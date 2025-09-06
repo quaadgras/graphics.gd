@@ -44,8 +44,6 @@ func EngineTypeAsGoType(pkg, meta string, gdType string) string {
 		return "bool"
 	case "StringName":
 		return "String.Name"
-	case "enum::GDExtension.InitializationLevel":
-		return maybeInternal("GDExtensionInitializationLevel")
 	case "PackedInt32Array":
 		return "Packed.Array[int32]"
 	case "PackedInt64Array":

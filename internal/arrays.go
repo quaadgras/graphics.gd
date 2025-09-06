@@ -51,7 +51,7 @@ func (a Array) Iter() iter.Seq2[int64, Variant] {
 }
 
 func NewArray() Array {
-	return pointers.New[Array](gdextension.Make[gdextension.Array](Global.typeset.creation.Array[0], 0, nil))
+	return pointers.New[Array](gdextension.Make[gdextension.Array](builtin.creation.Array[0], 0, nil))
 }
 
 func ArrayAs[S []T, T any](array Array) []T {

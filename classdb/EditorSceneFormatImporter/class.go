@@ -133,7 +133,7 @@ func (self implementation) GetOptionVisibility(path string, for_animation bool, 
 Return supported file extensions for this scene importer.
 */
 func (Instance) _get_extensions(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
@@ -149,7 +149,7 @@ func (Instance) _get_extensions(impl func(ptr gdclass.Receiver) []string) (cb gd
 Perform the bulk of the scene import logic here, for example using [GLTFDocument] or [FBXDocument].
 */
 func (Instance) _import_scene(impl func(ptr gdclass.Receiver, path string, flags int, options map[any]any) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[int64](p_args, 1)
@@ -172,7 +172,7 @@ Override to add general import options. These will appear in the main import doc
 When the user is editing project settings, [param path] will be empty. It is recommended to add all options when [param path] is empty to allow the user to customize Import Defaults.
 */
 func (Instance) _get_import_options(impl func(ptr gdclass.Receiver, path string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -184,7 +184,7 @@ func (Instance) _get_import_options(impl func(ptr gdclass.Receiver, path string)
 Should return [code]true[/code] to show the given option, [code]false[/code] to hide the given option, or [code]null[/code] to ignore.
 */
 func (Instance) _get_option_visibility(impl func(ptr gdclass.Receiver, path string, for_animation bool, option string) any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)
@@ -269,7 +269,7 @@ func New() Instance {
 Return supported file extensions for this scene importer.
 */
 func (class) _get_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
@@ -285,7 +285,7 @@ func (class) _get_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb
 Perform the bulk of the scene import logic here, for example using [GLTFDocument] or [FBXDocument].
 */
 func (class) _import_scene(impl func(ptr gdclass.Receiver, path String.Readable, flags int64, options Dictionary.Any) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var flags = gd.UnsafeGet[int64](p_args, 1)
@@ -308,7 +308,7 @@ Override to add general import options. These will appear in the main import doc
 When the user is editing project settings, [param path] will be empty. It is recommended to add all options when [param path] is empty to allow the user to customize Import Defaults.
 */
 func (class) _get_import_options(impl func(ptr gdclass.Receiver, path String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -320,7 +320,7 @@ func (class) _get_import_options(impl func(ptr gdclass.Receiver, path String.Rea
 Should return [code]true[/code] to show the given option, [code]false[/code] to hide the given option, or [code]null[/code] to ignore.
 */
 func (class) _get_option_visibility(impl func(ptr gdclass.Receiver, path String.Readable, for_animation bool, option String.Readable) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)

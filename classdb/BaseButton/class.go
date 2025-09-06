@@ -143,7 +143,7 @@ func (self implementation) Toggled(toggled_on bool) { return }
 Called when the button is pressed. If you need to know the button's pressed state (and [member toggle_mode] is active), use [method _toggled] instead.
 */
 func (Instance) _pressed(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -153,7 +153,7 @@ func (Instance) _pressed(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassC
 Called when the button is toggled (only if [member toggle_mode] is active).
 */
 func (Instance) _toggled(impl func(ptr gdclass.Receiver, toggled_on bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var toggled_on = gd.UnsafeGet[bool](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, toggled_on)
@@ -300,7 +300,7 @@ func (self Instance) SetShortcutInTooltip(value bool) {
 Called when the button is pressed. If you need to know the button's pressed state (and [member toggle_mode] is active), use [method _toggled] instead.
 */
 func (class) _pressed(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -310,7 +310,7 @@ func (class) _pressed(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCall
 Called when the button is toggled (only if [member toggle_mode] is active).
 */
 func (class) _toggled(impl func(ptr gdclass.Receiver, toggled_on bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var toggled_on = gd.UnsafeGet[bool](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, toggled_on)

@@ -150,7 +150,7 @@ func (self implementation) Load(path string, original_path string, use_sub_threa
 Gets the list of extensions for files this loader is able to read.
 */
 func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
@@ -167,7 +167,7 @@ Tells whether or not this loader should load a resource from its resource path f
 If it is not implemented, the default behavior returns whether the path's extension is within the ones provided by [method _get_recognized_extensions], and if the type is within the ones provided by [method _get_resource_type].
 */
 func (Instance) _recognize_path(impl func(ptr gdclass.Receiver, path string, atype string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var atype = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1)))))
@@ -183,7 +183,7 @@ Tells which resource class this loader can load.
 [b]Note:[/b] Custom resource types defined by scripts aren't known by the [ClassDB], so you might just handle [code]"Resource"[/code] for them.
 */
 func (Instance) _handles_type(impl func(ptr gdclass.Receiver, atype string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var atype = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(atype))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -197,7 +197,7 @@ Gets the class name of the resource associated with the given path. If the loade
 [b]Note:[/b] Custom resource types defined by scripts aren't known by the [ClassDB], so you might just return [code]"Resource"[/code] for them.
 */
 func (Instance) _get_resource_type(impl func(ptr gdclass.Receiver, path string) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -215,7 +215,7 @@ func (Instance) _get_resource_type(impl func(ptr gdclass.Receiver, path string) 
 Returns the script class name associated with the [Resource] under the given [param path]. If the resource has no script or the script isn't a named class, it should return [code]""[/code].
 */
 func (Instance) _get_resource_script_class(impl func(ptr gdclass.Receiver, path string) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -233,7 +233,7 @@ func (Instance) _get_resource_script_class(impl func(ptr gdclass.Receiver, path 
 Should return the unique ID for the resource associated with the given path. If this method is not overridden, a [code].uid[/code] file is generated along with the resource file, containing the unique ID.
 */
 func (Instance) _get_resource_uid(impl func(ptr gdclass.Receiver, path string) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -247,7 +247,7 @@ If implemented, gets the dependencies of a given resource. If [param add_types] 
 [b]Note:[/b] Custom resource types defined by scripts aren't known by the [ClassDB], so you might just return [code]"Resource"[/code] for them.
 */
 func (Instance) _get_dependencies(impl func(ptr gdclass.Receiver, path string, add_types bool) []string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var add_types = gd.UnsafeGet[bool](p_args, 1)
@@ -267,7 +267,7 @@ If implemented, renames dependencies within the given resource and saves it. [pa
 Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
 func (Instance) _rename_dependencies(impl func(ptr gdclass.Receiver, path string, renames map[any]any) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var renames = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
@@ -283,7 +283,7 @@ func (Instance) _rename_dependencies(impl func(ptr gdclass.Receiver, path string
 	}
 }
 func (Instance) _exists(impl func(ptr gdclass.Receiver, path string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -292,7 +292,7 @@ func (Instance) _exists(impl func(ptr gdclass.Receiver, path string) bool) (cb g
 	}
 }
 func (Instance) _get_classes_used(impl func(ptr gdclass.Receiver, path string) []string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -311,7 +311,7 @@ Loads a resource when the engine finds this loader to be compatible. If the load
 The [param cache_mode] property defines whether and how the cache should be used or updated when loading the resource. See [enum CacheMode] for details.
 */
 func (Instance) _load(impl func(ptr gdclass.Receiver, path string, original_path string, use_sub_threads bool, cache_mode int) any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var original_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
@@ -376,7 +376,7 @@ func New() Instance {
 Gets the list of extensions for files this loader is able to read.
 */
 func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
@@ -393,7 +393,7 @@ Tells whether or not this loader should load a resource from its resource path f
 If it is not implemented, the default behavior returns whether the path's extension is within the ones provided by [method _get_recognized_extensions], and if the type is within the ones provided by [method _get_resource_type].
 */
 func (class) _recognize_path(impl func(ptr gdclass.Receiver, path String.Readable, atype String.Name) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var atype = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1)))))
@@ -409,7 +409,7 @@ Tells which resource class this loader can load.
 [b]Note:[/b] Custom resource types defined by scripts aren't known by the [ClassDB], so you might just handle [code]"Resource"[/code] for them.
 */
 func (class) _handles_type(impl func(ptr gdclass.Receiver, atype String.Name) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var atype = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(atype))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -423,7 +423,7 @@ Gets the class name of the resource associated with the given path. If the loade
 [b]Note:[/b] Custom resource types defined by scripts aren't known by the [ClassDB], so you might just return [code]"Resource"[/code] for them.
 */
 func (class) _get_resource_type(impl func(ptr gdclass.Receiver, path String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -441,7 +441,7 @@ func (class) _get_resource_type(impl func(ptr gdclass.Receiver, path String.Read
 Returns the script class name associated with the [Resource] under the given [param path]. If the resource has no script or the script isn't a named class, it should return [code]""[/code].
 */
 func (class) _get_resource_script_class(impl func(ptr gdclass.Receiver, path String.Readable) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -459,7 +459,7 @@ func (class) _get_resource_script_class(impl func(ptr gdclass.Receiver, path Str
 Should return the unique ID for the resource associated with the given path. If this method is not overridden, a [code].uid[/code] file is generated along with the resource file, containing the unique ID.
 */
 func (class) _get_resource_uid(impl func(ptr gdclass.Receiver, path String.Readable) int64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -473,7 +473,7 @@ If implemented, gets the dependencies of a given resource. If [param add_types] 
 [b]Note:[/b] Custom resource types defined by scripts aren't known by the [ClassDB], so you might just return [code]"Resource"[/code] for them.
 */
 func (class) _get_dependencies(impl func(ptr gdclass.Receiver, path String.Readable, add_types bool) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var add_types = gd.UnsafeGet[bool](p_args, 1)
@@ -493,7 +493,7 @@ If implemented, renames dependencies within the given resource and saves it. [pa
 Returns [constant OK] on success, or an [enum Error] constant in case of failure.
 */
 func (class) _rename_dependencies(impl func(ptr gdclass.Receiver, path String.Readable, renames Dictionary.Any) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var renames = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
@@ -510,7 +510,7 @@ func (class) _rename_dependencies(impl func(ptr gdclass.Receiver, path String.Re
 }
 
 func (class) _exists(impl func(ptr gdclass.Receiver, path String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -520,7 +520,7 @@ func (class) _exists(impl func(ptr gdclass.Receiver, path String.Readable) bool)
 }
 
 func (class) _get_classes_used(impl func(ptr gdclass.Receiver, path String.Readable) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -539,7 +539,7 @@ Loads a resource when the engine finds this loader to be compatible. If the load
 The [param cache_mode] property defines whether and how the cache should be used or updated when loading the resource. See [enum CacheMode] for details.
 */
 func (class) _load(impl func(ptr gdclass.Receiver, path String.Readable, original_path String.Readable, use_sub_threads bool, cache_mode int64) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var original_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))

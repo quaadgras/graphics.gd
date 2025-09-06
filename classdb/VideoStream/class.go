@@ -116,7 +116,7 @@ func (self implementation) InstantiatePlayback() (_ VideoStreamPlayback.Instance
 Called when the video starts playing, to initialize and return a subclass of [VideoStreamPlayback].
 */
 func (Instance) _instantiate_playback(impl func(ptr gdclass.Receiver) VideoStreamPlayback.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
@@ -183,7 +183,7 @@ func (self Instance) SetFile(value string) {
 Called when the video starts playing, to initialize and return a subclass of [VideoStreamPlayback].
 */
 func (class) _instantiate_playback(impl func(ptr gdclass.Receiver) [1]gdclass.VideoStreamPlayback) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])

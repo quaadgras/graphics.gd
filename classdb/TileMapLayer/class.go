@@ -201,7 +201,7 @@ Should return [code]true[/code] if the tile at coordinates [param coords] requir
 [b]Note:[/b] If the result of this function should change, use [method notify_runtime_tile_data_update] to notify the [TileMapLayer] it needs an update.
 */
 func (Instance) _use_tile_data_runtime_update(impl func(ptr gdclass.Receiver, coords Vector2i.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var coords = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, coords)
@@ -216,7 +216,7 @@ This method is only called if [method _use_tile_data_runtime_update] is implemen
 [b]Note:[/b] If the properties of [param tile_data] object should change over time, use [method notify_runtime_tile_data_update] to notify the [TileMapLayer] it needs an update.
 */
 func (Instance) _tile_data_runtime_update(impl func(ptr gdclass.Receiver, coords Vector2i.XY, tile_data TileData.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var coords = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		var tile_data = [1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
 
@@ -237,7 +237,7 @@ Note that any internal update happening while one of these conditions is verifie
 [b]Warning:[/b] Implementing this method may degrade the [TileMapLayer]'s performance.
 */
 func (Instance) _update_cells(impl func(ptr gdclass.Receiver, coords []Vector2i.XY, forced_cleanup bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var coords = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(coords))
 		var forced_cleanup = gd.UnsafeGet[bool](p_args, 1)
@@ -658,7 +658,7 @@ Should return [code]true[/code] if the tile at coordinates [param coords] requir
 [b]Note:[/b] If the result of this function should change, use [method notify_runtime_tile_data_update] to notify the [TileMapLayer] it needs an update.
 */
 func (class) _use_tile_data_runtime_update(impl func(ptr gdclass.Receiver, coords Vector2i.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var coords = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, coords)
@@ -673,7 +673,7 @@ This method is only called if [method _use_tile_data_runtime_update] is implemen
 [b]Note:[/b] If the properties of [param tile_data] object should change over time, use [method notify_runtime_tile_data_update] to notify the [TileMapLayer] it needs an update.
 */
 func (class) _tile_data_runtime_update(impl func(ptr gdclass.Receiver, coords Vector2i.XY, tile_data [1]gdclass.TileData)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var coords = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		var tile_data = [1]gdclass.TileData{pointers.New[gdclass.TileData]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
 
@@ -694,7 +694,7 @@ Note that any internal update happening while one of these conditions is verifie
 [b]Warning:[/b] Implementing this method may degrade the [TileMapLayer]'s performance.
 */
 func (class) _update_cells(impl func(ptr gdclass.Receiver, coords Array.Contains[Vector2i.XY], forced_cleanup bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var coords = Array.Through(gd.ArrayProxy[Vector2i.XY]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(coords))
 		var forced_cleanup = gd.UnsafeGet[bool](p_args, 1)

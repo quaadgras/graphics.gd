@@ -141,7 +141,7 @@ func (self implementation) Convert(resource Resource.Instance) (_ Resource.Insta
 Returns the class name of the target type of [Resource] that this plugin converts source resources to.
 */
 func (Instance) _converts_to(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -157,7 +157,7 @@ func (Instance) _converts_to(impl func(ptr gdclass.Receiver) string) (cb gd.Exte
 Called to determine whether a particular [Resource] can be converted to the target resource type by this plugin.
 */
 func (Instance) _handles(impl func(ptr gdclass.Receiver, resource Resource.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(resource[0])
@@ -171,7 +171,7 @@ func (Instance) _handles(impl func(ptr gdclass.Receiver, resource Resource.Insta
 Takes an input [Resource] and converts it to the type given in [method _converts_to]. The returned [Resource] is the result of the conversion, and the input [Resource] remains unchanged.
 */
 func (Instance) _convert(impl func(ptr gdclass.Receiver, resource Resource.Instance) Resource.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(resource[0])
@@ -233,7 +233,7 @@ func New() Instance {
 Returns the class name of the target type of [Resource] that this plugin converts source resources to.
 */
 func (class) _converts_to(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -249,7 +249,7 @@ func (class) _converts_to(impl func(ptr gdclass.Receiver) String.Readable) (cb g
 Called to determine whether a particular [Resource] can be converted to the target resource type by this plugin.
 */
 func (class) _handles(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(resource[0])
@@ -263,7 +263,7 @@ func (class) _handles(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resour
 Takes an input [Resource] and converts it to the type given in [method _converts_to]. The returned [Resource] is the result of the conversion, and the input [Resource] remains unchanged.
 */
 func (class) _convert(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource) [1]gdclass.Resource) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(resource[0])

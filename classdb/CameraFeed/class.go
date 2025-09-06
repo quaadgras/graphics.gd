@@ -135,7 +135,7 @@ func (self implementation) DeactivateFeed()        { return }
 Called when the camera feed is activated.
 */
 func (Instance) _activate_feed(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -146,7 +146,7 @@ func (Instance) _activate_feed(impl func(ptr gdclass.Receiver) bool) (cb gd.Exte
 Called when the camera feed is deactivated.
 */
 func (Instance) _deactivate_feed(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -299,7 +299,7 @@ func (self Instance) Formats() []any {
 Called when the camera feed is activated.
 */
 func (class) _activate_feed(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -310,7 +310,7 @@ func (class) _activate_feed(impl func(ptr gdclass.Receiver) bool) (cb gd.Extensi
 Called when the camera feed is deactivated.
 */
 func (class) _deactivate_feed(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}

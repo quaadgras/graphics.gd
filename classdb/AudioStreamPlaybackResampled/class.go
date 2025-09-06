@@ -105,7 +105,7 @@ type implementation struct{}
 func (self implementation) MixResampled(dst_buffer *AudioFrame, frame_count int) (_ int) { return }
 func (self implementation) GetStreamSamplingRate() (_ Float.X)                           { return }
 func (Instance) _mix_resampled(impl func(ptr gdclass.Receiver, dst_buffer *AudioFrame, frame_count int) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var frame_count = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -114,7 +114,7 @@ func (Instance) _mix_resampled(impl func(ptr gdclass.Receiver, dst_buffer *Audio
 	}
 }
 func (Instance) _get_stream_sampling_rate(impl func(ptr gdclass.Receiver) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, float64(ret))
@@ -168,7 +168,7 @@ func New() Instance {
 }
 
 func (class) _mix_resampled(impl func(ptr gdclass.Receiver, dst_buffer *AudioFrame, frame_count int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var dst_buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var frame_count = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -178,7 +178,7 @@ func (class) _mix_resampled(impl func(ptr gdclass.Receiver, dst_buffer *AudioFra
 }
 
 func (class) _get_stream_sampling_rate(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)

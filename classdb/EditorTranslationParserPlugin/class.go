@@ -220,7 +220,7 @@ func (self implementation) GetRecognizedExtensions() (_ []string) { return }
 Override this method to define a custom parsing logic to extract the translatable strings.
 */
 func (Instance) _parse_file(impl func(ptr gdclass.Receiver, path string) [][]string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -238,7 +238,7 @@ func (Instance) _parse_file(impl func(ptr gdclass.Receiver, path string) [][]str
 Gets the list of file extensions to associate with this parser, e.g. [code]["csv"][/code].
 */
 func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
@@ -297,7 +297,7 @@ func New() Instance {
 Override this method to define a custom parsing logic to extract the translatable strings.
 */
 func (class) _parse_file(impl func(ptr gdclass.Receiver, path String.Readable) Array.Contains[Packed.Strings]) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -315,7 +315,7 @@ func (class) _parse_file(impl func(ptr gdclass.Receiver, path String.Readable) A
 Gets the list of file extensions to associate with this parser, e.g. [code]["csv"][/code].
 */
 func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))

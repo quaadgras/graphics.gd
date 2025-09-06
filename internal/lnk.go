@@ -13,16 +13,18 @@ import (
 	"graphics.gd/internal/pointers"
 )
 
+var Linked bool = false
+
 var Links []func()
 
 // Link needs to be called once for the API to load in all of the
 // dynamic function pointers. Typically, the link layer will take
 // care of this (and you won't need to call it yourself).
-func (Godot *API) Init(level gdextension.InitializationLevel) {
+func Init(level gdextension.InitializationLevel) {
 	if level == gdextension.InitializationLevelScene {
-		Godot.linkBuiltin()
-		Godot.linkTypeset()
-		Godot.linkTypesetCreation()
+		linkBuiltin()
+		linkTypeset()
+		linkTypesetCreation()
 		LinkMethods(pointers.Get(NewStringName("Object")), &object_methods, false)
 		LinkMethods(pointers.Get(NewStringName("RefCounted")), &refcounted_methods, false)
 		for _, fn := range Links {
@@ -39,9 +41,9 @@ func (Godot *API) Init(level gdextension.InitializationLevel) {
 
 // linkBuiltin is very similar to [Godot.linkMethods], except it loads in methods for the
 // builtin Godot classes.
-func (Godot *API) linkBuiltin() {
-	rvalue := reflect.ValueOf(&Godot.builtin).Elem()
-	for i := 0; i < rvalue.NumField(); i++ {
+func linkBuiltin() {
+	rvalue := reflect.ValueOf(&builtin).Elem()
+	for i := 1; i < rvalue.NumField(); i++ {
 		class := rvalue.Type().Field(i)
 		value := reflect.NewAt(class.Type, unsafe.Add(rvalue.Addr().UnsafePointer(), class.Offset))
 		for j := 0; j < class.Type.NumField(); j++ {
@@ -89,13 +91,15 @@ func LinkMethods(className gdextension.StringName, methods any, editor bool) {
 	}
 }
 
-func (Godot *API) linkTypeset() {
-	Godot.refCountedClassTag = gdextension.Host.Objects.Type(pointers.Get(NewStringName("RefCounted")))
+var refCountedClassTag gdextension.ObjectType
+
+func linkTypeset() {
+	refCountedClassTag = gdextension.Host.Objects.Type(pointers.Get(NewStringName("RefCounted")))
 }
 
 // linkTypesetCreation, each field is an array of constructors.
-func (Godot *API) linkTypesetCreation() {
-	rvalue := reflect.ValueOf(&Godot.typeset.creation).Elem()
+func linkTypesetCreation() {
+	rvalue := reflect.ValueOf(&builtin.creation).Elem()
 	for i := 0; i < rvalue.NumField(); i++ {
 		field := rvalue.Type().Field(i)
 		esize := field.Type.Elem().Size()

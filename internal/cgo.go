@@ -6,14 +6,6 @@ import (
 	"structs"
 )
 
-// cache is responsible for keeping a local copy for the various
-// function pointers that are looked up at runtime and used for
-// calling methods on classes.
-type cache struct {
-	builtin builtin
-	typeset typeset
-}
-
 type ObjectID uint64
 
 type AudioFrame struct {

@@ -123,7 +123,7 @@ func (self implementation) LoadImage(image Image.Instance, fileaccess FileAccess
 Returns the list of file extensions for this image format. Files with the given extensions will be treated as image file and loaded using this class.
 */
 func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
@@ -139,7 +139,7 @@ func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []str
 Loads the content of [param fileaccess] into the provided [param image].
 */
 func (Instance) _load_image(impl func(ptr gdclass.Receiver, image Image.Instance, fileaccess FileAccess.Instance, flags ImageFormatLoader.LoaderFlags, scale Float.X) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(image[0])
@@ -220,7 +220,7 @@ func New() Instance {
 Returns the list of file extensions for this image format. Files with the given extensions will be treated as image file and loaded using this class.
 */
 func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
@@ -236,7 +236,7 @@ func (class) _get_recognized_extensions(impl func(ptr gdclass.Receiver) Packed.S
 Loads the content of [param fileaccess] into the provided [param image].
 */
 func (class) _load_image(impl func(ptr gdclass.Receiver, image [1]gdclass.Image, fileaccess [1]gdclass.FileAccess, flags ImageFormatLoader.LoaderFlags, scale float64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(image[0])

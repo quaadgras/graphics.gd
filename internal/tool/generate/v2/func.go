@@ -305,7 +305,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, "", arg.Meta, arg.Type))
 	}
 	fmt.Fprintf(w, ") %v) (cb gd.ExtensionClassCallVirtualFunc) {\n", resultSimple)
-	fmt.Fprintf(w, "\treturn func(class any, p_args gd.Address, p_back gd.Address) {\n")
+	fmt.Fprintf(w, "\treturn func(class any, p_args, p_back gdextension.Pointer) {\n")
 	for i, arg := range method.Arguments {
 		var expert = gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)
 		pointerKind, argIsPtr := gdtype.Name(expert).IsPointer()

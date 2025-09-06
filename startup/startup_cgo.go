@@ -32,7 +32,7 @@ func init() {
 	gdextension.On.Engine = gdextension.CallbacksForEngine{
 		Init: func(level gdextension.InitializationLevel) {
 			internal.Linked = true
-			internal.Global.Init(level)
+			internal.Init(level)
 			if level == 2 {
 				for _, fn := range internal.StartupFunctions {
 					fn()

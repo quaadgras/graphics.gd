@@ -126,7 +126,7 @@ func (self implementation) ProcessCustomFx(char_fx CharFXTransform.Instance) (_ 
 Override this method to modify properties in [param char_fx]. The method must return [code]true[/code] if the character could be transformed successfully. If the method returns [code]false[/code], it will skip transformation to avoid displaying broken text.
 */
 func (Instance) _process_custom_fx(impl func(ptr gdclass.Receiver, char_fx CharFXTransform.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var char_fx = [1]gdclass.CharFXTransform{pointers.New[gdclass.CharFXTransform]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(char_fx[0])
@@ -183,7 +183,7 @@ func New() Instance {
 Override this method to modify properties in [param char_fx]. The method must return [code]true[/code] if the character could be transformed successfully. If the method returns [code]false[/code], it will skip transformation to avoid displaying broken text.
 */
 func (class) _process_custom_fx(impl func(ptr gdclass.Receiver, char_fx [1]gdclass.CharFXTransform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var char_fx = [1]gdclass.CharFXTransform{pointers.New[gdclass.CharFXTransform]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(char_fx[0])

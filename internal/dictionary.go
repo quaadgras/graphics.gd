@@ -28,7 +28,7 @@ func (d Dictionary) Free() {
 }
 
 func NewDictionary() Dictionary {
-	return pointers.New[Dictionary](gdextension.Make[gdextension.Dictionary](Global.typeset.creation.Dictionary[0], 0, nil))
+	return pointers.New[Dictionary](gdextension.Make[gdextension.Dictionary](builtin.creation.Dictionary[0], 0, nil))
 }
 
 func InternalDictionary[K comparable, V any](dict DictionaryType.Map[K, V]) Dictionary {

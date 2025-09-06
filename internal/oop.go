@@ -11,6 +11,8 @@ import (
 	"graphics.gd/internal/pointers"
 )
 
+type ExtensionClassCallVirtualFunc func(any, gdextension.Pointer, gdextension.Pointer)
+
 var ExtensionInstanceLookup func(gdextension.Object) any
 
 type NotificationType int32
@@ -104,7 +106,7 @@ func (self RefCounted) Free() {
 	}
 }
 func (self *RefCounted) SetObject(obj [1]Object) bool {
-	ref := gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), Global.refCountedClassTag)
+	ref := gdextension.Host.Objects.Cast(gdextension.Object(pointers.Get(obj[0])[0]), refCountedClassTag)
 	if ref != 0 {
 		*self = RefCounted(obj[0])
 		return true
@@ -124,7 +126,7 @@ func (self Object) Free() {
 	//fmt.Println(raw)
 	//fmt.Fprintln(os.Stderr, "FREE ", pointers.Trio[Object](self), pointers.Raw[Object](raw).GetClass().String())
 	//fmt.Println(runtime.Caller(2))
-	ref := gdextension.Host.Objects.Cast(gdextension.Object(raw[0]), Global.refCountedClassTag)
+	ref := gdextension.Host.Objects.Cast(gdextension.Object(raw[0]), refCountedClassTag)
 	if ref != 0 {
 		// Important that we don't destroy RefCounted objects, instead
 		// they should be unreferenced instead.

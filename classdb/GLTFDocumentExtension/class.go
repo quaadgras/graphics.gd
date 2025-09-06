@@ -245,7 +245,7 @@ Part of the import process. This method is run first, before all other parts of 
 The return value is used to determine if this [GLTFDocumentExtension] instance should be used for importing a given glTF file. If [constant OK], the import will use this [GLTFDocumentExtension] instance. If not overridden, [constant OK] is returned.
 */
 func (Instance) _import_preflight(impl func(ptr gdclass.Receiver, state GLTFState.Instance, extensions []string) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -267,7 +267,7 @@ Part of the import process. This method is run after [method _import_preflight] 
 Returns an array of the glTF extensions supported by this GLTFDocumentExtension class. This is used to validate if a glTF file with required extensions can be loaded.
 */
 func (Instance) _get_supported_extensions(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
@@ -284,7 +284,7 @@ Part of the import process. This method is run after [method _get_supported_exte
 Runs when parsing the node extensions of a GLTFNode. This method can be used to process the extension JSON data into a format that can be used by [method _generate_scene_node]. The return value should be a member of the [enum Error] enum.
 */
 func (Instance) _parse_node_extensions(impl func(ptr gdclass.Receiver, state GLTFState.Instance, gltf_node GLTFNode.Instance, extensions map[any]any) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -309,7 +309,7 @@ Part of the import process. This method is run after [method _parse_node_extensi
 Runs when parsing image data from a glTF file. The data could be sourced from a separate file, a URI, or a buffer, and then is passed as a byte array.
 */
 func (Instance) _parse_image_data(impl func(ptr gdclass.Receiver, state GLTFState.Instance, image_data []byte, mime_type string, ret_image Image.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -335,7 +335,7 @@ func (Instance) _parse_image_data(impl func(ptr gdclass.Receiver, state GLTFStat
 Returns the file extension to use for saving image data into, for example, [code]".png"[/code]. If defined, when this extension is used to handle images, and the images are saved to a separate file, the image bytes will be copied to a file with this extension. If this is set, there should be a [ResourceImporter] class able to import the file. If not defined or empty, Godot will save the image into a PNG file.
 */
 func (Instance) _get_image_file_extension(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -352,7 +352,7 @@ Part of the import process. This method is run after [method _parse_image_data] 
 Runs when parsing the texture JSON from the glTF textures array. This can be used to set the source image index to use as the texture.
 */
 func (Instance) _parse_texture_json(impl func(ptr gdclass.Receiver, state GLTFState.Instance, texture_json map[any]any, ret_gltf_texture GLTFTexture.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -378,7 +378,7 @@ Returns a [GLTFObjectModelProperty] instance that defines how the property shoul
 In many cases, [param partial_paths] will contain the start of a path, allowing the extension to complete the path. For example, for [code]/nodes/3/extensions/MY_ext/prop[/code], Godot will pass you a NodePath that leads to node 3, so the GLTFDocumentExtension class only needs to resolve the last [code]MY_ext/prop[/code] part of the path. In this example, the extension should check [code]split.size() > 4 and split[0] == "nodes" and split[2] == "extensions" and split[3] == "MY_ext"[/code] at the start of the function to check if this JSON pointer applies to it, then it can use [param partial_paths] and handle [code]split[4][/code].
 */
 func (Instance) _import_object_model_property(impl func(ptr gdclass.Receiver, state GLTFState.Instance, split_json_pointer []string, partial_paths []string) GLTFObjectModelProperty.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -402,7 +402,7 @@ Part of the import process. This method is run after [method _parse_node_extensi
 This method can be used to modify any of the data imported so far after parsing each node, but before generating the scene or any of its nodes.
 */
 func (Instance) _import_post_parse(impl func(ptr gdclass.Receiver, state GLTFState.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -422,7 +422,7 @@ Part of the import process. This method is run after [method _import_post_parse]
 This method can be used to modify or read from any of the processed data structures, before generating the nodes and then running the final per-node import step.
 */
 func (Instance) _import_pre_generate(impl func(ptr gdclass.Receiver, state GLTFState.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -443,7 +443,7 @@ Runs when generating a Godot scene node from a GLTFNode. The returned node will 
 [b]Note:[/b] The [param scene_parent] parameter may be [code]null[/code] if this is the single root node.
 */
 func (Instance) _generate_scene_node(impl func(ptr gdclass.Receiver, state GLTFState.Instance, gltf_node GLTFNode.Instance, scene_parent Node.Instance) Node3D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -469,7 +469,7 @@ Part of the import process. This method is run after [method _generate_scene_nod
 This method can be used to make modifications to each of the generated Godot scene nodes.
 */
 func (Instance) _import_node(impl func(ptr gdclass.Receiver, state GLTFState.Instance, gltf_node GLTFNode.Instance, json map[any]any, node Node.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -497,7 +497,7 @@ Part of the import process. This method is run last, after all other parts of th
 This method can be used to modify the final Godot scene generated by the import process.
 */
 func (Instance) _import_post(impl func(ptr gdclass.Receiver, state GLTFState.Instance, root Node.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -520,7 +520,7 @@ Part of the export process. This method is run first, before all other parts of 
 The return value is used to determine if this [GLTFDocumentExtension] instance should be used for exporting a given glTF file. If [constant OK], the export will use this [GLTFDocumentExtension] instance. If not overridden, [constant OK] is returned.
 */
 func (Instance) _export_preflight(impl func(ptr gdclass.Receiver, state GLTFState.Instance, root Node.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -543,7 +543,7 @@ Part of the export process. This method is run after [method _export_preflight] 
 Runs when converting the data from a Godot scene node. This method can be used to process the Godot scene node data into a format that can be used by [method _export_node].
 */
 func (Instance) _convert_scene_node(impl func(ptr gdclass.Receiver, state GLTFState.Instance, gltf_node GLTFNode.Instance, scene_node Node.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -563,7 +563,7 @@ Part of the export process. This method is run after [method _convert_scene_node
 This method can be used to modify the converted node data structures before serialization with any additional data from the scene tree.
 */
 func (Instance) _export_post_convert(impl func(ptr gdclass.Receiver, state GLTFState.Instance, root Node.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -586,7 +586,7 @@ Part of the export process. This method is run after [method _export_post_conver
 This method can be used to alter the state before performing serialization. It runs every time when generating a buffer with [method GLTFDocument.generate_buffer] or writing to the file system with [method GLTFDocument.write_to_filesystem].
 */
 func (Instance) _export_preserialize(impl func(ptr gdclass.Receiver, state GLTFState.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -607,7 +607,7 @@ Returns a [GLTFObjectModelProperty] instance that defines how the property shoul
 The parameters provide context for the property, including the NodePath, the Godot node, the GLTF node index, and the target object. The [param target_object] will be equal to [param godot_node] if no sub-object can be found, otherwise it will point to a sub-object. For example, if the path is [code]^"A/B/C/MeshInstance3D:mesh:surface_0/material:emission_intensity"[/code], it will get the node, then the mesh, and then the material, so [param target_object] will be the [Material] resource, and [param target_depth] will be 2 because 2 levels were traversed to get to the target.
 */
 func (Instance) _export_object_model_property(impl func(ptr gdclass.Receiver, state GLTFState.Instance, node_path string, godot_node Node.Instance, gltf_node_index int, target_object Object.Instance, target_depth int) GLTFObjectModelProperty.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -636,7 +636,7 @@ Part of the export process. This method is run after [method _convert_scene_node
 Returns an array of the image formats that can be saved/exported by this extension. This extension will only be selected as the image exporter if the [GLTFDocument]'s [member GLTFDocument.image_format] is in this array. If this [GLTFDocumentExtension] is selected as the image exporter, one of the [method _save_image_at_path] or [method _serialize_image_to_bytes] methods will run next, otherwise [method _export_node] will run next. If the format name contains [code]"Lossy"[/code], the lossy quality slider will be displayed.
 */
 func (Instance) _get_saveable_image_formats(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
@@ -654,7 +654,7 @@ This method is run when embedding images in the glTF file. When images are saved
 This method must set the image MIME type in the [param image_dict] with the [code]"mimeType"[/code] key. For example, for a PNG image, it would be set to [code]"image/png"[/code]. The return value must be a [PackedByteArray] containing the image data.
 */
 func (Instance) _serialize_image_to_bytes(impl func(ptr gdclass.Receiver, state GLTFState.Instance, image Image.Instance, image_dict map[any]any, image_format string, lossy_quality Float.X) []byte) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -682,7 +682,7 @@ Part of the export process. This method is run after [method _get_saveable_image
 This method is run when saving images separately from the glTF file. When images are embedded, [method _serialize_image_to_bytes] runs instead. Note that these methods only run when this [GLTFDocumentExtension] is selected as the image exporter.
 */
 func (Instance) _save_image_at_path(impl func(ptr gdclass.Receiver, state GLTFState.Instance, image Image.Instance, file_path string, image_format string, lossy_quality Float.X) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -710,7 +710,7 @@ Part of the export process. This method is run after [method _save_image_at_path
 This method can be used to set up the extensions for the texture JSON by editing [param texture_json]. The extension must also be added as used extension with [method GLTFState.add_used_extension], be sure to set [code]required[/code] to [code]true[/code] if you are not providing a fallback.
 */
 func (Instance) _serialize_texture_json(impl func(ptr gdclass.Receiver, state GLTFState.Instance, texture_json map[any]any, gltf_texture GLTFTexture.Instance, image_format string) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -737,7 +737,7 @@ Part of the export process. This method is run after [method _get_saveable_image
 This method can be used to modify the final JSON of each node. Data should be primarily stored in [param gltf_node] prior to serializing the JSON, but the original Godot [Node] is also provided if available. [param node] may be [code]null[/code] if not available, such as when exporting glTF data not generated from a Godot scene.
 */
 func (Instance) _export_node(impl func(ptr gdclass.Receiver, state GLTFState.Instance, gltf_node GLTFNode.Instance, json map[any]any, node Node.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -765,7 +765,7 @@ Part of the export process. This method is run last, after all other parts of th
 This method can be used to modify the final JSON of the generated glTF file.
 */
 func (Instance) _export_post(impl func(ptr gdclass.Receiver, state GLTFState.Instance) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -828,7 +828,7 @@ Part of the import process. This method is run first, before all other parts of 
 The return value is used to determine if this [GLTFDocumentExtension] instance should be used for importing a given glTF file. If [constant OK], the import will use this [GLTFDocumentExtension] instance. If not overridden, [constant OK] is returned.
 */
 func (class) _import_preflight(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, extensions Packed.Strings) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -850,7 +850,7 @@ Part of the import process. This method is run after [method _import_preflight] 
 Returns an array of the glTF extensions supported by this GLTFDocumentExtension class. This is used to validate if a glTF file with required extensions can be loaded.
 */
 func (class) _get_supported_extensions(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
@@ -867,7 +867,7 @@ Part of the import process. This method is run after [method _get_supported_exte
 Runs when parsing the node extensions of a GLTFNode. This method can be used to process the extension JSON data into a format that can be used by [method _generate_scene_node]. The return value should be a member of the [enum Error] enum.
 */
 func (class) _parse_node_extensions(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, extensions Dictionary.Any) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -892,7 +892,7 @@ Part of the import process. This method is run after [method _parse_node_extensi
 Runs when parsing image data from a glTF file. The data could be sourced from a separate file, a URI, or a buffer, and then is passed as a byte array.
 */
 func (class) _parse_image_data(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, image_data Packed.Bytes, mime_type String.Readable, ret_image [1]gdclass.Image) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -918,7 +918,7 @@ func (class) _parse_image_data(impl func(ptr gdclass.Receiver, state [1]gdclass.
 Returns the file extension to use for saving image data into, for example, [code]".png"[/code]. If defined, when this extension is used to handle images, and the images are saved to a separate file, the image bytes will be copied to a file with this extension. If this is set, there should be a [ResourceImporter] class able to import the file. If not defined or empty, Godot will save the image into a PNG file.
 */
 func (class) _get_image_file_extension(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -935,7 +935,7 @@ Part of the import process. This method is run after [method _parse_image_data] 
 Runs when parsing the texture JSON from the glTF textures array. This can be used to set the source image index to use as the texture.
 */
 func (class) _parse_texture_json(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, texture_json Dictionary.Any, ret_gltf_texture [1]gdclass.GLTFTexture) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -961,7 +961,7 @@ Returns a [GLTFObjectModelProperty] instance that defines how the property shoul
 In many cases, [param partial_paths] will contain the start of a path, allowing the extension to complete the path. For example, for [code]/nodes/3/extensions/MY_ext/prop[/code], Godot will pass you a NodePath that leads to node 3, so the GLTFDocumentExtension class only needs to resolve the last [code]MY_ext/prop[/code] part of the path. In this example, the extension should check [code]split.size() > 4 and split[0] == "nodes" and split[2] == "extensions" and split[3] == "MY_ext"[/code] at the start of the function to check if this JSON pointer applies to it, then it can use [param partial_paths] and handle [code]split[4][/code].
 */
 func (class) _import_object_model_property(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, split_json_pointer Packed.Strings, partial_paths Array.Contains[Path.ToNode]) [1]gdclass.GLTFObjectModelProperty) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -985,7 +985,7 @@ Part of the import process. This method is run after [method _parse_node_extensi
 This method can be used to modify any of the data imported so far after parsing each node, but before generating the scene or any of its nodes.
 */
 func (class) _import_post_parse(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -1005,7 +1005,7 @@ Part of the import process. This method is run after [method _import_post_parse]
 This method can be used to modify or read from any of the processed data structures, before generating the nodes and then running the final per-node import step.
 */
 func (class) _import_pre_generate(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -1026,7 +1026,7 @@ Runs when generating a Godot scene node from a GLTFNode. The returned node will 
 [b]Note:[/b] The [param scene_parent] parameter may be [code]null[/code] if this is the single root node.
 */
 func (class) _generate_scene_node(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, scene_parent [1]gdclass.Node) [1]gdclass.Node3D) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -1052,7 +1052,7 @@ Part of the import process. This method is run after [method _generate_scene_nod
 This method can be used to make modifications to each of the generated Godot scene nodes.
 */
 func (class) _import_node(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, json Dictionary.Any, node [1]gdclass.Node) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -1080,7 +1080,7 @@ Part of the import process. This method is run last, after all other parts of th
 This method can be used to modify the final Godot scene generated by the import process.
 */
 func (class) _import_post(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, root [1]gdclass.Node) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -1103,7 +1103,7 @@ Part of the export process. This method is run first, before all other parts of 
 The return value is used to determine if this [GLTFDocumentExtension] instance should be used for exporting a given glTF file. If [constant OK], the export will use this [GLTFDocumentExtension] instance. If not overridden, [constant OK] is returned.
 */
 func (class) _export_preflight(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, root [1]gdclass.Node) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -1126,7 +1126,7 @@ Part of the export process. This method is run after [method _export_preflight] 
 Runs when converting the data from a Godot scene node. This method can be used to process the Godot scene node data into a format that can be used by [method _export_node].
 */
 func (class) _convert_scene_node(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, scene_node [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -1146,7 +1146,7 @@ Part of the export process. This method is run after [method _convert_scene_node
 This method can be used to modify the converted node data structures before serialization with any additional data from the scene tree.
 */
 func (class) _export_post_convert(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, root [1]gdclass.Node) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -1169,7 +1169,7 @@ Part of the export process. This method is run after [method _export_post_conver
 This method can be used to alter the state before performing serialization. It runs every time when generating a buffer with [method GLTFDocument.generate_buffer] or writing to the file system with [method GLTFDocument.write_to_filesystem].
 */
 func (class) _export_preserialize(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -1190,7 +1190,7 @@ Returns a [GLTFObjectModelProperty] instance that defines how the property shoul
 The parameters provide context for the property, including the NodePath, the Godot node, the GLTF node index, and the target object. The [param target_object] will be equal to [param godot_node] if no sub-object can be found, otherwise it will point to a sub-object. For example, if the path is [code]^"A/B/C/MeshInstance3D:mesh:surface_0/material:emission_intensity"[/code], it will get the node, then the mesh, and then the material, so [param target_object] will be the [Material] resource, and [param target_depth] will be 2 because 2 levels were traversed to get to the target.
 */
 func (class) _export_object_model_property(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, node_path Path.ToNode, godot_node [1]gdclass.Node, gltf_node_index int64, target_object [1]gd.Object, target_depth int64) [1]gdclass.GLTFObjectModelProperty) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -1219,7 +1219,7 @@ Part of the export process. This method is run after [method _convert_scene_node
 Returns an array of the image formats that can be saved/exported by this extension. This extension will only be selected as the image exporter if the [GLTFDocument]'s [member GLTFDocument.image_format] is in this array. If this [GLTFDocumentExtension] is selected as the image exporter, one of the [method _save_image_at_path] or [method _serialize_image_to_bytes] methods will run next, otherwise [method _export_node] will run next. If the format name contains [code]"Lossy"[/code], the lossy quality slider will be displayed.
 */
 func (class) _get_saveable_image_formats(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
@@ -1237,7 +1237,7 @@ This method is run when embedding images in the glTF file. When images are saved
 This method must set the image MIME type in the [param image_dict] with the [code]"mimeType"[/code] key. For example, for a PNG image, it would be set to [code]"image/png"[/code]. The return value must be a [PackedByteArray] containing the image data.
 */
 func (class) _serialize_image_to_bytes(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, image [1]gdclass.Image, image_dict Dictionary.Any, image_format String.Readable, lossy_quality float64) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -1265,7 +1265,7 @@ Part of the export process. This method is run after [method _get_saveable_image
 This method is run when saving images separately from the glTF file. When images are embedded, [method _serialize_image_to_bytes] runs instead. Note that these methods only run when this [GLTFDocumentExtension] is selected as the image exporter.
 */
 func (class) _save_image_at_path(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, image [1]gdclass.Image, file_path String.Readable, image_format String.Readable, lossy_quality float64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -1293,7 +1293,7 @@ Part of the export process. This method is run after [method _save_image_at_path
 This method can be used to set up the extensions for the texture JSON by editing [param texture_json]. The extension must also be added as used extension with [method GLTFState.add_used_extension], be sure to set [code]required[/code] to [code]true[/code] if you are not providing a fallback.
 */
 func (class) _serialize_texture_json(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, texture_json Dictionary.Any, gltf_texture [1]gdclass.GLTFTexture, image_format String.Readable) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -1320,7 +1320,7 @@ Part of the export process. This method is run after [method _get_saveable_image
 This method can be used to modify the final JSON of each node. Data should be primarily stored in [param gltf_node] prior to serializing the JSON, but the original Godot [Node] is also provided if available. [param node] may be [code]null[/code] if not available, such as when exporting glTF data not generated from a Godot scene.
 */
 func (class) _export_node(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState, gltf_node [1]gdclass.GLTFNode, json Dictionary.Any, node [1]gdclass.Node) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -1348,7 +1348,7 @@ Part of the export process. This method is run last, after all other parts of th
 This method can be used to modify the final JSON of the generated glTF file.
 */
 func (class) _export_post(impl func(ptr gdclass.Receiver, state [1]gdclass.GLTFState) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])

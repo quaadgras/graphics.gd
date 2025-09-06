@@ -150,7 +150,7 @@ func (self implementation) PostProcess(scene Node.Instance) { return }
 Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [method add_import_option] and [method add_import_option_advanced].
 */
 func (Instance) _get_internal_import_options(impl func(ptr gdclass.Receiver, category int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var category = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(category))
@@ -161,7 +161,7 @@ func (Instance) _get_internal_import_options(impl func(ptr gdclass.Receiver, cat
 Should return [code]true[/code] to show the given option, [code]false[/code] to hide the given option, or [code]null[/code] to ignore.
 */
 func (Instance) _get_internal_option_visibility(impl func(ptr gdclass.Receiver, category int, for_animation bool, option string) any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var category = gd.UnsafeGet[int64](p_args, 0)
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)
 		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
@@ -181,7 +181,7 @@ func (Instance) _get_internal_option_visibility(impl func(ptr gdclass.Receiver, 
 Should return [code]true[/code] if the 3D view of the import dialog needs to update when changing the given option.
 */
 func (Instance) _get_internal_option_update_view_required(impl func(ptr gdclass.Receiver, category int, option string) any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var category = gd.UnsafeGet[int64](p_args, 0)
 		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(option))
@@ -200,7 +200,7 @@ func (Instance) _get_internal_option_update_view_required(impl func(ptr gdclass.
 Process a specific node or resource for a given category.
 */
 func (Instance) _internal_process(impl func(ptr gdclass.Receiver, category int, base_node Node.Instance, node Node.Instance, resource Resource.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var category = gd.UnsafeGet[int64](p_args, 0)
 		var base_node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
 
@@ -220,7 +220,7 @@ func (Instance) _internal_process(impl func(ptr gdclass.Receiver, category int, 
 Override to add general import options. These will appear in the main import dock on the editor. Add options via [method add_import_option] and [method add_import_option_advanced].
 */
 func (Instance) _get_import_options(impl func(ptr gdclass.Receiver, path string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -232,7 +232,7 @@ func (Instance) _get_import_options(impl func(ptr gdclass.Receiver, path string)
 Should return [code]true[/code] to show the given option, [code]false[/code] to hide the given option, or [code]null[/code] to ignore.
 */
 func (Instance) _get_option_visibility(impl func(ptr gdclass.Receiver, path string, for_animation bool, option string) any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)
@@ -254,7 +254,7 @@ Pre Process the scene. This function is called right after the scene format load
 Pre process may be used to adjust internal import options in the [code]"nodes"[/code], [code]"meshes"[/code], [code]"animations"[/code] or [code]"materials"[/code] keys inside [code]get_option_value("_subresources")[/code].
 */
 func (Instance) _pre_process(impl func(ptr gdclass.Receiver, scene Node.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(scene[0])
@@ -267,7 +267,7 @@ func (Instance) _pre_process(impl func(ptr gdclass.Receiver, scene Node.Instance
 Post process the scene. This function is called after the final scene has been configured.
 */
 func (Instance) _post_process(impl func(ptr gdclass.Receiver, scene Node.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(scene[0])
@@ -351,7 +351,7 @@ func New() Instance {
 Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [method add_import_option] and [method add_import_option_advanced].
 */
 func (class) _get_internal_import_options(impl func(ptr gdclass.Receiver, category int64)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var category = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, category)
@@ -362,7 +362,7 @@ func (class) _get_internal_import_options(impl func(ptr gdclass.Receiver, catego
 Should return [code]true[/code] to show the given option, [code]false[/code] to hide the given option, or [code]null[/code] to ignore.
 */
 func (class) _get_internal_option_visibility(impl func(ptr gdclass.Receiver, category int64, for_animation bool, option String.Readable) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var category = gd.UnsafeGet[int64](p_args, 0)
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)
 		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
@@ -382,7 +382,7 @@ func (class) _get_internal_option_visibility(impl func(ptr gdclass.Receiver, cat
 Should return [code]true[/code] if the 3D view of the import dialog needs to update when changing the given option.
 */
 func (class) _get_internal_option_update_view_required(impl func(ptr gdclass.Receiver, category int64, option String.Readable) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var category = gd.UnsafeGet[int64](p_args, 0)
 		var option = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(option))
@@ -401,7 +401,7 @@ func (class) _get_internal_option_update_view_required(impl func(ptr gdclass.Rec
 Process a specific node or resource for a given category.
 */
 func (class) _internal_process(impl func(ptr gdclass.Receiver, category int64, base_node [1]gdclass.Node, node [1]gdclass.Node, resource [1]gdclass.Resource)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var category = gd.UnsafeGet[int64](p_args, 0)
 		var base_node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
 
@@ -421,7 +421,7 @@ func (class) _internal_process(impl func(ptr gdclass.Receiver, category int64, b
 Override to add general import options. These will appear in the main import dock on the editor. Add options via [method add_import_option] and [method add_import_option_advanced].
 */
 func (class) _get_import_options(impl func(ptr gdclass.Receiver, path String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -433,7 +433,7 @@ func (class) _get_import_options(impl func(ptr gdclass.Receiver, path String.Rea
 Should return [code]true[/code] to show the given option, [code]false[/code] to hide the given option, or [code]null[/code] to ignore.
 */
 func (class) _get_option_visibility(impl func(ptr gdclass.Receiver, path String.Readable, for_animation bool, option String.Readable) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var for_animation = gd.UnsafeGet[bool](p_args, 1)
@@ -455,7 +455,7 @@ Pre Process the scene. This function is called right after the scene format load
 Pre process may be used to adjust internal import options in the [code]"nodes"[/code], [code]"meshes"[/code], [code]"animations"[/code] or [code]"materials"[/code] keys inside [code]get_option_value("_subresources")[/code].
 */
 func (class) _pre_process(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(scene[0])
@@ -468,7 +468,7 @@ func (class) _pre_process(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node)
 Post process the scene. This function is called after the final scene has been configured.
 */
 func (class) _post_process(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(scene[0])

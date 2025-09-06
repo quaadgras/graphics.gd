@@ -112,7 +112,7 @@ func (self implementation) PutPacket(p_buffer gdextension.Pointer, p_buffer_size
 func (self implementation) GetAvailablePacketCount() (_ int) { return }
 func (self implementation) GetMaxPacketSize() (_ int)        { return }
 func (Instance) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_buffer_size *int32) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -126,7 +126,7 @@ func (Instance) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension
 	}
 }
 func (Instance) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension.Pointer, p_buffer_size int) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -140,14 +140,14 @@ func (Instance) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension
 	}
 }
 func (Instance) _get_available_packet_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 func (Instance) _get_max_packet_size(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -198,7 +198,7 @@ func New() Instance {
 }
 
 func (class) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension.Pointer, r_buffer_size *int32) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var r_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var r_buffer_size = gd.UnsafeGet[*int32](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -213,7 +213,7 @@ func (class) _get_packet(impl func(ptr gdclass.Receiver, r_buffer gdextension.Po
 }
 
 func (class) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension.Pointer, p_buffer_size int64) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_buffer = gd.UnsafeGet[gdextension.Pointer](p_args, 0)
 		var p_buffer_size = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -228,7 +228,7 @@ func (class) _put_packet(impl func(ptr gdclass.Receiver, p_buffer gdextension.Po
 }
 
 func (class) _get_available_packet_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -236,7 +236,7 @@ func (class) _get_available_packet_count(impl func(ptr gdclass.Receiver) int64) 
 }
 
 func (class) _get_max_packet_size(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)

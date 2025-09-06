@@ -130,7 +130,7 @@ func (self implementation) RenderCallback(effect_callback_type int, render_data 
 Implement this function with your custom rendering code. [param effect_callback_type] should always match the effect callback type you've specified in [member effect_callback_type]. [param render_data] provides access to the rendering state, it is only valid during rendering and should not be stored.
 */
 func (Instance) _render_callback(impl func(ptr gdclass.Receiver, effect_callback_type int, render_data RenderData.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var effect_callback_type = gd.UnsafeGet[int64](p_args, 0)
 		var render_data = [1]gdclass.RenderData{pointers.New[gdclass.RenderData]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
 
@@ -243,7 +243,7 @@ func (self Instance) SetNeedsSeparateSpecular(value bool) {
 Implement this function with your custom rendering code. [param effect_callback_type] should always match the effect callback type you've specified in [member effect_callback_type]. [param render_data] provides access to the rendering state, it is only valid during rendering and should not be stored.
 */
 func (class) _render_callback(impl func(ptr gdclass.Receiver, effect_callback_type int64, render_data [1]gdclass.RenderData)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var effect_callback_type = gd.UnsafeGet[int64](p_args, 0)
 		var render_data = [1]gdclass.RenderData{pointers.New[gdclass.RenderData]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
 

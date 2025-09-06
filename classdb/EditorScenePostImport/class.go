@@ -167,7 +167,7 @@ func (self implementation) PostImport(scene Node.Instance) (_ Object.Instance) {
 Called after the scene was imported. This method must return the modified version of the scene.
 */
 func (Instance) _post_import(impl func(ptr gdclass.Receiver, scene Node.Instance) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(scene[0])
@@ -236,7 +236,7 @@ func New() Instance {
 Called after the scene was imported. This method must return the modified version of the scene.
 */
 func (class) _post_import(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var scene = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(scene[0])

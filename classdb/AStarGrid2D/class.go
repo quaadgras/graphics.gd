@@ -176,7 +176,7 @@ Called when estimating the cost between a point and the path's ending point.
 Note that this function is hidden in the default [AStarGrid2D] class.
 */
 func (Instance) _estimate_cost(impl func(ptr gdclass.Receiver, from_id Vector2i.XY, end_id Vector2i.XY) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		var end_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -190,7 +190,7 @@ Called when computing the cost between two connected points.
 Note that this function is hidden in the default [AStarGrid2D] class.
 */
 func (Instance) _compute_cost(impl func(ptr gdclass.Receiver, from_id Vector2i.XY, to_id Vector2i.XY) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		var to_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -469,7 +469,7 @@ Called when estimating the cost between a point and the path's ending point.
 Note that this function is hidden in the default [AStarGrid2D] class.
 */
 func (class) _estimate_cost(impl func(ptr gdclass.Receiver, from_id Vector2i.XY, end_id Vector2i.XY) float64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		var end_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -483,7 +483,7 @@ Called when computing the cost between two connected points.
 Note that this function is hidden in the default [AStarGrid2D] class.
 */
 func (class) _compute_cost(impl func(ptr gdclass.Receiver, from_id Vector2i.XY, to_id Vector2i.XY) float64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		var to_id = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

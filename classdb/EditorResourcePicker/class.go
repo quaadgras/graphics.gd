@@ -135,7 +135,7 @@ This virtual method is called when updating the context menu of [EditorResourceP
 [b]Note:[/b] Implement [method _handle_menu_selected] to handle these custom items.
 */
 func (Instance) _set_create_options(impl func(ptr gdclass.Receiver, menu_node Object.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var menu_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(menu_node[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -147,7 +147,7 @@ func (Instance) _set_create_options(impl func(ptr gdclass.Receiver, menu_node Ob
 This virtual method can be implemented to handle context menu items not handled by default. See [method _set_create_options].
 */
 func (Instance) _handle_menu_selected(impl func(ptr gdclass.Receiver, id int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(id))
@@ -248,7 +248,7 @@ This virtual method is called when updating the context menu of [EditorResourceP
 [b]Note:[/b] Implement [method _handle_menu_selected] to handle these custom items.
 */
 func (class) _set_create_options(impl func(ptr gdclass.Receiver, menu_node [1]gd.Object)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var menu_node = [1]gd.Object{pointers.New[gd.Object]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 		defer pointers.End(menu_node[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -260,7 +260,7 @@ func (class) _set_create_options(impl func(ptr gdclass.Receiver, menu_node [1]gd
 This virtual method can be implemented to handle context menu items not handled by default. See [method _set_create_options].
 */
 func (class) _handle_menu_selected(impl func(ptr gdclass.Receiver, id int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, id)

@@ -21,7 +21,7 @@ func init() {
 			case func():
 				cb()
 				gdmemory.Set(gdextension.Pointer(result), gdextension.Variant{})
-				gdmemory.Set(gdextension.Pointer(call_error), CallError{})
+				gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{})
 				return
 			}
 			vargs := make([]reflect.Value, min(arg_count, 16))
@@ -64,7 +64,7 @@ func init() {
 				raw, _ := pointers.End(CutVariant(results[0].Interface(), true))
 				gdmemory.Set(gdextension.Pointer(result), raw)
 			}
-			gdmemory.Set(gdextension.Pointer(call_error), CallError{})
+			gdmemory.Set(gdextension.Pointer(call_error), gdextension.CallError{})
 		},
 		Hash: func(fn gdextension.FunctionID) uint32 {
 			return uint32(cgoHandle(fn))

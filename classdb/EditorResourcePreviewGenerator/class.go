@@ -139,7 +139,7 @@ func (self implementation) CanGenerateSmallPreview() (_ bool)           { return
 Returns [code]true[/code] if your generator supports the resource of type [param type].
 */
 func (Instance) _handles(impl func(ptr gdclass.Receiver, atype string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(atype))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -155,7 +155,7 @@ Care must be taken because this function is always called from a thread (not the
 [param metadata] dictionary can be modified to store file-specific metadata that can be used in [method EditorResourceTooltipPlugin._make_tooltip_for_path] (like image size, sample length etc.).
 */
 func (Instance) _generate(impl func(ptr gdclass.Receiver, resource Resource.Instance, size Vector2i.XY, metadata map[any]any) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(resource[0])
@@ -180,7 +180,7 @@ Care must be taken because this function is always called from a thread (not the
 [param metadata] dictionary can be modified to store file-specific metadata that can be used in [method EditorResourceTooltipPlugin._make_tooltip_for_path] (like image size, sample length etc.).
 */
 func (Instance) _generate_from_path(impl func(ptr gdclass.Receiver, path string, size Vector2i.XY, metadata map[any]any) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
@@ -202,7 +202,7 @@ If this function returns [code]true[/code], the generator will automatically gen
 By default, it returns [code]false[/code].
 */
 func (Instance) _generate_small_preview_automatically(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -214,7 +214,7 @@ If this function returns [code]true[/code], the generator will call [method _gen
 By default, it returns [code]false[/code].
 */
 func (Instance) _can_generate_small_preview(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -268,7 +268,7 @@ func New() Instance {
 Returns [code]true[/code] if your generator supports the resource of type [param type].
 */
 func (class) _handles(impl func(ptr gdclass.Receiver, atype String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(atype))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -284,7 +284,7 @@ Care must be taken because this function is always called from a thread (not the
 [param metadata] dictionary can be modified to store file-specific metadata that can be used in [method EditorResourceTooltipPlugin._make_tooltip_for_path] (like image size, sample length etc.).
 */
 func (class) _generate(impl func(ptr gdclass.Receiver, resource [1]gdclass.Resource, size Vector2i.XY, metadata Dictionary.Any) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var resource = [1]gdclass.Resource{pointers.New[gdclass.Resource]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(resource[0])
@@ -309,7 +309,7 @@ Care must be taken because this function is always called from a thread (not the
 [param metadata] dictionary can be modified to store file-specific metadata that can be used in [method EditorResourceTooltipPlugin._make_tooltip_for_path] (like image size, sample length etc.).
 */
 func (class) _generate_from_path(impl func(ptr gdclass.Receiver, path String.Readable, size Vector2i.XY, metadata Dictionary.Any) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
@@ -331,7 +331,7 @@ If this function returns [code]true[/code], the generator will automatically gen
 By default, it returns [code]false[/code].
 */
 func (class) _generate_small_preview_automatically(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -343,7 +343,7 @@ If this function returns [code]true[/code], the generator will call [method _gen
 By default, it returns [code]false[/code].
 */
 func (class) _can_generate_small_preview(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)

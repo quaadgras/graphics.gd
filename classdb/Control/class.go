@@ -418,7 +418,7 @@ If not overridden, default behavior is checking if the point is within control's
 [b]Note:[/b] If you want to check if a point is inside the control, you can use [code]Rect2(Vector2.ZERO, size).has_point(point)[/code].
 */
 func (Instance) _has_point(impl func(ptr gdclass.Receiver, point Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, point)
@@ -431,7 +431,7 @@ User defined BiDi algorithm override function.
 Returns an [Array] of [Vector3i] text ranges and text base directions, in the left-to-right order. Ranges should cover full source [param text] without overlaps. BiDi algorithm will be used on each range separately.
 */
 func (Instance) _structured_text_parser(impl func(ptr gdclass.Receiver, args []any, text string) []Vector3i.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(args))
 		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
@@ -453,7 +453,7 @@ If not overridden, defaults to [constant Vector2.ZERO].
 [b]Note:[/b] This method will not be called when the script is attached to a [Control] node that already overrides its minimum size (e.g. [Label], [Button], [PanelContainer] etc.). It can only be used with most basic GUI nodes, like [Control], [Container], [Panel] etc.
 */
 func (Instance) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
@@ -465,7 +465,7 @@ Virtual method to be implemented by the user. Returns the tooltip text for the p
 [b]Note:[/b] If this method returns an empty [String] and [method _make_custom_tooltip] is not overridden, no tooltip is displayed.
 */
 func (Instance) _get_tooltip(impl func(ptr gdclass.Receiver, at_position Vector2.XY) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, at_position)
@@ -503,7 +503,7 @@ public override Variant _GetDragData(Vector2 atPosition)
 [/codeblocks]
 */
 func (Instance) _get_drag_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY) any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, at_position)
@@ -541,7 +541,7 @@ public override bool _CanDropData(Vector2 atPosition, Variant data)
 [/codeblocks]
 */
 func (Instance) _can_drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY, data any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
@@ -581,7 +581,7 @@ public override void _DropData(Vector2 atPosition, Variant data)
 [/codeblocks]
 */
 func (Instance) _drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY, data any)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
@@ -641,7 +641,7 @@ public override Control _MakeCustomTooltip(string forText)
 [/codeblocks]
 */
 func (Instance) _make_custom_tooltip(impl func(ptr gdclass.Receiver, for_text string) Object.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(for_text))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -691,7 +691,7 @@ If the [param event] inherits [InputEventMouse], this method will [b]not[/b] be 
 [b]Note:[/b] The [param event]'s position is relative to this control's origin.
 */
 func (Instance) _gui_input(impl func(ptr gdclass.Receiver, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(event[0])
@@ -1913,7 +1913,7 @@ If not overridden, default behavior is checking if the point is within control's
 [b]Note:[/b] If you want to check if a point is inside the control, you can use [code]Rect2(Vector2.ZERO, size).has_point(point)[/code].
 */
 func (class) _has_point(impl func(ptr gdclass.Receiver, point Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var point = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, point)
@@ -1926,7 +1926,7 @@ User defined BiDi algorithm override function.
 Returns an [Array] of [Vector3i] text ranges and text base directions, in the left-to-right order. Ranges should cover full source [param text] without overlaps. BiDi algorithm will be used on each range separately.
 */
 func (class) _structured_text_parser(impl func(ptr gdclass.Receiver, args Array.Any, text String.Readable) Array.Contains[Vector3i.XYZ]) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var args = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(args))
 		var text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
@@ -1948,7 +1948,7 @@ If not overridden, defaults to [constant Vector2.ZERO].
 [b]Note:[/b] This method will not be called when the script is attached to a [Control] node that already overrides its minimum size (e.g. [Label], [Button], [PanelContainer] etc.). It can only be used with most basic GUI nodes, like [Control], [Container], [Panel] etc.
 */
 func (class) _get_minimum_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -1960,7 +1960,7 @@ Virtual method to be implemented by the user. Returns the tooltip text for the p
 [b]Note:[/b] If this method returns an empty [String] and [method _make_custom_tooltip] is not overridden, no tooltip is displayed.
 */
 func (class) _get_tooltip(impl func(ptr gdclass.Receiver, at_position Vector2.XY) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, at_position)
@@ -1998,7 +1998,7 @@ public override Variant _GetDragData(Vector2 atPosition)
 [/codeblocks]
 */
 func (class) _get_drag_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, at_position)
@@ -2036,7 +2036,7 @@ public override bool _CanDropData(Vector2 atPosition, Variant data)
 [/codeblocks]
 */
 func (class) _can_drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY, data variant.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
@@ -2076,7 +2076,7 @@ public override void _DropData(Vector2 atPosition, Variant data)
 [/codeblocks]
 */
 func (class) _drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY, data variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var at_position = gd.UnsafeGet[Vector2.XY](p_args, 0)
 		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
@@ -2136,7 +2136,7 @@ public override Control _MakeCustomTooltip(string forText)
 [/codeblocks]
 */
 func (class) _make_custom_tooltip(impl func(ptr gdclass.Receiver, for_text String.Readable) [1]gd.Object) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var for_text = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(for_text))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -2186,7 +2186,7 @@ If the [param event] inherits [InputEventMouse], this method will [b]not[/b] be 
 [b]Note:[/b] The [param event]'s position is relative to this control's origin.
 */
 func (class) _gui_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var event = [1]gdclass.InputEvent{pointers.New[gdclass.InputEvent]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(event[0])

@@ -121,7 +121,7 @@ func (self implementation) Tick(frame_time Float.X, process_time Float.X, physic
 Called when the profiler is enabled/disabled, along with a set of [param options].
 */
 func (Instance) _toggle(impl func(ptr gdclass.Receiver, enable bool, options []any)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var enable = gd.UnsafeGet[bool](p_args, 0)
 		var options = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(options))
@@ -134,7 +134,7 @@ func (Instance) _toggle(impl func(ptr gdclass.Receiver, enable bool, options []a
 Called when data is added to profiler using [method EngineDebugger.profiler_add_frame_data].
 */
 func (Instance) _add_frame(impl func(ptr gdclass.Receiver, data []any)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(data))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -146,7 +146,7 @@ func (Instance) _add_frame(impl func(ptr gdclass.Receiver, data []any)) (cb gd.E
 Called once every engine iteration when the profiler is active with information about the current frame. All time values are in seconds. Lower values represent faster processing times and are therefore considered better.
 */
 func (Instance) _tick(impl func(ptr gdclass.Receiver, frame_time Float.X, process_time Float.X, physics_time Float.X, physics_frame_time Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var frame_time = gd.UnsafeGet[float64](p_args, 0)
 		var process_time = gd.UnsafeGet[float64](p_args, 1)
 		var physics_time = gd.UnsafeGet[float64](p_args, 2)
@@ -203,7 +203,7 @@ func New() Instance {
 Called when the profiler is enabled/disabled, along with a set of [param options].
 */
 func (class) _toggle(impl func(ptr gdclass.Receiver, enable bool, options Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var enable = gd.UnsafeGet[bool](p_args, 0)
 		var options = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(options))
@@ -216,7 +216,7 @@ func (class) _toggle(impl func(ptr gdclass.Receiver, enable bool, options Array.
 Called when data is added to profiler using [method EngineDebugger.profiler_add_frame_data].
 */
 func (class) _add_frame(impl func(ptr gdclass.Receiver, data Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var data = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(data))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -228,7 +228,7 @@ func (class) _add_frame(impl func(ptr gdclass.Receiver, data Array.Any)) (cb gd.
 Called once every engine iteration when the profiler is active with information about the current frame. All time values are in seconds. Lower values represent faster processing times and are therefore considered better.
 */
 func (class) _tick(impl func(ptr gdclass.Receiver, frame_time float64, process_time float64, physics_time float64, physics_frame_time float64)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var frame_time = gd.UnsafeGet[float64](p_args, 0)
 		var process_time = gd.UnsafeGet[float64](p_args, 1)
 		var physics_time = gd.UnsafeGet[float64](p_args, 2)

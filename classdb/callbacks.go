@@ -100,7 +100,7 @@ func init() {
 				cgoHandle(instance).Value().(*instanceImplementation).Notification(what, reverse)
 			},
 			CheckedCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[any], args gdextension.Accepts[any]) {
-				cgoHandle(fn).Value().(*methodImplementation).checked(cgoHandle(instance).Value(), gd.Address(args), gd.Address(result))
+				cgoHandle(fn).Value().(*methodImplementation).checked(cgoHandle(instance).Value(), gdextension.Pointer(args), gdextension.Pointer(result))
 			},
 			VariantCall: func(instance gdextension.ExtensionInstanceID, fn gdextension.FunctionID, result gdextension.Returns[gdextension.Variant], args gdextension.Accepts[gdextension.Variant]) {
 				method := cgoHandle(fn).Value().(*methodImplementation)
@@ -150,8 +150,8 @@ func init() {
 					return 0
 				}
 				return gdextension.FunctionID(cgoNewHandle(&methodImplementation{
-					checked: func(instance any, args, ret gd.Address) {
-						instance.(*instanceImplementation).CallVirtual(virtual, gd.Address(args), gd.Address(ret))
+					checked: func(instance any, args, ret gdextension.Pointer) {
+						instance.(*instanceImplementation).CallVirtual(virtual, args, ret)
 					},
 				}))
 			},

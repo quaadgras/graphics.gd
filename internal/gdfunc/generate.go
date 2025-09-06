@@ -90,7 +90,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 			fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type))
 		}
 		fmt.Fprintf(w, ") %v) (cb "+prefix+"ExtensionClassCallVirtualFunc) {\n", result)
-		fmt.Fprint(w, "\treturn func(class any, p_args "+prefix+"Address, p_back "+prefix+"Address) {\n")
+		fmt.Fprint(w, "\treturn func(class any, p_args, p_back gdextension.Pointer) {\n")
 		for i, arg := range method.Arguments {
 			var argType = gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)
 			pointerKind, argIsPtr := gdtype.Name(argType).IsPointer()

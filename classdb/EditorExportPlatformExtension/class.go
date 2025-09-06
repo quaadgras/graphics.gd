@@ -280,7 +280,7 @@ func (self implementation) GetDebugProtocol() (_ string)      { return }
 Returns array of platform specific features for the specified [param preset].
 */
 func (Instance) _get_preset_features(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance) []string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -300,7 +300,7 @@ func (Instance) _get_preset_features(impl func(ptr gdclass.Receiver, preset Edit
 Returns [code]true[/code] if specified file is a valid executable (native executable or script) for the target platform.
 */
 func (Instance) _is_executable(impl func(ptr gdclass.Receiver, path string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -323,7 +323,7 @@ Additionally, the following keys are supported:
 See also [method Object._get_property_list].
 */
 func (Instance) _get_export_options(impl func(ptr gdclass.Receiver) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
@@ -340,7 +340,7 @@ func (Instance) _get_export_options(impl func(ptr gdclass.Receiver) []map[any]an
 Returns [code]true[/code] if export options list is changed and presets should be updated.
 */
 func (Instance) _should_update_export_options(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -352,7 +352,7 @@ func (Instance) _should_update_export_options(impl func(ptr gdclass.Receiver) bo
 Validates [param option] and returns visibility for the specified [param preset]. Default implementation return [code]true[/code] for all options.
 */
 func (Instance) _get_export_option_visibility(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance, option string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -369,7 +369,7 @@ func (Instance) _get_export_option_visibility(impl func(ptr gdclass.Receiver, pr
 Validates [param option] and returns warning message for the specified [param preset]. Default implementation return empty string for all options.
 */
 func (Instance) _get_export_option_warning(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance, option string) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -391,7 +391,7 @@ func (Instance) _get_export_option_warning(impl func(ptr gdclass.Receiver, prese
 Returns target OS name.
 */
 func (Instance) _get_os_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -408,7 +408,7 @@ func (Instance) _get_os_name(impl func(ptr gdclass.Receiver) string) (cb gd.Exte
 Returns export platform name.
 */
 func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -425,7 +425,7 @@ func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.Extensi
 Returns platform logo displayed in the export dialog, logo should be 32x32 adjusted to the current editor scale, see [method EditorInterface.get_editor_scale].
 */
 func (Instance) _get_logo(impl func(ptr gdclass.Receiver) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
@@ -442,7 +442,7 @@ func (Instance) _get_logo(impl func(ptr gdclass.Receiver) Texture2D.Instance) (c
 Returns [code]true[/code] if one-click deploy options are changed and editor interface should be updated.
 */
 func (Instance) _poll_export(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -454,7 +454,7 @@ func (Instance) _poll_export(impl func(ptr gdclass.Receiver) bool) (cb gd.Extens
 Returns number one-click deploy devices (or other one-click option displayed in the menu).
 */
 func (Instance) _get_options_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -466,7 +466,7 @@ func (Instance) _get_options_count(impl func(ptr gdclass.Receiver) int) (cb gd.E
 Returns tooltip of the one-click deploy menu button.
 */
 func (Instance) _get_options_tooltip(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -483,7 +483,7 @@ func (Instance) _get_options_tooltip(impl func(ptr gdclass.Receiver) string) (cb
 Returns one-click deploy menu item icon for the specified [param device], icon should be 16x16 adjusted to the current editor scale, see [method EditorInterface.get_editor_scale].
 */
 func (Instance) _get_option_icon(impl func(ptr gdclass.Receiver, device int) ImageTexture.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(device))
@@ -501,7 +501,7 @@ func (Instance) _get_option_icon(impl func(ptr gdclass.Receiver, device int) Ima
 Returns one-click deploy menu item label for the specified [param device].
 */
 func (Instance) _get_option_label(impl func(ptr gdclass.Receiver, device int) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(device))
@@ -519,7 +519,7 @@ func (Instance) _get_option_label(impl func(ptr gdclass.Receiver, device int) st
 Returns one-click deploy menu item tooltip for the specified [param device].
 */
 func (Instance) _get_option_tooltip(impl func(ptr gdclass.Receiver, device int) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(device))
@@ -537,7 +537,7 @@ func (Instance) _get_option_tooltip(impl func(ptr gdclass.Receiver, device int) 
 Returns device architecture for one-click deploy.
 */
 func (Instance) _get_device_architecture(impl func(ptr gdclass.Receiver, device int) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(device))
@@ -555,7 +555,7 @@ func (Instance) _get_device_architecture(impl func(ptr gdclass.Receiver, device 
 Called by the editor before platform is unregistered.
 */
 func (Instance) _cleanup(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -567,7 +567,7 @@ This method is called when [param device] one-click deploy menu option is select
 Implementation should export project to a temporary location, upload and run it on the specific [param device], or perform another action associated with the menu item.
 */
 func (Instance) _run(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance, device int, debug_flags EditorExportPlatform.DebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -589,7 +589,7 @@ func (Instance) _run(impl func(ptr gdclass.Receiver, preset EditorExportPreset.I
 Returns icon of the one-click deploy menu button, icon should be 16x16 adjusted to the current editor scale, see [method EditorInterface.get_editor_scale].
 */
 func (Instance) _get_run_icon(impl func(ptr gdclass.Receiver) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
@@ -607,7 +607,7 @@ Returns [code]true[/code], if specified [param preset] is valid and can be expor
 Usual implementation can call [method _has_valid_export_configuration] and [method _has_valid_project_configuration] to determine if export is possible.
 */
 func (Instance) _can_export(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance, debug bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -623,7 +623,7 @@ func (Instance) _can_export(impl func(ptr gdclass.Receiver, preset EditorExportP
 Returns [code]true[/code] if export configuration is valid.
 */
 func (Instance) _has_valid_export_configuration(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance, debug bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -639,7 +639,7 @@ func (Instance) _has_valid_export_configuration(impl func(ptr gdclass.Receiver, 
 Returns [code]true[/code] if project configuration is valid.
 */
 func (Instance) _has_valid_project_configuration(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -654,7 +654,7 @@ func (Instance) _has_valid_project_configuration(impl func(ptr gdclass.Receiver,
 Returns array of supported binary extensions for the full project export.
 */
 func (Instance) _get_binary_extensions(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance) []string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -676,7 +676,7 @@ This method is called when "Export" button is pressed in the export dialog.
 This method implementation can call [method EditorExportPlatform.save_pack] or [method EditorExportPlatform.save_zip] to use default PCK/ZIP export process, or calls [method EditorExportPlatform.export_project_files] and implement custom callback for processing each exported file.
 */
 func (Instance) _export_project(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance, debug bool, path string, flags EditorExportPlatform.DebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -701,7 +701,7 @@ Creates a PCK archive at [param path] for the specified [param preset].
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and PCK is selected as a file type.
 */
 func (Instance) _export_pack(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance, debug bool, path string, flags EditorExportPlatform.DebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -726,7 +726,7 @@ Create a ZIP archive at [param path] for the specified [param preset].
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and ZIP is selected as a file type.
 */
 func (Instance) _export_zip(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance, debug bool, path string, flags EditorExportPlatform.DebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -752,7 +752,7 @@ This method is called when "Export PCK/ZIP" button is pressed in the export dial
 [b]Note:[/b] The patches provided in [param patches] have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
 */
 func (Instance) _export_pack_patch(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags EditorExportPlatform.DebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -780,7 +780,7 @@ This method is called when "Export PCK/ZIP" button is pressed in the export dial
 [b]Note:[/b] The patches provided in [param patches] have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
 */
 func (Instance) _export_zip_patch(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags EditorExportPlatform.DebugFlags) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -806,7 +806,7 @@ func (Instance) _export_zip_patch(impl func(ptr gdclass.Receiver, preset EditorE
 Returns array of platform specific features.
 */
 func (Instance) _get_platform_features(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
@@ -823,7 +823,7 @@ func (Instance) _get_platform_features(impl func(ptr gdclass.Receiver) []string)
 Returns protocol used for remote debugging. Default implementation return [code]tcp://[/code].
 */
 func (Instance) _get_debug_protocol(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -911,7 +911,7 @@ func New() Instance {
 Returns array of platform specific features for the specified [param preset].
 */
 func (class) _get_preset_features(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -931,7 +931,7 @@ func (class) _get_preset_features(impl func(ptr gdclass.Receiver, preset [1]gdcl
 Returns [code]true[/code] if specified file is a valid executable (native executable or script) for the target platform.
 */
 func (class) _is_executable(impl func(ptr gdclass.Receiver, path String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -954,7 +954,7 @@ Additionally, the following keys are supported:
 See also [method Object._get_property_list].
 */
 func (class) _get_export_options(impl func(ptr gdclass.Receiver) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
@@ -971,7 +971,7 @@ func (class) _get_export_options(impl func(ptr gdclass.Receiver) Array.Contains[
 Returns [code]true[/code] if export options list is changed and presets should be updated.
 */
 func (class) _should_update_export_options(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -983,7 +983,7 @@ func (class) _should_update_export_options(impl func(ptr gdclass.Receiver) bool)
 Validates [param option] and returns visibility for the specified [param preset]. Default implementation return [code]true[/code] for all options.
 */
 func (class) _get_export_option_visibility(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset, option String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -1000,7 +1000,7 @@ func (class) _get_export_option_visibility(impl func(ptr gdclass.Receiver, prese
 Validates [param option] and returns warning message for the specified [param preset]. Default implementation return empty string for all options.
 */
 func (class) _get_export_option_warning(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset, option String.Name) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -1022,7 +1022,7 @@ func (class) _get_export_option_warning(impl func(ptr gdclass.Receiver, preset [
 Returns target OS name.
 */
 func (class) _get_os_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -1039,7 +1039,7 @@ func (class) _get_os_name(impl func(ptr gdclass.Receiver) String.Readable) (cb g
 Returns export platform name.
 */
 func (class) _get_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -1056,7 +1056,7 @@ func (class) _get_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.E
 Returns platform logo displayed in the export dialog, logo should be 32x32 adjusted to the current editor scale, see [method EditorInterface.get_editor_scale].
 */
 func (class) _get_logo(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
@@ -1073,7 +1073,7 @@ func (class) _get_logo(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D) (cb
 Returns [code]true[/code] if one-click deploy options are changed and editor interface should be updated.
 */
 func (class) _poll_export(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -1085,7 +1085,7 @@ func (class) _poll_export(impl func(ptr gdclass.Receiver) bool) (cb gd.Extension
 Returns number one-click deploy devices (or other one-click option displayed in the menu).
 */
 func (class) _get_options_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -1097,7 +1097,7 @@ func (class) _get_options_count(impl func(ptr gdclass.Receiver) int64) (cb gd.Ex
 Returns tooltip of the one-click deploy menu button.
 */
 func (class) _get_options_tooltip(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -1114,7 +1114,7 @@ func (class) _get_options_tooltip(impl func(ptr gdclass.Receiver) String.Readabl
 Returns one-click deploy menu item icon for the specified [param device], icon should be 16x16 adjusted to the current editor scale, see [method EditorInterface.get_editor_scale].
 */
 func (class) _get_option_icon(impl func(ptr gdclass.Receiver, device int64) [1]gdclass.ImageTexture) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, device)
@@ -1132,7 +1132,7 @@ func (class) _get_option_icon(impl func(ptr gdclass.Receiver, device int64) [1]g
 Returns one-click deploy menu item label for the specified [param device].
 */
 func (class) _get_option_label(impl func(ptr gdclass.Receiver, device int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, device)
@@ -1150,7 +1150,7 @@ func (class) _get_option_label(impl func(ptr gdclass.Receiver, device int64) Str
 Returns one-click deploy menu item tooltip for the specified [param device].
 */
 func (class) _get_option_tooltip(impl func(ptr gdclass.Receiver, device int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, device)
@@ -1168,7 +1168,7 @@ func (class) _get_option_tooltip(impl func(ptr gdclass.Receiver, device int64) S
 Returns device architecture for one-click deploy.
 */
 func (class) _get_device_architecture(impl func(ptr gdclass.Receiver, device int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, device)
@@ -1186,7 +1186,7 @@ func (class) _get_device_architecture(impl func(ptr gdclass.Receiver, device int
 Called by the editor before platform is unregistered.
 */
 func (class) _cleanup(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -1198,7 +1198,7 @@ This method is called when [param device] one-click deploy menu option is select
 Implementation should export project to a temporary location, upload and run it on the specific [param device], or perform another action associated with the menu item.
 */
 func (class) _run(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset, device int64, debug_flags EditorExportPlatform.DebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -1220,7 +1220,7 @@ func (class) _run(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExport
 Returns icon of the one-click deploy menu button, icon should be 16x16 adjusted to the current editor scale, see [method EditorInterface.get_editor_scale].
 */
 func (class) _get_run_icon(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
@@ -1238,7 +1238,7 @@ Returns [code]true[/code], if specified [param preset] is valid and can be expor
 Usual implementation can call [method _has_valid_export_configuration] and [method _has_valid_project_configuration] to determine if export is possible.
 */
 func (class) _can_export(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset, debug bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -1254,7 +1254,7 @@ func (class) _can_export(impl func(ptr gdclass.Receiver, preset [1]gdclass.Edito
 Returns [code]true[/code] if export configuration is valid.
 */
 func (class) _has_valid_export_configuration(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset, debug bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -1270,7 +1270,7 @@ func (class) _has_valid_export_configuration(impl func(ptr gdclass.Receiver, pre
 Returns [code]true[/code] if project configuration is valid.
 */
 func (class) _has_valid_project_configuration(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -1285,7 +1285,7 @@ func (class) _has_valid_project_configuration(impl func(ptr gdclass.Receiver, pr
 Returns array of supported binary extensions for the full project export.
 */
 func (class) _get_binary_extensions(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -1307,7 +1307,7 @@ This method is called when "Export" button is pressed in the export dialog.
 This method implementation can call [method EditorExportPlatform.save_pack] or [method EditorExportPlatform.save_zip] to use default PCK/ZIP export process, or calls [method EditorExportPlatform.export_project_files] and implement custom callback for processing each exported file.
 */
 func (class) _export_project(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags EditorExportPlatform.DebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -1332,7 +1332,7 @@ Creates a PCK archive at [param path] for the specified [param preset].
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and PCK is selected as a file type.
 */
 func (class) _export_pack(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags EditorExportPlatform.DebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -1357,7 +1357,7 @@ Create a ZIP archive at [param path] for the specified [param preset].
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and ZIP is selected as a file type.
 */
 func (class) _export_zip(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, flags EditorExportPlatform.DebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -1383,7 +1383,7 @@ This method is called when "Export PCK/ZIP" button is pressed in the export dial
 [b]Note:[/b] The patches provided in [param patches] have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
 */
 func (class) _export_pack_patch(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, patches Packed.Strings, flags EditorExportPlatform.DebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -1411,7 +1411,7 @@ This method is called when "Export PCK/ZIP" button is pressed in the export dial
 [b]Note:[/b] The patches provided in [param patches] have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
 */
 func (class) _export_zip_patch(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset, debug bool, path String.Readable, patches Packed.Strings, flags EditorExportPlatform.DebugFlags) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var preset = [1]gdclass.EditorExportPreset{pointers.New[gdclass.EditorExportPreset]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(preset[0])
@@ -1437,7 +1437,7 @@ func (class) _export_zip_patch(impl func(ptr gdclass.Receiver, preset [1]gdclass
 Returns array of platform specific features.
 */
 func (class) _get_platform_features(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
@@ -1454,7 +1454,7 @@ func (class) _get_platform_features(impl func(ptr gdclass.Receiver) Packed.Strin
 Returns protocol used for remote debugging. Default implementation return [code]tcp://[/code].
 */
 func (class) _get_debug_protocol(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))

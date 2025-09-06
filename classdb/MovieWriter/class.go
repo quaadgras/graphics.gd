@@ -148,7 +148,7 @@ func (self implementation) WriteEnd() { return }
 Called when the audio sample rate used for recording the audio is requested by the engine. The value returned must be specified in Hz. Defaults to 48000 Hz if [method _get_audio_mix_rate] is not overridden.
 */
 func (Instance) _get_audio_mix_rate(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -159,7 +159,7 @@ func (Instance) _get_audio_mix_rate(impl func(ptr gdclass.Receiver) int) (cb gd.
 Called when the audio speaker mode used for recording the audio is requested by the engine. This can affect the number of output channels in the resulting audio file/stream. Defaults to [constant AudioServer.SPEAKER_MODE_STEREO] if [method _get_audio_speaker_mode] is not overridden.
 */
 func (Instance) _get_audio_speaker_mode(impl func(ptr gdclass.Receiver) AudioServer.SpeakerMode) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -178,7 +178,7 @@ func _handles_file(path):
 [/codeblock]
 */
 func (Instance) _handles_file(impl func(ptr gdclass.Receiver, path string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -191,7 +191,7 @@ func (Instance) _handles_file(impl func(ptr gdclass.Receiver, path string) bool)
 Called once before the engine starts writing video and audio data. [param movie_size] is the width and height of the video to save. [param fps] is the number of frames per second specified in the project settings or using the [code]--fixed-fps <fps>[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
 */
 func (Instance) _write_begin(impl func(ptr gdclass.Receiver, movie_size Vector2i.XY, fps int, base_path string) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var movie_size = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		var fps = gd.UnsafeGet[int64](p_args, 1)
 		var base_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
@@ -211,7 +211,7 @@ func (Instance) _write_begin(impl func(ptr gdclass.Receiver, movie_size Vector2i
 Called at the end of every rendered frame. The [param frame_image] and [param audio_frame_block] function arguments should be written to.
 */
 func (Instance) _write_frame(impl func(ptr gdclass.Receiver, frame_image Image.Instance, audio_frame_block gdextension.Pointer) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var frame_image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(frame_image[0])
@@ -232,7 +232,7 @@ Called when the engine finishes writing. This occurs when the engine quits by pr
 [b]Note:[/b] Pressing [kbd]Ctrl + C[/kbd] on the terminal running the editor/project does [i]not[/i] result in [method _write_end] being called.
 */
 func (Instance) _write_end(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -293,7 +293,7 @@ func New() Instance {
 Called when the audio sample rate used for recording the audio is requested by the engine. The value returned must be specified in Hz. Defaults to 48000 Hz if [method _get_audio_mix_rate] is not overridden.
 */
 func (class) _get_audio_mix_rate(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -304,7 +304,7 @@ func (class) _get_audio_mix_rate(impl func(ptr gdclass.Receiver) int64) (cb gd.E
 Called when the audio speaker mode used for recording the audio is requested by the engine. This can affect the number of output channels in the resulting audio file/stream. Defaults to [constant AudioServer.SPEAKER_MODE_STEREO] if [method _get_audio_speaker_mode] is not overridden.
 */
 func (class) _get_audio_speaker_mode(impl func(ptr gdclass.Receiver) AudioServer.SpeakerMode) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -323,7 +323,7 @@ func _handles_file(path):
 [/codeblock]
 */
 func (class) _handles_file(impl func(ptr gdclass.Receiver, path String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -336,7 +336,7 @@ func (class) _handles_file(impl func(ptr gdclass.Receiver, path String.Readable)
 Called once before the engine starts writing video and audio data. [param movie_size] is the width and height of the video to save. [param fps] is the number of frames per second specified in the project settings or using the [code]--fixed-fps <fps>[/code] [url=$DOCS_URL/tutorials/editor/command_line_tutorial.html]command line argument[/url].
 */
 func (class) _write_begin(impl func(ptr gdclass.Receiver, movie_size Vector2i.XY, fps int64, base_path String.Readable) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var movie_size = gd.UnsafeGet[Vector2i.XY](p_args, 0)
 		var fps = gd.UnsafeGet[int64](p_args, 1)
 		var base_path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
@@ -356,7 +356,7 @@ func (class) _write_begin(impl func(ptr gdclass.Receiver, movie_size Vector2i.XY
 Called at the end of every rendered frame. The [param frame_image] and [param audio_frame_block] function arguments should be written to.
 */
 func (class) _write_frame(impl func(ptr gdclass.Receiver, frame_image [1]gdclass.Image, audio_frame_block gdextension.Pointer) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var frame_image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(frame_image[0])
@@ -377,7 +377,7 @@ Called when the engine finishes writing. This occurs when the engine quits by pr
 [b]Note:[/b] Pressing [kbd]Ctrl + C[/kbd] on the terminal running the editor/project does [i]not[/i] result in [method _write_end] being called.
 */
 func (class) _write_end(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}

@@ -250,7 +250,7 @@ func (p PackedColorArray) Len() int { return int(p.Size()) }
 func (p PackedColorArray) Cap() int { return int(p.Size()) }
 
 func NewPackedByteArray() PackedByteArray {
-	return pointers.New[PackedByteArray](gdextension.Make[gdextension.PackedArray[byte]](Global.typeset.creation.PackedByteArray[0], 0, nil))
+	return pointers.New[PackedByteArray](gdextension.Make[gdextension.PackedArray[byte]](builtin.creation.PackedByteArray[0], 0, nil))
 }
 
 // PackedByteSlice returns a [PackedByteArray] from a byte slice.
@@ -262,7 +262,7 @@ func NewPackedByteSlice(data []byte) PackedByteArray {
 }
 
 func NewPackedColorArray() PackedColorArray {
-	return pointers.New[PackedColorArray](gdextension.Make[gdextension.PackedArray[Color]](Global.typeset.creation.PackedColorArray[0], 0, nil))
+	return pointers.New[PackedColorArray](gdextension.Make[gdextension.PackedArray[Color]](builtin.creation.PackedColorArray[0], 0, nil))
 }
 
 func NewPackedColorSlice(data []Color) PackedColorArray {
@@ -273,7 +273,7 @@ func NewPackedColorSlice(data []Color) PackedColorArray {
 }
 
 func NewPackedFloat32Array() PackedFloat32Array {
-	return pointers.New[PackedFloat32Array](gdextension.Make[gdextension.PackedArray[float32]](Global.typeset.creation.PackedFloat32Array[0], 0, nil))
+	return pointers.New[PackedFloat32Array](gdextension.Make[gdextension.PackedArray[float32]](builtin.creation.PackedFloat32Array[0], 0, nil))
 }
 
 func NewPackedFloat32Slice(data []float32) PackedFloat32Array {
@@ -284,7 +284,7 @@ func NewPackedFloat32Slice(data []float32) PackedFloat32Array {
 }
 
 func NewPackedInt32Array() PackedInt32Array {
-	return pointers.New[PackedInt32Array](gdextension.Make[gdextension.PackedArray[int32]](Global.typeset.creation.PackedInt32Array[0], 0, nil))
+	return pointers.New[PackedInt32Array](gdextension.Make[gdextension.PackedArray[int32]](builtin.creation.PackedInt32Array[0], 0, nil))
 }
 
 func NewPackedInt32Slice(data []int32) PackedInt32Array {
@@ -295,7 +295,7 @@ func NewPackedInt32Slice(data []int32) PackedInt32Array {
 }
 
 func NewPackedStringArray() PackedStringArray {
-	return pointers.New[PackedStringArray](gdextension.Make[gdextension.PackedArray[gdextension.String]](Global.typeset.creation.PackedStringArray[0], 0, nil))
+	return pointers.New[PackedStringArray](gdextension.Make[gdextension.PackedArray[gdextension.String]](builtin.creation.PackedStringArray[0], 0, nil))
 }
 
 func NewPackedStringSlice(data []string) PackedStringArray {
@@ -318,7 +318,7 @@ func NewPackedReadableStringSlice(data []StringType.Readable) PackedStringArray 
 }
 
 func NewPackedVector2Array() PackedVector2Array {
-	return pointers.New[PackedVector2Array](gdextension.Make[gdextension.PackedArray[Vector2]](Global.typeset.creation.PackedVector2Array[0], 0, nil))
+	return pointers.New[PackedVector2Array](gdextension.Make[gdextension.PackedArray[Vector2]](builtin.creation.PackedVector2Array[0], 0, nil))
 }
 
 func NewPackedVector2Slice(data []Vector2) PackedVector2Array {
@@ -329,7 +329,7 @@ func NewPackedVector2Slice(data []Vector2) PackedVector2Array {
 }
 
 func NewPackedVector3Array() PackedVector3Array {
-	return pointers.New[PackedVector3Array](gdextension.Make[gdextension.PackedArray[Vector3]](Global.typeset.creation.PackedVector3Array[0], 0, nil))
+	return pointers.New[PackedVector3Array](gdextension.Make[gdextension.PackedArray[Vector3]](builtin.creation.PackedVector3Array[0], 0, nil))
 }
 
 func NewPackedVector3Slice(data []Vector3) PackedVector3Array {
@@ -340,7 +340,7 @@ func NewPackedVector3Slice(data []Vector3) PackedVector3Array {
 }
 
 func NewPackedVector4Array() PackedVector4Array {
-	return pointers.New[PackedVector4Array](gdextension.Make[gdextension.PackedArray[Vector4]](Global.typeset.creation.PackedVector4Array[0], 0, nil))
+	return pointers.New[PackedVector4Array](gdextension.Make[gdextension.PackedArray[Vector4]](builtin.creation.PackedVector4Array[0], 0, nil))
 }
 
 func NewPackedVector4Slice(data []Vector4) PackedVector4Array {
@@ -351,7 +351,7 @@ func NewPackedVector4Slice(data []Vector4) PackedVector4Array {
 }
 
 func NewPackedInt64Array() PackedInt64Array {
-	return pointers.New[PackedInt64Array](gdextension.Make[gdextension.PackedArray[int64]](Global.typeset.creation.PackedInt64Array[0], 0, nil))
+	return pointers.New[PackedInt64Array](gdextension.Make[gdextension.PackedArray[int64]](builtin.creation.PackedInt64Array[0], 0, nil))
 }
 
 func NewPackedInt64Slice(data []int64) PackedInt64Array {
@@ -362,7 +362,7 @@ func NewPackedInt64Slice(data []int64) PackedInt64Array {
 }
 
 func NewPackedFloat64Array() PackedFloat64Array {
-	return pointers.New[PackedFloat64Array](gdextension.Make[gdextension.PackedArray[float64]](Global.typeset.creation.PackedFloat64Array[0], 0, nil))
+	return pointers.New[PackedFloat64Array](gdextension.Make[gdextension.PackedArray[float64]](builtin.creation.PackedFloat64Array[0], 0, nil))
 }
 
 func NewPackedFloat64Slice(data []float64) PackedFloat64Array {

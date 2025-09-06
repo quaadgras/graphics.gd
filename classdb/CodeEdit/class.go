@@ -242,7 +242,7 @@ func (self implementation) FilterCodeCompletionCandidates(candidates []map[any]a
 Override this method to define how the selected entry should be inserted. If [param replace] is [code]true[/code], any existing text should be replaced.
 */
 func (Instance) _confirm_code_completion(impl func(ptr gdclass.Receiver, replace bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var replace = gd.UnsafeGet[bool](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, replace)
@@ -253,7 +253,7 @@ func (Instance) _confirm_code_completion(impl func(ptr gdclass.Receiver, replace
 Override this method to define what happens when the user requests code completion. If [param force] is [code]true[/code], any checks should be bypassed.
 */
 func (Instance) _request_code_completion(impl func(ptr gdclass.Receiver, force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var force = gd.UnsafeGet[bool](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, force)
@@ -265,7 +265,7 @@ Override this method to define what items in [param candidates] should be displa
 Both [param candidates] and the return is a [Array] of [Dictionary], see [method get_code_completion_option] for [Dictionary] content.
 */
 func (Instance) _filter_code_completion_candidates(impl func(ptr gdclass.Receiver, candidates []map[any]any) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var candidates = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(candidates))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1060,7 +1060,7 @@ func (self Instance) SetAutoBraceCompletionPairs(value map[any]any) {
 Override this method to define how the selected entry should be inserted. If [param replace] is [code]true[/code], any existing text should be replaced.
 */
 func (class) _confirm_code_completion(impl func(ptr gdclass.Receiver, replace bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var replace = gd.UnsafeGet[bool](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, replace)
@@ -1071,7 +1071,7 @@ func (class) _confirm_code_completion(impl func(ptr gdclass.Receiver, replace bo
 Override this method to define what happens when the user requests code completion. If [param force] is [code]true[/code], any checks should be bypassed.
 */
 func (class) _request_code_completion(impl func(ptr gdclass.Receiver, force bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var force = gd.UnsafeGet[bool](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, force)
@@ -1083,7 +1083,7 @@ Override this method to define what items in [param candidates] should be displa
 Both [param candidates] and the return is a [Array] of [Dictionary], see [method get_code_completion_option] for [Dictionary] content.
 */
 func (class) _filter_code_completion_candidates(impl func(ptr gdclass.Receiver, candidates Array.Contains[Dictionary.Any]) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var candidates = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(candidates))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

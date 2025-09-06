@@ -159,7 +159,7 @@ func (self implementation) DrawRectRegion(to_canvas_item RID.Any, rect Rect2.Pos
 Called when the [Texture2D]'s width is queried.
 */
 func (Instance) _get_width(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -170,7 +170,7 @@ func (Instance) _get_width(impl func(ptr gdclass.Receiver) int) (cb gd.Extension
 Called when the [Texture2D]'s height is queried.
 */
 func (Instance) _get_height(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -181,7 +181,7 @@ func (Instance) _get_height(impl func(ptr gdclass.Receiver) int) (cb gd.Extensio
 Called when a pixel's opaque state in the [Texture2D] is queried at the specified [code](x, y)[/code] position.
 */
 func (Instance) _is_pixel_opaque(impl func(ptr gdclass.Receiver, x int, y int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var x = gd.UnsafeGet[int64](p_args, 0)
 		var y = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -194,7 +194,7 @@ func (Instance) _is_pixel_opaque(impl func(ptr gdclass.Receiver, x int, y int) b
 Called when the presence of an alpha channel in the [Texture2D] is queried.
 */
 func (Instance) _has_alpha(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -206,7 +206,7 @@ Called when the entire [Texture2D] is requested to be drawn over a [CanvasItem],
 [b]Note:[/b] This is only used in 2D rendering, not 3D.
 */
 func (Instance) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, pos Vector2.XY, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[Vector2.XY](p_args, 1)
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 2)
@@ -221,7 +221,7 @@ Called when the [Texture2D] is requested to be drawn onto [CanvasItem]'s specifi
 [b]Note:[/b] This is only used in 2D rendering, not 3D.
 */
 func (Instance) _draw_rect(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
 		var tile = gd.UnsafeGet[bool](p_args, 2)
@@ -237,7 +237,7 @@ Called when a part of the [Texture2D] specified by [param src_rect]'s coordinate
 [b]Note:[/b] This is only used in 2D rendering, not 3D.
 */
 func (Instance) _draw_rect_region(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
 		var src_rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 2)
@@ -382,7 +382,7 @@ func New() Instance {
 Called when the [Texture2D]'s width is queried.
 */
 func (class) _get_width(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -393,7 +393,7 @@ func (class) _get_width(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionC
 Called when the [Texture2D]'s height is queried.
 */
 func (class) _get_height(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -404,7 +404,7 @@ func (class) _get_height(impl func(ptr gdclass.Receiver) int64) (cb gd.Extension
 Called when a pixel's opaque state in the [Texture2D] is queried at the specified [code](x, y)[/code] position.
 */
 func (class) _is_pixel_opaque(impl func(ptr gdclass.Receiver, x int64, y int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var x = gd.UnsafeGet[int64](p_args, 0)
 		var y = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -417,7 +417,7 @@ func (class) _is_pixel_opaque(impl func(ptr gdclass.Receiver, x int64, y int64) 
 Called when the presence of an alpha channel in the [Texture2D] is queried.
 */
 func (class) _has_alpha(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -429,7 +429,7 @@ Called when the entire [Texture2D] is requested to be drawn over a [CanvasItem],
 [b]Note:[/b] This is only used in 2D rendering, not 3D.
 */
 func (class) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, pos Vector2.XY, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[Vector2.XY](p_args, 1)
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 2)
@@ -444,7 +444,7 @@ Called when the [Texture2D] is requested to be drawn onto [CanvasItem]'s specifi
 [b]Note:[/b] This is only used in 2D rendering, not 3D.
 */
 func (class) _draw_rect(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
 		var tile = gd.UnsafeGet[bool](p_args, 2)
@@ -460,7 +460,7 @@ Called when a part of the [Texture2D] specified by [param src_rect]'s coordinate
 [b]Note:[/b] This is only used in 2D rendering, not 3D.
 */
 func (class) _draw_rect_region(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
 		var src_rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 2)

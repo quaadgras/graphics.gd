@@ -187,7 +187,7 @@ func (self implementation) CommitSubgizmos(ids []int32, restores []Transform3D.B
 Override this method to add all the gizmo elements whenever a gizmo update is requested. It's common to call [method clear] at the beginning of this method and then add visual elements depending on the node's properties.
 */
 func (Instance) _redraw(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -198,7 +198,7 @@ Override this method to return the name of an edited handle (handles must have b
 The [param secondary] argument is [code]true[/code] when the requested handle is secondary (see [method add_handles] for more information).
 */
 func (Instance) _get_handle_name(impl func(ptr gdclass.Receiver, id int, secondary bool) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -217,7 +217,7 @@ Override this method to return [code]true[/code] whenever the given handle shoul
 The [param secondary] argument is [code]true[/code] when the requested handle is secondary (see [method add_handles] for more information).
 */
 func (Instance) _is_handle_highlighted(impl func(ptr gdclass.Receiver, id int, secondary bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -231,7 +231,7 @@ Override this method to return the current value of a handle. This value will be
 The [param secondary] argument is [code]true[/code] when the requested handle is secondary (see [method add_handles] for more information).
 */
 func (Instance) _get_handle_value(impl func(ptr gdclass.Receiver, id int, secondary bool) any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -245,7 +245,7 @@ func (Instance) _get_handle_value(impl func(ptr gdclass.Receiver, id int, second
 	}
 }
 func (Instance) _begin_handle_action(impl func(ptr gdclass.Receiver, id int, secondary bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -258,7 +258,7 @@ Override this method to update the node properties when the user drags a gizmo h
 The [param secondary] argument is [code]true[/code] when the edited handle is secondary (see [method add_handles] for more information).
 */
 func (Instance) _set_handle(impl func(ptr gdclass.Receiver, id int, secondary bool, camera Camera3D.Instance, point Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))})}
@@ -276,7 +276,7 @@ If the [param cancel] argument is [code]true[/code], the [param restore] value s
 The [param secondary] argument is [code]true[/code] when the committed handle is secondary (see [method add_handles] for more information).
 */
 func (Instance) _commit_handle(impl func(ptr gdclass.Receiver, id int, secondary bool, restore any, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 		var restore = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
@@ -291,7 +291,7 @@ func (Instance) _commit_handle(impl func(ptr gdclass.Receiver, id int, secondary
 Override this method to allow selecting subgizmos using mouse clicks. Given a [param camera] and a [param point] in screen coordinates, this method should return which subgizmo should be selected. The returned value should be a unique subgizmo identifier, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 */
 func (Instance) _subgizmos_intersect_ray(impl func(ptr gdclass.Receiver, camera Camera3D.Instance, point Vector2.XY) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(camera[0])
@@ -306,7 +306,7 @@ func (Instance) _subgizmos_intersect_ray(impl func(ptr gdclass.Receiver, camera 
 Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and a [param frustum], this method should return which subgizmos are contained within the frustum. The [param frustum] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 */
 func (Instance) _subgizmos_intersect_frustum(impl func(ptr gdclass.Receiver, camera Camera3D.Instance, frustum []Plane.NormalD) []int32) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(camera[0])
@@ -327,7 +327,7 @@ func (Instance) _subgizmos_intersect_frustum(impl func(ptr gdclass.Receiver, cam
 Override this method to update the node properties during subgizmo editing (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). The [param transform] is given in the [Node3D]'s local coordinate system.
 */
 func (Instance) _set_subgizmo_transform(impl func(ptr gdclass.Receiver, id int, transform Transform3D.BasisOrigin)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -339,7 +339,7 @@ func (Instance) _set_subgizmo_transform(impl func(ptr gdclass.Receiver, id int, 
 Override this method to return the current transform of a subgizmo. This transform will be requested at the start of an edit and used as the [code]restore[/code] argument in [method _commit_subgizmos].
 */
 func (Instance) _get_subgizmo_transform(impl func(ptr gdclass.Receiver, id int) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, int(id))
@@ -352,7 +352,7 @@ Override this method to commit a group of subgizmos being edited (see [method _s
 If the [param cancel] argument is [code]true[/code], the [param restores] transforms should be directly set, without any [UndoRedo] action.
 */
 func (Instance) _commit_subgizmos(impl func(ptr gdclass.Receiver, ids []int32, restores []Transform3D.BasisOrigin, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var ids = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ids))
 		var restores = Array.Through(gd.ArrayProxy[Transform3D.BasisOrigin]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
@@ -526,7 +526,7 @@ func New() Instance {
 Override this method to add all the gizmo elements whenever a gizmo update is requested. It's common to call [method clear] at the beginning of this method and then add visual elements depending on the node's properties.
 */
 func (class) _redraw(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -537,7 +537,7 @@ Override this method to return the name of an edited handle (handles must have b
 The [param secondary] argument is [code]true[/code] when the requested handle is secondary (see [method add_handles] for more information).
 */
 func (class) _get_handle_name(impl func(ptr gdclass.Receiver, id int64, secondary bool) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -556,7 +556,7 @@ Override this method to return [code]true[/code] whenever the given handle shoul
 The [param secondary] argument is [code]true[/code] when the requested handle is secondary (see [method add_handles] for more information).
 */
 func (class) _is_handle_highlighted(impl func(ptr gdclass.Receiver, id int64, secondary bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -570,7 +570,7 @@ Override this method to return the current value of a handle. This value will be
 The [param secondary] argument is [code]true[/code] when the requested handle is secondary (see [method add_handles] for more information).
 */
 func (class) _get_handle_value(impl func(ptr gdclass.Receiver, id int64, secondary bool) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -585,7 +585,7 @@ func (class) _get_handle_value(impl func(ptr gdclass.Receiver, id int64, seconda
 }
 
 func (class) _begin_handle_action(impl func(ptr gdclass.Receiver, id int64, secondary bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -598,7 +598,7 @@ Override this method to update the node properties when the user drags a gizmo h
 The [param secondary] argument is [code]true[/code] when the edited handle is secondary (see [method add_handles] for more information).
 */
 func (class) _set_handle(impl func(ptr gdclass.Receiver, id int64, secondary bool, camera [1]gdclass.Camera3D, point Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 2))})}
@@ -616,7 +616,7 @@ If the [param cancel] argument is [code]true[/code], the [param restore] value s
 The [param secondary] argument is [code]true[/code] when the committed handle is secondary (see [method add_handles] for more information).
 */
 func (class) _commit_handle(impl func(ptr gdclass.Receiver, id int64, secondary bool, restore variant.Any, cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var secondary = gd.UnsafeGet[bool](p_args, 1)
 		var restore = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
@@ -631,7 +631,7 @@ func (class) _commit_handle(impl func(ptr gdclass.Receiver, id int64, secondary 
 Override this method to allow selecting subgizmos using mouse clicks. Given a [param camera] and a [param point] in screen coordinates, this method should return which subgizmo should be selected. The returned value should be a unique subgizmo identifier, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 */
 func (class) _subgizmos_intersect_ray(impl func(ptr gdclass.Receiver, camera [1]gdclass.Camera3D, point Vector2.XY) int64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(camera[0])
@@ -646,7 +646,7 @@ func (class) _subgizmos_intersect_ray(impl func(ptr gdclass.Receiver, camera [1]
 Override this method to allow selecting subgizmos using mouse drag box selection. Given a [param camera] and a [param frustum], this method should return which subgizmos are contained within the frustum. The [param frustum] argument consists of an array with all the [Plane]s that make up the selection frustum. The returned value should contain a list of unique subgizmo identifiers, which can have any non-negative value and will be used in other virtual methods like [method _get_subgizmo_transform] or [method _commit_subgizmos].
 */
 func (class) _subgizmos_intersect_frustum(impl func(ptr gdclass.Receiver, camera [1]gdclass.Camera3D, frustum Array.Contains[Plane.NormalD]) Packed.Array[int32]) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var camera = [1]gdclass.Camera3D{pointers.New[gdclass.Camera3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(camera[0])
@@ -667,7 +667,7 @@ func (class) _subgizmos_intersect_frustum(impl func(ptr gdclass.Receiver, camera
 Override this method to update the node properties during subgizmo editing (see [method _subgizmos_intersect_ray] and [method _subgizmos_intersect_frustum]). The [param transform] is given in the [Node3D]'s local coordinate system.
 */
 func (class) _set_subgizmo_transform(impl func(ptr gdclass.Receiver, id int64, transform Transform3D.BasisOrigin)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -679,7 +679,7 @@ func (class) _set_subgizmo_transform(impl func(ptr gdclass.Receiver, id int64, t
 Override this method to return the current transform of a subgizmo. This transform will be requested at the start of an edit and used as the [code]restore[/code] argument in [method _commit_subgizmos].
 */
 func (class) _get_subgizmo_transform(impl func(ptr gdclass.Receiver, id int64) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var id = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, id)
@@ -692,7 +692,7 @@ Override this method to commit a group of subgizmos being edited (see [method _s
 If the [param cancel] argument is [code]true[/code], the [param restores] transforms should be directly set, without any [UndoRedo] action.
 */
 func (class) _commit_subgizmos(impl func(ptr gdclass.Receiver, ids Packed.Array[int32], restores Array.Contains[Transform3D.BasisOrigin], cancel bool)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var ids = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](ids))
 		var restores = Array.Through(gd.ArrayProxy[Transform3D.BasisOrigin]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))

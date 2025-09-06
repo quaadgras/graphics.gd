@@ -166,7 +166,7 @@ func (self implementation) HasFilter() (_ bool)    { return }
 When inheriting from [AnimationRootNode], implement this virtual method to return all child animation nodes in order as a [code]name: node[/code] dictionary.
 */
 func (Instance) _get_child_nodes(impl func(ptr gdclass.Receiver) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
@@ -182,7 +182,7 @@ func (Instance) _get_child_nodes(impl func(ptr gdclass.Receiver) map[any]any) (c
 When inheriting from [AnimationRootNode], implement this virtual method to return a list of the properties on this animation node. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees. Format is similar to [method Object.get_property_list].
 */
 func (Instance) _get_parameter_list(impl func(ptr gdclass.Receiver) []any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.EngineArrayFromSlice(ret)))
@@ -198,7 +198,7 @@ func (Instance) _get_parameter_list(impl func(ptr gdclass.Receiver) []any) (cb g
 When inheriting from [AnimationRootNode], implement this virtual method to return a child animation node by its [param name].
 */
 func (Instance) _get_child_by_name(impl func(ptr gdclass.Receiver, name string) Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -216,7 +216,7 @@ func (Instance) _get_child_by_name(impl func(ptr gdclass.Receiver, name string) 
 When inheriting from [AnimationRootNode], implement this virtual method to return the default value of a [param parameter]. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
 func (Instance) _get_parameter_default_value(impl func(ptr gdclass.Receiver, parameter string) any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(parameter))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -234,7 +234,7 @@ func (Instance) _get_parameter_default_value(impl func(ptr gdclass.Receiver, par
 When inheriting from [AnimationRootNode], implement this virtual method to return whether the [param parameter] is read-only. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
 func (Instance) _is_parameter_read_only(impl func(ptr gdclass.Receiver, parameter string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(parameter))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -249,7 +249,7 @@ Here, call the [method blend_input], [method blend_node] or [method blend_animat
 This function should return the delta.
 */
 func (Instance) _process(impl func(ptr gdclass.Receiver, time Float.X, seek bool, is_external_seeking bool, test_only bool) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var time = gd.UnsafeGet[float64](p_args, 0)
 		var seek = gd.UnsafeGet[bool](p_args, 1)
 		var is_external_seeking = gd.UnsafeGet[bool](p_args, 2)
@@ -264,7 +264,7 @@ func (Instance) _process(impl func(ptr gdclass.Receiver, time Float.X, seek bool
 When inheriting from [AnimationRootNode], implement this virtual method to override the text caption for this animation node.
 */
 func (Instance) _get_caption(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -280,7 +280,7 @@ func (Instance) _get_caption(impl func(ptr gdclass.Receiver) string) (cb gd.Exte
 When inheriting from [AnimationRootNode], implement this virtual method to return whether the blend tree editor should display filter editing on this animation node.
 */
 func (Instance) _has_filter(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -471,7 +471,7 @@ func (self Instance) SetFilterEnabled(value bool) {
 When inheriting from [AnimationRootNode], implement this virtual method to return all child animation nodes in order as a [code]name: node[/code] dictionary.
 */
 func (class) _get_child_nodes(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalDictionary(ret))
@@ -487,7 +487,7 @@ func (class) _get_child_nodes(impl func(ptr gdclass.Receiver) Dictionary.Any) (c
 When inheriting from [AnimationRootNode], implement this virtual method to return a list of the properties on this animation node. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees. Format is similar to [method Object.get_property_list].
 */
 func (class) _get_parameter_list(impl func(ptr gdclass.Receiver) Array.Any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
@@ -503,7 +503,7 @@ func (class) _get_parameter_list(impl func(ptr gdclass.Receiver) Array.Any) (cb 
 When inheriting from [AnimationRootNode], implement this virtual method to return a child animation node by its [param name].
 */
 func (class) _get_child_by_name(impl func(ptr gdclass.Receiver, name String.Name) [1]gdclass.AnimationNode) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -521,7 +521,7 @@ func (class) _get_child_by_name(impl func(ptr gdclass.Receiver, name String.Name
 When inheriting from [AnimationRootNode], implement this virtual method to return the default value of a [param parameter]. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
 func (class) _get_parameter_default_value(impl func(ptr gdclass.Receiver, parameter String.Name) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(parameter))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -539,7 +539,7 @@ func (class) _get_parameter_default_value(impl func(ptr gdclass.Receiver, parame
 When inheriting from [AnimationRootNode], implement this virtual method to return whether the [param parameter] is read-only. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
 */
 func (class) _is_parameter_read_only(impl func(ptr gdclass.Receiver, parameter String.Name) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var parameter = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(parameter))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -554,7 +554,7 @@ Here, call the [method blend_input], [method blend_node] or [method blend_animat
 This function should return the delta.
 */
 func (class) _process(impl func(ptr gdclass.Receiver, time float64, seek bool, is_external_seeking bool, test_only bool) float64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var time = gd.UnsafeGet[float64](p_args, 0)
 		var seek = gd.UnsafeGet[bool](p_args, 1)
 		var is_external_seeking = gd.UnsafeGet[bool](p_args, 2)
@@ -569,7 +569,7 @@ func (class) _process(impl func(ptr gdclass.Receiver, time float64, seek bool, i
 When inheriting from [AnimationRootNode], implement this virtual method to override the text caption for this animation node.
 */
 func (class) _get_caption(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -585,7 +585,7 @@ func (class) _get_caption(impl func(ptr gdclass.Receiver) String.Readable) (cb g
 When inheriting from [AnimationRootNode], implement this virtual method to return whether the blend tree editor should display filter editing on this animation node.
 */
 func (class) _has_filter(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)

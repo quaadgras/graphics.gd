@@ -122,7 +122,7 @@ The [PackedFloat64Array] parameter contains the playback information, containing
 The function must return a [PackedFloat32Array] of the node's time info, containing the following values (in order): animation length, time position, delta, [enum Animation.LoopMode] (encoded as a float), whether the animation is about to end (encoded as a float greater than [code]0[/code]) and whether the animation is infinite (encoded as a float greater than [code]0[/code]). All values must be included in the returned array.
 */
 func (Instance) _process_animation_node(impl func(ptr gdclass.Receiver, playback_info []float64, test_only bool) []float32) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var playback_info = Packed.Array[float64](Array.Through(gd.PackedProxy[gd.PackedFloat64Array, float64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](playback_info))
 		var test_only = gd.UnsafeGet[bool](p_args, 1)
@@ -202,7 +202,7 @@ The [PackedFloat64Array] parameter contains the playback information, containing
 The function must return a [PackedFloat32Array] of the node's time info, containing the following values (in order): animation length, time position, delta, [enum Animation.LoopMode] (encoded as a float), whether the animation is about to end (encoded as a float greater than [code]0[/code]) and whether the animation is infinite (encoded as a float greater than [code]0[/code]). All values must be included in the returned array.
 */
 func (class) _process_animation_node(impl func(ptr gdclass.Receiver, playback_info Packed.Array[float64], test_only bool) Packed.Array[float32]) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var playback_info = Packed.Array[float64](Array.Through(gd.PackedProxy[gd.PackedFloat64Array, float64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 0)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedFloat64Array, float64](playback_info))
 		var test_only = gd.UnsafeGet[bool](p_args, 1)

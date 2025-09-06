@@ -10,13 +10,8 @@ import (
 )
 
 // Version returns the version of the Engine.
-func Version() gd.Version {
-	return gd.Version{
-		Major: gdextension.Host.Version.Major(),
-		Minor: gdextension.Host.Version.Minor(),
-		Patch: gdextension.Host.Version.Patch(),
-		Value: pointers.New[gd.String](gdextension.Host.Version.String()).String(),
-	}
+func Version() string {
+	return pointers.New[gd.String](gdextension.Host.Version.String()).String()
 }
 
 var (

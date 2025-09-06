@@ -163,7 +163,7 @@ func (self implementation) PostProcessKeyValue(animation Animation.Instance, tra
 A virtual function for processing after getting a key during playback.
 */
 func (Instance) _post_process_key_value(impl func(ptr gdclass.Receiver, animation Animation.Instance, track int, value any, object_id int, object_sub_idx int) any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var animation = [1]gdclass.Animation{pointers.New[gdclass.Animation]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(animation[0])
@@ -601,7 +601,7 @@ func (self Instance) SetCallbackModeDiscrete(value AnimationCallbackModeDiscrete
 A virtual function for processing after getting a key during playback.
 */
 func (class) _post_process_key_value(impl func(ptr gdclass.Receiver, animation [1]gdclass.Animation, track int64, value variant.Any, object_id int64, object_sub_idx int64) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var animation = [1]gdclass.Animation{pointers.New[gdclass.Animation]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(animation[0])

@@ -184,7 +184,7 @@ func (self implementation) IntegrateForces(state PhysicsDirectBodyState2D.Instan
 Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
 */
 func (Instance) _integrate_forces(impl func(ptr gdclass.Receiver, state PhysicsDirectBodyState2D.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.PhysicsDirectBodyState2D{pointers.New[gdclass.PhysicsDirectBodyState2D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
@@ -554,7 +554,7 @@ func (self Instance) SetConstantTorque(value Float.X) {
 Called during physics processing, allowing you to read and safely modify the simulation state for the object. By default, it is called before the standard force integration, but the [member custom_integrator] property allows you to disable the standard force integration and do fully custom force integration for a body.
 */
 func (class) _integrate_forces(impl func(ptr gdclass.Receiver, state [1]gdclass.PhysicsDirectBodyState2D)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var state = [1]gdclass.PhysicsDirectBodyState2D{pointers.New[gdclass.PhysicsDirectBodyState2D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])

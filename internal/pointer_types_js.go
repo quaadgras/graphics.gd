@@ -11,9 +11,9 @@ type gdptr uint32
 type EnginePointer = uint32
 type PackedPointers = [1]uint64
 
-func UnsafeGet[T any](frame Address, index int) T {
+func UnsafeGet[T any](frame gdextension.Pointer, index int) T {
 	// frame is a list of pointers, so we need to get the pointer at the index
-	var ptr = gdextension.Pointer(uintptr(frame) + uintptr(index)*unsafe.Sizeof(gdextension.Pointer(0)))
+	var ptr = frame + gdextension.Pointer(uintptr(index)*unsafe.Sizeof(gdextension.Pointer(0)))
 	var addr = gdextension.Pointer(gdextension.Host.Memory.Load.Uint32(ptr))
 	var zero T
 	var done = 0
@@ -40,8 +40,7 @@ func UnsafeGet[T any](frame Address, index int) T {
 	return zero
 }
 
-func UnsafeSet[T any](frame Address, value T) {
-	var addr = gdextension.Pointer(uintptr(frame))
+func UnsafeSet[T any](addr gdextension.Pointer, value T) {
 	var size = unsafe.Sizeof([1]T{})
 	var done = 0
 	for size > 0 {

@@ -69,7 +69,7 @@ func registerMethods(class gd.StringName, rtype reflect.Type, renames map[uintpt
 			gdextension.FunctionID(cgoNewHandle(&methodImplementation{
 				arg_count: method.Type.NumIn(),
 				dynamic:   call,
-				checked: func(instance any, args gd.Address, ret gd.Address) {
+				checked: func(instance any, args, ret gdextension.Pointer) {
 					extensionInstance := instance.(*instanceImplementation).Value
 					slowCall(false, reflect.ValueOf(extensionInstance).Method(method.Index), args, ret)
 				},
@@ -125,7 +125,7 @@ type methodImplementation struct {
 	arg_count int
 
 	dynamic func(instance any, v ...gd.Variant) (gd.Variant, error)
-	checked func(instance any, args gd.Address, ret gd.Address)
+	checked func(instance any, args, ret gdextension.Pointer)
 	variant func(instance any, v ...gd.Variant) gd.Variant
 }
 
@@ -166,8 +166,7 @@ func variantCall(method reflect.Method) func(instance any, v ...gd.Variant) (gd.
 	}
 }
 
-func slowCall(hasContext bool, method reflect.Value, p_args gd.Address, p_ret gd.Address) {
-
+func slowCall(hasContext bool, method reflect.Value, p_args, p_ret gdextension.Pointer) {
 	var (
 		args = make([]reflect.Value, method.Type().NumIn())
 	)

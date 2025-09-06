@@ -224,7 +224,7 @@ Called when [CanvasItem] has been requested to redraw (after [method queue_redra
 Corresponds to the [constant NOTIFICATION_DRAW] notification in [method Object._notification].
 */
 func (Instance) _draw(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -1102,7 +1102,7 @@ Called when [CanvasItem] has been requested to redraw (after [method queue_redra
 Corresponds to the [constant NOTIFICATION_DRAW] notification in [method Object._notification].
 */
 func (class) _draw(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}

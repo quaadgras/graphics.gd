@@ -170,7 +170,7 @@ Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the cli
 [b]Note:[/b] [method _input_event] requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
 */
 func (Instance) _input_event(impl func(ptr gdclass.Receiver, viewport Viewport.Instance, event InputEvent.Instance, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var viewport = [1]gdclass.Viewport{pointers.New[gdclass.Viewport]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(viewport[0])
@@ -187,7 +187,7 @@ func (Instance) _input_event(impl func(ptr gdclass.Receiver, viewport Viewport.I
 Called when the mouse pointer enters any of this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
 */
 func (Instance) _mouse_enter(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -197,7 +197,7 @@ func (Instance) _mouse_enter(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionCl
 Called when the mouse pointer exits all this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
 */
 func (Instance) _mouse_exit(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -207,7 +207,7 @@ func (Instance) _mouse_exit(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionCla
 Called when the mouse pointer enters any of this object's shapes or moves from one shape to another. [param shape_idx] is the child index of the newly entered [Shape2D]. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be called.
 */
 func (Instance) _mouse_shape_enter(impl func(ptr gdclass.Receiver, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(shape_idx))
@@ -218,7 +218,7 @@ func (Instance) _mouse_shape_enter(impl func(ptr gdclass.Receiver, shape_idx int
 Called when the mouse pointer exits any of this object's shapes. [param shape_idx] is the child index of the exited [Shape2D]. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be called.
 */
 func (Instance) _mouse_shape_exit(impl func(ptr gdclass.Receiver, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, int(shape_idx))
@@ -480,7 +480,7 @@ Accepts unhandled [InputEvent]s. [param shape_idx] is the child index of the cli
 [b]Note:[/b] [method _input_event] requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set.
 */
 func (class) _input_event(impl func(ptr gdclass.Receiver, viewport [1]gdclass.Viewport, event [1]gdclass.InputEvent, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var viewport = [1]gdclass.Viewport{pointers.New[gdclass.Viewport]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(viewport[0])
@@ -497,7 +497,7 @@ func (class) _input_event(impl func(ptr gdclass.Receiver, viewport [1]gdclass.Vi
 Called when the mouse pointer enters any of this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
 */
 func (class) _mouse_enter(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -507,7 +507,7 @@ func (class) _mouse_enter(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClass
 Called when the mouse pointer exits all this object's shapes. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this function to be called.
 */
 func (class) _mouse_exit(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -517,7 +517,7 @@ func (class) _mouse_exit(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassC
 Called when the mouse pointer enters any of this object's shapes or moves from one shape to another. [param shape_idx] is the child index of the newly entered [Shape2D]. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be called.
 */
 func (class) _mouse_shape_enter(impl func(ptr gdclass.Receiver, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shape_idx)
@@ -528,7 +528,7 @@ func (class) _mouse_shape_enter(impl func(ptr gdclass.Receiver, shape_idx int64)
 Called when the mouse pointer exits any of this object's shapes. [param shape_idx] is the child index of the exited [Shape2D]. Requires [member input_pickable] to be [code]true[/code] and at least one [member collision_layer] bit to be called.
 */
 func (class) _mouse_shape_exit(impl func(ptr gdclass.Receiver, shape_idx int64)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_idx = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, shape_idx)

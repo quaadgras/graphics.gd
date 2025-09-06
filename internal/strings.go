@@ -13,13 +13,13 @@ import (
 
 func (s String) StringName() StringName {
 	var arg = pointers.Get(s)
-	return pointers.New[StringName](gdextension.Make[gdextension.StringName](Global.typeset.creation.StringName[2], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
+	return pointers.New[StringName](gdextension.Make[gdextension.StringName](builtin.creation.StringName[2], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
 }
 
 // Copy returns a copy of the string that is owned by the provided context.
 func (s String) Copy() String {
 	var arg = pointers.Get(s)
-	return pointers.New[String](gdextension.Make[gdextension.String](Global.typeset.creation.String[1], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
+	return pointers.New[String](gdextension.Make[gdextension.String](builtin.creation.String[1], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
 }
 
 func (s String) Free() {
@@ -45,19 +45,19 @@ func (s String) String() string {
 	return unsafe.String(&buf[0], len(buf))
 }
 
-func (Godot *API) StringFromStringName(s StringName) String {
+func StringFromStringName(s StringName) String {
 	var arg = pointers.Get(s)
-	return pointers.New[String](gdextension.Make[gdextension.String](Godot.typeset.creation.String[2], gdextension.SizeStringName<<4, unsafe.Pointer(&arg)))
+	return pointers.New[String](gdextension.Make[gdextension.String](builtin.creation.String[2], gdextension.SizeStringName<<4, unsafe.Pointer(&arg)))
 }
 
-func (Godot *API) StringFromNodePath(s NodePath) String {
+func StringFromNodePath(s NodePath) String {
 	var arg = pointers.Get(s)
-	return pointers.New[String](gdextension.Make[gdextension.String](Godot.typeset.creation.String[3], gdextension.SizeNodePath<<4, unsafe.Pointer(&arg)))
+	return pointers.New[String](gdextension.Make[gdextension.String](builtin.creation.String[3], gdextension.SizeNodePath<<4, unsafe.Pointer(&arg)))
 }
 
 func NewStringNameFromString(s String) StringName {
 	var arg = pointers.Get(s)
-	return pointers.New[StringName](gdextension.Make[gdextension.StringName](Global.typeset.creation.StringName[2], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
+	return pointers.New[StringName](gdextension.Make[gdextension.StringName](builtin.creation.StringName[2], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
 }
 
 func (s StringName) Free() {
@@ -75,22 +75,22 @@ func (s StringName) String() string {
 	if pointers.Get(s) == (gdextension.StringName{}) {
 		return ""
 	}
-	var tmp = Global.StringFromStringName(s)
+	var tmp = StringFromStringName(s)
 	return tmp.String()
 }
 
 func (s String) NodePath() NodePath {
 	var arg = pointers.Get(s)
-	return pointers.New[NodePath](gdextension.Make[gdextension.NodePath](Global.typeset.creation.NodePath[2], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
+	return pointers.New[NodePath](gdextension.Make[gdextension.NodePath](builtin.creation.NodePath[2], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
 }
 
 func (n NodePath) InternalString() String {
 	var ptr = pointers.Get(n)
-	return pointers.New[String](gdextension.Make[gdextension.String](Global.typeset.creation.String[2], gdextension.SizeNodePath<<4, unsafe.Pointer(&ptr)))
+	return pointers.New[String](gdextension.Make[gdextension.String](builtin.creation.String[2], gdextension.SizeNodePath<<4, unsafe.Pointer(&ptr)))
 }
 
 func (n NodePath) String() string {
-	return Global.StringFromNodePath(n).String()
+	return StringFromNodePath(n).String()
 }
 
 func (n NodePath) Free() {

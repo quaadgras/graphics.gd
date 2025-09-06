@@ -153,7 +153,7 @@ func (self implementation) GetParameter(name string) (_ any)                    
 Override this method to customize what happens when the playback starts at the given position, such as by calling [method AudioStreamPlayer.play].
 */
 func (Instance) _start(impl func(ptr gdclass.Receiver, from_pos Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_pos = gd.UnsafeGet[float64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, Float.X(from_pos))
@@ -164,7 +164,7 @@ func (Instance) _start(impl func(ptr gdclass.Receiver, from_pos Float.X)) (cb gd
 Override this method to customize what happens when the playback is stopped, such as by calling [method AudioStreamPlayer.stop].
 */
 func (Instance) _stop(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -174,7 +174,7 @@ func (Instance) _stop(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCall
 Overridable method. Should return [code]true[/code] if this playback is active and playing its audio stream.
 */
 func (Instance) _is_playing(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -185,7 +185,7 @@ func (Instance) _is_playing(impl func(ptr gdclass.Receiver) bool) (cb gd.Extensi
 Overridable method. Should return how many times this audio stream has looped. Most built-in playbacks always return [code]0[/code].
 */
 func (Instance) _get_loop_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -196,7 +196,7 @@ func (Instance) _get_loop_count(impl func(ptr gdclass.Receiver) int) (cb gd.Exte
 Overridable method. Should return the current progress along the audio stream, in seconds.
 */
 func (Instance) _get_playback_position(impl func(ptr gdclass.Receiver) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, float64(ret))
@@ -207,7 +207,7 @@ func (Instance) _get_playback_position(impl func(ptr gdclass.Receiver) Float.X) 
 Override this method to customize what happens when seeking this audio stream at the given [param position], such as by calling [method AudioStreamPlayer.seek].
 */
 func (Instance) _seek(impl func(ptr gdclass.Receiver, position Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var position = gd.UnsafeGet[float64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, Float.X(position))
@@ -219,7 +219,7 @@ Override this method to customize how the audio stream is mixed. This method is 
 [b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
 */
 func (Instance) _mix(impl func(ptr gdclass.Receiver, buffer *AudioFrame, rate_scale Float.X, frames int) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var rate_scale = gd.UnsafeGet[float64](p_args, 1)
 		var frames = gd.UnsafeGet[int64](p_args, 2)
@@ -233,7 +233,7 @@ func (Instance) _mix(impl func(ptr gdclass.Receiver, buffer *AudioFrame, rate_sc
 Overridable method. Called whenever the audio stream is mixed if the playback is active and [method AudioServer.set_enable_tagging_used_audio_streams] has been set to [code]true[/code]. Editor plugins may use this method to "tag" the current position along the audio stream and display it in a preview.
 */
 func (Instance) _tag_used_streams(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -243,7 +243,7 @@ func (Instance) _tag_used_streams(impl func(ptr gdclass.Receiver)) (cb gd.Extens
 Set the current value of a playback parameter by name (see [method AudioStream._get_parameter_list]).
 */
 func (Instance) _set_parameter(impl func(ptr gdclass.Receiver, name string, value any)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
 		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
@@ -257,7 +257,7 @@ func (Instance) _set_parameter(impl func(ptr gdclass.Receiver, name string, valu
 Return the current value of a playback parameter by name (see [method AudioStream._get_parameter_list]).
 */
 func (Instance) _get_parameter(impl func(ptr gdclass.Receiver, name string) any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -397,7 +397,7 @@ func New() Instance {
 Override this method to customize what happens when the playback starts at the given position, such as by calling [method AudioStreamPlayer.play].
 */
 func (class) _start(impl func(ptr gdclass.Receiver, from_pos float64)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_pos = gd.UnsafeGet[float64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, from_pos)
@@ -408,7 +408,7 @@ func (class) _start(impl func(ptr gdclass.Receiver, from_pos float64)) (cb gd.Ex
 Override this method to customize what happens when the playback is stopped, such as by calling [method AudioStreamPlayer.stop].
 */
 func (class) _stop(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -418,7 +418,7 @@ func (class) _stop(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVir
 Overridable method. Should return [code]true[/code] if this playback is active and playing its audio stream.
 */
 func (class) _is_playing(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -429,7 +429,7 @@ func (class) _is_playing(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionC
 Overridable method. Should return how many times this audio stream has looped. Most built-in playbacks always return [code]0[/code].
 */
 func (class) _get_loop_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -440,7 +440,7 @@ func (class) _get_loop_count(impl func(ptr gdclass.Receiver) int64) (cb gd.Exten
 Overridable method. Should return the current progress along the audio stream, in seconds.
 */
 func (class) _get_playback_position(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -451,7 +451,7 @@ func (class) _get_playback_position(impl func(ptr gdclass.Receiver) float64) (cb
 Override this method to customize what happens when seeking this audio stream at the given [param position], such as by calling [method AudioStreamPlayer.seek].
 */
 func (class) _seek(impl func(ptr gdclass.Receiver, position float64)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var position = gd.UnsafeGet[float64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self, position)
@@ -463,7 +463,7 @@ Override this method to customize how the audio stream is mixed. This method is 
 [b]Note:[/b] It is not useful to override this method in GDScript or C#. Only GDExtension can take advantage of it.
 */
 func (class) _mix(impl func(ptr gdclass.Receiver, buffer *AudioFrame, rate_scale float64, frames int64) int64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var buffer = gd.UnsafeGet[*AudioFrame](p_args, 0)
 		var rate_scale = gd.UnsafeGet[float64](p_args, 1)
 		var frames = gd.UnsafeGet[int64](p_args, 2)
@@ -477,7 +477,7 @@ func (class) _mix(impl func(ptr gdclass.Receiver, buffer *AudioFrame, rate_scale
 Overridable method. Called whenever the audio stream is mixed if the playback is active and [method AudioServer.set_enable_tagging_used_audio_streams] has been set to [code]true[/code]. Editor plugins may use this method to "tag" the current position along the audio stream and display it in a preview.
 */
 func (class) _tag_used_streams(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -487,7 +487,7 @@ func (class) _tag_used_streams(impl func(ptr gdclass.Receiver)) (cb gd.Extension
 Set the current value of a playback parameter by name (see [method AudioStream._get_parameter_list]).
 */
 func (class) _set_parameter(impl func(ptr gdclass.Receiver, name String.Name, value variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
 		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
@@ -501,7 +501,7 @@ func (class) _set_parameter(impl func(ptr gdclass.Receiver, name String.Name, va
 Return the current value of a playback parameter by name (see [method AudioStream._get_parameter_list]).
 */
 func (class) _get_parameter(impl func(ptr gdclass.Receiver, name String.Name) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var name = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(name))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

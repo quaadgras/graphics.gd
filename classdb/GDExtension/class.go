@@ -109,8 +109,8 @@ func (self Instance) IsLibraryOpen() bool { //gd:GDExtension.is_library_open
 /*
 Returns the lowest level required for this extension to be properly initialized (see the [enum InitializationLevel] enum).
 */
-func (self Instance) GetMinimumLibraryInitializationLevel() gd.GDExtensionInitializationLevel { //gd:GDExtension.get_minimum_library_initialization_level
-	return gd.GDExtensionInitializationLevel(Advanced(self).GetMinimumLibraryInitializationLevel())
+func (self Instance) GetMinimumLibraryInitializationLevel() InitializationLevel { //gd:GDExtension.get_minimum_library_initialization_level
+	return InitializationLevel(Advanced(self).GetMinimumLibraryInitializationLevel())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -170,8 +170,8 @@ func (self class) IsLibraryOpen() bool { //gd:GDExtension.is_library_open
 Returns the lowest level required for this extension to be properly initialized (see the [enum InitializationLevel] enum).
 */
 //go:nosplit
-func (self class) GetMinimumLibraryInitializationLevel() gd.GDExtensionInitializationLevel { //gd:GDExtension.get_minimum_library_initialization_level
-	var r_ret = gdextension.Call[gd.GDExtensionInitializationLevel](gd.ObjectChecked(self.AsObject()), methods.get_minimum_library_initialization_level, gdextension.SizeInt, &struct{}{})
+func (self class) GetMinimumLibraryInitializationLevel() InitializationLevel { //gd:GDExtension.get_minimum_library_initialization_level
+	var r_ret = gdextension.Call[InitializationLevel](gd.ObjectChecked(self.AsObject()), methods.get_minimum_library_initialization_level, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

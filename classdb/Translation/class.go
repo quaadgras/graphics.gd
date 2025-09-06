@@ -130,7 +130,7 @@ func (self implementation) GetMessage(src_message string, context string) (_ str
 Virtual method to override [method get_plural_message].
 */
 func (Instance) _get_plural_message(impl func(ptr gdclass.Receiver, src_message string, src_plural_message string, n int, context string) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var src_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(src_message))
 		var src_plural_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1)))))
@@ -153,7 +153,7 @@ func (Instance) _get_plural_message(impl func(ptr gdclass.Receiver, src_message 
 Virtual method to override [method get_message].
 */
 func (Instance) _get_message(impl func(ptr gdclass.Receiver, src_message string, context string) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var src_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(src_message))
 		var context = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1)))))
@@ -321,7 +321,7 @@ func (self Instance) SetLocale(value string) {
 Virtual method to override [method get_plural_message].
 */
 func (class) _get_plural_message(impl func(ptr gdclass.Receiver, src_message String.Name, src_plural_message String.Name, n int64, context String.Name) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var src_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(src_message))
 		var src_plural_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1)))))
@@ -344,7 +344,7 @@ func (class) _get_plural_message(impl func(ptr gdclass.Receiver, src_message Str
 Virtual method to override [method get_message].
 */
 func (class) _get_message(impl func(ptr gdclass.Receiver, src_message String.Name, context String.Name) String.Name) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var src_message = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(src_message))
 		var context = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 1)))))

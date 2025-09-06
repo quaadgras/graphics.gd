@@ -157,7 +157,7 @@ func _setup_local_to_scene():
 [/codeblock]
 */
 func (Instance) _setup_local_to_scene(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -167,7 +167,7 @@ func (Instance) _setup_local_to_scene(impl func(ptr gdclass.Receiver)) (cb gd.Ex
 Override this method to return a custom [RID] when [method get_rid] is called.
 */
 func (Instance) _get_rid(impl func(ptr gdclass.Receiver) ID) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, RID.Any(ret))
@@ -178,7 +178,7 @@ func (Instance) _get_rid(impl func(ptr gdclass.Receiver) ID) (cb gd.ExtensionCla
 For resources that use a variable number of properties, either via [method Object._validate_property] or [method Object._get_property_list], this method should be implemented to correctly clear the resource's state.
 */
 func (Instance) _reset_state(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -188,7 +188,7 @@ func (Instance) _reset_state(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionCl
 Sets the resource's path to [param path] without involving the resource cache.
 */
 func (Instance) _set_path_cache(impl func(ptr gdclass.Receiver, path string)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -395,7 +395,7 @@ func _setup_local_to_scene():
 [/codeblock]
 */
 func (class) _setup_local_to_scene(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -405,7 +405,7 @@ func (class) _setup_local_to_scene(impl func(ptr gdclass.Receiver)) (cb gd.Exten
 Override this method to return a custom [RID] when [method get_rid] is called.
 */
 func (class) _get_rid(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -416,7 +416,7 @@ func (class) _get_rid(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionC
 For resources that use a variable number of properties, either via [method Object._validate_property] or [method Object._get_property_list], this method should be implemented to correctly clear the resource's state.
 */
 func (class) _reset_state(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -426,7 +426,7 @@ func (class) _reset_state(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClass
 Sets the resource's path to [param path] without involving the resource cache.
 */
 func (class) _set_path_cache(impl func(ptr gdclass.Receiver, path String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

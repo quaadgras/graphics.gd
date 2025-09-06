@@ -187,56 +187,56 @@ func variantTypeFromName(s string) (gdextension.VariantType, reflect.Type) {
 	}
 }
 
-func operatoTypeFromName(name string) Operator {
+func operatoTypeFromName(name string) gdextension.VariantOperator {
 	switch name {
 	case "Equals":
 		return gdextension.Equal
 	case "NotEqual":
-		return NotEqual
+		return gdextension.NotEqual
 	case "Less":
-		return Less
+		return gdextension.Less
 	case "LessEqual":
-		return LessEqual
+		return gdextension.LessEqual
 	case "Greater":
-		return Greater
+		return gdextension.Greater
 	case "GreaterEqual":
-		return GreaterEqual
+		return gdextension.GreaterEqual
 	case "Add":
-		return Add
+		return gdextension.Add
 	case "Subtract":
-		return Subtract
+		return gdextension.Subtract
 	case "Multiply":
-		return Multiply
+		return gdextension.Multiply
 	case "Divide":
-		return Divide
+		return gdextension.Divide
 	case "Negate":
-		return Negate
+		return gdextension.Negate
 	case "Module":
-		return Module
+		return gdextension.Module
 	case "Power":
-		return Power
+		return gdextension.Power
 	case "ShiftLeft":
-		return ShiftLeft
+		return gdextension.ShiftLeft
 	case "ShiftRight":
-		return ShiftRight
+		return gdextension.ShiftRight
 	case "BitAnd":
-		return BitAnd
+		return gdextension.BitAnd
 	case "BitOr":
-		return BitOr
+		return gdextension.BitOr
 	case "BitXor":
-		return BitXor
+		return gdextension.BitXor
 	case "BitNegate":
-		return BitNegate
+		return gdextension.BitNegate
 	case "And":
-		return LogicalAnd
+		return gdextension.LogicalAnd
 	case "Or":
-		return LogicalOr
+		return gdextension.LogicalOr
 	case "Xor":
-		return LogicalXor
+		return gdextension.LogicalXor
 	case "Not":
-		return LogicalNegate
+		return gdextension.LogicalNegate
 	case "In":
-		return In
+		return gdextension.In
 	default:
 		panic("gdextension.operatoTypeFromName: unknown operator " + name)
 	}

@@ -132,7 +132,7 @@ func (self implementation) MakeTooltipForPath(path string, metadata map[any]any,
 Return [code]true[/code] if the plugin is going to handle the given [Resource] [param type].
 */
 func (Instance) _handles(impl func(ptr gdclass.Receiver, atype string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(atype))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -158,7 +158,7 @@ func _make_tooltip_for_path(path, metadata, base):
 [/codeblock]
 */
 func (Instance) _make_tooltip_for_path(impl func(ptr gdclass.Receiver, path string, metadata map[any]any, base Control.Instance) Control.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var metadata = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
@@ -231,7 +231,7 @@ func New() Instance {
 Return [code]true[/code] if the plugin is going to handle the given [Resource] [param type].
 */
 func (class) _handles(impl func(ptr gdclass.Receiver, atype String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var atype = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(atype))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -257,7 +257,7 @@ func _make_tooltip_for_path(path, metadata, base):
 [/codeblock]
 */
 func (class) _make_tooltip_for_path(impl func(ptr gdclass.Receiver, path String.Readable, metadata Dictionary.Any, base [1]gdclass.Control) [1]gdclass.Control) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
 		var metadata = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))

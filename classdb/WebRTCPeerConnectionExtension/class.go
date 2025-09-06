@@ -127,28 +127,28 @@ func (self implementation) AddIceCandidate(p_sdp_mid_name string, p_sdp_mline_in
 func (self implementation) Poll() (_ error) { return }
 func (self implementation) Close()          { return }
 func (Instance) _get_connection_state(impl func(ptr gdclass.Receiver) WebRTCPeerConnection.ConnectionState) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _get_gathering_state(impl func(ptr gdclass.Receiver) WebRTCPeerConnection.GatheringState) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _get_signaling_state(impl func(ptr gdclass.Receiver) WebRTCPeerConnection.SignalingState) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
 func (Instance) _initialize(impl func(ptr gdclass.Receiver, p_config map[any]any) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_config = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 0))))
 		defer pointers.End(gd.InternalDictionary(p_config))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -162,7 +162,7 @@ func (Instance) _initialize(impl func(ptr gdclass.Receiver, p_config map[any]any
 	}
 }
 func (Instance) _create_data_channel(impl func(ptr gdclass.Receiver, p_label string, p_config map[any]any) WebRTCDataChannel.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_label = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(p_label))
 		var p_config = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
@@ -178,7 +178,7 @@ func (Instance) _create_data_channel(impl func(ptr gdclass.Receiver, p_label str
 	}
 }
 func (Instance) _create_offer(impl func(ptr gdclass.Receiver) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -190,7 +190,7 @@ func (Instance) _create_offer(impl func(ptr gdclass.Receiver) error) (cb gd.Exte
 	}
 }
 func (Instance) _set_remote_description(impl func(ptr gdclass.Receiver, p_type string, p_sdp string) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_type = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(p_type))
 		var p_sdp = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
@@ -206,7 +206,7 @@ func (Instance) _set_remote_description(impl func(ptr gdclass.Receiver, p_type s
 	}
 }
 func (Instance) _set_local_description(impl func(ptr gdclass.Receiver, p_type string, p_sdp string) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_type = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(p_type))
 		var p_sdp = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
@@ -222,7 +222,7 @@ func (Instance) _set_local_description(impl func(ptr gdclass.Receiver, p_type st
 	}
 }
 func (Instance) _add_ice_candidate(impl func(ptr gdclass.Receiver, p_sdp_mid_name string, p_sdp_mline_index int, p_sdp_name string) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_sdp_mid_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(p_sdp_mid_name))
 		var p_sdp_mline_index = gd.UnsafeGet[int64](p_args, 1)
@@ -239,7 +239,7 @@ func (Instance) _add_ice_candidate(impl func(ptr gdclass.Receiver, p_sdp_mid_nam
 	}
 }
 func (Instance) _poll(impl func(ptr gdclass.Receiver) error) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
@@ -251,7 +251,7 @@ func (Instance) _poll(impl func(ptr gdclass.Receiver) error) (cb gd.ExtensionCla
 	}
 }
 func (Instance) _close(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}
@@ -301,7 +301,7 @@ func New() Instance {
 }
 
 func (class) _get_connection_state(impl func(ptr gdclass.Receiver) WebRTCPeerConnection.ConnectionState) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -309,7 +309,7 @@ func (class) _get_connection_state(impl func(ptr gdclass.Receiver) WebRTCPeerCon
 }
 
 func (class) _get_gathering_state(impl func(ptr gdclass.Receiver) WebRTCPeerConnection.GatheringState) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -317,7 +317,7 @@ func (class) _get_gathering_state(impl func(ptr gdclass.Receiver) WebRTCPeerConn
 }
 
 func (class) _get_signaling_state(impl func(ptr gdclass.Receiver) WebRTCPeerConnection.SignalingState) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -325,7 +325,7 @@ func (class) _get_signaling_state(impl func(ptr gdclass.Receiver) WebRTCPeerConn
 }
 
 func (class) _initialize(impl func(ptr gdclass.Receiver, p_config Dictionary.Any) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_config = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 0))))
 		defer pointers.End(gd.InternalDictionary(p_config))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -340,7 +340,7 @@ func (class) _initialize(impl func(ptr gdclass.Receiver, p_config Dictionary.Any
 }
 
 func (class) _create_data_channel(impl func(ptr gdclass.Receiver, p_label String.Readable, p_config Dictionary.Any) [1]gdclass.WebRTCDataChannel) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_label = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(p_label))
 		var p_config = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
@@ -357,7 +357,7 @@ func (class) _create_data_channel(impl func(ptr gdclass.Receiver, p_label String
 }
 
 func (class) _create_offer(impl func(ptr gdclass.Receiver) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -370,7 +370,7 @@ func (class) _create_offer(impl func(ptr gdclass.Receiver) Error.Code) (cb gd.Ex
 }
 
 func (class) _set_remote_description(impl func(ptr gdclass.Receiver, p_type String.Readable, p_sdp String.Readable) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_type = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(p_type))
 		var p_sdp = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
@@ -387,7 +387,7 @@ func (class) _set_remote_description(impl func(ptr gdclass.Receiver, p_type Stri
 }
 
 func (class) _set_local_description(impl func(ptr gdclass.Receiver, p_type String.Readable, p_sdp String.Readable) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_type = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(p_type))
 		var p_sdp = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
@@ -404,7 +404,7 @@ func (class) _set_local_description(impl func(ptr gdclass.Receiver, p_type Strin
 }
 
 func (class) _add_ice_candidate(impl func(ptr gdclass.Receiver, p_sdp_mid_name String.Readable, p_sdp_mline_index int64, p_sdp_name String.Readable) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_sdp_mid_name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(p_sdp_mid_name))
 		var p_sdp_mline_index = gd.UnsafeGet[int64](p_args, 1)
@@ -422,7 +422,7 @@ func (class) _add_ice_candidate(impl func(ptr gdclass.Receiver, p_sdp_mid_name S
 }
 
 func (class) _poll(impl func(ptr gdclass.Receiver) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(ret)
@@ -435,7 +435,7 @@ func (class) _poll(impl func(ptr gdclass.Receiver) Error.Code) (cb gd.ExtensionC
 }
 
 func (class) _close(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
 	}

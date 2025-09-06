@@ -655,7 +655,7 @@ func (instance *instanceImplementation) Unreference() bool {
 	return false
 }
 
-func (instance *instanceImplementation) CallVirtual(virtual any, args gd.Address, back gd.Address) {
+func (instance *instanceImplementation) CallVirtual(virtual any, args, back gdextension.Pointer) {
 	virtual.(gd.ExtensionClassCallVirtualFunc)(instance.Value, args, back)
 }
 

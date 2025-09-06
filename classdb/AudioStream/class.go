@@ -147,7 +147,7 @@ func (self implementation) GetBarBeats() (_ int)                                
 Override this method to customize the returned value of [method instantiate_playback]. Should return a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer]).
 */
 func (Instance) _instantiate_playback(impl func(ptr gdclass.Receiver) AudioStreamPlayback.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
@@ -163,7 +163,7 @@ func (Instance) _instantiate_playback(impl func(ptr gdclass.Receiver) AudioStrea
 Override this method to customize the name assigned to this audio stream. Unused by the engine.
 */
 func (Instance) _get_stream_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
@@ -179,7 +179,7 @@ func (Instance) _get_stream_name(impl func(ptr gdclass.Receiver) string) (cb gd.
 Override this method to customize the returned value of [method get_length]. Should return the length of this audio stream, in seconds.
 */
 func (Instance) _get_length(impl func(ptr gdclass.Receiver) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, float64(ret))
@@ -190,7 +190,7 @@ func (Instance) _get_length(impl func(ptr gdclass.Receiver) Float.X) (cb gd.Exte
 Override this method to customize the returned value of [method is_monophonic]. Should return [code]true[/code] if this audio stream only supports one channel.
 */
 func (Instance) _is_monophonic(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -202,7 +202,7 @@ Overridable method. Should return the tempo of this audio stream, in beats per m
 Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
 */
 func (Instance) _get_bpm(impl func(ptr gdclass.Receiver) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, float64(ret))
@@ -214,7 +214,7 @@ Overridable method. Should return the total number of beats of this audio stream
 Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
 */
 func (Instance) _get_beat_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -225,7 +225,7 @@ func (Instance) _get_beat_count(impl func(ptr gdclass.Receiver) int) (cb gd.Exte
 Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [method Object.get_property_list]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
 */
 func (Instance) _get_parameter_list(impl func(ptr gdclass.Receiver) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](ret)))
@@ -241,7 +241,7 @@ func (Instance) _get_parameter_list(impl func(ptr gdclass.Receiver) []map[any]an
 Override this method to return [code]true[/code] if this stream has a loop.
 */
 func (Instance) _has_loop(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -252,7 +252,7 @@ func (Instance) _has_loop(impl func(ptr gdclass.Receiver) bool) (cb gd.Extension
 Override this method to return the bar beats of this stream.
 */
 func (Instance) _get_bar_beats(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, int64(ret))
@@ -348,7 +348,7 @@ func New() Instance {
 Override this method to customize the returned value of [method instantiate_playback]. Should return a new [AudioStreamPlayback] created when the stream is played (such as by an [AudioStreamPlayer]).
 */
 func (class) _instantiate_playback(impl func(ptr gdclass.Receiver) [1]gdclass.AudioStreamPlayback) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(ret[0])
@@ -364,7 +364,7 @@ func (class) _instantiate_playback(impl func(ptr gdclass.Receiver) [1]gdclass.Au
 Override this method to customize the name assigned to this audio stream. Unused by the engine.
 */
 func (class) _get_stream_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalString(ret))
@@ -380,7 +380,7 @@ func (class) _get_stream_name(impl func(ptr gdclass.Receiver) String.Readable) (
 Override this method to customize the returned value of [method get_length]. Should return the length of this audio stream, in seconds.
 */
 func (class) _get_length(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -391,7 +391,7 @@ func (class) _get_length(impl func(ptr gdclass.Receiver) float64) (cb gd.Extensi
 Override this method to customize the returned value of [method is_monophonic]. Should return [code]true[/code] if this audio stream only supports one channel.
 */
 func (class) _is_monophonic(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -403,7 +403,7 @@ Overridable method. Should return the tempo of this audio stream, in beats per m
 Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
 */
 func (class) _get_bpm(impl func(ptr gdclass.Receiver) float64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -415,7 +415,7 @@ Overridable method. Should return the total number of beats of this audio stream
 Ideally, the returned value should be based off the stream's sample rate ([member AudioStreamWAV.mix_rate], for example).
 */
 func (class) _get_beat_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -426,7 +426,7 @@ func (class) _get_beat_count(impl func(ptr gdclass.Receiver) int64) (cb gd.Exten
 Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [method Object.get_property_list]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
 */
 func (class) _get_parameter_list(impl func(ptr gdclass.Receiver) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalArray(ret))
@@ -442,7 +442,7 @@ func (class) _get_parameter_list(impl func(ptr gdclass.Receiver) Array.Contains[
 Override this method to return [code]true[/code] if this stream has a loop.
 */
 func (class) _has_loop(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
@@ -453,7 +453,7 @@ func (class) _has_loop(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionCla
 Override this method to return the bar beats of this stream.
 */
 func (class) _get_bar_beats(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
-	return func(class any, p_args gd.Address, p_back gd.Address) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
