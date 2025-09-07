@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import {
   Github,
   ExternalLink,
   Play,
-  Download,
   Code2,
   Zap,
   Shield,
@@ -16,9 +16,23 @@ import {
   Coffee,
   Gamepad2,
   Twitter,
+  Newspaper,
 } from "lucide-react";
+import BlogPage from "./components/BlogPage";
 
 function App() {
+  const navigate = useNavigate();
+
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/blog" element={<BlogPage onBack={() => navigate('/')} />} />
+    </Routes>
+  );
+}
+
+function HomePage() {
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
@@ -72,6 +86,11 @@ function App() {
     { id: "contributing", label: "Contributing" },
   ];
 
+  const handleBlogClick = () => {
+    navigate('/blog');
+    setIsMenuOpen(false);
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -100,6 +119,13 @@ function App() {
                   {item.label}
                 </button>
               ))}
+              <button
+                onClick={handleBlogClick}
+                className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+              >
+                <Newspaper className="h-4 w-4" />
+                <span>Blog</span>
+              </button>
               <a
                 href="https://github.com/quaadgras/graphics.gd"
                 target="_blank"
@@ -142,6 +168,13 @@ function App() {
                   {item.label}
                 </button>
               ))}
+              <button
+                onClick={handleBlogClick}
+                className="flex items-center space-x-2 w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                <Newspaper className="h-4 w-4" />
+                <span>Blog</span>
+              </button>
               <a
                 href="https://github.com/quaadgras/graphics.gd"
                 target="_blank"
