@@ -6,7 +6,7 @@ multimedia applications, games and more!
 _Why use graphics.gd?_
 
 * [Write shaders in Go!](./shaders/Readme.md)
-* Unlike C++/C#/GDScript/Rust/Swift, all Godot RIDs, callables and dictionary arguments are all fully typed.
+* Unlike C++/C#/GDScript/Rust/Swift, all Godot RIDs, callables and dictionary arguments are fully typed.
 * A good balance of performance and convenience.
 * General purpose pure-Go 'variant' packages, reuse them in any Go project.
 * After the first build, recompile quickly, with an experience similar to a scripting language.
