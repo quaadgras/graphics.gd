@@ -824,8 +824,8 @@ void gd_classdb_register(uintptr_t class_name, uintptr_t parent, uintptr_t id, b
         .validate_property_func = cgo_class_validate_property_func,
         .notification_func = (GDExtensionClassNotification2)go_on_extension_instance_notification,
         .to_string_func = cgo_class_to_string_func,
-        .reference_func = (GDExtensionClassReference)cgo_class_reference_func,
-        .unreference_func = (GDExtensionClassUnreference)cgo_class_unreference_func,
+        //.reference_func = (GDExtensionClassReference)cgo_class_reference_func, // FIXME JavaScript error: null function or function signature mismatch
+        //.unreference_func = (GDExtensionClassUnreference)cgo_class_unreference_func, // FIXME JavaScript error: null function or function signature mismatch
         .create_instance_func = cgo_class_create_instance_func,
         .free_instance_func = cgo_class_free_instance_func,
         .get_virtual_call_data_func = cgo_class_get_virtual_call_data_func,
