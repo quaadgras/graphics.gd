@@ -6,17 +6,18 @@ multimedia applications, games and more!
 _Why use graphics.gd?_
 
 * [Write shaders in Go!](./shaders/Readme.md)
-* Unlike other native Godot languages, RIDs, callables and dictionary arguments are all distinctly typed.
+* Unlike C++/C#/GDScript/Rust/Swift, all Godot RIDs, callables and dictionary arguments are all fully typed.
 * A good balance of performance and convenience.
 * General purpose pure-Go 'variant' packages, reuse them in any Go project.
 * After the first build, recompile quickly, with an experience similar to a scripting language.
 * Easily cross-compile for windows/macos/android/linux on any host platform.
-* Build and launch native apps on connected Android devices, no Java nor Android SDK/NDK needed.
+* Build and launch native apps on connected Android devices, no Java, no Android SDK/NDK.
 
-Not just a wrapper! graphics.gd is designed from the ground up to provide a cohesive curated graphics runtime on top of gdextension.
+Not just a wrapper! graphics.gd is designed from the ground up to provide a cohesive curated graphics 
+runtime on top of Godot + GDExtension.
 
-We would love you to take part in our [active discussions](https://github.com/quaadgras/graphics.gd/discussions)
-section with any questions, comments or feedback you may have. Show us what you're building!
+Join us in our [active discussions forum](https://github.com/quaadgras/graphics.gd/discussions)
+with any questions, comments or feedback you may have. Show us what you're building!
 
 ```go
 // This file is all you need to start a project.
@@ -76,19 +77,19 @@ go build -o example.so -buildmode=c-shared
 
 ## Next Steps
 
-Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which covers more topics.
+Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which covers much, much more!.
 
-## Design Principles
+## TLDR
 
-Each graphics class is available as a package under `classdb`. To import the
+Each engine class is available as a package under `classdb`. To import the
 `Node` class you can import `"graphics.gd/classdb/Node"` There's no inheritance,
-so to access a 'super' class, you need to call `Super()` on an Extension 'Class'.
+so to access a 'super' class, you need to call `Super()` on an extension 'class'.
 All engine classes have methods to cast to any sub-classes they extend for example
 `AsObject()` or `AsNode2D()`.
 
 Methods have been renamed to follow Go conventions, so instead of
 underscores, methods are named as PascalCase. Keep this in mind when
-referring to the Engine documentation.
+referring to Godot documentation.
 
 https://docs.godotengine.org/en/latest/index.html
 
@@ -104,11 +105,11 @@ _NOTE_ in order to avoid circular dependencies, a handful of functions have move
 for example `Node.get_tree()` (GDScript) has moved to `SceneTree.Get()` (Go).
 
 ## Performance
-It's feasible to write high performance code using this module, keep to Engine types where possible and avoid
+It's feasible to write high performance code with `graphics.gd`, keep to variant types where possible and avoid
 allocating memory on the heap in frequently called functions. `Advanced` instances are available for each class
 which allow more fine-grained control over memory allocations.
 
-Benchmarking shows `Advanced` method calls from Go -> Engine do not allocate in practice.
+Benchmarks show that `Advanced` method calls from Go -> Engine do not allocate.
 
 ## Examples
 There are a number of examples in the [samples](https://github.com/quaadgras/graphics.gd/tree/samples)
@@ -127,7 +128,7 @@ branch. All the samples are designed to be run with `gd run` without any additio
 
 * Go is not available as a 'scripting language' edited within the editor.
 * 64bit only (arm64 && amd64).
-* No support for video game consoles (this may be achieved in the future with WASM).
+* No support for Playstation/Xbox/Switch (achievable in the future with WASI, wasm2c or hitsumabushi).
 
 ## Contributing
 
@@ -149,7 +150,7 @@ you need!
 
 To run the go tests for graphics.gd, cd into the repo and run `cd internal && gd test`.
 
-Note, we are looking for somebody to create benchmarks for the project.
+> **Note** we are looking for somebody to create benchmarks for the project.
 
 Lastly, spread the word and let people know about graphics.gd!
 
