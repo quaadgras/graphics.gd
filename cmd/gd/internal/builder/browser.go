@@ -75,6 +75,9 @@ func (browser Browser) BuildMain(args ...string) error {
 	if err := browser.Build(args...); err != nil {
 		return xray.New(err)
 	}
+	if err := os.Chdir(project.GraphicsDirectory); err != nil {
+		return xray.New(err)
+	}
 	return tooling.Godot.Exec("--headless", "--export-release", "Web")
 }
 
