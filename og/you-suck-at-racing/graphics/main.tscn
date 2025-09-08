@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bmhmiv43fqo4c"]
+
+[node name="Node" type="Racing"]
+
+[node name="Road" type="Road" parent="."]
+
+[node name="Player" type="Player" parent="."]
