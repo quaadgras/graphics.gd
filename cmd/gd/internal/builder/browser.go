@@ -61,7 +61,14 @@ func (browser Browser) Run(args ...string) error {
 	if err != nil {
 		return xray.New(err)
 	}
-	wasm_exec = bytes.ReplaceAll(wasm_exec, []byte("this.argv = [\"js\"]"), []byte("this.argv = ["+strings.Join(args, ", ")+"]"))
+	var argsQuoted = []string{`"js"`}
+	for _, arg := range args {
+		if arg == "-x" {
+			continue
+		}
+		argsQuoted = append(argsQuoted, strconv.Quote(arg))
+	}
+	wasm_exec = bytes.ReplaceAll(wasm_exec, []byte("this.argv = [\"js\"]"), []byte("this.argv = ["+strings.Join(argsQuoted, ", ")+"]"))
 	if err := os.WriteFile(wasm_exec_path, wasm_exec, 0644); err != nil {
 		return xray.New(err)
 	}
@@ -83,7 +90,7 @@ func (browser Browser) BuildMain(args ...string) error {
 
 func (browser Browser) Test(args ...string) error {
 	browser.testing = true
-	converted := []string{`"js"`}
+	converted := []string{}
 	for _, arg := range os.Args[2:] {
 		switch arg {
 		case "-bench", "-benchmem", "-benchtime", "blockprofile",
@@ -94,9 +101,9 @@ func (browser Browser) Test(args ...string) error {
 			"-mutexprofilefraction", "-outputdir", "-paniconexit0",
 			"-parallel", "-run", "-short", "-shuffle", "-skip", "-testlogfile",
 			"-timeout", "-trace", "-v":
-			converted = append(converted, strconv.Quote("-test."+strings.TrimPrefix(arg, "-")))
+			converted = append(converted, "-test."+strings.TrimPrefix(arg, "-"))
 		default:
-			converted = append(converted, strconv.Quote(arg))
+			converted = append(converted, arg)
 		}
 	}
 	return browser.Run(converted...)
