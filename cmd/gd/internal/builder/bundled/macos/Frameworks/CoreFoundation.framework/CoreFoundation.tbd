@@ -4,8 +4,9 @@ install-name: '/System/Library/Frameworks/CoreFoundation.framework/Versions/A/Co
 targets:
  - x86_64-macos
  - arm64-macos
+ - arm64-ios
 exports:
- - targets: [ x86_64-macos, arm64-macos ]
+ - targets: [ x86_64-macos, arm64-macos, arm64-ios ]
    symbols: # the required symbols to compile Go code, see crypto/x509/internal/macos
     - _CFArrayAppendValue
     - _CFArrayCreateMutable
@@ -20,4 +21,8 @@ exports:
     - _CFRelease
     - _CFStringCreateExternalRepresentation
     - _CFStringCreateWithBytes
+
+    # needed by godot
+    - _kCFRunLoopDefaultMode
+    - _kCFAllocatorDefault
 ...

@@ -1,0 +1,21 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/IOSurface.framework/Versions/A/IOSurface'  # expected location for the implementation on IOS
+targets:
+ - arm64-ios
+exports:
+ - targets: [ arm64-ios ]
+   symbols: # the required symbols to link MoltenVK
+    - _kIOSurfaceWidth
+    - _kIOSurfacePlaneWidth
+    - _kIOSurfacePlaneInfo
+    - _kIOSurfacePlaneHeight
+    - _kIOSurfacePlaneElementWidth
+    - _kIOSurfacePlaneElementHeight
+    - _kIOSurfacePlaneBytesPerElement
+    - _kIOSurfaceIsGlobal
+    - _kIOSurfaceHeight
+    - _kIOSurfaceElementWidth
+    - _kIOSurfaceElementHeight
+    - _kIOSurfaceBytesPerElement
+...

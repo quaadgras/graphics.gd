@@ -4,8 +4,9 @@ install-name: '/System/Library/Frameworks/Security.framework/Versions/A/Security
 targets:
  - x86_64-macos
  - arm64-macos
+ - arm64-ios
 exports:
- - targets: [ x86_64-macos, arm64-macos ]
+ - targets: [ x86_64-macos, arm64-macos, arm64-ios ]
    symbols: # the required symbols to compile Go code, see crypto/x509/internal/macos
     - _SecCertificateCopyData
     - _SecCertificateCreateWithData

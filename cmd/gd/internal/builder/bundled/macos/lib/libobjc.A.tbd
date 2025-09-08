@@ -6,4 +6,35 @@ install-name: '/usr/lib/libobjc.A.dylib' # expected location for the implementat
 targets:
  - x86_64-macos
  - arm64-macos
+ - arm64-ios
+exports:
+ - targets: [ x86_64-macos, arm64-macos, arm64-ios ]
+   symbols:
+    - _objc_unsafeClaimAutoreleasedReturnValue
+    - _objc_sync_exit
+    - _objc_sync_enter
+    - _objc_storeWeak
+    - _objc_storeStrong
+    - _objc_setProperty_nonatomic_copy
+    - _objc_retainBlock
+    - _objc_retainAutoreleasedReturnValue
+    - _objc_retainAutoreleaseReturnValue
+    - _objc_retainAutorelease
+    - _objc_retain
+    - _objc_release
+    - _objc_opt_respondsToSelector
+    - _objc_opt_new
+    - _objc_opt_isKindOfClass
+    - _objc_opt_class
+    - _objc_msgSendSuper2
+    - _objc_msgSend
+    - _objc_loadWeakRetained
+    - _objc_enumerationMutation
+    - _objc_destroyWeak
+    - _objc_autoreleaseReturnValue
+    - _objc_autoreleasePoolPush
+    - _objc_autoreleasePoolPop
+    - _objc_autorelease
+    - _objc_alloc_init
+    - _objc_alloc
 ...
