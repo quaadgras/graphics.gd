@@ -1,7 +1,6 @@
 package String
 
 import (
-	"fmt"
 	"strings"
 	"unicode/utf8"
 	"unsafe"
@@ -23,7 +22,6 @@ func fromGoString(s string) Readable {
 		}
 		return utf8.RuneError
 	}, s)
-	fmt.Println(unsafe.StringData(s), len(s))
 	return Via(goString{ptr: unsafe.StringData(s)}, complex(float64(len(s)), 0))
 }
 
