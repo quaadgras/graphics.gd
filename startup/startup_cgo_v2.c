@@ -54,17 +54,10 @@
 GDExtensionClassLibraryPtr cgo_library = NULL;
 GDExtensionGodotVersion2 cgo_cached_godot_version = {};
 
-typedef struct {
-    GDExtensionVariantPtr r_return;
-    GDExtensionCallError *r_error;
-    const GDExtensionConstVariantPtr *p_args;
-    GDExtensionInt p_argument_count;
-} reverse_variant_frame;
-
-typedef struct {
-    GDExtensionConstTypePtr r_return;
-    const GDExtensionConstTypePtr *p_args;
-} reverse_unsafe_frame;
+typedef struct { uint64_t part[2]; } result_16;
+typedef struct { uint64_t part[3]; } result_24;
+typedef struct { uint64_t part[4]; } result_32;
+typedef struct { uint64_t part[8]; } result_64;
 
 void cgo_initialize(void *ignore, GDExtensionInitializationLevel level) { go_on_engine_init(level); }
 void cgo_deinitialize(void *ignore, GDExtensionInitializationLevel level) { go_on_engine_exit(level); }
@@ -1045,6 +1038,13 @@ void gd_object_call(uintptr_t obj, uintptr_t fn, ANY result, INT argc, ANY args,
     gdextension_object_method_bind_call((GDExtensionMethodBindPtr)fn, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)result, (GDExtensionCallError*)err);
 };
 
+result_24 gd_object_call_24(uintptr_t obj, uintptr_t fn, INT argc, ANY args, ANY err) {
+    void *points[16]; prepare_variants(&points[0], argc, args);
+    result_24 result = {};
+    gdextension_object_method_bind_call((GDExtensionMethodBindPtr)fn, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], argc, (GDExtensionTypePtr)&result, (GDExtensionCallError*)err);
+    return result;
+};
+
 void gd_object_unsafe_free(uintptr_t obj) {
     gdextension_object_destroy((GDExtensionObjectPtr)obj);
 };
@@ -1100,6 +1100,34 @@ uintptr_t gd_object_method_lookup(uintptr_t class_name, uintptr_t method, INT64(
 void gd_object_unsafe_call(uintptr_t obj, uintptr_t method, ANY result, UINT64(shape), ANY args) {
     void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
     gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)result);
+};
+
+uint64_t gd_object_unsafe_call_8(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
+    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+    uint64_t result = 0;
+    gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
+    return result;
+};
+
+result_16 gd_object_unsafe_call_16(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
+    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+    result_16 result = {};
+    gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
+    return result;
+};
+
+result_32 gd_object_unsafe_call_32(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
+    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+    result_32 result = {};
+    gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
+    return result;
+};
+
+result_64 gd_object_unsafe_call_64(uintptr_t obj, uintptr_t method, UINT64(shape), ANY args) {
+    void *points[16]; prepare_callframe(1, &points[0], UINT64_FROM(shape), args);
+    result_64 result = {};
+    gdextension_object_method_bind_ptrcall((GDExtensionMethodBindPtr)method, (GDExtensionObjectPtr)obj, (const GDExtensionConstTypePtr*)&points[0], (GDExtensionTypePtr)&result);
+    return result;
 };
 
 GDExtensionBool cgo_class_get_category_func(GDExtensionScriptInstanceDataPtr instance, GDExtensionPropertyInfo *info) {
