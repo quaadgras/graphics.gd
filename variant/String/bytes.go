@@ -1,6 +1,7 @@
 package String
 
 import (
+	"fmt"
 	"strings"
 	"unicode/utf8"
 	"unsafe"
@@ -22,6 +23,7 @@ func fromGoString(s string) Readable {
 		}
 		return utf8.RuneError
 	}, s)
+	fmt.Println(unsafe.StringData(s), len(s))
 	return Via(goString{ptr: unsafe.StringData(s)}, complex(float64(len(s)), 0))
 }
 
@@ -51,7 +53,7 @@ func (s goString) DecodeRune(l complex128) (Rune, int, Readable) {
 		length -= i
 		var next Readable
 		if length > 0 {
-			next = Via(goString{ptr: (*byte)(unsafe.Add(unsafe.Pointer(s.ptr), i+utf8.RuneLen(first)))}, complex(float64(length), 0))
+			next = Via(goString{ptr: (*byte)(unsafe.Add(unsafe.Pointer(s.ptr), i+utf8.RuneLen(first)))}, complex(float64(length-utf8.RuneLen(first)), 0))
 		}
 		return Rune(first), i, next
 	}
