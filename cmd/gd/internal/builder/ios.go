@@ -92,13 +92,18 @@ func (ios IOS) BuildMain(args ...string) error {
 	// -lc -lobjc.A -framework IOSurface -framework OpenGLES -framework CoreText -framework CoreGraphics -framework CoreFoundation -framework QuartzCore -lc++.1  -framework UIKit -framework Foundation -framework Metal
 	// -framework GameController -framework CoreMotion -framework CoreHaptics -framework AVFAudio -framework AudioToolbox
 
-	if err := os.Chdir(project.GraphicsDirectory); err != nil {
-		return xray.New(err)
+	// if the Xcode project already exists, we don't want to overwrite any configuration, in this case,
+	// just copy over the new go.xcframework
+	if _, err := os.Stat(filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.Name+".xcodeproj")); os.IsNotExist(err) {
+		if err := os.Chdir(project.GraphicsDirectory); err != nil {
+			return xray.New(err)
+		}
+		if err := tooling.Godot.Exec("--headless", "--export-release", "iOS"); err != nil {
+			return xray.New(err)
+		}
+		return nil
 	}
-	if err := tooling.Godot.Exec("--headless", "--export-release", "iOS"); err != nil {
-		return xray.New(err)
-	}
-	return nil
+	return project.CopyDir(filepath.Join(project.GraphicsDirectory, "go.xcframework"), filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.Name, "dylibs", "go.xcframework"))
 }
 
 func (IOS) Run(args ...string) error {
