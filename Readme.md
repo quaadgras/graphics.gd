@@ -119,10 +119,10 @@ branch. All the samples are designed to be run with `gd run` without any additio
 
 * Windows `GOOS=windows gd build`
 * Linux   `GOOS=linux gd build`
-* Mac     `GOOS=darwin gd build`
+* MacOS   `GOOS=macos gd build`
 * Android `GOOS=android GOARCH=arm64 gd run`
-* IOS     (no `gd` tooling support for this target)
-* Web     `GOOS=js GOARCH=wasm gd run`
+* IOS     `GOOS=ios gd build` (only on MacOS)
+* Web     `GOOS=web gd run`
 
 ## Platform Restrictions
 
