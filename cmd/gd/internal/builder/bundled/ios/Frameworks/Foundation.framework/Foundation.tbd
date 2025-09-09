@@ -1,0 +1,35 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation'  # expected location for the implementation on IOS
+targets:
+ - arm64-ios
+exports:
+ - targets: [ arm64-ios ]
+   symbols:
+    - _NSStringFromClass
+    - _NSTemporaryDirectory
+    - _NSSearchPathForDirectoriesInDomains
+    - _NSRunLoopCommonModes
+    - _NSLog
+    - _NSLocalizedDescriptionKey
+   objc-classes:
+    - NSUUID
+    - NSURL
+    - NSTimer
+    - NSThread
+    - NSString
+    - NSRunLoop
+    - NSProcessInfo
+    - NSOperationQueue
+    - NSNumber
+    - NSNotificationCenter
+    - NSMutableString
+    - NSMutableArray
+    - NSLocale
+    - NSFileManager
+    - NSError
+    - NSDictionary
+    - NSData
+    - NSBundle
+    - NSArray
+...

@@ -1905,3 +1905,11 @@ EMSCRIPTEN_BINDINGS(my_module) {
 	function("gd_version_string", &gd_version_string, allow_raw_pointers());
 }
 #endif // __EMSCRIPTEN__
+
+
+/* needed for standalone IOS builds.
+#ifdef TARGET_OS_IOS
+    void _Z28godot_ios_plugins_initializev() {};
+    void _Z30godot_ios_plugins_deinitializev() {};
+#endif
+*/

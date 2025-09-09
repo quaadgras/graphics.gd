@@ -12,4 +12,10 @@ exports:
     - _kCTFontTraitsAttribute
     - _kCTFontSymbolicTrait
     - _kCTFontFamilyNameAttribute
+    - _CTFontManagerCopyAvailableFontFamilyNames
+    - _CTFontDescriptorCreateWithAttributes
+    - _CTFontDescriptorCopyAttribute
+    - _CTFontCreateWithFontDescriptor
+    - _CTFontCreateForString
+    - _CTFontCopyFontDescriptor
 ...

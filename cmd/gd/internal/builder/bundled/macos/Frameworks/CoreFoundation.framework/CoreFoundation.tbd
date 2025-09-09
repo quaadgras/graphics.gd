@@ -22,7 +22,27 @@ exports:
     - _CFStringCreateExternalRepresentation
     - _CFStringCreateWithBytes
 
+    # runtime/cgo
+    - _CFBundleGetValueForInfoDictionaryKey
+    - _CFBundleGetMainBundle
+    - _CFBundleCopyResourceURL
+
     # needed by godot
     - _kCFRunLoopDefaultMode
     - _kCFAllocatorDefault
+    - ___NSDictionary0__
+    - ___CFConstantStringClassReference
+    - _CFURLGetString
+    - _CFStringGetLength
+    - _CFStringGetCharacterAtIndex
+    - _CFStringGetCString
+    - _CFStringCreateWithCString
+    - _CFStringCompare
+    - _CFRunLoopRunInMode
+    - _CFRetain
+    - _CFNumberCreate
+    - _CFDictionaryCreateMutableCopy
+    - _CFDictionaryCreateMutable
+    - _CFDictionaryAddValue
+    - _CFBundleGetVersionNumber
 ...

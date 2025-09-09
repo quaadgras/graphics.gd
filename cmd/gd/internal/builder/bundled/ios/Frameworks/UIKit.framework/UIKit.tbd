@@ -1,0 +1,32 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/UIKit.framework/Versions/A/UIKit'  # expected location for the implementation on IOS
+targets:
+ - arm64-ios
+exports:
+ - targets: [ arm64-ios ]
+   symbols: # the required symbols to link MoltenVK
+    - _UITextViewTextDidChangeNotification
+    - _UITextContentTypeURL
+    - _UITextContentTypeTelephoneNumber
+    - _UITextContentTypePassword
+    - _UITextContentTypeEmailAddress
+    - _UIKeyboardFrameEndUserInfoKey
+    - _UIKeyboardDidShowNotification
+    - _UIKeyboardDidHideNotification
+    - _UIEdgeInsetsZero
+    - _UIApplicationMain
+   objc-classes:
+    - UIViewController
+    - UIView
+    - UITextView
+    - UIWindow
+    - UITraitCollection
+    - UIStoryboard
+    - UIScreen
+    - UIPasteboard
+    - UIDevice
+    - UIApplication
+    - UIAlertController
+    - UIAlertAction
+...

@@ -53,8 +53,8 @@ func builderFor(goos string) Builder {
 	case "darwin", "macos":
 		os.Setenv("GOOS", "darwin")
 		return builder.MacOS{}
-	case "ios":
-		os.Setenv("GOOS", "darwin")
+	case "ios", "iphone":
+		os.Setenv("GOOS", "ios")
 		return builder.IOS{}
 	case "android":
 		os.Setenv("GOOS", "android")

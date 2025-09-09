@@ -36,6 +36,9 @@ var (
 
 	//go:embed graphics/gitignore
 	gitignore string
+
+	//go:embed graphics/icon.svg
+	icon string
 )
 
 var (
@@ -118,6 +121,10 @@ func SetupFile(force bool, name, embed string, args ...any) error {
 		}
 	}
 	return nil
+}
+
+func SetupIcon() error {
+	return SetupFile(false, filepath.Join(GraphicsDirectory, "icon.svg"), icon)
 }
 
 // SetupFiles writes the contents of an embed.FS to the target directory on the OS filesystem.
