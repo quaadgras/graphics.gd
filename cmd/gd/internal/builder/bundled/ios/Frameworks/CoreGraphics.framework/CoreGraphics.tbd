@@ -17,4 +17,7 @@ exports:
     - _kCGColorSpaceDisplayP3
     - _kCGColorSpaceDCIP3
     - _kCGColorSpaceAdobeRGB1998
+    - _CGColorSpaceRelease
+    - _CGColorSpaceGetName
+    - _CGColorSpaceCreateWithName
 ...

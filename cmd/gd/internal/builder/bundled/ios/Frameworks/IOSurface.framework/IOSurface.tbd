@@ -18,4 +18,16 @@ exports:
     - _kIOSurfaceElementWidth
     - _kIOSurfaceElementHeight
     - _kIOSurfaceBytesPerElement
+    - _IOSurfaceGetWidthOfPlane
+    - _IOSurfaceGetWidth
+    - _IOSurfaceGetPlaneCount
+    - _IOSurfaceGetHeightOfPlane
+    - _IOSurfaceGetHeight
+    - _IOSurfaceGetElementWidthOfPlane
+    - _IOSurfaceGetElementWidth
+    - _IOSurfaceGetElementHeightOfPlane
+    - _IOSurfaceGetElementHeight
+    - _IOSurfaceGetBytesPerElementOfPlane
+    - _IOSurfaceGetBytesPerElement
+    - _IOSurfaceCreate
 ...

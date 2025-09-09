@@ -5,8 +5,141 @@ targets:
  - arm64-ios
 exports:
  - targets: [ arm64-ios ]
-   symbols: # the required symbols to link MoltenVK
+   symbols:
+    # the required symbols to link MoltenVK
     - _kEAGLDrawablePropertyRetainedBacking
     - _kEAGLDrawablePropertyColorFormat
     - _kEAGLColorFormatRGBA8
+
+    # the required symbols to link Godot
+    - _glViewport
+    - _glVertexAttribPointer
+    - _glVertexAttribIPointer
+    - _glVertexAttribI4ui
+    - _glVertexAttribDivisor
+    - _glVertexAttrib4f
+    - _glUseProgram
+    - _glUnmapBuffer
+    - _glUniformMatrix4fv
+    - _glUniformMatrix3fv
+    - _glUniformBlockBinding
+    - _glUniform4fv
+    - _glUniform4f
+    - _glUniform3fv
+    - _glUniform2iv
+    - _glUniform2fv
+    - _glUniform2f
+    - _glUniform1uiv
+    - _glUniform1ui
+    - _glUniform1iv
+    - _glUniform1i
+    - _glUniform1f
+    - _glTransformFeedbackVaryings
+    - _glTexSubImage3D
+    - _glTexStorage2D
+    - _glTexParameteri
+    - _glTexParameterf
+    - _glTexImage3D
+    - _glTexImage2D
+    - _glShaderSource
+    - _glRenderbufferStorageOES
+    - _glRenderbufferStorageMultisample
+    - _glRenderbufferStorage
+    - _glReadPixels
+    - _glProgramBinary
+    - _glPixelStorei
+    - _glMapBufferRange
+    - _glLinkProgram
+    - _glGetUniformLocation
+    - _glGetUniformBlockIndex
+    - _glGetSynciv
+    - _glGetStringi
+    - _glScissor
+    - _glReadBuffer
+    - _glGetString
+    - _glGetShaderiv
+    - _glGetShaderInfoLog
+    - _glGetProgramiv
+    - _glGetProgramBinary
+    - _glGetIntegerv
+    - _glGetInteger64v
+    - _glGetFloatv
+    - _glGetRenderbufferParameterivOES
+    - _glGetProgramInfoLog
+    - _glGenerateMipmap
+    - _glGenVertexArrays
+    - _glGenTextures
+    - _glGenRenderbuffersOES
+    - _glGenRenderbuffers
+    - _glGenQueries
+    - _glGenFramebuffersOES
+    - _glGenFramebuffers
+    - _glGenBuffers
+    - _glFrontFace
+    - _glFramebufferTextureLayer
+    - _glFramebufferTexture2D
+    - _glFramebufferRenderbufferOES
+    - _glFramebufferRenderbuffer
+    - _glFinish
+    - _glFenceSync
+    - _glEndTransformFeedback
+    - _glEnableVertexAttribArray
+    - _glEnable
+    - _glDrawElementsInstanced
+    - _glDrawElements
+    - _glDrawBuffers
+    - _glDrawArraysInstanced
+    - _glDrawArrays
+    - _glDisableVertexAttribArray
+    - _glDisable
+    - _glDepthMask
+    - _glDepthFunc
+    - _glDeleteVertexArrays
+    - _glDeleteTextures
+    - _glDeleteSync
+    - _glDeleteShader
+    - _glDeleteRenderbuffersOES
+    - _glDeleteRenderbuffers
+    - _glDeleteQueries
+    - _glDeleteProgram
+    - _glDeleteFramebuffersOES
+    - _glDeleteFramebuffers
+    - _glDeleteBuffers
+    - _glCullFace
+    - _glCreateShader
+    - _glCreateProgram
+    - _glCopyBufferSubData
+    - _glCompressedTexSubImage3D
+    - _glCompressedTexImage3D
+    - _glCompressedTexImage2D
+    - _glCompileShader
+    - _glColorMask
+    - _glClientWaitSync
+    - _glClearDepthf
+    - _glClearColor
+    - _glClearBufferfv
+    - _glClear
+    - _glCheckFramebufferStatusOES
+    - _glCheckFramebufferStatus
+    - _glBufferSubData
+    - _glBufferData
+    - _glBlitFramebuffer
+    - _glBlendFuncSeparate
+    - _glBlendFunc
+    - _glBlendEquation
+    - _glBlendColor
+    - _glBindVertexArray
+    - _glBindTexture
+    - _glBindRenderbufferOES
+    - _glBindRenderbuffer
+    - _glBindFramebufferOES
+    - _glBindFramebuffer
+    - _glBindBufferRange
+    - _glBindBufferBase
+    - _glBindBuffer
+    - _glBeginTransformFeedback
+    - _glAttachShader
+    - _glActiveTexture
+   objc-classes:
+    - EAGLContext
 ...

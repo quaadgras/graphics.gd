@@ -1,0 +1,26 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore'  # expected location for the implementation on IOS
+targets:
+ - arm64-ios
+exports:
+ - targets: [ arm64-ios ]
+   symbols: # the required symbols to link MoltenVK
+    - _kCAGravityTopRight
+    - _kCAGravityTopLeft
+    - _kCAGravityTop
+    - _kCAGravityRight
+    - _kCAGravityResizeAspect
+    - _kCAGravityResize
+    - _kCAGravityLeft
+    - _kCAGravityCenter
+    - _kCAGravityBottomRight
+    - _kCAGravityBottomLeft
+    - _kCAGravityBottom
+    - _kCAFilterNearest
+    - _kCAFilterLinear
+   objc-classes:
+    - CAMetalLayer
+    - CAEAGLLayer
+    - CADisplayLink
+...

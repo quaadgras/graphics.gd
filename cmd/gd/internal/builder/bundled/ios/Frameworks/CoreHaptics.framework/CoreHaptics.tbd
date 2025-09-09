@@ -1,0 +1,22 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/CoreHaptics.framework/Versions/A/CoreHaptics'  # expected location for the implementation on IOS
+targets:
+ - arm64-ios
+exports:
+ - targets: [ arm64-ios ]
+   symbols:
+    - _CHHapticPatternKeyTime
+    - _CHHapticPatternKeyPattern
+    - _CHHapticPatternKeyParameterValue
+    - _CHHapticPatternKeyParameterID
+    - _CHHapticPatternKeyEventType
+    - _CHHapticPatternKeyEventParameters
+    - _CHHapticPatternKeyEventDuration
+    - _CHHapticPatternKeyEvent
+    - _CHHapticEventTypeHapticContinuous
+    - _CHHapticEventParameterIDHapticIntensity
+   objc-classes:
+    - CHHapticEngine
+    - CHHapticPattern
+...

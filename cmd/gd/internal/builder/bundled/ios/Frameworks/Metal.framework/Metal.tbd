@@ -1,0 +1,37 @@
+--- !tapi-tbd
+tbd-version:  4
+install-name: '/System/Library/Frameworks/Metal.framework/Versions/A/Metal'  # expected location for the implementation on IOS
+targets:
+ - arm64-ios
+exports:
+ - targets: [ arm64-ios ]
+   symbols:
+    - _MTLCreateSystemDefaultDevice
+    - _MTLCommonCounterTimestamp
+    - _MTLCommonCounterSetTimestamp
+    - _MTLCommandBufferEncoderInfoErrorKey
+   objc-classes:
+    - MTLVertexDescriptor
+    - MTLTextureDescriptor
+    - MTLStencilDescriptor
+    - MTLStageInputOutputDescriptor
+    - MTLSharedEventListener
+    - MTLSamplerDescriptor
+    - MTLRenderPipelineDescriptor
+    - MTLRenderPassStencilAttachmentDescriptor
+    - MTLRenderPassDescriptor
+    - MTLRenderPassDepthAttachmentDescriptor
+    - MTLHeapDescriptor
+    - MTLFunctionConstantValues
+    - MTLFXTemporalScalerDescriptor
+    - MTLFXSpatialScalerDescriptor
+    - MTLDepthStencilDescriptor
+    - MTLCounterSampleBufferDescriptor
+    - MTLComputePipelineDescriptor
+    - MTLCompileOptions
+    - MTLCommandBufferDescriptor
+    - MTLCaptureManager
+    - MTLCaptureDescriptor
+    - MTLBlitPassDescriptor
+    - MTLArgumentDescriptor
+...
