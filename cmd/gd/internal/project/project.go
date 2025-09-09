@@ -3,6 +3,7 @@ package project
 import (
 	"embed"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -42,6 +43,7 @@ var (
 )
 
 var (
+	Name              string // Name of the current project (the name of the directory where go.mod is located).
 	Directory         string // Directory of the current project (where go.mod is located).
 	GraphicsDirectory string // Graphics directory.
 	ReleasesDirectory string // Releases directory (Directory + "/releases"
@@ -63,6 +65,7 @@ func Setup() error {
 	if err != nil {
 		return xray.New(err)
 	}
+	Name = filepath.Base(wd)
 	Directory = wd
 	GraphicsDirectory = filepath.Join(wd, "graphics")
 	ReleasesDirectory = filepath.Join(wd, "releases")
@@ -167,4 +170,73 @@ func setupGoMod() error {
 		}
 	}
 	return nil
+}
+
+// CopyDir recursively copies a directory tree from src to dst.
+// It returns an error if the copy operation fails.
+func CopyDir(src, dst string) error {
+	// Get source directory info
+	srcInfo, err := os.Stat(src)
+	if err != nil {
+		return err
+	}
+
+	// Create destination directory
+	if err := os.MkdirAll(dst, srcInfo.Mode()); err != nil {
+		return err
+	}
+
+	// Read source directory entries
+	entries, err := os.ReadDir(src)
+	if err != nil {
+		return err
+	}
+
+	// Iterate through directory entries
+	for _, entry := range entries {
+		srcPath := filepath.Join(src, entry.Name())
+		dstPath := filepath.Join(dst, entry.Name())
+
+		if entry.IsDir() {
+			// Recursively copy subdirectories
+			if err := CopyDir(srcPath, dstPath); err != nil {
+				return err
+			}
+		} else {
+			// Copy files
+			if err := copyFile(srcPath, dstPath); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
+// copyFile copies a single file from src to dst
+func copyFile(src, dst string) error {
+	// Open source file
+	srcFile, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer srcFile.Close()
+
+	// Create destination file
+	dstFile, err := os.Create(dst)
+	if err != nil {
+		return err
+	}
+	defer dstFile.Close()
+
+	// Copy file contents
+	if _, err := io.Copy(dstFile, srcFile); err != nil {
+		return err
+	}
+
+	// Copy file permissions
+	srcInfo, err := os.Stat(src)
+	if err != nil {
+		return err
+	}
+	return os.Chmod(dst, srcInfo.Mode())
 }
