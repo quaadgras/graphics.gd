@@ -134,11 +134,9 @@ examples you can contribute are more than welcome.
 
 The next best thing you can do to help is improve the Variant packages, these are general-purpose
 packages inspired by the Godot engine's Variant types. Specifically any changes you can make to
-optimize functionality and/or improve test coverage of these packages is more than welcome
-(such as specialized assembly routines for vector operations, anyone?).
+optimize functionality and/or improve test coverage of these packages is more than welcome.
 
-If you enjoy hunting down memory-safety issues, we would appreciate any issues being opened on
-this front.
+If you enjoy hunting down memory-safety issues, we would appreciate this.
 
 Thirdly, the project needs more tests to ensure that everything is working, the best way you can
 guarantee that graphics.gd won't break on you is to contribute tests that cover the functionality
