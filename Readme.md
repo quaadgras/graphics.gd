@@ -64,10 +64,6 @@ subdirectory where you can manage your assets via the Engine's Editor.
 
 Running the command without any arguments will startup the editor.
 
-**NOTE** On linux (and macos if you have brew), `gd` will download the engine for you automatically!
-**HINT**  On Windows, you'll want to
-[setup CGO](https://github.com/go101/go101/wiki/CGO-Environment-Setup).
-
 If you don't want to use the `gd` command, you can build a shared library with
 the `go` command directly:
 
