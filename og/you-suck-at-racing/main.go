@@ -1,3 +1,4 @@
+// This is a graphics.gd port of https://github.com/youngwiseone/U-SUK-RAYSING, now available under the graphics.gd samples license.
 package main
 
 import (
