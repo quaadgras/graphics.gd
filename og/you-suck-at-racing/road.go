@@ -1,3 +1,6 @@
+// WARNING! You will not understand the maths in this file, it makes heavy use of 2d geometry with a catch.
+// The catch is, the roads rotate around the car. Yes. You read that right. (Don't judge). Youngwiseone knows!
+
 package main
 
 import (
@@ -15,6 +18,7 @@ import (
 	"graphics.gd/variant/Vector2"
 )
 
+// Doubly Linked List of road tiles.
 type RoadTile struct {
 	Pos      Vector2.XY
 	Angle    Angle.Radians
@@ -26,8 +30,9 @@ type RoadTile struct {
 
 type Road struct {
 	Node2D.Extension[Road]
-	car_pos Vector2.XY
-	head    *RoadTile
+	car_pos       Vector2.XY
+	head          *RoadTile
+	resize_offset Vector2.XY
 }
 
 const (
@@ -59,15 +64,18 @@ func RandomRoadTile(base *RoadTile) *RoadTile {
 }
 
 func (road *Road) Ready() {
-	size := Resource.Load[Texture2D.Instance]("res://roadtile-1.png").GetSize()
+	road.AsCanvasItem().SetZIndex(-1)
 	// Initialize head as a dummy node
 	road.head = &RoadTile{
 		Angle: math.Pi / 2, // Start with a vertical road
 	}
-	game_size := DisplayServer.WindowGetSize(0)
+	game_size_int := DisplayServer.WindowGetSize(0)
+	game_size := Vector2.New(game_size_int.X, game_size_int.Y)
+	size := Resource.Load[Texture2D.Instance]("res://roadtile-1.png")
+	sizeVec := size.GetSize()
 	current := road.head
 	// Create initial straight road tiles
-	for y := Float.X(0); y <= Float.X(game_size.Y); y += size.Y {
+	for y := Float.X(0); y <= Float.X(game_size.Y); y += sizeVec.Y {
 		newTile := &RoadTile{
 			Pos:      Vector2.New(Float.X(game_size.X/2), y),
 			Texture:  Resource.Load[Texture2D.Instance]("res://roadtile-0.png"),
@@ -77,6 +85,9 @@ func (road *Road) Ready() {
 		}
 		current.next = newTile
 		current = newTile
+		AddToScene(Vector2.Zero, Vector2.Add(current.Pos, Vector2.Rotated(Vector2.New(-sizeVec.X-game_size.X/2+Float.RandomBetween(0, game_size.X/2), 0), current.Angle)), Resource.Load[Texture2D.Instance]("res://tree.png"))
+		AddToScene(Vector2.Zero, Vector2.Add(current.Pos, Vector2.Rotated(Vector2.New(+sizeVec.X+game_size.X/2-Float.RandomBetween(0, game_size.X/2), 0), current.Angle)), Resource.Load[Texture2D.Instance]("res://tree.png"))
+
 	}
 
 }
@@ -99,11 +110,19 @@ func collisionLineToCircle(from, upto Vector2.XY, center Vector2.XY, radius Floa
 	return dist_to_center <= radius && proj >= 0 && proj <= line_len
 }
 
-func (r *Road) Travel(dt Float.X, pos Vector2.XY, speed Float.X, angle Angle.Radians) bool {
+func (r *Road) Travel(dt Float.X, pos Vector2.XY, speed Float.X, angle Angle.Radians, resize_offset Vector2.XY) bool {
+	r.AsCanvasItem().QueueRedraw()
+	r.resize_offset = resize_offset
+
+	if GameOver {
+		return false
+	}
+
 	speed = Angle.Cos(Angle.Radians(angle)) * speed * dt
 	r.car_pos = pos
-	r.AsCanvasItem().QueueRedraw()
-	game_size := DisplayServer.WindowGetSize(0)
+
+	game_size_int := DisplayServer.WindowGetSize(0)
+	game_size := Vector2.New(game_size_int.X, game_size_int.Y)
 	size := Resource.Load[Texture2D.Instance]("res://roadtile-1.png")
 	if size == Texture2D.Nil {
 		return false
@@ -113,7 +132,7 @@ func (r *Road) Travel(dt Float.X, pos Vector2.XY, speed Float.X, angle Angle.Rad
 	current := r.head.next
 	for current != nil {
 		current.Pos.Y += speed // Move down to simulate car moving up
-		if current.Pos.Y > Float.X(game_size.Y)+sizeVec.Y/2*10 {
+		if current.Pos.Y+resize_offset.Y > Float.X(game_size.Y)+sizeVec.Y/2*10 {
 			// Remove tile if it's off-screen
 			// Unlink from list
 			if current.previous != nil {
@@ -140,7 +159,7 @@ func (r *Road) Travel(dt Float.X, pos Vector2.XY, speed Float.X, angle Angle.Rad
 		current = newTile
 	}
 	// Add new tiles at the top if the first tile's top is too far down
-	for current != nil && current.Pos.Y-sizeVec.Y/2 > -sizeVec.Y*10 {
+	for current != nil && current.Pos.Y+resize_offset.Y-sizeVec.Y/2 > -sizeVec.Y*50 {
 		newTile := RandomRoadTile(current)
 		if newTile == nil {
 			break
@@ -150,11 +169,14 @@ func (r *Road) Travel(dt Float.X, pos Vector2.XY, speed Float.X, angle Angle.Rad
 		current.previous = newTile
 		r.head.next = newTile
 		current = newTile
+
+		AddToScene(resize_offset, Vector2.Add(current.Pos, Vector2.Rotated(Vector2.New(-sizeVec.X-game_size.X/2+Float.RandomBetween(0, game_size.X/2), 0), current.Angle)), Resource.Load[Texture2D.Instance]("res://tree.png"))
+		AddToScene(resize_offset, Vector2.Add(current.Pos, Vector2.Rotated(Vector2.New(+sizeVec.X+game_size.X/2-Float.RandomBetween(0, game_size.X/2), 0), current.Angle)), Resource.Load[Texture2D.Instance]("res://tree.png"))
 	}
 	// Check collision
 	current = r.head.next
 	for current != nil {
-		worldPos := Vector2.Add(current.Pos, Vector2.New(-r.car_pos.X, 0))
+		worldPos := Vector2.Add(Vector2.Add(current.Pos, Vector2.New(-r.car_pos.X, 0)), resize_offset)
 		var (
 			roadLeftStart  = Vector2.Add(worldPos, Vector2.Rotated(Vector2.New(sizeVec.X/2-10, 0), current.Angle))
 			roadLeftEnd    = Vector2.Add(worldPos, Vector2.Rotated(Vector2.New(sizeVec.X/2-10, -sizeVec.Y), current.Angle))
@@ -174,7 +196,7 @@ func (road *Road) Draw() {
 	if road.head == nil || road.head.next == nil {
 		return
 	}
-	road.head.next.drawTo(road.AsCanvasItem(), Vector2.New(-road.car_pos.X, 0))
+	road.head.next.drawTo(road.AsCanvasItem(), Vector2.Add(Vector2.New(-road.car_pos.X, 0), road.resize_offset))
 }
 
 func (tile *RoadTile) drawTo(canvas CanvasItem.Instance, offset Vector2.XY) {
