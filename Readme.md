@@ -89,6 +89,13 @@ referring to Godot documentation.
 
 https://docs.godotengine.org/en/latest/index.html
 
+Optional arguments are omitted by default, convert an `Instance` into either the `Expanded`
+or `Advanced` type to use them. ie. for a `Node.Instance` called `node`, it can bed converted:
+
+```go
+Node.Expanded(node).AddChild(...)
+```
+
 ## Where Do I Find?
 Ctrl+F in the project for a specific `//gd:symbol` to find the matching Go symbol.
 ```
