@@ -73,11 +73,12 @@ func Posmod[T Any](x, y T) T { //gd:posmod
 
 // Snapped returns the multiple of step that is the closest to x. This can also be used to round a
 // floating point number to an arbitrary number of decimals.
-func Snapped[X Any](val, by X) X { //gd:snappedi
+func Snapped[X Any, F ~float32 | ~float64 | Any](val F, by X) X { //gd:snappedi
 	if by != 0 {
-		val = X(Float.Floor(Float.X(val)/Float.X(by)+Float.X(0.5)) * Float.X(by))
+		snapped := Float.Snapped(Float.X(val), Float.X(by))
+		return X(snapped)
 	}
-	return val
+	return X(val)
 }
 
 // Wrap value between min and max. Can be used for creating loop-alike behavior or
