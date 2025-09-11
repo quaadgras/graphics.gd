@@ -75,7 +75,7 @@ func Posmod[T Any](x, y T) T { //gd:posmod
 // floating point number to an arbitrary number of decimals.
 func Snapped[X Any](val, by X) X { //gd:snappedi
 	if by != 0 {
-		val = (val / by) * by
+		val = X(Float.Floor(Float.X(val)/Float.X(by)+Float.X(0.5)) * Float.X(by))
 	}
 	return val
 }
