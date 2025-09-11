@@ -90,7 +90,7 @@ referring to Godot documentation.
 https://docs.godotengine.org/en/latest/index.html
 
 Optional arguments are omitted by default, convert an `Instance` into either the `Expanded`
-or `Advanced` type to use them. ie. for a `Node.Instance` called `node`, it can bed converted:
+or `Advanced` type to use them. ie. for a `Node.Instance` called `node`, it can be converted:
 
 ```go
 Node.Expanded(node).AddChild(...)
