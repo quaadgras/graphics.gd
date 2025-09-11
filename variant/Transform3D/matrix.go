@@ -254,7 +254,7 @@ func Transform(v Vector3.XYZ, t BasisOrigin) Vector3.XYZ { //gd:Transform3D*Vect
 	}
 }
 
-func TransformAabb(aabb AABB.PositionSize, t BasisOrigin) AABB.PositionSize { //gd:Transform3D*AABB
+func TransformAABB(aabb AABB.PositionSize, t BasisOrigin) AABB.PositionSize { //gd:Transform3D*AABB
 	/* https://dev.theomader.com/transform-bounding-boxes/ */
 	min := aabb.Position
 	max := Vector3.Add(aabb.Position, aabb.Size)

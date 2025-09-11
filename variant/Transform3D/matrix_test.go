@@ -29,21 +29,21 @@ func aabbApproxEqual(a, b AABB.PositionSize, tolerance Float.X) bool {
 		vector3ApproxEqual(a.Size, b.Size, tolerance)
 }
 
-func TestTransformAabb_Identity(t *testing.T) {
+func TestTransformAABB_Identity(t *testing.T) {
 	// Test that identity transform doesn't change the AABB
 	aabb := AABB.PositionSize{
 		Position: Vector3.XYZ{X: 1, Y: 2, Z: 3},
 		Size:     Vector3.XYZ{X: 4, Y: 5, Z: 6},
 	}
 
-	result := Transform3D.TransformAabb(aabb, Transform3D.Identity)
+	result := Transform3D.TransformAABB(aabb, Transform3D.Identity)
 
 	if !aabbApproxEqual(result, aabb, 1e-6) {
 		t.Errorf("Identity transform should not change AABB. Expected %+v, got %+v", aabb, result)
 	}
 }
 
-func TestTransformAabb_Translation(t *testing.T) {
+func TestTransformAABB_Translation(t *testing.T) {
 	// Test pure translation
 	aabb := AABB.PositionSize{
 		Position: Vector3.XYZ{X: 0, Y: 0, Z: 0},
@@ -56,7 +56,7 @@ func TestTransformAabb_Translation(t *testing.T) {
 		Origin: translation,
 	}
 
-	result := Transform3D.TransformAabb(aabb, transform)
+	result := Transform3D.TransformAABB(aabb, transform)
 	expected := AABB.PositionSize{
 		Position: translation,
 		Size:     aabb.Size,
@@ -67,7 +67,7 @@ func TestTransformAabb_Translation(t *testing.T) {
 	}
 }
 
-func TestTransformAabb_UniformScale(t *testing.T) {
+func TestTransformAABB_UniformScale(t *testing.T) {
 	// Test uniform scaling
 	aabb := AABB.PositionSize{
 		Position: Vector3.XYZ{X: 1, Y: 1, Z: 1},
@@ -84,7 +84,7 @@ func TestTransformAabb_UniformScale(t *testing.T) {
 		Origin: Vector3.Zero,
 	}
 
-	result := Transform3D.TransformAabb(aabb, transform)
+	result := Transform3D.TransformAABB(aabb, transform)
 	expected := AABB.PositionSize{
 		Position: Vector3.XYZ{X: 2, Y: 2, Z: 2}, // Position scaled
 		Size:     Vector3.XYZ{X: 4, Y: 4, Z: 4}, // Size scaled
@@ -95,7 +95,7 @@ func TestTransformAabb_UniformScale(t *testing.T) {
 	}
 }
 
-func TestTransformAabb_Rotation90Z(t *testing.T) {
+func TestTransformAABB_Rotation90Z(t *testing.T) {
 	// Test 90-degree rotation around Z-axis
 	aabb := AABB.PositionSize{
 		Position: Vector3.XYZ{X: 1, Y: 0, Z: 0},
@@ -112,7 +112,7 @@ func TestTransformAabb_Rotation90Z(t *testing.T) {
 		Origin: Vector3.Zero,
 	}
 
-	result := Transform3D.TransformAabb(aabb, transform)
+	result := Transform3D.TransformAABB(aabb, transform)
 
 	// After rotation, the AABB should encompass the rotated box
 	// Original box spans from (1,0,0) to (2,1,1)
@@ -128,7 +128,7 @@ func TestTransformAabb_Rotation90Z(t *testing.T) {
 	}
 }
 
-func TestTransformAabb_NegativeScale(t *testing.T) {
+func TestTransformAABB_NegativeScale(t *testing.T) {
 	// Test negative scaling (mirroring)
 	aabb := AABB.PositionSize{
 		Position: Vector3.XYZ{X: 1, Y: 1, Z: 1},
@@ -145,7 +145,7 @@ func TestTransformAabb_NegativeScale(t *testing.T) {
 		Origin: Vector3.Zero,
 	}
 
-	result := Transform3D.TransformAabb(aabb, transform)
+	result := Transform3D.TransformAABB(aabb, transform)
 
 	// Original box spans from (1,1,1) to (3,3,3)
 	// After X flip: (1,1,1) -> (-1,1,1), (3,3,3) -> (-3,3,3)
