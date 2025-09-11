@@ -2,6 +2,7 @@
 package Transform3D
 
 import (
+	"graphics.gd/variant/AABB"
 	"graphics.gd/variant/Angle"
 	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/Float"
@@ -250,5 +251,116 @@ func Transform(v Vector3.XYZ, t BasisOrigin) Vector3.XYZ { //gd:Transform3D*Vect
 		X: t.Basis.X.X*v.X + t.Basis.Y.X*v.Y + t.Basis.Z.X*v.Z + t.Origin.X,
 		Y: t.Basis.X.Y*v.X + t.Basis.Y.Y*v.Y + t.Basis.Z.Y*v.Z + t.Origin.Y,
 		Z: t.Basis.X.Z*v.X + t.Basis.Y.Z*v.Y + t.Basis.Z.Z*v.Z + t.Origin.Z,
+	}
+}
+
+func TransformAabb(aabb AABB.PositionSize, t BasisOrigin) AABB.PositionSize { //gd:Transform3D*AABB
+	/* https://dev.theomader.com/transform-bounding-boxes/ */
+	min := aabb.Position
+	max := Vector3.Add(aabb.Position, aabb.Size)
+	var tmin, tmax Vector3.XYZ
+
+	tmin.X = t.Origin.X
+	tmax.X = t.Origin.X
+
+	e := t.Basis.X.X * min.X
+	f := t.Basis.X.X * max.X
+	if e < f {
+		tmin.X += e
+		tmax.X += f
+	} else {
+		tmin.X += f
+		tmax.X += e
+	}
+
+	e = t.Basis.Y.X * min.Y
+	f = t.Basis.Y.X * max.Y
+	if e < f {
+		tmin.X += e
+		tmax.X += f
+	} else {
+		tmin.X += f
+		tmax.X += e
+	}
+
+	e = t.Basis.Z.X * min.Z
+	f = t.Basis.Z.X * max.Z
+	if e < f {
+		tmin.X += e
+		tmax.X += f
+	} else {
+		tmin.X += f
+		tmax.X += e
+	}
+
+	tmin.Y = t.Origin.Y
+	tmax.Y = t.Origin.Y
+
+	e = t.Basis.X.Y * min.X
+	f = t.Basis.X.Y * max.X
+	if e < f {
+		tmin.Y += e
+		tmax.Y += f
+	} else {
+		tmin.Y += f
+		tmax.Y += e
+	}
+
+	e = t.Basis.Y.Y * min.Y
+	f = t.Basis.Y.Y * max.Y
+	if e < f {
+		tmin.Y += e
+		tmax.Y += f
+	} else {
+		tmin.Y += f
+		tmax.Y += e
+	}
+
+	e = t.Basis.Z.Y * min.Z
+	f = t.Basis.Z.Y * max.Z
+	if e < f {
+		tmin.Y += e
+		tmax.Y += f
+	} else {
+		tmin.Y += f
+		tmax.Y += e
+	}
+
+	tmin.Z = t.Origin.Z
+	tmax.Z = t.Origin.Z
+
+	e = t.Basis.X.Z * min.X
+	f = t.Basis.X.Z * max.X
+	if e < f {
+		tmin.Z += e
+		tmax.Z += f
+	} else {
+		tmin.Z += f
+		tmax.Z += e
+	}
+
+	e = t.Basis.Y.Z * min.Y
+	f = t.Basis.Y.Z * max.Y
+	if e < f {
+		tmin.Z += e
+		tmax.Z += f
+	} else {
+		tmin.Z += f
+		tmax.Z += e
+	}
+
+	e = t.Basis.Z.Z * min.Z
+	f = t.Basis.Z.Z * max.Z
+	if e < f {
+		tmin.Z += e
+		tmax.Z += f
+	} else {
+		tmin.Z += f
+		tmax.Z += e
+	}
+
+	return AABB.PositionSize{
+		Position: tmin,
+		Size:     Vector3.Sub(tmax, tmin),
 	}
 }
