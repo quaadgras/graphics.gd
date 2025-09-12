@@ -47,7 +47,7 @@ func main() {
 
 ```
 
-You can help fund the project, motivate development and prioritise issues [here](https://buy.stripe.com/4gw14maETbnX3vOcMM)
+You can help fund the project, motivate development and prioritise issues [by sponsoring the project](https://buy.stripe.com/4gw14maETbnX3vOcMM)
 
 ## Getting Started
 The module includes a drop-in replacement for the go command called `gd` that
