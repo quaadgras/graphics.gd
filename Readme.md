@@ -1,4 +1,4 @@
-# graphics.gd [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd)
+# graphics.gd [![Go Reference](https://pkg.go.dev/badge/graphics.gd.svg)](https://pkg.go.dev/graphics.gd) ![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/splizard)
 
 A cross platform 2D/3D graphics runtime for Go suitable for building native mobile apps, gdextensions,
 multimedia applications, games and more!
