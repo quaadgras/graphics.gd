@@ -6,14 +6,15 @@ multimedia applications, games and more!
 _Why use graphics.gd?_
 
 * [Write shaders in Go!](./shaders/Readme.md)
-* Unlike C++/C#/GDScript/Rust/Swift equivalents, all Godot RIDs, callables and dictionary arguments are fully typed.
+* Unlike C++/C#/GDScript/Rust/Swift equivalents, all Godot RIDs, callables and dictionary arguments are concretely typed.
 * A good balance of performance and convenience.
 * General purpose pure-Go 'variant' packages, reuse them in any Go project.
 * After the first build, recompile quickly, with an experience similar to a scripting language.
-* Easily cross-compile for windows/macos/android/linux/web on any host platform.
-* Build and launch native apps on connected Android devices, no Java, no Android SDK/NDK needed.
+* Easily cross-compile for windows/macos/android/linux/ios/web on any host platform.
+* Neither Java, nor an Android SDK/NDK is needed to build Android apps.
+* Neither Xcode nor MacOS is needed to build IOS apps.
 
-Not just a wrapper! graphics.gd is designed from the ground up to provide a cohesive curated graphics 
+Not just a wrapper! graphics.gd is designed from the ground up to provide a cohesive curated graphics
 runtime on top of Godot + GDExtension.
 
 Join us in our [active discussions forum](https://github.com/quaadgras/graphics.gd/discussions)
@@ -124,7 +125,7 @@ branch. All the samples are designed to be run with `gd run` without any additio
 * Linux   `GOOS=linux gd build`
 * MacOS   `GOOS=macos gd build`
 * Android `GOOS=android GOARCH=arm64 gd run`
-* IOS     `GOOS=ios gd build` (only on MacOS)
+* IOS     `GOOS=ios gd run` (requires [SideStore](https://sidestore.io) on the IOS device)
 * Web     `GOOS=web gd run`
 
 ## Platform Restrictions
