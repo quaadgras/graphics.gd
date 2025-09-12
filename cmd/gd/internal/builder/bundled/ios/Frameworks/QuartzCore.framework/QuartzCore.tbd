@@ -1,6 +1,6 @@
 --- !tapi-tbd
 tbd-version:  4
-install-name: '/System/Library/Frameworks/QuartzCore.framework/Versions/A/QuartzCore'  # expected location for the implementation on IOS
+install-name: '/System/Library/Frameworks/QuartzCore.framework/QuartzCore'  # expected location for the implementation on IOS
 targets:
  - arm64-ios
 exports:

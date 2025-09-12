@@ -85,3 +85,19 @@ var UltimatePackerForExecutables = toolchain{
 	DownloadARCH: map[string]string{"amd64": "amd64", "arm64": "arm64"},
 	RequiredFor:  "minifying builds",
 }
+
+var Zsign = toolchain{
+	Name:          "zsign",
+	VersionFlag:   "-v",
+	Version:       "0.7",
+	VersionPrefix: "version: 0.7",
+	RequiredFor:   "adhoc signing of ios apps",
+}
+
+var LinkIdentityEditor = toolchain{
+	Name:          "ldid",
+	Version:       "2.1.5",
+	VersionPrefix: "Link Identity Editor v2.1.5",
+	VersionFlag:   "--help",
+	RequiredFor:   "fakesigning ios apps",
+}

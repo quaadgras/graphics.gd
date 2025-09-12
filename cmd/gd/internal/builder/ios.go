@@ -1,12 +1,20 @@
 package builder
 
 import (
+	"archive/zip"
 	"embed"
 	_ "embed"
 	"fmt"
+	"net"
+	"net/http"
+	"net/url"
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
+	"time"
+
+	"github.com/mdp/qrterminal/v3"
 
 	"graphics.gd/cmd/gd/internal/project"
 	"graphics.gd/cmd/gd/internal/tooling"
@@ -69,7 +77,7 @@ func (IOS) Build(args ...string) error {
 		return xray.New(err)
 	}
 	if err := os.Rename(
-		filepath.Join(project.GraphicsDirectory, "/darwin_arm64.a"),
+		filepath.Join(project.GraphicsDirectory, "darwin_arm64.a"),
 		filepath.Join(project.GraphicsDirectory, "go.xcframework", "ios-arm64", "libgo.a"),
 	); err != nil {
 		return xray.New(err)
@@ -88,9 +96,7 @@ func (ios IOS) BuildMain(args ...string) error {
 	// TODO when we want to support standalone ios builds on any platform, this will do it.
 	// Main blocker here is code-signing and being able to launch the app on an actual device.
 	//
-	// zig cc -target aarch64-ios ./MoltenVK.xcframework/ios-arm64/libMoltenVK.a ./hello_triangle.xcframework/ios-arm64/libgodot.a ./go.xcframework/ios-arm64/libgo.a -o ios_app -F ./releases/ios/sdk/Frameworks -L./releases/ios/sdk/lib
-	// -lc -lobjc.A -framework IOSurface -framework OpenGLES -framework CoreText -framework CoreGraphics -framework CoreFoundation -framework QuartzCore -lc++.1  -framework UIKit -framework Foundation -framework Metal
-	// -framework GameController -framework CoreMotion -framework CoreHaptics -framework AVFAudio -framework AudioToolbox
+	// zig
 
 	// if the Xcode project already exists, we don't want to overwrite any configuration, in this case,
 	// just copy over the new go.xcframework
@@ -102,12 +108,173 @@ func (ios IOS) BuildMain(args ...string) error {
 			return xray.New(err)
 		}
 		return nil
+	} else {
+		if err := project.CopyDir(filepath.Join(project.GraphicsDirectory, "go.xcframework"), filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.Name, "dylibs", "go.xcframework")); err != nil {
+			return xray.New(err)
+		}
 	}
-	return project.CopyDir(filepath.Join(project.GraphicsDirectory, "go.xcframework"), filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.Name, "dylibs", "go.xcframework"))
+
+	if runtime.GOOS == "darwin" {
+		return nil
+	}
+
+	GDPATH := os.Getenv("GOPATH")
+	if GDPATH == "" {
+		GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
+	}
+
+	apple_name := project.AppleSafePackageName(project.Name)
+
+	if err := os.Chdir(filepath.Join(project.ReleasesDirectory, "ios", "arm64")); err != nil {
+		return xray.New(err)
+	}
+	if err := os.RemoveAll(apple_name + ".app"); err != nil {
+		return xray.New(err)
+	}
+	if err := os.MkdirAll(apple_name+".app", 0o755); err != nil {
+		return xray.New(err)
+	}
+	if err := tooling.Zig.Exec("cc", "-target", "aarch64-ios",
+		"./MoltenVK.xcframework/ios-arm64/libMoltenVK.a", "./hello_triangle.xcframework/ios-arm64/libgodot.a", "./hello_triangle/dylibs/go.xcframework/ios-arm64/libgo.a",
+		"./"+project.Name+"/dummy.cpp",
+		"-o", filepath.Join(apple_name+".app", apple_name), "-F", "../sdk/Frameworks", "-L../sdk/lib", "-lc", "-lobjc.A", "-framework", "IOSurface",
+		"-framework", "OpenGLES", "-framework", "CoreText", "-framework", "CoreGraphics", "-framework", "CoreFoundation", "-framework", "QuartzCore",
+		"-lc++.1", "-framework", "UIKit", "-framework", "Foundation", "-framework", "Metal", "-framework", "GameController", "-framework", "CoreMotion",
+		"-framework", "CoreHaptics", "-framework", "AVFAudio", "-framework", "AudioToolbox"); err != nil {
+		return xray.New(err)
+	}
+	info, err := os.ReadFile(filepath.Join(".", project.Name, project.Name+"-Info.plist"))
+	if err != nil {
+		return xray.New(err)
+	}
+	replacer := strings.NewReplacer(
+		"$(INFOPLIST_KEY_CFBundleDisplayName)", project.Name,
+		"$(EXECUTABLE_NAME)", project.Name,
+		"$(PRODUCT_BUNDLE_IDENTIFIER)", "gd.graphics."+project.AppleSafePackageName(project.Name),
+		"$(PRODUCT_NAME)", project.Name,
+		"$(MARKETING_VERSION)", "v0.1.0",
+		"$(CURRENT_PROJECT_VERSION)", "1",
+	)
+	if err := os.WriteFile(filepath.Join(apple_name+".app", "Info.plist"), []byte(replacer.Replace(string(info))), 0o644); err != nil {
+		return xray.New(err)
+	}
+	if err := project.CopyFile(project.Name+".pck", filepath.Join(apple_name+".app", apple_name+".pck")); err != nil {
+		return xray.New(err)
+	}
+	/*if err := project.CopyDir("_CodeSignature", filepath.Join(apple_name+".app", "_CodeSignature")); err != nil {
+		return xray.New(err)
+	}*/
+	/*if err := project.CopyFile(filepath.Join(project.Name, "Launch Screen.storyboard"), filepath.Join(project.Name+".app", "Launch Screen.storyboard")); err != nil {
+	return xray.New(err)
+	}*/
+	/*if err := project.CopyFile("FixedDummyAdHoc.mobileprovision", filepath.Join(apple_name+".app", "embedded.mobileprovision")); err != nil {
+		return xray.New(err)
+	}*/
+	if err := os.WriteFile(filepath.Join(apple_name+".app", "PkgInfo"), []byte("APPL????"), 0o644); err != nil {
+		return xray.New(err)
+	}
+
+	ipa, err := os.Create(apple_name + ".ipa")
+	if err != nil {
+		return xray.New(err)
+	}
+	zipped := zip.NewWriter(ipa)
+	defer ipa.Close()
+	defer zipped.Close()
+
+	filepath.Walk(apple_name+".app", func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		rel, err := filepath.Rel(filepath.Dir(apple_name+".app"), path)
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			return nil
+		}
+		var header = &zip.FileHeader{
+			Name:     filepath.ToSlash(filepath.Join("Payload", rel)),
+			Method:   zip.Deflate,
+			Modified: time.Now(),
+		}
+		header.SetMode(info.Mode())
+		header.CreatorVersion = (3 << 8) // Unix
+		f, err := zipped.CreateHeader(header)
+		if err != nil {
+			return err
+		}
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		_, err = f.Write(data)
+		return err
+	})
+
+	if err := zipped.Close(); err != nil {
+		return xray.New(err)
+	}
+	if err := ipa.Close(); err != nil {
+		return xray.New(err)
+	}
+	/*if err := tooling.Zsign.Exec("-a", "-o", apple_name+".ipa.adhoc", apple_name+".ipa"); err != nil {
+		return xray.New(err)
+	}*/
+
+	/*if err := tooling.Zsign.Exec("-k", "dummy.p12", "-p", "", "-d", "-m", "dummy.plist", "-o", apple_name+".ipa.adhoc", apple_name+".ipa"); err != nil {
+	return xray.New(err)
+	}*/
+
+	return nil
 }
 
-func (IOS) Run(args ...string) error {
-	return fmt.Errorf("gd run: ios not supported")
+func GetLocalIP() (net.IP, error) {
+	addrs, err := net.InterfaceAddrs()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, addr := range addrs {
+		if ipnet, ok := addr.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
+			if ipnet.IP.To4() != nil { // Check if it's an IPv4 address
+				return ipnet.IP, nil
+			}
+		}
+	}
+	return nil, fmt.Errorf("no non-loopback IPv4 address found")
+}
+
+func (ios IOS) Run(args ...string) error {
+	if err := ios.BuildMain(args...); err != nil {
+		return xray.New(err)
+	}
+
+	if runtime.GOOS == "darwin" {
+		return fmt.Errorf("gd run: ios on macos not supported (yet)")
+	}
+
+	host, err := GetLocalIP()
+	if err != nil {
+		return xray.New(err)
+	}
+
+	values := url.Values{}
+	values.Add("url", "http://"+host.String()+":4431/"+project.AppleSafePackageName(project.Name)+".ipa")
+	sidestore_url := url.URL{
+		Scheme:   "sidestore",
+		Path:     "install",
+		RawQuery: values.Encode(),
+	}
+
+	fmt.Println(sidestore_url.String())
+
+	// Generate a 'dense' qrcode with the 'Low' level error correction and write it to Stdout
+	qrterminal.Generate(sidestore_url.String(), qrterminal.L, os.Stdout)
+	return http.ListenAndServe(":4431", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("Serving", project.AppleSafePackageName(project.Name)+".ipa", "to", r.RemoteAddr)
+		http.ServeFile(w, r, filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.AppleSafePackageName(project.Name)+".ipa"))
+	}))
 }
 
 func (IOS) Test(args ...string) error {

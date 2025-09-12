@@ -178,12 +178,10 @@ func (exe *toolchain) Lookup() (string, error) {
 	// if the expected version of the tool is already installed in $PATH, then we can
 	// just use it.
 	if path, err := exec.LookPath(exe.Name); err == nil {
-		version, err := exec.Command(path, exe.VersionFlag).CombinedOutput()
-		if err == nil {
-			if (exe.Version != "" && string(version) == exe.Version) || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) {
-				exe.path = path
-				return exe.PathToCommand(), nil
-			}
+		version, _ := exec.Command(path, exe.VersionFlag).CombinedOutput()
+		if (exe.Version != "" && string(version) == exe.Version) || (exe.VersionPrefix != "" && strings.HasPrefix(string(version), exe.VersionPrefix)) {
+			exe.path = path
+			return exe.PathToCommand(), nil
 		}
 	}
 	// attempt to automatically download and install the toolchain.
