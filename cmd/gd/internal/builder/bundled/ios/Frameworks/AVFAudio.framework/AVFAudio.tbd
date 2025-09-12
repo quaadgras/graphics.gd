@@ -1,6 +1,6 @@
 --- !tapi-tbd
 tbd-version:  4
-install-name: '/System/Library/Frameworks/AVFAudio.framework/Versions/A/AVFAudio'  # expected location for the implementation on IOS
+install-name: '/System/Library/Frameworks/AVFAudio.framework/AVFAudio'  # expected location for the implementation on IOS
 targets:
  - arm64-ios
 exports:

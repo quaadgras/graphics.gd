@@ -1,6 +1,6 @@
 --- !tapi-tbd
 tbd-version:  4
-install-name: '/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation'  # expected location for the implementation on macos, see crypto/x509/internal/macos
+install-name: '/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation'  # expected location for the implementation on macos, see crypto/x509/internal/macos
 targets:
  - x86_64-macos
  - arm64-macos

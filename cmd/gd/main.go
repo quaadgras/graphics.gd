@@ -55,9 +55,15 @@ func builderFor(goos string) Builder {
 		return builder.MacOS{}
 	case "ios", "iphone":
 		os.Setenv("GOOS", "ios")
+		if os.Getenv("GOARCH") == "" {
+			os.Setenv("GOARCH", "arm64")
+		}
 		return builder.IOS{}
 	case "android":
 		os.Setenv("GOOS", "android")
+		if os.Getenv("GOARCH") == "" {
+			os.Setenv("GOARCH", "arm64")
+		}
 		return builder.Android{}
 	case "browser", "js", "web", "wasm":
 		os.Setenv("GOOS", "js")
@@ -90,6 +96,9 @@ func gd(args ...string) error {
 	var platform = builderFor(GOOS)
 	if goos := os.Getenv("GOOS"); goos != "" {
 		GOOS = goos
+	}
+	if arch := os.Getenv("GOARCH"); arch != "" {
+		GOARCH = arch
 	}
 	if GOOS != "js" {
 		if err := os.Setenv("CGO_ENABLED", "1"); err != nil {

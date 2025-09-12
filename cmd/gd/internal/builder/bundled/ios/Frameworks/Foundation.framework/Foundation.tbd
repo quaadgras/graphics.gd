@@ -1,6 +1,6 @@
 --- !tapi-tbd
 tbd-version:  4
-install-name: '/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation'  # expected location for the implementation on IOS
+install-name: '/System/Library/Frameworks/Foundation.framework/Foundation'  # expected location for the implementation on IOS
 targets:
  - arm64-ios
 exports:
