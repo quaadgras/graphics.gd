@@ -112,10 +112,6 @@ func (ios IOS) BuildMain(args ...string) error {
 		}
 	}
 
-	if runtime.GOOS == "darwin" {
-		return nil
-	}
-
 	GDPATH := os.Getenv("GOPATH")
 	if GDPATH == "" {
 		GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
@@ -247,10 +243,6 @@ func GetLocalIP() (net.IP, error) {
 func (ios IOS) Run(args ...string) error {
 	if err := ios.BuildMain(args...); err != nil {
 		return xray.New(err)
-	}
-
-	if runtime.GOOS == "darwin" {
-		return fmt.Errorf("gd run: ios on macos not supported (yet)")
 	}
 
 	host, err := GetLocalIP()
