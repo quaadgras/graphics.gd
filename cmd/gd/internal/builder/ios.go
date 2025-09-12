@@ -103,9 +103,7 @@ func (ios IOS) BuildMain(args ...string) error {
 		if err := os.Chdir(project.GraphicsDirectory); err != nil {
 			return xray.New(err)
 		}
-		if err := tooling.Godot.Exec("--headless", "--export-release", "iOS"); err != nil {
-			return xray.New(err)
-		}
+		tooling.Godot.Exec("--headless", "--export-release", "iOS")
 	} else {
 		if err := project.CopyDir(filepath.Join(project.GraphicsDirectory, "go.xcframework"), filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.Name, "dylibs", "go.xcframework")); err != nil {
 			return xray.New(err)
@@ -130,8 +128,8 @@ func (ios IOS) BuildMain(args ...string) error {
 	}
 	if err := tooling.Zig.Exec("cc", "-target", "aarch64-ios",
 		filepath.Join(".", "MoltenVK.xcframework", "ios-arm64", "libMoltenVK.a"),
-		filepath.Join(".", "hello_triangle.xcframework", "ios-arm64", "libgodot.a"),
-		filepath.Join(".", "hello_triangle", "dylibs", "go.xcframework", "ios-arm64", "libgo.a"),
+		filepath.Join(".", project.Name+".xcframework", "ios-arm64", "libgodot.a"),
+		filepath.Join(".", project.Name, "dylibs", "go.xcframework", "ios-arm64", "libgo.a"),
 		filepath.Join(".", project.Name, "dummy.cpp"),
 		"-o", filepath.Join(apple_name+".app", apple_name), "-F", filepath.Join("..", "sdk", "Frameworks"), "-L"+filepath.Join("..", "sdk", "lib"),
 		"-lc", "-lobjc.A", "-framework", "IOSurface", "-framework", "OpenGLES", "-framework", "CoreText", "-framework", "CoreGraphics",
