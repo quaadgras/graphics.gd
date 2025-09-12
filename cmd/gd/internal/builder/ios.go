@@ -93,10 +93,9 @@ func (ios IOS) BuildMain(args ...string) error {
 		return xray.New(err)
 	}
 
-	// TODO when we want to support standalone ios builds on any platform, this will do it.
-	// Main blocker here is code-signing and being able to launch the app on an actual device.
-	//
-	// zig
+	if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, "ios", "arm64"), 0o755); err != nil {
+		return xray.New(err)
+	}
 
 	// if the Xcode project already exists, we don't want to overwrite any configuration, in this case,
 	// just copy over the new go.xcframework
@@ -107,7 +106,6 @@ func (ios IOS) BuildMain(args ...string) error {
 		if err := tooling.Godot.Exec("--headless", "--export-release", "iOS"); err != nil {
 			return xray.New(err)
 		}
-		return nil
 	} else {
 		if err := project.CopyDir(filepath.Join(project.GraphicsDirectory, "go.xcframework"), filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.Name, "dylibs", "go.xcframework")); err != nil {
 			return xray.New(err)
@@ -135,11 +133,14 @@ func (ios IOS) BuildMain(args ...string) error {
 		return xray.New(err)
 	}
 	if err := tooling.Zig.Exec("cc", "-target", "aarch64-ios",
-		"./MoltenVK.xcframework/ios-arm64/libMoltenVK.a", "./hello_triangle.xcframework/ios-arm64/libgodot.a", "./hello_triangle/dylibs/go.xcframework/ios-arm64/libgo.a",
-		"./"+project.Name+"/dummy.cpp",
-		"-o", filepath.Join(apple_name+".app", apple_name), "-F", "../sdk/Frameworks", "-L../sdk/lib", "-lc", "-lobjc.A", "-framework", "IOSurface",
-		"-framework", "OpenGLES", "-framework", "CoreText", "-framework", "CoreGraphics", "-framework", "CoreFoundation", "-framework", "QuartzCore",
-		"-lc++.1", "-framework", "UIKit", "-framework", "Foundation", "-framework", "Metal", "-framework", "GameController", "-framework", "CoreMotion",
+		filepath.Join(".", "MoltenVK.xcframework", "ios-arm64", "libMoltenVK.a"),
+		filepath.Join(".", "hello_triangle.xcframework", "ios-arm64", "libgodot.a"),
+		filepath.Join(".", "hello_triangle", "dylibs", "go.xcframework", "ios-arm64", "libgo.a"),
+		filepath.Join(".", project.Name, "dummy.cpp"),
+		"-o", filepath.Join(apple_name+".app", apple_name), "-F", filepath.Join("..", "sdk", "Frameworks"), "-L"+filepath.Join("..", "sdk", "lib"),
+		"-lc", "-lobjc.A", "-framework", "IOSurface", "-framework", "OpenGLES", "-framework", "CoreText", "-framework", "CoreGraphics",
+		"-framework", "CoreFoundation", "-framework", "QuartzCore", "-lc++.1", "-framework", "UIKit", "-framework", "Foundation",
+		"-framework", "Metal", "-framework", "GameController", "-framework", "CoreMotion",
 		"-framework", "CoreHaptics", "-framework", "AVFAudio", "-framework", "AudioToolbox"); err != nil {
 		return xray.New(err)
 	}
@@ -149,8 +150,9 @@ func (ios IOS) BuildMain(args ...string) error {
 	}
 	replacer := strings.NewReplacer(
 		"$(INFOPLIST_KEY_CFBundleDisplayName)", project.Name,
-		"$(EXECUTABLE_NAME)", project.Name,
-		"$(PRODUCT_BUNDLE_IDENTIFIER)", "gd.graphics."+project.AppleSafePackageName(project.Name),
+		"$(EXECUTABLE_NAME)", project.AppleSafePackageName(project.Name),
+		"$(PRODUCT_BUNDLE_IDENTIFIER)", "gd.graphics",
+		"$(BUNDLE_NAME)", project.AppleSafePackageName(project.Name),
 		"$(PRODUCT_NAME)", project.Name,
 		"$(MARKETING_VERSION)", "v0.1.0",
 		"$(CURRENT_PROJECT_VERSION)", "1",
@@ -161,15 +163,19 @@ func (ios IOS) BuildMain(args ...string) error {
 	if err := project.CopyFile(project.Name+".pck", filepath.Join(apple_name+".app", apple_name+".pck")); err != nil {
 		return xray.New(err)
 	}
-	/*if err := project.CopyDir("_CodeSignature", filepath.Join(apple_name+".app", "_CodeSignature")); err != nil {
+	if err := project.CopyFile(filepath.Join(project.Name, "Images.xcassets", "AppIcon.appiconset", "Icon-58.png"), filepath.Join(apple_name+".app", "Icon.png")); err != nil {
 		return xray.New(err)
-	}*/
-	/*if err := project.CopyFile(filepath.Join(project.Name, "Launch Screen.storyboard"), filepath.Join(project.Name+".app", "Launch Screen.storyboard")); err != nil {
-	return xray.New(err)
-	}*/
-	/*if err := project.CopyFile("FixedDummyAdHoc.mobileprovision", filepath.Join(apple_name+".app", "embedded.mobileprovision")); err != nil {
+	}
+	if err := project.CopyFile(filepath.Join(project.Name, "Images.xcassets", "AppIcon.appiconset", "Icon-114.png"), filepath.Join(apple_name+".app", "Icon@2x.png")); err != nil {
 		return xray.New(err)
-	}*/
+	}
+	// FIXME I don't think the storyboard / splash image is working, probably needs to be compiled on MacOS.
+	if err := project.CopyFile(filepath.Join(project.Name, "Launch Screen.storyboard"), filepath.Join(apple_name+".app", "Launch Screen.storyboard")); err != nil {
+		return xray.New(err)
+	}
+	if err := project.CopyFile(filepath.Join(project.Name, "Images.xcassets", "SplashImage.imageset", "splash@2x.png"), filepath.Join(apple_name+".app", "SplashImage@2x.png")); err != nil {
+		return xray.New(err)
+	}
 	if err := os.WriteFile(filepath.Join(apple_name+".app", "PkgInfo"), []byte("APPL????"), 0o644); err != nil {
 		return xray.New(err)
 	}
@@ -218,13 +224,6 @@ func (ios IOS) BuildMain(args ...string) error {
 	if err := ipa.Close(); err != nil {
 		return xray.New(err)
 	}
-	/*if err := tooling.Zsign.Exec("-a", "-o", apple_name+".ipa.adhoc", apple_name+".ipa"); err != nil {
-		return xray.New(err)
-	}*/
-
-	/*if err := tooling.Zsign.Exec("-k", "dummy.p12", "-p", "", "-d", "-m", "dummy.plist", "-o", apple_name+".ipa.adhoc", apple_name+".ipa"); err != nil {
-	return xray.New(err)
-	}*/
 
 	return nil
 }
@@ -267,10 +266,11 @@ func (ios IOS) Run(args ...string) error {
 		RawQuery: values.Encode(),
 	}
 
+	fmt.Println("Scan the following QRCode with your iOS device to install the app: (you will need SideStore installed: https://sidestore.io)")
 	fmt.Println(sidestore_url.String())
 
-	// Generate a 'dense' qrcode with the 'Low' level error correction and write it to Stdout
 	qrterminal.Generate(sidestore_url.String(), qrterminal.L, os.Stdout)
+
 	return http.ListenAndServe(":4431", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Serving", project.AppleSafePackageName(project.Name)+".ipa", "to", r.RemoteAddr)
 		http.ServeFile(w, r, filepath.Join(project.ReleasesDirectory, "ios", "arm64", project.AppleSafePackageName(project.Name)+".ipa"))
