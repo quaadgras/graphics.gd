@@ -54,7 +54,7 @@ func AndroidSafePackageName(name string) string {
 }
 
 func AppleSafePackageName(name string) string {
-	return strings.ReplaceAll(name, "_", "-")
+	return strings.ReplaceAll(name, "_", "")
 }
 
 func Setup() error {
@@ -204,7 +204,7 @@ func CopyDir(src, dst string) error {
 			}
 		} else {
 			// Copy files
-			if err := copyFile(srcPath, dstPath); err != nil {
+			if err := CopyFile(srcPath, dstPath); err != nil {
 				return err
 			}
 		}
@@ -212,8 +212,8 @@ func CopyDir(src, dst string) error {
 	return nil
 }
 
-// copyFile copies a single file from src to dst
-func copyFile(src, dst string) error {
+// CopyFile copies a single file from src to dst
+func CopyFile(src, dst string) error {
 	// Open source file
 	srcFile, err := os.Open(src)
 	if err != nil {
