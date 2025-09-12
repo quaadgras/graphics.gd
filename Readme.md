@@ -12,7 +12,7 @@ _Why use graphics.gd?_
 * After the first build, recompile quickly, with an experience similar to a scripting language.
 * Easily cross-compile for windows/macos/android/linux/ios/web on any host platform.
 * Neither Java, nor an Android SDK/NDK is needed to build Android apps.
-* Neither Xcode nor MacOS is needed to build IOS apps.
+* Neither Xcode nor MacOS is needed to build iOS apps.
 
 Not just a wrapper! graphics.gd is designed from the ground up to provide a cohesive curated graphics
 runtime on top of Godot + GDExtension.
