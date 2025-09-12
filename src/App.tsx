@@ -593,7 +593,7 @@ func main() {
               { name: "Linux", status: "stable" },
               { name: "macOS", status: "stable" },
               { name: "Android", status: "stable" },
-              { name: "iOS", status: "experimental" },
+              { name: "iOS", status: "stable" },
               { name: "Web", status: "stable" },
             ].map((platform) => (
               <div key={platform.name} className="text-center">
