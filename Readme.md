@@ -162,4 +162,4 @@ Lastly, spread the word and let people know about graphics.gd!
 ## Licensing
 This project is licensed under an MIT license (the same license as Godot), you can use it in any manner
 you can use the Godot engine. If you use this project for any commercially successful products, please
-consider [financially supporting us](https://buy.stripe.com/4gw14maETbnX3vOcMM) to show your appreciation!
+consider [financially supporting the project](https://buy.stripe.com/4gw14maETbnX3vOcMM) to show your appreciation!
