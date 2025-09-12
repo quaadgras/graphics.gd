@@ -1,0 +1,30 @@
+---
+title: Scenes
+slug: guide/rendering/scenes
+sidebar:
+  order: 25
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+Scenes are the basis for composition in the engine's editor, so if a project is particularly editor-focused, you
+may want to create new types of nodes, plugins for the editor, or new resource types that can be edited.
+
+<Aside type="caution">
+    Tightly-coupling the editor with plenty of custom nodes and resources can lead to complex project structures that
+    are difficult to port and reason about!
+</Aside>
+
+The biggest advantage of using a scene tree, is that the extensive Godot eco-system is primarily designed to be
+interoperable with nodes structured within the scene tree. The editor also supports inspecting scenes at runtime,
+which can be useful for debugging projects.
+
+The scene tree is well suited for pre-designed spaces and environments, and/or for artists and designers to work
+within. If you are expecting to design puzzles, levels, tell stories, or create an art-piece, using the scene tree
+will be effective as you can design all of the visual elements within the editor and leave any behavioral logic to
+be implemented in code.
+
+If, instead, you are building projects with more dynamic environments, ie. creative editors, procedural-generation
+and/or large scale evolving worlds. The overhead and workflow of using the scene tree may be more of a hindrance
+than a help. In these cases, you may want to consider using a more code-centric approach, such as a [Canvas](/guide/canvas)-based
+approach or the lower-level [Rendering Server](/guide/rendering/server) or [Rendering Device](/guide/rendering/device) APIs.
