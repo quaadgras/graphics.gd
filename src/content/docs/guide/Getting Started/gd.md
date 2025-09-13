@@ -13,6 +13,9 @@ go install graphics.gd/cmd/gd@release
 
 Run this command again whenever you update `graphics.gd` (it doesn't currently stay in sync with your project version).
 
+The `gd` command is also fully compatible with standard GDScript-based Godot projects and can be used to initialise cross-platform export configurations
+and to easily launch projects on Web, Android and iOS. To use it this way, run it inside the directory where `project.godot` is located.
+
 #### Quick Rundown
 
 ```sh
@@ -46,3 +49,4 @@ Everything you would have to setup for yourself if you were using `go` directly:
 * sets the correct `zig` flags when cross-compiling.
 * uses `vpk` to bundle the project into a self-updating release.
 * sets up Go tests to run correctly within the Godot runtime.
+* builds projects for Android and iOS without their SDKs installed.
