@@ -75,7 +75,8 @@ go build -o example.so -buildmode=c-shared
 
 The `gd` command is also compatible with standard GDScript-based Godot projects
 and can be used to initialise export configurations and launch projects on Web,
-Android and iOS.
+Android and iOS. To use it this way, run it inside the directory where
+`project.godot` is located.
 
 ## Next Steps
 
