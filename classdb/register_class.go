@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"runtime"
+	"runtime/debug"
 	"strings"
 
 	"golang.org/x/text/cases"
@@ -19,6 +20,7 @@ import (
 	EditorInterfaceClass "graphics.gd/classdb/EditorInterface"
 	EditorPluginClass "graphics.gd/classdb/EditorPlugin"
 	EngineClass "graphics.gd/classdb/Engine"
+	"graphics.gd/classdb/MainLoop"
 	NodeClass "graphics.gd/classdb/Node"
 	ScriptClass "graphics.gd/classdb/Script"
 	ScriptLanguageClass "graphics.gd/classdb/ScriptLanguage"
@@ -126,6 +128,11 @@ func Register[T Class](exports ...any) {
 			}:
 			tool = true
 		}
+		var isMainLoop bool
+		switch super.(type) {
+		case interface{ AsMainLoop() MainLoop.Instance }:
+			isMainLoop = true
+		}
 		switch any(([1]T{})[0]).(type) {
 		case Tool:
 			tool = true
@@ -146,6 +153,7 @@ func Register[T Class](exports ...any) {
 			Type:           classType,
 			Tool:           tool,
 			RefCounted:     refCounted,
+			isMainLoop:     isMainLoop,
 			VirtualMethods: reference.Virtual,
 			Constructor: func() reflect.Value {
 				return reflect.New(classType)
@@ -445,6 +453,7 @@ type classImplementation struct {
 
 	Tool       bool
 	RefCounted bool
+	isMainLoop bool
 
 	Type reflect.Type
 
@@ -544,10 +553,11 @@ func (class classImplementation) reloadInstance(value reflect.Value, super [1]gd
 		go manageSignals(Object.Instance(super[0].AsObject()).ID(), chSignals)
 	}
 	return &instanceImplementation{
-		object:   pointers.Get(super[0])[0],
-		Value:    value.Addr().Interface().(gdclass.Pointer),
-		signals:  signals,
-		isEditor: !class.Tool && EngineClass.IsEditorHint(),
+		object:     pointers.Get(super[0])[0],
+		Value:      value.Addr().Interface().(gdclass.Pointer),
+		signals:    signals,
+		isEditor:   !class.Tool && EngineClass.IsEditorHint(),
+		isMainLoop: class.isMainLoop,
 	}
 }
 
@@ -600,7 +610,7 @@ type instanceImplementation struct {
 	signals []signalChan
 
 	// FIXME use a bitfield for these booleans.
-	isEditor, freed bool
+	isEditor, isMainLoop, freed bool
 }
 
 var lastGC int
@@ -626,6 +636,9 @@ func (instance *instanceImplementation) OnCreate(value reflect.Value) {
 func (instance *instanceImplementation) Notification(what int32, reversed bool) {
 	if what == 13 { // NOTIFICATION_READY
 		instance.ready()
+	}
+	if instance.isMainLoop && what == 2012 { // NOTIFICATION_CRASH
+		debug.PrintStack()
 	}
 	if !instance.isEditor {
 		switch notify := instance.Value.(type) {
