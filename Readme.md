@@ -13,6 +13,7 @@ _Why use graphics.gd?_
 * Easily cross-compile for windows/macos/android/linux/ios/web on any host platform.
 * Neither Java, nor an Android SDK/NDK is needed to build Android apps.
 * Neither Xcode nor MacOS is needed to build iOS apps.
+* Drop in `gd` command, a cross-platform build tool compatible with GDScript-based Godot projects.
 
 Not just a wrapper! graphics.gd is designed from the ground up to provide a cohesive curated graphics
 runtime on top of Godot + GDExtension.
@@ -71,6 +72,10 @@ the `go` command directly:
 ```sh
 go build -o example.so -buildmode=c-shared
 ```
+
+The `gd` command is also compatible with standard GDScript-based Godot projects
+and can be used to initialise export configurations and launch projects on Web,
+Android and iOS.
 
 ## Next Steps
 
