@@ -30,6 +30,12 @@ func (browser Browser) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (browser Browser) Build(args ...string) error {
+	if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, "js", "wasm"), 0755); err != nil {
+		return xray.New(err)
+	}
+	if !project.IncludesGo {
+		return nil
+	}
 	if err := browser.AssertExportTemplate(); err != nil {
 		return xray.New(err)
 	}
@@ -56,21 +62,23 @@ func (browser Browser) Run(args ...string) error {
 	if PORT == "" {
 		PORT = "8080"
 	}
-	wasm_exec_path := filepath.Join(project.ReleasesDirectory, "js", "wasm", "wasm_exec.js")
-	wasm_exec, err := os.ReadFile(wasm_exec_path)
-	if err != nil {
-		return xray.New(err)
-	}
-	var argsQuoted = []string{`"js"`}
-	for _, arg := range args {
-		if arg == "-x" {
-			continue
+	if project.IncludesGo {
+		wasm_exec_path := filepath.Join(project.ReleasesDirectory, "js", "wasm", "wasm_exec.js")
+		wasm_exec, err := os.ReadFile(wasm_exec_path)
+		if err != nil {
+			return xray.New(err)
 		}
-		argsQuoted = append(argsQuoted, strconv.Quote(arg))
-	}
-	wasm_exec = bytes.ReplaceAll(wasm_exec, []byte("this.argv = [\"js\"]"), []byte("this.argv = ["+strings.Join(argsQuoted, ", ")+"]"))
-	if err := os.WriteFile(wasm_exec_path, wasm_exec, 0644); err != nil {
-		return xray.New(err)
+		var argsQuoted = []string{`"js"`}
+		for _, arg := range args {
+			if arg == "-x" {
+				continue
+			}
+			argsQuoted = append(argsQuoted, strconv.Quote(arg))
+		}
+		wasm_exec = bytes.ReplaceAll(wasm_exec, []byte("this.argv = [\"js\"]"), []byte("this.argv = ["+strings.Join(argsQuoted, ", ")+"]"))
+		if err := os.WriteFile(wasm_exec_path, wasm_exec, 0644); err != nil {
+			return xray.New(err)
+		}
 	}
 	fmt.Println("gd: serving wasm/js on http://localhost:" + PORT)
 	browser.handler = http.FileServer(http.Dir(filepath.Join(project.ReleasesDirectory, "js", "wasm")))
@@ -110,9 +118,6 @@ func (browser Browser) Test(args ...string) error {
 }
 
 func (Browser) AssertExportTemplate() error {
-	if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, "js", "wasm"), 0755); err != nil {
-		return xray.New(err)
-	}
 	if err := os.MkdirAll(filepath.Join(project.GraphicsDirectory, ".godot", "public"), 0o755); err != nil {
 		return xray.New(err)
 	}

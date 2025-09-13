@@ -67,7 +67,9 @@ func (Android) Build(args ...string) error {
 			}
 		}
 	}
-
+	if !project.IncludesGo {
+		return nil
+	}
 	var GOARCH = "arm64"
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch

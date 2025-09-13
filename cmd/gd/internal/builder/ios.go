@@ -54,6 +54,9 @@ func (IOS) Build(args ...string) error {
 	if err != nil {
 		return xray.New(err)
 	}
+	if !project.IncludesGo {
+		return nil
+	}
 	GDPATH := os.Getenv("GOPATH")
 	if GDPATH == "" {
 		GDPATH = filepath.Join(os.Getenv("HOME"), "gd")
@@ -126,16 +129,23 @@ func (ios IOS) BuildMain(args ...string) error {
 	if err := os.MkdirAll(apple_name+".app", 0o755); err != nil {
 		return xray.New(err)
 	}
-	if err := tooling.Zig.Exec("cc", "-target", "aarch64-ios",
+	var zig_args = []string{
+		"cc", "-target", "aarch64-ios",
 		filepath.Join(".", "MoltenVK.xcframework", "ios-arm64", "libMoltenVK.a"),
 		filepath.Join(".", project.Name+".xcframework", "ios-arm64", "libgodot.a"),
-		filepath.Join(".", project.Name, "dylibs", "go.xcframework", "ios-arm64", "libgo.a"),
 		filepath.Join(".", project.Name, "dummy.cpp"),
+	}
+	if project.IncludesGo {
+		zig_args = append(args, filepath.Join(".", project.Name, "dylibs", "go.xcframework", "ios-arm64", "libgo.a"))
+	}
+	zig_args = append(zig_args,
 		"-o", filepath.Join(apple_name+".app", apple_name), "-F", filepath.Join("..", "sdk", "Frameworks"), "-L"+filepath.Join("..", "sdk", "lib"),
 		"-lc", "-lobjc.A", "-framework", "IOSurface", "-framework", "OpenGLES", "-framework", "CoreText", "-framework", "CoreGraphics",
 		"-framework", "CoreFoundation", "-framework", "QuartzCore", "-lc++.1", "-framework", "UIKit", "-framework", "Foundation",
 		"-framework", "Metal", "-framework", "GameController", "-framework", "CoreMotion",
-		"-framework", "CoreHaptics", "-framework", "AVFAudio", "-framework", "AudioToolbox"); err != nil {
+		"-framework", "CoreHaptics", "-framework", "AVFAudio", "-framework", "AudioToolbox",
+	)
+	if err := tooling.Zig.Exec(zig_args...); err != nil {
 		return xray.New(err)
 	}
 	info, err := os.ReadFile(filepath.Join(".", project.Name, project.Name+"-Info.plist"))
