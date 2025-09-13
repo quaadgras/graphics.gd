@@ -14,6 +14,7 @@ _Why use graphics.gd?_
 * Neither Java, nor an Android SDK/NDK is needed to build Android apps.
 * Neither Xcode nor MacOS is needed to build iOS apps.
 * Drop in `gd` command, a cross-platform build tool compatible with GDScript-based Godot projects.
+* Building a UI framework in Go or a game engine? Implement a graphics.gd driver for seamless cross-platform support. 
 
 Not just a wrapper! graphics.gd has been designed from the ground up to provide a cohesively curated graphics
 runtime for Go on top of Godot + GDExtension.
