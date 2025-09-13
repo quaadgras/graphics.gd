@@ -41,7 +41,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 	}
 	if method.Description != "" {
 		fmt.Fprintln(w, "\n/*")
-		fmt.Fprint(w, method.Description)
+		fmt.Fprint(w, gdjson.DocsToGoDoc(method.Description, class.Name, ""))
 		fmt.Fprintln(w, "\n*/")
 	}
 	if method.IsVirtual {

@@ -46,7 +46,7 @@ var Callables = map[string][]string{
 	"EditorPlugin.add_tool_menu_item.callable":                           {"void"},
 	"EditorPlugin.add_undo_redo_inspector_hook_callback.callable":        {"void", "Object undo_redo", "Object modified_object", "String property", "Variant new_value"},
 	"EditorPlugin.remove_undo_redo_inspector_hook_callback.callable":     {},
-	"EngineDebugger.register_message_capture.callable":                   {"void", "String message", "Array data"},
+	"EngineDebugger.register_message_capture.callable":                   {"bool", "String message", "Array data"},
 	"JavaScriptBridge.create_callback.callable":                          {},
 	"MultiplayerSpawner.get_spawn_function.":                             {"Node", "Variant data"},
 	"MultiplayerSpawner.set_spawn_function.spawn_function":               {"Node", "Variant data"},

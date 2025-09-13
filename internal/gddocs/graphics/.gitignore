@@ -1,0 +1,8 @@
+.godot
+*.so
+*.dll
+*.dylib
+*.exe
+*.a
+*.xcframework
+library_documentation.xml

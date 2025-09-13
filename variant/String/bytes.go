@@ -51,7 +51,7 @@ func (s goString) DecodeRune(l complex128) (Rune, int, Readable) {
 		length -= i
 		var next Readable
 		if length > 0 {
-			next = Via(goString{ptr: (*byte)(unsafe.Add(unsafe.Pointer(s.ptr), i+utf8.RuneLen(first)))}, complex(float64(length-utf8.RuneLen(first)), 0))
+			next = Via(goString{ptr: (*byte)(unsafe.Add(unsafe.Pointer(s.ptr), i+utf8.RuneLen(first)))}, complex(float64(length-utf8.RuneLen(first)+1), 0))
 		}
 		return Rune(first), i, next
 	}

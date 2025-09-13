@@ -14,6 +14,7 @@ require (
 )
 
 require (
+	github.com/justakit/bbparser v0.0.0-20180521072836-ce6eaaf5e50e // indirect
 	github.com/konoui/go-qsort v0.1.0 // indirect
 	golang.org/x/mod v0.24.0 // indirect
 	golang.org/x/sync v0.14.0 // indirect

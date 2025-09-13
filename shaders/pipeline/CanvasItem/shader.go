@@ -64,6 +64,7 @@ type Vertex struct {
 	CanvasMatrix mat4.ColumnMajor `gd:"CANVAS_MATRIX"`
 	// Canvas space to clip space. In clip space coordinates ranging from (-1, -1) to (1, 1).
 	ScreenMatrix mat4.ColumnMajor `gd:"SCREEN_MATRIX"`
+	ScreenUV     vec2.XY          `gd:"SCREEN_UV"` // Normalized screen coordinates, ranging from (0, 0) to (1, 1).
 
 	InstanceID     int.X     `gd:"INSTANCE_ID"`     // InstanceID for instancing.
 	InstanceCustom vec4.XYZW `gd:"INSTANCE_CUSTOM"` // InstanceCustom data.
