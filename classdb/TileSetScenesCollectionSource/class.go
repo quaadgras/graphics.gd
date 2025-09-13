@@ -5,6 +5,27 @@ When placed on a [TileMap], tiles from [TileSetScenesCollectionSource] will auto
 Scenes are instantiated as children of the [TileMap] when it enters the tree. If you add/remove a scene tile in the [TileMap] that is already inside the tree, the [TileMap] will automatically instantiate/free the scene accordingly.
 Note: Scene tiles all occupy one tile slot and instead use alternate tile ID to identify scene index. [Instance.Tilesetsource.GetTilesCount] will always return 1. Use [Instance.GetSceneTilesCount] to get a number of scenes in a [TileSetScenesCollectionSource].
 Use this code if you want to find the scene path at a given tile in [TileMapLayer]:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/TileMapLayer"
+		"graphics.gd/classdb/TileSetScenesCollectionSource"
+		"graphics.gd/variant/Object"
+		"graphics.gd/variant/Vector2i"
+	)
+
+	func ExampleTileSetScenesCollectionSource(tileMapLayer TileMapLayer.Instance, x, y int) {
+		sourceId := tileMapLayer.GetCellSourceId(Vector2i.New(x, y))
+		if sourceId > -1 {
+			var scene_source = tileMapLayer.TileSet().GetSource(sourceId)
+			if scene_source, ok := Object.As[TileSetScenesCollectionSource.Instance](scene_source); ok {
+				altId := tileMapLayer.GetCellAlternativeTile(Vector2i.New(x, y))
+				var scene = scene_source.GetSceneTileScene(altId)
+				_ = scene
+			}
+		}
+	}
 */
 package TileSetScenesCollectionSource
 

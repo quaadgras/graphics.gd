@@ -4,6 +4,21 @@
 A control used to show a set of internal [TreeItem]s in a hierarchical structure. The tree items can be selected, expanded and collapsed. The tree can have multiple columns with custom controls like [LineEdit]s, buttons and popups. It can be useful for structured displays and interactions.
 Trees are built via code, using [TreeItem] objects to create the structure. They have a single root, but multiple roots can be simulated with [member hide_root]:
 
+	package main
+
+	import "graphics.gd/classdb/Tree"
+
+	func ExampleTree() {
+		var tree = Tree.New()
+		var root = tree.CreateItem()
+		tree.SetHideRoot(true)
+		var child1 = Tree.Expanded(tree).CreateItem(root, -1)
+		var child2 = Tree.Expanded(tree).CreateItem(root, -1)
+		var subchild1 = Tree.Expanded(tree).CreateItem(child1, -1)
+		subchild1.SetText(0, "Subchild1")
+		_ = child2
+	}
+
 To iterate over all the [TreeItem] objects in a [Tree] object, use [Instance.Treeitem.GetNext] and [Instance.Treeitem.GetFirstChild] after getting the root through [Instance.GetRoot]. You can use [Instance.Object.Free] on a [TreeItem] to remove it from the [Tree].
 Incremental search: Like [ItemList] and [PopupMenu], [Tree] supports searching within the list while the control is focused. Press a key that matches the first letter of an item's name to select the first item starting with the given letter. After that point, there are two ways to perform incremental search: 1) Press the same key again before the timeout duration to select the next item starting with the same letter. 2) Press letter keys that match the rest of the word before the timeout duration to match to select the item in question directly. Both of these actions will be reset to the beginning of the list if the timeout duration has passed since the last keystroke was registered. You can adjust the timeout duration by changing [member ProjectSettings.gui/timers/incremental_search_max_interval_msec].
 */

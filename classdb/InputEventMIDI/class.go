@@ -5,6 +5,41 @@ InputEventMIDI stores information about messages from [url=https://en.wikipedia.
 MIDI messages can be received over a 5-pin MIDI connector or over USB. If your device supports both be sure to check the settings in the device to see which output it is using.
 By default, Godot does not detect MIDI devices. You need to call [Instance.Os.OpenMidiInputs], first. You can check which devices are detected with [Instance.Os.GetConnectedMidiInputs], and close the connection with [Instance.Os.CloseMidiInputs].
 
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/InputEvent"
+		"graphics.gd/classdb/InputEventMIDI"
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/OS"
+		"graphics.gd/variant/Object"
+	)
+
+	type MyMIDI struct {
+		Node.Extension[MyMIDI]
+	}
+
+	func (n MyMIDI) Ready() {
+		OS.OpenMidiInputs()
+		fmt.Println(OS.GetConnectedMidiInputs())
+	}
+
+	func (n MyMIDI) Input(event InputEvent.Instance) {
+		if event, ok := Object.As[InputEventMIDI.Instance](event); ok {
+			fmt.Println(event)
+			fmt.Println("Channel ", event.Channel())
+			fmt.Println("Message ", event.Message())
+			fmt.Println("Pitch ", event.Pitch())
+			fmt.Println("Velocity ", event.Velocity())
+			fmt.Println("Instrument ", event.Instrument())
+			fmt.Println("Pressure ", event.Pressure())
+			fmt.Println("Controller number: ", event.ControllerNumber())
+			fmt.Println("Controller value: ", event.ControllerValue())
+		}
+	}
+
 Note: Godot does not support MIDI output, so there is no way to emit MIDI messages from Godot. Only MIDI input is supported.
 Note: On the Web platform, using MIDI input requires a browser permission to be granted first. This permission request is performed when calling [Instance.Os.OpenMidiInputs]. MIDI input will not work until the user accepts the permission request.
 */

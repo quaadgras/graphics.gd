@@ -4,6 +4,27 @@
 Provides OpenType variations, simulated bold / slant, and additional font settings like OpenType features and extra spacing.
 To use simulated bold font variant:
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Font"
+		"graphics.gd/classdb/FontVariation"
+		"graphics.gd/classdb/Resource"
+		"graphics.gd/classdb/TextServer"
+		"graphics.gd/classdb/TextServerManager"
+		"graphics.gd/variant/String"
+	)
+
+	func ExampleFontVariation() {
+		var fv = FontVariation.New()
+		var ts = TextServer.Advanced(TextServerManager.GetPrimaryInterface())
+		fv.SetBaseFont(Resource.Load[Font.Instance]("res://BarlowCondensed-Regular.ttf"))
+		fv.SetVariationOpentype(map[any]any{
+			ts.NameToTag(String.New("wght")):        900,
+			ts.NameToTag(String.New("custom_hght")): 900,
+		})
+	}
+
 To set the coordinate of multiple variation axes:
 [codeblock]
 var fv = FontVariation.new();

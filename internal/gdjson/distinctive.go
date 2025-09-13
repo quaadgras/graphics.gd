@@ -48,4 +48,6 @@ var Distinctions = map[string][][3]string{
 	"SkeletonModification2DCCDIK":    {{"angle", "float", "Angle.Radians"}, {"angle ", "float", "Angle.Radians"}, {"clamp_angle max", "float", "Angle.Radians"}},
 	"TextureProgressBar":             {{"angle ", "float", "Angle.Radians"}},
 	"VisualShader":                   {{"node", "int", "NodeID"}, {"id ", "int", "NodeID"}},
+
+	"HTTPRequest": {{"result", "int", "Result"}},
 }

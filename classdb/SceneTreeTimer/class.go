@@ -4,6 +4,23 @@
 A one-shot timer managed by the scene tree, which emits [signal timeout] on completion. See also [Instance.Scenetree.CreateTimer].
 As opposed to [Timer], it does not require the instantiation of a node. Commonly used to create a one-shot delay timer as in the following example:
 
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/SceneTree"
+	)
+
+	func ExampleSceneTreeTimer(node Node.Instance) {
+		fmt.Println("Timer started.")
+		SceneTree.Get(node).CreateTimer(1.0).OnTimeout(func() {
+			fmt.Println("Timer ended.")
+		})
+
+	}
+
 The timer will be dereferenced after its time elapses. To preserve the timer, you can keep a reference to it. See [RefCounted].
 Note: The timer is processed after all of the nodes in the current frame, i.e. node's [Instance.Node.Process] method would be called before the timer (or [Instance.Node.PhysicsProcess] if process_in_physics in [Instance.Scenetree.CreateTimer] has been set to true).
 */

@@ -4,7 +4,42 @@
 A navigation mesh can be created either by baking it with the help of the [NavigationServer2D], or by adding vertices and convex polygon indices arrays manually.
 To bake a navigation mesh at least one outline needs to be added that defines the outer bounds of the baked area.
 
+	package main
+
+	import (
+		"graphics.gd/classdb/NavigationMeshSourceGeometryData2D"
+		"graphics.gd/classdb/NavigationPolygon"
+		"graphics.gd/classdb/NavigationRegion2D"
+		"graphics.gd/classdb/NavigationServer2D"
+		"graphics.gd/variant/Vector2"
+	)
+
+	func ExampleNavigationPolygon(region NavigationRegion2D.Instance) {
+		var new_navigation_mesh = NavigationPolygon.New()
+		var bounding_outline = []Vector2.XY{{0, 0}, {0, 50}, {50, 50}, {50, 0}}
+		new_navigation_mesh.AddOutline(bounding_outline)
+		NavigationServer2D.BakeFromSourceGeometryData(new_navigation_mesh, NavigationMeshSourceGeometryData2D.New(), nil)
+		region.SetNavigationPolygon(new_navigation_mesh)
+	}
+
 Adding vertices and polygon indices manually.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/NavigationPolygon"
+		"graphics.gd/classdb/NavigationRegion2D"
+		"graphics.gd/variant/Vector2"
+	)
+
+	func ExampleNavigationPolygon2(region NavigationRegion2D.Instance) {
+		var new_navigation_mesh = NavigationPolygon.New()
+		var new_vertices = []Vector2.XY{{0, 0}, {0, 50}, {50, 50}, {50, 0}}
+		new_navigation_mesh.SetVertices(new_vertices)
+		var new_polygon_indices = []int32{0, 1, 2, 3}
+		new_navigation_mesh.AddPolygon(new_polygon_indices)
+		region.SetNavigationPolygon(new_navigation_mesh.AsNavigationPolygon())
+	}
 */
 package NavigationPolygon
 

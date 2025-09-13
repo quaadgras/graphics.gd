@@ -5,6 +5,28 @@ The [WorkerThreadPool] singleton allocates a set of [Thread]s (called worker thr
 Tasks hold the [Callable] to be run by the threads. [WorkerThreadPool] can be used to create regular tasks, which will be taken by one worker thread, or group tasks, which can be distributed between multiple worker threads. Group tasks execute the [Callable] multiple times, which makes them useful for iterating over a lot of elements, such as the enemies in an arena.
 Here's a sample on how to offload an expensive function to worker threads:
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/WorkerThreadPool"
+	)
+
+	var enemies []Node.Instance
+
+	func process_enemy_ai(enemy_index int) {
+		var processed_enemy = enemies[enemy_index]
+		// Expensive logic...
+		_ = processed_enemy
+	}
+
+	func process() {
+		var task_id = WorkerThreadPool.AddGroupTask(process_enemy_ai, len(enemies), false, "")
+		// Other code...
+		WorkerThreadPool.WaitForGroupTaskCompletion(task_id)
+		// Other code that depends on the enemy AI already being processed.
+	}
+
 The above code relies on the number of elements in the enemies array remaining constant during the multithreaded part.
 Note: Using this singleton could affect performance negatively if the task being distributed between threads is not computationally expensive.
 */
@@ -112,7 +134,7 @@ Adds 'action' as a task to be executed by a worker thread. 'high_priority' deter
 Returns a task ID that can be used by other methods.
 Warning: Every task must be waited for completion using [Instance.WaitForTaskCompletion] or [Instance.WaitForGroupTaskCompletion] at some point so that any allocated resources inside the task can be cleaned up.
 */
-func AddTask(action func(), high_priority bool, description string) int { //gd:WorkerThreadPool.add_task
+func AddTask(action func(int), high_priority bool, description string) int { //gd:WorkerThreadPool.add_task
 	once.Do(singleton)
 	return int(int(Advanced().AddTask(Callable.New(action), high_priority, String.New(description))))
 }
@@ -122,7 +144,7 @@ Adds 'action' as a task to be executed by a worker thread. 'high_priority' deter
 Returns a task ID that can be used by other methods.
 Warning: Every task must be waited for completion using [Instance.WaitForTaskCompletion] or [Instance.WaitForGroupTaskCompletion] at some point so that any allocated resources inside the task can be cleaned up.
 */
-func AddTaskOptions(action func(), high_priority bool, description string) int { //gd:WorkerThreadPool.add_task
+func AddTaskOptions(action func(int), high_priority bool, description string) int { //gd:WorkerThreadPool.add_task
 	once.Do(singleton)
 	return int(int(Advanced().AddTask(Callable.New(action), high_priority, String.New(description))))
 }
@@ -153,7 +175,7 @@ The number of threads the task is distributed to is defined by 'tasks_needed', w
 Returns a group task ID that can be used by other methods.
 Warning: Every task must be waited for completion using [Instance.WaitForTaskCompletion] or [Instance.WaitForGroupTaskCompletion] at some point so that any allocated resources inside the task can be cleaned up.
 */
-func AddGroupTask(action func(), elements int, high_priority bool, description string) int { //gd:WorkerThreadPool.add_group_task
+func AddGroupTask(action func(int), elements int, high_priority bool, description string) int { //gd:WorkerThreadPool.add_group_task
 	once.Do(singleton)
 	return int(int(Advanced().AddGroupTask(Callable.New(action), int64(elements), int64(-1), high_priority, String.New(description))))
 }
@@ -164,7 +186,7 @@ The number of threads the task is distributed to is defined by 'tasks_needed', w
 Returns a group task ID that can be used by other methods.
 Warning: Every task must be waited for completion using [Instance.WaitForTaskCompletion] or [Instance.WaitForGroupTaskCompletion] at some point so that any allocated resources inside the task can be cleaned up.
 */
-func AddGroupTaskOptions(action func(), elements int, tasks_needed int, high_priority bool, description string) int { //gd:WorkerThreadPool.add_group_task
+func AddGroupTaskOptions(action func(int), elements int, tasks_needed int, high_priority bool, description string) int { //gd:WorkerThreadPool.add_group_task
 	once.Do(singleton)
 	return int(int(Advanced().AddGroupTask(Callable.New(action), int64(elements), int64(tasks_needed), high_priority, String.New(description))))
 }

@@ -4,6 +4,75 @@
 A simple server that opens a UDP socket and returns connected [PacketPeerUDP] upon receiving new packets. See also [Instance.Packetpeerudp.ConnectToHost].
 After starting the server ([Instance.Listen]), you will need to [Instance.Poll] it at regular intervals (e.g. inside [Instance.Node.Process]) for it to process new packets, delivering them to the appropriate [PacketPeerUDP], and taking new connections.
 Below a small example of how it can be used:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PacketPeerUDP"
+		"graphics.gd/classdb/UDPServer"
+	)
+
+	type ServerNode struct {
+		Node.Extension[ServerNode]
+
+		udp   UDPServer.Instance
+		peers []PacketPeerUDP.Instance
+	}
+
+	func (s *ServerNode) Ready() {
+		s.udp = UDPServer.New()
+		s.udp.Listen(4242)
+	}
+
+	func (s *ServerNode) Process(_ float64) {
+		s.udp.Poll() // Important!
+		if s.udp.IsConnectionAvailable() {
+			peer := s.udp.TakeConnection()
+			packet := peer.AsPacketPeer().GetPacket()
+			print("Accepted peer: ", peer.GetPacketIp(), ":", peer.GetPacketPort())
+			print("Received data: ", string(packet))
+			// Reply so it knows we received the message.
+			peer.AsPacketPeer().PutPacket(packet)
+			// Keep a reference so we can keep contacting the remote peer.
+			s.peers = append(s.peers, peer)
+		}
+		for _, peer := range s.peers {
+			_ = peer // Do something with the connected peers.
+		}
+	}
+
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PacketPeerUDP"
+	)
+
+	type ClientNode struct {
+		Node.Extension[ClientNode]
+
+		udp       PacketPeerUDP.Instance
+		connected bool
+	}
+
+	func (c *ClientNode) Ready() {
+		c.udp = PacketPeerUDP.New()
+		c.udp.ConnectToHost("127.0.0.1", 4242)
+	}
+
+	func (c *ClientNode) Process(delta float64) {
+		if !c.connected {
+			// Try to contact server
+			c.udp.AsPacketPeer().PutPacket([]byte("The answer is... 42!"))
+		}
+		if c.udp.AsPacketPeer().GetAvailablePacketCount() > 0 {
+			fmt.Println("Connected: ", string(c.udp.AsPacketPeer().GetPacket()))
+			c.connected = true
+		}
+	}
 */
 package UDPServer
 

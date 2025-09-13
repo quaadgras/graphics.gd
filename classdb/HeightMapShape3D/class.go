@@ -4,6 +4,25 @@
 A 3D heightmap shape, intended for use in physics. Usually used to provide a shape for a [CollisionShape3D]. This is useful for terrain, but it is limited as overhangs (such as caves) cannot be stored. Holes in a [HeightMapShape3D] are created by assigning very low values to points in the desired area.
 Performance: [HeightMapShape3D] is faster to check collisions against than [ConcavePolygonShape3D], but it is significantly slower than primitive shapes like [BoxShape3D].
 A heightmap collision shape can also be build by using an [Image] reference:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/HeightMapShape3D"
+		"graphics.gd/classdb/Image"
+		"graphics.gd/classdb/Resource"
+		"graphics.gd/classdb/Texture2D"
+		"graphics.gd/variant/Float"
+	)
+
+	func ExampleHeightMapShape3D(shape HeightMapShape3D.Instance) {
+		var heightmap_texture = Resource.Load[Texture2D.Instance]("res://heightmap_image.exr")
+		var heightmap_image = heightmap_texture.GetImage()
+		heightmap_image.Convert(Image.FormatRf)
+		var height_min Float.X = 0.0
+		var height_max Float.X = 10.0
+		shape.UpdateMapDataFromImage(heightmap_image, height_min, height_max)
+	}
 */
 package HeightMapShape3D
 

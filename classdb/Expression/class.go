@@ -4,6 +4,36 @@
 An expression can be made of any arithmetic operation, built-in math function call, method call of a passed instance, or built-in type construction call.
 An example expression text using the built-in math functions could be sqrt(pow(3, 2) + pow(4, 2)).
 In the following example we use a [LineEdit] node to write our expression and show the result.
+
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/Expression"
+		"graphics.gd/classdb/LineEdit"
+	)
+
+	type ExampleExpression struct {
+		LineEdit LineEdit.Instance
+
+		expression Expression.Instance
+	}
+
+	func (e *ExampleExpression) Ready() {
+		e.expression = Expression.New()
+		e.LineEdit.OnTextSubmitted(func(new_text string) {
+			var err = e.expression.Parse(new_text)
+			if err != nil {
+				fmt.Println(e.expression.GetErrorText())
+				return
+			}
+			var result = e.expression.Execute()
+			if !e.expression.HasExecuteFailed() {
+				e.LineEdit.SetText(fmt.Sprint(result))
+			}
+		})
+	}
 */
 package Expression
 

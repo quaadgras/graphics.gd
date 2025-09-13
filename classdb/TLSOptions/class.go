@@ -3,6 +3,20 @@
 /*
 TLSOptions abstracts the configuration options for the [StreamPeerTLS] and [PacketPeerDTLS] classes.
 Objects of this class cannot be instantiated directly, and one of the static methods [Instance.Client], [Instance.ClientUnsafe], or [Instance.Server] should be used instead.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Resource"
+		"graphics.gd/classdb/TLSOptions"
+		"graphics.gd/classdb/X509Certificate"
+	)
+
+	func ExampleTLSOptions() {
+		var client_trusted_cas = Resource.Load[X509Certificate.Instance]("res://my_trusted_cas.crt")
+		var client_tls_options = TLSOptions.Client(client_trusted_cas, "")
+		_ = client_tls_options
+	}
 */
 package TLSOptions
 

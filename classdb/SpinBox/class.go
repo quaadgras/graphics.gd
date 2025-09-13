@@ -4,6 +4,22 @@
 [SpinBox] is a numerical input text field. It allows entering integers and floating-point numbers.
 Example: Create a [SpinBox], disable its context menu and set its text alignment to right.
 
+	package main
+
+	import (
+		"graphics.gd/classdb/GUI"
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/SpinBox"
+	)
+
+	func ExampleSpinBox(parent Node.Instance) {
+		var spinBox = SpinBox.New()
+		parent.AddChild(spinBox.AsNode())
+		var lineEdit = spinBox.GetLineEdit()
+		lineEdit.SetContextMenuEnabled(false)
+		SpinBox.Advanced(spinBox).SetHorizontalAlignment(GUI.HorizontalAlignmentRight)
+	}
+
 See [Range] class for more options over the [SpinBox].
 Note: With the [SpinBox]'s context menu disabled, you can right-click the bottom half of the spinbox to set the value to its minimum, while right-clicking the top half sets the value to its maximum.
 Note: [SpinBox] relies on an underlying [LineEdit] node. To theme a [SpinBox]'s background, add theme items for [LineEdit] and customize them. The [LineEdit] has the SpinBoxInnerLineEdit theme variation, so that you can give it a distinct appearance from regular [LineEdit]s.

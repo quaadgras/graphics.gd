@@ -4,6 +4,21 @@
 This class can be used to permanently store data in the user device's file system and to read from it. This is useful for storing game save data or player configuration files.
 Here's a sample on how to write and read from a file:
 
+	package main
+
+	import "graphics.gd/classdb/FileAccess"
+
+	func SaveToFile(content string) {
+		var file = FileAccess.Open("user://save_game.dat", FileAccess.Write)
+		file.StoreString(content)
+	}
+
+	func LoadFromFile() string {
+		var file = FileAccess.Open("user://save_game.dat", FileAccess.Read)
+		var content = file.GetAsText()
+		return content
+	}
+
 In the example above, the file will be saved in the user data folder as specified in the [url=$DOCS_URL/tutorials/io/data_paths.html]Data paths[/url] documentation.
 [FileAccess] will close when it's freed, which happens when it goes out of scope or when it gets assigned with null. [Instance.Close] can be used to close it before then explicitly. In C# the reference must be disposed manually, which can be done with the using statement or by calling the Dispose method directly.
 Note: To access project resources once exported, it is recommended to use [ResourceLoader] instead of [FileAccess], as some files are converted to engine-specific formats and their original source files might not be present in the exported PCK package. If using [FileAccess], make sure the file is included in the export by changing its import mode to Keep File (exported as is) in the Import dock, or, for files where this option is not available, change the non-resource export filter in the Export dialog to include the file's extension (e.g. *.txt).

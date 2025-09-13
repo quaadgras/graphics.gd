@@ -1141,7 +1141,7 @@ func (self class) BusLayoutChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BusLayoutChanged`))))
 }
 
-func OnBusRenamed(cb func(bus_index int, old_name string, new_name string), flags ...Signal.Flags) {
+func OnBusRenamed(cb func(bus_index Bus, old_name string, new_name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag

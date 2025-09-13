@@ -1398,7 +1398,7 @@ func (self class) IsEmulatingTouchFromMouse() bool { //gd:Input.is_emulating_tou
 	var ret = r_ret
 	return ret
 }
-func OnJoyConnectionChanged(cb func(device int, connected bool), flags ...Signal.Flags) {
+func OnJoyConnectionChanged(cb func(device Device, connected bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag

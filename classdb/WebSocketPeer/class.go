@@ -5,6 +5,42 @@ This class represents WebSocket connection, and can be used as a WebSocket clien
 You can send WebSocket binary frames using [Instance.Packetpeer.PutPacket], and WebSocket text frames using [Instance.Send] (prefer text frames when interacting with text-based API). You can check the frame type of the last packet via [Instance.WasStringPacket].
 To start a WebSocket client, first call [Instance.ConnectToUrl], then regularly call [Instance.Poll] (e.g. during [Node] process). You can query the socket state via [Instance.GetReadyState], get the number of pending packets using [Instance.Packetpeer.GetAvailablePacketCount], and retrieve them via [Instance.Packetpeer.GetPacket].
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/WebSocketPeer"
+	)
+
+	type WebSocketNode struct {
+		Node.Extension[WebSocketNode]
+
+		socket WebSocketPeer.Instance
+	}
+
+	func (w *WebSocketNode) Ready() {
+		w.socket = WebSocketPeer.New()
+		w.socket.ConnectToUrl("wss://example.com")
+	}
+
+	func (w *WebSocketNode) Process(_ float64) {
+		w.socket.Poll()
+		var state = w.socket.GetReadyState()
+		switch state {
+		case WebSocketPeer.StateOpen:
+			for w.socket.AsPacketPeer().GetAvailablePacketCount() > 0 {
+				print("Packet: ", w.socket.AsPacketPeer().GetPacket())
+			}
+		case WebSocketPeer.StateClosing:
+			// Keep polling to achieve proper close.
+		case WebSocketPeer.StateClosed:
+			var code = w.socket.GetCloseCode()
+			var reason = w.socket.GetCloseReason()
+			print("WebSocket closed with code: %d, reason %s. Clean: %s", code, reason, code != -1)
+			w.AsNode().SetProcess(false) // Stop processing.
+		}
+	}
+
 To use the peer as part of a WebSocket server refer to [Instance.AcceptStream] and the online tutorial.
 */
 package WebSocketPeer

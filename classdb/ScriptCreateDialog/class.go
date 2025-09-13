@@ -2,6 +2,17 @@
 
 /*
 The [ScriptCreateDialog] creates script files according to a given template for a given scripting language. The standard use is to configure its fields prior to calling one of the [Instance.Window.Popup] methods.
+
+	package main
+
+	import "graphics.gd/classdb/ScriptCreateDialog"
+
+	func ExampleScriptCreateDialog() {
+		var dialog = ScriptCreateDialog.New()
+		dialog.Config("Node", "res://new_node.gd")                       // For in-engine types.
+		dialog.Config("\"res://base_node.gd\"", "res://derived_node.gd") // For script types.
+		dialog.AsWindow().PopupCentered()
+	}
 */
 package ScriptCreateDialog
 

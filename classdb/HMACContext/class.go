@@ -2,6 +2,45 @@
 
 /*
 The HMACContext class is useful for advanced HMAC use cases, such as streaming the message as it supports creating the message over time rather than providing it all at once.
+
+	package main
+
+	import (
+		"encoding/hex"
+		"fmt"
+
+		"graphics.gd/classdb/HMACContext"
+		"graphics.gd/classdb/HashingContext"
+		"graphics.gd/classdb/Node"
+	)
+
+	type MyHMAC struct {
+		Node.Extension[MyHMAC]
+
+		ctx HMACContext.Instance
+	}
+
+	func (n *MyHMAC) Ready() {
+		n.ctx = HMACContext.New()
+
+		var key = []byte("supersecret")
+		var err = n.ctx.Start(HashingContext.HashSha256, key)
+		if err != nil {
+			panic(err)
+		}
+		var msg1 = []byte("this is ")
+		var msg2 = []byte("super duper secret")
+		err = n.ctx.Update(msg1)
+		if err != nil {
+			panic(err)
+		}
+		err = n.ctx.Update(msg2)
+		if err != nil {
+			panic(err)
+		}
+		var hmac = n.ctx.Finish()
+		fmt.Println(hex.EncodeToString(hmac))
+	}
 */
 package HMACContext
 

@@ -6,9 +6,74 @@ The return value should be an [Array] of [PackedStringArray]s, one for each extr
 The extracted strings will be written into a POT file selected by user under "POT Generation" in "Localization" tab in "Project Settings" menu.
 Below shows an example of a custom parser that extracts strings from a CSV file to write into a POT.
 
+	package main
+
+	import (
+		"strings"
+
+		"graphics.gd/classdb/EditorTranslationParserPlugin"
+		"graphics.gd/classdb/FileAccess"
+	)
+
+	type CustomParser struct {
+		EditorTranslationParserPlugin.Extension[CustomParser]
+	}
+
+	func (c *CustomParser) ParseFile(path string) [][]string {
+		var ret [][]string
+		var file = FileAccess.Open(path, FileAccess.Read)
+		var text = file.GetAsText()
+		for s := range strings.SplitSeq(text, ",") {
+			ret = append(ret, []string{s})
+		}
+		return ret
+	}
+
+	func (c *CustomParser) GetRecognizedExtensions() []string {
+		return []string{"csv"}
+	}
+
 To add a translatable string associated with a context, plural, or comment:
 
+	package main
+
+	func ExampleEditorTranslationParserPlugin() {
+		ret := [][]string{}
+		// This will add a message with msgid "Test 1", msgctxt "context", msgid_plural "test 1 plurals", and comment "test 1 comment".
+		ret = append(ret, []string{"Test 1", "context", "test 1 plurals", "test 1 comment"})
+		// This will add a message with msgid "A test without context" and msgid_plural "plurals".
+		ret = append(ret, []string{"A test without context", "", "plurals"})
+		// This will add a message with msgid "Only with context" and msgctxt "a friendly context".
+		ret = append(ret, []string{"Only with context", "a friendly context"})
+		_ = ret
+	}
+
 Note: If you override parsing logic for standard script types (GDScript, C#, etc.), it would be better to load the path argument using [Instance.Resourceloader.Load]. This is because built-in scripts are loaded as [Resource] type, not [FileAccess] type. For example:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/EditorTranslationParserPlugin"
+		"graphics.gd/classdb/ResourceLoader"
+		"graphics.gd/classdb/Script"
+		"graphics.gd/variant/Object"
+	)
+
+	type MyEditorTranslationParserPlugin struct {
+		EditorTranslationParserPlugin.Extension[MyEditorTranslationParserPlugin]
+	}
+
+	func (m *MyEditorTranslationParserPlugin) ParseFile(path string) [][]string {
+		var res = Object.To[Script.Instance](ResourceLoader.Load(path, "Script"))
+		var text = res.SourceCode()
+		// Parsing logic.
+		_ = text
+		return nil
+	}
+
+	func (m *MyEditorTranslationParserPlugin) GetRecognizedExtensions() []string {
+		return []string{"gd"}
+	}
 
 To use [EditorTranslationParserPlugin], register it using the [Instance.Editorplugin.AddTranslationParserPlugin] method first.
 */

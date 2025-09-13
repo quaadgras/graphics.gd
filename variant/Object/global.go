@@ -1,6 +1,8 @@
 package Object
 
 import (
+	"iter"
+
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/pointers"
 )
@@ -51,4 +53,32 @@ func Call(object Any, method string, args ...any) any { //gd:Object.call
 // invalidated and the object has not been freed).
 func InstanceIsValid(obj Any) bool { //gd:is_instance_valid
 	return !pointers.Bad(obj.AsObject()[0]) && Instance(obj.AsObject()).ID().Instance() != Nil
+}
+
+// GetPropertyList returns a list of all property names in the object.
+func GetPropertyList(object Any) []PropertyInfo { //gd:Object.get_property_list
+	return gd.ArrayAs[[]PropertyInfo](object.AsObject()[0].GetPropertyList())
+}
+
+// SetIndex sets the value at the given index in the object. If the index is out of range or the
+// value's type doesn't match, nothing happens.
+func SetIndex(object Any, index int, value any) { //gd:Object[]
+	object.AsObject()[0].SetIndex(index, gd.NewVariant(value))
+}
+
+// Index returns the Variant value at the given index in the object. If the index is out of range,
+func Index(object Any, index int) any { //gd:Object[]
+	return object.AsObject()[0].GetIndex(index).Interface()
+}
+
+// Iter returns an iterator over the elements of an Object that implements Iterable.
+func Iter(object Any) iter.Seq[any] {
+	iter := gd.NewVariant(object).Iterator()
+	return func(yield func(any) bool) {
+		for iter.Next() {
+			if !yield(iter.Value()) {
+				return
+			}
+		}
+	}
 }

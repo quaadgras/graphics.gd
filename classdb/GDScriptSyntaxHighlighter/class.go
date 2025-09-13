@@ -2,6 +2,19 @@
 
 /*
 Note: This class can only be used for editor plugins because it relies on editor settings.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/GDScriptSyntaxHighlighter"
+		"graphics.gd/classdb/TextEdit"
+	)
+
+	func ExampleScriptSyntaxHighlighter() {
+		var code_preview = TextEdit.New()
+		var highlighter = GDScriptSyntaxHighlighter.New()
+		TextEdit.Advanced(code_preview).SetSyntaxHighlighter(highlighter.AsSyntaxHighlighter())
+	}
 */
 package GDScriptSyntaxHighlighter
 

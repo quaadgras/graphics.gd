@@ -19,7 +19,7 @@ func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson
 		if i > 0 {
 			fmt.Fprint(w, ", ")
 		}
-		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, "", arg.Meta, arg.Type))
+		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, class.Name+"."+signal.Name+"."+arg.Name, arg.Meta, arg.Type))
 	}
 	fmt.Fprint(w, "), flags ...Signal.Flags) {\n\t")
 	fmt.Fprintln(w, "var flags_together Signal.Flags")

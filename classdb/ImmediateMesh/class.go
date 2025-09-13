@@ -4,6 +4,23 @@
 A mesh type optimized for creating geometry manually, similar to OpenGL 1.x immediate mode.
 Here's a sample on how to generate a triangular face:
 
+	package main
+
+	import (
+		"graphics.gd/classdb/ImmediateMesh"
+		"graphics.gd/classdb/Mesh"
+		"graphics.gd/variant/Vector3"
+	)
+
+	func ExampleImmediateMesh() {
+		var mesh = ImmediateMesh.New()
+		mesh.SurfaceBegin(Mesh.PrimitiveTriangles)
+		mesh.SurfaceAddVertex(Vector3.Left)
+		mesh.SurfaceAddVertex(Vector3.Forward)
+		mesh.SurfaceAddVertex(Vector3.Zero)
+		mesh.SurfaceEnd()
+	}
+
 Note: Generating complex geometries with [ImmediateMesh] is highly inefficient. Instead, it is designed to generate simple geometry that changes often.
 */
 package ImmediateMesh
