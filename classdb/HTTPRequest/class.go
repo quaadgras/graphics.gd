@@ -7,7 +7,94 @@ Warning: See the notes and warnings on [HTTPClient] for limitations, especially 
 Note: When exporting to Android, make sure to enable the INTERNET permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 Example: Contact a REST API and print one of its returned fields:
 
+	package main
+
+	import (
+		"encoding/json"
+
+		"graphics.gd/classdb/Engine"
+		"graphics.gd/classdb/HTTPClient"
+		"graphics.gd/classdb/HTTPRequest"
+		"graphics.gd/classdb/Node"
+		"graphics.gd/variant/Signal"
+	)
+
+	type ExampleHTTP struct {
+		Node.Extension[ExampleHTTP]
+	}
+
+	func (n *ExampleHTTP) Ready() {
+		// Create an HTTP request node and connect its completion signal.
+		var httpRequest = HTTPRequest.New()
+		n.AsNode().AddChild(httpRequest.AsNode())
+		httpRequest.OnRequestCompleted(func(result HTTPRequest.Result, response_code int, headers []string, body []byte) {
+			var Response struct {
+				Headers map[string]string
+			}
+			json.Unmarshal(body, &Response)
+			// Will print the user agent string used by the HTTPRequest node (as recognized by httpbin.org).
+			println(Response.Headers["User-Agent"])
+
+			// Perform a POST request. The URL below returns JSON as of writing.
+			body, _ = json.Marshal(map[string]string{"name": "Godette"})
+			var err = HTTPRequest.Expanded(httpRequest).Request("https://httpbin.org/post", nil, HTTPClient.MethodPost, string(body))
+			if err != nil {
+				Engine.Raise(err)
+			}
+		}, Signal.OneShot)
+		// Perform a GET request. The URL below returns JSON as of writing.
+		var err = HTTPRequest.Expanded(httpRequest).Request("https://httpbin.org/get", nil, HTTPClient.MethodGet, "")
+		if err != nil {
+			Engine.Raise(err)
+		}
+		// Note: Don't make simultaneous requests using a single HTTPRequest node.
+	}
+
 Example: Load an image using [HTTPRequest] and display it:
+
+	package main
+
+	import (
+		"errors"
+
+		"graphics.gd/classdb/Engine"
+		"graphics.gd/classdb/HTTPRequest"
+		"graphics.gd/classdb/Image"
+		"graphics.gd/classdb/ImageTexture"
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/TextureRect"
+		"graphics.gd/variant/Signal"
+	)
+
+	type ExampleDownloadImage struct {
+		Node.Extension[ExampleDownloadImage]
+	}
+
+	func (n ExampleDownloadImage) Ready() {
+		var http_request = HTTPRequest.New()
+		n.AsNode().AddChild(http_request.AsNode())
+		http_request.AsHTTPRequest().OnRequestCompleted(func(result HTTPRequest.Result, response_code int, headers []string, body []byte) {
+			if result != HTTPRequest.ResultSuccess {
+				Engine.Raise(errors.New("Image couldn't be downloaded. Try a different image."))
+			}
+			var image = Image.New()
+			var err = image.LoadPngFromBuffer(body)
+			if err != nil {
+				Engine.Raise(errors.New("Couldn't load the image."))
+			}
+			var texture = ImageTexture.CreateFromImage(image)
+
+			// Display the image in a TextureRect node.
+			var texture_rect = TextureRect.New()
+			texture_rect.AsTextureRect().SetTexture(texture.AsTexture2D())
+			n.AsNode().AddChild(texture_rect.AsNode())
+		}, Signal.OneShot)
+		// Perform the HTTP request. The URL below returns a PNG image as of writing.
+		var error = http_request.Request("https://placehold.co/512")
+		if error != nil {
+			panic("An error occurred in the HTTP request.")
+		}
+	}
 
 Note: [HTTPRequest] nodes will automatically handle decompression of response bodies. A Accept-Encoding header will be automatically added to each of your requests, unless one is already specified. Any response with a Content-Encoding: gzip header will automatically be decompressed and delivered to you as uncompressed bytes.
 */
@@ -505,7 +592,7 @@ func (self class) SetHttpsProxy(host String.Readable, port int64) { //gd:HTTPReq
 		port int64
 	}{pointers.Get(gd.InternalString(host)), port})
 }
-func (self Instance) OnRequestCompleted(cb func(result int, response_code int, headers []string, body []byte), flags ...Signal.Flags) {
+func (self Instance) OnRequestCompleted(cb func(result Result, response_code int, headers []string, body []byte), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
 		flags_together |= flag

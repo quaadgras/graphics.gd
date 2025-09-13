@@ -4,6 +4,15 @@
 [TextServer] is the API backend for managing fonts and rendering text.
 Note: This is a low-level API, consider using [TextLine], [TextParagraph], and [Font] classes instead.
 This is an abstract class, so to get the currently active [TextServer] instance, use the following code:
+
+	package main
+
+	import "graphics.gd/classdb/TextServerManager"
+
+	func ExampleTextServer() {
+		var ts = TextServerManager.GetPrimaryInterface()
+		_ = ts
+	}
 */
 package TextServer
 

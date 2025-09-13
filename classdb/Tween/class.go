@@ -6,15 +6,102 @@ Tweens are mostly useful for animations requiring a numerical property to be int
 A [Tween] can be created by using either [Instance.Scenetree.CreateTween] or [Instance.Node.CreateTween]. [Tween]s created manually (i.e. by using Tween.new()) are invalid and can't be used for tweening values.
 A tween animation is created by adding [Tweener]s to the [Tween] object, using [Instance.TweenProperty], [Instance.TweenInterval], [Instance.TweenCallback] or [Instance.TweenMethod]:
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PropertyTweener"
+		"graphics.gd/classdb/SceneTree"
+		"graphics.gd/classdb/Sprite2D"
+		"graphics.gd/variant/Color"
+		"graphics.gd/variant/Vector2"
+	)
+
+	func ExampleTween(node Node.Instance, sprite Sprite2D.Instance) {
+		var tween = SceneTree.Get(node).CreateTween()
+		PropertyTweener.Make(tween, sprite.AsObject(), "modulate", Color.W3C.Red, 1)
+		PropertyTweener.Make(tween, sprite.AsObject(), "scale", Vector2.Zero, 1)
+		tween.TweenCallback(sprite.AsNode().QueueFree)
+	}
+
 This sequence will make the $Sprite node turn red, then shrink, before finally calling [Instance.Node.QueueFree] to free the sprite. [Tweener]s are executed one after another by default. This behavior can be changed using [Instance.Parallel] and [Instance.SetParallel].
 When a [Tweener] is created with one of the tween_* methods, a chained method call can be used to tweak the properties of this [Tweener]. For example, if you want to set a different transition type in the above example, you can use [Instance.SetTrans]:
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PropertyTweener"
+		"graphics.gd/classdb/SceneTree"
+		"graphics.gd/classdb/Sprite2D"
+		"graphics.gd/classdb/Tween"
+		"graphics.gd/variant/Color"
+		"graphics.gd/variant/Vector2"
+	)
+
+	func ExampleTweenSetTrans(node Node.Instance, sprite Sprite2D.Instance) {
+		var tween = SceneTree.Get(node).CreateTween()
+		PropertyTweener.Make(tween, sprite.AsObject(), "modulate", Color.W3C.Red, 1).SetTrans(Tween.TransSine)
+		PropertyTweener.Make(tween, sprite.AsObject(), "scale", Vector2.Zero, 1).SetTrans(Tween.TransBounce)
+		tween.TweenCallback(sprite.AsNode().QueueFree)
+	}
+
 Most of the [Tween] methods can be chained this way too. In the following example the [Tween] is bound to the running script's node and a default transition is set for its [Tweener]s:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PropertyTweener"
+		"graphics.gd/classdb/SceneTree"
+		"graphics.gd/classdb/Sprite2D"
+		"graphics.gd/classdb/Tween"
+		"graphics.gd/variant/Color"
+		"graphics.gd/variant/Vector2"
+	)
+
+	func ExampleTweenBound(node Node.Instance, sprite Sprite2D.Instance) {
+		var tween = Tween.Instance(Tween.Advanced(SceneTree.Get(node).CreateTween()).BindNode(node)).SetTrans(Tween.TransElastic)
+		PropertyTweener.Make(tween, sprite.AsObject(), "modulate", Color.W3C.Red, 1)
+		PropertyTweener.Make(tween, sprite.AsObject(), "scale", Vector2.Zero, 1)
+		tween.TweenCallback(sprite.AsNode().QueueFree)
+	}
 
 Another interesting use for [Tween]s is animating arbitrary sets of objects:
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PropertyTweener"
+		"graphics.gd/variant/Vector2"
+	)
+
+	func ExampleTweenObjects(node Node.Instance) {
+		var tween = node.CreateTween()
+		for _, sprite := range node.GetChildren() {
+			PropertyTweener.Make(tween, sprite.AsObject(), "position", Vector2.Zero, 1.0)
+		}
+	}
+
 In the example above, all children of a node are moved one after another to position (0, 0).
 You should avoid using more than one [Tween] per object's property. If two or more tweens animate one property at the same time, the last one created will take priority and assign the final value. If you want to interrupt and restart an animation, consider assigning the [Tween] to a variable:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/Tween"
+	)
+
+	var tween Tween.Instance
+
+	func Animate(node Node.Instance) {
+		if tween != Tween.Nil {
+			tween.Kill()
+		}
+		tween = node.CreateTween()
+	}
 
 Some [Tweener]s use transitions and eases. The first accepts a [TransitionType] constant, and refers to the way the timing of the animation is handled (see [url=https://easings.net/]easings.net[/url] for some examples). The second accepts an [EaseType] constant, and controls where the trans_type is applied to the interpolation (in the beginning, the end, or both). If you don't know which transition and easing to pick, you can try different [TransitionType] constants with [EaseInOut], and use the one that looks best.
 [url=https://raw.githubusercontent.com/godotengine/godot-docs/master/img/tween_cheatsheet.webp]Tween easing and transition types cheatsheet[/url]

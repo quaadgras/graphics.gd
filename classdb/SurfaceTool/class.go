@@ -3,6 +3,25 @@
 /*
 The [SurfaceTool] is used to construct a [Mesh] by specifying vertex attributes individually. It can be used to construct a [Mesh] from a script. All properties except indices need to be added before calling [Instance.AddVertex]. For example, to add vertex colors and UVs:
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Mesh"
+		"graphics.gd/classdb/SurfaceTool"
+		"graphics.gd/variant/Color"
+		"graphics.gd/variant/Vector2"
+		"graphics.gd/variant/Vector3"
+	)
+
+	func ExampleSurfaceTool() {
+		var st = SurfaceTool.New()
+		st.Begin(Mesh.PrimitiveTriangles)
+		st.SetColor(Color.RGBA{1, 0, 0, 1})
+		st.SetUv(Vector2.New(0, 0))
+		st.AddVertex(Vector3.New(0, 0, 0))
+
+	}
+
 The above [SurfaceTool] now contains one vertex of a triangle which has a UV coordinate and a specified [Color]. If another vertex were added without calling [Instance.SetUv] or [Instance.SetColor], then the last values would be used.
 Vertex attributes must be passed before calling [Instance.AddVertex]. Failure to do so will result in an error when committing the vertex information to a mesh.
 Additionally, the attributes used before the first vertex is added determine the format of the mesh. For example, if you only add UVs to the first vertex, you cannot add color to any of the subsequent vertices.

@@ -1548,7 +1548,7 @@ func (self Instance) NotifyThreadSafe(what int) { //gd:Node.notify_thread_safe
 Binds this [Tween] with the given [param node]. [Tween]s are processed directly by the [SceneTree], so they run independently of the animated nodes. When you bind a [Node] with the [Tween], the [Tween] will halt the animation when the object is not inside tree and the [Tween] will be automatically killed when the bound object is freed. Also [constant TWEEN_PAUSE_BOUND] will make the pausing behavior dependent on the bound node.
 For a shorter way to create and bind a [Tween], you can use [method Node.create_tween].
 */
-func (self Instance) BindTween(peer Tween.Instance) Tween.Instance { //gd:Tween.bind_node
+func (self Instance) BindNode(peer Tween.Instance) Tween.Instance { //gd:Tween.bind_node
 	return Tween.Instance(Tween.Advanced(peer).BindNode(self))
 }
 

@@ -5,10 +5,45 @@ UndoRedo works by registering methods and property changes inside "actions". You
 When an action is committed, all of the do_* methods will run. If the [Instance.Undo] method is used, the undo_* methods will run. If the [Instance.Redo] method is used, once again, all of the do_* methods will run.
 Here's an example on how to add an action:
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Node2D"
+		"graphics.gd/classdb/UndoRedo"
+		"graphics.gd/variant/Vector2"
+	)
+
+	var undoRedo = UndoRedo.New()
+
+	func ExampleUndoRedo(node Node2D.Instance) {
+		undoRedo.CreateAction("Move the node")
+		undoRedo.AddDoMethod(func() {})
+		undoRedo.AddUndoMethod(func() {})
+		undoRedo.AddDoProperty(node.AsObject(), "position", Vector2.New(100.0, 100.0))
+		undoRedo.AddUndoProperty(node.AsObject(), "position", node.Position())
+		undoRedo.CommitAction()
+	}
+
 Before calling any of the add_(un)do_* methods, you need to first call [Instance.CreateAction]. Afterwards you need to call [Instance.CommitAction].
 If you don't need to register a method, you can leave [Instance.AddDoMethod] and [Instance.AddUndoMethod] out; the same goes for properties. You can also register more than one method/property.
 If you are making an [EditorPlugin] and want to integrate into the editor's undo history, use [EditorUndoRedoManager] instead.
 If you are registering multiple properties/method which depend on one another, be aware that by default undo operation are called in the same order they have been added. Therefore instead of grouping do operation with their undo operations it is better to group do on one side and undo on the other as shown below.
+
+	package main
+
+	func ExamplesUndoRedo() {
+		undoRedo.CreateAction("Add object")
+
+		// DO
+		undoRedo.AddDoMethod(func() {}) // _create_object
+		undoRedo.AddDoMethod(func() {}) // _add_object_to_singleton
+
+		// UNDO
+		undoRedo.AddUndoMethod(func() {}) // _remove_object_from_singleton
+		undoRedo.AddUndoMethod(func() {}) // _destroy_that_object
+
+		undoRedo.CommitAction()
+	}
 */
 package UndoRedo
 

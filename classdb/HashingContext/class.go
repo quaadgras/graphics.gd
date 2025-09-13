@@ -3,6 +3,33 @@
 /*
 The HashingContext class provides an interface for computing cryptographic hashes over multiple iterations. Useful for computing hashes of big files (so you don't have to load them all in memory), network streams, and data streams in general (so you don't have to hold buffers).
 The [HashType] enum shows the supported hashing algorithms.
+
+	package main
+
+	import (
+		"encoding/hex"
+		"fmt"
+
+		"graphics.gd/classdb/FileAccess"
+		"graphics.gd/classdb/HashingContext"
+	)
+
+	const ChunkSize = 1024
+
+	func HashFile(path string) {
+		if !FileAccess.FileExists(path) {
+			return
+		}
+		var ctx = HashingContext.New()
+		ctx.Start(HashingContext.HashSha256)
+		var file = FileAccess.Open(path, FileAccess.Read)
+		for file.GetPosition() < file.GetLength() {
+			remaining := int(file.GetLength() - file.GetPosition())
+			ctx.Update(file.GetBuffer(min(remaining, ChunkSize)))
+		}
+		res := ctx.Finish()
+		fmt.Println(hex.EncodeToString(res), res)
+	}
 */
 package HashingContext
 

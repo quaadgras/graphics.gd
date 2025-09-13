@@ -634,6 +634,26 @@ func (o Object) Notification(what Int, reversed bool) {
 		int64(what), reversed,
 	}))
 }
+func (o Object) GetPropertyList() Array {
+	return pointers.New[Array](gdextension.Call[gdextension.Array](ObjectChecked(o.AsObject()), object_methods.get_property_list, gdextension.SizeArray, nil))
+}
+
+func (o Object) SetIndex(i int, v Variant) {
+	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set_indexed, 0|gdextension.SizeInt<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
+		Index   int64
+		Element gdextension.Variant
+	}{
+		int64(i), gdextension.Variant(pointers.Get(v)),
+	}))
+}
+
+func (o Object) GetIndex(i int) Variant {
+	return pointers.New[Variant]([3]uint64(gdextension.Call[gdextension.Variant](ObjectChecked(o.AsObject()), object_methods.get_indexed, gdextension.SizeVariant|gdextension.SizeInt<<4, unsafe.Pointer(&struct {
+		Index int64
+	}{
+		int64(i),
+	}))))
+}
 
 func (rc RefCounted) Reference() {
 	gdextension.Call[struct{}](ObjectChecked(rc.AsObject()), refcounted_methods.reference, 0, nil)

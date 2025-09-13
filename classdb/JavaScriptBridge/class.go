@@ -137,7 +137,7 @@ func GetInterface(intf string) JavaScriptObject.Instance { //gd:JavaScriptBridge
 Creates a reference to a [Callable] that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
 Note: The callback function must take exactly one [Array] argument, which is going to be the JavaScript [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments]arguments object[/url] converted to an array.
 */
-func CreateCallback(callable Callable.Function) JavaScriptObject.Instance { //gd:JavaScriptBridge.create_callback
+func CreateCallback(callable func(args []any) any) JavaScriptObject.Instance { //gd:JavaScriptBridge.create_callback
 	once.Do(singleton)
 	return JavaScriptObject.Instance(Advanced().CreateCallback(Callable.New(callable)))
 }

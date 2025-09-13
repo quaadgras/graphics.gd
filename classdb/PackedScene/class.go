@@ -6,7 +6,48 @@ Can be used to save a node to a file. When saving, the node as well as all the n
 Note: The node doesn't need to own itself.
 Example: Load a saved scene:
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/PackedScene"
+		"graphics.gd/classdb/Resource"
+	)
+
+	func ExamplePackedSceneLoad(parent Node.Instance) {
+		var scene = Resource.Load[PackedScene.Instance]("res://scene.tscn").Instantiate()
+		parent.AddChild(scene)
+	}
+
 Example: Save a node with different owners. The following example creates 3 objects: [Node2D] (node), [RigidBody2D] (body) and [CollisionObject2D] (collision). collision is a child of body which is a child of node. Only body is owned by node and [Instance.Pack] will therefore only save those two nodes, but not collision.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/CollisionShape2D"
+		"graphics.gd/classdb/Engine"
+		"graphics.gd/classdb/Node2D"
+		"graphics.gd/classdb/PackedScene"
+		"graphics.gd/classdb/ResourceSaver"
+		"graphics.gd/classdb/RigidBody2D"
+	)
+
+	func ExamplePackedSceneSave() {
+		var node = Node2D.New()
+		var body = RigidBody2D.New()
+		var collision = CollisionShape2D.New()
+		body.AsNode().AddChild(collision.AsNode())
+		node.AsNode().AddChild(body.AsNode())
+		body.AsNode().SetOwner(node.AsNode()) // Change owner of `body`, but not of `collision`.
+		var scene = PackedScene.New()
+		var result = scene.Pack(node.AsNode()) // Only `node` and `body` are now packed.
+		if result == nil {
+			var err = ResourceSaver.Save(scene.AsResource(), "res://path/name.tscn", 0) // Or "user://..."
+			if err != nil {
+				Engine.Raise(err)
+			}
+		}
+	}
 */
 package PackedScene
 

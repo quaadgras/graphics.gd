@@ -3,6 +3,17 @@
 /*
 The [PCKPacker] is used to create packages that can be loaded into a running project using [Instance.Projectsettings.LoadResourcePack].
 
+	package main
+
+	import "graphics.gd/classdb/PCKPacker"
+
+	func ExamplePCKPacker() {
+		var packer = PCKPacker.New()
+		packer.PckStart("test.pck")
+		packer.AddFile("res://text.txt", "text.txt")
+		packer.Flush()
+	}
+
 The above [PCKPacker] creates package test.pck, then adds a file named text.txt at the root of the package.
 Note: PCK is Godot's own pack file format. To create ZIP archives that can be read by any program, use [ZIPPacker] instead.
 */

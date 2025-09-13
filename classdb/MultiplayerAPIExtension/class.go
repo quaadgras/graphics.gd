@@ -4,7 +4,87 @@
 This class can be used to extend or replace the default [MultiplayerAPI] implementation via script or extensions.
 The following example extend the default implementation ([SceneMultiplayer]) by logging every RPC being made, and every object being configured for replication.
 
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/MultiplayerAPI"
+		"graphics.gd/classdb/MultiplayerAPIExtension"
+		"graphics.gd/classdb/MultiplayerPeer"
+		"graphics.gd/classdb/MultiplayerSpawner"
+		"graphics.gd/classdb/MultiplayerSynchronizer"
+		"graphics.gd/variant"
+		"graphics.gd/variant/Object"
+	)
+
+	type LogMultiplayer struct {
+		MultiplayerAPIExtension.Extension[LogMultiplayer]
+
+		base MultiplayerAPI.Instance
+	}
+
+	func (m *LogMultiplayer) Init() {
+		m.base.OnConnectedToServer(func() { MultiplayerAPI.Advanced(m.AsMultiplayerAPI()).ConnectedToServer().Emit() })
+		m.base.OnConnectionFailed(func() { MultiplayerAPI.Advanced(m.AsMultiplayerAPI()).ConnectionFailed().Emit() })
+		m.base.OnPeerConnected(func(id int) { MultiplayerAPI.Advanced(m.AsMultiplayerAPI()).PeerConnected().Emit(variant.New(id)) })
+		m.base.OnPeerDisconnected(func(id int) { MultiplayerAPI.Advanced(m.AsMultiplayerAPI()).PeerDisconnected().Emit(variant.New(id)) })
+	}
+
+	func (m *LogMultiplayer) Poll() error { return m.base.Poll() }
+
+	func (m *LogMultiplayer) Rpc(peer int, object Object.Instance, method string, args []any) error {
+		fmt.Println("Got RPC for", peer, ":", object, "::", method, "(", args, ")")
+		return MultiplayerAPI.Expanded(m.base).Rpc(peer, object, method, args)
+	}
+
+	func (m *LogMultiplayer) ObjectConfigurationAdd(object Object.Instance, config any) error {
+		if _, ok := config.(MultiplayerSynchronizer.Instance); ok {
+			fmt.Println("Adding synchronization configuration for", object, ". Synchronizer:", config)
+		} else if _, ok := config.(MultiplayerSpawner.Instance); ok {
+			fmt.Println("Adding node", object, "to the spawn list. Spawner:", config)
+		}
+		return m.base.ObjectConfigurationAdd(object, config)
+	}
+
+	func (m *LogMultiplayer) ObjectConfigurationRemove(object Object.Instance, config any) error {
+		if _, ok := config.(MultiplayerSynchronizer.Instance); ok {
+			fmt.Println("Removing synchronization configuration for", object, ". Synchronizer:", config)
+		} else if _, ok := config.(MultiplayerSpawner.Instance); ok {
+			fmt.Println("Removing node", object, "from the spawn list. Spawner:", config)
+		}
+		return m.base.ObjectConfigurationRemove(object, config)
+	}
+
+	func (m *LogMultiplayer) SetMultiplayerPeer(p_peer MultiplayerPeer.Instance) {
+		m.base.SetMultiplayerPeer(p_peer)
+	}
+
+	func (m *LogMultiplayer) GetMultiplayerPeer() MultiplayerPeer.Instance {
+		return m.base.MultiplayerPeer()
+	}
+
+	func (m *LogMultiplayer) GetUniqueID() int {
+		return m.base.GetUniqueId()
+	}
+
+	func (m *LogMultiplayer) GetPeerIDs() []int32 {
+		return m.base.GetPeers()
+	}
+
 Then in your main scene or in an autoload call [Instance.Scenetree.SetMultiplayer] to start using your custom [MultiplayerAPI]:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Engine"
+		"graphics.gd/classdb/SceneTree"
+		"graphics.gd/variant/Object"
+	)
+
+	func ExampleSetCustomMultiplayer() {
+		Object.To[SceneTree.Instance](Engine.GetMainLoop()).SetMultiplayer(new(LogMultiplayer).AsMultiplayerAPI())
+	}
 
 Native extensions can alternatively use the [Instance.Multiplayerapi.SetDefaultInterface] method during initialization to configure themselves as the default implementation.
 */

@@ -5,6 +5,37 @@ MeshDataTool provides access to individual vertices in a [Mesh]. It allows users
 To use MeshDataTool, load a mesh with [Instance.CreateFromSurface]. When you are finished editing the data commit the data to a mesh with [Instance.CommitToSurface].
 Below is an example of how MeshDataTool may be used.
 
+	package main
+
+	import (
+		"graphics.gd/classdb/ArrayMesh"
+		"graphics.gd/classdb/BoxMesh"
+		"graphics.gd/classdb/Mesh"
+		"graphics.gd/classdb/MeshDataTool"
+		"graphics.gd/classdb/MeshInstance3D"
+		"graphics.gd/classdb/Node"
+		"graphics.gd/variant/Vector3"
+	)
+
+	func ExampleMeshDataTool(parent Node.Instance) {
+		var mesh = ArrayMesh.New()
+		mesh.AddSurfaceFromArrays(Mesh.PrimitiveTriangles, BoxMesh.New().AsPrimitiveMesh().GetMeshArrays())
+		var mdt = MeshDataTool.New()
+		mdt.CreateFromSurface(mesh, 0)
+		for i := 0; i < mdt.GetVertexCount(); i++ {
+			var vertex = mdt.GetVertex(i)
+			// In this example we extend the mesh by one unit, which results in separated faces as it is flat shaded.
+			vertex = Vector3.Add(vertex, mdt.GetVertexNormal(i))
+			// Save your change.
+			mdt.SetVertex(i, vertex)
+		}
+		mesh.ClearSurfaces()
+		mdt.CommitToSurface(mesh)
+		var mi = MeshInstance3D.New()
+		mi.SetMesh(mesh.AsMesh())
+		parent.AddChild(mi.AsNode())
+	}
+
 See also [ArrayMesh], [ImmediateMesh] and [SurfaceTool] for procedural geometry generation.
 Note: Godot uses clockwise [url=https://learnopengl.com/Advanced-OpenGL/Face-culling]winding order[/url] for front faces of triangle primitive modes.
 */

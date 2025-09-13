@@ -4,6 +4,35 @@
 [MainLoop] is the abstract base class for a Godot project's game loop. It is inherited by [SceneTree], which is the default game loop implementation used in Godot projects, though it is also possible to write and use one's own [MainLoop] subclass instead of the scene tree.
 Upon the application start, a [MainLoop] implementation must be provided to the OS; otherwise, the application will exit. This happens automatically (and a [SceneTree] is created) unless a [MainLoop] [Script] is provided from the command line (with e.g. godot -s my_loop.gd) or the [member ProjectSettings.application/run/main_loop_type] project setting is overwritten.
 Here is an example script implementing a simple [MainLoop]:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Input"
+		"graphics.gd/classdb/MainLoop"
+		"graphics.gd/variant/Float"
+	)
+
+	type MyMainLoop struct {
+		MainLoop.Extension[MyMainLoop]
+
+		timeElapsed Float.X
+	}
+
+	func (m *MyMainLoop) Initialize() {
+		println("Initialized:")
+		println("  Starting time: ", m.timeElapsed)
+	}
+
+	func (m *MyMainLoop) Process(delta Float.X) bool {
+		m.timeElapsed += delta
+		return Input.GetMouseButtonMask() != 0 || Input.IsKeyPressed(Input.KeyEscape)
+	}
+
+	func (m *MyMainLoop) Finalize() {
+		println("Finalized:")
+		println("  End time: ", m.timeElapsed)
+	}
 */
 package MainLoop
 

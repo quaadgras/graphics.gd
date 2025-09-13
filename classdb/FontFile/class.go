@@ -11,6 +11,20 @@ Supported font formats:
 Note: A character is a symbol that represents an item (letter, digit etc.) in an abstract way.
 Note: A glyph is a bitmap or a shape used to draw one or more characters in a context-dependent manner. Glyph indices are bound to the specific font data source.
 Note: If none of the font data sources contain glyphs for a character used in a string, the character in question will be replaced with a box displaying its hexadecimal code.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/FontFile"
+		"graphics.gd/classdb/Label"
+		"graphics.gd/classdb/Resource"
+	)
+
+	func ExampleFontFile(label Label.Instance) {
+		var f = Resource.Load[FontFile.Instance]("res://BarlowCondensed-Bold.ttf")
+		label.AsControl().AddThemeFontOverride("font", f.AsFont())
+		label.AsControl().AddThemeFontSizeOverride("font_size", 64)
+	}
 */
 package FontFile
 

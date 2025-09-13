@@ -5,6 +5,21 @@ Object that holds the project-independent editor settings. These settings are ge
 Property names use slash delimiters to distinguish sections. Setting values can be of any [Variant] type. It's recommended to use snake_case for editor settings to be consistent with the Godot editor itself.
 Accessing the settings can be done using the following methods, such as:
 
+	package main
+
+	import (
+		"graphics.gd/classdb/EditorInterface"
+		"graphics.gd/variant/Object"
+	)
+
+	func ExampleEditorSettings() {
+		var settings = EditorInterface.GetEditorSettings()
+		settings.SetSetting("some/property", 10)
+		settings.GetSetting("some/property")
+		var list_of_settings = Object.GetPropertyList(settings)
+		_ = list_of_settings
+	}
+
 Note: This class shouldn't be instantiated directly. Instead, access the singleton using [Instance.Editorinterface.GetEditorSettings].
 */
 package EditorSettings

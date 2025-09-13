@@ -55,6 +55,9 @@ func transdoc() error {
 		return xray.New(err)
 	}
 	for _, class := range spec.Classes {
+		if class.Name == "Object" {
+			continue
+		}
 		docs := class.Description
 		var blocks []string
 		for codeblock := range codeblocks(docs) {
@@ -64,12 +67,14 @@ func transdoc() error {
 			if existing, err := os.ReadFile("./internal/gddocs/" + class.Name + ".go"); err == nil {
 				if !bytes.HasPrefix(existing, []byte("/*"+blocks[0]+"*/")) {
 					fmt.Println(class.Name + ".go")
-					fmt.Print("/*" + blocks[0] + "*/")
+					fmt.Println("/*" + blocks[0] + "*/")
+					fmt.Println("\npackage main")
 					os.Exit(0)
 				}
 			} else {
 				fmt.Println(class.Name + ".go")
-				fmt.Print("/*" + blocks[0] + "*/")
+				fmt.Println("/*" + blocks[0] + "*/")
+				fmt.Println("\npackage main")
 				os.Exit(0)
 			}
 		}
@@ -81,7 +86,8 @@ func transdoc() error {
 					}
 				}
 				fmt.Printf("%s%d.go", class.Name, i+2)
-				fmt.Print(block)
+				fmt.Println("/*" + block + "*/")
+				fmt.Println("\npackage main")
 				os.Exit(0)
 			}
 		}
