@@ -90,8 +90,10 @@ func gd(args ...string) error {
 	if err := project.Setup(); err != nil {
 		return err
 	}
-	if err := docgen.Process(project.Directory); err != nil {
-		return xray.New(err)
+	if project.IncludesGo {
+		if err := docgen.Process(project.Directory); err != nil {
+			return xray.New(err)
+		}
 	}
 	var platform = builderFor(GOOS)
 	if goos := os.Getenv("GOOS"); goos != "" {
@@ -121,7 +123,7 @@ func gd(args ...string) error {
 		if err := platform.Build(); err != nil {
 			return xray.New(err)
 		}
-		if err := os.Chdir("./graphics"); err != nil {
+		if err := os.Chdir(project.GraphicsDirectory); err != nil {
 			return xray.New(err)
 		}
 		return tooling.Godot.Exec("-e")
@@ -135,6 +137,9 @@ func gd(args ...string) error {
 		case "run":
 			return platform.Run(args[2:]...)
 		case "test":
+			if !project.IncludesGo {
+				return errors.New("cannot run 'gd test' on a project that does not include Go code")
+			}
 			converted := []string{}
 			for _, arg := range os.Args[2:] {
 				switch arg {

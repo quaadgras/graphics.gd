@@ -15,6 +15,9 @@ import (
 type Linux struct{}
 
 func (Linux) Build(args ...string) error {
+	if !project.IncludesGo {
+		return nil
+	}
 	var GOARCH = runtime.GOARCH
 	if goarch := os.Getenv("GOARCH"); goarch != "" {
 		GOARCH = goarch

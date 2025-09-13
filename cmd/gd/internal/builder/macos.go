@@ -31,6 +31,9 @@ func (MacOS) Build(args ...string) error {
 	if err := os.MkdirAll(filepath.Join(project.ReleasesDirectory, "darwin", "universal"), 0755); err != nil {
 		return xray.New(err)
 	}
+	if !project.IncludesGo {
+		return nil
+	}
 	if err := os.Setenv("CGO_ENABLED", "1"); err != nil {
 		return xray.New(err)
 	}

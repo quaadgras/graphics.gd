@@ -35,6 +35,9 @@ var (
 	//go:embed graphics/export_presets.cfg
 	export_presets_cfg string
 
+	//go:embed graphics/gdscript_export_presets.cfg
+	gdscript_export_presets_cfg string
+
 	//go:embed graphics/gitignore
 	gitignore string
 
@@ -47,6 +50,8 @@ var (
 	Directory         string // Directory of the current project (where go.mod is located).
 	GraphicsDirectory string // Graphics directory.
 	ReleasesDirectory string // Releases directory (Directory + "/releases"
+
+	IncludesGo bool
 )
 
 func AndroidSafePackageName(name string) string {
@@ -58,13 +63,25 @@ func AppleSafePackageName(name string) string {
 }
 
 func Setup() error {
-	if err := setupGoMod(); err != nil {
-		return xray.New(err)
-	}
 	wd, err := os.Getwd()
 	if err != nil {
 		return xray.New(err)
 	}
+	if !hasGoMod(wd) {
+		if _, err := os.Stat("project.godot"); err == nil {
+			Name = filepath.Base(wd)
+			Directory = wd
+			GraphicsDirectory = wd
+			ReleasesDirectory = filepath.Join(wd, "releases")
+			SetupFile(false, filepath.Join(ReleasesDirectory, ".gdignore"), "")
+			if err := SetupFile(false, filepath.Join(GraphicsDirectory, "export_presets.cfg"), gdscript_export_presets_cfg, filepath.Base(wd), AndroidSafePackageName(filepath.Base(wd)), AppleSafePackageName(filepath.Base(wd))); err != nil {
+				return xray.New(err)
+			}
+			return nil
+		}
+		return fmt.Errorf("gd requires your project to have a go.mod file")
+	}
+	IncludesGo = true
 	Name = filepath.Base(wd)
 	Directory = wd
 	GraphicsDirectory = filepath.Join(wd, "graphics")
@@ -151,14 +168,10 @@ func SetupFiles(embedded embed.FS, embedRoot, targetDir string) error {
 	})
 }
 
-func setupGoMod() error {
-	wd, err := os.Getwd()
-	if err != nil {
-		return xray.New(err)
-	}
+func hasGoMod(wd string) bool {
 	for wd := wd; true; wd = filepath.Dir(wd) { // look for a go.mod file
 		if wd == "/" {
-			return fmt.Errorf("gd requires your project to have a go.mod file")
+			return false
 		}
 		_, err := os.Stat(wd + "/go.mod")
 		if err == nil {
@@ -166,10 +179,10 @@ func setupGoMod() error {
 		} else if os.IsNotExist(err) {
 			continue
 		} else {
-			return xray.New(err)
+			return false
 		}
 	}
-	return nil
+	return true
 }
 
 // CopyDir recursively copies a directory tree from src to dst.
