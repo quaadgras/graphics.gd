@@ -15,8 +15,8 @@ _Why use graphics.gd?_
 * Neither Xcode nor MacOS is needed to build iOS apps.
 * Drop in `gd` command, a cross-platform build tool compatible with GDScript-based Godot projects.
 
-Not just a wrapper! graphics.gd is designed from the ground up to provide a cohesive curated graphics
-runtime on top of Godot + GDExtension.
+Not just a wrapper! graphics.gd has been designed from the ground up to provide a cohesively curated graphics
+runtime for Go on top of Godot + GDExtension.
 
 Join us in our [active discussions forum](https://github.com/quaadgras/graphics.gd/discussions)
 with any questions, comments or feedback you may have. Show us what you're building!
