@@ -10,6 +10,7 @@ import (
 	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/Color"
 	FloatVariant "graphics.gd/variant/Float"
+	IntVariant "graphics.gd/variant/Int"
 	"graphics.gd/variant/Projection"
 	"graphics.gd/variant/Transform2D"
 	"graphics.gd/variant/Vector2"
@@ -168,9 +169,12 @@ type AnyFloat interface {
 	~float32 | ~float64 | ~Float
 }
 
-func NewFloat[T AnyFloat](x T) Float {
+func NewFloat[T AnyFloat | IntVariant.Any](x T) Float {
 	rvalue := reflect.ValueOf(x)
 	if rvalue.Kind() != reflect.Struct {
+		if rvalue.Kind() != reflect.Float32 && rvalue.Kind() != reflect.Float64 {
+			rvalue = reflect.ValueOf(float64(rvalue.Int()))
+		}
 		return Float{X: rvalue.Float()}
 	}
 	return rvalue.Convert(reflect.TypeFor[Float]()).Interface().(Float)

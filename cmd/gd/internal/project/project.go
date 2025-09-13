@@ -67,7 +67,18 @@ func Setup() error {
 	if err != nil {
 		return xray.New(err)
 	}
-	if !hasGoMod(wd) {
+	var specificGoFile bool
+	var isRun bool
+	for _, arg := range os.Args[1:] {
+		if strings.HasSuffix(arg, ".go") {
+			specificGoFile = true
+		}
+		if arg == "run" {
+			isRun = true
+		}
+	}
+	var runningSpecificGoFile = specificGoFile && isRun
+	if !runningSpecificGoFile && !hasGoMod(wd) {
 		if _, err := os.Stat("project.godot"); err == nil {
 			Name = filepath.Base(wd)
 			Directory = wd
@@ -88,6 +99,9 @@ func Setup() error {
 	ReleasesDirectory = filepath.Join(wd, "releases")
 	if runtime.GOOS == "android" {
 		GraphicsDirectory = "/sdcard/gd/" + filepath.Base(wd) // Godot project needs to be in an accessible location
+	}
+	if err := os.MkdirAll(GraphicsDirectory, 0755); err != nil {
+		return xray.New(err)
 	}
 	if _, err := os.Stat(filepath.Join(GraphicsDirectory, "project.godot")); os.IsNotExist(err) {
 		// only create the main scene if the project.godot file doesn't exist yet

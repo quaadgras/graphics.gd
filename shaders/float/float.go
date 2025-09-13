@@ -1,13 +1,16 @@
 // Package float provides GPU operations on floating-point values.
 package float
 
-import "graphics.gd/shaders/internal/gpu"
+import (
+	"graphics.gd/shaders/internal/gpu"
+	"graphics.gd/variant/Int"
+)
 
 // X is a floating-point value on the GPU (represented by an unspecified number of bits).
 type X gpu.Float
 
 // New creates a new [X] value from a float.
-func New[T gpu.AnyFloat](x T) X { return gpu.NewFloat(x) }
+func New[T gpu.AnyFloat | Int.Any](x T) X { return gpu.NewFloat(x) }
 
 func Add[A, B gpu.AnyFloat](a A, b B) X { //glsl:+(float,float)
 	return gpu.NewFloatExpression(gpu.Op(gpu.NewFloat(a), "+", gpu.NewFloat(b)))
