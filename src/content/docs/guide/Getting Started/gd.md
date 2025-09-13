@@ -14,7 +14,7 @@ go install graphics.gd/cmd/gd@release
 Run this command again whenever you update `graphics.gd` (it doesn't currently stay in sync with your project version).
 
 The `gd` command is also fully compatible with standard GDScript-based Godot projects and can be used to initialise cross-platform export configurations
-and to easily launch projects on Web, Android and iOS. To use it this way, run it inside the directory where `project.godot` is located.
+and to easily launch projects on Web, Android and iOS (on any platform). To use it this way, run it inside the directory where `project.godot` is located.
 
 #### Quick Rundown
 
