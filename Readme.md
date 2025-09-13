@@ -8,7 +8,7 @@ _Why use graphics.gd?_
 * [Write shaders in Go!](./shaders/Readme.md)
 * Unlike C++/C#/GDScript/Rust/Swift equivalents, all Godot RIDs, callables and dictionary arguments are concretely typed.
 * A good balance of performance and convenience.
-* General purpose pure-Go 'variant' packages, reuse them in any Go project.
+* General purpose pure-Go 'variant' math packages, reuse them in any Go project.
 * After the first build, recompile quickly, with an experience similar to a scripting language.
 * Easily cross-compile for windows/macos/android/linux/ios/web on any host platform.
 * Neither Java, nor an Android SDK/NDK is needed to build Android apps.
