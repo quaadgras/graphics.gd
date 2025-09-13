@@ -15,7 +15,7 @@ func BenchmarkBuiltinPointerCall(B *testing.B) {
 	B.ReportAllocs()
 	s := gd.NewString("Hello, World!")
 	var sum int64
-	for i := 0; i < B.N; i++ {
+	for B.Loop() {
 		sum += s.Length()
 	}
 	if sum != int64(B.N)*int64(len("Hello, World!")) {
@@ -25,14 +25,14 @@ func BenchmarkBuiltinPointerCall(B *testing.B) {
 
 func BenchmarkMethodBindCall(B *testing.B) {
 	B.ReportAllocs()
-	for i := 0; i < B.N; i++ {
+	for B.Loop() {
 		Engine.GetFramesPerSecond()
 	}
 }
 
 func BenchmarkMethodBindCallWithArgument(B *testing.B) {
 	B.ReportAllocs()
-	for i := 0; i < B.N; i++ {
+	for B.Loop() {
 		Engine.SetMaxFps(60)
 	}
 }
