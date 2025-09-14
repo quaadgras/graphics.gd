@@ -52,7 +52,11 @@ func Call(object Any, method string, args ...any) any { //gd:Object.call
 // InstanceIsValid returns true if the given object instance is valid (the reference has not been
 // invalidated and the object has not been freed).
 func InstanceIsValid(obj Any) bool { //gd:is_instance_valid
-	return !pointers.Bad(obj.AsObject()[0]) && Instance(obj.AsObject()).ID().Instance() != Nil
+	if !pointers.Bad(obj.AsObject()[0]) {
+		return false
+	}
+	_, ok := Instance(obj.AsObject()).ID().Instance()
+	return ok
 }
 
 // GetPropertyList returns a list of all property names in the object.
@@ -62,7 +66,7 @@ func GetPropertyList(object Any) []PropertyInfo { //gd:Object.get_property_list
 
 // SetIndex sets the value at the given index in the object. If the index is out of range or the
 // value's type doesn't match, nothing happens.
-func SetIndex(object Any, index int, value any) { //gd:Object[]
+func SetIndex(object Any, index int, value any) { //gd:Object[]=
 	object.AsObject()[0].SetIndex(index, gd.NewVariant(value))
 }
 
