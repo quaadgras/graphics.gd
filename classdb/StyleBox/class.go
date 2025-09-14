@@ -111,7 +111,7 @@ type Any interface {
 }
 
 type Interface interface {
-	Draw(to_canvas_item RID.Any, rect Rect2.PositionSize)
+	Draw(to_canvas_item RID.CanvasItem, rect Rect2.PositionSize)
 	GetDrawRect(rect Rect2.PositionSize) Rect2.PositionSize
 	// Virtual method to be implemented by the user. Returns a custom minimum size that the stylebox must respect when drawing. By default [Instance.GetMinimumSize] only takes content margins into account. This method can be overridden to add another size restriction. A combination of the default behavior and the output of this method will be used, to account for both sizes.
 	GetMinimumSize() Vector2.XY
@@ -123,11 +123,11 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Draw(to_canvas_item RID.Any, rect Rect2.PositionSize)        { return }
+func (self implementation) Draw(to_canvas_item RID.CanvasItem, rect Rect2.PositionSize) { return }
 func (self implementation) GetDrawRect(rect Rect2.PositionSize) (_ Rect2.PositionSize)  { return }
 func (self implementation) GetMinimumSize() (_ Vector2.XY)                              { return }
 func (self implementation) TestMask(point Vector2.XY, rect Rect2.PositionSize) (_ bool) { return }
-func (Instance) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.CanvasItem, rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)

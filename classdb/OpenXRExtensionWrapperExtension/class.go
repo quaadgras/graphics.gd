@@ -149,11 +149,11 @@ type Interface interface {
 	// Called right after the main swapchains are (re)created.
 	OnMainSwapchainsCreated()
 	// Called right before the given viewport is rendered.
-	OnPreDrawViewport(viewport RID.Any)
+	OnPreDrawViewport(viewport RID.Viewport)
 	// Called right after the given viewport is rendered.
 	//
 	// Note: The draw commands might only be queued at this point, not executed.
-	OnPostDrawViewport(viewport RID.Any)
+	OnPostDrawViewport(viewport RID.Viewport)
 	// Called right before the OpenXR session is destroyed.
 	OnSessionDestroyed()
 	// Called when the OpenXR session state is changed to idle.
@@ -230,8 +230,8 @@ func (self implementation) OnSessionCreated(session int)                     { r
 func (self implementation) OnProcess()                                       { return }
 func (self implementation) OnPreRender()                                     { return }
 func (self implementation) OnMainSwapchainsCreated()                         { return }
-func (self implementation) OnPreDrawViewport(viewport RID.Any)               { return }
-func (self implementation) OnPostDrawViewport(viewport RID.Any)              { return }
+func (self implementation) OnPreDrawViewport(viewport RID.Viewport)          { return }
+func (self implementation) OnPostDrawViewport(viewport RID.Viewport)         { return }
 func (self implementation) OnSessionDestroyed()                              { return }
 func (self implementation) OnStateIdle()                                     { return }
 func (self implementation) OnStateReady()                                    { return }
@@ -494,7 +494,7 @@ func (Instance) _on_main_swapchains_created(impl func(ptr gdclass.Receiver)) (cb
 /*
 Called right before the given viewport is rendered.
 */
-func (Instance) _on_pre_draw_viewport(impl func(ptr gdclass.Receiver, viewport RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _on_pre_draw_viewport(impl func(ptr gdclass.Receiver, viewport RID.Viewport)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var viewport = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -507,7 +507,7 @@ Called right after the given viewport is rendered.
 
 Note: The draw commands might only be queued at this point, not executed.
 */
-func (Instance) _on_post_draw_viewport(impl func(ptr gdclass.Receiver, viewport RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _on_post_draw_viewport(impl func(ptr gdclass.Receiver, viewport RID.Viewport)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var viewport = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

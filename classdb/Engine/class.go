@@ -167,6 +167,10 @@ func GetFramesPerSecond() Float.X { //gd:Engine.get_frames_per_second
 Returns the total number of frames passed since the engine started. This number is increased every physics frame. See also [GetProcessFrames].
 
 This method can be used to run expensive logic less often without relying on a [graphics.gd/classdb/Timer]:
+
+	if Engine.GetPhysicsFrames()%2 == 0 {
+		// Run expensive logic only once every 2 physics frames here.
+	}
 */
 func GetPhysicsFrames() int { //gd:Engine.get_physics_frames
 	once.Do(singleton)
@@ -177,6 +181,10 @@ func GetPhysicsFrames() int { //gd:Engine.get_physics_frames
 Returns the total number of frames passed since the engine started. This number is increased every process frame, regardless of whether the render loop is enabled. See also [GetFramesDrawn] and [GetPhysicsFrames].
 
 This method can be used to run expensive logic less often without relying on a [graphics.gd/classdb/Timer]:
+
+	if Engine.GetProcessFrames()%5 == 0 {
+		// Run expensive logic only once every 5 process (render) frames here.
+	}
 */
 func GetProcessFrames() int { //gd:Engine.get_process_frames
 	once.Do(singleton)
@@ -217,6 +225,12 @@ Returns the current engine version information as a data structure containing th
 The hex value is encoded as follows, from left to right: one byte for the major, one byte for the minor, one byte for the patch version. For example, "3.1.12" would be 0x03010C.
 
 Note: The hex value is still an int internally, and printing it will give you its decimal representation, which is not particularly meaningful. Use hexadecimal literals for quick version comparisons from code:
+
+	if Engine.GetVersionInfo().Hex >= 0x040100 {
+		// Do things specific to version 4.1 or later.
+	} else {
+		// Do things specific to versions before 4.1.
+	}
 */
 func GetVersionInfo() VersionInfo { //gd:Engine.get_version_info
 	once.Do(singleton)
@@ -294,6 +308,33 @@ func GetArchitectureName() string { //gd:Engine.get_architecture_name
 
 /*
 Returns true if the engine is inside the fixed physics process step of the main loop.
+
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/Engine"
+		"graphics.gd/classdb/Node"
+	)
+
+	type ExampleInPhysicsFrame struct {
+		Node.Extension[ExampleInPhysicsFrame]
+	}
+
+	func (e *ExampleInPhysicsFrame) EnterTree() {
+		// Depending on when the node is added to the tree,
+		// prints either "true" or "false".
+		fmt.Println(Engine.IsInPhysicsFrame())
+	}
+
+	func (e *ExampleInPhysicsFrame) Process(delta float64) {
+		fmt.Println(Engine.IsInPhysicsFrame()) // Prints false
+	}
+
+	func (e *ExampleInPhysicsFrame) PhysicsProcess(delta float64) {
+		fmt.Println(Engine.IsInPhysicsFrame()) // Prints true
+	}
 */
 func IsInPhysicsFrame() bool { //gd:Engine.is_in_physics_frame
 	once.Do(singleton)
@@ -302,6 +343,11 @@ func IsInPhysicsFrame() bool { //gd:Engine.is_in_physics_frame
 
 /*
 Returns true if a singleton with the given 'name' exists in the global scope. See also [GetSingleton].
+
+	fmt.Println(Engine.HasSingleton("OS"))          // Prints true
+	fmt.Println(Engine.HasSingleton("Engine"))      // Prints true
+	fmt.Println(Engine.HasSingleton("AudioServer")) // Prints true
+	fmt.Println(Engine.HasSingleton("Unknown"))     // Prints false
 
 Note: Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
 */
@@ -392,6 +438,12 @@ func GetScriptLanguage(index int) ScriptLanguage.Instance { //gd:Engine.get_scri
 
 /*
 Returns true if the script is currently running inside the editor, otherwise returns false. This is useful for @tool scripts to conditionally draw editor helpers, or prevent accidentally running "game" code that would affect the scene state while in the editor:
+
+	if Engine.IsEditorHint() {
+		DrawGizmos()
+	} else {
+		SimulatePhysics()
+	}
 
 See [Running code in the editor] in the documentation for more information.
 
@@ -611,6 +663,10 @@ Returns the total number of frames passed since the engine started. This number 
 This method can be used to run expensive logic less often without relying on a [graphics.gd/classdb/Timer]:
 
 
+	if Engine.GetPhysicsFrames()%2 == 0 {
+		// Run expensive logic only once every 2 physics frames here.
+	}
+
 */
 //go:nosplit
 func (self class) GetPhysicsFrames() int64 { //gd:Engine.get_physics_frames
@@ -624,6 +680,10 @@ Returns the total number of frames passed since the engine started. This number 
 
 This method can be used to run expensive logic less often without relying on a [graphics.gd/classdb/Timer]:
 
+
+	if Engine.GetProcessFrames()%5 == 0 {
+		// Run expensive logic only once every 5 process (render) frames here.
+	}
 
 */
 //go:nosplit
@@ -670,6 +730,12 @@ The hex value is encoded as follows, from left to right: one byte for the major,
 
 Note: The hex value is still an int internally, and printing it will give you its decimal representation, which is not particularly meaningful. Use hexadecimal literals for quick version comparisons from code:
 
+
+	if Engine.GetVersionInfo().Hex >= 0x040100 {
+		// Do things specific to version 4.1 or later.
+	} else {
+		// Do things specific to versions before 4.1.
+	}
 
 */
 //go:nosplit
@@ -763,6 +829,32 @@ func (self class) GetArchitectureName() String.Readable { //gd:Engine.get_archit
 /*
 Returns true if the engine is inside the fixed physics process step of the main loop.
 
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/Engine"
+		"graphics.gd/classdb/Node"
+	)
+
+	type ExampleInPhysicsFrame struct {
+		Node.Extension[ExampleInPhysicsFrame]
+	}
+
+	func (e *ExampleInPhysicsFrame) EnterTree() {
+		// Depending on when the node is added to the tree,
+		// prints either "true" or "false".
+		fmt.Println(Engine.IsInPhysicsFrame())
+	}
+
+	func (e *ExampleInPhysicsFrame) Process(delta float64) {
+		fmt.Println(Engine.IsInPhysicsFrame()) // Prints false
+	}
+
+	func (e *ExampleInPhysicsFrame) PhysicsProcess(delta float64) {
+		fmt.Println(Engine.IsInPhysicsFrame()) // Prints true
+	}
 
 */
 //go:nosplit
@@ -775,6 +867,11 @@ func (self class) IsInPhysicsFrame() bool { //gd:Engine.is_in_physics_frame
 /*
 Returns true if a singleton with the given 'name' exists in the global scope. See also [GetSingleton].
 
+
+	fmt.Println(Engine.HasSingleton("OS"))          // Prints true
+	fmt.Println(Engine.HasSingleton("Engine"))      // Prints true
+	fmt.Println(Engine.HasSingleton("AudioServer")) // Prints true
+	fmt.Println(Engine.HasSingleton("Unknown"))     // Prints false
 
 
 Note: Global singletons are not the same as autoloaded nodes, which are configurable in the project settings.
@@ -884,6 +981,12 @@ func (self class) GetScriptLanguage(index int64) [1]gdclass.ScriptLanguage { //g
 /*
 Returns true if the script is currently running inside the editor, otherwise returns false. This is useful for @tool scripts to conditionally draw editor helpers, or prevent accidentally running "game" code that would affect the scene state while in the editor:
 
+
+	if Engine.IsEditorHint() {
+		DrawGizmos()
+	} else {
+		SimulatePhysics()
+	}
 
 
 See [Running code in the editor] in the documentation for more information.

@@ -130,15 +130,15 @@ type Interface interface {
 	// Called when the entire [graphics.gd/classdb/Texture2D] is requested to be drawn over a [graphics.gd/classdb/CanvasItem], with the top-left offset specified in 'pos'. 'modulate' specifies a multiplier for the colors being drawn, while 'transpose' specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 	//
 	// Note: This is only used in 2D rendering, not 3D.
-	Draw(to_canvas_item RID.Any, pos Vector2.XY, modulate Color.RGBA, transpose bool)
+	Draw(to_canvas_item RID.CanvasItem, pos Vector2.XY, modulate Color.RGBA, transpose bool)
 	// Called when the [graphics.gd/classdb/Texture2D] is requested to be drawn onto [graphics.gd/classdb/CanvasItem]'s specified 'rect'. 'modulate' specifies a multiplier for the colors being drawn, while 'transpose' specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 	//
 	// Note: This is only used in 2D rendering, not 3D.
-	DrawRect(to_canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)
+	DrawRect(to_canvas_item RID.CanvasItem, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)
 	// Called when a part of the [graphics.gd/classdb/Texture2D] specified by 'src_rect''s coordinates is requested to be drawn onto [graphics.gd/classdb/CanvasItem]'s specified 'rect'. 'modulate' specifies a multiplier for the colors being drawn, while 'transpose' specifies whether drawing should be performed in column-major order instead of row-major order (resulting in 90-degree clockwise rotation).
 	//
 	// Note: This is only used in 2D rendering, not 3D.
-	DrawRectRegion(to_canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)
+	DrawRectRegion(to_canvas_item RID.CanvasItem, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -150,13 +150,13 @@ func (self implementation) GetWidth() (_ int)                   { return }
 func (self implementation) GetHeight() (_ int)                  { return }
 func (self implementation) IsPixelOpaque(x int, y int) (_ bool) { return }
 func (self implementation) HasAlpha() (_ bool)                  { return }
-func (self implementation) Draw(to_canvas_item RID.Any, pos Vector2.XY, modulate Color.RGBA, transpose bool) {
+func (self implementation) Draw(to_canvas_item RID.CanvasItem, pos Vector2.XY, modulate Color.RGBA, transpose bool) {
 	return
 }
-func (self implementation) DrawRect(to_canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) {
+func (self implementation) DrawRect(to_canvas_item RID.CanvasItem, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool) {
 	return
 }
-func (self implementation) DrawRectRegion(to_canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) {
+func (self implementation) DrawRectRegion(to_canvas_item RID.CanvasItem, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) {
 	return
 }
 
@@ -211,7 +211,7 @@ Called when the entire [graphics.gd/classdb/Texture2D] is requested to be drawn 
 
 Note: This is only used in 2D rendering, not 3D.
 */
-func (Instance) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, pos Vector2.XY, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.CanvasItem, pos Vector2.XY, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[Vector2.XY](p_args, 1)
@@ -227,7 +227,7 @@ Called when the [graphics.gd/classdb/Texture2D] is requested to be drawn onto [g
 
 Note: This is only used in 2D rendering, not 3D.
 */
-func (Instance) _draw_rect(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw_rect(impl func(ptr gdclass.Receiver, to_canvas_item RID.CanvasItem, rect Rect2.PositionSize, tile bool, modulate Color.RGBA, transpose bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
@@ -244,7 +244,7 @@ Called when a part of the [graphics.gd/classdb/Texture2D] specified by 'src_rect
 
 Note: This is only used in 2D rendering, not 3D.
 */
-func (Instance) _draw_rect_region(impl func(ptr gdclass.Receiver, to_canvas_item RID.Any, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _draw_rect_region(impl func(ptr gdclass.Receiver, to_canvas_item RID.CanvasItem, rect Rect2.PositionSize, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)

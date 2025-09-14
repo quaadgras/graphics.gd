@@ -140,7 +140,7 @@ type Interface interface {
 	GetContactImpulse(contact_idx int) Vector3.XYZ
 	GetContactLocalShape(contact_idx int) int
 	GetContactLocalVelocityAtPosition(contact_idx int) Vector3.XYZ
-	GetContactCollider(contact_idx int) RID.Any
+	GetContactCollider(contact_idx int) RID.Body3D
 	GetContactColliderPosition(contact_idx int) Vector3.XYZ
 	GetContactColliderId(contact_idx int) int
 	GetContactColliderObject(contact_idx int) Object.Instance
@@ -195,7 +195,7 @@ func (self implementation) GetContactLocalNormal(contact_idx int) (_ Vector3.XYZ
 func (self implementation) GetContactImpulse(contact_idx int) (_ Vector3.XYZ)                 { return }
 func (self implementation) GetContactLocalShape(contact_idx int) (_ int)                      { return }
 func (self implementation) GetContactLocalVelocityAtPosition(contact_idx int) (_ Vector3.XYZ) { return }
-func (self implementation) GetContactCollider(contact_idx int) (_ RID.Any)                    { return }
+func (self implementation) GetContactCollider(contact_idx int) (_ RID.Body3D)                 { return }
 func (self implementation) GetContactColliderPosition(contact_idx int) (_ Vector3.XYZ)        { return }
 func (self implementation) GetContactColliderId(contact_idx int) (_ int)                      { return }
 func (self implementation) GetContactColliderObject(contact_idx int) (_ Object.Instance)      { return }
@@ -474,7 +474,7 @@ func (Instance) _get_contact_local_velocity_at_position(impl func(ptr gdclass.Re
 		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
 	}
 }
-func (Instance) _get_contact_collider(impl func(ptr gdclass.Receiver, contact_idx int) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_contact_collider(impl func(ptr gdclass.Receiver, contact_idx int) RID.Body3D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var contact_idx = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())

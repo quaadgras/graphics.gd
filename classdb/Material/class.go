@@ -107,7 +107,7 @@ type Any interface {
 
 type Interface interface {
 	// Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [graphics.gd/classdb/Material]'s [graphics.gd/classdb/Shader].
-	GetShaderRid() RID.Any
+	GetShaderRid() RID.Shader
 	// Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools.
 	GetShaderMode() Shader.Mode
 	// Only exposed for the purpose of overriding. You cannot call this function directly. Used internally to determine if [Instance.NextPass] should be shown in the editor or not.
@@ -121,7 +121,7 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetShaderRid() (_ RID.Any)      { return }
+func (self implementation) GetShaderRid() (_ RID.Shader)   { return }
 func (self implementation) GetShaderMode() (_ Shader.Mode) { return }
 func (self implementation) CanDoNextPass() (_ bool)        { return }
 func (self implementation) CanUseRenderPriority() (_ bool) { return }
@@ -129,7 +129,7 @@ func (self implementation) CanUseRenderPriority() (_ bool) { return }
 /*
 Only exposed for the purpose of overriding. You cannot call this function directly. Used internally by various editor tools. Used to access the RID of the [graphics.gd/classdb/Material]'s [graphics.gd/classdb/Shader].
 */
-func (Instance) _get_shader_rid(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_shader_rid(impl func(ptr gdclass.Receiver) RID.Shader) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)

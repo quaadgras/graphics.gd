@@ -106,287 +106,287 @@ type Any interface {
 
 type Interface interface {
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.WorldBoundaryShapeCreate].
-	WorldBoundaryShapeCreate() RID.Any
+	WorldBoundaryShapeCreate() RID.Shape2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.SeparationRayShapeCreate].
-	SeparationRayShapeCreate() RID.Any
+	SeparationRayShapeCreate() RID.Shape2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.SegmentShapeCreate].
-	SegmentShapeCreate() RID.Any
+	SegmentShapeCreate() RID.Shape2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.CircleShapeCreate].
-	CircleShapeCreate() RID.Any
+	CircleShapeCreate() RID.Shape2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.RectangleShapeCreate].
-	RectangleShapeCreate() RID.Any
+	RectangleShapeCreate() RID.Shape2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.CapsuleShapeCreate].
-	CapsuleShapeCreate() RID.Any
+	CapsuleShapeCreate() RID.Shape2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.ConvexPolygonShapeCreate].
-	ConvexPolygonShapeCreate() RID.Any
+	ConvexPolygonShapeCreate() RID.Shape2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.ConcavePolygonShapeCreate].
-	ConcavePolygonShapeCreate() RID.Any
+	ConcavePolygonShapeCreate() RID.Shape2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.ShapeSetData].
-	ShapeSetData(shape RID.Any, data any)
+	ShapeSetData(shape RID.Shape2D, data any)
 	// Should set the custom solver bias for the given 'shape'. It defines how much bodies are forced to separate on contact.
 	//
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal shape_get_custom_solver_bias method. Corresponds to [graphics.gd/classdb/Shape2D.Instance.CustomSolverBias].
-	ShapeSetCustomSolverBias(shape RID.Any, bias Float.X)
+	ShapeSetCustomSolverBias(shape RID.Shape2D, bias Float.X)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.ShapeGetType].
-	ShapeGetType(shape RID.Any) PhysicsServer2D.ShapeType
+	ShapeGetType(shape RID.Shape2D) PhysicsServer2D.ShapeType
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.ShapeGetData].
-	ShapeGetData(shape RID.Any) any
+	ShapeGetData(shape RID.Shape2D) any
 	// Should return the custom solver bias of the given 'shape', which defines how much bodies are forced to separate on contact when this shape is involved.
 	//
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal shape_get_custom_solver_bias method. Corresponds to [graphics.gd/classdb/Shape2D.Instance.CustomSolverBias].
-	ShapeGetCustomSolverBias(shape RID.Any) Float.X
+	ShapeGetCustomSolverBias(shape RID.Shape2D) Float.X
 	// Given two shapes and their parameters, should return true if a collision between the two would occur, with additional details passed in 'results'.
 	//
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal shape_collide method. Corresponds to [graphics.gd/classdb/PhysicsDirectSpaceState2D.Instance.CollideShape].
-	ShapeCollide(shape_A RID.Any, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Any, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results gdextension.Pointer, result_max int, result_count *int32) bool
+	ShapeCollide(shape_A RID.Shape2D, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Shape2D, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results gdextension.Pointer, result_max int, result_count *int32) bool
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.SpaceCreate].
-	SpaceCreate() RID.Any
+	SpaceCreate() RID.Space2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.SpaceSetActive].
-	SpaceSetActive(space RID.Any, active bool)
+	SpaceSetActive(space RID.Space2D, active bool)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.SpaceIsActive].
-	SpaceIsActive(space RID.Any) bool
+	SpaceIsActive(space RID.Space2D) bool
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.SpaceSetParam].
-	SpaceSetParam(space RID.Any, param PhysicsServer2D.SpaceParameter, value Float.X)
+	SpaceSetParam(space RID.Space2D, param PhysicsServer2D.SpaceParameter, value Float.X)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.SpaceGetParam].
-	SpaceGetParam(space RID.Any, param PhysicsServer2D.SpaceParameter) Float.X
+	SpaceGetParam(space RID.Space2D, param PhysicsServer2D.SpaceParameter) Float.X
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.SpaceGetDirectState].
-	SpaceGetDirectState(space RID.Any) PhysicsDirectSpaceState2D.Instance
+	SpaceGetDirectState(space RID.Space2D) PhysicsDirectSpaceState2D.Instance
 	// Used internally to allow the given 'space' to store contact points, up to 'max_contacts'. This is automatically set for the main [graphics.gd/classdb/World2D]'s space when [graphics.gd/classdb/SceneTree.Instance.DebugCollisionsHint] is true, or by checking "Visible Collision Shapes" in the editor. Only works in debug builds.
 	//
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal space_set_debug_contacts method.
-	SpaceSetDebugContacts(space RID.Any, max_contacts int)
+	SpaceSetDebugContacts(space RID.Space2D, max_contacts int)
 	// Should return the positions of all contacts that have occurred during the last physics step in the given 'space'. See also [Interface.SpaceGetContactCount] and [Interface.SpaceSetDebugContacts].
 	//
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal space_get_contacts method.
-	SpaceGetContacts(space RID.Any) []Vector2.XY
+	SpaceGetContacts(space RID.Space2D) []Vector2.XY
 	// Should return how many contacts have occurred during the last physics step in the given 'space'. See also [Interface.SpaceGetContacts] and [Interface.SpaceSetDebugContacts].
 	//
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal space_get_contact_count method.
-	SpaceGetContactCount(space RID.Any) int
+	SpaceGetContactCount(space RID.Space2D) int
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaCreate].
-	AreaCreate() RID.Any
+	AreaCreate() RID.Area2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetSpace].
-	AreaSetSpace(area RID.Any, space RID.Any)
+	AreaSetSpace(area RID.Area2D, space RID.Space2D)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetSpace].
-	AreaGetSpace(area RID.Any) RID.Any
+	AreaGetSpace(area RID.Area2D) RID.Space2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaAddShape].
-	AreaAddShape(area RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool)
+	AreaAddShape(area RID.Area2D, shape RID.Shape2D, transform Transform2D.OriginXY, disabled bool)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetShape].
-	AreaSetShape(area RID.Any, shape_idx int, shape RID.Any)
+	AreaSetShape(area RID.Area2D, shape_idx int, shape RID.Shape2D)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetShapeTransform].
-	AreaSetShapeTransform(area RID.Any, shape_idx int, transform Transform2D.OriginXY)
+	AreaSetShapeTransform(area RID.Area2D, shape_idx int, transform Transform2D.OriginXY)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetShapeDisabled].
-	AreaSetShapeDisabled(area RID.Any, shape_idx int, disabled bool)
+	AreaSetShapeDisabled(area RID.Area2D, shape_idx int, disabled bool)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetShapeCount].
-	AreaGetShapeCount(area RID.Any) int
+	AreaGetShapeCount(area RID.Area2D) int
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetShape].
-	AreaGetShape(area RID.Any, shape_idx int) RID.Any
+	AreaGetShape(area RID.Area2D, shape_idx int) RID.Area2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetShapeTransform].
-	AreaGetShapeTransform(area RID.Any, shape_idx int) Transform2D.OriginXY
+	AreaGetShapeTransform(area RID.Area2D, shape_idx int) Transform2D.OriginXY
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaRemoveShape].
-	AreaRemoveShape(area RID.Any, shape_idx int)
+	AreaRemoveShape(area RID.Area2D, shape_idx int)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaClearShapes].
-	AreaClearShapes(area RID.Any)
+	AreaClearShapes(area RID.Area2D)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaAttachObjectInstanceId].
-	AreaAttachObjectInstanceId(area RID.Any, id int)
+	AreaAttachObjectInstanceId(area RID.Area2D, id int)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetObjectInstanceId].
-	AreaGetObjectInstanceId(area RID.Any) int
+	AreaGetObjectInstanceId(area RID.Area2D) int
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaAttachCanvasInstanceId].
-	AreaAttachCanvasInstanceId(area RID.Any, id int)
+	AreaAttachCanvasInstanceId(area RID.Area2D, id int)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetCanvasInstanceId].
-	AreaGetCanvasInstanceId(area RID.Any) int
+	AreaGetCanvasInstanceId(area RID.Area2D) int
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetParam].
-	AreaSetParam(area RID.Any, param PhysicsServer2D.AreaParameter, value any)
+	AreaSetParam(area RID.Area2D, param PhysicsServer2D.AreaParameter, value any)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetTransform].
-	AreaSetTransform(area RID.Any, transform Transform2D.OriginXY)
+	AreaSetTransform(area RID.Area2D, transform Transform2D.OriginXY)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetParam].
-	AreaGetParam(area RID.Any, param PhysicsServer2D.AreaParameter) any
+	AreaGetParam(area RID.Area2D, param PhysicsServer2D.AreaParameter) any
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetTransform].
-	AreaGetTransform(area RID.Any) Transform2D.OriginXY
+	AreaGetTransform(area RID.Area2D) Transform2D.OriginXY
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetCollisionLayer].
-	AreaSetCollisionLayer(area RID.Any, layer int)
+	AreaSetCollisionLayer(area RID.Area2D, layer int)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetCollisionLayer].
-	AreaGetCollisionLayer(area RID.Any) int
+	AreaGetCollisionLayer(area RID.Area2D) int
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetCollisionMask].
-	AreaSetCollisionMask(area RID.Any, mask int)
+	AreaSetCollisionMask(area RID.Area2D, mask int)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetCollisionMask].
-	AreaGetCollisionMask(area RID.Any) int
+	AreaGetCollisionMask(area RID.Area2D) int
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetMonitorable].
-	AreaSetMonitorable(area RID.Any, monitorable bool)
+	AreaSetMonitorable(area RID.Area2D, monitorable bool)
 	// If set to true, allows the area with the given [Resource.ID] to detect mouse inputs when the mouse cursor is hovering on it.
 	//
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal area_set_pickable method. Corresponds to [graphics.gd/classdb/CollisionObject2D.Instance.InputPickable].
-	AreaSetPickable(area RID.Any, pickable bool)
+	AreaSetPickable(area RID.Area2D, pickable bool)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetMonitorCallback].
-	AreaSetMonitorCallback(area RID.Any, callback Callable.Function)
+	AreaSetMonitorCallback(area RID.Area2D, callback Callable.Function)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetAreaMonitorCallback].
-	AreaSetAreaMonitorCallback(area RID.Any, callback Callable.Function)
+	AreaSetAreaMonitorCallback(area RID.Area2D, callback Callable.Function)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyCreate].
-	BodyCreate() RID.Any
+	BodyCreate() RID.Body2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetSpace].
-	BodySetSpace(body RID.Any, space RID.Any)
+	BodySetSpace(body RID.Body2D, space RID.Space2D)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetSpace].
-	BodyGetSpace(body RID.Any) RID.Any
+	BodyGetSpace(body RID.Body2D) RID.Space2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetMode].
-	BodySetMode(body RID.Any, mode PhysicsServer2D.BodyMode)
+	BodySetMode(body RID.Body2D, mode PhysicsServer2D.BodyMode)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetMode].
-	BodyGetMode(body RID.Any) PhysicsServer2D.BodyMode
+	BodyGetMode(body RID.Body2D) PhysicsServer2D.BodyMode
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyAddShape].
-	BodyAddShape(body RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool)
+	BodyAddShape(body RID.Body2D, shape RID.Shape2D, transform Transform2D.OriginXY, disabled bool)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetShape].
-	BodySetShape(body RID.Any, shape_idx int, shape RID.Any)
+	BodySetShape(body RID.Body2D, shape_idx int, shape RID.Shape2D)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetShapeTransform].
-	BodySetShapeTransform(body RID.Any, shape_idx int, transform Transform2D.OriginXY)
+	BodySetShapeTransform(body RID.Body2D, shape_idx int, transform Transform2D.OriginXY)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetShapeCount].
-	BodyGetShapeCount(body RID.Any) int
+	BodyGetShapeCount(body RID.Body2D) int
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetShape].
-	BodyGetShape(body RID.Any, shape_idx int) RID.Any
+	BodyGetShape(body RID.Body2D, shape_idx int) RID.Body2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetShapeTransform].
-	BodyGetShapeTransform(body RID.Any, shape_idx int) Transform2D.OriginXY
+	BodyGetShapeTransform(body RID.Body2D, shape_idx int) Transform2D.OriginXY
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetShapeDisabled].
-	BodySetShapeDisabled(body RID.Any, shape_idx int, disabled bool)
+	BodySetShapeDisabled(body RID.Body2D, shape_idx int, disabled bool)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetShapeAsOneWayCollision].
-	BodySetShapeAsOneWayCollision(body RID.Any, shape_idx int, enable bool, margin Float.X)
+	BodySetShapeAsOneWayCollision(body RID.Body2D, shape_idx int, enable bool, margin Float.X)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyRemoveShape].
-	BodyRemoveShape(body RID.Any, shape_idx int)
+	BodyRemoveShape(body RID.Body2D, shape_idx int)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyClearShapes].
-	BodyClearShapes(body RID.Any)
+	BodyClearShapes(body RID.Body2D)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyAttachObjectInstanceId].
-	BodyAttachObjectInstanceId(body RID.Any, id int)
+	BodyAttachObjectInstanceId(body RID.Body2D, id int)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetObjectInstanceId].
-	BodyGetObjectInstanceId(body RID.Any) int
+	BodyGetObjectInstanceId(body RID.Body2D) int
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyAttachCanvasInstanceId].
-	BodyAttachCanvasInstanceId(body RID.Any, id int)
+	BodyAttachCanvasInstanceId(body RID.Body2D, id int)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetCanvasInstanceId].
-	BodyGetCanvasInstanceId(body RID.Any) int
+	BodyGetCanvasInstanceId(body RID.Body2D) int
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetContinuousCollisionDetectionMode].
-	BodySetContinuousCollisionDetectionMode(body RID.Any, mode PhysicsServer2D.CCDMode)
+	BodySetContinuousCollisionDetectionMode(body RID.Body2D, mode PhysicsServer2D.CCDMode)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetContinuousCollisionDetectionMode].
-	BodyGetContinuousCollisionDetectionMode(body RID.Any) PhysicsServer2D.CCDMode
+	BodyGetContinuousCollisionDetectionMode(body RID.Body2D) PhysicsServer2D.CCDMode
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetCollisionLayer].
-	BodySetCollisionLayer(body RID.Any, layer int)
+	BodySetCollisionLayer(body RID.Body2D, layer int)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetCollisionLayer].
-	BodyGetCollisionLayer(body RID.Any) int
+	BodyGetCollisionLayer(body RID.Body2D) int
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetCollisionMask].
-	BodySetCollisionMask(body RID.Any, mask int)
+	BodySetCollisionMask(body RID.Body2D, mask int)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetCollisionMask].
-	BodyGetCollisionMask(body RID.Any) int
+	BodyGetCollisionMask(body RID.Body2D) int
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetCollisionPriority].
-	BodySetCollisionPriority(body RID.Any, priority Float.X)
+	BodySetCollisionPriority(body RID.Body2D, priority Float.X)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetCollisionPriority].
-	BodyGetCollisionPriority(body RID.Any) Float.X
+	BodyGetCollisionPriority(body RID.Body2D) Float.X
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetParam].
-	BodySetParam(body RID.Any, param PhysicsServer2D.BodyParameter, value any)
+	BodySetParam(body RID.Body2D, param PhysicsServer2D.BodyParameter, value any)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetParam].
-	BodyGetParam(body RID.Any, param PhysicsServer2D.BodyParameter) any
+	BodyGetParam(body RID.Body2D, param PhysicsServer2D.BodyParameter) any
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyResetMassProperties].
-	BodyResetMassProperties(body RID.Any)
+	BodyResetMassProperties(body RID.Body2D)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetState].
-	BodySetState(body RID.Any, state PhysicsServer2D.BodyState, value any)
+	BodySetState(body RID.Body2D, state PhysicsServer2D.BodyState, value any)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetState].
-	BodyGetState(body RID.Any, state PhysicsServer2D.BodyState) any
+	BodyGetState(body RID.Body2D, state PhysicsServer2D.BodyState) any
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyApplyCentralImpulse].
-	BodyApplyCentralImpulse(body RID.Any, impulse Vector2.XY)
+	BodyApplyCentralImpulse(body RID.Body2D, impulse Vector2.XY)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyApplyTorqueImpulse].
-	BodyApplyTorqueImpulse(body RID.Any, impulse Float.X)
+	BodyApplyTorqueImpulse(body RID.Body2D, impulse Float.X)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyApplyImpulse].
-	BodyApplyImpulse(body RID.Any, impulse Vector2.XY, position Vector2.XY)
+	BodyApplyImpulse(body RID.Body2D, impulse Vector2.XY, position Vector2.XY)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyApplyCentralForce].
-	BodyApplyCentralForce(body RID.Any, force Vector2.XY)
+	BodyApplyCentralForce(body RID.Body2D, force Vector2.XY)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyApplyForce].
-	BodyApplyForce(body RID.Any, force Vector2.XY, position Vector2.XY)
+	BodyApplyForce(body RID.Body2D, force Vector2.XY, position Vector2.XY)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyApplyTorque].
-	BodyApplyTorque(body RID.Any, torque Float.X)
+	BodyApplyTorque(body RID.Body2D, torque Float.X)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyAddConstantCentralForce].
-	BodyAddConstantCentralForce(body RID.Any, force Vector2.XY)
+	BodyAddConstantCentralForce(body RID.Body2D, force Vector2.XY)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyAddConstantForce].
-	BodyAddConstantForce(body RID.Any, force Vector2.XY, position Vector2.XY)
+	BodyAddConstantForce(body RID.Body2D, force Vector2.XY, position Vector2.XY)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyAddConstantTorque].
-	BodyAddConstantTorque(body RID.Any, torque Float.X)
+	BodyAddConstantTorque(body RID.Body2D, torque Float.X)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetConstantForce].
-	BodySetConstantForce(body RID.Any, force Vector2.XY)
+	BodySetConstantForce(body RID.Body2D, force Vector2.XY)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetConstantForce].
-	BodyGetConstantForce(body RID.Any) Vector2.XY
+	BodyGetConstantForce(body RID.Body2D) Vector2.XY
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetConstantTorque].
-	BodySetConstantTorque(body RID.Any, torque Float.X)
+	BodySetConstantTorque(body RID.Body2D, torque Float.X)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetConstantTorque].
-	BodyGetConstantTorque(body RID.Any) Float.X
+	BodyGetConstantTorque(body RID.Body2D) Float.X
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetAxisVelocity].
-	BodySetAxisVelocity(body RID.Any, axis_velocity Vector2.XY)
+	BodySetAxisVelocity(body RID.Body2D, axis_velocity Vector2.XY)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyAddCollisionException].
-	BodyAddCollisionException(body RID.Any, excepted_body RID.Any)
+	BodyAddCollisionException(body RID.Body2D, excepted_body RID.Body2D)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyRemoveCollisionException].
-	BodyRemoveCollisionException(body RID.Any, excepted_body RID.Any)
+	BodyRemoveCollisionException(body RID.Body2D, excepted_body RID.Body2D)
 	// Returns the [Resource.ID]s of all bodies added as collision exceptions for the given 'body'. See also [Interface.BodyAddCollisionException] and [Interface.BodyRemoveCollisionException].
 	//
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal body_get_collision_exceptions method. Corresponds to [graphics.gd/classdb/PhysicsBody2D.Instance.GetCollisionExceptions].
-	BodyGetCollisionExceptions(body RID.Any) []RID.Any
+	BodyGetCollisionExceptions(body RID.Body2D) []RID.Body2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetMaxContactsReported].
-	BodySetMaxContactsReported(body RID.Any, amount int)
+	BodySetMaxContactsReported(body RID.Body2D, amount int)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetMaxContactsReported].
-	BodyGetMaxContactsReported(body RID.Any) int
+	BodyGetMaxContactsReported(body RID.Body2D) int
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal body_set_contacts_reported_depth_threshold method.
 	//
 	// Note: This method is currently unused by Godot's default physics implementation.
-	BodySetContactsReportedDepthThreshold(body RID.Any, threshold Float.X)
+	BodySetContactsReportedDepthThreshold(body RID.Body2D, threshold Float.X)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal body_get_contacts_reported_depth_threshold method.
 	//
 	// Note: This method is currently unused by Godot's default physics implementation.
-	BodyGetContactsReportedDepthThreshold(body RID.Any) Float.X
+	BodyGetContactsReportedDepthThreshold(body RID.Body2D) Float.X
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetOmitForceIntegration].
-	BodySetOmitForceIntegration(body RID.Any, enable bool)
+	BodySetOmitForceIntegration(body RID.Body2D, enable bool)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyIsOmittingForceIntegration].
-	BodyIsOmittingForceIntegration(body RID.Any) bool
+	BodyIsOmittingForceIntegration(body RID.Body2D) bool
 	// Assigns the 'body' to call the given 'callable' during the synchronization phase of the loop, before [Interface.Step] is called. See also [Interface.Sync].
 	//
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetStateSyncCallback].
-	BodySetStateSyncCallback(body RID.Any, callable Callable.Function)
+	BodySetStateSyncCallback(body RID.Body2D, callable Callable.Function)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetForceIntegrationCallback].
-	BodySetForceIntegrationCallback(body RID.Any, callable Callable.Function, userdata any)
+	BodySetForceIntegrationCallback(body RID.Body2D, callable Callable.Function, userdata any)
 	// Given a 'body', a 'shape', and their respective parameters, this method should return true if a collision between the two would occur, with additional details passed in 'results'.
 	//
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal shape_collide method. Corresponds to [graphics.gd/classdb/PhysicsDirectSpaceState2D.Instance.CollideShape].
-	BodyCollideShape(body RID.Any, body_shape int, shape RID.Any, shape_xform Transform2D.OriginXY, motion Vector2.XY, results gdextension.Pointer, result_max int, result_count *int32) bool
+	BodyCollideShape(body RID.Body2D, body_shape int, shape RID.Shape2D, shape_xform Transform2D.OriginXY, motion Vector2.XY, results gdextension.Pointer, result_max int, result_count *int32) bool
 	// If set to true, allows the body with the given [Resource.ID] to detect mouse inputs when the mouse cursor is hovering on it.
 	//
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal body_set_pickable method. Corresponds to [graphics.gd/classdb/CollisionObject2D.Instance.InputPickable].
-	BodySetPickable(body RID.Any, pickable bool)
+	BodySetPickable(body RID.Body2D, pickable bool)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetDirectState].
-	BodyGetDirectState(body RID.Any) PhysicsDirectBodyState2D.Instance
+	BodyGetDirectState(body RID.Body2D) PhysicsDirectBodyState2D.Instance
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyTestMotion]. Unlike the exposed implementation, this method does not receive all of the arguments inside a [graphics.gd/classdb/PhysicsTestMotionParameters2D].
-	BodyTestMotion(body RID.Any, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool
+	BodyTestMotion(body RID.Body2D, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointCreate].
-	JointCreate() RID.Any
+	JointCreate() RID.Joint2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointClear].
-	JointClear(joint RID.Any)
+	JointClear(joint RID.Joint2D)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointSetParam].
-	JointSetParam(joint RID.Any, param PhysicsServer2D.JointParam, value Float.X)
+	JointSetParam(joint RID.Joint2D, param PhysicsServer2D.JointParam, value Float.X)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointGetParam].
-	JointGetParam(joint RID.Any, param PhysicsServer2D.JointParam) Float.X
+	JointGetParam(joint RID.Joint2D, param PhysicsServer2D.JointParam) Float.X
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointDisableCollisionsBetweenBodies].
-	JointDisableCollisionsBetweenBodies(joint RID.Any, disable bool)
+	JointDisableCollisionsBetweenBodies(joint RID.Joint2D, disable bool)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointIsDisabledCollisionsBetweenBodies].
-	JointIsDisabledCollisionsBetweenBodies(joint RID.Any) bool
+	JointIsDisabledCollisionsBetweenBodies(joint RID.Joint2D) bool
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointMakePin].
-	JointMakePin(joint RID.Any, anchor Vector2.XY, body_a RID.Any, body_b RID.Any)
+	JointMakePin(joint RID.Joint2D, anchor Vector2.XY, body_a RID.Body2D, body_b RID.Body2D)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointMakeGroove].
-	JointMakeGroove(joint RID.Any, a_groove1 Vector2.XY, a_groove2 Vector2.XY, b_anchor Vector2.XY, body_a RID.Any, body_b RID.Any)
+	JointMakeGroove(joint RID.Joint2D, a_groove1 Vector2.XY, a_groove2 Vector2.XY, b_anchor Vector2.XY, body_a RID.Body2D, body_b RID.Body2D)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointMakeDampedSpring].
-	JointMakeDampedSpring(joint RID.Any, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Any, body_b RID.Any)
+	JointMakeDampedSpring(joint RID.Joint2D, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Body2D, body_b RID.Body2D)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.PinJointSetFlag].
-	PinJointSetFlag(joint RID.Any, flag PhysicsServer2D.PinJointFlag, enabled bool)
+	PinJointSetFlag(joint RID.Joint2D, flag PhysicsServer2D.PinJointFlag, enabled bool)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.PinJointGetFlag].
-	PinJointGetFlag(joint RID.Any, flag PhysicsServer2D.PinJointFlag) bool
+	PinJointGetFlag(joint RID.Joint2D, flag PhysicsServer2D.PinJointFlag) bool
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.PinJointSetParam].
-	PinJointSetParam(joint RID.Any, param PhysicsServer2D.PinJointParam, value Float.X)
+	PinJointSetParam(joint RID.Joint2D, param PhysicsServer2D.PinJointParam, value Float.X)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.PinJointGetParam].
-	PinJointGetParam(joint RID.Any, param PhysicsServer2D.PinJointParam) Float.X
+	PinJointGetParam(joint RID.Joint2D, param PhysicsServer2D.PinJointParam) Float.X
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.DampedSpringJointSetParam].
-	DampedSpringJointSetParam(joint RID.Any, param PhysicsServer2D.DampedSpringParam, value Float.X)
+	DampedSpringJointSetParam(joint RID.Joint2D, param PhysicsServer2D.DampedSpringParam, value Float.X)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.DampedSpringJointGetParam].
-	DampedSpringJointGetParam(joint RID.Any, param PhysicsServer2D.DampedSpringParam) Float.X
+	DampedSpringJointGetParam(joint RID.Joint2D, param PhysicsServer2D.DampedSpringParam) Float.X
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointGetType].
-	JointGetType(joint RID.Any) PhysicsServer2D.JointType
+	JointGetType(joint RID.Joint2D) PhysicsServer2D.JointType
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.FreeRid].
 	FreeRid(rid RID.Any)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.SetActive].
@@ -428,212 +428,226 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) WorldBoundaryShapeCreate() (_ RID.Any)                    { return }
-func (self implementation) SeparationRayShapeCreate() (_ RID.Any)                    { return }
-func (self implementation) SegmentShapeCreate() (_ RID.Any)                          { return }
-func (self implementation) CircleShapeCreate() (_ RID.Any)                           { return }
-func (self implementation) RectangleShapeCreate() (_ RID.Any)                        { return }
-func (self implementation) CapsuleShapeCreate() (_ RID.Any)                          { return }
-func (self implementation) ConvexPolygonShapeCreate() (_ RID.Any)                    { return }
-func (self implementation) ConcavePolygonShapeCreate() (_ RID.Any)                   { return }
-func (self implementation) ShapeSetData(shape RID.Any, data any)                     { return }
-func (self implementation) ShapeSetCustomSolverBias(shape RID.Any, bias Float.X)     { return }
-func (self implementation) ShapeGetType(shape RID.Any) (_ PhysicsServer2D.ShapeType) { return }
-func (self implementation) ShapeGetData(shape RID.Any) (_ any)                       { return }
-func (self implementation) ShapeGetCustomSolverBias(shape RID.Any) (_ Float.X)       { return }
-func (self implementation) ShapeCollide(shape_A RID.Any, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Any, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results gdextension.Pointer, result_max int, result_count *int32) (_ bool) {
+func (self implementation) WorldBoundaryShapeCreate() (_ RID.Shape2D)                    { return }
+func (self implementation) SeparationRayShapeCreate() (_ RID.Shape2D)                    { return }
+func (self implementation) SegmentShapeCreate() (_ RID.Shape2D)                          { return }
+func (self implementation) CircleShapeCreate() (_ RID.Shape2D)                           { return }
+func (self implementation) RectangleShapeCreate() (_ RID.Shape2D)                        { return }
+func (self implementation) CapsuleShapeCreate() (_ RID.Shape2D)                          { return }
+func (self implementation) ConvexPolygonShapeCreate() (_ RID.Shape2D)                    { return }
+func (self implementation) ConcavePolygonShapeCreate() (_ RID.Shape2D)                   { return }
+func (self implementation) ShapeSetData(shape RID.Shape2D, data any)                     { return }
+func (self implementation) ShapeSetCustomSolverBias(shape RID.Shape2D, bias Float.X)     { return }
+func (self implementation) ShapeGetType(shape RID.Shape2D) (_ PhysicsServer2D.ShapeType) { return }
+func (self implementation) ShapeGetData(shape RID.Shape2D) (_ any)                       { return }
+func (self implementation) ShapeGetCustomSolverBias(shape RID.Shape2D) (_ Float.X)       { return }
+func (self implementation) ShapeCollide(shape_A RID.Shape2D, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Shape2D, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results gdextension.Pointer, result_max int, result_count *int32) (_ bool) {
 	return
 }
-func (self implementation) SpaceCreate() (_ RID.Any)                  { return }
-func (self implementation) SpaceSetActive(space RID.Any, active bool) { return }
-func (self implementation) SpaceIsActive(space RID.Any) (_ bool)      { return }
-func (self implementation) SpaceSetParam(space RID.Any, param PhysicsServer2D.SpaceParameter, value Float.X) {
+func (self implementation) SpaceCreate() (_ RID.Space2D)                  { return }
+func (self implementation) SpaceSetActive(space RID.Space2D, active bool) { return }
+func (self implementation) SpaceIsActive(space RID.Space2D) (_ bool)      { return }
+func (self implementation) SpaceSetParam(space RID.Space2D, param PhysicsServer2D.SpaceParameter, value Float.X) {
 	return
 }
-func (self implementation) SpaceGetParam(space RID.Any, param PhysicsServer2D.SpaceParameter) (_ Float.X) {
+func (self implementation) SpaceGetParam(space RID.Space2D, param PhysicsServer2D.SpaceParameter) (_ Float.X) {
 	return
 }
-func (self implementation) SpaceGetDirectState(space RID.Any) (_ PhysicsDirectSpaceState2D.Instance) {
+func (self implementation) SpaceGetDirectState(space RID.Space2D) (_ PhysicsDirectSpaceState2D.Instance) {
 	return
 }
-func (self implementation) SpaceSetDebugContacts(space RID.Any, max_contacts int) { return }
-func (self implementation) SpaceGetContacts(space RID.Any) (_ []Vector2.XY)       { return }
-func (self implementation) SpaceGetContactCount(space RID.Any) (_ int)            { return }
-func (self implementation) AreaCreate() (_ RID.Any)                               { return }
-func (self implementation) AreaSetSpace(area RID.Any, space RID.Any)              { return }
-func (self implementation) AreaGetSpace(area RID.Any) (_ RID.Any)                 { return }
-func (self implementation) AreaAddShape(area RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool) {
+func (self implementation) SpaceSetDebugContacts(space RID.Space2D, max_contacts int) { return }
+func (self implementation) SpaceGetContacts(space RID.Space2D) (_ []Vector2.XY)       { return }
+func (self implementation) SpaceGetContactCount(space RID.Space2D) (_ int)            { return }
+func (self implementation) AreaCreate() (_ RID.Area2D)                                { return }
+func (self implementation) AreaSetSpace(area RID.Area2D, space RID.Space2D)           { return }
+func (self implementation) AreaGetSpace(area RID.Area2D) (_ RID.Space2D)              { return }
+func (self implementation) AreaAddShape(area RID.Area2D, shape RID.Shape2D, transform Transform2D.OriginXY, disabled bool) {
 	return
 }
-func (self implementation) AreaSetShape(area RID.Any, shape_idx int, shape RID.Any) { return }
-func (self implementation) AreaSetShapeTransform(area RID.Any, shape_idx int, transform Transform2D.OriginXY) {
+func (self implementation) AreaSetShape(area RID.Area2D, shape_idx int, shape RID.Shape2D) { return }
+func (self implementation) AreaSetShapeTransform(area RID.Area2D, shape_idx int, transform Transform2D.OriginXY) {
 	return
 }
-func (self implementation) AreaSetShapeDisabled(area RID.Any, shape_idx int, disabled bool) { return }
-func (self implementation) AreaGetShapeCount(area RID.Any) (_ int)                          { return }
-func (self implementation) AreaGetShape(area RID.Any, shape_idx int) (_ RID.Any)            { return }
-func (self implementation) AreaGetShapeTransform(area RID.Any, shape_idx int) (_ Transform2D.OriginXY) {
+func (self implementation) AreaSetShapeDisabled(area RID.Area2D, shape_idx int, disabled bool) {
 	return
 }
-func (self implementation) AreaRemoveShape(area RID.Any, shape_idx int)     { return }
-func (self implementation) AreaClearShapes(area RID.Any)                    { return }
-func (self implementation) AreaAttachObjectInstanceId(area RID.Any, id int) { return }
-func (self implementation) AreaGetObjectInstanceId(area RID.Any) (_ int)    { return }
-func (self implementation) AreaAttachCanvasInstanceId(area RID.Any, id int) { return }
-func (self implementation) AreaGetCanvasInstanceId(area RID.Any) (_ int)    { return }
-func (self implementation) AreaSetParam(area RID.Any, param PhysicsServer2D.AreaParameter, value any) {
+func (self implementation) AreaGetShapeCount(area RID.Area2D) (_ int)                  { return }
+func (self implementation) AreaGetShape(area RID.Area2D, shape_idx int) (_ RID.Area2D) { return }
+func (self implementation) AreaGetShapeTransform(area RID.Area2D, shape_idx int) (_ Transform2D.OriginXY) {
 	return
 }
-func (self implementation) AreaSetTransform(area RID.Any, transform Transform2D.OriginXY) { return }
-func (self implementation) AreaGetParam(area RID.Any, param PhysicsServer2D.AreaParameter) (_ any) {
+func (self implementation) AreaRemoveShape(area RID.Area2D, shape_idx int)     { return }
+func (self implementation) AreaClearShapes(area RID.Area2D)                    { return }
+func (self implementation) AreaAttachObjectInstanceId(area RID.Area2D, id int) { return }
+func (self implementation) AreaGetObjectInstanceId(area RID.Area2D) (_ int)    { return }
+func (self implementation) AreaAttachCanvasInstanceId(area RID.Area2D, id int) { return }
+func (self implementation) AreaGetCanvasInstanceId(area RID.Area2D) (_ int)    { return }
+func (self implementation) AreaSetParam(area RID.Area2D, param PhysicsServer2D.AreaParameter, value any) {
 	return
 }
-func (self implementation) AreaGetTransform(area RID.Any) (_ Transform2D.OriginXY)          { return }
-func (self implementation) AreaSetCollisionLayer(area RID.Any, layer int)                   { return }
-func (self implementation) AreaGetCollisionLayer(area RID.Any) (_ int)                      { return }
-func (self implementation) AreaSetCollisionMask(area RID.Any, mask int)                     { return }
-func (self implementation) AreaGetCollisionMask(area RID.Any) (_ int)                       { return }
-func (self implementation) AreaSetMonitorable(area RID.Any, monitorable bool)               { return }
-func (self implementation) AreaSetPickable(area RID.Any, pickable bool)                     { return }
-func (self implementation) AreaSetMonitorCallback(area RID.Any, callback Callable.Function) { return }
-func (self implementation) AreaSetAreaMonitorCallback(area RID.Any, callback Callable.Function) {
+func (self implementation) AreaSetTransform(area RID.Area2D, transform Transform2D.OriginXY) { return }
+func (self implementation) AreaGetParam(area RID.Area2D, param PhysicsServer2D.AreaParameter) (_ any) {
 	return
 }
-func (self implementation) BodyCreate() (_ RID.Any)                                 { return }
-func (self implementation) BodySetSpace(body RID.Any, space RID.Any)                { return }
-func (self implementation) BodyGetSpace(body RID.Any) (_ RID.Any)                   { return }
-func (self implementation) BodySetMode(body RID.Any, mode PhysicsServer2D.BodyMode) { return }
-func (self implementation) BodyGetMode(body RID.Any) (_ PhysicsServer2D.BodyMode)   { return }
-func (self implementation) BodyAddShape(body RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool) {
+func (self implementation) AreaGetTransform(area RID.Area2D) (_ Transform2D.OriginXY) { return }
+func (self implementation) AreaSetCollisionLayer(area RID.Area2D, layer int)          { return }
+func (self implementation) AreaGetCollisionLayer(area RID.Area2D) (_ int)             { return }
+func (self implementation) AreaSetCollisionMask(area RID.Area2D, mask int)            { return }
+func (self implementation) AreaGetCollisionMask(area RID.Area2D) (_ int)              { return }
+func (self implementation) AreaSetMonitorable(area RID.Area2D, monitorable bool)      { return }
+func (self implementation) AreaSetPickable(area RID.Area2D, pickable bool)            { return }
+func (self implementation) AreaSetMonitorCallback(area RID.Area2D, callback Callable.Function) {
 	return
 }
-func (self implementation) BodySetShape(body RID.Any, shape_idx int, shape RID.Any) { return }
-func (self implementation) BodySetShapeTransform(body RID.Any, shape_idx int, transform Transform2D.OriginXY) {
+func (self implementation) AreaSetAreaMonitorCallback(area RID.Area2D, callback Callable.Function) {
 	return
 }
-func (self implementation) BodyGetShapeCount(body RID.Any) (_ int)               { return }
-func (self implementation) BodyGetShape(body RID.Any, shape_idx int) (_ RID.Any) { return }
-func (self implementation) BodyGetShapeTransform(body RID.Any, shape_idx int) (_ Transform2D.OriginXY) {
+func (self implementation) BodyCreate() (_ RID.Body2D)                                 { return }
+func (self implementation) BodySetSpace(body RID.Body2D, space RID.Space2D)            { return }
+func (self implementation) BodyGetSpace(body RID.Body2D) (_ RID.Space2D)               { return }
+func (self implementation) BodySetMode(body RID.Body2D, mode PhysicsServer2D.BodyMode) { return }
+func (self implementation) BodyGetMode(body RID.Body2D) (_ PhysicsServer2D.BodyMode)   { return }
+func (self implementation) BodyAddShape(body RID.Body2D, shape RID.Shape2D, transform Transform2D.OriginXY, disabled bool) {
 	return
 }
-func (self implementation) BodySetShapeDisabled(body RID.Any, shape_idx int, disabled bool) { return }
-func (self implementation) BodySetShapeAsOneWayCollision(body RID.Any, shape_idx int, enable bool, margin Float.X) {
+func (self implementation) BodySetShape(body RID.Body2D, shape_idx int, shape RID.Shape2D) { return }
+func (self implementation) BodySetShapeTransform(body RID.Body2D, shape_idx int, transform Transform2D.OriginXY) {
 	return
 }
-func (self implementation) BodyRemoveShape(body RID.Any, shape_idx int)     { return }
-func (self implementation) BodyClearShapes(body RID.Any)                    { return }
-func (self implementation) BodyAttachObjectInstanceId(body RID.Any, id int) { return }
-func (self implementation) BodyGetObjectInstanceId(body RID.Any) (_ int)    { return }
-func (self implementation) BodyAttachCanvasInstanceId(body RID.Any, id int) { return }
-func (self implementation) BodyGetCanvasInstanceId(body RID.Any) (_ int)    { return }
-func (self implementation) BodySetContinuousCollisionDetectionMode(body RID.Any, mode PhysicsServer2D.CCDMode) {
+func (self implementation) BodyGetShapeCount(body RID.Body2D) (_ int)                  { return }
+func (self implementation) BodyGetShape(body RID.Body2D, shape_idx int) (_ RID.Body2D) { return }
+func (self implementation) BodyGetShapeTransform(body RID.Body2D, shape_idx int) (_ Transform2D.OriginXY) {
 	return
 }
-func (self implementation) BodyGetContinuousCollisionDetectionMode(body RID.Any) (_ PhysicsServer2D.CCDMode) {
+func (self implementation) BodySetShapeDisabled(body RID.Body2D, shape_idx int, disabled bool) {
 	return
 }
-func (self implementation) BodySetCollisionLayer(body RID.Any, layer int)           { return }
-func (self implementation) BodyGetCollisionLayer(body RID.Any) (_ int)              { return }
-func (self implementation) BodySetCollisionMask(body RID.Any, mask int)             { return }
-func (self implementation) BodyGetCollisionMask(body RID.Any) (_ int)               { return }
-func (self implementation) BodySetCollisionPriority(body RID.Any, priority Float.X) { return }
-func (self implementation) BodyGetCollisionPriority(body RID.Any) (_ Float.X)       { return }
-func (self implementation) BodySetParam(body RID.Any, param PhysicsServer2D.BodyParameter, value any) {
+func (self implementation) BodySetShapeAsOneWayCollision(body RID.Body2D, shape_idx int, enable bool, margin Float.X) {
 	return
 }
-func (self implementation) BodyGetParam(body RID.Any, param PhysicsServer2D.BodyParameter) (_ any) {
+func (self implementation) BodyRemoveShape(body RID.Body2D, shape_idx int)     { return }
+func (self implementation) BodyClearShapes(body RID.Body2D)                    { return }
+func (self implementation) BodyAttachObjectInstanceId(body RID.Body2D, id int) { return }
+func (self implementation) BodyGetObjectInstanceId(body RID.Body2D) (_ int)    { return }
+func (self implementation) BodyAttachCanvasInstanceId(body RID.Body2D, id int) { return }
+func (self implementation) BodyGetCanvasInstanceId(body RID.Body2D) (_ int)    { return }
+func (self implementation) BodySetContinuousCollisionDetectionMode(body RID.Body2D, mode PhysicsServer2D.CCDMode) {
 	return
 }
-func (self implementation) BodyResetMassProperties(body RID.Any) { return }
-func (self implementation) BodySetState(body RID.Any, state PhysicsServer2D.BodyState, value any) {
+func (self implementation) BodyGetContinuousCollisionDetectionMode(body RID.Body2D) (_ PhysicsServer2D.CCDMode) {
 	return
 }
-func (self implementation) BodyGetState(body RID.Any, state PhysicsServer2D.BodyState) (_ any) {
+func (self implementation) BodySetCollisionLayer(body RID.Body2D, layer int)           { return }
+func (self implementation) BodyGetCollisionLayer(body RID.Body2D) (_ int)              { return }
+func (self implementation) BodySetCollisionMask(body RID.Body2D, mask int)             { return }
+func (self implementation) BodyGetCollisionMask(body RID.Body2D) (_ int)               { return }
+func (self implementation) BodySetCollisionPriority(body RID.Body2D, priority Float.X) { return }
+func (self implementation) BodyGetCollisionPriority(body RID.Body2D) (_ Float.X)       { return }
+func (self implementation) BodySetParam(body RID.Body2D, param PhysicsServer2D.BodyParameter, value any) {
 	return
 }
-func (self implementation) BodyApplyCentralImpulse(body RID.Any, impulse Vector2.XY) { return }
-func (self implementation) BodyApplyTorqueImpulse(body RID.Any, impulse Float.X)     { return }
-func (self implementation) BodyApplyImpulse(body RID.Any, impulse Vector2.XY, position Vector2.XY) {
+func (self implementation) BodyGetParam(body RID.Body2D, param PhysicsServer2D.BodyParameter) (_ any) {
 	return
 }
-func (self implementation) BodyApplyCentralForce(body RID.Any, force Vector2.XY) { return }
-func (self implementation) BodyApplyForce(body RID.Any, force Vector2.XY, position Vector2.XY) {
+func (self implementation) BodyResetMassProperties(body RID.Body2D) { return }
+func (self implementation) BodySetState(body RID.Body2D, state PhysicsServer2D.BodyState, value any) {
 	return
 }
-func (self implementation) BodyApplyTorque(body RID.Any, torque Float.X)               { return }
-func (self implementation) BodyAddConstantCentralForce(body RID.Any, force Vector2.XY) { return }
-func (self implementation) BodyAddConstantForce(body RID.Any, force Vector2.XY, position Vector2.XY) {
+func (self implementation) BodyGetState(body RID.Body2D, state PhysicsServer2D.BodyState) (_ any) {
 	return
 }
-func (self implementation) BodyAddConstantTorque(body RID.Any, torque Float.X)               { return }
-func (self implementation) BodySetConstantForce(body RID.Any, force Vector2.XY)              { return }
-func (self implementation) BodyGetConstantForce(body RID.Any) (_ Vector2.XY)                 { return }
-func (self implementation) BodySetConstantTorque(body RID.Any, torque Float.X)               { return }
-func (self implementation) BodyGetConstantTorque(body RID.Any) (_ Float.X)                   { return }
-func (self implementation) BodySetAxisVelocity(body RID.Any, axis_velocity Vector2.XY)       { return }
-func (self implementation) BodyAddCollisionException(body RID.Any, excepted_body RID.Any)    { return }
-func (self implementation) BodyRemoveCollisionException(body RID.Any, excepted_body RID.Any) { return }
-func (self implementation) BodyGetCollisionExceptions(body RID.Any) (_ []RID.Any)            { return }
-func (self implementation) BodySetMaxContactsReported(body RID.Any, amount int)              { return }
-func (self implementation) BodyGetMaxContactsReported(body RID.Any) (_ int)                  { return }
-func (self implementation) BodySetContactsReportedDepthThreshold(body RID.Any, threshold Float.X) {
+func (self implementation) BodyApplyCentralImpulse(body RID.Body2D, impulse Vector2.XY) { return }
+func (self implementation) BodyApplyTorqueImpulse(body RID.Body2D, impulse Float.X)     { return }
+func (self implementation) BodyApplyImpulse(body RID.Body2D, impulse Vector2.XY, position Vector2.XY) {
 	return
 }
-func (self implementation) BodyGetContactsReportedDepthThreshold(body RID.Any) (_ Float.X)    { return }
-func (self implementation) BodySetOmitForceIntegration(body RID.Any, enable bool)             { return }
-func (self implementation) BodyIsOmittingForceIntegration(body RID.Any) (_ bool)              { return }
-func (self implementation) BodySetStateSyncCallback(body RID.Any, callable Callable.Function) { return }
-func (self implementation) BodySetForceIntegrationCallback(body RID.Any, callable Callable.Function, userdata any) {
+func (self implementation) BodyApplyCentralForce(body RID.Body2D, force Vector2.XY) { return }
+func (self implementation) BodyApplyForce(body RID.Body2D, force Vector2.XY, position Vector2.XY) {
 	return
 }
-func (self implementation) BodyCollideShape(body RID.Any, body_shape int, shape RID.Any, shape_xform Transform2D.OriginXY, motion Vector2.XY, results gdextension.Pointer, result_max int, result_count *int32) (_ bool) {
+func (self implementation) BodyApplyTorque(body RID.Body2D, torque Float.X)               { return }
+func (self implementation) BodyAddConstantCentralForce(body RID.Body2D, force Vector2.XY) { return }
+func (self implementation) BodyAddConstantForce(body RID.Body2D, force Vector2.XY, position Vector2.XY) {
 	return
 }
-func (self implementation) BodySetPickable(body RID.Any, pickable bool) { return }
-func (self implementation) BodyGetDirectState(body RID.Any) (_ PhysicsDirectBodyState2D.Instance) {
+func (self implementation) BodyAddConstantTorque(body RID.Body2D, torque Float.X)         { return }
+func (self implementation) BodySetConstantForce(body RID.Body2D, force Vector2.XY)        { return }
+func (self implementation) BodyGetConstantForce(body RID.Body2D) (_ Vector2.XY)           { return }
+func (self implementation) BodySetConstantTorque(body RID.Body2D, torque Float.X)         { return }
+func (self implementation) BodyGetConstantTorque(body RID.Body2D) (_ Float.X)             { return }
+func (self implementation) BodySetAxisVelocity(body RID.Body2D, axis_velocity Vector2.XY) { return }
+func (self implementation) BodyAddCollisionException(body RID.Body2D, excepted_body RID.Body2D) {
 	return
 }
-func (self implementation) BodyTestMotion(body RID.Any, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) (_ bool) {
+func (self implementation) BodyRemoveCollisionException(body RID.Body2D, excepted_body RID.Body2D) {
 	return
 }
-func (self implementation) JointCreate() (_ RID.Any) { return }
-func (self implementation) JointClear(joint RID.Any) { return }
-func (self implementation) JointSetParam(joint RID.Any, param PhysicsServer2D.JointParam, value Float.X) {
+func (self implementation) BodyGetCollisionExceptions(body RID.Body2D) (_ []RID.Body2D) { return }
+func (self implementation) BodySetMaxContactsReported(body RID.Body2D, amount int)      { return }
+func (self implementation) BodyGetMaxContactsReported(body RID.Body2D) (_ int)          { return }
+func (self implementation) BodySetContactsReportedDepthThreshold(body RID.Body2D, threshold Float.X) {
 	return
 }
-func (self implementation) JointGetParam(joint RID.Any, param PhysicsServer2D.JointParam) (_ Float.X) {
+func (self implementation) BodyGetContactsReportedDepthThreshold(body RID.Body2D) (_ Float.X) { return }
+func (self implementation) BodySetOmitForceIntegration(body RID.Body2D, enable bool)          { return }
+func (self implementation) BodyIsOmittingForceIntegration(body RID.Body2D) (_ bool)           { return }
+func (self implementation) BodySetStateSyncCallback(body RID.Body2D, callable Callable.Function) {
 	return
 }
-func (self implementation) JointDisableCollisionsBetweenBodies(joint RID.Any, disable bool) { return }
-func (self implementation) JointIsDisabledCollisionsBetweenBodies(joint RID.Any) (_ bool)   { return }
-func (self implementation) JointMakePin(joint RID.Any, anchor Vector2.XY, body_a RID.Any, body_b RID.Any) {
+func (self implementation) BodySetForceIntegrationCallback(body RID.Body2D, callable Callable.Function, userdata any) {
 	return
 }
-func (self implementation) JointMakeGroove(joint RID.Any, a_groove1 Vector2.XY, a_groove2 Vector2.XY, b_anchor Vector2.XY, body_a RID.Any, body_b RID.Any) {
+func (self implementation) BodyCollideShape(body RID.Body2D, body_shape int, shape RID.Shape2D, shape_xform Transform2D.OriginXY, motion Vector2.XY, results gdextension.Pointer, result_max int, result_count *int32) (_ bool) {
 	return
 }
-func (self implementation) JointMakeDampedSpring(joint RID.Any, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Any, body_b RID.Any) {
+func (self implementation) BodySetPickable(body RID.Body2D, pickable bool) { return }
+func (self implementation) BodyGetDirectState(body RID.Body2D) (_ PhysicsDirectBodyState2D.Instance) {
 	return
 }
-func (self implementation) PinJointSetFlag(joint RID.Any, flag PhysicsServer2D.PinJointFlag, enabled bool) {
+func (self implementation) BodyTestMotion(body RID.Body2D, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) (_ bool) {
 	return
 }
-func (self implementation) PinJointGetFlag(joint RID.Any, flag PhysicsServer2D.PinJointFlag) (_ bool) {
+func (self implementation) JointCreate() (_ RID.Joint2D) { return }
+func (self implementation) JointClear(joint RID.Joint2D) { return }
+func (self implementation) JointSetParam(joint RID.Joint2D, param PhysicsServer2D.JointParam, value Float.X) {
 	return
 }
-func (self implementation) PinJointSetParam(joint RID.Any, param PhysicsServer2D.PinJointParam, value Float.X) {
+func (self implementation) JointGetParam(joint RID.Joint2D, param PhysicsServer2D.JointParam) (_ Float.X) {
 	return
 }
-func (self implementation) PinJointGetParam(joint RID.Any, param PhysicsServer2D.PinJointParam) (_ Float.X) {
+func (self implementation) JointDisableCollisionsBetweenBodies(joint RID.Joint2D, disable bool) {
 	return
 }
-func (self implementation) DampedSpringJointSetParam(joint RID.Any, param PhysicsServer2D.DampedSpringParam, value Float.X) {
+func (self implementation) JointIsDisabledCollisionsBetweenBodies(joint RID.Joint2D) (_ bool) { return }
+func (self implementation) JointMakePin(joint RID.Joint2D, anchor Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) {
 	return
 }
-func (self implementation) DampedSpringJointGetParam(joint RID.Any, param PhysicsServer2D.DampedSpringParam) (_ Float.X) {
+func (self implementation) JointMakeGroove(joint RID.Joint2D, a_groove1 Vector2.XY, a_groove2 Vector2.XY, b_anchor Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) {
 	return
 }
-func (self implementation) JointGetType(joint RID.Any) (_ PhysicsServer2D.JointType)        { return }
+func (self implementation) JointMakeDampedSpring(joint RID.Joint2D, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) {
+	return
+}
+func (self implementation) PinJointSetFlag(joint RID.Joint2D, flag PhysicsServer2D.PinJointFlag, enabled bool) {
+	return
+}
+func (self implementation) PinJointGetFlag(joint RID.Joint2D, flag PhysicsServer2D.PinJointFlag) (_ bool) {
+	return
+}
+func (self implementation) PinJointSetParam(joint RID.Joint2D, param PhysicsServer2D.PinJointParam, value Float.X) {
+	return
+}
+func (self implementation) PinJointGetParam(joint RID.Joint2D, param PhysicsServer2D.PinJointParam) (_ Float.X) {
+	return
+}
+func (self implementation) DampedSpringJointSetParam(joint RID.Joint2D, param PhysicsServer2D.DampedSpringParam, value Float.X) {
+	return
+}
+func (self implementation) DampedSpringJointGetParam(joint RID.Joint2D, param PhysicsServer2D.DampedSpringParam) (_ Float.X) {
+	return
+}
+func (self implementation) JointGetType(joint RID.Joint2D) (_ PhysicsServer2D.JointType)    { return }
 func (self implementation) FreeRid(rid RID.Any)                                             { return }
 func (self implementation) SetActive(active bool)                                           { return }
 func (self implementation) Init()                                                           { return }
@@ -648,7 +662,7 @@ func (self implementation) GetProcessInfo(process_info PhysicsServer2D.ProcessIn
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.WorldBoundaryShapeCreate].
 */
-func (Instance) _world_boundary_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _world_boundary_shape_create(impl func(ptr gdclass.Receiver) RID.Shape2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -659,7 +673,7 @@ func (Instance) _world_boundary_shape_create(impl func(ptr gdclass.Receiver) RID
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.SeparationRayShapeCreate].
 */
-func (Instance) _separation_ray_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _separation_ray_shape_create(impl func(ptr gdclass.Receiver) RID.Shape2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -670,7 +684,7 @@ func (Instance) _separation_ray_shape_create(impl func(ptr gdclass.Receiver) RID
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.SegmentShapeCreate].
 */
-func (Instance) _segment_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _segment_shape_create(impl func(ptr gdclass.Receiver) RID.Shape2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -681,7 +695,7 @@ func (Instance) _segment_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.CircleShapeCreate].
 */
-func (Instance) _circle_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _circle_shape_create(impl func(ptr gdclass.Receiver) RID.Shape2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -692,7 +706,7 @@ func (Instance) _circle_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (c
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.RectangleShapeCreate].
 */
-func (Instance) _rectangle_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _rectangle_shape_create(impl func(ptr gdclass.Receiver) RID.Shape2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -703,7 +717,7 @@ func (Instance) _rectangle_shape_create(impl func(ptr gdclass.Receiver) RID.Any)
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.CapsuleShapeCreate].
 */
-func (Instance) _capsule_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _capsule_shape_create(impl func(ptr gdclass.Receiver) RID.Shape2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -714,7 +728,7 @@ func (Instance) _capsule_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.ConvexPolygonShapeCreate].
 */
-func (Instance) _convex_polygon_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _convex_polygon_shape_create(impl func(ptr gdclass.Receiver) RID.Shape2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -725,7 +739,7 @@ func (Instance) _convex_polygon_shape_create(impl func(ptr gdclass.Receiver) RID
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.ConcavePolygonShapeCreate].
 */
-func (Instance) _concave_polygon_shape_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _concave_polygon_shape_create(impl func(ptr gdclass.Receiver) RID.Shape2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -736,7 +750,7 @@ func (Instance) _concave_polygon_shape_create(impl func(ptr gdclass.Receiver) RI
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.ShapeSetData].
 */
-func (Instance) _shape_set_data(impl func(ptr gdclass.Receiver, shape RID.Any, data any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shape_set_data(impl func(ptr gdclass.Receiver, shape RID.Shape2D, data any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
@@ -751,7 +765,7 @@ Should set the custom solver bias for the given 'shape'. It defines how much bod
 
 Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal shape_get_custom_solver_bias method. Corresponds to [graphics.gd/classdb/Shape2D.Instance.CustomSolverBias].
 */
-func (Instance) _shape_set_custom_solver_bias(impl func(ptr gdclass.Receiver, shape RID.Any, bias Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shape_set_custom_solver_bias(impl func(ptr gdclass.Receiver, shape RID.Shape2D, bias Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 		var bias = gd.UnsafeGet[float64](p_args, 1)
@@ -763,7 +777,7 @@ func (Instance) _shape_set_custom_solver_bias(impl func(ptr gdclass.Receiver, sh
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.ShapeGetType].
 */
-func (Instance) _shape_get_type(impl func(ptr gdclass.Receiver, shape RID.Any) PhysicsServer2D.ShapeType) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shape_get_type(impl func(ptr gdclass.Receiver, shape RID.Shape2D) PhysicsServer2D.ShapeType) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -775,7 +789,7 @@ func (Instance) _shape_get_type(impl func(ptr gdclass.Receiver, shape RID.Any) P
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.ShapeGetData].
 */
-func (Instance) _shape_get_data(impl func(ptr gdclass.Receiver, shape RID.Any) any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shape_get_data(impl func(ptr gdclass.Receiver, shape RID.Shape2D) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -794,7 +808,7 @@ Should return the custom solver bias of the given 'shape', which defines how muc
 
 Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal shape_get_custom_solver_bias method. Corresponds to [graphics.gd/classdb/Shape2D.Instance.CustomSolverBias].
 */
-func (Instance) _shape_get_custom_solver_bias(impl func(ptr gdclass.Receiver, shape RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shape_get_custom_solver_bias(impl func(ptr gdclass.Receiver, shape RID.Shape2D) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -808,7 +822,7 @@ Given two shapes and their parameters, should return true if a collision between
 
 Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal shape_collide method. Corresponds to [graphics.gd/classdb/PhysicsDirectSpaceState2D.Instance.CollideShape].
 */
-func (Instance) _shape_collide(impl func(ptr gdclass.Receiver, shape_A RID.Any, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Any, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results gdextension.Pointer, result_max int, result_count *int32) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _shape_collide(impl func(ptr gdclass.Receiver, shape_A RID.Shape2D, xform_A Transform2D.OriginXY, motion_A Vector2.XY, shape_B RID.Shape2D, xform_B Transform2D.OriginXY, motion_B Vector2.XY, results gdextension.Pointer, result_max int, result_count *int32) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape_A = gd.UnsafeGet[RID.Any](p_args, 0)
 		var xform_A = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
@@ -828,7 +842,7 @@ func (Instance) _shape_collide(impl func(ptr gdclass.Receiver, shape_A RID.Any, 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.SpaceCreate].
 */
-func (Instance) _space_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _space_create(impl func(ptr gdclass.Receiver) RID.Space2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -839,7 +853,7 @@ func (Instance) _space_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.Ex
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.SpaceSetActive].
 */
-func (Instance) _space_set_active(impl func(ptr gdclass.Receiver, space RID.Any, active bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _space_set_active(impl func(ptr gdclass.Receiver, space RID.Space2D, active bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		var active = gd.UnsafeGet[bool](p_args, 1)
@@ -851,7 +865,7 @@ func (Instance) _space_set_active(impl func(ptr gdclass.Receiver, space RID.Any,
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.SpaceIsActive].
 */
-func (Instance) _space_is_active(impl func(ptr gdclass.Receiver, space RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _space_is_active(impl func(ptr gdclass.Receiver, space RID.Space2D) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -863,7 +877,7 @@ func (Instance) _space_is_active(impl func(ptr gdclass.Receiver, space RID.Any) 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.SpaceSetParam].
 */
-func (Instance) _space_set_param(impl func(ptr gdclass.Receiver, space RID.Any, param PhysicsServer2D.SpaceParameter, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _space_set_param(impl func(ptr gdclass.Receiver, space RID.Space2D, param PhysicsServer2D.SpaceParameter, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer2D.SpaceParameter](p_args, 1)
@@ -876,7 +890,7 @@ func (Instance) _space_set_param(impl func(ptr gdclass.Receiver, space RID.Any, 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.SpaceGetParam].
 */
-func (Instance) _space_get_param(impl func(ptr gdclass.Receiver, space RID.Any, param PhysicsServer2D.SpaceParameter) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _space_get_param(impl func(ptr gdclass.Receiver, space RID.Space2D, param PhysicsServer2D.SpaceParameter) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer2D.SpaceParameter](p_args, 1)
@@ -889,7 +903,7 @@ func (Instance) _space_get_param(impl func(ptr gdclass.Receiver, space RID.Any, 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.SpaceGetDirectState].
 */
-func (Instance) _space_get_direct_state(impl func(ptr gdclass.Receiver, space RID.Any) PhysicsDirectSpaceState2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _space_get_direct_state(impl func(ptr gdclass.Receiver, space RID.Space2D) PhysicsDirectSpaceState2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -908,7 +922,7 @@ Used internally to allow the given 'space' to store contact points, up to 'max_c
 
 Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal space_set_debug_contacts method.
 */
-func (Instance) _space_set_debug_contacts(impl func(ptr gdclass.Receiver, space RID.Any, max_contacts int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _space_set_debug_contacts(impl func(ptr gdclass.Receiver, space RID.Space2D, max_contacts int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		var max_contacts = gd.UnsafeGet[int64](p_args, 1)
@@ -922,7 +936,7 @@ Should return the positions of all contacts that have occurred during the last p
 
 Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal space_get_contacts method.
 */
-func (Instance) _space_get_contacts(impl func(ptr gdclass.Receiver, space RID.Any) []Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _space_get_contacts(impl func(ptr gdclass.Receiver, space RID.Space2D) []Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -941,7 +955,7 @@ Should return how many contacts have occurred during the last physics step in th
 
 Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal space_get_contact_count method.
 */
-func (Instance) _space_get_contact_count(impl func(ptr gdclass.Receiver, space RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _space_get_contact_count(impl func(ptr gdclass.Receiver, space RID.Space2D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -953,7 +967,7 @@ func (Instance) _space_get_contact_count(impl func(ptr gdclass.Receiver, space R
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaCreate].
 */
-func (Instance) _area_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_create(impl func(ptr gdclass.Receiver) RID.Area2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -964,7 +978,7 @@ func (Instance) _area_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.Ext
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetSpace].
 */
-func (Instance) _area_set_space(impl func(ptr gdclass.Receiver, area RID.Any, space RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_space(impl func(ptr gdclass.Receiver, area RID.Area2D, space RID.Space2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var space = gd.UnsafeGet[RID.Any](p_args, 1)
@@ -976,7 +990,7 @@ func (Instance) _area_set_space(impl func(ptr gdclass.Receiver, area RID.Any, sp
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetSpace].
 */
-func (Instance) _area_get_space(impl func(ptr gdclass.Receiver, area RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_get_space(impl func(ptr gdclass.Receiver, area RID.Area2D) RID.Space2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -988,7 +1002,7 @@ func (Instance) _area_get_space(impl func(ptr gdclass.Receiver, area RID.Any) RI
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaAddShape].
 */
-func (Instance) _area_add_shape(impl func(ptr gdclass.Receiver, area RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_add_shape(impl func(ptr gdclass.Receiver, area RID.Area2D, shape RID.Shape2D, transform Transform2D.OriginXY, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape = gd.UnsafeGet[RID.Any](p_args, 1)
@@ -1002,7 +1016,7 @@ func (Instance) _area_add_shape(impl func(ptr gdclass.Receiver, area RID.Any, sh
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetShape].
 */
-func (Instance) _area_set_shape(impl func(ptr gdclass.Receiver, area RID.Any, shape_idx int, shape RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_shape(impl func(ptr gdclass.Receiver, area RID.Area2D, shape_idx int, shape RID.Shape2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
@@ -1015,7 +1029,7 @@ func (Instance) _area_set_shape(impl func(ptr gdclass.Receiver, area RID.Any, sh
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetShapeTransform].
 */
-func (Instance) _area_set_shape_transform(impl func(ptr gdclass.Receiver, area RID.Any, shape_idx int, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_shape_transform(impl func(ptr gdclass.Receiver, area RID.Area2D, shape_idx int, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
@@ -1028,7 +1042,7 @@ func (Instance) _area_set_shape_transform(impl func(ptr gdclass.Receiver, area R
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetShapeDisabled].
 */
-func (Instance) _area_set_shape_disabled(impl func(ptr gdclass.Receiver, area RID.Any, shape_idx int, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_shape_disabled(impl func(ptr gdclass.Receiver, area RID.Area2D, shape_idx int, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
@@ -1041,7 +1055,7 @@ func (Instance) _area_set_shape_disabled(impl func(ptr gdclass.Receiver, area RI
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetShapeCount].
 */
-func (Instance) _area_get_shape_count(impl func(ptr gdclass.Receiver, area RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_get_shape_count(impl func(ptr gdclass.Receiver, area RID.Area2D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1053,7 +1067,7 @@ func (Instance) _area_get_shape_count(impl func(ptr gdclass.Receiver, area RID.A
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetShape].
 */
-func (Instance) _area_get_shape(impl func(ptr gdclass.Receiver, area RID.Any, shape_idx int) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_get_shape(impl func(ptr gdclass.Receiver, area RID.Area2D, shape_idx int) RID.Area2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
@@ -1066,7 +1080,7 @@ func (Instance) _area_get_shape(impl func(ptr gdclass.Receiver, area RID.Any, sh
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetShapeTransform].
 */
-func (Instance) _area_get_shape_transform(impl func(ptr gdclass.Receiver, area RID.Any, shape_idx int) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_get_shape_transform(impl func(ptr gdclass.Receiver, area RID.Area2D, shape_idx int) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
@@ -1079,7 +1093,7 @@ func (Instance) _area_get_shape_transform(impl func(ptr gdclass.Receiver, area R
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaRemoveShape].
 */
-func (Instance) _area_remove_shape(impl func(ptr gdclass.Receiver, area RID.Any, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_remove_shape(impl func(ptr gdclass.Receiver, area RID.Area2D, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
@@ -1091,7 +1105,7 @@ func (Instance) _area_remove_shape(impl func(ptr gdclass.Receiver, area RID.Any,
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaClearShapes].
 */
-func (Instance) _area_clear_shapes(impl func(ptr gdclass.Receiver, area RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_clear_shapes(impl func(ptr gdclass.Receiver, area RID.Area2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1102,7 +1116,7 @@ func (Instance) _area_clear_shapes(impl func(ptr gdclass.Receiver, area RID.Any)
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaAttachObjectInstanceId].
 */
-func (Instance) _area_attach_object_instance_id(impl func(ptr gdclass.Receiver, area RID.Any, id int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_attach_object_instance_id(impl func(ptr gdclass.Receiver, area RID.Area2D, id int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var id = gd.UnsafeGet[int64](p_args, 1)
@@ -1114,7 +1128,7 @@ func (Instance) _area_attach_object_instance_id(impl func(ptr gdclass.Receiver, 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetObjectInstanceId].
 */
-func (Instance) _area_get_object_instance_id(impl func(ptr gdclass.Receiver, area RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_get_object_instance_id(impl func(ptr gdclass.Receiver, area RID.Area2D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1126,7 +1140,7 @@ func (Instance) _area_get_object_instance_id(impl func(ptr gdclass.Receiver, are
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaAttachCanvasInstanceId].
 */
-func (Instance) _area_attach_canvas_instance_id(impl func(ptr gdclass.Receiver, area RID.Any, id int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_attach_canvas_instance_id(impl func(ptr gdclass.Receiver, area RID.Area2D, id int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var id = gd.UnsafeGet[int64](p_args, 1)
@@ -1138,7 +1152,7 @@ func (Instance) _area_attach_canvas_instance_id(impl func(ptr gdclass.Receiver, 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetCanvasInstanceId].
 */
-func (Instance) _area_get_canvas_instance_id(impl func(ptr gdclass.Receiver, area RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_get_canvas_instance_id(impl func(ptr gdclass.Receiver, area RID.Area2D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1150,7 +1164,7 @@ func (Instance) _area_get_canvas_instance_id(impl func(ptr gdclass.Receiver, are
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetParam].
 */
-func (Instance) _area_set_param(impl func(ptr gdclass.Receiver, area RID.Any, param PhysicsServer2D.AreaParameter, value any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_param(impl func(ptr gdclass.Receiver, area RID.Area2D, param PhysicsServer2D.AreaParameter, value any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer2D.AreaParameter](p_args, 1)
@@ -1164,7 +1178,7 @@ func (Instance) _area_set_param(impl func(ptr gdclass.Receiver, area RID.Any, pa
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetTransform].
 */
-func (Instance) _area_set_transform(impl func(ptr gdclass.Receiver, area RID.Any, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_transform(impl func(ptr gdclass.Receiver, area RID.Area2D, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
@@ -1176,7 +1190,7 @@ func (Instance) _area_set_transform(impl func(ptr gdclass.Receiver, area RID.Any
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetParam].
 */
-func (Instance) _area_get_param(impl func(ptr gdclass.Receiver, area RID.Any, param PhysicsServer2D.AreaParameter) any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_get_param(impl func(ptr gdclass.Receiver, area RID.Area2D, param PhysicsServer2D.AreaParameter) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer2D.AreaParameter](p_args, 1)
@@ -1194,7 +1208,7 @@ func (Instance) _area_get_param(impl func(ptr gdclass.Receiver, area RID.Any, pa
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetTransform].
 */
-func (Instance) _area_get_transform(impl func(ptr gdclass.Receiver, area RID.Any) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_get_transform(impl func(ptr gdclass.Receiver, area RID.Area2D) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1206,7 +1220,7 @@ func (Instance) _area_get_transform(impl func(ptr gdclass.Receiver, area RID.Any
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetCollisionLayer].
 */
-func (Instance) _area_set_collision_layer(impl func(ptr gdclass.Receiver, area RID.Any, layer int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_collision_layer(impl func(ptr gdclass.Receiver, area RID.Area2D, layer int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var layer = gd.UnsafeGet[int64](p_args, 1)
@@ -1218,7 +1232,7 @@ func (Instance) _area_set_collision_layer(impl func(ptr gdclass.Receiver, area R
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetCollisionLayer].
 */
-func (Instance) _area_get_collision_layer(impl func(ptr gdclass.Receiver, area RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_get_collision_layer(impl func(ptr gdclass.Receiver, area RID.Area2D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1230,7 +1244,7 @@ func (Instance) _area_get_collision_layer(impl func(ptr gdclass.Receiver, area R
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetCollisionMask].
 */
-func (Instance) _area_set_collision_mask(impl func(ptr gdclass.Receiver, area RID.Any, mask int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_collision_mask(impl func(ptr gdclass.Receiver, area RID.Area2D, mask int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var mask = gd.UnsafeGet[int64](p_args, 1)
@@ -1242,7 +1256,7 @@ func (Instance) _area_set_collision_mask(impl func(ptr gdclass.Receiver, area RI
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaGetCollisionMask].
 */
-func (Instance) _area_get_collision_mask(impl func(ptr gdclass.Receiver, area RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_get_collision_mask(impl func(ptr gdclass.Receiver, area RID.Area2D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1254,7 +1268,7 @@ func (Instance) _area_get_collision_mask(impl func(ptr gdclass.Receiver, area RI
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetMonitorable].
 */
-func (Instance) _area_set_monitorable(impl func(ptr gdclass.Receiver, area RID.Any, monitorable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_monitorable(impl func(ptr gdclass.Receiver, area RID.Area2D, monitorable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var monitorable = gd.UnsafeGet[bool](p_args, 1)
@@ -1268,7 +1282,7 @@ If set to true, allows the area with the given [Resource.ID] to detect mouse inp
 
 Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal area_set_pickable method. Corresponds to [graphics.gd/classdb/CollisionObject2D.Instance.InputPickable].
 */
-func (Instance) _area_set_pickable(impl func(ptr gdclass.Receiver, area RID.Any, pickable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_pickable(impl func(ptr gdclass.Receiver, area RID.Area2D, pickable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pickable = gd.UnsafeGet[bool](p_args, 1)
@@ -1280,7 +1294,7 @@ func (Instance) _area_set_pickable(impl func(ptr gdclass.Receiver, area RID.Any,
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetMonitorCallback].
 */
-func (Instance) _area_set_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Any, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Area2D, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
@@ -1293,7 +1307,7 @@ func (Instance) _area_set_monitor_callback(impl func(ptr gdclass.Receiver, area 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetAreaMonitorCallback].
 */
-func (Instance) _area_set_area_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Any, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_area_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Area2D, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
@@ -1306,7 +1320,7 @@ func (Instance) _area_set_area_monitor_callback(impl func(ptr gdclass.Receiver, 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyCreate].
 */
-func (Instance) _body_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_create(impl func(ptr gdclass.Receiver) RID.Body2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -1317,7 +1331,7 @@ func (Instance) _body_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.Ext
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetSpace].
 */
-func (Instance) _body_set_space(impl func(ptr gdclass.Receiver, body RID.Any, space RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_space(impl func(ptr gdclass.Receiver, body RID.Body2D, space RID.Space2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var space = gd.UnsafeGet[RID.Any](p_args, 1)
@@ -1329,7 +1343,7 @@ func (Instance) _body_set_space(impl func(ptr gdclass.Receiver, body RID.Any, sp
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetSpace].
 */
-func (Instance) _body_get_space(impl func(ptr gdclass.Receiver, body RID.Any) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_space(impl func(ptr gdclass.Receiver, body RID.Body2D) RID.Space2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1341,7 +1355,7 @@ func (Instance) _body_get_space(impl func(ptr gdclass.Receiver, body RID.Any) RI
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetMode].
 */
-func (Instance) _body_set_mode(impl func(ptr gdclass.Receiver, body RID.Any, mode PhysicsServer2D.BodyMode)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_mode(impl func(ptr gdclass.Receiver, body RID.Body2D, mode PhysicsServer2D.BodyMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var mode = gd.UnsafeGet[PhysicsServer2D.BodyMode](p_args, 1)
@@ -1353,7 +1367,7 @@ func (Instance) _body_set_mode(impl func(ptr gdclass.Receiver, body RID.Any, mod
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetMode].
 */
-func (Instance) _body_get_mode(impl func(ptr gdclass.Receiver, body RID.Any) PhysicsServer2D.BodyMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_mode(impl func(ptr gdclass.Receiver, body RID.Body2D) PhysicsServer2D.BodyMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1365,7 +1379,7 @@ func (Instance) _body_get_mode(impl func(ptr gdclass.Receiver, body RID.Any) Phy
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyAddShape].
 */
-func (Instance) _body_add_shape(impl func(ptr gdclass.Receiver, body RID.Any, shape RID.Any, transform Transform2D.OriginXY, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_add_shape(impl func(ptr gdclass.Receiver, body RID.Body2D, shape RID.Shape2D, transform Transform2D.OriginXY, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape = gd.UnsafeGet[RID.Any](p_args, 1)
@@ -1379,7 +1393,7 @@ func (Instance) _body_add_shape(impl func(ptr gdclass.Receiver, body RID.Any, sh
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetShape].
 */
-func (Instance) _body_set_shape(impl func(ptr gdclass.Receiver, body RID.Any, shape_idx int, shape RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_shape(impl func(ptr gdclass.Receiver, body RID.Body2D, shape_idx int, shape RID.Shape2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
@@ -1392,7 +1406,7 @@ func (Instance) _body_set_shape(impl func(ptr gdclass.Receiver, body RID.Any, sh
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetShapeTransform].
 */
-func (Instance) _body_set_shape_transform(impl func(ptr gdclass.Receiver, body RID.Any, shape_idx int, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_shape_transform(impl func(ptr gdclass.Receiver, body RID.Body2D, shape_idx int, transform Transform2D.OriginXY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
@@ -1405,7 +1419,7 @@ func (Instance) _body_set_shape_transform(impl func(ptr gdclass.Receiver, body R
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetShapeCount].
 */
-func (Instance) _body_get_shape_count(impl func(ptr gdclass.Receiver, body RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_shape_count(impl func(ptr gdclass.Receiver, body RID.Body2D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1417,7 +1431,7 @@ func (Instance) _body_get_shape_count(impl func(ptr gdclass.Receiver, body RID.A
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetShape].
 */
-func (Instance) _body_get_shape(impl func(ptr gdclass.Receiver, body RID.Any, shape_idx int) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_shape(impl func(ptr gdclass.Receiver, body RID.Body2D, shape_idx int) RID.Body2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
@@ -1430,7 +1444,7 @@ func (Instance) _body_get_shape(impl func(ptr gdclass.Receiver, body RID.Any, sh
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetShapeTransform].
 */
-func (Instance) _body_get_shape_transform(impl func(ptr gdclass.Receiver, body RID.Any, shape_idx int) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_shape_transform(impl func(ptr gdclass.Receiver, body RID.Body2D, shape_idx int) Transform2D.OriginXY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
@@ -1443,7 +1457,7 @@ func (Instance) _body_get_shape_transform(impl func(ptr gdclass.Receiver, body R
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetShapeDisabled].
 */
-func (Instance) _body_set_shape_disabled(impl func(ptr gdclass.Receiver, body RID.Any, shape_idx int, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_shape_disabled(impl func(ptr gdclass.Receiver, body RID.Body2D, shape_idx int, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
@@ -1456,7 +1470,7 @@ func (Instance) _body_set_shape_disabled(impl func(ptr gdclass.Receiver, body RI
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetShapeAsOneWayCollision].
 */
-func (Instance) _body_set_shape_as_one_way_collision(impl func(ptr gdclass.Receiver, body RID.Any, shape_idx int, enable bool, margin Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_shape_as_one_way_collision(impl func(ptr gdclass.Receiver, body RID.Body2D, shape_idx int, enable bool, margin Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
@@ -1470,7 +1484,7 @@ func (Instance) _body_set_shape_as_one_way_collision(impl func(ptr gdclass.Recei
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyRemoveShape].
 */
-func (Instance) _body_remove_shape(impl func(ptr gdclass.Receiver, body RID.Any, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_remove_shape(impl func(ptr gdclass.Receiver, body RID.Body2D, shape_idx int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
@@ -1482,7 +1496,7 @@ func (Instance) _body_remove_shape(impl func(ptr gdclass.Receiver, body RID.Any,
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyClearShapes].
 */
-func (Instance) _body_clear_shapes(impl func(ptr gdclass.Receiver, body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_clear_shapes(impl func(ptr gdclass.Receiver, body RID.Body2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1493,7 +1507,7 @@ func (Instance) _body_clear_shapes(impl func(ptr gdclass.Receiver, body RID.Any)
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyAttachObjectInstanceId].
 */
-func (Instance) _body_attach_object_instance_id(impl func(ptr gdclass.Receiver, body RID.Any, id int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_attach_object_instance_id(impl func(ptr gdclass.Receiver, body RID.Body2D, id int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var id = gd.UnsafeGet[int64](p_args, 1)
@@ -1505,7 +1519,7 @@ func (Instance) _body_attach_object_instance_id(impl func(ptr gdclass.Receiver, 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetObjectInstanceId].
 */
-func (Instance) _body_get_object_instance_id(impl func(ptr gdclass.Receiver, body RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_object_instance_id(impl func(ptr gdclass.Receiver, body RID.Body2D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1517,7 +1531,7 @@ func (Instance) _body_get_object_instance_id(impl func(ptr gdclass.Receiver, bod
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyAttachCanvasInstanceId].
 */
-func (Instance) _body_attach_canvas_instance_id(impl func(ptr gdclass.Receiver, body RID.Any, id int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_attach_canvas_instance_id(impl func(ptr gdclass.Receiver, body RID.Body2D, id int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var id = gd.UnsafeGet[int64](p_args, 1)
@@ -1529,7 +1543,7 @@ func (Instance) _body_attach_canvas_instance_id(impl func(ptr gdclass.Receiver, 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetCanvasInstanceId].
 */
-func (Instance) _body_get_canvas_instance_id(impl func(ptr gdclass.Receiver, body RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_canvas_instance_id(impl func(ptr gdclass.Receiver, body RID.Body2D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1541,7 +1555,7 @@ func (Instance) _body_get_canvas_instance_id(impl func(ptr gdclass.Receiver, bod
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetContinuousCollisionDetectionMode].
 */
-func (Instance) _body_set_continuous_collision_detection_mode(impl func(ptr gdclass.Receiver, body RID.Any, mode PhysicsServer2D.CCDMode)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_continuous_collision_detection_mode(impl func(ptr gdclass.Receiver, body RID.Body2D, mode PhysicsServer2D.CCDMode)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var mode = gd.UnsafeGet[PhysicsServer2D.CCDMode](p_args, 1)
@@ -1553,7 +1567,7 @@ func (Instance) _body_set_continuous_collision_detection_mode(impl func(ptr gdcl
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetContinuousCollisionDetectionMode].
 */
-func (Instance) _body_get_continuous_collision_detection_mode(impl func(ptr gdclass.Receiver, body RID.Any) PhysicsServer2D.CCDMode) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_continuous_collision_detection_mode(impl func(ptr gdclass.Receiver, body RID.Body2D) PhysicsServer2D.CCDMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1565,7 +1579,7 @@ func (Instance) _body_get_continuous_collision_detection_mode(impl func(ptr gdcl
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetCollisionLayer].
 */
-func (Instance) _body_set_collision_layer(impl func(ptr gdclass.Receiver, body RID.Any, layer int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_collision_layer(impl func(ptr gdclass.Receiver, body RID.Body2D, layer int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var layer = gd.UnsafeGet[int64](p_args, 1)
@@ -1577,7 +1591,7 @@ func (Instance) _body_set_collision_layer(impl func(ptr gdclass.Receiver, body R
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetCollisionLayer].
 */
-func (Instance) _body_get_collision_layer(impl func(ptr gdclass.Receiver, body RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_collision_layer(impl func(ptr gdclass.Receiver, body RID.Body2D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1589,7 +1603,7 @@ func (Instance) _body_get_collision_layer(impl func(ptr gdclass.Receiver, body R
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetCollisionMask].
 */
-func (Instance) _body_set_collision_mask(impl func(ptr gdclass.Receiver, body RID.Any, mask int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_collision_mask(impl func(ptr gdclass.Receiver, body RID.Body2D, mask int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var mask = gd.UnsafeGet[int64](p_args, 1)
@@ -1601,7 +1615,7 @@ func (Instance) _body_set_collision_mask(impl func(ptr gdclass.Receiver, body RI
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetCollisionMask].
 */
-func (Instance) _body_get_collision_mask(impl func(ptr gdclass.Receiver, body RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_collision_mask(impl func(ptr gdclass.Receiver, body RID.Body2D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1613,7 +1627,7 @@ func (Instance) _body_get_collision_mask(impl func(ptr gdclass.Receiver, body RI
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetCollisionPriority].
 */
-func (Instance) _body_set_collision_priority(impl func(ptr gdclass.Receiver, body RID.Any, priority Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_collision_priority(impl func(ptr gdclass.Receiver, body RID.Body2D, priority Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var priority = gd.UnsafeGet[float64](p_args, 1)
@@ -1625,7 +1639,7 @@ func (Instance) _body_set_collision_priority(impl func(ptr gdclass.Receiver, bod
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetCollisionPriority].
 */
-func (Instance) _body_get_collision_priority(impl func(ptr gdclass.Receiver, body RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_collision_priority(impl func(ptr gdclass.Receiver, body RID.Body2D) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1637,7 +1651,7 @@ func (Instance) _body_get_collision_priority(impl func(ptr gdclass.Receiver, bod
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetParam].
 */
-func (Instance) _body_set_param(impl func(ptr gdclass.Receiver, body RID.Any, param PhysicsServer2D.BodyParameter, value any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_param(impl func(ptr gdclass.Receiver, body RID.Body2D, param PhysicsServer2D.BodyParameter, value any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer2D.BodyParameter](p_args, 1)
@@ -1651,7 +1665,7 @@ func (Instance) _body_set_param(impl func(ptr gdclass.Receiver, body RID.Any, pa
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetParam].
 */
-func (Instance) _body_get_param(impl func(ptr gdclass.Receiver, body RID.Any, param PhysicsServer2D.BodyParameter) any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_param(impl func(ptr gdclass.Receiver, body RID.Body2D, param PhysicsServer2D.BodyParameter) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer2D.BodyParameter](p_args, 1)
@@ -1669,7 +1683,7 @@ func (Instance) _body_get_param(impl func(ptr gdclass.Receiver, body RID.Any, pa
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyResetMassProperties].
 */
-func (Instance) _body_reset_mass_properties(impl func(ptr gdclass.Receiver, body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_reset_mass_properties(impl func(ptr gdclass.Receiver, body RID.Body2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1680,7 +1694,7 @@ func (Instance) _body_reset_mass_properties(impl func(ptr gdclass.Receiver, body
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetState].
 */
-func (Instance) _body_set_state(impl func(ptr gdclass.Receiver, body RID.Any, state PhysicsServer2D.BodyState, value any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_state(impl func(ptr gdclass.Receiver, body RID.Body2D, state PhysicsServer2D.BodyState, value any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var state = gd.UnsafeGet[PhysicsServer2D.BodyState](p_args, 1)
@@ -1694,7 +1708,7 @@ func (Instance) _body_set_state(impl func(ptr gdclass.Receiver, body RID.Any, st
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetState].
 */
-func (Instance) _body_get_state(impl func(ptr gdclass.Receiver, body RID.Any, state PhysicsServer2D.BodyState) any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_state(impl func(ptr gdclass.Receiver, body RID.Body2D, state PhysicsServer2D.BodyState) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var state = gd.UnsafeGet[PhysicsServer2D.BodyState](p_args, 1)
@@ -1712,7 +1726,7 @@ func (Instance) _body_get_state(impl func(ptr gdclass.Receiver, body RID.Any, st
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyApplyCentralImpulse].
 */
-func (Instance) _body_apply_central_impulse(impl func(ptr gdclass.Receiver, body RID.Any, impulse Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_apply_central_impulse(impl func(ptr gdclass.Receiver, body RID.Body2D, impulse Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var impulse = gd.UnsafeGet[Vector2.XY](p_args, 1)
@@ -1724,7 +1738,7 @@ func (Instance) _body_apply_central_impulse(impl func(ptr gdclass.Receiver, body
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyApplyTorqueImpulse].
 */
-func (Instance) _body_apply_torque_impulse(impl func(ptr gdclass.Receiver, body RID.Any, impulse Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_apply_torque_impulse(impl func(ptr gdclass.Receiver, body RID.Body2D, impulse Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var impulse = gd.UnsafeGet[float64](p_args, 1)
@@ -1736,7 +1750,7 @@ func (Instance) _body_apply_torque_impulse(impl func(ptr gdclass.Receiver, body 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyApplyImpulse].
 */
-func (Instance) _body_apply_impulse(impl func(ptr gdclass.Receiver, body RID.Any, impulse Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_apply_impulse(impl func(ptr gdclass.Receiver, body RID.Body2D, impulse Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var impulse = gd.UnsafeGet[Vector2.XY](p_args, 1)
@@ -1749,7 +1763,7 @@ func (Instance) _body_apply_impulse(impl func(ptr gdclass.Receiver, body RID.Any
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyApplyCentralForce].
 */
-func (Instance) _body_apply_central_force(impl func(ptr gdclass.Receiver, body RID.Any, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_apply_central_force(impl func(ptr gdclass.Receiver, body RID.Body2D, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var force = gd.UnsafeGet[Vector2.XY](p_args, 1)
@@ -1761,7 +1775,7 @@ func (Instance) _body_apply_central_force(impl func(ptr gdclass.Receiver, body R
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyApplyForce].
 */
-func (Instance) _body_apply_force(impl func(ptr gdclass.Receiver, body RID.Any, force Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_apply_force(impl func(ptr gdclass.Receiver, body RID.Body2D, force Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var force = gd.UnsafeGet[Vector2.XY](p_args, 1)
@@ -1774,7 +1788,7 @@ func (Instance) _body_apply_force(impl func(ptr gdclass.Receiver, body RID.Any, 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyApplyTorque].
 */
-func (Instance) _body_apply_torque(impl func(ptr gdclass.Receiver, body RID.Any, torque Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_apply_torque(impl func(ptr gdclass.Receiver, body RID.Body2D, torque Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var torque = gd.UnsafeGet[float64](p_args, 1)
@@ -1786,7 +1800,7 @@ func (Instance) _body_apply_torque(impl func(ptr gdclass.Receiver, body RID.Any,
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyAddConstantCentralForce].
 */
-func (Instance) _body_add_constant_central_force(impl func(ptr gdclass.Receiver, body RID.Any, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_add_constant_central_force(impl func(ptr gdclass.Receiver, body RID.Body2D, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var force = gd.UnsafeGet[Vector2.XY](p_args, 1)
@@ -1798,7 +1812,7 @@ func (Instance) _body_add_constant_central_force(impl func(ptr gdclass.Receiver,
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyAddConstantForce].
 */
-func (Instance) _body_add_constant_force(impl func(ptr gdclass.Receiver, body RID.Any, force Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_add_constant_force(impl func(ptr gdclass.Receiver, body RID.Body2D, force Vector2.XY, position Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var force = gd.UnsafeGet[Vector2.XY](p_args, 1)
@@ -1811,7 +1825,7 @@ func (Instance) _body_add_constant_force(impl func(ptr gdclass.Receiver, body RI
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyAddConstantTorque].
 */
-func (Instance) _body_add_constant_torque(impl func(ptr gdclass.Receiver, body RID.Any, torque Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_add_constant_torque(impl func(ptr gdclass.Receiver, body RID.Body2D, torque Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var torque = gd.UnsafeGet[float64](p_args, 1)
@@ -1823,7 +1837,7 @@ func (Instance) _body_add_constant_torque(impl func(ptr gdclass.Receiver, body R
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetConstantForce].
 */
-func (Instance) _body_set_constant_force(impl func(ptr gdclass.Receiver, body RID.Any, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_constant_force(impl func(ptr gdclass.Receiver, body RID.Body2D, force Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var force = gd.UnsafeGet[Vector2.XY](p_args, 1)
@@ -1835,7 +1849,7 @@ func (Instance) _body_set_constant_force(impl func(ptr gdclass.Receiver, body RI
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetConstantForce].
 */
-func (Instance) _body_get_constant_force(impl func(ptr gdclass.Receiver, body RID.Any) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_constant_force(impl func(ptr gdclass.Receiver, body RID.Body2D) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1847,7 +1861,7 @@ func (Instance) _body_get_constant_force(impl func(ptr gdclass.Receiver, body RI
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetConstantTorque].
 */
-func (Instance) _body_set_constant_torque(impl func(ptr gdclass.Receiver, body RID.Any, torque Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_constant_torque(impl func(ptr gdclass.Receiver, body RID.Body2D, torque Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var torque = gd.UnsafeGet[float64](p_args, 1)
@@ -1859,7 +1873,7 @@ func (Instance) _body_set_constant_torque(impl func(ptr gdclass.Receiver, body R
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetConstantTorque].
 */
-func (Instance) _body_get_constant_torque(impl func(ptr gdclass.Receiver, body RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_constant_torque(impl func(ptr gdclass.Receiver, body RID.Body2D) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1871,7 +1885,7 @@ func (Instance) _body_get_constant_torque(impl func(ptr gdclass.Receiver, body R
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetAxisVelocity].
 */
-func (Instance) _body_set_axis_velocity(impl func(ptr gdclass.Receiver, body RID.Any, axis_velocity Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_axis_velocity(impl func(ptr gdclass.Receiver, body RID.Body2D, axis_velocity Vector2.XY)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var axis_velocity = gd.UnsafeGet[Vector2.XY](p_args, 1)
@@ -1883,7 +1897,7 @@ func (Instance) _body_set_axis_velocity(impl func(ptr gdclass.Receiver, body RID
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyAddCollisionException].
 */
-func (Instance) _body_add_collision_exception(impl func(ptr gdclass.Receiver, body RID.Any, excepted_body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_add_collision_exception(impl func(ptr gdclass.Receiver, body RID.Body2D, excepted_body RID.Body2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var excepted_body = gd.UnsafeGet[RID.Any](p_args, 1)
@@ -1895,7 +1909,7 @@ func (Instance) _body_add_collision_exception(impl func(ptr gdclass.Receiver, bo
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyRemoveCollisionException].
 */
-func (Instance) _body_remove_collision_exception(impl func(ptr gdclass.Receiver, body RID.Any, excepted_body RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_remove_collision_exception(impl func(ptr gdclass.Receiver, body RID.Body2D, excepted_body RID.Body2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var excepted_body = gd.UnsafeGet[RID.Any](p_args, 1)
@@ -1909,7 +1923,7 @@ Returns the [Resource.ID]s of all bodies added as collision exceptions for the g
 
 Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal body_get_collision_exceptions method. Corresponds to [graphics.gd/classdb/PhysicsBody2D.Instance.GetCollisionExceptions].
 */
-func (Instance) _body_get_collision_exceptions(impl func(ptr gdclass.Receiver, body RID.Any) []RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_collision_exceptions(impl func(ptr gdclass.Receiver, body RID.Body2D) []RID.Body2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1926,7 +1940,7 @@ func (Instance) _body_get_collision_exceptions(impl func(ptr gdclass.Receiver, b
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetMaxContactsReported].
 */
-func (Instance) _body_set_max_contacts_reported(impl func(ptr gdclass.Receiver, body RID.Any, amount int)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_max_contacts_reported(impl func(ptr gdclass.Receiver, body RID.Body2D, amount int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var amount = gd.UnsafeGet[int64](p_args, 1)
@@ -1938,7 +1952,7 @@ func (Instance) _body_set_max_contacts_reported(impl func(ptr gdclass.Receiver, 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetMaxContactsReported].
 */
-func (Instance) _body_get_max_contacts_reported(impl func(ptr gdclass.Receiver, body RID.Any) int) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_max_contacts_reported(impl func(ptr gdclass.Receiver, body RID.Body2D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1952,7 +1966,7 @@ Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal body_set
 
 Note: This method is currently unused by Godot's default physics implementation.
 */
-func (Instance) _body_set_contacts_reported_depth_threshold(impl func(ptr gdclass.Receiver, body RID.Any, threshold Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_contacts_reported_depth_threshold(impl func(ptr gdclass.Receiver, body RID.Body2D, threshold Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var threshold = gd.UnsafeGet[float64](p_args, 1)
@@ -1966,7 +1980,7 @@ Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal body_get
 
 Note: This method is currently unused by Godot's default physics implementation.
 */
-func (Instance) _body_get_contacts_reported_depth_threshold(impl func(ptr gdclass.Receiver, body RID.Any) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_contacts_reported_depth_threshold(impl func(ptr gdclass.Receiver, body RID.Body2D) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1978,7 +1992,7 @@ func (Instance) _body_get_contacts_reported_depth_threshold(impl func(ptr gdclas
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetOmitForceIntegration].
 */
-func (Instance) _body_set_omit_force_integration(impl func(ptr gdclass.Receiver, body RID.Any, enable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_omit_force_integration(impl func(ptr gdclass.Receiver, body RID.Body2D, enable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var enable = gd.UnsafeGet[bool](p_args, 1)
@@ -1990,7 +2004,7 @@ func (Instance) _body_set_omit_force_integration(impl func(ptr gdclass.Receiver,
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyIsOmittingForceIntegration].
 */
-func (Instance) _body_is_omitting_force_integration(impl func(ptr gdclass.Receiver, body RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_is_omitting_force_integration(impl func(ptr gdclass.Receiver, body RID.Body2D) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -2004,7 +2018,7 @@ Assigns the 'body' to call the given 'callable' during the synchronization phase
 
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetStateSyncCallback].
 */
-func (Instance) _body_set_state_sync_callback(impl func(ptr gdclass.Receiver, body RID.Any, callable Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_state_sync_callback(impl func(ptr gdclass.Receiver, body RID.Body2D, callable Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
@@ -2017,7 +2031,7 @@ func (Instance) _body_set_state_sync_callback(impl func(ptr gdclass.Receiver, bo
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetForceIntegrationCallback].
 */
-func (Instance) _body_set_force_integration_callback(impl func(ptr gdclass.Receiver, body RID.Any, callable Callable.Function, userdata any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_force_integration_callback(impl func(ptr gdclass.Receiver, body RID.Body2D, callable Callable.Function, userdata any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
@@ -2034,7 +2048,7 @@ Given a 'body', a 'shape', and their respective parameters, this method should r
 
 Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal shape_collide method. Corresponds to [graphics.gd/classdb/PhysicsDirectSpaceState2D.Instance.CollideShape].
 */
-func (Instance) _body_collide_shape(impl func(ptr gdclass.Receiver, body RID.Any, body_shape int, shape RID.Any, shape_xform Transform2D.OriginXY, motion Vector2.XY, results gdextension.Pointer, result_max int, result_count *int32) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_collide_shape(impl func(ptr gdclass.Receiver, body RID.Body2D, body_shape int, shape RID.Shape2D, shape_xform Transform2D.OriginXY, motion Vector2.XY, results gdextension.Pointer, result_max int, result_count *int32) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var body_shape = gd.UnsafeGet[int64](p_args, 1)
@@ -2055,7 +2069,7 @@ If set to true, allows the body with the given [Resource.ID] to detect mouse inp
 
 Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal body_set_pickable method. Corresponds to [graphics.gd/classdb/CollisionObject2D.Instance.InputPickable].
 */
-func (Instance) _body_set_pickable(impl func(ptr gdclass.Receiver, body RID.Any, pickable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_pickable(impl func(ptr gdclass.Receiver, body RID.Body2D, pickable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pickable = gd.UnsafeGet[bool](p_args, 1)
@@ -2067,7 +2081,7 @@ func (Instance) _body_set_pickable(impl func(ptr gdclass.Receiver, body RID.Any,
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyGetDirectState].
 */
-func (Instance) _body_get_direct_state(impl func(ptr gdclass.Receiver, body RID.Any) PhysicsDirectBodyState2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_get_direct_state(impl func(ptr gdclass.Receiver, body RID.Body2D) PhysicsDirectBodyState2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -2084,7 +2098,7 @@ func (Instance) _body_get_direct_state(impl func(ptr gdclass.Receiver, body RID.
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyTestMotion]. Unlike the exposed implementation, this method does not receive all of the arguments inside a [graphics.gd/classdb/PhysicsTestMotionParameters2D].
 */
-func (Instance) _body_test_motion(impl func(ptr gdclass.Receiver, body RID.Any, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_test_motion(impl func(ptr gdclass.Receiver, body RID.Body2D, from Transform2D.OriginXY, motion Vector2.XY, margin Float.X, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var from = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
@@ -2102,7 +2116,7 @@ func (Instance) _body_test_motion(impl func(ptr gdclass.Receiver, body RID.Any, 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointCreate].
 */
-func (Instance) _joint_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _joint_create(impl func(ptr gdclass.Receiver) RID.Joint2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -2113,7 +2127,7 @@ func (Instance) _joint_create(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.Ex
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointClear].
 */
-func (Instance) _joint_clear(impl func(ptr gdclass.Receiver, joint RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _joint_clear(impl func(ptr gdclass.Receiver, joint RID.Joint2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -2124,7 +2138,7 @@ func (Instance) _joint_clear(impl func(ptr gdclass.Receiver, joint RID.Any)) (cb
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointSetParam].
 */
-func (Instance) _joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Any, param PhysicsServer2D.JointParam, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Joint2D, param PhysicsServer2D.JointParam, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer2D.JointParam](p_args, 1)
@@ -2137,7 +2151,7 @@ func (Instance) _joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Any, 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointGetParam].
 */
-func (Instance) _joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Any, param PhysicsServer2D.JointParam) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Joint2D, param PhysicsServer2D.JointParam) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer2D.JointParam](p_args, 1)
@@ -2150,7 +2164,7 @@ func (Instance) _joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Any, 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointDisableCollisionsBetweenBodies].
 */
-func (Instance) _joint_disable_collisions_between_bodies(impl func(ptr gdclass.Receiver, joint RID.Any, disable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _joint_disable_collisions_between_bodies(impl func(ptr gdclass.Receiver, joint RID.Joint2D, disable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var disable = gd.UnsafeGet[bool](p_args, 1)
@@ -2162,7 +2176,7 @@ func (Instance) _joint_disable_collisions_between_bodies(impl func(ptr gdclass.R
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointIsDisabledCollisionsBetweenBodies].
 */
-func (Instance) _joint_is_disabled_collisions_between_bodies(impl func(ptr gdclass.Receiver, joint RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _joint_is_disabled_collisions_between_bodies(impl func(ptr gdclass.Receiver, joint RID.Joint2D) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -2174,7 +2188,7 @@ func (Instance) _joint_is_disabled_collisions_between_bodies(impl func(ptr gdcla
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointMakePin].
 */
-func (Instance) _joint_make_pin(impl func(ptr gdclass.Receiver, joint RID.Any, anchor Vector2.XY, body_a RID.Any, body_b RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _joint_make_pin(impl func(ptr gdclass.Receiver, joint RID.Joint2D, anchor Vector2.XY, body_a RID.Body2D, body_b RID.Body2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var anchor = gd.UnsafeGet[Vector2.XY](p_args, 1)
@@ -2188,7 +2202,7 @@ func (Instance) _joint_make_pin(impl func(ptr gdclass.Receiver, joint RID.Any, a
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointMakeGroove].
 */
-func (Instance) _joint_make_groove(impl func(ptr gdclass.Receiver, joint RID.Any, a_groove1 Vector2.XY, a_groove2 Vector2.XY, b_anchor Vector2.XY, body_a RID.Any, body_b RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _joint_make_groove(impl func(ptr gdclass.Receiver, joint RID.Joint2D, a_groove1 Vector2.XY, a_groove2 Vector2.XY, b_anchor Vector2.XY, body_a RID.Body2D, body_b RID.Body2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var a_groove1 = gd.UnsafeGet[Vector2.XY](p_args, 1)
@@ -2204,7 +2218,7 @@ func (Instance) _joint_make_groove(impl func(ptr gdclass.Receiver, joint RID.Any
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointMakeDampedSpring].
 */
-func (Instance) _joint_make_damped_spring(impl func(ptr gdclass.Receiver, joint RID.Any, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Any, body_b RID.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _joint_make_damped_spring(impl func(ptr gdclass.Receiver, joint RID.Joint2D, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Body2D, body_b RID.Body2D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var anchor_a = gd.UnsafeGet[Vector2.XY](p_args, 1)
@@ -2219,7 +2233,7 @@ func (Instance) _joint_make_damped_spring(impl func(ptr gdclass.Receiver, joint 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.PinJointSetFlag].
 */
-func (Instance) _pin_joint_set_flag(impl func(ptr gdclass.Receiver, joint RID.Any, flag PhysicsServer2D.PinJointFlag, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _pin_joint_set_flag(impl func(ptr gdclass.Receiver, joint RID.Joint2D, flag PhysicsServer2D.PinJointFlag, enabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var flag = gd.UnsafeGet[PhysicsServer2D.PinJointFlag](p_args, 1)
@@ -2232,7 +2246,7 @@ func (Instance) _pin_joint_set_flag(impl func(ptr gdclass.Receiver, joint RID.An
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.PinJointGetFlag].
 */
-func (Instance) _pin_joint_get_flag(impl func(ptr gdclass.Receiver, joint RID.Any, flag PhysicsServer2D.PinJointFlag) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _pin_joint_get_flag(impl func(ptr gdclass.Receiver, joint RID.Joint2D, flag PhysicsServer2D.PinJointFlag) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var flag = gd.UnsafeGet[PhysicsServer2D.PinJointFlag](p_args, 1)
@@ -2245,7 +2259,7 @@ func (Instance) _pin_joint_get_flag(impl func(ptr gdclass.Receiver, joint RID.An
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.PinJointSetParam].
 */
-func (Instance) _pin_joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Any, param PhysicsServer2D.PinJointParam, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _pin_joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Joint2D, param PhysicsServer2D.PinJointParam, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer2D.PinJointParam](p_args, 1)
@@ -2258,7 +2272,7 @@ func (Instance) _pin_joint_set_param(impl func(ptr gdclass.Receiver, joint RID.A
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.PinJointGetParam].
 */
-func (Instance) _pin_joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Any, param PhysicsServer2D.PinJointParam) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _pin_joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Joint2D, param PhysicsServer2D.PinJointParam) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer2D.PinJointParam](p_args, 1)
@@ -2271,7 +2285,7 @@ func (Instance) _pin_joint_get_param(impl func(ptr gdclass.Receiver, joint RID.A
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.DampedSpringJointSetParam].
 */
-func (Instance) _damped_spring_joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Any, param PhysicsServer2D.DampedSpringParam, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _damped_spring_joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Joint2D, param PhysicsServer2D.DampedSpringParam, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer2D.DampedSpringParam](p_args, 1)
@@ -2284,7 +2298,7 @@ func (Instance) _damped_spring_joint_set_param(impl func(ptr gdclass.Receiver, j
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.DampedSpringJointGetParam].
 */
-func (Instance) _damped_spring_joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Any, param PhysicsServer2D.DampedSpringParam) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _damped_spring_joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Joint2D, param PhysicsServer2D.DampedSpringParam) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer2D.DampedSpringParam](p_args, 1)
@@ -2297,7 +2311,7 @@ func (Instance) _damped_spring_joint_get_param(impl func(ptr gdclass.Receiver, j
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.JointGetType].
 */
-func (Instance) _joint_get_type(impl func(ptr gdclass.Receiver, joint RID.Any) PhysicsServer2D.JointType) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _joint_get_type(impl func(ptr gdclass.Receiver, joint RID.Joint2D) PhysicsServer2D.JointType) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
