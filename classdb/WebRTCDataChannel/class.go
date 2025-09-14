@@ -122,7 +122,7 @@ func (self Instance) Close() { //gd:WebRTCDataChannel.close
 }
 
 /*
-Returns true if the last received packet was transferred as text. See [member write_mode].
+Returns true if the last received packet was transferred as text. See [Instance.WriteMode].
 */
 func (self Instance) WasStringPacket() bool { //gd:WebRTCDataChannel.was_string_packet
 	return bool(Advanced(self).WasStringPacket())
@@ -151,6 +151,7 @@ func (self Instance) IsOrdered() bool { //gd:WebRTCDataChannel.is_ordered
 
 /*
 Returns the ID assigned to this channel during creation (or auto-assigned during negotiation).
+
 If the channel is not negotiated out-of-band the ID will only be available after the connection is established (will return 65535 until then).
 */
 func (self Instance) GetId() int { //gd:WebRTCDataChannel.get_id
@@ -159,6 +160,7 @@ func (self Instance) GetId() int { //gd:WebRTCDataChannel.get_id
 
 /*
 Returns the maxPacketLifeTime value assigned to this channel during creation.
+
 Will be 65535 if not specified.
 */
 func (self Instance) GetMaxPacketLifeTime() int { //gd:WebRTCDataChannel.get_max_packet_life_time
@@ -167,6 +169,7 @@ func (self Instance) GetMaxPacketLifeTime() int { //gd:WebRTCDataChannel.get_max
 
 /*
 Returns the maxRetransmits value assigned to this channel during creation.
+
 Will be 65535 if not specified.
 */
 func (self Instance) GetMaxRetransmits() int { //gd:WebRTCDataChannel.get_max_retransmits
@@ -264,7 +267,7 @@ func (self class) Close() { //gd:WebRTCDataChannel.close
 }
 
 /*
-Returns true if the last received packet was transferred as text. See [member write_mode].
+Returns true if the last received packet was transferred as text. See [Instance.WriteMode].
 */
 //go:nosplit
 func (self class) WasStringPacket() bool { //gd:WebRTCDataChannel.was_string_packet
@@ -317,6 +320,7 @@ func (self class) IsOrdered() bool { //gd:WebRTCDataChannel.is_ordered
 
 /*
 Returns the ID assigned to this channel during creation (or auto-assigned during negotiation).
+
 If the channel is not negotiated out-of-band the ID will only be available after the connection is established (will return 65535 until then).
 */
 //go:nosplit
@@ -328,6 +332,7 @@ func (self class) GetId() int64 { //gd:WebRTCDataChannel.get_id
 
 /*
 Returns the maxPacketLifeTime value assigned to this channel during creation.
+
 Will be 65535 if not specified.
 */
 //go:nosplit
@@ -339,6 +344,7 @@ func (self class) GetMaxPacketLifeTime() int64 { //gd:WebRTCDataChannel.get_max_
 
 /*
 Returns the maxRetransmits value assigned to this channel during creation.
+
 Will be 65535 if not specified.
 */
 //go:nosplit
@@ -419,21 +425,21 @@ func init() {
 type WriteMode int //gd:WebRTCDataChannel.WriteMode
 
 const (
-	/*Tells the channel to send data over this channel as text. An external peer (non-Godot) would receive this as a string.*/
+	// Tells the channel to send data over this channel as text. An external peer (non-Godot) would receive this as a string.
 	WriteModeText WriteMode = 0
-	/*Tells the channel to send data over this channel as binary. An external peer (non-Godot) would receive this as array buffer or blob.*/
+	// Tells the channel to send data over this channel as binary. An external peer (non-Godot) would receive this as array buffer or blob.
 	WriteModeBinary WriteMode = 1
 )
 
 type ChannelState int //gd:WebRTCDataChannel.ChannelState
 
 const (
-	/*The channel was created, but it's still trying to connect.*/
+	// The channel was created, but it's still trying to connect.
 	StateConnecting ChannelState = 0
-	/*The channel is currently open, and data can flow over it.*/
+	// The channel is currently open, and data can flow over it.
 	StateOpen ChannelState = 1
-	/*The channel is being closed, no new messages will be accepted, but those already in queue will be flushed.*/
+	// The channel is being closed, no new messages will be accepted, but those already in queue will be flushed.
 	StateClosing ChannelState = 2
-	/*The channel was closed, or connection failed.*/
+	// The channel was closed, or connection failed.
 	StateClosed ChannelState = 3
 )

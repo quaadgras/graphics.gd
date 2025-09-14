@@ -2,6 +2,7 @@
 
 /*
 Abstract scene data object, exists for the duration of rendering a single viewport.
+
 Note: This is an internal rendering server object, do not instantiate this from script.
 */
 package RenderSceneData
@@ -107,6 +108,7 @@ type Any interface {
 
 /*
 Returns the camera transform used to render this frame.
+
 Note: If more than one view is rendered, this will return a centered transform.
 */
 func (self Instance) GetCamTransform() Transform3D.BasisOrigin { //gd:RenderSceneData.get_cam_transform
@@ -115,6 +117,7 @@ func (self Instance) GetCamTransform() Transform3D.BasisOrigin { //gd:RenderScen
 
 /*
 Returns the camera projection used to render this frame.
+
 Note: If more than one view is rendered, this will return a combined projection.
 */
 func (self Instance) GetCamProjection() Projection.XYZW { //gd:RenderSceneData.get_cam_projection
@@ -137,6 +140,7 @@ func (self Instance) GetViewEyeOffset(view int) Vector3.XYZ { //gd:RenderSceneDa
 
 /*
 Returns the view projection per view used to render this frame.
+
 Note: If a single view is rendered, this returns the camera projection. If more than one view is rendered, this will return a projection for the given view including the eye offset.
 */
 func (self Instance) GetViewProjection(view int) Projection.XYZW { //gd:RenderSceneData.get_view_projection
@@ -144,7 +148,7 @@ func (self Instance) GetViewProjection(view int) Projection.XYZW { //gd:RenderSc
 }
 
 /*
-Return the [RID] of the uniform buffer containing the scene data as a UBO.
+Return the [Resource.ID] of the uniform buffer containing the scene data as a UBO.
 */
 func (self Instance) GetUniformBuffer() RID.UniformBuffer { //gd:RenderSceneData.get_uniform_buffer
 	return RID.UniformBuffer(Advanced(self).GetUniformBuffer())
@@ -194,6 +198,7 @@ func New() Instance {
 
 /*
 Returns the camera transform used to render this frame.
+
 Note: If more than one view is rendered, this will return a centered transform.
 */
 //go:nosplit
@@ -205,6 +210,7 @@ func (self class) GetCamTransform() Transform3D.BasisOrigin { //gd:RenderSceneDa
 
 /*
 Returns the camera projection used to render this frame.
+
 Note: If more than one view is rendered, this will return a combined projection.
 */
 //go:nosplit
@@ -236,6 +242,7 @@ func (self class) GetViewEyeOffset(view int64) Vector3.XYZ { //gd:RenderSceneDat
 
 /*
 Returns the view projection per view used to render this frame.
+
 Note: If a single view is rendered, this returns the camera projection. If more than one view is rendered, this will return a projection for the given view including the eye offset.
 */
 //go:nosplit
@@ -246,7 +253,7 @@ func (self class) GetViewProjection(view int64) Projection.XYZW { //gd:RenderSce
 }
 
 /*
-Return the [RID] of the uniform buffer containing the scene data as a UBO.
+Return the [Resource.ID] of the uniform buffer containing the scene data as a UBO.
 */
 //go:nosplit
 func (self class) GetUniformBuffer() RID.Any { //gd:RenderSceneData.get_uniform_buffer

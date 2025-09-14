@@ -2,6 +2,7 @@
 
 /*
 XR runtimes often identify multiple locations on devices such as controllers that are spatially tracked.
+
 Orientation, location, linear velocity and angular velocity are all provided for each pose by the XR runtime. This object contains this state of a pose.
 */
 package XRPose
@@ -112,7 +113,7 @@ type Any interface {
 }
 
 /*
-Returns the [member transform] with world scale and our reference frame applied. This is the transform used to position [XRNode3D] objects.
+Returns the [Instance.Transform] with world scale and our reference frame applied. This is the transform used to position [graphics.gd/classdb/XRNode3D] objects.
 */
 func (self Instance) GetAdjustedTransform() Transform3D.BasisOrigin { //gd:XRPose.get_adjusted_transform
 	return Transform3D.BasisOrigin(Advanced(self).GetAdjustedTransform())
@@ -246,7 +247,7 @@ func (self class) GetTransform() Transform3D.BasisOrigin { //gd:XRPose.get_trans
 }
 
 /*
-Returns the [member transform] with world scale and our reference frame applied. This is the transform used to position [XRNode3D] objects.
+Returns the [Instance.Transform] with world scale and our reference frame applied. This is the transform used to position [graphics.gd/classdb/XRNode3D] objects.
 */
 //go:nosplit
 func (self class) GetAdjustedTransform() Transform3D.BasisOrigin { //gd:XRPose.get_adjusted_transform
@@ -321,10 +322,10 @@ func init() {
 type TrackingConfidence int //gd:XRPose.TrackingConfidence
 
 const (
-	/*No tracking information is available for this pose.*/
+	// No tracking information is available for this pose.
 	XrTrackingConfidenceNone TrackingConfidence = 0
-	/*Tracking information may be inaccurate or estimated. For example, with inside out tracking this would indicate a controller may be (partially) obscured.*/
+	// Tracking information may be inaccurate or estimated. For example, with inside out tracking this would indicate a controller may be (partially) obscured.
 	XrTrackingConfidenceLow TrackingConfidence = 1
-	/*Tracking information is considered accurate and up to date.*/
+	// Tracking information is considered accurate and up to date.
 	XrTrackingConfidenceHigh TrackingConfidence = 2
 )

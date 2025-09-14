@@ -2,16 +2,28 @@
 
 /*
 This is a generic mobile VR implementation where you need to provide details about the phone and HMD used. It does not rely on any existing framework. This is the most basic interface we have. For the best effect, you need a mobile phone with a gyroscope and accelerometer.
-Note that even though there is no positional tracking, the camera will assume the headset is at a height of 1.85 meters. You can change this by setting [member eye_height].
+
+Note that even though there is no positional tracking, the camera will assume the headset is at a height of 1.85 meters. You can change this by setting [Instance.EyeHeight].
+
 You can initialize this interface as follows:
-[codeblock]
-var interface = XRServer.find_interface("Native mobile")
-if interface and interface.initialize():
 
-	get_viewport().use_xr = true
+	package main
 
-[/codeblock]
-Note: For Android, [member ProjectSettings.input_devices/sensors/enable_accelerometer], [member ProjectSettings.input_devices/sensors/enable_gravity], [member ProjectSettings.input_devices/sensors/enable_gyroscope] and [member ProjectSettings.input_devices/sensors/enable_magnetometer] must be enabled.
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/Viewport"
+		"graphics.gd/classdb/XRInterface"
+		"graphics.gd/classdb/XRServer"
+	)
+
+	func ExampleMobileVR(node Node.Instance) {
+		var XR = XRServer.FindInterface("Native mobile")
+		if XR != XRInterface.Nil && XR.Initialize() {
+			Viewport.Get(node).SetUseXr(true)
+		}
+	}
+
+Note: For Android, [graphics.gd/classdb/ProjectSettings] "input_devices/sensors/enable_accelerometer", [graphics.gd/classdb/ProjectSettings] "input_devices/sensors/enable_gravity", [graphics.gd/classdb/ProjectSettings] "input_devices/sensors/enable_gyroscope" and [graphics.gd/classdb/ProjectSettings] "input_devices/sensors/enable_magnetometer" must be enabled.
 */
 package MobileVRInterface
 

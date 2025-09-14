@@ -2,6 +2,7 @@
 
 /*
 Translates to step(edge, x) in the shader language.
+
 Returns 0.0 if x is smaller than edge and 1.0 otherwise.
 */
 package VisualShaderNodeStep
@@ -215,20 +216,20 @@ func init() {
 type OpType int //gd:VisualShaderNodeStep.OpType
 
 const (
-	/*A floating-point scalar type.*/
+	// A floating-point scalar type.
 	OpTypeScalar OpType = 0
-	/*A 2D vector type.*/
+	// A 2D vector type.
 	OpTypeVector2d OpType = 1
-	/*The [code]x[/code] port uses a 2D vector type, while the [code]edge[/code] port uses a floating-point scalar type.*/
+	// The x port uses a 2D vector type, while the edge port uses a floating-point scalar type.
 	OpTypeVector2dScalar OpType = 2
-	/*A 3D vector type.*/
+	// A 3D vector type.
 	OpTypeVector3d OpType = 3
-	/*The [code]x[/code] port uses a 3D vector type, while the [code]edge[/code] port uses a floating-point scalar type.*/
+	// The x port uses a 3D vector type, while the edge port uses a floating-point scalar type.
 	OpTypeVector3dScalar OpType = 4
-	/*A 4D vector type.*/
+	// A 4D vector type.
 	OpTypeVector4d OpType = 5
-	/*The [code]a[/code] and [code]b[/code] ports use a 4D vector type. The [code]weight[/code] port uses a scalar type.*/
+	// The a and b ports use a 4D vector type. The weight port uses a scalar type.
 	OpTypeVector4dScalar OpType = 6
-	/*Represents the size of the [enum OpType] enum.*/
+	// Represents the size of the [OpType] enum.
 	OpTypeMax OpType = 7
 )

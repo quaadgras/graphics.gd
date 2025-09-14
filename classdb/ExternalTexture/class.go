@@ -2,8 +2,13 @@
 
 /*
 Displays the content of an external buffer provided by the platform.
-Requires the [url=https://registry.khronos.org/OpenGL/extensions/OES/OES_EGL_image_external.txt]OES_EGL_image_external[/url] extension (OpenGL) or [url=https://registry.khronos.org/vulkan/specs/1.1-extensions/html/vkspec.html#VK_ANDROID_external_memory_android_hardware_buffer]VK_ANDROID_external_memory_android_hardware_buffer[/url] extension (Vulkan).
+
+Requires the [OES_EGL_image_external] extension (OpenGL) or [VK_ANDROID_external_memory_android_hardware_buffer] extension (Vulkan).
+
 Note: This is currently only supported in Android builds.
+
+[OES_EGL_image_external]: https://registry.khronos.org/OpenGL/extensions/OES/OES_EGL_image_external.txt
+[VK_ANDROID_external_memory_android_hardware_buffer]: https://registry.khronos.org/vulkan/specs/1.1-extensions/html/vkspec.html#VK_ANDROID_external_memory_android_hardware_buffer
 */
 package ExternalTexture
 
@@ -106,6 +111,7 @@ type Any interface {
 
 /*
 Returns the external texture ID.
+
 Depending on your use case, you may need to pass this to platform APIs, for example, when creating an android.graphics.SurfaceTexture on Android.
 */
 func (self Instance) GetExternalTextureId() int { //gd:ExternalTexture.get_external_texture_id
@@ -114,6 +120,7 @@ func (self Instance) GetExternalTextureId() int { //gd:ExternalTexture.get_exter
 
 /*
 Sets the external buffer ID.
+
 Depending on your use case, you may need to call this with data received from a platform API, for example, SurfaceTexture.getHardwareBuffer() on Android.
 */
 func (self Instance) SetExternalBufferId(external_buffer_id int) { //gd:ExternalTexture.set_external_buffer_id
@@ -174,6 +181,7 @@ func (self class) SetSize(size Vector2.XY) { //gd:ExternalTexture.set_size
 
 /*
 Returns the external texture ID.
+
 Depending on your use case, you may need to pass this to platform APIs, for example, when creating an android.graphics.SurfaceTexture on Android.
 */
 //go:nosplit
@@ -185,6 +193,7 @@ func (self class) GetExternalTextureId() int64 { //gd:ExternalTexture.get_extern
 
 /*
 Sets the external buffer ID.
+
 Depending on your use case, you may need to call this with data received from a platform API, for example, SurfaceTexture.getHardwareBuffer() on Android.
 */
 //go:nosplit

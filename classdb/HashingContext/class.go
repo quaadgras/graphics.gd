@@ -2,6 +2,7 @@
 
 /*
 The HashingContext class provides an interface for computing cryptographic hashes over multiple iterations. Useful for computing hashes of big files (so you don't have to load them all in memory), network streams, and data streams in general (so you don't have to hold buffers).
+
 The [HashType] enum shows the supported hashing algorithms.
 
 	package main
@@ -254,10 +255,10 @@ func init() {
 type HashType int //gd:HashingContext.HashType
 
 const (
-	/*Hashing algorithm: MD5.*/
+	// Hashing algorithm: MD5.
 	HashMd5 HashType = 0
-	/*Hashing algorithm: SHA-1.*/
+	// Hashing algorithm: SHA-1.
 	HashSha1 HashType = 1
-	/*Hashing algorithm: SHA-256.*/
+	// Hashing algorithm: SHA-256.
 	HashSha256 HashType = 2
 )

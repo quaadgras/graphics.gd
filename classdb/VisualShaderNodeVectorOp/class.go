@@ -224,30 +224,30 @@ func init() {
 type Operator int //gd:VisualShaderNodeVectorOp.Operator
 
 const (
-	/*Adds two vectors.*/
+	// Adds two vectors.
 	OpAdd Operator = 0
-	/*Subtracts a vector from a vector.*/
+	// Subtracts a vector from a vector.
 	OpSub Operator = 1
-	/*Multiplies two vectors.*/
+	// Multiplies two vectors.
 	OpMul Operator = 2
-	/*Divides vector by vector.*/
+	// Divides vector by vector.
 	OpDiv Operator = 3
-	/*Returns the remainder of the two vectors.*/
+	// Returns the remainder of the two vectors.
 	OpMod Operator = 4
-	/*Returns the value of the first parameter raised to the power of the second, for each component of the vectors.*/
+	// Returns the value of the first parameter raised to the power of the second, for each component of the vectors.
 	OpPow Operator = 5
-	/*Returns the greater of two values, for each component of the vectors.*/
+	// Returns the greater of two values, for each component of the vectors.
 	OpMax Operator = 6
-	/*Returns the lesser of two values, for each component of the vectors.*/
+	// Returns the lesser of two values, for each component of the vectors.
 	OpMin Operator = 7
-	/*Calculates the cross product of two vectors.*/
+	// Calculates the cross product of two vectors.
 	OpCross Operator = 8
-	/*Returns the arc-tangent of the parameters.*/
+	// Returns the arc-tangent of the parameters.
 	OpAtan2 Operator = 9
-	/*Returns the vector that points in the direction of reflection. [code]a[/code] is incident vector and [code]b[/code] is the normal vector.*/
+	// Returns the vector that points in the direction of reflection. a is incident vector and b is the normal vector.
 	OpReflect Operator = 10
-	/*Vector step operator. Returns [code]0.0[/code] if [code]a[/code] is smaller than [code]b[/code] and [code]1.0[/code] otherwise.*/
+	// Vector step operator. Returns 0.0 if a is smaller than b and 1.0 otherwise.
 	OpStep Operator = 11
-	/*Represents the size of the [enum Operator] enum.*/
+	// Represents the size of the [Operator] enum.
 	OpEnumSize Operator = 12
 )

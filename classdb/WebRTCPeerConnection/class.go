@@ -2,10 +2,15 @@
 
 /*
 A WebRTC connection between the local computer and a remote peer. Provides an interface to connect, maintain and monitor the connection.
+
 Setting up a WebRTC connection between two peers may not seem a trivial task, but it can be broken down into 3 main steps:
+
 - The peer that wants to initiate the connection (A from now on) creates an offer and send it to the other peer (B from now on).
+
 - B receives the offer, generate and answer, and sends it to A).
+
 - A and B then generates and exchange ICE candidates with each other.
+
 After these steps, the connection should become connected. Keep on reading or look into the tutorial for more information.
 */
 package WebRTCPeerConnection
@@ -116,7 +121,7 @@ type Any interface {
 }
 
 /*
-Sets the 'extension_class' as the default [WebRTCPeerConnectionExtension] returned when creating a new [WebRTCPeerConnection].
+Sets the 'extension_class' as the default [graphics.gd/classdb/WebRTCPeerConnectionExtension] returned when creating a new [graphics.gd/classdb/WebRTCPeerConnection].
 */
 func SetDefaultExtension(extension_class string) { //gd:WebRTCPeerConnection.set_default_extension
 	self := Instance{}
@@ -125,23 +130,8 @@ func SetDefaultExtension(extension_class string) { //gd:WebRTCPeerConnection.set
 
 /*
 Re-initialize this peer connection, closing any previously active connection, and going back to state [StateNew]. A dictionary of 'configuration' options can be passed to configure the peer connection.
+
 Valid 'configuration' options are:
-[codeblock]
-
-	{
-	    "iceServers": [
-	        {
-	            "urls": [ "stun:stun.example.com:3478" ], # One or more STUN servers.
-	        },
-	        {
-	            "urls": [ "turn:turn.example.com:3478" ], # One or more TURN servers.
-	            "username": "a_username", # Optional username for the TURN server.
-	            "credential": "a_password", # Optional password for the TURN server.
-	        }
-	    ]
-	}
-
-[/codeblock]
 */
 func (self Instance) Initialize() error { //gd:WebRTCPeerConnection.initialize
 	return error(gd.ToError(Advanced(self).Initialize(Dictionary.Nil)))
@@ -149,47 +139,20 @@ func (self Instance) Initialize() error { //gd:WebRTCPeerConnection.initialize
 
 /*
 Re-initialize this peer connection, closing any previously active connection, and going back to state [StateNew]. A dictionary of 'configuration' options can be passed to configure the peer connection.
+
 Valid 'configuration' options are:
-[codeblock]
-
-	{
-	    "iceServers": [
-	        {
-	            "urls": [ "stun:stun.example.com:3478" ], # One or more STUN servers.
-	        },
-	        {
-	            "urls": [ "turn:turn.example.com:3478" ], # One or more TURN servers.
-	            "username": "a_username", # Optional username for the TURN server.
-	            "credential": "a_password", # Optional password for the TURN server.
-	        }
-	    ]
-	}
-
-[/codeblock]
 */
 func (self Expanded) Initialize(configuration Configuration) error { //gd:WebRTCPeerConnection.initialize
 	return error(gd.ToError(Advanced(self).Initialize(gd.DictionaryFromMap(configuration))))
 }
 
 /*
-Returns a new [WebRTCDataChannel] (or null on failure) with given 'label' and optionally configured via the 'options' dictionary. This method can only be called when the connection is in state [StateNew].
-There are two ways to create a working data channel: either call [Instance.CreateDataChannel] on only one of the peer and listen to [signal data_channel_received] on the other, or call [Instance.CreateDataChannel] on both peers, with the same values, and the "negotiated" option set to true.
+Returns a new [graphics.gd/classdb/WebRTCDataChannel] (or null on failure) with given 'label' and optionally configured via the 'options' dictionary. This method can only be called when the connection is in state [StateNew].
+
+There are two ways to create a working data channel: either call [Instance.CreateDataChannel] on only one of the peer and listen to [Instance.OnDataChannelReceived] on the other, or call [Instance.CreateDataChannel] on both peers, with the same values, and the "negotiated" option set to true.
+
 Valid 'options' are:
-[codeblock]
 
-	{
-	    "negotiated": true, # When set to true (default off), means the channel is negotiated out of band. "id" must be set too. "data_channel_received" will not be called.
-	    "id": 1, # When "negotiated" is true this value must also be set to the same value on both peer.
-
-	    # Only one of maxRetransmits and maxPacketLifeTime can be specified, not both. They make the channel unreliable (but also better at real time).
-	    "maxRetransmits": 1, # Specify the maximum number of attempt the peer will make to retransmits packets if they are not acknowledged.
-	    "maxPacketLifeTime": 100, # Specify the maximum amount of time before giving up retransmitions of unacknowledged packets (in milliseconds).
-	    "ordered": true, # When in unreliable mode (i.e. either "maxRetransmits" or "maxPacketLifetime" is set), "ordered" (true by default) specify if packet ordering is to be enforced.
-
-	    "protocol": "my-custom-protocol", # A custom sub-protocol string for this channel.
-	}
-
-[/codeblock]
 Note: You must keep a reference to channels created this way, or it will be closed.
 */
 func (self Instance) CreateDataChannel(label string) WebRTCDataChannel.Instance { //gd:WebRTCPeerConnection.create_data_channel
@@ -197,24 +160,12 @@ func (self Instance) CreateDataChannel(label string) WebRTCDataChannel.Instance 
 }
 
 /*
-Returns a new [WebRTCDataChannel] (or null on failure) with given 'label' and optionally configured via the 'options' dictionary. This method can only be called when the connection is in state [StateNew].
-There are two ways to create a working data channel: either call [Instance.CreateDataChannel] on only one of the peer and listen to [signal data_channel_received] on the other, or call [Instance.CreateDataChannel] on both peers, with the same values, and the "negotiated" option set to true.
+Returns a new [graphics.gd/classdb/WebRTCDataChannel] (or null on failure) with given 'label' and optionally configured via the 'options' dictionary. This method can only be called when the connection is in state [StateNew].
+
+There are two ways to create a working data channel: either call [Instance.CreateDataChannel] on only one of the peer and listen to [Instance.OnDataChannelReceived] on the other, or call [Instance.CreateDataChannel] on both peers, with the same values, and the "negotiated" option set to true.
+
 Valid 'options' are:
-[codeblock]
 
-	{
-	    "negotiated": true, # When set to true (default off), means the channel is negotiated out of band. "id" must be set too. "data_channel_received" will not be called.
-	    "id": 1, # When "negotiated" is true this value must also be set to the same value on both peer.
-
-	    # Only one of maxRetransmits and maxPacketLifeTime can be specified, not both. They make the channel unreliable (but also better at real time).
-	    "maxRetransmits": 1, # Specify the maximum number of attempt the peer will make to retransmits packets if they are not acknowledged.
-	    "maxPacketLifeTime": 100, # Specify the maximum amount of time before giving up retransmitions of unacknowledged packets (in milliseconds).
-	    "ordered": true, # When in unreliable mode (i.e. either "maxRetransmits" or "maxPacketLifetime" is set), "ordered" (true by default) specify if packet ordering is to be enforced.
-
-	    "protocol": "my-custom-protocol", # A custom sub-protocol string for this channel.
-	}
-
-[/codeblock]
 Note: You must keep a reference to channels created this way, or it will be closed.
 */
 func (self Expanded) CreateDataChannel(label string, options Options) WebRTCDataChannel.Instance { //gd:WebRTCPeerConnection.create_data_channel
@@ -222,16 +173,18 @@ func (self Expanded) CreateDataChannel(label string, options Options) WebRTCData
 }
 
 /*
-Creates a new SDP offer to start a WebRTC connection with a remote peer. At least one [WebRTCDataChannel] must have been created before calling this method.
-If this functions returns [Ok], [signal session_description_created] will be called when the session is ready to be sent.
+Creates a new SDP offer to start a WebRTC connection with a remote peer. At least one [graphics.gd/classdb/WebRTCDataChannel] must have been created before calling this method.
+
+If this functions returns [Ok], [Instance.OnSessionDescriptionCreated] will be called when the session is ready to be sent.
 */
 func (self Instance) CreateOffer() error { //gd:WebRTCPeerConnection.create_offer
 	return error(gd.ToError(Advanced(self).CreateOffer()))
 }
 
 /*
-Sets the SDP description of the local peer. This should be called in response to [signal session_description_created].
-After calling this function the peer will start emitting [signal ice_candidate_created] (unless an [Error] different from [Ok] is returned).
+Sets the SDP description of the local peer. This should be called in response to [Instance.OnSessionDescriptionCreated].
+
+After calling this function the peer will start emitting [Instance.OnIceCandidateCreated] (unless an [Error] different from [Ok] is returned).
 */
 func (self Instance) SetLocalDescription(atype string, sdp string) error { //gd:WebRTCPeerConnection.set_local_description
 	return error(gd.ToError(Advanced(self).SetLocalDescription(String.New(atype), String.New(sdp))))
@@ -239,22 +192,24 @@ func (self Instance) SetLocalDescription(atype string, sdp string) error { //gd:
 
 /*
 Sets the SDP description of the remote peer. This should be called with the values generated by a remote peer and received over the signaling server.
-If 'type' is "offer" the peer will emit [signal session_description_created] with the appropriate answer.
-If 'type' is "answer" the peer will start emitting [signal ice_candidate_created].
+
+If 'type' is "offer" the peer will emit [Instance.OnSessionDescriptionCreated] with the appropriate answer.
+
+If 'type' is "answer" the peer will start emitting [Instance.OnIceCandidateCreated].
 */
 func (self Instance) SetRemoteDescription(atype string, sdp string) error { //gd:WebRTCPeerConnection.set_remote_description
 	return error(gd.ToError(Advanced(self).SetRemoteDescription(String.New(atype), String.New(sdp))))
 }
 
 /*
-Add an ice candidate generated by a remote peer (and received over the signaling server). See [signal ice_candidate_created].
+Add an ice candidate generated by a remote peer (and received over the signaling server). See [Instance.OnIceCandidateCreated].
 */
 func (self Instance) AddIceCandidate(media string, index int, name string) error { //gd:WebRTCPeerConnection.add_ice_candidate
 	return error(gd.ToError(Advanced(self).AddIceCandidate(String.New(media), int64(index), String.New(name))))
 }
 
 /*
-Call this method frequently (e.g. in [Instance.Node.Process] or [Instance.Node.PhysicsProcess]) to properly receive signals.
+Call this method frequently (e.g. in [graphics.gd/classdb/Node.Instance.Process] or [graphics.gd/classdb/Node.Instance.PhysicsProcess]) to properly receive signals.
 */
 func (self Instance) Poll() error { //gd:WebRTCPeerConnection.poll
 	return error(gd.ToError(Advanced(self).Poll()))
@@ -262,6 +217,7 @@ func (self Instance) Poll() error { //gd:WebRTCPeerConnection.poll
 
 /*
 Close the peer connection and all data channels associated with it.
+
 Note: You cannot reuse this object for a new connection unless you call [Instance.Initialize].
 */
 func (self Instance) Close() { //gd:WebRTCPeerConnection.close
@@ -333,7 +289,7 @@ func New() Instance {
 }
 
 /*
-Sets the 'extension_class' as the default [WebRTCPeerConnectionExtension] returned when creating a new [WebRTCPeerConnection].
+Sets the 'extension_class' as the default [graphics.gd/classdb/WebRTCPeerConnectionExtension] returned when creating a new [graphics.gd/classdb/WebRTCPeerConnection].
 */
 //go:nosplit
 func (self class) SetDefaultExtension(extension_class String.Name) { //gd:WebRTCPeerConnection.set_default_extension
@@ -342,21 +298,10 @@ func (self class) SetDefaultExtension(extension_class String.Name) { //gd:WebRTC
 
 /*
 Re-initialize this peer connection, closing any previously active connection, and going back to state [StateNew]. A dictionary of 'configuration' options can be passed to configure the peer connection.
+
 Valid 'configuration' options are:
-[codeblock]
-{
-    "iceServers": [
-        {
-            "urls": [ "stun:stun.example.com:3478" ], # One or more STUN servers.
-        },
-        {
-            "urls": [ "turn:turn.example.com:3478" ], # One or more TURN servers.
-            "username": "a_username", # Optional username for the TURN server.
-            "credential": "a_password", # Optional password for the TURN server.
-        }
-    ]
-}
-[/codeblock]
+
+
 */
 //go:nosplit
 func (self class) Initialize(configuration Dictionary.Any) Error.Code { //gd:WebRTCPeerConnection.initialize
@@ -366,22 +311,14 @@ func (self class) Initialize(configuration Dictionary.Any) Error.Code { //gd:Web
 }
 
 /*
-Returns a new [WebRTCDataChannel] (or null on failure) with given 'label' and optionally configured via the 'options' dictionary. This method can only be called when the connection is in state [StateNew].
-There are two ways to create a working data channel: either call [Instance.CreateDataChannel] on only one of the peer and listen to [signal data_channel_received] on the other, or call [Instance.CreateDataChannel] on both peers, with the same values, and the "negotiated" option set to true.
+Returns a new [graphics.gd/classdb/WebRTCDataChannel] (or null on failure) with given 'label' and optionally configured via the 'options' dictionary. This method can only be called when the connection is in state [StateNew].
+
+There are two ways to create a working data channel: either call [Instance.CreateDataChannel] on only one of the peer and listen to [Instance.OnDataChannelReceived] on the other, or call [Instance.CreateDataChannel] on both peers, with the same values, and the "negotiated" option set to true.
+
 Valid 'options' are:
-[codeblock]
-{
-    "negotiated": true, # When set to true (default off), means the channel is negotiated out of band. "id" must be set too. "data_channel_received" will not be called.
-    "id": 1, # When "negotiated" is true this value must also be set to the same value on both peer.
 
-    # Only one of maxRetransmits and maxPacketLifeTime can be specified, not both. They make the channel unreliable (but also better at real time).
-    "maxRetransmits": 1, # Specify the maximum number of attempt the peer will make to retransmits packets if they are not acknowledged.
-    "maxPacketLifeTime": 100, # Specify the maximum amount of time before giving up retransmitions of unacknowledged packets (in milliseconds).
-    "ordered": true, # When in unreliable mode (i.e. either "maxRetransmits" or "maxPacketLifetime" is set), "ordered" (true by default) specify if packet ordering is to be enforced.
 
-    "protocol": "my-custom-protocol", # A custom sub-protocol string for this channel.
-}
-[/codeblock]
+
 Note: You must keep a reference to channels created this way, or it will be closed.
 */
 //go:nosplit
@@ -395,8 +332,9 @@ func (self class) CreateDataChannel(label String.Readable, options Dictionary.An
 }
 
 /*
-Creates a new SDP offer to start a WebRTC connection with a remote peer. At least one [WebRTCDataChannel] must have been created before calling this method.
-If this functions returns [Ok], [signal session_description_created] will be called when the session is ready to be sent.
+Creates a new SDP offer to start a WebRTC connection with a remote peer. At least one [graphics.gd/classdb/WebRTCDataChannel] must have been created before calling this method.
+
+If this functions returns [Ok], [Instance.OnSessionDescriptionCreated] will be called when the session is ready to be sent.
 */
 //go:nosplit
 func (self class) CreateOffer() Error.Code { //gd:WebRTCPeerConnection.create_offer
@@ -406,8 +344,9 @@ func (self class) CreateOffer() Error.Code { //gd:WebRTCPeerConnection.create_of
 }
 
 /*
-Sets the SDP description of the local peer. This should be called in response to [signal session_description_created].
-After calling this function the peer will start emitting [signal ice_candidate_created] (unless an [Error] different from [Ok] is returned).
+Sets the SDP description of the local peer. This should be called in response to [Instance.OnSessionDescriptionCreated].
+
+After calling this function the peer will start emitting [Instance.OnIceCandidateCreated] (unless an [Error] different from [Ok] is returned).
 */
 //go:nosplit
 func (self class) SetLocalDescription(atype String.Readable, sdp String.Readable) Error.Code { //gd:WebRTCPeerConnection.set_local_description
@@ -421,8 +360,10 @@ func (self class) SetLocalDescription(atype String.Readable, sdp String.Readable
 
 /*
 Sets the SDP description of the remote peer. This should be called with the values generated by a remote peer and received over the signaling server.
-If 'type' is "offer" the peer will emit [signal session_description_created] with the appropriate answer.
-If 'type' is "answer" the peer will start emitting [signal ice_candidate_created].
+
+If 'type' is "offer" the peer will emit [Instance.OnSessionDescriptionCreated] with the appropriate answer.
+
+If 'type' is "answer" the peer will start emitting [Instance.OnIceCandidateCreated].
 */
 //go:nosplit
 func (self class) SetRemoteDescription(atype String.Readable, sdp String.Readable) Error.Code { //gd:WebRTCPeerConnection.set_remote_description
@@ -435,7 +376,7 @@ func (self class) SetRemoteDescription(atype String.Readable, sdp String.Readabl
 }
 
 /*
-Add an ice candidate generated by a remote peer (and received over the signaling server). See [signal ice_candidate_created].
+Add an ice candidate generated by a remote peer (and received over the signaling server). See [Instance.OnIceCandidateCreated].
 */
 //go:nosplit
 func (self class) AddIceCandidate(media String.Readable, index int64, name String.Readable) Error.Code { //gd:WebRTCPeerConnection.add_ice_candidate
@@ -449,7 +390,7 @@ func (self class) AddIceCandidate(media String.Readable, index int64, name Strin
 }
 
 /*
-Call this method frequently (e.g. in [Instance.Node.Process] or [Instance.Node.PhysicsProcess]) to properly receive signals.
+Call this method frequently (e.g. in [graphics.gd/classdb/Node.Instance.Process] or [graphics.gd/classdb/Node.Instance.PhysicsProcess]) to properly receive signals.
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:WebRTCPeerConnection.poll
@@ -460,6 +401,7 @@ func (self class) Poll() Error.Code { //gd:WebRTCPeerConnection.poll
 
 /*
 Close the peer connection and all data channels associated with it.
+
 Note: You cannot reuse this object for a new connection unless you call [Instance.Initialize].
 */
 //go:nosplit
@@ -569,45 +511,45 @@ func init() {
 type ConnectionState int //gd:WebRTCPeerConnection.ConnectionState
 
 const (
-	/*The connection is new, data channels and an offer can be created in this state.*/
+	// The connection is new, data channels and an offer can be created in this state.
 	StateNew ConnectionState = 0
-	/*The peer is connecting, ICE is in progress, none of the transports has failed.*/
+	// The peer is connecting, ICE is in progress, none of the transports has failed.
 	StateConnecting ConnectionState = 1
-	/*The peer is connected, all ICE transports are connected.*/
+	// The peer is connected, all ICE transports are connected.
 	StateConnected ConnectionState = 2
-	/*At least one ICE transport is disconnected.*/
+	// At least one ICE transport is disconnected.
 	StateDisconnected ConnectionState = 3
-	/*One or more of the ICE transports failed.*/
+	// One or more of the ICE transports failed.
 	StateFailed ConnectionState = 4
-	/*The peer connection is closed (after calling [method close] for example).*/
+	// The peer connection is closed (after calling [Instance.Close] for example).
 	StateClosed ConnectionState = 5
 )
 
 type GatheringState int //gd:WebRTCPeerConnection.GatheringState
 
 const (
-	/*The peer connection was just created and hasn't done any networking yet.*/
+	// The peer connection was just created and hasn't done any networking yet.
 	GatheringStateNew GatheringState = 0
-	/*The ICE agent is in the process of gathering candidates for the connection.*/
+	// The ICE agent is in the process of gathering candidates for the connection.
 	GatheringStateGathering GatheringState = 1
-	/*The ICE agent has finished gathering candidates. If something happens that requires collecting new candidates, such as a new interface being added or the addition of a new ICE server, the state will revert to gathering to gather those candidates.*/
+	// The ICE agent has finished gathering candidates. If something happens that requires collecting new candidates, such as a new interface being added or the addition of a new ICE server, the state will revert to gathering to gather those candidates.
 	GatheringStateComplete GatheringState = 2
 )
 
 type SignalingState int //gd:WebRTCPeerConnection.SignalingState
 
 const (
-	/*There is no ongoing exchange of offer and answer underway. This may mean that the [WebRTCPeerConnection] is new ([constant STATE_NEW]) or that negotiation is complete and a connection has been established ([constant STATE_CONNECTED]).*/
+	// There is no ongoing exchange of offer and answer underway. This may mean that the [graphics.gd/classdb/WebRTCPeerConnection] is new ([StateNew]) or that negotiation is complete and a connection has been established ([StateConnected]).
 	SignalingStateStable SignalingState = 0
-	/*The local peer has called [method set_local_description], passing in SDP representing an offer (usually created by calling [method create_offer]), and the offer has been applied successfully.*/
+	// The local peer has called [Instance.SetLocalDescription], passing in SDP representing an offer (usually created by calling [Instance.CreateOffer]), and the offer has been applied successfully.
 	SignalingStateHaveLocalOffer SignalingState = 1
-	/*The remote peer has created an offer and used the signaling server to deliver it to the local peer, which has set the offer as the remote description by calling [method set_remote_description].*/
+	// The remote peer has created an offer and used the signaling server to deliver it to the local peer, which has set the offer as the remote description by calling [Instance.SetRemoteDescription].
 	SignalingStateHaveRemoteOffer SignalingState = 2
-	/*The offer sent by the remote peer has been applied and an answer has been created and applied by calling [method set_local_description]. This provisional answer describes the supported media formats and so forth, but may not have a complete set of ICE candidates included. Further candidates will be delivered separately later.*/
+	// The offer sent by the remote peer has been applied and an answer has been created and applied by calling [Instance.SetLocalDescription]. This provisional answer describes the supported media formats and so forth, but may not have a complete set of ICE candidates included. Further candidates will be delivered separately later.
 	SignalingStateHaveLocalPranswer SignalingState = 3
-	/*A provisional answer has been received and successfully applied in response to an offer previously sent and established by calling [method set_local_description].*/
+	// A provisional answer has been received and successfully applied in response to an offer previously sent and established by calling [Instance.SetLocalDescription].
 	SignalingStateHaveRemotePranswer SignalingState = 4
-	/*The [WebRTCPeerConnection] has been closed.*/
+	// The [graphics.gd/classdb/WebRTCPeerConnection] has been closed.
 	SignalingStateClosed SignalingState = 5
 )
 

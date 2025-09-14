@@ -279,7 +279,7 @@ func (self class) ClearDefaultInputValues() { //gd:VisualShaderNode.clear_defaul
 }
 
 /*
-Sets the default input ports values using an [Array] of the form [index0, value0, index1, value1, ...]. For example: [0, Vector3(0, 0, 0), 1, Vector3(0, 0, 0)].
+Sets the default input ports values using an slice of the form [index0, value0, index1, value1, ...]. For example: [0, Vector3(0, 0, 0), 1, Vector3(0, 0, 0)].
 */
 //go:nosplit
 func (self class) SetDefaultInputValues(values Array.Any) { //gd:VisualShaderNode.set_default_input_values
@@ -287,7 +287,7 @@ func (self class) SetDefaultInputValues(values Array.Any) { //gd:VisualShaderNod
 }
 
 /*
-Returns an [Array] containing default values for all of the input ports of the node in the form [index0, value0, index1, value1, ...].
+Returns an slice containing default values for all of the input ports of the node in the form [index0, value0, index1, value1, ...].
 */
 //go:nosplit
 func (self class) GetDefaultInputValues() Array.Any { //gd:VisualShaderNode.get_default_input_values
@@ -349,24 +349,24 @@ func init() {
 type PortType int //gd:VisualShaderNode.PortType
 
 const (
-	/*Floating-point scalar. Translated to [code skip-lint]float[/code] type in shader code.*/
+	// Floating-point scalar. Translated to float type in shader code.
 	PortTypeScalar PortType = 0
-	/*Integer scalar. Translated to [code skip-lint]int[/code] type in shader code.*/
+	// Integer scalar. Translated to int type in shader code.
 	PortTypeScalarInt PortType = 1
-	/*Unsigned integer scalar. Translated to [code skip-lint]uint[/code] type in shader code.*/
+	// Unsigned integer scalar. Translated to uint type in shader code.
 	PortTypeScalarUint PortType = 2
-	/*2D vector of floating-point values. Translated to [code skip-lint]vec2[/code] type in shader code.*/
+	// 2D vector of floating-point values. Translated to vec2 type in shader code.
 	PortTypeVector2d PortType = 3
-	/*3D vector of floating-point values. Translated to [code skip-lint]vec3[/code] type in shader code.*/
+	// 3D vector of floating-point values. Translated to vec3 type in shader code.
 	PortTypeVector3d PortType = 4
-	/*4D vector of floating-point values. Translated to [code skip-lint]vec4[/code] type in shader code.*/
+	// 4D vector of floating-point values. Translated to vec4 type in shader code.
 	PortTypeVector4d PortType = 5
-	/*Boolean type. Translated to [code skip-lint]bool[/code] type in shader code.*/
+	// Boolean type. Translated to bool type in shader code.
 	PortTypeBoolean PortType = 6
-	/*Transform type. Translated to [code skip-lint]mat4[/code] type in shader code.*/
+	// Transform type. Translated to mat4 type in shader code.
 	PortTypeTransform PortType = 7
-	/*Sampler type. Translated to reference of sampler uniform in shader code. Can only be used for input ports in non-uniform nodes.*/
+	// Sampler type. Translated to reference of sampler uniform in shader code. Can only be used for input ports in non-uniform nodes.
 	PortTypeSampler PortType = 8
-	/*Represents the size of the [enum PortType] enum.*/
+	// Represents the size of the [PortType] enum.
 	PortTypeMax PortType = 9
 )

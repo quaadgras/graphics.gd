@@ -2,10 +2,15 @@
 
 /*
 This is the CSG base class that provides CSG operation support to the various CSG nodes in Godot.
+
 Performance: CSG nodes are only intended for prototyping as they have a significant CPU performance cost.
+
 Consider baking final CSG operation results into static geometry that replaces the CSG nodes.
+
 Individual CSG root node results can be baked to nodes with static resources with the editor menu that appears when a CSG root node is selected.
+
 Individual CSG root nodes can also be baked to static resources with scripts by calling [Instance.BakeStaticMesh] for the visual mesh or [Instance.BakeCollisionShape] for the physics collision.
+
 Entire scenes of CSG nodes can be baked to static geometry and exported with the editor gltf scene exporter.
 */
 package CSGShape3D
@@ -136,49 +141,50 @@ func (self Instance) IsRootShape() bool { //gd:CSGShape3D.is_root_shape
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [member collision_mask], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [Instance.CollisionMask], given a 'layer_number' between 1 and 32.
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:CSGShape3D.set_collision_mask_value
 	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
-Returns whether or not the specified layer of the [member collision_mask] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [Instance.CollisionMask] is enabled, given a 'layer_number' between 1 and 32.
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:CSGShape3D.get_collision_mask_value
 	return bool(Advanced(self).GetCollisionMaskValue(int64(layer_number)))
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [member collision_layer], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [Instance.CollisionLayer], given a 'layer_number' between 1 and 32.
 */
 func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:CSGShape3D.set_collision_layer_value
 	Advanced(self).SetCollisionLayerValue(int64(layer_number), value)
 }
 
 /*
-Returns whether or not the specified layer of the [member collision_layer] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [Instance.CollisionLayer] is enabled, given a 'layer_number' between 1 and 32.
 */
 func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:CSGShape3D.get_collision_layer_value
 	return bool(Advanced(self).GetCollisionLayerValue(int64(layer_number)))
 }
 
 /*
-Returns an [Array] with two elements, the first is the [Transform3D] of this node and the second is the root [Mesh] of this node. Only works when this node is the root shape.
+Returns an slice with two elements, the first is the [Transform3D.BasisOrigin] of this node and the second is the root [graphics.gd/classdb/Mesh] of this node. Only works when this node is the root shape.
 */
 func (self Instance) GetMeshes() []any { //gd:CSGShape3D.get_meshes
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetMeshes())))
 }
 
 /*
-Returns a baked static [ArrayMesh] of this node's CSG operation result. Materials from involved CSG nodes are added as extra mesh surfaces. Returns an empty mesh if the node is not a CSG root node or has no valid geometry.
+Returns a baked static [graphics.gd/classdb/ArrayMesh] of this node's CSG operation result. Materials from involved CSG nodes are added as extra mesh surfaces. Returns an empty mesh if the node is not a CSG root node or has no valid geometry.
 */
 func (self Instance) BakeStaticMesh() ArrayMesh.Instance { //gd:CSGShape3D.bake_static_mesh
 	return ArrayMesh.Instance(Advanced(self).BakeStaticMesh())
 }
 
 /*
-Returns a baked physics [ConcavePolygonShape3D] of this node's CSG operation result. Returns an empty shape if the node is not a CSG root node or has no valid geometry.
+Returns a baked physics [graphics.gd/classdb/ConcavePolygonShape3D] of this node's CSG operation result. Returns an empty shape if the node is not a CSG root node or has no valid geometry.
+
 Performance: If the CSG operation results in a very detailed geometry with many faces physics performance will be very slow. Concave shapes should in general only be used for static level geometry and not with dynamic objects that are moving.
 */
 func (self Instance) BakeCollisionShape() ConcavePolygonShape3D.Instance { //gd:CSGShape3D.bake_collision_shape
@@ -354,7 +360,7 @@ func (self class) GetCollisionMask() int64 { //gd:CSGShape3D.get_collision_mask
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [member collision_mask], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [Instance.CollisionMask], given a 'layer_number' between 1 and 32.
 */
 //go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:CSGShape3D.set_collision_mask_value
@@ -365,7 +371,7 @@ func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:C
 }
 
 /*
-Returns whether or not the specified layer of the [member collision_mask] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [Instance.CollisionMask] is enabled, given a 'layer_number' between 1 and 32.
 */
 //go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:CSGShape3D.get_collision_mask_value
@@ -375,7 +381,7 @@ func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:CSGShape
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [member collision_layer], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [Instance.CollisionLayer], given a 'layer_number' between 1 and 32.
 */
 //go:nosplit
 func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:CSGShape3D.set_collision_layer_value
@@ -386,7 +392,7 @@ func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:
 }
 
 /*
-Returns whether or not the specified layer of the [member collision_layer] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [Instance.CollisionLayer] is enabled, given a 'layer_number' between 1 and 32.
 */
 //go:nosplit
 func (self class) GetCollisionLayerValue(layer_number int64) bool { //gd:CSGShape3D.get_collision_layer_value
@@ -420,7 +426,7 @@ func (self class) IsCalculatingTangents() bool { //gd:CSGShape3D.is_calculating_
 }
 
 /*
-Returns an [Array] with two elements, the first is the [Transform3D] of this node and the second is the root [Mesh] of this node. Only works when this node is the root shape.
+Returns an slice with two elements, the first is the [Transform3D.BasisOrigin] of this node and the second is the root [graphics.gd/classdb/Mesh] of this node. Only works when this node is the root shape.
 */
 //go:nosplit
 func (self class) GetMeshes() Array.Any { //gd:CSGShape3D.get_meshes
@@ -430,7 +436,7 @@ func (self class) GetMeshes() Array.Any { //gd:CSGShape3D.get_meshes
 }
 
 /*
-Returns a baked static [ArrayMesh] of this node's CSG operation result. Materials from involved CSG nodes are added as extra mesh surfaces. Returns an empty mesh if the node is not a CSG root node or has no valid geometry.
+Returns a baked static [graphics.gd/classdb/ArrayMesh] of this node's CSG operation result. Materials from involved CSG nodes are added as extra mesh surfaces. Returns an empty mesh if the node is not a CSG root node or has no valid geometry.
 */
 //go:nosplit
 func (self class) BakeStaticMesh() [1]gdclass.ArrayMesh { //gd:CSGShape3D.bake_static_mesh
@@ -440,7 +446,8 @@ func (self class) BakeStaticMesh() [1]gdclass.ArrayMesh { //gd:CSGShape3D.bake_s
 }
 
 /*
-Returns a baked physics [ConcavePolygonShape3D] of this node's CSG operation result. Returns an empty shape if the node is not a CSG root node or has no valid geometry.
+Returns a baked physics [graphics.gd/classdb/ConcavePolygonShape3D] of this node's CSG operation result. Returns an empty shape if the node is not a CSG root node or has no valid geometry.
+
 Performance: If the CSG operation results in a very detailed geometry with many faces physics performance will be very slow. Concave shapes should in general only be used for static level geometry and not with dynamic objects that are moving.
 */
 //go:nosplit
@@ -505,10 +512,10 @@ func init() {
 type Operation int //gd:CSGShape3D.Operation
 
 const (
-	/*Geometry of both primitives is merged, intersecting geometry is removed.*/
+	// Geometry of both primitives is merged, intersecting geometry is removed.
 	OperationUnion Operation = 0
-	/*Only intersecting geometry remains, the rest is removed.*/
+	// Only intersecting geometry remains, the rest is removed.
 	OperationIntersection Operation = 1
-	/*The second shape is subtracted from the first, leaving a dent with its shape.*/
+	// The second shape is subtracted from the first, leaving a dent with its shape.
 	OperationSubtraction Operation = 2
 )

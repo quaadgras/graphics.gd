@@ -79,7 +79,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 	fmt.Fprintln(w)
 	if method.Description != "" {
 		fmt.Fprintln(w, "/*")
-		fmt.Fprint(w, gdjson.DocsToGoDoc(method.Description, class.Name, ""))
+		fmt.Fprint(w, gdjson.DocsToGoDoc(method.Description, classDB, class.Name, class.Name+"_"+gdjson.ConvertName(method.Name)))
 		fmt.Fprintln(w, "\n*/")
 	}
 

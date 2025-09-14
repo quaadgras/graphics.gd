@@ -214,14 +214,14 @@ func init() {
 type OpType int //gd:VisualShaderNodeMultiplyAdd.OpType
 
 const (
-	/*A floating-point scalar type.*/
+	// A floating-point scalar type.
 	OpTypeScalar OpType = 0
-	/*A 2D vector type.*/
+	// A 2D vector type.
 	OpTypeVector2d OpType = 1
-	/*A 3D vector type.*/
+	// A 3D vector type.
 	OpTypeVector3d OpType = 2
-	/*A 4D vector type.*/
+	// A 4D vector type.
 	OpTypeVector4d OpType = 3
-	/*Represents the size of the [enum OpType] enum.*/
+	// Represents the size of the [OpType] enum.
 	OpTypeMax OpType = 4
 )

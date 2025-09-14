@@ -268,3 +268,11 @@ func (obj Instance) Signal(name string) Signal.Any {
 func (obj Instance) HasMethod(name string) bool {
 	return obj[0].HasMethod(gd.NewStringName(name))
 }
+
+type MethodInfo struct {
+	Name        string         `gd:"name"`
+	Args        []PropertyInfo `gd:"args"`
+	DefaultArgs []any          `gd:"default_args"`
+	ReturnValue PropertyInfo   `gd:"return"`
+	Flags       int            `gd:"flags"`
+}

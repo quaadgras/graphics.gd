@@ -2,7 +2,9 @@
 
 /*
 Object that holds the project-independent editor settings. These settings are generally visible in the Editor > Editor Settings menu.
-Property names use slash delimiters to distinguish sections. Setting values can be of any [Variant] type. It's recommended to use snake_case for editor settings to be consistent with the Godot editor itself.
+
+Property names use slash delimiters to distinguish sections. Setting values can be of any any type. It's recommended to use snake_case for editor settings to be consistent with the Godot editor itself.
+
 Accessing the settings can be done using the following methods, such as:
 
 	package main
@@ -20,7 +22,7 @@ Accessing the settings can be done using the following methods, such as:
 		_ = list_of_settings
 	}
 
-Note: This class shouldn't be instantiated directly. Instead, access the singleton using [Instance.Editorinterface.GetEditorSettings].
+Note: This class shouldn't be instantiated directly. Instead, access the singleton using [graphics.gd/classdb/EditorInterface.GetEditorSettings].
 */
 package EditorSettings
 
@@ -142,14 +144,14 @@ func (self Instance) HasSetting(name string) bool { //gd:EditorSettings.has_sett
 }
 
 /*
-Sets the 'value' of the setting specified by 'name'. This is equivalent to using [Instance.Object.Set] on the EditorSettings instance.
+Sets the 'value' of the setting specified by 'name'. This is equivalent to using [graphics.gd/classdb/Object.Instance.Set] on the EditorSettings instance.
 */
 func (self Instance) SetSetting(name string, value any) { //gd:EditorSettings.set_setting
 	Advanced(self).SetSetting(String.New(name), variant.New(value))
 }
 
 /*
-Returns the value of the setting specified by 'name'. This is equivalent to using [Instance.Object.Get] on the EditorSettings instance.
+Returns the value of the setting specified by 'name'. This is equivalent to using [graphics.gd/classdb/Object.Instance.Get] on the EditorSettings instance.
 */
 func (self Instance) GetSetting(name string) any { //gd:EditorSettings.get_setting
 	return any(Advanced(self).GetSetting(String.New(name)).Interface())
@@ -171,40 +173,14 @@ func (self Instance) SetInitialValue(name string, value any, update_current bool
 
 /*
 Adds a custom property info to a property. The dictionary must contain:
-- name: [String] (the name of the property)
-- type: [int] (see [Variant.Type])
-- optionally hint: [int] (see [PropertyHint]) and hint_string: [String]
 
-[gdscript]
-var settings = EditorInterface.get_editor_settings()
-settings.set("category/property_name", 0)
+- name: string (the name of the property)
 
-	var property_info = {
-	    "name": "category/property_name",
-	    "type": TYPE_INT,
-	    "hint": PROPERTY_HINT_ENUM,
-	    "hint_string": "one,two,three"
-	}
+- type: int (see [Variant.Type])
 
-settings.add_property_info(property_info)
-[/gdscript]
-[csharp]
-var settings = GetEditorInterface().GetEditorSettings();
-settings.Set("category/property_name", 0);
-
-var propertyInfo = new Godot.Collections.Dictionary
-
-	{
-	    {"name", "category/propertyName"},
-	    {"type", Variant.Type.Int},
-	    {"hint", PropertyHint.Enum},
-	    {"hint_string", "one,two,three"}
-	};
-
-settings.AddPropertyInfo(propertyInfo);
-[/csharp]
+- optionally hint: int (see [PropertyHint]) and hint_string: string
 */
-func (self Instance) AddPropertyInfo(info PropertyInfo) { //gd:EditorSettings.add_property_info
+func (self Instance) AddPropertyInfo(info Object.PropertyInfo) { //gd:EditorSettings.add_property_info
 	Advanced(self).AddPropertyInfo(gd.DictionaryFromMap(info))
 }
 
@@ -339,7 +315,7 @@ func (self class) HasSetting(name String.Readable) bool { //gd:EditorSettings.ha
 }
 
 /*
-Sets the 'value' of the setting specified by 'name'. This is equivalent to using [Instance.Object.Set] on the EditorSettings instance.
+Sets the 'value' of the setting specified by 'name'. This is equivalent to using [graphics.gd/classdb/Object.Instance.Set] on the EditorSettings instance.
 */
 //go:nosplit
 func (self class) SetSetting(name String.Readable, value variant.Any) { //gd:EditorSettings.set_setting
@@ -350,7 +326,7 @@ func (self class) SetSetting(name String.Readable, value variant.Any) { //gd:Edi
 }
 
 /*
-Returns the value of the setting specified by 'name'. This is equivalent to using [Instance.Object.Get] on the EditorSettings instance.
+Returns the value of the setting specified by 'name'. This is equivalent to using [graphics.gd/classdb/Object.Instance.Get] on the EditorSettings instance.
 */
 //go:nosplit
 func (self class) GetSetting(name String.Readable) variant.Any { //gd:EditorSettings.get_setting
@@ -381,37 +357,13 @@ func (self class) SetInitialValue(name String.Name, value variant.Any, update_cu
 
 /*
 Adds a custom property info to a property. The dictionary must contain:
-- name: [String] (the name of the property)
-- type: [int] (see [Variant.Type])
-- optionally hint: [int] (see [PropertyHint]) and hint_string: [String]
 
-[gdscript]
-var settings = EditorInterface.get_editor_settings()
-settings.set("category/property_name", 0)
+- name: string (the name of the property)
 
-var property_info = {
-    "name": "category/property_name",
-    "type": TYPE_INT,
-    "hint": PROPERTY_HINT_ENUM,
-    "hint_string": "one,two,three"
-}
+- type: int (see [Variant.Type])
 
-settings.add_property_info(property_info)
-[/gdscript]
-[csharp]
-var settings = GetEditorInterface().GetEditorSettings();
-settings.Set("category/property_name", 0);
+- optionally hint: int (see [PropertyHint]) and hint_string: string
 
-var propertyInfo = new Godot.Collections.Dictionary
-{
-    {"name", "category/propertyName"},
-    {"type", Variant.Type.Int},
-    {"hint", PropertyHint.Enum},
-    {"hint_string", "one,two,three"}
-};
-
-settings.AddPropertyInfo(propertyInfo);
-[/csharp]
 
 */
 //go:nosplit
@@ -572,15 +524,6 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	gdclass.Register("EditorSettings", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.EditorSettings](ptr)} })
-}
-
-type PropertyInfo struct {
-	ClassName  string       `gd:"class_name"`
-	Name       string       `gd:"name"`
-	Hint       int          `gd:"hint"`
-	HintString string       `gd:"hint_string"`
-	Type       reflect.Type `gd:"type"`
-	Usage      int          `gd:"usage"`
 }
 
 const NotificationEditorSettingsChanged Object.Notification = 10000 //gd:EditorSettings.NOTIFICATION_EDITOR_SETTINGS_CHANGED

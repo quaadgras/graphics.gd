@@ -2,99 +2,107 @@
 
 /*
 WebXR is an open standard that allows creating VR and AR applications that run in the web browser.
+
 As such, this interface is only available when running in Web exports.
+
 WebXR supports a wide range of devices, from the very capable (like Valve Index, HTC Vive, Oculus Rift and Quest) down to the much less capable (like Google Cardboard, Oculus Go, GearVR, or plain smartphones).
-Since WebXR is based on JavaScript, it makes extensive use of callbacks, which means that [WebXRInterface] is forced to use signals, where other XR interfaces would instead use functions that return a result immediately. This makes [WebXRInterface] quite a bit more complicated to initialize than other XR interfaces.
+
+Since WebXR is based on JavaScript, it makes extensive use of callbacks, which means that [graphics.gd/classdb/WebXRInterface] is forced to use signals, where other XR interfaces would instead use functions that return a result immediately. This makes [graphics.gd/classdb/WebXRInterface] quite a bit more complicated to initialize than other XR interfaces.
+
 Here's the minimum code required to start an immersive VR session:
-[codeblock]
-extends Node3D
 
-var webxr_interface
-var vr_supported = false
+	package main
 
-func _ready():
+	import (
+		"graphics.gd/classdb/Button"
+		"graphics.gd/classdb/Node3D"
+		"graphics.gd/classdb/OS"
+		"graphics.gd/classdb/Viewport"
+		"graphics.gd/classdb/WebXRInterface"
+		"graphics.gd/classdb/XRServer"
+		"graphics.gd/variant/Object"
+	)
 
-	# We assume this node has a button as a child.
-	# This button is for the user to consent to entering immersive VR mode.
-	$Button.pressed.connect(self._on_button_pressed)
+	type NodeWebXR struct {
+		Node3D.Extension[NodeWebXR]
 
-	webxr_interface = XRServer.find_interface("WebXR")
-	if webxr_interface:
-	    # WebXR uses a lot of asynchronous callbacks, so we connect to various
-	    # signals in order to receive them.
-	    webxr_interface.session_supported.connect(self._webxr_session_supported)
-	    webxr_interface.session_started.connect(self._webxr_session_started)
-	    webxr_interface.session_ended.connect(self._webxr_session_ended)
-	    webxr_interface.session_failed.connect(self._webxr_session_failed)
+		Button Button.Instance
 
-	    # This returns immediately - our _webxr_session_supported() method
-	    # (which we connected to the "session_supported" signal above) will
-	    # be called sometime later to let us know if it's supported or not.
-	    webxr_interface.is_session_supported("immersive-vr")
+		webxr_interface WebXRInterface.Instance
+		vr_supported    bool
+	}
 
-func _webxr_session_supported(session_mode, supported):
+	func (n *NodeWebXR) Ready() {
+		n.Button.AsBaseButton().OnPressed(func() {
+			if !n.vr_supported {
+				OS.Alert("Your browser doesn't support VR")
+				return
+			}
+			// We want an immersive VR session, as opposed to AR ('immersive-ar') or a
+			// simple 3DoF viewer ('viewer').
+			n.webxr_interface.SetSessionMode("immersive-vr")
+			// 'bounded-floor' is room scale, 'local-floor' is a standing or sitting
+			// experience (it puts you 1.6m above the ground if you have 3DoF headset),
+			// whereas as 'local' puts you down at the XROrigin.
+			// This list means it'll first try to request 'bounded-floor', then
+			// fallback on 'local-floor' and ultimately 'local', if nothing else is
+			// supported.
+			n.webxr_interface.SetRequestedReferenceSpaceTypes("bounded-floor, local-floor, local")
+			// In order to use 'local-floor' or 'bounded-floor' we must also
+			// mark the features as required or optional. By including 'hand-tracking'
+			// as an optional feature, it will be enabled if supported.
+			n.webxr_interface.SetRequiredFeatures("local-floor")
+			n.webxr_interface.SetOptionalFeatures("bounded-floor, hand-tracking")
 
-	if session_mode == 'immersive-vr':
-	    vr_supported = supported
+			// This will return false if we're unable to even request the session,
+			// however, it can still fail asynchronously later in the process, so we
+			// only know if it's really succeeded or failed when our
+			// _webxr_session_started() or _webxr_session_failed() methods are called.
+			if !n.webxr_interface.AsXRInterface().Initialize() {
+				OS.Alert("Failed to initialize")
+				return
+			}
+		})
 
-func _on_button_pressed():
+		n.webxr_interface = Object.To[WebXRInterface.Instance](XRServer.FindInterface("WebXR"))
+		if n.webxr_interface != WebXRInterface.Nil {
+			// WebXR uses a lot of asynchronous callbacks, so we connect to various
+			// signals in order to receive them.
+			n.webxr_interface.OnSessionSupported(func(session_mode string, supported bool) {
+				if session_mode == "immersive-vr" {
+					n.vr_supported = supported
+				}
+			})
+			n.webxr_interface.OnSessionStarted(func() {
+				n.Button.AsCanvasItem().SetVisible(false)
+				// This tells Godot to start rendering to the headset.
+				Viewport.Get(n.AsNode()).SetUseXr(true)
+				// This will be the reference space type you ultimately got, out of the
+				// types that you requested above. This is useful if you want the game to
+				// work a little differently in 'bounded-floor' versus 'local-floor'.
+				print("Reference space type: ", n.webxr_interface.ReferenceSpaceType())
+				// This will be the list of features that were successfully enabled
+				// (except on browsers that don't support this property).
+				print("Enabled features: ", n.webxr_interface.EnabledFeatures())
+			})
+			n.webxr_interface.OnSessionEnded(func() {
+				n.Button.AsCanvasItem().SetVisible(true)
+				// If the user exits immersive mode, then we tell Godot to render to the web
+				// page again.
+				Viewport.Get(n.AsNode()).SetUseXr(false)
+			})
+			n.webxr_interface.OnSessionFailed(func(message string) {
+				OS.Alert("Failed to initialize: " + message)
+			})
+		}
+	}
 
-	if not vr_supported:
-	    OS.alert("Your browser doesn't support VR")
-	    return
-
-	# We want an immersive VR session, as opposed to AR ('immersive-ar') or a
-	# simple 3DoF viewer ('viewer').
-	webxr_interface.session_mode = 'immersive-vr'
-	# 'bounded-floor' is room scale, 'local-floor' is a standing or sitting
-	# experience (it puts you 1.6m above the ground if you have 3DoF headset),
-	# whereas as 'local' puts you down at the XROrigin.
-	# This list means it'll first try to request 'bounded-floor', then
-	# fallback on 'local-floor' and ultimately 'local', if nothing else is
-	# supported.
-	webxr_interface.requested_reference_space_types = 'bounded-floor, local-floor, local'
-	# In order to use 'local-floor' or 'bounded-floor' we must also
-	# mark the features as required or optional. By including 'hand-tracking'
-	# as an optional feature, it will be enabled if supported.
-	webxr_interface.required_features = 'local-floor'
-	webxr_interface.optional_features = 'bounded-floor, hand-tracking'
-
-	# This will return false if we're unable to even request the session,
-	# however, it can still fail asynchronously later in the process, so we
-	# only know if it's really succeeded or failed when our
-	# _webxr_session_started() or _webxr_session_failed() methods are called.
-	if not webxr_interface.initialize():
-	    OS.alert("Failed to initialize")
-	    return
-
-func _webxr_session_started():
-
-	$Button.visible = false
-	# This tells Godot to start rendering to the headset.
-	get_viewport().use_xr = true
-	# This will be the reference space type you ultimately got, out of the
-	# types that you requested above. This is useful if you want the game to
-	# work a little differently in 'bounded-floor' versus 'local-floor'.
-	print("Reference space type: ", webxr_interface.reference_space_type)
-	# This will be the list of features that were successfully enabled
-	# (except on browsers that don't support this property).
-	print("Enabled features: ", webxr_interface.enabled_features)
-
-func _webxr_session_ended():
-
-	$Button.visible = true
-	# If the user exits immersive mode, then we tell Godot to render to the web
-	# page again.
-	get_viewport().use_xr = false
-
-func _webxr_session_failed(message):
-
-	OS.alert("Failed to initialize: " + message)
-
-[/codeblock]
 There are a couple ways to handle "controller" input:
-- Using [XRController3D] nodes and their [signal XRController3D.button_pressed] and [signal XRController3D.button_released] signals. This is how controllers are typically handled in XR apps in Godot, however, this will only work with advanced VR controllers like the Oculus Touch or Index controllers, for example.
-- Using the [signal select], [signal squeeze] and related signals. This method will work for both advanced VR controllers, and non-traditional input sources like a tap on the screen, a spoken voice command or a button press on the device itself.
+
+- Using [graphics.gd/classdb/XRController3D] nodes and their [Instance.OnXrcontroller3d.ButtonPressed] and [Instance.OnXrcontroller3d.ButtonReleased] signals. This is how controllers are typically handled in XR apps in Godot, however, this will only work with advanced VR controllers like the Oculus Touch or Index controllers, for example.
+
+- Using the [Instance.OnSelect], [Instance.OnSqueeze] and related signals. This method will work for both advanced VR controllers, and non-traditional input sources like a tap on the screen, a spoken voice command or a button press on the device itself.
+
 You can use both methods to allow your game or app to support a wider or narrower set of devices and input methods, or to allow more advanced interactions with more advanced devices.
 */
 package WebXRInterface
@@ -211,8 +219,12 @@ type Any interface {
 
 /*
 Checks if the given 'session_mode' is supported by the user's browser.
-Possible values come from [url=https://developer.mozilla.org/en-US/docs/Web/API/XRSessionMode]WebXR's XRSessionMode[/url], including: "immersive-vr", "immersive-ar", and "inline".
-This method returns nothing, instead it emits the [signal session_supported] signal with the result.
+
+Possible values come from [WebXR's XRSessionMode], including: "immersive-vr", "immersive-ar", and "inline".
+
+This method returns nothing, instead it emits the [Instance.OnSessionSupported] signal with the result.
+
+[WebXR's XRSessionMode]: https://developer.mozilla.org/en-US/docs/Web/API/XRSessionMode
 */
 func (self Instance) IsSessionSupported(session_mode string) { //gd:WebXRInterface.is_session_supported
 	Advanced(self).IsSessionSupported(String.New(session_mode))
@@ -226,15 +238,23 @@ func (self Instance) IsInputSourceActive(input_source_id int) bool { //gd:WebXRI
 }
 
 /*
-Gets an [XRControllerTracker] for the given 'input_source_id'.
-In the context of WebXR, an input source can be an advanced VR controller like the Oculus Touch or Index controllers, or even a tap on the screen, a spoken voice command or a button press on the device itself. When a non-traditional input source is used, interpret the position and orientation of the [XRPositionalTracker] as a ray pointing at the object the user wishes to interact with.
+Gets an [graphics.gd/classdb/XRControllerTracker] for the given 'input_source_id'.
+
+In the context of WebXR, an input source can be an advanced VR controller like the Oculus Touch or Index controllers, or even a tap on the screen, a spoken voice command or a button press on the device itself. When a non-traditional input source is used, interpret the position and orientation of the [graphics.gd/classdb/XRPositionalTracker] as a ray pointing at the object the user wishes to interact with.
+
 Use this method to get information about the input source that triggered one of these signals:
-- [signal selectstart]
-- [signal select]
-- [signal selectend]
-- [signal squeezestart]
-- [signal squeeze]
-- [signal squeezestart]
+
+- [Instance.OnSelectstart]
+
+- [Instance.OnSelect]
+
+- [Instance.OnSelectend]
+
+- [Instance.OnSqueezestart]
+
+- [Instance.OnSqueeze]
+
+- [Instance.OnSqueezestart]
 */
 func (self Instance) GetInputSourceTracker(input_source_id int) XRControllerTracker.Instance { //gd:WebXRInterface.get_input_source_tracker
 	return XRControllerTracker.Instance(Advanced(self).GetInputSourceTracker(int64(input_source_id)))
@@ -242,7 +262,10 @@ func (self Instance) GetInputSourceTracker(input_source_id int) XRControllerTrac
 
 /*
 Returns the target ray mode for the given 'input_source_id'.
-This can help interpret the input coming from that input source. See [url=https://developer.mozilla.org/en-US/docs/Web/API/XRInputSource/targetRayMode]XRInputSource.targetRayMode[/url] for more information.
+
+This can help interpret the input coming from that input source. See [XRInputSource.targetRayMode] for more information.
+
+[XRInputSource.targetRayMode]: https://developer.mozilla.org/en-US/docs/Web/API/XRInputSource/targetRayMode
 */
 func (self Instance) GetInputSourceTargetRayMode(input_source_id int) TargetRayMode { //gd:WebXRInterface.get_input_source_target_ray_mode
 	return TargetRayMode(Advanced(self).GetInputSourceTargetRayMode(int64(input_source_id)))
@@ -256,7 +279,7 @@ func (self Instance) GetDisplayRefreshRate() Float.X { //gd:WebXRInterface.get_d
 }
 
 /*
-Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [signal display_refresh_rate_changed] is emitted.
+Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [Instance.OnDisplayRefreshRateChanged] is emitted.
 */
 func (self Instance) SetDisplayRefreshRate(refresh_rate Float.X) { //gd:WebXRInterface.set_display_refresh_rate
 	Advanced(self).SetDisplayRefreshRate(float64(refresh_rate))
@@ -358,8 +381,12 @@ func (self Instance) VisibilityState() string {
 
 /*
 Checks if the given 'session_mode' is supported by the user's browser.
-Possible values come from [url=https://developer.mozilla.org/en-US/docs/Web/API/XRSessionMode]WebXR's XRSessionMode[/url], including: "immersive-vr", "immersive-ar", and "inline".
-This method returns nothing, instead it emits the [signal session_supported] signal with the result.
+
+Possible values come from [WebXR's XRSessionMode], including: "immersive-vr", "immersive-ar", and "inline".
+
+This method returns nothing, instead it emits the [Instance.OnSessionSupported] signal with the result.
+
+[WebXR's XRSessionMode]: https://developer.mozilla.org/en-US/docs/Web/API/XRSessionMode
 */
 //go:nosplit
 func (self class) IsSessionSupported(session_mode String.Readable) { //gd:WebXRInterface.is_session_supported
@@ -439,15 +466,23 @@ func (self class) IsInputSourceActive(input_source_id int64) bool { //gd:WebXRIn
 }
 
 /*
-Gets an [XRControllerTracker] for the given 'input_source_id'.
-In the context of WebXR, an input source can be an advanced VR controller like the Oculus Touch or Index controllers, or even a tap on the screen, a spoken voice command or a button press on the device itself. When a non-traditional input source is used, interpret the position and orientation of the [XRPositionalTracker] as a ray pointing at the object the user wishes to interact with.
+Gets an [graphics.gd/classdb/XRControllerTracker] for the given 'input_source_id'.
+
+In the context of WebXR, an input source can be an advanced VR controller like the Oculus Touch or Index controllers, or even a tap on the screen, a spoken voice command or a button press on the device itself. When a non-traditional input source is used, interpret the position and orientation of the [graphics.gd/classdb/XRPositionalTracker] as a ray pointing at the object the user wishes to interact with.
+
 Use this method to get information about the input source that triggered one of these signals:
-- [signal selectstart]
-- [signal select]
-- [signal selectend]
-- [signal squeezestart]
-- [signal squeeze]
-- [signal squeezestart]
+
+- [Instance.OnSelectstart]
+
+- [Instance.OnSelect]
+
+- [Instance.OnSelectend]
+
+- [Instance.OnSqueezestart]
+
+- [Instance.OnSqueeze]
+
+- [Instance.OnSqueezestart]
 */
 //go:nosplit
 func (self class) GetInputSourceTracker(input_source_id int64) [1]gdclass.XRControllerTracker { //gd:WebXRInterface.get_input_source_tracker
@@ -458,7 +493,10 @@ func (self class) GetInputSourceTracker(input_source_id int64) [1]gdclass.XRCont
 
 /*
 Returns the target ray mode for the given 'input_source_id'.
-This can help interpret the input coming from that input source. See [url=https://developer.mozilla.org/en-US/docs/Web/API/XRInputSource/targetRayMode]XRInputSource.targetRayMode[/url] for more information.
+
+This can help interpret the input coming from that input source. See [XRInputSource.targetRayMode] for more information.
+
+[XRInputSource.targetRayMode]: https://developer.mozilla.org/en-US/docs/Web/API/XRInputSource/targetRayMode
 */
 //go:nosplit
 func (self class) GetInputSourceTargetRayMode(input_source_id int64) TargetRayMode { //gd:WebXRInterface.get_input_source_target_ray_mode
@@ -485,7 +523,7 @@ func (self class) GetDisplayRefreshRate() float64 { //gd:WebXRInterface.get_disp
 }
 
 /*
-Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [signal display_refresh_rate_changed] is emitted.
+Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [Instance.OnDisplayRefreshRateChanged] is emitted.
 */
 //go:nosplit
 func (self class) SetDisplayRefreshRate(refresh_rate float64) { //gd:WebXRInterface.set_display_refresh_rate
@@ -699,12 +737,12 @@ func init() {
 type TargetRayMode int //gd:WebXRInterface.TargetRayMode
 
 const (
-	/*We don't know the target ray mode.*/
+	// We don't know the target ray mode.
 	TargetRayModeUnknown TargetRayMode = 0
-	/*Target ray originates at the viewer's eyes and points in the direction they are looking.*/
+	// Target ray originates at the viewer's eyes and points in the direction they are looking.
 	TargetRayModeGaze TargetRayMode = 1
-	/*Target ray from a handheld pointer, most likely a VR touch controller.*/
+	// Target ray from a handheld pointer, most likely a VR touch controller.
 	TargetRayModeTrackedPointer TargetRayMode = 2
-	/*Target ray from touch screen, mouse or other tactile input device.*/
+	// Target ray from touch screen, mouse or other tactile input device.
 	TargetRayModeScreen TargetRayMode = 3
 )

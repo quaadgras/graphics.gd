@@ -53,56 +53,66 @@ var _ = slices.Delete[[]struct{}, struct{}]
 type DeviceType int //gd:RenderingDevice.DeviceType
 
 const (
-	/*Rendering device type does not match any of the other enum values or is unknown.*/
+	// Rendering device type does not match any of the other enum values or is unknown.
 	DeviceTypeOther DeviceType = 0
-	/*Rendering device is an integrated GPU, which is typically [i](but not always)[/i] slower than dedicated GPUs ([constant DEVICE_TYPE_DISCRETE_GPU]). On Android and iOS, the rendering device type is always considered to be [constant DEVICE_TYPE_INTEGRATED_GPU].*/
+	// Rendering device is an integrated GPU, which is typically (but not always) slower than dedicated GPUs ([DeviceTypeDiscreteGpu]). On Android and iOS, the rendering device type is always considered to be [DeviceTypeIntegratedGpu].
 	DeviceTypeIntegratedGpu DeviceType = 1
-	/*Rendering device is a dedicated GPU, which is typically [i](but not always)[/i] faster than integrated GPUs ([constant DEVICE_TYPE_INTEGRATED_GPU]).*/
+	// Rendering device is a dedicated GPU, which is typically (but not always) faster than integrated GPUs ([DeviceTypeIntegratedGpu]).
 	DeviceTypeDiscreteGpu DeviceType = 2
-	/*Rendering device is an emulated GPU in a virtual environment. This is typically much slower than the host GPU, which means the expected performance level on a dedicated GPU will be roughly equivalent to [constant DEVICE_TYPE_INTEGRATED_GPU]. Virtual machine GPU passthrough (such as VFIO) will not report the device type as [constant DEVICE_TYPE_VIRTUAL_GPU]. Instead, the host GPU's device type will be reported as if the GPU was not emulated.*/
+	// Rendering device is an emulated GPU in a virtual environment. This is typically much slower than the host GPU, which means the expected performance level on a dedicated GPU will be roughly equivalent to [DeviceTypeIntegratedGpu]. Virtual machine GPU passthrough (such as VFIO) will not report the device type as [DeviceTypeVirtualGpu]. Instead, the host GPU's device type will be reported as if the GPU was not emulated.
 	DeviceTypeVirtualGpu DeviceType = 3
-	/*Rendering device is provided by software emulation (such as Lavapipe or [url=https://github.com/google/swiftshader]SwiftShader[/url]). This is the slowest kind of rendering device available; it's typically much slower than [constant DEVICE_TYPE_INTEGRATED_GPU].*/
+	// Rendering device is provided by software emulation (such as Lavapipe or [SwiftShader]). This is the slowest kind of rendering device available; it's typically much slower than [DeviceTypeIntegratedGpu].
+	//
+	// [SwiftShader]: https://github.com/google/swiftshader
 	DeviceTypeCpu DeviceType = 4
-	/*Represents the size of the [enum DeviceType] enum.*/
+	// Represents the size of the [DeviceType] enum.
 	DeviceTypeMax DeviceType = 5
 )
 
 type DriverResource int //gd:RenderingDevice.DriverResource
 
 const (
-	/*Specific device object based on a physical device.
-	  - Vulkan: Vulkan device driver resource ([code]VkDevice[/code]). ([code]rid[/code] argument doesn't apply.)*/
+	// Specific device object based on a physical device.
+	//
+	// - Vulkan: Vulkan device driver resource (VkDevice). (rid argument doesn't apply.)
 	DriverResourceLogicalDevice DriverResource = 0
-	/*Physical device the specific logical device is based on.
-	  - Vulkan: [code]VkDevice[/code]. ([code]rid[/code] argument doesn't apply.)*/
+	// Physical device the specific logical device is based on.
+	//
+	// - Vulkan: VkDevice. (rid argument doesn't apply.)
 	DriverResourcePhysicalDevice DriverResource = 1
-	/*Top-most graphics API entry object.
-	  - Vulkan: [code]VkInstance[/code]. ([code]rid[/code] argument doesn't apply.)*/
+	// Top-most graphics API entry object.
+	//
+	// - Vulkan: VkInstance. (rid argument doesn't apply.)
 	DriverResourceTopmostObject DriverResource = 2
-	/*The main graphics-compute command queue.
-	  - Vulkan: [code]VkQueue[/code]. ([code]rid[/code] argument doesn't apply.)*/
+	// The main graphics-compute command queue.
+	//
+	// - Vulkan: VkQueue. (rid argument doesn't apply.)
 	DriverResourceCommandQueue DriverResource = 3
-	/*The specific family the main queue belongs to.
-	  - Vulkan: the queue family index, an [code]uint32_t[/code]. ([code]rid[/code] argument doesn't apply.)*/
+	// The specific family the main queue belongs to.
+	//
+	// - Vulkan: the queue family index, an uint32_t. (rid argument doesn't apply.)
 	DriverResourceQueueFamily DriverResource = 4
-	/*- Vulkan: [code]VkImage[/code].*/
+	// - Vulkan: VkImage.
 	DriverResourceTexture DriverResource = 5
-	/*The view of an owned or shared texture.
-	  - Vulkan: [code]VkImageView[/code].*/
+	// The view of an owned or shared texture.
+	//
+	// - Vulkan: VkImageView.
 	DriverResourceTextureView DriverResource = 6
-	/*The native id of the data format of the texture.
-	  - Vulkan: [code]VkFormat[/code].*/
+	// The native id of the data format of the texture.
+	//
+	// - Vulkan: VkFormat.
 	DriverResourceTextureDataFormat DriverResource = 7
-	/*- Vulkan: [code]VkSampler[/code].*/
+	// - Vulkan: VkSampler.
 	DriverResourceSampler DriverResource = 8
-	/*- Vulkan: [code]VkDescriptorSet[/code].*/
+	// - Vulkan: VkDescriptorSet.
 	DriverResourceUniformSet DriverResource = 9
-	/*Buffer of any kind of (storage, vertex, etc.).
-	  - Vulkan: [code]VkBuffer[/code].*/
+	// Buffer of any kind of (storage, vertex, etc.).
+	//
+	// - Vulkan: VkBuffer.
 	DriverResourceBuffer DriverResource = 10
-	/*- Vulkan: [code]VkPipeline[/code].*/
+	// - Vulkan: VkPipeline.
 	DriverResourceComputePipeline DriverResource = 11
-	/*- Vulkan: [code]VkPipeline[/code].*/
+	// - Vulkan: VkPipeline.
 	DriverResourceRenderPipeline                 DriverResource = 12
 	DriverResourceVulkanDevice                   DriverResource = 0
 	DriverResourceVulkanPhysicalDevice           DriverResource = 1
@@ -122,625 +132,635 @@ const (
 type DataFormat int //gd:RenderingDevice.DataFormat
 
 const (
-	/*4-bit-per-channel red/green channel data format, packed into 8 bits. Values are in the [code][0.0, 1.0][/code] range.
-	  [b]Note:[/b] More information on all data formats can be found on the [url=https://registry.khronos.org/vulkan/specs/1.1/html/vkspec.html#_identification_of_formats]Identification of formats[/url] section of the Vulkan specification, as well as the [url=https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VkFormat.html]VkFormat[/url] enum.*/
+	// 4-bit-per-channel red/green channel data format, packed into 8 bits. Values are in the [0.0, 1.0] range.
+	//
+	// Note: More information on all data formats can be found on the [Identification of formats] section of the Vulkan specification, as well as the [VkFormat] enum.
+	//
+	// [Identification of formats]: https://registry.khronos.org/vulkan/specs/1.1/html/vkspec.html#_identification_of_formats
+	// [VkFormat]: https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VkFormat.html
 	DataFormatR4g4UnormPack8 DataFormat = 0
-	/*4-bit-per-channel red/green/blue/alpha channel data format, packed into 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 4-bit-per-channel red/green/blue/alpha channel data format, packed into 16 bits. Values are in the [0.0, 1.0] range.
 	DataFormatR4g4b4a4UnormPack16 DataFormat = 1
-	/*4-bit-per-channel blue/green/red/alpha channel data format, packed into 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 4-bit-per-channel blue/green/red/alpha channel data format, packed into 16 bits. Values are in the [0.0, 1.0] range.
 	DataFormatB4g4r4a4UnormPack16 DataFormat = 2
-	/*Red/green/blue channel data format with 5 bits of red, 6 bits of green and 5 bits of blue, packed into 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	// Red/green/blue channel data format with 5 bits of red, 6 bits of green and 5 bits of blue, packed into 16 bits. Values are in the [0.0, 1.0] range.
 	DataFormatR5g6b5UnormPack16 DataFormat = 3
-	/*Blue/green/red channel data format with 5 bits of blue, 6 bits of green and 5 bits of red, packed into 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	// Blue/green/red channel data format with 5 bits of blue, 6 bits of green and 5 bits of red, packed into 16 bits. Values are in the [0.0, 1.0] range.
 	DataFormatB5g6r5UnormPack16 DataFormat = 4
-	/*Red/green/blue/alpha channel data format with 5 bits of red, 6 bits of green, 5 bits of blue and 1 bit of alpha, packed into 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	// Red/green/blue/alpha channel data format with 5 bits of red, 6 bits of green, 5 bits of blue and 1 bit of alpha, packed into 16 bits. Values are in the [0.0, 1.0] range.
 	DataFormatR5g5b5a1UnormPack16 DataFormat = 5
-	/*Blue/green/red/alpha channel data format with 5 bits of blue, 6 bits of green, 5 bits of red and 1 bit of alpha, packed into 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	// Blue/green/red/alpha channel data format with 5 bits of blue, 6 bits of green, 5 bits of red and 1 bit of alpha, packed into 16 bits. Values are in the [0.0, 1.0] range.
 	DataFormatB5g5r5a1UnormPack16 DataFormat = 6
-	/*Alpha/red/green/blue channel data format with 1 bit of alpha, 5 bits of red, 6 bits of green and 5 bits of blue, packed into 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	// Alpha/red/green/blue channel data format with 1 bit of alpha, 5 bits of red, 6 bits of green and 5 bits of blue, packed into 16 bits. Values are in the [0.0, 1.0] range.
 	DataFormatA1r5g5b5UnormPack16 DataFormat = 7
-	/*8-bit-per-channel unsigned floating-point red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point red channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatR8Unorm DataFormat = 8
-	/*8-bit-per-channel signed floating-point red channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	// 8-bit-per-channel signed floating-point red channel data format with normalized value. Values are in the [-1.0, 1.0] range.
 	DataFormatR8Snorm DataFormat = 9
-	/*8-bit-per-channel unsigned floating-point red channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 255.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point red channel data format with scaled value (value is converted from integer to float). Values are in the [0.0, 255.0] range.
 	DataFormatR8Uscaled DataFormat = 10
-	/*8-bit-per-channel signed floating-point red channel data format with scaled value (value is converted from integer to float). Values are in the [code][-127.0, 127.0][/code] range.*/
+	// 8-bit-per-channel signed floating-point red channel data format with scaled value (value is converted from integer to float). Values are in the [-127.0, 127.0] range.
 	DataFormatR8Sscaled DataFormat = 11
-	/*8-bit-per-channel unsigned integer red channel data format. Values are in the [code][0, 255][/code] range.*/
+	// 8-bit-per-channel unsigned integer red channel data format. Values are in the [0, 255] range.
 	DataFormatR8Uint DataFormat = 12
-	/*8-bit-per-channel signed integer red channel data format. Values are in the [code][-127, 127][/code] range.*/
+	// 8-bit-per-channel signed integer red channel data format. Values are in the [-127, 127] range.
 	DataFormatR8Sint DataFormat = 13
-	/*8-bit-per-channel unsigned floating-point red channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point red channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range.
 	DataFormatR8Srgb DataFormat = 14
-	/*8-bit-per-channel unsigned floating-point red/green channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point red/green channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatR8g8Unorm DataFormat = 15
-	/*8-bit-per-channel signed floating-point red/green channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	// 8-bit-per-channel signed floating-point red/green channel data format with normalized value. Values are in the [-1.0, 1.0] range.
 	DataFormatR8g8Snorm DataFormat = 16
-	/*8-bit-per-channel unsigned floating-point red/green channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 255.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point red/green channel data format with scaled value (value is converted from integer to float). Values are in the [0.0, 255.0] range.
 	DataFormatR8g8Uscaled DataFormat = 17
-	/*8-bit-per-channel signed floating-point red/green channel data format with scaled value (value is converted from integer to float). Values are in the [code][-127.0, 127.0][/code] range.*/
+	// 8-bit-per-channel signed floating-point red/green channel data format with scaled value (value is converted from integer to float). Values are in the [-127.0, 127.0] range.
 	DataFormatR8g8Sscaled DataFormat = 18
-	/*8-bit-per-channel unsigned integer red/green channel data format. Values are in the [code][0, 255][/code] range.*/
+	// 8-bit-per-channel unsigned integer red/green channel data format. Values are in the [0, 255] range.
 	DataFormatR8g8Uint DataFormat = 19
-	/*8-bit-per-channel signed integer red/green channel data format. Values are in the [code][-127, 127][/code] range.*/
+	// 8-bit-per-channel signed integer red/green channel data format. Values are in the [-127, 127] range.
 	DataFormatR8g8Sint DataFormat = 20
-	/*8-bit-per-channel unsigned floating-point red/green channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point red/green channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range.
 	DataFormatR8g8Srgb DataFormat = 21
-	/*8-bit-per-channel unsigned floating-point red/green/blue channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point red/green/blue channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatR8g8b8Unorm DataFormat = 22
-	/*8-bit-per-channel signed floating-point red/green/blue channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	// 8-bit-per-channel signed floating-point red/green/blue channel data format with normalized value. Values are in the [-1.0, 1.0] range.
 	DataFormatR8g8b8Snorm DataFormat = 23
-	/*8-bit-per-channel unsigned floating-point red/green/blue channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 255.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point red/green/blue channel data format with scaled value (value is converted from integer to float). Values are in the [0.0, 255.0] range.
 	DataFormatR8g8b8Uscaled DataFormat = 24
-	/*8-bit-per-channel signed floating-point red/green/blue channel data format with scaled value (value is converted from integer to float). Values are in the [code][-127.0, 127.0][/code] range.*/
+	// 8-bit-per-channel signed floating-point red/green/blue channel data format with scaled value (value is converted from integer to float). Values are in the [-127.0, 127.0] range.
 	DataFormatR8g8b8Sscaled DataFormat = 25
-	/*8-bit-per-channel unsigned integer red/green/blue channel data format. Values are in the [code][0, 255][/code] range.*/
+	// 8-bit-per-channel unsigned integer red/green/blue channel data format. Values are in the [0, 255] range.
 	DataFormatR8g8b8Uint DataFormat = 26
-	/*8-bit-per-channel signed integer red/green/blue channel data format. Values are in the [code][-127, 127][/code] range.*/
+	// 8-bit-per-channel signed integer red/green/blue channel data format. Values are in the [-127, 127] range.
 	DataFormatR8g8b8Sint DataFormat = 27
-	/*8-bit-per-channel unsigned floating-point red/green/blue/blue channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point red/green/blue/blue channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range.
 	DataFormatR8g8b8Srgb DataFormat = 28
-	/*8-bit-per-channel unsigned floating-point blue/green/red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point blue/green/red channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatB8g8r8Unorm DataFormat = 29
-	/*8-bit-per-channel signed floating-point blue/green/red channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	// 8-bit-per-channel signed floating-point blue/green/red channel data format with normalized value. Values are in the [-1.0, 1.0] range.
 	DataFormatB8g8r8Snorm DataFormat = 30
-	/*8-bit-per-channel unsigned floating-point blue/green/red channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 255.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point blue/green/red channel data format with scaled value (value is converted from integer to float). Values are in the [0.0, 255.0] range.
 	DataFormatB8g8r8Uscaled DataFormat = 31
-	/*8-bit-per-channel signed floating-point blue/green/red channel data format with scaled value (value is converted from integer to float). Values are in the [code][-127.0, 127.0][/code] range.*/
+	// 8-bit-per-channel signed floating-point blue/green/red channel data format with scaled value (value is converted from integer to float). Values are in the [-127.0, 127.0] range.
 	DataFormatB8g8r8Sscaled DataFormat = 32
-	/*8-bit-per-channel unsigned integer blue/green/red channel data format. Values are in the [code][0, 255][/code] range.*/
+	// 8-bit-per-channel unsigned integer blue/green/red channel data format. Values are in the [0, 255] range.
 	DataFormatB8g8r8Uint DataFormat = 33
-	/*8-bit-per-channel signed integer blue/green/red channel data format. Values are in the [code][-127, 127][/code] range.*/
+	// 8-bit-per-channel signed integer blue/green/red channel data format. Values are in the [-127, 127] range.
 	DataFormatB8g8r8Sint DataFormat = 34
-	/*8-bit-per-channel unsigned floating-point blue/green/red data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point blue/green/red data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range.
 	DataFormatB8g8r8Srgb DataFormat = 35
-	/*8-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatR8g8b8a8Unorm DataFormat = 36
-	/*8-bit-per-channel signed floating-point red/green/blue/alpha channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	// 8-bit-per-channel signed floating-point red/green/blue/alpha channel data format with normalized value. Values are in the [-1.0, 1.0] range.
 	DataFormatR8g8b8a8Snorm DataFormat = 37
-	/*8-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 255.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [0.0, 255.0] range.
 	DataFormatR8g8b8a8Uscaled DataFormat = 38
-	/*8-bit-per-channel signed floating-point red/green/blue/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [code][-127.0, 127.0][/code] range.*/
+	// 8-bit-per-channel signed floating-point red/green/blue/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [-127.0, 127.0] range.
 	DataFormatR8g8b8a8Sscaled DataFormat = 39
-	/*8-bit-per-channel unsigned integer red/green/blue/alpha channel data format. Values are in the [code][0, 255][/code] range.*/
+	// 8-bit-per-channel unsigned integer red/green/blue/alpha channel data format. Values are in the [0, 255] range.
 	DataFormatR8g8b8a8Uint DataFormat = 40
-	/*8-bit-per-channel signed integer red/green/blue/alpha channel data format. Values are in the [code][-127, 127][/code] range.*/
+	// 8-bit-per-channel signed integer red/green/blue/alpha channel data format. Values are in the [-127, 127] range.
 	DataFormatR8g8b8a8Sint DataFormat = 41
-	/*8-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range.
 	DataFormatR8g8b8a8Srgb DataFormat = 42
-	/*8-bit-per-channel unsigned floating-point blue/green/red/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point blue/green/red/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatB8g8r8a8Unorm DataFormat = 43
-	/*8-bit-per-channel signed floating-point blue/green/red/alpha channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	// 8-bit-per-channel signed floating-point blue/green/red/alpha channel data format with normalized value. Values are in the [-1.0, 1.0] range.
 	DataFormatB8g8r8a8Snorm DataFormat = 44
-	/*8-bit-per-channel unsigned floating-point blue/green/red/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 255.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point blue/green/red/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [0.0, 255.0] range.
 	DataFormatB8g8r8a8Uscaled DataFormat = 45
-	/*8-bit-per-channel signed floating-point blue/green/red/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [code][-127.0, 127.0][/code] range.*/
+	// 8-bit-per-channel signed floating-point blue/green/red/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [-127.0, 127.0] range.
 	DataFormatB8g8r8a8Sscaled DataFormat = 46
-	/*8-bit-per-channel unsigned integer blue/green/red/alpha channel data format. Values are in the [code][0, 255][/code] range.*/
+	// 8-bit-per-channel unsigned integer blue/green/red/alpha channel data format. Values are in the [0, 255] range.
 	DataFormatB8g8r8a8Uint DataFormat = 47
-	/*8-bit-per-channel signed integer blue/green/red/alpha channel data format. Values are in the [code][-127, 127][/code] range.*/
+	// 8-bit-per-channel signed integer blue/green/red/alpha channel data format. Values are in the [-127, 127] range.
 	DataFormatB8g8r8a8Sint DataFormat = 48
-	/*8-bit-per-channel unsigned floating-point blue/green/red/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point blue/green/red/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range.
 	DataFormatB8g8r8a8Srgb DataFormat = 49
-	/*8-bit-per-channel unsigned floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Values are in the [0.0, 1.0] range.
 	DataFormatA8b8g8r8UnormPack32 DataFormat = 50
-	/*8-bit-per-channel signed floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Values are in the [code][-1.0, 1.0][/code] range.*/
+	// 8-bit-per-channel signed floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Values are in the [-1.0, 1.0] range.
 	DataFormatA8b8g8r8SnormPack32 DataFormat = 51
-	/*8-bit-per-channel unsigned floating-point alpha/red/green/blue channel data format with scaled value (value is converted from integer to float), packed in 32 bits. Values are in the [code][0.0, 255.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point alpha/red/green/blue channel data format with scaled value (value is converted from integer to float), packed in 32 bits. Values are in the [0.0, 255.0] range.
 	DataFormatA8b8g8r8UscaledPack32 DataFormat = 52
-	/*8-bit-per-channel signed floating-point alpha/red/green/blue channel data format with scaled value (value is converted from integer to float), packed in 32 bits. Values are in the [code][-127.0, 127.0][/code] range.*/
+	// 8-bit-per-channel signed floating-point alpha/red/green/blue channel data format with scaled value (value is converted from integer to float), packed in 32 bits. Values are in the [-127.0, 127.0] range.
 	DataFormatA8b8g8r8SscaledPack32 DataFormat = 53
-	/*8-bit-per-channel unsigned integer alpha/red/green/blue channel data format, packed in 32 bits. Values are in the [code][0, 255][/code] range.*/
+	// 8-bit-per-channel unsigned integer alpha/red/green/blue channel data format, packed in 32 bits. Values are in the [0, 255] range.
 	DataFormatA8b8g8r8UintPack32 DataFormat = 54
-	/*8-bit-per-channel signed integer alpha/red/green/blue channel data format, packed in 32 bits. Values are in the [code][-127, 127][/code] range.*/
+	// 8-bit-per-channel signed integer alpha/red/green/blue channel data format, packed in 32 bits. Values are in the [-127, 127] range.
 	DataFormatA8b8g8r8SintPack32 DataFormat = 55
-	/*8-bit-per-channel unsigned floating-point alpha/red/green/blue channel data format with normalized value and non-linear sRGB encoding, packed in 32 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point alpha/red/green/blue channel data format with normalized value and non-linear sRGB encoding, packed in 32 bits. Values are in the [0.0, 1.0] range.
 	DataFormatA8b8g8r8SrgbPack32 DataFormat = 56
-	/*Unsigned floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [code][0.0, 1.0][/code] range.*/
+	// Unsigned floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [0.0, 1.0] range.
 	DataFormatA2r10g10b10UnormPack32 DataFormat = 57
-	/*Signed floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [code][-1.0, 1.0][/code] range.*/
+	// Signed floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [-1.0, 1.0] range.
 	DataFormatA2r10g10b10SnormPack32 DataFormat = 58
-	/*Unsigned floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [code][0.0, 1023.0][/code] range for red/green/blue and [code][0.0, 3.0][/code] for alpha.*/
+	// Unsigned floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [0.0, 1023.0] range for red/green/blue and [0.0, 3.0] for alpha.
 	DataFormatA2r10g10b10UscaledPack32 DataFormat = 59
-	/*Signed floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [code][-511.0, 511.0][/code] range for red/green/blue and [code][-1.0, 1.0][/code] for alpha.*/
+	// Signed floating-point alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [-511.0, 511.0] range for red/green/blue and [-1.0, 1.0] for alpha.
 	DataFormatA2r10g10b10SscaledPack32 DataFormat = 60
-	/*Unsigned integer alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [code][0, 1023][/code] range for red/green/blue and [code][0, 3][/code] for alpha.*/
+	// Unsigned integer alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [0, 1023] range for red/green/blue and [0, 3] for alpha.
 	DataFormatA2r10g10b10UintPack32 DataFormat = 61
-	/*Signed integer alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [code][-511, 511][/code] range for red/green/blue and [code][-1, 1][/code] for alpha.*/
+	// Signed integer alpha/red/green/blue channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of red, 10 bits of green and 10 bits of blue. Values are in the [-511, 511] range for red/green/blue and [-1, 1] for alpha.
 	DataFormatA2r10g10b10SintPack32 DataFormat = 62
-	/*Unsigned floating-point alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [code][0.0, 1.0][/code] range.*/
+	// Unsigned floating-point alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [0.0, 1.0] range.
 	DataFormatA2b10g10r10UnormPack32 DataFormat = 63
-	/*Signed floating-point alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [code][-1.0, 1.0][/code] range.*/
+	// Signed floating-point alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [-1.0, 1.0] range.
 	DataFormatA2b10g10r10SnormPack32 DataFormat = 64
-	/*Unsigned floating-point alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [code][0.0, 1023.0][/code] range for blue/green/red and [code][0.0, 3.0][/code] for alpha.*/
+	// Unsigned floating-point alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [0.0, 1023.0] range for blue/green/red and [0.0, 3.0] for alpha.
 	DataFormatA2b10g10r10UscaledPack32 DataFormat = 65
-	/*Signed floating-point alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [code][-511.0, 511.0][/code] range for blue/green/red and [code][-1.0, 1.0][/code] for alpha.*/
+	// Signed floating-point alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [-511.0, 511.0] range for blue/green/red and [-1.0, 1.0] for alpha.
 	DataFormatA2b10g10r10SscaledPack32 DataFormat = 66
-	/*Unsigned integer alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [code][0, 1023][/code] range for blue/green/red and [code][0, 3][/code] for alpha.*/
+	// Unsigned integer alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [0, 1023] range for blue/green/red and [0, 3] for alpha.
 	DataFormatA2b10g10r10UintPack32 DataFormat = 67
-	/*Signed integer alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [code][-511, 511][/code] range for blue/green/red and [code][-1, 1][/code] for alpha.*/
+	// Signed integer alpha/blue/green/red channel data format with normalized value, packed in 32 bits. Format contains 2 bits of alpha, 10 bits of blue, 10 bits of green and 10 bits of red. Values are in the [-511, 511] range for blue/green/red and [-1, 1] for alpha.
 	DataFormatA2b10g10r10SintPack32 DataFormat = 68
-	/*16-bit-per-channel unsigned floating-point red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 16-bit-per-channel unsigned floating-point red channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatR16Unorm DataFormat = 69
-	/*16-bit-per-channel signed floating-point red channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	// 16-bit-per-channel signed floating-point red channel data format with normalized value. Values are in the [-1.0, 1.0] range.
 	DataFormatR16Snorm DataFormat = 70
-	/*16-bit-per-channel unsigned floating-point red channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 65535.0][/code] range.*/
+	// 16-bit-per-channel unsigned floating-point red channel data format with scaled value (value is converted from integer to float). Values are in the [0.0, 65535.0] range.
 	DataFormatR16Uscaled DataFormat = 71
-	/*16-bit-per-channel signed floating-point red channel data format with scaled value (value is converted from integer to float). Values are in the [code][-32767.0, 32767.0][/code] range.*/
+	// 16-bit-per-channel signed floating-point red channel data format with scaled value (value is converted from integer to float). Values are in the [-32767.0, 32767.0] range.
 	DataFormatR16Sscaled DataFormat = 72
-	/*16-bit-per-channel unsigned integer red channel data format. Values are in the [code][0.0, 65535][/code] range.*/
+	// 16-bit-per-channel unsigned integer red channel data format. Values are in the [0.0, 65535] range.
 	DataFormatR16Uint DataFormat = 73
-	/*16-bit-per-channel signed integer red channel data format. Values are in the [code][-32767, 32767][/code] range.*/
+	// 16-bit-per-channel signed integer red channel data format. Values are in the [-32767, 32767] range.
 	DataFormatR16Sint DataFormat = 74
-	/*16-bit-per-channel signed floating-point red channel data format with the value stored as-is.*/
+	// 16-bit-per-channel signed floating-point red channel data format with the value stored as-is.
 	DataFormatR16Sfloat DataFormat = 75
-	/*16-bit-per-channel unsigned floating-point red/green channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 16-bit-per-channel unsigned floating-point red/green channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatR16g16Unorm DataFormat = 76
-	/*16-bit-per-channel signed floating-point red/green channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	// 16-bit-per-channel signed floating-point red/green channel data format with normalized value. Values are in the [-1.0, 1.0] range.
 	DataFormatR16g16Snorm DataFormat = 77
-	/*16-bit-per-channel unsigned floating-point red/green channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 65535.0][/code] range.*/
+	// 16-bit-per-channel unsigned floating-point red/green channel data format with scaled value (value is converted from integer to float). Values are in the [0.0, 65535.0] range.
 	DataFormatR16g16Uscaled DataFormat = 78
-	/*16-bit-per-channel signed floating-point red/green channel data format with scaled value (value is converted from integer to float). Values are in the [code][-32767.0, 32767.0][/code] range.*/
+	// 16-bit-per-channel signed floating-point red/green channel data format with scaled value (value is converted from integer to float). Values are in the [-32767.0, 32767.0] range.
 	DataFormatR16g16Sscaled DataFormat = 79
-	/*16-bit-per-channel unsigned integer red/green channel data format. Values are in the [code][0.0, 65535][/code] range.*/
+	// 16-bit-per-channel unsigned integer red/green channel data format. Values are in the [0.0, 65535] range.
 	DataFormatR16g16Uint DataFormat = 80
-	/*16-bit-per-channel signed integer red/green channel data format. Values are in the [code][-32767, 32767][/code] range.*/
+	// 16-bit-per-channel signed integer red/green channel data format. Values are in the [-32767, 32767] range.
 	DataFormatR16g16Sint DataFormat = 81
-	/*16-bit-per-channel signed floating-point red/green channel data format with the value stored as-is.*/
+	// 16-bit-per-channel signed floating-point red/green channel data format with the value stored as-is.
 	DataFormatR16g16Sfloat DataFormat = 82
-	/*16-bit-per-channel unsigned floating-point red/green/blue channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 16-bit-per-channel unsigned floating-point red/green/blue channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatR16g16b16Unorm DataFormat = 83
-	/*16-bit-per-channel signed floating-point red/green/blue channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	// 16-bit-per-channel signed floating-point red/green/blue channel data format with normalized value. Values are in the [-1.0, 1.0] range.
 	DataFormatR16g16b16Snorm DataFormat = 84
-	/*16-bit-per-channel unsigned floating-point red/green/blue channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 65535.0][/code] range.*/
+	// 16-bit-per-channel unsigned floating-point red/green/blue channel data format with scaled value (value is converted from integer to float). Values are in the [0.0, 65535.0] range.
 	DataFormatR16g16b16Uscaled DataFormat = 85
-	/*16-bit-per-channel signed floating-point red/green/blue channel data format with scaled value (value is converted from integer to float). Values are in the [code][-32767.0, 32767.0][/code] range.*/
+	// 16-bit-per-channel signed floating-point red/green/blue channel data format with scaled value (value is converted from integer to float). Values are in the [-32767.0, 32767.0] range.
 	DataFormatR16g16b16Sscaled DataFormat = 86
-	/*16-bit-per-channel unsigned integer red/green/blue channel data format. Values are in the [code][0.0, 65535][/code] range.*/
+	// 16-bit-per-channel unsigned integer red/green/blue channel data format. Values are in the [0.0, 65535] range.
 	DataFormatR16g16b16Uint DataFormat = 87
-	/*16-bit-per-channel signed integer red/green/blue channel data format. Values are in the [code][-32767, 32767][/code] range.*/
+	// 16-bit-per-channel signed integer red/green/blue channel data format. Values are in the [-32767, 32767] range.
 	DataFormatR16g16b16Sint DataFormat = 88
-	/*16-bit-per-channel signed floating-point red/green/blue channel data format with the value stored as-is.*/
+	// 16-bit-per-channel signed floating-point red/green/blue channel data format with the value stored as-is.
 	DataFormatR16g16b16Sfloat DataFormat = 89
-	/*16-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 16-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatR16g16b16a16Unorm DataFormat = 90
-	/*16-bit-per-channel signed floating-point red/green/blue/alpha channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range.*/
+	// 16-bit-per-channel signed floating-point red/green/blue/alpha channel data format with normalized value. Values are in the [-1.0, 1.0] range.
 	DataFormatR16g16b16a16Snorm DataFormat = 91
-	/*16-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [code][0.0, 65535.0][/code] range.*/
+	// 16-bit-per-channel unsigned floating-point red/green/blue/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [0.0, 65535.0] range.
 	DataFormatR16g16b16a16Uscaled DataFormat = 92
-	/*16-bit-per-channel signed floating-point red/green/blue/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [code][-32767.0, 32767.0][/code] range.*/
+	// 16-bit-per-channel signed floating-point red/green/blue/alpha channel data format with scaled value (value is converted from integer to float). Values are in the [-32767.0, 32767.0] range.
 	DataFormatR16g16b16a16Sscaled DataFormat = 93
-	/*16-bit-per-channel unsigned integer red/green/blue/alpha channel data format. Values are in the [code][0.0, 65535][/code] range.*/
+	// 16-bit-per-channel unsigned integer red/green/blue/alpha channel data format. Values are in the [0.0, 65535] range.
 	DataFormatR16g16b16a16Uint DataFormat = 94
-	/*16-bit-per-channel signed integer red/green/blue/alpha channel data format. Values are in the [code][-32767, 32767][/code] range.*/
+	// 16-bit-per-channel signed integer red/green/blue/alpha channel data format. Values are in the [-32767, 32767] range.
 	DataFormatR16g16b16a16Sint DataFormat = 95
-	/*16-bit-per-channel signed floating-point red/green/blue/alpha channel data format with the value stored as-is.*/
+	// 16-bit-per-channel signed floating-point red/green/blue/alpha channel data format with the value stored as-is.
 	DataFormatR16g16b16a16Sfloat DataFormat = 96
-	/*32-bit-per-channel unsigned integer red channel data format. Values are in the [code][0, 2^32 - 1][/code] range.*/
+	// 32-bit-per-channel unsigned integer red channel data format. Values are in the [0, 2^32 - 1] range.
 	DataFormatR32Uint DataFormat = 97
-	/*32-bit-per-channel signed integer red channel data format. Values are in the [code][2^31 + 1, 2^31 - 1][/code] range.*/
+	// 32-bit-per-channel signed integer red channel data format. Values are in the [2^31 + 1, 2^31 - 1] range.
 	DataFormatR32Sint DataFormat = 98
-	/*32-bit-per-channel signed floating-point red channel data format with the value stored as-is.*/
+	// 32-bit-per-channel signed floating-point red channel data format with the value stored as-is.
 	DataFormatR32Sfloat DataFormat = 99
-	/*32-bit-per-channel unsigned integer red/green channel data format. Values are in the [code][0, 2^32 - 1][/code] range.*/
+	// 32-bit-per-channel unsigned integer red/green channel data format. Values are in the [0, 2^32 - 1] range.
 	DataFormatR32g32Uint DataFormat = 100
-	/*32-bit-per-channel signed integer red/green channel data format. Values are in the [code][2^31 + 1, 2^31 - 1][/code] range.*/
+	// 32-bit-per-channel signed integer red/green channel data format. Values are in the [2^31 + 1, 2^31 - 1] range.
 	DataFormatR32g32Sint DataFormat = 101
-	/*32-bit-per-channel signed floating-point red/green channel data format with the value stored as-is.*/
+	// 32-bit-per-channel signed floating-point red/green channel data format with the value stored as-is.
 	DataFormatR32g32Sfloat DataFormat = 102
-	/*32-bit-per-channel unsigned integer red/green/blue channel data format. Values are in the [code][0, 2^32 - 1][/code] range.*/
+	// 32-bit-per-channel unsigned integer red/green/blue channel data format. Values are in the [0, 2^32 - 1] range.
 	DataFormatR32g32b32Uint DataFormat = 103
-	/*32-bit-per-channel signed integer red/green/blue channel data format. Values are in the [code][2^31 + 1, 2^31 - 1][/code] range.*/
+	// 32-bit-per-channel signed integer red/green/blue channel data format. Values are in the [2^31 + 1, 2^31 - 1] range.
 	DataFormatR32g32b32Sint DataFormat = 104
-	/*32-bit-per-channel signed floating-point red/green/blue channel data format with the value stored as-is.*/
+	// 32-bit-per-channel signed floating-point red/green/blue channel data format with the value stored as-is.
 	DataFormatR32g32b32Sfloat DataFormat = 105
-	/*32-bit-per-channel unsigned integer red/green/blue/alpha channel data format. Values are in the [code][0, 2^32 - 1][/code] range.*/
+	// 32-bit-per-channel unsigned integer red/green/blue/alpha channel data format. Values are in the [0, 2^32 - 1] range.
 	DataFormatR32g32b32a32Uint DataFormat = 106
-	/*32-bit-per-channel signed integer red/green/blue/alpha channel data format. Values are in the [code][2^31 + 1, 2^31 - 1][/code] range.*/
+	// 32-bit-per-channel signed integer red/green/blue/alpha channel data format. Values are in the [2^31 + 1, 2^31 - 1] range.
 	DataFormatR32g32b32a32Sint DataFormat = 107
-	/*32-bit-per-channel signed floating-point red/green/blue/alpha channel data format with the value stored as-is.*/
+	// 32-bit-per-channel signed floating-point red/green/blue/alpha channel data format with the value stored as-is.
 	DataFormatR32g32b32a32Sfloat DataFormat = 108
-	/*64-bit-per-channel unsigned integer red channel data format. Values are in the [code][0, 2^64 - 1][/code] range.*/
+	// 64-bit-per-channel unsigned integer red channel data format. Values are in the [0, 2^64 - 1] range.
 	DataFormatR64Uint DataFormat = 109
-	/*64-bit-per-channel signed integer red channel data format. Values are in the [code][2^63 + 1, 2^63 - 1][/code] range.*/
+	// 64-bit-per-channel signed integer red channel data format. Values are in the [2^63 + 1, 2^63 - 1] range.
 	DataFormatR64Sint DataFormat = 110
-	/*64-bit-per-channel signed floating-point red channel data format with the value stored as-is.*/
+	// 64-bit-per-channel signed floating-point red channel data format with the value stored as-is.
 	DataFormatR64Sfloat DataFormat = 111
-	/*64-bit-per-channel unsigned integer red/green channel data format. Values are in the [code][0, 2^64 - 1][/code] range.*/
+	// 64-bit-per-channel unsigned integer red/green channel data format. Values are in the [0, 2^64 - 1] range.
 	DataFormatR64g64Uint DataFormat = 112
-	/*64-bit-per-channel signed integer red/green channel data format. Values are in the [code][2^63 + 1, 2^63 - 1][/code] range.*/
+	// 64-bit-per-channel signed integer red/green channel data format. Values are in the [2^63 + 1, 2^63 - 1] range.
 	DataFormatR64g64Sint DataFormat = 113
-	/*64-bit-per-channel signed floating-point red/green channel data format with the value stored as-is.*/
+	// 64-bit-per-channel signed floating-point red/green channel data format with the value stored as-is.
 	DataFormatR64g64Sfloat DataFormat = 114
-	/*64-bit-per-channel unsigned integer red/green/blue channel data format. Values are in the [code][0, 2^64 - 1][/code] range.*/
+	// 64-bit-per-channel unsigned integer red/green/blue channel data format. Values are in the [0, 2^64 - 1] range.
 	DataFormatR64g64b64Uint DataFormat = 115
-	/*64-bit-per-channel signed integer red/green/blue channel data format. Values are in the [code][2^63 + 1, 2^63 - 1][/code] range.*/
+	// 64-bit-per-channel signed integer red/green/blue channel data format. Values are in the [2^63 + 1, 2^63 - 1] range.
 	DataFormatR64g64b64Sint DataFormat = 116
-	/*64-bit-per-channel signed floating-point red/green/blue channel data format with the value stored as-is.*/
+	// 64-bit-per-channel signed floating-point red/green/blue channel data format with the value stored as-is.
 	DataFormatR64g64b64Sfloat DataFormat = 117
-	/*64-bit-per-channel unsigned integer red/green/blue/alpha channel data format. Values are in the [code][0, 2^64 - 1][/code] range.*/
+	// 64-bit-per-channel unsigned integer red/green/blue/alpha channel data format. Values are in the [0, 2^64 - 1] range.
 	DataFormatR64g64b64a64Uint DataFormat = 118
-	/*64-bit-per-channel signed integer red/green/blue/alpha channel data format. Values are in the [code][2^63 + 1, 2^63 - 1][/code] range.*/
+	// 64-bit-per-channel signed integer red/green/blue/alpha channel data format. Values are in the [2^63 + 1, 2^63 - 1] range.
 	DataFormatR64g64b64a64Sint DataFormat = 119
-	/*64-bit-per-channel signed floating-point red/green/blue/alpha channel data format with the value stored as-is.*/
+	// 64-bit-per-channel signed floating-point red/green/blue/alpha channel data format with the value stored as-is.
 	DataFormatR64g64b64a64Sfloat DataFormat = 120
-	/*Unsigned floating-point blue/green/red data format with the value stored as-is, packed in 32 bits. The format's precision is 10 bits of blue channel, 11 bits of green channel and 11 bits of red channel.*/
+	// Unsigned floating-point blue/green/red data format with the value stored as-is, packed in 32 bits. The format's precision is 10 bits of blue channel, 11 bits of green channel and 11 bits of red channel.
 	DataFormatB10g11r11UfloatPack32 DataFormat = 121
-	/*Unsigned floating-point exposure/blue/green/red data format with the value stored as-is, packed in 32 bits. The format's precision is 5 bits of exposure, 9 bits of blue channel, 9 bits of green channel and 9 bits of red channel.*/
+	// Unsigned floating-point exposure/blue/green/red data format with the value stored as-is, packed in 32 bits. The format's precision is 5 bits of exposure, 9 bits of blue channel, 9 bits of green channel and 9 bits of red channel.
 	DataFormatE5b9g9r9UfloatPack32 DataFormat = 122
-	/*16-bit unsigned floating-point depth data format with normalized value. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 16-bit unsigned floating-point depth data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatD16Unorm DataFormat = 123
-	/*24-bit unsigned floating-point depth data format with normalized value, plus 8 unused bits, packed in 32 bits. Values for depth are in the [code][0.0, 1.0][/code] range.*/
+	// 24-bit unsigned floating-point depth data format with normalized value, plus 8 unused bits, packed in 32 bits. Values for depth are in the [0.0, 1.0] range.
 	DataFormatX8D24UnormPack32 DataFormat = 124
-	/*32-bit signed floating-point depth data format with the value stored as-is.*/
+	// 32-bit signed floating-point depth data format with the value stored as-is.
 	DataFormatD32Sfloat DataFormat = 125
-	/*8-bit unsigned integer stencil data format.*/
+	// 8-bit unsigned integer stencil data format.
 	DataFormatS8Uint DataFormat = 126
-	/*16-bit unsigned floating-point depth data format with normalized value, plus 8 bits of stencil in unsigned integer format. Values for depth are in the [code][0.0, 1.0][/code] range. Values for stencil are in the [code][0, 255][/code] range.*/
+	// 16-bit unsigned floating-point depth data format with normalized value, plus 8 bits of stencil in unsigned integer format. Values for depth are in the [0.0, 1.0] range. Values for stencil are in the [0, 255] range.
 	DataFormatD16UnormS8Uint DataFormat = 127
-	/*24-bit unsigned floating-point depth data format with normalized value, plus 8 bits of stencil in unsigned integer format. Values for depth are in the [code][0.0, 1.0][/code] range. Values for stencil are in the [code][0, 255][/code] range.*/
+	// 24-bit unsigned floating-point depth data format with normalized value, plus 8 bits of stencil in unsigned integer format. Values for depth are in the [0.0, 1.0] range. Values for stencil are in the [0, 255] range.
 	DataFormatD24UnormS8Uint DataFormat = 128
-	/*32-bit signed floating-point depth data format with the value stored as-is, plus 8 bits of stencil in unsigned integer format. Values for stencil are in the [code][0, 255][/code] range.*/
+	// 32-bit signed floating-point depth data format with the value stored as-is, plus 8 bits of stencil in unsigned integer format. Values for stencil are in the [0, 255] range.
 	DataFormatD32SfloatS8Uint DataFormat = 129
-	/*VRAM-compressed unsigned red/green/blue channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel and 5 bits of blue channel. Using BC1 texture compression (also known as S3TC DXT1).*/
+	// VRAM-compressed unsigned red/green/blue channel data format with normalized value. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel and 5 bits of blue channel. Using BC1 texture compression (also known as S3TC DXT1).
 	DataFormatBc1RgbUnormBlock DataFormat = 130
-	/*VRAM-compressed unsigned red/green/blue channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel and 5 bits of blue channel. Using BC1 texture compression (also known as S3TC DXT1).*/
+	// VRAM-compressed unsigned red/green/blue channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel and 5 bits of blue channel. Using BC1 texture compression (also known as S3TC DXT1).
 	DataFormatBc1RgbSrgbBlock DataFormat = 131
-	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 1 bit of alpha channel. Using BC1 texture compression (also known as S3TC DXT1).*/
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 1 bit of alpha channel. Using BC1 texture compression (also known as S3TC DXT1).
 	DataFormatBc1RgbaUnormBlock DataFormat = 132
-	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 1 bit of alpha channel. Using BC1 texture compression (also known as S3TC DXT1).*/
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 1 bit of alpha channel. Using BC1 texture compression (also known as S3TC DXT1).
 	DataFormatBc1RgbaSrgbBlock DataFormat = 133
-	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 4 bits of alpha channel. Using BC2 texture compression (also known as S3TC DXT3).*/
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 4 bits of alpha channel. Using BC2 texture compression (also known as S3TC DXT3).
 	DataFormatBc2UnormBlock DataFormat = 134
-	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 4 bits of alpha channel. Using BC2 texture compression (also known as S3TC DXT3).*/
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 4 bits of alpha channel. Using BC2 texture compression (also known as S3TC DXT3).
 	DataFormatBc2SrgbBlock DataFormat = 135
-	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 8 bits of alpha channel. Using BC3 texture compression (also known as S3TC DXT5).*/
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 8 bits of alpha channel. Using BC3 texture compression (also known as S3TC DXT5).
 	DataFormatBc3UnormBlock DataFormat = 136
-	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 8 bits of alpha channel. Using BC3 texture compression (also known as S3TC DXT5).*/
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. The format's precision is 5 bits of red channel, 6 bits of green channel, 5 bits of blue channel and 8 bits of alpha channel. Using BC3 texture compression (also known as S3TC DXT5).
 	DataFormatBc3SrgbBlock DataFormat = 137
-	/*VRAM-compressed unsigned red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 8 bits of red channel. Using BC4 texture compression.*/
+	// VRAM-compressed unsigned red channel data format with normalized value. Values are in the [0.0, 1.0] range. The format's precision is 8 bits of red channel. Using BC4 texture compression.
 	DataFormatBc4UnormBlock DataFormat = 138
-	/*VRAM-compressed signed red channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range. The format's precision is 8 bits of red channel. Using BC4 texture compression.*/
+	// VRAM-compressed signed red channel data format with normalized value. Values are in the [-1.0, 1.0] range. The format's precision is 8 bits of red channel. Using BC4 texture compression.
 	DataFormatBc4SnormBlock DataFormat = 139
-	/*VRAM-compressed unsigned red/green channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. The format's precision is 8 bits of red channel and 8 bits of green channel. Using BC5 texture compression (also known as S3TC RGTC).*/
+	// VRAM-compressed unsigned red/green channel data format with normalized value. Values are in the [0.0, 1.0] range. The format's precision is 8 bits of red channel and 8 bits of green channel. Using BC5 texture compression (also known as S3TC RGTC).
 	DataFormatBc5UnormBlock DataFormat = 140
-	/*VRAM-compressed signed red/green channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range. The format's precision is 8 bits of red channel and 8 bits of green channel. Using BC5 texture compression (also known as S3TC RGTC).*/
+	// VRAM-compressed signed red/green channel data format with normalized value. Values are in the [-1.0, 1.0] range. The format's precision is 8 bits of red channel and 8 bits of green channel. Using BC5 texture compression (also known as S3TC RGTC).
 	DataFormatBc5SnormBlock DataFormat = 141
-	/*VRAM-compressed unsigned red/green/blue channel data format with the floating-point value stored as-is. The format's precision is between 10 and 13 bits for the red/green/blue channels. Using BC6H texture compression (also known as BPTC HDR).*/
+	// VRAM-compressed unsigned red/green/blue channel data format with the floating-point value stored as-is. The format's precision is between 10 and 13 bits for the red/green/blue channels. Using BC6H texture compression (also known as BPTC HDR).
 	DataFormatBc6hUfloatBlock DataFormat = 142
-	/*VRAM-compressed signed red/green/blue channel data format with the floating-point value stored as-is. The format's precision is between 10 and 13 bits for the red/green/blue channels. Using BC6H texture compression (also known as BPTC HDR).*/
+	// VRAM-compressed signed red/green/blue channel data format with the floating-point value stored as-is. The format's precision is between 10 and 13 bits for the red/green/blue channels. Using BC6H texture compression (also known as BPTC HDR).
 	DataFormatBc6hSfloatBlock DataFormat = 143
-	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. The format's precision is between 4 and 7 bits for the red/green/blue channels and between 0 and 8 bits for the alpha channel. Also known as BPTC LDR.*/
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range. The format's precision is between 4 and 7 bits for the red/green/blue channels and between 0 and 8 bits for the alpha channel. Also known as BPTC LDR.
 	DataFormatBc7UnormBlock DataFormat = 144
-	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. The format's precision is between 4 and 7 bits for the red/green/blue channels and between 0 and 8 bits for the alpha channel. Also known as BPTC LDR.*/
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. The format's precision is between 4 and 7 bits for the red/green/blue channels and between 0 and 8 bits for the alpha channel. Also known as BPTC LDR.
 	DataFormatBc7SrgbBlock DataFormat = 145
-	/*VRAM-compressed unsigned red/green/blue channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Using ETC2 texture compression.*/
+	// VRAM-compressed unsigned red/green/blue channel data format with normalized value. Values are in the [0.0, 1.0] range. Using ETC2 texture compression.
 	DataFormatEtc2R8g8b8UnormBlock DataFormat = 146
-	/*VRAM-compressed unsigned red/green/blue channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. Using ETC2 texture compression.*/
+	// VRAM-compressed unsigned red/green/blue channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. Using ETC2 texture compression.
 	DataFormatEtc2R8g8b8SrgbBlock DataFormat = 147
-	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Red/green/blue use 8 bit of precision each, with alpha using 1 bit of precision. Using ETC2 texture compression.*/
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range. Red/green/blue use 8 bit of precision each, with alpha using 1 bit of precision. Using ETC2 texture compression.
 	DataFormatEtc2R8g8b8a1UnormBlock DataFormat = 148
-	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. Red/green/blue use 8 bit of precision each, with alpha using 1 bit of precision. Using ETC2 texture compression.*/
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. Red/green/blue use 8 bit of precision each, with alpha using 1 bit of precision. Using ETC2 texture compression.
 	DataFormatEtc2R8g8b8a1SrgbBlock DataFormat = 149
-	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Red/green/blue use 8 bits of precision each, with alpha using 8 bits of precision. Using ETC2 texture compression.*/
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value. Values are in the [0.0, 1.0] range. Red/green/blue use 8 bits of precision each, with alpha using 8 bits of precision. Using ETC2 texture compression.
 	DataFormatEtc2R8g8b8a8UnormBlock DataFormat = 150
-	/*VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [code][0.0, 1.0][/code] range. Red/green/blue use 8 bits of precision each, with alpha using 8 bits of precision. Using ETC2 texture compression.*/
+	// VRAM-compressed unsigned red/green/blue/alpha channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range. Red/green/blue use 8 bits of precision each, with alpha using 8 bits of precision. Using ETC2 texture compression.
 	DataFormatEtc2R8g8b8a8SrgbBlock DataFormat = 151
-	/*11-bit VRAM-compressed unsigned red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Using ETC2 texture compression.*/
+	// 11-bit VRAM-compressed unsigned red channel data format with normalized value. Values are in the [0.0, 1.0] range. Using ETC2 texture compression.
 	DataFormatEacR11UnormBlock DataFormat = 152
-	/*11-bit VRAM-compressed signed red channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range. Using ETC2 texture compression.*/
+	// 11-bit VRAM-compressed signed red channel data format with normalized value. Values are in the [-1.0, 1.0] range. Using ETC2 texture compression.
 	DataFormatEacR11SnormBlock DataFormat = 153
-	/*11-bit VRAM-compressed unsigned red/green channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Using ETC2 texture compression.*/
+	// 11-bit VRAM-compressed unsigned red/green channel data format with normalized value. Values are in the [0.0, 1.0] range. Using ETC2 texture compression.
 	DataFormatEacR11g11UnormBlock DataFormat = 154
-	/*11-bit VRAM-compressed signed red/green channel data format with normalized value. Values are in the [code][-1.0, 1.0][/code] range. Using ETC2 texture compression.*/
+	// 11-bit VRAM-compressed signed red/green channel data format with normalized value. Values are in the [-1.0, 1.0] range. Using ETC2 texture compression.
 	DataFormatEacR11g11SnormBlock DataFormat = 155
-	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 4×4 blocks (highest quality). Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 4×4 blocks (highest quality). Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc4x4UnormBlock DataFormat = 156
-	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 4×4 blocks (highest quality). Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 4×4 blocks (highest quality). Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc4x4SrgbBlock DataFormat = 157
-	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 5×4 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 5×4 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc5x4UnormBlock DataFormat = 158
-	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 5×4 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 5×4 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc5x4SrgbBlock DataFormat = 159
-	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 5×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 5×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc5x5UnormBlock DataFormat = 160
-	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 5×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 5×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc5x5SrgbBlock DataFormat = 161
-	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 6×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 6×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc6x5UnormBlock DataFormat = 162
-	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 6×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 6×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc6x5SrgbBlock DataFormat = 163
-	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 6×6 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 6×6 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc6x6UnormBlock DataFormat = 164
-	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 6×6 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 6×6 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc6x6SrgbBlock DataFormat = 165
-	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 8×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 8×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc8x5UnormBlock DataFormat = 166
-	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 8×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 8×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc8x5SrgbBlock DataFormat = 167
-	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 8×6 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 8×6 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc8x6UnormBlock DataFormat = 168
-	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 8×6 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 8×6 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc8x6SrgbBlock DataFormat = 169
-	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 8×8 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 8×8 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc8x8UnormBlock DataFormat = 170
-	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 8×8 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 8×8 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc8x8SrgbBlock DataFormat = 171
-	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x5UnormBlock DataFormat = 172
-	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×5 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×5 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x5SrgbBlock DataFormat = 173
-	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×6 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×6 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x6UnormBlock DataFormat = 174
-	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×6 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×6 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x6SrgbBlock DataFormat = 175
-	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×8 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×8 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x8UnormBlock DataFormat = 176
-	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×8 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×8 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x8SrgbBlock DataFormat = 177
-	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×10 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 10×10 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x10UnormBlock DataFormat = 178
-	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×10 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 10×10 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc10x10SrgbBlock DataFormat = 179
-	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 12×10 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 12×10 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc12x10UnormBlock DataFormat = 180
-	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 12×10 blocks. Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 12×10 blocks. Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc12x10SrgbBlock DataFormat = 181
-	/*VRAM-compressed unsigned floating-point data format with normalized value, packed in 12 blocks (lowest quality). Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value, packed in 12 blocks (lowest quality). Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc12x12UnormBlock DataFormat = 182
-	/*VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 12 blocks (lowest quality). Values are in the [code][0.0, 1.0][/code] range. Using ASTC compression.*/
+	// VRAM-compressed unsigned floating-point data format with normalized value and non-linear sRGB encoding, packed in 12 blocks (lowest quality). Values are in the [0.0, 1.0] range. Using ASTC compression.
 	DataFormatAstc12x12SrgbBlock DataFormat = 183
-	/*8-bit-per-channel unsigned floating-point green/blue/red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	// 8-bit-per-channel unsigned floating-point green/blue/red channel data format with normalized value. Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG8b8g8r8422Unorm DataFormat = 184
-	/*8-bit-per-channel unsigned floating-point blue/green/red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	// 8-bit-per-channel unsigned floating-point blue/green/red channel data format with normalized value. Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).
 	DataFormatB8g8r8g8422Unorm DataFormat = 185
-	/*8-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, stored across 3 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
+	// 8-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, stored across 3 separate planes (green + blue + red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG8B8R83plane420Unorm DataFormat = 186
-	/*8-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, stored across 2 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
+	// 8-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, stored across 2 separate planes (green + blue/red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG8B8r82plane420Unorm DataFormat = 187
-	/*8-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, stored across 2 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	// 8-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, stored across 2 separate planes (green + blue + red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG8B8R83plane422Unorm DataFormat = 188
-	/*8-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, stored across 2 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	// 8-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, stored across 2 separate planes (green + blue/red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG8B8r82plane422Unorm DataFormat = 189
-	/*8-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, stored across 3 separate planes. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 8-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, stored across 3 separate planes. Values are in the [0.0, 1.0] range.
 	DataFormatG8B8R83plane444Unorm DataFormat = 190
-	/*10-bit-per-channel unsigned floating-point red channel data with normalized value, plus 6 unused bits, packed in 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 10-bit-per-channel unsigned floating-point red channel data with normalized value, plus 6 unused bits, packed in 16 bits. Values are in the [0.0, 1.0] range.
 	DataFormatR10x6UnormPack16 DataFormat = 191
-	/*10-bit-per-channel unsigned floating-point red/green channel data with normalized value, plus 6 unused bits after each channel, packed in 2×16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 10-bit-per-channel unsigned floating-point red/green channel data with normalized value, plus 6 unused bits after each channel, packed in 2×16 bits. Values are in the [0.0, 1.0] range.
 	DataFormatR10x6g10x6Unorm2pack16 DataFormat = 192
-	/*10-bit-per-channel unsigned floating-point red/green/blue/alpha channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 10-bit-per-channel unsigned floating-point red/green/blue/alpha channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [0.0, 1.0] range.
 	DataFormatR10x6g10x6b10x6a10x6Unorm4pack16 DataFormat = 193
-	/*10-bit-per-channel unsigned floating-point green/blue/green/red channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel). The green channel is listed twice, but contains different values to allow it to be represented at full resolution.*/
+	// 10-bit-per-channel unsigned floating-point green/blue/green/red channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel). The green channel is listed twice, but contains different values to allow it to be represented at full resolution.
 	DataFormatG10x6b10x6g10x6r10x6422Unorm4pack16 DataFormat = 194
-	/*10-bit-per-channel unsigned floating-point blue/green/red/green channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel). The green channel is listed twice, but contains different values to allow it to be represented at full resolution.*/
+	// 10-bit-per-channel unsigned floating-point blue/green/red/green channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel). The green channel is listed twice, but contains different values to allow it to be represented at full resolution.
 	DataFormatB10x6g10x6r10x6g10x6422Unorm4pack16 DataFormat = 195
-	/*10-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 2 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
+	// 10-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 2 separate planes (green + blue + red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG10x6B10x6R10x63plane420Unorm3pack16 DataFormat = 196
-	/*10-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 2 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
+	// 10-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 2 separate planes (green + blue/red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG10x6B10x6r10x62plane420Unorm3pack16 DataFormat = 197
-	/*10-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	// 10-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue + red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG10x6B10x6R10x63plane422Unorm3pack16 DataFormat = 198
-	/*10-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	// 10-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue/red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG10x6B10x6r10x62plane422Unorm3pack16 DataFormat = 199
-	/*10-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range.*/
+	// 10-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue + red). Values are in the [0.0, 1.0] range.
 	DataFormatG10x6B10x6R10x63plane444Unorm3pack16 DataFormat = 200
-	/*12-bit-per-channel unsigned floating-point red channel data with normalized value, plus 6 unused bits, packed in 16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 12-bit-per-channel unsigned floating-point red channel data with normalized value, plus 6 unused bits, packed in 16 bits. Values are in the [0.0, 1.0] range.
 	DataFormatR12x4UnormPack16 DataFormat = 201
-	/*12-bit-per-channel unsigned floating-point red/green channel data with normalized value, plus 6 unused bits after each channel, packed in 2×16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 12-bit-per-channel unsigned floating-point red/green channel data with normalized value, plus 6 unused bits after each channel, packed in 2×16 bits. Values are in the [0.0, 1.0] range.
 	DataFormatR12x4g12x4Unorm2pack16 DataFormat = 202
-	/*12-bit-per-channel unsigned floating-point red/green/blue/alpha channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [code][0.0, 1.0][/code] range.*/
+	// 12-bit-per-channel unsigned floating-point red/green/blue/alpha channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [0.0, 1.0] range.
 	DataFormatR12x4g12x4b12x4a12x4Unorm4pack16 DataFormat = 203
-	/*12-bit-per-channel unsigned floating-point green/blue/green/red channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel). The green channel is listed twice, but contains different values to allow it to be represented at full resolution.*/
+	// 12-bit-per-channel unsigned floating-point green/blue/green/red channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel). The green channel is listed twice, but contains different values to allow it to be represented at full resolution.
 	DataFormatG12x4b12x4g12x4r12x4422Unorm4pack16 DataFormat = 204
-	/*12-bit-per-channel unsigned floating-point blue/green/red/green channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel). The green channel is listed twice, but contains different values to allow it to be represented at full resolution.*/
+	// 12-bit-per-channel unsigned floating-point blue/green/red/green channel data with normalized value, plus 6 unused bits after each channel, packed in 4×16 bits. Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel). The green channel is listed twice, but contains different values to allow it to be represented at full resolution.
 	DataFormatB12x4g12x4r12x4g12x4422Unorm4pack16 DataFormat = 205
-	/*12-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 2 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
+	// 12-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 2 separate planes (green + blue + red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG12x4B12x4R12x43plane420Unorm3pack16 DataFormat = 206
-	/*12-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 2 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
+	// 12-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 2 separate planes (green + blue/red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG12x4B12x4r12x42plane420Unorm3pack16 DataFormat = 207
-	/*12-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	// 12-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue + red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG12x4B12x4R12x43plane422Unorm3pack16 DataFormat = 208
-	/*12-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	// 12-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue/red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG12x4B12x4r12x42plane422Unorm3pack16 DataFormat = 209
-	/*12-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range.*/
+	// 12-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Packed in 3×16 bits and stored across 3 separate planes (green + blue + red). Values are in the [0.0, 1.0] range.
 	DataFormatG12x4B12x4R12x43plane444Unorm3pack16 DataFormat = 210
-	/*16-bit-per-channel unsigned floating-point green/blue/red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	// 16-bit-per-channel unsigned floating-point green/blue/red channel data format with normalized value. Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG16b16g16r16422Unorm DataFormat = 211
-	/*16-bit-per-channel unsigned floating-point blue/green/red channel data format with normalized value. Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	// 16-bit-per-channel unsigned floating-point blue/green/red channel data format with normalized value. Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).
 	DataFormatB16g16r16g16422Unorm DataFormat = 212
-	/*16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 2 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
+	// 16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 2 separate planes (green + blue + red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG16B16R163plane420Unorm DataFormat = 213
-	/*16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 2 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).*/
+	// 16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 2 separate planes (green + blue/red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal and vertical resolution (i.e. 2×2 adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG16B16r162plane420Unorm DataFormat = 214
-	/*16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 3 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	// 16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 3 separate planes (green + blue + red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG16B16R163plane422Unorm DataFormat = 215
-	/*16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 3 separate planes (green + blue/red). Values are in the [code][0.0, 1.0][/code] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).*/
+	// 16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 3 separate planes (green + blue/red). Values are in the [0.0, 1.0] range. Blue and red channel data is stored at halved horizontal resolution (i.e. 2 horizontally adjacent pixels will share the same value for the blue/red channel).
 	DataFormatG16B16r162plane422Unorm DataFormat = 216
-	/*16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 3 separate planes (green + blue + red). Values are in the [code][0.0, 1.0][/code] range.*/
+	// 16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 3 separate planes (green + blue + red). Values are in the [0.0, 1.0] range.
 	DataFormatG16B16R163plane444Unorm DataFormat = 217
-	/*Represents the size of the [enum DataFormat] enum.*/
+	// Represents the size of the [DataFormat] enum.
 	DataFormatMax DataFormat = 218
 )
 
 type BarrierMask int //gd:RenderingDevice.BarrierMask
 
 const (
-	/*Vertex shader barrier mask.*/
+	// Vertex shader barrier mask.
 	BarrierMaskVertex BarrierMask = 1
-	/*Fragment shader barrier mask.*/
+	// Fragment shader barrier mask.
 	BarrierMaskFragment BarrierMask = 8
-	/*Compute barrier mask.*/
+	// Compute barrier mask.
 	BarrierMaskCompute BarrierMask = 2
-	/*Transfer barrier mask.*/
+	// Transfer barrier mask.
 	BarrierMaskTransfer BarrierMask = 4
-	/*Raster barrier mask (vertex and fragment). Equivalent to [code]BARRIER_MASK_VERTEX | BARRIER_MASK_FRAGMENT[/code].*/
+	// Raster barrier mask (vertex and fragment). Equivalent to BARRIER_MASK_VERTEX | BARRIER_MASK_FRAGMENT.
 	BarrierMaskRaster BarrierMask = 9
-	/*Barrier mask for all types (vertex, fragment, compute, transfer).*/
+	// Barrier mask for all types (vertex, fragment, compute, transfer).
 	BarrierMaskAllBarriers BarrierMask = 32767
-	/*No barrier for any type.*/
+	// No barrier for any type.
 	BarrierMaskNoBarrier BarrierMask = 32768
 )
 
 type TextureType int //gd:RenderingDevice.TextureType
 
 const (
-	/*1-dimensional texture.*/
+	// 1-dimensional texture.
 	TextureType1d TextureType = 0
-	/*2-dimensional texture.*/
+	// 2-dimensional texture.
 	TextureType2d TextureType = 1
-	/*3-dimensional texture.*/
+	// 3-dimensional texture.
 	TextureType3d TextureType = 2
-	/*[Cubemap] texture.*/
+	// [graphics.gd/classdb/Cubemap] texture.
 	TextureTypeCube TextureType = 3
-	/*Array of 1-dimensional textures.*/
+	// Array of 1-dimensional textures.
 	TextureType1dArray TextureType = 4
-	/*Array of 2-dimensional textures.*/
+	// Array of 2-dimensional textures.
 	TextureType2dArray TextureType = 5
-	/*Array of [Cubemap] textures.*/
+	// Array of [graphics.gd/classdb/Cubemap] textures.
 	TextureTypeCubeArray TextureType = 6
-	/*Represents the size of the [enum TextureType] enum.*/
+	// Represents the size of the [TextureType] enum.
 	TextureTypeMax TextureType = 7
 )
 
 type TextureSamples int //gd:RenderingDevice.TextureSamples
 
 const (
-	/*Perform 1 texture sample (this is the fastest but lowest-quality for antialiasing).*/
+	// Perform 1 texture sample (this is the fastest but lowest-quality for antialiasing).
 	TextureSamples1 TextureSamples = 0
-	/*Perform 2 texture samples.*/
+	// Perform 2 texture samples.
 	TextureSamples2 TextureSamples = 1
-	/*Perform 4 texture samples.*/
+	// Perform 4 texture samples.
 	TextureSamples4 TextureSamples = 2
-	/*Perform 8 texture samples. Not supported on mobile GPUs (including Apple Silicon).*/
+	// Perform 8 texture samples. Not supported on mobile GPUs (including Apple Silicon).
 	TextureSamples8 TextureSamples = 3
-	/*Perform 16 texture samples. Not supported on mobile GPUs and many desktop GPUs.*/
+	// Perform 16 texture samples. Not supported on mobile GPUs and many desktop GPUs.
 	TextureSamples16 TextureSamples = 4
-	/*Perform 32 texture samples. Not supported on most GPUs.*/
+	// Perform 32 texture samples. Not supported on most GPUs.
 	TextureSamples32 TextureSamples = 5
-	/*Perform 64 texture samples (this is the slowest but highest-quality for antialiasing). Not supported on most GPUs.*/
+	// Perform 64 texture samples (this is the slowest but highest-quality for antialiasing). Not supported on most GPUs.
 	TextureSamples64 TextureSamples = 6
-	/*Represents the size of the [enum TextureSamples] enum.*/
+	// Represents the size of the [TextureSamples] enum.
 	TextureSamplesMax TextureSamples = 7
 )
 
 type TextureUsageBits int //gd:RenderingDevice.TextureUsageBits
 
 const (
-	/*Texture can be sampled.*/
+	// Texture can be sampled.
 	TextureUsageSamplingBit TextureUsageBits = 1
-	/*Texture can be used as a color attachment in a framebuffer.*/
+	// Texture can be used as a color attachment in a framebuffer.
 	TextureUsageColorAttachmentBit TextureUsageBits = 2
-	/*Texture can be used as a depth/stencil attachment in a framebuffer.*/
+	// Texture can be used as a depth/stencil attachment in a framebuffer.
 	TextureUsageDepthStencilAttachmentBit TextureUsageBits = 4
-	/*Texture can be used as a [url=https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#descriptorsets-storageimage]storage image[/url].*/
+	// Texture can be used as a [storage image].
+	//
+	// [storage image]: https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#descriptorsets-storageimage
 	TextureUsageStorageBit TextureUsageBits = 8
-	/*Texture can be used as a [url=https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#descriptorsets-storageimage]storage image[/url] with support for atomic operations.*/
+	// Texture can be used as a [storage image] with support for atomic operations.
+	//
+	// [storage image]: https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#descriptorsets-storageimage
 	TextureUsageStorageAtomicBit TextureUsageBits = 16
-	/*Texture can be read back on the CPU using [method texture_get_data] faster than without this bit, since it is always kept in the system memory.*/
+	// Texture can be read back on the CPU using [Instance.TextureGetData] faster than without this bit, since it is always kept in the system memory.
 	TextureUsageCpuReadBit TextureUsageBits = 32
-	/*Texture can be updated using [method texture_update].*/
+	// Texture can be updated using [Instance.TextureUpdate].
 	TextureUsageCanUpdateBit TextureUsageBits = 64
-	/*Texture can be a source for [method texture_copy].*/
+	// Texture can be a source for [Instance.TextureCopy].
 	TextureUsageCanCopyFromBit TextureUsageBits = 128
-	/*Texture can be a destination for [method texture_copy].*/
+	// Texture can be a destination for [Instance.TextureCopy].
 	TextureUsageCanCopyToBit TextureUsageBits = 256
-	/*Texture can be used as a [url=https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#descriptorsets-inputattachment]input attachment[/url] in a framebuffer.*/
+	// Texture can be used as a [input attachment] in a framebuffer.
+	//
+	// [input attachment]: https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#descriptorsets-inputattachment
 	TextureUsageInputAttachmentBit TextureUsageBits = 512
 )
 
 type TextureSwizzle int //gd:RenderingDevice.TextureSwizzle
 
 const (
-	/*Return the sampled value as-is.*/
+	// Return the sampled value as-is.
 	TextureSwizzleIdentity TextureSwizzle = 0
-	/*Always return [code]0.0[/code] when sampling.*/
+	// Always return 0.0 when sampling.
 	TextureSwizzleZero TextureSwizzle = 1
-	/*Always return [code]1.0[/code] when sampling.*/
+	// Always return 1.0 when sampling.
 	TextureSwizzleOne TextureSwizzle = 2
-	/*Sample the red color channel.*/
+	// Sample the red color channel.
 	TextureSwizzleR TextureSwizzle = 3
-	/*Sample the green color channel.*/
+	// Sample the green color channel.
 	TextureSwizzleG TextureSwizzle = 4
-	/*Sample the blue color channel.*/
+	// Sample the blue color channel.
 	TextureSwizzleB TextureSwizzle = 5
-	/*Sample the alpha channel.*/
+	// Sample the alpha channel.
 	TextureSwizzleA TextureSwizzle = 6
-	/*Represents the size of the [enum TextureSwizzle] enum.*/
+	// Represents the size of the [TextureSwizzle] enum.
 	TextureSwizzleMax TextureSwizzle = 7
 )
 
 type TextureSliceType int //gd:RenderingDevice.TextureSliceType
 
 const (
-	/*2-dimensional texture slice.*/
+	// 2-dimensional texture slice.
 	TextureSlice2d TextureSliceType = 0
-	/*Cubemap texture slice.*/
+	// Cubemap texture slice.
 	TextureSliceCubemap TextureSliceType = 1
-	/*3-dimensional texture slice.*/
+	// 3-dimensional texture slice.
 	TextureSlice3d TextureSliceType = 2
 )
 
 type SamplerFilter int //gd:RenderingDevice.SamplerFilter
 
 const (
-	/*Nearest-neighbor sampler filtering. Sampling at higher resolutions than the source will result in a pixelated look.*/
+	// Nearest-neighbor sampler filtering. Sampling at higher resolutions than the source will result in a pixelated look.
 	SamplerFilterNearest SamplerFilter = 0
-	/*Bilinear sampler filtering. Sampling at higher resolutions than the source will result in a blurry look.*/
+	// Bilinear sampler filtering. Sampling at higher resolutions than the source will result in a blurry look.
 	SamplerFilterLinear SamplerFilter = 1
 )
 
 type SamplerRepeatMode int //gd:RenderingDevice.SamplerRepeatMode
 
 const (
-	/*Sample with repeating enabled.*/
+	// Sample with repeating enabled.
 	SamplerRepeatModeRepeat SamplerRepeatMode = 0
-	/*Sample with mirrored repeating enabled. When sampling outside the [code][0.0, 1.0][/code] range, return a mirrored version of the sampler. This mirrored version is mirrored again if sampling further away, with the pattern repeating indefinitely.*/
+	// Sample with mirrored repeating enabled. When sampling outside the [0.0, 1.0] range, return a mirrored version of the sampler. This mirrored version is mirrored again if sampling further away, with the pattern repeating indefinitely.
 	SamplerRepeatModeMirroredRepeat SamplerRepeatMode = 1
-	/*Sample with repeating disabled. When sampling outside the [code][0.0, 1.0][/code] range, return the color of the last pixel on the edge.*/
+	// Sample with repeating disabled. When sampling outside the [0.0, 1.0] range, return the color of the last pixel on the edge.
 	SamplerRepeatModeClampToEdge SamplerRepeatMode = 2
-	/*Sample with repeating disabled. When sampling outside the [code][0.0, 1.0][/code] range, return the specified [member RDSamplerState.border_color].*/
+	// Sample with repeating disabled. When sampling outside the [0.0, 1.0] range, return the specified [graphics.gd/classdb/RDSamplerState.Instance.BorderColor].
 	SamplerRepeatModeClampToBorder SamplerRepeatMode = 3
-	/*Sample with mirrored repeating enabled, but only once. When sampling in the [code][-1.0, 0.0][/code] range, return a mirrored version of the sampler. When sampling outside the [code][-1.0, 1.0][/code] range, return the color of the last pixel on the edge.*/
+	// Sample with mirrored repeating enabled, but only once. When sampling in the [-1.0, 0.0] range, return a mirrored version of the sampler. When sampling outside the [-1.0, 1.0] range, return the color of the last pixel on the edge.
 	SamplerRepeatModeMirrorClampToEdge SamplerRepeatMode = 4
-	/*Represents the size of the [enum SamplerRepeatMode] enum.*/
+	// Represents the size of the [SamplerRepeatMode] enum.
 	SamplerRepeatModeMax SamplerRepeatMode = 5
 )
 
 type SamplerBorderColor int //gd:RenderingDevice.SamplerBorderColor
 
 const (
-	/*Return a floating-point transparent black color when sampling outside the [code][0.0, 1.0][/code] range. Only effective if the sampler repeat mode is [constant SAMPLER_REPEAT_MODE_CLAMP_TO_BORDER].*/
+	// Return a floating-point transparent black color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
 	SamplerBorderColorFloatTransparentBlack SamplerBorderColor = 0
-	/*Return a integer transparent black color when sampling outside the [code][0.0, 1.0][/code] range. Only effective if the sampler repeat mode is [constant SAMPLER_REPEAT_MODE_CLAMP_TO_BORDER].*/
+	// Return a integer transparent black color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
 	SamplerBorderColorIntTransparentBlack SamplerBorderColor = 1
-	/*Return a floating-point opaque black color when sampling outside the [code][0.0, 1.0][/code] range. Only effective if the sampler repeat mode is [constant SAMPLER_REPEAT_MODE_CLAMP_TO_BORDER].*/
+	// Return a floating-point opaque black color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
 	SamplerBorderColorFloatOpaqueBlack SamplerBorderColor = 2
-	/*Return a integer opaque black color when sampling outside the [code][0.0, 1.0][/code] range. Only effective if the sampler repeat mode is [constant SAMPLER_REPEAT_MODE_CLAMP_TO_BORDER].*/
+	// Return a integer opaque black color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
 	SamplerBorderColorIntOpaqueBlack SamplerBorderColor = 3
-	/*Return a floating-point opaque white color when sampling outside the [code][0.0, 1.0][/code] range. Only effective if the sampler repeat mode is [constant SAMPLER_REPEAT_MODE_CLAMP_TO_BORDER].*/
+	// Return a floating-point opaque white color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
 	SamplerBorderColorFloatOpaqueWhite SamplerBorderColor = 4
-	/*Return a integer opaque white color when sampling outside the [code][0.0, 1.0][/code] range. Only effective if the sampler repeat mode is [constant SAMPLER_REPEAT_MODE_CLAMP_TO_BORDER].*/
+	// Return a integer opaque white color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
 	SamplerBorderColorIntOpaqueWhite SamplerBorderColor = 5
-	/*Represents the size of the [enum SamplerBorderColor] enum.*/
+	// Represents the size of the [SamplerBorderColor] enum.
 	SamplerBorderColorMax SamplerBorderColor = 6
 )
 
 type VertexFrequency int //gd:RenderingDevice.VertexFrequency
 
 const (
-	/*Vertex attribute addressing is a function of the vertex. This is used to specify the rate at which vertex attributes are pulled from buffers.*/
+	// Vertex attribute addressing is a function of the vertex. This is used to specify the rate at which vertex attributes are pulled from buffers.
 	VertexFrequencyVertex VertexFrequency = 0
-	/*Vertex attribute addressing is a function of the instance index. This is used to specify the rate at which vertex attributes are pulled from buffers.*/
+	// Vertex attribute addressing is a function of the instance index. This is used to specify the rate at which vertex attributes are pulled from buffers.
 	VertexFrequencyInstance VertexFrequency = 1
 )
 
 type IndexBufferFormat int //gd:RenderingDevice.IndexBufferFormat
 
 const (
-	/*Index buffer in 16-bit unsigned integer format. This limits the maximum index that can be specified to [code]65535[/code].*/
+	// Index buffer in 16-bit unsigned integer format. This limits the maximum index that can be specified to 65535.
 	IndexBufferFormatUint16 IndexBufferFormat = 0
-	/*Index buffer in 32-bit unsigned integer format. This limits the maximum index that can be specified to [code]4294967295[/code].*/
+	// Index buffer in 32-bit unsigned integer format. This limits the maximum index that can be specified to 4294967295.
 	IndexBufferFormatUint32 IndexBufferFormat = 1
 )
 
@@ -753,255 +773,279 @@ const (
 type BufferCreationBits int //gd:RenderingDevice.BufferCreationBits
 
 const (
-	/*Optionally, set this flag if you wish to use [method buffer_get_device_address] functionality. You must first check the GPU supports it:
-	  [codeblocks]
-	  [gdscript]
-	  rd = RenderingServer.get_rendering_device()
-
-	  if rd.has_feature(RenderingDevice.SUPPORTS_BUFFER_DEVICE_ADDRESS):
-	        storage_buffer = rd.storage_buffer_create(bytes.size(), bytes, RenderingDevice.STORAGE_BUFFER_USAGE_SHADER_DEVICE_ADDRESS):
-	        storage_buffer_address = rd.buffer_get_device_address(storage_buffer)
-	  [/gdscript]
-	  [/codeblocks]*/
+	// Optionally, set this flag if you wish to use [Instance.BufferGetDeviceAddress] functionality. You must first check the GPU supports it:
+	//
+	//
+	//
+	// [gdscript]
+	//
+	// rd = RenderingServer.get_rendering_device()
+	//
+	//
+	//
+	// if rd.has_feature(RenderingDevice.SUPPORTS_BUFFER_DEVICE_ADDRESS):
+	//
+	//       storage_buffer = rd.storage_buffer_create(bytes.size(), bytes, RenderingDevice.STORAGE_BUFFER_USAGE_SHADER_DEVICE_ADDRESS):
+	//
+	//       storage_buffer_address = rd.buffer_get_device_address(storage_buffer)
+	//
+	// [/gdscript]
+	//
+	//
 	BufferCreationDeviceAddressBit BufferCreationBits = 1
-	/*Set this flag so that it is created as storage. This is useful if Compute Shaders need access (for reading or writing) to the buffer, e.g. skeletal animations are processed in Compute Shaders which need access to vertex buffers, to be later consumed by vertex shaders as part of the regular rasterization pipeline.*/
+	// Set this flag so that it is created as storage. This is useful if Compute Shaders need access (for reading or writing) to the buffer, e.g. skeletal animations are processed in Compute Shaders which need access to vertex buffers, to be later consumed by vertex shaders as part of the regular rasterization pipeline.
 	BufferCreationAsStorageBit BufferCreationBits = 2
 )
 
 type UniformType int //gd:RenderingDevice.UniformType
 
 const (
-	/*Sampler uniform.*/
+	// Sampler uniform.
 	UniformTypeSampler UniformType = 0
-	/*Sampler uniform with a texture.*/
+	// Sampler uniform with a texture.
 	UniformTypeSamplerWithTexture UniformType = 1
-	/*Texture uniform.*/
+	// Texture uniform.
 	UniformTypeTexture UniformType = 2
-	/*Image uniform.*/
+	// Image uniform.
 	UniformTypeImage UniformType = 3
-	/*Texture buffer uniform.*/
+	// Texture buffer uniform.
 	UniformTypeTextureBuffer UniformType = 4
-	/*Sampler uniform with a texture buffer.*/
+	// Sampler uniform with a texture buffer.
 	UniformTypeSamplerWithTextureBuffer UniformType = 5
-	/*Image buffer uniform.*/
+	// Image buffer uniform.
 	UniformTypeImageBuffer UniformType = 6
-	/*Uniform buffer uniform.*/
+	// Uniform buffer uniform.
 	UniformTypeUniformBuffer UniformType = 7
-	/*[url=https://vkguide.dev/docs/chapter-4/storage_buffers/]Storage buffer[/url] uniform.*/
+	// [Storage buffer] uniform.
+	//
+	// [Storage buffer]: https://vkguide.dev/docs/chapter-4/storage_buffers/
 	UniformTypeStorageBuffer UniformType = 8
-	/*Input attachment uniform.*/
+	// Input attachment uniform.
 	UniformTypeInputAttachment UniformType = 9
-	/*Represents the size of the [enum UniformType] enum.*/
+	// Represents the size of the [UniformType] enum.
 	UniformTypeMax UniformType = 10
 )
 
 type RenderPrimitive int //gd:RenderingDevice.RenderPrimitive
 
 const (
-	/*Point rendering primitive (with constant size, regardless of distance from camera).*/
+	// Point rendering primitive (with constant size, regardless of distance from camera).
 	RenderPrimitivePoints RenderPrimitive = 0
-	/*Line list rendering primitive. Lines are drawn separated from each other.*/
+	// Line list rendering primitive. Lines are drawn separated from each other.
 	RenderPrimitiveLines RenderPrimitive = 1
-	/*[url=https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#drawing-line-lists-with-adjacency]Line list rendering primitive with adjacency.[/url]
-	  [b]Note:[/b] Adjacency is only useful with geometry shaders, which Godot does not expose.*/
+	// [Line list rendering primitive with adjacency.]
+	//
+	// Note: Adjacency is only useful with geometry shaders, which Godot does not expose.
+	//
+	// [Line list rendering primitive with adjacency.]: https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#drawing-line-lists-with-adjacency
 	RenderPrimitiveLinesWithAdjacency RenderPrimitive = 2
-	/*Line strip rendering primitive. Lines drawn are connected to the previous vertex.*/
+	// Line strip rendering primitive. Lines drawn are connected to the previous vertex.
 	RenderPrimitiveLinestrips RenderPrimitive = 3
-	/*[url=https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#drawing-line-strips-with-adjacency]Line strip rendering primitive with adjacency.[/url]
-	  [b]Note:[/b] Adjacency is only useful with geometry shaders, which Godot does not expose.*/
+	// [Line strip rendering primitive with adjacency.]
+	//
+	// Note: Adjacency is only useful with geometry shaders, which Godot does not expose.
+	//
+	// [Line strip rendering primitive with adjacency.]: https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#drawing-line-strips-with-adjacency
 	RenderPrimitiveLinestripsWithAdjacency RenderPrimitive = 4
-	/*Triangle list rendering primitive. Triangles are drawn separated from each other.*/
+	// Triangle list rendering primitive. Triangles are drawn separated from each other.
 	RenderPrimitiveTriangles RenderPrimitive = 5
-	/*[url=https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#drawing-triangle-lists-with-adjacency]Triangle list rendering primitive with adjacency.[/url]
-	  [b]Note:[/b] Adjacency is only useful with geometry shaders, which Godot does not expose.*/
+	// [Triangle list rendering primitive with adjacency.]
+	//
+	//  Note: Adjacency is only useful with geometry shaders, which Godot does not expose.
+	//
+	// [Triangle list rendering primitive with adjacency.]: https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#drawing-triangle-lists-with-adjacency
 	RenderPrimitiveTrianglesWithAdjacency RenderPrimitive = 6
-	/*Triangle strip rendering primitive. Triangles drawn are connected to the previous triangle.*/
+	// Triangle strip rendering primitive. Triangles drawn are connected to the previous triangle.
 	RenderPrimitiveTriangleStrips RenderPrimitive = 7
-	/*[url=https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#drawing-triangle-strips-with-adjacency]Triangle strip rendering primitive with adjacency.[/url]
-	  [b]Note:[/b] Adjacency is only useful with geometry shaders, which Godot does not expose.*/
+	// [Triangle strip rendering primitive with adjacency.]
+	//
+	// Note: Adjacency is only useful with geometry shaders, which Godot does not expose.
+	//
+	// [Triangle strip rendering primitive with adjacency.]: https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#drawing-triangle-strips-with-adjacency
 	RenderPrimitiveTriangleStripsWithAjacency RenderPrimitive = 8
-	/*Triangle strip rendering primitive with [i]primitive restart[/i] enabled. Triangles drawn are connected to the previous triangle, but a primitive restart index can be specified before drawing to create a second triangle strip after the specified index.
-	  [b]Note:[/b] Only compatible with indexed draws.*/
+	// Triangle strip rendering primitive with primitive restart enabled. Triangles drawn are connected to the previous triangle, but a primitive restart index can be specified before drawing to create a second triangle strip after the specified index.
+	//
+	// Note: Only compatible with indexed draws.
 	RenderPrimitiveTriangleStripsWithRestartIndex RenderPrimitive = 9
-	/*Tessellation patch rendering primitive. Only useful with tessellation shaders, which can be used to deform these patches.*/
+	// Tessellation patch rendering primitive. Only useful with tessellation shaders, which can be used to deform these patches.
 	RenderPrimitiveTesselationPatch RenderPrimitive = 10
-	/*Represents the size of the [enum RenderPrimitive] enum.*/
+	// Represents the size of the [RenderPrimitive] enum.
 	RenderPrimitiveMax RenderPrimitive = 11
 )
 
 type PolygonCullMode int //gd:RenderingDevice.PolygonCullMode
 
 const (
-	/*Do not use polygon front face or backface culling.*/
+	// Do not use polygon front face or backface culling.
 	PolygonCullDisabled PolygonCullMode = 0
-	/*Use polygon frontface culling (faces pointing towards the camera are hidden).*/
+	// Use polygon frontface culling (faces pointing towards the camera are hidden).
 	PolygonCullFront PolygonCullMode = 1
-	/*Use polygon backface culling (faces pointing away from the camera are hidden).*/
+	// Use polygon backface culling (faces pointing away from the camera are hidden).
 	PolygonCullBack PolygonCullMode = 2
 )
 
 type PolygonFrontFace int //gd:RenderingDevice.PolygonFrontFace
 
 const (
-	/*Clockwise winding order to determine which face of a polygon is its front face.*/
+	// Clockwise winding order to determine which face of a polygon is its front face.
 	PolygonFrontFaceClockwise PolygonFrontFace = 0
-	/*Counter-clockwise winding order to determine which face of a polygon is its front face.*/
+	// Counter-clockwise winding order to determine which face of a polygon is its front face.
 	PolygonFrontFaceCounterClockwise PolygonFrontFace = 1
 )
 
 type StencilOperation int //gd:RenderingDevice.StencilOperation
 
 const (
-	/*Keep the current stencil value.*/
+	// Keep the current stencil value.
 	StencilOpKeep StencilOperation = 0
-	/*Set the stencil value to [code]0[/code].*/
+	// Set the stencil value to 0.
 	StencilOpZero StencilOperation = 1
-	/*Replace the existing stencil value with the new one.*/
+	// Replace the existing stencil value with the new one.
 	StencilOpReplace StencilOperation = 2
-	/*Increment the existing stencil value and clamp to the maximum representable unsigned value if reached. Stencil bits are considered as an unsigned integer.*/
+	// Increment the existing stencil value and clamp to the maximum representable unsigned value if reached. Stencil bits are considered as an unsigned integer.
 	StencilOpIncrementAndClamp StencilOperation = 3
-	/*Decrement the existing stencil value and clamp to the minimum value if reached. Stencil bits are considered as an unsigned integer.*/
+	// Decrement the existing stencil value and clamp to the minimum value if reached. Stencil bits are considered as an unsigned integer.
 	StencilOpDecrementAndClamp StencilOperation = 4
-	/*Bitwise-invert the existing stencil value.*/
+	// Bitwise-invert the existing stencil value.
 	StencilOpInvert StencilOperation = 5
-	/*Increment the stencil value and wrap around to [code]0[/code] if reaching the maximum representable unsigned. Stencil bits are considered as an unsigned integer.*/
+	// Increment the stencil value and wrap around to 0 if reaching the maximum representable unsigned. Stencil bits are considered as an unsigned integer.
 	StencilOpIncrementAndWrap StencilOperation = 6
-	/*Decrement the stencil value and wrap around to the maximum representable unsigned if reaching the minimum. Stencil bits are considered as an unsigned integer.*/
+	// Decrement the stencil value and wrap around to the maximum representable unsigned if reaching the minimum. Stencil bits are considered as an unsigned integer.
 	StencilOpDecrementAndWrap StencilOperation = 7
-	/*Represents the size of the [enum StencilOperation] enum.*/
+	// Represents the size of the [StencilOperation] enum.
 	StencilOpMax StencilOperation = 8
 )
 
 type CompareOperator int //gd:RenderingDevice.CompareOperator
 
 const (
-	/*"Never" comparison (opposite of [constant COMPARE_OP_ALWAYS]).*/
+	// "Never" comparison (opposite of [CompareOpAlways]).
 	CompareOpNever CompareOperator = 0
-	/*"Less than" comparison.*/
+	// "Less than" comparison.
 	CompareOpLess CompareOperator = 1
-	/*"Equal" comparison.*/
+	// "Equal" comparison.
 	CompareOpEqual CompareOperator = 2
-	/*"Less than or equal" comparison.*/
+	// "Less than or equal" comparison.
 	CompareOpLessOrEqual CompareOperator = 3
-	/*"Greater than" comparison.*/
+	// "Greater than" comparison.
 	CompareOpGreater CompareOperator = 4
-	/*"Not equal" comparison.*/
+	// "Not equal" comparison.
 	CompareOpNotEqual CompareOperator = 5
-	/*"Greater than or equal" comparison.*/
+	// "Greater than or equal" comparison.
 	CompareOpGreaterOrEqual CompareOperator = 6
-	/*"Always" comparison (opposite of [constant COMPARE_OP_NEVER]).*/
+	// "Always" comparison (opposite of [CompareOpNever]).
 	CompareOpAlways CompareOperator = 7
-	/*Represents the size of the [enum CompareOperator] enum.*/
+	// Represents the size of the [CompareOperator] enum.
 	CompareOpMax CompareOperator = 8
 )
 
 type LogicOperation int //gd:RenderingDevice.LogicOperation
 
 const (
-	/*Clear logic operation (result is always [code]0[/code]). See also [constant LOGIC_OP_SET].*/
+	// Clear logic operation (result is always 0). See also [LogicOpSet].
 	LogicOpClear LogicOperation = 0
-	/*AND logic operation.*/
+	// AND logic operation.
 	LogicOpAnd LogicOperation = 1
-	/*AND logic operation with the [i]destination[/i] operand being inverted. See also [constant LOGIC_OP_AND_INVERTED].*/
+	// AND logic operation with the destination operand being inverted. See also [LogicOpAndInverted].
 	LogicOpAndReverse LogicOperation = 2
-	/*Copy logic operation (keeps the [i]source[/i] value as-is). See also [constant LOGIC_OP_COPY_INVERTED] and [constant LOGIC_OP_NO_OP].*/
+	// Copy logic operation (keeps the source value as-is). See also [LogicOpCopyInverted] and [LogicOpNoOp].
 	LogicOpCopy LogicOperation = 3
-	/*AND logic operation with the [i]source[/i] operand being inverted. See also [constant LOGIC_OP_AND_REVERSE].*/
+	// AND logic operation with the source operand being inverted. See also [LogicOpAndReverse].
 	LogicOpAndInverted LogicOperation = 4
-	/*No-op logic operation (keeps the [i]destination[/i] value as-is). See also [constant LOGIC_OP_COPY].*/
+	// No-op logic operation (keeps the destination value as-is). See also [LogicOpCopy].
 	LogicOpNoOp LogicOperation = 5
-	/*Exclusive or (XOR) logic operation.*/
+	// Exclusive or (XOR) logic operation.
 	LogicOpXor LogicOperation = 6
-	/*OR logic operation.*/
+	// OR logic operation.
 	LogicOpOr LogicOperation = 7
-	/*Not-OR (NOR) logic operation.*/
+	// Not-OR (NOR) logic operation.
 	LogicOpNor LogicOperation = 8
-	/*Not-XOR (XNOR) logic operation.*/
+	// Not-XOR (XNOR) logic operation.
 	LogicOpEquivalent LogicOperation = 9
-	/*Invert logic operation.*/
+	// Invert logic operation.
 	LogicOpInvert LogicOperation = 10
-	/*OR logic operation with the [i]destination[/i] operand being inverted. See also [constant LOGIC_OP_OR_REVERSE].*/
+	// OR logic operation with the destination operand being inverted. See also [LogicOpOrReverse].
 	LogicOpOrReverse LogicOperation = 11
-	/*NOT logic operation (inverts the value). See also [constant LOGIC_OP_COPY].*/
+	// NOT logic operation (inverts the value). See also [LogicOpCopy].
 	LogicOpCopyInverted LogicOperation = 12
-	/*OR logic operation with the [i]source[/i] operand being inverted. See also [constant LOGIC_OP_OR_REVERSE].*/
+	// OR logic operation with the source operand being inverted. See also [LogicOpOrReverse].
 	LogicOpOrInverted LogicOperation = 13
-	/*Not-AND (NAND) logic operation.*/
+	// Not-AND (NAND) logic operation.
 	LogicOpNand LogicOperation = 14
-	/*SET logic operation (result is always [code]1[/code]). See also [constant LOGIC_OP_CLEAR].*/
+	// SET logic operation (result is always 1). See also [LogicOpClear].
 	LogicOpSet LogicOperation = 15
-	/*Represents the size of the [enum LogicOperation] enum.*/
+	// Represents the size of the [LogicOperation] enum.
 	LogicOpMax LogicOperation = 16
 )
 
 type BlendFactor int //gd:RenderingDevice.BlendFactor
 
 const (
-	/*Constant [code]0.0[/code] blend factor.*/
+	// Constant 0.0 blend factor.
 	BlendFactorZero BlendFactor = 0
-	/*Constant [code]1.0[/code] blend factor.*/
+	// Constant 1.0 blend factor.
 	BlendFactorOne BlendFactor = 1
-	/*Color blend factor is [code]source color[/code]. Alpha blend factor is [code]source alpha[/code].*/
+	// Color blend factor is source color. Alpha blend factor is source alpha.
 	BlendFactorSrcColor BlendFactor = 2
-	/*Color blend factor is [code]1.0 - source color[/code]. Alpha blend factor is [code]1.0 - source alpha[/code].*/
+	// Color blend factor is 1.0 - source color. Alpha blend factor is 1.0 - source alpha.
 	BlendFactorOneMinusSrcColor BlendFactor = 3
-	/*Color blend factor is [code]destination color[/code]. Alpha blend factor is [code]destination alpha[/code].*/
+	// Color blend factor is destination color. Alpha blend factor is destination alpha.
 	BlendFactorDstColor BlendFactor = 4
-	/*Color blend factor is [code]1.0 - destination color[/code]. Alpha blend factor is [code]1.0 - destination alpha[/code].*/
+	// Color blend factor is 1.0 - destination color. Alpha blend factor is 1.0 - destination alpha.
 	BlendFactorOneMinusDstColor BlendFactor = 5
-	/*Color and alpha blend factor is [code]source alpha[/code].*/
+	// Color and alpha blend factor is source alpha.
 	BlendFactorSrcAlpha BlendFactor = 6
-	/*Color and alpha blend factor is [code]1.0 - source alpha[/code].*/
+	// Color and alpha blend factor is 1.0 - source alpha.
 	BlendFactorOneMinusSrcAlpha BlendFactor = 7
-	/*Color and alpha blend factor is [code]destination alpha[/code].*/
+	// Color and alpha blend factor is destination alpha.
 	BlendFactorDstAlpha BlendFactor = 8
-	/*Color and alpha blend factor is [code]1.0 - destination alpha[/code].*/
+	// Color and alpha blend factor is 1.0 - destination alpha.
 	BlendFactorOneMinusDstAlpha BlendFactor = 9
-	/*Color blend factor is [code]blend constant color[/code]. Alpha blend factor is [code]blend constant alpha[/code] (see [method draw_list_set_blend_constants]).*/
+	// Color blend factor is blend constant color. Alpha blend factor is blend constant alpha (see [Instance.DrawListSetBlendConstants]).
 	BlendFactorConstantColor BlendFactor = 10
-	/*Color blend factor is [code]1.0 - blend constant color[/code]. Alpha blend factor is [code]1.0 - blend constant alpha[/code] (see [method draw_list_set_blend_constants]).*/
+	// Color blend factor is 1.0 - blend constant color. Alpha blend factor is 1.0 - blend constant alpha (see [Instance.DrawListSetBlendConstants]).
 	BlendFactorOneMinusConstantColor BlendFactor = 11
-	/*Color and alpha blend factor is [code]blend constant alpha[/code] (see [method draw_list_set_blend_constants]).*/
+	// Color and alpha blend factor is blend constant alpha (see [Instance.DrawListSetBlendConstants]).
 	BlendFactorConstantAlpha BlendFactor = 12
-	/*Color and alpha blend factor is [code]1.0 - blend constant alpha[/code] (see [method draw_list_set_blend_constants]).*/
+	// Color and alpha blend factor is 1.0 - blend constant alpha (see [Instance.DrawListSetBlendConstants]).
 	BlendFactorOneMinusConstantAlpha BlendFactor = 13
-	/*Color blend factor is [code]min(source alpha, 1.0 - destination alpha)[/code]. Alpha blend factor is [code]1.0[/code].*/
+	// Color blend factor is min(source alpha, 1.0 - destination alpha). Alpha blend factor is 1.0.
 	BlendFactorSrcAlphaSaturate BlendFactor = 14
-	/*Color blend factor is [code]second source color[/code]. Alpha blend factor is [code]second source alpha[/code]. Only relevant for dual-source blending.*/
+	// Color blend factor is second source color. Alpha blend factor is second source alpha. Only relevant for dual-source blending.
 	BlendFactorSrc1Color BlendFactor = 15
-	/*Color blend factor is [code]1.0 - second source color[/code]. Alpha blend factor is [code]1.0 - second source alpha[/code]. Only relevant for dual-source blending.*/
+	// Color blend factor is 1.0 - second source color. Alpha blend factor is 1.0 - second source alpha. Only relevant for dual-source blending.
 	BlendFactorOneMinusSrc1Color BlendFactor = 16
-	/*Color and alpha blend factor is [code]second source alpha[/code]. Only relevant for dual-source blending.*/
+	// Color and alpha blend factor is second source alpha. Only relevant for dual-source blending.
 	BlendFactorSrc1Alpha BlendFactor = 17
-	/*Color and alpha blend factor is [code]1.0 - second source alpha[/code]. Only relevant for dual-source blending.*/
+	// Color and alpha blend factor is 1.0 - second source alpha. Only relevant for dual-source blending.
 	BlendFactorOneMinusSrc1Alpha BlendFactor = 18
-	/*Represents the size of the [enum BlendFactor] enum.*/
+	// Represents the size of the [BlendFactor] enum.
 	BlendFactorMax BlendFactor = 19
 )
 
 type BlendOperation int //gd:RenderingDevice.BlendOperation
 
 const (
-	/*Additive blending operation ([code]source + destination[/code]).*/
+	// Additive blending operation (source + destination).
 	BlendOpAdd BlendOperation = 0
-	/*Subtractive blending operation ([code]source - destination[/code]).*/
+	// Subtractive blending operation (source - destination).
 	BlendOpSubtract BlendOperation = 1
-	/*Reverse subtractive blending operation ([code]destination - source[/code]).*/
+	// Reverse subtractive blending operation (destination - source).
 	BlendOpReverseSubtract BlendOperation = 2
-	/*Minimum blending operation (keep the lowest value of the two).*/
+	// Minimum blending operation (keep the lowest value of the two).
 	BlendOpMinimum BlendOperation = 3
-	/*Maximum blending operation (keep the highest value of the two).*/
+	// Maximum blending operation (keep the highest value of the two).
 	BlendOpMaximum BlendOperation = 4
-	/*Represents the size of the [enum BlendOperation] enum.*/
+	// Represents the size of the [BlendOperation] enum.
 	BlendOpMax BlendOperation = 5
 )
 
 type PipelineDynamicStateFlags int //gd:RenderingDevice.PipelineDynamicStateFlags
 
 const (
-	/*Allows dynamically changing the width of rendering lines.*/
+	// Allows dynamically changing the width of rendering lines.
 	DynamicStateLineWidth PipelineDynamicStateFlags = 1
-	/*Allows dynamically changing the depth bias.*/
+	// Allows dynamically changing the depth bias.
 	DynamicStateDepthBias          PipelineDynamicStateFlags = 2
 	DynamicStateBlendConstants     PipelineDynamicStateFlags = 4
 	DynamicStateDepthBounds        PipelineDynamicStateFlags = 8
@@ -1013,13 +1057,13 @@ const (
 type InitialAction int //gd:RenderingDevice.InitialAction
 
 const (
-	/*Load the previous contents of the framebuffer.*/
+	// Load the previous contents of the framebuffer.
 	InitialActionLoad InitialAction = 0
-	/*Clear the whole framebuffer or its specified region.*/
+	// Clear the whole framebuffer or its specified region.
 	InitialActionClear InitialAction = 1
-	/*Ignore the previous contents of the framebuffer. This is the fastest option if you'll overwrite all of the pixels and don't need to read any of them.*/
+	// Ignore the previous contents of the framebuffer. This is the fastest option if you'll overwrite all of the pixels and don't need to read any of them.
 	InitialActionDiscard InitialAction = 2
-	/*Represents the size of the [enum InitialAction] enum.*/
+	// Represents the size of the [InitialAction] enum.
 	InitialActionMax                 InitialAction = 3
 	InitialActionClearRegion         InitialAction = 1
 	InitialActionClearRegionContinue InitialAction = 1
@@ -1031,11 +1075,11 @@ const (
 type FinalAction int //gd:RenderingDevice.FinalAction
 
 const (
-	/*Store the result of the draw list in the framebuffer. This is generally what you want to do.*/
+	// Store the result of the draw list in the framebuffer. This is generally what you want to do.
 	FinalActionStore FinalAction = 0
-	/*Discard the contents of the framebuffer. This is the fastest option if you don't need to use the results of the draw list.*/
+	// Discard the contents of the framebuffer. This is the fastest option if you don't need to use the results of the draw list.
 	FinalActionDiscard FinalAction = 1
-	/*Represents the size of the [enum FinalAction] enum.*/
+	// Represents the size of the [FinalAction] enum.
 	FinalActionMax      FinalAction = 2
 	FinalActionRead     FinalAction = 0
 	FinalActionContinue FinalAction = 0
@@ -1044,150 +1088,156 @@ const (
 type ShaderStage int //gd:RenderingDevice.ShaderStage
 
 const (
-	/*Vertex shader stage. This can be used to manipulate vertices from a shader (but not create new vertices).*/
+	// Vertex shader stage. This can be used to manipulate vertices from a shader (but not create new vertices).
 	ShaderStageVertex ShaderStage = 0
-	/*Fragment shader stage (called "pixel shader" in Direct3D). This can be used to manipulate pixels from a shader.*/
+	// Fragment shader stage (called "pixel shader" in Direct3D). This can be used to manipulate pixels from a shader.
 	ShaderStageFragment ShaderStage = 1
-	/*Tessellation control shader stage. This can be used to create additional geometry from a shader.*/
+	// Tessellation control shader stage. This can be used to create additional geometry from a shader.
 	ShaderStageTesselationControl ShaderStage = 2
-	/*Tessellation evaluation shader stage. This can be used to create additional geometry from a shader.*/
+	// Tessellation evaluation shader stage. This can be used to create additional geometry from a shader.
 	ShaderStageTesselationEvaluation ShaderStage = 3
-	/*Compute shader stage. This can be used to run arbitrary computing tasks in a shader, performing them on the GPU instead of the CPU.*/
+	// Compute shader stage. This can be used to run arbitrary computing tasks in a shader, performing them on the GPU instead of the CPU.
 	ShaderStageCompute ShaderStage = 4
-	/*Represents the size of the [enum ShaderStage] enum.*/
+	// Represents the size of the [ShaderStage] enum.
 	ShaderStageMax ShaderStage = 5
-	/*Vertex shader stage bit (see also [constant SHADER_STAGE_VERTEX]).*/
+	// Vertex shader stage bit (see also [ShaderStageVertex]).
 	ShaderStageVertexBit ShaderStage = 1
-	/*Fragment shader stage bit (see also [constant SHADER_STAGE_FRAGMENT]).*/
+	// Fragment shader stage bit (see also [ShaderStageFragment]).
 	ShaderStageFragmentBit ShaderStage = 2
-	/*Tessellation control shader stage bit (see also [constant SHADER_STAGE_TESSELATION_CONTROL]).*/
+	// Tessellation control shader stage bit (see also [ShaderStageTesselationControl]).
 	ShaderStageTesselationControlBit ShaderStage = 4
-	/*Tessellation evaluation shader stage bit (see also [constant SHADER_STAGE_TESSELATION_EVALUATION]).*/
+	// Tessellation evaluation shader stage bit (see also [ShaderStageTesselationEvaluation]).
 	ShaderStageTesselationEvaluationBit ShaderStage = 8
-	/*Compute shader stage bit (see also [constant SHADER_STAGE_COMPUTE]).*/
+	// Compute shader stage bit (see also [ShaderStageCompute]).
 	ShaderStageComputeBit ShaderStage = 16
 )
 
 type ShaderLanguage int //gd:RenderingDevice.ShaderLanguage
 
 const (
-	/*Khronos' GLSL shading language (used natively by OpenGL and Vulkan). This is the language used for core Godot shaders.*/
+	// Khronos' GLSL shading language (used natively by OpenGL and Vulkan). This is the language used for core Godot shaders.
 	ShaderLanguageGlsl ShaderLanguage = 0
-	/*Microsoft's High-Level Shading Language (used natively by Direct3D, but can also be used in Vulkan).*/
+	// Microsoft's High-Level Shading Language (used natively by Direct3D, but can also be used in Vulkan).
 	ShaderLanguageHlsl ShaderLanguage = 1
 )
 
 type PipelineSpecializationConstantType int //gd:RenderingDevice.PipelineSpecializationConstantType
 
 const (
-	/*Boolean specialization constant.*/
+	// Boolean specialization constant.
 	PipelineSpecializationConstantTypeBool PipelineSpecializationConstantType = 0
-	/*Integer specialization constant.*/
+	// Integer specialization constant.
 	PipelineSpecializationConstantTypeInt PipelineSpecializationConstantType = 1
-	/*Floating-point specialization constant.*/
+	// Floating-point specialization constant.
 	PipelineSpecializationConstantTypeFloat PipelineSpecializationConstantType = 2
 )
 
 type Features int //gd:RenderingDevice.Features
 
 const (
-	/*Features support for buffer device address extension.*/
+	// Features support for buffer device address extension.
 	SupportsBufferDeviceAddress Features = 6
 )
 
 type Limit int //gd:RenderingDevice.Limit
 
 const (
-	/*Maximum number of uniform sets that can be bound at a given time.*/
+	// Maximum number of uniform sets that can be bound at a given time.
 	LimitMaxBoundUniformSets Limit = 0
-	/*Maximum number of color framebuffer attachments that can be used at a given time.*/
+	// Maximum number of color framebuffer attachments that can be used at a given time.
 	LimitMaxFramebufferColorAttachments Limit = 1
-	/*Maximum number of textures that can be used per uniform set.*/
+	// Maximum number of textures that can be used per uniform set.
 	LimitMaxTexturesPerUniformSet Limit = 2
-	/*Maximum number of samplers that can be used per uniform set.*/
+	// Maximum number of samplers that can be used per uniform set.
 	LimitMaxSamplersPerUniformSet Limit = 3
-	/*Maximum number of [url=https://vkguide.dev/docs/chapter-4/storage_buffers/]storage buffers[/url] per uniform set.*/
+	// Maximum number of [storage buffers] per uniform set.
+	//
+	// [storage buffers]: https://vkguide.dev/docs/chapter-4/storage_buffers/
 	LimitMaxStorageBuffersPerUniformSet Limit = 4
-	/*Maximum number of storage images per uniform set.*/
+	// Maximum number of storage images per uniform set.
 	LimitMaxStorageImagesPerUniformSet Limit = 5
-	/*Maximum number of uniform buffers per uniform set.*/
+	// Maximum number of uniform buffers per uniform set.
 	LimitMaxUniformBuffersPerUniformSet Limit = 6
-	/*Maximum index for an indexed draw command.*/
+	// Maximum index for an indexed draw command.
 	LimitMaxDrawIndexedIndex Limit = 7
-	/*Maximum height of a framebuffer (in pixels).*/
+	// Maximum height of a framebuffer (in pixels).
 	LimitMaxFramebufferHeight Limit = 8
-	/*Maximum width of a framebuffer (in pixels).*/
+	// Maximum width of a framebuffer (in pixels).
 	LimitMaxFramebufferWidth Limit = 9
-	/*Maximum number of texture array layers.*/
+	// Maximum number of texture array layers.
 	LimitMaxTextureArrayLayers Limit = 10
-	/*Maximum supported 1-dimensional texture size (in pixels on a single axis).*/
+	// Maximum supported 1-dimensional texture size (in pixels on a single axis).
 	LimitMaxTextureSize1d Limit = 11
-	/*Maximum supported 2-dimensional texture size (in pixels on a single axis).*/
+	// Maximum supported 2-dimensional texture size (in pixels on a single axis).
 	LimitMaxTextureSize2d Limit = 12
-	/*Maximum supported 3-dimensional texture size (in pixels on a single axis).*/
+	// Maximum supported 3-dimensional texture size (in pixels on a single axis).
 	LimitMaxTextureSize3d Limit = 13
-	/*Maximum supported cubemap texture size (in pixels on a single axis of a single face).*/
+	// Maximum supported cubemap texture size (in pixels on a single axis of a single face).
 	LimitMaxTextureSizeCube Limit = 14
-	/*Maximum number of textures per shader stage.*/
+	// Maximum number of textures per shader stage.
 	LimitMaxTexturesPerShaderStage Limit = 15
-	/*Maximum number of samplers per shader stage.*/
+	// Maximum number of samplers per shader stage.
 	LimitMaxSamplersPerShaderStage Limit = 16
-	/*Maximum number of [url=https://vkguide.dev/docs/chapter-4/storage_buffers/]storage buffers[/url] per shader stage.*/
+	// Maximum number of [storage buffers] per shader stage.
+	//
+	// [storage buffers]: https://vkguide.dev/docs/chapter-4/storage_buffers/
 	LimitMaxStorageBuffersPerShaderStage Limit = 17
-	/*Maximum number of storage images per shader stage.*/
+	// Maximum number of storage images per shader stage.
 	LimitMaxStorageImagesPerShaderStage Limit = 18
-	/*Maximum number of uniform buffers per uniform set.*/
+	// Maximum number of uniform buffers per uniform set.
 	LimitMaxUniformBuffersPerShaderStage Limit = 19
-	/*Maximum size of a push constant. A lot of devices are limited to 128 bytes, so try to avoid exceeding 128 bytes in push constants to ensure compatibility even if your GPU is reporting a higher value.*/
+	// Maximum size of a push constant. A lot of devices are limited to 128 bytes, so try to avoid exceeding 128 bytes in push constants to ensure compatibility even if your GPU is reporting a higher value.
 	LimitMaxPushConstantSize Limit = 20
-	/*Maximum size of a uniform buffer.*/
+	// Maximum size of a uniform buffer.
 	LimitMaxUniformBufferSize Limit = 21
-	/*Maximum vertex input attribute offset.*/
+	// Maximum vertex input attribute offset.
 	LimitMaxVertexInputAttributeOffset Limit = 22
-	/*Maximum number of vertex input attributes.*/
+	// Maximum number of vertex input attributes.
 	LimitMaxVertexInputAttributes Limit = 23
-	/*Maximum number of vertex input bindings.*/
+	// Maximum number of vertex input bindings.
 	LimitMaxVertexInputBindings Limit = 24
-	/*Maximum vertex input binding stride.*/
+	// Maximum vertex input binding stride.
 	LimitMaxVertexInputBindingStride Limit = 25
-	/*Minimum uniform buffer offset alignment.*/
+	// Minimum uniform buffer offset alignment.
 	LimitMinUniformBufferOffsetAlignment Limit = 26
-	/*Maximum shared memory size for compute shaders.*/
+	// Maximum shared memory size for compute shaders.
 	LimitMaxComputeSharedMemorySize Limit = 27
-	/*Maximum number of workgroups for compute shaders on the X axis.*/
+	// Maximum number of workgroups for compute shaders on the X axis.
 	LimitMaxComputeWorkgroupCountX Limit = 28
-	/*Maximum number of workgroups for compute shaders on the Y axis.*/
+	// Maximum number of workgroups for compute shaders on the Y axis.
 	LimitMaxComputeWorkgroupCountY Limit = 29
-	/*Maximum number of workgroups for compute shaders on the Z axis.*/
+	// Maximum number of workgroups for compute shaders on the Z axis.
 	LimitMaxComputeWorkgroupCountZ Limit = 30
-	/*Maximum number of workgroup invocations for compute shaders.*/
+	// Maximum number of workgroup invocations for compute shaders.
 	LimitMaxComputeWorkgroupInvocations Limit = 31
-	/*Maximum workgroup size for compute shaders on the X axis.*/
+	// Maximum workgroup size for compute shaders on the X axis.
 	LimitMaxComputeWorkgroupSizeX Limit = 32
-	/*Maximum workgroup size for compute shaders on the Y axis.*/
+	// Maximum workgroup size for compute shaders on the Y axis.
 	LimitMaxComputeWorkgroupSizeY Limit = 33
-	/*Maximum workgroup size for compute shaders on the Z axis.*/
+	// Maximum workgroup size for compute shaders on the Z axis.
 	LimitMaxComputeWorkgroupSizeZ Limit = 34
-	/*Maximum viewport width (in pixels).*/
+	// Maximum viewport width (in pixels).
 	LimitMaxViewportDimensionsX Limit = 35
-	/*Maximum viewport height (in pixels).*/
+	// Maximum viewport height (in pixels).
 	LimitMaxViewportDimensionsY Limit = 36
-	/*Returns the smallest value for [member ProjectSettings.rendering/scaling_3d/scale] when using the MetalFX temporal upscaler.
-	  [b]Note:[/b] The returned value is multiplied by a factor of [code]1000000[/code] to preserve 6 digits of precision. It must be divided by [code]1000000.0[/code] to convert the value to a floating point number.*/
+	// Returns the smallest value for [graphics.gd/classdb/ProjectSettings] "rendering/scaling_3d/scale" when using the MetalFX temporal upscaler.
+	//
+	// Note: The returned value is multiplied by a factor of 1000000 to preserve 6 digits of precision. It must be divided by 1000000.0 to convert the value to a floating point number.
 	LimitMetalfxTemporalScalerMinScale Limit = 46
-	/*Returns the largest value for [member ProjectSettings.rendering/scaling_3d/scale] when using the MetalFX temporal upscaler.
-	  [b]Note:[/b] The returned value is multiplied by a factor of [code]1000000[/code] to preserve 6 digits of precision. It must be divided by [code]1000000.0[/code] to convert the value to a floating point number.*/
+	// Returns the largest value for [graphics.gd/classdb/ProjectSettings] "rendering/scaling_3d/scale" when using the MetalFX temporal upscaler.
+	//
+	// Note: The returned value is multiplied by a factor of 1000000 to preserve 6 digits of precision. It must be divided by 1000000.0 to convert the value to a floating point number.
 	LimitMetalfxTemporalScalerMaxScale Limit = 47
 )
 
 type MemoryType int //gd:RenderingDevice.MemoryType
 
 const (
-	/*Memory taken by textures.*/
+	// Memory taken by textures.
 	MemoryTextures MemoryType = 0
-	/*Memory taken by buffers.*/
+	// Memory taken by buffers.
 	MemoryBuffers MemoryType = 1
-	/*Total memory taken. This is greater than the sum of [constant MEMORY_TEXTURES] and [constant MEMORY_BUFFERS], as it also includes miscellaneous memory usage.*/
+	// Total memory taken. This is greater than the sum of [MemoryTextures] and [MemoryBuffers], as it also includes miscellaneous memory usage.
 	MemoryTotal MemoryType = 2
 )
 
@@ -1212,58 +1262,58 @@ const (
 type DrawFlags int //gd:RenderingDevice.DrawFlags
 
 const (
-	/*Do not clear or ignore any attachments.*/
+	// Do not clear or ignore any attachments.
 	DrawDefaultAll DrawFlags = 0
-	/*Clear the first color attachment.*/
+	// Clear the first color attachment.
 	DrawClearColor0 DrawFlags = 1
-	/*Clear the second color attachment.*/
+	// Clear the second color attachment.
 	DrawClearColor1 DrawFlags = 2
-	/*Clear the third color attachment.*/
+	// Clear the third color attachment.
 	DrawClearColor2 DrawFlags = 4
-	/*Clear the fourth color attachment.*/
+	// Clear the fourth color attachment.
 	DrawClearColor3 DrawFlags = 8
-	/*Clear the fifth color attachment.*/
+	// Clear the fifth color attachment.
 	DrawClearColor4 DrawFlags = 16
-	/*Clear the sixth color attachment.*/
+	// Clear the sixth color attachment.
 	DrawClearColor5 DrawFlags = 32
-	/*Clear the seventh color attachment.*/
+	// Clear the seventh color attachment.
 	DrawClearColor6 DrawFlags = 64
-	/*Clear the eighth color attachment.*/
+	// Clear the eighth color attachment.
 	DrawClearColor7 DrawFlags = 128
-	/*Mask for clearing all color attachments.*/
+	// Mask for clearing all color attachments.
 	DrawClearColorMask DrawFlags = 255
-	/*Clear all color attachments.*/
+	// Clear all color attachments.
 	DrawClearColorAll DrawFlags = 255
-	/*Ignore the previous contents of the first color attachment.*/
+	// Ignore the previous contents of the first color attachment.
 	DrawIgnoreColor0 DrawFlags = 256
-	/*Ignore the previous contents of the second color attachment.*/
+	// Ignore the previous contents of the second color attachment.
 	DrawIgnoreColor1 DrawFlags = 512
-	/*Ignore the previous contents of the third color attachment.*/
+	// Ignore the previous contents of the third color attachment.
 	DrawIgnoreColor2 DrawFlags = 1024
-	/*Ignore the previous contents of the fourth color attachment.*/
+	// Ignore the previous contents of the fourth color attachment.
 	DrawIgnoreColor3 DrawFlags = 2048
-	/*Ignore the previous contents of the fifth color attachment.*/
+	// Ignore the previous contents of the fifth color attachment.
 	DrawIgnoreColor4 DrawFlags = 4096
-	/*Ignore the previous contents of the sixth color attachment.*/
+	// Ignore the previous contents of the sixth color attachment.
 	DrawIgnoreColor5 DrawFlags = 8192
-	/*Ignore the previous contents of the seventh color attachment.*/
+	// Ignore the previous contents of the seventh color attachment.
 	DrawIgnoreColor6 DrawFlags = 16384
-	/*Ignore the previous contents of the eighth color attachment.*/
+	// Ignore the previous contents of the eighth color attachment.
 	DrawIgnoreColor7 DrawFlags = 32768
-	/*Mask for ignoring all the previous contents of the color attachments.*/
+	// Mask for ignoring all the previous contents of the color attachments.
 	DrawIgnoreColorMask DrawFlags = 65280
-	/*Ignore the previous contents of all color attachments.*/
+	// Ignore the previous contents of all color attachments.
 	DrawIgnoreColorAll DrawFlags = 65280
-	/*Clear the depth attachment.*/
+	// Clear the depth attachment.
 	DrawClearDepth DrawFlags = 65536
-	/*Ignore the previous contents of the depth attachment.*/
+	// Ignore the previous contents of the depth attachment.
 	DrawIgnoreDepth DrawFlags = 131072
-	/*Clear the stencil attachment.*/
+	// Clear the stencil attachment.
 	DrawClearStencil DrawFlags = 262144
-	/*Ignore the previous contents of the stencil attachment.*/
+	// Ignore the previous contents of the stencil attachment.
 	DrawIgnoreStencil DrawFlags = 524288
-	/*Clear all attachments.*/
+	// Clear all attachments.
 	DrawClearAll DrawFlags = 327935
-	/*Ignore the previous contents of all attachments.*/
+	// Ignore the previous contents of all attachments.
 	DrawIgnoreAll DrawFlags = 720640
 )

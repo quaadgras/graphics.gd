@@ -224,72 +224,72 @@ func init() {
 type Function int //gd:VisualShaderNodeVectorFunc.Function
 
 const (
-	/*Normalizes the vector so that it has a length of [code]1[/code] but points in the same direction.*/
+	// Normalizes the vector so that it has a length of 1 but points in the same direction.
 	FuncNormalize Function = 0
-	/*Clamps the value between [code]0.0[/code] and [code]1.0[/code].*/
+	// Clamps the value between 0.0 and 1.0.
 	FuncSaturate Function = 1
-	/*Returns the opposite value of the parameter.*/
+	// Returns the opposite value of the parameter.
 	FuncNegate Function = 2
-	/*Returns [code]1/vector[/code].*/
+	// Returns 1/vector.
 	FuncReciprocal Function = 3
-	/*Returns the absolute value of the parameter.*/
+	// Returns the absolute value of the parameter.
 	FuncAbs Function = 4
-	/*Returns the arc-cosine of the parameter.*/
+	// Returns the arc-cosine of the parameter.
 	FuncAcos Function = 5
-	/*Returns the inverse hyperbolic cosine of the parameter.*/
+	// Returns the inverse hyperbolic cosine of the parameter.
 	FuncAcosh Function = 6
-	/*Returns the arc-sine of the parameter.*/
+	// Returns the arc-sine of the parameter.
 	FuncAsin Function = 7
-	/*Returns the inverse hyperbolic sine of the parameter.*/
+	// Returns the inverse hyperbolic sine of the parameter.
 	FuncAsinh Function = 8
-	/*Returns the arc-tangent of the parameter.*/
+	// Returns the arc-tangent of the parameter.
 	FuncAtan Function = 9
-	/*Returns the inverse hyperbolic tangent of the parameter.*/
+	// Returns the inverse hyperbolic tangent of the parameter.
 	FuncAtanh Function = 10
-	/*Finds the nearest integer that is greater than or equal to the parameter.*/
+	// Finds the nearest integer that is greater than or equal to the parameter.
 	FuncCeil Function = 11
-	/*Returns the cosine of the parameter.*/
+	// Returns the cosine of the parameter.
 	FuncCos Function = 12
-	/*Returns the hyperbolic cosine of the parameter.*/
+	// Returns the hyperbolic cosine of the parameter.
 	FuncCosh Function = 13
-	/*Converts a quantity in radians to degrees.*/
+	// Converts a quantity in radians to degrees.
 	FuncDegrees Function = 14
-	/*Base-e Exponential.*/
+	// Base-e Exponential.
 	FuncExp Function = 15
-	/*Base-2 Exponential.*/
+	// Base-2 Exponential.
 	FuncExp2 Function = 16
-	/*Finds the nearest integer less than or equal to the parameter.*/
+	// Finds the nearest integer less than or equal to the parameter.
 	FuncFloor Function = 17
-	/*Computes the fractional part of the argument.*/
+	// Computes the fractional part of the argument.
 	FuncFract Function = 18
-	/*Returns the inverse of the square root of the parameter.*/
+	// Returns the inverse of the square root of the parameter.
 	FuncInverseSqrt Function = 19
-	/*Natural logarithm.*/
+	// Natural logarithm.
 	FuncLog Function = 20
-	/*Base-2 logarithm.*/
+	// Base-2 logarithm.
 	FuncLog2 Function = 21
-	/*Converts a quantity in degrees to radians.*/
+	// Converts a quantity in degrees to radians.
 	FuncRadians Function = 22
-	/*Finds the nearest integer to the parameter.*/
+	// Finds the nearest integer to the parameter.
 	FuncRound Function = 23
-	/*Finds the nearest even integer to the parameter.*/
+	// Finds the nearest even integer to the parameter.
 	FuncRoundeven Function = 24
-	/*Extracts the sign of the parameter, i.e. returns [code]-1[/code] if the parameter is negative, [code]1[/code] if it's positive and [code]0[/code] otherwise.*/
+	// Extracts the sign of the parameter, i.e. returns -1 if the parameter is negative, 1 if it's positive and 0 otherwise.
 	FuncSign Function = 25
-	/*Returns the sine of the parameter.*/
+	// Returns the sine of the parameter.
 	FuncSin Function = 26
-	/*Returns the hyperbolic sine of the parameter.*/
+	// Returns the hyperbolic sine of the parameter.
 	FuncSinh Function = 27
-	/*Returns the square root of the parameter.*/
+	// Returns the square root of the parameter.
 	FuncSqrt Function = 28
-	/*Returns the tangent of the parameter.*/
+	// Returns the tangent of the parameter.
 	FuncTan Function = 29
-	/*Returns the hyperbolic tangent of the parameter.*/
+	// Returns the hyperbolic tangent of the parameter.
 	FuncTanh Function = 30
-	/*Returns a value equal to the nearest integer to the parameter whose absolute value is not larger than the absolute value of the parameter.*/
+	// Returns a value equal to the nearest integer to the parameter whose absolute value is not larger than the absolute value of the parameter.
 	FuncTrunc Function = 31
-	/*Returns [code]1.0 - vector[/code].*/
+	// Returns 1.0 - vector.
 	FuncOneminus Function = 32
-	/*Represents the size of the [enum Function] enum.*/
+	// Represents the size of the [Function] enum.
 	FuncMax Function = 33
 )

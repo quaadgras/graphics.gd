@@ -2,7 +2,8 @@
 
 /*
 This node is used to preload sub-resources inside a scene, so when the scene is loaded, all the resources are ready to use and can be retrieved from the preloader. You can add the resources using the ResourcePreloader tab when the node is selected.
-GDScript has a simplified [Instance.@Gdscript.Preload] built-in method which can be used in most situations, leaving the use of [ResourcePreloader] for more advanced scenarios.
+
+GDScript has a simplified [graphics.gd/classdb/@GDScript.Instance.Preload] built-in method which can be used in most situations, leaving the use of [graphics.gd/classdb/ResourcePreloader] for more advanced scenarios.
 */
 package ResourcePreloader
 

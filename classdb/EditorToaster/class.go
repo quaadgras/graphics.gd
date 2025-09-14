@@ -2,7 +2,8 @@
 
 /*
 This object manages the functionality and display of toast notifications within the editor, ensuring timely and informative alerts are presented to users.
-Note: This class shouldn't be instantiated directly. Instead, access the singleton using [Instance.Editorinterface.GetEditorToaster].
+
+Note: This class shouldn't be instantiated directly. Instead, access the singleton using [graphics.gd/classdb/EditorInterface.GetEditorToaster].
 */
 package EditorToaster
 
@@ -244,10 +245,10 @@ func init() {
 type Severity int //gd:EditorToaster.Severity
 
 const (
-	/*Toast will display with an INFO severity.*/
+	// Toast will display with an INFO severity.
 	SeverityInfo Severity = 0
-	/*Toast will display with a WARNING severity and have a corresponding color.*/
+	// Toast will display with a WARNING severity and have a corresponding color.
 	SeverityWarning Severity = 1
-	/*Toast will display with an ERROR severity and have a corresponding color.*/
+	// Toast will display with an ERROR severity and have a corresponding color.
 	SeverityError Severity = 2
 )

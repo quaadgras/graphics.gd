@@ -2,7 +2,8 @@
 
 /*
 This resource describes a mathematical curve by defining a set of points and tangents at each point. By default, it ranges between 0 and 1 on the X and Y axes, but these ranges can be changed.
-Please note that many resources and nodes assume they are given [i]unit curves[/i]. A unit curve is a curve whose domain (the X axis) is between 0 and 1. Some examples of unit curve usage are [member CPUParticles2D.angle_curve] and [member Line2D.width_curve].
+
+Please note that many resources and nodes assume they are given unit curves. A unit curve is a curve whose domain (the X axis) is between 0 and 1. Some examples of unit curve usage are [graphics.gd/classdb/CPUParticles2D.Instance.AngleCurve] and [graphics.gd/classdb/Line2D.Instance.WidthCurve].
 */
 package Curve
 
@@ -252,14 +253,14 @@ func (self Instance) SetPointRightMode(index int, mode TangentMode) { //gd:Curve
 }
 
 /*
-Returns the difference between [member min_value] and [member max_value].
+Returns the difference between [Instance.MinValue] and [Instance.MaxValue].
 */
 func (self Instance) GetValueRange() Float.X { //gd:Curve.get_value_range
 	return Float.X(Float.X(Advanced(self).GetValueRange()))
 }
 
 /*
-Returns the difference between [member min_domain] and [member max_domain].
+Returns the difference between [Instance.MinDomain] and [Instance.MaxDomain].
 */
 func (self Instance) GetDomainRange() Float.X { //gd:Curve.get_domain_range
 	return Float.X(Float.X(Advanced(self).GetDomainRange()))
@@ -577,7 +578,7 @@ func (self class) SetMaxValue(max float64) { //gd:Curve.set_max_value
 }
 
 /*
-Returns the difference between [member min_value] and [member max_value].
+Returns the difference between [Instance.MinValue] and [Instance.MaxValue].
 */
 //go:nosplit
 func (self class) GetValueRange() float64 { //gd:Curve.get_value_range
@@ -611,7 +612,7 @@ func (self class) SetMaxDomain(max float64) { //gd:Curve.set_max_domain
 }
 
 /*
-Returns the difference between [member min_domain] and [member max_domain].
+Returns the difference between [Instance.MinDomain] and [Instance.MaxDomain].
 */
 //go:nosplit
 func (self class) GetDomainRange() float64 { //gd:Curve.get_domain_range
@@ -709,10 +710,10 @@ func init() {
 type TangentMode int //gd:Curve.TangentMode
 
 const (
-	/*The tangent on this side of the point is user-defined.*/
+	// The tangent on this side of the point is user-defined.
 	TangentFree TangentMode = 0
-	/*The curve calculates the tangent on this side of the point as the slope halfway towards the adjacent point.*/
+	// The curve calculates the tangent on this side of the point as the slope halfway towards the adjacent point.
 	TangentLinear TangentMode = 1
-	/*The total number of available tangent modes.*/
+	// The total number of available tangent modes.
 	TangentModeCount TangentMode = 2
 )

@@ -2,17 +2,28 @@
 
 /*
 Nodes are Godot's building blocks. They can be assigned as the child of another node, resulting in a tree arrangement. A given node can contain any number of nodes as children with the requirement that all siblings (direct children of a node) should have unique names.
-A tree of nodes is called a [i]scene[/i]. Scenes can be saved to the disk and then instantiated into other scenes. This allows for very high flexibility in the architecture and data model of Godot projects.
-Scene tree: The [SceneTree] contains the active tree of nodes. When a node is added to the scene tree, it receives the [NotificationEnterTree] notification and its [Instance.EnterTree] callback is triggered. Child nodes are always added [i]after[/i] their parent node, i.e. the [Instance.EnterTree] callback of a parent node will be triggered before its child's.
-Once all nodes have been added in the scene tree, they receive the [NotificationReady] notification and their respective [Instance.Ready] callbacks are triggered. For groups of nodes, the [Instance.Ready] callback is called in reverse order, starting with the children and moving up to the parent nodes.
-This means that when adding a node to the scene tree, the following order will be used for the callbacks: [Instance.EnterTree] of the parent, [Instance.EnterTree] of the children, [Instance.Ready] of the children and finally [Instance.Ready] of the parent (recursively for the entire scene tree).
-Processing: Nodes can override the "process" state, so that they receive a callback on each frame requesting them to process (do something). Normal processing (callback [Instance.Process], toggled with [Instance.SetProcess]) happens as fast as possible and is dependent on the frame rate, so the processing time [i]delta[/i] (in seconds) is passed as an argument. Physics processing (callback [Instance.PhysicsProcess], toggled with [Instance.SetPhysicsProcess]) happens a fixed number of times per second (60 by default) and is useful for code related to the physics engine.
-Nodes can also process input events. When present, the [Instance.Input] function will be called for each input that the program receives. In many cases, this can be overkill (unless used for simple projects), and the [Instance.UnhandledInput] function might be preferred; it is called when the input event was not handled by anyone else (typically, GUI [Control] nodes), ensuring that the node only receives the events that were meant for it.
-To keep track of the scene hierarchy (especially when instantiating scenes into other scenes), an "owner" can be set for the node with the [member owner] property. This keeps track of who instantiated what. This is mostly useful when writing editors and tools, though.
-Finally, when a node is freed with [Instance.Object.Free] or [Instance.QueueFree], it will also free all its children.
-Groups: Nodes can be added to as many groups as you want to be easy to manage, you could create groups like "enemies" or "collectables" for example, depending on your game. See [Instance.AddToGroup], [Instance.IsInGroup] and [Instance.RemoveFromGroup]. You can then retrieve all nodes in these groups, iterate them and even call methods on groups via the methods on [SceneTree].
-Networking with nodes: After connecting to a server (or making one, see [ENetMultiplayerPeer]), it is possible to use the built-in RPC (remote procedure call) system to communicate over the network. By calling [Instance.Rpc] with a method name, it will be called locally and in all connected peers (peers = clients and the server that accepts connections). To identify which node receives the RPC call, Godot will use its [NodePath] (make sure node names are the same on all peers). Also, take a look at the high-level networking tutorial and corresponding demos.
-Note: The script property is part of the [Object] class, not [Node]. It isn't exposed like most properties but does have a setter and getter (see [Instance.Object.SetScript] and [Instance.Object.GetScript]).
+
+A tree of nodes is called a scene. Scenes can be saved to the disk and then instantiated into other scenes. This allows for very high flexibility in the architecture and data model of Godot projects.
+
+Scene tree: The [graphics.gd/classdb/SceneTree] contains the active tree of nodes. When a node is added to the scene tree, it receives the [NotificationEnterTree] notification and its [Interface.EnterTree] callback is triggered. Child nodes are always added after their parent node, i.e. the [Interface.EnterTree] callback of a parent node will be triggered before its child's.
+
+Once all nodes have been added in the scene tree, they receive the [NotificationReady] notification and their respective [Interface.Ready] callbacks are triggered. For groups of nodes, the [Interface.Ready] callback is called in reverse order, starting with the children and moving up to the parent nodes.
+
+This means that when adding a node to the scene tree, the following order will be used for the callbacks: [Interface.EnterTree] of the parent, [Interface.EnterTree] of the children, [Interface.Ready] of the children and finally [Interface.Ready] of the parent (recursively for the entire scene tree).
+
+Processing: Nodes can override the "process" state, so that they receive a callback on each frame requesting them to process (do something). Normal processing (callback [Interface.Process], toggled with [Instance.SetProcess]) happens as fast as possible and is dependent on the frame rate, so the processing time delta (in seconds) is passed as an argument. Physics processing (callback [Interface.PhysicsProcess], toggled with [Instance.SetPhysicsProcess]) happens a fixed number of times per second (60 by default) and is useful for code related to the physics engine.
+
+Nodes can also process input events. When present, the [Interface.Input] function will be called for each input that the program receives. In many cases, this can be overkill (unless used for simple projects), and the [Interface.UnhandledInput] function might be preferred; it is called when the input event was not handled by anyone else (typically, GUI [graphics.gd/classdb/Control] nodes), ensuring that the node only receives the events that were meant for it.
+
+To keep track of the scene hierarchy (especially when instantiating scenes into other scenes), an "owner" can be set for the node with the [Instance.Owner] property. This keeps track of who instantiated what. This is mostly useful when writing editors and tools, though.
+
+Finally, when a node is freed with [graphics.gd/classdb/Object.Instance.Free] or [Instance.QueueFree], it will also free all its children.
+
+Groups: Nodes can be added to as many groups as you want to be easy to manage, you could create groups like "enemies" or "collectables" for example, depending on your game. See [Instance.AddToGroup], [Instance.IsInGroup] and [Instance.RemoveFromGroup]. You can then retrieve all nodes in these groups, iterate them and even call methods on groups via the methods on [graphics.gd/classdb/SceneTree].
+
+Networking with nodes: After connecting to a server (or making one, see [graphics.gd/classdb/ENetMultiplayerPeer]), it is possible to use the built-in RPC (remote procedure call) system to communicate over the network. By calling [Instance.Rpc] with a method name, it will be called locally and in all connected peers (peers = clients and the server that accepts connections). To identify which node receives the RPC call, Godot will use its node path (make sure node names are the same on all peers). Also, take a look at the high-level networking tutorial and corresponding demos.
+
+Note: The script property is part of the [graphics.gd/classdb/Object] class, not [graphics.gd/classdb/Node]. It isn't exposed like most properties but does have a setter and getter (see [graphics.gd/classdb/Object.Instance.SetScript] and [graphics.gd/classdb/Object.Instance.GetScript]).
 */
 package Node
 
@@ -78,12 +89,11 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 // Instance of the class with convieniently typed arguments and results.
-// See [Interface] for methods that can be overridden by a [Class] that extends it.
 type Instance [1]gdclass.Node
 
 var otype gdextension.ObjectType
@@ -229,72 +239,119 @@ type Any interface {
 	gd.IsClass
 	AsNode() Instance
 }
+
 type Interface interface {
-	//Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the [param delta] time since the previous frame is not constant. [param delta] is in seconds.
-	//It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process].
-	//Processing happens in order of [member process_priority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
-	//Corresponds to the [constant NOTIFICATION_PROCESS] notification in [method Object._notification].
-	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-	//[b]Note:[/b] [param delta] will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [method _process] and [method _physics_process]. As a result, avoid using [param delta] for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [method Time.get_ticks_usec].
-	Process(delta Float.X)
-	//Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the [param delta] parameter will [i]generally[/i] be constant (see exceptions below). [param delta] is in seconds.
-	//It is only called if physics processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_physics_process].
-	//Processing happens in order of [member process_physics_priority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
-	//Corresponds to the [constant NOTIFICATION_PHYSICS_PROCESS] notification in [method Object._notification].
-	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-	//[b]Note:[/b] [param delta] will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [method _process] and [method _physics_process]. As a result, avoid using [param delta] for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [method Time.get_ticks_usec].
-	PhysicsProcess(delta Float.X)
-	//Called when the node enters the [SceneTree] (e.g. upon instantiating, scene changing, or after calling [method add_child] in a script). If the node has children, its [method _enter_tree] callback will be called first, and then that of the children.
-	//Corresponds to the [constant NOTIFICATION_ENTER_TREE] notification in [method Object._notification].
-	EnterTree()
-	//Called when the node is about to leave the [SceneTree] (e.g. upon freeing, scene changing, or after calling [method remove_child] in a script). If the node has children, its [method _exit_tree] callback will be called last, after all its children have left the tree.
-	//Corresponds to the [constant NOTIFICATION_EXIT_TREE] notification in [method Object._notification] and signal [signal tree_exiting]. To get notified when the node has already left the active tree, connect to the [signal tree_exited].
-	ExitTree()
-	//Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [method _ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
-	//Corresponds to the [constant NOTIFICATION_READY] notification in [method Object._notification]. See also the [code]@onready[/code] annotation for variables.
-	//Usually used for initialization. For even earlier initialization, [method Object._init] may be used. See also [method _enter_tree].
-	//[b]Note:[/b] This method may be called only once for each node. After removing a node from the scene tree and adding it again, [method _ready] will [b]not[/b] be called a second time. This can be bypassed by requesting another call with [method request_ready], which may be called anywhere before adding the node again.
-	Ready()
-	//The elements in the array returned from this method are displayed as warnings in the Scene dock if the script that overrides it is a [code]tool[/code] script.
-	//Returning an empty array produces no warnings.
-	//Call [method update_configuration_warnings] when the warnings need to be updated for this node.
-	//[codeblock]
-	//@export var energy = 0:
-	//    set(value):
-	//        energy = value
-	//        update_configuration_warnings()
+	// Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the 'delta' time since the previous frame is not constant. 'delta' is in seconds.
 	//
-	//func _get_configuration_warnings():
-	//    if energy < 0:
-	//        return ["Energy must be 0 or greater."]
-	//    else:
-	//        return []
-	//[/codeblock]
+	// It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcess].
+	//
+	// Processing happens in order of [Instance.ProcessPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
+	//
+	// Corresponds to the [NotificationProcess] notification in [graphics.gd/classdb/Object.Instance.Notification].
+	//
+	// Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+	//
+	// Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+	Process(delta Float.X)
+	// Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the 'delta' parameter will generally be constant (see exceptions below). 'delta' is in seconds.
+	//
+	// It is only called if physics processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetPhysicsProcess].
+	//
+	// Processing happens in order of [Instance.ProcessPhysicsPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
+	//
+	// Corresponds to the [NotificationPhysicsProcess] notification in [graphics.gd/classdb/Object.Instance.Notification].
+	//
+	// Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+	//
+	// Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+	PhysicsProcess(delta Float.X)
+	// Called when the node enters the [graphics.gd/classdb/SceneTree] (e.g. upon instantiating, scene changing, or after calling [Instance.AddChild] in a script). If the node has children, its [Interface.EnterTree] callback will be called first, and then that of the children.
+	//
+	// Corresponds to the [NotificationEnterTree] notification in [graphics.gd/classdb/Object.Instance.Notification].
+	EnterTree()
+	// Called when the node is about to leave the [graphics.gd/classdb/SceneTree] (e.g. upon freeing, scene changing, or after calling [Instance.RemoveChild] in a script). If the node has children, its [Interface.ExitTree] callback will be called last, after all its children have left the tree.
+	//
+	// Corresponds to the [NotificationExitTree] notification in [graphics.gd/classdb/Object.Instance.Notification] and signal [Instance.OnTreeExiting]. To get notified when the node has already left the active tree, connect to the [Instance.OnTreeExited].
+	ExitTree()
+	// Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [Interface.Ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
+	//
+	// Corresponds to the [NotificationReady] notification in [graphics.gd/classdb/Object.Instance.Notification]. See also the @onready annotation for variables.
+	//
+	// Usually used for initialization. For even earlier initialization, [graphics.gd/classdb/Object.Instance.Init] may be used. See also [Interface.EnterTree].
+	//
+	// Note: This method may be called only once for each node. After removing a node from the scene tree and adding it again, [Interface.Ready] will not be called a second time. This can be bypassed by requesting another call with [Instance.RequestReady], which may be called anywhere before adding the node again.
+	Ready()
+	// The elements in the array returned from this method are displayed as warnings in the Scene dock if the script that overrides it is a tool script.
+	//
+	// Returning an empty array produces no warnings.
+	//
+	// Call [Instance.UpdateConfigurationWarnings] when the warnings need to be updated for this node.
+	//
+	//
+	//
+	// @export var energy = 0:
+	//
+	//     set(value):
+	//
+	//         energy = value
+	//
+	//         update_configuration_warnings()
+	//
+	//
+	//
+	// func _get_configuration_warnings():
+	//
+	//     if energy < 0:
+	//
+	//         return ["Energy must be 0 or greater."]
+	//
+	//     else:
+	//
+	//         return []
+	//
+	//
 	GetConfigurationWarnings() []string
-	//Called when there is an input event. The input event propagates up through the node tree until a node consumes it.
-	//It is only called if input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_input].
-	//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
-	//For gameplay input, [method _unhandled_input] and [method _unhandled_key_input] are usually a better fit as they allow the GUI to intercept the events first.
-	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+	// Called when there is an input event. The input event propagates up through the node tree until a node consumes it.
+	//
+	// It is only called if input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessInput].
+	//
+	// To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+	//
+	// For gameplay input, [Interface.UnhandledInput] and [Interface.UnhandledKeyInput] are usually a better fit as they allow the GUI to intercept the events first.
+	//
+	// Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 	Input(event InputEvent.Instance)
-	//Called when an [InputEventKey], [InputEventShortcut], or [InputEventJoypadButton] hasn't been consumed by [method _input] or any GUI [Control] item. It is called before [method _unhandled_key_input] and [method _unhandled_input]. The input event propagates up through the node tree until a node consumes it.
-	//It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_shortcut_input].
-	//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
-	//This method can be used to handle shortcuts. For generic GUI events, use [method _input] instead. Gameplay events should usually be handled with either [method _unhandled_input] or [method _unhandled_key_input].
-	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
+	// Called when an [graphics.gd/classdb/InputEventKey], [graphics.gd/classdb/InputEventShortcut], or [graphics.gd/classdb/InputEventJoypadButton] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called before [Interface.UnhandledKeyInput] and [Interface.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+	//
+	// It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessShortcutInput].
+	//
+	// To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+	//
+	// This method can be used to handle shortcuts. For generic GUI events, use [Interface.Input] instead. Gameplay events should usually be handled with either [Interface.UnhandledInput] or [Interface.UnhandledKeyInput].
+	//
+	// Note: This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
 	ShortcutInput(event InputEvent.Instance)
-	//Called when an [InputEvent] hasn't been consumed by [method _input] or any GUI [Control] item. It is called after [method _shortcut_input] and after [method _unhandled_key_input]. The input event propagates up through the node tree until a node consumes it.
-	//It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_unhandled_input].
-	//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
-	//For gameplay input, this method is usually a better fit than [method _input], as GUI events need a higher priority. For keyboard shortcuts, consider using [method _shortcut_input] instead, as it is called before this method. Finally, to handle keyboard events, consider using [method _unhandled_key_input] for performance reasons.
-	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+	// Called when an [graphics.gd/classdb/InputEvent] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called after [Interface.ShortcutInput] and after [Interface.UnhandledKeyInput]. The input event propagates up through the node tree until a node consumes it.
+	//
+	// It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessUnhandledInput].
+	//
+	// To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+	//
+	// For gameplay input, this method is usually a better fit than [Interface.Input], as GUI events need a higher priority. For keyboard shortcuts, consider using [Interface.ShortcutInput] instead, as it is called before this method. Finally, to handle keyboard events, consider using [Interface.UnhandledKeyInput] for performance reasons.
+	//
+	// Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 	UnhandledInput(event InputEvent.Instance)
-	//Called when an [InputEventKey] hasn't been consumed by [method _input] or any GUI [Control] item. It is called after [method _shortcut_input] but before [method _unhandled_input]. The input event propagates up through the node tree until a node consumes it.
-	//It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [method set_process_unhandled_key_input].
-	//To consume the input event and stop it propagating further to other nodes, [method Viewport.set_input_as_handled] can be called.
-	//This method can be used to handle Unicode character input with [kbd]Alt[/kbd], [kbd]Alt + Ctrl[/kbd], and [kbd]Alt + Shift[/kbd] modifiers, after shortcuts were handled.
-	//For gameplay input, this and [method _unhandled_input] are usually a better fit than [method _input], as GUI events should be handled first. This method also performs better than [method _unhandled_input], since unrelated events such as [InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [method _shortcut_input] instead.
-	//[b]Note:[/b] This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+	// Called when an [graphics.gd/classdb/InputEventKey] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called after [Interface.ShortcutInput] but before [Interface.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+	//
+	// It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessUnhandledKeyInput].
+	//
+	// To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+	//
+	// This method can be used to handle Unicode character input with Alt, Alt + Ctrl, and Alt + Shift modifiers, after shortcuts were handled.
+	//
+	// For gameplay input, this and [Interface.UnhandledInput] are usually a better fit than [Interface.Input], as GUI events should be handled first. This method also performs better than [Interface.UnhandledInput], since unrelated events such as [graphics.gd/classdb/InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [Interface.ShortcutInput] instead.
+	//
+	// Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 	UnhandledKeyInput(event InputEvent.Instance)
 }
 
@@ -316,11 +373,16 @@ func (self implementation) UnhandledKeyInput(event InputEvent.Instance) { return
 
 /*
 Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the 'delta' time since the previous frame is not constant. 'delta' is in seconds.
+
 It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcess].
-Processing happens in order of [member process_priority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
-Corresponds to the [NotificationProcess] notification in [Instance.Object.Notification].
+
+Processing happens in order of [Instance.ProcessPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
+
+Corresponds to the [NotificationProcess] notification in [graphics.gd/classdb/Object.Instance.Notification].
+
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-Note: 'delta' will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Instance.Process] and [Instance.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [Instance.Time.GetTicksUsec].
+
+Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
 */
 func (Instance) _process(impl func(ptr gdclass.Receiver, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -331,12 +393,17 @@ func (Instance) _process(impl func(ptr gdclass.Receiver, delta Float.X)) (cb gd.
 }
 
 /*
-Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the 'delta' parameter will [i]generally[/i] be constant (see exceptions below). 'delta' is in seconds.
+Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the 'delta' parameter will generally be constant (see exceptions below). 'delta' is in seconds.
+
 It is only called if physics processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetPhysicsProcess].
-Processing happens in order of [member process_physics_priority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
-Corresponds to the [NotificationPhysicsProcess] notification in [Instance.Object.Notification].
+
+Processing happens in order of [Instance.ProcessPhysicsPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
+
+Corresponds to the [NotificationPhysicsProcess] notification in [graphics.gd/classdb/Object.Instance.Notification].
+
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-Note: 'delta' will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Instance.Process] and [Instance.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [Instance.Time.GetTicksUsec].
+
+Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
 */
 func (Instance) _physics_process(impl func(ptr gdclass.Receiver, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -347,8 +414,9 @@ func (Instance) _physics_process(impl func(ptr gdclass.Receiver, delta Float.X))
 }
 
 /*
-Called when the node enters the [SceneTree] (e.g. upon instantiating, scene changing, or after calling [Instance.AddChild] in a script). If the node has children, its [Instance.EnterTree] callback will be called first, and then that of the children.
-Corresponds to the [NotificationEnterTree] notification in [Instance.Object.Notification].
+Called when the node enters the [graphics.gd/classdb/SceneTree] (e.g. upon instantiating, scene changing, or after calling [Instance.AddChild] in a script). If the node has children, its [Interface.EnterTree] callback will be called first, and then that of the children.
+
+Corresponds to the [NotificationEnterTree] notification in [graphics.gd/classdb/Object.Instance.Notification].
 */
 func (Instance) _enter_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -358,8 +426,9 @@ func (Instance) _enter_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionCla
 }
 
 /*
-Called when the node is about to leave the [SceneTree] (e.g. upon freeing, scene changing, or after calling [Instance.RemoveChild] in a script). If the node has children, its [Instance.ExitTree] callback will be called last, after all its children have left the tree.
-Corresponds to the [NotificationExitTree] notification in [Instance.Object.Notification] and signal [signal tree_exiting]. To get notified when the node has already left the active tree, connect to the [signal tree_exited].
+Called when the node is about to leave the [graphics.gd/classdb/SceneTree] (e.g. upon freeing, scene changing, or after calling [Instance.RemoveChild] in a script). If the node has children, its [Interface.ExitTree] callback will be called last, after all its children have left the tree.
+
+Corresponds to the [NotificationExitTree] notification in [graphics.gd/classdb/Object.Instance.Notification] and signal [Instance.OnTreeExiting]. To get notified when the node has already left the active tree, connect to the [Instance.OnTreeExited].
 */
 func (Instance) _exit_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -369,10 +438,13 @@ func (Instance) _exit_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClas
 }
 
 /*
-Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [Instance.Ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
-Corresponds to the [NotificationReady] notification in [Instance.Object.Notification]. See also the @onready annotation for variables.
-Usually used for initialization. For even earlier initialization, [Instance.Object.Init] may be used. See also [Instance.EnterTree].
-Note: This method may be called only once for each node. After removing a node from the scene tree and adding it again, [Instance.Ready] will not be called a second time. This can be bypassed by requesting another call with [Instance.RequestReady], which may be called anywhere before adding the node again.
+Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [Interface.Ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
+
+Corresponds to the [NotificationReady] notification in [graphics.gd/classdb/Object.Instance.Notification]. See also the @onready annotation for variables.
+
+Usually used for initialization. For even earlier initialization, [graphics.gd/classdb/Object.Instance.Init] may be used. See also [Interface.EnterTree].
+
+Note: This method may be called only once for each node. After removing a node from the scene tree and adding it again, [Interface.Ready] will not be called a second time. This can be bypassed by requesting another call with [Instance.RequestReady], which may be called anywhere before adding the node again.
 */
 func (Instance) _ready(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -383,23 +455,10 @@ func (Instance) _ready(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCal
 
 /*
 The elements in the array returned from this method are displayed as warnings in the Scene dock if the script that overrides it is a tool script.
+
 Returning an empty array produces no warnings.
+
 Call [Instance.UpdateConfigurationWarnings] when the warnings need to be updated for this node.
-[codeblock]
-@export var energy = 0:
-
-	set(value):
-	    energy = value
-	    update_configuration_warnings()
-
-func _get_configuration_warnings():
-
-	if energy < 0:
-	    return ["Energy must be 0 or greater."]
-	else:
-	    return []
-
-[/codeblock]
 */
 func (Instance) _get_configuration_warnings(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -416,9 +475,13 @@ func (Instance) _get_configuration_warnings(impl func(ptr gdclass.Receiver) []st
 
 /*
 Called when there is an input event. The input event propagates up through the node tree until a node consumes it.
+
 It is only called if input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessInput].
-To consume the input event and stop it propagating further to other nodes, [Instance.Viewport.SetInputAsHandled] can be called.
-For gameplay input, [Instance.UnhandledInput] and [Instance.UnhandledKeyInput] are usually a better fit as they allow the GUI to intercept the events first.
+
+To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+
+For gameplay input, [Interface.UnhandledInput] and [Interface.UnhandledKeyInput] are usually a better fit as they allow the GUI to intercept the events first.
+
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (Instance) _input(impl func(ptr gdclass.Receiver, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -432,10 +495,14 @@ func (Instance) _input(impl func(ptr gdclass.Receiver, event InputEvent.Instance
 }
 
 /*
-Called when an [InputEventKey], [InputEventShortcut], or [InputEventJoypadButton] hasn't been consumed by [Instance.Input] or any GUI [Control] item. It is called before [Instance.UnhandledKeyInput] and [Instance.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+Called when an [graphics.gd/classdb/InputEventKey], [graphics.gd/classdb/InputEventShortcut], or [graphics.gd/classdb/InputEventJoypadButton] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called before [Interface.UnhandledKeyInput] and [Interface.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+
 It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessShortcutInput].
-To consume the input event and stop it propagating further to other nodes, [Instance.Viewport.SetInputAsHandled] can be called.
-This method can be used to handle shortcuts. For generic GUI events, use [Instance.Input] instead. Gameplay events should usually be handled with either [Instance.UnhandledInput] or [Instance.UnhandledKeyInput].
+
+To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+
+This method can be used to handle shortcuts. For generic GUI events, use [Interface.Input] instead. Gameplay events should usually be handled with either [Interface.UnhandledInput] or [Interface.UnhandledKeyInput].
+
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
 */
 func (Instance) _shortcut_input(impl func(ptr gdclass.Receiver, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -449,10 +516,14 @@ func (Instance) _shortcut_input(impl func(ptr gdclass.Receiver, event InputEvent
 }
 
 /*
-Called when an [InputEvent] hasn't been consumed by [Instance.Input] or any GUI [Control] item. It is called after [Instance.ShortcutInput] and after [Instance.UnhandledKeyInput]. The input event propagates up through the node tree until a node consumes it.
+Called when an [graphics.gd/classdb/InputEvent] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called after [Interface.ShortcutInput] and after [Interface.UnhandledKeyInput]. The input event propagates up through the node tree until a node consumes it.
+
 It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessUnhandledInput].
-To consume the input event and stop it propagating further to other nodes, [Instance.Viewport.SetInputAsHandled] can be called.
-For gameplay input, this method is usually a better fit than [Instance.Input], as GUI events need a higher priority. For keyboard shortcuts, consider using [Instance.ShortcutInput] instead, as it is called before this method. Finally, to handle keyboard events, consider using [Instance.UnhandledKeyInput] for performance reasons.
+
+To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+
+For gameplay input, this method is usually a better fit than [Interface.Input], as GUI events need a higher priority. For keyboard shortcuts, consider using [Interface.ShortcutInput] instead, as it is called before this method. Finally, to handle keyboard events, consider using [Interface.UnhandledKeyInput] for performance reasons.
+
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (Instance) _unhandled_input(impl func(ptr gdclass.Receiver, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -466,11 +537,16 @@ func (Instance) _unhandled_input(impl func(ptr gdclass.Receiver, event InputEven
 }
 
 /*
-Called when an [InputEventKey] hasn't been consumed by [Instance.Input] or any GUI [Control] item. It is called after [Instance.ShortcutInput] but before [Instance.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+Called when an [graphics.gd/classdb/InputEventKey] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called after [Interface.ShortcutInput] but before [Interface.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+
 It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessUnhandledKeyInput].
-To consume the input event and stop it propagating further to other nodes, [Instance.Viewport.SetInputAsHandled] can be called.
-This method can be used to handle Unicode character input with [kbd]Alt[/kbd], [kbd]Alt + Ctrl[/kbd], and [kbd]Alt + Shift[/kbd] modifiers, after shortcuts were handled.
-For gameplay input, this and [Instance.UnhandledInput] are usually a better fit than [Instance.Input], as GUI events should be handled first. This method also performs better than [Instance.UnhandledInput], since unrelated events such as [InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [Instance.ShortcutInput] instead.
+
+To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+
+This method can be used to handle Unicode character input with Alt, Alt + Ctrl, and Alt + Shift modifiers, after shortcuts were handled.
+
+For gameplay input, this and [Interface.UnhandledInput] are usually a better fit than [Interface.Input], as GUI events should be handled first. This method also performs better than [Interface.UnhandledInput], since unrelated events such as [graphics.gd/classdb/InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [Interface.ShortcutInput] instead.
+
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (Instance) _unhandled_key_input(impl func(ptr gdclass.Receiver, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -484,7 +560,8 @@ func (Instance) _unhandled_key_input(impl func(ptr gdclass.Receiver, event Input
 }
 
 /*
-Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
+Prints all orphan nodes (nodes outside the [graphics.gd/classdb/SceneTree]). Useful for debugging.
+
 Note: This method only works in debug builds. Does nothing in a project exported in release mode.
 */
 func PrintOrphanNodes() { //gd:Node.print_orphan_nodes
@@ -494,8 +571,11 @@ func PrintOrphanNodes() { //gd:Node.print_orphan_nodes
 
 /*
 Adds a 'sibling' node to this node's parent, and moves the added sibling right below this node.
-If 'force_readable_name' is true, improves the readability of the added 'sibling'. If not named, the 'sibling' is renamed to its type, and if it shares [member name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
+
+If 'force_readable_name' is true, improves the readability of the added 'sibling'. If not named, the 'sibling' is renamed to its type, and if it shares [Instance.Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
+
 Use [Instance.AddChild] instead of this method if you don't need the child node to be added below a specific node in the list of children.
+
 Note: If this node is internal, the added sibling will be internal too (see [Instance.AddChild]'s internal parameter).
 */
 func (self Instance) AddSibling(sibling Instance) { //gd:Node.add_sibling
@@ -504,8 +584,11 @@ func (self Instance) AddSibling(sibling Instance) { //gd:Node.add_sibling
 
 /*
 Adds a 'sibling' node to this node's parent, and moves the added sibling right below this node.
-If 'force_readable_name' is true, improves the readability of the added 'sibling'. If not named, the 'sibling' is renamed to its type, and if it shares [member name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
+
+If 'force_readable_name' is true, improves the readability of the added 'sibling'. If not named, the 'sibling' is renamed to its type, and if it shares [Instance.Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
+
 Use [Instance.AddChild] instead of this method if you don't need the child node to be added below a specific node in the list of children.
+
 Note: If this node is internal, the added sibling will be internal too (see [Instance.AddChild]'s internal parameter).
 */
 func (self Expanded) AddSibling(sibling Instance, force_readable_name bool) { //gd:Node.add_sibling
@@ -514,31 +597,19 @@ func (self Expanded) AddSibling(sibling Instance, force_readable_name bool) { //
 
 /*
 Adds a child 'node'. Nodes can have any number of children, but every child must have a unique name. Child nodes are automatically deleted when the parent node is deleted, so an entire scene can be removed by deleting its topmost node.
-If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [member name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
-If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [Instance.GetChildren], unless their parameter include_internal is true. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [ColorPicker]. See [InternalMode] for available modes.
+
+If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [Instance.Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
+
+If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [Instance.GetChildren], unless their parameter include_internal is true. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [graphics.gd/classdb/ColorPicker]. See [InternalMode] for available modes.
+
 Note: If 'node' already has a parent, this method will fail. Use [Instance.RemoveChild] first to remove 'node' from its current parent. For example:
 
-[gdscript]
-var child_node = get_child(0)
-if child_node.get_parent():
-
-	child_node.get_parent().remove_child(child_node)
-
-add_child(child_node)
-[/gdscript]
-[csharp]
-Node childNode = GetChild(0);
-if (childNode.GetParent() != null)
-
-	{
-	    childNode.GetParent().RemoveChild(childNode);
-	}
-
-AddChild(childNode);
-[/csharp]
-
 If you need the child node to be added below a specific node in the list of children, use [Instance.AddSibling] instead of this method.
-Note: If you want a child to be persisted to a [PackedScene], you must set [member owner] in addition to calling [Instance.AddChild]. This is typically relevant for [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]tool scripts[/url] and [url=$DOCS_URL/tutorials/plugins/editor/index.html]editor plugins[/url]. If [Instance.AddChild] is called without setting [member owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
+
+Note: If you want a child to be persisted to a [graphics.gd/classdb/PackedScene], you must set [Instance.Owner] in addition to calling [Instance.AddChild]. This is typically relevant for [tool scripts] and [editor plugins]. If [Instance.AddChild] is called without setting [Instance.Owner], the newly added [graphics.gd/classdb/Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
+
+[editor plugins]: https://docs.godotengine.org/tutorials/plugins/editor/index.html
+[tool scripts]: https://docs.godotengine.org/tutorials/plugins/running_code_in_the_editor.html
 */
 func (self Instance) AddChild(node Instance) { //gd:Node.add_child
 	Advanced(self).AddChild(node, false, 0)
@@ -546,31 +617,19 @@ func (self Instance) AddChild(node Instance) { //gd:Node.add_child
 
 /*
 Adds a child 'node'. Nodes can have any number of children, but every child must have a unique name. Child nodes are automatically deleted when the parent node is deleted, so an entire scene can be removed by deleting its topmost node.
-If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [member name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
-If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [Instance.GetChildren], unless their parameter include_internal is true. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [ColorPicker]. See [InternalMode] for available modes.
+
+If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [Instance.Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
+
+If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [Instance.GetChildren], unless their parameter include_internal is true. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [graphics.gd/classdb/ColorPicker]. See [InternalMode] for available modes.
+
 Note: If 'node' already has a parent, this method will fail. Use [Instance.RemoveChild] first to remove 'node' from its current parent. For example:
 
-[gdscript]
-var child_node = get_child(0)
-if child_node.get_parent():
-
-	child_node.get_parent().remove_child(child_node)
-
-add_child(child_node)
-[/gdscript]
-[csharp]
-Node childNode = GetChild(0);
-if (childNode.GetParent() != null)
-
-	{
-	    childNode.GetParent().RemoveChild(childNode);
-	}
-
-AddChild(childNode);
-[/csharp]
-
 If you need the child node to be added below a specific node in the list of children, use [Instance.AddSibling] instead of this method.
-Note: If you want a child to be persisted to a [PackedScene], you must set [member owner] in addition to calling [Instance.AddChild]. This is typically relevant for [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]tool scripts[/url] and [url=$DOCS_URL/tutorials/plugins/editor/index.html]editor plugins[/url]. If [Instance.AddChild] is called without setting [member owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
+
+Note: If you want a child to be persisted to a [graphics.gd/classdb/PackedScene], you must set [Instance.Owner] in addition to calling [Instance.AddChild]. This is typically relevant for [tool scripts] and [editor plugins]. If [Instance.AddChild] is called without setting [Instance.Owner], the newly added [graphics.gd/classdb/Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
+
+[editor plugins]: https://docs.godotengine.org/tutorials/plugins/editor/index.html
+[tool scripts]: https://docs.godotengine.org/tutorials/plugins/running_code_in_the_editor.html
 */
 func (self Expanded) AddChild(node Instance, force_readable_name bool, internal_ InternalMode) { //gd:Node.add_child
 	Advanced(self).AddChild(node, force_readable_name, internal_)
@@ -578,23 +637,26 @@ func (self Expanded) AddChild(node Instance, force_readable_name bool, internal_
 
 /*
 Removes a child 'node'. The 'node', along with its children, are not deleted. To delete a node, see [Instance.QueueFree].
-Note: When this node is inside the tree, this method sets the [member owner] of the removed 'node' (or its descendants) to null, if their [member owner] is no longer an ancestor (see [Instance.IsAncestorOf]).
+
+Note: When this node is inside the tree, this method sets the [Instance.Owner] of the removed 'node' (or its descendants) to null, if their [Instance.Owner] is no longer an ancestor (see [Instance.IsAncestorOf]).
 */
 func (self Instance) RemoveChild(node Instance) { //gd:Node.remove_child
 	Advanced(self).RemoveChild(node)
 }
 
 /*
-Changes the parent of this [Node] to the 'new_parent'. The node needs to already have a parent. The node's [member owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
-If 'keep_global_transform' is true, the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
+Changes the parent of this [graphics.gd/classdb/Node] to the 'new_parent'. The node needs to already have a parent. The node's [Instance.Owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
+
+If 'keep_global_transform' is true, the node's global transform will be preserved if supported. [graphics.gd/classdb/Node2D], [graphics.gd/classdb/Node3D] and [graphics.gd/classdb/Control] support this argument (but [graphics.gd/classdb/Control] keeps only position).
 */
 func (self Instance) Reparent(new_parent Instance) { //gd:Node.reparent
 	Advanced(self).Reparent(new_parent, true)
 }
 
 /*
-Changes the parent of this [Node] to the 'new_parent'. The node needs to already have a parent. The node's [member owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
-If 'keep_global_transform' is true, the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
+Changes the parent of this [graphics.gd/classdb/Node] to the 'new_parent'. The node needs to already have a parent. The node's [Instance.Owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
+
+If 'keep_global_transform' is true, the node's global transform will be preserved if supported. [graphics.gd/classdb/Node2D], [graphics.gd/classdb/Node3D] and [graphics.gd/classdb/Control] support this argument (but [graphics.gd/classdb/Control] keeps only position).
 */
 func (self Expanded) Reparent(new_parent Instance, keep_global_transform bool) { //gd:Node.reparent
 	Advanced(self).Reparent(new_parent, keep_global_transform)
@@ -602,6 +664,7 @@ func (self Expanded) Reparent(new_parent Instance, keep_global_transform bool) {
 
 /*
 Returns the number of children of this node.
+
 If 'include_internal' is false, internal children are not counted (see [Instance.AddChild]'s internal parameter).
 */
 func (self Instance) GetChildCount() int { //gd:Node.get_child_count
@@ -610,6 +673,7 @@ func (self Instance) GetChildCount() int { //gd:Node.get_child_count
 
 /*
 Returns the number of children of this node.
+
 If 'include_internal' is false, internal children are not counted (see [Instance.AddChild]'s internal parameter).
 */
 func (self Expanded) GetChildCount(include_internal bool) int { //gd:Node.get_child_count
@@ -617,7 +681,8 @@ func (self Expanded) GetChildCount(include_internal bool) int { //gd:Node.get_ch
 }
 
 /*
-Returns all children of this node inside an [Array].
+Returns all children of this node inside an slice.
+
 If 'include_internal' is false, excludes internal children from the returned array (see [Instance.AddChild]'s internal parameter).
 */
 func (self Instance) GetChildren() []Instance { //gd:Node.get_children
@@ -625,7 +690,8 @@ func (self Instance) GetChildren() []Instance { //gd:Node.get_children
 }
 
 /*
-Returns all children of this node inside an [Array].
+Returns all children of this node inside an slice.
+
 If 'include_internal' is false, excludes internal children from the returned array (see [Instance.AddChild]'s internal parameter).
 */
 func (self Expanded) GetChildren(include_internal bool) []Instance { //gd:Node.get_children
@@ -634,17 +700,10 @@ func (self Expanded) GetChildren(include_internal bool) []Instance { //gd:Node.g
 
 /*
 Fetches a child node by its index. Each child node has an index relative its siblings (see [Instance.GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [Instance.GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
-If 'include_internal' is false, internal children are ignored (see [Instance.AddChild]'s internal parameter).
-[codeblock]
-# Assuming the following are children of this node, in order:
-# First, Middle, Last.
 
-var a = get_child(0).name  # a is "First"
-var b = get_child(1).name  # b is "Middle"
-var b = get_child(2).name  # b is "Last"
-var c = get_child(-1).name # c is "Last"
-[/codeblock]
-Note: To fetch a node by [NodePath], use [Instance.GetNode].
+If 'include_internal' is false, internal children are ignored (see [Instance.AddChild]'s internal parameter).
+
+Note: To fetch a node by node path, use [Instance.GetNode].
 */
 func (self Instance) GetChild(idx int) Instance { //gd:Node.get_child
 	return Instance(Advanced(self).GetChild(int64(idx), false))
@@ -652,17 +711,10 @@ func (self Instance) GetChild(idx int) Instance { //gd:Node.get_child
 
 /*
 Fetches a child node by its index. Each child node has an index relative its siblings (see [Instance.GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [Instance.GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
-If 'include_internal' is false, internal children are ignored (see [Instance.AddChild]'s internal parameter).
-[codeblock]
-# Assuming the following are children of this node, in order:
-# First, Middle, Last.
 
-var a = get_child(0).name  # a is "First"
-var b = get_child(1).name  # b is "Middle"
-var b = get_child(2).name  # b is "Last"
-var c = get_child(-1).name # c is "Last"
-[/codeblock]
-Note: To fetch a node by [NodePath], use [Instance.GetNode].
+If 'include_internal' is false, internal children are ignored (see [Instance.AddChild]'s internal parameter).
+
+Note: To fetch a node by node path, use [Instance.GetNode].
 */
 func (self Expanded) GetChild(idx int, include_internal bool) Instance { //gd:Node.get_child
 	return Instance(Advanced(self).GetChild(int64(idx), include_internal))
@@ -676,44 +728,20 @@ func (self Instance) HasNode(path string) bool { //gd:Node.has_node
 }
 
 /*
-Fetches a node. The [NodePath] can either be a relative path (from this node), or an absolute path (from the [member SceneTree.root]) to a node. If 'path' does not point to a valid node, generates an error and returns null. Attempts to access methods on the return value will result in an [i]"Attempt to call <method> on a null instance."[/i] error.
+Fetches a node. The node path can either be a relative path (from this node), or an absolute path (from the [graphics.gd/classdb/SceneTree.Instance.Root]) to a node. If 'path' does not point to a valid node, generates an error and returns null. Attempts to access methods on the return value will result in an "Attempt to call <method> on a null instance." error.
+
 Note: Fetching by absolute path only works when the node is inside the scene tree (see [Instance.IsInsideTree]).
+
 Example: Assume this method is called from the Character node, inside the following tree:
-[codeblock lang=text]
 
-	┖╴root
-	   ┠╴Character (you are here!)
-	   ┃  ┠╴Sword
-	   ┃  ┖╴Backpack
-	   ┃     ┖╴Dagger
-	   ┠╴MyGame
-	   ┖╴Swamp
-	      ┠╴Alligator
-	      ┠╴Mosquito
-	      ┖╴Goblin
-
-[/codeblock]
 The following calls will return a valid node:
-
-[gdscript]
-get_node("Sword")
-get_node("Backpack/Dagger")
-get_node("../Swamp/Alligator")
-get_node("/root/MyGame")
-[/gdscript]
-[csharp]
-GetNode("Sword");
-GetNode("Backpack/Dagger");
-GetNode("../Swamp/Alligator");
-GetNode("/root/MyGame");
-[/csharp]
 */
 func (self Instance) GetNode(path string) Instance { //gd:Node.get_node
 	return Instance(Advanced(self).GetNode(Path.ToNode(String.New(path))))
 }
 
 /*
-Fetches a node by [NodePath]. Similar to [Instance.GetNode], but does not generate an error if 'path' does not point to a valid node.
+Fetches a node by node path. Similar to [Instance.GetNode], but does not generate an error if 'path' does not point to a valid node.
 */
 func (self Instance) GetNodeOrNull(path string) Instance { //gd:Node.get_node_or_null
 	return Instance(Advanced(self).GetNodeOrNull(Path.ToNode(String.New(path))))
@@ -727,10 +755,14 @@ func (self Instance) GetParent() Instance { //gd:Node.get_parent
 }
 
 /*
-Finds the first descendant of this node whose [member name] matches 'pattern', returning null if no match is found. The matching is done against node names, [i]not[/i] their paths, through [Instance.String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
+Finds the first descendant of this node whose [Instance.Name] matches 'pattern', returning null if no match is found. The matching is done against node names, not their paths, through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
+
 If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [Instance.AddChild]).
-If 'owned' is true, only descendants with a valid [member owner] node are checked.
-Note: This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [Instance.GetNode] with unique names (see [member unique_name_in_owner]).
+
+If 'owned' is true, only descendants with a valid [Instance.Owner] node are checked.
+
+Note: This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [Instance.GetNode] with unique names (see [Instance.UniqueNameInOwner]).
+
 Note: To find all descendant nodes matching a pattern or a class type, see [Instance.FindChildren].
 */
 func (self Instance) FindChild(pattern string) Instance { //gd:Node.find_child
@@ -738,10 +770,14 @@ func (self Instance) FindChild(pattern string) Instance { //gd:Node.find_child
 }
 
 /*
-Finds the first descendant of this node whose [member name] matches 'pattern', returning null if no match is found. The matching is done against node names, [i]not[/i] their paths, through [Instance.String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
+Finds the first descendant of this node whose [Instance.Name] matches 'pattern', returning null if no match is found. The matching is done against node names, not their paths, through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
+
 If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [Instance.AddChild]).
-If 'owned' is true, only descendants with a valid [member owner] node are checked.
-Note: This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [Instance.GetNode] with unique names (see [member unique_name_in_owner]).
+
+If 'owned' is true, only descendants with a valid [Instance.Owner] node are checked.
+
+Note: This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [Instance.GetNode] with unique names (see [Instance.UniqueNameInOwner]).
+
 Note: To find all descendant nodes matching a pattern or a class type, see [Instance.FindChildren].
 */
 func (self Expanded) FindChild(pattern string, recursive bool, owned bool) Instance { //gd:Node.find_child
@@ -749,11 +785,16 @@ func (self Expanded) FindChild(pattern string, recursive bool, owned bool) Insta
 }
 
 /*
-Finds all descendants of this node whose names match 'pattern', returning an empty [Array] if no match is found. The matching is done against node names, [i]not[/i] their paths, through [Instance.String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
-If 'type' is not empty, only ancestors inheriting from 'type' are included (see [Instance.Object.IsClass]).
+Finds all descendants of this node whose names match 'pattern', returning an empty slice if no match is found. The matching is done against node names, not their paths, through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
+
+If 'type' is not empty, only ancestors inheriting from 'type' are included (see [graphics.gd/classdb/Object.Instance.IsClass]).
+
 If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [Instance.AddChild]).
-If 'owned' is true, only descendants with a valid [member owner] node are checked.
+
+If 'owned' is true, only descendants with a valid [Instance.Owner] node are checked.
+
 Note: This method can be very slow. Consider storing references to the found nodes in a variable.
+
 Note: To find a single descendant node matching a pattern, see [Instance.FindChild].
 */
 func (self Instance) FindChildren(pattern string) []Instance { //gd:Node.find_children
@@ -761,11 +802,16 @@ func (self Instance) FindChildren(pattern string) []Instance { //gd:Node.find_ch
 }
 
 /*
-Finds all descendants of this node whose names match 'pattern', returning an empty [Array] if no match is found. The matching is done against node names, [i]not[/i] their paths, through [Instance.String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
-If 'type' is not empty, only ancestors inheriting from 'type' are included (see [Instance.Object.IsClass]).
+Finds all descendants of this node whose names match 'pattern', returning an empty slice if no match is found. The matching is done against node names, not their paths, through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
+
+If 'type' is not empty, only ancestors inheriting from 'type' are included (see [graphics.gd/classdb/Object.Instance.IsClass]).
+
 If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [Instance.AddChild]).
-If 'owned' is true, only descendants with a valid [member owner] node are checked.
+
+If 'owned' is true, only descendants with a valid [Instance.Owner] node are checked.
+
 Note: This method can be very slow. Consider storing references to the found nodes in a variable.
+
 Note: To find a single descendant node matching a pattern, see [Instance.FindChild].
 */
 func (self Expanded) FindChildren(pattern string, atype string, recursive bool, owned bool) []Instance { //gd:Node.find_children
@@ -773,66 +819,38 @@ func (self Expanded) FindChildren(pattern string, atype string, recursive bool, 
 }
 
 /*
-Finds the first ancestor of this node whose [member name] matches 'pattern', returning null if no match is found. The matching is done through [Instance.String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character. See also [Instance.FindChild] and [Instance.FindChildren].
-Note: As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [Instance.GetNode] with unique names (see [member unique_name_in_owner]).
+Finds the first ancestor of this node whose [Instance.Name] matches 'pattern', returning null if no match is found. The matching is done through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character. See also [Instance.FindChild] and [Instance.FindChildren].
+
+Note: As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [Instance.GetNode] with unique names (see [Instance.UniqueNameInOwner]).
 */
 func (self Instance) FindParent(pattern string) Instance { //gd:Node.find_parent
 	return Instance(Advanced(self).FindParent(String.New(pattern)))
 }
 
 /*
-Returns true if 'path' points to a valid node and its subnames point to a valid [Resource], e.g. Area2D/CollisionShape2D:shape. Properties that are not [Resource] types (such as nodes or other [Variant] types) are not considered. See also [Instance.GetNodeAndResource].
+Returns true if 'path' points to a valid node and its subnames point to a valid [graphics.gd/classdb/Resource], e.g. Area2D/CollisionShape2D:shape. Properties that are not [graphics.gd/classdb/Resource] types (such as nodes or other any types) are not considered. See also [Instance.GetNodeAndResource].
 */
 func (self Instance) HasNodeAndResource(path string) bool { //gd:Node.has_node_and_resource
 	return bool(Advanced(self).HasNodeAndResource(Path.ToNode(String.New(path))))
 }
 
 /*
-Fetches a node and its most nested resource as specified by the [NodePath]'s subname. Returns an [Array] of size 3 where:
-- Element 0 is the [Node], or null if not found;
-- Element 1 is the subname's last nested [Resource], or null if not found;
-- Element 2 is the remaining [NodePath], referring to an existing, non-[Resource] property (see [Instance.Object.GetIndexed]).
-Example: Assume that the child's [member Sprite2D.texture] has been assigned a [AtlasTexture]:
+Fetches a node and its most nested resource as specified by the node path's subname. Returns an slice of size 3 where:
 
-[gdscript]
-var a = get_node_and_resource("Area2D/Sprite2D")
-print(a[0].name) # Prints Sprite2D
-print(a[1])      # Prints <null>
-print(a[2])      # Prints ^""
+- Element 0 is the [graphics.gd/classdb/Node], or null if not found;
 
-var b = get_node_and_resource("Area2D/Sprite2D:texture:atlas")
-print(b[0].name)        # Prints Sprite2D
-print(b[1].get_class()) # Prints AtlasTexture
-print(b[2])             # Prints ^""
+- Element 1 is the subname's last nested [graphics.gd/classdb/Resource], or null if not found;
 
-var c = get_node_and_resource("Area2D/Sprite2D:texture:atlas:region")
-print(c[0].name)        # Prints Sprite2D
-print(c[1].get_class()) # Prints AtlasTexture
-print(c[2])             # Prints ^":region"
-[/gdscript]
-[csharp]
-var a = GetNodeAndResource(NodePath("Area2D/Sprite2D"));
-GD.Print(a[0].Name); // Prints Sprite2D
-GD.Print(a[1]);      // Prints <null>
-GD.Print(a[2]);      // Prints ^"
+- Element 2 is the remaining node path, referring to an existing, non-[graphics.gd/classdb/Resource] property (see [graphics.gd/classdb/Object.Instance.GetIndexed]).
 
-var b = GetNodeAndResource(NodePath("Area2D/Sprite2D:texture:atlas"));
-GD.Print(b[0].name);        // Prints Sprite2D
-GD.Print(b[1].get_class()); // Prints AtlasTexture
-GD.Print(b[2]);             // Prints ^""
-
-var c = GetNodeAndResource(NodePath("Area2D/Sprite2D:texture:atlas:region"));
-GD.Print(c[0].name);        // Prints Sprite2D
-GD.Print(c[1].get_class()); // Prints AtlasTexture
-GD.Print(c[2]);             // Prints ^":region"
-[/csharp]
+Example: Assume that the child's [graphics.gd/classdb/Sprite2D.Instance.Texture] has been assigned a [graphics.gd/classdb/AtlasTexture]:
 */
 func (self Instance) GetNodeAndResource(path string) []any { //gd:Node.get_node_and_resource
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetNodeAndResource(Path.ToNode(String.New(path))))))
 }
 
 /*
-Returns true if this node is currently inside a [SceneTree]. See also [Instance.GetTree].
+Returns true if this node is currently inside a [graphics.gd/classdb/SceneTree]. See also [Instance.GetTree].
 */
 func (self Instance) IsInsideTree() bool { //gd:Node.is_inside_tree
 	return bool(Advanced(self).IsInsideTree())
@@ -860,15 +878,17 @@ func (self Instance) IsGreaterThan(node Instance) bool { //gd:Node.is_greater_th
 }
 
 /*
-Returns the node's absolute path, relative to the [member SceneTree.root]. If the node is not inside the scene tree, this method fails and returns an empty [NodePath].
+Returns the node's absolute path, relative to the [graphics.gd/classdb/SceneTree.Instance.Root]. If the node is not inside the scene tree, this method fails and returns an empty node path.
 */
 func (self Instance) GetPath() string { //gd:Node.get_path
 	return string(Advanced(self).GetPath().String())
 }
 
 /*
-Returns the relative [NodePath] from this node to the specified 'node'. Both nodes must be in the same [SceneTree] or scene hierarchy, otherwise this method fails and returns an empty [NodePath].
-If 'use_unique_path' is true, returns the shortest path accounting for this node's unique name (see [member unique_name_in_owner]).
+Returns the relative node path from this node to the specified 'node'. Both nodes must be in the same [graphics.gd/classdb/SceneTree] or scene hierarchy, otherwise this method fails and returns an empty node path.
+
+If 'use_unique_path' is true, returns the shortest path accounting for this node's unique name (see [Instance.UniqueNameInOwner]).
+
 Note: If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
 */
 func (self Instance) GetPathTo(node Instance) string { //gd:Node.get_path_to
@@ -876,8 +896,10 @@ func (self Instance) GetPathTo(node Instance) string { //gd:Node.get_path_to
 }
 
 /*
-Returns the relative [NodePath] from this node to the specified 'node'. Both nodes must be in the same [SceneTree] or scene hierarchy, otherwise this method fails and returns an empty [NodePath].
-If 'use_unique_path' is true, returns the shortest path accounting for this node's unique name (see [member unique_name_in_owner]).
+Returns the relative node path from this node to the specified 'node'. Both nodes must be in the same [graphics.gd/classdb/SceneTree] or scene hierarchy, otherwise this method fails and returns an empty node path.
+
+If 'use_unique_path' is true, returns the shortest path accounting for this node's unique name (see [Instance.UniqueNameInOwner]).
+
 Note: If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
 */
 func (self Expanded) GetPathTo(node Instance, use_unique_path bool) string { //gd:Node.get_path_to
@@ -885,34 +907,40 @@ func (self Expanded) GetPathTo(node Instance, use_unique_path bool) string { //g
 }
 
 /*
-Adds the node to the 'group'. Groups can be helpful to organize a subset of nodes, for example "enemies" or "collectables". See notes in the description, and the group methods in [SceneTree].
-If 'persistent' is true, the group will be stored when saved inside a [PackedScene]. All groups created and displayed in the Node dock are persistent.
-Note: To improve performance, the order of group names is [i]not[/i] guaranteed and may vary between project runs. Therefore, do not rely on the group order.
-Note: [SceneTree]'s group methods will [i]not[/i] work on this node if not inside the tree (see [Instance.IsInsideTree]).
+Adds the node to the 'group'. Groups can be helpful to organize a subset of nodes, for example "enemies" or "collectables". See notes in the description, and the group methods in [graphics.gd/classdb/SceneTree].
+
+If 'persistent' is true, the group will be stored when saved inside a [graphics.gd/classdb/PackedScene]. All groups created and displayed in the Node dock are persistent.
+
+Note: To improve performance, the order of group names is not guaranteed and may vary between project runs. Therefore, do not rely on the group order.
+
+Note: [graphics.gd/classdb/SceneTree]'s group methods will not work on this node if not inside the tree (see [Instance.IsInsideTree]).
 */
 func (self Instance) AddToGroup(group string) { //gd:Node.add_to_group
 	Advanced(self).AddToGroup(String.Name(String.New(group)), false)
 }
 
 /*
-Adds the node to the 'group'. Groups can be helpful to organize a subset of nodes, for example "enemies" or "collectables". See notes in the description, and the group methods in [SceneTree].
-If 'persistent' is true, the group will be stored when saved inside a [PackedScene]. All groups created and displayed in the Node dock are persistent.
-Note: To improve performance, the order of group names is [i]not[/i] guaranteed and may vary between project runs. Therefore, do not rely on the group order.
-Note: [SceneTree]'s group methods will [i]not[/i] work on this node if not inside the tree (see [Instance.IsInsideTree]).
+Adds the node to the 'group'. Groups can be helpful to organize a subset of nodes, for example "enemies" or "collectables". See notes in the description, and the group methods in [graphics.gd/classdb/SceneTree].
+
+If 'persistent' is true, the group will be stored when saved inside a [graphics.gd/classdb/PackedScene]. All groups created and displayed in the Node dock are persistent.
+
+Note: To improve performance, the order of group names is not guaranteed and may vary between project runs. Therefore, do not rely on the group order.
+
+Note: [graphics.gd/classdb/SceneTree]'s group methods will not work on this node if not inside the tree (see [Instance.IsInsideTree]).
 */
 func (self Expanded) AddToGroup(group string, persistent bool) { //gd:Node.add_to_group
 	Advanced(self).AddToGroup(String.Name(String.New(group)), persistent)
 }
 
 /*
-Removes the node from the given 'group'. Does nothing if the node is not in the 'group'. See also notes in the description, and the [SceneTree]'s group methods.
+Removes the node from the given 'group'. Does nothing if the node is not in the 'group'. See also notes in the description, and the [graphics.gd/classdb/SceneTree]'s group methods.
 */
 func (self Instance) RemoveFromGroup(group string) { //gd:Node.remove_from_group
 	Advanced(self).RemoveFromGroup(String.Name(String.New(group)))
 }
 
 /*
-Returns true if this node has been added to the given 'group'. See [Instance.AddToGroup] and [Instance.RemoveFromGroup]. See also notes in the description, and the [SceneTree]'s group methods.
+Returns true if this node has been added to the given 'group'. See [Instance.AddToGroup] and [Instance.RemoveFromGroup]. See also notes in the description, and the [graphics.gd/classdb/SceneTree]'s group methods.
 */
 func (self Instance) IsInGroup(group string) bool { //gd:Node.is_in_group
 	return bool(Advanced(self).IsInGroup(String.Name(String.New(group))))
@@ -920,37 +948,19 @@ func (self Instance) IsInGroup(group string) bool { //gd:Node.is_in_group
 
 /*
 Moves 'child_node' to the given index. A node's index is the order among its siblings. If 'to_index' is negative, the index is counted from the end of the list. See also [Instance.GetChild] and [Instance.GetIndex].
-Note: The processing order of several engine callbacks ([Instance.Ready], [Instance.Process], etc.) and notifications sent through [Instance.PropagateNotification] is affected by tree order. [CanvasItem] nodes are also rendered in tree order. See also [member process_priority].
+
+Note: The processing order of several engine callbacks ([Interface.Ready], [Interface.Process], etc.) and notifications sent through [Instance.PropagateNotification] is affected by tree order. [graphics.gd/classdb/CanvasItem] nodes are also rendered in tree order. See also [Instance.ProcessPriority].
 */
 func (self Instance) MoveChild(child_node Instance, to_index int) { //gd:Node.move_child
 	Advanced(self).MoveChild(child_node, int64(to_index))
 }
 
 /*
-Returns an [Array] of group names that the node has been added to.
-Note: To improve performance, the order of group names is [i]not[/i] guaranteed and may vary between project runs. Therefore, do not rely on the group order.
+Returns an slice of group names that the node has been added to.
+
+Note: To improve performance, the order of group names is not guaranteed and may vary between project runs. Therefore, do not rely on the group order.
+
 Note: This method may also return some group names starting with an underscore (_). These are internally used by the engine. To avoid conflicts, do not use custom groups starting with underscores. To exclude internal groups, see the following code snippet:
-
-[gdscript]
-# Stores the node's non-internal groups only (as an array of StringNames).
-var non_internal_groups = []
-for group in get_groups():
-
-	if not str(group).begins_with("_"):
-	    non_internal_groups.push_back(group)
-
-[/gdscript]
-[csharp]
-// Stores the node's non-internal groups only (as a List of StringNames).
-List<string> nonInternalGroups = new List<string>();
-foreach (string group in GetGroups())
-
-	{
-	    if (!group.BeginsWith("_"))
-	        nonInternalGroups.Add(group);
-	}
-
-[/csharp]
 */
 func (self Instance) GetGroups() []string { //gd:Node.get_groups
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetGroups())))
@@ -958,6 +968,7 @@ func (self Instance) GetGroups() []string { //gd:Node.get_groups
 
 /*
 Returns this node's order among its siblings. The first node's index is 0. See also [Instance.GetChild].
+
 If 'include_internal' is false, returns the index ignoring internal children. The first, non-internal child will have an index of 0 (see [Instance.AddChild]'s internal parameter).
 */
 func (self Instance) GetIndex() int { //gd:Node.get_index
@@ -966,6 +977,7 @@ func (self Instance) GetIndex() int { //gd:Node.get_index
 
 /*
 Returns this node's order among its siblings. The first node's index is 0. See also [Instance.GetChild].
+
 If 'include_internal' is false, returns the index ignoring internal children. The first, non-internal child will have an index of 0 (see [Instance.AddChild]'s internal parameter).
 */
 func (self Expanded) GetIndex(include_internal bool) int { //gd:Node.get_index
@@ -973,16 +985,9 @@ func (self Expanded) GetIndex(include_internal bool) int { //gd:Node.get_index
 }
 
 /*
-Prints the node and its children to the console, recursively. The node does not have to be inside the tree. This method outputs [NodePath]s relative to this node, and is good for copy/pasting into [Instance.GetNode]. See also [Instance.PrintTreePretty].
+Prints the node and its children to the console, recursively. The node does not have to be inside the tree. This method outputs node paths relative to this node, and is good for copy/pasting into [Instance.GetNode]. See also [Instance.PrintTreePretty].
+
 May print, for example:
-[codeblock lang=text]
-.
-Menu
-Menu/Label
-Menu/Camera2D
-SplashScreen
-SplashScreen/Camera2D
-[/codeblock]
 */
 func (self Instance) PrintTree() { //gd:Node.print_tree
 	Advanced(self).PrintTree()
@@ -990,58 +995,33 @@ func (self Instance) PrintTree() { //gd:Node.print_tree
 
 /*
 Prints the node and its children to the console, recursively. The node does not have to be inside the tree. Similar to [Instance.PrintTree], but the graphical representation looks like what is displayed in the editor's Scene dock. It is useful for inspecting larger trees.
+
 May print, for example:
-[codeblock lang=text]
-
-	┖╴TheGame
-	   ┠╴Menu
-	   ┃  ┠╴Label
-	   ┃  ┖╴Camera2D
-	   ┖╴SplashScreen
-	      ┖╴Camera2D
-
-[/codeblock]
 */
 func (self Instance) PrintTreePretty() { //gd:Node.print_tree_pretty
 	Advanced(self).PrintTreePretty()
 }
 
 /*
-Returns the tree as a [String]. Used mainly for debugging purposes. This version displays the path relative to the current node, and is good for copy/pasting into the [Instance.GetNode] function. It also can be used in game UI/UX.
+Returns the tree as a string. Used mainly for debugging purposes. This version displays the path relative to the current node, and is good for copy/pasting into the [Instance.GetNode] function. It also can be used in game UI/UX.
+
 May print, for example:
-[codeblock lang=text]
-TheGame
-TheGame/Menu
-TheGame/Menu/Label
-TheGame/Menu/Camera2D
-TheGame/SplashScreen
-TheGame/SplashScreen/Camera2D
-[/codeblock]
 */
 func (self Instance) GetTreeString() string { //gd:Node.get_tree_string
 	return string(Advanced(self).GetTreeString().String())
 }
 
 /*
-Similar to [Instance.GetTreeString], this returns the tree as a [String]. This version displays a more graphical representation similar to what is displayed in the Scene Dock. It is useful for inspecting larger trees.
+Similar to [Instance.GetTreeString], this returns the tree as a string. This version displays a more graphical representation similar to what is displayed in the Scene Dock. It is useful for inspecting larger trees.
+
 May print, for example:
-[codeblock lang=text]
-
-	┖╴TheGame
-	   ┠╴Menu
-	   ┃  ┠╴Label
-	   ┃  ┖╴Camera2D
-	   ┖╴SplashScreen
-	      ┖╴Camera2D
-
-[/codeblock]
 */
 func (self Instance) GetTreeStringPretty() string { //gd:Node.get_tree_string_pretty
 	return string(Advanced(self).GetTreeStringPretty().String())
 }
 
 /*
-Calls [Instance.Object.Notification] with 'what' on this node and all of its children, recursively.
+Calls [graphics.gd/classdb/Object.Instance.Notification] with 'what' on this node and all of its children, recursively.
 */
 func (self Instance) PropagateNotification(what int) { //gd:Node.propagate_notification
 	Advanced(self).PropagateNotification(int64(what))
@@ -1049,6 +1029,7 @@ func (self Instance) PropagateNotification(what int) { //gd:Node.propagate_notif
 
 /*
 Calls the given 'method' name, passing 'args' as arguments, on this node and all of its children, recursively.
+
 If 'parent_first' is true, the method is called on this node first, then on all of its children. If false, the children's methods are called first.
 */
 func (self Instance) PropagateCall(method string) { //gd:Node.propagate_call
@@ -1057,6 +1038,7 @@ func (self Instance) PropagateCall(method string) { //gd:Node.propagate_call
 
 /*
 Calls the given 'method' name, passing 'args' as arguments, on this node and all of its children, recursively.
+
 If 'parent_first' is true, the method is called on this node first, then on all of its children. If false, the children's methods are called first.
 */
 func (self Expanded) PropagateCall(method string, args []any, parent_first bool) { //gd:Node.propagate_call
@@ -1064,16 +1046,18 @@ func (self Expanded) PropagateCall(method string, args []any, parent_first bool)
 }
 
 /*
-If set to true, enables physics (fixed framerate) processing. When a node is being processed, it will receive a [NotificationPhysicsProcess] at a fixed (usually 60 FPS, see [member Engine.physics_ticks_per_second] to change) interval (and the [Instance.PhysicsProcess] callback will be called if it exists).
-Note: If [Instance.PhysicsProcess] is overridden, this will be automatically enabled before [Instance.Ready] is called.
+If set to true, enables physics (fixed framerate) processing. When a node is being processed, it will receive a [NotificationPhysicsProcess] at a fixed (usually 60 FPS, see [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] to change) interval (and the [Interface.PhysicsProcess] callback will be called if it exists).
+
+Note: If [Interface.PhysicsProcess] is overridden, this will be automatically enabled before [Interface.Ready] is called.
 */
 func (self Instance) SetPhysicsProcess(enable bool) { //gd:Node.set_physics_process
 	Advanced(self).SetPhysicsProcess(enable)
 }
 
 /*
-Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [Instance.PhysicsProcess]'s delta parameter, and is often consistent at run-time, unless [member Engine.physics_ticks_per_second] is changed. See also [NotificationPhysicsProcess].
-Note: The returned value will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Instance.Process] and [Instance.PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [Instance.Time.GetTicksUsec].
+Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [Interface.PhysicsProcess]'s delta parameter, and is often consistent at run-time, unless [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] is changed. See also [NotificationPhysicsProcess].
+
+Note: The returned value will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
 */
 func (self Instance) GetPhysicsProcessDeltaTime() Float.X { //gd:Node.get_physics_process_delta_time
 	return Float.X(Float.X(Advanced(self).GetPhysicsProcessDeltaTime()))
@@ -1087,17 +1071,20 @@ func (self Instance) IsPhysicsProcessing() bool { //gd:Node.is_physics_processin
 }
 
 /*
-Returns the time elapsed (in seconds) since the last process callback. This value is identical to [Instance.Process]'s delta parameter, and may vary from frame to frame. See also [NotificationProcess].
-Note: The returned value will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Instance.Process] and [Instance.PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [Instance.Time.GetTicksUsec].
+Returns the time elapsed (in seconds) since the last process callback. This value is identical to [Interface.Process]'s delta parameter, and may vary from frame to frame. See also [NotificationProcess].
+
+Note: The returned value will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
 */
 func (self Instance) GetProcessDeltaTime() Float.X { //gd:Node.get_process_delta_time
 	return Float.X(Float.X(Advanced(self).GetProcessDeltaTime()))
 }
 
 /*
-If set to true, enables processing. When a node is being processed, it will receive a [NotificationProcess] on every drawn frame (and the [Instance.Process] callback will be called if it exists).
-Note: If [Instance.Process] is overridden, this will be automatically enabled before [Instance.Ready] is called.
-Note: This method only affects the [Instance.Process] callback, i.e. it has no effect on other callbacks like [Instance.PhysicsProcess]. If you want to disable all processing for the node, set [member process_mode] to [ProcessModeDisabled].
+If set to true, enables processing. When a node is being processed, it will receive a [NotificationProcess] on every drawn frame (and the [Interface.Process] callback will be called if it exists).
+
+Note: If [Interface.Process] is overridden, this will be automatically enabled before [Interface.Ready] is called.
+
+Note: This method only affects the [Interface.Process] callback, i.e. it has no effect on other callbacks like [Interface.PhysicsProcess]. If you want to disable all processing for the node, set [Instance.ProcessMode] to [ProcessModeDisabled].
 */
 func (self Instance) SetProcess(enable bool) { //gd:Node.set_process
 	Advanced(self).SetProcess(enable)
@@ -1112,7 +1099,8 @@ func (self Instance) IsProcessing() bool { //gd:Node.is_processing
 
 /*
 If set to true, enables input processing.
-Note: If [Instance.Input] is overridden, this will be automatically enabled before [Instance.Ready] is called. Input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
+
+Note: If [Interface.Input] is overridden, this will be automatically enabled before [Interface.Ready] is called. Input processing is also already enabled for GUI controls, such as [graphics.gd/classdb/Button] and [graphics.gd/classdb/TextEdit].
 */
 func (self Instance) SetProcessInput(enable bool) { //gd:Node.set_process_input
 	Advanced(self).SetProcessInput(enable)
@@ -1127,7 +1115,8 @@ func (self Instance) IsProcessingInput() bool { //gd:Node.is_processing_input
 
 /*
 If set to true, enables shortcut processing for this node.
-Note: If [Instance.ShortcutInput] is overridden, this will be automatically enabled before [Instance.Ready] is called.
+
+Note: If [Interface.ShortcutInput] is overridden, this will be automatically enabled before [Interface.Ready] is called.
 */
 func (self Instance) SetProcessShortcutInput(enable bool) { //gd:Node.set_process_shortcut_input
 	Advanced(self).SetProcessShortcutInput(enable)
@@ -1141,8 +1130,9 @@ func (self Instance) IsProcessingShortcutInput() bool { //gd:Node.is_processing_
 }
 
 /*
-If set to true, enables unhandled input processing. It enables the node to receive all input that was not previously handled (usually by a [Control]).
-Note: If [Instance.UnhandledInput] is overridden, this will be automatically enabled before [Instance.Ready] is called. Unhandled input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
+If set to true, enables unhandled input processing. It enables the node to receive all input that was not previously handled (usually by a [graphics.gd/classdb/Control]).
+
+Note: If [Interface.UnhandledInput] is overridden, this will be automatically enabled before [Interface.Ready] is called. Unhandled input processing is also already enabled for GUI controls, such as [graphics.gd/classdb/Button] and [graphics.gd/classdb/TextEdit].
 */
 func (self Instance) SetProcessUnhandledInput(enable bool) { //gd:Node.set_process_unhandled_input
 	Advanced(self).SetProcessUnhandledInput(enable)
@@ -1157,7 +1147,8 @@ func (self Instance) IsProcessingUnhandledInput() bool { //gd:Node.is_processing
 
 /*
 If set to true, enables unhandled key input processing.
-Note: If [Instance.UnhandledKeyInput] is overridden, this will be automatically enabled before [Instance.Ready] is called.
+
+Note: If [Interface.UnhandledKeyInput] is overridden, this will be automatically enabled before [Interface.Ready] is called.
 */
 func (self Instance) SetProcessUnhandledKeyInput(enable bool) { //gd:Node.set_process_unhandled_key_input
 	Advanced(self).SetProcessUnhandledKeyInput(enable)
@@ -1171,13 +1162,19 @@ func (self Instance) IsProcessingUnhandledKeyInput() bool { //gd:Node.is_process
 }
 
 /*
-Returns true if the node can receive processing notifications and input callbacks ([NotificationProcess], [Instance.Input], etc.) from the [SceneTree] and [Viewport]. The returned value depends on [member process_mode]:
-- If set to [ProcessModePausable], returns true when the game is processing, i.e. [member SceneTree.paused] is false;
-- If set to [ProcessModeWhenPaused], returns true when the game is paused, i.e. [member SceneTree.paused] is true;
+Returns true if the node can receive processing notifications and input callbacks ([NotificationProcess], [Interface.Input], etc.) from the [graphics.gd/classdb/SceneTree] and [graphics.gd/classdb/Viewport]. The returned value depends on [Instance.ProcessMode]:
+
+- If set to [ProcessModePausable], returns true when the game is processing, i.e. [graphics.gd/classdb/SceneTree.Instance.Paused] is false;
+
+- If set to [ProcessModeWhenPaused], returns true when the game is paused, i.e. [graphics.gd/classdb/SceneTree.Instance.Paused] is true;
+
 - If set to [ProcessModeAlways], always returns true;
+
 - If set to [ProcessModeDisabled], always returns false;
-- If set to [ProcessModeInherit], use the parent node's [member process_mode] to determine the result.
-If the node is not inside the tree, returns false no matter the value of [member process_mode].
+
+- If set to [ProcessModeInherit], use the parent node's [Instance.ProcessMode] to determine the result.
+
+If the node is not inside the tree, returns false no matter the value of [Instance.ProcessMode].
 */
 func (self Instance) CanProcess() bool { //gd:Node.can_process
 	return bool(Advanced(self).CanProcess())
@@ -1198,7 +1195,8 @@ func (self Instance) IsDisplayedFolded() bool { //gd:Node.is_displayed_folded
 }
 
 /*
-If set to true, enables internal processing for this node. Internal processing happens in isolation from the normal [Instance.Process] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or processing is disabled for scripting ([Instance.SetProcess]).
+If set to true, enables internal processing for this node. Internal processing happens in isolation from the normal [Interface.Process] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or processing is disabled for scripting ([Instance.SetProcess]).
+
 Warning: Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
 */
 func (self Instance) SetProcessInternal(enable bool) { //gd:Node.set_process_internal
@@ -1213,7 +1211,8 @@ func (self Instance) IsProcessingInternal() bool { //gd:Node.is_processing_inter
 }
 
 /*
-If set to true, enables internal physics for this node. Internal physics processing happens in isolation from the normal [Instance.PhysicsProcess] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or physics processing is disabled for scripting ([Instance.SetPhysicsProcess]).
+If set to true, enables internal physics for this node. Internal physics processing happens in isolation from the normal [Interface.PhysicsProcess] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or physics processing is disabled for scripting ([Instance.SetPhysicsProcess]).
+
 Warning: Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
 */
 func (self Instance) SetPhysicsProcessInternal(enable bool) { //gd:Node.set_physics_process_internal
@@ -1228,17 +1227,20 @@ func (self Instance) IsPhysicsProcessingInternal() bool { //gd:Node.is_physics_p
 }
 
 /*
-Returns true if physics interpolation is enabled for this node (see [member physics_interpolation_mode]).
-Note: Interpolation will only be active if both the flag is set and physics interpolation is enabled within the [SceneTree]. This can be tested using [Instance.IsPhysicsInterpolatedAndEnabled].
+Returns true if physics interpolation is enabled for this node (see [Instance.PhysicsInterpolationMode]).
+
+Note: Interpolation will only be active if both the flag is set and physics interpolation is enabled within the [graphics.gd/classdb/SceneTree]. This can be tested using [Instance.IsPhysicsInterpolatedAndEnabled].
 */
 func (self Instance) IsPhysicsInterpolated() bool { //gd:Node.is_physics_interpolated
 	return bool(Advanced(self).IsPhysicsInterpolated())
 }
 
 /*
-Returns true if physics interpolation is enabled (see [member physics_interpolation_mode]) and enabled in the [SceneTree].
+Returns true if physics interpolation is enabled (see [Instance.PhysicsInterpolationMode]) and enabled in the [graphics.gd/classdb/SceneTree].
+
 This is a convenience version of [Instance.IsPhysicsInterpolated] that also checks whether physics interpolation is enabled globally.
-See [member SceneTree.physics_interpolation] and [member ProjectSettings.physics/common/physics_interpolation].
+
+See [graphics.gd/classdb/SceneTree.Instance.PhysicsInterpolation] and [graphics.gd/classdb/ProjectSettings] "physics/common/physics_interpolation".
 */
 func (self Instance) IsPhysicsInterpolatedAndEnabled() bool { //gd:Node.is_physics_interpolated_and_enabled
 	return bool(Advanced(self).IsPhysicsInterpolatedAndEnabled())
@@ -1246,8 +1248,11 @@ func (self Instance) IsPhysicsInterpolatedAndEnabled() bool { //gd:Node.is_physi
 
 /*
 When physics interpolation is active, moving a node to a radically different transform (such as placement within a level) can result in a visible glitch as the object is rendered moving from the old to new position over the physics tick.
+
 That glitch can be prevented by calling this method, which temporarily disables interpolation until the physics tick is complete.
+
 The notification [NotificationResetPhysicsInterpolation] will be received by the node and all children recursively.
+
 Note: This function should be called after moving the node, rather than before.
 */
 func (self Instance) ResetPhysicsInterpolation() { //gd:Node.reset_physics_interpolation
@@ -1256,25 +1261,21 @@ func (self Instance) ResetPhysicsInterpolation() { //gd:Node.reset_physics_inter
 
 /*
 Makes this node inherit the translation domain from its parent node. If this node has no parent, the main translation domain will be used.
-This is the default behavior for all nodes. Calling [Instance.Object.SetTranslationDomain] disables this behavior.
+
+This is the default behavior for all nodes. Calling [graphics.gd/classdb/Object.Instance.SetTranslationDomain] disables this behavior.
 */
 func (self Instance) SetTranslationDomainInherited() { //gd:Node.set_translation_domain_inherited
 	Advanced(self).SetTranslationDomainInherited()
 }
 
 /*
-Creates a new [Tween] and binds it to this node.
+Creates a new [graphics.gd/classdb/Tween] and binds it to this node.
+
 This is the equivalent of doing:
 
-[gdscript]
-get_tree().create_tween().bind_node(self)
-[/gdscript]
-[csharp]
-GetTree().CreateTween().BindNode(this);
-[/csharp]
+The Tween will start automatically on the next process frame or physics frame (depending on [Tween.TweenProcessMode]). See [graphics.gd/classdb/Tween.Instance.BindNode] for more info on Tweens bound to nodes.
 
-The Tween will start automatically on the next process frame or physics frame (depending on [Tween.TweenProcessMode]). See [Instance.Tween.BindNode] for more info on Tweens bound to nodes.
-Note: The method can still be used when the node is not inside [SceneTree]. It can fail in an unlikely case of using a custom [MainLoop].
+Note: The method can still be used when the node is not inside [graphics.gd/classdb/SceneTree]. It can fail in an unlikely case of using a custom [graphics.gd/classdb/MainLoop].
 */
 func (self Instance) CreateTween() Tween.Instance { //gd:Node.create_tween
 	return Tween.Instance(Advanced(self).CreateTween())
@@ -1282,7 +1283,8 @@ func (self Instance) CreateTween() Tween.Instance { //gd:Node.create_tween
 
 /*
 Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]).
-Note: For nodes with a [Script] attached, if [Instance.Object.Init] has been defined with required parameters, the duplicated node will not have a [Script].
+
+Note: For nodes with a [graphics.gd/classdb/Script] attached, if [graphics.gd/classdb/Object.Instance.Init] has been defined with required parameters, the duplicated node will not have a [graphics.gd/classdb/Script].
 */
 func (self Instance) Duplicate() Instance { //gd:Node.duplicate
 	return Instance(Advanced(self).Duplicate(int64(15)))
@@ -1290,7 +1292,8 @@ func (self Instance) Duplicate() Instance { //gd:Node.duplicate
 
 /*
 Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]).
-Note: For nodes with a [Script] attached, if [Instance.Object.Init] has been defined with required parameters, the duplicated node will not have a [Script].
+
+Note: For nodes with a [graphics.gd/classdb/Script] attached, if [graphics.gd/classdb/Object.Instance.Init] has been defined with required parameters, the duplicated node will not have a [graphics.gd/classdb/Script].
 */
 func (self Expanded) Duplicate(flags int) Instance { //gd:Node.duplicate
 	return Instance(Advanced(self).Duplicate(int64(flags)))
@@ -1298,8 +1301,10 @@ func (self Expanded) Duplicate(flags int) Instance { //gd:Node.duplicate
 
 /*
 Replaces this node by the given 'node'. All children of this node are moved to 'node'.
+
 If 'keep_groups' is true, the 'node' is added to the same groups that the replaced node is in (see [Instance.AddToGroup]).
-Warning: The replaced node is removed from the tree, but it is not deleted. To prevent memory leaks, store a reference to the node in a variable, or use [Instance.Object.Free].
+
+Warning: The replaced node is removed from the tree, but it is not deleted. To prevent memory leaks, store a reference to the node in a variable, or use [graphics.gd/classdb/Object.Instance.Free].
 */
 func (self Instance) ReplaceBy(node Instance) { //gd:Node.replace_by
 	Advanced(self).ReplaceBy(node, false)
@@ -1307,29 +1312,31 @@ func (self Instance) ReplaceBy(node Instance) { //gd:Node.replace_by
 
 /*
 Replaces this node by the given 'node'. All children of this node are moved to 'node'.
+
 If 'keep_groups' is true, the 'node' is added to the same groups that the replaced node is in (see [Instance.AddToGroup]).
-Warning: The replaced node is removed from the tree, but it is not deleted. To prevent memory leaks, store a reference to the node in a variable, or use [Instance.Object.Free].
+
+Warning: The replaced node is removed from the tree, but it is not deleted. To prevent memory leaks, store a reference to the node in a variable, or use [graphics.gd/classdb/Object.Instance.Free].
 */
 func (self Expanded) ReplaceBy(node Instance, keep_groups bool) { //gd:Node.replace_by
 	Advanced(self).ReplaceBy(node, keep_groups)
 }
 
 /*
-If set to true, the node becomes a [InstancePlaceholder] when packed and instantiated from a [PackedScene]. See also [Instance.GetSceneInstanceLoadPlaceholder].
+If set to true, the node becomes a [graphics.gd/classdb/InstancePlaceholder] when packed and instantiated from a [graphics.gd/classdb/PackedScene]. See also [Instance.GetSceneInstanceLoadPlaceholder].
 */
 func (self Instance) SetSceneInstanceLoadPlaceholder(load_placeholder bool) { //gd:Node.set_scene_instance_load_placeholder
 	Advanced(self).SetSceneInstanceLoadPlaceholder(load_placeholder)
 }
 
 /*
-Returns true if this node is an instance load placeholder. See [InstancePlaceholder] and [Instance.SetSceneInstanceLoadPlaceholder].
+Returns true if this node is an instance load placeholder. See [graphics.gd/classdb/InstancePlaceholder] and [Instance.SetSceneInstanceLoadPlaceholder].
 */
 func (self Instance) GetSceneInstanceLoadPlaceholder() bool { //gd:Node.get_scene_instance_load_placeholder
 	return bool(Advanced(self).GetSceneInstanceLoadPlaceholder())
 }
 
 /*
-Set to true to allow all nodes owned by 'node' to be available, and editable, in the Scene dock, even if their [member owner] is not the scene root. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [Instance.IsEditableInstance].
+Set to true to allow all nodes owned by 'node' to be available, and editable, in the Scene dock, even if their [Instance.Owner] is not the scene root. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [Instance.IsEditableInstance].
 */
 func (self Instance) SetEditableInstance(node Instance, is_editable bool) { //gd:Node.set_editable_instance
 	Advanced(self).SetEditableInstance(node, is_editable)
@@ -1344,16 +1351,19 @@ func (self Instance) IsEditableInstance(node Instance) bool { //gd:Node.is_edita
 
 /*
 Queues this node to be deleted at the end of the current frame. When deleted, all of its children are deleted as well, and all references to the node and its children become invalid.
-Unlike with [Instance.Object.Free], the node is not deleted instantly, and it can still be accessed before deletion. It is also safe to call [Instance.QueueFree] multiple times. Use [Instance.Object.IsQueuedForDeletion] to check if the node will be deleted at the end of the frame.
-Note: The node will only be freed after all other deferred calls are finished. Using this method is not always the same as calling [Instance.Object.Free] through [Instance.Object.CallDeferred].
+
+Unlike with [graphics.gd/classdb/Object.Instance.Free], the node is not deleted instantly, and it can still be accessed before deletion. It is also safe to call [Instance.QueueFree] multiple times. Use [graphics.gd/classdb/Object.Instance.IsQueuedForDeletion] to check if the node will be deleted at the end of the frame.
+
+Note: The node will only be freed after all other deferred calls are finished. Using this method is not always the same as calling [graphics.gd/classdb/Object.Instance.Free] through [graphics.gd/classdb/Object.Instance.CallDeferred].
 */
 func (self Instance) QueueFree() { //gd:Node.queue_free
 	Advanced(self).QueueFree()
 }
 
 /*
-Requests [Instance.Ready] to be called again the next time the node enters the tree. Does not immediately call [Instance.Ready].
-Note: This method only affects the current node. If the node's children also need to request ready, this method needs to be called for each one of them. When the node and its children enter the tree again, the order of [Instance.Ready] callbacks will be the same as normal.
+Requests [Interface.Ready] to be called again the next time the node enters the tree. Does not immediately call [Interface.Ready].
+
+Note: This method only affects the current node. If the node's children also need to request ready, this method needs to be called for each one of them. When the node and its children enter the tree again, the order of [Interface.Ready] callbacks will be the same as normal.
 */
 func (self Instance) RequestReady() { //gd:Node.request_ready
 	Advanced(self).RequestReady()
@@ -1361,6 +1371,7 @@ func (self Instance) RequestReady() { //gd:Node.request_ready
 
 /*
 Returns true if the node is ready, i.e. it's inside scene tree and all its children are initialized.
+
 [Instance.RequestReady] resets it back to false.
 */
 func (self Instance) IsNodeReady() bool { //gd:Node.is_node_ready
@@ -1368,18 +1379,22 @@ func (self Instance) IsNodeReady() bool { //gd:Node.is_node_ready
 }
 
 /*
-Sets the node's multiplayer authority to the peer with the given peer 'id'. The multiplayer authority is the peer that has authority over the node on the network. Defaults to peer ID 1 (the server). Useful in conjunction with [Instance.RpcConfig] and the [MultiplayerAPI].
+Sets the node's multiplayer authority to the peer with the given peer 'id'. The multiplayer authority is the peer that has authority over the node on the network. Defaults to peer ID 1 (the server). Useful in conjunction with [Instance.RpcConfig] and the [graphics.gd/classdb/MultiplayerAPI].
+
 If 'recursive' is true, the given peer is recursively set as the authority for all children of this node.
-Warning: This does not automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [member MultiplayerSpawner.spawn_function], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does not propagate to newly added children.
+
+Warning: This does not automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [graphics.gd/classdb/MultiplayerSpawner.Instance.SpawnFunction], an RPC, or a [graphics.gd/classdb/MultiplayerSynchronizer]. Furthermore, the parent's authority does not propagate to newly added children.
 */
 func (self Instance) SetMultiplayerAuthority(id int) { //gd:Node.set_multiplayer_authority
 	Advanced(self).SetMultiplayerAuthority(int64(id), true)
 }
 
 /*
-Sets the node's multiplayer authority to the peer with the given peer 'id'. The multiplayer authority is the peer that has authority over the node on the network. Defaults to peer ID 1 (the server). Useful in conjunction with [Instance.RpcConfig] and the [MultiplayerAPI].
+Sets the node's multiplayer authority to the peer with the given peer 'id'. The multiplayer authority is the peer that has authority over the node on the network. Defaults to peer ID 1 (the server). Useful in conjunction with [Instance.RpcConfig] and the [graphics.gd/classdb/MultiplayerAPI].
+
 If 'recursive' is true, the given peer is recursively set as the authority for all children of this node.
-Warning: This does not automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [member MultiplayerSpawner.spawn_function], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does not propagate to newly added children.
+
+Warning: This does not automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [graphics.gd/classdb/MultiplayerSpawner.Instance.SpawnFunction], an RPC, or a [graphics.gd/classdb/MultiplayerSynchronizer]. Furthermore, the parent's authority does not propagate to newly added children.
 */
 func (self Expanded) SetMultiplayerAuthority(id int, recursive bool) { //gd:Node.set_multiplayer_authority
 	Advanced(self).SetMultiplayerAuthority(int64(id), recursive)
@@ -1400,39 +1415,56 @@ func (self Instance) IsMultiplayerAuthority() bool { //gd:Node.is_multiplayer_au
 }
 
 /*
-Changes the RPC configuration for the given 'method'. 'config' should either be null to disable the feature (as by default), or a [Dictionary] containing the following entries:
+Changes the RPC configuration for the given 'method'. 'config' should either be null to disable the feature (as by default), or a data structure containing the following entries:
+
 - rpc_mode: see [MultiplayerAPI.RPCMode];
+
 - transfer_mode: see [MultiplayerPeer.TransferMode];
+
 - call_local: if true, the method will also be called locally;
-- channel: an [int] representing the channel to send the RPC on.
-Note: In GDScript, this method corresponds to the [annotation @GDScript.@rpc] annotation, with various parameters passed (@rpc(any), @rpc(authority)...). See also the [url=$DOCS_URL/tutorials/networking/high_level_multiplayer.html]high-level multiplayer[/url] tutorial.
+
+- channel: an int representing the channel to send the RPC on.
+
+Note: In GDScript, this method corresponds to the  annotation, with various parameters passed ([code]@rpc(any)[/code], [code]@rpc(authority)[/code]...). See also the [url=https://docs.godotengine.org/tutorials/networking/high_level_multiplayer.html]high-level multiplayer[/url] tutorial. annotation, with various parameters passed (@rpc(any), @rpc(authority)...). See also the [high-level multiplayer] tutorial.
+
+[high-level multiplayer]: https://docs.godotengine.org/tutorials/networking/high_level_multiplayer.html
 */
 func (self Instance) RpcConfig(method string, config any) { //gd:Node.rpc_config
 	Advanced(self).RpcConfig(String.Name(String.New(method)), variant.New(config))
 }
 
 /*
-Returns a [Dictionary] mapping method names to their RPC configuration defined for this node using [Instance.RpcConfig].
+Returns a data structure mapping method names to their RPC configuration defined for this node using [Instance.RpcConfig].
 */
 func (self Instance) GetRpcConfig() any { //gd:Node.get_rpc_config
 	return any(Advanced(self).GetRpcConfig().Interface())
 }
 
 /*
-Translates a 'message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation. Note that most [Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
-This method works the same as [Instance.Object.Tr], with the addition of respecting the [member auto_translate_mode] state.
-If [Instance.Object.CanTranslateMessages] is false, or no translation is available, this method returns the 'message' without changes. See [Instance.Object.SetMessageTranslation].
-For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
+Translates a 'message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation. Note that most [graphics.gd/classdb/Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
+
+This method works the same as [graphics.gd/classdb/Object.Instance.Tr], with the addition of respecting the [Instance.AutoTranslateMode] state.
+
+If [graphics.gd/classdb/Object.Instance.CanTranslateMessages] is false, or no translation is available, this method returns the 'message' without changes. See [graphics.gd/classdb/Object.Instance.SetMessageTranslation].
+
+For detailed examples, see [Internationalizing games].
+
+[Internationalizing games]: https://docs.godotengine.org/tutorials/i18n/internationalizing_games.html
 */
 func (self Instance) Atr(message string) string { //gd:Node.atr
 	return string(Advanced(self).Atr(String.New(message), String.Name(String.New(""))).String())
 }
 
 /*
-Translates a 'message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation. Note that most [Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
-This method works the same as [Instance.Object.Tr], with the addition of respecting the [member auto_translate_mode] state.
-If [Instance.Object.CanTranslateMessages] is false, or no translation is available, this method returns the 'message' without changes. See [Instance.Object.SetMessageTranslation].
-For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
+Translates a 'message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation. Note that most [graphics.gd/classdb/Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
+
+This method works the same as [graphics.gd/classdb/Object.Instance.Tr], with the addition of respecting the [Instance.AutoTranslateMode] state.
+
+If [graphics.gd/classdb/Object.Instance.CanTranslateMessages] is false, or no translation is available, this method returns the 'message' without changes. See [graphics.gd/classdb/Object.Instance.SetMessageTranslation].
+
+For detailed examples, see [Internationalizing games].
+
+[Internationalizing games]: https://docs.godotengine.org/tutorials/i18n/internationalizing_games.html
 */
 func (self Expanded) Atr(message string, context string) string { //gd:Node.atr
 	return string(Advanced(self).Atr(String.New(message), String.Name(String.New(context))).String())
@@ -1440,11 +1472,18 @@ func (self Expanded) Atr(message string, context string) string { //gd:Node.atr
 
 /*
 Translates a 'message' or 'plural_message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation.
-This method works the same as [Instance.Object.TrN], with the addition of respecting the [member auto_translate_mode] state.
-If [Instance.Object.CanTranslateMessages] is false, or no translation is available, this method returns 'message' or 'plural_message', without changes. See [Instance.Object.SetMessageTranslation].
+
+This method works the same as [graphics.gd/classdb/Object.Instance.TrN], with the addition of respecting the [Instance.AutoTranslateMode] state.
+
+If [graphics.gd/classdb/Object.Instance.CanTranslateMessages] is false, or no translation is available, this method returns 'message' or 'plural_message', without changes. See [graphics.gd/classdb/Object.Instance.SetMessageTranslation].
+
 The 'n' is the number, or amount, of the message's subject. It is used by the translation system to fetch the correct plural form for the current language.
-For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gettext.html]Localization using gettext[/url].
-Note: Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [Instance.Atr].
+
+For detailed examples, see [Localization using gettext].
+
+Note: Negative and [Float.X] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [Instance.Atr].
+
+[Localization using gettext]: https://docs.godotengine.org/tutorials/i18n/localization_using_gettext.html
 */
 func (self Instance) AtrN(message string, plural_message string, n int) string { //gd:Node.atr_n
 	return string(Advanced(self).AtrN(String.New(message), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(""))).String())
@@ -1452,20 +1491,33 @@ func (self Instance) AtrN(message string, plural_message string, n int) string {
 
 /*
 Translates a 'message' or 'plural_message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation.
-This method works the same as [Instance.Object.TrN], with the addition of respecting the [member auto_translate_mode] state.
-If [Instance.Object.CanTranslateMessages] is false, or no translation is available, this method returns 'message' or 'plural_message', without changes. See [Instance.Object.SetMessageTranslation].
+
+This method works the same as [graphics.gd/classdb/Object.Instance.TrN], with the addition of respecting the [Instance.AutoTranslateMode] state.
+
+If [graphics.gd/classdb/Object.Instance.CanTranslateMessages] is false, or no translation is available, this method returns 'message' or 'plural_message', without changes. See [graphics.gd/classdb/Object.Instance.SetMessageTranslation].
+
 The 'n' is the number, or amount, of the message's subject. It is used by the translation system to fetch the correct plural form for the current language.
-For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gettext.html]Localization using gettext[/url].
-Note: Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [Instance.Atr].
+
+For detailed examples, see [Localization using gettext].
+
+Note: Negative and [Float.X] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [Instance.Atr].
+
+[Localization using gettext]: https://docs.godotengine.org/tutorials/i18n/localization_using_gettext.html
 */
 func (self Expanded) AtrN(message string, plural_message string, n int, context string) string { //gd:Node.atr_n
 	return string(Advanced(self).AtrN(String.New(message), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(context))).String())
 }
 
 /*
-Sends a remote procedure call request for the given 'method' to peers on the network (and locally), sending additional arguments to the method called by the RPC. The call request will only be received by nodes with the same [NodePath], including the exact same [member name]. Behavior depends on the RPC configuration for the given 'method' (see [Instance.RpcConfig] and [annotation @GDScript.@rpc]). By default, methods are not exposed to RPCs.
-May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [member multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [member multiplayer]'s connection is not available.
-Note: You can only safely use RPCs on clients after you received the [signal MultiplayerAPI.connected_to_server] signal from the [MultiplayerAPI]. You also need to keep track of the connection state, either by the [MultiplayerAPI] signals like [signal MultiplayerAPI.server_disconnected] or by checking (get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED).
+Sends a remote procedure call request for the given 'method' to peers on the network (and locally), sending additional arguments to the method called by the RPC. The call request will only be received by nodes with the same node path, including the exact same [Instance.Name]. Behavior depends on the RPC configuration for the given 'method' (see [Instance.RpcConfig] and ). By default, methods are not exposed to RPCs.
+
+May return [constant OK] if the call is successful, [constant ERR_INVALID_PARAMETER] if the arguments passed in the [param method] do not match, [constant ERR_UNCONFIGURED] if the node's [member multiplayer] cannot be fetched (such as when the node is not inside the tree), [constant ERR_CONNECTION_ERROR] if [member multiplayer]'s connection is not available.
+
+[b]Note:[/b] You can only safely use RPCs on clients after you received the [signal MultiplayerAPI.connected_to_server] signal from the [MultiplayerAPI]. You also need to keep track of the connection state, either by the [MultiplayerAPI] signals like [signal MultiplayerAPI.server_disconnected] or by checking ([code]get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED[/code]).). By default, methods are not exposed to RPCs.
+
+May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [Instance.Multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [Instance.Multiplayer]'s connection is not available.
+
+Note: You can only safely use RPCs on clients after you received the [Instance.OnMultiplayerapi.ConnectedToServer] signal from the [graphics.gd/classdb/MultiplayerAPI]. You also need to keep track of the connection state, either by the [graphics.gd/classdb/MultiplayerAPI] signals like [Instance.OnMultiplayerapi.ServerDisconnected] or by checking (get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED).
 */
 func (self Instance) Rpc(method string, args ...any) error { //gd:Node.rpc
 	var converted_variants = make([]gd.Variant, len(args))
@@ -1476,8 +1528,9 @@ func (self Instance) Rpc(method string, args ...any) error { //gd:Node.rpc
 }
 
 /*
-Sends a [Instance.Rpc] to a specific peer identified by 'peer_id' (see [Instance.Multiplayerpeer.SetTargetPeer]).
-May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [member multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [member multiplayer]'s connection is not available.
+Sends a [Instance.Rpc] to a specific peer identified by 'peer_id' (see [graphics.gd/classdb/MultiplayerPeer.Instance.SetTargetPeer]).
+
+May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [Instance.Multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [Instance.Multiplayer]'s connection is not available.
 */
 func (self Instance) RpcId(peer_id int, method string, args ...any) error { //gd:Node.rpc_id
 	var converted_variants = make([]gd.Variant, len(args))
@@ -1488,14 +1541,14 @@ func (self Instance) RpcId(peer_id int, method string, args ...any) error { //gd
 }
 
 /*
-Refreshes the warnings displayed for this node in the Scene dock. Use [Instance.GetConfigurationWarnings] to customize the warning messages to display.
+Refreshes the warnings displayed for this node in the Scene dock. Use [Interface.GetConfigurationWarnings] to customize the warning messages to display.
 */
 func (self Instance) UpdateConfigurationWarnings() { //gd:Node.update_configuration_warnings
 	Advanced(self).UpdateConfigurationWarnings()
 }
 
 /*
-This function is similar to [Instance.Object.CallDeferred] except that the call will take place when the node thread group is processed. If the node thread group processes in sub-threads, then the call will be done on that thread, right before [NotificationProcess] or [NotificationPhysicsProcess], the [Instance.Process] or [Instance.PhysicsProcess] or their internal versions are called.
+This function is similar to [graphics.gd/classdb/Object.Instance.CallDeferred] except that the call will take place when the node thread group is processed. If the node thread group processes in sub-threads, then the call will be done on that thread, right before [NotificationProcess] or [NotificationPhysicsProcess], the [Interface.Process] or [Interface.PhysicsProcess] or their internal versions are called.
 */
 func (self Instance) CallDeferredThreadGroup(method string, args ...any) any { //gd:Node.call_deferred_thread_group
 	var converted_variants = make([]gd.Variant, len(args))
@@ -1711,11 +1764,16 @@ func (self Instance) SetEditorDescription(value string) {
 
 /*
 Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the 'delta' time since the previous frame is not constant. 'delta' is in seconds.
+
 It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcess].
-Processing happens in order of [member process_priority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
-Corresponds to the [NotificationProcess] notification in [Instance.Object.Notification].
+
+Processing happens in order of [Instance.ProcessPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
+
+Corresponds to the [NotificationProcess] notification in [graphics.gd/classdb/Object.Instance.Notification].
+
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-Note: 'delta' will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Instance.Process] and [Instance.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [Instance.Time.GetTicksUsec].
+
+Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
 */
 func (class) _process(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1726,12 +1784,17 @@ func (class) _process(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.Ext
 }
 
 /*
-Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the 'delta' parameter will [i]generally[/i] be constant (see exceptions below). 'delta' is in seconds.
+Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the 'delta' parameter will generally be constant (see exceptions below). 'delta' is in seconds.
+
 It is only called if physics processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetPhysicsProcess].
-Processing happens in order of [member process_physics_priority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
-Corresponds to the [NotificationPhysicsProcess] notification in [Instance.Object.Notification].
+
+Processing happens in order of [Instance.ProcessPhysicsPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
+
+Corresponds to the [NotificationPhysicsProcess] notification in [graphics.gd/classdb/Object.Instance.Notification].
+
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
-Note: 'delta' will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Instance.Process] and [Instance.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [Instance.Time.GetTicksUsec].
+
+Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
 */
 func (class) _physics_process(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1742,8 +1805,9 @@ func (class) _physics_process(impl func(ptr gdclass.Receiver, delta float64)) (c
 }
 
 /*
-Called when the node enters the [SceneTree] (e.g. upon instantiating, scene changing, or after calling [Instance.AddChild] in a script). If the node has children, its [Instance.EnterTree] callback will be called first, and then that of the children.
-Corresponds to the [NotificationEnterTree] notification in [Instance.Object.Notification].
+Called when the node enters the [graphics.gd/classdb/SceneTree] (e.g. upon instantiating, scene changing, or after calling [Instance.AddChild] in a script). If the node has children, its [Interface.EnterTree] callback will be called first, and then that of the children.
+
+Corresponds to the [NotificationEnterTree] notification in [graphics.gd/classdb/Object.Instance.Notification].
 */
 func (class) _enter_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1753,8 +1817,9 @@ func (class) _enter_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassC
 }
 
 /*
-Called when the node is about to leave the [SceneTree] (e.g. upon freeing, scene changing, or after calling [Instance.RemoveChild] in a script). If the node has children, its [Instance.ExitTree] callback will be called last, after all its children have left the tree.
-Corresponds to the [NotificationExitTree] notification in [Instance.Object.Notification] and signal [signal tree_exiting]. To get notified when the node has already left the active tree, connect to the [signal tree_exited].
+Called when the node is about to leave the [graphics.gd/classdb/SceneTree] (e.g. upon freeing, scene changing, or after calling [Instance.RemoveChild] in a script). If the node has children, its [Interface.ExitTree] callback will be called last, after all its children have left the tree.
+
+Corresponds to the [NotificationExitTree] notification in [graphics.gd/classdb/Object.Instance.Notification] and signal [Instance.OnTreeExiting]. To get notified when the node has already left the active tree, connect to the [Instance.OnTreeExited].
 */
 func (class) _exit_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1764,10 +1829,13 @@ func (class) _exit_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCa
 }
 
 /*
-Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [Instance.Ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
-Corresponds to the [NotificationReady] notification in [Instance.Object.Notification]. See also the @onready annotation for variables.
-Usually used for initialization. For even earlier initialization, [Instance.Object.Init] may be used. See also [Instance.EnterTree].
-Note: This method may be called only once for each node. After removing a node from the scene tree and adding it again, [Instance.Ready] will not be called a second time. This can be bypassed by requesting another call with [Instance.RequestReady], which may be called anywhere before adding the node again.
+Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [Interface.Ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
+
+Corresponds to the [NotificationReady] notification in [graphics.gd/classdb/Object.Instance.Notification]. See also the @onready annotation for variables.
+
+Usually used for initialization. For even earlier initialization, [graphics.gd/classdb/Object.Instance.Init] may be used. See also [Interface.EnterTree].
+
+Note: This method may be called only once for each node. After removing a node from the scene tree and adding it again, [Interface.Ready] will not be called a second time. This can be bypassed by requesting another call with [Instance.RequestReady], which may be called anywhere before adding the node again.
 */
 func (class) _ready(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1778,23 +1846,10 @@ func (class) _ready(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVi
 
 /*
 The elements in the array returned from this method are displayed as warnings in the Scene dock if the script that overrides it is a tool script.
+
 Returning an empty array produces no warnings.
+
 Call [Instance.UpdateConfigurationWarnings] when the warnings need to be updated for this node.
-[codeblock]
-@export var energy = 0:
-
-	set(value):
-	    energy = value
-	    update_configuration_warnings()
-
-func _get_configuration_warnings():
-
-	if energy < 0:
-	    return ["Energy must be 0 or greater."]
-	else:
-	    return []
-
-[/codeblock]
 */
 func (class) _get_configuration_warnings(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1811,9 +1866,13 @@ func (class) _get_configuration_warnings(impl func(ptr gdclass.Receiver) Packed.
 
 /*
 Called when there is an input event. The input event propagates up through the node tree until a node consumes it.
+
 It is only called if input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessInput].
-To consume the input event and stop it propagating further to other nodes, [Instance.Viewport.SetInputAsHandled] can be called.
-For gameplay input, [Instance.UnhandledInput] and [Instance.UnhandledKeyInput] are usually a better fit as they allow the GUI to intercept the events first.
+
+To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+
+For gameplay input, [Interface.UnhandledInput] and [Interface.UnhandledKeyInput] are usually a better fit as they allow the GUI to intercept the events first.
+
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (class) _input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1827,10 +1886,14 @@ func (class) _input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)
 }
 
 /*
-Called when an [InputEventKey], [InputEventShortcut], or [InputEventJoypadButton] hasn't been consumed by [Instance.Input] or any GUI [Control] item. It is called before [Instance.UnhandledKeyInput] and [Instance.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+Called when an [graphics.gd/classdb/InputEventKey], [graphics.gd/classdb/InputEventShortcut], or [graphics.gd/classdb/InputEventJoypadButton] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called before [Interface.UnhandledKeyInput] and [Interface.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+
 It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessShortcutInput].
-To consume the input event and stop it propagating further to other nodes, [Instance.Viewport.SetInputAsHandled] can be called.
-This method can be used to handle shortcuts. For generic GUI events, use [Instance.Input] instead. Gameplay events should usually be handled with either [Instance.UnhandledInput] or [Instance.UnhandledKeyInput].
+
+To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+
+This method can be used to handle shortcuts. For generic GUI events, use [Interface.Input] instead. Gameplay events should usually be handled with either [Interface.UnhandledInput] or [Interface.UnhandledKeyInput].
+
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
 */
 func (class) _shortcut_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1844,10 +1907,14 @@ func (class) _shortcut_input(impl func(ptr gdclass.Receiver, event [1]gdclass.In
 }
 
 /*
-Called when an [InputEvent] hasn't been consumed by [Instance.Input] or any GUI [Control] item. It is called after [Instance.ShortcutInput] and after [Instance.UnhandledKeyInput]. The input event propagates up through the node tree until a node consumes it.
+Called when an [graphics.gd/classdb/InputEvent] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called after [Interface.ShortcutInput] and after [Interface.UnhandledKeyInput]. The input event propagates up through the node tree until a node consumes it.
+
 It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessUnhandledInput].
-To consume the input event and stop it propagating further to other nodes, [Instance.Viewport.SetInputAsHandled] can be called.
-For gameplay input, this method is usually a better fit than [Instance.Input], as GUI events need a higher priority. For keyboard shortcuts, consider using [Instance.ShortcutInput] instead, as it is called before this method. Finally, to handle keyboard events, consider using [Instance.UnhandledKeyInput] for performance reasons.
+
+To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+
+For gameplay input, this method is usually a better fit than [Interface.Input], as GUI events need a higher priority. For keyboard shortcuts, consider using [Interface.ShortcutInput] instead, as it is called before this method. Finally, to handle keyboard events, consider using [Interface.UnhandledKeyInput] for performance reasons.
+
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (class) _unhandled_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1861,11 +1928,16 @@ func (class) _unhandled_input(impl func(ptr gdclass.Receiver, event [1]gdclass.I
 }
 
 /*
-Called when an [InputEventKey] hasn't been consumed by [Instance.Input] or any GUI [Control] item. It is called after [Instance.ShortcutInput] but before [Instance.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+Called when an [graphics.gd/classdb/InputEventKey] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called after [Interface.ShortcutInput] but before [Interface.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+
 It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessUnhandledKeyInput].
-To consume the input event and stop it propagating further to other nodes, [Instance.Viewport.SetInputAsHandled] can be called.
-This method can be used to handle Unicode character input with [kbd]Alt[/kbd], [kbd]Alt + Ctrl[/kbd], and [kbd]Alt + Shift[/kbd] modifiers, after shortcuts were handled.
-For gameplay input, this and [Instance.UnhandledInput] are usually a better fit than [Instance.Input], as GUI events should be handled first. This method also performs better than [Instance.UnhandledInput], since unrelated events such as [InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [Instance.ShortcutInput] instead.
+
+To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+
+This method can be used to handle Unicode character input with Alt, Alt + Ctrl, and Alt + Shift modifiers, after shortcuts were handled.
+
+For gameplay input, this and [Interface.UnhandledInput] are usually a better fit than [Interface.Input], as GUI events should be handled first. This method also performs better than [Interface.UnhandledInput], since unrelated events such as [graphics.gd/classdb/InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [Interface.ShortcutInput] instead.
+
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 */
 func (class) _unhandled_key_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1879,7 +1951,8 @@ func (class) _unhandled_key_input(impl func(ptr gdclass.Receiver, event [1]gdcla
 }
 
 /*
-Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
+Prints all orphan nodes (nodes outside the [graphics.gd/classdb/SceneTree]). Useful for debugging.
+
 Note: This method only works in debug builds. Does nothing in a project exported in release mode.
 */
 //go:nosplit
@@ -1889,8 +1962,11 @@ func (self class) PrintOrphanNodes() { //gd:Node.print_orphan_nodes
 
 /*
 Adds a 'sibling' node to this node's parent, and moves the added sibling right below this node.
-If 'force_readable_name' is true, improves the readability of the added 'sibling'. If not named, the 'sibling' is renamed to its type, and if it shares [member name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
+
+If 'force_readable_name' is true, improves the readability of the added 'sibling'. If not named, the 'sibling' is renamed to its type, and if it shares [Instance.Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
+
 Use [Instance.AddChild] instead of this method if you don't need the child node to be added below a specific node in the list of children.
+
 Note: If this node is internal, the added sibling will be internal too (see [Instance.AddChild]'s internal parameter).
 */
 //go:nosplit
@@ -1915,27 +1991,21 @@ func (self class) GetName() String.Name { //gd:Node.get_name
 
 /*
 Adds a child 'node'. Nodes can have any number of children, but every child must have a unique name. Child nodes are automatically deleted when the parent node is deleted, so an entire scene can be removed by deleting its topmost node.
-If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [member name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
-If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [Instance.GetChildren], unless their parameter include_internal is true. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [ColorPicker]. See [InternalMode] for available modes.
+
+If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [Instance.Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
+
+If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [Instance.GetChildren], unless their parameter include_internal is true. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [graphics.gd/classdb/ColorPicker]. See [InternalMode] for available modes.
+
 Note: If 'node' already has a parent, this method will fail. Use [Instance.RemoveChild] first to remove 'node' from its current parent. For example:
 
-[gdscript]
-var child_node = get_child(0)
-if child_node.get_parent():
-    child_node.get_parent().remove_child(child_node)
-add_child(child_node)
-[/gdscript]
-[csharp]
-Node childNode = GetChild(0);
-if (childNode.GetParent() != null)
-{
-    childNode.GetParent().RemoveChild(childNode);
-}
-AddChild(childNode);
-[/csharp]
+
 
 If you need the child node to be added below a specific node in the list of children, use [Instance.AddSibling] instead of this method.
-Note: If you want a child to be persisted to a [PackedScene], you must set [member owner] in addition to calling [Instance.AddChild]. This is typically relevant for [url=$DOCS_URL/tutorials/plugins/running_code_in_the_editor.html]tool scripts[/url] and [url=$DOCS_URL/tutorials/plugins/editor/index.html]editor plugins[/url]. If [Instance.AddChild] is called without setting [member owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
+
+Note: If you want a child to be persisted to a [graphics.gd/classdb/PackedScene], you must set [Instance.Owner] in addition to calling [Instance.AddChild]. This is typically relevant for [tool scripts] and [editor plugins]. If [Instance.AddChild] is called without setting [Instance.Owner], the newly added [graphics.gd/classdb/Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
+
+[editor plugins]: https://docs.godotengine.org/tutorials/plugins/editor/index.html
+[tool scripts]: https://docs.godotengine.org/tutorials/plugins/running_code_in_the_editor.html
 */
 //go:nosplit
 func (self class) AddChild(node [1]gdclass.Node, force_readable_name bool, internal_ InternalMode) { //gd:Node.add_child
@@ -1948,7 +2018,8 @@ func (self class) AddChild(node [1]gdclass.Node, force_readable_name bool, inter
 
 /*
 Removes a child 'node'. The 'node', along with its children, are not deleted. To delete a node, see [Instance.QueueFree].
-Note: When this node is inside the tree, this method sets the [member owner] of the removed 'node' (or its descendants) to null, if their [member owner] is no longer an ancestor (see [Instance.IsAncestorOf]).
+
+Note: When this node is inside the tree, this method sets the [Instance.Owner] of the removed 'node' (or its descendants) to null, if their [Instance.Owner] is no longer an ancestor (see [Instance.IsAncestorOf]).
 */
 //go:nosplit
 func (self class) RemoveChild(node [1]gdclass.Node) { //gd:Node.remove_child
@@ -1956,8 +2027,9 @@ func (self class) RemoveChild(node [1]gdclass.Node) { //gd:Node.remove_child
 }
 
 /*
-Changes the parent of this [Node] to the 'new_parent'. The node needs to already have a parent. The node's [member owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
-If 'keep_global_transform' is true, the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
+Changes the parent of this [graphics.gd/classdb/Node] to the 'new_parent'. The node needs to already have a parent. The node's [Instance.Owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
+
+If 'keep_global_transform' is true, the node's global transform will be preserved if supported. [graphics.gd/classdb/Node2D], [graphics.gd/classdb/Node3D] and [graphics.gd/classdb/Control] support this argument (but [graphics.gd/classdb/Control] keeps only position).
 */
 //go:nosplit
 func (self class) Reparent(new_parent [1]gdclass.Node, keep_global_transform bool) { //gd:Node.reparent
@@ -1969,6 +2041,7 @@ func (self class) Reparent(new_parent [1]gdclass.Node, keep_global_transform boo
 
 /*
 Returns the number of children of this node.
+
 If 'include_internal' is false, internal children are not counted (see [Instance.AddChild]'s internal parameter).
 */
 //go:nosplit
@@ -1979,7 +2052,8 @@ func (self class) GetChildCount(include_internal bool) int64 { //gd:Node.get_chi
 }
 
 /*
-Returns all children of this node inside an [Array].
+Returns all children of this node inside an slice.
+
 If 'include_internal' is false, excludes internal children from the returned array (see [Instance.AddChild]'s internal parameter).
 */
 //go:nosplit
@@ -1991,17 +2065,12 @@ func (self class) GetChildren(include_internal bool) Array.Contains[[1]gdclass.N
 
 /*
 Fetches a child node by its index. Each child node has an index relative its siblings (see [Instance.GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [Instance.GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
-If 'include_internal' is false, internal children are ignored (see [Instance.AddChild]'s internal parameter).
-[codeblock]
-# Assuming the following are children of this node, in order:
-# First, Middle, Last.
 
-var a = get_child(0).name  # a is "First"
-var b = get_child(1).name  # b is "Middle"
-var b = get_child(2).name  # b is "Last"
-var c = get_child(-1).name # c is "Last"
-[/codeblock]
-Note: To fetch a node by [NodePath], use [Instance.GetNode].
+If 'include_internal' is false, internal children are ignored (see [Instance.AddChild]'s internal parameter).
+
+
+
+Note: To fetch a node by node path, use [Instance.GetNode].
 */
 //go:nosplit
 func (self class) GetChild(idx int64, include_internal bool) [1]gdclass.Node { //gd:Node.get_child
@@ -2024,35 +2093,16 @@ func (self class) HasNode(path Path.ToNode) bool { //gd:Node.has_node
 }
 
 /*
-Fetches a node. The [NodePath] can either be a relative path (from this node), or an absolute path (from the [member SceneTree.root]) to a node. If 'path' does not point to a valid node, generates an error and returns null. Attempts to access methods on the return value will result in an [i]"Attempt to call <method> on a null instance."[/i] error.
+Fetches a node. The node path can either be a relative path (from this node), or an absolute path (from the [graphics.gd/classdb/SceneTree.Instance.Root]) to a node. If 'path' does not point to a valid node, generates an error and returns null. Attempts to access methods on the return value will result in an "Attempt to call <method> on a null instance." error.
+
 Note: Fetching by absolute path only works when the node is inside the scene tree (see [Instance.IsInsideTree]).
+
 Example: Assume this method is called from the Character node, inside the following tree:
-[codeblock lang=text]
- ┖╴root
-    ┠╴Character (you are here!)
-    ┃  ┠╴Sword
-    ┃  ┖╴Backpack
-    ┃     ┖╴Dagger
-    ┠╴MyGame
-    ┖╴Swamp
-       ┠╴Alligator
-       ┠╴Mosquito
-       ┖╴Goblin
-[/codeblock]
+
+
+
 The following calls will return a valid node:
 
-[gdscript]
-get_node("Sword")
-get_node("Backpack/Dagger")
-get_node("../Swamp/Alligator")
-get_node("/root/MyGame")
-[/gdscript]
-[csharp]
-GetNode("Sword");
-GetNode("Backpack/Dagger");
-GetNode("../Swamp/Alligator");
-GetNode("/root/MyGame");
-[/csharp]
 
 */
 //go:nosplit
@@ -2063,7 +2113,7 @@ func (self class) GetNode(path Path.ToNode) [1]gdclass.Node { //gd:Node.get_node
 }
 
 /*
-Fetches a node by [NodePath]. Similar to [Instance.GetNode], but does not generate an error if 'path' does not point to a valid node.
+Fetches a node by node path. Similar to [Instance.GetNode], but does not generate an error if 'path' does not point to a valid node.
 */
 //go:nosplit
 func (self class) GetNodeOrNull(path Path.ToNode) [1]gdclass.Node { //gd:Node.get_node_or_null
@@ -2083,10 +2133,14 @@ func (self class) GetParent() [1]gdclass.Node { //gd:Node.get_parent
 }
 
 /*
-Finds the first descendant of this node whose [member name] matches 'pattern', returning null if no match is found. The matching is done against node names, [i]not[/i] their paths, through [Instance.String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
+Finds the first descendant of this node whose [Instance.Name] matches 'pattern', returning null if no match is found. The matching is done against node names, not their paths, through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
+
 If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [Instance.AddChild]).
-If 'owned' is true, only descendants with a valid [member owner] node are checked.
-Note: This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [Instance.GetNode] with unique names (see [member unique_name_in_owner]).
+
+If 'owned' is true, only descendants with a valid [Instance.Owner] node are checked.
+
+Note: This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [Instance.GetNode] with unique names (see [Instance.UniqueNameInOwner]).
+
 Note: To find all descendant nodes matching a pattern or a class type, see [Instance.FindChildren].
 */
 //go:nosplit
@@ -2101,11 +2155,16 @@ func (self class) FindChild(pattern String.Readable, recursive bool, owned bool)
 }
 
 /*
-Finds all descendants of this node whose names match 'pattern', returning an empty [Array] if no match is found. The matching is done against node names, [i]not[/i] their paths, through [Instance.String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
-If 'type' is not empty, only ancestors inheriting from 'type' are included (see [Instance.Object.IsClass]).
+Finds all descendants of this node whose names match 'pattern', returning an empty slice if no match is found. The matching is done against node names, not their paths, through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
+
+If 'type' is not empty, only ancestors inheriting from 'type' are included (see [graphics.gd/classdb/Object.Instance.IsClass]).
+
 If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [Instance.AddChild]).
-If 'owned' is true, only descendants with a valid [member owner] node are checked.
+
+If 'owned' is true, only descendants with a valid [Instance.Owner] node are checked.
+
 Note: This method can be very slow. Consider storing references to the found nodes in a variable.
+
 Note: To find a single descendant node matching a pattern, see [Instance.FindChild].
 */
 //go:nosplit
@@ -2121,8 +2180,9 @@ func (self class) FindChildren(pattern String.Readable, atype String.Readable, r
 }
 
 /*
-Finds the first ancestor of this node whose [member name] matches 'pattern', returning null if no match is found. The matching is done through [Instance.String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character. See also [Instance.FindChild] and [Instance.FindChildren].
-Note: As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [Instance.GetNode] with unique names (see [member unique_name_in_owner]).
+Finds the first ancestor of this node whose [Instance.Name] matches 'pattern', returning null if no match is found. The matching is done through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character. See also [Instance.FindChild] and [Instance.FindChildren].
+
+Note: As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [Instance.GetNode] with unique names (see [Instance.UniqueNameInOwner]).
 */
 //go:nosplit
 func (self class) FindParent(pattern String.Readable) [1]gdclass.Node { //gd:Node.find_parent
@@ -2132,7 +2192,7 @@ func (self class) FindParent(pattern String.Readable) [1]gdclass.Node { //gd:Nod
 }
 
 /*
-Returns true if 'path' points to a valid node and its subnames point to a valid [Resource], e.g. Area2D/CollisionShape2D:shape. Properties that are not [Resource] types (such as nodes or other [Variant] types) are not considered. See also [Instance.GetNodeAndResource].
+Returns true if 'path' points to a valid node and its subnames point to a valid [graphics.gd/classdb/Resource], e.g. Area2D/CollisionShape2D:shape. Properties that are not [graphics.gd/classdb/Resource] types (such as nodes or other any types) are not considered. See also [Instance.GetNodeAndResource].
 */
 //go:nosplit
 func (self class) HasNodeAndResource(path Path.ToNode) bool { //gd:Node.has_node_and_resource
@@ -2142,44 +2202,16 @@ func (self class) HasNodeAndResource(path Path.ToNode) bool { //gd:Node.has_node
 }
 
 /*
-Fetches a node and its most nested resource as specified by the [NodePath]'s subname. Returns an [Array] of size 3 where:
-- Element 0 is the [Node], or null if not found;
-- Element 1 is the subname's last nested [Resource], or null if not found;
-- Element 2 is the remaining [NodePath], referring to an existing, non-[Resource] property (see [Instance.Object.GetIndexed]).
-Example: Assume that the child's [member Sprite2D.texture] has been assigned a [AtlasTexture]:
+Fetches a node and its most nested resource as specified by the node path's subname. Returns an slice of size 3 where:
 
-[gdscript]
-var a = get_node_and_resource("Area2D/Sprite2D")
-print(a[0].name) # Prints Sprite2D
-print(a[1])      # Prints <null>
-print(a[2])      # Prints ^""
+- Element 0 is the [graphics.gd/classdb/Node], or null if not found;
 
-var b = get_node_and_resource("Area2D/Sprite2D:texture:atlas")
-print(b[0].name)        # Prints Sprite2D
-print(b[1].get_class()) # Prints AtlasTexture
-print(b[2])             # Prints ^""
+- Element 1 is the subname's last nested [graphics.gd/classdb/Resource], or null if not found;
 
-var c = get_node_and_resource("Area2D/Sprite2D:texture:atlas:region")
-print(c[0].name)        # Prints Sprite2D
-print(c[1].get_class()) # Prints AtlasTexture
-print(c[2])             # Prints ^":region"
-[/gdscript]
-[csharp]
-var a = GetNodeAndResource(NodePath("Area2D/Sprite2D"));
-GD.Print(a[0].Name); // Prints Sprite2D
-GD.Print(a[1]);      // Prints <null>
-GD.Print(a[2]);      // Prints ^"
+- Element 2 is the remaining node path, referring to an existing, non-[graphics.gd/classdb/Resource] property (see [graphics.gd/classdb/Object.Instance.GetIndexed]).
 
-var b = GetNodeAndResource(NodePath("Area2D/Sprite2D:texture:atlas"));
-GD.Print(b[0].name);        // Prints Sprite2D
-GD.Print(b[1].get_class()); // Prints AtlasTexture
-GD.Print(b[2]);             // Prints ^""
+Example: Assume that the child's [graphics.gd/classdb/Sprite2D.Instance.Texture] has been assigned a [graphics.gd/classdb/AtlasTexture]:
 
-var c = GetNodeAndResource(NodePath("Area2D/Sprite2D:texture:atlas:region"));
-GD.Print(c[0].name);        // Prints Sprite2D
-GD.Print(c[1].get_class()); // Prints AtlasTexture
-GD.Print(c[2]);             // Prints ^":region"
-[/csharp]
 
 */
 //go:nosplit
@@ -2190,7 +2222,7 @@ func (self class) GetNodeAndResource(path Path.ToNode) Array.Any { //gd:Node.get
 }
 
 /*
-Returns true if this node is currently inside a [SceneTree]. See also [Instance.GetTree].
+Returns true if this node is currently inside a [graphics.gd/classdb/SceneTree]. See also [Instance.GetTree].
 */
 //go:nosplit
 func (self class) IsInsideTree() bool { //gd:Node.is_inside_tree
@@ -2230,7 +2262,7 @@ func (self class) IsGreaterThan(node [1]gdclass.Node) bool { //gd:Node.is_greate
 }
 
 /*
-Returns the node's absolute path, relative to the [member SceneTree.root]. If the node is not inside the scene tree, this method fails and returns an empty [NodePath].
+Returns the node's absolute path, relative to the [graphics.gd/classdb/SceneTree.Instance.Root]. If the node is not inside the scene tree, this method fails and returns an empty node path.
 */
 //go:nosplit
 func (self class) GetPath() Path.ToNode { //gd:Node.get_path
@@ -2240,8 +2272,10 @@ func (self class) GetPath() Path.ToNode { //gd:Node.get_path
 }
 
 /*
-Returns the relative [NodePath] from this node to the specified 'node'. Both nodes must be in the same [SceneTree] or scene hierarchy, otherwise this method fails and returns an empty [NodePath].
-If 'use_unique_path' is true, returns the shortest path accounting for this node's unique name (see [member unique_name_in_owner]).
+Returns the relative node path from this node to the specified 'node'. Both nodes must be in the same [graphics.gd/classdb/SceneTree] or scene hierarchy, otherwise this method fails and returns an empty node path.
+
+If 'use_unique_path' is true, returns the shortest path accounting for this node's unique name (see [Instance.UniqueNameInOwner]).
+
 Note: If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
 */
 //go:nosplit
@@ -2255,10 +2289,13 @@ func (self class) GetPathTo(node [1]gdclass.Node, use_unique_path bool) Path.ToN
 }
 
 /*
-Adds the node to the 'group'. Groups can be helpful to organize a subset of nodes, for example "enemies" or "collectables". See notes in the description, and the group methods in [SceneTree].
-If 'persistent' is true, the group will be stored when saved inside a [PackedScene]. All groups created and displayed in the Node dock are persistent.
-Note: To improve performance, the order of group names is [i]not[/i] guaranteed and may vary between project runs. Therefore, do not rely on the group order.
-Note: [SceneTree]'s group methods will [i]not[/i] work on this node if not inside the tree (see [Instance.IsInsideTree]).
+Adds the node to the 'group'. Groups can be helpful to organize a subset of nodes, for example "enemies" or "collectables". See notes in the description, and the group methods in [graphics.gd/classdb/SceneTree].
+
+If 'persistent' is true, the group will be stored when saved inside a [graphics.gd/classdb/PackedScene]. All groups created and displayed in the Node dock are persistent.
+
+Note: To improve performance, the order of group names is not guaranteed and may vary between project runs. Therefore, do not rely on the group order.
+
+Note: [graphics.gd/classdb/SceneTree]'s group methods will not work on this node if not inside the tree (see [Instance.IsInsideTree]).
 */
 //go:nosplit
 func (self class) AddToGroup(group String.Name, persistent bool) { //gd:Node.add_to_group
@@ -2269,7 +2306,7 @@ func (self class) AddToGroup(group String.Name, persistent bool) { //gd:Node.add
 }
 
 /*
-Removes the node from the given 'group'. Does nothing if the node is not in the 'group'. See also notes in the description, and the [SceneTree]'s group methods.
+Removes the node from the given 'group'. Does nothing if the node is not in the 'group'. See also notes in the description, and the [graphics.gd/classdb/SceneTree]'s group methods.
 */
 //go:nosplit
 func (self class) RemoveFromGroup(group String.Name) { //gd:Node.remove_from_group
@@ -2277,7 +2314,7 @@ func (self class) RemoveFromGroup(group String.Name) { //gd:Node.remove_from_gro
 }
 
 /*
-Returns true if this node has been added to the given 'group'. See [Instance.AddToGroup] and [Instance.RemoveFromGroup]. See also notes in the description, and the [SceneTree]'s group methods.
+Returns true if this node has been added to the given 'group'. See [Instance.AddToGroup] and [Instance.RemoveFromGroup]. See also notes in the description, and the [graphics.gd/classdb/SceneTree]'s group methods.
 */
 //go:nosplit
 func (self class) IsInGroup(group String.Name) bool { //gd:Node.is_in_group
@@ -2288,7 +2325,8 @@ func (self class) IsInGroup(group String.Name) bool { //gd:Node.is_in_group
 
 /*
 Moves 'child_node' to the given index. A node's index is the order among its siblings. If 'to_index' is negative, the index is counted from the end of the list. See also [Instance.GetChild] and [Instance.GetIndex].
-Note: The processing order of several engine callbacks ([Instance.Ready], [Instance.Process], etc.) and notifications sent through [Instance.PropagateNotification] is affected by tree order. [CanvasItem] nodes are also rendered in tree order. See also [member process_priority].
+
+Note: The processing order of several engine callbacks ([Interface.Ready], [Interface.Process], etc.) and notifications sent through [Instance.PropagateNotification] is affected by tree order. [graphics.gd/classdb/CanvasItem] nodes are also rendered in tree order. See also [Instance.ProcessPriority].
 */
 //go:nosplit
 func (self class) MoveChild(child_node [1]gdclass.Node, to_index int64) { //gd:Node.move_child
@@ -2299,26 +2337,12 @@ func (self class) MoveChild(child_node [1]gdclass.Node, to_index int64) { //gd:N
 }
 
 /*
-Returns an [Array] of group names that the node has been added to.
-Note: To improve performance, the order of group names is [i]not[/i] guaranteed and may vary between project runs. Therefore, do not rely on the group order.
+Returns an slice of group names that the node has been added to.
+
+Note: To improve performance, the order of group names is not guaranteed and may vary between project runs. Therefore, do not rely on the group order.
+
 Note: This method may also return some group names starting with an underscore (_). These are internally used by the engine. To avoid conflicts, do not use custom groups starting with underscores. To exclude internal groups, see the following code snippet:
 
-[gdscript]
-# Stores the node's non-internal groups only (as an array of StringNames).
-var non_internal_groups = []
-for group in get_groups():
-    if not str(group).begins_with("_"):
-        non_internal_groups.push_back(group)
-[/gdscript]
-[csharp]
-// Stores the node's non-internal groups only (as a List of StringNames).
-List<string> nonInternalGroups = new List<string>();
-foreach (string group in GetGroups())
-{
-    if (!group.BeginsWith("_"))
-        nonInternalGroups.Add(group);
-}
-[/csharp]
 
 */
 //go:nosplit
@@ -2342,6 +2366,7 @@ func (self class) GetOwner() [1]gdclass.Node { //gd:Node.get_owner
 
 /*
 Returns this node's order among its siblings. The first node's index is 0. See also [Instance.GetChild].
+
 If 'include_internal' is false, returns the index ignoring internal children. The first, non-internal child will have an index of 0 (see [Instance.AddChild]'s internal parameter).
 */
 //go:nosplit
@@ -2352,16 +2377,11 @@ func (self class) GetIndex(include_internal bool) int64 { //gd:Node.get_index
 }
 
 /*
-Prints the node and its children to the console, recursively. The node does not have to be inside the tree. This method outputs [NodePath]s relative to this node, and is good for copy/pasting into [Instance.GetNode]. See also [Instance.PrintTreePretty].
+Prints the node and its children to the console, recursively. The node does not have to be inside the tree. This method outputs node paths relative to this node, and is good for copy/pasting into [Instance.GetNode]. See also [Instance.PrintTreePretty].
+
 May print, for example:
-[codeblock lang=text]
-.
-Menu
-Menu/Label
-Menu/Camera2D
-SplashScreen
-SplashScreen/Camera2D
-[/codeblock]
+
+
 */
 //go:nosplit
 func (self class) PrintTree() { //gd:Node.print_tree
@@ -2370,15 +2390,10 @@ func (self class) PrintTree() { //gd:Node.print_tree
 
 /*
 Prints the node and its children to the console, recursively. The node does not have to be inside the tree. Similar to [Instance.PrintTree], but the graphical representation looks like what is displayed in the editor's Scene dock. It is useful for inspecting larger trees.
+
 May print, for example:
-[codeblock lang=text]
- ┖╴TheGame
-    ┠╴Menu
-    ┃  ┠╴Label
-    ┃  ┖╴Camera2D
-    ┖╴SplashScreen
-       ┖╴Camera2D
-[/codeblock]
+
+
 */
 //go:nosplit
 func (self class) PrintTreePretty() { //gd:Node.print_tree_pretty
@@ -2386,16 +2401,11 @@ func (self class) PrintTreePretty() { //gd:Node.print_tree_pretty
 }
 
 /*
-Returns the tree as a [String]. Used mainly for debugging purposes. This version displays the path relative to the current node, and is good for copy/pasting into the [Instance.GetNode] function. It also can be used in game UI/UX.
+Returns the tree as a string. Used mainly for debugging purposes. This version displays the path relative to the current node, and is good for copy/pasting into the [Instance.GetNode] function. It also can be used in game UI/UX.
+
 May print, for example:
-[codeblock lang=text]
-TheGame
-TheGame/Menu
-TheGame/Menu/Label
-TheGame/Menu/Camera2D
-TheGame/SplashScreen
-TheGame/SplashScreen/Camera2D
-[/codeblock]
+
+
 */
 //go:nosplit
 func (self class) GetTreeString() String.Readable { //gd:Node.get_tree_string
@@ -2405,16 +2415,11 @@ func (self class) GetTreeString() String.Readable { //gd:Node.get_tree_string
 }
 
 /*
-Similar to [Instance.GetTreeString], this returns the tree as a [String]. This version displays a more graphical representation similar to what is displayed in the Scene Dock. It is useful for inspecting larger trees.
+Similar to [Instance.GetTreeString], this returns the tree as a string. This version displays a more graphical representation similar to what is displayed in the Scene Dock. It is useful for inspecting larger trees.
+
 May print, for example:
-[codeblock lang=text]
- ┖╴TheGame
-    ┠╴Menu
-    ┃  ┠╴Label
-    ┃  ┖╴Camera2D
-    ┖╴SplashScreen
-       ┖╴Camera2D
-[/codeblock]
+
+
 */
 //go:nosplit
 func (self class) GetTreeStringPretty() String.Readable { //gd:Node.get_tree_string_pretty
@@ -2436,7 +2441,7 @@ func (self class) GetSceneFilePath() String.Readable { //gd:Node.get_scene_file_
 }
 
 /*
-Calls [Instance.Object.Notification] with 'what' on this node and all of its children, recursively.
+Calls [graphics.gd/classdb/Object.Instance.Notification] with 'what' on this node and all of its children, recursively.
 */
 //go:nosplit
 func (self class) PropagateNotification(what int64) { //gd:Node.propagate_notification
@@ -2445,6 +2450,7 @@ func (self class) PropagateNotification(what int64) { //gd:Node.propagate_notifi
 
 /*
 Calls the given 'method' name, passing 'args' as arguments, on this node and all of its children, recursively.
+
 If 'parent_first' is true, the method is called on this node first, then on all of its children. If false, the children's methods are called first.
 */
 //go:nosplit
@@ -2457,8 +2463,9 @@ func (self class) PropagateCall(method String.Name, args Array.Any, parent_first
 }
 
 /*
-If set to true, enables physics (fixed framerate) processing. When a node is being processed, it will receive a [NotificationPhysicsProcess] at a fixed (usually 60 FPS, see [member Engine.physics_ticks_per_second] to change) interval (and the [Instance.PhysicsProcess] callback will be called if it exists).
-Note: If [Instance.PhysicsProcess] is overridden, this will be automatically enabled before [Instance.Ready] is called.
+If set to true, enables physics (fixed framerate) processing. When a node is being processed, it will receive a [NotificationPhysicsProcess] at a fixed (usually 60 FPS, see [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] to change) interval (and the [Interface.PhysicsProcess] callback will be called if it exists).
+
+Note: If [Interface.PhysicsProcess] is overridden, this will be automatically enabled before [Interface.Ready] is called.
 */
 //go:nosplit
 func (self class) SetPhysicsProcess(enable bool) { //gd:Node.set_physics_process
@@ -2466,8 +2473,9 @@ func (self class) SetPhysicsProcess(enable bool) { //gd:Node.set_physics_process
 }
 
 /*
-Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [Instance.PhysicsProcess]'s delta parameter, and is often consistent at run-time, unless [member Engine.physics_ticks_per_second] is changed. See also [NotificationPhysicsProcess].
-Note: The returned value will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Instance.Process] and [Instance.PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [Instance.Time.GetTicksUsec].
+Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [Interface.PhysicsProcess]'s delta parameter, and is often consistent at run-time, unless [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] is changed. See also [NotificationPhysicsProcess].
+
+Note: The returned value will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
 */
 //go:nosplit
 func (self class) GetPhysicsProcessDeltaTime() float64 { //gd:Node.get_physics_process_delta_time
@@ -2487,8 +2495,9 @@ func (self class) IsPhysicsProcessing() bool { //gd:Node.is_physics_processing
 }
 
 /*
-Returns the time elapsed (in seconds) since the last process callback. This value is identical to [Instance.Process]'s delta parameter, and may vary from frame to frame. See also [NotificationProcess].
-Note: The returned value will be larger than expected if running at a framerate lower than [member Engine.physics_ticks_per_second] / [member Engine.max_physics_steps_per_frame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Instance.Process] and [Instance.PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [Instance.Time.GetTicksUsec].
+Returns the time elapsed (in seconds) since the last process callback. This value is identical to [Interface.Process]'s delta parameter, and may vary from frame to frame. See also [NotificationProcess].
+
+Note: The returned value will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
 */
 //go:nosplit
 func (self class) GetProcessDeltaTime() float64 { //gd:Node.get_process_delta_time
@@ -2498,9 +2507,11 @@ func (self class) GetProcessDeltaTime() float64 { //gd:Node.get_process_delta_ti
 }
 
 /*
-If set to true, enables processing. When a node is being processed, it will receive a [NotificationProcess] on every drawn frame (and the [Instance.Process] callback will be called if it exists).
-Note: If [Instance.Process] is overridden, this will be automatically enabled before [Instance.Ready] is called.
-Note: This method only affects the [Instance.Process] callback, i.e. it has no effect on other callbacks like [Instance.PhysicsProcess]. If you want to disable all processing for the node, set [member process_mode] to [ProcessModeDisabled].
+If set to true, enables processing. When a node is being processed, it will receive a [NotificationProcess] on every drawn frame (and the [Interface.Process] callback will be called if it exists).
+
+Note: If [Interface.Process] is overridden, this will be automatically enabled before [Interface.Ready] is called.
+
+Note: This method only affects the [Interface.Process] callback, i.e. it has no effect on other callbacks like [Interface.PhysicsProcess]. If you want to disable all processing for the node, set [Instance.ProcessMode] to [ProcessModeDisabled].
 */
 //go:nosplit
 func (self class) SetProcess(enable bool) { //gd:Node.set_process
@@ -2543,7 +2554,8 @@ func (self class) IsProcessing() bool { //gd:Node.is_processing
 
 /*
 If set to true, enables input processing.
-Note: If [Instance.Input] is overridden, this will be automatically enabled before [Instance.Ready] is called. Input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
+
+Note: If [Interface.Input] is overridden, this will be automatically enabled before [Interface.Ready] is called. Input processing is also already enabled for GUI controls, such as [graphics.gd/classdb/Button] and [graphics.gd/classdb/TextEdit].
 */
 //go:nosplit
 func (self class) SetProcessInput(enable bool) { //gd:Node.set_process_input
@@ -2562,7 +2574,8 @@ func (self class) IsProcessingInput() bool { //gd:Node.is_processing_input
 
 /*
 If set to true, enables shortcut processing for this node.
-Note: If [Instance.ShortcutInput] is overridden, this will be automatically enabled before [Instance.Ready] is called.
+
+Note: If [Interface.ShortcutInput] is overridden, this will be automatically enabled before [Interface.Ready] is called.
 */
 //go:nosplit
 func (self class) SetProcessShortcutInput(enable bool) { //gd:Node.set_process_shortcut_input
@@ -2580,8 +2593,9 @@ func (self class) IsProcessingShortcutInput() bool { //gd:Node.is_processing_sho
 }
 
 /*
-If set to true, enables unhandled input processing. It enables the node to receive all input that was not previously handled (usually by a [Control]).
-Note: If [Instance.UnhandledInput] is overridden, this will be automatically enabled before [Instance.Ready] is called. Unhandled input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
+If set to true, enables unhandled input processing. It enables the node to receive all input that was not previously handled (usually by a [graphics.gd/classdb/Control]).
+
+Note: If [Interface.UnhandledInput] is overridden, this will be automatically enabled before [Interface.Ready] is called. Unhandled input processing is also already enabled for GUI controls, such as [graphics.gd/classdb/Button] and [graphics.gd/classdb/TextEdit].
 */
 //go:nosplit
 func (self class) SetProcessUnhandledInput(enable bool) { //gd:Node.set_process_unhandled_input
@@ -2600,7 +2614,8 @@ func (self class) IsProcessingUnhandledInput() bool { //gd:Node.is_processing_un
 
 /*
 If set to true, enables unhandled key input processing.
-Note: If [Instance.UnhandledKeyInput] is overridden, this will be automatically enabled before [Instance.Ready] is called.
+
+Note: If [Interface.UnhandledKeyInput] is overridden, this will be automatically enabled before [Interface.Ready] is called.
 */
 //go:nosplit
 func (self class) SetProcessUnhandledKeyInput(enable bool) { //gd:Node.set_process_unhandled_key_input
@@ -2630,13 +2645,19 @@ func (self class) GetProcessMode() ProcessMode { //gd:Node.get_process_mode
 }
 
 /*
-Returns true if the node can receive processing notifications and input callbacks ([NotificationProcess], [Instance.Input], etc.) from the [SceneTree] and [Viewport]. The returned value depends on [member process_mode]:
-- If set to [ProcessModePausable], returns true when the game is processing, i.e. [member SceneTree.paused] is false;
-- If set to [ProcessModeWhenPaused], returns true when the game is paused, i.e. [member SceneTree.paused] is true;
+Returns true if the node can receive processing notifications and input callbacks ([NotificationProcess], [Interface.Input], etc.) from the [graphics.gd/classdb/SceneTree] and [graphics.gd/classdb/Viewport]. The returned value depends on [Instance.ProcessMode]:
+
+- If set to [ProcessModePausable], returns true when the game is processing, i.e. [graphics.gd/classdb/SceneTree.Instance.Paused] is false;
+
+- If set to [ProcessModeWhenPaused], returns true when the game is paused, i.e. [graphics.gd/classdb/SceneTree.Instance.Paused] is true;
+
 - If set to [ProcessModeAlways], always returns true;
+
 - If set to [ProcessModeDisabled], always returns false;
-- If set to [ProcessModeInherit], use the parent node's [member process_mode] to determine the result.
-If the node is not inside the tree, returns false no matter the value of [member process_mode].
+
+- If set to [ProcessModeInherit], use the parent node's [Instance.ProcessMode] to determine the result.
+
+If the node is not inside the tree, returns false no matter the value of [Instance.ProcessMode].
 */
 //go:nosplit
 func (self class) CanProcess() bool { //gd:Node.can_process
@@ -2700,7 +2721,8 @@ func (self class) IsDisplayedFolded() bool { //gd:Node.is_displayed_folded
 }
 
 /*
-If set to true, enables internal processing for this node. Internal processing happens in isolation from the normal [Instance.Process] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or processing is disabled for scripting ([Instance.SetProcess]).
+If set to true, enables internal processing for this node. Internal processing happens in isolation from the normal [Interface.Process] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or processing is disabled for scripting ([Instance.SetProcess]).
+
 Warning: Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
 */
 //go:nosplit
@@ -2719,7 +2741,8 @@ func (self class) IsProcessingInternal() bool { //gd:Node.is_processing_internal
 }
 
 /*
-If set to true, enables internal physics for this node. Internal physics processing happens in isolation from the normal [Instance.PhysicsProcess] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or physics processing is disabled for scripting ([Instance.SetPhysicsProcess]).
+If set to true, enables internal physics for this node. Internal physics processing happens in isolation from the normal [Interface.PhysicsProcess] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or physics processing is disabled for scripting ([Instance.SetPhysicsProcess]).
+
 Warning: Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
 */
 //go:nosplit
@@ -2750,8 +2773,9 @@ func (self class) GetPhysicsInterpolationMode() PhysicsInterpolationMode { //gd:
 }
 
 /*
-Returns true if physics interpolation is enabled for this node (see [member physics_interpolation_mode]).
-Note: Interpolation will only be active if both the flag is set and physics interpolation is enabled within the [SceneTree]. This can be tested using [Instance.IsPhysicsInterpolatedAndEnabled].
+Returns true if physics interpolation is enabled for this node (see [Instance.PhysicsInterpolationMode]).
+
+Note: Interpolation will only be active if both the flag is set and physics interpolation is enabled within the [graphics.gd/classdb/SceneTree]. This can be tested using [Instance.IsPhysicsInterpolatedAndEnabled].
 */
 //go:nosplit
 func (self class) IsPhysicsInterpolated() bool { //gd:Node.is_physics_interpolated
@@ -2761,9 +2785,11 @@ func (self class) IsPhysicsInterpolated() bool { //gd:Node.is_physics_interpolat
 }
 
 /*
-Returns true if physics interpolation is enabled (see [member physics_interpolation_mode]) and enabled in the [SceneTree].
+Returns true if physics interpolation is enabled (see [Instance.PhysicsInterpolationMode]) and enabled in the [graphics.gd/classdb/SceneTree].
+
 This is a convenience version of [Instance.IsPhysicsInterpolated] that also checks whether physics interpolation is enabled globally.
-See [member SceneTree.physics_interpolation] and [member ProjectSettings.physics/common/physics_interpolation].
+
+See [graphics.gd/classdb/SceneTree.Instance.PhysicsInterpolation] and [graphics.gd/classdb/ProjectSettings] "physics/common/physics_interpolation".
 */
 //go:nosplit
 func (self class) IsPhysicsInterpolatedAndEnabled() bool { //gd:Node.is_physics_interpolated_and_enabled
@@ -2774,8 +2800,11 @@ func (self class) IsPhysicsInterpolatedAndEnabled() bool { //gd:Node.is_physics_
 
 /*
 When physics interpolation is active, moving a node to a radically different transform (such as placement within a level) can result in a visible glitch as the object is rendered moving from the old to new position over the physics tick.
+
 That glitch can be prevented by calling this method, which temporarily disables interpolation until the physics tick is complete.
+
 The notification [NotificationResetPhysicsInterpolation] will be received by the node and all children recursively.
+
 Note: This function should be called after moving the node, rather than before.
 */
 //go:nosplit
@@ -2797,7 +2826,8 @@ func (self class) GetAutoTranslateMode() AutoTranslateMode { //gd:Node.get_auto_
 
 /*
 Makes this node inherit the translation domain from its parent node. If this node has no parent, the main translation domain will be used.
-This is the default behavior for all nodes. Calling [Instance.Object.SetTranslationDomain] disables this behavior.
+
+This is the default behavior for all nodes. Calling [graphics.gd/classdb/Object.Instance.SetTranslationDomain] disables this behavior.
 */
 //go:nosplit
 func (self class) SetTranslationDomainInherited() { //gd:Node.set_translation_domain_inherited
@@ -2805,7 +2835,7 @@ func (self class) SetTranslationDomainInherited() { //gd:Node.set_translation_do
 }
 
 /*
-Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node (get_tree().get_root()).
+Returns the [graphics.gd/classdb/Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node (get_tree().get_root()).
 */
 //go:nosplit
 func (self class) GetWindow() [1]gdclass.Window { //gd:Node.get_window
@@ -2815,7 +2845,7 @@ func (self class) GetWindow() [1]gdclass.Window { //gd:Node.get_window
 }
 
 /*
-Returns the [Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
+Returns the [graphics.gd/classdb/Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
 */
 //go:nosplit
 func (self class) GetLastExclusiveWindow() [1]gdclass.Window { //gd:Node.get_last_exclusive_window
@@ -2825,7 +2855,7 @@ func (self class) GetLastExclusiveWindow() [1]gdclass.Window { //gd:Node.get_las
 }
 
 /*
-Returns the [SceneTree] that contains this node. If this node is not inside the tree, generates an error and returns null. See also [Instance.IsInsideTree].
+Returns the [graphics.gd/classdb/SceneTree] that contains this node. If this node is not inside the tree, generates an error and returns null. See also [Instance.IsInsideTree].
 */
 //go:nosplit
 func (self class) GetTree() [1]gdclass.SceneTree { //gd:Node.get_tree
@@ -2835,18 +2865,15 @@ func (self class) GetTree() [1]gdclass.SceneTree { //gd:Node.get_tree
 }
 
 /*
-Creates a new [Tween] and binds it to this node.
+Creates a new [graphics.gd/classdb/Tween] and binds it to this node.
+
 This is the equivalent of doing:
 
-[gdscript]
-get_tree().create_tween().bind_node(self)
-[/gdscript]
-[csharp]
-GetTree().CreateTween().BindNode(this);
-[/csharp]
 
-The Tween will start automatically on the next process frame or physics frame (depending on [Tween.TweenProcessMode]). See [Instance.Tween.BindNode] for more info on Tweens bound to nodes.
-Note: The method can still be used when the node is not inside [SceneTree]. It can fail in an unlikely case of using a custom [MainLoop].
+
+The Tween will start automatically on the next process frame or physics frame (depending on [Tween.TweenProcessMode]). See [graphics.gd/classdb/Tween.Instance.BindNode] for more info on Tweens bound to nodes.
+
+Note: The method can still be used when the node is not inside [graphics.gd/classdb/SceneTree]. It can fail in an unlikely case of using a custom [graphics.gd/classdb/MainLoop].
 */
 //go:nosplit
 func (self class) CreateTween() [1]gdclass.Tween { //gd:Node.create_tween
@@ -2857,7 +2884,8 @@ func (self class) CreateTween() [1]gdclass.Tween { //gd:Node.create_tween
 
 /*
 Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]).
-Note: For nodes with a [Script] attached, if [Instance.Object.Init] has been defined with required parameters, the duplicated node will not have a [Script].
+
+Note: For nodes with a [graphics.gd/classdb/Script] attached, if [graphics.gd/classdb/Object.Instance.Init] has been defined with required parameters, the duplicated node will not have a [graphics.gd/classdb/Script].
 */
 //go:nosplit
 func (self class) Duplicate(flags int64) [1]gdclass.Node { //gd:Node.duplicate
@@ -2868,8 +2896,10 @@ func (self class) Duplicate(flags int64) [1]gdclass.Node { //gd:Node.duplicate
 
 /*
 Replaces this node by the given 'node'. All children of this node are moved to 'node'.
+
 If 'keep_groups' is true, the 'node' is added to the same groups that the replaced node is in (see [Instance.AddToGroup]).
-Warning: The replaced node is removed from the tree, but it is not deleted. To prevent memory leaks, store a reference to the node in a variable, or use [Instance.Object.Free].
+
+Warning: The replaced node is removed from the tree, but it is not deleted. To prevent memory leaks, store a reference to the node in a variable, or use [graphics.gd/classdb/Object.Instance.Free].
 */
 //go:nosplit
 func (self class) ReplaceBy(node [1]gdclass.Node, keep_groups bool) { //gd:Node.replace_by
@@ -2880,7 +2910,7 @@ func (self class) ReplaceBy(node [1]gdclass.Node, keep_groups bool) { //gd:Node.
 }
 
 /*
-If set to true, the node becomes a [InstancePlaceholder] when packed and instantiated from a [PackedScene]. See also [Instance.GetSceneInstanceLoadPlaceholder].
+If set to true, the node becomes a [graphics.gd/classdb/InstancePlaceholder] when packed and instantiated from a [graphics.gd/classdb/PackedScene]. See also [Instance.GetSceneInstanceLoadPlaceholder].
 */
 //go:nosplit
 func (self class) SetSceneInstanceLoadPlaceholder(load_placeholder bool) { //gd:Node.set_scene_instance_load_placeholder
@@ -2888,7 +2918,7 @@ func (self class) SetSceneInstanceLoadPlaceholder(load_placeholder bool) { //gd:
 }
 
 /*
-Returns true if this node is an instance load placeholder. See [InstancePlaceholder] and [Instance.SetSceneInstanceLoadPlaceholder].
+Returns true if this node is an instance load placeholder. See [graphics.gd/classdb/InstancePlaceholder] and [Instance.SetSceneInstanceLoadPlaceholder].
 */
 //go:nosplit
 func (self class) GetSceneInstanceLoadPlaceholder() bool { //gd:Node.get_scene_instance_load_placeholder
@@ -2898,7 +2928,7 @@ func (self class) GetSceneInstanceLoadPlaceholder() bool { //gd:Node.get_scene_i
 }
 
 /*
-Set to true to allow all nodes owned by 'node' to be available, and editable, in the Scene dock, even if their [member owner] is not the scene root. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [Instance.IsEditableInstance].
+Set to true to allow all nodes owned by 'node' to be available, and editable, in the Scene dock, even if their [Instance.Owner] is not the scene root. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [Instance.IsEditableInstance].
 */
 //go:nosplit
 func (self class) SetEditableInstance(node [1]gdclass.Node, is_editable bool) { //gd:Node.set_editable_instance
@@ -2919,7 +2949,7 @@ func (self class) IsEditableInstance(node [1]gdclass.Node) bool { //gd:Node.is_e
 }
 
 /*
-Returns the node's closest [Viewport] ancestor, if the node is inside the tree. Otherwise, returns null.
+Returns the node's closest [graphics.gd/classdb/Viewport] ancestor, if the node is inside the tree. Otherwise, returns null.
 */
 //go:nosplit
 func (self class) GetViewport() [1]gdclass.Viewport { //gd:Node.get_viewport
@@ -2930,8 +2960,10 @@ func (self class) GetViewport() [1]gdclass.Viewport { //gd:Node.get_viewport
 
 /*
 Queues this node to be deleted at the end of the current frame. When deleted, all of its children are deleted as well, and all references to the node and its children become invalid.
-Unlike with [Instance.Object.Free], the node is not deleted instantly, and it can still be accessed before deletion. It is also safe to call [Instance.QueueFree] multiple times. Use [Instance.Object.IsQueuedForDeletion] to check if the node will be deleted at the end of the frame.
-Note: The node will only be freed after all other deferred calls are finished. Using this method is not always the same as calling [Instance.Object.Free] through [Instance.Object.CallDeferred].
+
+Unlike with [graphics.gd/classdb/Object.Instance.Free], the node is not deleted instantly, and it can still be accessed before deletion. It is also safe to call [Instance.QueueFree] multiple times. Use [graphics.gd/classdb/Object.Instance.IsQueuedForDeletion] to check if the node will be deleted at the end of the frame.
+
+Note: The node will only be freed after all other deferred calls are finished. Using this method is not always the same as calling [graphics.gd/classdb/Object.Instance.Free] through [graphics.gd/classdb/Object.Instance.CallDeferred].
 */
 //go:nosplit
 func (self class) QueueFree() { //gd:Node.queue_free
@@ -2940,8 +2972,9 @@ func (self class) QueueFree() { //gd:Node.queue_free
 }
 
 /*
-Requests [Instance.Ready] to be called again the next time the node enters the tree. Does not immediately call [Instance.Ready].
-Note: This method only affects the current node. If the node's children also need to request ready, this method needs to be called for each one of them. When the node and its children enter the tree again, the order of [Instance.Ready] callbacks will be the same as normal.
+Requests [Interface.Ready] to be called again the next time the node enters the tree. Does not immediately call [Interface.Ready].
+
+Note: This method only affects the current node. If the node's children also need to request ready, this method needs to be called for each one of them. When the node and its children enter the tree again, the order of [Interface.Ready] callbacks will be the same as normal.
 */
 //go:nosplit
 func (self class) RequestReady() { //gd:Node.request_ready
@@ -2950,6 +2983,7 @@ func (self class) RequestReady() { //gd:Node.request_ready
 
 /*
 Returns true if the node is ready, i.e. it's inside scene tree and all its children are initialized.
+
 [Instance.RequestReady] resets it back to false.
 */
 //go:nosplit
@@ -2960,9 +2994,11 @@ func (self class) IsNodeReady() bool { //gd:Node.is_node_ready
 }
 
 /*
-Sets the node's multiplayer authority to the peer with the given peer 'id'. The multiplayer authority is the peer that has authority over the node on the network. Defaults to peer ID 1 (the server). Useful in conjunction with [Instance.RpcConfig] and the [MultiplayerAPI].
+Sets the node's multiplayer authority to the peer with the given peer 'id'. The multiplayer authority is the peer that has authority over the node on the network. Defaults to peer ID 1 (the server). Useful in conjunction with [Instance.RpcConfig] and the [graphics.gd/classdb/MultiplayerAPI].
+
 If 'recursive' is true, the given peer is recursively set as the authority for all children of this node.
-Warning: This does not automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [member MultiplayerSpawner.spawn_function], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does not propagate to newly added children.
+
+Warning: This does not automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [graphics.gd/classdb/MultiplayerSpawner.Instance.SpawnFunction], an RPC, or a [graphics.gd/classdb/MultiplayerSynchronizer]. Furthermore, the parent's authority does not propagate to newly added children.
 */
 //go:nosplit
 func (self class) SetMultiplayerAuthority(id int64, recursive bool) { //gd:Node.set_multiplayer_authority
@@ -3000,12 +3036,19 @@ func (self class) GetMultiplayer() [1]gdclass.MultiplayerAPI { //gd:Node.get_mul
 }
 
 /*
-Changes the RPC configuration for the given 'method'. 'config' should either be null to disable the feature (as by default), or a [Dictionary] containing the following entries:
+Changes the RPC configuration for the given 'method'. 'config' should either be null to disable the feature (as by default), or a data structure containing the following entries:
+
 - rpc_mode: see [MultiplayerAPI.RPCMode];
+
 - transfer_mode: see [MultiplayerPeer.TransferMode];
+
 - call_local: if true, the method will also be called locally;
-- channel: an [int] representing the channel to send the RPC on.
-Note: In GDScript, this method corresponds to the [annotation @GDScript.@rpc] annotation, with various parameters passed (@rpc(any), @rpc(authority)...). See also the [url=$DOCS_URL/tutorials/networking/high_level_multiplayer.html]high-level multiplayer[/url] tutorial.
+
+- channel: an int representing the channel to send the RPC on.
+
+Note: In GDScript, this method corresponds to the  annotation, with various parameters passed ([code]@rpc(any)[/code], [code]@rpc(authority)[/code]...). See also the [url=https://docs.godotengine.org/tutorials/networking/high_level_multiplayer.html]high-level multiplayer[/url] tutorial. annotation, with various parameters passed (@rpc(any), @rpc(authority)...). See also the [high-level multiplayer] tutorial.
+
+[high-level multiplayer]: https://docs.godotengine.org/tutorials/networking/high_level_multiplayer.html
 */
 //go:nosplit
 func (self class) RpcConfig(method String.Name, config variant.Any) { //gd:Node.rpc_config
@@ -3016,7 +3059,7 @@ func (self class) RpcConfig(method String.Name, config variant.Any) { //gd:Node.
 }
 
 /*
-Returns a [Dictionary] mapping method names to their RPC configuration defined for this node using [Instance.RpcConfig].
+Returns a data structure mapping method names to their RPC configuration defined for this node using [Instance.RpcConfig].
 */
 //go:nosplit
 func (self class) GetRpcConfig() variant.Any { //gd:Node.get_rpc_config
@@ -3050,10 +3093,15 @@ func (self class) IsUniqueNameInOwner() bool { //gd:Node.is_unique_name_in_owner
 }
 
 /*
-Translates a 'message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation. Note that most [Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
-This method works the same as [Instance.Object.Tr], with the addition of respecting the [member auto_translate_mode] state.
-If [Instance.Object.CanTranslateMessages] is false, or no translation is available, this method returns the 'message' without changes. See [Instance.Object.SetMessageTranslation].
-For detailed examples, see [url=$DOCS_URL/tutorials/i18n/internationalizing_games.html]Internationalizing games[/url].
+Translates a 'message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation. Note that most [graphics.gd/classdb/Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
+
+This method works the same as [graphics.gd/classdb/Object.Instance.Tr], with the addition of respecting the [Instance.AutoTranslateMode] state.
+
+If [graphics.gd/classdb/Object.Instance.CanTranslateMessages] is false, or no translation is available, this method returns the 'message' without changes. See [graphics.gd/classdb/Object.Instance.SetMessageTranslation].
+
+For detailed examples, see [Internationalizing games].
+
+[Internationalizing games]: https://docs.godotengine.org/tutorials/i18n/internationalizing_games.html
 */
 //go:nosplit
 func (self class) Atr(message String.Readable, context String.Name) String.Readable { //gd:Node.atr
@@ -3067,11 +3115,18 @@ func (self class) Atr(message String.Readable, context String.Name) String.Reada
 
 /*
 Translates a 'message' or 'plural_message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation.
-This method works the same as [Instance.Object.TrN], with the addition of respecting the [member auto_translate_mode] state.
-If [Instance.Object.CanTranslateMessages] is false, or no translation is available, this method returns 'message' or 'plural_message', without changes. See [Instance.Object.SetMessageTranslation].
+
+This method works the same as [graphics.gd/classdb/Object.Instance.TrN], with the addition of respecting the [Instance.AutoTranslateMode] state.
+
+If [graphics.gd/classdb/Object.Instance.CanTranslateMessages] is false, or no translation is available, this method returns 'message' or 'plural_message', without changes. See [graphics.gd/classdb/Object.Instance.SetMessageTranslation].
+
 The 'n' is the number, or amount, of the message's subject. It is used by the translation system to fetch the correct plural form for the current language.
-For detailed examples, see [url=$DOCS_URL/tutorials/i18n/localization_using_gettext.html]Localization using gettext[/url].
-Note: Negative and [float] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [Instance.Atr].
+
+For detailed examples, see [Localization using gettext].
+
+Note: Negative and [Float.X] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [Instance.Atr].
+
+[Localization using gettext]: https://docs.godotengine.org/tutorials/i18n/localization_using_gettext.html
 */
 //go:nosplit
 func (self class) AtrN(message String.Readable, plural_message String.Name, n int64, context String.Name) String.Readable { //gd:Node.atr_n
@@ -3086,9 +3141,15 @@ func (self class) AtrN(message String.Readable, plural_message String.Name, n in
 }
 
 /*
-Sends a remote procedure call request for the given 'method' to peers on the network (and locally), sending additional arguments to the method called by the RPC. The call request will only be received by nodes with the same [NodePath], including the exact same [member name]. Behavior depends on the RPC configuration for the given 'method' (see [Instance.RpcConfig] and [annotation @GDScript.@rpc]). By default, methods are not exposed to RPCs.
-May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [member multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [member multiplayer]'s connection is not available.
-Note: You can only safely use RPCs on clients after you received the [signal MultiplayerAPI.connected_to_server] signal from the [MultiplayerAPI]. You also need to keep track of the connection state, either by the [MultiplayerAPI] signals like [signal MultiplayerAPI.server_disconnected] or by checking (get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED).
+Sends a remote procedure call request for the given 'method' to peers on the network (and locally), sending additional arguments to the method called by the RPC. The call request will only be received by nodes with the same node path, including the exact same [Instance.Name]. Behavior depends on the RPC configuration for the given 'method' (see [Instance.RpcConfig] and ). By default, methods are not exposed to RPCs.
+
+May return [constant OK] if the call is successful, [constant ERR_INVALID_PARAMETER] if the arguments passed in the [param method] do not match, [constant ERR_UNCONFIGURED] if the node's [member multiplayer] cannot be fetched (such as when the node is not inside the tree), [constant ERR_CONNECTION_ERROR] if [member multiplayer]'s connection is not available.
+
+[b]Note:[/b] You can only safely use RPCs on clients after you received the [signal MultiplayerAPI.connected_to_server] signal from the [MultiplayerAPI]. You also need to keep track of the connection state, either by the [MultiplayerAPI] signals like [signal MultiplayerAPI.server_disconnected] or by checking ([code]get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED[/code]).). By default, methods are not exposed to RPCs.
+
+May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [Instance.Multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [Instance.Multiplayer]'s connection is not available.
+
+Note: You can only safely use RPCs on clients after you received the [Instance.OnMultiplayerapi.ConnectedToServer] signal from the [graphics.gd/classdb/MultiplayerAPI]. You also need to keep track of the connection state, either by the [graphics.gd/classdb/MultiplayerAPI] signals like [Instance.OnMultiplayerapi.ServerDisconnected] or by checking (get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED).
 */
 //go:nosplit
 func (self class) Rpc(method String.Name, args ...gd.Variant) Error.Code { //gd:Node.rpc
@@ -3105,8 +3166,9 @@ func (self class) Rpc(method String.Name, args ...gd.Variant) Error.Code { //gd:
 }
 
 /*
-Sends a [Instance.Rpc] to a specific peer identified by 'peer_id' (see [Instance.Multiplayerpeer.SetTargetPeer]).
-May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [member multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [member multiplayer]'s connection is not available.
+Sends a [Instance.Rpc] to a specific peer identified by 'peer_id' (see [graphics.gd/classdb/MultiplayerPeer.Instance.SetTargetPeer]).
+
+May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [Instance.Multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [Instance.Multiplayer]'s connection is not available.
 */
 //go:nosplit
 func (self class) RpcId(peer_id int64, method String.Name, args ...gd.Variant) Error.Code { //gd:Node.rpc_id
@@ -3123,7 +3185,7 @@ func (self class) RpcId(peer_id int64, method String.Name, args ...gd.Variant) E
 }
 
 /*
-Refreshes the warnings displayed for this node in the Scene dock. Use [Instance.GetConfigurationWarnings] to customize the warning messages to display.
+Refreshes the warnings displayed for this node in the Scene dock. Use [Interface.GetConfigurationWarnings] to customize the warning messages to display.
 */
 //go:nosplit
 func (self class) UpdateConfigurationWarnings() { //gd:Node.update_configuration_warnings
@@ -3131,7 +3193,7 @@ func (self class) UpdateConfigurationWarnings() { //gd:Node.update_configuration
 }
 
 /*
-This function is similar to [Instance.Object.CallDeferred] except that the call will take place when the node thread group is processed. If the node thread group processes in sub-threads, then the call will be done on that thread, right before [NotificationProcess] or [NotificationPhysicsProcess], the [Instance.Process] or [Instance.PhysicsProcess] or their internal versions are called.
+This function is similar to [graphics.gd/classdb/Object.Instance.CallDeferred] except that the call will take place when the node thread group is processed. If the node thread group processes in sub-threads, then the call will be done on that thread, right before [NotificationProcess] or [NotificationPhysicsProcess], the [Interface.Process] or [Interface.PhysicsProcess] or their internal versions are called.
 */
 //go:nosplit
 func (self class) CallDeferredThreadGroup(method String.Name, args ...gd.Variant) variant.Any { //gd:Node.call_deferred_thread_group
@@ -3397,84 +3459,85 @@ func init() {
 type ProcessMode int //gd:Node.ProcessMode
 
 const (
-	/*Inherits [member process_mode] from the node's parent. This is the default for any newly created node.*/
+	// Inherits [Instance.ProcessMode] from the node's parent. This is the default for any newly created node.
 	ProcessModeInherit ProcessMode = 0
-	/*Stops processing when [member SceneTree.paused] is [code]true[/code]. This is the inverse of [constant PROCESS_MODE_WHEN_PAUSED], and the default for the root node.*/
+	// Stops processing when [graphics.gd/classdb/SceneTree.Instance.Paused] is true. This is the inverse of [ProcessModeWhenPaused], and the default for the root node.
 	ProcessModePausable ProcessMode = 1
-	/*Process [b]only[/b] when [member SceneTree.paused] is [code]true[/code]. This is the inverse of [constant PROCESS_MODE_PAUSABLE].*/
+	// Process only when [graphics.gd/classdb/SceneTree.Instance.Paused] is true. This is the inverse of [ProcessModePausable].
 	ProcessModeWhenPaused ProcessMode = 2
-	/*Always process. Keeps processing, ignoring [member SceneTree.paused]. This is the inverse of [constant PROCESS_MODE_DISABLED].*/
+	// Always process. Keeps processing, ignoring [graphics.gd/classdb/SceneTree.Instance.Paused]. This is the inverse of [ProcessModeDisabled].
 	ProcessModeAlways ProcessMode = 3
-	/*Never process. Completely disables processing, ignoring [member SceneTree.paused]. This is the inverse of [constant PROCESS_MODE_ALWAYS].*/
+	// Never process. Completely disables processing, ignoring [graphics.gd/classdb/SceneTree.Instance.Paused]. This is the inverse of [ProcessModeAlways].
 	ProcessModeDisabled ProcessMode = 4
 )
 
 type ProcessThreadGroup int //gd:Node.ProcessThreadGroup
 
 const (
-	/*Process this node based on the thread group mode of the first parent (or grandparent) node that has a thread group mode that is not inherit. See [member process_thread_group] for more information.*/
+	// Process this node based on the thread group mode of the first parent (or grandparent) node that has a thread group mode that is not inherit. See [Instance.ProcessThreadGroup] for more information.
 	ProcessThreadGroupInherit ProcessThreadGroup = 0
-	/*Process this node (and child nodes set to inherit) on the main thread. See [member process_thread_group] for more information.*/
+	// Process this node (and child nodes set to inherit) on the main thread. See [Instance.ProcessThreadGroup] for more information.
 	ProcessThreadGroupMainThread ProcessThreadGroup = 1
-	/*Process this node (and child nodes set to inherit) on a sub-thread. See [member process_thread_group] for more information.*/
+	// Process this node (and child nodes set to inherit) on a sub-thread. See [Instance.ProcessThreadGroup] for more information.
 	ProcessThreadGroupSubThread ProcessThreadGroup = 2
 )
 
 type ProcessThreadMessages int //gd:Node.ProcessThreadMessages
 
 const (
-	/*Allows this node to process threaded messages created with [method call_deferred_thread_group] right before [method _process] is called.*/
+	// Allows this node to process threaded messages created with [Instance.CallDeferredThreadGroup] right before [Instance.Process] is called.
 	FlagProcessThreadMessages ProcessThreadMessages = 1
-	/*Allows this node to process threaded messages created with [method call_deferred_thread_group] right before [method _physics_process] is called.*/
+	// Allows this node to process threaded messages created with [Instance.CallDeferredThreadGroup] right before [Instance.PhysicsProcess] is called.
 	FlagProcessThreadMessagesPhysics ProcessThreadMessages = 2
-	/*Allows this node to process threaded messages created with [method call_deferred_thread_group] right before either [method _process] or [method _physics_process] are called.*/
+	// Allows this node to process threaded messages created with [Instance.CallDeferredThreadGroup] right before either [Instance.Process] or [Instance.PhysicsProcess] are called.
 	FlagProcessThreadMessagesAll ProcessThreadMessages = 3
 )
 
 type PhysicsInterpolationMode int //gd:Node.PhysicsInterpolationMode
 
 const (
-	/*Inherits [member physics_interpolation_mode] from the node's parent. This is the default for any newly created node.*/
+	// Inherits [Instance.PhysicsInterpolationMode] from the node's parent. This is the default for any newly created node.
 	PhysicsInterpolationModeInherit PhysicsInterpolationMode = 0
-	/*Enables physics interpolation for this node and for children set to [constant PHYSICS_INTERPOLATION_MODE_INHERIT]. This is the default for the root node.*/
+	// Enables physics interpolation for this node and for children set to [PhysicsInterpolationModeInherit]. This is the default for the root node.
 	PhysicsInterpolationModeOn PhysicsInterpolationMode = 1
-	/*Disables physics interpolation for this node and for children set to [constant PHYSICS_INTERPOLATION_MODE_INHERIT].*/
+	// Disables physics interpolation for this node and for children set to [PhysicsInterpolationModeInherit].
 	PhysicsInterpolationModeOff PhysicsInterpolationMode = 2
 )
 
 type DuplicateFlags int //gd:Node.DuplicateFlags
 
 const (
-	/*Duplicate the node's signal connections.*/
+	// Duplicate the node's signal connections.
 	DuplicateSignals DuplicateFlags = 1
-	/*Duplicate the node's groups.*/
+	// Duplicate the node's groups.
 	DuplicateGroups DuplicateFlags = 2
-	/*Duplicate the node's script (also overriding the duplicated children's scripts, if combined with [constant DUPLICATE_USE_INSTANTIATION]).*/
+	// Duplicate the node's script (also overriding the duplicated children's scripts, if combined with [DuplicateUseInstantiation]).
 	DuplicateScripts DuplicateFlags = 4
-	/*Duplicate using [method PackedScene.instantiate]. If the node comes from a scene saved on disk, reuses [method PackedScene.instantiate] as the base for the duplicated node and its children.*/
+	// Duplicate using [graphics.gd/classdb/PackedScene.Instance.Instantiate]. If the node comes from a scene saved on disk, reuses [graphics.gd/classdb/PackedScene.Instance.Instantiate] as the base for the duplicated node and its children.
 	DuplicateUseInstantiation DuplicateFlags = 8
 )
 
 type InternalMode int //gd:Node.InternalMode
 
 const (
-	/*The node will not be internal.*/
+	// The node will not be internal.
 	InternalModeDisabled InternalMode = 0
-	/*The node will be placed at the beginning of the parent's children, before any non-internal sibling.*/
+	// The node will be placed at the beginning of the parent's children, before any non-internal sibling.
 	InternalModeFront InternalMode = 1
-	/*The node will be placed at the end of the parent's children, after any non-internal sibling.*/
+	// The node will be placed at the end of the parent's children, after any non-internal sibling.
 	InternalModeBack InternalMode = 2
 )
 
 type AutoTranslateMode int //gd:Node.AutoTranslateMode
 
 const (
-	/*Inherits [member auto_translate_mode] from the node's parent. This is the default for any newly created node.*/
+	// Inherits [Instance.AutoTranslateMode] from the node's parent. This is the default for any newly created node.
 	AutoTranslateModeInherit AutoTranslateMode = 0
-	/*Always automatically translate. This is the inverse of [constant AUTO_TRANSLATE_MODE_DISABLED], and the default for the root node.*/
+	// Always automatically translate. This is the inverse of [AutoTranslateModeDisabled], and the default for the root node.
 	AutoTranslateModeAlways AutoTranslateMode = 1
-	/*Never automatically translate. This is the inverse of [constant AUTO_TRANSLATE_MODE_ALWAYS].
-	  String parsing for POT generation will be skipped for this node and children that are set to [constant AUTO_TRANSLATE_MODE_INHERIT].*/
+	// Never automatically translate. This is the inverse of [AutoTranslateModeAlways].
+	//
+	// String parsing for POT generation will be skipped for this node and children that are set to [AutoTranslateModeInherit].
 	AutoTranslateModeDisabled AutoTranslateMode = 2
 )
 const NotificationEnterTree Object.Notification = 10                   //gd:Node.NOTIFICATION_ENTER_TREE

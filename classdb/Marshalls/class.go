@@ -102,8 +102,9 @@ func singleton() {
 }
 
 /*
-Returns a Base64-encoded string of the [Variant] 'variant'. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
-Internally, this uses the same encoding mechanism as the [Instance.@Globalscope.VarToBytes] method.
+Returns a Base64-encoded string of the any 'variant'. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
+
+Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
 */
 func VariantToBase64(v any, full_objects bool) string { //gd:Marshalls.variant_to_base64
 	once.Do(singleton)
@@ -111,8 +112,9 @@ func VariantToBase64(v any, full_objects bool) string { //gd:Marshalls.variant_t
 }
 
 /*
-Returns a Base64-encoded string of the [Variant] 'variant'. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
-Internally, this uses the same encoding mechanism as the [Instance.@Globalscope.VarToBytes] method.
+Returns a Base64-encoded string of the any 'variant'. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
+
+Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
 */
 func VariantToBase64Options(v any, full_objects bool) string { //gd:Marshalls.variant_to_base64
 	once.Do(singleton)
@@ -120,8 +122,10 @@ func VariantToBase64Options(v any, full_objects bool) string { //gd:Marshalls.va
 }
 
 /*
-Returns a decoded [Variant] corresponding to the Base64-encoded string 'base64_str'. If 'allow_objects' is true, decoding objects is allowed.
-Internally, this uses the same decoding mechanism as the [Instance.@Globalscope.BytesToVar] method.
+Returns a decoded any corresponding to the Base64-encoded string 'base64_str'. If 'allow_objects' is true, decoding objects is allowed.
+
+Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 func Base64ToVariant(base64_str string, allow_objects bool) any { //gd:Marshalls.base64_to_variant
@@ -130,8 +134,10 @@ func Base64ToVariant(base64_str string, allow_objects bool) any { //gd:Marshalls
 }
 
 /*
-Returns a decoded [Variant] corresponding to the Base64-encoded string 'base64_str'. If 'allow_objects' is true, decoding objects is allowed.
-Internally, this uses the same decoding mechanism as the [Instance.@Globalscope.BytesToVar] method.
+Returns a decoded any corresponding to the Base64-encoded string 'base64_str'. If 'allow_objects' is true, decoding objects is allowed.
+
+Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 func Base64ToVariantOptions(base64_str string, allow_objects bool) any { //gd:Marshalls.base64_to_variant
@@ -140,7 +146,7 @@ func Base64ToVariantOptions(base64_str string, allow_objects bool) any { //gd:Ma
 }
 
 /*
-Returns a Base64-encoded string of a given byte slice.
+Returns a Base64-encoded string of a given []byte.
 */
 func RawToBase64(array []byte) string { //gd:Marshalls.raw_to_base64
 	once.Do(singleton)
@@ -148,7 +154,7 @@ func RawToBase64(array []byte) string { //gd:Marshalls.raw_to_base64
 }
 
 /*
-Returns a decoded byte slice corresponding to the Base64-encoded string 'base64_str'.
+Returns a decoded []byte corresponding to the Base64-encoded string 'base64_str'.
 */
 func Base64ToRaw(base64_str string) []byte { //gd:Marshalls.base64_to_raw
 	once.Do(singleton)
@@ -195,8 +201,9 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
-Returns a Base64-encoded string of the [Variant] 'variant'. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
-Internally, this uses the same encoding mechanism as the [Instance.@Globalscope.VarToBytes] method.
+Returns a Base64-encoded string of the any 'variant'. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
+
+Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
 */
 //go:nosplit
 func (self class) VariantToBase64(v variant.Any, full_objects bool) String.Readable { //gd:Marshalls.variant_to_base64
@@ -209,8 +216,10 @@ func (self class) VariantToBase64(v variant.Any, full_objects bool) String.Reada
 }
 
 /*
-Returns a decoded [Variant] corresponding to the Base64-encoded string 'base64_str'. If 'allow_objects' is true, decoding objects is allowed.
-Internally, this uses the same decoding mechanism as the [Instance.@Globalscope.BytesToVar] method.
+Returns a decoded any corresponding to the Base64-encoded string 'base64_str'. If 'allow_objects' is true, decoding objects is allowed.
+
+Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 //go:nosplit
@@ -224,7 +233,7 @@ func (self class) Base64ToVariant(base64_str String.Readable, allow_objects bool
 }
 
 /*
-Returns a Base64-encoded string of a given byte slice.
+Returns a Base64-encoded string of a given []byte.
 */
 //go:nosplit
 func (self class) RawToBase64(array Packed.Bytes) String.Readable { //gd:Marshalls.raw_to_base64
@@ -234,7 +243,7 @@ func (self class) RawToBase64(array Packed.Bytes) String.Readable { //gd:Marshal
 }
 
 /*
-Returns a decoded byte slice corresponding to the Base64-encoded string 'base64_str'.
+Returns a decoded []byte corresponding to the Base64-encoded string 'base64_str'.
 */
 //go:nosplit
 func (self class) Base64ToRaw(base64_str String.Readable) Packed.Bytes { //gd:Marshalls.base64_to_raw

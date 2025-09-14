@@ -121,7 +121,7 @@ type Any interface {
 }
 
 /*
-Creates a new GLTFPhysicsBody instance from the given Godot [CollisionObject3D] node.
+Creates a new GLTFPhysicsBody instance from the given Godot [graphics.gd/classdb/CollisionObject3D] node.
 */
 func FromNode(body_node CollisionObject3D.Instance) Instance { //gd:GLTFPhysicsBody.from_node
 	self := Instance{}
@@ -129,14 +129,14 @@ func FromNode(body_node CollisionObject3D.Instance) Instance { //gd:GLTFPhysicsB
 }
 
 /*
-Converts this GLTFPhysicsBody instance into a Godot [CollisionObject3D] node.
+Converts this GLTFPhysicsBody instance into a Godot [graphics.gd/classdb/CollisionObject3D] node.
 */
 func (self Instance) ToNode() CollisionObject3D.Instance { //gd:GLTFPhysicsBody.to_node
 	return CollisionObject3D.Instance(Advanced(self).ToNode())
 }
 
 /*
-Creates a new GLTFPhysicsBody instance by parsing the given [Dictionary] in the OMI_physics_body glTF extension format.
+Creates a new GLTFPhysicsBody instance by parsing the given data structure in the OMI_physics_body glTF extension format.
 */
 func FromDictionary(dictionary Structure) Instance { //gd:GLTFPhysicsBody.from_dictionary
 	self := Instance{}
@@ -144,7 +144,7 @@ func FromDictionary(dictionary Structure) Instance { //gd:GLTFPhysicsBody.from_d
 }
 
 /*
-Serializes this GLTFPhysicsBody instance into a [Dictionary]. It will be in the format expected by the OMI_physics_body glTF extension.
+Serializes this GLTFPhysicsBody instance into a data structure. It will be in the format expected by the OMI_physics_body glTF extension.
 */
 func (self Instance) ToDictionary() Structure { //gd:GLTFPhysicsBody.to_dictionary
 	return Structure(gd.DictionaryAs[Structure](Advanced(self).ToDictionary()))
@@ -258,7 +258,7 @@ func (self Instance) SetInertiaTensor(value Basis.XYZ) {
 }
 
 /*
-Creates a new GLTFPhysicsBody instance from the given Godot [CollisionObject3D] node.
+Creates a new GLTFPhysicsBody instance from the given Godot [graphics.gd/classdb/CollisionObject3D] node.
 */
 //go:nosplit
 func (self class) FromNode(body_node [1]gdclass.CollisionObject3D) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_node
@@ -268,7 +268,7 @@ func (self class) FromNode(body_node [1]gdclass.CollisionObject3D) [1]gdclass.GL
 }
 
 /*
-Converts this GLTFPhysicsBody instance into a Godot [CollisionObject3D] node.
+Converts this GLTFPhysicsBody instance into a Godot [graphics.gd/classdb/CollisionObject3D] node.
 */
 //go:nosplit
 func (self class) ToNode() [1]gdclass.CollisionObject3D { //gd:GLTFPhysicsBody.to_node
@@ -278,7 +278,7 @@ func (self class) ToNode() [1]gdclass.CollisionObject3D { //gd:GLTFPhysicsBody.t
 }
 
 /*
-Creates a new GLTFPhysicsBody instance by parsing the given [Dictionary] in the OMI_physics_body glTF extension format.
+Creates a new GLTFPhysicsBody instance by parsing the given data structure in the OMI_physics_body glTF extension format.
 */
 //go:nosplit
 func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_dictionary
@@ -288,7 +288,7 @@ func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFPhysi
 }
 
 /*
-Serializes this GLTFPhysicsBody instance into a [Dictionary]. It will be in the format expected by the OMI_physics_body glTF extension.
+Serializes this GLTFPhysicsBody instance into a data structure. It will be in the format expected by the OMI_physics_body glTF extension.
 */
 //go:nosplit
 func (self class) ToDictionary() Dictionary.Any { //gd:GLTFPhysicsBody.to_dictionary

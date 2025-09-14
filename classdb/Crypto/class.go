@@ -2,7 +2,8 @@
 
 /*
 The Crypto class provides access to advanced cryptographic functionalities.
-Currently, this includes asymmetric key encryption/decryption, signing/verification, and generating cryptographically secure random bytes, RSA keys, HMAC digests, and self-signed [X509Certificate]s.
+
+Currently, this includes asymmetric key encryption/decryption, signing/verification, and generating cryptographically secure random bytes, RSA keys, HMAC digests, and self-signed [graphics.gd/classdb/X509Certificate]s.
 
 	package main
 
@@ -149,60 +150,32 @@ type Any interface {
 }
 
 /*
-Generates a byte slice of cryptographically secure random bytes with given 'size'.
+Generates a []byte of cryptographically secure random bytes with given 'size'.
 */
 func (self Instance) GenerateRandomBytes(size int) []byte { //gd:Crypto.generate_random_bytes
 	return []byte(Advanced(self).GenerateRandomBytes(int64(size)).Bytes())
 }
 
 /*
-Generates an RSA [CryptoKey] that can be used for creating self-signed certificates and passed to [Instance.Streampeertls.AcceptStream].
+Generates an RSA [graphics.gd/classdb/CryptoKey] that can be used for creating self-signed certificates and passed to [graphics.gd/classdb/StreamPeerTLS.Instance.AcceptStream].
 */
 func (self Instance) GenerateRsa(size int) CryptoKey.Instance { //gd:Crypto.generate_rsa
 	return CryptoKey.Instance(Advanced(self).GenerateRsa(int64(size)))
 }
 
 /*
-Generates a self-signed [X509Certificate] from the given [CryptoKey] and 'issuer_name'. The certificate validity will be defined by 'not_before' and 'not_after' (first valid date and last valid date). The 'issuer_name' must contain at least "CN=" (common name, i.e. the domain name), "O=" (organization, i.e. your company name), "C=" (country, i.e. 2 lettered ISO-3166 code of the country the organization is based in).
-A small example to generate an RSA key and an X509 self-signed certificate.
+Generates a self-signed [graphics.gd/classdb/X509Certificate] from the given [graphics.gd/classdb/CryptoKey] and 'issuer_name'. The certificate validity will be defined by 'not_before' and 'not_after' (first valid date and last valid date). The 'issuer_name' must contain at least "CN=" (common name, i.e. the domain name), "O=" (organization, i.e. your company name), "C=" (country, i.e. 2 lettered ISO-3166 code of the country the organization is based in).
 
-[gdscript]
-var crypto = Crypto.new()
-# Generate 4096 bits RSA key.
-var key = crypto.generate_rsa(4096)
-# Generate self-signed certificate using the given key.
-var cert = crypto.generate_self_signed_certificate(key, "CN=example.com,O=A Game Company,C=IT")
-[/gdscript]
-[csharp]
-var crypto = new Crypto();
-// Generate 4096 bits RSA key.
-CryptoKey key = crypto.GenerateRsa(4096);
-// Generate self-signed certificate using the given key.
-X509Certificate cert = crypto.GenerateSelfSignedCertificate(key, "CN=mydomain.com,O=My Game Company,C=IT");
-[/csharp]
+A small example to generate an RSA key and an X509 self-signed certificate.
 */
 func (self Instance) GenerateSelfSignedCertificate(key CryptoKey.Instance) X509Certificate.Instance { //gd:Crypto.generate_self_signed_certificate
 	return X509Certificate.Instance(Advanced(self).GenerateSelfSignedCertificate(key, String.New("CN=myserver,O=myorganisation,C=IT"), String.New("20140101000000"), String.New("20340101000000")))
 }
 
 /*
-Generates a self-signed [X509Certificate] from the given [CryptoKey] and 'issuer_name'. The certificate validity will be defined by 'not_before' and 'not_after' (first valid date and last valid date). The 'issuer_name' must contain at least "CN=" (common name, i.e. the domain name), "O=" (organization, i.e. your company name), "C=" (country, i.e. 2 lettered ISO-3166 code of the country the organization is based in).
-A small example to generate an RSA key and an X509 self-signed certificate.
+Generates a self-signed [graphics.gd/classdb/X509Certificate] from the given [graphics.gd/classdb/CryptoKey] and 'issuer_name'. The certificate validity will be defined by 'not_before' and 'not_after' (first valid date and last valid date). The 'issuer_name' must contain at least "CN=" (common name, i.e. the domain name), "O=" (organization, i.e. your company name), "C=" (country, i.e. 2 lettered ISO-3166 code of the country the organization is based in).
 
-[gdscript]
-var crypto = Crypto.new()
-# Generate 4096 bits RSA key.
-var key = crypto.generate_rsa(4096)
-# Generate self-signed certificate using the given key.
-var cert = crypto.generate_self_signed_certificate(key, "CN=example.com,O=A Game Company,C=IT")
-[/gdscript]
-[csharp]
-var crypto = new Crypto();
-// Generate 4096 bits RSA key.
-CryptoKey key = crypto.GenerateRsa(4096);
-// Generate self-signed certificate using the given key.
-X509Certificate cert = crypto.GenerateSelfSignedCertificate(key, "CN=mydomain.com,O=My Game Company,C=IT");
-[/csharp]
+A small example to generate an RSA key and an X509 self-signed certificate.
 */
 func (self Expanded) GenerateSelfSignedCertificate(key CryptoKey.Instance, issuer_name string, not_before string, not_after string) X509Certificate.Instance { //gd:Crypto.generate_self_signed_certificate
 	return X509Certificate.Instance(Advanced(self).GenerateSelfSignedCertificate(key, String.New(issuer_name), String.New(not_before), String.New(not_after)))
@@ -224,6 +197,7 @@ func (self Instance) Verify(hash_type HashingContext.HashType, hash []byte, sign
 
 /*
 Encrypt the given 'plaintext' with the provided public 'key'.
+
 Note: The maximum size of accepted plaintext is limited by the key size.
 */
 func (self Instance) Encrypt(key CryptoKey.Instance, plaintext []byte) []byte { //gd:Crypto.encrypt
@@ -232,6 +206,7 @@ func (self Instance) Encrypt(key CryptoKey.Instance, plaintext []byte) []byte { 
 
 /*
 Decrypt the given 'ciphertext' with the provided private 'key'.
+
 Note: The maximum size of accepted ciphertext is limited by the key size.
 */
 func (self Instance) Decrypt(key CryptoKey.Instance, ciphertext []byte) []byte { //gd:Crypto.decrypt
@@ -239,16 +214,22 @@ func (self Instance) Decrypt(key CryptoKey.Instance, ciphertext []byte) []byte {
 }
 
 /*
-Generates an [url=https://en.wikipedia.org/wiki/HMAC]HMAC[/url] digest of 'msg' using 'key'. The 'hash_type' parameter is the hashing algorithm that is used for the inner and outer hashes.
+Generates an [HMAC] digest of 'msg' using 'key'. The 'hash_type' parameter is the hashing algorithm that is used for the inner and outer hashes.
+
 Currently, only [Hashingcontext.HashSha256] and [Hashingcontext.HashSha1] are supported.
+
+[HMAC]: https://en.wikipedia.org/wiki/HMAC
 */
 func (self Instance) HmacDigest(hash_type HashingContext.HashType, key []byte, msg []byte) []byte { //gd:Crypto.hmac_digest
 	return []byte(Advanced(self).HmacDigest(hash_type, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(msg...))).Bytes())
 }
 
 /*
-Compares two byte slices for equality without leaking timing information in order to prevent timing attacks.
-See [url=https://paragonie.com/blog/2015/11/preventing-timing-attacks-on-string-comparison-with-double-hmac-strategy]this blog post[/url] for more information.
+Compares two []bytes for equality without leaking timing information in order to prevent timing attacks.
+
+See [this blog post] for more information.
+
+[this blog post]: https://paragonie.com/blog/2015/11/preventing-timing-attacks-on-string-comparison-with-double-hmac-strategy
 */
 func (self Instance) ConstantTimeCompare(trusted []byte, received []byte) bool { //gd:Crypto.constant_time_compare
 	return bool(Advanced(self).ConstantTimeCompare(Packed.Bytes(Packed.New(trusted...)), Packed.Bytes(Packed.New(received...))))
@@ -298,7 +279,7 @@ func New() Instance {
 }
 
 /*
-Generates a byte slice of cryptographically secure random bytes with given 'size'.
+Generates a []byte of cryptographically secure random bytes with given 'size'.
 */
 //go:nosplit
 func (self class) GenerateRandomBytes(size int64) Packed.Bytes { //gd:Crypto.generate_random_bytes
@@ -308,7 +289,7 @@ func (self class) GenerateRandomBytes(size int64) Packed.Bytes { //gd:Crypto.gen
 }
 
 /*
-Generates an RSA [CryptoKey] that can be used for creating self-signed certificates and passed to [Instance.Streampeertls.AcceptStream].
+Generates an RSA [graphics.gd/classdb/CryptoKey] that can be used for creating self-signed certificates and passed to [graphics.gd/classdb/StreamPeerTLS.Instance.AcceptStream].
 */
 //go:nosplit
 func (self class) GenerateRsa(size int64) [1]gdclass.CryptoKey { //gd:Crypto.generate_rsa
@@ -318,23 +299,10 @@ func (self class) GenerateRsa(size int64) [1]gdclass.CryptoKey { //gd:Crypto.gen
 }
 
 /*
-Generates a self-signed [X509Certificate] from the given [CryptoKey] and 'issuer_name'. The certificate validity will be defined by 'not_before' and 'not_after' (first valid date and last valid date). The 'issuer_name' must contain at least "CN=" (common name, i.e. the domain name), "O=" (organization, i.e. your company name), "C=" (country, i.e. 2 lettered ISO-3166 code of the country the organization is based in).
+Generates a self-signed [graphics.gd/classdb/X509Certificate] from the given [graphics.gd/classdb/CryptoKey] and 'issuer_name'. The certificate validity will be defined by 'not_before' and 'not_after' (first valid date and last valid date). The 'issuer_name' must contain at least "CN=" (common name, i.e. the domain name), "O=" (organization, i.e. your company name), "C=" (country, i.e. 2 lettered ISO-3166 code of the country the organization is based in).
+
 A small example to generate an RSA key and an X509 self-signed certificate.
 
-[gdscript]
-var crypto = Crypto.new()
-# Generate 4096 bits RSA key.
-var key = crypto.generate_rsa(4096)
-# Generate self-signed certificate using the given key.
-var cert = crypto.generate_self_signed_certificate(key, "CN=example.com,O=A Game Company,C=IT")
-[/gdscript]
-[csharp]
-var crypto = new Crypto();
-// Generate 4096 bits RSA key.
-CryptoKey key = crypto.GenerateRsa(4096);
-// Generate self-signed certificate using the given key.
-X509Certificate cert = crypto.GenerateSelfSignedCertificate(key, "CN=mydomain.com,O=My Game Company,C=IT");
-[/csharp]
 
 */
 //go:nosplit
@@ -380,6 +348,7 @@ func (self class) Verify(hash_type HashingContext.HashType, hash Packed.Bytes, s
 
 /*
 Encrypt the given 'plaintext' with the provided public 'key'.
+
 Note: The maximum size of accepted plaintext is limited by the key size.
 */
 //go:nosplit
@@ -394,6 +363,7 @@ func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext Packed.Bytes) Pack
 
 /*
 Decrypt the given 'ciphertext' with the provided private 'key'.
+
 Note: The maximum size of accepted ciphertext is limited by the key size.
 */
 //go:nosplit
@@ -407,8 +377,11 @@ func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext Packed.Bytes) Pac
 }
 
 /*
-Generates an [url=https://en.wikipedia.org/wiki/HMAC]HMAC[/url] digest of 'msg' using 'key'. The 'hash_type' parameter is the hashing algorithm that is used for the inner and outer hashes.
+Generates an [HMAC] digest of 'msg' using 'key'. The 'hash_type' parameter is the hashing algorithm that is used for the inner and outer hashes.
+
 Currently, only [Hashingcontext.HashSha256] and [Hashingcontext.HashSha1] are supported.
+
+[HMAC]: https://en.wikipedia.org/wiki/HMAC
 */
 //go:nosplit
 func (self class) HmacDigest(hash_type HashingContext.HashType, key Packed.Bytes, msg Packed.Bytes) Packed.Bytes { //gd:Crypto.hmac_digest
@@ -422,8 +395,11 @@ func (self class) HmacDigest(hash_type HashingContext.HashType, key Packed.Bytes
 }
 
 /*
-Compares two byte slices for equality without leaking timing information in order to prevent timing attacks.
-See [url=https://paragonie.com/blog/2015/11/preventing-timing-attacks-on-string-comparison-with-double-hmac-strategy]this blog post[/url] for more information.
+Compares two []bytes for equality without leaking timing information in order to prevent timing attacks.
+
+See [this blog post] for more information.
+
+[this blog post]: https://paragonie.com/blog/2015/11/preventing-timing-attacks-on-string-comparison-with-double-hmac-strategy
 */
 //go:nosplit
 func (self class) ConstantTimeCompare(trusted Packed.Bytes, received Packed.Bytes) bool { //gd:Crypto.constant_time_compare

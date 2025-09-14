@@ -2,7 +2,8 @@
 
 /*
 This object manages the SceneTree selection in the editor.
-Note: This class shouldn't be instantiated directly. Instead, access the singleton using [Instance.Editorinterface.GetSelection].
+
+Note: This class shouldn't be instantiated directly. Instead, access the singleton using [graphics.gd/classdb/EditorInterface.GetSelection].
 */
 package EditorSelection
 
@@ -111,7 +112,8 @@ func (self Instance) Clear() { //gd:EditorSelection.clear
 
 /*
 Adds a node to the selection.
-Note: The newly selected node will not be automatically edited in the inspector. If you want to edit a node, use [Instance.Editorinterface.EditNode].
+
+Note: The newly selected node will not be automatically edited in the inspector. If you want to edit a node, use [graphics.gd/classdb/EditorInterface.EditNode].
 */
 func (self Instance) AddNode(node Node.Instance) { //gd:EditorSelection.add_node
 	Advanced(self).AddNode(node)
@@ -190,7 +192,8 @@ func (self class) Clear() { //gd:EditorSelection.clear
 
 /*
 Adds a node to the selection.
-Note: The newly selected node will not be automatically edited in the inspector. If you want to edit a node, use [Instance.Editorinterface.EditNode].
+
+Note: The newly selected node will not be automatically edited in the inspector. If you want to edit a node, use [graphics.gd/classdb/EditorInterface.EditNode].
 */
 //go:nosplit
 func (self class) AddNode(node [1]gdclass.Node) { //gd:EditorSelection.add_node

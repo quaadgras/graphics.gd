@@ -53,65 +53,65 @@ var _ = slices.Delete[[]struct{}, struct{}]
 type HorizontalAlignment int //gd:HorizontalAlignment
 
 const (
-	/*Horizontal left alignment, usually for text-derived classes.*/
+	// Horizontal left alignment, usually for text-derived classes.
 	HorizontalAlignmentLeft HorizontalAlignment = 0
-	/*Horizontal center alignment, usually for text-derived classes.*/
+	// Horizontal center alignment, usually for text-derived classes.
 	HorizontalAlignmentCenter HorizontalAlignment = 1
-	/*Horizontal right alignment, usually for text-derived classes.*/
+	// Horizontal right alignment, usually for text-derived classes.
 	HorizontalAlignmentRight HorizontalAlignment = 2
-	/*Expand row to fit width, usually for text-derived classes.*/
+	// Expand row to fit width, usually for text-derived classes.
 	HorizontalAlignmentFill HorizontalAlignment = 3
 )
 
 type InlineAlignment int //gd:InlineAlignment
 
 const (
-	/*Aligns the top of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	// Aligns the top of the inline object (e.g. image, table) to the position of the text specified by INLINE_ALIGNMENT_TO_* constant.
 	InlineAlignmentTopTo InlineAlignment = 0
-	/*Aligns the center of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	// Aligns the center of the inline object (e.g. image, table) to the position of the text specified by INLINE_ALIGNMENT_TO_* constant.
 	InlineAlignmentCenterTo InlineAlignment = 1
-	/*Aligns the baseline (user defined) of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	// Aligns the baseline (user defined) of the inline object (e.g. image, table) to the position of the text specified by INLINE_ALIGNMENT_TO_* constant.
 	InlineAlignmentBaselineTo InlineAlignment = 3
-	/*Aligns the bottom of the inline object (e.g. image, table) to the position of the text specified by [code]INLINE_ALIGNMENT_TO_*[/code] constant.*/
+	// Aligns the bottom of the inline object (e.g. image, table) to the position of the text specified by INLINE_ALIGNMENT_TO_* constant.
 	InlineAlignmentBottomTo InlineAlignment = 2
-	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the top of the text.*/
+	// Aligns the position of the inline object (e.g. image, table) specified by INLINE_ALIGNMENT_*_TO constant to the top of the text.
 	InlineAlignmentToTop InlineAlignment = 0
-	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the center of the text.*/
+	// Aligns the position of the inline object (e.g. image, table) specified by INLINE_ALIGNMENT_*_TO constant to the center of the text.
 	InlineAlignmentToCenter InlineAlignment = 4
-	/*Aligns the position of the inline object (e.g. image, table) specified by [code]INLINE_ALIGNMENT_*_TO[/code] constant to the baseline of the text.*/
+	// Aligns the position of the inline object (e.g. image, table) specified by INLINE_ALIGNMENT_*_TO constant to the baseline of the text.
 	InlineAlignmentToBaseline InlineAlignment = 8
-	/*Aligns inline object (e.g. image, table) to the bottom of the text.*/
+	// Aligns inline object (e.g. image, table) to the bottom of the text.
 	InlineAlignmentToBottom InlineAlignment = 12
-	/*Aligns top of the inline object (e.g. image, table) to the top of the text. Equivalent to [code]INLINE_ALIGNMENT_TOP_TO | INLINE_ALIGNMENT_TO_TOP[/code].*/
+	// Aligns top of the inline object (e.g. image, table) to the top of the text. Equivalent to INLINE_ALIGNMENT_TOP_TO | INLINE_ALIGNMENT_TO_TOP.
 	InlineAlignmentTop InlineAlignment = 0
-	/*Aligns center of the inline object (e.g. image, table) to the center of the text. Equivalent to [code]INLINE_ALIGNMENT_CENTER_TO | INLINE_ALIGNMENT_TO_CENTER[/code].*/
+	// Aligns center of the inline object (e.g. image, table) to the center of the text. Equivalent to INLINE_ALIGNMENT_CENTER_TO | INLINE_ALIGNMENT_TO_CENTER.
 	InlineAlignmentCenter InlineAlignment = 5
-	/*Aligns bottom of the inline object (e.g. image, table) to the bottom of the text. Equivalent to [code]INLINE_ALIGNMENT_BOTTOM_TO | INLINE_ALIGNMENT_TO_BOTTOM[/code].*/
+	// Aligns bottom of the inline object (e.g. image, table) to the bottom of the text. Equivalent to INLINE_ALIGNMENT_BOTTOM_TO | INLINE_ALIGNMENT_TO_BOTTOM.
 	InlineAlignmentBottom InlineAlignment = 14
-	/*A bit mask for [code]INLINE_ALIGNMENT_*_TO[/code] alignment constants.*/
+	// A bit mask for INLINE_ALIGNMENT_*_TO alignment constants.
 	InlineAlignmentImageMask InlineAlignment = 3
-	/*A bit mask for [code]INLINE_ALIGNMENT_TO_*[/code] alignment constants.*/
+	// A bit mask for INLINE_ALIGNMENT_TO_* alignment constants.
 	InlineAlignmentTextMask InlineAlignment = 12
 )
 
 type Orientation int //gd:Orientation
 
 const (
-	/*General vertical alignment, usually used for [Separator], [ScrollBar], [Slider], etc.*/
+	// General vertical alignment, usually used for [graphics.gd/classdb/Separator], [graphics.gd/classdb/ScrollBar], [graphics.gd/classdb/Slider], etc.
 	Vertical Orientation = 1
-	/*General horizontal alignment, usually used for [Separator], [ScrollBar], [Slider], etc.*/
+	// General horizontal alignment, usually used for [graphics.gd/classdb/Separator], [graphics.gd/classdb/ScrollBar], [graphics.gd/classdb/Slider], etc.
 	Horizontal Orientation = 0
 )
 
 type VerticalAlignment int //gd:VerticalAlignment
 
 const (
-	/*Vertical top alignment, usually for text-derived classes.*/
+	// Vertical top alignment, usually for text-derived classes.
 	VerticalAlignmentTop VerticalAlignment = 0
-	/*Vertical center alignment, usually for text-derived classes.*/
+	// Vertical center alignment, usually for text-derived classes.
 	VerticalAlignmentCenter VerticalAlignment = 1
-	/*Vertical bottom alignment, usually for text-derived classes.*/
+	// Vertical bottom alignment, usually for text-derived classes.
 	VerticalAlignmentBottom VerticalAlignment = 2
-	/*Expand rows to fit height, usually for text-derived classes.*/
+	// Expand rows to fit height, usually for text-derived classes.
 	VerticalAlignmentFill VerticalAlignment = 3
 )

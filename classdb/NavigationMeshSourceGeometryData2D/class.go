@@ -157,7 +157,7 @@ func (self Instance) AddObstructionOutline(shape_outline []Vector2.XY) { //gd:Na
 }
 
 /*
-Adds the geometry data of another [NavigationMeshSourceGeometryData2D] to the navigation mesh baking data.
+Adds the geometry data of another [graphics.gd/classdb/NavigationMeshSourceGeometryData2D] to the navigation mesh baking data.
 */
 func (self Instance) Merge(other_geometry Instance) { //gd:NavigationMeshSourceGeometryData2D.merge
 	Advanced(self).Merge(other_geometry)
@@ -342,7 +342,7 @@ func (self class) AddObstructionOutline(shape_outline Packed.Array[Vector2.XY]) 
 }
 
 /*
-Adds the geometry data of another [NavigationMeshSourceGeometryData2D] to the navigation mesh baking data.
+Adds the geometry data of another [graphics.gd/classdb/NavigationMeshSourceGeometryData2D] to the navigation mesh baking data.
 */
 //go:nosplit
 func (self class) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometryData2D) { //gd:NavigationMeshSourceGeometryData2D.merge
@@ -371,10 +371,6 @@ func (self class) ClearProjectedObstructions() { //gd:NavigationMeshSourceGeomet
 /*
 Sets the projected obstructions with an Array of Dictionaries with the following key value pairs:
 
-[gdscript]
-"vertices" : PackedFloat32Array
-"carve" : bool
-[/gdscript]
 
 */
 //go:nosplit
@@ -383,9 +379,11 @@ func (self class) SetProjectedObstructions(projected_obstructions Array.Any) { /
 }
 
 /*
-Returns the projected obstructions as an [Array] of dictionaries. Each [Dictionary] contains the following entries:
-- vertices - A [PackedFloat32Array] that defines the outline points of the projected shape.
-- carve - A [bool] that defines how the projected shape affects the navigation mesh baking. If true the projected shape will not be affected by addition offsets, e.g. agent radius.
+Returns the projected obstructions as an slice of dictionaries. Each data structure contains the following entries:
+
+- vertices - A []float32 that defines the outline points of the projected shape.
+
+- carve - A bool that defines how the projected shape affects the navigation mesh baking. If true the projected shape will not be affected by addition offsets, e.g. agent radius.
 */
 //go:nosplit
 func (self class) GetProjectedObstructions() Array.Any { //gd:NavigationMeshSourceGeometryData2D.get_projected_obstructions

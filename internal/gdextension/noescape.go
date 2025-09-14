@@ -70,3 +70,7 @@ func index_packed_noescape(access func(p PackedArray[byte], idx int, result unsa
 func index_packed(access func(p PackedArray[byte], idx int, result unsafe.Pointer), p PackedArray[byte], index int, result unsafe.Pointer) {
 	access(p, index, result)
 }
+
+func CallStatic[T any](method MethodForClass, shape Shape, args any) T {
+	return Call[T](0, method, shape, args)
+}

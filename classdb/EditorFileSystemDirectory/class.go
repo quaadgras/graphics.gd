@@ -145,7 +145,7 @@ func (self Instance) GetFilePath(idx int) string { //gd:EditorFileSystemDirector
 }
 
 /*
-Returns the resource type of the file at index 'idx'. This returns a string such as "Resource" or "GDScript", [i]not[/i] a file extension such as ".gd".
+Returns the resource type of the file at index 'idx'. This returns a string such as "Resource" or "GDScript", not a file extension such as ".gd".
 */
 func (self Instance) GetFileType(idx int) string { //gd:EditorFileSystemDirectory.get_file_type
 	return string(Advanced(self).GetFileType(int64(idx)).String())
@@ -300,7 +300,7 @@ func (self class) GetFilePath(idx int64) String.Readable { //gd:EditorFileSystem
 }
 
 /*
-Returns the resource type of the file at index 'idx'. This returns a string such as "Resource" or "GDScript", [i]not[/i] a file extension such as ".gd".
+Returns the resource type of the file at index 'idx'. This returns a string such as "Resource" or "GDScript", not a file extension such as ".gd".
 */
 //go:nosplit
 func (self class) GetFileType(idx int64) String.Name { //gd:EditorFileSystemDirectory.get_file_type

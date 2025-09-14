@@ -2,7 +2,9 @@
 
 /*
 UndoRedo works by registering methods and property changes inside "actions". You can create an action, then provide ways to do and undo this action using function calls and property changes, then commit the action.
+
 When an action is committed, all of the do_* methods will run. If the [Instance.Undo] method is used, the undo_* methods will run. If the [Instance.Redo] method is used, once again, all of the do_* methods will run.
+
 Here's an example on how to add an action:
 
 	package main
@@ -25,8 +27,11 @@ Here's an example on how to add an action:
 	}
 
 Before calling any of the add_(un)do_* methods, you need to first call [Instance.CreateAction]. Afterwards you need to call [Instance.CommitAction].
+
 If you don't need to register a method, you can leave [Instance.AddDoMethod] and [Instance.AddUndoMethod] out; the same goes for properties. You can also register more than one method/property.
-If you are making an [EditorPlugin] and want to integrate into the editor's undo history, use [EditorUndoRedoManager] instead.
+
+If you are making an [graphics.gd/classdb/EditorPlugin] and want to integrate into the editor's undo history, use [graphics.gd/classdb/EditorUndoRedoManager] instead.
+
 If you are registering multiple properties/method which depend on one another, be aware that by default undo operation are called in the same order they have been added. Therefore instead of grouping do operation with their undo operations it is better to group do on one side and undo on the other as shown below.
 
 	package main
@@ -164,7 +169,9 @@ type Any interface {
 
 /*
 Create a new action. After this is called, do all your calls to [Instance.AddDoMethod], [Instance.AddUndoMethod], [Instance.AddDoProperty], and [Instance.AddUndoProperty], then commit the action with [Instance.CommitAction].
+
 The way actions are merged is dictated by 'merge_mode'. See [MergeMode] for details.
+
 The way undo operation are ordered in actions is dictated by 'backward_undo_ops'. When 'backward_undo_ops' is false undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
 func (self Instance) CreateAction(name string) { //gd:UndoRedo.create_action
@@ -173,7 +180,9 @@ func (self Instance) CreateAction(name string) { //gd:UndoRedo.create_action
 
 /*
 Create a new action. After this is called, do all your calls to [Instance.AddDoMethod], [Instance.AddUndoMethod], [Instance.AddDoProperty], and [Instance.AddUndoProperty], then commit the action with [Instance.CommitAction].
+
 The way actions are merged is dictated by 'merge_mode'. See [MergeMode] for details.
+
 The way undo operation are ordered in actions is dictated by 'backward_undo_ops'. When 'backward_undo_ops' is false undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
 func (self Expanded) CreateAction(name string, merge_mode MergeMode, backward_undo_ops bool) { //gd:UndoRedo.create_action
@@ -195,21 +204,21 @@ func (self Expanded) CommitAction(execute bool) { //gd:UndoRedo.commit_action
 }
 
 /*
-Returns true if the [UndoRedo] is currently committing the action, i.e. running its "do" method or property change (see [Instance.CommitAction]).
+Returns true if the [graphics.gd/classdb/UndoRedo] is currently committing the action, i.e. running its "do" method or property change (see [Instance.CommitAction]).
 */
 func (self Instance) IsCommittingAction() bool { //gd:UndoRedo.is_committing_action
 	return bool(Advanced(self).IsCommittingAction())
 }
 
 /*
-Register a [Callable] that will be called when the action is committed.
+Register a func that will be called when the action is committed.
 */
 func (self Instance) AddDoMethod(callable func()) { //gd:UndoRedo.add_do_method
 	Advanced(self).AddDoMethod(Callable.New(callable))
 }
 
 /*
-Register a [Callable] that will be called when the action is undone.
+Register a func that will be called when the action is undone.
 */
 func (self Instance) AddUndoMethod(callable func()) { //gd:UndoRedo.add_undo_method
 	Advanced(self).AddUndoMethod(Callable.New(callable))
@@ -231,15 +240,8 @@ func (self Instance) AddUndoProperty(obj Object.Instance, property string, value
 
 /*
 Register a reference to an object that will be erased if the "do" history is deleted. This is useful for objects added by the "do" action and removed by the "undo" action.
-When the "do" history is deleted, if the object is a [RefCounted], it will be unreferenced. Otherwise, it will be freed. Do not use for resources.
-[codeblock]
-var node = Node2D.new()
-undo_redo.create_action("Add node")
-undo_redo.add_do_method(add_child.bind(node))
-undo_redo.add_do_reference(node)
-undo_redo.add_undo_method(remove_child.bind(node))
-undo_redo.commit_action()
-[/codeblock]
+
+When the "do" history is deleted, if the object is a [graphics.gd/classdb/RefCounted], it will be unreferenced. Otherwise, it will be freed. Do not use for resources.
 */
 func (self Instance) AddDoReference(obj Object.Instance) { //gd:UndoRedo.add_do_reference
 	Advanced(self).AddDoReference(obj)
@@ -247,15 +249,8 @@ func (self Instance) AddDoReference(obj Object.Instance) { //gd:UndoRedo.add_do_
 
 /*
 Register a reference to an object that will be erased if the "undo" history is deleted. This is useful for objects added by the "undo" action and removed by the "do" action.
-When the "undo" history is deleted, if the object is a [RefCounted], it will be unreferenced. Otherwise, it will be freed. Do not use for resources.
-[codeblock]
-var node = $Node2D
-undo_redo.create_action("Remove node")
-undo_redo.add_do_method(remove_child.bind(node))
-undo_redo.add_undo_method(add_child.bind(node))
-undo_redo.add_undo_reference(node)
-undo_redo.commit_action()
-[/codeblock]
+
+When the "undo" history is deleted, if the object is a [graphics.gd/classdb/RefCounted], it will be unreferenced. Otherwise, it will be freed. Do not use for resources.
 */
 func (self Instance) AddUndoReference(obj Object.Instance) { //gd:UndoRedo.add_undo_reference
 	Advanced(self).AddUndoReference(obj)
@@ -298,6 +293,7 @@ func (self Instance) GetActionName(id int) string { //gd:UndoRedo.get_action_nam
 
 /*
 Clear the undo/redo history and associated references.
+
 Passing false to 'increase_version' will prevent the version number from increasing when the history is cleared.
 */
 func (self Instance) ClearHistory() { //gd:UndoRedo.clear_history
@@ -306,6 +302,7 @@ func (self Instance) ClearHistory() { //gd:UndoRedo.clear_history
 
 /*
 Clear the undo/redo history and associated references.
+
 Passing false to 'increase_version' will prevent the version number from increasing when the history is cleared.
 */
 func (self Expanded) ClearHistory(increase_version bool) { //gd:UndoRedo.clear_history
@@ -334,7 +331,8 @@ func (self Instance) HasRedo() bool { //gd:UndoRedo.has_redo
 }
 
 /*
-Gets the version. Every time a new action is committed, the [UndoRedo]'s version number is increased automatically.
+Gets the version. Every time a new action is committed, the [graphics.gd/classdb/UndoRedo]'s version number is increased automatically.
+
 This is useful mostly to check if something changed from a saved version.
 */
 func (self Instance) GetVersion() int { //gd:UndoRedo.get_version
@@ -407,7 +405,9 @@ func (self Instance) SetMaxSteps(value int) {
 
 /*
 Create a new action. After this is called, do all your calls to [Instance.AddDoMethod], [Instance.AddUndoMethod], [Instance.AddDoProperty], and [Instance.AddUndoProperty], then commit the action with [Instance.CommitAction].
+
 The way actions are merged is dictated by 'merge_mode'. See [MergeMode] for details.
+
 The way undo operation are ordered in actions is dictated by 'backward_undo_ops'. When 'backward_undo_ops' is false undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
 //go:nosplit
@@ -428,7 +428,7 @@ func (self class) CommitAction(execute bool) { //gd:UndoRedo.commit_action
 }
 
 /*
-Returns true if the [UndoRedo] is currently committing the action, i.e. running its "do" method or property change (see [Instance.CommitAction]).
+Returns true if the [graphics.gd/classdb/UndoRedo] is currently committing the action, i.e. running its "do" method or property change (see [Instance.CommitAction]).
 */
 //go:nosplit
 func (self class) IsCommittingAction() bool { //gd:UndoRedo.is_committing_action
@@ -438,7 +438,7 @@ func (self class) IsCommittingAction() bool { //gd:UndoRedo.is_committing_action
 }
 
 /*
-Register a [Callable] that will be called when the action is committed.
+Register a func that will be called when the action is committed.
 */
 //go:nosplit
 func (self class) AddDoMethod(callable Callable.Function) { //gd:UndoRedo.add_do_method
@@ -446,7 +446,7 @@ func (self class) AddDoMethod(callable Callable.Function) { //gd:UndoRedo.add_do
 }
 
 /*
-Register a [Callable] that will be called when the action is undone.
+Register a func that will be called when the action is undone.
 */
 //go:nosplit
 func (self class) AddUndoMethod(callable Callable.Function) { //gd:UndoRedo.add_undo_method
@@ -479,15 +479,10 @@ func (self class) AddUndoProperty(obj [1]gd.Object, property String.Name, value 
 
 /*
 Register a reference to an object that will be erased if the "do" history is deleted. This is useful for objects added by the "do" action and removed by the "undo" action.
-When the "do" history is deleted, if the object is a [RefCounted], it will be unreferenced. Otherwise, it will be freed. Do not use for resources.
-[codeblock]
-var node = Node2D.new()
-undo_redo.create_action("Add node")
-undo_redo.add_do_method(add_child.bind(node))
-undo_redo.add_do_reference(node)
-undo_redo.add_undo_method(remove_child.bind(node))
-undo_redo.commit_action()
-[/codeblock]
+
+When the "do" history is deleted, if the object is a [graphics.gd/classdb/RefCounted], it will be unreferenced. Otherwise, it will be freed. Do not use for resources.
+
+
 */
 //go:nosplit
 func (self class) AddDoReference(obj [1]gd.Object) { //gd:UndoRedo.add_do_reference
@@ -496,15 +491,10 @@ func (self class) AddDoReference(obj [1]gd.Object) { //gd:UndoRedo.add_do_refere
 
 /*
 Register a reference to an object that will be erased if the "undo" history is deleted. This is useful for objects added by the "undo" action and removed by the "do" action.
-When the "undo" history is deleted, if the object is a [RefCounted], it will be unreferenced. Otherwise, it will be freed. Do not use for resources.
-[codeblock]
-var node = $Node2D
-undo_redo.create_action("Remove node")
-undo_redo.add_do_method(remove_child.bind(node))
-undo_redo.add_undo_method(add_child.bind(node))
-undo_redo.add_undo_reference(node)
-undo_redo.commit_action()
-[/codeblock]
+
+When the "undo" history is deleted, if the object is a [graphics.gd/classdb/RefCounted], it will be unreferenced. Otherwise, it will be freed. Do not use for resources.
+
+
 */
 //go:nosplit
 func (self class) AddUndoReference(obj [1]gd.Object) { //gd:UndoRedo.add_undo_reference
@@ -559,6 +549,7 @@ func (self class) GetActionName(id int64) String.Readable { //gd:UndoRedo.get_ac
 
 /*
 Clear the undo/redo history and associated references.
+
 Passing false to 'increase_version' will prevent the version number from increasing when the history is cleared.
 */
 //go:nosplit
@@ -597,7 +588,8 @@ func (self class) HasRedo() bool { //gd:UndoRedo.has_redo
 }
 
 /*
-Gets the version. Every time a new action is committed, the [UndoRedo]'s version number is increased automatically.
+Gets the version. Every time a new action is committed, the [graphics.gd/classdb/UndoRedo]'s version number is increased automatically.
+
 This is useful mostly to check if something changed from a saved version.
 */
 //go:nosplit
@@ -674,10 +666,10 @@ func init() {
 type MergeMode int //gd:UndoRedo.MergeMode
 
 const (
-	/*Makes "do"/"undo" operations stay in separate actions.*/
+	// Makes "do"/"undo" operations stay in separate actions.
 	MergeDisable MergeMode = 0
-	/*Merges this action with the previous one if they have the same name. Keeps only the first action's "undo" operations and the last action's "do" operations. Useful for sequential changes to a single value.*/
+	// Merges this action with the previous one if they have the same name. Keeps only the first action's "undo" operations and the last action's "do" operations. Useful for sequential changes to a single value.
 	MergeEnds MergeMode = 1
-	/*Merges this action with the previous one if they have the same name.*/
+	// Merges this action with the previous one if they have the same name.
 	MergeAll MergeMode = 2
 )

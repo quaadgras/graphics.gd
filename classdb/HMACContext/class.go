@@ -153,7 +153,7 @@ func (self Instance) Update(data []byte) error { //gd:HMACContext.update
 }
 
 /*
-Returns the resulting HMAC. If the HMAC failed, an empty byte slice is returned.
+Returns the resulting HMAC. If the HMAC failed, an empty []byte is returned.
 */
 func (self Instance) Finish() []byte { //gd:HMACContext.finish
 	return []byte(Advanced(self).Finish().Bytes())
@@ -226,7 +226,7 @@ func (self class) Update(data Packed.Bytes) Error.Code { //gd:HMACContext.update
 }
 
 /*
-Returns the resulting HMAC. If the HMAC failed, an empty byte slice is returned.
+Returns the resulting HMAC. If the HMAC failed, an empty []byte is returned.
 */
 //go:nosplit
 func (self class) Finish() Packed.Bytes { //gd:HMACContext.finish

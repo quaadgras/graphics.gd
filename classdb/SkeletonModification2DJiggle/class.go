@@ -2,8 +2,10 @@
 
 /*
 This modification moves a series of bones, typically called a bone chain, towards a target. What makes this modification special is that it calculates the velocity and acceleration for each bone in the bone chain, and runs a very light physics-like calculation using the inputted values. This allows the bones to overshoot the target and "jiggle" around. It can be configured to act more like a spring, or sway around like cloth might.
+
 This modification is useful for adding additional motion to things like hair, the edges of clothing, and more. It has several settings to that allow control over how the joint moves when the target moves.
-Note: The Jiggle modifier has jiggle_joints, which are the data objects that hold the data for each joint in the Jiggle chain. This is different from than [Bone2D] nodes! Jiggle joints hold the data needed for each [Bone2D] in the bone chain used by the Jiggle modification.
+
+Note: The Jiggle modifier has jiggle_joints, which are the data objects that hold the data for each joint in the Jiggle chain. This is different from than [graphics.gd/classdb/Bone2D] nodes! Jiggle joints hold the data needed for each [graphics.gd/classdb/Bone2D] in the bone chain used by the Jiggle modification.
 */
 package SkeletonModification2DJiggle
 
@@ -163,14 +165,14 @@ func (self Instance) GetCollisionMask() int { //gd:SkeletonModification2DJiggle.
 }
 
 /*
-Sets the [Bone2D] node assigned to the Jiggle joint at 'joint_idx'.
+Sets the [graphics.gd/classdb/Bone2D] node assigned to the Jiggle joint at 'joint_idx'.
 */
 func (self Instance) SetJiggleJointBone2dNode(joint_idx int, bone2d_node string) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone2d_node
 	Advanced(self).SetJiggleJointBone2dNode(int64(joint_idx), Path.ToNode(String.New(bone2d_node)))
 }
 
 /*
-Returns the [Bone2D] node assigned to the Jiggle joint at 'joint_idx'.
+Returns the [graphics.gd/classdb/Bone2D] node assigned to the Jiggle joint at 'joint_idx'.
 */
 func (self Instance) GetJiggleJointBone2dNode(joint_idx int) string { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone2d_node
 	return string(Advanced(self).GetJiggleJointBone2dNode(int64(joint_idx)).String())
@@ -184,7 +186,7 @@ func (self Instance) SetJiggleJointBoneIndex(joint_idx int, bone_idx int) { //gd
 }
 
 /*
-Returns the index of the [Bone2D] node assigned to the Jiggle joint at 'joint_idx'.
+Returns the index of the [graphics.gd/classdb/Bone2D] node assigned to the Jiggle joint at 'joint_idx'.
 */
 func (self Instance) GetJiggleJointBoneIndex(joint_idx int) int { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone_index
 	return int(int(Advanced(self).GetJiggleJointBoneIndex(int64(joint_idx))))
@@ -268,7 +270,7 @@ func (self Instance) SetJiggleJointGravity(joint_idx int, gravity Vector2.XY) { 
 }
 
 /*
-Returns a [Vector2] representing the amount of gravity the Jiggle joint at 'joint_idx' is influenced by.
+Returns a [Vector2.XY] representing the amount of gravity the Jiggle joint at 'joint_idx' is influenced by.
 */
 func (self Instance) GetJiggleJointGravity(joint_idx int) Vector2.XY { //gd:SkeletonModification2DJiggle.get_jiggle_joint_gravity
 	return Vector2.XY(Advanced(self).GetJiggleJointGravity(int64(joint_idx)))
@@ -494,7 +496,7 @@ func (self class) GetCollisionMask() int64 { //gd:SkeletonModification2DJiggle.g
 }
 
 /*
-Sets the [Bone2D] node assigned to the Jiggle joint at 'joint_idx'.
+Sets the [graphics.gd/classdb/Bone2D] node assigned to the Jiggle joint at 'joint_idx'.
 */
 //go:nosplit
 func (self class) SetJiggleJointBone2dNode(joint_idx int64, bone2d_node Path.ToNode) { //gd:SkeletonModification2DJiggle.set_jiggle_joint_bone2d_node
@@ -505,7 +507,7 @@ func (self class) SetJiggleJointBone2dNode(joint_idx int64, bone2d_node Path.ToN
 }
 
 /*
-Returns the [Bone2D] node assigned to the Jiggle joint at 'joint_idx'.
+Returns the [graphics.gd/classdb/Bone2D] node assigned to the Jiggle joint at 'joint_idx'.
 */
 //go:nosplit
 func (self class) GetJiggleJointBone2dNode(joint_idx int64) Path.ToNode { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone2d_node
@@ -526,7 +528,7 @@ func (self class) SetJiggleJointBoneIndex(joint_idx int64, bone_idx int64) { //g
 }
 
 /*
-Returns the index of the [Bone2D] node assigned to the Jiggle joint at 'joint_idx'.
+Returns the index of the [graphics.gd/classdb/Bone2D] node assigned to the Jiggle joint at 'joint_idx'.
 */
 //go:nosplit
 func (self class) GetJiggleJointBoneIndex(joint_idx int64) int64 { //gd:SkeletonModification2DJiggle.get_jiggle_joint_bone_index
@@ -652,7 +654,7 @@ func (self class) SetJiggleJointGravity(joint_idx int64, gravity Vector2.XY) { /
 }
 
 /*
-Returns a [Vector2] representing the amount of gravity the Jiggle joint at 'joint_idx' is influenced by.
+Returns a [Vector2.XY] representing the amount of gravity the Jiggle joint at 'joint_idx' is influenced by.
 */
 //go:nosplit
 func (self class) GetJiggleJointGravity(joint_idx int64) Vector2.XY { //gd:SkeletonModification2DJiggle.get_jiggle_joint_gravity

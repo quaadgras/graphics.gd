@@ -2,12 +2,19 @@
 
 /*
 PhysicsServer3D is the server responsible for all 3D physics. It can directly create and manipulate all physics objects:
-- A [i]space[/i] is a self-contained world for a physics simulation. It contains bodies, areas, and joints. Its state can be queried for collision and intersection information, and several parameters of the simulation can be modified.
-- A [i]shape[/i] is a geometric shape such as a sphere, a box, a cylinder, or a polygon. It can be used for collision detection by adding it to a body/area, possibly with an extra transformation relative to the body/area's origin. Bodies/areas can have multiple (transformed) shapes added to them, and a single shape can be added to bodies/areas multiple times with different local transformations.
-- A [i]body[/i] is a physical object which can be in static, kinematic, or rigid mode. Its state (such as position and velocity) can be queried and updated. A force integration callback can be set to customize the body's physics.
-- An [i]area[/i] is a region in space which can be used to detect bodies and areas entering and exiting it. A body monitoring callback can be set to report entering/exiting body shapes, and similarly an area monitoring callback can be set. Gravity and damping can be overridden within the area by setting area parameters.
-- A [i]joint[/i] is a constraint, either between two bodies or on one body relative to a point. Parameters such as the joint bias and the rest length of a spring joint can be adjusted.
-Physics objects in [PhysicsServer3D] may be created and manipulated independently; they do not have to be tied to nodes in the scene tree.
+
+- A space is a self-contained world for a physics simulation. It contains bodies, areas, and joints. Its state can be queried for collision and intersection information, and several parameters of the simulation can be modified.
+
+- A shape is a geometric shape such as a sphere, a box, a cylinder, or a polygon. It can be used for collision detection by adding it to a body/area, possibly with an extra transformation relative to the body/area's origin. Bodies/areas can have multiple (transformed) shapes added to them, and a single shape can be added to bodies/areas multiple times with different local transformations.
+
+- A body is a physical object which can be in static, kinematic, or rigid mode. Its state (such as position and velocity) can be queried and updated. A force integration callback can be set to customize the body's physics.
+
+- An area is a region in space which can be used to detect bodies and areas entering and exiting it. A body monitoring callback can be set to report entering/exiting body shapes, and similarly an area monitoring callback can be set. Gravity and damping can be overridden within the area by setting area parameters.
+
+- A joint is a constraint, either between two bodies or on one body relative to a point. Parameters such as the joint bias and the rest length of a spring joint can be adjusted.
+
+Physics objects in [graphics.gd/classdb/PhysicsServer3D] may be created and manipulated independently; they do not have to be tied to nodes in the scene tree.
+
 Note: All the 3D physics nodes use the physics server internally. Adding a physics node to the scene tree will cause a corresponding physics object to be created in the physics server. A rigid body node registers a callback that updates the node's transform with the transform of the respective body object in the physics server (every physics update). An area node registers a callback to inform the area node about overlaps with the respective area object in the physics server. The raycast node queries the direct state of the relevant space in the physics server.
 */
 package PhysicsServer3D
@@ -320,7 +327,7 @@ func CustomShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.custom_shape_create
 }
 
 /*
-Sets the shape data that defines its shape and size. The data to be passed depends on the kind of shape created [Instance.ShapeGetType].
+Sets the shape data that defines its shape and size. The data to be passed depends on the kind of shape created [ShapeGetType].
 */
 func ShapeSetData(shape RID.Shape3D, data any) { //gd:PhysicsServer3D.shape_set_data
 	once.Do(singleton)
@@ -329,6 +336,7 @@ func ShapeSetData(shape RID.Shape3D, data any) { //gd:PhysicsServer3D.shape_set_
 
 /*
 Sets the collision margin for the shape.
+
 Note: This is not used in Godot Physics.
 */
 func ShapeSetMargin(shape RID.Shape3D, margin Float.X) { //gd:PhysicsServer3D.shape_set_margin
@@ -354,6 +362,7 @@ func ShapeGetData(shape RID.Shape3D) any { //gd:PhysicsServer3D.shape_get_data
 
 /*
 Returns the collision margin for the shape.
+
 Note: This is not used in Godot Physics, so will always return 0.
 */
 func ShapeGetMargin(shape RID.Shape3D) Float.X { //gd:PhysicsServer3D.shape_get_margin
@@ -362,7 +371,7 @@ func ShapeGetMargin(shape RID.Shape3D) Float.X { //gd:PhysicsServer3D.shape_get_
 }
 
 /*
-Creates a space. A space is a collection of parameters for the physics engine that can be assigned to an area or a body. It can be assigned to an area with [Instance.AreaSetSpace], or to a body with [Instance.BodySetSpace].
+Creates a space. A space is a collection of parameters for the physics engine that can be assigned to an area or a body. It can be assigned to an area with [AreaSetSpace], or to a body with [BodySetSpace].
 */
 func SpaceCreate() RID.Space3D { //gd:PhysicsServer3D.space_create
 	once.Do(singleton)
@@ -402,7 +411,7 @@ func SpaceGetParam(space RID.Space3D, param SpaceParameter) Float.X { //gd:Physi
 }
 
 /*
-Returns the state of a space, a [PhysicsDirectSpaceState3D]. This object can be used to make collision/intersection queries.
+Returns the state of a space, a [graphics.gd/classdb/PhysicsDirectSpaceState3D]. This object can be used to make collision/intersection queries.
 */
 func SpaceGetDirectState(space RID.Space3D) PhysicsDirectSpaceState3D.Instance { //gd:PhysicsServer3D.space_get_direct_state
 	once.Do(singleton)
@@ -410,8 +419,9 @@ func SpaceGetDirectState(space RID.Space3D) PhysicsDirectSpaceState3D.Instance {
 }
 
 /*
-Creates a 3D area object in the physics server, and returns the [RID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and monitorable set to false.
-Use [Instance.AreaAddShape] to add shapes to it, use [Instance.AreaSetTransform] to set its transform, and use [Instance.AreaSetSpace] to add the area to a space. If you want the area to be detectable use [Instance.AreaSetMonitorable].
+Creates a 3D area object in the physics server, and returns the [Resource.ID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and monitorable set to false.
+
+Use [AreaAddShape] to add shapes to it, use [AreaSetTransform] to set its transform, and use [AreaSetSpace] to add the area to a space. If you want the area to be detectable use [AreaSetMonitorable].
 */
 func AreaCreate() RID.Area3D { //gd:PhysicsServer3D.area_create
 	once.Do(singleton)
@@ -451,7 +461,7 @@ func AreaAddShapeOptions(area RID.Area3D, shape RID.Shape3D, transform Transform
 }
 
 /*
-Substitutes a given area shape by another. The old shape is selected by its index, the new one by its [RID].
+Substitutes a given area shape by another. The old shape is selected by its index, the new one by its [Resource.ID].
 */
 func AreaSetShape(area RID.Area3D, shape_idx int, shape RID.Shape3D) { //gd:PhysicsServer3D.area_set_shape
 	once.Do(singleton)
@@ -479,7 +489,7 @@ func AreaGetShapeCount(area RID.Area3D) int { //gd:PhysicsServer3D.area_get_shap
 }
 
 /*
-Returns the [RID] of the nth shape of an area.
+Returns the [Resource.ID] of the nth shape of an area.
 */
 func AreaGetShape(area RID.Area3D, shape_idx int) RID.Shape3D { //gd:PhysicsServer3D.area_get_shape
 	once.Do(singleton)
@@ -575,7 +585,7 @@ func AreaGetTransform(area RID.Area3D) Transform3D.BasisOrigin { //gd:PhysicsSer
 }
 
 /*
-Assigns the area to a descendant of [Object], so it can exist in the node tree.
+Assigns the area to a descendant of [graphics.gd/classdb/Object], so it can exist in the node tree.
 */
 func AreaAttachObjectInstanceId(area RID.Area3D, id int) { //gd:PhysicsServer3D.area_attach_object_instance_id
 	once.Do(singleton)
@@ -592,11 +602,17 @@ func AreaGetObjectInstanceId(area RID.Area3D) int { //gd:PhysicsServer3D.area_ge
 
 /*
 Sets the area's body monitor callback. This callback will be called when any other (shape of a) body enters or exits (a shape of) the given area, and must take the following five parameters:
+
 1. an integer status: either [AreaBodyAdded] or [AreaBodyRemoved] depending on whether the other body shape entered or exited the area,
-2. an [RID] body_rid: the [RID] of the body that entered or exited the area,
+
+2. an [Resource.ID] body_rid: the [Resource.ID] of the body that entered or exited the area,
+
 3. an integer instance_id: the ObjectID attached to the body,
+
 4. an integer body_shape_idx: the index of the shape of the body that entered or exited the area,
+
 5. an integer self_shape_idx: the index of the shape of the area where the body entered or exited.
+
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if a body (with all its shapes) is entering for the first time or exiting for the last time.
 */
 func AreaSetMonitorCallback(area RID.Area3D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) { //gd:PhysicsServer3D.area_set_monitor_callback
@@ -606,11 +622,17 @@ func AreaSetMonitorCallback(area RID.Area3D, callback func(status int, body_rid 
 
 /*
 Sets the area's area monitor callback. This callback will be called when any other (shape of an) area enters or exits (a shape of) the given area, and must take the following five parameters:
+
 1. an integer status: either [AreaBodyAdded] or [AreaBodyRemoved] depending on whether the other area's shape entered or exited the area,
-2. an [RID] area_rid: the [RID] of the other area that entered or exited the area,
+
+2. an [Resource.ID] area_rid: the [Resource.ID] of the other area that entered or exited the area,
+
 3. an integer instance_id: the ObjectID attached to the other area,
+
 4. an integer area_shape_idx: the index of the shape of the other area that entered or exited the area,
+
 5. an integer self_shape_idx: the index of the shape of the area where the other area entered or exited.
+
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if an area (with all its shapes) is entering for the first time or exiting for the last time.
 */
 func AreaSetAreaMonitorCallback(area RID.Area3D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) { //gd:PhysicsServer3D.area_set_area_monitor_callback
@@ -631,8 +653,9 @@ func AreaSetRayPickable(area RID.Area3D, enable bool) { //gd:PhysicsServer3D.are
 }
 
 /*
-Creates a 3D body object in the physics server, and returns the [RID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and body mode set to [BodyModeRigid].
-Use [Instance.BodyAddShape] to add shapes to it, use [Instance.BodySetState] to set its transform, and use [Instance.BodySetSpace] to add the body to a space.
+Creates a 3D body object in the physics server, and returns the [Resource.ID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and body mode set to [BodyModeRigid].
+
+Use [BodyAddShape] to add shapes to it, use [BodySetState] to set its transform, and use [BodySetSpace] to add the body to a space.
 */
 func BodyCreate() RID.Body3D { //gd:PhysicsServer3D.body_create
 	once.Do(singleton)
@@ -640,7 +663,7 @@ func BodyCreate() RID.Body3D { //gd:PhysicsServer3D.body_create
 }
 
 /*
-Assigns a space to the body (see [Instance.SpaceCreate]).
+Assigns a space to the body (see [SpaceCreate]).
 */
 func BodySetSpace(body RID.Body3D, space RID.Space3D) { //gd:PhysicsServer3D.body_set_space
 	once.Do(singleton)
@@ -648,7 +671,7 @@ func BodySetSpace(body RID.Body3D, space RID.Space3D) { //gd:PhysicsServer3D.bod
 }
 
 /*
-Returns the [RID] of the space assigned to a body.
+Returns the [Resource.ID] of the space assigned to a body.
 */
 func BodyGetSpace(body RID.Body3D) RID.Space3D { //gd:PhysicsServer3D.body_get_space
 	once.Do(singleton)
@@ -736,7 +759,7 @@ func BodyAddShapeOptions(body RID.Body3D, shape RID.Shape3D, transform Transform
 }
 
 /*
-Substitutes a given body shape by another. The old shape is selected by its index, the new one by its [RID].
+Substitutes a given body shape by another. The old shape is selected by its index, the new one by its [Resource.ID].
 */
 func BodySetShape(body RID.Body3D, shape_idx int, shape RID.Shape3D) { //gd:PhysicsServer3D.body_set_shape
 	once.Do(singleton)
@@ -764,7 +787,7 @@ func BodyGetShapeCount(body RID.Body3D) int { //gd:PhysicsServer3D.body_get_shap
 }
 
 /*
-Returns the [RID] of the nth shape of a body.
+Returns the [Resource.ID] of the nth shape of a body.
 */
 func BodyGetShape(body RID.Body3D, shape_idx int) RID.Shape3D { //gd:PhysicsServer3D.body_get_shape
 	once.Do(singleton)
@@ -796,7 +819,7 @@ func BodyClearShapes(body RID.Body3D) { //gd:PhysicsServer3D.body_clear_shapes
 }
 
 /*
-Assigns the area to a descendant of [Object], so it can exist in the node tree.
+Assigns the area to a descendant of [graphics.gd/classdb/Object], so it can exist in the node tree.
 */
 func BodyAttachObjectInstanceId(body RID.Body3D, id int) { //gd:PhysicsServer3D.body_attach_object_instance_id
 	once.Do(singleton)
@@ -813,6 +836,7 @@ func BodyGetObjectInstanceId(body RID.Body3D) int { //gd:PhysicsServer3D.body_ge
 
 /*
 If true, the continuous collision detection mode is enabled.
+
 Continuous collision detection tries to predict where a moving body will collide, instead of moving it and correcting its movement if it collided.
 */
 func BodySetEnableContinuousCollisionDetection(body RID.Body3D, enable bool) { //gd:PhysicsServer3D.body_set_enable_continuous_collision_detection
@@ -845,7 +869,7 @@ func BodyGetParam(body RID.Body3D, param BodyParameter) any { //gd:PhysicsServer
 }
 
 /*
-Restores the default inertia and center of mass based on shapes to cancel any custom values previously set using [Instance.BodySetParam].
+Restores the default inertia and center of mass based on shapes to cancel any custom values previously set using [BodySetParam].
 */
 func BodyResetMassProperties(body RID.Body3D) { //gd:PhysicsServer3D.body_reset_mass_properties
 	once.Do(singleton)
@@ -870,8 +894,10 @@ func BodyGetState(body RID.Body3D, state BodyState) any { //gd:PhysicsServer3D.b
 
 /*
 Applies a directional impulse without affecting rotation.
+
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
-This is equivalent to using [Instance.BodyApplyImpulse] at the body's center of mass.
+
+This is equivalent to using [BodyApplyImpulse] at the body's center of mass.
 */
 func BodyApplyCentralImpulse(body RID.Body3D, impulse Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_central_impulse
 	once.Do(singleton)
@@ -880,7 +906,9 @@ func BodyApplyCentralImpulse(body RID.Body3D, impulse Vector3.XYZ) { //gd:Physic
 
 /*
 Applies a positioned impulse to the body.
+
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+
 'position' is the offset from the body origin in global coordinates.
 */
 func BodyApplyImpulse(body RID.Body3D, impulse Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_impulse
@@ -890,7 +918,9 @@ func BodyApplyImpulse(body RID.Body3D, impulse Vector3.XYZ, position Vector3.XYZ
 
 /*
 Applies a positioned impulse to the body.
+
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+
 'position' is the offset from the body origin in global coordinates.
 */
 func BodyApplyImpulseOptions(body RID.Body3D, impulse Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_impulse
@@ -900,6 +930,7 @@ func BodyApplyImpulseOptions(body RID.Body3D, impulse Vector3.XYZ, position Vect
 
 /*
 Applies a rotational impulse to the body without affecting the position.
+
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 */
 func BodyApplyTorqueImpulse(body RID.Body3D, impulse Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_torque_impulse
@@ -909,7 +940,8 @@ func BodyApplyTorqueImpulse(body RID.Body3D, impulse Vector3.XYZ) { //gd:Physics
 
 /*
 Applies a directional force without affecting rotation. A force is time dependent and meant to be applied every physics update.
-This is equivalent to using [Instance.BodyApplyForce] at the body's center of mass.
+
+This is equivalent to using [BodyApplyForce] at the body's center of mass.
 */
 func BodyApplyCentralForce(body RID.Body3D, force Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_central_force
 	once.Do(singleton)
@@ -918,6 +950,7 @@ func BodyApplyCentralForce(body RID.Body3D, force Vector3.XYZ) { //gd:PhysicsSer
 
 /*
 Applies a positioned force to the body. A force is time dependent and meant to be applied every physics update.
+
 'position' is the offset from the body origin in global coordinates.
 */
 func BodyApplyForce(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_force
@@ -927,6 +960,7 @@ func BodyApplyForce(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) { 
 
 /*
 Applies a positioned force to the body. A force is time dependent and meant to be applied every physics update.
+
 'position' is the offset from the body origin in global coordinates.
 */
 func BodyApplyForceOptions(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_force
@@ -944,7 +978,8 @@ func BodyApplyTorque(body RID.Body3D, torque Vector3.XYZ) { //gd:PhysicsServer3D
 
 /*
 Adds a constant directional force without affecting rotation that keeps being applied over time until cleared with body_set_constant_force(body, Vector3(0, 0, 0)).
-This is equivalent to using [Instance.BodyAddConstantForce] at the body's center of mass.
+
+This is equivalent to using [BodyAddConstantForce] at the body's center of mass.
 */
 func BodyAddConstantCentralForce(body RID.Body3D, force Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_central_force
 	once.Do(singleton)
@@ -953,6 +988,7 @@ func BodyAddConstantCentralForce(body RID.Body3D, force Vector3.XYZ) { //gd:Phys
 
 /*
 Adds a constant positioned force to the body that keeps being applied over time until cleared with body_set_constant_force(body, Vector3(0, 0, 0)).
+
 'position' is the offset from the body origin in global coordinates.
 */
 func BodyAddConstantForce(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_force
@@ -962,6 +998,7 @@ func BodyAddConstantForce(body RID.Body3D, force Vector3.XYZ, position Vector3.X
 
 /*
 Adds a constant positioned force to the body that keeps being applied over time until cleared with body_set_constant_force(body, Vector3(0, 0, 0)).
+
 'position' is the offset from the body origin in global coordinates.
 */
 func BodyAddConstantForceOptions(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_force
@@ -979,7 +1016,8 @@ func BodyAddConstantTorque(body RID.Body3D, torque Vector3.XYZ) { //gd:PhysicsSe
 
 /*
 Sets the body's total constant positional forces applied during each physics update.
-See [Instance.BodyAddConstantForce] and [Instance.BodyAddConstantCentralForce].
+
+See [BodyAddConstantForce] and [BodyAddConstantCentralForce].
 */
 func BodySetConstantForce(body RID.Body3D, force Vector3.XYZ) { //gd:PhysicsServer3D.body_set_constant_force
 	once.Do(singleton)
@@ -988,7 +1026,8 @@ func BodySetConstantForce(body RID.Body3D, force Vector3.XYZ) { //gd:PhysicsServ
 
 /*
 Returns the body's total constant positional forces applied during each physics update.
-See [Instance.BodyAddConstantForce] and [Instance.BodyAddConstantCentralForce].
+
+See [BodyAddConstantForce] and [BodyAddConstantCentralForce].
 */
 func BodyGetConstantForce(body RID.Body3D) Vector3.XYZ { //gd:PhysicsServer3D.body_get_constant_force
 	once.Do(singleton)
@@ -997,7 +1036,8 @@ func BodyGetConstantForce(body RID.Body3D) Vector3.XYZ { //gd:PhysicsServer3D.bo
 
 /*
 Sets the body's total constant rotational forces applied during each physics update.
-See [Instance.BodyAddConstantTorque].
+
+See [BodyAddConstantTorque].
 */
 func BodySetConstantTorque(body RID.Body3D, torque Vector3.XYZ) { //gd:PhysicsServer3D.body_set_constant_torque
 	once.Do(singleton)
@@ -1006,7 +1046,8 @@ func BodySetConstantTorque(body RID.Body3D, torque Vector3.XYZ) { //gd:PhysicsSe
 
 /*
 Returns the body's total constant rotational forces applied during each physics update.
-See [Instance.BodyAddConstantTorque].
+
+See [BodyAddConstantTorque].
 */
 func BodyGetConstantTorque(body RID.Body3D) Vector3.XYZ { //gd:PhysicsServer3D.body_get_constant_torque
 	once.Do(singleton)
@@ -1039,6 +1080,7 @@ func BodyAddCollisionException(body RID.Body3D, excepted_body RID.Body3D) { //gd
 
 /*
 Removes a body from the list of bodies exempt from collisions.
+
 Continuous collision detection tries to predict where a moving body will collide, instead of moving it and correcting its movement if it collided.
 */
 func BodyRemoveCollisionException(body RID.Body3D, excepted_body RID.Body3D) { //gd:PhysicsServer3D.body_remove_collision_exception
@@ -1055,7 +1097,7 @@ func BodySetMaxContactsReported(body RID.Body3D, amount int) { //gd:PhysicsServe
 }
 
 /*
-Returns the maximum contacts that can be reported. See [Instance.BodySetMaxContactsReported].
+Returns the maximum contacts that can be reported. See [BodySetMaxContactsReported].
 */
 func BodyGetMaxContactsReported(body RID.Body3D) int { //gd:PhysicsServer3D.body_get_max_contacts_reported
 	once.Do(singleton)
@@ -1063,8 +1105,9 @@ func BodyGetMaxContactsReported(body RID.Body3D) int { //gd:PhysicsServer3D.body
 }
 
 /*
-Sets whether the body omits the standard force integration. If 'enable' is true, the body will not automatically use applied forces, torques, and damping to update the body's linear and angular velocity. In this case, [Instance.BodySetForceIntegrationCallback] can be used to manually update the linear and angular velocity instead.
-This method is called when the property [member RigidBody3D.custom_integrator] is set.
+Sets whether the body omits the standard force integration. If 'enable' is true, the body will not automatically use applied forces, torques, and damping to update the body's linear and angular velocity. In this case, [BodySetForceIntegrationCallback] can be used to manually update the linear and angular velocity instead.
+
+This method is called when the property [graphics.gd/classdb/RigidBody3D.Instance.CustomIntegrator] is set.
 */
 func BodySetOmitForceIntegration(body RID.Body3D, enable bool) { //gd:PhysicsServer3D.body_set_omit_force_integration
 	once.Do(singleton)
@@ -1072,7 +1115,7 @@ func BodySetOmitForceIntegration(body RID.Body3D, enable bool) { //gd:PhysicsSer
 }
 
 /*
-Returns true if the body is omitting the standard force integration. See [Instance.BodySetOmitForceIntegration].
+Returns true if the body is omitting the standard force integration. See [BodySetOmitForceIntegration].
 */
 func BodyIsOmittingForceIntegration(body RID.Body3D) bool { //gd:PhysicsServer3D.body_is_omitting_force_integration
 	once.Do(singleton)
@@ -1080,10 +1123,13 @@ func BodyIsOmittingForceIntegration(body RID.Body3D) bool { //gd:PhysicsServer3D
 }
 
 /*
-Sets the body's state synchronization callback function to 'callable'. Use an empty [Callable] (Callable()) to clear the callback.
+Sets the body's state synchronization callback function to 'callable'. Use an empty func (Callable()) to clear the callback.
+
 The function 'callable' will be called every physics frame, assuming that the body was active during the previous physics tick, and can be used to fetch the latest state from the physics server.
+
 The function 'callable' must take the following parameters:
-1. state: a [PhysicsDirectBodyState3D], used to retrieve the body's state.
+
+1. state: a [graphics.gd/classdb/PhysicsDirectBodyState3D], used to retrieve the body's state.
 */
 func BodySetStateSyncCallback(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance)) { //gd:PhysicsServer3D.body_set_state_sync_callback
 	once.Do(singleton)
@@ -1091,11 +1137,16 @@ func BodySetStateSyncCallback(body RID.Body3D, callable func(state PhysicsDirect
 }
 
 /*
-Sets the body's custom force integration callback function to 'callable'. Use an empty [Callable] (Callable()) to clear the custom callback.
-The function 'callable' will be called every physics tick, before the standard force integration (see [Instance.BodySetOmitForceIntegration]). It can be used for example to update the body's linear and angular velocity based on contact with other bodies.
+Sets the body's custom force integration callback function to 'callable'. Use an empty func (Callable()) to clear the custom callback.
+
+The function 'callable' will be called every physics tick, before the standard force integration (see [BodySetOmitForceIntegration]). It can be used for example to update the body's linear and angular velocity based on contact with other bodies.
+
 If 'userdata' is not null, the function 'callable' must take the following two parameters:
-1. state: a [PhysicsDirectBodyState3D], used to retrieve and modify the body's state,
-2. userdata: a [Variant]; its value will be the 'userdata' passed into this method.
+
+1. state: a [graphics.gd/classdb/PhysicsDirectBodyState3D], used to retrieve and modify the body's state,
+
+2. userdata: a any; its value will be the 'userdata' passed into this method.
+
 If 'userdata' is null, then 'callable' must take only the state parameter.
 */
 func BodySetForceIntegrationCallback(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance, userdata any), userdata any) { //gd:PhysicsServer3D.body_set_force_integration_callback
@@ -1104,11 +1155,16 @@ func BodySetForceIntegrationCallback(body RID.Body3D, callable func(state Physic
 }
 
 /*
-Sets the body's custom force integration callback function to 'callable'. Use an empty [Callable] (Callable()) to clear the custom callback.
-The function 'callable' will be called every physics tick, before the standard force integration (see [Instance.BodySetOmitForceIntegration]). It can be used for example to update the body's linear and angular velocity based on contact with other bodies.
+Sets the body's custom force integration callback function to 'callable'. Use an empty func (Callable()) to clear the custom callback.
+
+The function 'callable' will be called every physics tick, before the standard force integration (see [BodySetOmitForceIntegration]). It can be used for example to update the body's linear and angular velocity based on contact with other bodies.
+
 If 'userdata' is not null, the function 'callable' must take the following two parameters:
-1. state: a [PhysicsDirectBodyState3D], used to retrieve and modify the body's state,
-2. userdata: a [Variant]; its value will be the 'userdata' passed into this method.
+
+1. state: a [graphics.gd/classdb/PhysicsDirectBodyState3D], used to retrieve and modify the body's state,
+
+2. userdata: a any; its value will be the 'userdata' passed into this method.
+
 If 'userdata' is null, then 'callable' must take only the state parameter.
 */
 func BodySetForceIntegrationCallbackOptions(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance, userdata any), userdata any) { //gd:PhysicsServer3D.body_set_force_integration_callback
@@ -1125,7 +1181,7 @@ func BodySetRayPickable(body RID.Body3D, enable bool) { //gd:PhysicsServer3D.bod
 }
 
 /*
-Returns true if a collision would result from moving along a motion vector from a given point in space. [PhysicsTestMotionParameters3D] is passed to set motion parameters. [PhysicsTestMotionResult3D] can be passed to return additional information.
+Returns true if a collision would result from moving along a motion vector from a given point in space. [graphics.gd/classdb/PhysicsTestMotionParameters3D] is passed to set motion parameters. [graphics.gd/classdb/PhysicsTestMotionResult3D] can be passed to return additional information.
 */
 func BodyTestMotion(body RID.Body3D, parameters PhysicsTestMotionParameters3D.Instance, result PhysicsTestMotionResult3D.Instance) bool { //gd:PhysicsServer3D.body_test_motion
 	once.Do(singleton)
@@ -1133,7 +1189,7 @@ func BodyTestMotion(body RID.Body3D, parameters PhysicsTestMotionParameters3D.In
 }
 
 /*
-Returns true if a collision would result from moving along a motion vector from a given point in space. [PhysicsTestMotionParameters3D] is passed to set motion parameters. [PhysicsTestMotionResult3D] can be passed to return additional information.
+Returns true if a collision would result from moving along a motion vector from a given point in space. [graphics.gd/classdb/PhysicsTestMotionParameters3D] is passed to set motion parameters. [graphics.gd/classdb/PhysicsTestMotionResult3D] can be passed to return additional information.
 */
 func BodyTestMotionOptions(body RID.Body3D, parameters PhysicsTestMotionParameters3D.Instance, result PhysicsTestMotionResult3D.Instance) bool { //gd:PhysicsServer3D.body_test_motion
 	once.Do(singleton)
@@ -1141,7 +1197,7 @@ func BodyTestMotionOptions(body RID.Body3D, parameters PhysicsTestMotionParamete
 }
 
 /*
-Returns the [PhysicsDirectBodyState3D] of the body. Returns null if the body is destroyed or removed from the physics space.
+Returns the [graphics.gd/classdb/PhysicsDirectBodyState3D] of the body. Returns null if the body is destroyed or removed from the physics space.
 */
 func BodyGetDirectState(body RID.Body3D) PhysicsDirectBodyState3D.Instance { //gd:PhysicsServer3D.body_get_direct_state
 	once.Do(singleton)
@@ -1149,7 +1205,7 @@ func BodyGetDirectState(body RID.Body3D) PhysicsDirectBodyState3D.Instance { //g
 }
 
 /*
-Creates a new soft body and returns its internal [RID].
+Creates a new soft body and returns its internal [Resource.ID].
 */
 func SoftBodyCreate() RID.SoftBody3D { //gd:PhysicsServer3D.soft_body_create
 	once.Do(singleton)
@@ -1165,7 +1221,7 @@ func SoftBodyUpdateRenderingServer(body RID.SoftBody3D, rendering_server_handler
 }
 
 /*
-Assigns a space to the given soft body (see [Instance.SpaceCreate]).
+Assigns a space to the given soft body (see [SpaceCreate]).
 */
 func SoftBodySetSpace(body RID.SoftBody3D, space RID.Space3D) { //gd:PhysicsServer3D.soft_body_set_space
 	once.Do(singleton)
@@ -1173,7 +1229,7 @@ func SoftBodySetSpace(body RID.SoftBody3D, space RID.Space3D) { //gd:PhysicsServ
 }
 
 /*
-Returns the [RID] of the space assigned to the given soft body.
+Returns the [Resource.ID] of the space assigned to the given soft body.
 */
 func SoftBodyGetSpace(body RID.SoftBody3D) RID.Space3D { //gd:PhysicsServer3D.soft_body_get_space
 	once.Do(singleton)
@@ -1246,6 +1302,7 @@ func SoftBodyRemoveCollisionException(body RID.SoftBody3D, body_b RID.Body3D) { 
 
 /*
 Sets the given body state for the given body (see [BodyState] constants).
+
 Note: Godot's default physics implementation does not support [BodyStateLinearVelocity], [BodyStateAngularVelocity], [BodyStateSleeping], or [BodyStateCanSleep].
 */
 func SoftBodySetState(body RID.SoftBody3D, state BodyState, v any) { //gd:PhysicsServer3D.soft_body_set_state
@@ -1255,6 +1312,7 @@ func SoftBodySetState(body RID.SoftBody3D, state BodyState, v any) { //gd:Physic
 
 /*
 Returns the given soft body state (see [BodyState] constants).
+
 Note: Godot's default physics implementation does not support [BodyStateLinearVelocity], [BodyStateAngularVelocity], [BodyStateSleeping], or [BodyStateCanSleep].
 */
 func SoftBodyGetState(body RID.SoftBody3D, state BodyState) any { //gd:PhysicsServer3D.soft_body_get_state
@@ -1360,6 +1418,7 @@ func SoftBodyGetDampingCoefficient(body RID.SoftBody3D) Float.X { //gd:PhysicsSe
 
 /*
 Sets the drag coefficient of the given soft body. Higher values increase this body's air resistance.
+
 Note: This value is currently unused by Godot's default physics implementation.
 */
 func SoftBodySetDragCoefficient(body RID.SoftBody3D, drag_coefficient Float.X) { //gd:PhysicsServer3D.soft_body_set_drag_coefficient
@@ -1401,7 +1460,8 @@ func SoftBodyRemoveAllPinnedPoints(body RID.SoftBody3D) { //gd:PhysicsServer3D.s
 
 /*
 Pins or unpins the given soft body point based on the value of 'pin'.
-Note: Pinning a point effectively makes it kinematic, preventing it from being affected by forces, but you can still move it using [Instance.SoftBodyMovePoint].
+
+Note: Pinning a point effectively makes it kinematic, preventing it from being affected by forces, but you can still move it using [SoftBodyMovePoint].
 */
 func SoftBodyPinPoint(body RID.SoftBody3D, point_index int, pin bool) { //gd:PhysicsServer3D.soft_body_pin_point
 	once.Do(singleton)
@@ -1577,7 +1637,7 @@ func JointGetSolverPriority(joint RID.Joint3D) int { //gd:PhysicsServer3D.joint_
 }
 
 /*
-Sets whether the bodies attached to the [Joint3D] will collide with each other.
+Sets whether the bodies attached to the [graphics.gd/classdb/Joint3D] will collide with each other.
 */
 func JointDisableCollisionsBetweenBodies(joint RID.Joint3D, disable bool) { //gd:PhysicsServer3D.joint_disable_collisions_between_bodies
 	once.Do(singleton)
@@ -1585,7 +1645,7 @@ func JointDisableCollisionsBetweenBodies(joint RID.Joint3D, disable bool) { //gd
 }
 
 /*
-Returns whether the bodies attached to the [Joint3D] will collide with each other.
+Returns whether the bodies attached to the [graphics.gd/classdb/Joint3D] will collide with each other.
 */
 func JointIsDisabledCollisionsBetweenBodies(joint RID.Joint3D) bool { //gd:PhysicsServer3D.joint_is_disabled_collisions_between_bodies
 	once.Do(singleton)
@@ -1593,7 +1653,7 @@ func JointIsDisabledCollisionsBetweenBodies(joint RID.Joint3D) bool { //gd:Physi
 }
 
 /*
-Make the joint a generic six degrees of freedom (6DOF) joint. Use [Instance.Generic6dofJointSetFlag] and [Instance.Generic6dofJointSetParam] to set the joint's flags and parameters respectively.
+Make the joint a generic six degrees of freedom (6DOF) joint. Use [Generic6dofJointSetFlag] and [Generic6dofJointSetParam] to set the joint's flags and parameters respectively.
 */
 func JointMakeGeneric6dof(joint RID.Joint3D, body_A RID.Body3D, local_ref_A Transform3D.BasisOrigin, body_B RID.Body3D, local_ref_B Transform3D.BasisOrigin) { //gd:PhysicsServer3D.joint_make_generic_6dof
 	once.Do(singleton)
@@ -1633,7 +1693,7 @@ func Generic6dofJointGetFlag(joint RID.Joint3D, axis Vector3.Axis, flag G6DOFJoi
 }
 
 /*
-Destroys any of the objects created by PhysicsServer3D. If the [RID] passed is not one of the objects that can be created by PhysicsServer3D, an error will be sent to the console.
+Destroys any of the objects created by PhysicsServer3D. If the [Resource.ID] passed is not one of the objects that can be created by PhysicsServer3D, an error will be sent to the console.
 */
 func FreeRid(rid RID.Any) { //gd:PhysicsServer3D.free_rid
 	once.Do(singleton)
@@ -1750,7 +1810,7 @@ func (self class) CustomShapeCreate() RID.Any { //gd:PhysicsServer3D.custom_shap
 }
 
 /*
-Sets the shape data that defines its shape and size. The data to be passed depends on the kind of shape created [Instance.ShapeGetType].
+Sets the shape data that defines its shape and size. The data to be passed depends on the kind of shape created [ShapeGetType].
 */
 //go:nosplit
 func (self class) ShapeSetData(shape RID.Any, data variant.Any) { //gd:PhysicsServer3D.shape_set_data
@@ -1762,6 +1822,7 @@ func (self class) ShapeSetData(shape RID.Any, data variant.Any) { //gd:PhysicsSe
 
 /*
 Sets the collision margin for the shape.
+
 Note: This is not used in Godot Physics.
 */
 //go:nosplit
@@ -1794,6 +1855,7 @@ func (self class) ShapeGetData(shape RID.Any) variant.Any { //gd:PhysicsServer3D
 
 /*
 Returns the collision margin for the shape.
+
 Note: This is not used in Godot Physics, so will always return 0.
 */
 //go:nosplit
@@ -1804,7 +1866,7 @@ func (self class) ShapeGetMargin(shape RID.Any) float64 { //gd:PhysicsServer3D.s
 }
 
 /*
-Creates a space. A space is a collection of parameters for the physics engine that can be assigned to an area or a body. It can be assigned to an area with [Instance.AreaSetSpace], or to a body with [Instance.BodySetSpace].
+Creates a space. A space is a collection of parameters for the physics engine that can be assigned to an area or a body. It can be assigned to an area with [AreaSetSpace], or to a body with [BodySetSpace].
 */
 //go:nosplit
 func (self class) SpaceCreate() RID.Any { //gd:PhysicsServer3D.space_create
@@ -1860,7 +1922,7 @@ func (self class) SpaceGetParam(space RID.Any, param SpaceParameter) float64 { /
 }
 
 /*
-Returns the state of a space, a [PhysicsDirectSpaceState3D]. This object can be used to make collision/intersection queries.
+Returns the state of a space, a [graphics.gd/classdb/PhysicsDirectSpaceState3D]. This object can be used to make collision/intersection queries.
 */
 //go:nosplit
 func (self class) SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpaceState3D { //gd:PhysicsServer3D.space_get_direct_state
@@ -1870,8 +1932,9 @@ func (self class) SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpa
 }
 
 /*
-Creates a 3D area object in the physics server, and returns the [RID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and monitorable set to false.
-Use [Instance.AreaAddShape] to add shapes to it, use [Instance.AreaSetTransform] to set its transform, and use [Instance.AreaSetSpace] to add the area to a space. If you want the area to be detectable use [Instance.AreaSetMonitorable].
+Creates a 3D area object in the physics server, and returns the [Resource.ID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and monitorable set to false.
+
+Use [AreaAddShape] to add shapes to it, use [AreaSetTransform] to set its transform, and use [AreaSetSpace] to add the area to a space. If you want the area to be detectable use [AreaSetMonitorable].
 */
 //go:nosplit
 func (self class) AreaCreate() RID.Any { //gd:PhysicsServer3D.area_create
@@ -1915,7 +1978,7 @@ func (self class) AreaAddShape(area RID.Any, shape RID.Any, transform Transform3
 }
 
 /*
-Substitutes a given area shape by another. The old shape is selected by its index, the new one by its [RID].
+Substitutes a given area shape by another. The old shape is selected by its index, the new one by its [Resource.ID].
 */
 //go:nosplit
 func (self class) AreaSetShape(area RID.Any, shape_idx int64, shape RID.Any) { //gd:PhysicsServer3D.area_set_shape
@@ -1958,7 +2021,7 @@ func (self class) AreaGetShapeCount(area RID.Any) int64 { //gd:PhysicsServer3D.a
 }
 
 /*
-Returns the [RID] of the nth shape of an area.
+Returns the [Resource.ID] of the nth shape of an area.
 */
 //go:nosplit
 func (self class) AreaGetShape(area RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer3D.area_get_shape
@@ -2091,7 +2154,7 @@ func (self class) AreaGetTransform(area RID.Any) Transform3D.BasisOrigin { //gd:
 }
 
 /*
-Assigns the area to a descendant of [Object], so it can exist in the node tree.
+Assigns the area to a descendant of [graphics.gd/classdb/Object], so it can exist in the node tree.
 */
 //go:nosplit
 func (self class) AreaAttachObjectInstanceId(area RID.Any, id int64) { //gd:PhysicsServer3D.area_attach_object_instance_id
@@ -2113,11 +2176,17 @@ func (self class) AreaGetObjectInstanceId(area RID.Any) int64 { //gd:PhysicsServ
 
 /*
 Sets the area's body monitor callback. This callback will be called when any other (shape of a) body enters or exits (a shape of) the given area, and must take the following five parameters:
+
 1. an integer status: either [AreaBodyAdded] or [AreaBodyRemoved] depending on whether the other body shape entered or exited the area,
-2. an [RID] body_rid: the [RID] of the body that entered or exited the area,
+
+2. an [Resource.ID] body_rid: the [Resource.ID] of the body that entered or exited the area,
+
 3. an integer instance_id: the ObjectID attached to the body,
+
 4. an integer body_shape_idx: the index of the shape of the body that entered or exited the area,
+
 5. an integer self_shape_idx: the index of the shape of the area where the body entered or exited.
+
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if a body (with all its shapes) is entering for the first time or exiting for the last time.
 */
 //go:nosplit
@@ -2130,11 +2199,17 @@ func (self class) AreaSetMonitorCallback(area RID.Any, callback Callable.Functio
 
 /*
 Sets the area's area monitor callback. This callback will be called when any other (shape of an) area enters or exits (a shape of) the given area, and must take the following five parameters:
+
 1. an integer status: either [AreaBodyAdded] or [AreaBodyRemoved] depending on whether the other area's shape entered or exited the area,
-2. an [RID] area_rid: the [RID] of the other area that entered or exited the area,
+
+2. an [Resource.ID] area_rid: the [Resource.ID] of the other area that entered or exited the area,
+
 3. an integer instance_id: the ObjectID attached to the other area,
+
 4. an integer area_shape_idx: the index of the shape of the other area that entered or exited the area,
+
 5. an integer self_shape_idx: the index of the shape of the area where the other area entered or exited.
+
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if an area (with all its shapes) is entering for the first time or exiting for the last time.
 */
 //go:nosplit
@@ -2165,8 +2240,9 @@ func (self class) AreaSetRayPickable(area RID.Any, enable bool) { //gd:PhysicsSe
 }
 
 /*
-Creates a 3D body object in the physics server, and returns the [RID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and body mode set to [BodyModeRigid].
-Use [Instance.BodyAddShape] to add shapes to it, use [Instance.BodySetState] to set its transform, and use [Instance.BodySetSpace] to add the body to a space.
+Creates a 3D body object in the physics server, and returns the [Resource.ID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and body mode set to [BodyModeRigid].
+
+Use [BodyAddShape] to add shapes to it, use [BodySetState] to set its transform, and use [BodySetSpace] to add the body to a space.
 */
 //go:nosplit
 func (self class) BodyCreate() RID.Any { //gd:PhysicsServer3D.body_create
@@ -2176,7 +2252,7 @@ func (self class) BodyCreate() RID.Any { //gd:PhysicsServer3D.body_create
 }
 
 /*
-Assigns a space to the body (see [Instance.SpaceCreate]).
+Assigns a space to the body (see [SpaceCreate]).
 */
 //go:nosplit
 func (self class) BodySetSpace(body RID.Any, space RID.Any) { //gd:PhysicsServer3D.body_set_space
@@ -2187,7 +2263,7 @@ func (self class) BodySetSpace(body RID.Any, space RID.Any) { //gd:PhysicsServer
 }
 
 /*
-Returns the [RID] of the space assigned to a body.
+Returns the [Resource.ID] of the space assigned to a body.
 */
 //go:nosplit
 func (self class) BodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer3D.body_get_space
@@ -2294,7 +2370,7 @@ func (self class) BodyAddShape(body RID.Any, shape RID.Any, transform Transform3
 }
 
 /*
-Substitutes a given body shape by another. The old shape is selected by its index, the new one by its [RID].
+Substitutes a given body shape by another. The old shape is selected by its index, the new one by its [Resource.ID].
 */
 //go:nosplit
 func (self class) BodySetShape(body RID.Any, shape_idx int64, shape RID.Any) { //gd:PhysicsServer3D.body_set_shape
@@ -2337,7 +2413,7 @@ func (self class) BodyGetShapeCount(body RID.Any) int64 { //gd:PhysicsServer3D.b
 }
 
 /*
-Returns the [RID] of the nth shape of a body.
+Returns the [Resource.ID] of the nth shape of a body.
 */
 //go:nosplit
 func (self class) BodyGetShape(body RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer3D.body_get_shape
@@ -2382,7 +2458,7 @@ func (self class) BodyClearShapes(body RID.Any) { //gd:PhysicsServer3D.body_clea
 }
 
 /*
-Assigns the area to a descendant of [Object], so it can exist in the node tree.
+Assigns the area to a descendant of [graphics.gd/classdb/Object], so it can exist in the node tree.
 */
 //go:nosplit
 func (self class) BodyAttachObjectInstanceId(body RID.Any, id int64) { //gd:PhysicsServer3D.body_attach_object_instance_id
@@ -2404,6 +2480,7 @@ func (self class) BodyGetObjectInstanceId(body RID.Any) int64 { //gd:PhysicsServ
 
 /*
 If true, the continuous collision detection mode is enabled.
+
 Continuous collision detection tries to predict where a moving body will collide, instead of moving it and correcting its movement if it collided.
 */
 //go:nosplit
@@ -2450,7 +2527,7 @@ func (self class) BodyGetParam(body RID.Any, param BodyParameter) variant.Any { 
 }
 
 /*
-Restores the default inertia and center of mass based on shapes to cancel any custom values previously set using [Instance.BodySetParam].
+Restores the default inertia and center of mass based on shapes to cancel any custom values previously set using [BodySetParam].
 */
 //go:nosplit
 func (self class) BodyResetMassProperties(body RID.Any) { //gd:PhysicsServer3D.body_reset_mass_properties
@@ -2484,8 +2561,10 @@ func (self class) BodyGetState(body RID.Any, state BodyState) variant.Any { //gd
 
 /*
 Applies a directional impulse without affecting rotation.
+
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
-This is equivalent to using [Instance.BodyApplyImpulse] at the body's center of mass.
+
+This is equivalent to using [BodyApplyImpulse] at the body's center of mass.
 */
 //go:nosplit
 func (self class) BodyApplyCentralImpulse(body RID.Any, impulse Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_central_impulse
@@ -2497,7 +2576,9 @@ func (self class) BodyApplyCentralImpulse(body RID.Any, impulse Vector3.XYZ) { /
 
 /*
 Applies a positioned impulse to the body.
+
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+
 'position' is the offset from the body origin in global coordinates.
 */
 //go:nosplit
@@ -2511,6 +2592,7 @@ func (self class) BodyApplyImpulse(body RID.Any, impulse Vector3.XYZ, position V
 
 /*
 Applies a rotational impulse to the body without affecting the position.
+
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
 */
 //go:nosplit
@@ -2523,7 +2605,8 @@ func (self class) BodyApplyTorqueImpulse(body RID.Any, impulse Vector3.XYZ) { //
 
 /*
 Applies a directional force without affecting rotation. A force is time dependent and meant to be applied every physics update.
-This is equivalent to using [Instance.BodyApplyForce] at the body's center of mass.
+
+This is equivalent to using [BodyApplyForce] at the body's center of mass.
 */
 //go:nosplit
 func (self class) BodyApplyCentralForce(body RID.Any, force Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_central_force
@@ -2535,6 +2618,7 @@ func (self class) BodyApplyCentralForce(body RID.Any, force Vector3.XYZ) { //gd:
 
 /*
 Applies a positioned force to the body. A force is time dependent and meant to be applied every physics update.
+
 'position' is the offset from the body origin in global coordinates.
 */
 //go:nosplit
@@ -2559,7 +2643,8 @@ func (self class) BodyApplyTorque(body RID.Any, torque Vector3.XYZ) { //gd:Physi
 
 /*
 Adds a constant directional force without affecting rotation that keeps being applied over time until cleared with body_set_constant_force(body, Vector3(0, 0, 0)).
-This is equivalent to using [Instance.BodyAddConstantForce] at the body's center of mass.
+
+This is equivalent to using [BodyAddConstantForce] at the body's center of mass.
 */
 //go:nosplit
 func (self class) BodyAddConstantCentralForce(body RID.Any, force Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_central_force
@@ -2571,6 +2656,7 @@ func (self class) BodyAddConstantCentralForce(body RID.Any, force Vector3.XYZ) {
 
 /*
 Adds a constant positioned force to the body that keeps being applied over time until cleared with body_set_constant_force(body, Vector3(0, 0, 0)).
+
 'position' is the offset from the body origin in global coordinates.
 */
 //go:nosplit
@@ -2595,7 +2681,8 @@ func (self class) BodyAddConstantTorque(body RID.Any, torque Vector3.XYZ) { //gd
 
 /*
 Sets the body's total constant positional forces applied during each physics update.
-See [Instance.BodyAddConstantForce] and [Instance.BodyAddConstantCentralForce].
+
+See [BodyAddConstantForce] and [BodyAddConstantCentralForce].
 */
 //go:nosplit
 func (self class) BodySetConstantForce(body RID.Any, force Vector3.XYZ) { //gd:PhysicsServer3D.body_set_constant_force
@@ -2607,7 +2694,8 @@ func (self class) BodySetConstantForce(body RID.Any, force Vector3.XYZ) { //gd:P
 
 /*
 Returns the body's total constant positional forces applied during each physics update.
-See [Instance.BodyAddConstantForce] and [Instance.BodyAddConstantCentralForce].
+
+See [BodyAddConstantForce] and [BodyAddConstantCentralForce].
 */
 //go:nosplit
 func (self class) BodyGetConstantForce(body RID.Any) Vector3.XYZ { //gd:PhysicsServer3D.body_get_constant_force
@@ -2618,7 +2706,8 @@ func (self class) BodyGetConstantForce(body RID.Any) Vector3.XYZ { //gd:PhysicsS
 
 /*
 Sets the body's total constant rotational forces applied during each physics update.
-See [Instance.BodyAddConstantTorque].
+
+See [BodyAddConstantTorque].
 */
 //go:nosplit
 func (self class) BodySetConstantTorque(body RID.Any, torque Vector3.XYZ) { //gd:PhysicsServer3D.body_set_constant_torque
@@ -2630,7 +2719,8 @@ func (self class) BodySetConstantTorque(body RID.Any, torque Vector3.XYZ) { //gd
 
 /*
 Returns the body's total constant rotational forces applied during each physics update.
-See [Instance.BodyAddConstantTorque].
+
+See [BodyAddConstantTorque].
 */
 //go:nosplit
 func (self class) BodyGetConstantTorque(body RID.Any) Vector3.XYZ { //gd:PhysicsServer3D.body_get_constant_torque
@@ -2682,6 +2772,7 @@ func (self class) BodyAddCollisionException(body RID.Any, excepted_body RID.Any)
 
 /*
 Removes a body from the list of bodies exempt from collisions.
+
 Continuous collision detection tries to predict where a moving body will collide, instead of moving it and correcting its movement if it collided.
 */
 //go:nosplit
@@ -2704,7 +2795,7 @@ func (self class) BodySetMaxContactsReported(body RID.Any, amount int64) { //gd:
 }
 
 /*
-Returns the maximum contacts that can be reported. See [Instance.BodySetMaxContactsReported].
+Returns the maximum contacts that can be reported. See [BodySetMaxContactsReported].
 */
 //go:nosplit
 func (self class) BodyGetMaxContactsReported(body RID.Any) int64 { //gd:PhysicsServer3D.body_get_max_contacts_reported
@@ -2714,8 +2805,9 @@ func (self class) BodyGetMaxContactsReported(body RID.Any) int64 { //gd:PhysicsS
 }
 
 /*
-Sets whether the body omits the standard force integration. If 'enable' is true, the body will not automatically use applied forces, torques, and damping to update the body's linear and angular velocity. In this case, [Instance.BodySetForceIntegrationCallback] can be used to manually update the linear and angular velocity instead.
-This method is called when the property [member RigidBody3D.custom_integrator] is set.
+Sets whether the body omits the standard force integration. If 'enable' is true, the body will not automatically use applied forces, torques, and damping to update the body's linear and angular velocity. In this case, [BodySetForceIntegrationCallback] can be used to manually update the linear and angular velocity instead.
+
+This method is called when the property [graphics.gd/classdb/RigidBody3D.Instance.CustomIntegrator] is set.
 */
 //go:nosplit
 func (self class) BodySetOmitForceIntegration(body RID.Any, enable bool) { //gd:PhysicsServer3D.body_set_omit_force_integration
@@ -2726,7 +2818,7 @@ func (self class) BodySetOmitForceIntegration(body RID.Any, enable bool) { //gd:
 }
 
 /*
-Returns true if the body is omitting the standard force integration. See [Instance.BodySetOmitForceIntegration].
+Returns true if the body is omitting the standard force integration. See [BodySetOmitForceIntegration].
 */
 //go:nosplit
 func (self class) BodyIsOmittingForceIntegration(body RID.Any) bool { //gd:PhysicsServer3D.body_is_omitting_force_integration
@@ -2736,10 +2828,13 @@ func (self class) BodyIsOmittingForceIntegration(body RID.Any) bool { //gd:Physi
 }
 
 /*
-Sets the body's state synchronization callback function to 'callable'. Use an empty [Callable] (Callable()) to clear the callback.
+Sets the body's state synchronization callback function to 'callable'. Use an empty func (Callable()) to clear the callback.
+
 The function 'callable' will be called every physics frame, assuming that the body was active during the previous physics tick, and can be used to fetch the latest state from the physics server.
+
 The function 'callable' must take the following parameters:
-1. state: a [PhysicsDirectBodyState3D], used to retrieve the body's state.
+
+1. state: a [graphics.gd/classdb/PhysicsDirectBodyState3D], used to retrieve the body's state.
 */
 //go:nosplit
 func (self class) BodySetStateSyncCallback(body RID.Any, callable Callable.Function) { //gd:PhysicsServer3D.body_set_state_sync_callback
@@ -2750,11 +2845,16 @@ func (self class) BodySetStateSyncCallback(body RID.Any, callable Callable.Funct
 }
 
 /*
-Sets the body's custom force integration callback function to 'callable'. Use an empty [Callable] (Callable()) to clear the custom callback.
-The function 'callable' will be called every physics tick, before the standard force integration (see [Instance.BodySetOmitForceIntegration]). It can be used for example to update the body's linear and angular velocity based on contact with other bodies.
+Sets the body's custom force integration callback function to 'callable'. Use an empty func (Callable()) to clear the custom callback.
+
+The function 'callable' will be called every physics tick, before the standard force integration (see [BodySetOmitForceIntegration]). It can be used for example to update the body's linear and angular velocity based on contact with other bodies.
+
 If 'userdata' is not null, the function 'callable' must take the following two parameters:
-1. state: a [PhysicsDirectBodyState3D], used to retrieve and modify the body's state,
-2. userdata: a [Variant]; its value will be the 'userdata' passed into this method.
+
+1. state: a [graphics.gd/classdb/PhysicsDirectBodyState3D], used to retrieve and modify the body's state,
+
+2. userdata: a any; its value will be the 'userdata' passed into this method.
+
 If 'userdata' is null, then 'callable' must take only the state parameter.
 */
 //go:nosplit
@@ -2778,7 +2878,7 @@ func (self class) BodySetRayPickable(body RID.Any, enable bool) { //gd:PhysicsSe
 }
 
 /*
-Returns true if a collision would result from moving along a motion vector from a given point in space. [PhysicsTestMotionParameters3D] is passed to set motion parameters. [PhysicsTestMotionResult3D] can be passed to return additional information.
+Returns true if a collision would result from moving along a motion vector from a given point in space. [graphics.gd/classdb/PhysicsTestMotionParameters3D] is passed to set motion parameters. [graphics.gd/classdb/PhysicsTestMotionResult3D] can be passed to return additional information.
 */
 //go:nosplit
 func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTestMotionParameters3D, result [1]gdclass.PhysicsTestMotionResult3D) bool { //gd:PhysicsServer3D.body_test_motion
@@ -2792,7 +2892,7 @@ func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTest
 }
 
 /*
-Returns the [PhysicsDirectBodyState3D] of the body. Returns null if the body is destroyed or removed from the physics space.
+Returns the [graphics.gd/classdb/PhysicsDirectBodyState3D] of the body. Returns null if the body is destroyed or removed from the physics space.
 */
 //go:nosplit
 func (self class) BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyState3D { //gd:PhysicsServer3D.body_get_direct_state
@@ -2802,7 +2902,7 @@ func (self class) BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyS
 }
 
 /*
-Creates a new soft body and returns its internal [RID].
+Creates a new soft body and returns its internal [Resource.ID].
 */
 //go:nosplit
 func (self class) SoftBodyCreate() RID.Any { //gd:PhysicsServer3D.soft_body_create
@@ -2823,7 +2923,7 @@ func (self class) SoftBodyUpdateRenderingServer(body RID.Any, rendering_server_h
 }
 
 /*
-Assigns a space to the given soft body (see [Instance.SpaceCreate]).
+Assigns a space to the given soft body (see [SpaceCreate]).
 */
 //go:nosplit
 func (self class) SoftBodySetSpace(body RID.Any, space RID.Any) { //gd:PhysicsServer3D.soft_body_set_space
@@ -2834,7 +2934,7 @@ func (self class) SoftBodySetSpace(body RID.Any, space RID.Any) { //gd:PhysicsSe
 }
 
 /*
-Returns the [RID] of the space assigned to the given soft body.
+Returns the [Resource.ID] of the space assigned to the given soft body.
 */
 //go:nosplit
 func (self class) SoftBodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer3D.soft_body_get_space
@@ -2930,6 +3030,7 @@ func (self class) SoftBodyRemoveCollisionException(body RID.Any, body_b RID.Any)
 
 /*
 Sets the given body state for the given body (see [BodyState] constants).
+
 Note: Godot's default physics implementation does not support [BodyStateLinearVelocity], [BodyStateAngularVelocity], [BodyStateSleeping], or [BodyStateCanSleep].
 */
 //go:nosplit
@@ -2943,6 +3044,7 @@ func (self class) SoftBodySetState(body RID.Any, state BodyState, v variant.Any)
 
 /*
 Returns the given soft body state (see [BodyState] constants).
+
 Note: Godot's default physics implementation does not support [BodyStateLinearVelocity], [BodyStateAngularVelocity], [BodyStateSleeping], or [BodyStateCanSleep].
 */
 //go:nosplit
@@ -3084,6 +3186,7 @@ func (self class) SoftBodyGetDampingCoefficient(body RID.Any) float64 { //gd:Phy
 
 /*
 Sets the drag coefficient of the given soft body. Higher values increase this body's air resistance.
+
 Note: This value is currently unused by Godot's default physics implementation.
 */
 //go:nosplit
@@ -3139,7 +3242,8 @@ func (self class) SoftBodyRemoveAllPinnedPoints(body RID.Any) { //gd:PhysicsServ
 
 /*
 Pins or unpins the given soft body point based on the value of 'pin'.
-Note: Pinning a point effectively makes it kinematic, preventing it from being affected by forces, but you can still move it using [Instance.SoftBodyMovePoint].
+
+Note: Pinning a point effectively makes it kinematic, preventing it from being affected by forces, but you can still move it using [SoftBodyMovePoint].
 */
 //go:nosplit
 func (self class) SoftBodyPinPoint(body RID.Any, point_index int64, pin bool) { //gd:PhysicsServer3D.soft_body_pin_point
@@ -3418,7 +3522,7 @@ func (self class) JointGetSolverPriority(joint RID.Any) int64 { //gd:PhysicsServ
 }
 
 /*
-Sets whether the bodies attached to the [Joint3D] will collide with each other.
+Sets whether the bodies attached to the [graphics.gd/classdb/Joint3D] will collide with each other.
 */
 //go:nosplit
 func (self class) JointDisableCollisionsBetweenBodies(joint RID.Any, disable bool) { //gd:PhysicsServer3D.joint_disable_collisions_between_bodies
@@ -3429,7 +3533,7 @@ func (self class) JointDisableCollisionsBetweenBodies(joint RID.Any, disable boo
 }
 
 /*
-Returns whether the bodies attached to the [Joint3D] will collide with each other.
+Returns whether the bodies attached to the [graphics.gd/classdb/Joint3D] will collide with each other.
 */
 //go:nosplit
 func (self class) JointIsDisabledCollisionsBetweenBodies(joint RID.Any) bool { //gd:PhysicsServer3D.joint_is_disabled_collisions_between_bodies
@@ -3439,7 +3543,7 @@ func (self class) JointIsDisabledCollisionsBetweenBodies(joint RID.Any) bool { /
 }
 
 /*
-Make the joint a generic six degrees of freedom (6DOF) joint. Use [Instance.Generic6dofJointSetFlag] and [Instance.Generic6dofJointSetParam] to set the joint's flags and parameters respectively.
+Make the joint a generic six degrees of freedom (6DOF) joint. Use [Generic6dofJointSetFlag] and [Generic6dofJointSetParam] to set the joint's flags and parameters respectively.
 */
 //go:nosplit
 func (self class) JointMakeGeneric6dof(joint RID.Any, body_A RID.Any, local_ref_A Transform3D.BasisOrigin, body_B RID.Any, local_ref_B Transform3D.BasisOrigin) { //gd:PhysicsServer3D.joint_make_generic_6dof
@@ -3507,7 +3611,7 @@ func (self class) Generic6dofJointGetFlag(joint RID.Any, axis Vector3.Axis, flag
 }
 
 /*
-Destroys any of the objects created by PhysicsServer3D. If the [RID] passed is not one of the objects that can be created by PhysicsServer3D, an error will be sent to the console.
+Destroys any of the objects created by PhysicsServer3D. If the [Resource.ID] passed is not one of the objects that can be created by PhysicsServer3D, an error will be sent to the console.
 */
 //go:nosplit
 func (self class) FreeRid(rid RID.Any) { //gd:PhysicsServer3D.free_rid
@@ -3551,373 +3655,381 @@ func init() {
 type JointType int //gd:PhysicsServer3D.JointType
 
 const (
-	/*The [Joint3D] is a [PinJoint3D].*/
+	// The [graphics.gd/classdb/Joint3D] is a [graphics.gd/classdb/PinJoint3D].
 	JointTypePin JointType = 0
-	/*The [Joint3D] is a [HingeJoint3D].*/
+	// The [graphics.gd/classdb/Joint3D] is a [graphics.gd/classdb/HingeJoint3D].
 	JointTypeHinge JointType = 1
-	/*The [Joint3D] is a [SliderJoint3D].*/
+	// The [graphics.gd/classdb/Joint3D] is a [graphics.gd/classdb/SliderJoint3D].
 	JointTypeSlider JointType = 2
-	/*The [Joint3D] is a [ConeTwistJoint3D].*/
+	// The [graphics.gd/classdb/Joint3D] is a [graphics.gd/classdb/ConeTwistJoint3D].
 	JointTypeConeTwist JointType = 3
-	/*The [Joint3D] is a [Generic6DOFJoint3D].*/
+	// The [graphics.gd/classdb/Joint3D] is a [graphics.gd/classdb/Generic6DOFJoint3D].
 	JointType6dof JointType = 4
-	/*Represents the size of the [enum JointType] enum.*/
+	// Represents the size of the [JointType] enum.
 	JointTypeMax JointType = 5
 )
 
 type PinJointParam int //gd:PhysicsServer3D.PinJointParam
 
 const (
-	/*The strength with which the pinned objects try to stay in positional relation to each other.
-	  The higher, the stronger.*/
+	// The strength with which the pinned objects try to stay in positional relation to each other.
+	//
+	// The higher, the stronger.
 	PinJointBias PinJointParam = 0
-	/*The strength with which the pinned objects try to stay in velocity relation to each other.
-	  The higher, the stronger.*/
+	// The strength with which the pinned objects try to stay in velocity relation to each other.
+	//
+	// The higher, the stronger.
 	PinJointDamping PinJointParam = 1
-	/*If above 0, this value is the maximum value for an impulse that this Joint3D puts on its ends.*/
+	// If above 0, this value is the maximum value for an impulse that this Joint3D puts on its ends.
 	PinJointImpulseClamp PinJointParam = 2
 )
 
 type HingeJointParam int //gd:PhysicsServer3D.HingeJointParam
 
 const (
-	/*The speed with which the two bodies get pulled together when they move in different directions.*/
+	// The speed with which the two bodies get pulled together when they move in different directions.
 	HingeJointBias HingeJointParam = 0
-	/*The maximum rotation across the Hinge.*/
+	// The maximum rotation across the Hinge.
 	HingeJointLimitUpper HingeJointParam = 1
-	/*The minimum rotation across the Hinge.*/
+	// The minimum rotation across the Hinge.
 	HingeJointLimitLower HingeJointParam = 2
-	/*The speed with which the rotation across the axis perpendicular to the hinge gets corrected.*/
+	// The speed with which the rotation across the axis perpendicular to the hinge gets corrected.
 	HingeJointLimitBias     HingeJointParam = 3
 	HingeJointLimitSoftness HingeJointParam = 4
-	/*The lower this value, the more the rotation gets slowed down.*/
+	// The lower this value, the more the rotation gets slowed down.
 	HingeJointLimitRelaxation HingeJointParam = 5
-	/*Target speed for the motor.*/
+	// Target speed for the motor.
 	HingeJointMotorTargetVelocity HingeJointParam = 6
-	/*Maximum acceleration for the motor.*/
+	// Maximum acceleration for the motor.
 	HingeJointMotorMaxImpulse HingeJointParam = 7
 )
 
 type HingeJointFlag int //gd:PhysicsServer3D.HingeJointFlag
 
 const (
-	/*If [code]true[/code], the Hinge has a maximum and a minimum rotation.*/
+	// If true, the Hinge has a maximum and a minimum rotation.
 	HingeJointFlagUseLimit HingeJointFlag = 0
-	/*If [code]true[/code], a motor turns the Hinge.*/
+	// If true, a motor turns the Hinge.
 	HingeJointFlagEnableMotor HingeJointFlag = 1
 )
 
 type SliderJointParam int //gd:PhysicsServer3D.SliderJointParam
 
 const (
-	/*The maximum difference between the pivot points on their X axis before damping happens.*/
+	// The maximum difference between the pivot points on their X axis before damping happens.
 	SliderJointLinearLimitUpper SliderJointParam = 0
-	/*The minimum difference between the pivot points on their X axis before damping happens.*/
+	// The minimum difference between the pivot points on their X axis before damping happens.
 	SliderJointLinearLimitLower SliderJointParam = 1
-	/*A factor applied to the movement across the slider axis once the limits get surpassed. The lower, the slower the movement.*/
+	// A factor applied to the movement across the slider axis once the limits get surpassed. The lower, the slower the movement.
 	SliderJointLinearLimitSoftness SliderJointParam = 2
-	/*The amount of restitution once the limits are surpassed. The lower, the more velocity-energy gets lost.*/
+	// The amount of restitution once the limits are surpassed. The lower, the more velocity-energy gets lost.
 	SliderJointLinearLimitRestitution SliderJointParam = 3
-	/*The amount of damping once the slider limits are surpassed.*/
+	// The amount of damping once the slider limits are surpassed.
 	SliderJointLinearLimitDamping SliderJointParam = 4
-	/*A factor applied to the movement across the slider axis as long as the slider is in the limits. The lower, the slower the movement.*/
+	// A factor applied to the movement across the slider axis as long as the slider is in the limits. The lower, the slower the movement.
 	SliderJointLinearMotionSoftness SliderJointParam = 5
-	/*The amount of restitution inside the slider limits.*/
+	// The amount of restitution inside the slider limits.
 	SliderJointLinearMotionRestitution SliderJointParam = 6
-	/*The amount of damping inside the slider limits.*/
+	// The amount of damping inside the slider limits.
 	SliderJointLinearMotionDamping SliderJointParam = 7
-	/*A factor applied to the movement across axes orthogonal to the slider.*/
+	// A factor applied to the movement across axes orthogonal to the slider.
 	SliderJointLinearOrthogonalSoftness SliderJointParam = 8
-	/*The amount of restitution when movement is across axes orthogonal to the slider.*/
+	// The amount of restitution when movement is across axes orthogonal to the slider.
 	SliderJointLinearOrthogonalRestitution SliderJointParam = 9
-	/*The amount of damping when movement is across axes orthogonal to the slider.*/
+	// The amount of damping when movement is across axes orthogonal to the slider.
 	SliderJointLinearOrthogonalDamping SliderJointParam = 10
-	/*The upper limit of rotation in the slider.*/
+	// The upper limit of rotation in the slider.
 	SliderJointAngularLimitUpper SliderJointParam = 11
-	/*The lower limit of rotation in the slider.*/
+	// The lower limit of rotation in the slider.
 	SliderJointAngularLimitLower SliderJointParam = 12
-	/*A factor applied to the all rotation once the limit is surpassed.*/
+	// A factor applied to the all rotation once the limit is surpassed.
 	SliderJointAngularLimitSoftness SliderJointParam = 13
-	/*The amount of restitution of the rotation when the limit is surpassed.*/
+	// The amount of restitution of the rotation when the limit is surpassed.
 	SliderJointAngularLimitRestitution SliderJointParam = 14
-	/*The amount of damping of the rotation when the limit is surpassed.*/
+	// The amount of damping of the rotation when the limit is surpassed.
 	SliderJointAngularLimitDamping SliderJointParam = 15
-	/*A factor that gets applied to the all rotation in the limits.*/
+	// A factor that gets applied to the all rotation in the limits.
 	SliderJointAngularMotionSoftness SliderJointParam = 16
-	/*The amount of restitution of the rotation in the limits.*/
+	// The amount of restitution of the rotation in the limits.
 	SliderJointAngularMotionRestitution SliderJointParam = 17
-	/*The amount of damping of the rotation in the limits.*/
+	// The amount of damping of the rotation in the limits.
 	SliderJointAngularMotionDamping SliderJointParam = 18
-	/*A factor that gets applied to the all rotation across axes orthogonal to the slider.*/
+	// A factor that gets applied to the all rotation across axes orthogonal to the slider.
 	SliderJointAngularOrthogonalSoftness SliderJointParam = 19
-	/*The amount of restitution of the rotation across axes orthogonal to the slider.*/
+	// The amount of restitution of the rotation across axes orthogonal to the slider.
 	SliderJointAngularOrthogonalRestitution SliderJointParam = 20
-	/*The amount of damping of the rotation across axes orthogonal to the slider.*/
+	// The amount of damping of the rotation across axes orthogonal to the slider.
 	SliderJointAngularOrthogonalDamping SliderJointParam = 21
-	/*Represents the size of the [enum SliderJointParam] enum.*/
+	// Represents the size of the [SliderJointParam] enum.
 	SliderJointMax SliderJointParam = 22
 )
 
 type ConeTwistJointParam int //gd:PhysicsServer3D.ConeTwistJointParam
 
 const (
-	/*Swing is rotation from side to side, around the axis perpendicular to the twist axis.
-	  The swing span defines, how much rotation will not get corrected along the swing axis.
-	  Could be defined as looseness in the [ConeTwistJoint3D].
-	  If below 0.05, this behavior is locked.*/
+	// Swing is rotation from side to side, around the axis perpendicular to the twist axis.
+	//
+	// The swing span defines, how much rotation will not get corrected along the swing axis.
+	//
+	// Could be defined as looseness in the [graphics.gd/classdb/ConeTwistJoint3D].
+	//
+	// If below 0.05, this behavior is locked.
 	ConeTwistJointSwingSpan ConeTwistJointParam = 0
-	/*Twist is the rotation around the twist axis, this value defined how far the joint can twist.
-	  Twist is locked if below 0.05.*/
+	// Twist is the rotation around the twist axis, this value defined how far the joint can twist.
+	//
+	// Twist is locked if below 0.05.
 	ConeTwistJointTwistSpan ConeTwistJointParam = 1
-	/*The speed with which the swing or twist will take place.
-	  The higher, the faster.*/
+	// The speed with which the swing or twist will take place.
+	//
+	// The higher, the faster.
 	ConeTwistJointBias ConeTwistJointParam = 2
-	/*The ease with which the Joint3D twists, if it's too low, it takes more force to twist the joint.*/
+	// The ease with which the Joint3D twists, if it's too low, it takes more force to twist the joint.
 	ConeTwistJointSoftness ConeTwistJointParam = 3
-	/*Defines, how fast the swing- and twist-speed-difference on both sides gets synced.*/
+	// Defines, how fast the swing- and twist-speed-difference on both sides gets synced.
 	ConeTwistJointRelaxation ConeTwistJointParam = 4
 )
 
 type G6DOFJointAxisParam int //gd:PhysicsServer3D.G6DOFJointAxisParam
 
 const (
-	/*The minimum difference between the pivot points' axes.*/
+	// The minimum difference between the pivot points' axes.
 	G6dofJointLinearLowerLimit G6DOFJointAxisParam = 0
-	/*The maximum difference between the pivot points' axes.*/
+	// The maximum difference between the pivot points' axes.
 	G6dofJointLinearUpperLimit G6DOFJointAxisParam = 1
-	/*A factor that gets applied to the movement across the axes. The lower, the slower the movement.*/
+	// A factor that gets applied to the movement across the axes. The lower, the slower the movement.
 	G6dofJointLinearLimitSoftness G6DOFJointAxisParam = 2
-	/*The amount of restitution on the axes movement. The lower, the more velocity-energy gets lost.*/
+	// The amount of restitution on the axes movement. The lower, the more velocity-energy gets lost.
 	G6dofJointLinearRestitution G6DOFJointAxisParam = 3
-	/*The amount of damping that happens at the linear motion across the axes.*/
+	// The amount of damping that happens at the linear motion across the axes.
 	G6dofJointLinearDamping G6DOFJointAxisParam = 4
-	/*The velocity that the joint's linear motor will attempt to reach.*/
+	// The velocity that the joint's linear motor will attempt to reach.
 	G6dofJointLinearMotorTargetVelocity G6DOFJointAxisParam = 5
-	/*The maximum force that the linear motor can apply while trying to reach the target velocity.*/
+	// The maximum force that the linear motor can apply while trying to reach the target velocity.
 	G6dofJointLinearMotorForceLimit        G6DOFJointAxisParam = 6
 	G6dofJointLinearSpringStiffness        G6DOFJointAxisParam = 7
 	G6dofJointLinearSpringDamping          G6DOFJointAxisParam = 8
 	G6dofJointLinearSpringEquilibriumPoint G6DOFJointAxisParam = 9
-	/*The minimum rotation in negative direction to break loose and rotate around the axes.*/
+	// The minimum rotation in negative direction to break loose and rotate around the axes.
 	G6dofJointAngularLowerLimit G6DOFJointAxisParam = 10
-	/*The minimum rotation in positive direction to break loose and rotate around the axes.*/
+	// The minimum rotation in positive direction to break loose and rotate around the axes.
 	G6dofJointAngularUpperLimit G6DOFJointAxisParam = 11
-	/*A factor that gets multiplied onto all rotations across the axes.*/
+	// A factor that gets multiplied onto all rotations across the axes.
 	G6dofJointAngularLimitSoftness G6DOFJointAxisParam = 12
-	/*The amount of rotational damping across the axes. The lower, the more damping occurs.*/
+	// The amount of rotational damping across the axes. The lower, the more damping occurs.
 	G6dofJointAngularDamping G6DOFJointAxisParam = 13
-	/*The amount of rotational restitution across the axes. The lower, the more restitution occurs.*/
+	// The amount of rotational restitution across the axes. The lower, the more restitution occurs.
 	G6dofJointAngularRestitution G6DOFJointAxisParam = 14
-	/*The maximum amount of force that can occur, when rotating around the axes.*/
+	// The maximum amount of force that can occur, when rotating around the axes.
 	G6dofJointAngularForceLimit G6DOFJointAxisParam = 15
-	/*When correcting the crossing of limits in rotation across the axes, this error tolerance factor defines how much the correction gets slowed down. The lower, the slower.*/
+	// When correcting the crossing of limits in rotation across the axes, this error tolerance factor defines how much the correction gets slowed down. The lower, the slower.
 	G6dofJointAngularErp G6DOFJointAxisParam = 16
-	/*Target speed for the motor at the axes.*/
+	// Target speed for the motor at the axes.
 	G6dofJointAngularMotorTargetVelocity G6DOFJointAxisParam = 17
-	/*Maximum acceleration for the motor at the axes.*/
+	// Maximum acceleration for the motor at the axes.
 	G6dofJointAngularMotorForceLimit        G6DOFJointAxisParam = 18
 	G6dofJointAngularSpringStiffness        G6DOFJointAxisParam = 19
 	G6dofJointAngularSpringDamping          G6DOFJointAxisParam = 20
 	G6dofJointAngularSpringEquilibriumPoint G6DOFJointAxisParam = 21
-	/*Represents the size of the [enum G6DOFJointAxisParam] enum.*/
+	// Represents the size of the [G6DOFJointAxisParam] enum.
 	G6dofJointMax G6DOFJointAxisParam = 22
 )
 
 type G6DOFJointAxisFlag int //gd:PhysicsServer3D.G6DOFJointAxisFlag
 
 const (
-	/*If set, linear motion is possible within the given limits.*/
+	// If set, linear motion is possible within the given limits.
 	G6dofJointFlagEnableLinearLimit G6DOFJointAxisFlag = 0
-	/*If set, rotational motion is possible.*/
+	// If set, rotational motion is possible.
 	G6dofJointFlagEnableAngularLimit  G6DOFJointAxisFlag = 1
 	G6dofJointFlagEnableAngularSpring G6DOFJointAxisFlag = 2
 	G6dofJointFlagEnableLinearSpring  G6DOFJointAxisFlag = 3
-	/*If set, there is a rotational motor across these axes.*/
+	// If set, there is a rotational motor across these axes.
 	G6dofJointFlagEnableMotor G6DOFJointAxisFlag = 4
-	/*If set, there is a linear motor on this axis that targets a specific velocity.*/
+	// If set, there is a linear motor on this axis that targets a specific velocity.
 	G6dofJointFlagEnableLinearMotor G6DOFJointAxisFlag = 5
-	/*Represents the size of the [enum G6DOFJointAxisFlag] enum.*/
+	// Represents the size of the [G6DOFJointAxisFlag] enum.
 	G6dofJointFlagMax G6DOFJointAxisFlag = 6
 )
 
 type ShapeType int //gd:PhysicsServer3D.ShapeType
 
 const (
-	/*The [Shape3D] is a [WorldBoundaryShape3D].*/
+	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/WorldBoundaryShape3D].
 	ShapeWorldBoundary ShapeType = 0
-	/*The [Shape3D] is a [SeparationRayShape3D].*/
+	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/SeparationRayShape3D].
 	ShapeSeparationRay ShapeType = 1
-	/*The [Shape3D] is a [SphereShape3D].*/
+	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/SphereShape3D].
 	ShapeSphere ShapeType = 2
-	/*The [Shape3D] is a [BoxShape3D].*/
+	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/BoxShape3D].
 	ShapeBox ShapeType = 3
-	/*The [Shape3D] is a [CapsuleShape3D].*/
+	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/CapsuleShape3D].
 	ShapeCapsule ShapeType = 4
-	/*The [Shape3D] is a [CylinderShape3D].*/
+	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/CylinderShape3D].
 	ShapeCylinder ShapeType = 5
-	/*The [Shape3D] is a [ConvexPolygonShape3D].*/
+	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/ConvexPolygonShape3D].
 	ShapeConvexPolygon ShapeType = 6
-	/*The [Shape3D] is a [ConcavePolygonShape3D].*/
+	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/ConcavePolygonShape3D].
 	ShapeConcavePolygon ShapeType = 7
-	/*The [Shape3D] is a [HeightMapShape3D].*/
+	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/HeightMapShape3D].
 	ShapeHeightmap ShapeType = 8
-	/*The [Shape3D] is used internally for a soft body. Any attempt to create this kind of shape results in an error.*/
+	// The [graphics.gd/classdb/Shape3D] is used internally for a soft body. Any attempt to create this kind of shape results in an error.
 	ShapeSoftBody ShapeType = 9
-	/*This constant is used internally by the engine. Any attempt to create this kind of shape results in an error.*/
+	// This constant is used internally by the engine. Any attempt to create this kind of shape results in an error.
 	ShapeCustom ShapeType = 10
 )
 
 type AreaParameter int //gd:PhysicsServer3D.AreaParameter
 
 const (
-	/*Constant to set/get gravity override mode in an area. See [enum AreaSpaceOverrideMode] for possible values.*/
+	// Constant to set/get gravity override mode in an area. See [AreaSpaceOverrideMode] for possible values.
 	AreaParamGravityOverrideMode AreaParameter = 0
-	/*Constant to set/get gravity strength in an area.*/
+	// Constant to set/get gravity strength in an area.
 	AreaParamGravity AreaParameter = 1
-	/*Constant to set/get gravity vector/center in an area.*/
+	// Constant to set/get gravity vector/center in an area.
 	AreaParamGravityVector AreaParameter = 2
-	/*Constant to set/get whether the gravity vector of an area is a direction, or a center point.*/
+	// Constant to set/get whether the gravity vector of an area is a direction, or a center point.
 	AreaParamGravityIsPoint AreaParameter = 3
-	/*Constant to set/get the distance at which the gravity strength is equal to the gravity controlled by [constant AREA_PARAM_GRAVITY]. For example, on a planet 100 meters in radius with a surface gravity of 4.0 m/s², set the gravity to 4.0 and the unit distance to 100.0. The gravity will have falloff according to the inverse square law, so in the example, at 200 meters from the center the gravity will be 1.0 m/s² (twice the distance, 1/4th the gravity), at 50 meters it will be 16.0 m/s² (half the distance, 4x the gravity), and so on.
-	  The above is true only when the unit distance is a positive number. When this is set to 0.0, the gravity will be constant regardless of distance.*/
+	// Constant to set/get the distance at which the gravity strength is equal to the gravity controlled by [AreaParamGravity]. For example, on a planet 100 meters in radius with a surface gravity of 4.0 m/s², set the gravity to 4.0 and the unit distance to 100.0. The gravity will have falloff according to the inverse square law, so in the example, at 200 meters from the center the gravity will be 1.0 m/s² (twice the distance, 1/4th the gravity), at 50 meters it will be 16.0 m/s² (half the distance, 4x the gravity), and so on.
+	//
+	// The above is true only when the unit distance is a positive number. When this is set to 0.0, the gravity will be constant regardless of distance.
 	AreaParamGravityPointUnitDistance AreaParameter = 4
-	/*Constant to set/get linear damping override mode in an area. See [enum AreaSpaceOverrideMode] for possible values.*/
+	// Constant to set/get linear damping override mode in an area. See [AreaSpaceOverrideMode] for possible values.
 	AreaParamLinearDampOverrideMode AreaParameter = 5
-	/*Constant to set/get the linear damping factor of an area.*/
+	// Constant to set/get the linear damping factor of an area.
 	AreaParamLinearDamp AreaParameter = 6
-	/*Constant to set/get angular damping override mode in an area. See [enum AreaSpaceOverrideMode] for possible values.*/
+	// Constant to set/get angular damping override mode in an area. See [AreaSpaceOverrideMode] for possible values.
 	AreaParamAngularDampOverrideMode AreaParameter = 7
-	/*Constant to set/get the angular damping factor of an area.*/
+	// Constant to set/get the angular damping factor of an area.
 	AreaParamAngularDamp AreaParameter = 8
-	/*Constant to set/get the priority (order of processing) of an area.*/
+	// Constant to set/get the priority (order of processing) of an area.
 	AreaParamPriority AreaParameter = 9
-	/*Constant to set/get the magnitude of area-specific wind force. This wind force only applies to [SoftBody3D] nodes. Other physics bodies are currently not affected by wind.*/
+	// Constant to set/get the magnitude of area-specific wind force. This wind force only applies to [graphics.gd/classdb/SoftBody3D] nodes. Other physics bodies are currently not affected by wind.
 	AreaParamWindForceMagnitude AreaParameter = 10
-	/*Constant to set/get the 3D vector that specifies the origin from which an area-specific wind blows.*/
+	// Constant to set/get the 3D vector that specifies the origin from which an area-specific wind blows.
 	AreaParamWindSource AreaParameter = 11
-	/*Constant to set/get the 3D vector that specifies the direction in which an area-specific wind blows.*/
+	// Constant to set/get the 3D vector that specifies the direction in which an area-specific wind blows.
 	AreaParamWindDirection AreaParameter = 12
-	/*Constant to set/get the exponential rate at which wind force decreases with distance from its origin.*/
+	// Constant to set/get the exponential rate at which wind force decreases with distance from its origin.
 	AreaParamWindAttenuationFactor AreaParameter = 13
 )
 
 type AreaSpaceOverrideMode int //gd:PhysicsServer3D.AreaSpaceOverrideMode
 
 const (
-	/*This area does not affect gravity/damp. These are generally areas that exist only to detect collisions, and objects entering or exiting them.*/
+	// This area does not affect gravity/damp. These are generally areas that exist only to detect collisions, and objects entering or exiting them.
 	AreaSpaceOverrideDisabled AreaSpaceOverrideMode = 0
-	/*This area adds its gravity/damp values to whatever has been calculated so far. This way, many overlapping areas can combine their physics to make interesting effects.*/
+	// This area adds its gravity/damp values to whatever has been calculated so far. This way, many overlapping areas can combine their physics to make interesting effects.
 	AreaSpaceOverrideCombine AreaSpaceOverrideMode = 1
-	/*This area adds its gravity/damp values to whatever has been calculated so far. Then stops taking into account the rest of the areas, even the default one.*/
+	// This area adds its gravity/damp values to whatever has been calculated so far. Then stops taking into account the rest of the areas, even the default one.
 	AreaSpaceOverrideCombineReplace AreaSpaceOverrideMode = 2
-	/*This area replaces any gravity/damp, even the default one, and stops taking into account the rest of the areas.*/
+	// This area replaces any gravity/damp, even the default one, and stops taking into account the rest of the areas.
 	AreaSpaceOverrideReplace AreaSpaceOverrideMode = 3
-	/*This area replaces any gravity/damp calculated so far, but keeps calculating the rest of the areas, down to the default one.*/
+	// This area replaces any gravity/damp calculated so far, but keeps calculating the rest of the areas, down to the default one.
 	AreaSpaceOverrideReplaceCombine AreaSpaceOverrideMode = 4
 )
 
 type BodyMode int //gd:PhysicsServer3D.BodyMode
 
 const (
-	/*Constant for static bodies. In this mode, a body can be only moved by user code and doesn't collide with other bodies along its path when moved.*/
+	// Constant for static bodies. In this mode, a body can be only moved by user code and doesn't collide with other bodies along its path when moved.
 	BodyModeStatic BodyMode = 0
-	/*Constant for kinematic bodies. In this mode, a body can be only moved by user code and collides with other bodies along its path.*/
+	// Constant for kinematic bodies. In this mode, a body can be only moved by user code and collides with other bodies along its path.
 	BodyModeKinematic BodyMode = 1
-	/*Constant for rigid bodies. In this mode, a body can be pushed by other bodies and has forces applied.*/
+	// Constant for rigid bodies. In this mode, a body can be pushed by other bodies and has forces applied.
 	BodyModeRigid BodyMode = 2
-	/*Constant for linear rigid bodies. In this mode, a body can not rotate, and only its linear velocity is affected by external forces.*/
+	// Constant for linear rigid bodies. In this mode, a body can not rotate, and only its linear velocity is affected by external forces.
 	BodyModeRigidLinear BodyMode = 3
 )
 
 type BodyParameter int //gd:PhysicsServer3D.BodyParameter
 
 const (
-	/*Constant to set/get a body's bounce factor.*/
+	// Constant to set/get a body's bounce factor.
 	BodyParamBounce BodyParameter = 0
-	/*Constant to set/get a body's friction.*/
+	// Constant to set/get a body's friction.
 	BodyParamFriction BodyParameter = 1
-	/*Constant to set/get a body's mass.*/
+	// Constant to set/get a body's mass.
 	BodyParamMass BodyParameter = 2
-	/*Constant to set/get a body's inertia.*/
+	// Constant to set/get a body's inertia.
 	BodyParamInertia BodyParameter = 3
-	/*Constant to set/get a body's center of mass position in the body's local coordinate system.*/
+	// Constant to set/get a body's center of mass position in the body's local coordinate system.
 	BodyParamCenterOfMass BodyParameter = 4
-	/*Constant to set/get a body's gravity multiplier.*/
+	// Constant to set/get a body's gravity multiplier.
 	BodyParamGravityScale BodyParameter = 5
-	/*Constant to set/get a body's linear damping mode. See [enum BodyDampMode] for possible values.*/
+	// Constant to set/get a body's linear damping mode. See [BodyDampMode] for possible values.
 	BodyParamLinearDampMode BodyParameter = 6
-	/*Constant to set/get a body's angular damping mode. See [enum BodyDampMode] for possible values.*/
+	// Constant to set/get a body's angular damping mode. See [BodyDampMode] for possible values.
 	BodyParamAngularDampMode BodyParameter = 7
-	/*Constant to set/get a body's linear damping factor.*/
+	// Constant to set/get a body's linear damping factor.
 	BodyParamLinearDamp BodyParameter = 8
-	/*Constant to set/get a body's angular damping factor.*/
+	// Constant to set/get a body's angular damping factor.
 	BodyParamAngularDamp BodyParameter = 9
-	/*Represents the size of the [enum BodyParameter] enum.*/
+	// Represents the size of the [BodyParameter] enum.
 	BodyParamMax BodyParameter = 10
 )
 
 type BodyDampMode int //gd:PhysicsServer3D.BodyDampMode
 
 const (
-	/*The body's damping value is added to any value set in areas or the default value.*/
+	// The body's damping value is added to any value set in areas or the default value.
 	BodyDampModeCombine BodyDampMode = 0
-	/*The body's damping value replaces any value set in areas or the default value.*/
+	// The body's damping value replaces any value set in areas or the default value.
 	BodyDampModeReplace BodyDampMode = 1
 )
 
 type BodyState int //gd:PhysicsServer3D.BodyState
 
 const (
-	/*Constant to set/get the current transform matrix of the body.*/
+	// Constant to set/get the current transform matrix of the body.
 	BodyStateTransform BodyState = 0
-	/*Constant to set/get the current linear velocity of the body.*/
+	// Constant to set/get the current linear velocity of the body.
 	BodyStateLinearVelocity BodyState = 1
-	/*Constant to set/get the current angular velocity of the body.*/
+	// Constant to set/get the current angular velocity of the body.
 	BodyStateAngularVelocity BodyState = 2
-	/*Constant to sleep/wake up a body, or to get whether it is sleeping.*/
+	// Constant to sleep/wake up a body, or to get whether it is sleeping.
 	BodyStateSleeping BodyState = 3
-	/*Constant to set/get whether the body can sleep.*/
+	// Constant to set/get whether the body can sleep.
 	BodyStateCanSleep BodyState = 4
 )
 
 type AreaBodyStatus int //gd:PhysicsServer3D.AreaBodyStatus
 
 const (
-	/*The value of the first parameter and area callback function receives, when an object enters one of its shapes.*/
+	// The value of the first parameter and area callback function receives, when an object enters one of its shapes.
 	AreaBodyAdded AreaBodyStatus = 0
-	/*The value of the first parameter and area callback function receives, when an object exits one of its shapes.*/
+	// The value of the first parameter and area callback function receives, when an object exits one of its shapes.
 	AreaBodyRemoved AreaBodyStatus = 1
 )
 
 type ProcessInfo int //gd:PhysicsServer3D.ProcessInfo
 
 const (
-	/*Constant to get the number of objects that are not sleeping.*/
+	// Constant to get the number of objects that are not sleeping.
 	InfoActiveObjects ProcessInfo = 0
-	/*Constant to get the number of possible collisions.*/
+	// Constant to get the number of possible collisions.
 	InfoCollisionPairs ProcessInfo = 1
-	/*Constant to get the number of space regions where a collision could occur.*/
+	// Constant to get the number of space regions where a collision could occur.
 	InfoIslandCount ProcessInfo = 2
 )
 
 type SpaceParameter int //gd:PhysicsServer3D.SpaceParameter
 
 const (
-	/*Constant to set/get the maximum distance a pair of bodies has to move before their collision status has to be recalculated.*/
+	// Constant to set/get the maximum distance a pair of bodies has to move before their collision status has to be recalculated.
 	SpaceParamContactRecycleRadius SpaceParameter = 0
-	/*Constant to set/get the maximum distance a shape can be from another before they are considered separated and the contact is discarded.*/
+	// Constant to set/get the maximum distance a shape can be from another before they are considered separated and the contact is discarded.
 	SpaceParamContactMaxSeparation SpaceParameter = 1
-	/*Constant to set/get the maximum distance a shape can penetrate another shape before it is considered a collision.*/
+	// Constant to set/get the maximum distance a shape can penetrate another shape before it is considered a collision.
 	SpaceParamContactMaxAllowedPenetration SpaceParameter = 2
-	/*Constant to set/get the default solver bias for all physics contacts. A solver bias is a factor controlling how much two objects "rebound", after overlapping, to avoid leaving them in that state because of numerical imprecision.*/
+	// Constant to set/get the default solver bias for all physics contacts. A solver bias is a factor controlling how much two objects "rebound", after overlapping, to avoid leaving them in that state because of numerical imprecision.
 	SpaceParamContactDefaultBias SpaceParameter = 3
-	/*Constant to set/get the threshold linear velocity of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after the time given.*/
+	// Constant to set/get the threshold linear velocity of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after the time given.
 	SpaceParamBodyLinearVelocitySleepThreshold SpaceParameter = 4
-	/*Constant to set/get the threshold angular velocity of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after the time given.*/
+	// Constant to set/get the threshold angular velocity of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after the time given.
 	SpaceParamBodyAngularVelocitySleepThreshold SpaceParameter = 5
-	/*Constant to set/get the maximum time of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after this time.*/
+	// Constant to set/get the maximum time of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after this time.
 	SpaceParamBodyTimeToSleep SpaceParameter = 6
-	/*Constant to set/get the number of solver iterations for contacts and constraints. The greater the number of iterations, the more accurate the collisions and constraints will be. However, a greater number of iterations requires more CPU power, which can decrease performance.*/
+	// Constant to set/get the number of solver iterations for contacts and constraints. The greater the number of iterations, the more accurate the collisions and constraints will be. However, a greater number of iterations requires more CPU power, which can decrease performance.
 	SpaceParamSolverIterations SpaceParameter = 7
 )
 

@@ -80,16 +80,21 @@ func (p *Parser) Parse(str string) string {
 				if str[j] == ']' {
 					tag = p.parseTag(str[i+1 : j])
 					if tag.Name == "" {
+						panic("unknown tag or empty tag [" + str[i+1:j] + "] in string: \n" + str)
 						i = j
 						break
 					}
 					if !tag.Closing {
 						contentEnd, tagEnd, found := p.findEnd(str[j+1:], tag.Name)
 						if !found {
-							str = str[:i] + p.Handlers[tag.Name](tag, "") + str[j+1:]
+							sub := p.Handlers[tag.Name](tag, str[j+1:])
+							str = str[:i] + sub + str[j+1:]
+							i += len(sub) - 1
 							break
 						}
-						str = str[:i] + p.Handlers[tag.Name](tag, str[j+1:j+1+contentEnd]) + str[j+1+tagEnd+1:]
+						sub := p.Handlers[tag.Name](tag, str[j+1:j+1+contentEnd])
+						str = str[:i] + sub + str[j+1+tagEnd+1:]
+						i += len(sub) - 1
 						break
 					}
 				}

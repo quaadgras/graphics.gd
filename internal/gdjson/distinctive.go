@@ -19,6 +19,7 @@ var Distinctions = map[string][][3]string{
 	"CSGPolygon3D":                   {{"angle ", "float", "Angle.Radians"}},
 	"DisplayServer":                  {{"screen", "int", "Screen"}, {"status_indicator id", "int", "StatusIndicator"}, {"create_status_indicator ", "int", "StatusIndicator"}, {"window_id", "int", "Window"}},
 	"ENetPacketPeer":                 {{"flags", "int", "Flags"}},
+	"EditorPlugin":                   {{"_forward_3d_gui_input ", "int", "AfterGUIInput"}},
 	"EditorSceneFormatImporter":      {{"import_ flags", "int", "Flags"}},
 	"Environment":                    {{"sky_rotation ", "Vector3", "Euler.Radians"}},
 	"GLTFState":                      {{"handle_binary_image ", "int", "BinaryHandler"}},

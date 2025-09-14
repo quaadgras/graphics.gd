@@ -2,7 +2,8 @@
 
 /*
 Resource UIDs (Unique IDentifiers) allow the engine to keep references between resources intact, even if files are renamed or moved. They can be accessed with uid://.
-[ResourceUID] keeps track of all registered resource UIDs in a project, generates new UIDs, and converts between their string and integer representations.
+
+[graphics.gd/classdb/ResourceUID] keeps track of all registered resource UIDs in a project, generates new UIDs, and converts between their string and integer representations.
 */
 package ResourceUID
 
@@ -123,7 +124,8 @@ func TextToId(text_id string) int { //gd:ResourceUID.text_to_id
 
 /*
 Generates a random resource UID which is guaranteed to be unique within the list of currently loaded UIDs.
-In order for this UID to be registered, you must call [Instance.AddId] or [Instance.SetId].
+
+In order for this UID to be registered, you must call [AddId] or [SetId].
 */
 func CreateId() int { //gd:ResourceUID.create_id
 	once.Do(singleton)
@@ -140,7 +142,8 @@ func HasId(id Resource.UID) bool { //gd:ResourceUID.has_id
 
 /*
 Adds a new UID value which is mapped to the given resource path.
-Fails with an error if the UID already exists, so be sure to check [Instance.HasId] beforehand, or use [Instance.SetId] instead.
+
+Fails with an error if the UID already exists, so be sure to check [HasId] beforehand, or use [SetId] instead.
 */
 func AddId(id Resource.UID, path string) { //gd:ResourceUID.add_id
 	once.Do(singleton)
@@ -149,7 +152,8 @@ func AddId(id Resource.UID, path string) { //gd:ResourceUID.add_id
 
 /*
 Updates the resource path of an existing UID.
-Fails with an error if the UID does not exist, so be sure to check [Instance.HasId] beforehand, or use [Instance.AddId] instead.
+
+Fails with an error if the UID does not exist, so be sure to check [HasId] beforehand, or use [AddId] instead.
 */
 func SetId(id Resource.UID, path string) { //gd:ResourceUID.set_id
 	once.Do(singleton)
@@ -158,7 +162,8 @@ func SetId(id Resource.UID, path string) { //gd:ResourceUID.set_id
 
 /*
 Returns the path that the given UID value refers to.
-Fails with an error if the UID does not exist, so be sure to check [Instance.HasId] beforehand.
+
+Fails with an error if the UID does not exist, so be sure to check [HasId] beforehand.
 */
 func GetIdPath(id Resource.UID) string { //gd:ResourceUID.get_id_path
 	once.Do(singleton)
@@ -167,7 +172,8 @@ func GetIdPath(id Resource.UID) string { //gd:ResourceUID.get_id_path
 
 /*
 Removes a loaded UID value from the cache.
-Fails with an error if the UID does not exist, so be sure to check [Instance.HasId] beforehand.
+
+Fails with an error if the UID does not exist, so be sure to check [HasId] beforehand.
 */
 func RemoveId(id Resource.UID) { //gd:ResourceUID.remove_id
 	once.Do(singleton)
@@ -219,7 +225,8 @@ func (self class) TextToId(text_id String.Readable) int64 { //gd:ResourceUID.tex
 
 /*
 Generates a random resource UID which is guaranteed to be unique within the list of currently loaded UIDs.
-In order for this UID to be registered, you must call [Instance.AddId] or [Instance.SetId].
+
+In order for this UID to be registered, you must call [AddId] or [SetId].
 */
 //go:nosplit
 func (self class) CreateId() int64 { //gd:ResourceUID.create_id
@@ -240,7 +247,8 @@ func (self class) HasId(id int64) bool { //gd:ResourceUID.has_id
 
 /*
 Adds a new UID value which is mapped to the given resource path.
-Fails with an error if the UID already exists, so be sure to check [Instance.HasId] beforehand, or use [Instance.SetId] instead.
+
+Fails with an error if the UID already exists, so be sure to check [HasId] beforehand, or use [SetId] instead.
 */
 //go:nosplit
 func (self class) AddId(id int64, path String.Readable) { //gd:ResourceUID.add_id
@@ -252,7 +260,8 @@ func (self class) AddId(id int64, path String.Readable) { //gd:ResourceUID.add_i
 
 /*
 Updates the resource path of an existing UID.
-Fails with an error if the UID does not exist, so be sure to check [Instance.HasId] beforehand, or use [Instance.AddId] instead.
+
+Fails with an error if the UID does not exist, so be sure to check [HasId] beforehand, or use [AddId] instead.
 */
 //go:nosplit
 func (self class) SetId(id int64, path String.Readable) { //gd:ResourceUID.set_id
@@ -264,7 +273,8 @@ func (self class) SetId(id int64, path String.Readable) { //gd:ResourceUID.set_i
 
 /*
 Returns the path that the given UID value refers to.
-Fails with an error if the UID does not exist, so be sure to check [Instance.HasId] beforehand.
+
+Fails with an error if the UID does not exist, so be sure to check [HasId] beforehand.
 */
 //go:nosplit
 func (self class) GetIdPath(id int64) String.Readable { //gd:ResourceUID.get_id_path
@@ -275,7 +285,8 @@ func (self class) GetIdPath(id int64) String.Readable { //gd:ResourceUID.get_id_
 
 /*
 Removes a loaded UID value from the cache.
-Fails with an error if the UID does not exist, so be sure to check [Instance.HasId] beforehand.
+
+Fails with an error if the UID does not exist, so be sure to check [HasId] beforehand.
 */
 //go:nosplit
 func (self class) RemoveId(id int64) { //gd:ResourceUID.remove_id

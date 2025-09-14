@@ -214,14 +214,14 @@ func init() {
 type Operator int //gd:VisualShaderNodeTransformVecMult.Operator
 
 const (
-	/*Multiplies transform [code]a[/code] by the vector [code]b[/code].*/
+	// Multiplies transform a by the vector b.
 	OpAxb Operator = 0
-	/*Multiplies vector [code]b[/code] by the transform [code]a[/code].*/
+	// Multiplies vector b by the transform a.
 	OpBxa Operator = 1
-	/*Multiplies transform [code]a[/code] by the vector [code]b[/code], skipping the last row and column of the transform.*/
+	// Multiplies transform a by the vector b, skipping the last row and column of the transform.
 	Op3x3Axb Operator = 2
-	/*Multiplies vector [code]b[/code] by the transform [code]a[/code], skipping the last row and column of the transform.*/
+	// Multiplies vector b by the transform a, skipping the last row and column of the transform.
 	Op3x3Bxa Operator = 3
-	/*Represents the size of the [enum Operator] enum.*/
+	// Represents the size of the [Operator] enum.
 	OpMax Operator = 4
 )

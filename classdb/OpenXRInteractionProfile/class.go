@@ -2,7 +2,10 @@
 
 /*
 This object stores suggested bindings for an interaction profile. Interaction profiles define the metadata for a tracked XR device such as an XR controller.
-For more information see the [url=https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#semantic-path-interaction-profiles]interaction profiles info in the OpenXR specification[/url].
+
+For more information see the [interaction profiles info in the OpenXR specification].
+
+[interaction profiles info in the OpenXR specification]: https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#semantic-path-interaction-profiles
 */
 package OpenXRInteractionProfile
 
@@ -131,7 +134,7 @@ func (self Instance) GetBindingModifierCount() int { //gd:OpenXRInteractionProfi
 }
 
 /*
-Get the [OpenXRBindingModifier] at this index.
+Get the [graphics.gd/classdb/OpenXRBindingModifier] at this index.
 */
 func (self Instance) GetBindingModifier(index int) OpenXRIPBindingModifier.Instance { //gd:OpenXRInteractionProfile.get_binding_modifier
 	return OpenXRIPBindingModifier.Instance(Advanced(self).GetBindingModifier(int64(index)))
@@ -259,7 +262,7 @@ func (self class) GetBindingModifierCount() int64 { //gd:OpenXRInteractionProfil
 }
 
 /*
-Get the [OpenXRBindingModifier] at this index.
+Get the [graphics.gd/classdb/OpenXRBindingModifier] at this index.
 */
 //go:nosplit
 func (self class) GetBindingModifier(index int64) [1]gdclass.OpenXRIPBindingModifier { //gd:OpenXRInteractionProfile.get_binding_modifier

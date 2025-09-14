@@ -214,18 +214,18 @@ func init() {
 type OpType int //gd:VisualShaderNodeClamp.OpType
 
 const (
-	/*A floating-point scalar.*/
+	// A floating-point scalar.
 	OpTypeFloat OpType = 0
-	/*An integer scalar.*/
+	// An integer scalar.
 	OpTypeInt OpType = 1
-	/*An unsigned integer scalar.*/
+	// An unsigned integer scalar.
 	OpTypeUint OpType = 2
-	/*A 2D vector type.*/
+	// A 2D vector type.
 	OpTypeVector2d OpType = 3
-	/*A 3D vector type.*/
+	// A 3D vector type.
 	OpTypeVector3d OpType = 4
-	/*A 4D vector type.*/
+	// A 4D vector type.
 	OpTypeVector4d OpType = 5
-	/*Represents the size of the [enum OpType] enum.*/
+	// Represents the size of the [OpType] enum.
 	OpTypeMax OpType = 6
 )

@@ -284,24 +284,25 @@ func init() {
 type StretchMode int //gd:AspectRatioContainer.StretchMode
 
 const (
-	/*The height of child controls is automatically adjusted based on the width of the container.*/
+	// The height of child controls is automatically adjusted based on the width of the container.
 	StretchWidthControlsHeight StretchMode = 0
-	/*The width of child controls is automatically adjusted based on the height of the container.*/
+	// The width of child controls is automatically adjusted based on the height of the container.
 	StretchHeightControlsWidth StretchMode = 1
-	/*The bounding rectangle of child controls is automatically adjusted to fit inside the container while keeping the aspect ratio.*/
+	// The bounding rectangle of child controls is automatically adjusted to fit inside the container while keeping the aspect ratio.
 	StretchFit StretchMode = 2
-	/*The width and height of child controls is automatically adjusted to make their bounding rectangle cover the entire area of the container while keeping the aspect ratio.
-	  When the bounding rectangle of child controls exceed the container's size and [member Control.clip_contents] is enabled, this allows to show only the container's area restricted by its own bounding rectangle.*/
+	// The width and height of child controls is automatically adjusted to make their bounding rectangle cover the entire area of the container while keeping the aspect ratio.
+	//
+	// When the bounding rectangle of child controls exceed the container's size and [graphics.gd/classdb/Control.Instance.ClipContents] is enabled, this allows to show only the container's area restricted by its own bounding rectangle.
 	StretchCover StretchMode = 3
 )
 
 type AlignmentMode int //gd:AspectRatioContainer.AlignmentMode
 
 const (
-	/*Aligns child controls with the beginning (left or top) of the container.*/
+	// Aligns child controls with the beginning (left or top) of the container.
 	AlignmentBegin AlignmentMode = 0
-	/*Aligns child controls with the center of the container.*/
+	// Aligns child controls with the center of the container.
 	AlignmentCenter AlignmentMode = 1
-	/*Aligns child controls with the end (right or bottom) of the container.*/
+	// Aligns child controls with the end (right or bottom) of the container.
 	AlignmentEnd AlignmentMode = 2
 )

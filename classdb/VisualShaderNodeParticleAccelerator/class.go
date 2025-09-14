@@ -216,12 +216,12 @@ func init() {
 type Mode int //gd:VisualShaderNodeParticleAccelerator.Mode
 
 const (
-	/*The particles will be accelerated based on their velocity.*/
+	// The particles will be accelerated based on their velocity.
 	ModeLinear Mode = 0
-	/*The particles will be accelerated towards or away from the center.*/
+	// The particles will be accelerated towards or away from the center.
 	ModeRadial Mode = 1
-	/*The particles will be accelerated tangentially to the radius vector from center to their position.*/
+	// The particles will be accelerated tangentially to the radius vector from center to their position.
 	ModeTangential Mode = 2
-	/*Represents the size of the [enum Mode] enum.*/
+	// Represents the size of the [Mode] enum.
 	ModeMax Mode = 3
 )

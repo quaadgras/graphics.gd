@@ -129,7 +129,7 @@ func GetReferenceFrame() Transform3D.BasisOrigin { //gd:XRServer.get_reference_f
 }
 
 /*
-Clears the reference frame that was set by previous calls to [Instance.CenterOnHmd].
+Clears the reference frame that was set by previous calls to [CenterOnHmd].
 */
 func ClearReferenceFrame() { //gd:XRServer.clear_reference_frame
 	once.Do(singleton)
@@ -138,10 +138,15 @@ func ClearReferenceFrame() { //gd:XRServer.clear_reference_frame
 
 /*
 This is an important function to understand correctly. AR and VR platforms all handle positioning slightly differently.
+
 For platforms that do not offer spatial tracking, our origin point (0, 0, 0) is the location of our HMD, but you have little control over the direction the player is facing in the real world.
+
 For platforms that do offer spatial tracking, our origin point depends very much on the system. For OpenVR, our origin point is usually the center of the tracking space, on the ground. For other platforms, it's often the location of the tracking camera.
+
 This method allows you to center your tracker on the location of the HMD. It will take the current location of the HMD and use that to adjust all your tracking data; in essence, realigning the real world to your player's current position in the game world.
+
 For this method to produce usable results, tracking information must be available. This often takes a few frames after starting your game.
+
 You should call this method after a few seconds have passed. For example, when the user requests a realignment of the display holding a designated button on a controller for a short period of time, or when implementing a teleport mechanism.
 */
 func CenterOnHmd(rotation_mode RotationMode, keep_height bool) { //gd:XRServer.center_on_hmd
@@ -158,7 +163,7 @@ func GetHmdTransform() Transform3D.BasisOrigin { //gd:XRServer.get_hmd_transform
 }
 
 /*
-Registers an [XRInterface] object.
+Registers an [graphics.gd/classdb/XRInterface] object.
 */
 func AddInterface(intf XRInterface.Instance) { //gd:XRServer.add_interface
 	once.Do(singleton)
@@ -206,7 +211,7 @@ func FindInterface(name string) XRInterface.Instance { //gd:XRServer.find_interf
 }
 
 /*
-Registers a new [XRTracker] that tracks a physical object.
+Registers a new [graphics.gd/classdb/XRTracker] that tracks a physical object.
 */
 func AddTracker(tracker XRTracker.Instance) { //gd:XRServer.add_tracker
 	once.Do(singleton)
@@ -335,7 +340,7 @@ func (self class) GetReferenceFrame() Transform3D.BasisOrigin { //gd:XRServer.ge
 }
 
 /*
-Clears the reference frame that was set by previous calls to [Instance.CenterOnHmd].
+Clears the reference frame that was set by previous calls to [CenterOnHmd].
 */
 //go:nosplit
 func (self class) ClearReferenceFrame() { //gd:XRServer.clear_reference_frame
@@ -344,10 +349,15 @@ func (self class) ClearReferenceFrame() { //gd:XRServer.clear_reference_frame
 
 /*
 This is an important function to understand correctly. AR and VR platforms all handle positioning slightly differently.
+
 For platforms that do not offer spatial tracking, our origin point (0, 0, 0) is the location of our HMD, but you have little control over the direction the player is facing in the real world.
+
 For platforms that do offer spatial tracking, our origin point depends very much on the system. For OpenVR, our origin point is usually the center of the tracking space, on the ground. For other platforms, it's often the location of the tracking camera.
+
 This method allows you to center your tracker on the location of the HMD. It will take the current location of the HMD and use that to adjust all your tracking data; in essence, realigning the real world to your player's current position in the game world.
+
 For this method to produce usable results, tracking information must be available. This often takes a few frames after starting your game.
+
 You should call this method after a few seconds have passed. For example, when the user requests a realignment of the display holding a designated button on a controller for a short period of time, or when implementing a teleport mechanism.
 */
 //go:nosplit
@@ -381,7 +391,7 @@ func (self class) IsCameraLockedToOrigin() bool { //gd:XRServer.is_camera_locked
 }
 
 /*
-Registers an [XRInterface] object.
+Registers an [graphics.gd/classdb/XRInterface] object.
 */
 //go:nosplit
 func (self class) AddInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.add_interface
@@ -437,7 +447,7 @@ func (self class) FindInterface(name String.Readable) [1]gdclass.XRInterface { /
 }
 
 /*
-Registers a new [XRTracker] that tracks a physical object.
+Registers a new [graphics.gd/classdb/XRTracker] that tracks a physical object.
 */
 //go:nosplit
 func (self class) AddTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.add_tracker
@@ -575,10 +585,10 @@ func init() {
 type RotationMode int //gd:XRServer.RotationMode
 
 const (
-	/*Fully reset the orientation of the HMD. Regardless of what direction the user is looking to in the real world. The user will look dead ahead in the virtual world.*/
+	// Fully reset the orientation of the HMD. Regardless of what direction the user is looking to in the real world. The user will look dead ahead in the virtual world.
 	ResetFullRotation RotationMode = 0
-	/*Resets the orientation but keeps the tilt of the device. So if we're looking down, we keep looking down but heading will be reset.*/
+	// Resets the orientation but keeps the tilt of the device. So if we're looking down, we keep looking down but heading will be reset.
 	ResetButKeepTilt RotationMode = 1
-	/*Does not reset the orientation of the HMD, only the position of the player gets centered.*/
+	// Does not reset the orientation of the HMD, only the position of the player gets centered.
 	DontResetRotation RotationMode = 2
 )

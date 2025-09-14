@@ -2,8 +2,10 @@
 
 /*
 A script implemented in the GDScript programming language, saved with the .gd extension. The script extends the functionality of all objects that instantiate it.
-Calling [Instance.New] creates a new instance of the script. [Instance.Object.SetScript] extends an existing object, if that object's class matches one of the script's base classes.
-If you are looking for GDScript's built-in functions, see [@GDScript] instead.
+
+Calling [Instance.New] creates a new instance of the script. [graphics.gd/classdb/Object.Instance.SetScript] extends an existing object, if that object's class matches one of the script's base classes.
+
+If you are looking for GDScript's built-in functions, see [graphics.gd/classdb/GDScript] instead.
 */
 package GDScript
 
@@ -102,11 +104,6 @@ type Any interface {
 
 /*
 Returns a new instance of the script.
-[codeblock]
-var MyClass = load("myclass.gd")
-var instance = MyClass.new()
-print(instance.get_script() == MyClass) # Prints true
-[/codeblock]
 */
 func (self Instance) New(args ...any) any { //gd:GDScript.new
 	var converted_variants = make([]gd.Variant, len(args))
@@ -161,11 +158,8 @@ func New() Instance {
 
 /*
 Returns a new instance of the script.
-[codeblock]
-var MyClass = load("myclass.gd")
-var instance = MyClass.new()
-print(instance.get_script() == MyClass) # Prints true
-[/codeblock]
+
+
 */
 //go:nosplit
 func (self class) New(args ...gd.Variant) variant.Any { //gd:GDScript.new

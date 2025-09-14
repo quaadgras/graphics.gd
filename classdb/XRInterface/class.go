@@ -2,7 +2,8 @@
 
 /*
 This class needs to be implemented to make an AR or VR platform available to Godot and these should be implemented as C++ modules or GDExtension modules. Part of the interface is exposed to GDScript so you can detect, enable and configure an AR or VR platform.
-Interfaces should be written in such a way that simply enabling them will give us a working setup. You can query the available interfaces through [XRServer].
+
+Interfaces should be written in such a way that simply enabling them will give us a working setup. You can query the available interfaces through [graphics.gd/classdb/XRServer].
 */
 package XRInterface
 
@@ -151,9 +152,13 @@ func (self Instance) IsInitialized() bool { //gd:XRInterface.is_initialized
 
 /*
 Call this to initialize this interface. The first interface that is initialized is identified as the primary interface and it will be used for rendering output.
+
 After initializing the interface you want to use you then need to enable the AR/VR mode of a viewport and rendering should commence.
+
 Note: You must enable the XR mode on the main viewport for any device that uses the main output of Godot, such as for mobile VR.
+
 If you do this for a platform that handles its own output (such as OpenVR) Godot will show just one eye without distortion on screen. Alternatively, you can add a separate viewport node to your scene and enable AR/VR on that viewport. It will be used to output to the HMD, leaving you free to do anything you like in the main window, such as using a separate camera as a spectator camera or rendering something completely different.
+
 While currently not used, you can activate additional interfaces. You may wish to do this if you want to track controllers from other platforms. However, at this point in time only one interface can render to an HMD.
 */
 func (self Instance) Initialize() bool { //gd:XRInterface.initialize
@@ -168,7 +173,8 @@ func (self Instance) Uninitialize() { //gd:XRInterface.uninitialize
 }
 
 /*
-Returns a [Dictionary] with extra system info. Interfaces are expected to return XRRuntimeName and XRRuntimeVersion providing info about the used XR runtime. Additional entries may be provided specific to an interface.
+Returns a data structure with extra system info. Interfaces are expected to return XRRuntimeName and XRRuntimeVersion providing info about the used XR runtime. Additional entries may be provided specific to an interface.
+
 Note:This information may only be available after [Instance.Initialize] was successfully called.
 */
 func (self Instance) GetSystemInfo() map[string]interface{} { //gd:XRInterface.get_system_info
@@ -198,11 +204,17 @@ func (self Instance) GetViewCount() int { //gd:XRInterface.get_view_count
 
 /*
 Triggers a haptic pulse on a device associated with this interface.
+
 'action_name' is the name of the action for this pulse.
+
 'tracker_name' is optional and can be used to direct the pulse to a specific device provided that device is bound to this haptic.
+
 'frequency' is the frequency of the pulse, set to 0.0 to have the system use a default frequency.
+
 'amplitude' is the amplitude of the pulse between 0.0 and 1.0.
+
 'duration_sec' is the duration of the pulse in seconds.
+
 'delay_sec' is a delay in seconds before the pulse is given.
 */
 func (self Instance) TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X) { //gd:XRInterface.trigger_haptic_pulse
@@ -217,14 +229,14 @@ func (self Instance) SupportsPlayAreaMode(mode PlayAreaMode) bool { //gd:XRInter
 }
 
 /*
-Returns an array of vectors that represent the physical play area mapped to the virtual space around the [XROrigin3D] point. The points form a convex polygon that can be used to react to or visualize the play area. This returns an empty array if this feature is not supported or if the information is not yet available.
+Returns an array of vectors that represent the physical play area mapped to the virtual space around the [graphics.gd/classdb/XROrigin3D] point. The points form a convex polygon that can be used to react to or visualize the play area. This returns an empty array if this feature is not supported or if the information is not yet available.
 */
 func (self Instance) GetPlayArea() []Vector3.XYZ { //gd:XRInterface.get_play_area
 	return []Vector3.XYZ(slices.Collect(Advanced(self).GetPlayArea().Values()))
 }
 
 /*
-If this is an AR interface that requires displaying a camera feed as the background, this method returns the feed ID in the [CameraServer] for this interface.
+If this is an AR interface that requires displaying a camera feed as the background, this method returns the feed ID in the [graphics.gd/classdb/CameraServer] for this interface.
 */
 func (self Instance) GetCameraFeedId() int { //gd:XRInterface.get_camera_feed_id
 	return int(int(Advanced(self).GetCameraFeedId()))
@@ -246,6 +258,7 @@ func (self Instance) IsPassthroughEnabled() bool { //gd:XRInterface.is_passthrou
 
 /*
 Starts passthrough, will return false if passthrough couldn't be started.
+
 Note: The viewport used for XR must have a transparent background, otherwise passthrough may not properly render.
 */
 func (self Instance) StartPassthrough() bool { //gd:XRInterface.start_passthrough
@@ -261,8 +274,10 @@ func (self Instance) StopPassthrough() { //gd:XRInterface.stop_passthrough
 
 /*
 Returns the transform for a view/eye.
+
 'view' is the view/eye index.
-'cam_transform' is the transform that maps device coordinates to scene coordinates, typically the [member Node3D.global_transform] of the current XROrigin3D.
+
+'cam_transform' is the transform that maps device coordinates to scene coordinates, typically the [graphics.gd/classdb/Node3D.Instance.GlobalTransform] of the current XROrigin3D.
 */
 func (self Instance) GetTransformForView(view int, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin { //gd:XRInterface.get_transform_for_view
 	return Transform3D.BasisOrigin(Advanced(self).GetTransformForView(int64(view), Transform3D.BasisOrigin(cam_transform)))
@@ -401,9 +416,13 @@ func (self class) IsInitialized() bool { //gd:XRInterface.is_initialized
 
 /*
 Call this to initialize this interface. The first interface that is initialized is identified as the primary interface and it will be used for rendering output.
+
 After initializing the interface you want to use you then need to enable the AR/VR mode of a viewport and rendering should commence.
+
 Note: You must enable the XR mode on the main viewport for any device that uses the main output of Godot, such as for mobile VR.
+
 If you do this for a platform that handles its own output (such as OpenVR) Godot will show just one eye without distortion on screen. Alternatively, you can add a separate viewport node to your scene and enable AR/VR on that viewport. It will be used to output to the HMD, leaving you free to do anything you like in the main window, such as using a separate camera as a spectator camera or rendering something completely different.
+
 While currently not used, you can activate additional interfaces. You may wish to do this if you want to track controllers from other platforms. However, at this point in time only one interface can render to an HMD.
 */
 //go:nosplit
@@ -422,7 +441,8 @@ func (self class) Uninitialize() { //gd:XRInterface.uninitialize
 }
 
 /*
-Returns a [Dictionary] with extra system info. Interfaces are expected to return XRRuntimeName and XRRuntimeVersion providing info about the used XR runtime. Additional entries may be provided specific to an interface.
+Returns a data structure with extra system info. Interfaces are expected to return XRRuntimeName and XRRuntimeVersion providing info about the used XR runtime. Additional entries may be provided specific to an interface.
+
 Note:This information may only be available after [Instance.Initialize] was successfully called.
 */
 //go:nosplit
@@ -464,11 +484,17 @@ func (self class) GetViewCount() int64 { //gd:XRInterface.get_view_count
 
 /*
 Triggers a haptic pulse on a device associated with this interface.
+
 'action_name' is the name of the action for this pulse.
+
 'tracker_name' is optional and can be used to direct the pulse to a specific device provided that device is bound to this haptic.
+
 'frequency' is the frequency of the pulse, set to 0.0 to have the system use a default frequency.
+
 'amplitude' is the amplitude of the pulse between 0.0 and 1.0.
+
 'duration_sec' is the duration of the pulse in seconds.
+
 'delay_sec' is a delay in seconds before the pulse is given.
 */
 //go:nosplit
@@ -502,7 +528,8 @@ func (self class) GetPlayAreaMode() PlayAreaMode { //gd:XRInterface.get_play_are
 
 /*
 Sets the active play area mode, will return false if the mode can't be used with this interface.
-Note: Changing this after the interface has already been initialized can be jarring for the player, so it's recommended to recenter on the HMD with [Instance.Xrserver.CenterOnHmd] (if switching to [Xrinterface.XrPlayAreaStage]) or make the switch during a scene change.
+
+Note: Changing this after the interface has already been initialized can be jarring for the player, so it's recommended to recenter on the HMD with [graphics.gd/classdb/XRServer.CenterOnHmd] (if switching to [Xrinterface.XrPlayAreaStage]) or make the switch during a scene change.
 */
 //go:nosplit
 func (self class) SetPlayAreaMode(mode PlayAreaMode) bool { //gd:XRInterface.set_play_area_mode
@@ -512,7 +539,7 @@ func (self class) SetPlayAreaMode(mode PlayAreaMode) bool { //gd:XRInterface.set
 }
 
 /*
-Returns an array of vectors that represent the physical play area mapped to the virtual space around the [XROrigin3D] point. The points form a convex polygon that can be used to react to or visualize the play area. This returns an empty array if this feature is not supported or if the information is not yet available.
+Returns an array of vectors that represent the physical play area mapped to the virtual space around the [graphics.gd/classdb/XROrigin3D] point. The points form a convex polygon that can be used to react to or visualize the play area. This returns an empty array if this feature is not supported or if the information is not yet available.
 */
 //go:nosplit
 func (self class) GetPlayArea() Packed.Array[Vector3.XYZ] { //gd:XRInterface.get_play_area
@@ -534,7 +561,7 @@ func (self class) SetAnchorDetectionIsEnabled(enable bool) { //gd:XRInterface.se
 }
 
 /*
-If this is an AR interface that requires displaying a camera feed as the background, this method returns the feed ID in the [CameraServer] for this interface.
+If this is an AR interface that requires displaying a camera feed as the background, this method returns the feed ID in the [graphics.gd/classdb/CameraServer] for this interface.
 */
 //go:nosplit
 func (self class) GetCameraFeedId() int64 { //gd:XRInterface.get_camera_feed_id
@@ -565,6 +592,7 @@ func (self class) IsPassthroughEnabled() bool { //gd:XRInterface.is_passthrough_
 
 /*
 Starts passthrough, will return false if passthrough couldn't be started.
+
 Note: The viewport used for XR must have a transparent background, otherwise passthrough may not properly render.
 */
 //go:nosplit
@@ -584,8 +612,10 @@ func (self class) StopPassthrough() { //gd:XRInterface.stop_passthrough
 
 /*
 Returns the transform for a view/eye.
+
 'view' is the view/eye index.
-'cam_transform' is the transform that maps device coordinates to scene coordinates, typically the [member Node3D.global_transform] of the current XROrigin3D.
+
+'cam_transform' is the transform that maps device coordinates to scene coordinates, typically the [graphics.gd/classdb/Node3D.Instance.GlobalTransform] of the current XROrigin3D.
 */
 //go:nosplit
 func (self class) GetTransformForView(view int64, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin { //gd:XRInterface.get_transform_for_view
@@ -624,21 +654,12 @@ func (self class) GetSupportedEnvironmentBlendModes() Array.Any { //gd:XRInterfa
 
 /*
 Sets the active environment blend mode.
+
 'mode' is the environment blend mode starting with the next frame.
+
 Note: Not all runtimes support all environment blend modes, so it is important to check this at startup. For example:
-[codeblock]
-func _ready():
-    var xr_interface = XRServer.find_interface("OpenXR")
-    if xr_interface and xr_interface.is_initialized():
-        var vp = get_viewport()
-        vp.use_xr = true
-        var acceptable_modes = [XRInterface.XR_ENV_BLEND_MODE_OPAQUE, XRInterface.XR_ENV_BLEND_MODE_ADDITIVE]
-        var modes = xr_interface.get_supported_environment_blend_modes()
-        for mode in acceptable_modes:
-            if mode in modes:
-                xr_interface.set_environment_blend_mode(mode)
-                break
-[/codeblock]
+
+
 */
 //go:nosplit
 func (self class) SetEnvironmentBlendMode(mode EnvironmentBlendMode) bool { //gd:XRInterface.set_environment_blend_mode
@@ -700,59 +721,59 @@ func init() {
 type Capabilities int //gd:XRInterface.Capabilities
 
 const (
-	/*No XR capabilities.*/
+	// No XR capabilities.
 	XrNone Capabilities = 0
-	/*This interface can work with normal rendering output (non-HMD based AR).*/
+	// This interface can work with normal rendering output (non-HMD based AR).
 	XrMono Capabilities = 1
-	/*This interface supports stereoscopic rendering.*/
+	// This interface supports stereoscopic rendering.
 	XrStereo Capabilities = 2
-	/*This interface supports quad rendering (not yet supported by Godot).*/
+	// This interface supports quad rendering (not yet supported by Godot).
 	XrQuad Capabilities = 4
-	/*This interface supports VR.*/
+	// This interface supports VR.
 	XrVr Capabilities = 8
-	/*This interface supports AR (video background and real world tracking).*/
+	// This interface supports AR (video background and real world tracking).
 	XrAr Capabilities = 16
-	/*This interface outputs to an external device. If the main viewport is used, the on screen output is an unmodified buffer of either the left or right eye (stretched if the viewport size is not changed to the same aspect ratio of [method get_render_target_size]). Using a separate viewport node frees up the main viewport for other purposes.*/
+	// This interface outputs to an external device. If the main viewport is used, the on screen output is an unmodified buffer of either the left or right eye (stretched if the viewport size is not changed to the same aspect ratio of [Instance.GetRenderTargetSize]). Using a separate viewport node frees up the main viewport for other purposes.
 	XrExternal Capabilities = 32
 )
 
 type TrackingStatus int //gd:XRInterface.TrackingStatus
 
 const (
-	/*Tracking is behaving as expected.*/
+	// Tracking is behaving as expected.
 	XrNormalTracking TrackingStatus = 0
-	/*Tracking is hindered by excessive motion (the player is moving faster than tracking can keep up).*/
+	// Tracking is hindered by excessive motion (the player is moving faster than tracking can keep up).
 	XrExcessiveMotion TrackingStatus = 1
-	/*Tracking is hindered by insufficient features, it's too dark (for camera-based tracking), player is blocked, etc.*/
+	// Tracking is hindered by insufficient features, it's too dark (for camera-based tracking), player is blocked, etc.
 	XrInsufficientFeatures TrackingStatus = 2
-	/*We don't know the status of the tracking or this interface does not provide feedback.*/
+	// We don't know the status of the tracking or this interface does not provide feedback.
 	XrUnknownTracking TrackingStatus = 3
-	/*Tracking is not functional (camera not plugged in or obscured, lighthouses turned off, etc.).*/
+	// Tracking is not functional (camera not plugged in or obscured, lighthouses turned off, etc.).
 	XrNotTracking TrackingStatus = 4
 )
 
 type PlayAreaMode int //gd:XRInterface.PlayAreaMode
 
 const (
-	/*Play area mode not set or not available.*/
+	// Play area mode not set or not available.
 	XrPlayAreaUnknown PlayAreaMode = 0
-	/*Play area only supports orientation tracking, no positional tracking, area will center around player.*/
+	// Play area only supports orientation tracking, no positional tracking, area will center around player.
 	XrPlayArea3dof PlayAreaMode = 1
-	/*Player is in seated position, limited positional tracking, fixed guardian around player.*/
+	// Player is in seated position, limited positional tracking, fixed guardian around player.
 	XrPlayAreaSitting PlayAreaMode = 2
-	/*Player is free to move around, full positional tracking.*/
+	// Player is free to move around, full positional tracking.
 	XrPlayAreaRoomscale PlayAreaMode = 3
-	/*Same as [constant XR_PLAY_AREA_ROOMSCALE] but origin point is fixed to the center of the physical space. In this mode, system-level recentering may be disabled, requiring the use of [method XRServer.center_on_hmd].*/
+	// Same as [XrPlayAreaRoomscale] but origin point is fixed to the center of the physical space. In this mode, system-level recentering may be disabled, requiring the use of [graphics.gd/classdb/XRServer.CenterOnHmd].
 	XrPlayAreaStage PlayAreaMode = 4
 )
 
 type EnvironmentBlendMode int //gd:XRInterface.EnvironmentBlendMode
 
 const (
-	/*Opaque blend mode. This is typically used for VR devices.*/
+	// Opaque blend mode. This is typically used for VR devices.
 	XrEnvBlendModeOpaque EnvironmentBlendMode = 0
-	/*Additive blend mode. This is typically used for AR devices or VR devices with passthrough.*/
+	// Additive blend mode. This is typically used for AR devices or VR devices with passthrough.
 	XrEnvBlendModeAdditive EnvironmentBlendMode = 1
-	/*Alpha blend mode. This is typically used for AR or VR devices with passthrough capabilities. The alpha channel controls how much of the passthrough is visible. Alpha of 0.0 means the passthrough is visible and this pixel works in ADDITIVE mode. Alpha of 1.0 means that the passthrough is not visible and this pixel works in OPAQUE mode.*/
+	// Alpha blend mode. This is typically used for AR or VR devices with passthrough capabilities. The alpha channel controls how much of the passthrough is visible. Alpha of 0.0 means the passthrough is visible and this pixel works in ADDITIVE mode. Alpha of 1.0 means that the passthrough is not visible and this pixel works in OPAQUE mode.
 	XrEnvBlendModeAlphaBlend EnvironmentBlendMode = 2
 )

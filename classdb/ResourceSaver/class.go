@@ -2,7 +2,8 @@
 
 /*
 A singleton for saving resource types to the filesystem.
-It uses the many [ResourceFormatSaver] classes registered in the engine (either built-in or from a plugin) to save resource data to text-based (e.g. .tres or .tscn) or binary files (e.g. .res or .scn).
+
+It uses the many [graphics.gd/classdb/ResourceFormatSaver] classes registered in the engine (either built-in or from a plugin) to save resource data to text-based (e.g. .tres or .tscn) or binary files (e.g. .res or .scn).
 */
 package ResourceSaver
 
@@ -104,9 +105,12 @@ func singleton() {
 }
 
 /*
-Saves a resource to disk to the given path, using a [ResourceFormatSaver] that recognizes the resource object. If 'path' is empty, [ResourceSaver] will try to use [member Resource.resource_path].
+Saves a resource to disk to the given path, using a [graphics.gd/classdb/ResourceFormatSaver] that recognizes the resource object. If 'path' is empty, [graphics.gd/classdb/ResourceSaver] will try to use [graphics.gd/classdb/Resource.Instance.ResourcePath].
+
 The 'flags' bitmask can be specified to customize the save behavior using [SaverFlags] flags.
+
 Returns [Ok] on success.
+
 Note: When the project is running, any generated UID associated with the resource will not be saved as the required code is only executed in editor mode.
 */
 func Save(resource Resource.Instance, path string, flags SaverFlags) error { //gd:ResourceSaver.save
@@ -115,9 +119,12 @@ func Save(resource Resource.Instance, path string, flags SaverFlags) error { //g
 }
 
 /*
-Saves a resource to disk to the given path, using a [ResourceFormatSaver] that recognizes the resource object. If 'path' is empty, [ResourceSaver] will try to use [member Resource.resource_path].
+Saves a resource to disk to the given path, using a [graphics.gd/classdb/ResourceFormatSaver] that recognizes the resource object. If 'path' is empty, [graphics.gd/classdb/ResourceSaver] will try to use [graphics.gd/classdb/Resource.Instance.ResourcePath].
+
 The 'flags' bitmask can be specified to customize the save behavior using [SaverFlags] flags.
+
 Returns [Ok] on success.
+
 Note: When the project is running, any generated UID associated with the resource will not be saved as the required code is only executed in editor mode.
 */
 func SaveOptions(resource Resource.Instance, path string, flags SaverFlags) error { //gd:ResourceSaver.save
@@ -134,8 +141,9 @@ func GetRecognizedExtensions(atype Resource.Instance) []string { //gd:ResourceSa
 }
 
 /*
-Registers a new [ResourceFormatSaver]. The ResourceSaver will use the ResourceFormatSaver as described in [Instance.Save].
-This method is performed implicitly for ResourceFormatSavers written in GDScript (see [ResourceFormatSaver] for more information).
+Registers a new [graphics.gd/classdb/ResourceFormatSaver]. The ResourceSaver will use the ResourceFormatSaver as described in [Save].
+
+This method is performed implicitly for ResourceFormatSavers written in GDScript (see [graphics.gd/classdb/ResourceFormatSaver] for more information).
 */
 func AddResourceFormatSaver(format_saver ResourceFormatSaver.Instance, at_front bool) { //gd:ResourceSaver.add_resource_format_saver
 	once.Do(singleton)
@@ -143,8 +151,9 @@ func AddResourceFormatSaver(format_saver ResourceFormatSaver.Instance, at_front 
 }
 
 /*
-Registers a new [ResourceFormatSaver]. The ResourceSaver will use the ResourceFormatSaver as described in [Instance.Save].
-This method is performed implicitly for ResourceFormatSavers written in GDScript (see [ResourceFormatSaver] for more information).
+Registers a new [graphics.gd/classdb/ResourceFormatSaver]. The ResourceSaver will use the ResourceFormatSaver as described in [Save].
+
+This method is performed implicitly for ResourceFormatSavers written in GDScript (see [graphics.gd/classdb/ResourceFormatSaver] for more information).
 */
 func AddResourceFormatSaverOptions(format_saver ResourceFormatSaver.Instance, at_front bool) { //gd:ResourceSaver.add_resource_format_saver
 	once.Do(singleton)
@@ -152,7 +161,7 @@ func AddResourceFormatSaverOptions(format_saver ResourceFormatSaver.Instance, at
 }
 
 /*
-Unregisters the given [ResourceFormatSaver].
+Unregisters the given [graphics.gd/classdb/ResourceFormatSaver].
 */
 func RemoveResourceFormatSaver(format_saver ResourceFormatSaver.Instance) { //gd:ResourceSaver.remove_resource_format_saver
 	once.Do(singleton)
@@ -199,9 +208,12 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
-Saves a resource to disk to the given path, using a [ResourceFormatSaver] that recognizes the resource object. If 'path' is empty, [ResourceSaver] will try to use [member Resource.resource_path].
+Saves a resource to disk to the given path, using a [graphics.gd/classdb/ResourceFormatSaver] that recognizes the resource object. If 'path' is empty, [graphics.gd/classdb/ResourceSaver] will try to use [graphics.gd/classdb/Resource.Instance.ResourcePath].
+
 The 'flags' bitmask can be specified to customize the save behavior using [SaverFlags] flags.
+
 Returns [Ok] on success.
+
 Note: When the project is running, any generated UID associated with the resource will not be saved as the required code is only executed in editor mode.
 */
 //go:nosplit
@@ -226,8 +238,9 @@ func (self class) GetRecognizedExtensions(atype [1]gdclass.Resource) Packed.Stri
 }
 
 /*
-Registers a new [ResourceFormatSaver]. The ResourceSaver will use the ResourceFormatSaver as described in [Instance.Save].
-This method is performed implicitly for ResourceFormatSavers written in GDScript (see [ResourceFormatSaver] for more information).
+Registers a new [graphics.gd/classdb/ResourceFormatSaver]. The ResourceSaver will use the ResourceFormatSaver as described in [Save].
+
+This method is performed implicitly for ResourceFormatSavers written in GDScript (see [graphics.gd/classdb/ResourceFormatSaver] for more information).
 */
 //go:nosplit
 func (self class) AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver, at_front bool) { //gd:ResourceSaver.add_resource_format_saver
@@ -238,7 +251,7 @@ func (self class) AddResourceFormatSaver(format_saver [1]gdclass.ResourceFormatS
 }
 
 /*
-Unregisters the given [ResourceFormatSaver].
+Unregisters the given [graphics.gd/classdb/ResourceFormatSaver].
 */
 //go:nosplit
 func (self class) RemoveResourceFormatSaver(format_saver [1]gdclass.ResourceFormatSaver) { //gd:ResourceSaver.remove_resource_format_saver
@@ -277,20 +290,20 @@ func init() {
 type SaverFlags int //gd:ResourceSaver.SaverFlags
 
 const (
-	/*No resource saving option.*/
+	// No resource saving option.
 	FlagNone SaverFlags = 0
-	/*Save the resource with a path relative to the scene which uses it.*/
+	// Save the resource with a path relative to the scene which uses it.
 	FlagRelativePaths SaverFlags = 1
-	/*Bundles external resources.*/
+	// Bundles external resources.
 	FlagBundleResources SaverFlags = 2
-	/*Changes the [member Resource.resource_path] of the saved resource to match its new location.*/
+	// Changes the [graphics.gd/classdb/Resource.Instance.ResourcePath] of the saved resource to match its new location.
 	FlagChangePath SaverFlags = 4
-	/*Do not save editor-specific metadata (identified by their [code]__editor[/code] prefix).*/
+	// Do not save editor-specific metadata (identified by their __editor prefix).
 	FlagOmitEditorProperties SaverFlags = 8
-	/*Save as big endian (see [member FileAccess.big_endian]).*/
+	// Save as big endian (see [graphics.gd/classdb/FileAccess.Instance.BigEndian]).
 	FlagSaveBigEndian SaverFlags = 16
-	/*Compress the resource on save using [constant FileAccess.COMPRESSION_ZSTD]. Only available for binary resource types.*/
+	// Compress the resource on save using [Fileaccess.CompressionZstd]. Only available for binary resource types.
 	FlagCompress SaverFlags = 32
-	/*Take over the paths of the saved subresources (see [method Resource.take_over_path]).*/
+	// Take over the paths of the saved subresources (see [graphics.gd/classdb/Resource.Instance.TakeOverPath]).
 	FlagReplaceSubresourcePaths SaverFlags = 64
 )

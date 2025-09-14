@@ -62,12 +62,11 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 // Instance of the class with convieniently typed arguments and results.
-// See [Interface] for methods that can be overridden by a [Class] that extends it.
 type Instance [1]gdclass.ScriptLanguageExtension
 
 var otype gdextension.ObjectType
@@ -94,6 +93,7 @@ type Any interface {
 	gd.IsClass
 	AsScriptLanguageExtension() Instance
 }
+
 type Interface interface {
 	GetName() string
 	Init()
@@ -106,24 +106,24 @@ type Interface interface {
 	GetDocCommentDelimiters() []string
 	GetStringDelimiters() []string
 	MakeTemplate(template string, class_name string, base_class_name string) Script.Instance
-	GetBuiltInTemplates(obj string) []map[any]any
+	GetBuiltInTemplates(obj string) [][]Template
 	IsUsingTemplates() bool
-	Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) map[any]any
+	Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) Validation
 	ValidatePath(path string) string
 	CreateScript() Object.Instance
 	HasNamedClasses() bool
 	SupportsBuiltinMode() bool
 	SupportsDocumentation() bool
 	CanInheritFromFile() bool
-	//Returns the line where the function is defined in the code, or [code]-1[/code] if the function is not present.
+	// Returns the line where the function is defined in the code, or -1 if the function is not present.
 	FindFunction(function string, code string) int
 	MakeFunction(class_name string, function_name string, function_args []string) string
 	CanMakeFunction() bool
 	OpenInExternalEditor(script Script.Instance, line int, column int) error
 	OverridesExternalEditor() bool
 	PreferredFileNameCasing() ScriptLanguage.ScriptNameCasing
-	CompleteCode(code string, path string, owner Object.Instance) map[any]any
-	LookupCode(code string, symbol string, path string, owner Object.Instance) map[any]any
+	CompleteCode(code string, path string, owner Object.Instance) Completion
+	LookupCode(code string, symbol string, path string, owner Object.Instance) Code
 	AutoIndentCode(code string, from_line int, to_line int) string
 	AddGlobalConstant(name string, value any)
 	AddNamedGlobalConstant(name string, value any)
@@ -134,21 +134,21 @@ type Interface interface {
 	DebugGetStackLevelCount() int
 	DebugGetStackLevelLine(level int) int
 	DebugGetStackLevelFunction(level int) string
-	//Returns the source associated with a given debug stack position.
+	// Returns the source associated with a given debug stack position.
 	DebugGetStackLevelSource(level int) string
-	DebugGetStackLevelLocals(level int, max_subitems int, max_depth int) map[any]any
-	DebugGetStackLevelMembers(level int, max_subitems int, max_depth int) map[any]any
+	DebugGetStackLevelLocals(level int, max_subitems int, max_depth int) StackLevelLocals
+	DebugGetStackLevelMembers(level int, max_subitems int, max_depth int) StackLevelMembers
 	DebugGetStackLevelInstance(level int) gdextension.Pointer
-	DebugGetGlobals(max_subitems int, max_depth int) map[any]any
+	DebugGetGlobals(max_subitems int, max_depth int) Globals
 	DebugParseStackLevelExpression(level int, expression string, max_subitems int, max_depth int) string
-	DebugGetCurrentStackInfo() []map[any]any
+	DebugGetCurrentStackInfo() []StackInfo
 	ReloadAllScripts()
 	ReloadScripts(scripts []any, soft_reload bool)
 	ReloadToolScript(script Script.Instance, soft_reload bool)
 	GetRecognizedExtensions() []string
-	GetPublicFunctions() []map[any]any
-	GetPublicConstants() map[any]any
-	GetPublicAnnotations() []map[any]any
+	GetPublicFunctions() [][]Object.MethodInfo
+	GetPublicConstants() []Constant
+	GetPublicAnnotations() [][]Object.MethodInfo
 	ProfilingStart()
 	ProfilingStop()
 	ProfilingSetSaveNativeCalls(enable bool)
@@ -156,7 +156,7 @@ type Interface interface {
 	ProfilingGetFrameData(info_array *ProfilingInfo, info_max int) int
 	Frame()
 	HandlesGlobalClassType(atype string) bool
-	GetGlobalClassName(path string) map[any]any
+	GetGlobalClassName(path string) ClassName
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -177,9 +177,9 @@ func (self implementation) GetStringDelimiters() (_ []string)            { retur
 func (self implementation) MakeTemplate(template string, class_name string, base_class_name string) (_ Script.Instance) {
 	return
 }
-func (self implementation) GetBuiltInTemplates(obj string) (_ []map[any]any) { return }
-func (self implementation) IsUsingTemplates() (_ bool)                       { return }
-func (self implementation) Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) (_ map[any]any) {
+func (self implementation) GetBuiltInTemplates(obj string) (_ [][]Template) { return }
+func (self implementation) IsUsingTemplates() (_ bool)                      { return }
+func (self implementation) Validate(script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) (_ Validation) {
 	return
 }
 func (self implementation) ValidatePath(path string) (_ string)               { return }
@@ -198,10 +198,10 @@ func (self implementation) OpenInExternalEditor(script Script.Instance, line int
 }
 func (self implementation) OverridesExternalEditor() (_ bool)                            { return }
 func (self implementation) PreferredFileNameCasing() (_ ScriptLanguage.ScriptNameCasing) { return }
-func (self implementation) CompleteCode(code string, path string, owner Object.Instance) (_ map[any]any) {
+func (self implementation) CompleteCode(code string, path string, owner Object.Instance) (_ Completion) {
 	return
 }
-func (self implementation) LookupCode(code string, symbol string, path string, owner Object.Instance) (_ map[any]any) {
+func (self implementation) LookupCode(code string, symbol string, path string, owner Object.Instance) (_ Code) {
 	return
 }
 func (self implementation) AutoIndentCode(code string, from_line int, to_line int) (_ string) { return }
@@ -215,25 +215,25 @@ func (self implementation) DebugGetStackLevelCount() (_ int)                    
 func (self implementation) DebugGetStackLevelLine(level int) (_ int)                          { return }
 func (self implementation) DebugGetStackLevelFunction(level int) (_ string)                   { return }
 func (self implementation) DebugGetStackLevelSource(level int) (_ string)                     { return }
-func (self implementation) DebugGetStackLevelLocals(level int, max_subitems int, max_depth int) (_ map[any]any) {
+func (self implementation) DebugGetStackLevelLocals(level int, max_subitems int, max_depth int) (_ StackLevelLocals) {
 	return
 }
-func (self implementation) DebugGetStackLevelMembers(level int, max_subitems int, max_depth int) (_ map[any]any) {
+func (self implementation) DebugGetStackLevelMembers(level int, max_subitems int, max_depth int) (_ StackLevelMembers) {
 	return
 }
-func (self implementation) DebugGetStackLevelInstance(level int) (_ gdextension.Pointer)    { return }
-func (self implementation) DebugGetGlobals(max_subitems int, max_depth int) (_ map[any]any) { return }
+func (self implementation) DebugGetStackLevelInstance(level int) (_ gdextension.Pointer) { return }
+func (self implementation) DebugGetGlobals(max_subitems int, max_depth int) (_ Globals)  { return }
 func (self implementation) DebugParseStackLevelExpression(level int, expression string, max_subitems int, max_depth int) (_ string) {
 	return
 }
-func (self implementation) DebugGetCurrentStackInfo() (_ []map[any]any)               { return }
+func (self implementation) DebugGetCurrentStackInfo() (_ []StackInfo)                 { return }
 func (self implementation) ReloadAllScripts()                                         { return }
 func (self implementation) ReloadScripts(scripts []any, soft_reload bool)             { return }
 func (self implementation) ReloadToolScript(script Script.Instance, soft_reload bool) { return }
 func (self implementation) GetRecognizedExtensions() (_ []string)                     { return }
-func (self implementation) GetPublicFunctions() (_ []map[any]any)                     { return }
-func (self implementation) GetPublicConstants() (_ map[any]any)                       { return }
-func (self implementation) GetPublicAnnotations() (_ []map[any]any)                   { return }
+func (self implementation) GetPublicFunctions() (_ [][]Object.MethodInfo)             { return }
+func (self implementation) GetPublicConstants() (_ []Constant)                        { return }
+func (self implementation) GetPublicAnnotations() (_ [][]Object.MethodInfo)           { return }
 func (self implementation) ProfilingStart()                                           { return }
 func (self implementation) ProfilingStop()                                            { return }
 func (self implementation) ProfilingSetSaveNativeCalls(enable bool)                   { return }
@@ -243,9 +243,9 @@ func (self implementation) ProfilingGetAccumulatedData(info_array *ProfilingInfo
 func (self implementation) ProfilingGetFrameData(info_array *ProfilingInfo, info_max int) (_ int) {
 	return
 }
-func (self implementation) Frame()                                         { return }
-func (self implementation) HandlesGlobalClassType(atype string) (_ bool)   { return }
-func (self implementation) GetGlobalClassName(path string) (_ map[any]any) { return }
+func (self implementation) Frame()                                       { return }
+func (self implementation) HandlesGlobalClassType(atype string) (_ bool) { return }
+func (self implementation) GetGlobalClassName(path string) (_ ClassName) { return }
 func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -369,7 +369,7 @@ func (Instance) _make_template(impl func(ptr gdclass.Receiver, template string, 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_built_in_templates(impl func(ptr gdclass.Receiver, obj string) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_built_in_templates(impl func(ptr gdclass.Receiver, obj string) [][]Template) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var obj = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(obj))
@@ -390,7 +390,7 @@ func (Instance) _is_using_templates(impl func(ptr gdclass.Receiver) bool) (cb gd
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _validate(impl func(ptr gdclass.Receiver, script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _validate(impl func(ptr gdclass.Receiver, script string, path string, validate_functions bool, validate_errors bool, validate_warnings bool, validate_safe_lines bool) Validation) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(script))
@@ -535,7 +535,7 @@ func (Instance) _preferred_file_name_casing(impl func(ptr gdclass.Receiver) Scri
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _complete_code(impl func(ptr gdclass.Receiver, code string, path string, owner Object.Instance) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _complete_code(impl func(ptr gdclass.Receiver, code string, path string, owner Object.Instance) Completion) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(code))
@@ -553,7 +553,7 @@ func (Instance) _complete_code(impl func(ptr gdclass.Receiver, code string, path
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _lookup_code(impl func(ptr gdclass.Receiver, code string, symbol string, path string, owner Object.Instance) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _lookup_code(impl func(ptr gdclass.Receiver, code string, symbol string, path string, owner Object.Instance) Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var code = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(code))
@@ -686,7 +686,7 @@ func (Instance) _debug_get_stack_level_source(impl func(ptr gdclass.Receiver, le
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _debug_get_stack_level_locals(impl func(ptr gdclass.Receiver, level int, max_subitems int, max_depth int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _debug_get_stack_level_locals(impl func(ptr gdclass.Receiver, level int, max_subitems int, max_depth int) StackLevelLocals) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
 		var max_subitems = gd.UnsafeGet[int64](p_args, 1)
@@ -701,7 +701,7 @@ func (Instance) _debug_get_stack_level_locals(impl func(ptr gdclass.Receiver, le
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _debug_get_stack_level_members(impl func(ptr gdclass.Receiver, level int, max_subitems int, max_depth int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _debug_get_stack_level_members(impl func(ptr gdclass.Receiver, level int, max_subitems int, max_depth int) StackLevelMembers) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var level = gd.UnsafeGet[int64](p_args, 0)
 		var max_subitems = gd.UnsafeGet[int64](p_args, 1)
@@ -724,7 +724,7 @@ func (Instance) _debug_get_stack_level_instance(impl func(ptr gdclass.Receiver, 
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _debug_get_globals(impl func(ptr gdclass.Receiver, max_subitems int, max_depth int) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _debug_get_globals(impl func(ptr gdclass.Receiver, max_subitems int, max_depth int) Globals) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var max_subitems = gd.UnsafeGet[int64](p_args, 0)
 		var max_depth = gd.UnsafeGet[int64](p_args, 1)
@@ -755,7 +755,7 @@ func (Instance) _debug_parse_stack_level_expression(impl func(ptr gdclass.Receiv
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _debug_get_current_stack_info(impl func(ptr gdclass.Receiver) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _debug_get_current_stack_info(impl func(ptr gdclass.Receiver) []StackInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -804,7 +804,7 @@ func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []str
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_public_functions(impl func(ptr gdclass.Receiver) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_public_functions(impl func(ptr gdclass.Receiver) [][]Object.MethodInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -816,7 +816,7 @@ func (Instance) _get_public_functions(impl func(ptr gdclass.Receiver) []map[any]
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_public_constants(impl func(ptr gdclass.Receiver) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_public_constants(impl func(ptr gdclass.Receiver) []Constant) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -828,7 +828,7 @@ func (Instance) _get_public_constants(impl func(ptr gdclass.Receiver) map[any]an
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_public_annotations(impl func(ptr gdclass.Receiver) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_public_annotations(impl func(ptr gdclass.Receiver) [][]Object.MethodInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -892,7 +892,7 @@ func (Instance) _handles_global_class_type(impl func(ptr gdclass.Receiver, atype
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_global_class_name(impl func(ptr gdclass.Receiver, path string) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_global_class_name(impl func(ptr gdclass.Receiver, path string) ClassName) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(path))
@@ -1963,13 +1963,13 @@ const (
 type CodeCompletionLocation int //gd:ScriptLanguageExtension.CodeCompletionLocation
 
 const (
-	/*The option is local to the location of the code completion query - e.g. a local variable. Subsequent value of location represent options from the outer class, the exact value represent how far they are (in terms of inner classes).*/
+	// The option is local to the location of the code completion query - e.g. a local variable. Subsequent value of location represent options from the outer class, the exact value represent how far they are (in terms of inner classes).
 	LocationLocal CodeCompletionLocation = 0
-	/*The option is from the containing class or a parent class, relative to the location of the code completion query. Perform a bitwise OR with the class depth (e.g. [code]0[/code] for the local class, [code]1[/code] for the parent, [code]2[/code] for the grandparent, etc.) to store the depth of an option in the class or a parent class.*/
+	// The option is from the containing class or a parent class, relative to the location of the code completion query. Perform a bitwise OR with the class depth (e.g. 0 for the local class, 1 for the parent, 2 for the grandparent, etc.) to store the depth of an option in the class or a parent class.
 	LocationParentMask CodeCompletionLocation = 256
-	/*The option is from user code which is not local and not in a derived class (e.g. Autoload Singletons).*/
+	// The option is from user code which is not local and not in a derived class (e.g. Autoload Singletons).
 	LocationOtherUserCode CodeCompletionLocation = 512
-	/*The option is from other engine code, not covered by the other enum constants - e.g. built-in classes.*/
+	// The option is from other engine code, not covered by the other enum constants - e.g. built-in classes.
 	LocationOther CodeCompletionLocation = 1024
 )
 
@@ -1988,3 +1988,98 @@ const (
 	CodeCompletionKindPlainText CodeCompletionKind = 9
 	CodeCompletionKindMax       CodeCompletionKind = 10
 )
+
+type ClassName struct {
+	Name       string `gd:"name"`
+	BaseType   string `gd:"base_type"`
+	IconPath   string `gd:"icon_path"`
+	IsAbstract bool   `gd:"is_abstract"`
+	IsTool     bool   `gd:"is_tool"`
+}
+type Code struct {
+	Result              Error.Code      `gd:"result"`
+	Type                int             `gd:"type"`
+	ClassName           string          `gd:"class_name"`
+	ClassMember         string          `gd:"class_member"`
+	Description         string          `gd:"description"`
+	IsDeprecated        bool            `gd:"is_deprecated"`
+	DeprecatedMessage   string          `gd:"deprecated_message"`
+	IsExperimental      bool            `gd:"is_experimental"`
+	ExperimentalMessage string          `gd:"experimental_message"`
+	DocType             string          `gd:"doc_type"`
+	Enumeration         string          `gd:"enumeration"`
+	IsBitfield          bool            `gd:"is_bitfield"`
+	Value               string          `gd:"value"`
+	Script              Script.Instance `gd:"script"`
+	ScriptPath          string          `gd:"script_path"`
+	Location            int             `gd:"location"`
+}
+type Completion struct {
+	Kind       CodeCompletionKind `gd:"kind"`
+	Display    string             `gd:"display"`
+	InsertText string             `gd:"insert_text"`
+	FontColor  struct {
+		R float32
+		G float32
+		B float32
+		A float32
+	} `gd:"font_color"`
+	Icon         string     `gd:"icon"`
+	DefaultValue string     `gd:"default_value"`
+	Location     string     `gd:"location"`
+	Matches      []int32    `gd:"matches"`
+	Force        bool       `gd:"force"`
+	CallHint     string     `gd:"call_hint"`
+	Result       Error.Code `gd:"result"`
+}
+type Constant struct {
+	Name  string      `gd:"name"`
+	Value interface{} `gd:"value"`
+}
+type Globals struct {
+	Globals []string      `gd:"globals"`
+	Values  []interface{} `gd:"values"`
+}
+type StackInfo struct {
+	File string `gd:"file"`
+	Func string `gd:"func"`
+	Line int    `gd:"line"`
+}
+type StackLevelLocals struct {
+	Locals []string      `gd:"locals"`
+	Values []interface{} `gd:"values"`
+}
+type StackLevelMembers struct {
+	Members []string      `gd:"members"`
+	Values  []interface{} `gd:"values"`
+}
+type Template struct {
+	Inherit     string           `gd:"inherit"`
+	Name        string           `gd:"name"`
+	Description string           `gd:"description"`
+	Content     string           `gd:"content"`
+	ID          int32            `gd:"id"`
+	Origin      TemplateLocation `gd:"origin"`
+}
+type Validation struct {
+	Functions []string          `gd:"functions"`
+	Errors    []ValidationError `gd:"errors"`
+	Warnings  []Warning         `gd:"warnings"`
+	SafeLines []int32           `gd:"safe_lines"`
+	Valid     bool              `gd:"valid"`
+}
+type ValidationError struct {
+	Line    int    `gd:"line"`
+	Column  int    `gd:"column"`
+	Message string `gd:"message"`
+	Path    string `gd:"path"`
+}
+type Warning struct {
+	StartLine       int    `gd:"start_line"`
+	EndLine         int    `gd:"end_line"`
+	LeftMostColumn  int    `gd:"left_most_column"`
+	RightMostColumn int    `gd:"right_most_column"`
+	Code            int    `gd:"code"`
+	StringCode      string `gd:"string_code"`
+	Message         string `gd:"message"`
+}

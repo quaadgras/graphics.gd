@@ -282,12 +282,12 @@ func init() {
 type FillMode int //gd:ProgressBar.FillMode
 
 const (
-	/*The progress bar fills from begin to end horizontally, according to the language direction. If [method Control.is_layout_rtl] returns [code]false[/code], it fills from left to right, and if it returns [code]true[/code], it fills from right to left.*/
+	// The progress bar fills from begin to end horizontally, according to the language direction. If [graphics.gd/classdb/Control.Instance.IsLayoutRtl] returns false, it fills from left to right, and if it returns true, it fills from right to left.
 	FillBeginToEnd FillMode = 0
-	/*The progress bar fills from end to begin horizontally, according to the language direction. If [method Control.is_layout_rtl] returns [code]false[/code], it fills from right to left, and if it returns [code]true[/code], it fills from left to right.*/
+	// The progress bar fills from end to begin horizontally, according to the language direction. If [graphics.gd/classdb/Control.Instance.IsLayoutRtl] returns false, it fills from right to left, and if it returns true, it fills from left to right.
 	FillEndToBegin FillMode = 1
-	/*The progress fills from top to bottom.*/
+	// The progress fills from top to bottom.
 	FillTopToBottom FillMode = 2
-	/*The progress fills from bottom to top.*/
+	// The progress fills from bottom to top.
 	FillBottomToTop FillMode = 3
 )

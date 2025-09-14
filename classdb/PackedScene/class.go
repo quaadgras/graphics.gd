@@ -2,8 +2,11 @@
 
 /*
 A simplified interface to a scene file. Provides access to operations and checks that can be performed on the scene resource itself.
-Can be used to save a node to a file. When saving, the node as well as all the nodes it owns get saved (see [member Node.owner] property).
+
+Can be used to save a node to a file. When saving, the node as well as all the nodes it owns get saved (see [graphics.gd/classdb/Node.Instance.Owner] property).
+
 Note: The node doesn't need to own itself.
+
 Example: Load a saved scene:
 
 	package main
@@ -19,7 +22,7 @@ Example: Load a saved scene:
 		parent.AddChild(scene)
 	}
 
-Example: Save a node with different owners. The following example creates 3 objects: [Node2D] (node), [RigidBody2D] (body) and [CollisionObject2D] (collision). collision is a child of body which is a child of node. Only body is owned by node and [Instance.Pack] will therefore only save those two nodes, but not collision.
+Example: Save a node with different owners. The following example creates 3 objects: [graphics.gd/classdb/Node2D] (node), [graphics.gd/classdb/RigidBody2D] (body) and [graphics.gd/classdb/CollisionObject2D] (collision). collision is a child of body which is a child of node. Only body is owned by node and [Instance.Pack] will therefore only save those two nodes, but not collision.
 
 	package main
 
@@ -150,7 +153,7 @@ type Any interface {
 }
 
 /*
-Packs the 'path' node, and all owned sub-nodes, into this [PackedScene]. Any existing data will be cleared. See [member Node.owner].
+Packs the 'path' node, and all owned sub-nodes, into this [graphics.gd/classdb/PackedScene]. Any existing data will be cleared. See [graphics.gd/classdb/Node.Instance.Owner].
 */
 func (self Instance) Pack(path Node.Instance) error { //gd:PackedScene.pack
 	return error(gd.ToError(Advanced(self).Pack(path)))
@@ -221,7 +224,7 @@ func New() Instance {
 }
 
 /*
-Packs the 'path' node, and all owned sub-nodes, into this [PackedScene]. Any existing data will be cleared. See [member Node.owner].
+Packs the 'path' node, and all owned sub-nodes, into this [graphics.gd/classdb/PackedScene]. Any existing data will be cleared. See [graphics.gd/classdb/Node.Instance.Owner].
 */
 //go:nosplit
 func (self class) Pack(path [1]gdclass.Node) Error.Code { //gd:PackedScene.pack
@@ -251,7 +254,7 @@ func (self class) CanInstantiate() bool { //gd:PackedScene.can_instantiate
 }
 
 /*
-Returns the [SceneState] representing the scene file contents.
+Returns the [graphics.gd/classdb/SceneState] representing the scene file contents.
 */
 //go:nosplit
 func (self class) GetState() [1]gdclass.SceneState { //gd:PackedScene.get_state
@@ -301,15 +304,18 @@ func init() {
 type GenEditState int //gd:PackedScene.GenEditState
 
 const (
-	/*If passed to [method instantiate], blocks edits to the scene state.*/
+	// If passed to [Instance.Instantiate], blocks edits to the scene state.
 	GenEditStateDisabled GenEditState = 0
-	/*If passed to [method instantiate], provides local scene resources to the local scene.
-	  [b]Note:[/b] Only available in editor builds.*/
+	// If passed to [Instance.Instantiate], provides local scene resources to the local scene.
+	//
+	// Note: Only available in editor builds.
 	GenEditStateInstance GenEditState = 1
-	/*If passed to [method instantiate], provides local scene resources to the local scene. Only the main scene should receive the main edit state.
-	  [b]Note:[/b] Only available in editor builds.*/
+	// If passed to [Instance.Instantiate], provides local scene resources to the local scene. Only the main scene should receive the main edit state.
+	//
+	// Note: Only available in editor builds.
 	GenEditStateMain GenEditState = 2
-	/*It's similar to [constant GEN_EDIT_STATE_MAIN], but for the case where the scene is being instantiated to be the base of another one.
-	  [b]Note:[/b] Only available in editor builds.*/
+	// It's similar to [GenEditStateMain], but for the case where the scene is being instantiated to be the base of another one.
+	//
+	// Note: Only available in editor builds.
 	GenEditStateMainInherited GenEditState = 3
 )

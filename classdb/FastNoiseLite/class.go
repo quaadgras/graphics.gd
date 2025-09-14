@@ -2,6 +2,7 @@
 
 /*
 This class generates noise using the FastNoiseLite library, which is a collection of several noise algorithms including Cellular, Perlin, Value, and more.
+
 Most generated noise values are in the range of [-1, 1], but not always. Some of the cellular noise algorithms return results above 1.
 */
 package FastNoiseLite
@@ -652,84 +653,85 @@ func init() {
 type NoiseType int //gd:FastNoiseLite.NoiseType
 
 const (
-	/*A lattice of points are assigned random values then interpolated based on neighboring values.*/
+	// A lattice of points are assigned random values then interpolated based on neighboring values.
 	TypeValue NoiseType = 5
-	/*Similar to Value noise, but slower. Has more variance in peaks and valleys.
-	  Cubic noise can be used to avoid certain artifacts when using value noise to create a bumpmap. In general, you should always use this mode if the value noise is being used for a heightmap or bumpmap.*/
+	// Similar to Value noise, but slower. Has more variance in peaks and valleys.
+	//
+	// Cubic noise can be used to avoid certain artifacts when using value noise to create a bumpmap. In general, you should always use this mode if the value noise is being used for a heightmap or bumpmap.
 	TypeValueCubic NoiseType = 4
-	/*A lattice of random gradients. Their dot products are interpolated to obtain values in between the lattices.*/
+	// A lattice of random gradients. Their dot products are interpolated to obtain values in between the lattices.
 	TypePerlin NoiseType = 3
-	/*Cellular includes both Worley noise and Voronoi diagrams which creates various regions of the same value.*/
+	// Cellular includes both Worley noise and Voronoi diagrams which creates various regions of the same value.
 	TypeCellular NoiseType = 2
-	/*As opposed to [constant TYPE_PERLIN], gradients exist in a simplex lattice rather than a grid lattice, avoiding directional artifacts. Internally uses FastNoiseLite's OpenSimplex2 noise type.*/
+	// As opposed to [TypePerlin], gradients exist in a simplex lattice rather than a grid lattice, avoiding directional artifacts. Internally uses FastNoiseLite's OpenSimplex2 noise type.
 	TypeSimplex NoiseType = 0
-	/*Modified, higher quality version of [constant TYPE_SIMPLEX], but slower. Internally uses FastNoiseLite's OpenSimplex2S noise type.*/
+	// Modified, higher quality version of [TypeSimplex], but slower. Internally uses FastNoiseLite's OpenSimplex2S noise type.
 	TypeSimplexSmooth NoiseType = 1
 )
 
 type FractalType int //gd:FastNoiseLite.FractalType
 
 const (
-	/*No fractal noise.*/
+	// No fractal noise.
 	FractalNone FractalType = 0
-	/*Method using Fractional Brownian Motion to combine octaves into a fractal.*/
+	// Method using Fractional Brownian Motion to combine octaves into a fractal.
 	FractalFbm FractalType = 1
-	/*Method of combining octaves into a fractal resulting in a "ridged" look.*/
+	// Method of combining octaves into a fractal resulting in a "ridged" look.
 	FractalRidged FractalType = 2
-	/*Method of combining octaves into a fractal with a ping pong effect.*/
+	// Method of combining octaves into a fractal with a ping pong effect.
 	FractalPingPong FractalType = 3
 )
 
 type CellularDistanceFunction int //gd:FastNoiseLite.CellularDistanceFunction
 
 const (
-	/*Euclidean distance to the nearest point.*/
+	// Euclidean distance to the nearest point.
 	DistanceEuclidean CellularDistanceFunction = 0
-	/*Squared Euclidean distance to the nearest point.*/
+	// Squared Euclidean distance to the nearest point.
 	DistanceEuclideanSquared CellularDistanceFunction = 1
-	/*Manhattan distance (taxicab metric) to the nearest point.*/
+	// Manhattan distance (taxicab metric) to the nearest point.
 	DistanceManhattan CellularDistanceFunction = 2
-	/*Blend of [constant DISTANCE_EUCLIDEAN] and [constant DISTANCE_MANHATTAN] to give curved cell boundaries.*/
+	// Blend of [DistanceEuclidean] and [DistanceManhattan] to give curved cell boundaries.
 	DistanceHybrid CellularDistanceFunction = 3
 )
 
 type CellularReturnType int //gd:FastNoiseLite.CellularReturnType
 
 const (
-	/*The cellular distance function will return the same value for all points within a cell.*/
+	// The cellular distance function will return the same value for all points within a cell.
 	ReturnCellValue CellularReturnType = 0
-	/*The cellular distance function will return a value determined by the distance to the nearest point.*/
+	// The cellular distance function will return a value determined by the distance to the nearest point.
 	ReturnDistance CellularReturnType = 1
-	/*The cellular distance function returns the distance to the second-nearest point.*/
+	// The cellular distance function returns the distance to the second-nearest point.
 	ReturnDistance2 CellularReturnType = 2
-	/*The distance to the nearest point is added to the distance to the second-nearest point.*/
+	// The distance to the nearest point is added to the distance to the second-nearest point.
 	ReturnDistance2Add CellularReturnType = 3
-	/*The distance to the nearest point is subtracted from the distance to the second-nearest point.*/
+	// The distance to the nearest point is subtracted from the distance to the second-nearest point.
 	ReturnDistance2Sub CellularReturnType = 4
-	/*The distance to the nearest point is multiplied with the distance to the second-nearest point.*/
+	// The distance to the nearest point is multiplied with the distance to the second-nearest point.
 	ReturnDistance2Mul CellularReturnType = 5
-	/*The distance to the nearest point is divided by the distance to the second-nearest point.*/
+	// The distance to the nearest point is divided by the distance to the second-nearest point.
 	ReturnDistance2Div CellularReturnType = 6
 )
 
 type DomainWarpType int //gd:FastNoiseLite.DomainWarpType
 
 const (
-	/*The domain is warped using the simplex noise algorithm.*/
+	// The domain is warped using the simplex noise algorithm.
 	DomainWarpSimplex DomainWarpType = 0
-	/*The domain is warped using a simplified version of the simplex noise algorithm.*/
+	// The domain is warped using a simplified version of the simplex noise algorithm.
 	DomainWarpSimplexReduced DomainWarpType = 1
-	/*The domain is warped using a simple noise grid (not as smooth as the other methods, but more performant).*/
+	// The domain is warped using a simple noise grid (not as smooth as the other methods, but more performant).
 	DomainWarpBasicGrid DomainWarpType = 2
 )
 
 type DomainWarpFractalType int //gd:FastNoiseLite.DomainWarpFractalType
 
 const (
-	/*No fractal noise for warping the space.*/
+	// No fractal noise for warping the space.
 	DomainWarpFractalNone DomainWarpFractalType = 0
-	/*Warping the space progressively, octave for octave, resulting in a more "liquified" distortion.*/
+	// Warping the space progressively, octave for octave, resulting in a more "liquified" distortion.
 	DomainWarpFractalProgressive DomainWarpFractalType = 1
-	/*Warping the space independently for each octave, resulting in a more chaotic distortion.*/
+	// Warping the space independently for each octave, resulting in a more chaotic distortion.
 	DomainWarpFractalIndependent DomainWarpFractalType = 2
 )

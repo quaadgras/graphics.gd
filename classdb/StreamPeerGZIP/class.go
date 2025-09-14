@@ -2,7 +2,8 @@
 
 /*
 This class allows to compress or decompress data using GZIP/deflate in a streaming fashion. This is particularly useful when compressing or decompressing files that have to be sent through the network without needing to allocate them all in memory.
-After starting the stream via [Instance.StartCompression] (or [Instance.StartDecompression]), calling [Instance.Streampeer.PutPartialData] on this stream will compress (or decompress) the data, writing it to the internal buffer. Calling [Instance.Streampeer.GetAvailableBytes] will return the pending bytes in the internal buffer, and [Instance.Streampeer.GetPartialData] will retrieve the compressed (or decompressed) bytes from it. When the stream is over, you must call [Instance.Finish] to ensure the internal buffer is properly flushed (make sure to call [Instance.Streampeer.GetAvailableBytes] on last time to check if more data needs to be read after that).
+
+After starting the stream via [Instance.StartCompression] (or [Instance.StartDecompression]), calling [graphics.gd/classdb/StreamPeer.Instance.PutPartialData] on this stream will compress (or decompress) the data, writing it to the internal buffer. Calling [graphics.gd/classdb/StreamPeer.Instance.GetAvailableBytes] will return the pending bytes in the internal buffer, and [graphics.gd/classdb/StreamPeer.Instance.GetPartialData] will retrieve the compressed (or decompressed) bytes from it. When the stream is over, you must call [Instance.Finish] to ensure the internal buffer is properly flushed (make sure to call [graphics.gd/classdb/StreamPeer.Instance.GetAvailableBytes] on last time to check if more data needs to be read after that).
 */
 package StreamPeerGZIP
 

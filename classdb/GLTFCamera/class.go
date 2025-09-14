@@ -112,7 +112,7 @@ type Any interface {
 }
 
 /*
-Create a new GLTFCamera instance from the given Godot [Camera3D] node.
+Create a new GLTFCamera instance from the given Godot [graphics.gd/classdb/Camera3D] node.
 */
 func FromNode(camera_node Camera3D.Instance) Instance { //gd:GLTFCamera.from_node
 	self := Instance{}
@@ -120,14 +120,14 @@ func FromNode(camera_node Camera3D.Instance) Instance { //gd:GLTFCamera.from_nod
 }
 
 /*
-Converts this GLTFCamera instance into a Godot [Camera3D] node.
+Converts this GLTFCamera instance into a Godot [graphics.gd/classdb/Camera3D] node.
 */
 func (self Instance) ToNode() Camera3D.Instance { //gd:GLTFCamera.to_node
 	return Camera3D.Instance(Advanced(self).ToNode())
 }
 
 /*
-Creates a new GLTFCamera instance by parsing the given [Dictionary].
+Creates a new GLTFCamera instance by parsing the given data structure.
 */
 func FromDictionary(dictionary Structure) Instance { //gd:GLTFCamera.from_dictionary
 	self := Instance{}
@@ -135,7 +135,7 @@ func FromDictionary(dictionary Structure) Instance { //gd:GLTFCamera.from_dictio
 }
 
 /*
-Serializes this GLTFCamera instance into a [Dictionary].
+Serializes this GLTFCamera instance into a data structure.
 */
 func (self Instance) ToDictionary() Structure { //gd:GLTFCamera.to_dictionary
 	return Structure(gd.DictionaryAs[Structure](Advanced(self).ToDictionary()))
@@ -225,7 +225,7 @@ func (self Instance) SetDepthNear(value Float.X) {
 }
 
 /*
-Create a new GLTFCamera instance from the given Godot [Camera3D] node.
+Create a new GLTFCamera instance from the given Godot [graphics.gd/classdb/Camera3D] node.
 */
 //go:nosplit
 func (self class) FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_node
@@ -235,7 +235,7 @@ func (self class) FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamer
 }
 
 /*
-Converts this GLTFCamera instance into a Godot [Camera3D] node.
+Converts this GLTFCamera instance into a Godot [graphics.gd/classdb/Camera3D] node.
 */
 //go:nosplit
 func (self class) ToNode() [1]gdclass.Camera3D { //gd:GLTFCamera.to_node
@@ -245,7 +245,7 @@ func (self class) ToNode() [1]gdclass.Camera3D { //gd:GLTFCamera.to_node
 }
 
 /*
-Creates a new GLTFCamera instance by parsing the given [Dictionary].
+Creates a new GLTFCamera instance by parsing the given data structure.
 */
 //go:nosplit
 func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_dictionary
@@ -255,7 +255,7 @@ func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFCamer
 }
 
 /*
-Serializes this GLTFCamera instance into a [Dictionary].
+Serializes this GLTFCamera instance into a data structure.
 */
 //go:nosplit
 func (self class) ToDictionary() Dictionary.Any { //gd:GLTFCamera.to_dictionary

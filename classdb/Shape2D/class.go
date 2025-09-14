@@ -2,7 +2,8 @@
 
 /*
 Abstract base class for all 2D shapes, intended for use in physics.
-Performance: Primitive shapes, especially [CircleShape2D], are fast to check collisions against. [ConvexPolygonShape2D] is slower, and [ConcavePolygonShape2D] is the slowest.
+
+Performance: Primitive shapes, especially [graphics.gd/classdb/CircleShape2D], are fast to check collisions against. [graphics.gd/classdb/ConvexPolygonShape2D] is slower, and [graphics.gd/classdb/ConcavePolygonShape2D] is the slowest.
 */
 package Shape2D
 
@@ -111,6 +112,7 @@ type Any interface {
 
 /*
 Returns true if this shape is colliding with another.
+
 This method needs the transformation matrix for this shape ('local_xform'), the shape to check collisions with ('with_shape'), and the transformation matrix of that shape ('shape_xform').
 */
 func (self Instance) Collide(local_xform Transform2D.OriginXY, with_shape Instance, shape_xform Transform2D.OriginXY) bool { //gd:Shape2D.collide
@@ -119,6 +121,7 @@ func (self Instance) Collide(local_xform Transform2D.OriginXY, with_shape Instan
 
 /*
 Returns whether this shape would collide with another, if a given movement was applied.
+
 This method needs the transformation matrix for this shape ('local_xform'), the movement to test on this shape ('local_motion'), the shape to check collisions with ('with_shape'), the transformation matrix of that shape ('shape_xform'), and the movement to test onto the other object ('shape_motion').
 */
 func (self Instance) CollideWithMotion(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape Instance, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) bool { //gd:Shape2D.collide_with_motion
@@ -127,8 +130,11 @@ func (self Instance) CollideWithMotion(local_xform Transform2D.OriginXY, local_m
 
 /*
 Returns a list of contact point pairs where this shape touches another.
+
 If there are no collisions, the returned list is empty. Otherwise, the returned list contains contact points arranged in pairs, with entries alternating between points on the boundary of this shape and points on the boundary of 'with_shape'.
+
 A collision pair A, B can be used to calculate the collision normal with (B - A).normalized(), and the collision depth with (B - A).length(). This information is typically used to separate shapes, particularly in collision solvers.
+
 This method needs the transformation matrix for this shape ('local_xform'), the shape to check collisions with ('with_shape'), and the transformation matrix of that shape ('shape_xform').
 */
 func (self Instance) CollideAndGetContacts(local_xform Transform2D.OriginXY, with_shape Instance, shape_xform Transform2D.OriginXY) []Vector2.XY { //gd:Shape2D.collide_and_get_contacts
@@ -137,8 +143,11 @@ func (self Instance) CollideAndGetContacts(local_xform Transform2D.OriginXY, wit
 
 /*
 Returns a list of contact point pairs where this shape would touch another, if a given movement was applied.
+
 If there would be no collisions, the returned list is empty. Otherwise, the returned list contains contact points arranged in pairs, with entries alternating between points on the boundary of this shape and points on the boundary of 'with_shape'.
+
 A collision pair A, B can be used to calculate the collision normal with (B - A).normalized(), and the collision depth with (B - A).length(). This information is typically used to separate shapes, particularly in collision solvers.
+
 This method needs the transformation matrix for this shape ('local_xform'), the movement to test on this shape ('local_motion'), the shape to check collisions with ('with_shape'), the transformation matrix of that shape ('shape_xform'), and the movement to test onto the other object ('shape_motion').
 */
 func (self Instance) CollideWithMotionAndGetContacts(local_xform Transform2D.OriginXY, local_motion Vector2.XY, with_shape Instance, shape_xform Transform2D.OriginXY, shape_motion Vector2.XY) []Vector2.XY { //gd:Shape2D.collide_with_motion_and_get_contacts
@@ -146,14 +155,14 @@ func (self Instance) CollideWithMotionAndGetContacts(local_xform Transform2D.Ori
 }
 
 /*
-Draws a solid shape onto a [CanvasItem] with the [RenderingServer] API filled with the specified 'color'. The exact drawing method is specific for each shape and cannot be configured.
+Draws a solid shape onto a [graphics.gd/classdb/CanvasItem] with the [graphics.gd/classdb/RenderingServer] API filled with the specified 'color'. The exact drawing method is specific for each shape and cannot be configured.
 */
 func (self Instance) Draw(canvas_item RID.CanvasItem, color Color.RGBA) { //gd:Shape2D.draw
 	Advanced(self).Draw(RID.Any(canvas_item), Color.RGBA(color))
 }
 
 /*
-Returns a [Rect2] representing the shapes boundary.
+Returns a [Rect2.PositionSize] representing the shapes boundary.
 */
 func (self Instance) GetRect() Rect2.PositionSize { //gd:Shape2D.get_rect
 	return Rect2.PositionSize(Advanced(self).GetRect())
@@ -224,6 +233,7 @@ func (self class) GetCustomSolverBias() float64 { //gd:Shape2D.get_custom_solver
 
 /*
 Returns true if this shape is colliding with another.
+
 This method needs the transformation matrix for this shape ('local_xform'), the shape to check collisions with ('with_shape'), and the transformation matrix of that shape ('shape_xform').
 */
 //go:nosplit
@@ -239,6 +249,7 @@ func (self class) Collide(local_xform Transform2D.OriginXY, with_shape [1]gdclas
 
 /*
 Returns whether this shape would collide with another, if a given movement was applied.
+
 This method needs the transformation matrix for this shape ('local_xform'), the movement to test on this shape ('local_motion'), the shape to check collisions with ('with_shape'), the transformation matrix of that shape ('shape_xform'), and the movement to test onto the other object ('shape_motion').
 */
 //go:nosplit
@@ -256,8 +267,11 @@ func (self class) CollideWithMotion(local_xform Transform2D.OriginXY, local_moti
 
 /*
 Returns a list of contact point pairs where this shape touches another.
+
 If there are no collisions, the returned list is empty. Otherwise, the returned list contains contact points arranged in pairs, with entries alternating between points on the boundary of this shape and points on the boundary of 'with_shape'.
+
 A collision pair A, B can be used to calculate the collision normal with (B - A).normalized(), and the collision depth with (B - A).length(). This information is typically used to separate shapes, particularly in collision solvers.
+
 This method needs the transformation matrix for this shape ('local_xform'), the shape to check collisions with ('with_shape'), and the transformation matrix of that shape ('shape_xform').
 */
 //go:nosplit
@@ -273,8 +287,11 @@ func (self class) CollideAndGetContacts(local_xform Transform2D.OriginXY, with_s
 
 /*
 Returns a list of contact point pairs where this shape would touch another, if a given movement was applied.
+
 If there would be no collisions, the returned list is empty. Otherwise, the returned list contains contact points arranged in pairs, with entries alternating between points on the boundary of this shape and points on the boundary of 'with_shape'.
+
 A collision pair A, B can be used to calculate the collision normal with (B - A).normalized(), and the collision depth with (B - A).length(). This information is typically used to separate shapes, particularly in collision solvers.
+
 This method needs the transformation matrix for this shape ('local_xform'), the movement to test on this shape ('local_motion'), the shape to check collisions with ('with_shape'), the transformation matrix of that shape ('shape_xform'), and the movement to test onto the other object ('shape_motion').
 */
 //go:nosplit
@@ -291,7 +308,7 @@ func (self class) CollideWithMotionAndGetContacts(local_xform Transform2D.Origin
 }
 
 /*
-Draws a solid shape onto a [CanvasItem] with the [RenderingServer] API filled with the specified 'color'. The exact drawing method is specific for each shape and cannot be configured.
+Draws a solid shape onto a [graphics.gd/classdb/CanvasItem] with the [graphics.gd/classdb/RenderingServer] API filled with the specified 'color'. The exact drawing method is specific for each shape and cannot be configured.
 */
 //go:nosplit
 func (self class) Draw(canvas_item RID.Any, color Color.RGBA) { //gd:Shape2D.draw
@@ -302,7 +319,7 @@ func (self class) Draw(canvas_item RID.Any, color Color.RGBA) { //gd:Shape2D.dra
 }
 
 /*
-Returns a [Rect2] representing the shapes boundary.
+Returns a [Rect2.PositionSize] representing the shapes boundary.
 */
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:Shape2D.get_rect

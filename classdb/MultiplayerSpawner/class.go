@@ -2,8 +2,10 @@
 
 /*
 Spawnable scenes can be configured in the editor or through code (see [Instance.AddSpawnableScene]).
-Also supports custom node spawns through [Instance.Spawn], calling [member spawn_function] on all peers.
-Internally, [MultiplayerSpawner] uses [Instance.Multiplayerapi.ObjectConfigurationAdd] to notify spawns passing the spawned node as the object and itself as the configuration, and [Instance.Multiplayerapi.ObjectConfigurationRemove] to notify despawns in a similar way.
+
+Also supports custom node spawns through [Instance.Spawn], calling [Instance.SpawnFunction] on all peers.
+
+Internally, [graphics.gd/classdb/MultiplayerSpawner] uses [graphics.gd/classdb/MultiplayerAPI.Instance.ObjectConfigurationAdd] to notify spawns passing the spawned node as the object and itself as the configuration, and [graphics.gd/classdb/MultiplayerAPI.Instance.ObjectConfigurationRemove] to notify despawns in a similar way.
 */
 package MultiplayerSpawner
 
@@ -112,7 +114,7 @@ type Any interface {
 }
 
 /*
-Adds a scene path to spawnable scenes, making it automatically replicated from the multiplayer authority to other peers when added as children of the node pointed by [member spawn_path].
+Adds a scene path to spawnable scenes, making it automatically replicated from the multiplayer authority to other peers when added as children of the node pointed by [Instance.SpawnPath].
 */
 func (self Instance) AddSpawnableScene(path string) { //gd:MultiplayerSpawner.add_spawnable_scene
 	Advanced(self).AddSpawnableScene(String.New(path))
@@ -140,7 +142,8 @@ func (self Instance) ClearSpawnableScenes() { //gd:MultiplayerSpawner.clear_spaw
 }
 
 /*
-Requests a custom spawn, with 'data' passed to [member spawn_function] on all peers. Returns the locally spawned node instance already inside the scene tree, and added as a child of the node pointed by [member spawn_path].
+Requests a custom spawn, with 'data' passed to [Instance.SpawnFunction] on all peers. Returns the locally spawned node instance already inside the scene tree, and added as a child of the node pointed by [Instance.SpawnPath].
+
 Note: Spawnable scenes are spawned automatically. [Instance.Spawn] is only needed for custom spawns.
 */
 func (self Instance) Spawn() Node.Instance { //gd:MultiplayerSpawner.spawn
@@ -148,7 +151,8 @@ func (self Instance) Spawn() Node.Instance { //gd:MultiplayerSpawner.spawn
 }
 
 /*
-Requests a custom spawn, with 'data' passed to [member spawn_function] on all peers. Returns the locally spawned node instance already inside the scene tree, and added as a child of the node pointed by [member spawn_path].
+Requests a custom spawn, with 'data' passed to [Instance.SpawnFunction] on all peers. Returns the locally spawned node instance already inside the scene tree, and added as a child of the node pointed by [Instance.SpawnPath].
+
 Note: Spawnable scenes are spawned automatically. [Instance.Spawn] is only needed for custom spawns.
 */
 func (self Expanded) Spawn(data any) Node.Instance { //gd:MultiplayerSpawner.spawn
@@ -222,7 +226,7 @@ func (self Instance) SetSpawnFunction(value Callable.Function) {
 }
 
 /*
-Adds a scene path to spawnable scenes, making it automatically replicated from the multiplayer authority to other peers when added as children of the node pointed by [member spawn_path].
+Adds a scene path to spawnable scenes, making it automatically replicated from the multiplayer authority to other peers when added as children of the node pointed by [Instance.SpawnPath].
 */
 //go:nosplit
 func (self class) AddSpawnableScene(path String.Readable) { //gd:MultiplayerSpawner.add_spawnable_scene
@@ -258,7 +262,8 @@ func (self class) ClearSpawnableScenes() { //gd:MultiplayerSpawner.clear_spawnab
 }
 
 /*
-Requests a custom spawn, with 'data' passed to [member spawn_function] on all peers. Returns the locally spawned node instance already inside the scene tree, and added as a child of the node pointed by [member spawn_path].
+Requests a custom spawn, with 'data' passed to [Instance.SpawnFunction] on all peers. Returns the locally spawned node instance already inside the scene tree, and added as a child of the node pointed by [Instance.SpawnPath].
+
 Note: Spawnable scenes are spawned automatically. [Instance.Spawn] is only needed for custom spawns.
 */
 //go:nosplit

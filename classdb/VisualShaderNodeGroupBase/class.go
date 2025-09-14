@@ -120,28 +120,28 @@ type Any interface {
 }
 
 /*
-Defines all input ports using a [String] formatted as a colon-separated list: id,type,name; (see [Instance.AddInputPort]).
+Defines all input ports using a string formatted as a colon-separated list: id,type,name; (see [Instance.AddInputPort]).
 */
 func (self Instance) SetInputs(inputs string) { //gd:VisualShaderNodeGroupBase.set_inputs
 	Advanced(self).SetInputs(String.New(inputs))
 }
 
 /*
-Returns a [String] description of the input ports as a colon-separated list using the format id,type,name; (see [Instance.AddInputPort]).
+Returns a string description of the input ports as a colon-separated list using the format id,type,name; (see [Instance.AddInputPort]).
 */
 func (self Instance) GetInputs() string { //gd:VisualShaderNodeGroupBase.get_inputs
 	return string(Advanced(self).GetInputs().String())
 }
 
 /*
-Defines all output ports using a [String] formatted as a colon-separated list: id,type,name; (see [Instance.AddOutputPort]).
+Defines all output ports using a string formatted as a colon-separated list: id,type,name; (see [Instance.AddOutputPort]).
 */
 func (self Instance) SetOutputs(outputs string) { //gd:VisualShaderNodeGroupBase.set_outputs
 	Advanced(self).SetOutputs(String.New(outputs))
 }
 
 /*
-Returns a [String] description of the output ports as a colon-separated list using the format id,type,name; (see [Instance.AddOutputPort]).
+Returns a string description of the output ports as a colon-separated list using the format id,type,name; (see [Instance.AddOutputPort]).
 */
 func (self Instance) GetOutputs() string { //gd:VisualShaderNodeGroupBase.get_outputs
 	return string(Advanced(self).GetOutputs().String())
@@ -310,7 +310,7 @@ func New() Instance {
 }
 
 /*
-Defines all input ports using a [String] formatted as a colon-separated list: id,type,name; (see [Instance.AddInputPort]).
+Defines all input ports using a string formatted as a colon-separated list: id,type,name; (see [Instance.AddInputPort]).
 */
 //go:nosplit
 func (self class) SetInputs(inputs String.Readable) { //gd:VisualShaderNodeGroupBase.set_inputs
@@ -318,7 +318,7 @@ func (self class) SetInputs(inputs String.Readable) { //gd:VisualShaderNodeGroup
 }
 
 /*
-Returns a [String] description of the input ports as a colon-separated list using the format id,type,name; (see [Instance.AddInputPort]).
+Returns a string description of the input ports as a colon-separated list using the format id,type,name; (see [Instance.AddInputPort]).
 */
 //go:nosplit
 func (self class) GetInputs() String.Readable { //gd:VisualShaderNodeGroupBase.get_inputs
@@ -328,7 +328,7 @@ func (self class) GetInputs() String.Readable { //gd:VisualShaderNodeGroupBase.g
 }
 
 /*
-Defines all output ports using a [String] formatted as a colon-separated list: id,type,name; (see [Instance.AddOutputPort]).
+Defines all output ports using a string formatted as a colon-separated list: id,type,name; (see [Instance.AddOutputPort]).
 */
 //go:nosplit
 func (self class) SetOutputs(outputs String.Readable) { //gd:VisualShaderNodeGroupBase.set_outputs
@@ -336,7 +336,7 @@ func (self class) SetOutputs(outputs String.Readable) { //gd:VisualShaderNodeGro
 }
 
 /*
-Returns a [String] description of the output ports as a colon-separated list using the format id,type,name; (see [Instance.AddOutputPort]).
+Returns a string description of the output ports as a colon-separated list using the format id,type,name; (see [Instance.AddOutputPort]).
 */
 //go:nosplit
 func (self class) GetOutputs() String.Readable { //gd:VisualShaderNodeGroupBase.get_outputs

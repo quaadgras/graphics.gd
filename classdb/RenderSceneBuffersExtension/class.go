@@ -65,12 +65,11 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 // Instance of the class with convieniently typed arguments and results.
-// See [Interface] for methods that can be overridden by a [Class] that extends it.
 type Instance [1]gdclass.RenderSceneBuffersExtension
 
 var otype gdextension.ObjectType
@@ -97,16 +96,17 @@ type Any interface {
 	gd.IsClass
 	AsRenderSceneBuffersExtension() Instance
 }
+
 type Interface interface {
-	//Implement this in GDExtension to handle the (re)sizing of a viewport.
+	// Implement this in GDExtension to handle the (re)sizing of a viewport.
 	Configure(config RenderSceneBuffersConfiguration.Instance)
-	//Implement this in GDExtension to record a new FSR sharpness value.
+	// Implement this in GDExtension to record a new FSR sharpness value.
 	SetFsrSharpness(fsr_sharpness Float.X)
-	//Implement this in GDExtension to change the texture mipmap bias.
+	// Implement this in GDExtension to change the texture mipmap bias.
 	SetTextureMipmapBias(texture_mipmap_bias Float.X)
-	//Implement this in GDExtension to change the anisotropic filtering level.
+	// Implement this in GDExtension to change the anisotropic filtering level.
 	SetAnisotropicFilteringLevel(anisotropic_filtering_level int)
-	//Implement this in GDExtension to react to the debanding flag changing.
+	// Implement this in GDExtension to react to the debanding flag changing.
 	SetUseDebanding(use_debanding bool)
 }
 

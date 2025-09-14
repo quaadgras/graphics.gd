@@ -117,7 +117,7 @@ type Any interface {
 }
 
 /*
-Create a new GLTFLight instance from the given Godot [Light3D] node.
+Create a new GLTFLight instance from the given Godot [graphics.gd/classdb/Light3D] node.
 */
 func FromNode(light_node Light3D.Instance) Instance { //gd:GLTFLight.from_node
 	self := Instance{}
@@ -125,14 +125,14 @@ func FromNode(light_node Light3D.Instance) Instance { //gd:GLTFLight.from_node
 }
 
 /*
-Converts this GLTFLight instance into a Godot [Light3D] node.
+Converts this GLTFLight instance into a Godot [graphics.gd/classdb/Light3D] node.
 */
 func (self Instance) ToNode() Light3D.Instance { //gd:GLTFLight.to_node
 	return Light3D.Instance(Advanced(self).ToNode())
 }
 
 /*
-Creates a new GLTFLight instance by parsing the given [Dictionary].
+Creates a new GLTFLight instance by parsing the given data structure.
 */
 func FromDictionary(dictionary Structure) Instance { //gd:GLTFLight.from_dictionary
 	self := Instance{}
@@ -140,7 +140,7 @@ func FromDictionary(dictionary Structure) Instance { //gd:GLTFLight.from_diction
 }
 
 /*
-Serializes this GLTFLight instance into a [Dictionary].
+Serializes this GLTFLight instance into a data structure.
 */
 func (self Instance) ToDictionary() Structure { //gd:GLTFLight.to_dictionary
 	return Structure(gd.DictionaryAs[Structure](Advanced(self).ToDictionary()))
@@ -244,7 +244,7 @@ func (self Instance) SetOuterConeAngle(value Angle.Radians) {
 }
 
 /*
-Create a new GLTFLight instance from the given Godot [Light3D] node.
+Create a new GLTFLight instance from the given Godot [graphics.gd/classdb/Light3D] node.
 */
 //go:nosplit
 func (self class) FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight { //gd:GLTFLight.from_node
@@ -254,7 +254,7 @@ func (self class) FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight {
 }
 
 /*
-Converts this GLTFLight instance into a Godot [Light3D] node.
+Converts this GLTFLight instance into a Godot [graphics.gd/classdb/Light3D] node.
 */
 //go:nosplit
 func (self class) ToNode() [1]gdclass.Light3D { //gd:GLTFLight.to_node
@@ -264,7 +264,7 @@ func (self class) ToNode() [1]gdclass.Light3D { //gd:GLTFLight.to_node
 }
 
 /*
-Creates a new GLTFLight instance by parsing the given [Dictionary].
+Creates a new GLTFLight instance by parsing the given data structure.
 */
 //go:nosplit
 func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFLight { //gd:GLTFLight.from_dictionary
@@ -274,7 +274,7 @@ func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFLight
 }
 
 /*
-Serializes this GLTFLight instance into a [Dictionary].
+Serializes this GLTFLight instance into a data structure.
 */
 //go:nosplit
 func (self class) ToDictionary() Dictionary.Any { //gd:GLTFLight.to_dictionary

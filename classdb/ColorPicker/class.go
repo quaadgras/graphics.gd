@@ -2,7 +2,8 @@
 
 /*
 A widget that provides an interface for selecting or modifying a color. It can optionally provide functionalities like a color sampler (eyedropper), color modes, and presets.
-Note: This control is the color picker widget itself. You can use a [ColorPickerButton] instead if you need a button that brings up a [ColorPicker] in a popup.
+
+Note: This control is the color picker widget itself. You can use a [graphics.gd/classdb/ColorPickerButton] instead if you need a button that brings up a [graphics.gd/classdb/ColorPicker] in a popup.
 */
 package ColorPicker
 
@@ -133,7 +134,8 @@ type Any interface {
 
 /*
 Adds the given color to a list of color presets. The presets are displayed in the color picker and the user will be able to select them.
-Note: The presets list is only for [i]this[/i] color picker.
+
+Note: The presets list is only for this color picker.
 */
 func (self Instance) AddPreset(color Color.RGBA) { //gd:ColorPicker.add_preset
 	Advanced(self).AddPreset(Color.RGBA(color))
@@ -155,7 +157,8 @@ func (self Instance) GetPresets() []Color.RGBA { //gd:ColorPicker.get_presets
 
 /*
 Adds the given color to a list of color recent presets so that it can be picked later. Recent presets are the colors that were picked recently, a new preset is automatically created and added to recent presets when you pick a new color.
-Note: The recent presets list is only for [i]this[/i] color picker.
+
+Note: The recent presets list is only for this color picker.
 */
 func (self Instance) AddRecentPreset(color Color.RGBA) { //gd:ColorPicker.add_recent_preset
 	Advanced(self).AddRecentPreset(Color.RGBA(color))
@@ -427,7 +430,8 @@ func (self class) IsHexVisible() bool { //gd:ColorPicker.is_hex_visible
 
 /*
 Adds the given color to a list of color presets. The presets are displayed in the color picker and the user will be able to select them.
-Note: The presets list is only for [i]this[/i] color picker.
+
+Note: The presets list is only for this color picker.
 */
 //go:nosplit
 func (self class) AddPreset(color Color.RGBA) { //gd:ColorPicker.add_preset
@@ -454,7 +458,8 @@ func (self class) GetPresets() Packed.Array[Color.RGBA] { //gd:ColorPicker.get_p
 
 /*
 Adds the given color to a list of color recent presets so that it can be picked later. Recent presets are the colors that were picked recently, a new preset is automatically created and added to recent presets when you pick a new color.
-Note: The recent presets list is only for [i]this[/i] color picker.
+
+Note: The recent presets list is only for this color picker.
 */
 //go:nosplit
 func (self class) AddRecentPreset(color Color.RGBA) { //gd:ColorPicker.add_recent_preset
@@ -598,29 +603,33 @@ func init() {
 type ColorModeType int //gd:ColorPicker.ColorModeType
 
 const (
-	/*Allows editing the color with Red/Green/Blue sliders.*/
+	// Allows editing the color with Red/Green/Blue sliders.
 	ModeRgb ColorModeType = 0
-	/*Allows editing the color with Hue/Saturation/Value sliders.*/
+	// Allows editing the color with Hue/Saturation/Value sliders.
 	ModeHsv ColorModeType = 1
-	/*Allows the color R, G, B component values to go beyond 1.0, which can be used for certain special operations that require it (like tinting without darkening or rendering sprites in HDR).*/
+	// Allows the color R, G, B component values to go beyond 1.0, which can be used for certain special operations that require it (like tinting without darkening or rendering sprites in HDR).
 	ModeRaw ColorModeType = 2
-	/*Allows editing the color with Hue/Saturation/Lightness sliders.
-	  OKHSL is a new color space similar to HSL but that better match perception by leveraging the Oklab color space which is designed to be simple to use, while doing a good job at predicting perceived lightness, chroma and hue.
-	  [url=https://bottosson.github.io/posts/colorpicker/]Okhsv and Okhsl color spaces[/url]*/
+	// Allows editing the color with Hue/Saturation/Lightness sliders.
+	//
+	// OKHSL is a new color space similar to HSL but that better match perception by leveraging the Oklab color space which is designed to be simple to use, while doing a good job at predicting perceived lightness, chroma and hue.
+	//
+	// [Okhsv and Okhsl color spaces]
+	//
+	// [Okhsv and Okhsl color spaces]: https://bottosson.github.io/posts/colorpicker/
 	ModeOkhsl ColorModeType = 3
 )
 
 type PickerShapeType int //gd:ColorPicker.PickerShapeType
 
 const (
-	/*HSV Color Model rectangle color space.*/
+	// HSV Color Model rectangle color space.
 	ShapeHsvRectangle PickerShapeType = 0
-	/*HSV Color Model rectangle color space with a wheel.*/
+	// HSV Color Model rectangle color space with a wheel.
 	ShapeHsvWheel PickerShapeType = 1
-	/*HSV Color Model circle color space. Use Saturation as a radius.*/
+	// HSV Color Model circle color space. Use Saturation as a radius.
 	ShapeVhsCircle PickerShapeType = 2
-	/*HSL OK Color Model circle color space.*/
+	// HSL OK Color Model circle color space.
 	ShapeOkhslCircle PickerShapeType = 3
-	/*The color space shape and the shape select button are hidden. Can't be selected from the shapes popup.*/
+	// The color space shape and the shape select button are hidden. Can't be selected from the shapes popup.
 	ShapeNone PickerShapeType = 4
 )

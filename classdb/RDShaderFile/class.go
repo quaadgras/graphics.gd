@@ -2,7 +2,8 @@
 
 /*
 Compiled shader file in SPIR-V form.
-See also [RDShaderSource]. [RDShaderFile] is only meant to be used with the [RenderingDevice] API. It should not be confused with Godot's own [Shader] resource, which is what Godot's various nodes use for high-level shader programming.
+
+See also [graphics.gd/classdb/RDShaderSource]. [graphics.gd/classdb/RDShaderFile] is only meant to be used with the [graphics.gd/classdb/RenderingDevice] API. It should not be confused with Godot's own [graphics.gd/classdb/Shader] resource, which is what Godot's various nodes use for high-level shader programming.
 */
 package RDShaderFile
 

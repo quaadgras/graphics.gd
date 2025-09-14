@@ -256,16 +256,16 @@ func init() {
 type FFTSize int //gd:AudioEffectPitchShift.FFTSize
 
 const (
-	/*Use a buffer of 256 samples for the Fast Fourier transform. Lowest latency, but least stable over time.*/
+	// Use a buffer of 256 samples for the Fast Fourier transform. Lowest latency, but least stable over time.
 	FftSize256 FFTSize = 0
-	/*Use a buffer of 512 samples for the Fast Fourier transform. Low latency, but less stable over time.*/
+	// Use a buffer of 512 samples for the Fast Fourier transform. Low latency, but less stable over time.
 	FftSize512 FFTSize = 1
-	/*Use a buffer of 1024 samples for the Fast Fourier transform. This is a compromise between latency and stability over time.*/
+	// Use a buffer of 1024 samples for the Fast Fourier transform. This is a compromise between latency and stability over time.
 	FftSize1024 FFTSize = 2
-	/*Use a buffer of 2048 samples for the Fast Fourier transform. High latency, but stable over time.*/
+	// Use a buffer of 2048 samples for the Fast Fourier transform. High latency, but stable over time.
 	FftSize2048 FFTSize = 3
-	/*Use a buffer of 4096 samples for the Fast Fourier transform. Highest latency, but most stable over time.*/
+	// Use a buffer of 4096 samples for the Fast Fourier transform. Highest latency, but most stable over time.
 	FftSize4096 FFTSize = 4
-	/*Represents the size of the [enum FFTSize] enum.*/
+	// Represents the size of the [FFTSize] enum.
 	FftSizeMax FFTSize = 5
 )

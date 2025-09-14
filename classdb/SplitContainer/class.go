@@ -120,18 +120,17 @@ type Any interface {
 }
 
 /*
-Clamps the [member split_offset] value to not go outside the currently possible minimal and maximum values.
+Clamps the [Instance.SplitOffset] value to not go outside the currently possible minimal and maximum values.
 */
 func (self Instance) ClampSplitOffset() { //gd:SplitContainer.clamp_split_offset
 	Advanced(self).ClampSplitOffset()
 }
 
 /*
-Returns the drag area [Control]. For example, you can move a pre-configured button into the drag area [Control] so that it rides along with the split bar. Try setting the [Button] anchors to center prior to the reparent() call.
-[codeblock]
-$BarnacleButton.reparent($SplitContainer.get_drag_area_control())
-[/codeblock]
-Note: The drag area [Control] is drawn over the [SplitContainer]'s children, so [CanvasItem] draw objects called from the [Control] and children added to the [Control] will also appear over the [SplitContainer]'s children. Try setting [member Control.mouse_filter] of custom children to [Control.MouseFilterIgnore] to prevent blocking the mouse from dragging if desired.
+Returns the drag area [graphics.gd/classdb/Control]. For example, you can move a pre-configured button into the drag area [graphics.gd/classdb/Control] so that it rides along with the split bar. Try setting the [graphics.gd/classdb/Button] anchors to center prior to the reparent() call.
+
+Note: The drag area [graphics.gd/classdb/Control] is drawn over the [graphics.gd/classdb/SplitContainer]'s children, so [graphics.gd/classdb/CanvasItem] draw objects called from the [graphics.gd/classdb/Control] and children added to the [graphics.gd/classdb/Control] will also appear over the [graphics.gd/classdb/SplitContainer]'s children. Try setting [graphics.gd/classdb/Control.Instance.MouseFilter] of custom children to [Control.MouseFilterIgnore] to prevent blocking the mouse from dragging if desired.
+
 Warning: This is a required internal node, removing and freeing it may cause a crash.
 */
 func (self Instance) GetDragAreaControl() Control.Instance { //gd:SplitContainer.get_drag_area_control
@@ -265,7 +264,7 @@ func (self class) GetSplitOffset() int64 { //gd:SplitContainer.get_split_offset
 }
 
 /*
-Clamps the [member split_offset] value to not go outside the currently possible minimal and maximum values.
+Clamps the [Instance.SplitOffset] value to not go outside the currently possible minimal and maximum values.
 */
 //go:nosplit
 func (self class) ClampSplitOffset() { //gd:SplitContainer.clamp_split_offset
@@ -369,11 +368,12 @@ func (self class) IsDragAreaHighlightInEditorEnabled() bool { //gd:SplitContaine
 }
 
 /*
-Returns the drag area [Control]. For example, you can move a pre-configured button into the drag area [Control] so that it rides along with the split bar. Try setting the [Button] anchors to center prior to the reparent() call.
-[codeblock]
-$BarnacleButton.reparent($SplitContainer.get_drag_area_control())
-[/codeblock]
-Note: The drag area [Control] is drawn over the [SplitContainer]'s children, so [CanvasItem] draw objects called from the [Control] and children added to the [Control] will also appear over the [SplitContainer]'s children. Try setting [member Control.mouse_filter] of custom children to [Control.MouseFilterIgnore] to prevent blocking the mouse from dragging if desired.
+Returns the drag area [graphics.gd/classdb/Control]. For example, you can move a pre-configured button into the drag area [graphics.gd/classdb/Control] so that it rides along with the split bar. Try setting the [graphics.gd/classdb/Button] anchors to center prior to the reparent() call.
+
+
+
+Note: The drag area [graphics.gd/classdb/Control] is drawn over the [graphics.gd/classdb/SplitContainer]'s children, so [graphics.gd/classdb/CanvasItem] draw objects called from the [graphics.gd/classdb/Control] and children added to the [graphics.gd/classdb/Control] will also appear over the [graphics.gd/classdb/SplitContainer]'s children. Try setting [graphics.gd/classdb/Control.Instance.MouseFilter] of custom children to [Control.MouseFilterIgnore] to prevent blocking the mouse from dragging if desired.
+
 Warning: This is a required internal node, removing and freeing it may cause a crash.
 */
 //go:nosplit
@@ -472,13 +472,16 @@ func init() {
 type DraggerVisibility int //gd:SplitContainer.DraggerVisibility
 
 const (
-	/*The split dragger icon is always visible when [theme_item autohide] is [code]false[/code], otherwise visible only when the cursor hovers it.
-	  The size of the grabber icon determines the minimum [theme_item separation].
-	  The dragger icon is automatically hidden if the length of the grabber icon is longer than the split bar.*/
+	// The split dragger icon is always visible when theme's 'autohide' is false, otherwise visible only when the cursor hovers it.
+	//
+	// The size of the grabber icon determines the minimum theme's 'separation'.
+	//
+	// The dragger icon is automatically hidden if the length of the grabber icon is longer than the split bar.
 	DraggerVisible DraggerVisibility = 0
-	/*The split dragger icon is never visible regardless of the value of [theme_item autohide].
-	  The size of the grabber icon determines the minimum [theme_item separation].*/
+	// The split dragger icon is never visible regardless of the value of theme's 'autohide'.
+	//
+	// The size of the grabber icon determines the minimum theme's 'separation'.
 	DraggerHidden DraggerVisibility = 1
-	/*The split dragger icon is not visible, and the split bar is collapsed to zero thickness.*/
+	// The split dragger icon is not visible, and the split bar is collapsed to zero thickness.
 	DraggerHiddenCollapsed DraggerVisibility = 2
 )

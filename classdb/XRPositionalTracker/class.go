@@ -2,8 +2,10 @@
 
 /*
 An instance of this object represents a device that is tracked, such as a controller or anchor point. HMDs aren't represented here as they are handled internally.
-As controllers are turned on and the [XRInterface] detects them, instances of this object are automatically added to this list of active tracking objects accessible through the [XRServer].
-The [XRNode3D] and [XRAnchor3D] both consume objects of this type and should be used in your project. The positional trackers are just under-the-hood objects that make this all work. These are mostly exposed so that GDExtension-based interfaces can interact with them.
+
+As controllers are turned on and the [graphics.gd/classdb/XRInterface] detects them, instances of this object are automatically added to this list of active tracking objects accessible through the [graphics.gd/classdb/XRServer].
+
+The [graphics.gd/classdb/XRNode3D] and [graphics.gd/classdb/XRAnchor3D] both consume objects of this type and should be used in your project. The positional trackers are just under-the-hood objects that make this all work. These are mostly exposed so that GDExtension-based interfaces can interact with them.
 */
 package XRPositionalTracker
 
@@ -120,7 +122,7 @@ func (self Instance) HasPose(name string) bool { //gd:XRPositionalTracker.has_po
 }
 
 /*
-Returns the current [XRPose] state object for the bound 'name' pose.
+Returns the current [graphics.gd/classdb/XRPose] state object for the bound 'name' pose.
 */
 func (self Instance) GetPose(name string) XRPose.Instance { //gd:XRPositionalTracker.get_pose
 	return XRPose.Instance(Advanced(self).GetPose(String.Name(String.New(name))))
@@ -134,21 +136,21 @@ func (self Instance) InvalidatePose(name string) { //gd:XRPositionalTracker.inva
 }
 
 /*
-Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [XRInterface] implementation and should not be used directly.
+Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [graphics.gd/classdb/XRInterface] implementation and should not be used directly.
 */
 func (self Instance) SetPose(name string, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence XRPose.TrackingConfidence) { //gd:XRPositionalTracker.set_pose
 	Advanced(self).SetPose(String.Name(String.New(name)), Transform3D.BasisOrigin(transform), Vector3.XYZ(linear_velocity), Vector3.XYZ(angular_velocity), tracking_confidence)
 }
 
 /*
-Returns an input for this tracker. It can return a boolean, float or [Vector2] value depending on whether the input is a button, trigger or thumbstick/thumbpad.
+Returns an input for this tracker. It can return a boolean, float or [Vector2.XY] value depending on whether the input is a button, trigger or thumbstick/thumbpad.
 */
 func (self Instance) GetInput(name string) any { //gd:XRPositionalTracker.get_input
 	return any(Advanced(self).GetInput(String.Name(String.New(name))).Interface())
 }
 
 /*
-Changes the value for the given input. This method is called by a [XRInterface] implementation and should not be used directly.
+Changes the value for the given input. This method is called by a [graphics.gd/classdb/XRInterface] implementation and should not be used directly.
 */
 func (self Instance) SetInput(name string, value any) { //gd:XRPositionalTracker.set_input
 	Advanced(self).SetInput(String.Name(String.New(name)), variant.New(value))
@@ -248,7 +250,7 @@ func (self class) HasPose(name String.Name) bool { //gd:XRPositionalTracker.has_
 }
 
 /*
-Returns the current [XRPose] state object for the bound 'name' pose.
+Returns the current [graphics.gd/classdb/XRPose] state object for the bound 'name' pose.
 */
 //go:nosplit
 func (self class) GetPose(name String.Name) [1]gdclass.XRPose { //gd:XRPositionalTracker.get_pose
@@ -266,7 +268,7 @@ func (self class) InvalidatePose(name String.Name) { //gd:XRPositionalTracker.in
 }
 
 /*
-Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [XRInterface] implementation and should not be used directly.
+Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [graphics.gd/classdb/XRInterface] implementation and should not be used directly.
 */
 //go:nosplit
 func (self class) SetPose(name String.Name, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence XRPose.TrackingConfidence) { //gd:XRPositionalTracker.set_pose
@@ -280,7 +282,7 @@ func (self class) SetPose(name String.Name, transform Transform3D.BasisOrigin, l
 }
 
 /*
-Returns an input for this tracker. It can return a boolean, float or [Vector2] value depending on whether the input is a button, trigger or thumbstick/thumbpad.
+Returns an input for this tracker. It can return a boolean, float or [Vector2.XY] value depending on whether the input is a button, trigger or thumbstick/thumbpad.
 */
 //go:nosplit
 func (self class) GetInput(name String.Name) variant.Any { //gd:XRPositionalTracker.get_input
@@ -290,7 +292,7 @@ func (self class) GetInput(name String.Name) variant.Any { //gd:XRPositionalTrac
 }
 
 /*
-Changes the value for the given input. This method is called by a [XRInterface] implementation and should not be used directly.
+Changes the value for the given input. This method is called by a [graphics.gd/classdb/XRInterface] implementation and should not be used directly.
 */
 //go:nosplit
 func (self class) SetInput(name String.Name, value variant.Any) { //gd:XRPositionalTracker.set_input
@@ -427,12 +429,12 @@ func init() {
 type TrackerHand int //gd:XRPositionalTracker.TrackerHand
 
 const (
-	/*The hand this tracker is held in is unknown or not applicable.*/
+	// The hand this tracker is held in is unknown or not applicable.
 	TrackerHandUnknown TrackerHand = 0
-	/*This tracker is the left hand controller.*/
+	// This tracker is the left hand controller.
 	TrackerHandLeft TrackerHand = 1
-	/*This tracker is the right hand controller.*/
+	// This tracker is the right hand controller.
 	TrackerHandRight TrackerHand = 2
-	/*Represents the size of the [enum TrackerHand] enum.*/
+	// Represents the size of the [TrackerHand] enum.
 	TrackerHandMax TrackerHand = 3
 )

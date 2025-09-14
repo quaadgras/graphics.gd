@@ -2,6 +2,7 @@
 
 /*
 This class can be used to permanently store data in the user device's file system and to read from it. This is useful for storing game save data or player configuration files.
+
 Here's a sample on how to write and read from a file:
 
 	package main
@@ -19,10 +20,15 @@ Here's a sample on how to write and read from a file:
 		return content
 	}
 
-In the example above, the file will be saved in the user data folder as specified in the [url=$DOCS_URL/tutorials/io/data_paths.html]Data paths[/url] documentation.
-[FileAccess] will close when it's freed, which happens when it goes out of scope or when it gets assigned with null. [Instance.Close] can be used to close it before then explicitly. In C# the reference must be disposed manually, which can be done with the using statement or by calling the Dispose method directly.
-Note: To access project resources once exported, it is recommended to use [ResourceLoader] instead of [FileAccess], as some files are converted to engine-specific formats and their original source files might not be present in the exported PCK package. If using [FileAccess], make sure the file is included in the export by changing its import mode to Keep File (exported as is) in the Import dock, or, for files where this option is not available, change the non-resource export filter in the Export dialog to include the file's extension (e.g. *.txt).
+In the example above, the file will be saved in the user data folder as specified in the [Data paths] documentation.
+
+[graphics.gd/classdb/FileAccess] will close when it's freed, which happens when it goes out of scope or when it gets assigned with null. [Instance.Close] can be used to close it before then explicitly. In C# the reference must be disposed manually, which can be done with the using statement or by calling the Dispose method directly.
+
+Note: To access project resources once exported, it is recommended to use [graphics.gd/classdb/ResourceLoader] instead of [graphics.gd/classdb/FileAccess], as some files are converted to engine-specific formats and their original source files might not be present in the exported PCK package. If using [graphics.gd/classdb/FileAccess], make sure the file is included in the export by changing its import mode to Keep File (exported as is) in the Import dock, or, for files where this option is not available, change the non-resource export filter in the Export dialog to include the file's extension (e.g. *.txt).
+
 Note: Files are automatically closed only if the process exits "normally" (such as by clicking the window manager's close button or pressing Alt + F4). If you stop the project execution by pressing F8 while the project is running, the file won't be closed as the game process will be killed. You can work around this by calling [Instance.Flush] at regular intervals.
+
+[Data paths]: https://docs.godotengine.org/tutorials/io/data_paths.html
 */
 package FileAccess
 
@@ -179,8 +185,9 @@ type Any interface {
 }
 
 /*
-Creates a new [FileAccess] object and opens the file for writing or reading, depending on the flags.
-Returns null if opening the file failed. You can use [Instance.GetOpenError] to check the error that occurred.
+Creates a new [graphics.gd/classdb/FileAccess] object and opens the file for writing or reading, depending on the flags.
+
+Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
 */
 func Open(path string, flags ModeFlags) Instance { //gd:FileAccess.open
 	self := Instance{}
@@ -188,9 +195,11 @@ func Open(path string, flags ModeFlags) Instance { //gd:FileAccess.open
 }
 
 /*
-Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
+Creates a new [graphics.gd/classdb/FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
+
 Note: The provided key must be 32 bytes long.
-Returns null if opening the file failed. You can use [Instance.GetOpenError] to check the error that occurred.
+
+Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
 */
 func OpenEncrypted(path string, mode_flags ModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
 	self := Instance{}
@@ -198,9 +207,11 @@ func OpenEncrypted(path string, mode_flags ModeFlags, key []byte, iv []byte) Ins
 }
 
 /*
-Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
+Creates a new [graphics.gd/classdb/FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
+
 Note: The provided key must be 32 bytes long.
-Returns null if opening the file failed. You can use [Instance.GetOpenError] to check the error that occurred.
+
+Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
 */
 func OpenEncryptedOptions(path string, mode_flags ModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
 	self := Instance{}
@@ -208,8 +219,9 @@ func OpenEncryptedOptions(path string, mode_flags ModeFlags, key []byte, iv []by
 }
 
 /*
-Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a password to encrypt/decrypt it.
-Returns null if opening the file failed. You can use [Instance.GetOpenError] to check the error that occurred.
+Creates a new [graphics.gd/classdb/FileAccess] object and opens an encrypted file in write or read mode. You need to pass a password to encrypt/decrypt it.
+
+Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
 */
 func OpenEncryptedWithPass(path string, mode_flags ModeFlags, pass string) Instance { //gd:FileAccess.open_encrypted_with_pass
 	self := Instance{}
@@ -217,9 +229,13 @@ func OpenEncryptedWithPass(path string, mode_flags ModeFlags, pass string) Insta
 }
 
 /*
-Creates a new [FileAccess] object and opens a compressed file for reading or writing.
-Note: [Instance.OpenCompressed] can only read files that were saved by Godot, not third-party compression formats. See [url=https://github.com/godotengine/godot/issues/28999]GitHub issue #28999[/url] for a workaround.
-Returns null if opening the file failed. You can use [Instance.GetOpenError] to check the error that occurred.
+Creates a new [graphics.gd/classdb/FileAccess] object and opens a compressed file for reading or writing.
+
+Note: [OpenCompressed] can only read files that were saved by Godot, not third-party compression formats. See [GitHub issue #28999] for a workaround.
+
+Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
+
+[GitHub issue #28999]: https://github.com/godotengine/godot/issues/28999
 */
 func OpenCompressed(path string, mode_flags ModeFlags, compression_mode CompressionMode) Instance { //gd:FileAccess.open_compressed
 	self := Instance{}
@@ -227,9 +243,13 @@ func OpenCompressed(path string, mode_flags ModeFlags, compression_mode Compress
 }
 
 /*
-Creates a new [FileAccess] object and opens a compressed file for reading or writing.
-Note: [Instance.OpenCompressed] can only read files that were saved by Godot, not third-party compression formats. See [url=https://github.com/godotengine/godot/issues/28999]GitHub issue #28999[/url] for a workaround.
-Returns null if opening the file failed. You can use [Instance.GetOpenError] to check the error that occurred.
+Creates a new [graphics.gd/classdb/FileAccess] object and opens a compressed file for reading or writing.
+
+Note: [OpenCompressed] can only read files that were saved by Godot, not third-party compression formats. See [GitHub issue #28999] for a workaround.
+
+Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
+
+[GitHub issue #28999]: https://github.com/godotengine/godot/issues/28999
 */
 func OpenCompressedOptions(path string, mode_flags ModeFlags, compression_mode CompressionMode) Instance { //gd:FileAccess.open_compressed
 	self := Instance{}
@@ -237,7 +257,7 @@ func OpenCompressedOptions(path string, mode_flags ModeFlags, compression_mode C
 }
 
 /*
-Returns the result of the last [Instance.Open] call in the current thread.
+Returns the result of the last [Open] call in the current thread.
 */
 func GetOpenError() error { //gd:FileAccess.get_open_error
 	self := Instance{}
@@ -245,11 +265,15 @@ func GetOpenError() error { //gd:FileAccess.get_open_error
 }
 
 /*
-Creates a temporary file. This file will be freed when the returned [FileAccess] is freed.
+Creates a temporary file. This file will be freed when the returned [graphics.gd/classdb/FileAccess] is freed.
+
 If 'prefix' is not empty, it will be prefixed to the file name, separated by a -.
+
 If 'extension' is not empty, it will be appended to the temporary file name.
-If 'keep' is true, the file is not deleted when the returned [FileAccess] is freed.
-Returns null if opening the file failed. You can use [Instance.GetOpenError] to check the error that occurred.
+
+If 'keep' is true, the file is not deleted when the returned [graphics.gd/classdb/FileAccess] is freed.
+
+Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
 */
 func CreateTemp(mode_flags int, prefix string, extension string, keep bool) Instance { //gd:FileAccess.create_temp
 	self := Instance{}
@@ -257,11 +281,15 @@ func CreateTemp(mode_flags int, prefix string, extension string, keep bool) Inst
 }
 
 /*
-Creates a temporary file. This file will be freed when the returned [FileAccess] is freed.
+Creates a temporary file. This file will be freed when the returned [graphics.gd/classdb/FileAccess] is freed.
+
 If 'prefix' is not empty, it will be prefixed to the file name, separated by a -.
+
 If 'extension' is not empty, it will be appended to the temporary file name.
-If 'keep' is true, the file is not deleted when the returned [FileAccess] is freed.
-Returns null if opening the file failed. You can use [Instance.GetOpenError] to check the error that occurred.
+
+If 'keep' is true, the file is not deleted when the returned [graphics.gd/classdb/FileAccess] is freed.
+
+Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
 */
 func CreateTempOptions(mode_flags int, prefix string, extension string, keep bool) Instance { //gd:FileAccess.create_temp
 	self := Instance{}
@@ -269,8 +297,9 @@ func CreateTempOptions(mode_flags int, prefix string, extension string, keep boo
 }
 
 /*
-Returns the whole 'path' file contents as a byte slice without any decoding.
-Returns an empty byte slice if an error occurred while opening the file. You can use [Instance.GetOpenError] to check the error that occurred.
+Returns the whole 'path' file contents as a []byte without any decoding.
+
+Returns an empty []byte if an error occurred while opening the file. You can use [GetOpenError] to check the error that occurred.
 */
 func GetFileAsBytes(path string) []byte { //gd:FileAccess.get_file_as_bytes
 	self := Instance{}
@@ -278,8 +307,9 @@ func GetFileAsBytes(path string) []byte { //gd:FileAccess.get_file_as_bytes
 }
 
 /*
-Returns the whole 'path' file contents as a [String]. Text is interpreted as being UTF-8 encoded.
-Returns an empty [String] if an error occurred while opening the file. You can use [Instance.GetOpenError] to check the error that occurred.
+Returns the whole 'path' file contents as a string. Text is interpreted as being UTF-8 encoded.
+
+Returns an empty string if an error occurred while opening the file. You can use [GetOpenError] to check the error that occurred.
 */
 func GetFileAsString(path string) string { //gd:FileAccess.get_file_as_string
 	self := Instance{}
@@ -295,6 +325,7 @@ func (self Instance) Resize(length int) error { //gd:FileAccess.resize
 
 /*
 Writes the file's buffer to disk. Flushing is automatically performed when the file is closed. This means you don't need to call [Instance.Flush] manually before closing a file. Still, calling [Instance.Flush] can be used to ensure the data is safe even if the project crashes instead of being closed gracefully.
+
 Note: Only call [Instance.Flush] when you actually need it. Otherwise, it will decrease performance due to constant disk writes.
 */
 func (self Instance) Flush() { //gd:FileAccess.flush
@@ -302,14 +333,14 @@ func (self Instance) Flush() { //gd:FileAccess.flush
 }
 
 /*
-Returns the path as a [String] for the current open file.
+Returns the path as a string for the current open file.
 */
 func (self Instance) GetPath() string { //gd:FileAccess.get_path
 	return string(Advanced(self).GetPath().String())
 }
 
 /*
-Returns the absolute path as a [String] for the current open file.
+Returns the absolute path as a string for the current open file.
 */
 func (self Instance) GetPathAbsolute() string { //gd:FileAccess.get_path_absolute
 	return string(Advanced(self).GetPathAbsolute().String())
@@ -331,6 +362,7 @@ func (self Instance) SeekTo(position int) { //gd:FileAccess.seek
 
 /*
 Changes the file reading/writing cursor to the specified position (in bytes from the end of the file).
+
 Note: This is an offset, so you should use negative numbers or the cursor will be at the end of the file.
 */
 func (self Instance) SeekEnd() { //gd:FileAccess.seek_end
@@ -339,6 +371,7 @@ func (self Instance) SeekEnd() { //gd:FileAccess.seek_end
 
 /*
 Changes the file reading/writing cursor to the specified position (in bytes from the end of the file).
+
 Note: This is an offset, so you should use negative numbers or the cursor will be at the end of the file.
 */
 func (self Expanded) SeekEnd(position int) { //gd:FileAccess.seek_end
@@ -361,22 +394,8 @@ func (self Instance) GetLength() int { //gd:FileAccess.get_length
 
 /*
 Returns true if the file cursor has already read past the end of the file.
+
 Note: eof_reached() == false cannot be used to check whether there is more data available. To loop while there is more data available, use:
-
-[gdscript]
-while file.get_position() < file.get_length():
-
-	# Read data
-
-[/gdscript]
-[csharp]
-while (file.GetPosition() < file.GetLength())
-
-	{
-	    // Read data
-	}
-
-[/csharp]
 */
 func (self Instance) EofReached() bool { //gd:FileAccess.eof_reached
 	return bool(Advanced(self).EofReached())
@@ -439,14 +458,15 @@ func (self Instance) GetReal() Float.X { //gd:FileAccess.get_real
 }
 
 /*
-Returns next 'length' bytes of the file as a byte slice.
+Returns next 'length' bytes of the file as a []byte.
 */
 func (self Instance) GetBuffer(length int) []byte { //gd:FileAccess.get_buffer
 	return []byte(Advanced(self).GetBuffer(int64(length)).Bytes())
 }
 
 /*
-Returns the next line of the file as a [String]. The returned string doesn't include newline (\n) or carriage return (\r) characters, but does include any other leading or trailing whitespace.
+Returns the next line of the file as a string. The returned string doesn't include newline (\n) or carriage return (\r) characters, but does include any other leading or trailing whitespace.
+
 Text is interpreted as being UTF-8 encoded.
 */
 func (self Instance) GetLine() string { //gd:FileAccess.get_line
@@ -455,14 +475,12 @@ func (self Instance) GetLine() string { //gd:FileAccess.get_line
 
 /*
 Returns the next value of the file in CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long, and cannot be a double quotation mark.
+
 Text is interpreted as being UTF-8 encoded. Text values must be enclosed in double quotes if they include the delimiter character. Double quotes within a text value can be escaped by doubling their occurrence.
+
 For example, the following CSV lines are valid and will be properly parsed as two strings each:
-[codeblock lang=text]
-Alice,"Hello, Bob!"
-Bob,Alice! What a surprise!
-Alice,"I thought you'd reply with ""Hello, world""."
-[/codeblock]
-Note how the second line can omit the enclosing quotes as it does not include the delimiter. However it [i]could[/i] very well use quotes, it was only written without for demonstration purposes. The third line must use "" for each quotation mark that needs to be interpreted as such instead of the end of a text value.
+
+Note how the second line can omit the enclosing quotes as it does not include the delimiter. However it could very well use quotes, it was only written without for demonstration purposes. The third line must use "" for each quotation mark that needs to be interpreted as such instead of the end of a text value.
 */
 func (self Instance) GetCsvLine() []string { //gd:FileAccess.get_csv_line
 	return []string(Advanced(self).GetCsvLine(String.New(",")).Strings())
@@ -470,21 +488,20 @@ func (self Instance) GetCsvLine() []string { //gd:FileAccess.get_csv_line
 
 /*
 Returns the next value of the file in CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long, and cannot be a double quotation mark.
+
 Text is interpreted as being UTF-8 encoded. Text values must be enclosed in double quotes if they include the delimiter character. Double quotes within a text value can be escaped by doubling their occurrence.
+
 For example, the following CSV lines are valid and will be properly parsed as two strings each:
-[codeblock lang=text]
-Alice,"Hello, Bob!"
-Bob,Alice! What a surprise!
-Alice,"I thought you'd reply with ""Hello, world""."
-[/codeblock]
-Note how the second line can omit the enclosing quotes as it does not include the delimiter. However it [i]could[/i] very well use quotes, it was only written without for demonstration purposes. The third line must use "" for each quotation mark that needs to be interpreted as such instead of the end of a text value.
+
+Note how the second line can omit the enclosing quotes as it does not include the delimiter. However it could very well use quotes, it was only written without for demonstration purposes. The third line must use "" for each quotation mark that needs to be interpreted as such instead of the end of a text value.
 */
 func (self Expanded) GetCsvLine(delim string) []string { //gd:FileAccess.get_csv_line
 	return []string(Advanced(self).GetCsvLine(String.New(delim)).Strings())
 }
 
 /*
-Returns the whole file as a [String]. Text is interpreted as being UTF-8 encoded.
+Returns the whole file as a string. Text is interpreted as being UTF-8 encoded.
+
 If 'skip_cr' is true, carriage return characters (\r, CR) will be ignored when parsing the UTF-8, so that only line feed characters (\n, LF) represent a new line (Unix convention).
 */
 func (self Instance) GetAsText() string { //gd:FileAccess.get_as_text
@@ -492,7 +509,8 @@ func (self Instance) GetAsText() string { //gd:FileAccess.get_as_text
 }
 
 /*
-Returns the whole file as a [String]. Text is interpreted as being UTF-8 encoded.
+Returns the whole file as a string. Text is interpreted as being UTF-8 encoded.
+
 If 'skip_cr' is true, carriage return characters (\r, CR) will be ignored when parsing the UTF-8, so that only line feed characters (\n, LF) represent a new line (Unix convention).
 */
 func (self Expanded) GetAsText(skip_cr bool) string { //gd:FileAccess.get_as_text
@@ -500,7 +518,7 @@ func (self Expanded) GetAsText(skip_cr bool) string { //gd:FileAccess.get_as_tex
 }
 
 /*
-Returns an MD5 String representing the file at the given path or an empty [String] on failure.
+Returns an MD5 String representing the file at the given path or an empty string on failure.
 */
 func GetMd5(path string) string { //gd:FileAccess.get_md5
 	self := Instance{}
@@ -508,7 +526,7 @@ func GetMd5(path string) string { //gd:FileAccess.get_md5
 }
 
 /*
-Returns an SHA-256 [String] representing the file at the given path or an empty [String] on failure.
+Returns an SHA-256 string representing the file at the given path or an empty string on failure.
 */
 func GetSha256(path string) string { //gd:FileAccess.get_sha256
 	self := Instance{}
@@ -523,8 +541,10 @@ func (self Instance) GetError() error { //gd:FileAccess.get_error
 }
 
 /*
-Returns the next [Variant] value from the file. If 'allow_objects' is true, decoding objects is allowed.
-Internally, this uses the same decoding mechanism as the [Instance.@Globalscope.BytesToVar] method.
+Returns the next any value from the file. If 'allow_objects' is true, decoding objects is allowed.
+
+Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 func (self Instance) GetVar() any { //gd:FileAccess.get_var
@@ -532,8 +552,10 @@ func (self Instance) GetVar() any { //gd:FileAccess.get_var
 }
 
 /*
-Returns the next [Variant] value from the file. If 'allow_objects' is true, decoding objects is allowed.
-Internally, this uses the same decoding mechanism as the [Instance.@Globalscope.BytesToVar] method.
+Returns the next any value from the file. If 'allow_objects' is true, decoding objects is allowed.
+
+Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 func (self Expanded) GetVar(allow_objects bool) any { //gd:FileAccess.get_var
@@ -542,8 +564,11 @@ func (self Expanded) GetVar(allow_objects bool) any { //gd:FileAccess.get_var
 
 /*
 Stores an integer as 8 bits in the file.
+
 Note: The 'value' should lie in the interval [0, 255]. Any other value will overflow and wrap around.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
+
 To store a signed integer, use [Instance.Store64], or convert it manually (see [Instance.Store16] for an example).
 */
 func (self Instance) Store8(value int) bool { //gd:FileAccess.store_8
@@ -552,45 +577,12 @@ func (self Instance) Store8(value int) bool { //gd:FileAccess.store_8
 
 /*
 Stores an integer as 16 bits in the file.
+
 Note: The 'value' should lie in the interval [0, 2^16 - 1]. Any other value will overflow and wrap around.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
+
 To store a signed integer, use [Instance.Store64] or store a signed integer from the interval [-2^15, 2^15 - 1] (i.e. keeping one bit for the signedness) and compute its sign manually when reading. For example:
-
-[gdscript]
-const MAX_15B = 1 << 15
-const MAX_16B = 1 << 16
-
-func unsigned16_to_signed(unsigned):
-
-	return (unsigned + MAX_15B) % MAX_16B - MAX_15B
-
-func _ready():
-
-	var f = FileAccess.open("user://file.dat", FileAccess.WRITE_READ)
-	f.store_16(-42) # This wraps around and stores 65494 (2^16 - 42).
-	f.store_16(121) # In bounds, will store 121.
-	f.seek(0) # Go back to start to read the stored value.
-	var read1 = f.get_16() # 65494
-	var read2 = f.get_16() # 121
-	var converted1 = unsigned16_to_signed(read1) # -42
-	var converted2 = unsigned16_to_signed(read2) # 121
-
-[/gdscript]
-[csharp]
-public override void _Ready()
-
-	{
-	    using var f = FileAccess.Open("user://file.dat", FileAccess.ModeFlags.WriteRead);
-	    f.Store16(unchecked((ushort)-42)); // This wraps around and stores 65494 (2^16 - 42).
-	    f.Store16(121); // In bounds, will store 121.
-	    f.Seek(0); // Go back to start to read the stored value.
-	    ushort read1 = f.Get16(); // 65494
-	    ushort read2 = f.Get16(); // 121
-	    short converted1 = (short)read1; // -42
-	    short converted2 = (short)read2; // 121
-	}
-
-[/csharp]
 */
 func (self Instance) Store16(value int) bool { //gd:FileAccess.store_16
 	return bool(Advanced(self).Store16(int64(value)))
@@ -598,8 +590,11 @@ func (self Instance) Store16(value int) bool { //gd:FileAccess.store_16
 
 /*
 Stores an integer as 32 bits in the file.
+
 Note: The 'value' should lie in the interval [0, 2^32 - 1]. Any other value will overflow and wrap around.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
+
 To store a signed integer, use [Instance.Store64], or convert it manually (see [Instance.Store16] for an example).
 */
 func (self Instance) Store32(value int) bool { //gd:FileAccess.store_32
@@ -608,7 +603,9 @@ func (self Instance) Store32(value int) bool { //gd:FileAccess.store_32
 
 /*
 Stores an integer as 64 bits in the file.
-Note: The 'value' must lie in the interval [-2^63, 2^63 - 1] (i.e. be a valid [int] value).
+
+Note: The 'value' must lie in the interval [-2^63, 2^63 - 1] (i.e. be a valid int value).
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) Store64(value int) bool { //gd:FileAccess.store_64
@@ -624,6 +621,7 @@ func (self Instance) StoreHalf(value Float.X) bool { //gd:FileAccess.store_half
 
 /*
 Stores a floating-point number as 32 bits in the file.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreFloat(value Float.X) bool { //gd:FileAccess.store_float
@@ -632,6 +630,7 @@ func (self Instance) StoreFloat(value Float.X) bool { //gd:FileAccess.store_floa
 
 /*
 Stores a floating-point number as 64 bits in the file.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreDouble(value Float.X) bool { //gd:FileAccess.store_double
@@ -640,6 +639,7 @@ func (self Instance) StoreDouble(value Float.X) bool { //gd:FileAccess.store_dou
 
 /*
 Stores a floating-point number in the file.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreReal(value Float.X) bool { //gd:FileAccess.store_real
@@ -648,6 +648,7 @@ func (self Instance) StoreReal(value Float.X) bool { //gd:FileAccess.store_real
 
 /*
 Stores the given array of bytes in the file.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreBuffer(buffer []byte) bool { //gd:FileAccess.store_buffer
@@ -656,6 +657,7 @@ func (self Instance) StoreBuffer(buffer []byte) bool { //gd:FileAccess.store_buf
 
 /*
 Stores 'line' in the file followed by a newline character (\n), encoding the text as UTF-8.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreLine(line string) bool { //gd:FileAccess.store_line
@@ -663,8 +665,10 @@ func (self Instance) StoreLine(line string) bool { //gd:FileAccess.store_line
 }
 
 /*
-Store the given [PackedStringArray] in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long.
+Store the given []string in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long.
+
 Text will be encoded as UTF-8.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreCsvLine(values []string) bool { //gd:FileAccess.store_csv_line
@@ -672,8 +676,10 @@ func (self Instance) StoreCsvLine(values []string) bool { //gd:FileAccess.store_
 }
 
 /*
-Store the given [PackedStringArray] in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long.
+Store the given []string in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long.
+
 Text will be encoded as UTF-8.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Expanded) StoreCsvLine(values []string, delim string) bool { //gd:FileAccess.store_csv_line
@@ -682,7 +688,9 @@ func (self Expanded) StoreCsvLine(values []string, delim string) bool { //gd:Fil
 
 /*
 Stores 'string' in the file without a newline character (\n), encoding the text as UTF-8.
+
 Note: This method is intended to be used to write text files. The string is stored as a UTF-8 encoded buffer without string length or terminating zero, which means that it can't be loaded back easily. If you want to store a retrievable string in a binary file, consider using [Instance.StorePascalString] instead. For retrieving strings from a text file, you can use get_buffer(length).get_string_from_utf8() (if you know the length) or [Instance.GetAsText].
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreString(s string) bool { //gd:FileAccess.store_string
@@ -691,8 +699,11 @@ func (self Instance) StoreString(s string) bool { //gd:FileAccess.store_string
 
 /*
 Stores any Variant value in the file. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
-Internally, this uses the same encoding mechanism as the [Instance.@Globalscope.VarToBytes] method.
-Note: Not all properties are included. Only properties that are configured with the [PropertyUsageStorage] flag set will be serialized. You can add a new usage flag to a property by overriding the [Instance.Object.GetPropertyList] method in your class. You can also check how property usage is configured by calling [Instance.Object.GetPropertyList]. See [PropertyUsageFlags] for the possible usage flags.
+
+Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
+
+Note: Not all properties are included. Only properties that are configured with the [PropertyUsageStorage] flag set will be serialized. You can add a new usage flag to a property by overriding the [graphics.gd/classdb/Object.Instance.GetPropertyList] method in your class. You can also check how property usage is configured by calling [graphics.gd/classdb/Object.Instance.GetPropertyList]. See [PropertyUsageFlags] for the possible usage flags.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreVar(value any) bool { //gd:FileAccess.store_var
@@ -701,8 +712,11 @@ func (self Instance) StoreVar(value any) bool { //gd:FileAccess.store_var
 
 /*
 Stores any Variant value in the file. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
-Internally, this uses the same encoding mechanism as the [Instance.@Globalscope.VarToBytes] method.
-Note: Not all properties are included. Only properties that are configured with the [PropertyUsageStorage] flag set will be serialized. You can add a new usage flag to a property by overriding the [Instance.Object.GetPropertyList] method in your class. You can also check how property usage is configured by calling [Instance.Object.GetPropertyList]. See [PropertyUsageFlags] for the possible usage flags.
+
+Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
+
+Note: Not all properties are included. Only properties that are configured with the [PropertyUsageStorage] flag set will be serialized. You can add a new usage flag to a property by overriding the [graphics.gd/classdb/Object.Instance.GetPropertyList] method in your class. You can also check how property usage is configured by calling [graphics.gd/classdb/Object.Instance.GetPropertyList]. See [PropertyUsageFlags] for the possible usage flags.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Expanded) StoreVar(value any, full_objects bool) bool { //gd:FileAccess.store_var
@@ -710,8 +724,10 @@ func (self Expanded) StoreVar(value any, full_objects bool) bool { //gd:FileAcce
 }
 
 /*
-Stores the given [String] as a line in the file in Pascal format (i.e. also store the length of the string).
+Stores the given string as a line in the file in Pascal format (i.e. also store the length of the string).
+
 Text will be encoded as UTF-8.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StorePascalString(s string) bool { //gd:FileAccess.store_pascal_string
@@ -719,7 +735,8 @@ func (self Instance) StorePascalString(s string) bool { //gd:FileAccess.store_pa
 }
 
 /*
-Returns a [String] saved in Pascal format from the file.
+Returns a string saved in Pascal format from the file.
+
 Text is interpreted as being UTF-8 encoded.
 */
 func (self Instance) GetPascalString() string { //gd:FileAccess.get_pascal_string
@@ -728,7 +745,8 @@ func (self Instance) GetPascalString() string { //gd:FileAccess.get_pascal_strin
 
 /*
 Closes the currently opened file and prevents subsequent read/write operations. Use [Instance.Flush] to persist the data to disk without closing the file.
-Note: [FileAccess] will automatically close when it's freed, which happens when it goes out of scope or when it gets assigned with null. In C# the reference must be disposed after we are done using it, this can be done with the using statement or calling the Dispose method directly.
+
+Note: [graphics.gd/classdb/FileAccess] will automatically close when it's freed, which happens when it goes out of scope or when it gets assigned with null. In C# the reference must be disposed after we are done using it, this can be done with the using statement or calling the Dispose method directly.
 */
 func (self Instance) Close() { //gd:FileAccess.close
 	Advanced(self).Close()
@@ -736,8 +754,10 @@ func (self Instance) Close() { //gd:FileAccess.close
 
 /*
 Returns true if the file exists in the given path.
-Note: Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [Instance.Resourceloader.Exists] for an alternative approach that takes resource remapping into account.
-For a non-static, relative equivalent, use [Instance.Diraccess.FileExists].
+
+Note: Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [graphics.gd/classdb/ResourceLoader.Exists] for an alternative approach that takes resource remapping into account.
+
+For a non-static, relative equivalent, use [graphics.gd/classdb/DirAccess.Instance.FileExists].
 */
 func FileExists(path string) bool { //gd:FileAccess.file_exists
 	self := Instance{}
@@ -745,7 +765,7 @@ func FileExists(path string) bool { //gd:FileAccess.file_exists
 }
 
 /*
-Returns the last time the 'file' was modified in Unix timestamp format, or 0 on error. This Unix timestamp can be converted to another format using the [Time] singleton.
+Returns the last time the 'file' was modified in Unix timestamp format, or 0 on error. This Unix timestamp can be converted to another format using the [graphics.gd/classdb/Time] singleton.
 */
 func GetModifiedTime(file string) int { //gd:FileAccess.get_modified_time
 	self := Instance{}
@@ -754,6 +774,7 @@ func GetModifiedTime(file string) int { //gd:FileAccess.get_modified_time
 
 /*
 Returns file UNIX permissions.
+
 Note: This method is implemented on iOS, Linux/BSD, and macOS.
 */
 func GetUnixPermissions(file string) UnixPermissionFlags { //gd:FileAccess.get_unix_permissions
@@ -763,6 +784,7 @@ func GetUnixPermissions(file string) UnixPermissionFlags { //gd:FileAccess.get_u
 
 /*
 Sets file UNIX permissions.
+
 Note: This method is implemented on iOS, Linux/BSD, and macOS.
 */
 func SetUnixPermissions(file string, permissions UnixPermissionFlags) error { //gd:FileAccess.set_unix_permissions
@@ -772,6 +794,7 @@ func SetUnixPermissions(file string, permissions UnixPermissionFlags) error { //
 
 /*
 Returns true, if file hidden attribute is set.
+
 Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 func GetHiddenAttribute(file string) bool { //gd:FileAccess.get_hidden_attribute
@@ -781,6 +804,7 @@ func GetHiddenAttribute(file string) bool { //gd:FileAccess.get_hidden_attribute
 
 /*
 Sets file hidden attribute.
+
 Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 func SetHiddenAttribute(file string, hidden bool) error { //gd:FileAccess.set_hidden_attribute
@@ -790,6 +814,7 @@ func SetHiddenAttribute(file string, hidden bool) error { //gd:FileAccess.set_hi
 
 /*
 Sets file read only attribute.
+
 Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 func SetReadOnlyAttribute(file string, ro bool) error { //gd:FileAccess.set_read_only_attribute
@@ -799,6 +824,7 @@ func SetReadOnlyAttribute(file string, ro bool) error { //gd:FileAccess.set_read
 
 /*
 Returns true, if file read only attribute is set.
+
 Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 func GetReadOnlyAttribute(file string) bool { //gd:FileAccess.get_read_only_attribute
@@ -858,8 +884,9 @@ func (self Instance) SetBigEndian(value bool) {
 }
 
 /*
-Creates a new [FileAccess] object and opens the file for writing or reading, depending on the flags.
-Returns null if opening the file failed. You can use [Instance.GetOpenError] to check the error that occurred.
+Creates a new [graphics.gd/classdb/FileAccess] object and opens the file for writing or reading, depending on the flags.
+
+Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
 */
 //go:nosplit
 func (self class) Open(path String.Readable, flags ModeFlags) [1]gdclass.FileAccess { //gd:FileAccess.open
@@ -872,9 +899,11 @@ func (self class) Open(path String.Readable, flags ModeFlags) [1]gdclass.FileAcc
 }
 
 /*
-Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
+Creates a new [graphics.gd/classdb/FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
+
 Note: The provided key must be 32 bytes long.
-Returns null if opening the file failed. You can use [Instance.GetOpenError] to check the error that occurred.
+
+Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
 */
 //go:nosplit
 func (self class) OpenEncrypted(path String.Readable, mode_flags ModeFlags, key Packed.Bytes, iv Packed.Bytes) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
@@ -889,8 +918,9 @@ func (self class) OpenEncrypted(path String.Readable, mode_flags ModeFlags, key 
 }
 
 /*
-Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a password to encrypt/decrypt it.
-Returns null if opening the file failed. You can use [Instance.GetOpenError] to check the error that occurred.
+Creates a new [graphics.gd/classdb/FileAccess] object and opens an encrypted file in write or read mode. You need to pass a password to encrypt/decrypt it.
+
+Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
 */
 //go:nosplit
 func (self class) OpenEncryptedWithPass(path String.Readable, mode_flags ModeFlags, pass String.Readable) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted_with_pass
@@ -904,9 +934,13 @@ func (self class) OpenEncryptedWithPass(path String.Readable, mode_flags ModeFla
 }
 
 /*
-Creates a new [FileAccess] object and opens a compressed file for reading or writing.
-Note: [Instance.OpenCompressed] can only read files that were saved by Godot, not third-party compression formats. See [url=https://github.com/godotengine/godot/issues/28999]GitHub issue #28999[/url] for a workaround.
-Returns null if opening the file failed. You can use [Instance.GetOpenError] to check the error that occurred.
+Creates a new [graphics.gd/classdb/FileAccess] object and opens a compressed file for reading or writing.
+
+Note: [OpenCompressed] can only read files that were saved by Godot, not third-party compression formats. See [GitHub issue #28999] for a workaround.
+
+Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
+
+[GitHub issue #28999]: https://github.com/godotengine/godot/issues/28999
 */
 //go:nosplit
 func (self class) OpenCompressed(path String.Readable, mode_flags ModeFlags, compression_mode CompressionMode) [1]gdclass.FileAccess { //gd:FileAccess.open_compressed
@@ -920,7 +954,7 @@ func (self class) OpenCompressed(path String.Readable, mode_flags ModeFlags, com
 }
 
 /*
-Returns the result of the last [Instance.Open] call in the current thread.
+Returns the result of the last [Open] call in the current thread.
 */
 //go:nosplit
 func (self class) GetOpenError() Error.Code { //gd:FileAccess.get_open_error
@@ -930,11 +964,15 @@ func (self class) GetOpenError() Error.Code { //gd:FileAccess.get_open_error
 }
 
 /*
-Creates a temporary file. This file will be freed when the returned [FileAccess] is freed.
+Creates a temporary file. This file will be freed when the returned [graphics.gd/classdb/FileAccess] is freed.
+
 If 'prefix' is not empty, it will be prefixed to the file name, separated by a -.
+
 If 'extension' is not empty, it will be appended to the temporary file name.
-If 'keep' is true, the file is not deleted when the returned [FileAccess] is freed.
-Returns null if opening the file failed. You can use [Instance.GetOpenError] to check the error that occurred.
+
+If 'keep' is true, the file is not deleted when the returned [graphics.gd/classdb/FileAccess] is freed.
+
+Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
 */
 //go:nosplit
 func (self class) CreateTemp(mode_flags int64, prefix String.Readable, extension String.Readable, keep bool) [1]gdclass.FileAccess { //gd:FileAccess.create_temp
@@ -949,8 +987,9 @@ func (self class) CreateTemp(mode_flags int64, prefix String.Readable, extension
 }
 
 /*
-Returns the whole 'path' file contents as a byte slice without any decoding.
-Returns an empty byte slice if an error occurred while opening the file. You can use [Instance.GetOpenError] to check the error that occurred.
+Returns the whole 'path' file contents as a []byte without any decoding.
+
+Returns an empty []byte if an error occurred while opening the file. You can use [GetOpenError] to check the error that occurred.
 */
 //go:nosplit
 func (self class) GetFileAsBytes(path String.Readable) Packed.Bytes { //gd:FileAccess.get_file_as_bytes
@@ -960,8 +999,9 @@ func (self class) GetFileAsBytes(path String.Readable) Packed.Bytes { //gd:FileA
 }
 
 /*
-Returns the whole 'path' file contents as a [String]. Text is interpreted as being UTF-8 encoded.
-Returns an empty [String] if an error occurred while opening the file. You can use [Instance.GetOpenError] to check the error that occurred.
+Returns the whole 'path' file contents as a string. Text is interpreted as being UTF-8 encoded.
+
+Returns an empty string if an error occurred while opening the file. You can use [GetOpenError] to check the error that occurred.
 */
 //go:nosplit
 func (self class) GetFileAsString(path String.Readable) String.Readable { //gd:FileAccess.get_file_as_string
@@ -982,6 +1022,7 @@ func (self class) Resize(length int64) Error.Code { //gd:FileAccess.resize
 
 /*
 Writes the file's buffer to disk. Flushing is automatically performed when the file is closed. This means you don't need to call [Instance.Flush] manually before closing a file. Still, calling [Instance.Flush] can be used to ensure the data is safe even if the project crashes instead of being closed gracefully.
+
 Note: Only call [Instance.Flush] when you actually need it. Otherwise, it will decrease performance due to constant disk writes.
 */
 //go:nosplit
@@ -990,7 +1031,7 @@ func (self class) Flush() { //gd:FileAccess.flush
 }
 
 /*
-Returns the path as a [String] for the current open file.
+Returns the path as a string for the current open file.
 */
 //go:nosplit
 func (self class) GetPath() String.Readable { //gd:FileAccess.get_path
@@ -1000,7 +1041,7 @@ func (self class) GetPath() String.Readable { //gd:FileAccess.get_path
 }
 
 /*
-Returns the absolute path as a [String] for the current open file.
+Returns the absolute path as a string for the current open file.
 */
 //go:nosplit
 func (self class) GetPathAbsolute() String.Readable { //gd:FileAccess.get_path_absolute
@@ -1029,6 +1070,7 @@ func (self class) SeekTo(position int64) { //gd:FileAccess.seek
 
 /*
 Changes the file reading/writing cursor to the specified position (in bytes from the end of the file).
+
 Note: This is an offset, so you should use negative numbers or the cursor will be at the end of the file.
 */
 //go:nosplit
@@ -1058,18 +1100,9 @@ func (self class) GetLength() int64 { //gd:FileAccess.get_length
 
 /*
 Returns true if the file cursor has already read past the end of the file.
+
 Note: eof_reached() == false cannot be used to check whether there is more data available. To loop while there is more data available, use:
 
-[gdscript]
-while file.get_position() < file.get_length():
-    # Read data
-[/gdscript]
-[csharp]
-while (file.GetPosition() < file.GetLength())
-{
-    // Read data
-}
-[/csharp]
 
 */
 //go:nosplit
@@ -1160,7 +1193,7 @@ func (self class) GetReal() float64 { //gd:FileAccess.get_real
 }
 
 /*
-Returns next 'length' bytes of the file as a byte slice.
+Returns next 'length' bytes of the file as a []byte.
 */
 //go:nosplit
 func (self class) GetBuffer(length int64) Packed.Bytes { //gd:FileAccess.get_buffer
@@ -1170,7 +1203,8 @@ func (self class) GetBuffer(length int64) Packed.Bytes { //gd:FileAccess.get_buf
 }
 
 /*
-Returns the next line of the file as a [String]. The returned string doesn't include newline (\n) or carriage return (\r) characters, but does include any other leading or trailing whitespace.
+Returns the next line of the file as a string. The returned string doesn't include newline (\n) or carriage return (\r) characters, but does include any other leading or trailing whitespace.
+
 Text is interpreted as being UTF-8 encoded.
 */
 //go:nosplit
@@ -1182,14 +1216,14 @@ func (self class) GetLine() String.Readable { //gd:FileAccess.get_line
 
 /*
 Returns the next value of the file in CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long, and cannot be a double quotation mark.
+
 Text is interpreted as being UTF-8 encoded. Text values must be enclosed in double quotes if they include the delimiter character. Double quotes within a text value can be escaped by doubling their occurrence.
+
 For example, the following CSV lines are valid and will be properly parsed as two strings each:
-[codeblock lang=text]
-Alice,"Hello, Bob!"
-Bob,Alice! What a surprise!
-Alice,"I thought you'd reply with ""Hello, world""."
-[/codeblock]
-Note how the second line can omit the enclosing quotes as it does not include the delimiter. However it [i]could[/i] very well use quotes, it was only written without for demonstration purposes. The third line must use "" for each quotation mark that needs to be interpreted as such instead of the end of a text value.
+
+
+
+Note how the second line can omit the enclosing quotes as it does not include the delimiter. However it could very well use quotes, it was only written without for demonstration purposes. The third line must use "" for each quotation mark that needs to be interpreted as such instead of the end of a text value.
 */
 //go:nosplit
 func (self class) GetCsvLine(delim String.Readable) Packed.Strings { //gd:FileAccess.get_csv_line
@@ -1199,7 +1233,8 @@ func (self class) GetCsvLine(delim String.Readable) Packed.Strings { //gd:FileAc
 }
 
 /*
-Returns the whole file as a [String]. Text is interpreted as being UTF-8 encoded.
+Returns the whole file as a string. Text is interpreted as being UTF-8 encoded.
+
 If 'skip_cr' is true, carriage return characters (\r, CR) will be ignored when parsing the UTF-8, so that only line feed characters (\n, LF) represent a new line (Unix convention).
 */
 //go:nosplit
@@ -1210,7 +1245,7 @@ func (self class) GetAsText(skip_cr bool) String.Readable { //gd:FileAccess.get_
 }
 
 /*
-Returns an MD5 String representing the file at the given path or an empty [String] on failure.
+Returns an MD5 String representing the file at the given path or an empty string on failure.
 */
 //go:nosplit
 func (self class) GetMd5(path String.Readable) String.Readable { //gd:FileAccess.get_md5
@@ -1220,7 +1255,7 @@ func (self class) GetMd5(path String.Readable) String.Readable { //gd:FileAccess
 }
 
 /*
-Returns an SHA-256 [String] representing the file at the given path or an empty [String] on failure.
+Returns an SHA-256 string representing the file at the given path or an empty string on failure.
 */
 //go:nosplit
 func (self class) GetSha256(path String.Readable) String.Readable { //gd:FileAccess.get_sha256
@@ -1252,8 +1287,10 @@ func (self class) GetError() Error.Code { //gd:FileAccess.get_error
 }
 
 /*
-Returns the next [Variant] value from the file. If 'allow_objects' is true, decoding objects is allowed.
-Internally, this uses the same decoding mechanism as the [Instance.@Globalscope.BytesToVar] method.
+Returns the next any value from the file. If 'allow_objects' is true, decoding objects is allowed.
+
+Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 //go:nosplit
@@ -1265,8 +1302,11 @@ func (self class) GetVar(allow_objects bool) variant.Any { //gd:FileAccess.get_v
 
 /*
 Stores an integer as 8 bits in the file.
+
 Note: The 'value' should lie in the interval [0, 255]. Any other value will overflow and wrap around.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
+
 To store a signed integer, use [Instance.Store64], or convert it manually (see [Instance.Store16] for an example).
 */
 //go:nosplit
@@ -1278,40 +1318,13 @@ func (self class) Store8(value int64) bool { //gd:FileAccess.store_8
 
 /*
 Stores an integer as 16 bits in the file.
+
 Note: The 'value' should lie in the interval [0, 2^16 - 1]. Any other value will overflow and wrap around.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
+
 To store a signed integer, use [Instance.Store64] or store a signed integer from the interval [-2^15, 2^15 - 1] (i.e. keeping one bit for the signedness) and compute its sign manually when reading. For example:
 
-[gdscript]
-const MAX_15B = 1 << 15
-const MAX_16B = 1 << 16
-
-func unsigned16_to_signed(unsigned):
-    return (unsigned + MAX_15B) % MAX_16B - MAX_15B
-
-func _ready():
-    var f = FileAccess.open("user://file.dat", FileAccess.WRITE_READ)
-    f.store_16(-42) # This wraps around and stores 65494 (2^16 - 42).
-    f.store_16(121) # In bounds, will store 121.
-    f.seek(0) # Go back to start to read the stored value.
-    var read1 = f.get_16() # 65494
-    var read2 = f.get_16() # 121
-    var converted1 = unsigned16_to_signed(read1) # -42
-    var converted2 = unsigned16_to_signed(read2) # 121
-[/gdscript]
-[csharp]
-public override void _Ready()
-{
-    using var f = FileAccess.Open("user://file.dat", FileAccess.ModeFlags.WriteRead);
-    f.Store16(unchecked((ushort)-42)); // This wraps around and stores 65494 (2^16 - 42).
-    f.Store16(121); // In bounds, will store 121.
-    f.Seek(0); // Go back to start to read the stored value.
-    ushort read1 = f.Get16(); // 65494
-    ushort read2 = f.Get16(); // 121
-    short converted1 = (short)read1; // -42
-    short converted2 = (short)read2; // 121
-}
-[/csharp]
 
 */
 //go:nosplit
@@ -1323,8 +1336,11 @@ func (self class) Store16(value int64) bool { //gd:FileAccess.store_16
 
 /*
 Stores an integer as 32 bits in the file.
+
 Note: The 'value' should lie in the interval [0, 2^32 - 1]. Any other value will overflow and wrap around.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
+
 To store a signed integer, use [Instance.Store64], or convert it manually (see [Instance.Store16] for an example).
 */
 //go:nosplit
@@ -1336,7 +1352,9 @@ func (self class) Store32(value int64) bool { //gd:FileAccess.store_32
 
 /*
 Stores an integer as 64 bits in the file.
-Note: The 'value' must lie in the interval [-2^63, 2^63 - 1] (i.e. be a valid [int] value).
+
+Note: The 'value' must lie in the interval [-2^63, 2^63 - 1] (i.e. be a valid int value).
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
@@ -1358,6 +1376,7 @@ func (self class) StoreHalf(value float64) bool { //gd:FileAccess.store_half
 
 /*
 Stores a floating-point number as 32 bits in the file.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
@@ -1369,6 +1388,7 @@ func (self class) StoreFloat(value float64) bool { //gd:FileAccess.store_float
 
 /*
 Stores a floating-point number as 64 bits in the file.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
@@ -1380,6 +1400,7 @@ func (self class) StoreDouble(value float64) bool { //gd:FileAccess.store_double
 
 /*
 Stores a floating-point number in the file.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
@@ -1391,6 +1412,7 @@ func (self class) StoreReal(value float64) bool { //gd:FileAccess.store_real
 
 /*
 Stores the given array of bytes in the file.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
@@ -1402,6 +1424,7 @@ func (self class) StoreBuffer(buffer Packed.Bytes) bool { //gd:FileAccess.store_
 
 /*
 Stores 'line' in the file followed by a newline character (\n), encoding the text as UTF-8.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
@@ -1412,8 +1435,10 @@ func (self class) StoreLine(line String.Readable) bool { //gd:FileAccess.store_l
 }
 
 /*
-Store the given [PackedStringArray] in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long.
+Store the given []string in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long.
+
 Text will be encoded as UTF-8.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
@@ -1428,7 +1453,9 @@ func (self class) StoreCsvLine(values Packed.Strings, delim String.Readable) boo
 
 /*
 Stores 'string' in the file without a newline character (\n), encoding the text as UTF-8.
+
 Note: This method is intended to be used to write text files. The string is stored as a UTF-8 encoded buffer without string length or terminating zero, which means that it can't be loaded back easily. If you want to store a retrievable string in a binary file, consider using [Instance.StorePascalString] instead. For retrieving strings from a text file, you can use get_buffer(length).get_string_from_utf8() (if you know the length) or [Instance.GetAsText].
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
@@ -1440,8 +1467,11 @@ func (self class) StoreString(s String.Readable) bool { //gd:FileAccess.store_st
 
 /*
 Stores any Variant value in the file. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
-Internally, this uses the same encoding mechanism as the [Instance.@Globalscope.VarToBytes] method.
-Note: Not all properties are included. Only properties that are configured with the [PropertyUsageStorage] flag set will be serialized. You can add a new usage flag to a property by overriding the [Instance.Object.GetPropertyList] method in your class. You can also check how property usage is configured by calling [Instance.Object.GetPropertyList]. See [PropertyUsageFlags] for the possible usage flags.
+
+Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
+
+Note: Not all properties are included. Only properties that are configured with the [PropertyUsageStorage] flag set will be serialized. You can add a new usage flag to a property by overriding the [graphics.gd/classdb/Object.Instance.GetPropertyList] method in your class. You can also check how property usage is configured by calling [graphics.gd/classdb/Object.Instance.GetPropertyList]. See [PropertyUsageFlags] for the possible usage flags.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
@@ -1455,8 +1485,10 @@ func (self class) StoreVar(value variant.Any, full_objects bool) bool { //gd:Fil
 }
 
 /*
-Stores the given [String] as a line in the file in Pascal format (i.e. also store the length of the string).
+Stores the given string as a line in the file in Pascal format (i.e. also store the length of the string).
+
 Text will be encoded as UTF-8.
+
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
@@ -1467,7 +1499,8 @@ func (self class) StorePascalString(s String.Readable) bool { //gd:FileAccess.st
 }
 
 /*
-Returns a [String] saved in Pascal format from the file.
+Returns a string saved in Pascal format from the file.
+
 Text is interpreted as being UTF-8 encoded.
 */
 //go:nosplit
@@ -1479,7 +1512,8 @@ func (self class) GetPascalString() String.Readable { //gd:FileAccess.get_pascal
 
 /*
 Closes the currently opened file and prevents subsequent read/write operations. Use [Instance.Flush] to persist the data to disk without closing the file.
-Note: [FileAccess] will automatically close when it's freed, which happens when it goes out of scope or when it gets assigned with null. In C# the reference must be disposed after we are done using it, this can be done with the using statement or calling the Dispose method directly.
+
+Note: [graphics.gd/classdb/FileAccess] will automatically close when it's freed, which happens when it goes out of scope or when it gets assigned with null. In C# the reference must be disposed after we are done using it, this can be done with the using statement or calling the Dispose method directly.
 */
 //go:nosplit
 func (self class) Close() { //gd:FileAccess.close
@@ -1488,8 +1522,10 @@ func (self class) Close() { //gd:FileAccess.close
 
 /*
 Returns true if the file exists in the given path.
-Note: Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [Instance.Resourceloader.Exists] for an alternative approach that takes resource remapping into account.
-For a non-static, relative equivalent, use [Instance.Diraccess.FileExists].
+
+Note: Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [graphics.gd/classdb/ResourceLoader.Exists] for an alternative approach that takes resource remapping into account.
+
+For a non-static, relative equivalent, use [graphics.gd/classdb/DirAccess.Instance.FileExists].
 */
 //go:nosplit
 func (self class) FileExists(path String.Readable) bool { //gd:FileAccess.file_exists
@@ -1499,7 +1535,7 @@ func (self class) FileExists(path String.Readable) bool { //gd:FileAccess.file_e
 }
 
 /*
-Returns the last time the 'file' was modified in Unix timestamp format, or 0 on error. This Unix timestamp can be converted to another format using the [Time] singleton.
+Returns the last time the 'file' was modified in Unix timestamp format, or 0 on error. This Unix timestamp can be converted to another format using the [graphics.gd/classdb/Time] singleton.
 */
 //go:nosplit
 func (self class) GetModifiedTime(file String.Readable) int64 { //gd:FileAccess.get_modified_time
@@ -1510,6 +1546,7 @@ func (self class) GetModifiedTime(file String.Readable) int64 { //gd:FileAccess.
 
 /*
 Returns file UNIX permissions.
+
 Note: This method is implemented on iOS, Linux/BSD, and macOS.
 */
 //go:nosplit
@@ -1521,6 +1558,7 @@ func (self class) GetUnixPermissions(file String.Readable) UnixPermissionFlags {
 
 /*
 Sets file UNIX permissions.
+
 Note: This method is implemented on iOS, Linux/BSD, and macOS.
 */
 //go:nosplit
@@ -1535,6 +1573,7 @@ func (self class) SetUnixPermissions(file String.Readable, permissions UnixPermi
 
 /*
 Returns true, if file hidden attribute is set.
+
 Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
@@ -1546,6 +1585,7 @@ func (self class) GetHiddenAttribute(file String.Readable) bool { //gd:FileAcces
 
 /*
 Sets file hidden attribute.
+
 Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
@@ -1560,6 +1600,7 @@ func (self class) SetHiddenAttribute(file String.Readable, hidden bool) Error.Co
 
 /*
 Sets file read only attribute.
+
 Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
@@ -1574,6 +1615,7 @@ func (self class) SetReadOnlyAttribute(file String.Readable, ro bool) Error.Code
 
 /*
 Returns true, if file read only attribute is set.
+
 Note: This method is implemented on iOS, BSD, macOS, and Windows.
 */
 //go:nosplit
@@ -1615,58 +1657,70 @@ func init() {
 type ModeFlags int //gd:FileAccess.ModeFlags
 
 const (
-	/*Opens the file for read operations. The cursor is positioned at the beginning of the file.*/
+	// Opens the file for read operations. The cursor is positioned at the beginning of the file.
 	Read ModeFlags = 1
-	/*Opens the file for write operations. The file is created if it does not exist, and truncated if it does.
-	  [b]Note:[/b] When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [method DirAccess.make_dir_recursive].*/
+	// Opens the file for write operations. The file is created if it does not exist, and truncated if it does.
+	//
+	// Note: When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [graphics.gd/classdb/DirAccess.Instance.MakeDirRecursive].
 	Write ModeFlags = 2
-	/*Opens the file for read and write operations. Does not truncate the file. The cursor is positioned at the beginning of the file.*/
+	// Opens the file for read and write operations. Does not truncate the file. The cursor is positioned at the beginning of the file.
 	ReadWrite ModeFlags = 3
-	/*Opens the file for read and write operations. The file is created if it does not exist, and truncated if it does. The cursor is positioned at the beginning of the file.
-	  [b]Note:[/b] When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [method DirAccess.make_dir_recursive].*/
+	// Opens the file for read and write operations. The file is created if it does not exist, and truncated if it does. The cursor is positioned at the beginning of the file.
+	//
+	// Note: When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [graphics.gd/classdb/DirAccess.Instance.MakeDirRecursive].
 	WriteRead ModeFlags = 7
 )
 
 type CompressionMode int //gd:FileAccess.CompressionMode
 
 const (
-	/*Uses the [url=https://fastlz.org/]FastLZ[/url] compression method.*/
+	// Uses the [FastLZ] compression method.
+	//
+	// [FastLZ]: https://fastlz.org/
 	CompressionFastlz CompressionMode = 0
-	/*Uses the [url=https://en.wikipedia.org/wiki/DEFLATE]DEFLATE[/url] compression method.*/
+	// Uses the [DEFLATE] compression method.
+	//
+	// [DEFLATE]: https://en.wikipedia.org/wiki/DEFLATE
 	CompressionDeflate CompressionMode = 1
-	/*Uses the [url=https://facebook.github.io/zstd/]Zstandard[/url] compression method.*/
+	// Uses the [Zstandard] compression method.
+	//
+	// [Zstandard]: https://facebook.github.io/zstd/
 	CompressionZstd CompressionMode = 2
-	/*Uses the [url=https://www.gzip.org/]gzip[/url] compression method.*/
+	// Uses the [gzip] compression method.
+	//
+	// [gzip]: https://www.gzip.org/
 	CompressionGzip CompressionMode = 3
-	/*Uses the [url=https://github.com/google/brotli]brotli[/url] compression method (only decompression is supported).*/
+	// Uses the [brotli] compression method (only decompression is supported).
+	//
+	// [brotli]: https://github.com/google/brotli
 	CompressionBrotli CompressionMode = 4
 )
 
 type UnixPermissionFlags int //gd:FileAccess.UnixPermissionFlags
 
 const (
-	/*Read for owner bit.*/
+	// Read for owner bit.
 	UnixReadOwner UnixPermissionFlags = 256
-	/*Write for owner bit.*/
+	// Write for owner bit.
 	UnixWriteOwner UnixPermissionFlags = 128
-	/*Execute for owner bit.*/
+	// Execute for owner bit.
 	UnixExecuteOwner UnixPermissionFlags = 64
-	/*Read for group bit.*/
+	// Read for group bit.
 	UnixReadGroup UnixPermissionFlags = 32
-	/*Write for group bit.*/
+	// Write for group bit.
 	UnixWriteGroup UnixPermissionFlags = 16
-	/*Execute for group bit.*/
+	// Execute for group bit.
 	UnixExecuteGroup UnixPermissionFlags = 8
-	/*Read for other bit.*/
+	// Read for other bit.
 	UnixReadOther UnixPermissionFlags = 4
-	/*Write for other bit.*/
+	// Write for other bit.
 	UnixWriteOther UnixPermissionFlags = 2
-	/*Execute for other bit.*/
+	// Execute for other bit.
 	UnixExecuteOther UnixPermissionFlags = 1
-	/*Set user id on execution bit.*/
+	// Set user id on execution bit.
 	UnixSetUserId UnixPermissionFlags = 2048
-	/*Set group id on execution bit.*/
+	// Set group id on execution bit.
 	UnixSetGroupId UnixPermissionFlags = 1024
-	/*Restricted deletion (sticky) bit.*/
+	// Restricted deletion (sticky) bit.
 	UnixRestrictedDelete UnixPermissionFlags = 512
 )

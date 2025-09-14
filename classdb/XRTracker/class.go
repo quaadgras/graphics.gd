@@ -236,24 +236,24 @@ func init() {
 type Type int //gd:XRServer.TrackerType
 
 const (
-	/*The tracker tracks the location of the players head. This is usually a location centered between the players eyes. Note that for handheld AR devices this can be the current location of the device.*/
+	// The tracker tracks the location of the players head. This is usually a location centered between the players eyes. Note that for handheld AR devices this can be the current location of the device.
 	TrackerHead Type = 1
-	/*The tracker tracks the location of a controller.*/
+	// The tracker tracks the location of a controller.
 	TrackerController Type = 2
-	/*The tracker tracks the location of a base station.*/
+	// The tracker tracks the location of a base station.
 	TrackerBasestation Type = 4
-	/*The tracker tracks the location and size of an AR anchor.*/
+	// The tracker tracks the location and size of an AR anchor.
 	TrackerAnchor Type = 8
-	/*The tracker tracks the location and joints of a hand.*/
+	// The tracker tracks the location and joints of a hand.
 	TrackerHand Type = 16
-	/*The tracker tracks the location and joints of a body.*/
+	// The tracker tracks the location and joints of a body.
 	TrackerBody Type = 32
-	/*The tracker tracks the expressions of a face.*/
+	// The tracker tracks the expressions of a face.
 	TrackerFace Type = 64
-	/*Used internally to filter trackers of any known type.*/
+	// Used internally to filter trackers of any known type.
 	TrackerAnyKnown Type = 127
-	/*Used internally if we haven't set the tracker type yet.*/
+	// Used internally if we haven't set the tracker type yet.
 	TrackerUnknown Type = 128
-	/*Used internally to select all trackers.*/
+	// Used internally to select all trackers.
 	TrackerAny Type = 255
 )

@@ -69,9 +69,6 @@ func main() {
 	ClassMethodOwnership := maps.Clone(gdjson.ClassMethodOwnership)
 	for _, class := range spec.Classes {
 		for _, method := range class.Methods {
-			if method.IsVirtual {
-				continue
-			}
 			var isUnsafe bool
 			for _, arg := range method.Arguments {
 				_, ok := ClassMethodOwnership[class.Name][method.Name][arg.Name]

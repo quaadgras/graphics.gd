@@ -99,7 +99,8 @@ type Any interface {
 }
 
 /*
-Generates and sets an optimized translation from the given [Translation] resource.
+Generates and sets an optimized translation from the given [graphics.gd/classdb/Translation] resource.
+
 Note: This method is intended to be used in the editor. It does nothing when called from an exported project.
 */
 func (self Instance) Generate(from Translation.Instance) { //gd:OptimizedTranslation.generate
@@ -150,7 +151,8 @@ func New() Instance {
 }
 
 /*
-Generates and sets an optimized translation from the given [Translation] resource.
+Generates and sets an optimized translation from the given [graphics.gd/classdb/Translation] resource.
+
 Note: This method is intended to be used in the editor. It does nothing when called from an exported project.
 */
 //go:nosplit

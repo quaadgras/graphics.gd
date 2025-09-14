@@ -2,7 +2,8 @@
 
 /*
 An implementation of the A* algorithm, used to find the shortest path between two vertices on a connected graph in 2D space.
-See [AStar3D] for a more thorough explanation on how to use this class. [AStar2D] is a wrapper for [AStar3D] that enforces 2D coordinates.
+
+See [graphics.gd/classdb/AStar3D] for a more thorough explanation on how to use this class. [graphics.gd/classdb/AStar2D] is a wrapper for [graphics.gd/classdb/AStar3D] that enforces 2D coordinates.
 */
 package AStar2D
 
@@ -65,12 +66,11 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 // Instance of the class with convieniently typed arguments and results.
-// See [Interface] for methods that can be overridden by a [Class] that extends it.
 type Instance [1]gdclass.AStar2D
 
 var otype gdextension.ObjectType
@@ -122,12 +122,15 @@ type Any interface {
 	gd.IsClass
 	AsAStar2D() Instance
 }
+
 type Interface interface {
-	//Called when estimating the cost between a point and the path's ending point.
-	//Note that this function is hidden in the default [AStar2D] class.
+	// Called when estimating the cost between a point and the path's ending point.
+	//
+	// Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
 	EstimateCost(from_id Point, end_id Point) Float.X
-	//Called when computing the cost between two connected points.
-	//Note that this function is hidden in the default [AStar2D] class.
+	// Called when computing the cost between two connected points.
+	//
+	// Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
 	ComputeCost(from_id Point, to_id Point) Float.X
 }
 
@@ -141,28 +144,30 @@ func (self implementation) ComputeCost(from_id Point, to_id Point) (_ Float.X)  
 
 /*
 Called when estimating the cost between a point and the path's ending point.
-Note that this function is hidden in the default [AStar2D] class.
+
+Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
 */
-func (Instance) _estimate_cost(impl func(ptr gdclass.Receiver, from_id int, end_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _estimate_cost(impl func(ptr gdclass.Receiver, from_id Point, end_id Point) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
 		var end_id = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, int(from_id), int(end_id))
+		ret := impl(self, Point(from_id), Point(end_id))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
 
 /*
 Called when computing the cost between two connected points.
-Note that this function is hidden in the default [AStar2D] class.
+
+Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
 */
-func (Instance) _compute_cost(impl func(ptr gdclass.Receiver, from_id int, to_id int) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _compute_cost(impl func(ptr gdclass.Receiver, from_id Point, to_id Point) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var from_id = gd.UnsafeGet[int64](p_args, 0)
 		var to_id = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, int(from_id), int(to_id))
+		ret := impl(self, Point(from_id), Point(to_id))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -176,16 +181,11 @@ func (self Instance) GetAvailablePointId() int { //gd:AStar2D.get_available_poin
 
 /*
 Adds a new point at the given position with the given identifier. The 'id' must be 0 or larger, and the 'weight_scale' must be 0.0 or greater.
-The 'weight_scale' is multiplied by the result of [Instance.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
 
-[gdscript]
-var astar = AStar2D.new()
-astar.add_point(1, Vector2(1, 0), 4) # Adds the point (1, 0) with weight_scale 4 and id 1
-[/gdscript]
-[csharp]
-var astar = new AStar2D();
-astar.AddPoint(1, new Vector2(1, 0), 4); // Adds the point (1, 0) with weight_scale 4 and id 1
-[/csharp]
+The 'weight_scale' is multiplied by the result of [Interface.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
+
+	var astar = AStar2D.New()
+	AStar2D.Expanded(astar).AddPoint(1, Vector2.New(1, 0), 4) // Adds the point (1, 0) with weight_scale 4 and id 1
 
 If there already exists a point for the given 'id', its position and weight scale are updated to the given values.
 */
@@ -195,16 +195,11 @@ func (self Instance) AddPoint(id Point, position Vector2.XY) { //gd:AStar2D.add_
 
 /*
 Adds a new point at the given position with the given identifier. The 'id' must be 0 or larger, and the 'weight_scale' must be 0.0 or greater.
-The 'weight_scale' is multiplied by the result of [Instance.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
 
-[gdscript]
-var astar = AStar2D.new()
-astar.add_point(1, Vector2(1, 0), 4) # Adds the point (1, 0) with weight_scale 4 and id 1
-[/gdscript]
-[csharp]
-var astar = new AStar2D();
-astar.AddPoint(1, new Vector2(1, 0), 4); // Adds the point (1, 0) with weight_scale 4 and id 1
-[/csharp]
+The 'weight_scale' is multiplied by the result of [Interface.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
+
+	var astar = AStar2D.New()
+	AStar2D.Expanded(astar).AddPoint(1, Vector2.New(1, 0), 4) // Adds the point (1, 0) with weight_scale 4 and id 1
 
 If there already exists a point for the given 'id', its position and weight scale are updated to the given values.
 */
@@ -234,7 +229,7 @@ func (self Instance) GetPointWeightScale(id Point) Float.X { //gd:AStar2D.get_po
 }
 
 /*
-Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is multiplied by the result of [Instance.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
+Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is multiplied by the result of [Interface.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
 */
 func (self Instance) SetPointWeightScale(id Point, weight_scale Float.X) { //gd:AStar2D.set_point_weight_scale
 	Advanced(self).SetPointWeightScale(int64(id), float64(weight_scale))
@@ -257,30 +252,16 @@ func (self Instance) HasPoint(id Point) bool { //gd:AStar2D.has_point
 /*
 Returns an array with the IDs of the points that form the connection with the given point.
 
-[gdscript]
-var astar = AStar2D.new()
-astar.add_point(1, Vector2(0, 0))
-astar.add_point(2, Vector2(0, 1))
-astar.add_point(3, Vector2(1, 1))
-astar.add_point(4, Vector2(2, 0))
+	var astar = AStar2D.New()
+	astar.AddPoint(1, Vector2.New(0, 0))
+	astar.AddPoint(2, Vector2.New(0, 1))
+	astar.AddPoint(3, Vector2.New(1, 1))
+	astar.AddPoint(4, Vector2.New(2, 0))
 
-astar.connect_points(1, 2, true)
-astar.connect_points(1, 3, true)
+	AStar2D.Expanded(astar).ConnectPoints(1, 2, true)
+	AStar2D.Expanded(astar).ConnectPoints(1, 3, true)
 
-var neighbors = astar.get_point_connections(1) # Returns [2, 3]
-[/gdscript]
-[csharp]
-var astar = new AStar2D();
-astar.AddPoint(1, new Vector2(0, 0));
-astar.AddPoint(2, new Vector2(0, 1));
-astar.AddPoint(3, new Vector2(1, 1));
-astar.AddPoint(4, new Vector2(2, 0));
-
-astar.ConnectPoints(1, 2, true);
-astar.ConnectPoints(1, 3, true);
-
-long[] neighbors = astar.GetPointConnections(1); // Returns [2, 3]
-[/csharp]
+	var neighbors = astar.GetPointConnections(1) // Returns [2, 3]
 */
 func (self Instance) GetPointConnections(id Point) []Point { //gd:AStar2D.get_point_connections
 	return []Point(gd.IntsCollectAs[Point](Advanced(self).GetPointConnections(int64(id)).Values()))
@@ -317,18 +298,10 @@ func (self Instance) IsPointDisabled(id Point) bool { //gd:AStar2D.is_point_disa
 /*
 Creates a segment between the given points. If 'bidirectional' is false, only movement from 'id' to 'to_id' is allowed, not the reverse direction.
 
-[gdscript]
-var astar = AStar2D.new()
-astar.add_point(1, Vector2(1, 1))
-astar.add_point(2, Vector2(0, 5))
-astar.connect_points(1, 2, false)
-[/gdscript]
-[csharp]
-var astar = new AStar2D();
-astar.AddPoint(1, new Vector2(1, 1));
-astar.AddPoint(2, new Vector2(0, 5));
-astar.ConnectPoints(1, 2, false);
-[/csharp]
+	var astar = AStar2D.New()
+	astar.AddPoint(1, Vector2.New(1, 1))
+	astar.AddPoint(2, Vector2.New(0, 5))
+	AStar2D.Expanded(astar).ConnectPoints(1, 2, false)
 */
 func (self Instance) ConnectPoints(id Point, to_id Point) { //gd:AStar2D.connect_points
 	Advanced(self).ConnectPoints(int64(id), int64(to_id), true)
@@ -337,18 +310,10 @@ func (self Instance) ConnectPoints(id Point, to_id Point) { //gd:AStar2D.connect
 /*
 Creates a segment between the given points. If 'bidirectional' is false, only movement from 'id' to 'to_id' is allowed, not the reverse direction.
 
-[gdscript]
-var astar = AStar2D.new()
-astar.add_point(1, Vector2(1, 1))
-astar.add_point(2, Vector2(0, 5))
-astar.connect_points(1, 2, false)
-[/gdscript]
-[csharp]
-var astar = new AStar2D();
-astar.AddPoint(1, new Vector2(1, 1));
-astar.AddPoint(2, new Vector2(0, 5));
-astar.ConnectPoints(1, 2, false);
-[/csharp]
+	var astar = AStar2D.New()
+	astar.AddPoint(1, Vector2.New(1, 1))
+	astar.AddPoint(2, Vector2.New(0, 5))
+	AStar2D.Expanded(astar).ConnectPoints(1, 2, false)
 */
 func (self Expanded) ConnectPoints(id Point, to_id Point, bidirectional bool) { //gd:AStar2D.connect_points
 	Advanced(self).ConnectPoints(int64(id), int64(to_id), bidirectional)
@@ -412,6 +377,7 @@ func (self Instance) Clear() { //gd:AStar2D.clear
 
 /*
 Returns the ID of the closest point to 'to_position', optionally taking disabled points into account. Returns -1 if there are no points in the points pool.
+
 Note: If several points are the closest to 'to_position', the one with the smallest ID will be returned, ensuring a deterministic result.
 */
 func (self Instance) GetClosestPoint(to_position Vector2.XY) int { //gd:AStar2D.get_closest_point
@@ -420,6 +386,7 @@ func (self Instance) GetClosestPoint(to_position Vector2.XY) int { //gd:AStar2D.
 
 /*
 Returns the ID of the closest point to 'to_position', optionally taking disabled points into account. Returns -1 if there are no points in the points pool.
+
 Note: If several points are the closest to 'to_position', the one with the smallest ID will be returned, ensuring a deterministic result.
 */
 func (self Expanded) GetClosestPoint(to_position Vector2.XY, include_disabled bool) int { //gd:AStar2D.get_closest_point
@@ -429,20 +396,11 @@ func (self Expanded) GetClosestPoint(to_position Vector2.XY, include_disabled bo
 /*
 Returns the closest position to 'to_position' that resides inside a segment between two connected points.
 
-[gdscript]
-var astar = AStar2D.new()
-astar.add_point(1, Vector2(0, 0))
-astar.add_point(2, Vector2(0, 5))
-astar.connect_points(1, 2)
-var res = astar.get_closest_position_in_segment(Vector2(3, 3)) # Returns (0, 3)
-[/gdscript]
-[csharp]
-var astar = new AStar2D();
-astar.AddPoint(1, new Vector2(0, 0));
-astar.AddPoint(2, new Vector2(0, 5));
-astar.ConnectPoints(1, 2);
-Vector2 res = astar.GetClosestPositionInSegment(new Vector2(3, 3)); // Returns (0, 3)
-[/csharp]
+	var astar = AStar2D.New()
+	astar.AddPoint(1, Vector2.New(0, 0))
+	astar.AddPoint(2, Vector2.New(0, 5))
+	astar.ConnectPoints(1, 2)
+	var res = astar.GetClosestPositionInSegment(Vector2.New(3, 3)) // Returns (0, 3)
 
 The result is in the segment that goes from y = 0 to y = 5. It's the closest position in the segment to the given point.
 */
@@ -452,8 +410,11 @@ func (self Instance) GetClosestPositionInSegment(to_position Vector2.XY) Vector2
 
 /*
 Returns an array with the points that are in the path found by AStar2D between the given points. The array is ordered from the starting point to the ending point of the path.
+
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
-Note: This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
+
+Note: This method is not thread-safe. If called from a [graphics.gd/classdb/Thread], it will return an empty array and will print an error message.
+
 Additionally, when 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
 */
 func (self Instance) GetPointPath(from_id Point, to_id Point) []Vector2.XY { //gd:AStar2D.get_point_path
@@ -462,8 +423,11 @@ func (self Instance) GetPointPath(from_id Point, to_id Point) []Vector2.XY { //g
 
 /*
 Returns an array with the points that are in the path found by AStar2D between the given points. The array is ordered from the starting point to the ending point of the path.
+
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
-Note: This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
+
+Note: This method is not thread-safe. If called from a [graphics.gd/classdb/Thread], it will return an empty array and will print an error message.
+
 Additionally, when 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
 */
 func (self Expanded) GetPointPath(from_id Point, to_id Point, allow_partial_path bool) []Vector2.XY { //gd:AStar2D.get_point_path
@@ -472,36 +436,23 @@ func (self Expanded) GetPointPath(from_id Point, to_id Point, allow_partial_path
 
 /*
 Returns an array with the IDs of the points that form the path found by AStar2D between the given points. The array is ordered from the starting point to the ending point of the path.
+
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
+
 Note: When 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
 
-[gdscript]
-var astar = AStar2D.new()
-astar.add_point(1, Vector2(0, 0))
-astar.add_point(2, Vector2(0, 1), 1) # Default weight is 1
-astar.add_point(3, Vector2(1, 1))
-astar.add_point(4, Vector2(2, 0))
+	var astar = AStar2D.New()
+	astar.AddPoint(1, Vector2.New(0, 0))
+	AStar2D.Expanded(astar).AddPoint(2, Vector2.New(0, 1), 1) // Default weight is 1
+	astar.AddPoint(3, Vector2.New(1, 1))
+	astar.AddPoint(4, Vector2.New(2, 0))
 
-astar.connect_points(1, 2, false)
-astar.connect_points(2, 3, false)
-astar.connect_points(4, 3, false)
-astar.connect_points(1, 4, false)
+	AStar2D.Expanded(astar).ConnectPoints(1, 2, false)
+	AStar2D.Expanded(astar).ConnectPoints(2, 3, false)
+	AStar2D.Expanded(astar).ConnectPoints(4, 3, false)
+	AStar2D.Expanded(astar).ConnectPoints(1, 4, false)
 
-var res = astar.get_id_path(1, 3) # Returns [1, 2, 3]
-[/gdscript]
-[csharp]
-var astar = new AStar2D();
-astar.AddPoint(1, new Vector2(0, 0));
-astar.AddPoint(2, new Vector2(0, 1), 1); // Default weight is 1
-astar.AddPoint(3, new Vector2(1, 1));
-astar.AddPoint(4, new Vector2(2, 0));
-
-astar.ConnectPoints(1, 2, false);
-astar.ConnectPoints(2, 3, false);
-astar.ConnectPoints(4, 3, false);
-astar.ConnectPoints(1, 4, false);
-long[] res = astar.GetIdPath(1, 3); // Returns [1, 2, 3]
-[/csharp]
+	var res = astar.GetIdPath(1, 3) // Returns [1, 2, 3]
 
 If you change the 2nd point's weight to 3, then the result will be [1, 4, 3] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
 */
@@ -511,36 +462,23 @@ func (self Instance) GetIdPath(from_id Point, to_id Point) []Point { //gd:AStar2
 
 /*
 Returns an array with the IDs of the points that form the path found by AStar2D between the given points. The array is ordered from the starting point to the ending point of the path.
+
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
+
 Note: When 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
 
-[gdscript]
-var astar = AStar2D.new()
-astar.add_point(1, Vector2(0, 0))
-astar.add_point(2, Vector2(0, 1), 1) # Default weight is 1
-astar.add_point(3, Vector2(1, 1))
-astar.add_point(4, Vector2(2, 0))
+	var astar = AStar2D.New()
+	astar.AddPoint(1, Vector2.New(0, 0))
+	AStar2D.Expanded(astar).AddPoint(2, Vector2.New(0, 1), 1) // Default weight is 1
+	astar.AddPoint(3, Vector2.New(1, 1))
+	astar.AddPoint(4, Vector2.New(2, 0))
 
-astar.connect_points(1, 2, false)
-astar.connect_points(2, 3, false)
-astar.connect_points(4, 3, false)
-astar.connect_points(1, 4, false)
+	AStar2D.Expanded(astar).ConnectPoints(1, 2, false)
+	AStar2D.Expanded(astar).ConnectPoints(2, 3, false)
+	AStar2D.Expanded(astar).ConnectPoints(4, 3, false)
+	AStar2D.Expanded(astar).ConnectPoints(1, 4, false)
 
-var res = astar.get_id_path(1, 3) # Returns [1, 2, 3]
-[/gdscript]
-[csharp]
-var astar = new AStar2D();
-astar.AddPoint(1, new Vector2(0, 0));
-astar.AddPoint(2, new Vector2(0, 1), 1); // Default weight is 1
-astar.AddPoint(3, new Vector2(1, 1));
-astar.AddPoint(4, new Vector2(2, 0));
-
-astar.ConnectPoints(1, 2, false);
-astar.ConnectPoints(2, 3, false);
-astar.ConnectPoints(4, 3, false);
-astar.ConnectPoints(1, 4, false);
-long[] res = astar.GetIdPath(1, 3); // Returns [1, 2, 3]
-[/csharp]
+	var res = astar.GetIdPath(1, 3) // Returns [1, 2, 3]
 
 If you change the 2nd point's weight to 3, then the result will be [1, 4, 3] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
 */
@@ -593,7 +531,8 @@ func New() Instance {
 
 /*
 Called when estimating the cost between a point and the path's ending point.
-Note that this function is hidden in the default [AStar2D] class.
+
+Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
 */
 func (class) _estimate_cost(impl func(ptr gdclass.Receiver, from_id int64, end_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -607,7 +546,8 @@ func (class) _estimate_cost(impl func(ptr gdclass.Receiver, from_id int64, end_i
 
 /*
 Called when computing the cost between two connected points.
-Note that this function is hidden in the default [AStar2D] class.
+
+Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
 */
 func (class) _compute_cost(impl func(ptr gdclass.Receiver, from_id int64, to_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -631,16 +571,13 @@ func (self class) GetAvailablePointId() int64 { //gd:AStar2D.get_available_point
 
 /*
 Adds a new point at the given position with the given identifier. The 'id' must be 0 or larger, and the 'weight_scale' must be 0.0 or greater.
-The 'weight_scale' is multiplied by the result of [Instance.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
 
-[gdscript]
-var astar = AStar2D.new()
-astar.add_point(1, Vector2(1, 0), 4) # Adds the point (1, 0) with weight_scale 4 and id 1
-[/gdscript]
-[csharp]
-var astar = new AStar2D();
-astar.AddPoint(1, new Vector2(1, 0), 4); // Adds the point (1, 0) with weight_scale 4 and id 1
-[/csharp]
+The 'weight_scale' is multiplied by the result of [Interface.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
+
+
+	var astar = AStar2D.New()
+	AStar2D.Expanded(astar).AddPoint(1, Vector2.New(1, 0), 4) // Adds the point (1, 0) with weight_scale 4 and id 1
+
 
 If there already exists a point for the given 'id', its position and weight scale are updated to the given values.
 */
@@ -685,7 +622,7 @@ func (self class) GetPointWeightScale(id int64) float64 { //gd:AStar2D.get_point
 }
 
 /*
-Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is multiplied by the result of [Instance.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
+Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is multiplied by the result of [Interface.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
 */
 //go:nosplit
 func (self class) SetPointWeightScale(id int64, weight_scale float64) { //gd:AStar2D.set_point_weight_scale
@@ -716,30 +653,17 @@ func (self class) HasPoint(id int64) bool { //gd:AStar2D.has_point
 /*
 Returns an array with the IDs of the points that form the connection with the given point.
 
-[gdscript]
-var astar = AStar2D.new()
-astar.add_point(1, Vector2(0, 0))
-astar.add_point(2, Vector2(0, 1))
-astar.add_point(3, Vector2(1, 1))
-astar.add_point(4, Vector2(2, 0))
 
-astar.connect_points(1, 2, true)
-astar.connect_points(1, 3, true)
+	var astar = AStar2D.New()
+	astar.AddPoint(1, Vector2.New(0, 0))
+	astar.AddPoint(2, Vector2.New(0, 1))
+	astar.AddPoint(3, Vector2.New(1, 1))
+	astar.AddPoint(4, Vector2.New(2, 0))
 
-var neighbors = astar.get_point_connections(1) # Returns [2, 3]
-[/gdscript]
-[csharp]
-var astar = new AStar2D();
-astar.AddPoint(1, new Vector2(0, 0));
-astar.AddPoint(2, new Vector2(0, 1));
-astar.AddPoint(3, new Vector2(1, 1));
-astar.AddPoint(4, new Vector2(2, 0));
+	AStar2D.Expanded(astar).ConnectPoints(1, 2, true)
+	AStar2D.Expanded(astar).ConnectPoints(1, 3, true)
 
-astar.ConnectPoints(1, 2, true);
-astar.ConnectPoints(1, 3, true);
-
-long[] neighbors = astar.GetPointConnections(1); // Returns [2, 3]
-[/csharp]
+	var neighbors = astar.GetPointConnections(1) // Returns [2, 3]
 
 */
 //go:nosplit
@@ -783,18 +707,11 @@ func (self class) IsPointDisabled(id int64) bool { //gd:AStar2D.is_point_disable
 /*
 Creates a segment between the given points. If 'bidirectional' is false, only movement from 'id' to 'to_id' is allowed, not the reverse direction.
 
-[gdscript]
-var astar = AStar2D.new()
-astar.add_point(1, Vector2(1, 1))
-astar.add_point(2, Vector2(0, 5))
-astar.connect_points(1, 2, false)
-[/gdscript]
-[csharp]
-var astar = new AStar2D();
-astar.AddPoint(1, new Vector2(1, 1));
-astar.AddPoint(2, new Vector2(0, 5));
-astar.ConnectPoints(1, 2, false);
-[/csharp]
+
+	var astar = AStar2D.New()
+	astar.AddPoint(1, Vector2.New(1, 1))
+	astar.AddPoint(2, Vector2.New(0, 5))
+	AStar2D.Expanded(astar).ConnectPoints(1, 2, false)
 
 */
 //go:nosplit
@@ -870,6 +787,7 @@ func (self class) Clear() { //gd:AStar2D.clear
 
 /*
 Returns the ID of the closest point to 'to_position', optionally taking disabled points into account. Returns -1 if there are no points in the points pool.
+
 Note: If several points are the closest to 'to_position', the one with the smallest ID will be returned, ensuring a deterministic result.
 */
 //go:nosplit
@@ -885,20 +803,13 @@ func (self class) GetClosestPoint(to_position Vector2.XY, include_disabled bool)
 /*
 Returns the closest position to 'to_position' that resides inside a segment between two connected points.
 
-[gdscript]
-var astar = AStar2D.new()
-astar.add_point(1, Vector2(0, 0))
-astar.add_point(2, Vector2(0, 5))
-astar.connect_points(1, 2)
-var res = astar.get_closest_position_in_segment(Vector2(3, 3)) # Returns (0, 3)
-[/gdscript]
-[csharp]
-var astar = new AStar2D();
-astar.AddPoint(1, new Vector2(0, 0));
-astar.AddPoint(2, new Vector2(0, 5));
-astar.ConnectPoints(1, 2);
-Vector2 res = astar.GetClosestPositionInSegment(new Vector2(3, 3)); // Returns (0, 3)
-[/csharp]
+
+	var astar = AStar2D.New()
+	astar.AddPoint(1, Vector2.New(0, 0))
+	astar.AddPoint(2, Vector2.New(0, 5))
+	astar.ConnectPoints(1, 2)
+	var res = astar.GetClosestPositionInSegment(Vector2.New(3, 3)) // Returns (0, 3)
+
 
 The result is in the segment that goes from y = 0 to y = 5. It's the closest position in the segment to the given point.
 */
@@ -911,8 +822,11 @@ func (self class) GetClosestPositionInSegment(to_position Vector2.XY) Vector2.XY
 
 /*
 Returns an array with the points that are in the path found by AStar2D between the given points. The array is ordered from the starting point to the ending point of the path.
+
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
-Note: This method is not thread-safe. If called from a [Thread], it will return an empty array and will print an error message.
+
+Note: This method is not thread-safe. If called from a [graphics.gd/classdb/Thread], it will return an empty array and will print an error message.
+
 Additionally, when 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
 */
 //go:nosplit
@@ -928,36 +842,25 @@ func (self class) GetPointPath(from_id int64, to_id int64, allow_partial_path bo
 
 /*
 Returns an array with the IDs of the points that form the path found by AStar2D between the given points. The array is ordered from the starting point to the ending point of the path.
+
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
+
 Note: When 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
 
-[gdscript]
-var astar = AStar2D.new()
-astar.add_point(1, Vector2(0, 0))
-astar.add_point(2, Vector2(0, 1), 1) # Default weight is 1
-astar.add_point(3, Vector2(1, 1))
-astar.add_point(4, Vector2(2, 0))
 
-astar.connect_points(1, 2, false)
-astar.connect_points(2, 3, false)
-astar.connect_points(4, 3, false)
-astar.connect_points(1, 4, false)
+	var astar = AStar2D.New()
+	astar.AddPoint(1, Vector2.New(0, 0))
+	AStar2D.Expanded(astar).AddPoint(2, Vector2.New(0, 1), 1) // Default weight is 1
+	astar.AddPoint(3, Vector2.New(1, 1))
+	astar.AddPoint(4, Vector2.New(2, 0))
 
-var res = astar.get_id_path(1, 3) # Returns [1, 2, 3]
-[/gdscript]
-[csharp]
-var astar = new AStar2D();
-astar.AddPoint(1, new Vector2(0, 0));
-astar.AddPoint(2, new Vector2(0, 1), 1); // Default weight is 1
-astar.AddPoint(3, new Vector2(1, 1));
-astar.AddPoint(4, new Vector2(2, 0));
+	AStar2D.Expanded(astar).ConnectPoints(1, 2, false)
+	AStar2D.Expanded(astar).ConnectPoints(2, 3, false)
+	AStar2D.Expanded(astar).ConnectPoints(4, 3, false)
+	AStar2D.Expanded(astar).ConnectPoints(1, 4, false)
 
-astar.ConnectPoints(1, 2, false);
-astar.ConnectPoints(2, 3, false);
-astar.ConnectPoints(4, 3, false);
-astar.ConnectPoints(1, 4, false);
-long[] res = astar.GetIdPath(1, 3); // Returns [1, 2, 3]
-[/csharp]
+	var res = astar.GetIdPath(1, 3) // Returns [1, 2, 3]
+
 
 If you change the 2nd point's weight to 3, then the result will be [1, 4, 3] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
 */

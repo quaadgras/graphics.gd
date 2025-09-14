@@ -2,7 +2,8 @@
 
 /*
 This object holds information of all resources in the filesystem, their types, etc.
-Note: This class shouldn't be instantiated directly. Instead, access the singleton using [Instance.Editorinterface.GetResourceFilesystem].
+
+Note: This class shouldn't be instantiated directly. Instead, access the singleton using [graphics.gd/classdb/EditorInterface.GetResourceFilesystem].
 */
 package EditorFileSystem
 
@@ -144,6 +145,7 @@ func (self Instance) ScanSources() { //gd:EditorFileSystem.scan_sources
 
 /*
 Add a file in an existing directory, or schedule file information to be updated on editor restart. Can be used to update text files saved by an external program.
+
 This will not import the file. To reimport, call [Instance.ReimportFiles] or [Instance.Scan] methods.
 */
 func (self Instance) UpdateFile(path string) { //gd:EditorFileSystem.update_file
@@ -158,7 +160,7 @@ func (self Instance) GetFilesystemPath(path string) EditorFileSystemDirectory.In
 }
 
 /*
-Returns the resource type of the file, given the full path. This returns a string such as "Resource" or "GDScript", [i]not[/i] a file extension such as ".gd".
+Returns the resource type of the file, given the full path. This returns a string such as "Resource" or "GDScript", not a file extension such as ".gd".
 */
 func (self Instance) GetFileType(path string) string { //gd:EditorFileSystem.get_file_type
 	return string(Advanced(self).GetFileType(String.New(path)).String())
@@ -166,8 +168,10 @@ func (self Instance) GetFileType(path string) string { //gd:EditorFileSystem.get
 
 /*
 Reimports a set of files. Call this if these files or their .import files were directly edited by script or an external program.
+
 If the file type changed or the file was newly created, use [Instance.UpdateFile] or [Instance.Scan].
-Note: This function blocks until the import is finished. However, the main loop iteration, including timers and [Instance.Node.Process], will occur during the import process due to progress bar updates. Avoid calls to [Instance.ReimportFiles] or [Instance.Scan] while an import is in progress.
+
+Note: This function blocks until the import is finished. However, the main loop iteration, including timers and [graphics.gd/classdb/Node.Instance.Process], will occur during the import process due to progress bar updates. Avoid calls to [Instance.ReimportFiles] or [Instance.Scan] while an import is in progress.
 */
 func (self Instance) ReimportFiles(files []string) { //gd:EditorFileSystem.reimport_files
 	Advanced(self).ReimportFiles(Packed.MakeStrings(files...))
@@ -263,6 +267,7 @@ func (self class) ScanSources() { //gd:EditorFileSystem.scan_sources
 
 /*
 Add a file in an existing directory, or schedule file information to be updated on editor restart. Can be used to update text files saved by an external program.
+
 This will not import the file. To reimport, call [Instance.ReimportFiles] or [Instance.Scan] methods.
 */
 //go:nosplit
@@ -281,7 +286,7 @@ func (self class) GetFilesystemPath(path String.Readable) [1]gdclass.EditorFileS
 }
 
 /*
-Returns the resource type of the file, given the full path. This returns a string such as "Resource" or "GDScript", [i]not[/i] a file extension such as ".gd".
+Returns the resource type of the file, given the full path. This returns a string such as "Resource" or "GDScript", not a file extension such as ".gd".
 */
 //go:nosplit
 func (self class) GetFileType(path String.Readable) String.Readable { //gd:EditorFileSystem.get_file_type
@@ -292,8 +297,10 @@ func (self class) GetFileType(path String.Readable) String.Readable { //gd:Edito
 
 /*
 Reimports a set of files. Call this if these files or their .import files were directly edited by script or an external program.
+
 If the file type changed or the file was newly created, use [Instance.UpdateFile] or [Instance.Scan].
-Note: This function blocks until the import is finished. However, the main loop iteration, including timers and [Instance.Node.Process], will occur during the import process due to progress bar updates. Avoid calls to [Instance.ReimportFiles] or [Instance.Scan] while an import is in progress.
+
+Note: This function blocks until the import is finished. However, the main loop iteration, including timers and [graphics.gd/classdb/Node.Instance.Process], will occur during the import process due to progress bar updates. Avoid calls to [Instance.ReimportFiles] or [Instance.Scan] while an import is in progress.
 */
 //go:nosplit
 func (self class) ReimportFiles(files Packed.Strings) { //gd:EditorFileSystem.reimport_files

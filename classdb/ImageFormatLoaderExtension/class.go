@@ -2,6 +2,7 @@
 
 /*
 The engine supports multiple image formats out of the box (PNG, SVG, JPEG, WebP to name a few), but you can choose to implement support for additional image formats by extending this class.
+
 Be sure to respect the documented return types and values. You should create an instance of it, and call [Instance.AddFormatLoader] to register that loader during the initialization phase.
 */
 package ImageFormatLoaderExtension
@@ -67,12 +68,11 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 // Instance of the class with convieniently typed arguments and results.
-// See [Interface] for methods that can be overridden by a [Class] that extends it.
 type Instance [1]gdclass.ImageFormatLoaderExtension
 
 var otype gdextension.ObjectType
@@ -101,10 +101,11 @@ type Any interface {
 	gd.IsClass
 	AsImageFormatLoaderExtension() Instance
 }
+
 type Interface interface {
-	//Returns the list of file extensions for this image format. Files with the given extensions will be treated as image file and loaded using this class.
+	// Returns the list of file extensions for this image format. Files with the given extensions will be treated as image file and loaded using this class.
 	GetRecognizedExtensions() []string
-	//Loads the content of [param fileaccess] into the provided [param image].
+	// Loads the content of 'fileaccess' into the provided 'image'.
 	LoadImage(image Image.Instance, fileaccess FileAccess.Instance, flags ImageFormatLoader.LoaderFlags, scale Float.X) error
 }
 
@@ -159,7 +160,7 @@ func (Instance) _load_image(impl func(ptr gdclass.Receiver, image Image.Instance
 }
 
 /*
-Add this format loader to the engine, allowing it to recognize the file extensions returned by [Instance.GetRecognizedExtensions].
+Add this format loader to the engine, allowing it to recognize the file extensions returned by [Interface.GetRecognizedExtensions].
 */
 func (self Instance) AddFormatLoader() { //gd:ImageFormatLoaderExtension.add_format_loader
 	Advanced(self).AddFormatLoader()
@@ -256,7 +257,7 @@ func (class) _load_image(impl func(ptr gdclass.Receiver, image [1]gdclass.Image,
 }
 
 /*
-Add this format loader to the engine, allowing it to recognize the file extensions returned by [Instance.GetRecognizedExtensions].
+Add this format loader to the engine, allowing it to recognize the file extensions returned by [Interface.GetRecognizedExtensions].
 */
 //go:nosplit
 func (self class) AddFormatLoader() { //gd:ImageFormatLoaderExtension.add_format_loader

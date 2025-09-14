@@ -2,9 +2,13 @@
 
 /*
 An atlas is a grid of tiles laid out on a texture. Each tile in the grid must be exposed using [Instance.CreateTile]. Those tiles are then indexed using their coordinates in the grid.
+
 Each tile can also have a size in the grid coordinates, making it more or less cells in the atlas.
+
 Alternatives version of a tile can be created using [Instance.CreateAlternativeTile], which are then indexed using an alternative ID. The main tile (the one in the grid), is accessed with an alternative ID equal to 0.
-Each tile alternate has a set of properties that is defined by the source's [TileSet] layers. Those properties are stored in a TileData object that can be accessed and modified using [Instance.GetTileData].
+
+Each tile alternate has a set of properties that is defined by the source's [graphics.gd/classdb/TileSet] layers. Those properties are stored in a TileData object that can be accessed and modified using [Instance.GetTileData].
+
 As TileData properties are stored directly in the TileSetAtlasSource resource, their properties might also be set using TileSetAtlasSource.set("<coords_x>:<coords_y>/<alternative_id>/<tile_data_property>").
 */
 package TileSetAtlasSource
@@ -172,7 +176,9 @@ func (self Instance) RemoveTile(atlas_coords Vector2i.XY) { //gd:TileSetAtlasSou
 
 /*
 Move the tile and its alternatives at the 'atlas_coords' coordinates to the 'new_atlas_coords' coordinates with the 'new_size' size. This functions will fail if a tile is already present in the given area.
+
 If 'new_atlas_coords' is Vector2i(-1, -1), keeps the tile's coordinates. If 'new_size' is Vector2i(-1, -1), keeps the tile's size.
+
 To avoid an error, first check if a move is possible using [Instance.HasRoomForTile].
 */
 func (self Instance) MoveTileInAtlas(atlas_coords Vector2i.XY) { //gd:TileSetAtlasSource.move_tile_in_atlas
@@ -181,7 +187,9 @@ func (self Instance) MoveTileInAtlas(atlas_coords Vector2i.XY) { //gd:TileSetAtl
 
 /*
 Move the tile and its alternatives at the 'atlas_coords' coordinates to the 'new_atlas_coords' coordinates with the 'new_size' size. This functions will fail if a tile is already present in the given area.
+
 If 'new_atlas_coords' is Vector2i(-1, -1), keeps the tile's coordinates. If 'new_size' is Vector2i(-1, -1), keeps the tile's size.
+
 To avoid an error, first check if a move is possible using [Instance.HasRoomForTile].
 */
 func (self Expanded) MoveTileInAtlas(atlas_coords Vector2i.XY, new_atlas_coords Vector2i.XY, new_size Vector2i.XY) { //gd:TileSetAtlasSource.move_tile_in_atlas
@@ -330,6 +338,7 @@ func (self Instance) GetTileAnimationTotalDuration(atlas_coords Vector2i.XY) Flo
 
 /*
 Creates an alternative tile for the tile at coordinates 'atlas_coords'. If 'alternative_id_override' is -1, give it an automatically generated unique ID, or assigns it the given ID otherwise.
+
 Returns the new alternative identifier, or -1 if the alternative could not be created with a provided 'alternative_id_override'.
 */
 func (self Instance) CreateAlternativeTile(atlas_coords Vector2i.XY) int { //gd:TileSetAtlasSource.create_alternative_tile
@@ -338,6 +347,7 @@ func (self Instance) CreateAlternativeTile(atlas_coords Vector2i.XY) int { //gd:
 
 /*
 Creates an alternative tile for the tile at coordinates 'atlas_coords'. If 'alternative_id_override' is -1, give it an automatically generated unique ID, or assigns it the given ID otherwise.
+
 Returns the new alternative identifier, or -1 if the alternative could not be created with a provided 'alternative_id_override'.
 */
 func (self Expanded) CreateAlternativeTile(atlas_coords Vector2i.XY, alternative_id_override int) int { //gd:TileSetAtlasSource.create_alternative_tile
@@ -346,6 +356,7 @@ func (self Expanded) CreateAlternativeTile(atlas_coords Vector2i.XY, alternative
 
 /*
 Remove a tile's alternative with alternative ID 'alternative_tile'.
+
 Calling this function with 'alternative_tile' equals to 0 will fail, as the base tile alternative cannot be removed.
 */
 func (self Instance) RemoveAlternativeTile(atlas_coords Vector2i.XY, alternative_tile int) { //gd:TileSetAtlasSource.remove_alternative_tile
@@ -354,6 +365,7 @@ func (self Instance) RemoveAlternativeTile(atlas_coords Vector2i.XY, alternative
 
 /*
 Change a tile's alternative ID from 'alternative_tile' to 'new_id'.
+
 Calling this function with 'new_id' of 0 will fail, as the base tile alternative cannot be moved.
 */
 func (self Instance) SetAlternativeTileId(atlas_coords Vector2i.XY, alternative_tile int, new_id int) { //gd:TileSetAtlasSource.set_alternative_tile_id
@@ -368,14 +380,14 @@ func (self Instance) GetNextAlternativeTileId(atlas_coords Vector2i.XY) int { //
 }
 
 /*
-Returns the [TileData] object for the given atlas coordinates and alternative ID.
+Returns the [graphics.gd/classdb/TileData] object for the given atlas coordinates and alternative ID.
 */
 func (self Instance) GetTileData(atlas_coords Vector2i.XY, alternative_tile int) TileData.Instance { //gd:TileSetAtlasSource.get_tile_data
 	return TileData.Instance(Advanced(self).GetTileData(Vector2i.XY(atlas_coords), int64(alternative_tile)))
 }
 
 /*
-Returns the atlas grid size, which depends on how many tiles can fit in the texture. It thus depends on the [member texture]'s size, the atlas [member margins], and the tiles' [member texture_region_size].
+Returns the atlas grid size, which depends on how many tiles can fit in the texture. It thus depends on the [Instance.Texture]'s size, the atlas [Instance.Margins], and the tiles' [Instance.TextureRegionSize].
 */
 func (self Instance) GetAtlasGridSize() Vector2i.XY { //gd:TileSetAtlasSource.get_atlas_grid_size
 	return Vector2i.XY(Advanced(self).GetAtlasGridSize())
@@ -396,7 +408,7 @@ func (self Expanded) GetTileTextureRegion(atlas_coords Vector2i.XY, frame_ int) 
 }
 
 /*
-If [member use_texture_padding] is false, returns [member texture]. Otherwise, returns and internal [ImageTexture] created that includes the padding.
+If [Instance.UseTexturePadding] is false, returns [Instance.Texture]. Otherwise, returns and internal [graphics.gd/classdb/ImageTexture] created that includes the padding.
 */
 func (self Instance) GetRuntimeTexture() Texture2D.Instance { //gd:TileSetAtlasSource.get_runtime_texture
 	return Texture2D.Instance(Advanced(self).GetRuntimeTexture())
@@ -404,7 +416,8 @@ func (self Instance) GetRuntimeTexture() Texture2D.Instance { //gd:TileSetAtlasS
 
 /*
 Returns the region of the tile at coordinates 'atlas_coords' for the given 'frame' inside the texture returned by [Instance.GetRuntimeTexture].
-Note: If [member use_texture_padding] is false, returns the same as [Instance.GetTileTextureRegion].
+
+Note: If [Instance.UseTexturePadding] is false, returns the same as [Instance.GetTileTextureRegion].
 */
 func (self Instance) GetRuntimeTileTextureRegion(atlas_coords Vector2i.XY, frame_ int) Rect2i.PositionSize { //gd:TileSetAtlasSource.get_runtime_tile_texture_region
 	return Rect2i.PositionSize(Advanced(self).GetRuntimeTileTextureRegion(Vector2i.XY(atlas_coords), int64(frame_)))
@@ -574,7 +587,9 @@ func (self class) RemoveTile(atlas_coords Vector2i.XY) { //gd:TileSetAtlasSource
 
 /*
 Move the tile and its alternatives at the 'atlas_coords' coordinates to the 'new_atlas_coords' coordinates with the 'new_size' size. This functions will fail if a tile is already present in the given area.
+
 If 'new_atlas_coords' is Vector2i(-1, -1), keeps the tile's coordinates. If 'new_size' is Vector2i(-1, -1), keeps the tile's size.
+
 To avoid an error, first check if a move is possible using [Instance.HasRoomForTile].
 */
 //go:nosplit
@@ -798,6 +813,7 @@ func (self class) GetTileAnimationTotalDuration(atlas_coords Vector2i.XY) float6
 
 /*
 Creates an alternative tile for the tile at coordinates 'atlas_coords'. If 'alternative_id_override' is -1, give it an automatically generated unique ID, or assigns it the given ID otherwise.
+
 Returns the new alternative identifier, or -1 if the alternative could not be created with a provided 'alternative_id_override'.
 */
 //go:nosplit
@@ -812,6 +828,7 @@ func (self class) CreateAlternativeTile(atlas_coords Vector2i.XY, alternative_id
 
 /*
 Remove a tile's alternative with alternative ID 'alternative_tile'.
+
 Calling this function with 'alternative_tile' equals to 0 will fail, as the base tile alternative cannot be removed.
 */
 //go:nosplit
@@ -824,6 +841,7 @@ func (self class) RemoveAlternativeTile(atlas_coords Vector2i.XY, alternative_ti
 
 /*
 Change a tile's alternative ID from 'alternative_tile' to 'new_id'.
+
 Calling this function with 'new_id' of 0 will fail, as the base tile alternative cannot be moved.
 */
 //go:nosplit
@@ -846,7 +864,7 @@ func (self class) GetNextAlternativeTileId(atlas_coords Vector2i.XY) int64 { //g
 }
 
 /*
-Returns the [TileData] object for the given atlas coordinates and alternative ID.
+Returns the [graphics.gd/classdb/TileData] object for the given atlas coordinates and alternative ID.
 */
 //go:nosplit
 func (self class) GetTileData(atlas_coords Vector2i.XY, alternative_tile int64) [1]gdclass.TileData { //gd:TileSetAtlasSource.get_tile_data
@@ -859,7 +877,7 @@ func (self class) GetTileData(atlas_coords Vector2i.XY, alternative_tile int64) 
 }
 
 /*
-Returns the atlas grid size, which depends on how many tiles can fit in the texture. It thus depends on the [member texture]'s size, the atlas [member margins], and the tiles' [member texture_region_size].
+Returns the atlas grid size, which depends on how many tiles can fit in the texture. It thus depends on the [Instance.Texture]'s size, the atlas [Instance.Margins], and the tiles' [Instance.TextureRegionSize].
 */
 //go:nosplit
 func (self class) GetAtlasGridSize() Vector2i.XY { //gd:TileSetAtlasSource.get_atlas_grid_size
@@ -882,7 +900,7 @@ func (self class) GetTileTextureRegion(atlas_coords Vector2i.XY, frame_ int64) R
 }
 
 /*
-If [member use_texture_padding] is false, returns [member texture]. Otherwise, returns and internal [ImageTexture] created that includes the padding.
+If [Instance.UseTexturePadding] is false, returns [Instance.Texture]. Otherwise, returns and internal [graphics.gd/classdb/ImageTexture] created that includes the padding.
 */
 //go:nosplit
 func (self class) GetRuntimeTexture() [1]gdclass.Texture2D { //gd:TileSetAtlasSource.get_runtime_texture
@@ -893,7 +911,8 @@ func (self class) GetRuntimeTexture() [1]gdclass.Texture2D { //gd:TileSetAtlasSo
 
 /*
 Returns the region of the tile at coordinates 'atlas_coords' for the given 'frame' inside the texture returned by [Instance.GetRuntimeTexture].
-Note: If [member use_texture_padding] is false, returns the same as [Instance.GetTileTextureRegion].
+
+Note: If [Instance.UseTexturePadding] is false, returns the same as [Instance.GetTileTextureRegion].
 */
 //go:nosplit
 func (self class) GetRuntimeTileTextureRegion(atlas_coords Vector2i.XY, frame_ int64) Rect2i.PositionSize { //gd:TileSetAtlasSource.get_runtime_tile_texture_region
@@ -955,11 +974,11 @@ func init() {
 type TileAnimationMode int //gd:TileSetAtlasSource.TileAnimationMode
 
 const (
-	/*Tile animations start at same time, looking identical.*/
+	// Tile animations start at same time, looking identical.
 	TileAnimationModeDefault TileAnimationMode = 0
-	/*Tile animations start at random times, looking varied.*/
+	// Tile animations start at random times, looking varied.
 	TileAnimationModeRandomStartTimes TileAnimationMode = 1
-	/*Represents the size of the [enum TileAnimationMode] enum.*/
+	// Represents the size of the [TileAnimationMode] enum.
 	TileAnimationModeMax TileAnimationMode = 2
 )
 const TransformFlipH = 4096      //gd:TileSetAtlasSource.TRANSFORM_FLIP_H

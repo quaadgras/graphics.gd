@@ -2,7 +2,8 @@
 
 /*
 Imported scenes can be automatically modified right after import by setting their Custom Script Import property to a tool script that inherits from this class.
-The [Instance.PostImport] callback receives the imported scene's root node and returns the modified version of the scene:
+
+The [Interface.PostImport] callback receives the imported scene's root node and returns the modified version of the scene:
 
 	package main
 
@@ -90,12 +91,11 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 // Instance of the class with convieniently typed arguments and results.
-// See [Interface] for methods that can be overridden by a [Class] that extends it.
 type Instance [1]gdclass.EditorScenePostImport
 
 var otype gdextension.ObjectType
@@ -123,8 +123,9 @@ type Any interface {
 	gd.IsClass
 	AsEditorScenePostImport() Instance
 }
+
 type Interface interface {
-	//Called after the scene was imported. This method must return the modified version of the scene.
+	// Called after the scene was imported. This method must return the modified version of the scene.
 	PostImport(scene Node.Instance) Object.Instance
 }
 

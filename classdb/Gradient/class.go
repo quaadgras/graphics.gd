@@ -2,7 +2,8 @@
 
 /*
 This resource describes a color transition by defining a set of colored points and how to interpolate between them.
-See also [Curve] which supports more complex easing methods, but does not support colors.
+
+See also [graphics.gd/classdb/Curve] which supports more complex easing methods, but does not support colors.
 */
 package Gradient
 
@@ -145,7 +146,8 @@ func (self Instance) GetOffset(point int) Float.X { //gd:Gradient.get_offset
 
 /*
 Reverses/mirrors the gradient.
-Note: This method mirrors all points around the middle of the gradient, which may produce unexpected results when [member interpolation_mode] is set to [GradientInterpolateConstant].
+
+Note: This method mirrors all points around the middle of the gradient, which may produce unexpected results when [Instance.InterpolationMode] is set to [GradientInterpolateConstant].
 */
 func (self Instance) Reverse() { //gd:Gradient.reverse
 	Advanced(self).Reverse()
@@ -296,7 +298,8 @@ func (self class) GetOffset(point int64) float64 { //gd:Gradient.get_offset
 
 /*
 Reverses/mirrors the gradient.
-Note: This method mirrors all points around the middle of the gradient, which may produce unexpected results when [member interpolation_mode] is set to [GradientInterpolateConstant].
+
+Note: This method mirrors all points around the middle of the gradient, which may produce unexpected results when [Instance.InterpolationMode] is set to [GradientInterpolateConstant].
 */
 //go:nosplit
 func (self class) Reverse() { //gd:Gradient.reverse
@@ -433,21 +436,23 @@ func init() {
 type InterpolationMode int //gd:Gradient.InterpolationMode
 
 const (
-	/*Linear interpolation.*/
+	// Linear interpolation.
 	GradientInterpolateLinear InterpolationMode = 0
-	/*Constant interpolation, color changes abruptly at each point and stays uniform between. This might cause visible aliasing when used for a gradient texture in some cases.*/
+	// Constant interpolation, color changes abruptly at each point and stays uniform between. This might cause visible aliasing when used for a gradient texture in some cases.
 	GradientInterpolateConstant InterpolationMode = 1
-	/*Cubic interpolation.*/
+	// Cubic interpolation.
 	GradientInterpolateCubic InterpolationMode = 2
 )
 
 type ColorSpace int //gd:Gradient.ColorSpace
 
 const (
-	/*sRGB color space.*/
+	// sRGB color space.
 	GradientColorSpaceSrgb ColorSpace = 0
-	/*Linear sRGB color space.*/
+	// Linear sRGB color space.
 	GradientColorSpaceLinearSrgb ColorSpace = 1
-	/*[url=https://bottosson.github.io/posts/oklab/]Oklab[/url] color space. This color space provides a smooth and uniform-looking transition between colors.*/
+	// [Oklab] color space. This color space provides a smooth and uniform-looking transition between colors.
+	//
+	// [Oklab]: https://bottosson.github.io/posts/oklab/
 	GradientColorSpaceOklab ColorSpace = 2
 )

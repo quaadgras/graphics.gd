@@ -2,6 +2,7 @@
 
 /*
 Different types are available: clip, tan, lo-fi (bit crushing), overdrive, or waveshape.
+
 By distorting the waveform the frequency content changes, which will often make the sound "crunchy" or "abrasive". For games, it can simulate sound coming from some saturated device or speaker very efficiently.
 */
 package AudioEffectDistortion
@@ -301,13 +302,13 @@ func init() {
 type Mode int //gd:AudioEffectDistortion.Mode
 
 const (
-	/*Digital distortion effect which cuts off peaks at the top and bottom of the waveform.*/
+	// Digital distortion effect which cuts off peaks at the top and bottom of the waveform.
 	ModeClip Mode = 0
 	ModeAtan Mode = 1
-	/*Low-resolution digital distortion effect (bit depth reduction). You can use it to emulate the sound of early digital audio devices.*/
+	// Low-resolution digital distortion effect (bit depth reduction). You can use it to emulate the sound of early digital audio devices.
 	ModeLofi Mode = 2
-	/*Emulates the warm distortion produced by a field effect transistor, which is commonly used in solid-state musical instrument amplifiers. The [member drive] property has no effect in this mode.*/
+	// Emulates the warm distortion produced by a field effect transistor, which is commonly used in solid-state musical instrument amplifiers. The [Instance.Drive] property has no effect in this mode.
 	ModeOverdrive Mode = 3
-	/*Waveshaper distortions are used mainly by electronic musicians to achieve an extra-abrasive sound.*/
+	// Waveshaper distortions are used mainly by electronic musicians to achieve an extra-abrasive sound.
 	ModeWaveshape Mode = 4
 )

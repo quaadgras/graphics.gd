@@ -2,9 +2,12 @@
 
 /*
 A singleton used to load resource files from the filesystem.
-It uses the many [ResourceFormatLoader] classes registered in the engine (either built-in or from a plugin) to load files into memory and convert them to a format that can be used by the engine.
-Note: You have to import the files into the engine first to load them using [Instance.Load]. If you want to load [Image]s at run-time, you may use [Instance.Image.Load]. If you want to import audio files, you can use the snippet described in [member AudioStreamMP3.data].
-Note: Non-resource files such as plain text files cannot be read using [ResourceLoader]. Use [FileAccess] for those files instead, and be aware that non-resource files are not exported by default (see notes in the [FileAccess] class description for instructions on exporting them).
+
+It uses the many [graphics.gd/classdb/ResourceFormatLoader] classes registered in the engine (either built-in or from a plugin) to load files into memory and convert them to a format that can be used by the engine.
+
+Note: You have to import the files into the engine first to load them using [Load]. If you want to load [graphics.gd/classdb/Image]s at run-time, you may use [graphics.gd/classdb/Image.Instance.Load]. If you want to import audio files, you can use the snippet described in [graphics.gd/classdb/AudioStreamMP3.Instance.Data].
+
+Note: Non-resource files such as plain text files cannot be read using [graphics.gd/classdb/ResourceLoader]. Use [graphics.gd/classdb/FileAccess] for those files instead, and be aware that non-resource files are not exported by default (see notes in the [graphics.gd/classdb/FileAccess] class description for instructions on exporting them).
 */
 package ResourceLoader
 
@@ -116,6 +119,7 @@ func singleton() {
 
 /*
 Loads the resource using threads. If 'use_sub_threads' is true, multiple threads will be used to load the resource, which makes loading faster, but may affect the main thread (and thus cause game slowdowns).
+
 The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource. See [CacheMode] for details.
 */
 func LoadThreadedRequest(path string, type_hint string, use_sub_threads bool) error { //gd:ResourceLoader.load_threaded_request
@@ -125,6 +129,7 @@ func LoadThreadedRequest(path string, type_hint string, use_sub_threads bool) er
 
 /*
 Loads the resource using threads. If 'use_sub_threads' is true, multiple threads will be used to load the resource, which makes loading faster, but may affect the main thread (and thus cause game slowdowns).
+
 The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource. See [CacheMode] for details.
 */
 func LoadThreadedRequestOptions(path string, type_hint string, use_sub_threads bool, cache_mode CacheMode) error { //gd:ResourceLoader.load_threaded_request
@@ -133,9 +138,11 @@ func LoadThreadedRequestOptions(path string, type_hint string, use_sub_threads b
 }
 
 /*
-Returns the status of a threaded loading operation started with [Instance.LoadThreadedRequest] for the resource at 'path'. See [ThreadLoadStatus] for possible return values.
+Returns the status of a threaded loading operation started with [LoadThreadedRequest] for the resource at 'path'. See [ThreadLoadStatus] for possible return values.
+
 An array variable can optionally be passed via 'progress', and will return a one-element array containing the ratio of completion of the threaded loading (between 0.0 and 1.0).
-Note: The recommended way of using this method is to call it during different frames (e.g., in [Instance.Node.Process], instead of a loop).
+
+Note: The recommended way of using this method is to call it during different frames (e.g., in [graphics.gd/classdb/Node.Instance.Process], instead of a loop).
 */
 func LoadThreadedGetStatus(path string, progress []any) ThreadLoadStatus { //gd:ResourceLoader.load_threaded_get_status
 	once.Do(singleton)
@@ -143,9 +150,11 @@ func LoadThreadedGetStatus(path string, progress []any) ThreadLoadStatus { //gd:
 }
 
 /*
-Returns the status of a threaded loading operation started with [Instance.LoadThreadedRequest] for the resource at 'path'. See [ThreadLoadStatus] for possible return values.
+Returns the status of a threaded loading operation started with [LoadThreadedRequest] for the resource at 'path'. See [ThreadLoadStatus] for possible return values.
+
 An array variable can optionally be passed via 'progress', and will return a one-element array containing the ratio of completion of the threaded loading (between 0.0 and 1.0).
-Note: The recommended way of using this method is to call it during different frames (e.g., in [Instance.Node.Process], instead of a loop).
+
+Note: The recommended way of using this method is to call it during different frames (e.g., in [graphics.gd/classdb/Node.Instance.Process], instead of a loop).
 */
 func LoadThreadedGetStatusOptions(path string, progress []any) ThreadLoadStatus { //gd:ResourceLoader.load_threaded_get_status
 	once.Do(singleton)
@@ -153,8 +162,9 @@ func LoadThreadedGetStatusOptions(path string, progress []any) ThreadLoadStatus 
 }
 
 /*
-Returns the resource loaded by [Instance.LoadThreadedRequest].
-If this is called before the loading thread is done (i.e. [Instance.LoadThreadedGetStatus] is not [ThreadLoadLoaded]), the calling thread will be blocked until the resource has finished loading. However, it's recommended to use [Instance.LoadThreadedGetStatus] to known when the load has actually completed.
+Returns the resource loaded by [LoadThreadedRequest].
+
+If this is called before the loading thread is done (i.e. [LoadThreadedGetStatus] is not [ThreadLoadLoaded]), the calling thread will be blocked until the resource has finished loading. However, it's recommended to use [LoadThreadedGetStatus] to known when the load has actually completed.
 */
 func LoadThreadedGet(path string) Resource.Instance { //gd:ResourceLoader.load_threaded_get
 	once.Do(singleton)
@@ -163,12 +173,19 @@ func LoadThreadedGet(path string) Resource.Instance { //gd:ResourceLoader.load_t
 
 /*
 Loads a resource at the given 'path', caching the result for further access.
-The registered [ResourceFormatLoader]s are queried sequentially to find the first one which can handle the file's extension, and then attempt loading. If loading fails, the remaining ResourceFormatLoaders are also attempted.
-An optional 'type_hint' can be used to further specify the [Resource] type that should be handled by the [ResourceFormatLoader]. Anything that inherits from [Resource] can be used as a type hint, for example [Image].
+
+The registered [graphics.gd/classdb/ResourceFormatLoader]s are queried sequentially to find the first one which can handle the file's extension, and then attempt loading. If loading fails, the remaining ResourceFormatLoaders are also attempted.
+
+An optional 'type_hint' can be used to further specify the [graphics.gd/classdb/Resource] type that should be handled by the [graphics.gd/classdb/ResourceFormatLoader]. Anything that inherits from [graphics.gd/classdb/Resource] can be used as a type hint, for example [graphics.gd/classdb/Image].
+
 The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource. See [CacheMode] for details.
-Returns an empty resource if no [ResourceFormatLoader] could handle the file, and prints an error if no file is found at the specified path.
-GDScript has a simplified [Instance.@Gdscript.Load] built-in method which can be used in most situations, leaving the use of [ResourceLoader] for more advanced scenarios.
-Note: If [member ProjectSettings.editor/export/convert_text_resources_to_binary] is true, [Instance.@Gdscript.Load] will not be able to read converted files in an exported project. If you rely on run-time loading of files present within the PCK, set [member ProjectSettings.editor/export/convert_text_resources_to_binary] to false.
+
+Returns an empty resource if no [graphics.gd/classdb/ResourceFormatLoader] could handle the file, and prints an error if no file is found at the specified path.
+
+GDScript has a simplified [graphics.gd/classdb/@GDScript.Instance.Load] built-in method which can be used in most situations, leaving the use of [graphics.gd/classdb/ResourceLoader] for more advanced scenarios.
+
+Note: If [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary" is true, [graphics.gd/classdb/@GDScript.Instance.Load] will not be able to read converted files in an exported project. If you rely on run-time loading of files present within the PCK, set [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary" to false.
+
 Note: Relative paths will be prefixed with "res://" before loading, to avoid unexpected results make sure your paths are absolute.
 */
 func Load(path string, type_hint string) Resource.Instance { //gd:ResourceLoader.load
@@ -178,12 +195,19 @@ func Load(path string, type_hint string) Resource.Instance { //gd:ResourceLoader
 
 /*
 Loads a resource at the given 'path', caching the result for further access.
-The registered [ResourceFormatLoader]s are queried sequentially to find the first one which can handle the file's extension, and then attempt loading. If loading fails, the remaining ResourceFormatLoaders are also attempted.
-An optional 'type_hint' can be used to further specify the [Resource] type that should be handled by the [ResourceFormatLoader]. Anything that inherits from [Resource] can be used as a type hint, for example [Image].
+
+The registered [graphics.gd/classdb/ResourceFormatLoader]s are queried sequentially to find the first one which can handle the file's extension, and then attempt loading. If loading fails, the remaining ResourceFormatLoaders are also attempted.
+
+An optional 'type_hint' can be used to further specify the [graphics.gd/classdb/Resource] type that should be handled by the [graphics.gd/classdb/ResourceFormatLoader]. Anything that inherits from [graphics.gd/classdb/Resource] can be used as a type hint, for example [graphics.gd/classdb/Image].
+
 The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource. See [CacheMode] for details.
-Returns an empty resource if no [ResourceFormatLoader] could handle the file, and prints an error if no file is found at the specified path.
-GDScript has a simplified [Instance.@Gdscript.Load] built-in method which can be used in most situations, leaving the use of [ResourceLoader] for more advanced scenarios.
-Note: If [member ProjectSettings.editor/export/convert_text_resources_to_binary] is true, [Instance.@Gdscript.Load] will not be able to read converted files in an exported project. If you rely on run-time loading of files present within the PCK, set [member ProjectSettings.editor/export/convert_text_resources_to_binary] to false.
+
+Returns an empty resource if no [graphics.gd/classdb/ResourceFormatLoader] could handle the file, and prints an error if no file is found at the specified path.
+
+GDScript has a simplified [graphics.gd/classdb/@GDScript.Instance.Load] built-in method which can be used in most situations, leaving the use of [graphics.gd/classdb/ResourceLoader] for more advanced scenarios.
+
+Note: If [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary" is true, [graphics.gd/classdb/@GDScript.Instance.Load] will not be able to read converted files in an exported project. If you rely on run-time loading of files present within the PCK, set [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary" to false.
+
 Note: Relative paths will be prefixed with "res://" before loading, to avoid unexpected results make sure your paths are absolute.
 */
 func LoadOptions(path string, type_hint string, cache_mode CacheMode) Resource.Instance { //gd:ResourceLoader.load
@@ -200,8 +224,9 @@ func GetRecognizedExtensionsForType(atype string) []string { //gd:ResourceLoader
 }
 
 /*
-Registers a new [ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [Instance.Load].
-This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [ResourceFormatLoader] for more information).
+Registers a new [graphics.gd/classdb/ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [Load].
+
+This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [graphics.gd/classdb/ResourceFormatLoader] for more information).
 */
 func AddResourceFormatLoader(format_loader ResourceFormatLoader.Instance, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
 	once.Do(singleton)
@@ -209,8 +234,9 @@ func AddResourceFormatLoader(format_loader ResourceFormatLoader.Instance, at_fro
 }
 
 /*
-Registers a new [ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [Instance.Load].
-This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [ResourceFormatLoader] for more information).
+Registers a new [graphics.gd/classdb/ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [Load].
+
+This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [graphics.gd/classdb/ResourceFormatLoader] for more information).
 */
 func AddResourceFormatLoaderOptions(format_loader ResourceFormatLoader.Instance, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
 	once.Do(singleton)
@@ -218,7 +244,7 @@ func AddResourceFormatLoaderOptions(format_loader ResourceFormatLoader.Instance,
 }
 
 /*
-Unregisters the given [ResourceFormatLoader].
+Unregisters the given [graphics.gd/classdb/ResourceFormatLoader].
 */
 func RemoveResourceFormatLoader(format_loader ResourceFormatLoader.Instance) { //gd:ResourceLoader.remove_resource_format_loader
 	once.Do(singleton)
@@ -235,14 +261,8 @@ func SetAbortOnMissingResources(abort bool) { //gd:ResourceLoader.set_abort_on_m
 
 /*
 Returns the dependencies for the resource at the given 'path'.
-Note: The dependencies are returned with slices separated by ::. You can use [Instance.String.GetSlice] to get their components.
-[codeblock]
-for dependency in ResourceLoader.get_dependencies(path):
 
-	print(dependency.get_slice("::", 0)) # Prints the UID.
-	print(dependency.get_slice("::", 2)) # Prints the path.
-
-[/codeblock]
+Note: The dependencies are returned with slices separated by ::. You can use [graphics.gd/classdb/String.Instance.GetSlice] to get their components.
 */
 func GetDependencies(path string) []string { //gd:ResourceLoader.get_dependencies
 	once.Do(singleton)
@@ -251,7 +271,8 @@ func GetDependencies(path string) []string { //gd:ResourceLoader.get_dependencie
 
 /*
 Returns whether a cached resource is available for the given 'path'.
-Once a resource has been loaded by the engine, it is cached in memory for faster access, and future calls to the [Instance.Load] method will use the cached version. The cached resource can be overridden by using [Instance.Resource.TakeOverPath] on a new resource for that same path.
+
+Once a resource has been loaded by the engine, it is cached in memory for faster access, and future calls to the [Load] method will use the cached version. The cached resource can be overridden by using [graphics.gd/classdb/Resource.Instance.TakeOverPath] on a new resource for that same path.
 */
 func HasCached(path string) bool { //gd:ResourceLoader.has_cached
 	once.Do(singleton)
@@ -260,7 +281,8 @@ func HasCached(path string) bool { //gd:ResourceLoader.has_cached
 
 /*
 Returns the cached resource reference for the given 'path'.
-Note: If the resource is not cached, the returned [Resource] will be invalid.
+
+Note: If the resource is not cached, the returned [graphics.gd/classdb/Resource] will be invalid.
 */
 func GetCachedRef(path string) Resource.Instance { //gd:ResourceLoader.get_cached_ref
 	once.Do(singleton)
@@ -269,8 +291,10 @@ func GetCachedRef(path string) Resource.Instance { //gd:ResourceLoader.get_cache
 
 /*
 Returns whether a recognized resource exists for the given 'path'.
-An optional 'type_hint' can be used to further specify the [Resource] type that should be handled by the [ResourceFormatLoader]. Anything that inherits from [Resource] can be used as a type hint, for example [Image].
-Note: If you use [Instance.Resource.TakeOverPath], this method will return true for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
+
+An optional 'type_hint' can be used to further specify the [graphics.gd/classdb/Resource] type that should be handled by the [graphics.gd/classdb/ResourceFormatLoader]. Anything that inherits from [graphics.gd/classdb/Resource] can be used as a type hint, for example [graphics.gd/classdb/Image].
+
+Note: If you use [graphics.gd/classdb/Resource.Instance.TakeOverPath], this method will return true for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
 */
 func Exists(path string, type_hint string) bool { //gd:ResourceLoader.exists
 	once.Do(singleton)
@@ -279,8 +303,10 @@ func Exists(path string, type_hint string) bool { //gd:ResourceLoader.exists
 
 /*
 Returns whether a recognized resource exists for the given 'path'.
-An optional 'type_hint' can be used to further specify the [Resource] type that should be handled by the [ResourceFormatLoader]. Anything that inherits from [Resource] can be used as a type hint, for example [Image].
-Note: If you use [Instance.Resource.TakeOverPath], this method will return true for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
+
+An optional 'type_hint' can be used to further specify the [graphics.gd/classdb/Resource] type that should be handled by the [graphics.gd/classdb/ResourceFormatLoader]. Anything that inherits from [graphics.gd/classdb/Resource] can be used as a type hint, for example [graphics.gd/classdb/Image].
+
+Note: If you use [graphics.gd/classdb/Resource.Instance.TakeOverPath], this method will return true for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
 */
 func ExistsOptions(path string, type_hint string) bool { //gd:ResourceLoader.exists
 	once.Do(singleton)
@@ -328,6 +354,7 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 
 /*
 Loads the resource using threads. If 'use_sub_threads' is true, multiple threads will be used to load the resource, which makes loading faster, but may affect the main thread (and thus cause game slowdowns).
+
 The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource. See [CacheMode] for details.
 */
 //go:nosplit
@@ -343,9 +370,11 @@ func (self class) LoadThreadedRequest(path String.Readable, type_hint String.Rea
 }
 
 /*
-Returns the status of a threaded loading operation started with [Instance.LoadThreadedRequest] for the resource at 'path'. See [ThreadLoadStatus] for possible return values.
+Returns the status of a threaded loading operation started with [LoadThreadedRequest] for the resource at 'path'. See [ThreadLoadStatus] for possible return values.
+
 An array variable can optionally be passed via 'progress', and will return a one-element array containing the ratio of completion of the threaded loading (between 0.0 and 1.0).
-Note: The recommended way of using this method is to call it during different frames (e.g., in [Instance.Node.Process], instead of a loop).
+
+Note: The recommended way of using this method is to call it during different frames (e.g., in [graphics.gd/classdb/Node.Instance.Process], instead of a loop).
 */
 //go:nosplit
 func (self class) LoadThreadedGetStatus(path String.Readable, progress Array.Any) ThreadLoadStatus { //gd:ResourceLoader.load_threaded_get_status
@@ -358,8 +387,9 @@ func (self class) LoadThreadedGetStatus(path String.Readable, progress Array.Any
 }
 
 /*
-Returns the resource loaded by [Instance.LoadThreadedRequest].
-If this is called before the loading thread is done (i.e. [Instance.LoadThreadedGetStatus] is not [ThreadLoadLoaded]), the calling thread will be blocked until the resource has finished loading. However, it's recommended to use [Instance.LoadThreadedGetStatus] to known when the load has actually completed.
+Returns the resource loaded by [LoadThreadedRequest].
+
+If this is called before the loading thread is done (i.e. [LoadThreadedGetStatus] is not [ThreadLoadLoaded]), the calling thread will be blocked until the resource has finished loading. However, it's recommended to use [LoadThreadedGetStatus] to known when the load has actually completed.
 */
 //go:nosplit
 func (self class) LoadThreadedGet(path String.Readable) [1]gdclass.Resource { //gd:ResourceLoader.load_threaded_get
@@ -370,12 +400,19 @@ func (self class) LoadThreadedGet(path String.Readable) [1]gdclass.Resource { //
 
 /*
 Loads a resource at the given 'path', caching the result for further access.
-The registered [ResourceFormatLoader]s are queried sequentially to find the first one which can handle the file's extension, and then attempt loading. If loading fails, the remaining ResourceFormatLoaders are also attempted.
-An optional 'type_hint' can be used to further specify the [Resource] type that should be handled by the [ResourceFormatLoader]. Anything that inherits from [Resource] can be used as a type hint, for example [Image].
+
+The registered [graphics.gd/classdb/ResourceFormatLoader]s are queried sequentially to find the first one which can handle the file's extension, and then attempt loading. If loading fails, the remaining ResourceFormatLoaders are also attempted.
+
+An optional 'type_hint' can be used to further specify the [graphics.gd/classdb/Resource] type that should be handled by the [graphics.gd/classdb/ResourceFormatLoader]. Anything that inherits from [graphics.gd/classdb/Resource] can be used as a type hint, for example [graphics.gd/classdb/Image].
+
 The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource. See [CacheMode] for details.
-Returns an empty resource if no [ResourceFormatLoader] could handle the file, and prints an error if no file is found at the specified path.
-GDScript has a simplified [Instance.@Gdscript.Load] built-in method which can be used in most situations, leaving the use of [ResourceLoader] for more advanced scenarios.
-Note: If [member ProjectSettings.editor/export/convert_text_resources_to_binary] is true, [Instance.@Gdscript.Load] will not be able to read converted files in an exported project. If you rely on run-time loading of files present within the PCK, set [member ProjectSettings.editor/export/convert_text_resources_to_binary] to false.
+
+Returns an empty resource if no [graphics.gd/classdb/ResourceFormatLoader] could handle the file, and prints an error if no file is found at the specified path.
+
+GDScript has a simplified [graphics.gd/classdb/@GDScript.Instance.Load] built-in method which can be used in most situations, leaving the use of [graphics.gd/classdb/ResourceLoader] for more advanced scenarios.
+
+Note: If [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary" is true, [graphics.gd/classdb/@GDScript.Instance.Load] will not be able to read converted files in an exported project. If you rely on run-time loading of files present within the PCK, set [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary" to false.
+
 Note: Relative paths will be prefixed with "res://" before loading, to avoid unexpected results make sure your paths are absolute.
 */
 //go:nosplit
@@ -400,8 +437,9 @@ func (self class) GetRecognizedExtensionsForType(atype String.Readable) Packed.S
 }
 
 /*
-Registers a new [ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [Instance.Load].
-This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [ResourceFormatLoader] for more information).
+Registers a new [graphics.gd/classdb/ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [Load].
+
+This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [graphics.gd/classdb/ResourceFormatLoader] for more information).
 */
 //go:nosplit
 func (self class) AddResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
@@ -412,7 +450,7 @@ func (self class) AddResourceFormatLoader(format_loader [1]gdclass.ResourceForma
 }
 
 /*
-Unregisters the given [ResourceFormatLoader].
+Unregisters the given [graphics.gd/classdb/ResourceFormatLoader].
 */
 //go:nosplit
 func (self class) RemoveResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader) { //gd:ResourceLoader.remove_resource_format_loader
@@ -429,12 +467,10 @@ func (self class) SetAbortOnMissingResources(abort bool) { //gd:ResourceLoader.s
 
 /*
 Returns the dependencies for the resource at the given 'path'.
-Note: The dependencies are returned with slices separated by ::. You can use [Instance.String.GetSlice] to get their components.
-[codeblock]
-for dependency in ResourceLoader.get_dependencies(path):
-    print(dependency.get_slice("::", 0)) # Prints the UID.
-    print(dependency.get_slice("::", 2)) # Prints the path.
-[/codeblock]
+
+Note: The dependencies are returned with slices separated by ::. You can use [graphics.gd/classdb/String.Instance.GetSlice] to get their components.
+
+
 */
 //go:nosplit
 func (self class) GetDependencies(path String.Readable) Packed.Strings { //gd:ResourceLoader.get_dependencies
@@ -445,7 +481,8 @@ func (self class) GetDependencies(path String.Readable) Packed.Strings { //gd:Re
 
 /*
 Returns whether a cached resource is available for the given 'path'.
-Once a resource has been loaded by the engine, it is cached in memory for faster access, and future calls to the [Instance.Load] method will use the cached version. The cached resource can be overridden by using [Instance.Resource.TakeOverPath] on a new resource for that same path.
+
+Once a resource has been loaded by the engine, it is cached in memory for faster access, and future calls to the [Load] method will use the cached version. The cached resource can be overridden by using [graphics.gd/classdb/Resource.Instance.TakeOverPath] on a new resource for that same path.
 */
 //go:nosplit
 func (self class) HasCached(path String.Readable) bool { //gd:ResourceLoader.has_cached
@@ -456,7 +493,8 @@ func (self class) HasCached(path String.Readable) bool { //gd:ResourceLoader.has
 
 /*
 Returns the cached resource reference for the given 'path'.
-Note: If the resource is not cached, the returned [Resource] will be invalid.
+
+Note: If the resource is not cached, the returned [graphics.gd/classdb/Resource] will be invalid.
 */
 //go:nosplit
 func (self class) GetCachedRef(path String.Readable) [1]gdclass.Resource { //gd:ResourceLoader.get_cached_ref
@@ -467,8 +505,10 @@ func (self class) GetCachedRef(path String.Readable) [1]gdclass.Resource { //gd:
 
 /*
 Returns whether a recognized resource exists for the given 'path'.
-An optional 'type_hint' can be used to further specify the [Resource] type that should be handled by the [ResourceFormatLoader]. Anything that inherits from [Resource] can be used as a type hint, for example [Image].
-Note: If you use [Instance.Resource.TakeOverPath], this method will return true for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
+
+An optional 'type_hint' can be used to further specify the [graphics.gd/classdb/Resource] type that should be handled by the [graphics.gd/classdb/ResourceFormatLoader]. Anything that inherits from [graphics.gd/classdb/Resource] can be used as a type hint, for example [graphics.gd/classdb/Image].
+
+Note: If you use [graphics.gd/classdb/Resource.Instance.TakeOverPath], this method will return true for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
 */
 //go:nosplit
 func (self class) Exists(path String.Readable, type_hint String.Readable) bool { //gd:ResourceLoader.exists
@@ -519,27 +559,27 @@ func init() {
 type ThreadLoadStatus int //gd:ResourceLoader.ThreadLoadStatus
 
 const (
-	/*The resource is invalid, or has not been loaded with [method load_threaded_request].*/
+	// The resource is invalid, or has not been loaded with [Instance.LoadThreadedRequest].
 	ThreadLoadInvalidResource ThreadLoadStatus = 0
-	/*The resource is still being loaded.*/
+	// The resource is still being loaded.
 	ThreadLoadInProgress ThreadLoadStatus = 1
-	/*Some error occurred during loading and it failed.*/
+	// Some error occurred during loading and it failed.
 	ThreadLoadFailed ThreadLoadStatus = 2
-	/*The resource was loaded successfully and can be accessed via [method load_threaded_get].*/
+	// The resource was loaded successfully and can be accessed via [Instance.LoadThreadedGet].
 	ThreadLoadLoaded ThreadLoadStatus = 3
 )
 
 type CacheMode int //gd:ResourceLoader.CacheMode
 
 const (
-	/*Neither the main resource (the one requested to be loaded) nor any of its subresources are retrieved from cache nor stored into it. Dependencies (external resources) are loaded with [constant CACHE_MODE_REUSE].*/
+	// Neither the main resource (the one requested to be loaded) nor any of its subresources are retrieved from cache nor stored into it. Dependencies (external resources) are loaded with [CacheModeReuse].
 	CacheModeIgnore CacheMode = 0
-	/*The main resource (the one requested to be loaded), its subresources, and its dependencies (external resources) are retrieved from cache if present, instead of loaded. Those not cached are loaded and then stored into the cache. The same rules are propagated recursively down the tree of dependencies (external resources).*/
+	// The main resource (the one requested to be loaded), its subresources, and its dependencies (external resources) are retrieved from cache if present, instead of loaded. Those not cached are loaded and then stored into the cache. The same rules are propagated recursively down the tree of dependencies (external resources).
 	CacheModeReuse CacheMode = 1
-	/*Like [constant CACHE_MODE_REUSE], but the cache is checked for the main resource (the one requested to be loaded) as well as for each of its subresources. Those already in the cache, as long as the loaded and cached types match, have their data refreshed from storage into the already existing instances. Otherwise, they are recreated as completely new objects.*/
+	// Like [CacheModeReuse], but the cache is checked for the main resource (the one requested to be loaded) as well as for each of its subresources. Those already in the cache, as long as the loaded and cached types match, have their data refreshed from storage into the already existing instances. Otherwise, they are recreated as completely new objects.
 	CacheModeReplace CacheMode = 2
-	/*Like [constant CACHE_MODE_IGNORE], but propagated recursively down the tree of dependencies (external resources).*/
+	// Like [CacheModeIgnore], but propagated recursively down the tree of dependencies (external resources).
 	CacheModeIgnoreDeep CacheMode = 3
-	/*Like [constant CACHE_MODE_REPLACE], but propagated recursively down the tree of dependencies (external resources).*/
+	// Like [CacheModeReplace], but propagated recursively down the tree of dependencies (external resources).
 	CacheModeReplaceDeep CacheMode = 4
 )

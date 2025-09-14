@@ -214,10 +214,10 @@ func init() {
 type Source int //gd:VisualShaderNodeSample3D.Source
 
 const (
-	/*Creates internal uniform and provides a way to assign it within node.*/
+	// Creates internal uniform and provides a way to assign it within node.
 	SourceTexture Source = 0
-	/*Use the uniform texture from sampler port.*/
+	// Use the uniform texture from sampler port.
 	SourcePort Source = 1
-	/*Represents the size of the [enum Source] enum.*/
+	// Represents the size of the [Source] enum.
 	SourceMax Source = 2
 )

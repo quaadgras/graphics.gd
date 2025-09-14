@@ -258,40 +258,40 @@ func init() {
 type OpType int //gd:VisualShaderNodeDerivativeFunc.OpType
 
 const (
-	/*A floating-point scalar.*/
+	// A floating-point scalar.
 	OpTypeScalar OpType = 0
-	/*A 2D vector type.*/
+	// A 2D vector type.
 	OpTypeVector2d OpType = 1
-	/*A 3D vector type.*/
+	// A 3D vector type.
 	OpTypeVector3d OpType = 2
-	/*A 4D vector type.*/
+	// A 4D vector type.
 	OpTypeVector4d OpType = 3
-	/*Represents the size of the [enum OpType] enum.*/
+	// Represents the size of the [OpType] enum.
 	OpTypeMax OpType = 4
 )
 
 type Function int //gd:VisualShaderNodeDerivativeFunc.Function
 
 const (
-	/*Sum of absolute derivative in [code]x[/code] and [code]y[/code].*/
+	// Sum of absolute derivative in x and y.
 	FuncSum Function = 0
-	/*Derivative in [code]x[/code] using local differencing.*/
+	// Derivative in x using local differencing.
 	FuncX Function = 1
-	/*Derivative in [code]y[/code] using local differencing.*/
+	// Derivative in y using local differencing.
 	FuncY Function = 2
-	/*Represents the size of the [enum Function] enum.*/
+	// Represents the size of the [Function] enum.
 	FuncMax Function = 3
 )
 
 type Precision int //gd:VisualShaderNodeDerivativeFunc.Precision
 
 const (
-	/*No precision is specified, the GPU driver is allowed to use whatever level of precision it chooses. This is the default option and is equivalent to using [code]dFdx()[/code] or [code]dFdy()[/code] in text shaders.*/
+	// No precision is specified, the GPU driver is allowed to use whatever level of precision it chooses. This is the default option and is equivalent to using dFdx() or dFdy() in text shaders.
 	PrecisionNone Precision = 0
-	/*The derivative will be calculated using the current fragment's neighbors (which may not include the current fragment). This tends to be faster than using [constant PRECISION_FINE], but may not be suitable when more precision is needed. This is equivalent to using [code]dFdxCoarse()[/code] or [code]dFdyCoarse()[/code] in text shaders.*/
+	// The derivative will be calculated using the current fragment's neighbors (which may not include the current fragment). This tends to be faster than using [PrecisionFine], but may not be suitable when more precision is needed. This is equivalent to using dFdxCoarse() or dFdyCoarse() in text shaders.
 	PrecisionCoarse Precision = 1
-	/*The derivative will be calculated using the current fragment and its immediate neighbors. This tends to be slower than using [constant PRECISION_COARSE], but may be necessary when more precision is needed. This is equivalent to using [code]dFdxFine()[/code] or [code]dFdyFine()[/code] in text shaders.*/
+	// The derivative will be calculated using the current fragment and its immediate neighbors. This tends to be slower than using [PrecisionCoarse], but may be necessary when more precision is needed. This is equivalent to using dFdxFine() or dFdyFine() in text shaders.
 	PrecisionFine Precision = 2
-	/*Represents the size of the [enum Precision] enum.*/
+	// Represents the size of the [Precision] enum.
 	PrecisionMax Precision = 3
 )

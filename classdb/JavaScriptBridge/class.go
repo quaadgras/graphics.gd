@@ -2,7 +2,10 @@
 
 /*
 The JavaScriptBridge singleton is implemented only in the Web export. It's used to access the browser's JavaScript context. This allows interaction with embedding pages or calling third-party JavaScript APIs.
-Note: This singleton can be disabled at build-time to improve security. By default, the JavaScriptBridge singleton is enabled. Official export templates also have the JavaScriptBridge singleton enabled. See [url=$DOCS_URL/contributing/development/compiling/compiling_for_web.html]Compiling for the Web[/url] in the documentation for more information.
+
+Note: This singleton can be disabled at build-time to improve security. By default, the JavaScriptBridge singleton is enabled. Official export templates also have the JavaScriptBridge singleton enabled. See [Compiling for the Web] in the documentation for more information.
+
+[Compiling for the Web]: https://docs.godotengine.org/contributing/development/compiling/compiling_for_web.html
 */
 package JavaScriptBridge
 
@@ -109,6 +112,7 @@ func singleton() {
 
 /*
 Execute the string 'code' as JavaScript code within the browser window. This is a call to the actual global JavaScript function eval().
+
 If 'use_global_execution_context' is true, the code will be evaluated in the global execution context. Otherwise, it is evaluated in the execution context of a function within the engine's runtime environment.
 */
 func Eval(code string, use_global_execution_context bool) any { //gd:JavaScriptBridge.eval
@@ -118,6 +122,7 @@ func Eval(code string, use_global_execution_context bool) any { //gd:JavaScriptB
 
 /*
 Execute the string 'code' as JavaScript code within the browser window. This is a call to the actual global JavaScript function eval().
+
 If 'use_global_execution_context' is true, the code will be evaluated in the global execution context. Otherwise, it is evaluated in the execution context of a function within the engine's runtime environment.
 */
 func EvalOptions(code string, use_global_execution_context bool) any { //gd:JavaScriptBridge.eval
@@ -126,7 +131,7 @@ func EvalOptions(code string, use_global_execution_context bool) any { //gd:Java
 }
 
 /*
-Returns an interface to a JavaScript object that can be used by scripts. The 'interface' must be a valid property of the JavaScript window. The callback must accept a single [Array] argument, which will contain the JavaScript arguments. See [JavaScriptObject] for usage.
+Returns an interface to a JavaScript object that can be used by scripts. The 'interface' must be a valid property of the JavaScript window. The callback must accept a single slice argument, which will contain the JavaScript arguments. See [graphics.gd/classdb/JavaScriptObject] for usage.
 */
 func GetInterface(intf string) JavaScriptObject.Instance { //gd:JavaScriptBridge.get_interface
 	once.Do(singleton)
@@ -134,8 +139,11 @@ func GetInterface(intf string) JavaScriptObject.Instance { //gd:JavaScriptBridge
 }
 
 /*
-Creates a reference to a [Callable] that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
-Note: The callback function must take exactly one [Array] argument, which is going to be the JavaScript [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments]arguments object[/url] converted to an array.
+Creates a reference to a func that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [graphics.gd/classdb/JavaScriptObject] for usage.
+
+Note: The callback function must take exactly one slice argument, which is going to be the JavaScript [arguments object] converted to an array.
+
+[arguments object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments
 */
 func CreateCallback(callable func(args []any) any) JavaScriptObject.Instance { //gd:JavaScriptBridge.create_callback
 	once.Do(singleton)
@@ -143,7 +151,12 @@ func CreateCallback(callable func(args []any) any) JavaScriptObject.Instance { /
 }
 
 /*
-Returns true if the given 'javascript_object' is of type [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer]ArrayBuffer[/url], [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView]DataView[/url], or one of the many [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray]typed array objects[/url].
+Returns true if the given 'javascript_object' is of type [[code]ArrayBuffer[/code]], [[code]DataView[/code]], or one of the many [typed array objects].
+
+[typed array objects]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
+
+[[code]ArrayBuffer[/code]]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
+[[code]DataView[/code]]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView
 */
 func IsJsBuffer(javascript_object JavaScriptObject.Instance) bool { //gd:JavaScriptBridge.is_js_buffer
 	once.Do(singleton)
@@ -151,7 +164,7 @@ func IsJsBuffer(javascript_object JavaScriptObject.Instance) bool { //gd:JavaScr
 }
 
 /*
-Returns a copy of 'javascript_buffer”s contents as a byte slice. See also [Instance.IsJsBuffer].
+Returns a copy of 'javascript_buffer”s contents as a []byte. See also [IsJsBuffer].
 */
 func JsBufferToPackedByteArray(javascript_buffer JavaScriptObject.Instance) []byte { //gd:JavaScriptBridge.js_buffer_to_packed_byte_array
 	once.Do(singleton)
@@ -159,7 +172,7 @@ func JsBufferToPackedByteArray(javascript_buffer JavaScriptObject.Instance) []by
 }
 
 /*
-Creates a new JavaScript object using the new constructor. The 'object' must a valid property of the JavaScript window. See [JavaScriptObject] for usage.
+Creates a new JavaScript object using the new constructor. The 'object' must a valid property of the JavaScript window. See [graphics.gd/classdb/JavaScriptObject] for usage.
 */
 func CreateObject(obj string, args ...any) any { //gd:JavaScriptBridge.create_object
 	once.Do(singleton)
@@ -172,9 +185,14 @@ func CreateObject(obj string, args ...any) any { //gd:JavaScriptBridge.create_ob
 
 /*
 Prompts the user to download a file containing the specified 'buffer'. The file will have the given 'name' and 'mime' type.
-Note: The browser may override the [url=https://en.wikipedia.org/wiki/Media_type]MIME type[/url] provided based on the file 'name”s extension.
-Note: Browsers might block the download if [Instance.DownloadBuffer] is not being called from a user interaction (e.g. button click).
+
+Note: The browser may override the [MIME type] provided based on the file 'name”s extension.
+
+Note: Browsers might block the download if [DownloadBuffer] is not being called from a user interaction (e.g. button click).
+
 Note: Browsers might ask the user for permission or block the download if multiple download requests are made in a quick succession.
+
+[MIME type]: https://en.wikipedia.org/wiki/Media_type
 */
 func DownloadBuffer(buffer []byte, name string) { //gd:JavaScriptBridge.download_buffer
 	once.Do(singleton)
@@ -183,9 +201,14 @@ func DownloadBuffer(buffer []byte, name string) { //gd:JavaScriptBridge.download
 
 /*
 Prompts the user to download a file containing the specified 'buffer'. The file will have the given 'name' and 'mime' type.
-Note: The browser may override the [url=https://en.wikipedia.org/wiki/Media_type]MIME type[/url] provided based on the file 'name”s extension.
-Note: Browsers might block the download if [Instance.DownloadBuffer] is not being called from a user interaction (e.g. button click).
+
+Note: The browser may override the [MIME type] provided based on the file 'name”s extension.
+
+Note: Browsers might block the download if [DownloadBuffer] is not being called from a user interaction (e.g. button click).
+
 Note: Browsers might ask the user for permission or block the download if multiple download requests are made in a quick succession.
+
+[MIME type]: https://en.wikipedia.org/wiki/Media_type
 */
 func DownloadBufferOptions(buffer []byte, name string, mime string) { //gd:JavaScriptBridge.download_buffer
 	once.Do(singleton)
@@ -194,6 +217,7 @@ func DownloadBufferOptions(buffer []byte, name string, mime string) { //gd:JavaS
 
 /*
 Returns true if a new version of the progressive web app is waiting to be activated.
+
 Note: Only relevant when exported as a Progressive Web App.
 */
 func PwaNeedsUpdate() bool { //gd:JavaScriptBridge.pwa_needs_update
@@ -203,8 +227,10 @@ func PwaNeedsUpdate() bool { //gd:JavaScriptBridge.pwa_needs_update
 
 /*
 Performs the live update of the progressive web app. Forcing the new version to be installed and the page to be reloaded.
+
 Note: Your application will be reloaded in all browser tabs.
-Note: Only relevant when exported as a Progressive Web App and [Instance.PwaNeedsUpdate] returns true.
+
+Note: Only relevant when exported as a Progressive Web App and [PwaNeedsUpdate] returns true.
 */
 func PwaUpdate() error { //gd:JavaScriptBridge.pwa_update
 	once.Do(singleton)
@@ -213,7 +239,8 @@ func PwaUpdate() error { //gd:JavaScriptBridge.pwa_update
 
 /*
 Force synchronization of the persistent file system (when enabled).
-Note: This is only useful for modules or extensions that can't use [FileAccess] to write files.
+
+Note: This is only useful for modules or extensions that can't use [graphics.gd/classdb/FileAccess] to write files.
 */
 func ForceFsSync() { //gd:JavaScriptBridge.force_fs_sync
 	once.Do(singleton)
@@ -245,6 +272,7 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 
 /*
 Execute the string 'code' as JavaScript code within the browser window. This is a call to the actual global JavaScript function eval().
+
 If 'use_global_execution_context' is true, the code will be evaluated in the global execution context. Otherwise, it is evaluated in the execution context of a function within the engine's runtime environment.
 */
 //go:nosplit
@@ -258,7 +286,7 @@ func (self class) Eval(code String.Readable, use_global_execution_context bool) 
 }
 
 /*
-Returns an interface to a JavaScript object that can be used by scripts. The 'interface' must be a valid property of the JavaScript window. The callback must accept a single [Array] argument, which will contain the JavaScript arguments. See [JavaScriptObject] for usage.
+Returns an interface to a JavaScript object that can be used by scripts. The 'interface' must be a valid property of the JavaScript window. The callback must accept a single slice argument, which will contain the JavaScript arguments. See [graphics.gd/classdb/JavaScriptObject] for usage.
 */
 //go:nosplit
 func (self class) GetInterface(intf String.Readable) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.get_interface
@@ -268,8 +296,11 @@ func (self class) GetInterface(intf String.Readable) [1]gdclass.JavaScriptObject
 }
 
 /*
-Creates a reference to a [Callable] that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
-Note: The callback function must take exactly one [Array] argument, which is going to be the JavaScript [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments]arguments object[/url] converted to an array.
+Creates a reference to a func that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [graphics.gd/classdb/JavaScriptObject] for usage.
+
+Note: The callback function must take exactly one slice argument, which is going to be the JavaScript [arguments object] converted to an array.
+
+[arguments object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments
 */
 //go:nosplit
 func (self class) CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.create_callback
@@ -279,7 +310,11 @@ func (self class) CreateCallback(callable Callable.Function) [1]gdclass.JavaScri
 }
 
 /*
-Returns true if the given 'javascript_object' is of type [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer]ArrayBuffer[/url], [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView]DataView[/url], or one of the many [url=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray]typed array objects[/url].
+Returns true if the given 'javascript_object' is of type [[code]ArrayBuffer[/code]], [[code]DataView[/code]], or one of the many [typed array objects].
+
+[[code]ArrayBuffer[/code]]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer
+[[code]DataView[/code]]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView
+[typed array objects]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray
 */
 //go:nosplit
 func (self class) IsJsBuffer(javascript_object [1]gdclass.JavaScriptObject) bool { //gd:JavaScriptBridge.is_js_buffer
@@ -289,7 +324,7 @@ func (self class) IsJsBuffer(javascript_object [1]gdclass.JavaScriptObject) bool
 }
 
 /*
-Returns a copy of 'javascript_buffer''s contents as a byte slice. See also [Instance.IsJsBuffer].
+Returns a copy of 'javascript_buffer''s contents as a []byte. See also [IsJsBuffer].
 */
 //go:nosplit
 func (self class) JsBufferToPackedByteArray(javascript_buffer [1]gdclass.JavaScriptObject) Packed.Bytes { //gd:JavaScriptBridge.js_buffer_to_packed_byte_array
@@ -299,7 +334,7 @@ func (self class) JsBufferToPackedByteArray(javascript_buffer [1]gdclass.JavaScr
 }
 
 /*
-Creates a new JavaScript object using the new constructor. The 'object' must a valid property of the JavaScript window. See [JavaScriptObject] for usage.
+Creates a new JavaScript object using the new constructor. The 'object' must a valid property of the JavaScript window. See [graphics.gd/classdb/JavaScriptObject] for usage.
 */
 //go:nosplit
 func (self class) CreateObject(obj String.Readable, args ...gd.Variant) variant.Any { //gd:JavaScriptBridge.create_object
@@ -317,9 +352,14 @@ func (self class) CreateObject(obj String.Readable, args ...gd.Variant) variant.
 
 /*
 Prompts the user to download a file containing the specified 'buffer'. The file will have the given 'name' and 'mime' type.
-Note: The browser may override the [url=https://en.wikipedia.org/wiki/Media_type]MIME type[/url] provided based on the file 'name''s extension.
-Note: Browsers might block the download if [Instance.DownloadBuffer] is not being called from a user interaction (e.g. button click).
+
+Note: The browser may override the [MIME type] provided based on the file 'name''s extension.
+
+Note: Browsers might block the download if [DownloadBuffer] is not being called from a user interaction (e.g. button click).
+
 Note: Browsers might ask the user for permission or block the download if multiple download requests are made in a quick succession.
+
+[MIME type]: https://en.wikipedia.org/wiki/Media_type
 */
 //go:nosplit
 func (self class) DownloadBuffer(buffer Packed.Bytes, name String.Readable, mime String.Readable) { //gd:JavaScriptBridge.download_buffer
@@ -332,6 +372,7 @@ func (self class) DownloadBuffer(buffer Packed.Bytes, name String.Readable, mime
 
 /*
 Returns true if a new version of the progressive web app is waiting to be activated.
+
 Note: Only relevant when exported as a Progressive Web App.
 */
 //go:nosplit
@@ -343,8 +384,10 @@ func (self class) PwaNeedsUpdate() bool { //gd:JavaScriptBridge.pwa_needs_update
 
 /*
 Performs the live update of the progressive web app. Forcing the new version to be installed and the page to be reloaded.
+
 Note: Your application will be reloaded in all browser tabs.
-Note: Only relevant when exported as a Progressive Web App and [Instance.PwaNeedsUpdate] returns true.
+
+Note: Only relevant when exported as a Progressive Web App and [PwaNeedsUpdate] returns true.
 */
 //go:nosplit
 func (self class) PwaUpdate() Error.Code { //gd:JavaScriptBridge.pwa_update
@@ -355,7 +398,8 @@ func (self class) PwaUpdate() Error.Code { //gd:JavaScriptBridge.pwa_update
 
 /*
 Force synchronization of the persistent file system (when enabled).
-Note: This is only useful for modules or extensions that can't use [FileAccess] to write files.
+
+Note: This is only useful for modules or extensions that can't use [graphics.gd/classdb/FileAccess] to write files.
 */
 //go:nosplit
 func (self class) ForceFsSync() { //gd:JavaScriptBridge.force_fs_sync

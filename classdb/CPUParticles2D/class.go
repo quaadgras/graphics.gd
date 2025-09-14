@@ -2,7 +2,8 @@
 
 /*
 CPU-based 2D particle node used to create a variety of particle systems and effects.
-See also [GPUParticles2D], which provides the same functionality with hardware acceleration, but may not run on older devices.
+
+See also [graphics.gd/classdb/GPUParticles2D], which provides the same functionality with hardware acceleration, but may not run on older devices.
 */
 package CPUParticles2D
 
@@ -181,7 +182,8 @@ type Any interface {
 
 /*
 Requests the particles to process for extra process time during a single frame.
-Useful for particle playback, if used in combination with [member use_fixed_seed] or by calling [Instance.Restart] with parameter keep_seed set to true.
+
+Useful for particle playback, if used in combination with [Instance.UseFixedSeed] or by calling [Instance.Restart] with parameter keep_seed set to true.
 */
 func (self Instance) RequestParticlesProcess(process_time Float.X) { //gd:CPUParticles2D.request_particles_process
 	Advanced(self).RequestParticlesProcess(float64(process_time))
@@ -189,6 +191,7 @@ func (self Instance) RequestParticlesProcess(process_time Float.X) { //gd:CPUPar
 
 /*
 Restarts the particle emitter.
+
 If 'keep_seed' is true, the current random seed will be preserved. Useful for seeking and playback.
 */
 func (self Instance) Restart() { //gd:CPUParticles2D.restart
@@ -197,6 +200,7 @@ func (self Instance) Restart() { //gd:CPUParticles2D.restart
 
 /*
 Restarts the particle emitter.
+
 If 'keep_seed' is true, the current random seed will be preserved. Useful for seeking and playback.
 */
 func (self Expanded) Restart(keep_seed bool) { //gd:CPUParticles2D.restart
@@ -204,7 +208,7 @@ func (self Expanded) Restart(keep_seed bool) { //gd:CPUParticles2D.restart
 }
 
 /*
-Sets this node's properties to match a given [GPUParticles2D] node with an assigned [ParticleProcessMaterial].
+Sets this node's properties to match a given [graphics.gd/classdb/GPUParticles2D] node with an assigned [graphics.gd/classdb/ParticleProcessMaterial].
 */
 func (self Instance) ConvertFromParticles(particles Node.Instance) { //gd:CPUParticles2D.convert_from_particles
 	Advanced(self).ConvertFromParticles(particles)
@@ -850,7 +854,8 @@ func (self class) SetSpeedScale(scale float64) { //gd:CPUParticles2D.set_speed_s
 
 /*
 Requests the particles to process for extra process time during a single frame.
-Useful for particle playback, if used in combination with [member use_fixed_seed] or by calling [Instance.Restart] with parameter keep_seed set to true.
+
+Useful for particle playback, if used in combination with [Instance.UseFixedSeed] or by calling [Instance.Restart] with parameter keep_seed set to true.
 */
 //go:nosplit
 func (self class) RequestParticlesProcess(process_time float64) { //gd:CPUParticles2D.request_particles_process
@@ -991,6 +996,7 @@ func (self class) GetTexture() [1]gdclass.Texture2D { //gd:CPUParticles2D.get_te
 
 /*
 Restarts the particle emitter.
+
 If 'keep_seed' is true, the current random seed will be preserved. Useful for seeking and playback.
 */
 //go:nosplit
@@ -1065,7 +1071,7 @@ func (self class) GetParamMax(param Parameter) float64 { //gd:CPUParticles2D.get
 }
 
 /*
-Sets the [Curve] of the parameter specified by [Parameter]. Should be a unit [Curve].
+Sets the [graphics.gd/classdb/Curve] of the parameter specified by [Parameter]. Should be a unit [graphics.gd/classdb/Curve].
 */
 //go:nosplit
 func (self class) SetParamCurve(param Parameter, curve [1]gdclass.Curve) { //gd:CPUParticles2D.set_param_curve
@@ -1076,7 +1082,7 @@ func (self class) SetParamCurve(param Parameter, curve [1]gdclass.Curve) { //gd:
 }
 
 /*
-Returns the [Curve] of the parameter specified by [Parameter].
+Returns the [graphics.gd/classdb/Curve] of the parameter specified by [Parameter].
 */
 //go:nosplit
 func (self class) GetParamCurve(param Parameter) [1]gdclass.Curve { //gd:CPUParticles2D.get_param_curve
@@ -1269,7 +1275,7 @@ func (self class) SetScaleCurveY(scale_curve [1]gdclass.Curve) { //gd:CPUParticl
 }
 
 /*
-Sets this node's properties to match a given [GPUParticles2D] node with an assigned [ParticleProcessMaterial].
+Sets this node's properties to match a given [graphics.gd/classdb/GPUParticles2D] node with an assigned [graphics.gd/classdb/ParticleProcessMaterial].
 */
 //go:nosplit
 func (self class) ConvertFromParticles(particles [1]gdclass.Node) { //gd:CPUParticles2D.convert_from_particles
@@ -1334,71 +1340,71 @@ func init() {
 type DrawOrder int //gd:CPUParticles2D.DrawOrder
 
 const (
-	/*Particles are drawn in the order emitted.*/
+	// Particles are drawn in the order emitted.
 	DrawOrderIndex DrawOrder = 0
-	/*Particles are drawn in order of remaining lifetime. In other words, the particle with the highest lifetime is drawn at the front.*/
+	// Particles are drawn in order of remaining lifetime. In other words, the particle with the highest lifetime is drawn at the front.
 	DrawOrderLifetime DrawOrder = 1
 )
 
 type Parameter int //gd:CPUParticles2D.Parameter
 
 const (
-	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set initial velocity properties.*/
+	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set initial velocity properties.
 	ParamInitialLinearVelocity Parameter = 0
-	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set angular velocity properties.*/
+	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set angular velocity properties.
 	ParamAngularVelocity Parameter = 1
-	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set orbital velocity properties.*/
+	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set orbital velocity properties.
 	ParamOrbitVelocity Parameter = 2
-	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set linear acceleration properties.*/
+	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set linear acceleration properties.
 	ParamLinearAccel Parameter = 3
-	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set radial acceleration properties.*/
+	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set radial acceleration properties.
 	ParamRadialAccel Parameter = 4
-	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set tangential acceleration properties.*/
+	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set tangential acceleration properties.
 	ParamTangentialAccel Parameter = 5
-	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set damping properties.*/
+	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set damping properties.
 	ParamDamping Parameter = 6
-	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set angle properties.*/
+	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set angle properties.
 	ParamAngle Parameter = 7
-	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set scale properties.*/
+	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set scale properties.
 	ParamScale Parameter = 8
-	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set hue variation properties.*/
+	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set hue variation properties.
 	ParamHueVariation Parameter = 9
-	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set animation speed properties.*/
+	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set animation speed properties.
 	ParamAnimSpeed Parameter = 10
-	/*Use with [method set_param_min], [method set_param_max], and [method set_param_curve] to set animation offset properties.*/
+	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set animation offset properties.
 	ParamAnimOffset Parameter = 11
-	/*Represents the size of the [enum Parameter] enum.*/
+	// Represents the size of the [Parameter] enum.
 	ParamMax Parameter = 12
 )
 
 type ParticleFlags int //gd:CPUParticles2D.ParticleFlags
 
 const (
-	/*Use with [method set_particle_flag] to set [member particle_flag_align_y].*/
+	// Use with [Instance.SetParticleFlag] to set [Instance.ParticleFlagAlignY].
 	ParticleFlagAlignYToVelocity ParticleFlags = 0
-	/*Present for consistency with 3D particle nodes, not used in 2D.*/
+	// Present for consistency with 3D particle nodes, not used in 2D.
 	ParticleFlagRotateY ParticleFlags = 1
-	/*Present for consistency with 3D particle nodes, not used in 2D.*/
+	// Present for consistency with 3D particle nodes, not used in 2D.
 	ParticleFlagDisableZ ParticleFlags = 2
-	/*Represents the size of the [enum ParticleFlags] enum.*/
+	// Represents the size of the [ParticleFlags] enum.
 	ParticleFlagMax ParticleFlags = 3
 )
 
 type EmissionShape int //gd:CPUParticles2D.EmissionShape
 
 const (
-	/*All particles will be emitted from a single point.*/
+	// All particles will be emitted from a single point.
 	EmissionShapePoint EmissionShape = 0
-	/*Particles will be emitted in the volume of a sphere flattened to two dimensions.*/
+	// Particles will be emitted in the volume of a sphere flattened to two dimensions.
 	EmissionShapeSphere EmissionShape = 1
-	/*Particles will be emitted on the surface of a sphere flattened to two dimensions.*/
+	// Particles will be emitted on the surface of a sphere flattened to two dimensions.
 	EmissionShapeSphereSurface EmissionShape = 2
-	/*Particles will be emitted in the area of a rectangle.*/
+	// Particles will be emitted in the area of a rectangle.
 	EmissionShapeRectangle EmissionShape = 3
-	/*Particles will be emitted at a position chosen randomly among [member emission_points]. Particle color will be modulated by [member emission_colors].*/
+	// Particles will be emitted at a position chosen randomly among [Instance.EmissionPoints]. Particle color will be modulated by [Instance.EmissionColors].
 	EmissionShapePoints EmissionShape = 4
-	/*Particles will be emitted at a position chosen randomly among [member emission_points]. Particle velocity and rotation will be set based on [member emission_normals]. Particle color will be modulated by [member emission_colors].*/
+	// Particles will be emitted at a position chosen randomly among [Instance.EmissionPoints]. Particle velocity and rotation will be set based on [Instance.EmissionNormals]. Particle color will be modulated by [Instance.EmissionColors].
 	EmissionShapeDirectedPoints EmissionShape = 5
-	/*Represents the size of the [enum EmissionShape] enum.*/
+	// Represents the size of the [EmissionShape] enum.
 	EmissionShapeMax EmissionShape = 6
 )

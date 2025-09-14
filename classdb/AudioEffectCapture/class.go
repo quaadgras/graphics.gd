@@ -2,8 +2,10 @@
 
 /*
 AudioEffectCapture is an AudioEffect which copies all audio frames from the attached audio effect bus into its internal ring buffer.
-Application code should consume these audio frames from this ring buffer using [Instance.GetBuffer] and process it as needed, for example to capture data from an [AudioStreamMicrophone], implement application-defined effects, or to transmit audio over the network. When capturing audio data from a microphone, the format of the samples will be stereo 32-bit floating-point PCM.
-Unlike [AudioEffectRecord], this effect only returns the raw audio samples instead of encoding them into an [AudioStream].
+
+Application code should consume these audio frames from this ring buffer using [Instance.GetBuffer] and process it as needed, for example to capture data from an [graphics.gd/classdb/AudioStreamMicrophone], implement application-defined effects, or to transmit audio over the network. When capturing audio data from a microphone, the format of the samples will be stereo 32-bit floating-point PCM.
+
+Unlike [graphics.gd/classdb/AudioEffectRecord], this effect only returns the raw audio samples instead of encoding them into an [graphics.gd/classdb/AudioStream].
 */
 package AudioEffectCapture
 
@@ -118,7 +120,9 @@ func (self Instance) CanGetBuffer(frames int) bool { //gd:AudioEffectCapture.can
 
 /*
 Gets the next 'frames' audio samples from the internal ring buffer.
-Returns a [PackedVector2Array] containing exactly 'frames' audio samples if available, or an empty [PackedVector2Array] if insufficient data was available.
+
+Returns a [][Vector2.XY] containing exactly 'frames' audio samples if available, or an empty [][Vector2.XY] if insufficient data was available.
+
 The samples are signed floating-point PCM between -1 and 1. You will have to scale them if you want to use them as 8 or 16-bit integer samples. (v = 0x7fff * samples[0].x)
 */
 func (self Instance) GetBuffer(frames int) []Vector2.XY { //gd:AudioEffectCapture.get_buffer
@@ -127,6 +131,7 @@ func (self Instance) GetBuffer(frames int) []Vector2.XY { //gd:AudioEffectCaptur
 
 /*
 Clears the internal ring buffer.
+
 Note: Calling this during a capture can cause the loss of samples which causes popping in the playback.
 */
 func (self Instance) ClearBuffer() { //gd:AudioEffectCapture.clear_buffer
@@ -224,7 +229,9 @@ func (self class) CanGetBuffer(frames int64) bool { //gd:AudioEffectCapture.can_
 
 /*
 Gets the next 'frames' audio samples from the internal ring buffer.
-Returns a [PackedVector2Array] containing exactly 'frames' audio samples if available, or an empty [PackedVector2Array] if insufficient data was available.
+
+Returns a [][Vector2.XY] containing exactly 'frames' audio samples if available, or an empty [][Vector2.XY] if insufficient data was available.
+
 The samples are signed floating-point PCM between -1 and 1. You will have to scale them if you want to use them as 8 or 16-bit integer samples. (v = 0x7fff * samples[0].x)
 */
 //go:nosplit
@@ -236,6 +243,7 @@ func (self class) GetBuffer(frames int64) Packed.Array[Vector2.XY] { //gd:AudioE
 
 /*
 Clears the internal ring buffer.
+
 Note: Calling this during a capture can cause the loss of samples which causes popping in the playback.
 */
 //go:nosplit

@@ -2,8 +2,10 @@
 
 /*
 Retrieves the pose (or global pose) relative to the parent Skeleton's rest in model space and transfers it to the child Skeleton.
-This modifier rewrites the pose of the child skeleton directly in the parent skeleton's update process. This means that it overwrites the mapped bone pose set in the normal process on the target skeleton. If you want to set the target skeleton bone pose after retargeting, you will need to add a [SkeletonModifier3D] child to the target skeleton and thereby modify the pose.
-Note: When the [member use_global_pose] is enabled, even if it is an unmapped bone, it can cause visual problems because the global pose is applied ignoring the parent bone's pose if it has mapped bone children. See also [member use_global_pose].
+
+This modifier rewrites the pose of the child skeleton directly in the parent skeleton's update process. This means that it overwrites the mapped bone pose set in the normal process on the target skeleton. If you want to set the target skeleton bone pose after retargeting, you will need to add a [graphics.gd/classdb/SkeletonModifier3D] child to the target skeleton and thereby modify the pose.
+
+Note: When the [Instance.UseGlobalPose] is enabled, even if it is an unmapped bone, it can cause visual problems because the global pose is applied ignoring the parent bone's pose if it has mapped bone children. See also [Instance.UseGlobalPose].
 */
 package RetargetModifier3D
 
@@ -114,42 +116,42 @@ type Any interface {
 }
 
 /*
-Sets [TransformFlagPosition] into [member enable].
+Sets [TransformFlagPosition] into [Instance.Enable].
 */
 func (self Instance) SetPositionEnabled(enabled bool) { //gd:RetargetModifier3D.set_position_enabled
 	Advanced(self).SetPositionEnabled(enabled)
 }
 
 /*
-Returns true if [member enable] has [TransformFlagPosition].
+Returns true if [Instance.Enable] has [TransformFlagPosition].
 */
 func (self Instance) IsPositionEnabled() bool { //gd:RetargetModifier3D.is_position_enabled
 	return bool(Advanced(self).IsPositionEnabled())
 }
 
 /*
-Sets [TransformFlagRotation] into [member enable].
+Sets [TransformFlagRotation] into [Instance.Enable].
 */
 func (self Instance) SetRotationEnabled(enabled bool) { //gd:RetargetModifier3D.set_rotation_enabled
 	Advanced(self).SetRotationEnabled(enabled)
 }
 
 /*
-Returns true if [member enable] has [TransformFlagRotation].
+Returns true if [Instance.Enable] has [TransformFlagRotation].
 */
 func (self Instance) IsRotationEnabled() bool { //gd:RetargetModifier3D.is_rotation_enabled
 	return bool(Advanced(self).IsRotationEnabled())
 }
 
 /*
-Sets [TransformFlagScale] into [member enable].
+Sets [TransformFlagScale] into [Instance.Enable].
 */
 func (self Instance) SetScaleEnabled(enabled bool) { //gd:RetargetModifier3D.set_scale_enabled
 	Advanced(self).SetScaleEnabled(enabled)
 }
 
 /*
-Returns true if [member enable] has [TransformFlagScale].
+Returns true if [Instance.Enable] has [TransformFlagScale].
 */
 func (self Instance) IsScaleEnabled() bool { //gd:RetargetModifier3D.is_scale_enabled
 	return bool(Advanced(self).IsScaleEnabled())
@@ -258,7 +260,7 @@ func (self class) GetEnableFlags() TransformFlag { //gd:RetargetModifier3D.get_e
 }
 
 /*
-Sets [TransformFlagPosition] into [member enable].
+Sets [TransformFlagPosition] into [Instance.Enable].
 */
 //go:nosplit
 func (self class) SetPositionEnabled(enabled bool) { //gd:RetargetModifier3D.set_position_enabled
@@ -266,7 +268,7 @@ func (self class) SetPositionEnabled(enabled bool) { //gd:RetargetModifier3D.set
 }
 
 /*
-Returns true if [member enable] has [TransformFlagPosition].
+Returns true if [Instance.Enable] has [TransformFlagPosition].
 */
 //go:nosplit
 func (self class) IsPositionEnabled() bool { //gd:RetargetModifier3D.is_position_enabled
@@ -276,7 +278,7 @@ func (self class) IsPositionEnabled() bool { //gd:RetargetModifier3D.is_position
 }
 
 /*
-Sets [TransformFlagRotation] into [member enable].
+Sets [TransformFlagRotation] into [Instance.Enable].
 */
 //go:nosplit
 func (self class) SetRotationEnabled(enabled bool) { //gd:RetargetModifier3D.set_rotation_enabled
@@ -284,7 +286,7 @@ func (self class) SetRotationEnabled(enabled bool) { //gd:RetargetModifier3D.set
 }
 
 /*
-Returns true if [member enable] has [TransformFlagRotation].
+Returns true if [Instance.Enable] has [TransformFlagRotation].
 */
 //go:nosplit
 func (self class) IsRotationEnabled() bool { //gd:RetargetModifier3D.is_rotation_enabled
@@ -294,7 +296,7 @@ func (self class) IsRotationEnabled() bool { //gd:RetargetModifier3D.is_rotation
 }
 
 /*
-Sets [TransformFlagScale] into [member enable].
+Sets [TransformFlagScale] into [Instance.Enable].
 */
 //go:nosplit
 func (self class) SetScaleEnabled(enabled bool) { //gd:RetargetModifier3D.set_scale_enabled
@@ -302,7 +304,7 @@ func (self class) SetScaleEnabled(enabled bool) { //gd:RetargetModifier3D.set_sc
 }
 
 /*
-Returns true if [member enable] has [TransformFlagScale].
+Returns true if [Instance.Enable] has [TransformFlagScale].
 */
 //go:nosplit
 func (self class) IsScaleEnabled() bool { //gd:RetargetModifier3D.is_scale_enabled
@@ -359,12 +361,12 @@ func init() {
 type TransformFlag int //gd:RetargetModifier3D.TransformFlag
 
 const (
-	/*If set, allows to retarget the position.*/
+	// If set, allows to retarget the position.
 	TransformFlagPosition TransformFlag = 1
-	/*If set, allows to retarget the rotation.*/
+	// If set, allows to retarget the rotation.
 	TransformFlagRotation TransformFlag = 2
-	/*If set, allows to retarget the scale.*/
+	// If set, allows to retarget the scale.
 	TransformFlagScale TransformFlag = 4
-	/*If set, allows to retarget the position/rotation/scale.*/
+	// If set, allows to retarget the position/rotation/scale.
 	TransformFlagAll TransformFlag = 7
 )
