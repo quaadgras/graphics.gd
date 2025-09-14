@@ -552,7 +552,7 @@ Returns the [Resource.ID] of the [graphics.gd/classdb/NavigationServer2D] naviga
 By default this returns the default [graphics.gd/classdb/World2D] navigation map, unless a custom map was provided using [Instance.SetNavigationMap].
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap2D { //gd:TileMapLayer.get_navigation_map
-	return RID.NavigationMap2D(Advanced(self).GetNavigationMap())
+	return RID.NavigationMap2D(RID.NavigationMap2D(Advanced(self).GetNavigationMap()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

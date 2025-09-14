@@ -239,7 +239,7 @@ func (Instance) _draw(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCall
 Returns the canvas item RID used by [graphics.gd/classdb/RenderingServer] for this item.
 */
 func (self Instance) GetCanvasItem() RID.CanvasItem { //gd:CanvasItem.get_canvas_item
-	return RID.CanvasItem(Advanced(self).GetCanvasItem())
+	return RID.CanvasItem(RID.CanvasItem(Advanced(self).GetCanvasItem()))
 }
 
 /*
@@ -883,7 +883,7 @@ func (self Instance) GetGlobalMousePosition() Vector2.XY { //gd:CanvasItem.get_g
 Returns the [Resource.ID] of the [graphics.gd/classdb/World2D] canvas where this item is in.
 */
 func (self Instance) GetCanvas() RID.Canvas { //gd:CanvasItem.get_canvas
-	return RID.Canvas(Advanced(self).GetCanvas())
+	return RID.Canvas(RID.Canvas(Advanced(self).GetCanvas()))
 }
 
 /*

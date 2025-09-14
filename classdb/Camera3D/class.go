@@ -285,14 +285,14 @@ func (self Instance) IsPositionInFrustum(world_point Vector3.XYZ) bool { //gd:Ca
 Returns the camera's RID from the [graphics.gd/classdb/RenderingServer].
 */
 func (self Instance) GetCameraRid() RID.Camera { //gd:Camera3D.get_camera_rid
-	return RID.Camera(Advanced(self).GetCameraRid())
+	return RID.Camera(RID.Camera(Advanced(self).GetCameraRid()))
 }
 
 /*
 Returns the RID of a pyramid shape encompassing the camera's view frustum, ignoring the camera's near plane. The tip of the pyramid represents the position of the camera.
 */
 func (self Instance) GetPyramidShapeRid() RID.Shape3D { //gd:Camera3D.get_pyramid_shape_rid
-	return RID.Shape3D(Advanced(self).GetPyramidShapeRid())
+	return RID.Shape3D(RID.Shape3D(Advanced(self).GetPyramidShapeRid()))
 }
 
 /*

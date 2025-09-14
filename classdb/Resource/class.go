@@ -216,7 +216,7 @@ func (self Instance) SetPathCache(path string) { //gd:Resource.set_path_cache
 Returns the [Resource.ID] of this resource (or an empty RID). Many resources (such as [graphics.gd/classdb/Texture2D], [graphics.gd/classdb/Mesh], and so on) are high-level abstractions of resources stored in a specialized server ([graphics.gd/classdb/DisplayServer], [graphics.gd/classdb/RenderingServer], etc.), so this function will return the original [Resource.ID].
 */
 func (self Instance) GetRid() ID { //gd:Resource.get_rid
-	return ID(Advanced(self).GetRid())
+	return ID(ID(Advanced(self).GetRid()))
 }
 
 /*

@@ -141,14 +141,14 @@ type Any interface {
 Returns [graphics.gd/classdb/TextServer] RID of the font cache for specific variation.
 */
 func (self Instance) FindVariation(variation_coordinates map[string]float32) RID.Font { //gd:Font.find_variation
-	return RID.Font(Advanced(self).FindVariation(gd.DictionaryFromMap(variation_coordinates), int64(0), float64(0.0), Transform2D.OriginXY(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), int64(0), int64(0), int64(0), int64(0), float64(0.0)))
+	return RID.Font(RID.Font(Advanced(self).FindVariation(gd.DictionaryFromMap(variation_coordinates), int64(0), float64(0.0), Transform2D.OriginXY(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), int64(0), int64(0), int64(0), int64(0), float64(0.0))))
 }
 
 /*
 Returns [graphics.gd/classdb/TextServer] RID of the font cache for specific variation.
 */
 func (self Expanded) FindVariation(variation_coordinates map[string]float32, face_index int, strength Float.X, transform Transform2D.OriginXY, spacing_top int, spacing_bottom int, spacing_space int, spacing_glyph int, baseline_offset Float.X) RID.Font { //gd:Font.find_variation
-	return RID.Font(Advanced(self).FindVariation(gd.DictionaryFromMap(variation_coordinates), int64(face_index), float64(strength), Transform2D.OriginXY(transform), int64(spacing_top), int64(spacing_bottom), int64(spacing_space), int64(spacing_glyph), float64(baseline_offset)))
+	return RID.Font(RID.Font(Advanced(self).FindVariation(gd.DictionaryFromMap(variation_coordinates), int64(face_index), float64(strength), Transform2D.OriginXY(transform), int64(spacing_top), int64(spacing_bottom), int64(spacing_space), int64(spacing_glyph), float64(baseline_offset))))
 }
 
 /*

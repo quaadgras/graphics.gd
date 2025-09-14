@@ -231,7 +231,7 @@ func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:Collisi
 Returns the object's [Resource.ID].
 */
 func (self Instance) GetRid() RID.Body3D { //gd:CollisionObject3D.get_rid
-	return RID.Body3D(Advanced(self).GetRid())
+	return RID.Body3D(RID.Body3D(Advanced(self).GetRid()))
 }
 
 /*

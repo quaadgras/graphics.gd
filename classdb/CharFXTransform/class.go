@@ -265,7 +265,7 @@ func (self Instance) SetRelativeIndex(value int) {
 }
 
 func (self Instance) Font() RID.Any {
-	return RID.Any(class(self).GetFont())
+	return RID.Any(RID.Any(class(self).GetFont()))
 }
 
 func (self Instance) SetFont(value RID.Any) {

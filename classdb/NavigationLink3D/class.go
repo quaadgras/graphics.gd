@@ -125,7 +125,7 @@ type Any interface {
 Returns the [Resource.ID] of this link on the [graphics.gd/classdb/NavigationServer3D].
 */
 func (self Instance) GetRid() RID.NavigationLink3D { //gd:NavigationLink3D.get_rid
-	return RID.NavigationLink3D(Advanced(self).GetRid())
+	return RID.NavigationLink3D(RID.NavigationLink3D(Advanced(self).GetRid()))
 }
 
 /*
@@ -139,7 +139,7 @@ func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) { //gd
 Returns the current navigation map [Resource.ID] used by this link.
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:NavigationLink3D.get_navigation_map
-	return RID.NavigationMap3D(Advanced(self).GetNavigationMap())
+	return RID.NavigationMap3D(RID.NavigationMap3D(Advanced(self).GetNavigationMap()))
 }
 
 /*

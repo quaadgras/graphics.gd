@@ -299,7 +299,7 @@ func (self Instance) GetTexture() ViewportTexture.Instance { //gd:Viewport.get_t
 Returns the viewport's RID from the [graphics.gd/classdb/RenderingServer].
 */
 func (self Instance) GetViewportRid() RID.Viewport { //gd:Viewport.get_viewport_rid
-	return RID.Viewport(Advanced(self).GetViewportRid())
+	return RID.Viewport(RID.Viewport(Advanced(self).GetViewportRid()))
 }
 
 /*

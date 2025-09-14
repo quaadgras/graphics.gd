@@ -230,7 +230,7 @@ Note: This method is implemented only on macOS.
 */
 func GetSystemMenu(menu_id SystemMenus) RID.NativeMenu { //gd:NativeMenu.get_system_menu
 	once.Do(singleton)
-	return RID.NativeMenu(Advanced().GetSystemMenu(menu_id))
+	return RID.NativeMenu(RID.NativeMenu(Advanced().GetSystemMenu(menu_id)))
 }
 
 /*
@@ -250,7 +250,7 @@ Note: This method is implemented on macOS and Windows.
 */
 func CreateMenu() RID.NativeMenu { //gd:NativeMenu.create_menu
 	once.Do(singleton)
-	return RID.NativeMenu(Advanced().CreateMenu())
+	return RID.NativeMenu(RID.NativeMenu(Advanced().CreateMenu()))
 }
 
 /*
@@ -800,7 +800,7 @@ Note: This method is implemented on macOS and Windows.
 */
 func GetItemSubmenu(rid RID.NativeMenu, idx int) RID.NativeMenu { //gd:NativeMenu.get_item_submenu
 	once.Do(singleton)
-	return RID.NativeMenu(Advanced().GetItemSubmenu(RID.Any(rid), int64(idx)))
+	return RID.NativeMenu(RID.NativeMenu(Advanced().GetItemSubmenu(RID.Any(rid), int64(idx))))
 }
 
 /*

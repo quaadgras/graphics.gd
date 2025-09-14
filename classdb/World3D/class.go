@@ -177,15 +177,15 @@ func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) {
 }
 
 func (self Instance) Space() RID.Any {
-	return RID.Any(class(self).GetSpace())
+	return RID.Any(RID.Any(class(self).GetSpace()))
 }
 
 func (self Instance) NavigationMap() RID.Any {
-	return RID.Any(class(self).GetNavigationMap())
+	return RID.Any(RID.Any(class(self).GetNavigationMap()))
 }
 
 func (self Instance) Scenario() RID.Any {
-	return RID.Any(class(self).GetScenario())
+	return RID.Any(RID.Any(class(self).GetScenario()))
 }
 
 func (self Instance) DirectSpaceState() PhysicsDirectSpaceState3D.Instance {

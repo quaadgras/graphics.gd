@@ -239,7 +239,7 @@ Creates a 2D world boundary shape in the physics server, and returns the [Resour
 */
 func WorldBoundaryShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.world_boundary_shape_create
 	once.Do(singleton)
-	return RID.Shape2D(Advanced().WorldBoundaryShapeCreate())
+	return RID.Shape2D(RID.Shape2D(Advanced().WorldBoundaryShapeCreate()))
 }
 
 /*
@@ -247,7 +247,7 @@ Creates a 2D separation ray shape in the physics server, and returns the [Resour
 */
 func SeparationRayShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.separation_ray_shape_create
 	once.Do(singleton)
-	return RID.Shape2D(Advanced().SeparationRayShapeCreate())
+	return RID.Shape2D(RID.Shape2D(Advanced().SeparationRayShapeCreate()))
 }
 
 /*
@@ -255,7 +255,7 @@ Creates a 2D segment shape in the physics server, and returns the [Resource.ID] 
 */
 func SegmentShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.segment_shape_create
 	once.Do(singleton)
-	return RID.Shape2D(Advanced().SegmentShapeCreate())
+	return RID.Shape2D(RID.Shape2D(Advanced().SegmentShapeCreate()))
 }
 
 /*
@@ -263,7 +263,7 @@ Creates a 2D circle shape in the physics server, and returns the [Resource.ID] t
 */
 func CircleShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.circle_shape_create
 	once.Do(singleton)
-	return RID.Shape2D(Advanced().CircleShapeCreate())
+	return RID.Shape2D(RID.Shape2D(Advanced().CircleShapeCreate()))
 }
 
 /*
@@ -271,7 +271,7 @@ Creates a 2D rectangle shape in the physics server, and returns the [Resource.ID
 */
 func RectangleShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.rectangle_shape_create
 	once.Do(singleton)
-	return RID.Shape2D(Advanced().RectangleShapeCreate())
+	return RID.Shape2D(RID.Shape2D(Advanced().RectangleShapeCreate()))
 }
 
 /*
@@ -279,7 +279,7 @@ Creates a 2D capsule shape in the physics server, and returns the [Resource.ID] 
 */
 func CapsuleShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.capsule_shape_create
 	once.Do(singleton)
-	return RID.Shape2D(Advanced().CapsuleShapeCreate())
+	return RID.Shape2D(RID.Shape2D(Advanced().CapsuleShapeCreate()))
 }
 
 /*
@@ -287,7 +287,7 @@ Creates a 2D convex polygon shape in the physics server, and returns the [Resour
 */
 func ConvexPolygonShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.convex_polygon_shape_create
 	once.Do(singleton)
-	return RID.Shape2D(Advanced().ConvexPolygonShapeCreate())
+	return RID.Shape2D(RID.Shape2D(Advanced().ConvexPolygonShapeCreate()))
 }
 
 /*
@@ -295,7 +295,7 @@ Creates a 2D concave polygon shape in the physics server, and returns the [Resou
 */
 func ConcavePolygonShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.concave_polygon_shape_create
 	once.Do(singleton)
-	return RID.Shape2D(Advanced().ConcavePolygonShapeCreate())
+	return RID.Shape2D(RID.Shape2D(Advanced().ConcavePolygonShapeCreate()))
 }
 
 /*
@@ -345,7 +345,7 @@ Creates a 2D space in the physics server, and returns the [Resource.ID] that ide
 */
 func SpaceCreate() RID.Space2D { //gd:PhysicsServer2D.space_create
 	once.Do(singleton)
-	return RID.Space2D(Advanced().SpaceCreate())
+	return RID.Space2D(RID.Space2D(Advanced().SpaceCreate()))
 }
 
 /*
@@ -395,7 +395,7 @@ Use [AreaAddShape] to add shapes to it, use [AreaSetTransform] to set its transf
 */
 func AreaCreate() RID.Area2D { //gd:PhysicsServer2D.area_create
 	once.Do(singleton)
-	return RID.Area2D(Advanced().AreaCreate())
+	return RID.Area2D(RID.Area2D(Advanced().AreaCreate()))
 }
 
 /*
@@ -413,7 +413,7 @@ Returns the [Resource.ID] of the space assigned to the area. Returns an empty [R
 */
 func AreaGetSpace(area RID.Area2D) RID.Space2D { //gd:PhysicsServer2D.area_get_space
 	once.Do(singleton)
-	return RID.Space2D(Advanced().AreaGetSpace(RID.Any(area)))
+	return RID.Space2D(RID.Space2D(Advanced().AreaGetSpace(RID.Any(area))))
 }
 
 /*
@@ -469,7 +469,7 @@ Returns the [Resource.ID] of the shape with the given index in the area's array 
 */
 func AreaGetShape(area RID.Area2D, shape_idx int) RID.Shape2D { //gd:PhysicsServer2D.area_get_shape
 	once.Do(singleton)
-	return RID.Shape2D(Advanced().AreaGetShape(RID.Any(area), int64(shape_idx)))
+	return RID.Shape2D(RID.Shape2D(Advanced().AreaGetShape(RID.Any(area), int64(shape_idx))))
 }
 
 /*
@@ -647,7 +647,7 @@ Use [BodyAddShape] to add shapes to it, use [BodySetState] to set its transform,
 */
 func BodyCreate() RID.Body2D { //gd:PhysicsServer2D.body_create
 	once.Do(singleton)
-	return RID.Body2D(Advanced().BodyCreate())
+	return RID.Body2D(RID.Body2D(Advanced().BodyCreate()))
 }
 
 /*
@@ -669,7 +669,7 @@ Returns the [Resource.ID] of the space assigned to the body. Returns an empty [R
 */
 func BodyGetSpace(body RID.Body2D) RID.Space2D { //gd:PhysicsServer2D.body_get_space
 	once.Do(singleton)
-	return RID.Space2D(Advanced().BodyGetSpace(RID.Any(body)))
+	return RID.Space2D(RID.Space2D(Advanced().BodyGetSpace(RID.Any(body))))
 }
 
 /*
@@ -733,7 +733,7 @@ Returns the [Resource.ID] of the shape with the given index in the body's array 
 */
 func BodyGetShape(body RID.Body2D, shape_idx int) RID.Shape2D { //gd:PhysicsServer2D.body_get_shape
 	once.Do(singleton)
-	return RID.Shape2D(Advanced().BodyGetShape(RID.Any(body), int64(shape_idx)))
+	return RID.Shape2D(RID.Shape2D(Advanced().BodyGetShape(RID.Any(body), int64(shape_idx))))
 }
 
 /*
@@ -1215,7 +1215,7 @@ Creates a 2D joint in the physics server, and returns the [Resource.ID] that ide
 */
 func JointCreate() RID.Joint2D { //gd:PhysicsServer2D.joint_create
 	once.Do(singleton)
-	return RID.Joint2D(Advanced().JointCreate())
+	return RID.Joint2D(RID.Joint2D(Advanced().JointCreate()))
 }
 
 /*

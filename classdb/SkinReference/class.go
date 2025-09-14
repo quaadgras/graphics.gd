@@ -110,7 +110,7 @@ type Any interface {
 Returns the [Resource.ID] owned by this SkinReference, as returned by [graphics.gd/classdb/RenderingServer.SkeletonCreate].
 */
 func (self Instance) GetSkeleton() RID.Skeleton { //gd:SkinReference.get_skeleton
-	return RID.Skeleton(Advanced(self).GetSkeleton())
+	return RID.Skeleton(RID.Skeleton(Advanced(self).GetSkeleton()))
 }
 
 /*

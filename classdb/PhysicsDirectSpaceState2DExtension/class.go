@@ -173,7 +173,7 @@ func (Instance) _intersect_shape(impl func(ptr gdclass.Receiver, shape_rid RID.S
 		var result = gd.UnsafeGet[*PhysicsServer2DExtensionShapeResult](p_args, 7)
 		var max_results = gd.UnsafeGet[int64](p_args, 8)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shape_rid, transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, result, int(max_results))
+		ret := impl(self, RID.Shape2D(shape_rid), transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, result, int(max_results))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -189,7 +189,7 @@ func (Instance) _cast_motion(impl func(ptr gdclass.Receiver, shape_rid RID.Shape
 		var closest_safe = gd.UnsafeGet[*float64](p_args, 7)
 		var closest_unsafe = gd.UnsafeGet[*float64](p_args, 8)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shape_rid, transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, closest_safe, closest_unsafe)
+		ret := impl(self, RID.Shape2D(shape_rid), transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, closest_safe, closest_unsafe)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -206,7 +206,7 @@ func (Instance) _collide_shape(impl func(ptr gdclass.Receiver, shape_rid RID.Sha
 		var max_results = gd.UnsafeGet[int64](p_args, 8)
 		var result_count = gd.UnsafeGet[*int32](p_args, 9)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shape_rid, transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, results, int(max_results), result_count)
+		ret := impl(self, RID.Shape2D(shape_rid), transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, results, int(max_results), result_count)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -221,7 +221,7 @@ func (Instance) _rest_info(impl func(ptr gdclass.Receiver, shape_rid RID.Shape2D
 		var collide_with_areas = gd.UnsafeGet[bool](p_args, 6)
 		var rest_info = gd.UnsafeGet[*PhysicsServer2DExtensionShapeRestInfo](p_args, 7)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shape_rid, transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, rest_info)
+		ret := impl(self, RID.Shape2D(shape_rid), transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, rest_info)
 		gd.UnsafeSet(p_back, ret)
 	}
 }

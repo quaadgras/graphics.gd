@@ -287,43 +287,43 @@ func singleton() {
 }
 func WorldBoundaryShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.world_boundary_shape_create
 	once.Do(singleton)
-	return RID.Shape3D(Advanced().WorldBoundaryShapeCreate())
+	return RID.Shape3D(RID.Shape3D(Advanced().WorldBoundaryShapeCreate()))
 }
 func SeparationRayShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.separation_ray_shape_create
 	once.Do(singleton)
-	return RID.Shape3D(Advanced().SeparationRayShapeCreate())
+	return RID.Shape3D(RID.Shape3D(Advanced().SeparationRayShapeCreate()))
 }
 func SphereShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.sphere_shape_create
 	once.Do(singleton)
-	return RID.Shape3D(Advanced().SphereShapeCreate())
+	return RID.Shape3D(RID.Shape3D(Advanced().SphereShapeCreate()))
 }
 func BoxShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.box_shape_create
 	once.Do(singleton)
-	return RID.Shape3D(Advanced().BoxShapeCreate())
+	return RID.Shape3D(RID.Shape3D(Advanced().BoxShapeCreate()))
 }
 func CapsuleShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.capsule_shape_create
 	once.Do(singleton)
-	return RID.Shape3D(Advanced().CapsuleShapeCreate())
+	return RID.Shape3D(RID.Shape3D(Advanced().CapsuleShapeCreate()))
 }
 func CylinderShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.cylinder_shape_create
 	once.Do(singleton)
-	return RID.Shape3D(Advanced().CylinderShapeCreate())
+	return RID.Shape3D(RID.Shape3D(Advanced().CylinderShapeCreate()))
 }
 func ConvexPolygonShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.convex_polygon_shape_create
 	once.Do(singleton)
-	return RID.Shape3D(Advanced().ConvexPolygonShapeCreate())
+	return RID.Shape3D(RID.Shape3D(Advanced().ConvexPolygonShapeCreate()))
 }
 func ConcavePolygonShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.concave_polygon_shape_create
 	once.Do(singleton)
-	return RID.Shape3D(Advanced().ConcavePolygonShapeCreate())
+	return RID.Shape3D(RID.Shape3D(Advanced().ConcavePolygonShapeCreate()))
 }
 func HeightmapShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.heightmap_shape_create
 	once.Do(singleton)
-	return RID.Shape3D(Advanced().HeightmapShapeCreate())
+	return RID.Shape3D(RID.Shape3D(Advanced().HeightmapShapeCreate()))
 }
 func CustomShapeCreate() RID.Shape3D { //gd:PhysicsServer3D.custom_shape_create
 	once.Do(singleton)
-	return RID.Shape3D(Advanced().CustomShapeCreate())
+	return RID.Shape3D(RID.Shape3D(Advanced().CustomShapeCreate()))
 }
 
 /*
@@ -375,7 +375,7 @@ Creates a space. A space is a collection of parameters for the physics engine th
 */
 func SpaceCreate() RID.Space3D { //gd:PhysicsServer3D.space_create
 	once.Do(singleton)
-	return RID.Space3D(Advanced().SpaceCreate())
+	return RID.Space3D(RID.Space3D(Advanced().SpaceCreate()))
 }
 
 /*
@@ -425,7 +425,7 @@ Use [AreaAddShape] to add shapes to it, use [AreaSetTransform] to set its transf
 */
 func AreaCreate() RID.Area3D { //gd:PhysicsServer3D.area_create
 	once.Do(singleton)
-	return RID.Area3D(Advanced().AreaCreate())
+	return RID.Area3D(RID.Area3D(Advanced().AreaCreate()))
 }
 
 /*
@@ -441,7 +441,7 @@ Returns the space assigned to the area.
 */
 func AreaGetSpace(area RID.Area3D) RID.Space3D { //gd:PhysicsServer3D.area_get_space
 	once.Do(singleton)
-	return RID.Space3D(Advanced().AreaGetSpace(RID.Any(area)))
+	return RID.Space3D(RID.Space3D(Advanced().AreaGetSpace(RID.Any(area))))
 }
 
 /*
@@ -493,7 +493,7 @@ Returns the [Resource.ID] of the nth shape of an area.
 */
 func AreaGetShape(area RID.Area3D, shape_idx int) RID.Shape3D { //gd:PhysicsServer3D.area_get_shape
 	once.Do(singleton)
-	return RID.Shape3D(Advanced().AreaGetShape(RID.Any(area), int64(shape_idx)))
+	return RID.Shape3D(RID.Shape3D(Advanced().AreaGetShape(RID.Any(area), int64(shape_idx))))
 }
 
 /*
@@ -659,7 +659,7 @@ Use [BodyAddShape] to add shapes to it, use [BodySetState] to set its transform,
 */
 func BodyCreate() RID.Body3D { //gd:PhysicsServer3D.body_create
 	once.Do(singleton)
-	return RID.Body3D(Advanced().BodyCreate())
+	return RID.Body3D(RID.Body3D(Advanced().BodyCreate()))
 }
 
 /*
@@ -675,7 +675,7 @@ Returns the [Resource.ID] of the space assigned to a body.
 */
 func BodyGetSpace(body RID.Body3D) RID.Space3D { //gd:PhysicsServer3D.body_get_space
 	once.Do(singleton)
-	return RID.Space3D(Advanced().BodyGetSpace(RID.Any(body)))
+	return RID.Space3D(RID.Space3D(Advanced().BodyGetSpace(RID.Any(body))))
 }
 
 /*
@@ -791,7 +791,7 @@ Returns the [Resource.ID] of the nth shape of a body.
 */
 func BodyGetShape(body RID.Body3D, shape_idx int) RID.Shape3D { //gd:PhysicsServer3D.body_get_shape
 	once.Do(singleton)
-	return RID.Shape3D(Advanced().BodyGetShape(RID.Any(body), int64(shape_idx)))
+	return RID.Shape3D(RID.Shape3D(Advanced().BodyGetShape(RID.Any(body), int64(shape_idx))))
 }
 
 /*
@@ -1209,7 +1209,7 @@ Creates a new soft body and returns its internal [Resource.ID].
 */
 func SoftBodyCreate() RID.SoftBody3D { //gd:PhysicsServer3D.soft_body_create
 	once.Do(singleton)
-	return RID.SoftBody3D(Advanced().SoftBodyCreate())
+	return RID.SoftBody3D(RID.SoftBody3D(Advanced().SoftBodyCreate()))
 }
 
 /*
@@ -1233,7 +1233,7 @@ Returns the [Resource.ID] of the space assigned to the given soft body.
 */
 func SoftBodyGetSpace(body RID.SoftBody3D) RID.Space3D { //gd:PhysicsServer3D.soft_body_get_space
 	once.Do(singleton)
-	return RID.Space3D(Advanced().SoftBodyGetSpace(RID.Any(body)))
+	return RID.Space3D(RID.Space3D(Advanced().SoftBodyGetSpace(RID.Any(body))))
 }
 
 /*
@@ -1477,7 +1477,7 @@ func SoftBodyIsPointPinned(body RID.SoftBody3D, point_index int) bool { //gd:Phy
 }
 func JointCreate() RID.Joint3D { //gd:PhysicsServer3D.joint_create
 	once.Do(singleton)
-	return RID.Joint3D(Advanced().JointCreate())
+	return RID.Joint3D(RID.Joint3D(Advanced().JointCreate()))
 }
 func JointClear(joint RID.Joint3D) { //gd:PhysicsServer3D.joint_clear
 	once.Do(singleton)

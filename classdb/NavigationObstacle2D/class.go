@@ -126,7 +126,7 @@ type Any interface {
 Returns the [Resource.ID] of this obstacle on the [graphics.gd/classdb/NavigationServer2D].
 */
 func (self Instance) GetRid() RID.NavigationObstacle2D { //gd:NavigationObstacle2D.get_rid
-	return RID.NavigationObstacle2D(Advanced(self).GetRid())
+	return RID.NavigationObstacle2D(RID.NavigationObstacle2D(Advanced(self).GetRid()))
 }
 
 /*
@@ -140,7 +140,7 @@ func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap2D) { //gd
 Returns the [Resource.ID] of the navigation map for this NavigationObstacle node. This function returns always the map set on the NavigationObstacle node and not the map of the abstract obstacle on the NavigationServer. If the obstacle map is changed directly with the NavigationServer API the NavigationObstacle node will not be aware of the map change. Use [Instance.SetNavigationMap] to change the navigation map for the NavigationObstacle and also update the obstacle on the NavigationServer.
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap2D { //gd:NavigationObstacle2D.get_navigation_map
-	return RID.NavigationMap2D(Advanced(self).GetNavigationMap())
+	return RID.NavigationMap2D(RID.NavigationMap2D(Advanced(self).GetNavigationMap()))
 }
 
 /*

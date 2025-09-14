@@ -435,14 +435,14 @@ func (self Instance) FreeRid(rid RID.Any) { //gd:TextServer.free_rid
 Creates a new, empty font cache entry resource. To free the resulting resource, use the [Instance.FreeRid] method.
 */
 func (self Instance) CreateFont() RID.Font { //gd:TextServer.create_font
-	return RID.Font(Advanced(self).CreateFont())
+	return RID.Font(RID.Font(Advanced(self).CreateFont()))
 }
 
 /*
 Creates a new variation existing font which is reusing the same glyph cache and font data. To free the resulting resource, use the [Instance.FreeRid] method.
 */
 func (self Instance) CreateFontLinkedVariation(font_rid RID.Font) RID.Font { //gd:TextServer.create_font_linked_variation
-	return RID.Font(Advanced(self).CreateFontLinkedVariation(RID.Any(font_rid)))
+	return RID.Font(RID.Font(Advanced(self).CreateFontLinkedVariation(RID.Any(font_rid))))
 }
 
 /*
@@ -1075,7 +1075,7 @@ Returns resource ID of the cache texture containing the glyph.
 Note: If there are pending glyphs to render, calling this function might trigger the texture cache update.
 */
 func (self Instance) FontGetGlyphTextureRid(font_rid RID.Font, size Vector2i.XY, glyph int) RID.Texture { //gd:TextServer.font_get_glyph_texture_rid
-	return RID.Texture(Advanced(self).FontGetGlyphTextureRid(RID.Any(font_rid), Vector2i.XY(size), int64(glyph)))
+	return RID.Texture(RID.Texture(Advanced(self).FontGetGlyphTextureRid(RID.Any(font_rid), Vector2i.XY(size), int64(glyph))))
 }
 
 /*
@@ -1388,7 +1388,7 @@ Note: Direction is ignored if server does not support [FeatureBidiLayout] featur
 Note: Orientation is ignored if server does not support [FeatureVerticalLayout] feature (supported by [graphics.gd/classdb/TextServerAdvanced]).
 */
 func (self Instance) CreateShapedText() RID.TextBuffer { //gd:TextServer.create_shaped_text
-	return RID.TextBuffer(Advanced(self).CreateShapedText(0, 0))
+	return RID.TextBuffer(RID.TextBuffer(Advanced(self).CreateShapedText(0, 0)))
 }
 
 /*
@@ -1399,7 +1399,7 @@ Note: Direction is ignored if server does not support [FeatureBidiLayout] featur
 Note: Orientation is ignored if server does not support [FeatureVerticalLayout] feature (supported by [graphics.gd/classdb/TextServerAdvanced]).
 */
 func (self Expanded) CreateShapedText(direction Direction, orientation Orientation) RID.TextBuffer { //gd:TextServer.create_shaped_text
-	return RID.TextBuffer(Advanced(self).CreateShapedText(direction, orientation))
+	return RID.TextBuffer(RID.TextBuffer(Advanced(self).CreateShapedText(direction, orientation)))
 }
 
 /*
@@ -1628,14 +1628,14 @@ func (self Expanded) ShapedSetSpanUpdateFont(shaped RID.TextBuffer, index int, f
 Returns text buffer for the substring of the text in the 'shaped' text buffer (including inline objects).
 */
 func (self Instance) ShapedTextSubstr(shaped RID.TextBuffer, start int, length int) RID.TextBuffer { //gd:TextServer.shaped_text_substr
-	return RID.TextBuffer(Advanced(self).ShapedTextSubstr(RID.Any(shaped), int64(start), int64(length)))
+	return RID.TextBuffer(RID.TextBuffer(Advanced(self).ShapedTextSubstr(RID.Any(shaped), int64(start), int64(length))))
 }
 
 /*
 Returns the parent buffer from which the substring originates.
 */
 func (self Instance) ShapedTextGetParent(shaped RID.TextBuffer) RID.TextBuffer { //gd:TextServer.shaped_text_get_parent
-	return RID.TextBuffer(Advanced(self).ShapedTextGetParent(RID.Any(shaped)))
+	return RID.TextBuffer(RID.TextBuffer(Advanced(self).ShapedTextGetParent(RID.Any(shaped))))
 }
 
 /*

@@ -145,15 +145,15 @@ func New() Instance {
 }
 
 func (self Instance) Canvas() RID.Any {
-	return RID.Any(class(self).GetCanvas())
+	return RID.Any(RID.Any(class(self).GetCanvas()))
 }
 
 func (self Instance) Space() RID.Any {
-	return RID.Any(class(self).GetSpace())
+	return RID.Any(RID.Any(class(self).GetSpace()))
 }
 
 func (self Instance) NavigationMap() RID.Any {
-	return RID.Any(class(self).GetNavigationMap())
+	return RID.Any(RID.Any(class(self).GetNavigationMap()))
 }
 
 func (self Instance) DirectSpaceState() PhysicsDirectSpaceState2D.Instance {

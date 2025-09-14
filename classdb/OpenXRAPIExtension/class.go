@@ -299,7 +299,7 @@ func (self Instance) CanRender() bool { //gd:OpenXRAPIExtension.can_render
 Returns the [Resource.ID] corresponding to an Action of a matching name, optionally limited to a specified action set.
 */
 func (self Instance) FindAction(name string, action_set RID.ActionSet) RID.Action { //gd:OpenXRAPIExtension.find_action
-	return RID.Action(Advanced(self).FindAction(String.New(name), RID.Any(action_set)))
+	return RID.Action(RID.Action(Advanced(self).FindAction(String.New(name), RID.Any(action_set))))
 }
 
 /*
@@ -422,7 +422,7 @@ func (self Instance) OpenxrSwapchainAcquire(swapchain int) { //gd:OpenXRAPIExten
 Returns the RID of the provided swapchain's image.
 */
 func (self Instance) OpenxrSwapchainGetImage(swapchain int) RID.Texture { //gd:OpenXRAPIExtension.openxr_swapchain_get_image
-	return RID.Texture(Advanced(self).OpenxrSwapchainGetImage(int64(swapchain)))
+	return RID.Texture(RID.Texture(Advanced(self).OpenxrSwapchainGetImage(int64(swapchain))))
 }
 
 /*

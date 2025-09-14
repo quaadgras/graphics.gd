@@ -110,7 +110,7 @@ type Any interface {
 Returns the joint's internal [Resource.ID] from the [graphics.gd/classdb/PhysicsServer3D].
 */
 func (self Instance) GetRid() RID.Joint3D { //gd:Joint3D.get_rid
-	return RID.Joint3D(Advanced(self).GetRid())
+	return RID.Joint3D(RID.Joint3D(Advanced(self).GetRid()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

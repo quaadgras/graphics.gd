@@ -170,7 +170,7 @@ func (self Instance) GetCollider() Object.Instance { //gd:RayCast3D.get_collider
 Returns the [Resource.ID] of the first object that the ray intersects, or an empty [Resource.ID] if no object is intersecting the ray (i.e. [Instance.IsColliding] returns false).
 */
 func (self Instance) GetColliderRid() RID.Body3D { //gd:RayCast3D.get_collider_rid
-	return RID.Body3D(Advanced(self).GetColliderRid())
+	return RID.Body3D(RID.Body3D(Advanced(self).GetColliderRid()))
 }
 
 /*

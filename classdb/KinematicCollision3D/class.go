@@ -230,14 +230,14 @@ func (self Expanded) GetColliderId(collision_index int) int { //gd:KinematicColl
 Returns the colliding body's [Resource.ID] used by the [graphics.gd/classdb/PhysicsServer3D] given a collision index (the deepest collision by default).
 */
 func (self Instance) GetColliderRid() RID.Body3D { //gd:KinematicCollision3D.get_collider_rid
-	return RID.Body3D(Advanced(self).GetColliderRid(int64(0)))
+	return RID.Body3D(RID.Body3D(Advanced(self).GetColliderRid(int64(0))))
 }
 
 /*
 Returns the colliding body's [Resource.ID] used by the [graphics.gd/classdb/PhysicsServer3D] given a collision index (the deepest collision by default).
 */
 func (self Expanded) GetColliderRid(collision_index int) RID.Body3D { //gd:KinematicCollision3D.get_collider_rid
-	return RID.Body3D(Advanced(self).GetColliderRid(int64(collision_index)))
+	return RID.Body3D(RID.Body3D(Advanced(self).GetColliderRid(int64(collision_index))))
 }
 
 /*

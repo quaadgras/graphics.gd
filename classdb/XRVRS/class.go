@@ -110,7 +110,7 @@ Generates the VRS texture based on a render 'target_size' adjusted by our VRS ti
 The result will be cached, requesting a VRS texture with unchanged parameters and settings will return the cached RID.
 */
 func (self Instance) MakeVrsTexture(target_size Vector2.XY, eye_foci []Vector2.XY) RID.Texture { //gd:XRVRS.make_vrs_texture
-	return RID.Texture(Advanced(self).MakeVrsTexture(Vector2.XY(target_size), Packed.New(eye_foci...)))
+	return RID.Texture(RID.Texture(Advanced(self).MakeVrsTexture(Vector2.XY(target_size), Packed.New(eye_foci...))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

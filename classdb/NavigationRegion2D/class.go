@@ -139,7 +139,7 @@ type Any interface {
 Returns the [Resource.ID] of this region on the [graphics.gd/classdb/NavigationServer2D]. Combined with [graphics.gd/classdb/NavigationServer2D.MapGetClosestPointOwner] can be used to identify the [graphics.gd/classdb/NavigationRegion2D] closest to a point on the merged navigation map.
 */
 func (self Instance) GetRid() RID.NavigationRegion2D { //gd:NavigationRegion2D.get_rid
-	return RID.NavigationRegion2D(Advanced(self).GetRid())
+	return RID.NavigationRegion2D(RID.NavigationRegion2D(Advanced(self).GetRid()))
 }
 
 /*
@@ -153,7 +153,7 @@ func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap2D) { //gd
 Returns the current navigation map [Resource.ID] used by this region.
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap2D { //gd:NavigationRegion2D.get_navigation_map
-	return RID.NavigationMap2D(Advanced(self).GetNavigationMap())
+	return RID.NavigationMap2D(RID.NavigationMap2D(Advanced(self).GetNavigationMap()))
 }
 
 /*
@@ -174,7 +174,7 @@ func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:Navig
 Returns the [Resource.ID] of this region on the [graphics.gd/classdb/NavigationServer2D].
 */
 func (self Instance) GetRegionRid() RID.NavigationRegion2D { //gd:NavigationRegion2D.get_region_rid
-	return RID.NavigationRegion2D(Advanced(self).GetRegionRid())
+	return RID.NavigationRegion2D(RID.NavigationRegion2D(Advanced(self).GetRegionRid()))
 }
 
 /*

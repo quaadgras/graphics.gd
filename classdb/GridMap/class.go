@@ -201,7 +201,7 @@ Returns the [Resource.ID] of the navigation map this GridMap node uses for its c
 This function returns always the map set on the GridMap node and not the map on the NavigationServer. If the map is changed directly with the NavigationServer API the GridMap node will not be aware of the map change.
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:GridMap.get_navigation_map
-	return RID.NavigationMap3D(Advanced(self).GetNavigationMap())
+	return RID.NavigationMap3D(RID.NavigationMap3D(Advanced(self).GetNavigationMap()))
 }
 
 /*
@@ -321,7 +321,7 @@ func (self Instance) GetBakeMeshes() []any { //gd:GridMap.get_bake_meshes
 Returns [Resource.ID] of a baked mesh with the given 'idx'.
 */
 func (self Instance) GetBakeMeshInstance(idx int) RID.Mesh { //gd:GridMap.get_bake_mesh_instance
-	return RID.Mesh(Advanced(self).GetBakeMeshInstance(int64(idx)))
+	return RID.Mesh(RID.Mesh(Advanced(self).GetBakeMeshInstance(int64(idx))))
 }
 
 /*

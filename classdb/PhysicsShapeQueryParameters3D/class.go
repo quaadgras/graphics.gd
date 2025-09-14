@@ -200,7 +200,7 @@ func (self Instance) SetShape(value Resource.Instance) {
 }
 
 func (self Instance) ShapeRid() RID.Any {
-	return RID.Any(class(self).GetShapeRid())
+	return RID.Any(RID.Any(class(self).GetShapeRid()))
 }
 
 func (self Instance) SetShapeRid(value RID.Any) {

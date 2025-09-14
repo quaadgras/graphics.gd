@@ -121,14 +121,14 @@ func (self Instance) GetRenderSceneData() RenderSceneData.Instance { //gd:Render
 Returns the [Resource.ID] of the environment object in the [graphics.gd/classdb/RenderingServer] being used to render this viewport.
 */
 func (self Instance) GetEnvironment() RID.Environment { //gd:RenderData.get_environment
-	return RID.Environment(Advanced(self).GetEnvironment())
+	return RID.Environment(RID.Environment(Advanced(self).GetEnvironment()))
 }
 
 /*
 Returns the [Resource.ID] of the camera attributes object in the [graphics.gd/classdb/RenderingServer] being used to render this viewport.
 */
 func (self Instance) GetCameraAttributes() RID.CameraAttributes { //gd:RenderData.get_camera_attributes
-	return RID.CameraAttributes(Advanced(self).GetCameraAttributes())
+	return RID.CameraAttributes(RID.CameraAttributes(Advanced(self).GetCameraAttributes()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
