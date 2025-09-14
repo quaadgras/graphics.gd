@@ -102,7 +102,7 @@ Creates, or obtains a cached, framebuffer. 'textures' lists textures accessed. '
 */
 func GetCacheMultipass(textures [][]RID.Texture, passes []RDFramebufferPass.Instance, views int) RID.Framebuffer { //gd:FramebufferCacheRD.get_cache_multipass
 	self := Instance{}
-	return RID.Framebuffer(Advanced(self).GetCacheMultipass(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), int64(views)))
+	return RID.Framebuffer(RID.Framebuffer(Advanced(self).GetCacheMultipass(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), int64(views))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

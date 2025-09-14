@@ -259,7 +259,7 @@ Create a new map.
 */
 func MapCreate() RID.NavigationMap2D { //gd:NavigationServer2D.map_create
 	once.Do(singleton)
-	return RID.NavigationMap2D(Advanced().MapCreate())
+	return RID.NavigationMap2D(RID.NavigationMap2D(Advanced().MapCreate()))
 }
 
 /*
@@ -371,7 +371,7 @@ Returns the owner region RID for the navigation mesh surface point closest to th
 */
 func MapGetClosestPointOwner(map_ RID.NavigationMap2D, to_point Vector2.XY) RID.NavigationRegion2D { //gd:NavigationServer2D.map_get_closest_point_owner
 	once.Do(singleton)
-	return RID.NavigationRegion2D(Advanced().MapGetClosestPointOwner(RID.Any(map_), Vector2.XY(to_point)))
+	return RID.NavigationRegion2D(RID.NavigationRegion2D(Advanced().MapGetClosestPointOwner(RID.Any(map_), Vector2.XY(to_point))))
 }
 
 /*
@@ -479,7 +479,7 @@ Creates a new region.
 */
 func RegionCreate() RID.NavigationRegion2D { //gd:NavigationServer2D.region_create
 	once.Do(singleton)
-	return RID.NavigationRegion2D(Advanced().RegionCreate())
+	return RID.NavigationRegion2D(RID.NavigationRegion2D(Advanced().RegionCreate()))
 }
 
 /*
@@ -587,7 +587,7 @@ Returns the navigation map [Resource.ID] the requested 'region' is currently ass
 */
 func RegionGetMap(region RID.NavigationRegion2D) RID.NavigationMap2D { //gd:NavigationServer2D.region_get_map
 	once.Do(singleton)
-	return RID.NavigationMap2D(Advanced().RegionGetMap(RID.Any(region)))
+	return RID.NavigationMap2D(RID.NavigationMap2D(Advanced().RegionGetMap(RID.Any(region))))
 }
 
 /*
@@ -687,7 +687,7 @@ Create a new link between two positions on a map.
 */
 func LinkCreate() RID.NavigationLink2D { //gd:NavigationServer2D.link_create
 	once.Do(singleton)
-	return RID.NavigationLink2D(Advanced().LinkCreate())
+	return RID.NavigationLink2D(RID.NavigationLink2D(Advanced().LinkCreate()))
 }
 
 /*
@@ -703,7 +703,7 @@ Returns the navigation map [Resource.ID] the requested 'link' is currently assig
 */
 func LinkGetMap(link RID.NavigationLink2D) RID.NavigationMap2D { //gd:NavigationServer2D.link_get_map
 	once.Do(singleton)
-	return RID.NavigationMap2D(Advanced().LinkGetMap(RID.Any(link)))
+	return RID.NavigationMap2D(RID.NavigationMap2D(Advanced().LinkGetMap(RID.Any(link))))
 }
 
 /*
@@ -839,7 +839,7 @@ Creates the agent.
 */
 func AgentCreate() RID.NavigationAgent2D { //gd:NavigationServer2D.agent_create
 	once.Do(singleton)
-	return RID.NavigationAgent2D(Advanced().AgentCreate())
+	return RID.NavigationAgent2D(RID.NavigationAgent2D(Advanced().AgentCreate()))
 }
 
 /*
@@ -871,7 +871,7 @@ Returns the navigation map [Resource.ID] the requested 'agent' is currently assi
 */
 func AgentGetMap(agent RID.NavigationAgent2D) RID.NavigationMap2D { //gd:NavigationServer2D.agent_get_map
 	once.Do(singleton)
-	return RID.NavigationMap2D(Advanced().AgentGetMap(RID.Any(agent)))
+	return RID.NavigationMap2D(RID.NavigationMap2D(Advanced().AgentGetMap(RID.Any(agent))))
 }
 
 /*
@@ -1107,7 +1107,7 @@ Creates a new navigation obstacle.
 */
 func ObstacleCreate() RID.NavigationObstacle2D { //gd:NavigationServer2D.obstacle_create
 	once.Do(singleton)
-	return RID.NavigationObstacle2D(Advanced().ObstacleCreate())
+	return RID.NavigationObstacle2D(RID.NavigationObstacle2D(Advanced().ObstacleCreate()))
 }
 
 /*
@@ -1139,7 +1139,7 @@ Returns the navigation map [Resource.ID] the requested 'obstacle' is currently a
 */
 func ObstacleGetMap(obstacle RID.NavigationObstacle2D) RID.NavigationMap2D { //gd:NavigationServer2D.obstacle_get_map
 	once.Do(singleton)
-	return RID.NavigationMap2D(Advanced().ObstacleGetMap(RID.Any(obstacle)))
+	return RID.NavigationMap2D(RID.NavigationMap2D(Advanced().ObstacleGetMap(RID.Any(obstacle))))
 }
 
 /*
@@ -1307,7 +1307,7 @@ Creates a new source geometry parser. If a func is set for the parser with [Sour
 */
 func SourceGeometryParserCreate() RID.NavigationSourceGeometryParser2D { //gd:NavigationServer2D.source_geometry_parser_create
 	once.Do(singleton)
-	return RID.NavigationSourceGeometryParser2D(Advanced().SourceGeometryParserCreate())
+	return RID.NavigationSourceGeometryParser2D(RID.NavigationSourceGeometryParser2D(Advanced().SourceGeometryParserCreate()))
 }
 
 /*

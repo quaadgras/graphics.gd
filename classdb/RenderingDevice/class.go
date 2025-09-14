@@ -252,7 +252,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 Note: Not to be confused with [graphics.gd/classdb/RenderingServer.Texture2dCreate], which creates the Godot-specific [graphics.gd/classdb/Texture2D] resource as opposed to the graphics API's own texture type.
 */
 func (self Instance) TextureCreate(format RDTextureFormat.Instance, view RDTextureView.Instance) RID.Texture { //gd:RenderingDevice.texture_create
-	return RID.Texture(Advanced(self).TextureCreate(format, view, gd.ArrayFromSlice[Array.Contains[Packed.Bytes]]([1][][]byte{}[0])))
+	return RID.Texture(RID.Texture(Advanced(self).TextureCreate(format, view, gd.ArrayFromSlice[Array.Contains[Packed.Bytes]]([1][][]byte{}[0]))))
 }
 
 /*
@@ -263,14 +263,14 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 Note: Not to be confused with [graphics.gd/classdb/RenderingServer.Texture2dCreate], which creates the Godot-specific [graphics.gd/classdb/Texture2D] resource as opposed to the graphics API's own texture type.
 */
 func (self Expanded) TextureCreate(format RDTextureFormat.Instance, view RDTextureView.Instance, data [][]byte) RID.Texture { //gd:RenderingDevice.texture_create
-	return RID.Texture(Advanced(self).TextureCreate(format, view, gd.ArrayFromSlice[Array.Contains[Packed.Bytes]](data)))
+	return RID.Texture(RID.Texture(Advanced(self).TextureCreate(format, view, gd.ArrayFromSlice[Array.Contains[Packed.Bytes]](data))))
 }
 
 /*
 Creates a shared texture using the specified 'view' and the texture information from 'with_texture'.
 */
 func (self Instance) TextureCreateShared(view RDTextureView.Instance, with_texture RID.Texture) RID.Texture { //gd:RenderingDevice.texture_create_shared
-	return RID.Texture(Advanced(self).TextureCreateShared(view, RID.Any(with_texture)))
+	return RID.Texture(RID.Texture(Advanced(self).TextureCreateShared(view, RID.Any(with_texture))))
 }
 
 /*
@@ -281,7 +281,7 @@ For 2D textures (which only have one layer), 'layer' must be 0.
 Note: Layer slicing is only supported for 2D texture arrays, not 3D textures or cubemaps.
 */
 func (self Instance) TextureCreateSharedFromSlice(view RDTextureView.Instance, with_texture RID.Texture, layer int, mipmap int) RID.Texture { //gd:RenderingDevice.texture_create_shared_from_slice
-	return RID.Texture(Advanced(self).TextureCreateSharedFromSlice(view, RID.Any(with_texture), int64(layer), int64(mipmap), int64(1), 0))
+	return RID.Texture(RID.Texture(Advanced(self).TextureCreateSharedFromSlice(view, RID.Any(with_texture), int64(layer), int64(mipmap), int64(1), 0)))
 }
 
 /*
@@ -292,14 +292,14 @@ For 2D textures (which only have one layer), 'layer' must be 0.
 Note: Layer slicing is only supported for 2D texture arrays, not 3D textures or cubemaps.
 */
 func (self Expanded) TextureCreateSharedFromSlice(view RDTextureView.Instance, with_texture RID.Texture, layer int, mipmap int, mipmaps int, slice_type Rendering.TextureSliceType) RID.Texture { //gd:RenderingDevice.texture_create_shared_from_slice
-	return RID.Texture(Advanced(self).TextureCreateSharedFromSlice(view, RID.Any(with_texture), int64(layer), int64(mipmap), int64(mipmaps), slice_type))
+	return RID.Texture(RID.Texture(Advanced(self).TextureCreateSharedFromSlice(view, RID.Any(with_texture), int64(layer), int64(mipmap), int64(mipmaps), slice_type)))
 }
 
 /*
 Returns an RID for an existing 'image' (VkImage) with the given 'type', 'format', 'samples', 'usage_flags', 'width', 'height', 'depth', and 'layers'. This can be used to allow Godot to render onto foreign images.
 */
 func (self Instance) TextureCreateFromExtension(atype Rendering.TextureType, format Rendering.DataFormat, samples Rendering.TextureSamples, usage_flags Rendering.TextureUsageBits, image int, width int, height int, depth int, layers int) RID.Texture { //gd:RenderingDevice.texture_create_from_extension
-	return RID.Texture(Advanced(self).TextureCreateFromExtension(atype, format, samples, usage_flags, int64(image), int64(width), int64(height), int64(depth), int64(layers)))
+	return RID.Texture(RID.Texture(Advanced(self).TextureCreateFromExtension(atype, format, samples, usage_flags, int64(image), int64(width), int64(height), int64(depth), int64(layers))))
 }
 
 /*
@@ -507,7 +507,7 @@ Creates a new framebuffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) FramebufferCreate(textures [][]RID.Texture) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create
-	return RID.Framebuffer(Advanced(self).FramebufferCreate(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), int64(-1), int64(1)))
+	return RID.Framebuffer(RID.Framebuffer(Advanced(self).FramebufferCreate(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), int64(-1), int64(1))))
 }
 
 /*
@@ -516,7 +516,7 @@ Creates a new framebuffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Expanded) FramebufferCreate(textures [][]RID.Texture, validate_with_format int, view_count int) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create
-	return RID.Framebuffer(Advanced(self).FramebufferCreate(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), int64(validate_with_format), int64(view_count)))
+	return RID.Framebuffer(RID.Framebuffer(Advanced(self).FramebufferCreate(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), int64(validate_with_format), int64(view_count))))
 }
 
 /*
@@ -525,7 +525,7 @@ Creates a new multipass framebuffer. It can be accessed with the RID that is ret
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) FramebufferCreateMultipass(textures [][]RID.Texture, passes []RDFramebufferPass.Instance) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create_multipass
-	return RID.Framebuffer(Advanced(self).FramebufferCreateMultipass(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), int64(-1), int64(1)))
+	return RID.Framebuffer(RID.Framebuffer(Advanced(self).FramebufferCreateMultipass(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), int64(-1), int64(1))))
 }
 
 /*
@@ -534,7 +534,7 @@ Creates a new multipass framebuffer. It can be accessed with the RID that is ret
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Expanded) FramebufferCreateMultipass(textures [][]RID.Texture, passes []RDFramebufferPass.Instance, validate_with_format int, view_count int) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create_multipass
-	return RID.Framebuffer(Advanced(self).FramebufferCreateMultipass(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), int64(validate_with_format), int64(view_count)))
+	return RID.Framebuffer(RID.Framebuffer(Advanced(self).FramebufferCreateMultipass(gd.ArrayFromSlice[Array.Contains[RID.Any]](textures), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDFramebufferPass]](passes), int64(validate_with_format), int64(view_count))))
 }
 
 /*
@@ -543,7 +543,7 @@ Creates a new empty framebuffer. It can be accessed with the RID that is returne
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) FramebufferCreateEmpty(size Vector2i.XY) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create_empty
-	return RID.Framebuffer(Advanced(self).FramebufferCreateEmpty(Vector2i.XY(size), 0, int64(-1)))
+	return RID.Framebuffer(RID.Framebuffer(Advanced(self).FramebufferCreateEmpty(Vector2i.XY(size), 0, int64(-1))))
 }
 
 /*
@@ -552,7 +552,7 @@ Creates a new empty framebuffer. It can be accessed with the RID that is returne
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Expanded) FramebufferCreateEmpty(size Vector2i.XY, samples Rendering.TextureSamples, validate_with_format int) RID.Framebuffer { //gd:RenderingDevice.framebuffer_create_empty
-	return RID.Framebuffer(Advanced(self).FramebufferCreateEmpty(Vector2i.XY(size), samples, int64(validate_with_format)))
+	return RID.Framebuffer(RID.Framebuffer(Advanced(self).FramebufferCreateEmpty(Vector2i.XY(size), samples, int64(validate_with_format))))
 }
 
 /*
@@ -575,7 +575,7 @@ Creates a new sampler. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) SamplerCreate(state RDSamplerState.Instance) RID.Sampler { //gd:RenderingDevice.sampler_create
-	return RID.Sampler(Advanced(self).SamplerCreate(state))
+	return RID.Sampler(RID.Sampler(Advanced(self).SamplerCreate(state)))
 }
 
 /*
@@ -591,7 +591,7 @@ It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) VertexBufferCreate(size_bytes int) RID.VertexBuffer { //gd:RenderingDevice.vertex_buffer_create
-	return RID.VertexBuffer(Advanced(self).VertexBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), 0))
+	return RID.VertexBuffer(RID.VertexBuffer(Advanced(self).VertexBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), 0)))
 }
 
 /*
@@ -600,7 +600,7 @@ It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Expanded) VertexBufferCreate(size_bytes int, data []byte, creation_bits Rendering.BufferCreationBits) RID.VertexBuffer { //gd:RenderingDevice.vertex_buffer_create
-	return RID.VertexBuffer(Advanced(self).VertexBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New(data...)), creation_bits))
+	return RID.VertexBuffer(RID.VertexBuffer(Advanced(self).VertexBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New(data...)), creation_bits)))
 }
 
 /*
@@ -614,14 +614,14 @@ func (self Instance) VertexFormatCreate(vertex_descriptions []RDVertexAttribute.
 Creates a vertex array based on the specified buffers. Optionally, 'offsets' (in bytes) may be defined for each buffer.
 */
 func (self Instance) VertexArrayCreate(vertex_count int, vertex_format int, src_buffers [][]RID.VertexBuffer) RID.VertexArray { //gd:RenderingDevice.vertex_array_create
-	return RID.VertexArray(Advanced(self).VertexArrayCreate(int64(vertex_count), int64(vertex_format), gd.ArrayFromSlice[Array.Contains[RID.Any]](src_buffers), Packed.New([1][]int64{}[0]...)))
+	return RID.VertexArray(RID.VertexArray(Advanced(self).VertexArrayCreate(int64(vertex_count), int64(vertex_format), gd.ArrayFromSlice[Array.Contains[RID.Any]](src_buffers), Packed.New([1][]int64{}[0]...))))
 }
 
 /*
 Creates a vertex array based on the specified buffers. Optionally, 'offsets' (in bytes) may be defined for each buffer.
 */
 func (self Expanded) VertexArrayCreate(vertex_count int, vertex_format int, src_buffers [][]RID.VertexBuffer, offsets []int64) RID.VertexArray { //gd:RenderingDevice.vertex_array_create
-	return RID.VertexArray(Advanced(self).VertexArrayCreate(int64(vertex_count), int64(vertex_format), gd.ArrayFromSlice[Array.Contains[RID.Any]](src_buffers), Packed.New(offsets...)))
+	return RID.VertexArray(RID.VertexArray(Advanced(self).VertexArrayCreate(int64(vertex_count), int64(vertex_format), gd.ArrayFromSlice[Array.Contains[RID.Any]](src_buffers), Packed.New(offsets...))))
 }
 
 /*
@@ -630,7 +630,7 @@ Creates a new index buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) IndexBufferCreate(size_indices int, format Rendering.IndexBufferFormat) RID.IndexBuffer { //gd:RenderingDevice.index_buffer_create
-	return RID.IndexBuffer(Advanced(self).IndexBufferCreate(int64(size_indices), format, Packed.Bytes(Packed.New([1][]byte{}[0]...)), false, 0))
+	return RID.IndexBuffer(RID.IndexBuffer(Advanced(self).IndexBufferCreate(int64(size_indices), format, Packed.Bytes(Packed.New([1][]byte{}[0]...)), false, 0)))
 }
 
 /*
@@ -639,7 +639,7 @@ Creates a new index buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Expanded) IndexBufferCreate(size_indices int, format Rendering.IndexBufferFormat, data []byte, use_restart_indices bool, creation_bits Rendering.BufferCreationBits) RID.IndexBuffer { //gd:RenderingDevice.index_buffer_create
-	return RID.IndexBuffer(Advanced(self).IndexBufferCreate(int64(size_indices), format, Packed.Bytes(Packed.New(data...)), use_restart_indices, creation_bits))
+	return RID.IndexBuffer(RID.IndexBuffer(Advanced(self).IndexBufferCreate(int64(size_indices), format, Packed.Bytes(Packed.New(data...)), use_restart_indices, creation_bits)))
 }
 
 /*
@@ -648,7 +648,7 @@ Creates a new index array. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) IndexArrayCreate(index_buffer RID.IndexBuffer, index_offset int, index_count int) RID.IndexArray { //gd:RenderingDevice.index_array_create
-	return RID.IndexArray(Advanced(self).IndexArrayCreate(RID.Any(index_buffer), int64(index_offset), int64(index_count)))
+	return RID.IndexArray(RID.IndexArray(Advanced(self).IndexArrayCreate(RID.Any(index_buffer), int64(index_offset), int64(index_count))))
 }
 
 /*
@@ -693,7 +693,7 @@ Creates a new shader instance from SPIR-V intermediate code. It can be accessed 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method. See also [Instance.ShaderCompileSpirvFromSource] and [Instance.ShaderCreateFromBytecode].
 */
 func (self Instance) ShaderCreateFromSpirv(spirv_data RDShaderSPIRV.Instance) RID.Shader { //gd:RenderingDevice.shader_create_from_spirv
-	return RID.Shader(Advanced(self).ShaderCreateFromSpirv(spirv_data, String.New("")))
+	return RID.Shader(RID.Shader(Advanced(self).ShaderCreateFromSpirv(spirv_data, String.New(""))))
 }
 
 /*
@@ -702,7 +702,7 @@ Creates a new shader instance from SPIR-V intermediate code. It can be accessed 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method. See also [Instance.ShaderCompileSpirvFromSource] and [Instance.ShaderCreateFromBytecode].
 */
 func (self Expanded) ShaderCreateFromSpirv(spirv_data RDShaderSPIRV.Instance, name string) RID.Shader { //gd:RenderingDevice.shader_create_from_spirv
-	return RID.Shader(Advanced(self).ShaderCreateFromSpirv(spirv_data, String.New(name)))
+	return RID.Shader(RID.Shader(Advanced(self).ShaderCreateFromSpirv(spirv_data, String.New(name))))
 }
 
 /*
@@ -711,7 +711,7 @@ Creates a new shader instance from a binary compiled shader. It can be accessed 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method. See also [Instance.ShaderCompileBinaryFromSpirv] and [Instance.ShaderCreateFromSpirv].
 */
 func (self Instance) ShaderCreateFromBytecode(binary_data []byte) RID.Shader { //gd:RenderingDevice.shader_create_from_bytecode
-	return RID.Shader(Advanced(self).ShaderCreateFromBytecode(Packed.Bytes(Packed.New(binary_data...)), RID.Any([1]RID.Any{}[0])))
+	return RID.Shader(RID.Shader(Advanced(self).ShaderCreateFromBytecode(Packed.Bytes(Packed.New(binary_data...)), RID.Any([1]RID.Any{}[0]))))
 }
 
 /*
@@ -720,14 +720,14 @@ Creates a new shader instance from a binary compiled shader. It can be accessed 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method. See also [Instance.ShaderCompileBinaryFromSpirv] and [Instance.ShaderCreateFromSpirv].
 */
 func (self Expanded) ShaderCreateFromBytecode(binary_data []byte, placeholder_rid RID.ShaderPlaceholder) RID.Shader { //gd:RenderingDevice.shader_create_from_bytecode
-	return RID.Shader(Advanced(self).ShaderCreateFromBytecode(Packed.Bytes(Packed.New(binary_data...)), RID.Any(placeholder_rid)))
+	return RID.Shader(RID.Shader(Advanced(self).ShaderCreateFromBytecode(Packed.Bytes(Packed.New(binary_data...)), RID.Any(placeholder_rid))))
 }
 
 /*
 Create a placeholder RID by allocating an RID without initializing it for use in [Instance.ShaderCreateFromBytecode]. This allows you to create an RID for a shader and pass it around, but defer compiling the shader to a later time.
 */
 func (self Instance) ShaderCreatePlaceholder() RID.ShaderPlaceholder { //gd:RenderingDevice.shader_create_placeholder
-	return RID.ShaderPlaceholder(Advanced(self).ShaderCreatePlaceholder())
+	return RID.ShaderPlaceholder(RID.ShaderPlaceholder(Advanced(self).ShaderCreatePlaceholder()))
 }
 
 /*
@@ -743,7 +743,7 @@ Creates a new uniform buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) UniformBufferCreate(size_bytes int) RID.UniformBuffer { //gd:RenderingDevice.uniform_buffer_create
-	return RID.UniformBuffer(Advanced(self).UniformBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), 0))
+	return RID.UniformBuffer(RID.UniformBuffer(Advanced(self).UniformBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), 0)))
 }
 
 /*
@@ -752,7 +752,7 @@ Creates a new uniform buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Expanded) UniformBufferCreate(size_bytes int, data []byte, creation_bits Rendering.BufferCreationBits) RID.UniformBuffer { //gd:RenderingDevice.uniform_buffer_create
-	return RID.UniformBuffer(Advanced(self).UniformBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New(data...)), creation_bits))
+	return RID.UniformBuffer(RID.UniformBuffer(Advanced(self).UniformBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New(data...)), creation_bits)))
 }
 
 /*
@@ -763,7 +763,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 [storage buffer]: https://vkguide.dev/docs/chapter-4/storage_buffers/
 */
 func (self Instance) StorageBufferCreate(size_bytes int) RID.StorageBuffer { //gd:RenderingDevice.storage_buffer_create
-	return RID.StorageBuffer(Advanced(self).StorageBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), 0, 0))
+	return RID.StorageBuffer(RID.StorageBuffer(Advanced(self).StorageBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), 0, 0)))
 }
 
 /*
@@ -774,7 +774,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 [storage buffer]: https://vkguide.dev/docs/chapter-4/storage_buffers/
 */
 func (self Expanded) StorageBufferCreate(size_bytes int, data []byte, usage Rendering.StorageBufferUsage, creation_bits Rendering.BufferCreationBits) RID.StorageBuffer { //gd:RenderingDevice.storage_buffer_create
-	return RID.StorageBuffer(Advanced(self).StorageBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New(data...)), usage, creation_bits))
+	return RID.StorageBuffer(RID.StorageBuffer(Advanced(self).StorageBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New(data...)), usage, creation_bits)))
 }
 
 /*
@@ -783,7 +783,7 @@ Creates a new texture buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) TextureBufferCreate(size_bytes int, format Rendering.DataFormat) RID.TextureBuffer { //gd:RenderingDevice.texture_buffer_create
-	return RID.TextureBuffer(Advanced(self).TextureBufferCreate(int64(size_bytes), format, Packed.Bytes(Packed.New([1][]byte{}[0]...))))
+	return RID.TextureBuffer(RID.TextureBuffer(Advanced(self).TextureBufferCreate(int64(size_bytes), format, Packed.Bytes(Packed.New([1][]byte{}[0]...)))))
 }
 
 /*
@@ -792,7 +792,7 @@ Creates a new texture buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Expanded) TextureBufferCreate(size_bytes int, format Rendering.DataFormat, data []byte) RID.TextureBuffer { //gd:RenderingDevice.texture_buffer_create
-	return RID.TextureBuffer(Advanced(self).TextureBufferCreate(int64(size_bytes), format, Packed.Bytes(Packed.New(data...))))
+	return RID.TextureBuffer(RID.TextureBuffer(Advanced(self).TextureBufferCreate(int64(size_bytes), format, Packed.Bytes(Packed.New(data...)))))
 }
 
 /*
@@ -801,7 +801,7 @@ Creates a new uniform set. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) UniformSetCreate(uniforms []RDUniform.Instance, shader RID.Shader, shader_set int) RID.UniformSet { //gd:RenderingDevice.uniform_set_create
-	return RID.UniformSet(Advanced(self).UniformSetCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDUniform]](uniforms), RID.Any(shader), int64(shader_set)))
+	return RID.UniformSet(RID.UniformSet(Advanced(self).UniformSetCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDUniform]](uniforms), RID.Any(shader), int64(shader_set))))
 }
 
 /*
@@ -913,7 +913,7 @@ Creates a new render pipeline. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) RenderPipelineCreate(shader RID.Shader, framebuffer_format int, vertex_format int, primitive Rendering.RenderPrimitive, rasterization_state RDPipelineRasterizationState.Instance, multisample_state RDPipelineMultisampleState.Instance, stencil_state RDPipelineDepthStencilState.Instance, color_blend_state RDPipelineColorBlendState.Instance) RID.RenderPipeline { //gd:RenderingDevice.render_pipeline_create
-	return RID.RenderPipeline(Advanced(self).RenderPipelineCreate(RID.Any(shader), int64(framebuffer_format), int64(vertex_format), primitive, rasterization_state, multisample_state, stencil_state, color_blend_state, 0, int64(0), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]]([1][]RDPipelineSpecializationConstant.Instance{}[0])))
+	return RID.RenderPipeline(RID.RenderPipeline(Advanced(self).RenderPipelineCreate(RID.Any(shader), int64(framebuffer_format), int64(vertex_format), primitive, rasterization_state, multisample_state, stencil_state, color_blend_state, 0, int64(0), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]]([1][]RDPipelineSpecializationConstant.Instance{}[0]))))
 }
 
 /*
@@ -922,7 +922,7 @@ Creates a new render pipeline. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Expanded) RenderPipelineCreate(shader RID.Shader, framebuffer_format int, vertex_format int, primitive Rendering.RenderPrimitive, rasterization_state RDPipelineRasterizationState.Instance, multisample_state RDPipelineMultisampleState.Instance, stencil_state RDPipelineDepthStencilState.Instance, color_blend_state RDPipelineColorBlendState.Instance, dynamic_state_flags Rendering.PipelineDynamicStateFlags, for_render_pass int, specialization_constants []RDPipelineSpecializationConstant.Instance) RID.RenderPipeline { //gd:RenderingDevice.render_pipeline_create
-	return RID.RenderPipeline(Advanced(self).RenderPipelineCreate(RID.Any(shader), int64(framebuffer_format), int64(vertex_format), primitive, rasterization_state, multisample_state, stencil_state, color_blend_state, dynamic_state_flags, int64(for_render_pass), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]](specialization_constants)))
+	return RID.RenderPipeline(RID.RenderPipeline(Advanced(self).RenderPipelineCreate(RID.Any(shader), int64(framebuffer_format), int64(vertex_format), primitive, rasterization_state, multisample_state, stencil_state, color_blend_state, dynamic_state_flags, int64(for_render_pass), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]](specialization_constants))))
 }
 
 /*
@@ -938,7 +938,7 @@ Creates a new compute pipeline. It can be accessed with the RID that is returned
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) ComputePipelineCreate(shader RID.Shader) RID.ComputePipeline { //gd:RenderingDevice.compute_pipeline_create
-	return RID.ComputePipeline(Advanced(self).ComputePipelineCreate(RID.Any(shader), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]]([1][]RDPipelineSpecializationConstant.Instance{}[0])))
+	return RID.ComputePipeline(RID.ComputePipeline(Advanced(self).ComputePipelineCreate(RID.Any(shader), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]]([1][]RDPipelineSpecializationConstant.Instance{}[0]))))
 }
 
 /*
@@ -947,7 +947,7 @@ Creates a new compute pipeline. It can be accessed with the RID that is returned
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Expanded) ComputePipelineCreate(shader RID.Shader, specialization_constants []RDPipelineSpecializationConstant.Instance) RID.ComputePipeline { //gd:RenderingDevice.compute_pipeline_create
-	return RID.ComputePipeline(Advanced(self).ComputePipelineCreate(RID.Any(shader), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]](specialization_constants)))
+	return RID.ComputePipeline(RID.ComputePipeline(Advanced(self).ComputePipelineCreate(RID.Any(shader), gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]](specialization_constants))))
 }
 
 /*

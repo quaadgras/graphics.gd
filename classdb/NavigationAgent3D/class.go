@@ -185,7 +185,7 @@ type Any interface {
 Returns the [Resource.ID] of this agent on the [graphics.gd/classdb/NavigationServer3D].
 */
 func (self Instance) GetRid() RID.NavigationAgent3D { //gd:NavigationAgent3D.get_rid
-	return RID.NavigationAgent3D(Advanced(self).GetRid())
+	return RID.NavigationAgent3D(RID.NavigationAgent3D(Advanced(self).GetRid()))
 }
 
 /*
@@ -213,7 +213,7 @@ func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) { //gd
 Returns the [Resource.ID] of the navigation map for this NavigationAgent node. This function returns always the map set on the NavigationAgent node and not the map of the abstract agent on the NavigationServer. If the agent map is changed directly with the NavigationServer API the NavigationAgent node will not be aware of the map change. Use [Instance.SetNavigationMap] to change the navigation map for the NavigationAgent and also update the agent on the NavigationServer.
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:NavigationAgent3D.get_navigation_map
-	return RID.NavigationMap3D(Advanced(self).GetNavigationMap())
+	return RID.NavigationMap3D(RID.NavigationMap3D(Advanced(self).GetNavigationMap()))
 }
 
 /*

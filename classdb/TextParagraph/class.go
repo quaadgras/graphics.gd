@@ -266,21 +266,21 @@ func (self Instance) GetSize() Vector2.XY { //gd:TextParagraph.get_size
 Returns TextServer full string buffer RID.
 */
 func (self Instance) GetRid() RID.TextBuffer { //gd:TextParagraph.get_rid
-	return RID.TextBuffer(Advanced(self).GetRid())
+	return RID.TextBuffer(RID.TextBuffer(Advanced(self).GetRid()))
 }
 
 /*
 Returns TextServer line buffer RID.
 */
 func (self Instance) GetLineRid(line int) RID.TextBuffer { //gd:TextParagraph.get_line_rid
-	return RID.TextBuffer(Advanced(self).GetLineRid(int64(line)))
+	return RID.TextBuffer(RID.TextBuffer(Advanced(self).GetLineRid(int64(line))))
 }
 
 /*
 Returns drop cap text buffer RID.
 */
 func (self Instance) GetDropcapRid() RID.TextBuffer { //gd:TextParagraph.get_dropcap_rid
-	return RID.TextBuffer(Advanced(self).GetDropcapRid())
+	return RID.TextBuffer(RID.TextBuffer(Advanced(self).GetDropcapRid()))
 }
 
 /*

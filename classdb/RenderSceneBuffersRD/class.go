@@ -147,28 +147,28 @@ func (self Instance) HasTexture(context string, name string) bool { //gd:RenderS
 Create a new texture with the given definition and cache this under the given name. Will return the existing texture if it already exists.
 */
 func (self Instance) CreateTexture(context string, name string, data_format Rendering.DataFormat, usage_bits int, texture_samples Rendering.TextureSamples, size Vector2i.XY, layers int, mipmaps int, unique bool, discardable bool) RID.Texture { //gd:RenderSceneBuffersRD.create_texture
-	return RID.Texture(Advanced(self).CreateTexture(String.Name(String.New(context)), String.Name(String.New(name)), data_format, int64(usage_bits), texture_samples, Vector2i.XY(size), int64(layers), int64(mipmaps), unique, discardable))
+	return RID.Texture(RID.Texture(Advanced(self).CreateTexture(String.Name(String.New(context)), String.Name(String.New(name)), data_format, int64(usage_bits), texture_samples, Vector2i.XY(size), int64(layers), int64(mipmaps), unique, discardable)))
 }
 
 /*
 Create a new texture using the given format and view and cache this under the given name. Will return the existing texture if it already exists.
 */
 func (self Instance) CreateTextureFromFormat(context string, name string, format RDTextureFormat.Instance, view RDTextureView.Instance, unique bool) RID.Texture { //gd:RenderSceneBuffersRD.create_texture_from_format
-	return RID.Texture(Advanced(self).CreateTextureFromFormat(String.Name(String.New(context)), String.Name(String.New(name)), format, view, unique))
+	return RID.Texture(RID.Texture(Advanced(self).CreateTextureFromFormat(String.Name(String.New(context)), String.Name(String.New(name)), format, view, unique)))
 }
 
 /*
 Create a new texture view for an existing texture and cache this under the given 'view_name'. Will return the existing texture view if it already exists. Will error if the source texture doesn't exist.
 */
 func (self Instance) CreateTextureView(context string, name string, view_name string, view RDTextureView.Instance) RID.Texture { //gd:RenderSceneBuffersRD.create_texture_view
-	return RID.Texture(Advanced(self).CreateTextureView(String.Name(String.New(context)), String.Name(String.New(name)), String.Name(String.New(view_name)), view))
+	return RID.Texture(RID.Texture(Advanced(self).CreateTextureView(String.Name(String.New(context)), String.Name(String.New(name)), String.Name(String.New(view_name)), view)))
 }
 
 /*
 Returns a cached texture with this name.
 */
 func (self Instance) GetTexture(context string, name string) RID.Texture { //gd:RenderSceneBuffersRD.get_texture
-	return RID.Texture(Advanced(self).GetTexture(String.Name(String.New(context)), String.Name(String.New(name))))
+	return RID.Texture(RID.Texture(Advanced(self).GetTexture(String.Name(String.New(context)), String.Name(String.New(name)))))
 }
 
 /*
@@ -182,14 +182,14 @@ func (self Instance) GetTextureFormat(context string, name string) RDTextureForm
 Returns a specific slice (layer or mipmap) for a cached texture.
 */
 func (self Instance) GetTextureSlice(context string, name string, layer int, mipmap int, layers int, mipmaps int) RID.Texture { //gd:RenderSceneBuffersRD.get_texture_slice
-	return RID.Texture(Advanced(self).GetTextureSlice(String.Name(String.New(context)), String.Name(String.New(name)), int64(layer), int64(mipmap), int64(layers), int64(mipmaps)))
+	return RID.Texture(RID.Texture(Advanced(self).GetTextureSlice(String.Name(String.New(context)), String.Name(String.New(name)), int64(layer), int64(mipmap), int64(layers), int64(mipmaps))))
 }
 
 /*
 Returns a specific view of a slice (layer or mipmap) for a cached texture.
 */
 func (self Instance) GetTextureSliceView(context string, name string, layer int, mipmap int, layers int, mipmaps int, view RDTextureView.Instance) RID.Texture { //gd:RenderSceneBuffersRD.get_texture_slice_view
-	return RID.Texture(Advanced(self).GetTextureSliceView(String.Name(String.New(context)), String.Name(String.New(name)), int64(layer), int64(mipmap), int64(layers), int64(mipmaps), view))
+	return RID.Texture(RID.Texture(Advanced(self).GetTextureSliceView(String.Name(String.New(context)), String.Name(String.New(name)), int64(layer), int64(mipmap), int64(layers), int64(mipmaps), view)))
 }
 
 /*
@@ -212,7 +212,7 @@ Returns the color texture we are rendering 3D content to. If multiview is used t
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Instance) GetColorTexture() RID.Texture { //gd:RenderSceneBuffersRD.get_color_texture
-	return RID.Texture(Advanced(self).GetColorTexture(false))
+	return RID.Texture(RID.Texture(Advanced(self).GetColorTexture(false)))
 }
 
 /*
@@ -221,7 +221,7 @@ Returns the color texture we are rendering 3D content to. If multiview is used t
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Expanded) GetColorTexture(msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_color_texture
-	return RID.Texture(Advanced(self).GetColorTexture(msaa))
+	return RID.Texture(RID.Texture(Advanced(self).GetColorTexture(msaa)))
 }
 
 /*
@@ -230,7 +230,7 @@ Returns the specified layer from the color texture we are rendering 3D content t
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Instance) GetColorLayer(layer int) RID.Texture { //gd:RenderSceneBuffersRD.get_color_layer
-	return RID.Texture(Advanced(self).GetColorLayer(int64(layer), false))
+	return RID.Texture(RID.Texture(Advanced(self).GetColorLayer(int64(layer), false)))
 }
 
 /*
@@ -239,7 +239,7 @@ Returns the specified layer from the color texture we are rendering 3D content t
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Expanded) GetColorLayer(layer int, msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_color_layer
-	return RID.Texture(Advanced(self).GetColorLayer(int64(layer), msaa))
+	return RID.Texture(RID.Texture(Advanced(self).GetColorLayer(int64(layer), msaa)))
 }
 
 /*
@@ -248,7 +248,7 @@ Returns the depth texture we are rendering 3D content to. If multiview is used t
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Instance) GetDepthTexture() RID.Texture { //gd:RenderSceneBuffersRD.get_depth_texture
-	return RID.Texture(Advanced(self).GetDepthTexture(false))
+	return RID.Texture(RID.Texture(Advanced(self).GetDepthTexture(false)))
 }
 
 /*
@@ -257,7 +257,7 @@ Returns the depth texture we are rendering 3D content to. If multiview is used t
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Expanded) GetDepthTexture(msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_depth_texture
-	return RID.Texture(Advanced(self).GetDepthTexture(msaa))
+	return RID.Texture(RID.Texture(Advanced(self).GetDepthTexture(msaa)))
 }
 
 /*
@@ -266,7 +266,7 @@ Returns the specified layer from the depth texture we are rendering 3D content t
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Instance) GetDepthLayer(layer int) RID.Texture { //gd:RenderSceneBuffersRD.get_depth_layer
-	return RID.Texture(Advanced(self).GetDepthLayer(int64(layer), false))
+	return RID.Texture(RID.Texture(Advanced(self).GetDepthLayer(int64(layer), false)))
 }
 
 /*
@@ -275,7 +275,7 @@ Returns the specified layer from the depth texture we are rendering 3D content t
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Expanded) GetDepthLayer(layer int, msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_depth_layer
-	return RID.Texture(Advanced(self).GetDepthLayer(int64(layer), msaa))
+	return RID.Texture(RID.Texture(Advanced(self).GetDepthLayer(int64(layer), msaa)))
 }
 
 /*
@@ -284,7 +284,7 @@ Returns the velocity texture we are rendering 3D content to. If multiview is use
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Instance) GetVelocityTexture() RID.Texture { //gd:RenderSceneBuffersRD.get_velocity_texture
-	return RID.Texture(Advanced(self).GetVelocityTexture(false))
+	return RID.Texture(RID.Texture(Advanced(self).GetVelocityTexture(false)))
 }
 
 /*
@@ -293,28 +293,28 @@ Returns the velocity texture we are rendering 3D content to. If multiview is use
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Expanded) GetVelocityTexture(msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_velocity_texture
-	return RID.Texture(Advanced(self).GetVelocityTexture(msaa))
+	return RID.Texture(RID.Texture(Advanced(self).GetVelocityTexture(msaa)))
 }
 
 /*
 Returns the specified layer from the velocity texture we are rendering 3D content to.
 */
 func (self Instance) GetVelocityLayer(layer int) RID.Texture { //gd:RenderSceneBuffersRD.get_velocity_layer
-	return RID.Texture(Advanced(self).GetVelocityLayer(int64(layer), false))
+	return RID.Texture(RID.Texture(Advanced(self).GetVelocityLayer(int64(layer), false)))
 }
 
 /*
 Returns the specified layer from the velocity texture we are rendering 3D content to.
 */
 func (self Expanded) GetVelocityLayer(layer int, msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_velocity_layer
-	return RID.Texture(Advanced(self).GetVelocityLayer(int64(layer), msaa))
+	return RID.Texture(RID.Texture(Advanced(self).GetVelocityLayer(int64(layer), msaa)))
 }
 
 /*
 Returns the render target associated with this buffers object.
 */
 func (self Instance) GetRenderTarget() RID.Framebuffer { //gd:RenderSceneBuffersRD.get_render_target
-	return RID.Framebuffer(Advanced(self).GetRenderTarget())
+	return RID.Framebuffer(RID.Framebuffer(Advanced(self).GetRenderTarget()))
 }
 
 /*

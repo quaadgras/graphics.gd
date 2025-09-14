@@ -129,7 +129,7 @@ func (self Instance) GetBone(idx int) Bone2D.Instance { //gd:Skeleton2D.get_bone
 Returns the [Resource.ID] of a Skeleton2D instance.
 */
 func (self Instance) GetSkeleton() RID.Skeleton { //gd:Skeleton2D.get_skeleton
-	return RID.Skeleton(Advanced(self).GetSkeleton())
+	return RID.Skeleton(RID.Skeleton(Advanced(self).GetSkeleton()))
 }
 
 /*

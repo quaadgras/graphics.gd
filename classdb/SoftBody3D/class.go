@@ -145,7 +145,7 @@ type Any interface {
 Returns the internal [Resource.ID] used by the [graphics.gd/classdb/PhysicsServer3D] for this body.
 */
 func (self Instance) GetPhysicsRid() RID.SoftBody3D { //gd:SoftBody3D.get_physics_rid
-	return RID.SoftBody3D(Advanced(self).GetPhysicsRid())
+	return RID.SoftBody3D(RID.SoftBody3D(Advanced(self).GetPhysicsRid()))
 }
 
 /*

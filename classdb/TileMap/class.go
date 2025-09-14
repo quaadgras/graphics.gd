@@ -250,7 +250,7 @@ func (self Instance) SetNavigationMap(layer int, map_ RID.NavigationMap2D) { //g
 Returns the [Resource.ID] of the [graphics.gd/classdb/NavigationServer2D] navigation map assigned to the specified TileMap layer 'layer'.
 */
 func (self Instance) GetNavigationMap(layer int) RID.NavigationMap2D { //gd:TileMap.get_navigation_map
-	return RID.NavigationMap2D(Advanced(self).GetNavigationMap(int64(layer)))
+	return RID.NavigationMap2D(RID.NavigationMap2D(Advanced(self).GetNavigationMap(int64(layer))))
 }
 
 /*
@@ -444,7 +444,7 @@ In order to make [graphics.gd/classdb/NavigationAgent2D] switch between TileMap 
 If 'layer' is negative, the layers are accessed from the last one.
 */
 func (self Instance) GetLayerNavigationMap(layer int) RID.NavigationMap2D { //gd:TileMap.get_layer_navigation_map
-	return RID.NavigationMap2D(Advanced(self).GetLayerNavigationMap(int64(layer)))
+	return RID.NavigationMap2D(RID.NavigationMap2D(Advanced(self).GetLayerNavigationMap(int64(layer))))
 }
 
 /*

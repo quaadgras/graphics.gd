@@ -1455,7 +1455,7 @@ func (Instance) _free_rid(impl func(ptr gdclass.Receiver, rid RID.Any)) (cb gd.E
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, rid)
+		impl(self, RID.Any(rid))
 	}
 }
 
@@ -1468,7 +1468,7 @@ func (Instance) _has(impl func(ptr gdclass.Receiver, rid RID.Any) bool) (cb gd.E
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, rid)
+		ret := impl(self, RID.Any(rid))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -1628,7 +1628,7 @@ func (Instance) _create_font_linked_variation(impl func(ptr gdclass.Receiver, fo
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
@@ -1644,7 +1644,7 @@ func (Instance) _font_set_data(impl func(ptr gdclass.Receiver, font_rid RID.Font
 		var data = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, data.Bytes())
+		impl(self, RID.Font(font_rid), data.Bytes())
 	}
 }
 
@@ -1659,7 +1659,7 @@ func (Instance) _font_set_data_ptr(impl func(ptr gdclass.Receiver, font_rid RID.
 		var data_ptr = gd.UnsafeGet[gdextension.Pointer](p_args, 1)
 		var data_size = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, data_ptr, int(data_size))
+		impl(self, RID.Font(font_rid), data_ptr, int(data_size))
 	}
 }
 
@@ -1673,7 +1673,7 @@ func (Instance) _font_set_face_index(impl func(ptr gdclass.Receiver, font_rid RI
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var face_index = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, int(face_index))
+		impl(self, RID.Font(font_rid), int(face_index))
 	}
 }
 
@@ -1686,7 +1686,7 @@ func (Instance) _font_get_face_index(impl func(ptr gdclass.Receiver, font_rid RI
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1700,7 +1700,7 @@ func (Instance) _font_get_face_count(impl func(ptr gdclass.Receiver, font_rid RI
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1715,7 +1715,7 @@ func (Instance) _font_set_style(impl func(ptr gdclass.Receiver, font_rid RID.Fon
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var style = gd.UnsafeGet[TextServer.FontStyle](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, style)
+		impl(self, RID.Font(font_rid), style)
 	}
 }
 
@@ -1728,7 +1728,7 @@ func (Instance) _font_get_style(impl func(ptr gdclass.Receiver, font_rid RID.Fon
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -1744,7 +1744,7 @@ func (Instance) _font_set_name(impl func(ptr gdclass.Receiver, font_rid RID.Font
 		var name = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(name))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, name.String())
+		impl(self, RID.Font(font_rid), name.String())
 	}
 }
 
@@ -1757,7 +1757,7 @@ func (Instance) _font_get_name(impl func(ptr gdclass.Receiver, font_rid RID.Font
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
@@ -1776,7 +1776,7 @@ func (Instance) _font_get_ot_name_strings(impl func(ptr gdclass.Receiver, font_r
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
 		if !ok {
@@ -1797,7 +1797,7 @@ func (Instance) _font_set_style_name(impl func(ptr gdclass.Receiver, font_rid RI
 		var name_style = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(name_style))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, name_style.String())
+		impl(self, RID.Font(font_rid), name_style.String())
 	}
 }
 
@@ -1810,7 +1810,7 @@ func (Instance) _font_get_style_name(impl func(ptr gdclass.Receiver, font_rid RI
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
@@ -1830,7 +1830,7 @@ func (Instance) _font_set_weight(impl func(ptr gdclass.Receiver, font_rid RID.Fo
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var weight = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, int(weight))
+		impl(self, RID.Font(font_rid), int(weight))
 	}
 }
 
@@ -1843,7 +1843,7 @@ func (Instance) _font_get_weight(impl func(ptr gdclass.Receiver, font_rid RID.Fo
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1858,7 +1858,7 @@ func (Instance) _font_set_stretch(impl func(ptr gdclass.Receiver, font_rid RID.F
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var stretch = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, int(stretch))
+		impl(self, RID.Font(font_rid), int(stretch))
 	}
 }
 
@@ -1871,7 +1871,7 @@ func (Instance) _font_get_stretch(impl func(ptr gdclass.Receiver, font_rid RID.F
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1886,7 +1886,7 @@ func (Instance) _font_set_antialiasing(impl func(ptr gdclass.Receiver, font_rid 
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var antialiasing = gd.UnsafeGet[TextServer.FontAntialiasing](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, antialiasing)
+		impl(self, RID.Font(font_rid), antialiasing)
 	}
 }
 
@@ -1899,7 +1899,7 @@ func (Instance) _font_get_antialiasing(impl func(ptr gdclass.Receiver, font_rid 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -1914,7 +1914,7 @@ func (Instance) _font_set_disable_embedded_bitmaps(impl func(ptr gdclass.Receive
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var disable_embedded_bitmaps = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, disable_embedded_bitmaps)
+		impl(self, RID.Font(font_rid), disable_embedded_bitmaps)
 	}
 }
 
@@ -1927,7 +1927,7 @@ func (Instance) _font_get_disable_embedded_bitmaps(impl func(ptr gdclass.Receive
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -1942,7 +1942,7 @@ func (Instance) _font_set_generate_mipmaps(impl func(ptr gdclass.Receiver, font_
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var generate_mipmaps = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, generate_mipmaps)
+		impl(self, RID.Font(font_rid), generate_mipmaps)
 	}
 }
 
@@ -1955,7 +1955,7 @@ func (Instance) _font_get_generate_mipmaps(impl func(ptr gdclass.Receiver, font_
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -1970,7 +1970,7 @@ func (Instance) _font_set_multichannel_signed_distance_field(impl func(ptr gdcla
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var msdf = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, msdf)
+		impl(self, RID.Font(font_rid), msdf)
 	}
 }
 
@@ -1983,7 +1983,7 @@ func (Instance) _font_is_multichannel_signed_distance_field(impl func(ptr gdclas
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -1998,7 +1998,7 @@ func (Instance) _font_set_msdf_pixel_range(impl func(ptr gdclass.Receiver, font_
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var msdf_pixel_range = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, int(msdf_pixel_range))
+		impl(self, RID.Font(font_rid), int(msdf_pixel_range))
 	}
 }
 
@@ -2011,7 +2011,7 @@ func (Instance) _font_get_msdf_pixel_range(impl func(ptr gdclass.Receiver, font_
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -2026,7 +2026,7 @@ func (Instance) _font_set_msdf_size(impl func(ptr gdclass.Receiver, font_rid RID
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var msdf_size = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, int(msdf_size))
+		impl(self, RID.Font(font_rid), int(msdf_size))
 	}
 }
 
@@ -2039,7 +2039,7 @@ func (Instance) _font_get_msdf_size(impl func(ptr gdclass.Receiver, font_rid RID
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -2054,7 +2054,7 @@ func (Instance) _font_set_fixed_size(impl func(ptr gdclass.Receiver, font_rid RI
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var fixed_size = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, int(fixed_size))
+		impl(self, RID.Font(font_rid), int(fixed_size))
 	}
 }
 
@@ -2067,7 +2067,7 @@ func (Instance) _font_get_fixed_size(impl func(ptr gdclass.Receiver, font_rid RI
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -2082,7 +2082,7 @@ func (Instance) _font_set_fixed_size_scale_mode(impl func(ptr gdclass.Receiver, 
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var fixed_size_scale_mode = gd.UnsafeGet[TextServer.FixedSizeScaleMode](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, fixed_size_scale_mode)
+		impl(self, RID.Font(font_rid), fixed_size_scale_mode)
 	}
 }
 
@@ -2095,7 +2095,7 @@ func (Instance) _font_get_fixed_size_scale_mode(impl func(ptr gdclass.Receiver, 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -2110,7 +2110,7 @@ func (Instance) _font_set_allow_system_fallback(impl func(ptr gdclass.Receiver, 
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var allow_system_fallback = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, allow_system_fallback)
+		impl(self, RID.Font(font_rid), allow_system_fallback)
 	}
 }
 
@@ -2123,7 +2123,7 @@ func (Instance) _font_is_allow_system_fallback(impl func(ptr gdclass.Receiver, f
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -2138,7 +2138,7 @@ func (Instance) _font_set_force_autohinter(impl func(ptr gdclass.Receiver, font_
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var force_autohinter = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, force_autohinter)
+		impl(self, RID.Font(font_rid), force_autohinter)
 	}
 }
 
@@ -2151,7 +2151,7 @@ func (Instance) _font_is_force_autohinter(impl func(ptr gdclass.Receiver, font_r
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -2166,7 +2166,7 @@ func (Instance) _font_set_hinting(impl func(ptr gdclass.Receiver, font_rid RID.F
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var hinting = gd.UnsafeGet[TextServer.Hinting](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, hinting)
+		impl(self, RID.Font(font_rid), hinting)
 	}
 }
 
@@ -2179,7 +2179,7 @@ func (Instance) _font_get_hinting(impl func(ptr gdclass.Receiver, font_rid RID.F
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -2194,7 +2194,7 @@ func (Instance) _font_set_subpixel_positioning(impl func(ptr gdclass.Receiver, f
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var subpixel_positioning = gd.UnsafeGet[TextServer.SubpixelPositioning](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, subpixel_positioning)
+		impl(self, RID.Font(font_rid), subpixel_positioning)
 	}
 }
 
@@ -2207,7 +2207,7 @@ func (Instance) _font_get_subpixel_positioning(impl func(ptr gdclass.Receiver, f
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -2222,7 +2222,7 @@ func (Instance) _font_set_keep_rounding_remainders(impl func(ptr gdclass.Receive
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var keep_rounding_remainders = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, keep_rounding_remainders)
+		impl(self, RID.Font(font_rid), keep_rounding_remainders)
 	}
 }
 
@@ -2235,7 +2235,7 @@ func (Instance) _font_get_keep_rounding_remainders(impl func(ptr gdclass.Receive
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -2248,7 +2248,7 @@ func (Instance) _font_set_embolden(impl func(ptr gdclass.Receiver, font_rid RID.
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var strength = gd.UnsafeGet[float64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, Float.X(strength))
+		impl(self, RID.Font(font_rid), Float.X(strength))
 	}
 }
 
@@ -2261,7 +2261,7 @@ func (Instance) _font_get_embolden(impl func(ptr gdclass.Receiver, font_rid RID.
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -2277,7 +2277,7 @@ func (Instance) _font_set_spacing(impl func(ptr gdclass.Receiver, font_rid RID.F
 		var spacing = gd.UnsafeGet[TextServer.SpacingType](p_args, 1)
 		var value = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, spacing, int(value))
+		impl(self, RID.Font(font_rid), spacing, int(value))
 	}
 }
 
@@ -2291,7 +2291,7 @@ func (Instance) _font_get_spacing(impl func(ptr gdclass.Receiver, font_rid RID.F
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var spacing = gd.UnsafeGet[TextServer.SpacingType](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, spacing)
+		ret := impl(self, RID.Font(font_rid), spacing)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -2306,7 +2306,7 @@ func (Instance) _font_set_baseline_offset(impl func(ptr gdclass.Receiver, font_r
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var baseline_offset = gd.UnsafeGet[float64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, Float.X(baseline_offset))
+		impl(self, RID.Font(font_rid), Float.X(baseline_offset))
 	}
 }
 
@@ -2319,7 +2319,7 @@ func (Instance) _font_get_baseline_offset(impl func(ptr gdclass.Receiver, font_r
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -2334,7 +2334,7 @@ func (Instance) _font_set_transform(impl func(ptr gdclass.Receiver, font_rid RID
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var transform = gd.UnsafeGet[Transform2D.OriginXY](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, transform)
+		impl(self, RID.Font(font_rid), transform)
 	}
 }
 
@@ -2347,7 +2347,7 @@ func (Instance) _font_get_transform(impl func(ptr gdclass.Receiver, font_rid RID
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, Transform2D.OriginXY(ret))
 	}
 }
@@ -2363,7 +2363,7 @@ func (Instance) _font_set_variation_coordinates(impl func(ptr gdclass.Receiver, 
 		var variation_coordinates = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(variation_coordinates))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, gd.DictionaryAs[map[string]float32](variation_coordinates))
+		impl(self, RID.Font(font_rid), gd.DictionaryAs[map[string]float32](variation_coordinates))
 	}
 }
 
@@ -2376,7 +2376,7 @@ func (Instance) _font_get_variation_coordinates(impl func(ptr gdclass.Receiver, 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
 		if !ok {
@@ -2396,7 +2396,7 @@ func (Instance) _font_set_oversampling(impl func(ptr gdclass.Receiver, font_rid 
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var oversampling = gd.UnsafeGet[float64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, Float.X(oversampling))
+		impl(self, RID.Font(font_rid), Float.X(oversampling))
 	}
 }
 
@@ -2409,7 +2409,7 @@ func (Instance) _font_get_oversampling(impl func(ptr gdclass.Receiver, font_rid 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -2423,7 +2423,7 @@ func (Instance) _font_get_size_cache_list(impl func(ptr gdclass.Receiver, font_r
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Vector2i.XY]](ret)))
 
 		if !ok {
@@ -2442,7 +2442,7 @@ func (Instance) _font_clear_size_cache(impl func(ptr gdclass.Receiver, font_rid 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid)
+		impl(self, RID.Font(font_rid))
 	}
 }
 
@@ -2456,7 +2456,7 @@ func (Instance) _font_remove_size_cache(impl func(ptr gdclass.Receiver, font_rid
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, size)
+		impl(self, RID.Font(font_rid), size)
 	}
 }
 
@@ -2471,7 +2471,7 @@ func (Instance) _font_set_ascent(impl func(ptr gdclass.Receiver, font_rid RID.Fo
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var ascent = gd.UnsafeGet[float64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, int(size), Float.X(ascent))
+		impl(self, RID.Font(font_rid), int(size), Float.X(ascent))
 	}
 }
 
@@ -2485,7 +2485,7 @@ func (Instance) _font_get_ascent(impl func(ptr gdclass.Receiver, font_rid RID.Fo
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, int(size))
+		ret := impl(self, RID.Font(font_rid), int(size))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -2501,7 +2501,7 @@ func (Instance) _font_set_descent(impl func(ptr gdclass.Receiver, font_rid RID.F
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var descent = gd.UnsafeGet[float64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, int(size), Float.X(descent))
+		impl(self, RID.Font(font_rid), int(size), Float.X(descent))
 	}
 }
 
@@ -2515,7 +2515,7 @@ func (Instance) _font_get_descent(impl func(ptr gdclass.Receiver, font_rid RID.F
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, int(size))
+		ret := impl(self, RID.Font(font_rid), int(size))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -2531,7 +2531,7 @@ func (Instance) _font_set_underline_position(impl func(ptr gdclass.Receiver, fon
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var underline_position = gd.UnsafeGet[float64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, int(size), Float.X(underline_position))
+		impl(self, RID.Font(font_rid), int(size), Float.X(underline_position))
 	}
 }
 
@@ -2545,7 +2545,7 @@ func (Instance) _font_get_underline_position(impl func(ptr gdclass.Receiver, fon
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, int(size))
+		ret := impl(self, RID.Font(font_rid), int(size))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -2561,7 +2561,7 @@ func (Instance) _font_set_underline_thickness(impl func(ptr gdclass.Receiver, fo
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var underline_thickness = gd.UnsafeGet[float64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, int(size), Float.X(underline_thickness))
+		impl(self, RID.Font(font_rid), int(size), Float.X(underline_thickness))
 	}
 }
 
@@ -2575,7 +2575,7 @@ func (Instance) _font_get_underline_thickness(impl func(ptr gdclass.Receiver, fo
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, int(size))
+		ret := impl(self, RID.Font(font_rid), int(size))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -2591,7 +2591,7 @@ func (Instance) _font_set_scale(impl func(ptr gdclass.Receiver, font_rid RID.Fon
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var scale = gd.UnsafeGet[float64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, int(size), Float.X(scale))
+		impl(self, RID.Font(font_rid), int(size), Float.X(scale))
 	}
 }
 
@@ -2605,7 +2605,7 @@ func (Instance) _font_get_scale(impl func(ptr gdclass.Receiver, font_rid RID.Fon
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, int(size))
+		ret := impl(self, RID.Font(font_rid), int(size))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -2620,7 +2620,7 @@ func (Instance) _font_get_texture_count(impl func(ptr gdclass.Receiver, font_rid
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, size)
+		ret := impl(self, RID.Font(font_rid), size)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -2635,7 +2635,7 @@ func (Instance) _font_clear_textures(impl func(ptr gdclass.Receiver, font_rid RI
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, size)
+		impl(self, RID.Font(font_rid), size)
 	}
 }
 
@@ -2650,7 +2650,7 @@ func (Instance) _font_remove_texture(impl func(ptr gdclass.Receiver, font_rid RI
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var texture_index = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, size, int(texture_index))
+		impl(self, RID.Font(font_rid), size, int(texture_index))
 	}
 }
 
@@ -2668,7 +2668,7 @@ func (Instance) _font_set_texture_image(impl func(ptr gdclass.Receiver, font_rid
 
 		defer pointers.End(image[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, size, int(texture_index), image)
+		impl(self, RID.Font(font_rid), size, int(texture_index), image)
 	}
 }
 
@@ -2683,7 +2683,7 @@ func (Instance) _font_get_texture_image(impl func(ptr gdclass.Receiver, font_rid
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var texture_index = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, size, int(texture_index))
+		ret := impl(self, RID.Font(font_rid), size, int(texture_index))
 		ptr, ok := pointers.End(ret[0])
 
 		if !ok {
@@ -2706,7 +2706,7 @@ func (Instance) _font_set_texture_offsets(impl func(ptr gdclass.Receiver, font_r
 		var offset = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 3)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](offset))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, size, int(texture_index), slices.Collect(offset.Values()))
+		impl(self, RID.Font(font_rid), size, int(texture_index), slices.Collect(offset.Values()))
 	}
 }
 
@@ -2721,7 +2721,7 @@ func (Instance) _font_get_texture_offsets(impl func(ptr gdclass.Receiver, font_r
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var texture_index = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, size, int(texture_index))
+		ret := impl(self, RID.Font(font_rid), size, int(texture_index))
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
@@ -2741,7 +2741,7 @@ func (Instance) _font_get_glyph_list(impl func(ptr gdclass.Receiver, font_rid RI
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, size)
+		ret := impl(self, RID.Font(font_rid), size)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
@@ -2761,7 +2761,7 @@ func (Instance) _font_clear_glyphs(impl func(ptr gdclass.Receiver, font_rid RID.
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, size)
+		impl(self, RID.Font(font_rid), size)
 	}
 }
 
@@ -2776,7 +2776,7 @@ func (Instance) _font_remove_glyph(impl func(ptr gdclass.Receiver, font_rid RID.
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, size, int(glyph))
+		impl(self, RID.Font(font_rid), size, int(glyph))
 	}
 }
 
@@ -2791,7 +2791,7 @@ func (Instance) _font_get_glyph_advance(impl func(ptr gdclass.Receiver, font_rid
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, int(size), int(glyph))
+		ret := impl(self, RID.Font(font_rid), int(size), int(glyph))
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
 }
@@ -2808,7 +2808,7 @@ func (Instance) _font_set_glyph_advance(impl func(ptr gdclass.Receiver, font_rid
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		var advance = gd.UnsafeGet[Vector2.XY](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, int(size), int(glyph), advance)
+		impl(self, RID.Font(font_rid), int(size), int(glyph), advance)
 	}
 }
 
@@ -2823,7 +2823,7 @@ func (Instance) _font_get_glyph_offset(impl func(ptr gdclass.Receiver, font_rid 
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, size, int(glyph))
+		ret := impl(self, RID.Font(font_rid), size, int(glyph))
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
 }
@@ -2840,7 +2840,7 @@ func (Instance) _font_set_glyph_offset(impl func(ptr gdclass.Receiver, font_rid 
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		var offset = gd.UnsafeGet[Vector2.XY](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, size, int(glyph), offset)
+		impl(self, RID.Font(font_rid), size, int(glyph), offset)
 	}
 }
 
@@ -2855,7 +2855,7 @@ func (Instance) _font_get_glyph_size(impl func(ptr gdclass.Receiver, font_rid RI
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, size, int(glyph))
+		ret := impl(self, RID.Font(font_rid), size, int(glyph))
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
 }
@@ -2872,7 +2872,7 @@ func (Instance) _font_set_glyph_size(impl func(ptr gdclass.Receiver, font_rid RI
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		var gl_size = gd.UnsafeGet[Vector2.XY](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, size, int(glyph), gl_size)
+		impl(self, RID.Font(font_rid), size, int(glyph), gl_size)
 	}
 }
 
@@ -2887,7 +2887,7 @@ func (Instance) _font_get_glyph_uv_rect(impl func(ptr gdclass.Receiver, font_rid
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, size, int(glyph))
+		ret := impl(self, RID.Font(font_rid), size, int(glyph))
 		gd.UnsafeSet(p_back, Rect2.PositionSize(ret))
 	}
 }
@@ -2904,7 +2904,7 @@ func (Instance) _font_set_glyph_uv_rect(impl func(ptr gdclass.Receiver, font_rid
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		var uv_rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, size, int(glyph), uv_rect)
+		impl(self, RID.Font(font_rid), size, int(glyph), uv_rect)
 	}
 }
 
@@ -2919,7 +2919,7 @@ func (Instance) _font_get_glyph_texture_idx(impl func(ptr gdclass.Receiver, font
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, size, int(glyph))
+		ret := impl(self, RID.Font(font_rid), size, int(glyph))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -2936,7 +2936,7 @@ func (Instance) _font_set_glyph_texture_idx(impl func(ptr gdclass.Receiver, font
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		var texture_idx = gd.UnsafeGet[int64](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, size, int(glyph), int(texture_idx))
+		impl(self, RID.Font(font_rid), size, int(glyph), int(texture_idx))
 	}
 }
 
@@ -2951,7 +2951,7 @@ func (Instance) _font_get_glyph_texture_rid(impl func(ptr gdclass.Receiver, font
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, size, int(glyph))
+		ret := impl(self, RID.Font(font_rid), size, int(glyph))
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
@@ -2967,7 +2967,7 @@ func (Instance) _font_get_glyph_texture_size(impl func(ptr gdclass.Receiver, fon
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var glyph = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, size, int(glyph))
+		ret := impl(self, RID.Font(font_rid), size, int(glyph))
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
 }
@@ -2983,7 +2983,7 @@ func (Instance) _font_get_glyph_contours(impl func(ptr gdclass.Receiver, font_ri
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var index = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, int(size), int(index))
+		ret := impl(self, RID.Font(font_rid), int(size), int(index))
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
 		if !ok {
@@ -3003,7 +3003,7 @@ func (Instance) _font_get_kerning_list(impl func(ptr gdclass.Receiver, font_rid 
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, int(size))
+		ret := impl(self, RID.Font(font_rid), int(size))
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[Vector2i.XY]](ret)))
 
 		if !ok {
@@ -3023,7 +3023,7 @@ func (Instance) _font_clear_kerning_map(impl func(ptr gdclass.Receiver, font_rid
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, int(size))
+		impl(self, RID.Font(font_rid), int(size))
 	}
 }
 
@@ -3038,7 +3038,7 @@ func (Instance) _font_remove_kerning(impl func(ptr gdclass.Receiver, font_rid RI
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph_pair = gd.UnsafeGet[Vector2i.XY](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, int(size), glyph_pair)
+		impl(self, RID.Font(font_rid), int(size), glyph_pair)
 	}
 }
 
@@ -3054,7 +3054,7 @@ func (Instance) _font_set_kerning(impl func(ptr gdclass.Receiver, font_rid RID.F
 		var glyph_pair = gd.UnsafeGet[Vector2i.XY](p_args, 2)
 		var kerning = gd.UnsafeGet[Vector2.XY](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, int(size), glyph_pair, kerning)
+		impl(self, RID.Font(font_rid), int(size), glyph_pair, kerning)
 	}
 }
 
@@ -3069,7 +3069,7 @@ func (Instance) _font_get_kerning(impl func(ptr gdclass.Receiver, font_rid RID.F
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph_pair = gd.UnsafeGet[Vector2i.XY](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, int(size), glyph_pair)
+		ret := impl(self, RID.Font(font_rid), int(size), glyph_pair)
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
 }
@@ -3086,7 +3086,7 @@ func (Instance) _font_get_glyph_index(impl func(ptr gdclass.Receiver, font_rid R
 		var char = gd.UnsafeGet[int64](p_args, 2)
 		var variation_selector = gd.UnsafeGet[int64](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, int(size), int(char), int(variation_selector))
+		ret := impl(self, RID.Font(font_rid), int(size), int(char), int(variation_selector))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -3102,7 +3102,7 @@ func (Instance) _font_get_char_from_glyph_index(impl func(ptr gdclass.Receiver, 
 		var size = gd.UnsafeGet[int64](p_args, 1)
 		var glyph_index = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, int(size), int(glyph_index))
+		ret := impl(self, RID.Font(font_rid), int(size), int(glyph_index))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -3117,7 +3117,7 @@ func (Instance) _font_has_char(impl func(ptr gdclass.Receiver, font_rid RID.Font
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		var char = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, int(char))
+		ret := impl(self, RID.Font(font_rid), int(char))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -3131,7 +3131,7 @@ func (Instance) _font_get_supported_chars(impl func(ptr gdclass.Receiver, font_r
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
@@ -3150,7 +3150,7 @@ func (Instance) _font_get_supported_glyphs(impl func(ptr gdclass.Receiver, font_
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
@@ -3172,7 +3172,7 @@ func (Instance) _font_render_range(impl func(ptr gdclass.Receiver, font_rid RID.
 		var start = gd.UnsafeGet[int64](p_args, 2)
 		var end = gd.UnsafeGet[int64](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, size, int(start), int(end))
+		impl(self, RID.Font(font_rid), size, int(start), int(end))
 	}
 }
 
@@ -3187,7 +3187,7 @@ func (Instance) _font_render_glyph(impl func(ptr gdclass.Receiver, font_rid RID.
 		var size = gd.UnsafeGet[Vector2i.XY](p_args, 1)
 		var index = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, size, int(index))
+		impl(self, RID.Font(font_rid), size, int(index))
 	}
 }
 
@@ -3205,7 +3205,7 @@ func (Instance) _font_draw_glyph(impl func(ptr gdclass.Receiver, font_rid RID.Fo
 		var index = gd.UnsafeGet[int64](p_args, 4)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 5)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, canvas, int(size), pos, int(index), color)
+		impl(self, RID.Font(font_rid), RID.Canvas(canvas), int(size), pos, int(index), color)
 	}
 }
 
@@ -3224,7 +3224,7 @@ func (Instance) _font_draw_glyph_outline(impl func(ptr gdclass.Receiver, font_ri
 		var index = gd.UnsafeGet[int64](p_args, 5)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 6)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, canvas, int(size), int(outline_size), pos, int(index), color)
+		impl(self, RID.Font(font_rid), RID.Canvas(canvas), int(size), int(outline_size), pos, int(index), color)
 	}
 }
 
@@ -3241,7 +3241,7 @@ func (Instance) _font_is_language_supported(impl func(ptr gdclass.Receiver, font
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, language.String())
+		ret := impl(self, RID.Font(font_rid), language.String())
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -3258,7 +3258,7 @@ func (Instance) _font_set_language_support_override(impl func(ptr gdclass.Receiv
 		defer pointers.End(gd.InternalString(language))
 		var supported = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, language.String(), supported)
+		impl(self, RID.Font(font_rid), language.String(), supported)
 	}
 }
 
@@ -3273,7 +3273,7 @@ func (Instance) _font_get_language_support_override(impl func(ptr gdclass.Receiv
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, language.String())
+		ret := impl(self, RID.Font(font_rid), language.String())
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -3289,7 +3289,7 @@ func (Instance) _font_remove_language_support_override(impl func(ptr gdclass.Rec
 		var language = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(language))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, language.String())
+		impl(self, RID.Font(font_rid), language.String())
 	}
 }
 
@@ -3302,7 +3302,7 @@ func (Instance) _font_get_language_support_overrides(impl func(ptr gdclass.Recei
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
 		if !ok {
@@ -3323,7 +3323,7 @@ func (Instance) _font_is_script_supported(impl func(ptr gdclass.Receiver, font_r
 		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(script))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, script.String())
+		ret := impl(self, RID.Font(font_rid), script.String())
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -3340,7 +3340,7 @@ func (Instance) _font_set_script_support_override(impl func(ptr gdclass.Receiver
 		defer pointers.End(gd.InternalString(script))
 		var supported = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, script.String(), supported)
+		impl(self, RID.Font(font_rid), script.String(), supported)
 	}
 }
 
@@ -3355,7 +3355,7 @@ func (Instance) _font_get_script_support_override(impl func(ptr gdclass.Receiver
 		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(script))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid, script.String())
+		ret := impl(self, RID.Font(font_rid), script.String())
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -3371,7 +3371,7 @@ func (Instance) _font_remove_script_support_override(impl func(ptr gdclass.Recei
 		var script = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(script))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, script.String())
+		impl(self, RID.Font(font_rid), script.String())
 	}
 }
 
@@ -3384,7 +3384,7 @@ func (Instance) _font_get_script_support_overrides(impl func(ptr gdclass.Receive
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
 
 		if !ok {
@@ -3405,7 +3405,7 @@ func (Instance) _font_set_opentype_feature_overrides(impl func(ptr gdclass.Recei
 		var overrides = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(overrides))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, font_rid, gd.DictionaryAs[map[string][2]string](overrides))
+		impl(self, RID.Font(font_rid), gd.DictionaryAs[map[string][2]string](overrides))
 	}
 }
 
@@ -3418,7 +3418,7 @@ func (Instance) _font_get_opentype_feature_overrides(impl func(ptr gdclass.Recei
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
 		if !ok {
@@ -3437,7 +3437,7 @@ func (Instance) _font_supported_feature_list(impl func(ptr gdclass.Receiver, fon
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
 		if !ok {
@@ -3460,7 +3460,7 @@ func (Instance) _font_supported_variation_list(impl func(ptr gdclass.Receiver, f
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var font_rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, font_rid)
+		ret := impl(self, RID.Font(font_rid))
 		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
 
 		if !ok {
@@ -3524,7 +3524,7 @@ func (Instance) _draw_hex_code_box(impl func(ptr gdclass.Receiver, canvas RID.Ca
 		var index = gd.UnsafeGet[int64](p_args, 3)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 4)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, canvas, int(size), pos, int(index), color)
+		impl(self, RID.Canvas(canvas), int(size), pos, int(index), color)
 	}
 }
 
@@ -3552,7 +3552,7 @@ func (Instance) _shaped_text_clear(impl func(ptr gdclass.Receiver, shaped RID.Te
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shaped)
+		impl(self, RID.TextBuffer(shaped))
 	}
 }
 
@@ -3566,7 +3566,7 @@ func (Instance) _shaped_text_set_direction(impl func(ptr gdclass.Receiver, shape
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var direction = gd.UnsafeGet[TextServer.Direction](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shaped, direction)
+		impl(self, RID.TextBuffer(shaped), direction)
 	}
 }
 
@@ -3579,7 +3579,7 @@ func (Instance) _shaped_text_get_direction(impl func(ptr gdclass.Receiver, shape
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -3593,7 +3593,7 @@ func (Instance) _shaped_text_get_inferred_direction(impl func(ptr gdclass.Receiv
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -3609,7 +3609,7 @@ func (Instance) _shaped_text_set_bidi_override(impl func(ptr gdclass.Receiver, s
 		var override = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 1))))
 		defer pointers.End(gd.InternalArray(override))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shaped, gd.ArrayAs[[]any](gd.InternalArray(override)))
+		impl(self, RID.TextBuffer(shaped), gd.ArrayAs[[]any](gd.InternalArray(override)))
 	}
 }
 
@@ -3624,7 +3624,7 @@ func (Instance) _shaped_text_set_custom_punctuation(impl func(ptr gdclass.Receiv
 		var punct = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 1))))
 		defer pointers.End(gd.InternalString(punct))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shaped, punct.String())
+		impl(self, RID.TextBuffer(shaped), punct.String())
 	}
 }
 
@@ -3637,7 +3637,7 @@ func (Instance) _shaped_text_get_custom_punctuation(impl func(ptr gdclass.Receiv
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
@@ -3657,7 +3657,7 @@ func (Instance) _shaped_text_set_custom_ellipsis(impl func(ptr gdclass.Receiver,
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var char = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shaped, int(char))
+		impl(self, RID.TextBuffer(shaped), int(char))
 	}
 }
 
@@ -3670,7 +3670,7 @@ func (Instance) _shaped_text_get_custom_ellipsis(impl func(ptr gdclass.Receiver,
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -3685,7 +3685,7 @@ func (Instance) _shaped_text_set_orientation(impl func(ptr gdclass.Receiver, sha
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var orientation = gd.UnsafeGet[TextServer.Orientation](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shaped, orientation)
+		impl(self, RID.TextBuffer(shaped), orientation)
 	}
 }
 
@@ -3698,7 +3698,7 @@ func (Instance) _shaped_text_get_orientation(impl func(ptr gdclass.Receiver, sha
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -3713,7 +3713,7 @@ func (Instance) _shaped_text_set_preserve_invalid(impl func(ptr gdclass.Receiver
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var enabled = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shaped, enabled)
+		impl(self, RID.TextBuffer(shaped), enabled)
 	}
 }
 
@@ -3726,7 +3726,7 @@ func (Instance) _shaped_text_get_preserve_invalid(impl func(ptr gdclass.Receiver
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -3741,7 +3741,7 @@ func (Instance) _shaped_text_set_preserve_control(impl func(ptr gdclass.Receiver
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var enabled = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shaped, enabled)
+		impl(self, RID.TextBuffer(shaped), enabled)
 	}
 }
 
@@ -3754,7 +3754,7 @@ func (Instance) _shaped_text_get_preserve_control(impl func(ptr gdclass.Receiver
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -3770,7 +3770,7 @@ func (Instance) _shaped_text_set_spacing(impl func(ptr gdclass.Receiver, shaped 
 		var spacing = gd.UnsafeGet[TextServer.SpacingType](p_args, 1)
 		var value = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shaped, spacing, int(value))
+		impl(self, RID.TextBuffer(shaped), spacing, int(value))
 	}
 }
 
@@ -3784,7 +3784,7 @@ func (Instance) _shaped_text_get_spacing(impl func(ptr gdclass.Receiver, shaped 
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var spacing = gd.UnsafeGet[TextServer.SpacingType](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, spacing)
+		ret := impl(self, RID.TextBuffer(shaped), spacing)
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -3809,7 +3809,7 @@ func (Instance) _shaped_text_add_string(impl func(ptr gdclass.Receiver, shaped R
 		var meta = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 6))))
 		defer pointers.End(gd.InternalVariant(meta))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, text.String(), gd.ArrayAs[[]RID.TextBuffer](gd.InternalArray(fonts)), int(size), gd.DictionaryAs[map[string]uint32](opentype_features), language.String(), meta.Interface())
+		ret := impl(self, RID.TextBuffer(shaped), text.String(), gd.ArrayAs[[]RID.TextBuffer](gd.InternalArray(fonts)), int(size), gd.DictionaryAs[map[string]uint32](opentype_features), language.String(), meta.Interface())
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -3829,7 +3829,7 @@ func (Instance) _shaped_text_add_object(impl func(ptr gdclass.Receiver, shaped R
 		var length = gd.UnsafeGet[int64](p_args, 4)
 		var baseline = gd.UnsafeGet[float64](p_args, 5)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, key.Interface(), size, inline_align, int(length), Float.X(baseline))
+		ret := impl(self, RID.TextBuffer(shaped), key.Interface(), size, inline_align, int(length), Float.X(baseline))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -3848,7 +3848,7 @@ func (Instance) _shaped_text_resize_object(impl func(ptr gdclass.Receiver, shape
 		var inline_align = gd.UnsafeGet[GUI.InlineAlignment](p_args, 3)
 		var baseline = gd.UnsafeGet[float64](p_args, 4)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, key.Interface(), size, inline_align, Float.X(baseline))
+		ret := impl(self, RID.TextBuffer(shaped), key.Interface(), size, inline_align, Float.X(baseline))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -3862,7 +3862,7 @@ func (Instance) _shaped_get_span_count(impl func(ptr gdclass.Receiver, shaped RI
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -3877,7 +3877,7 @@ func (Instance) _shaped_get_span_meta(impl func(ptr gdclass.Receiver, shaped RID
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var index = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, int(index))
+		ret := impl(self, RID.TextBuffer(shaped), int(index))
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
@@ -3897,7 +3897,7 @@ func (Instance) _shaped_get_span_embedded_object(impl func(ptr gdclass.Receiver,
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var index = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, int(index))
+		ret := impl(self, RID.TextBuffer(shaped), int(index))
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
@@ -3922,7 +3922,7 @@ func (Instance) _shaped_set_span_update_font(impl func(ptr gdclass.Receiver, sha
 		var opentype_features = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 4))))
 		defer pointers.End(gd.InternalDictionary(opentype_features))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shaped, int(index), gd.ArrayAs[[][]RID.Font](gd.InternalArray(fonts)), int(size), gd.DictionaryAs[map[string]uint32](opentype_features))
+		impl(self, RID.TextBuffer(shaped), int(index), gd.ArrayAs[[][]RID.Font](gd.InternalArray(fonts)), int(size), gd.DictionaryAs[map[string]uint32](opentype_features))
 	}
 }
 
@@ -3937,7 +3937,7 @@ func (Instance) _shaped_text_substr(impl func(ptr gdclass.Receiver, shaped RID.T
 		var start = gd.UnsafeGet[int64](p_args, 1)
 		var length = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, int(start), int(length))
+		ret := impl(self, RID.TextBuffer(shaped), int(start), int(length))
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
@@ -3951,7 +3951,7 @@ func (Instance) _shaped_text_get_parent(impl func(ptr gdclass.Receiver, shaped R
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
@@ -3967,7 +3967,7 @@ func (Instance) _shaped_text_fit_to_width(impl func(ptr gdclass.Receiver, shaped
 		var width = gd.UnsafeGet[float64](p_args, 1)
 		var justification_flags = gd.UnsafeGet[TextServer.JustificationFlag](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, Float.X(width), justification_flags)
+		ret := impl(self, RID.TextBuffer(shaped), Float.X(width), justification_flags)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -3983,7 +3983,7 @@ func (Instance) _shaped_text_tab_align(impl func(ptr gdclass.Receiver, shaped RI
 		var tab_stops = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
 		defer pointers.End(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, slices.Collect(tab_stops.Values()))
+		ret := impl(self, RID.TextBuffer(shaped), slices.Collect(tab_stops.Values()))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -3997,7 +3997,7 @@ func (Instance) _shaped_text_shape(impl func(ptr gdclass.Receiver, shaped RID.Te
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -4011,7 +4011,7 @@ func (Instance) _shaped_text_update_breaks(impl func(ptr gdclass.Receiver, shape
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -4025,7 +4025,7 @@ func (Instance) _shaped_text_update_justification_ops(impl func(ptr gdclass.Rece
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -4039,7 +4039,7 @@ func (Instance) _shaped_text_is_ready(impl func(ptr gdclass.Receiver, shaped RID
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -4053,7 +4053,7 @@ func (Instance) _shaped_text_get_glyphs(impl func(ptr gdclass.Receiver, shaped R
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -4067,7 +4067,7 @@ func (Instance) _shaped_text_sort_logical(impl func(ptr gdclass.Receiver, shaped
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -4081,7 +4081,7 @@ func (Instance) _shaped_text_get_glyph_count(impl func(ptr gdclass.Receiver, sha
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -4095,7 +4095,7 @@ func (Instance) _shaped_text_get_range(impl func(ptr gdclass.Receiver, shaped RI
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, Vector2i.XY(ret))
 	}
 }
@@ -4114,7 +4114,7 @@ func (Instance) _shaped_text_get_line_breaks_adv(impl func(ptr gdclass.Receiver,
 		var once = gd.UnsafeGet[bool](p_args, 3)
 		var break_flags = gd.UnsafeGet[TextServer.LineBreakFlag](p_args, 4)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, slices.Collect(width.Values()), int(start), once, break_flags)
+		ret := impl(self, RID.TextBuffer(shaped), slices.Collect(width.Values()), int(start), once, break_flags)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
@@ -4136,7 +4136,7 @@ func (Instance) _shaped_text_get_line_breaks(impl func(ptr gdclass.Receiver, sha
 		var start = gd.UnsafeGet[int64](p_args, 2)
 		var break_flags = gd.UnsafeGet[TextServer.LineBreakFlag](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, Float.X(width), int(start), break_flags)
+		ret := impl(self, RID.TextBuffer(shaped), Float.X(width), int(start), break_flags)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
@@ -4157,7 +4157,7 @@ func (Instance) _shaped_text_get_word_breaks(impl func(ptr gdclass.Receiver, sha
 		var grapheme_flags = gd.UnsafeGet[TextServer.GraphemeFlag](p_args, 1)
 		var skip_grapheme_flags = gd.UnsafeGet[TextServer.GraphemeFlag](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, grapheme_flags, skip_grapheme_flags)
+		ret := impl(self, RID.TextBuffer(shaped), grapheme_flags, skip_grapheme_flags)
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
@@ -4176,7 +4176,7 @@ func (Instance) _shaped_text_get_trim_pos(impl func(ptr gdclass.Receiver, shaped
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -4190,7 +4190,7 @@ func (Instance) _shaped_text_get_ellipsis_pos(impl func(ptr gdclass.Receiver, sh
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -4204,7 +4204,7 @@ func (Instance) _shaped_text_get_ellipsis_glyph_count(impl func(ptr gdclass.Rece
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -4218,7 +4218,7 @@ func (Instance) _shaped_text_get_ellipsis_glyphs(impl func(ptr gdclass.Receiver,
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -4234,7 +4234,7 @@ func (Instance) _shaped_text_overrun_trim_to_width(impl func(ptr gdclass.Receive
 		var width = gd.UnsafeGet[float64](p_args, 1)
 		var trim_flags = gd.UnsafeGet[TextServer.TextOverrunFlag](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shaped, Float.X(width), trim_flags)
+		impl(self, RID.TextBuffer(shaped), Float.X(width), trim_flags)
 	}
 }
 
@@ -4247,7 +4247,7 @@ func (Instance) _shaped_text_get_objects(impl func(ptr gdclass.Receiver, shaped 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		ptr, ok := pointers.End(gd.InternalArray(gd.EngineArrayFromSlice(ret)))
 
 		if !ok {
@@ -4268,7 +4268,7 @@ func (Instance) _shaped_text_get_object_rect(impl func(ptr gdclass.Receiver, sha
 		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, key.Interface())
+		ret := impl(self, RID.TextBuffer(shaped), key.Interface())
 		gd.UnsafeSet(p_back, Rect2.PositionSize(ret))
 	}
 }
@@ -4284,7 +4284,7 @@ func (Instance) _shaped_text_get_object_range(impl func(ptr gdclass.Receiver, sh
 		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, key.Interface())
+		ret := impl(self, RID.TextBuffer(shaped), key.Interface())
 		gd.UnsafeSet(p_back, Vector2i.XY(ret))
 	}
 }
@@ -4300,7 +4300,7 @@ func (Instance) _shaped_text_get_object_glyph(impl func(ptr gdclass.Receiver, sh
 		var key = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(key))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, key.Interface())
+		ret := impl(self, RID.TextBuffer(shaped), key.Interface())
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -4314,7 +4314,7 @@ func (Instance) _shaped_text_get_size(impl func(ptr gdclass.Receiver, shaped RID
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
 }
@@ -4328,7 +4328,7 @@ func (Instance) _shaped_text_get_ascent(impl func(ptr gdclass.Receiver, shaped R
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -4342,7 +4342,7 @@ func (Instance) _shaped_text_get_descent(impl func(ptr gdclass.Receiver, shaped 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -4356,7 +4356,7 @@ func (Instance) _shaped_text_get_width(impl func(ptr gdclass.Receiver, shaped RI
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -4370,7 +4370,7 @@ func (Instance) _shaped_text_get_underline_position(impl func(ptr gdclass.Receiv
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -4384,7 +4384,7 @@ func (Instance) _shaped_text_get_underline_thickness(impl func(ptr gdclass.Recei
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -4400,7 +4400,7 @@ func (Instance) _shaped_text_get_dominant_direction_in_range(impl func(ptr gdcla
 		var start = gd.UnsafeGet[int64](p_args, 1)
 		var end = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, int(start), int(end))
+		ret := impl(self, RID.TextBuffer(shaped), int(start), int(end))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -4416,7 +4416,7 @@ func (Instance) _shaped_text_get_carets(impl func(ptr gdclass.Receiver, shaped R
 		var position = gd.UnsafeGet[int64](p_args, 1)
 		var caret = gd.UnsafeGet[*CaretInfo](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shaped, int(position), caret)
+		impl(self, RID.TextBuffer(shaped), int(position), caret)
 	}
 }
 
@@ -4431,7 +4431,7 @@ func (Instance) _shaped_text_get_selection(impl func(ptr gdclass.Receiver, shape
 		var start = gd.UnsafeGet[int64](p_args, 1)
 		var end = gd.UnsafeGet[int64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, int(start), int(end))
+		ret := impl(self, RID.TextBuffer(shaped), int(start), int(end))
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](Packed.New(ret...)))
 
 		if !ok {
@@ -4451,7 +4451,7 @@ func (Instance) _shaped_text_hit_test_grapheme(impl func(ptr gdclass.Receiver, s
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var coord = gd.UnsafeGet[float64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, Float.X(coord))
+		ret := impl(self, RID.TextBuffer(shaped), Float.X(coord))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -4466,7 +4466,7 @@ func (Instance) _shaped_text_hit_test_position(impl func(ptr gdclass.Receiver, s
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var coord = gd.UnsafeGet[float64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, Float.X(coord))
+		ret := impl(self, RID.TextBuffer(shaped), Float.X(coord))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -4485,7 +4485,7 @@ func (Instance) _shaped_text_draw(impl func(ptr gdclass.Receiver, shaped RID.Tex
 		var clip_r = gd.UnsafeGet[float64](p_args, 4)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 5)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shaped, canvas, pos, Float.X(clip_l), Float.X(clip_r), color)
+		impl(self, RID.TextBuffer(shaped), RID.Canvas(canvas), pos, Float.X(clip_l), Float.X(clip_r), color)
 	}
 }
 
@@ -4504,7 +4504,7 @@ func (Instance) _shaped_text_draw_outline(impl func(ptr gdclass.Receiver, shaped
 		var outline_size = gd.UnsafeGet[int64](p_args, 5)
 		var color = gd.UnsafeGet[Color.RGBA](p_args, 6)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shaped, canvas, pos, Float.X(clip_l), Float.X(clip_r), int(outline_size), color)
+		impl(self, RID.TextBuffer(shaped), RID.Canvas(canvas), pos, Float.X(clip_l), Float.X(clip_r), int(outline_size), color)
 	}
 }
 
@@ -4518,7 +4518,7 @@ func (Instance) _shaped_text_get_grapheme_bounds(impl func(ptr gdclass.Receiver,
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, int(pos))
+		ret := impl(self, RID.TextBuffer(shaped), int(pos))
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
 }
@@ -4533,7 +4533,7 @@ func (Instance) _shaped_text_next_grapheme_pos(impl func(ptr gdclass.Receiver, s
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, int(pos))
+		ret := impl(self, RID.TextBuffer(shaped), int(pos))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -4548,7 +4548,7 @@ func (Instance) _shaped_text_prev_grapheme_pos(impl func(ptr gdclass.Receiver, s
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, int(pos))
+		ret := impl(self, RID.TextBuffer(shaped), int(pos))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -4562,7 +4562,7 @@ func (Instance) _shaped_text_get_character_breaks(impl func(ptr gdclass.Receiver
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped)
+		ret := impl(self, RID.TextBuffer(shaped))
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedInt32Array, int32](Packed.New(ret...)))
 
 		if !ok {
@@ -4582,7 +4582,7 @@ func (Instance) _shaped_text_next_character_pos(impl func(ptr gdclass.Receiver, 
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, int(pos))
+		ret := impl(self, RID.TextBuffer(shaped), int(pos))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -4597,7 +4597,7 @@ func (Instance) _shaped_text_prev_character_pos(impl func(ptr gdclass.Receiver, 
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, int(pos))
+		ret := impl(self, RID.TextBuffer(shaped), int(pos))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -4612,7 +4612,7 @@ func (Instance) _shaped_text_closest_character_pos(impl func(ptr gdclass.Receive
 		var shaped = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pos = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shaped, int(pos))
+		ret := impl(self, RID.TextBuffer(shaped), int(pos))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }

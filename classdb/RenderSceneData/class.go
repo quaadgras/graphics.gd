@@ -151,7 +151,7 @@ func (self Instance) GetViewProjection(view int) Projection.XYZW { //gd:RenderSc
 Return the [Resource.ID] of the uniform buffer containing the scene data as a UBO.
 */
 func (self Instance) GetUniformBuffer() RID.UniformBuffer { //gd:RenderSceneData.get_uniform_buffer
-	return RID.UniformBuffer(Advanced(self).GetUniformBuffer())
+	return RID.UniformBuffer(RID.UniformBuffer(Advanced(self).GetUniformBuffer()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

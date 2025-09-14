@@ -178,7 +178,7 @@ func (Instance) _intersect_shape(impl func(ptr gdclass.Receiver, shape_rid RID.S
 		var result_count = gd.UnsafeGet[*PhysicsServer3DExtensionShapeResult](p_args, 7)
 		var max_results = gd.UnsafeGet[int64](p_args, 8)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shape_rid, transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, result_count, int(max_results))
+		ret := impl(self, RID.Shape3D(shape_rid), transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, result_count, int(max_results))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -195,7 +195,7 @@ func (Instance) _cast_motion(impl func(ptr gdclass.Receiver, shape_rid RID.Shape
 		var closest_unsafe = gd.UnsafeGet[*float64](p_args, 8)
 		var info = gd.UnsafeGet[*PhysicsServer3DExtensionShapeRestInfo](p_args, 9)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shape_rid, transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, closest_safe, closest_unsafe, info)
+		ret := impl(self, RID.Shape3D(shape_rid), transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, closest_safe, closest_unsafe, info)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -212,7 +212,7 @@ func (Instance) _collide_shape(impl func(ptr gdclass.Receiver, shape_rid RID.Sha
 		var max_results = gd.UnsafeGet[int64](p_args, 8)
 		var result_count = gd.UnsafeGet[*int32](p_args, 9)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shape_rid, transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, results, int(max_results), result_count)
+		ret := impl(self, RID.Shape3D(shape_rid), transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, results, int(max_results), result_count)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -227,7 +227,7 @@ func (Instance) _rest_info(impl func(ptr gdclass.Receiver, shape_rid RID.Shape3D
 		var collide_with_areas = gd.UnsafeGet[bool](p_args, 6)
 		var rest_info = gd.UnsafeGet[*PhysicsServer3DExtensionShapeRestInfo](p_args, 7)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shape_rid, transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, rest_info)
+		ret := impl(self, RID.Shape3D(shape_rid), transform, motion, Float.X(margin), int(collision_mask), collide_with_bodies, collide_with_areas, rest_info)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -236,7 +236,7 @@ func (Instance) _get_closest_point_to_object_volume(impl func(ptr gdclass.Receiv
 		var obj = gd.UnsafeGet[RID.Any](p_args, 0)
 		var point = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, obj, point)
+		ret := impl(self, RID.Body3D(obj), point)
 		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
 	}
 }

@@ -656,7 +656,7 @@ Note: Not to be confused with [graphics.gd/classdb/RenderingDevice.Instance.Text
 */
 func Texture2dCreate(image Image.Instance) RID.Texture2D { //gd:RenderingServer.texture_2d_create
 	once.Do(singleton)
-	return RID.Texture2D(Advanced().Texture2dCreate(image))
+	return RID.Texture2D(RID.Texture2D(Advanced().Texture2dCreate(image)))
 }
 
 /*
@@ -668,7 +668,7 @@ Note: The equivalent resource is [graphics.gd/classdb/TextureLayered].
 */
 func Texture2dLayeredCreate(layers []Image.Instance, layered_type TextureLayeredType) RID.Texture2D { //gd:RenderingServer.texture_2d_layered_create
 	once.Do(singleton)
-	return RID.Texture2D(Advanced().Texture2dLayeredCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](layers), layered_type))
+	return RID.Texture2D(RID.Texture2D(Advanced().Texture2dLayeredCreate(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](layers), layered_type)))
 }
 
 /*
@@ -676,7 +676,7 @@ Note: The equivalent resource is [graphics.gd/classdb/Texture3D].
 */
 func Texture3dCreate(format Image.Format, width int, height int, depth int, mipmaps bool, data []Image.Instance) RID.Texture3D { //gd:RenderingServer.texture_3d_create
 	once.Do(singleton)
-	return RID.Texture3D(Advanced().Texture3dCreate(format, int64(width), int64(height), int64(depth), mipmaps, gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data)))
+	return RID.Texture3D(RID.Texture3D(Advanced().Texture3dCreate(format, int64(width), int64(height), int64(depth), mipmaps, gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data))))
 }
 
 /*
@@ -684,7 +684,7 @@ This method does nothing and always returns an invalid [Resource.ID].
 */
 func TextureProxyCreate(base RID.TextureProxy) RID.TextureProxy { //gd:RenderingServer.texture_proxy_create
 	once.Do(singleton)
-	return RID.TextureProxy(Advanced().TextureProxyCreate(RID.Any(base)))
+	return RID.TextureProxy(RID.TextureProxy(Advanced().TextureProxyCreate(RID.Any(base))))
 }
 
 /*
@@ -694,7 +694,7 @@ Note: If using only the rendering device renderer, it's recommend to use [graphi
 */
 func TextureCreateFromNativeHandle(atype TextureType, format Image.Format, native_handle int, width int, height int, depth int, layered_type TextureLayeredType) RID.Texture { //gd:RenderingServer.texture_create_from_native_handle
 	once.Do(singleton)
-	return RID.Texture(Advanced().TextureCreateFromNativeHandle(atype, format, int64(native_handle), int64(width), int64(height), int64(depth), int64(1), layered_type))
+	return RID.Texture(RID.Texture(Advanced().TextureCreateFromNativeHandle(atype, format, int64(native_handle), int64(width), int64(height), int64(depth), int64(1), layered_type)))
 }
 
 /*
@@ -704,7 +704,7 @@ Note: If using only the rendering device renderer, it's recommend to use [graphi
 */
 func TextureCreateFromNativeHandleOptions(atype TextureType, format Image.Format, native_handle int, width int, height int, depth int, layers int, layered_type TextureLayeredType) RID.Texture { //gd:RenderingServer.texture_create_from_native_handle
 	once.Do(singleton)
-	return RID.Texture(Advanced().TextureCreateFromNativeHandle(atype, format, int64(native_handle), int64(width), int64(height), int64(depth), int64(layers), layered_type))
+	return RID.Texture(RID.Texture(Advanced().TextureCreateFromNativeHandle(atype, format, int64(native_handle), int64(width), int64(height), int64(depth), int64(layers), layered_type)))
 }
 
 /*
@@ -744,7 +744,7 @@ Note: The equivalent resource is [graphics.gd/classdb/PlaceholderTexture2D].
 */
 func Texture2dPlaceholderCreate() RID.Texture2D { //gd:RenderingServer.texture_2d_placeholder_create
 	once.Do(singleton)
-	return RID.Texture2D(Advanced().Texture2dPlaceholderCreate())
+	return RID.Texture2D(RID.Texture2D(Advanced().Texture2dPlaceholderCreate()))
 }
 
 /*
@@ -754,7 +754,7 @@ Note: The equivalent resource is [graphics.gd/classdb/PlaceholderTextureLayered]
 */
 func Texture2dLayeredPlaceholderCreate(layered_type TextureLayeredType) RID.Texture2D { //gd:RenderingServer.texture_2d_layered_placeholder_create
 	once.Do(singleton)
-	return RID.Texture2D(Advanced().Texture2dLayeredPlaceholderCreate(layered_type))
+	return RID.Texture2D(RID.Texture2D(Advanced().Texture2dLayeredPlaceholderCreate(layered_type)))
 }
 
 /*
@@ -766,7 +766,7 @@ Note: The equivalent resource is [graphics.gd/classdb/PlaceholderTexture3D].
 */
 func Texture3dPlaceholderCreate() RID.Texture3D { //gd:RenderingServer.texture_3d_placeholder_create
 	once.Do(singleton)
-	return RID.Texture3D(Advanced().Texture3dPlaceholderCreate())
+	return RID.Texture3D(RID.Texture3D(Advanced().Texture3dPlaceholderCreate()))
 }
 
 /*
@@ -832,7 +832,7 @@ Creates a new texture object based on a texture created directly on the [graphic
 */
 func TextureRdCreate(rd_texture RID.Texture, layer_type TextureLayeredType) RID.Texture { //gd:RenderingServer.texture_rd_create
 	once.Do(singleton)
-	return RID.Texture(Advanced().TextureRdCreate(RID.Any(rd_texture), layer_type))
+	return RID.Texture(RID.Texture(Advanced().TextureRdCreate(RID.Any(rd_texture), layer_type)))
 }
 
 /*
@@ -840,7 +840,7 @@ Creates a new texture object based on a texture created directly on the [graphic
 */
 func TextureRdCreateOptions(rd_texture RID.Texture, layer_type TextureLayeredType) RID.Texture { //gd:RenderingServer.texture_rd_create
 	once.Do(singleton)
-	return RID.Texture(Advanced().TextureRdCreate(RID.Any(rd_texture), layer_type))
+	return RID.Texture(RID.Texture(Advanced().TextureRdCreate(RID.Any(rd_texture), layer_type)))
 }
 
 /*
@@ -848,7 +848,7 @@ Returns a texture [Resource.ID] that can be used with [graphics.gd/classdb/Rende
 */
 func TextureGetRdTexture(texture RID.Texture, srgb bool) RID.Texture { //gd:RenderingServer.texture_get_rd_texture
 	once.Do(singleton)
-	return RID.Texture(Advanced().TextureGetRdTexture(RID.Any(texture), srgb))
+	return RID.Texture(RID.Texture(Advanced().TextureGetRdTexture(RID.Any(texture), srgb)))
 }
 
 /*
@@ -856,7 +856,7 @@ Returns a texture [Resource.ID] that can be used with [graphics.gd/classdb/Rende
 */
 func TextureGetRdTextureOptions(texture RID.Texture, srgb bool) RID.Texture { //gd:RenderingServer.texture_get_rd_texture
 	once.Do(singleton)
-	return RID.Texture(Advanced().TextureGetRdTexture(RID.Any(texture), srgb))
+	return RID.Texture(RID.Texture(Advanced().TextureGetRdTexture(RID.Any(texture), srgb)))
 }
 
 /*
@@ -888,7 +888,7 @@ Note: The equivalent resource is [graphics.gd/classdb/Shader].
 */
 func ShaderCreate() RID.Shader { //gd:RenderingServer.shader_create
 	once.Do(singleton)
-	return RID.Shader(Advanced().ShaderCreate())
+	return RID.Shader(RID.Shader(Advanced().ShaderCreate()))
 }
 
 /*
@@ -958,7 +958,7 @@ Note: If the sampler array is used use 'index' to access the specified texture.
 */
 func ShaderGetDefaultTextureParameter(shader RID.Shader, name string, index int) RID.Texture { //gd:RenderingServer.shader_get_default_texture_parameter
 	once.Do(singleton)
-	return RID.Texture(Advanced().ShaderGetDefaultTextureParameter(RID.Any(shader), String.Name(String.New(name)), int64(index)))
+	return RID.Texture(RID.Texture(Advanced().ShaderGetDefaultTextureParameter(RID.Any(shader), String.Name(String.New(name)), int64(index))))
 }
 
 /*
@@ -968,7 +968,7 @@ Note: If the sampler array is used use 'index' to access the specified texture.
 */
 func ShaderGetDefaultTextureParameterOptions(shader RID.Shader, name string, index int) RID.Texture { //gd:RenderingServer.shader_get_default_texture_parameter
 	once.Do(singleton)
-	return RID.Texture(Advanced().ShaderGetDefaultTextureParameter(RID.Any(shader), String.Name(String.New(name)), int64(index)))
+	return RID.Texture(RID.Texture(Advanced().ShaderGetDefaultTextureParameter(RID.Any(shader), String.Name(String.New(name)), int64(index))))
 }
 
 /*
@@ -980,7 +980,7 @@ Note: The equivalent resource is [graphics.gd/classdb/Material].
 */
 func MaterialCreate() RID.Material { //gd:RenderingServer.material_create
 	once.Do(singleton)
-	return RID.Material(Advanced().MaterialCreate())
+	return RID.Material(RID.Material(Advanced().MaterialCreate()))
 }
 
 /*
@@ -1024,11 +1024,11 @@ func MaterialSetNextPass(material RID.Material, next_material RID.Material) { //
 }
 func MeshCreateFromSurfaces(surfaces []Surface, blend_shape_count int) RID.Mesh { //gd:RenderingServer.mesh_create_from_surfaces
 	once.Do(singleton)
-	return RID.Mesh(Advanced().MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](surfaces), int64(blend_shape_count)))
+	return RID.Mesh(RID.Mesh(Advanced().MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](surfaces), int64(blend_shape_count))))
 }
 func MeshCreateFromSurfacesOptions(surfaces []Surface, blend_shape_count int) RID.Mesh { //gd:RenderingServer.mesh_create_from_surfaces
 	once.Do(singleton)
-	return RID.Mesh(Advanced().MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](surfaces), int64(blend_shape_count)))
+	return RID.Mesh(RID.Mesh(Advanced().MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](surfaces), int64(blend_shape_count))))
 }
 
 /*
@@ -1042,7 +1042,7 @@ Note: The equivalent resource is [graphics.gd/classdb/Mesh].
 */
 func MeshCreate() RID.Mesh { //gd:RenderingServer.mesh_create
 	once.Do(singleton)
-	return RID.Mesh(Advanced().MeshCreate())
+	return RID.Mesh(RID.Mesh(Advanced().MeshCreate()))
 }
 
 /*
@@ -1134,7 +1134,7 @@ Returns a mesh's surface's material.
 */
 func MeshSurfaceGetMaterial(mesh RID.Mesh, surface int) RID.Material { //gd:RenderingServer.mesh_surface_get_material
 	once.Do(singleton)
-	return RID.Material(Advanced().MeshSurfaceGetMaterial(RID.Any(mesh), int64(surface)))
+	return RID.Material(RID.Material(Advanced().MeshSurfaceGetMaterial(RID.Any(mesh), int64(surface))))
 }
 func MeshGetSurface(mesh RID.Mesh, surface int) Surface { //gd:RenderingServer.mesh_get_surface
 	once.Do(singleton)
@@ -1224,7 +1224,7 @@ Note: The equivalent resource is [graphics.gd/classdb/MultiMesh].
 */
 func MultimeshCreate() RID.MultiMesh { //gd:RenderingServer.multimesh_create
 	once.Do(singleton)
-	return RID.MultiMesh(Advanced().MultimeshCreate())
+	return RID.MultiMesh(RID.MultiMesh(Advanced().MultimeshCreate()))
 }
 func MultimeshAllocateData(multimesh RID.MultiMesh, instances int, transform_format MultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
 	once.Do(singleton)
@@ -1288,7 +1288,7 @@ Returns the RID of the mesh that will be used in drawing this multimesh.
 */
 func MultimeshGetMesh(multimesh RID.MultiMesh) RID.Mesh { //gd:RenderingServer.multimesh_get_mesh
 	once.Do(singleton)
-	return RID.Mesh(Advanced().MultimeshGetMesh(RID.Any(multimesh)))
+	return RID.Mesh(RID.Mesh(Advanced().MultimeshGetMesh(RID.Any(multimesh))))
 }
 
 /*
@@ -1388,7 +1388,7 @@ Each of the values in the buffer correspond to these options:
 */
 func MultimeshGetCommandBufferRdRid(multimesh RID.MultiMesh) RID.Buffer { //gd:RenderingServer.multimesh_get_command_buffer_rd_rid
 	once.Do(singleton)
-	return RID.Buffer(Advanced().MultimeshGetCommandBufferRdRid(RID.Any(multimesh)))
+	return RID.Buffer(RID.Buffer(Advanced().MultimeshGetCommandBufferRdRid(RID.Any(multimesh))))
 }
 
 /*
@@ -1396,7 +1396,7 @@ Returns the [graphics.gd/classdb/RenderingDevice] [Resource.ID] handle of the [g
 */
 func MultimeshGetBufferRdRid(multimesh RID.MultiMesh) RID.Buffer { //gd:RenderingServer.multimesh_get_buffer_rd_rid
 	once.Do(singleton)
-	return RID.Buffer(Advanced().MultimeshGetBufferRdRid(RID.Any(multimesh)))
+	return RID.Buffer(RID.Buffer(Advanced().MultimeshGetBufferRdRid(RID.Any(multimesh))))
 }
 
 /*
@@ -1454,7 +1454,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 func SkeletonCreate() RID.Skeleton { //gd:RenderingServer.skeleton_create
 	once.Do(singleton)
-	return RID.Skeleton(Advanced().SkeletonCreate())
+	return RID.Skeleton(RID.Skeleton(Advanced().SkeletonCreate()))
 }
 func SkeletonAllocateData(skeleton RID.Skeleton, bones int, is_2d_skeleton bool) { //gd:RenderingServer.skeleton_allocate_data
 	once.Do(singleton)
@@ -1520,7 +1520,7 @@ Note: The equivalent node is [graphics.gd/classdb/DirectionalLight3D].
 */
 func DirectionalLightCreate() RID.Light { //gd:RenderingServer.directional_light_create
 	once.Do(singleton)
-	return RID.Light(Advanced().DirectionalLightCreate())
+	return RID.Light(RID.Light(Advanced().DirectionalLightCreate()))
 }
 
 /*
@@ -1534,7 +1534,7 @@ Note: The equivalent node is [graphics.gd/classdb/OmniLight3D].
 */
 func OmniLightCreate() RID.Light { //gd:RenderingServer.omni_light_create
 	once.Do(singleton)
-	return RID.Light(Advanced().OmniLightCreate())
+	return RID.Light(RID.Light(Advanced().OmniLightCreate()))
 }
 
 /*
@@ -1546,7 +1546,7 @@ To place in a scene, attach this spot light to an instance using [InstanceSetBas
 */
 func SpotLightCreate() RID.Light { //gd:RenderingServer.spot_light_create
 	once.Do(singleton)
-	return RID.Light(Advanced().SpotLightCreate())
+	return RID.Light(RID.Light(Advanced().SpotLightCreate()))
 }
 
 /*
@@ -1720,7 +1720,7 @@ Note: The equivalent node is [graphics.gd/classdb/ReflectionProbe].
 */
 func ReflectionProbeCreate() RID.ReflectionProbe { //gd:RenderingServer.reflection_probe_create
 	once.Do(singleton)
-	return RID.ReflectionProbe(Advanced().ReflectionProbeCreate())
+	return RID.ReflectionProbe(RID.ReflectionProbe(Advanced().ReflectionProbeCreate()))
 }
 
 /*
@@ -1862,7 +1862,7 @@ Note: The equivalent node is [graphics.gd/classdb/Decal].
 */
 func DecalCreate() RID.Decal { //gd:RenderingServer.decal_create
 	once.Do(singleton)
-	return RID.Decal(Advanced().DecalCreate())
+	return RID.Decal(RID.Decal(Advanced().DecalCreate()))
 }
 
 /*
@@ -1962,7 +1962,7 @@ Note: The equivalent node is [graphics.gd/classdb/VoxelGI].
 */
 func VoxelGiCreate() RID.VoxelGI { //gd:RenderingServer.voxel_gi_create
 	once.Do(singleton)
-	return RID.VoxelGI(Advanced().VoxelGiCreate())
+	return RID.VoxelGI(RID.VoxelGI(Advanced().VoxelGiCreate()))
 }
 func VoxelGiAllocateData(voxel_gi RID.VoxelGI, to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3i.XYZ, octree_cells []byte, data_cells []byte, distance_field []byte, level_counts []int32) { //gd:RenderingServer.voxel_gi_allocate_data
 	once.Do(singleton)
@@ -2074,7 +2074,7 @@ Note: The equivalent node is [graphics.gd/classdb/LightmapGI].
 */
 func LightmapCreate() RID.Lightmap { //gd:RenderingServer.lightmap_create
 	once.Do(singleton)
-	return RID.Lightmap(Advanced().LightmapCreate())
+	return RID.Lightmap(RID.Lightmap(Advanced().LightmapCreate()))
 }
 
 /*
@@ -2138,7 +2138,7 @@ Note: All particles_* methods only apply to GPU-based particles, not CPU-based p
 */
 func ParticlesCreate() RID.Particles { //gd:RenderingServer.particles_create
 	once.Do(singleton)
-	return RID.Particles(Advanced().ParticlesCreate())
+	return RID.Particles(RID.Particles(Advanced().ParticlesCreate()))
 }
 
 /*
@@ -2402,7 +2402,7 @@ Note: The equivalent nodes are [graphics.gd/classdb/GPUParticlesCollision3D] and
 */
 func ParticlesCollisionCreate() RID.ParticlesCollision { //gd:RenderingServer.particles_collision_create
 	once.Do(singleton)
-	return RID.ParticlesCollision(Advanced().ParticlesCollisionCreate())
+	return RID.ParticlesCollision(RID.ParticlesCollision(Advanced().ParticlesCollisionCreate()))
 }
 
 /*
@@ -2502,7 +2502,7 @@ Note: The equivalent node is [graphics.gd/classdb/FogVolume].
 */
 func FogVolumeCreate() RID.FogVolume { //gd:RenderingServer.fog_volume_create
 	once.Do(singleton)
-	return RID.FogVolume(Advanced().FogVolumeCreate())
+	return RID.FogVolume(RID.FogVolume(Advanced().FogVolumeCreate()))
 }
 
 /*
@@ -2540,7 +2540,7 @@ Note: The equivalent node is [graphics.gd/classdb/VisibleOnScreenNotifier3D].
 */
 func VisibilityNotifierCreate() RID.VisibilityNotifier { //gd:RenderingServer.visibility_notifier_create
 	once.Do(singleton)
-	return RID.VisibilityNotifier(Advanced().VisibilityNotifierCreate())
+	return RID.VisibilityNotifier(RID.VisibilityNotifier(Advanced().VisibilityNotifierCreate()))
 }
 func VisibilityNotifierSetAabb(notifier RID.VisibilityNotifier, aabb AABB.PositionSize) { //gd:RenderingServer.visibility_notifier_set_aabb
 	once.Do(singleton)
@@ -2560,7 +2560,7 @@ Note: The equivalent resource is [graphics.gd/classdb/Occluder3D] (not to be con
 */
 func OccluderCreate() RID.Occluder { //gd:RenderingServer.occluder_create
 	once.Do(singleton)
-	return RID.Occluder(Advanced().OccluderCreate())
+	return RID.Occluder(RID.Occluder(Advanced().OccluderCreate()))
 }
 
 /*
@@ -2580,7 +2580,7 @@ Note: The equivalent node is [graphics.gd/classdb/Camera3D].
 */
 func CameraCreate() RID.Camera { //gd:RenderingServer.camera_create
 	once.Do(singleton)
-	return RID.Camera(Advanced().CameraCreate())
+	return RID.Camera(RID.Camera(Advanced().CameraCreate()))
 }
 
 /*
@@ -2664,7 +2664,7 @@ Note: The equivalent node is [graphics.gd/classdb/Viewport].
 */
 func ViewportCreate() RID.Viewport { //gd:RenderingServer.viewport_create
 	once.Do(singleton)
-	return RID.Viewport(Advanced().ViewportCreate())
+	return RID.Viewport(RID.Viewport(Advanced().ViewportCreate()))
 }
 
 /*
@@ -2820,7 +2820,7 @@ Returns the render target for the viewport.
 */
 func ViewportGetRenderTarget(viewport RID.Viewport) RID.Framebuffer { //gd:RenderingServer.viewport_get_render_target
 	once.Do(singleton)
-	return RID.Framebuffer(Advanced().ViewportGetRenderTarget(RID.Any(viewport)))
+	return RID.Framebuffer(RID.Framebuffer(Advanced().ViewportGetRenderTarget(RID.Any(viewport))))
 }
 
 /*
@@ -2828,7 +2828,7 @@ Returns the viewport's last rendered frame.
 */
 func ViewportGetTexture(viewport RID.Viewport) RID.Texture { //gd:RenderingServer.viewport_get_texture
 	once.Do(singleton)
-	return RID.Texture(Advanced().ViewportGetTexture(RID.Any(viewport)))
+	return RID.Texture(RID.Texture(Advanced().ViewportGetTexture(RID.Any(viewport))))
 }
 
 /*
@@ -3146,7 +3146,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 func SkyCreate() RID.Sky { //gd:RenderingServer.sky_create
 	once.Do(singleton)
-	return RID.Sky(Advanced().SkyCreate())
+	return RID.Sky(RID.Sky(Advanced().SkyCreate()))
 }
 
 /*
@@ -3192,7 +3192,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 func CompositorEffectCreate() RID.CompositorEffect { //gd:RenderingServer.compositor_effect_create
 	once.Do(singleton)
-	return RID.CompositorEffect(Advanced().CompositorEffectCreate())
+	return RID.CompositorEffect(RID.CompositorEffect(Advanced().CompositorEffectCreate()))
 }
 
 /*
@@ -3226,7 +3226,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 func CompositorCreate() RID.Compositor { //gd:RenderingServer.compositor_create
 	once.Do(singleton)
-	return RID.Compositor(Advanced().CompositorCreate())
+	return RID.Compositor(RID.Compositor(Advanced().CompositorCreate()))
 }
 
 /*
@@ -3246,7 +3246,7 @@ Note: The equivalent resource is [graphics.gd/classdb/Environment].
 */
 func EnvironmentCreate() RID.Environment { //gd:RenderingServer.environment_create
 	once.Do(singleton)
-	return RID.Environment(Advanced().EnvironmentCreate())
+	return RID.Environment(RID.Environment(Advanced().EnvironmentCreate()))
 }
 
 /*
@@ -3514,7 +3514,7 @@ Note: The equivalent resource is [graphics.gd/classdb/CameraAttributes].
 */
 func CameraAttributesCreate() RID.CameraAttributes { //gd:RenderingServer.camera_attributes_create
 	once.Do(singleton)
-	return RID.CameraAttributes(Advanced().CameraAttributesCreate())
+	return RID.CameraAttributes(RID.CameraAttributes(Advanced().CameraAttributesCreate()))
 }
 
 /*
@@ -3570,7 +3570,7 @@ The scenario is the 3D world that all the visual instances exist in.
 */
 func ScenarioCreate() RID.Scenario { //gd:RenderingServer.scenario_create
 	once.Do(singleton)
-	return RID.Scenario(Advanced().ScenarioCreate())
+	return RID.Scenario(RID.Scenario(Advanced().ScenarioCreate()))
 }
 
 /*
@@ -3612,7 +3612,7 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 */
 func InstanceCreate2(base RID.VisualInstance, scenario RID.Scenario) RID.VisualInstance { //gd:RenderingServer.instance_create2
 	once.Do(singleton)
-	return RID.VisualInstance(Advanced().InstanceCreate2(RID.Any(base), RID.Any(scenario)))
+	return RID.VisualInstance(RID.VisualInstance(Advanced().InstanceCreate2(RID.Any(base), RID.Any(scenario))))
 }
 
 /*
@@ -3626,7 +3626,7 @@ Note: The equivalent node is [graphics.gd/classdb/VisualInstance3D].
 */
 func InstanceCreate() RID.VisualInstance { //gd:RenderingServer.instance_create
 	once.Do(singleton)
-	return RID.VisualInstance(Advanced().InstanceCreate())
+	return RID.VisualInstance(RID.VisualInstance(Advanced().InstanceCreate()))
 }
 
 /*
@@ -3940,7 +3940,7 @@ Canvas has no [graphics.gd/classdb/Resource] or [graphics.gd/classdb/Node] equiv
 */
 func CanvasCreate() RID.Canvas { //gd:RenderingServer.canvas_create
 	once.Do(singleton)
-	return RID.Canvas(Advanced().CanvasCreate())
+	return RID.Canvas(RID.Canvas(Advanced().CanvasCreate()))
 }
 
 /*
@@ -3982,7 +3982,7 @@ Note: The equivalent resource is [graphics.gd/classdb/CanvasTexture] and is only
 */
 func CanvasTextureCreate() RID.CanvasTexture { //gd:RenderingServer.canvas_texture_create
 	once.Do(singleton)
-	return RID.CanvasTexture(Advanced().CanvasTextureCreate())
+	return RID.CanvasTexture(RID.CanvasTexture(Advanced().CanvasTextureCreate()))
 }
 
 /*
@@ -4026,7 +4026,7 @@ Note: The equivalent node is [graphics.gd/classdb/CanvasItem].
 */
 func CanvasItemCreate() RID.CanvasItem { //gd:RenderingServer.canvas_item_create
 	once.Do(singleton)
-	return RID.CanvasItem(Advanced().CanvasItemCreate())
+	return RID.CanvasItem(RID.CanvasItem(Advanced().CanvasItemCreate()))
 }
 
 /*
@@ -4600,7 +4600,7 @@ Note: The equivalent node is [graphics.gd/classdb/Light2D].
 */
 func CanvasLightCreate() RID.CanvasLight { //gd:RenderingServer.canvas_light_create
 	once.Do(singleton)
-	return RID.CanvasLight(Advanced().CanvasLightCreate())
+	return RID.CanvasLight(RID.CanvasLight(Advanced().CanvasLightCreate()))
 }
 
 /*
@@ -4792,7 +4792,7 @@ Note: The equivalent node is [graphics.gd/classdb/LightOccluder2D].
 */
 func CanvasLightOccluderCreate() RID.CanvasLightOccluder { //gd:RenderingServer.canvas_light_occluder_create
 	once.Do(singleton)
-	return RID.CanvasLightOccluder(Advanced().CanvasLightOccluderCreate())
+	return RID.CanvasLightOccluder(RID.CanvasLightOccluder(Advanced().CanvasLightOccluderCreate()))
 }
 
 /*
@@ -4876,7 +4876,7 @@ Note: The equivalent resource is [graphics.gd/classdb/OccluderPolygon2D].
 */
 func CanvasOccluderPolygonCreate() RID.CanvasLightOccluderPolygon { //gd:RenderingServer.canvas_occluder_polygon_create
 	once.Do(singleton)
-	return RID.CanvasLightOccluderPolygon(Advanced().CanvasOccluderPolygonCreate())
+	return RID.CanvasLightOccluderPolygon(RID.CanvasLightOccluderPolygon(Advanced().CanvasOccluderPolygonCreate()))
 }
 
 /*
@@ -5070,7 +5070,7 @@ Returns a mesh of a sphere with the given number of horizontal subdivisions, ver
 */
 func MakeSphereMesh(latitudes int, longitudes int, radius Float.X) RID.Mesh { //gd:RenderingServer.make_sphere_mesh
 	once.Do(singleton)
-	return RID.Mesh(Advanced().MakeSphereMesh(int64(latitudes), int64(longitudes), float64(radius)))
+	return RID.Mesh(RID.Mesh(Advanced().MakeSphereMesh(int64(latitudes), int64(longitudes), float64(radius))))
 }
 
 /*
@@ -5078,7 +5078,7 @@ Returns the RID of the test cube. This mesh will be created and returned on the 
 */
 func GetTestCube() RID.Mesh { //gd:RenderingServer.get_test_cube
 	once.Do(singleton)
-	return RID.Mesh(Advanced().GetTestCube())
+	return RID.Mesh(RID.Mesh(Advanced().GetTestCube()))
 }
 
 /*
@@ -5088,7 +5088,7 @@ Example: Get the test texture and apply it to a [graphics.gd/classdb/Sprite2D] n
 */
 func GetTestTexture() RID.Texture { //gd:RenderingServer.get_test_texture
 	once.Do(singleton)
-	return RID.Texture(Advanced().GetTestTexture())
+	return RID.Texture(RID.Texture(Advanced().GetTestTexture()))
 }
 
 /*
@@ -5098,7 +5098,7 @@ Example: Get the white texture and apply it to a [graphics.gd/classdb/Sprite2D] 
 */
 func GetWhiteTexture() RID.Texture { //gd:RenderingServer.get_white_texture
 	once.Do(singleton)
-	return RID.Texture(Advanced().GetWhiteTexture())
+	return RID.Texture(RID.Texture(Advanced().GetWhiteTexture()))
 }
 
 /*

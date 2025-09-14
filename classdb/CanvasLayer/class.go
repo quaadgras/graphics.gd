@@ -151,7 +151,7 @@ func (self Instance) GetFinalTransform() Transform2D.OriginXY { //gd:CanvasLayer
 Returns the RID of the canvas used by this layer.
 */
 func (self Instance) GetCanvas() RID.Canvas { //gd:CanvasLayer.get_canvas
-	return RID.Canvas(Advanced(self).GetCanvas())
+	return RID.Canvas(RID.Canvas(Advanced(self).GetCanvas()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

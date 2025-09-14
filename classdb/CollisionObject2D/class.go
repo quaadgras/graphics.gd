@@ -231,7 +231,7 @@ func (Instance) _mouse_shape_exit(impl func(ptr gdclass.Receiver, shape_idx int)
 Returns the object's [Resource.ID].
 */
 func (self Instance) GetRid() RID.Body2D { //gd:CollisionObject2D.get_rid
-	return RID.Body2D(Advanced(self).GetRid())
+	return RID.Body2D(RID.Body2D(Advanced(self).GetRid()))
 }
 
 /*

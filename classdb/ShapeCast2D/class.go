@@ -175,7 +175,7 @@ func (self Instance) GetCollider(index int) Object.Instance { //gd:ShapeCast2D.g
 Returns the [Resource.ID] of the collided object of one of the multiple collisions at 'index'.
 */
 func (self Instance) GetColliderRid(index int) RID.Body2D { //gd:ShapeCast2D.get_collider_rid
-	return RID.Body2D(Advanced(self).GetColliderRid(int64(index)))
+	return RID.Body2D(RID.Body2D(Advanced(self).GetColliderRid(int64(index))))
 }
 
 /*

@@ -218,7 +218,7 @@ func (Instance) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.CanvasI
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 2)
 		var transpose = gd.UnsafeGet[bool](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, to_canvas_item, pos, modulate, transpose)
+		impl(self, RID.CanvasItem(to_canvas_item), pos, modulate, transpose)
 	}
 }
 
@@ -235,7 +235,7 @@ func (Instance) _draw_rect(impl func(ptr gdclass.Receiver, to_canvas_item RID.Ca
 		var modulate = gd.UnsafeGet[Color.RGBA](p_args, 3)
 		var transpose = gd.UnsafeGet[bool](p_args, 4)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, to_canvas_item, rect, tile, modulate, transpose)
+		impl(self, RID.CanvasItem(to_canvas_item), rect, tile, modulate, transpose)
 	}
 }
 
@@ -253,7 +253,7 @@ func (Instance) _draw_rect_region(impl func(ptr gdclass.Receiver, to_canvas_item
 		var transpose = gd.UnsafeGet[bool](p_args, 4)
 		var clip_uv = gd.UnsafeGet[bool](p_args, 5)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, to_canvas_item, rect, src_rect, modulate, transpose, clip_uv)
+		impl(self, RID.CanvasItem(to_canvas_item), rect, src_rect, modulate, transpose, clip_uv)
 	}
 }
 

@@ -132,7 +132,7 @@ func (Instance) _draw(impl func(ptr gdclass.Receiver, to_canvas_item RID.CanvasI
 		var to_canvas_item = gd.UnsafeGet[RID.Any](p_args, 0)
 		var rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, to_canvas_item, rect)
+		impl(self, RID.CanvasItem(to_canvas_item), rect)
 	}
 }
 func (Instance) _get_draw_rect(impl func(ptr gdclass.Receiver, rect Rect2.PositionSize) Rect2.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {

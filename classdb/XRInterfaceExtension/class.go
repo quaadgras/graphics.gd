@@ -441,7 +441,7 @@ func (Instance) _pre_draw_viewport(impl func(ptr gdclass.Receiver, render_target
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, render_target)
+		ret := impl(self, RID.Framebuffer(render_target))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -454,7 +454,7 @@ func (Instance) _post_draw_viewport(impl func(ptr gdclass.Receiver, render_targe
 		var render_target = gd.UnsafeGet[RID.Any](p_args, 0)
 		var screen_rect = gd.UnsafeGet[Rect2.PositionSize](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, render_target, screen_rect)
+		impl(self, RID.Framebuffer(render_target), screen_rect)
 	}
 }
 
@@ -597,13 +597,13 @@ func (Instance) _get_velocity_texture(impl func(ptr gdclass.Receiver) RID.Textur
 	}
 }
 func (self Instance) GetColorTexture() RID.Texture { //gd:XRInterfaceExtension.get_color_texture
-	return RID.Texture(Advanced(self).GetColorTexture())
+	return RID.Texture(RID.Texture(Advanced(self).GetColorTexture()))
 }
 func (self Instance) GetDepthTexture() RID.Texture { //gd:XRInterfaceExtension.get_depth_texture
-	return RID.Texture(Advanced(self).GetDepthTexture())
+	return RID.Texture(RID.Texture(Advanced(self).GetDepthTexture()))
 }
 func (self Instance) GetVelocityTexture() RID.Texture { //gd:XRInterfaceExtension.get_velocity_texture
-	return RID.Texture(Advanced(self).GetVelocityTexture())
+	return RID.Texture(RID.Texture(Advanced(self).GetVelocityTexture()))
 }
 
 /*
@@ -617,7 +617,7 @@ func (self Instance) AddBlit(render_target RID.Framebuffer, src_rect Rect2.Posit
 Returns a valid [Resource.ID] for a texture to which we should render the current frame if supported by the interface.
 */
 func (self Instance) GetRenderTargetTexture(render_target RID.Framebuffer) RID.Texture { //gd:XRInterfaceExtension.get_render_target_texture
-	return RID.Texture(Advanced(self).GetRenderTargetTexture(RID.Any(render_target)))
+	return RID.Texture(RID.Texture(Advanced(self).GetRenderTargetTexture(RID.Any(render_target))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

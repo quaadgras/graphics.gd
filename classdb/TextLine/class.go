@@ -229,7 +229,7 @@ func (self Instance) GetSize() Vector2.XY { //gd:TextLine.get_size
 Returns TextServer buffer RID.
 */
 func (self Instance) GetRid() RID.TextBuffer { //gd:TextLine.get_rid
-	return RID.TextBuffer(Advanced(self).GetRid())
+	return RID.TextBuffer(RID.TextBuffer(Advanced(self).GetRid()))
 }
 
 /*

@@ -381,7 +381,7 @@ func (self Instance) GetContactLocalVelocityAtPosition(contact_idx int) Vector3.
 Returns the collider's [Resource.ID].
 */
 func (self Instance) GetContactCollider(contact_idx int) RID.Body3D { //gd:PhysicsDirectBodyState3D.get_contact_collider
-	return RID.Body3D(Advanced(self).GetContactCollider(int64(contact_idx)))
+	return RID.Body3D(RID.Body3D(Advanced(self).GetContactCollider(int64(contact_idx))))
 }
 
 /*

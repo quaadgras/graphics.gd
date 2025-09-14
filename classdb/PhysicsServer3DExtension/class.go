@@ -706,7 +706,7 @@ func (Instance) _shape_set_data(impl func(ptr gdclass.Receiver, shape RID.Shape3
 		var data = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 1))))
 		defer pointers.End(gd.InternalVariant(data))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shape, data.Interface())
+		impl(self, RID.Shape3D(shape), data.Interface())
 	}
 }
 func (Instance) _shape_set_custom_solver_bias(impl func(ptr gdclass.Receiver, shape RID.Shape3D, bias Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -714,7 +714,7 @@ func (Instance) _shape_set_custom_solver_bias(impl func(ptr gdclass.Receiver, sh
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 		var bias = gd.UnsafeGet[float64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shape, Float.X(bias))
+		impl(self, RID.Shape3D(shape), Float.X(bias))
 	}
 }
 func (Instance) _shape_set_margin(impl func(ptr gdclass.Receiver, shape RID.Shape3D, margin Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -722,14 +722,14 @@ func (Instance) _shape_set_margin(impl func(ptr gdclass.Receiver, shape RID.Shap
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 		var margin = gd.UnsafeGet[float64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, shape, Float.X(margin))
+		impl(self, RID.Shape3D(shape), Float.X(margin))
 	}
 }
 func (Instance) _shape_get_margin(impl func(ptr gdclass.Receiver, shape RID.Shape3D) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shape)
+		ret := impl(self, RID.Shape3D(shape))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -737,7 +737,7 @@ func (Instance) _shape_get_type(impl func(ptr gdclass.Receiver, shape RID.Shape3
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shape)
+		ret := impl(self, RID.Shape3D(shape))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -745,7 +745,7 @@ func (Instance) _shape_get_data(impl func(ptr gdclass.Receiver, shape RID.Shape3
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shape)
+		ret := impl(self, RID.Shape3D(shape))
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
@@ -758,7 +758,7 @@ func (Instance) _shape_get_custom_solver_bias(impl func(ptr gdclass.Receiver, sh
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var shape = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, shape)
+		ret := impl(self, RID.Shape3D(shape))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -774,14 +774,14 @@ func (Instance) _space_set_active(impl func(ptr gdclass.Receiver, space RID.Spac
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		var active = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, space, active)
+		impl(self, RID.Space3D(space), active)
 	}
 }
 func (Instance) _space_is_active(impl func(ptr gdclass.Receiver, space RID.Space3D) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, space)
+		ret := impl(self, RID.Space3D(space))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -791,7 +791,7 @@ func (Instance) _space_set_param(impl func(ptr gdclass.Receiver, space RID.Space
 		var param = gd.UnsafeGet[PhysicsServer3D.SpaceParameter](p_args, 1)
 		var value = gd.UnsafeGet[float64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, space, param, Float.X(value))
+		impl(self, RID.Space3D(space), param, Float.X(value))
 	}
 }
 func (Instance) _space_get_param(impl func(ptr gdclass.Receiver, space RID.Space3D, param PhysicsServer3D.SpaceParameter) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -799,7 +799,7 @@ func (Instance) _space_get_param(impl func(ptr gdclass.Receiver, space RID.Space
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer3D.SpaceParameter](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, space, param)
+		ret := impl(self, RID.Space3D(space), param)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -807,7 +807,7 @@ func (Instance) _space_get_direct_state(impl func(ptr gdclass.Receiver, space RI
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, space)
+		ret := impl(self, RID.Space3D(space))
 		ptr, ok := pointers.End(ret[0])
 
 		if !ok {
@@ -821,14 +821,14 @@ func (Instance) _space_set_debug_contacts(impl func(ptr gdclass.Receiver, space 
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		var max_contacts = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, space, int(max_contacts))
+		impl(self, RID.Space3D(space), int(max_contacts))
 	}
 }
 func (Instance) _space_get_contacts(impl func(ptr gdclass.Receiver, space RID.Space3D) []Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, space)
+		ret := impl(self, RID.Space3D(space))
 		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](Packed.New(ret...)))
 
 		if !ok {
@@ -841,7 +841,7 @@ func (Instance) _space_get_contact_count(impl func(ptr gdclass.Receiver, space R
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var space = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, space)
+		ret := impl(self, RID.Space3D(space))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -857,14 +857,14 @@ func (Instance) _area_set_space(impl func(ptr gdclass.Receiver, area RID.Area3D,
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var space = gd.UnsafeGet[RID.Any](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area, space)
+		impl(self, RID.Area3D(area), RID.Space3D(space))
 	}
 }
 func (Instance) _area_get_space(impl func(ptr gdclass.Receiver, area RID.Area3D) RID.Space3D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, area)
+		ret := impl(self, RID.Area3D(area))
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
@@ -875,7 +875,7 @@ func (Instance) _area_add_shape(impl func(ptr gdclass.Receiver, area RID.Area3D,
 		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 2))
 		var disabled = gd.UnsafeGet[bool](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area, shape, transform, disabled)
+		impl(self, RID.Area3D(area), RID.Shape3D(shape), transform, disabled)
 	}
 }
 func (Instance) _area_set_shape(impl func(ptr gdclass.Receiver, area RID.Area3D, shape_idx int, shape RID.Shape3D)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -884,7 +884,7 @@ func (Instance) _area_set_shape(impl func(ptr gdclass.Receiver, area RID.Area3D,
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 		var shape = gd.UnsafeGet[RID.Any](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area, int(shape_idx), shape)
+		impl(self, RID.Area3D(area), int(shape_idx), RID.Shape3D(shape))
 	}
 }
 func (Instance) _area_set_shape_transform(impl func(ptr gdclass.Receiver, area RID.Area3D, shape_idx int, transform Transform3D.BasisOrigin)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -893,7 +893,7 @@ func (Instance) _area_set_shape_transform(impl func(ptr gdclass.Receiver, area R
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 2))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area, int(shape_idx), transform)
+		impl(self, RID.Area3D(area), int(shape_idx), transform)
 	}
 }
 func (Instance) _area_set_shape_disabled(impl func(ptr gdclass.Receiver, area RID.Area3D, shape_idx int, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -902,14 +902,14 @@ func (Instance) _area_set_shape_disabled(impl func(ptr gdclass.Receiver, area RI
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 		var disabled = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area, int(shape_idx), disabled)
+		impl(self, RID.Area3D(area), int(shape_idx), disabled)
 	}
 }
 func (Instance) _area_get_shape_count(impl func(ptr gdclass.Receiver, area RID.Area3D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, area)
+		ret := impl(self, RID.Area3D(area))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -918,7 +918,7 @@ func (Instance) _area_get_shape(impl func(ptr gdclass.Receiver, area RID.Area3D,
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, area, int(shape_idx))
+		ret := impl(self, RID.Area3D(area), int(shape_idx))
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
@@ -927,7 +927,7 @@ func (Instance) _area_get_shape_transform(impl func(ptr gdclass.Receiver, area R
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, area, int(shape_idx))
+		ret := impl(self, RID.Area3D(area), int(shape_idx))
 		gd.UnsafeSet(p_back, gd.Transposed(Transform3D.BasisOrigin(ret)))
 	}
 }
@@ -936,14 +936,14 @@ func (Instance) _area_remove_shape(impl func(ptr gdclass.Receiver, area RID.Area
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area, int(shape_idx))
+		impl(self, RID.Area3D(area), int(shape_idx))
 	}
 }
 func (Instance) _area_clear_shapes(impl func(ptr gdclass.Receiver, area RID.Area3D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area)
+		impl(self, RID.Area3D(area))
 	}
 }
 func (Instance) _area_attach_object_instance_id(impl func(ptr gdclass.Receiver, area RID.Area3D, id int)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -951,14 +951,14 @@ func (Instance) _area_attach_object_instance_id(impl func(ptr gdclass.Receiver, 
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var id = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area, int(id))
+		impl(self, RID.Area3D(area), int(id))
 	}
 }
 func (Instance) _area_get_object_instance_id(impl func(ptr gdclass.Receiver, area RID.Area3D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, area)
+		ret := impl(self, RID.Area3D(area))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -969,7 +969,7 @@ func (Instance) _area_set_param(impl func(ptr gdclass.Receiver, area RID.Area3D,
 		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area, param, value.Interface())
+		impl(self, RID.Area3D(area), param, value.Interface())
 	}
 }
 func (Instance) _area_set_transform(impl func(ptr gdclass.Receiver, area RID.Area3D, transform Transform3D.BasisOrigin)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -977,7 +977,7 @@ func (Instance) _area_set_transform(impl func(ptr gdclass.Receiver, area RID.Are
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area, transform)
+		impl(self, RID.Area3D(area), transform)
 	}
 }
 func (Instance) _area_get_param(impl func(ptr gdclass.Receiver, area RID.Area3D, param PhysicsServer3D.AreaParameter) any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -985,7 +985,7 @@ func (Instance) _area_get_param(impl func(ptr gdclass.Receiver, area RID.Area3D,
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer3D.AreaParameter](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, area, param)
+		ret := impl(self, RID.Area3D(area), param)
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
@@ -998,7 +998,7 @@ func (Instance) _area_get_transform(impl func(ptr gdclass.Receiver, area RID.Are
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, area)
+		ret := impl(self, RID.Area3D(area))
 		gd.UnsafeSet(p_back, gd.Transposed(Transform3D.BasisOrigin(ret)))
 	}
 }
@@ -1007,14 +1007,14 @@ func (Instance) _area_set_collision_layer(impl func(ptr gdclass.Receiver, area R
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var layer = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area, int(layer))
+		impl(self, RID.Area3D(area), int(layer))
 	}
 }
 func (Instance) _area_get_collision_layer(impl func(ptr gdclass.Receiver, area RID.Area3D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, area)
+		ret := impl(self, RID.Area3D(area))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1023,14 +1023,14 @@ func (Instance) _area_set_collision_mask(impl func(ptr gdclass.Receiver, area RI
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var mask = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area, int(mask))
+		impl(self, RID.Area3D(area), int(mask))
 	}
 }
 func (Instance) _area_get_collision_mask(impl func(ptr gdclass.Receiver, area RID.Area3D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, area)
+		ret := impl(self, RID.Area3D(area))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1039,7 +1039,7 @@ func (Instance) _area_set_monitorable(impl func(ptr gdclass.Receiver, area RID.A
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var monitorable = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area, monitorable)
+		impl(self, RID.Area3D(area), monitorable)
 	}
 }
 func (Instance) _area_set_ray_pickable(impl func(ptr gdclass.Receiver, area RID.Area3D, enable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1047,7 +1047,7 @@ func (Instance) _area_set_ray_pickable(impl func(ptr gdclass.Receiver, area RID.
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var enable = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area, enable)
+		impl(self, RID.Area3D(area), enable)
 	}
 }
 func (Instance) _area_set_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Area3D, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1056,7 +1056,7 @@ func (Instance) _area_set_monitor_callback(impl func(ptr gdclass.Receiver, area 
 		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callback))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area, callback)
+		impl(self, RID.Area3D(area), callback)
 	}
 }
 func (Instance) _area_set_area_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Area3D, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1065,7 +1065,7 @@ func (Instance) _area_set_area_monitor_callback(impl func(ptr gdclass.Receiver, 
 		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callback))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, area, callback)
+		impl(self, RID.Area3D(area), callback)
 	}
 }
 func (Instance) _body_create(impl func(ptr gdclass.Receiver) RID.Body3D) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1080,14 +1080,14 @@ func (Instance) _body_set_space(impl func(ptr gdclass.Receiver, body RID.Body3D,
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var space = gd.UnsafeGet[RID.Any](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, space)
+		impl(self, RID.Body3D(body), RID.Space3D(space))
 	}
 }
 func (Instance) _body_get_space(impl func(ptr gdclass.Receiver, body RID.Body3D) RID.Space3D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
@@ -1096,14 +1096,14 @@ func (Instance) _body_set_mode(impl func(ptr gdclass.Receiver, body RID.Body3D, 
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var mode = gd.UnsafeGet[PhysicsServer3D.BodyMode](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, mode)
+		impl(self, RID.Body3D(body), mode)
 	}
 }
 func (Instance) _body_get_mode(impl func(ptr gdclass.Receiver, body RID.Body3D) PhysicsServer3D.BodyMode) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -1114,7 +1114,7 @@ func (Instance) _body_add_shape(impl func(ptr gdclass.Receiver, body RID.Body3D,
 		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 2))
 		var disabled = gd.UnsafeGet[bool](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, shape, transform, disabled)
+		impl(self, RID.Body3D(body), RID.Shape3D(shape), transform, disabled)
 	}
 }
 func (Instance) _body_set_shape(impl func(ptr gdclass.Receiver, body RID.Body3D, shape_idx int, shape RID.Shape3D)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1123,7 +1123,7 @@ func (Instance) _body_set_shape(impl func(ptr gdclass.Receiver, body RID.Body3D,
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 		var shape = gd.UnsafeGet[RID.Any](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, int(shape_idx), shape)
+		impl(self, RID.Body3D(body), int(shape_idx), RID.Shape3D(shape))
 	}
 }
 func (Instance) _body_set_shape_transform(impl func(ptr gdclass.Receiver, body RID.Body3D, shape_idx int, transform Transform3D.BasisOrigin)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1132,7 +1132,7 @@ func (Instance) _body_set_shape_transform(impl func(ptr gdclass.Receiver, body R
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 2))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, int(shape_idx), transform)
+		impl(self, RID.Body3D(body), int(shape_idx), transform)
 	}
 }
 func (Instance) _body_set_shape_disabled(impl func(ptr gdclass.Receiver, body RID.Body3D, shape_idx int, disabled bool)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1141,14 +1141,14 @@ func (Instance) _body_set_shape_disabled(impl func(ptr gdclass.Receiver, body RI
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 		var disabled = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, int(shape_idx), disabled)
+		impl(self, RID.Body3D(body), int(shape_idx), disabled)
 	}
 }
 func (Instance) _body_get_shape_count(impl func(ptr gdclass.Receiver, body RID.Body3D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1157,7 +1157,7 @@ func (Instance) _body_get_shape(impl func(ptr gdclass.Receiver, body RID.Body3D,
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body, int(shape_idx))
+		ret := impl(self, RID.Body3D(body), int(shape_idx))
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
@@ -1166,7 +1166,7 @@ func (Instance) _body_get_shape_transform(impl func(ptr gdclass.Receiver, body R
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body, int(shape_idx))
+		ret := impl(self, RID.Body3D(body), int(shape_idx))
 		gd.UnsafeSet(p_back, gd.Transposed(Transform3D.BasisOrigin(ret)))
 	}
 }
@@ -1175,14 +1175,14 @@ func (Instance) _body_remove_shape(impl func(ptr gdclass.Receiver, body RID.Body
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var shape_idx = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, int(shape_idx))
+		impl(self, RID.Body3D(body), int(shape_idx))
 	}
 }
 func (Instance) _body_clear_shapes(impl func(ptr gdclass.Receiver, body RID.Body3D)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body)
+		impl(self, RID.Body3D(body))
 	}
 }
 func (Instance) _body_attach_object_instance_id(impl func(ptr gdclass.Receiver, body RID.Body3D, id int)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1190,14 +1190,14 @@ func (Instance) _body_attach_object_instance_id(impl func(ptr gdclass.Receiver, 
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var id = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, int(id))
+		impl(self, RID.Body3D(body), int(id))
 	}
 }
 func (Instance) _body_get_object_instance_id(impl func(ptr gdclass.Receiver, body RID.Body3D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1206,14 +1206,14 @@ func (Instance) _body_set_enable_continuous_collision_detection(impl func(ptr gd
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var enable = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, enable)
+		impl(self, RID.Body3D(body), enable)
 	}
 }
 func (Instance) _body_is_continuous_collision_detection_enabled(impl func(ptr gdclass.Receiver, body RID.Body3D) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -1222,14 +1222,14 @@ func (Instance) _body_set_collision_layer(impl func(ptr gdclass.Receiver, body R
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var layer = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, int(layer))
+		impl(self, RID.Body3D(body), int(layer))
 	}
 }
 func (Instance) _body_get_collision_layer(impl func(ptr gdclass.Receiver, body RID.Body3D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1238,14 +1238,14 @@ func (Instance) _body_set_collision_mask(impl func(ptr gdclass.Receiver, body RI
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var mask = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, int(mask))
+		impl(self, RID.Body3D(body), int(mask))
 	}
 }
 func (Instance) _body_get_collision_mask(impl func(ptr gdclass.Receiver, body RID.Body3D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1254,14 +1254,14 @@ func (Instance) _body_set_collision_priority(impl func(ptr gdclass.Receiver, bod
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var priority = gd.UnsafeGet[float64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, Float.X(priority))
+		impl(self, RID.Body3D(body), Float.X(priority))
 	}
 }
 func (Instance) _body_get_collision_priority(impl func(ptr gdclass.Receiver, body RID.Body3D) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -1270,14 +1270,14 @@ func (Instance) _body_set_user_flags(impl func(ptr gdclass.Receiver, body RID.Bo
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var flags = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, int(flags))
+		impl(self, RID.Body3D(body), int(flags))
 	}
 }
 func (Instance) _body_get_user_flags(impl func(ptr gdclass.Receiver, body RID.Body3D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1288,7 +1288,7 @@ func (Instance) _body_set_param(impl func(ptr gdclass.Receiver, body RID.Body3D,
 		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, param, value.Interface())
+		impl(self, RID.Body3D(body), param, value.Interface())
 	}
 }
 func (Instance) _body_get_param(impl func(ptr gdclass.Receiver, body RID.Body3D, param PhysicsServer3D.BodyParameter) any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1296,7 +1296,7 @@ func (Instance) _body_get_param(impl func(ptr gdclass.Receiver, body RID.Body3D,
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer3D.BodyParameter](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body, param)
+		ret := impl(self, RID.Body3D(body), param)
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
@@ -1309,7 +1309,7 @@ func (Instance) _body_reset_mass_properties(impl func(ptr gdclass.Receiver, body
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body)
+		impl(self, RID.Body3D(body))
 	}
 }
 func (Instance) _body_set_state(impl func(ptr gdclass.Receiver, body RID.Body3D, state PhysicsServer3D.BodyState, value any)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1319,7 +1319,7 @@ func (Instance) _body_set_state(impl func(ptr gdclass.Receiver, body RID.Body3D,
 		var value = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(value))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, state, value.Interface())
+		impl(self, RID.Body3D(body), state, value.Interface())
 	}
 }
 func (Instance) _body_get_state(impl func(ptr gdclass.Receiver, body RID.Body3D, state PhysicsServer3D.BodyState) any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1327,7 +1327,7 @@ func (Instance) _body_get_state(impl func(ptr gdclass.Receiver, body RID.Body3D,
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var state = gd.UnsafeGet[PhysicsServer3D.BodyState](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body, state)
+		ret := impl(self, RID.Body3D(body), state)
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
@@ -1341,7 +1341,7 @@ func (Instance) _body_apply_central_impulse(impl func(ptr gdclass.Receiver, body
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var impulse = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, impulse)
+		impl(self, RID.Body3D(body), impulse)
 	}
 }
 func (Instance) _body_apply_impulse(impl func(ptr gdclass.Receiver, body RID.Body3D, impulse Vector3.XYZ, position Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1350,7 +1350,7 @@ func (Instance) _body_apply_impulse(impl func(ptr gdclass.Receiver, body RID.Bod
 		var impulse = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
 		var position = gd.UnsafeGet[Vector3.XYZ](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, impulse, position)
+		impl(self, RID.Body3D(body), impulse, position)
 	}
 }
 func (Instance) _body_apply_torque_impulse(impl func(ptr gdclass.Receiver, body RID.Body3D, impulse Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1358,7 +1358,7 @@ func (Instance) _body_apply_torque_impulse(impl func(ptr gdclass.Receiver, body 
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var impulse = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, impulse)
+		impl(self, RID.Body3D(body), impulse)
 	}
 }
 func (Instance) _body_apply_central_force(impl func(ptr gdclass.Receiver, body RID.Body3D, force Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1366,7 +1366,7 @@ func (Instance) _body_apply_central_force(impl func(ptr gdclass.Receiver, body R
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, force)
+		impl(self, RID.Body3D(body), force)
 	}
 }
 func (Instance) _body_apply_force(impl func(ptr gdclass.Receiver, body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1375,7 +1375,7 @@ func (Instance) _body_apply_force(impl func(ptr gdclass.Receiver, body RID.Body3
 		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
 		var position = gd.UnsafeGet[Vector3.XYZ](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, force, position)
+		impl(self, RID.Body3D(body), force, position)
 	}
 }
 func (Instance) _body_apply_torque(impl func(ptr gdclass.Receiver, body RID.Body3D, torque Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1383,7 +1383,7 @@ func (Instance) _body_apply_torque(impl func(ptr gdclass.Receiver, body RID.Body
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var torque = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, torque)
+		impl(self, RID.Body3D(body), torque)
 	}
 }
 func (Instance) _body_add_constant_central_force(impl func(ptr gdclass.Receiver, body RID.Body3D, force Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1391,7 +1391,7 @@ func (Instance) _body_add_constant_central_force(impl func(ptr gdclass.Receiver,
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, force)
+		impl(self, RID.Body3D(body), force)
 	}
 }
 func (Instance) _body_add_constant_force(impl func(ptr gdclass.Receiver, body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1400,7 +1400,7 @@ func (Instance) _body_add_constant_force(impl func(ptr gdclass.Receiver, body RI
 		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
 		var position = gd.UnsafeGet[Vector3.XYZ](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, force, position)
+		impl(self, RID.Body3D(body), force, position)
 	}
 }
 func (Instance) _body_add_constant_torque(impl func(ptr gdclass.Receiver, body RID.Body3D, torque Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1408,7 +1408,7 @@ func (Instance) _body_add_constant_torque(impl func(ptr gdclass.Receiver, body R
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var torque = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, torque)
+		impl(self, RID.Body3D(body), torque)
 	}
 }
 func (Instance) _body_set_constant_force(impl func(ptr gdclass.Receiver, body RID.Body3D, force Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1416,14 +1416,14 @@ func (Instance) _body_set_constant_force(impl func(ptr gdclass.Receiver, body RI
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, force)
+		impl(self, RID.Body3D(body), force)
 	}
 }
 func (Instance) _body_get_constant_force(impl func(ptr gdclass.Receiver, body RID.Body3D) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
 	}
 }
@@ -1432,14 +1432,14 @@ func (Instance) _body_set_constant_torque(impl func(ptr gdclass.Receiver, body R
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var torque = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, torque)
+		impl(self, RID.Body3D(body), torque)
 	}
 }
 func (Instance) _body_get_constant_torque(impl func(ptr gdclass.Receiver, body RID.Body3D) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
 	}
 }
@@ -1448,7 +1448,7 @@ func (Instance) _body_set_axis_velocity(impl func(ptr gdclass.Receiver, body RID
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var axis_velocity = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, axis_velocity)
+		impl(self, RID.Body3D(body), axis_velocity)
 	}
 }
 func (Instance) _body_set_axis_lock(impl func(ptr gdclass.Receiver, body RID.Body3D, axis PhysicsServer3D.BodyAxis, lock bool)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1457,7 +1457,7 @@ func (Instance) _body_set_axis_lock(impl func(ptr gdclass.Receiver, body RID.Bod
 		var axis = gd.UnsafeGet[PhysicsServer3D.BodyAxis](p_args, 1)
 		var lock = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, axis, lock)
+		impl(self, RID.Body3D(body), axis, lock)
 	}
 }
 func (Instance) _body_is_axis_locked(impl func(ptr gdclass.Receiver, body RID.Body3D, axis PhysicsServer3D.BodyAxis) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1465,7 +1465,7 @@ func (Instance) _body_is_axis_locked(impl func(ptr gdclass.Receiver, body RID.Bo
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var axis = gd.UnsafeGet[PhysicsServer3D.BodyAxis](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body, axis)
+		ret := impl(self, RID.Body3D(body), axis)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -1474,7 +1474,7 @@ func (Instance) _body_add_collision_exception(impl func(ptr gdclass.Receiver, bo
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var excepted_body = gd.UnsafeGet[RID.Any](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, excepted_body)
+		impl(self, RID.Body3D(body), RID.Body3D(excepted_body))
 	}
 }
 func (Instance) _body_remove_collision_exception(impl func(ptr gdclass.Receiver, body RID.Body3D, excepted_body RID.Body3D)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1482,14 +1482,14 @@ func (Instance) _body_remove_collision_exception(impl func(ptr gdclass.Receiver,
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var excepted_body = gd.UnsafeGet[RID.Any](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, excepted_body)
+		impl(self, RID.Body3D(body), RID.Body3D(excepted_body))
 	}
 }
 func (Instance) _body_get_collision_exceptions(impl func(ptr gdclass.Receiver, body RID.Body3D) []RID.Body3D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[RID.Any]](ret)))
 
 		if !ok {
@@ -1503,14 +1503,14 @@ func (Instance) _body_set_max_contacts_reported(impl func(ptr gdclass.Receiver, 
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var amount = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, int(amount))
+		impl(self, RID.Body3D(body), int(amount))
 	}
 }
 func (Instance) _body_get_max_contacts_reported(impl func(ptr gdclass.Receiver, body RID.Body3D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1519,14 +1519,14 @@ func (Instance) _body_set_contacts_reported_depth_threshold(impl func(ptr gdclas
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var threshold = gd.UnsafeGet[float64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, Float.X(threshold))
+		impl(self, RID.Body3D(body), Float.X(threshold))
 	}
 }
 func (Instance) _body_get_contacts_reported_depth_threshold(impl func(ptr gdclass.Receiver, body RID.Body3D) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -1535,14 +1535,14 @@ func (Instance) _body_set_omit_force_integration(impl func(ptr gdclass.Receiver,
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var enable = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, enable)
+		impl(self, RID.Body3D(body), enable)
 	}
 }
 func (Instance) _body_is_omitting_force_integration(impl func(ptr gdclass.Receiver, body RID.Body3D) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -1552,7 +1552,7 @@ func (Instance) _body_set_state_sync_callback(impl func(ptr gdclass.Receiver, bo
 		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callable))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, callable)
+		impl(self, RID.Body3D(body), callable)
 	}
 }
 func (Instance) _body_set_force_integration_callback(impl func(ptr gdclass.Receiver, body RID.Body3D, callable Callable.Function, userdata any)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1563,7 +1563,7 @@ func (Instance) _body_set_force_integration_callback(impl func(ptr gdclass.Recei
 		var userdata = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(userdata))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, callable, userdata.Interface())
+		impl(self, RID.Body3D(body), callable, userdata.Interface())
 	}
 }
 func (Instance) _body_set_ray_pickable(impl func(ptr gdclass.Receiver, body RID.Body3D, enable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1571,7 +1571,7 @@ func (Instance) _body_set_ray_pickable(impl func(ptr gdclass.Receiver, body RID.
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var enable = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, enable)
+		impl(self, RID.Body3D(body), enable)
 	}
 }
 func (Instance) _body_test_motion(impl func(ptr gdclass.Receiver, body RID.Body3D, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1585,7 +1585,7 @@ func (Instance) _body_test_motion(impl func(ptr gdclass.Receiver, body RID.Body3
 		var recovery_as_collision = gd.UnsafeGet[bool](p_args, 6)
 		var result = gd.UnsafeGet[*MotionResult](p_args, 7)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body, from, motion, Float.X(margin), int(max_collisions), collide_separation_ray, recovery_as_collision, result)
+		ret := impl(self, RID.Body3D(body), from, motion, Float.X(margin), int(max_collisions), collide_separation_ray, recovery_as_collision, result)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -1593,7 +1593,7 @@ func (Instance) _body_get_direct_state(impl func(ptr gdclass.Receiver, body RID.
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.Body3D(body))
 		ptr, ok := pointers.End(ret[0])
 
 		if !ok {
@@ -1616,7 +1616,7 @@ func (Instance) _soft_body_update_rendering_server(impl func(ptr gdclass.Receive
 
 		defer pointers.End(rendering_server_handler[0])
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, rendering_server_handler)
+		impl(self, RID.SoftBody3D(body), rendering_server_handler)
 	}
 }
 func (Instance) _soft_body_set_space(impl func(ptr gdclass.Receiver, body RID.SoftBody3D, space RID.Space3D)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1624,14 +1624,14 @@ func (Instance) _soft_body_set_space(impl func(ptr gdclass.Receiver, body RID.So
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var space = gd.UnsafeGet[RID.Any](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, space)
+		impl(self, RID.SoftBody3D(body), RID.Space3D(space))
 	}
 }
 func (Instance) _soft_body_get_space(impl func(ptr gdclass.Receiver, body RID.SoftBody3D) RID.Space3D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.SoftBody3D(body))
 		gd.UnsafeSet(p_back, RID.Any(ret))
 	}
 }
@@ -1640,7 +1640,7 @@ func (Instance) _soft_body_set_ray_pickable(impl func(ptr gdclass.Receiver, body
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var enable = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, enable)
+		impl(self, RID.SoftBody3D(body), enable)
 	}
 }
 func (Instance) _soft_body_set_collision_layer(impl func(ptr gdclass.Receiver, body RID.SoftBody3D, layer int)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1648,14 +1648,14 @@ func (Instance) _soft_body_set_collision_layer(impl func(ptr gdclass.Receiver, b
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var layer = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, int(layer))
+		impl(self, RID.SoftBody3D(body), int(layer))
 	}
 }
 func (Instance) _soft_body_get_collision_layer(impl func(ptr gdclass.Receiver, body RID.SoftBody3D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.SoftBody3D(body))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1664,14 +1664,14 @@ func (Instance) _soft_body_set_collision_mask(impl func(ptr gdclass.Receiver, bo
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var mask = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, int(mask))
+		impl(self, RID.SoftBody3D(body), int(mask))
 	}
 }
 func (Instance) _soft_body_get_collision_mask(impl func(ptr gdclass.Receiver, body RID.SoftBody3D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.SoftBody3D(body))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1680,7 +1680,7 @@ func (Instance) _soft_body_add_collision_exception(impl func(ptr gdclass.Receive
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var body_b = gd.UnsafeGet[RID.Any](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, body_b)
+		impl(self, RID.SoftBody3D(body), RID.Body3D(body_b))
 	}
 }
 func (Instance) _soft_body_remove_collision_exception(impl func(ptr gdclass.Receiver, body RID.SoftBody3D, body_b RID.Body3D)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1688,14 +1688,14 @@ func (Instance) _soft_body_remove_collision_exception(impl func(ptr gdclass.Rece
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var body_b = gd.UnsafeGet[RID.Any](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, body_b)
+		impl(self, RID.SoftBody3D(body), RID.Body3D(body_b))
 	}
 }
 func (Instance) _soft_body_get_collision_exceptions(impl func(ptr gdclass.Receiver, body RID.SoftBody3D) []RID.Body3D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.SoftBody3D(body))
 		ptr, ok := pointers.End(gd.InternalArray(gd.ArrayFromSlice[Array.Contains[RID.Any]](ret)))
 
 		if !ok {
@@ -1711,7 +1711,7 @@ func (Instance) _soft_body_set_state(impl func(ptr gdclass.Receiver, body RID.So
 		var v = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(v))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, state, v.Interface())
+		impl(self, RID.SoftBody3D(body), state, v.Interface())
 	}
 }
 func (Instance) _soft_body_get_state(impl func(ptr gdclass.Receiver, body RID.SoftBody3D, state PhysicsServer3D.BodyState) any) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1719,7 +1719,7 @@ func (Instance) _soft_body_get_state(impl func(ptr gdclass.Receiver, body RID.So
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var state = gd.UnsafeGet[PhysicsServer3D.BodyState](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body, state)
+		ret := impl(self, RID.SoftBody3D(body), state)
 		ptr, ok := pointers.End(gd.InternalVariant(variant.New(ret)))
 
 		if !ok {
@@ -1733,7 +1733,7 @@ func (Instance) _soft_body_set_transform(impl func(ptr gdclass.Receiver, body RI
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var transform = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 1))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, transform)
+		impl(self, RID.SoftBody3D(body), transform)
 	}
 }
 func (Instance) _soft_body_set_simulation_precision(impl func(ptr gdclass.Receiver, body RID.SoftBody3D, simulation_precision int)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1741,14 +1741,14 @@ func (Instance) _soft_body_set_simulation_precision(impl func(ptr gdclass.Receiv
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var simulation_precision = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, int(simulation_precision))
+		impl(self, RID.SoftBody3D(body), int(simulation_precision))
 	}
 }
 func (Instance) _soft_body_get_simulation_precision(impl func(ptr gdclass.Receiver, body RID.SoftBody3D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.SoftBody3D(body))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -1757,14 +1757,14 @@ func (Instance) _soft_body_set_total_mass(impl func(ptr gdclass.Receiver, body R
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var total_mass = gd.UnsafeGet[float64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, Float.X(total_mass))
+		impl(self, RID.SoftBody3D(body), Float.X(total_mass))
 	}
 }
 func (Instance) _soft_body_get_total_mass(impl func(ptr gdclass.Receiver, body RID.SoftBody3D) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.SoftBody3D(body))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -1773,14 +1773,14 @@ func (Instance) _soft_body_set_linear_stiffness(impl func(ptr gdclass.Receiver, 
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var linear_stiffness = gd.UnsafeGet[float64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, Float.X(linear_stiffness))
+		impl(self, RID.SoftBody3D(body), Float.X(linear_stiffness))
 	}
 }
 func (Instance) _soft_body_get_linear_stiffness(impl func(ptr gdclass.Receiver, body RID.SoftBody3D) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.SoftBody3D(body))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -1789,14 +1789,14 @@ func (Instance) _soft_body_set_pressure_coefficient(impl func(ptr gdclass.Receiv
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var pressure_coefficient = gd.UnsafeGet[float64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, Float.X(pressure_coefficient))
+		impl(self, RID.SoftBody3D(body), Float.X(pressure_coefficient))
 	}
 }
 func (Instance) _soft_body_get_pressure_coefficient(impl func(ptr gdclass.Receiver, body RID.SoftBody3D) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.SoftBody3D(body))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -1805,14 +1805,14 @@ func (Instance) _soft_body_set_damping_coefficient(impl func(ptr gdclass.Receive
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var damping_coefficient = gd.UnsafeGet[float64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, Float.X(damping_coefficient))
+		impl(self, RID.SoftBody3D(body), Float.X(damping_coefficient))
 	}
 }
 func (Instance) _soft_body_get_damping_coefficient(impl func(ptr gdclass.Receiver, body RID.SoftBody3D) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.SoftBody3D(body))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -1821,14 +1821,14 @@ func (Instance) _soft_body_set_drag_coefficient(impl func(ptr gdclass.Receiver, 
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var drag_coefficient = gd.UnsafeGet[float64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, Float.X(drag_coefficient))
+		impl(self, RID.SoftBody3D(body), Float.X(drag_coefficient))
 	}
 }
 func (Instance) _soft_body_get_drag_coefficient(impl func(ptr gdclass.Receiver, body RID.SoftBody3D) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.SoftBody3D(body))
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -1837,14 +1837,14 @@ func (Instance) _soft_body_set_mesh(impl func(ptr gdclass.Receiver, body RID.Sof
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var mesh = gd.UnsafeGet[RID.Any](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, mesh)
+		impl(self, RID.SoftBody3D(body), RID.Mesh(mesh))
 	}
 }
 func (Instance) _soft_body_get_bounds(impl func(ptr gdclass.Receiver, body RID.SoftBody3D) AABB.PositionSize) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body)
+		ret := impl(self, RID.SoftBody3D(body))
 		gd.UnsafeSet(p_back, AABB.PositionSize(ret))
 	}
 }
@@ -1854,7 +1854,7 @@ func (Instance) _soft_body_move_point(impl func(ptr gdclass.Receiver, body RID.S
 		var point_index = gd.UnsafeGet[int64](p_args, 1)
 		var global_position = gd.UnsafeGet[Vector3.XYZ](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, int(point_index), global_position)
+		impl(self, RID.SoftBody3D(body), int(point_index), global_position)
 	}
 }
 func (Instance) _soft_body_get_point_global_position(impl func(ptr gdclass.Receiver, body RID.SoftBody3D, point_index int) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1862,7 +1862,7 @@ func (Instance) _soft_body_get_point_global_position(impl func(ptr gdclass.Recei
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var point_index = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body, int(point_index))
+		ret := impl(self, RID.SoftBody3D(body), int(point_index))
 		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
 	}
 }
@@ -1870,7 +1870,7 @@ func (Instance) _soft_body_remove_all_pinned_points(impl func(ptr gdclass.Receiv
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body)
+		impl(self, RID.SoftBody3D(body))
 	}
 }
 func (Instance) _soft_body_pin_point(impl func(ptr gdclass.Receiver, body RID.SoftBody3D, point_index int, pin bool)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1879,7 +1879,7 @@ func (Instance) _soft_body_pin_point(impl func(ptr gdclass.Receiver, body RID.So
 		var point_index = gd.UnsafeGet[int64](p_args, 1)
 		var pin = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, body, int(point_index), pin)
+		impl(self, RID.SoftBody3D(body), int(point_index), pin)
 	}
 }
 func (Instance) _soft_body_is_point_pinned(impl func(ptr gdclass.Receiver, body RID.SoftBody3D, point_index int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1887,7 +1887,7 @@ func (Instance) _soft_body_is_point_pinned(impl func(ptr gdclass.Receiver, body 
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var point_index = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, body, int(point_index))
+		ret := impl(self, RID.SoftBody3D(body), int(point_index))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -1902,7 +1902,7 @@ func (Instance) _joint_clear(impl func(ptr gdclass.Receiver, joint RID.Joint3D))
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint)
+		impl(self, RID.Joint3D(joint))
 	}
 }
 func (Instance) _joint_make_pin(impl func(ptr gdclass.Receiver, joint RID.Joint3D, body_A RID.Body3D, local_A Vector3.XYZ, body_B RID.Body3D, local_B Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1913,7 +1913,7 @@ func (Instance) _joint_make_pin(impl func(ptr gdclass.Receiver, joint RID.Joint3
 		var body_B = gd.UnsafeGet[RID.Any](p_args, 3)
 		var local_B = gd.UnsafeGet[Vector3.XYZ](p_args, 4)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, body_A, local_A, body_B, local_B)
+		impl(self, RID.Joint3D(joint), RID.Body3D(body_A), local_A, RID.Body3D(body_B), local_B)
 	}
 }
 func (Instance) _pin_joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Joint3D, param PhysicsServer3D.PinJointParam, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1922,7 +1922,7 @@ func (Instance) _pin_joint_set_param(impl func(ptr gdclass.Receiver, joint RID.J
 		var param = gd.UnsafeGet[PhysicsServer3D.PinJointParam](p_args, 1)
 		var value = gd.UnsafeGet[float64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, param, Float.X(value))
+		impl(self, RID.Joint3D(joint), param, Float.X(value))
 	}
 }
 func (Instance) _pin_joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Joint3D, param PhysicsServer3D.PinJointParam) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1930,7 +1930,7 @@ func (Instance) _pin_joint_get_param(impl func(ptr gdclass.Receiver, joint RID.J
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer3D.PinJointParam](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, joint, param)
+		ret := impl(self, RID.Joint3D(joint), param)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -1939,14 +1939,14 @@ func (Instance) _pin_joint_set_local_a(impl func(ptr gdclass.Receiver, joint RID
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var local_A = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, local_A)
+		impl(self, RID.Joint3D(joint), local_A)
 	}
 }
 func (Instance) _pin_joint_get_local_a(impl func(ptr gdclass.Receiver, joint RID.Joint3D) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, joint)
+		ret := impl(self, RID.Joint3D(joint))
 		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
 	}
 }
@@ -1955,14 +1955,14 @@ func (Instance) _pin_joint_set_local_b(impl func(ptr gdclass.Receiver, joint RID
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var local_B = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, local_B)
+		impl(self, RID.Joint3D(joint), local_B)
 	}
 }
 func (Instance) _pin_joint_get_local_b(impl func(ptr gdclass.Receiver, joint RID.Joint3D) Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, joint)
+		ret := impl(self, RID.Joint3D(joint))
 		gd.UnsafeSet(p_back, Vector3.XYZ(ret))
 	}
 }
@@ -1974,7 +1974,7 @@ func (Instance) _joint_make_hinge(impl func(ptr gdclass.Receiver, joint RID.Join
 		var body_B = gd.UnsafeGet[RID.Any](p_args, 3)
 		var hinge_B = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 4))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, body_A, hinge_A, body_B, hinge_B)
+		impl(self, RID.Joint3D(joint), RID.Body3D(body_A), hinge_A, RID.Body3D(body_B), hinge_B)
 	}
 }
 func (Instance) _joint_make_hinge_simple(impl func(ptr gdclass.Receiver, joint RID.Joint3D, body_A RID.Body3D, pivot_A Vector3.XYZ, axis_A Vector3.XYZ, body_B RID.Body3D, pivot_B Vector3.XYZ, axis_B Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1987,7 +1987,7 @@ func (Instance) _joint_make_hinge_simple(impl func(ptr gdclass.Receiver, joint R
 		var pivot_B = gd.UnsafeGet[Vector3.XYZ](p_args, 5)
 		var axis_B = gd.UnsafeGet[Vector3.XYZ](p_args, 6)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, body_A, pivot_A, axis_A, body_B, pivot_B, axis_B)
+		impl(self, RID.Joint3D(joint), RID.Body3D(body_A), pivot_A, axis_A, RID.Body3D(body_B), pivot_B, axis_B)
 	}
 }
 func (Instance) _hinge_joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Joint3D, param PhysicsServer3D.HingeJointParam, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1996,7 +1996,7 @@ func (Instance) _hinge_joint_set_param(impl func(ptr gdclass.Receiver, joint RID
 		var param = gd.UnsafeGet[PhysicsServer3D.HingeJointParam](p_args, 1)
 		var value = gd.UnsafeGet[float64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, param, Float.X(value))
+		impl(self, RID.Joint3D(joint), param, Float.X(value))
 	}
 }
 func (Instance) _hinge_joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Joint3D, param PhysicsServer3D.HingeJointParam) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -2004,7 +2004,7 @@ func (Instance) _hinge_joint_get_param(impl func(ptr gdclass.Receiver, joint RID
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer3D.HingeJointParam](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, joint, param)
+		ret := impl(self, RID.Joint3D(joint), param)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -2014,7 +2014,7 @@ func (Instance) _hinge_joint_set_flag(impl func(ptr gdclass.Receiver, joint RID.
 		var flag = gd.UnsafeGet[PhysicsServer3D.HingeJointFlag](p_args, 1)
 		var enabled = gd.UnsafeGet[bool](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, flag, enabled)
+		impl(self, RID.Joint3D(joint), flag, enabled)
 	}
 }
 func (Instance) _hinge_joint_get_flag(impl func(ptr gdclass.Receiver, joint RID.Joint3D, flag PhysicsServer3D.HingeJointFlag) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -2022,7 +2022,7 @@ func (Instance) _hinge_joint_get_flag(impl func(ptr gdclass.Receiver, joint RID.
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var flag = gd.UnsafeGet[PhysicsServer3D.HingeJointFlag](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, joint, flag)
+		ret := impl(self, RID.Joint3D(joint), flag)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -2034,7 +2034,7 @@ func (Instance) _joint_make_slider(impl func(ptr gdclass.Receiver, joint RID.Joi
 		var body_B = gd.UnsafeGet[RID.Any](p_args, 3)
 		var local_ref_B = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 4))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, body_A, local_ref_A, body_B, local_ref_B)
+		impl(self, RID.Joint3D(joint), RID.Body3D(body_A), local_ref_A, RID.Body3D(body_B), local_ref_B)
 	}
 }
 func (Instance) _slider_joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Joint3D, param PhysicsServer3D.SliderJointParam, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -2043,7 +2043,7 @@ func (Instance) _slider_joint_set_param(impl func(ptr gdclass.Receiver, joint RI
 		var param = gd.UnsafeGet[PhysicsServer3D.SliderJointParam](p_args, 1)
 		var value = gd.UnsafeGet[float64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, param, Float.X(value))
+		impl(self, RID.Joint3D(joint), param, Float.X(value))
 	}
 }
 func (Instance) _slider_joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Joint3D, param PhysicsServer3D.SliderJointParam) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -2051,7 +2051,7 @@ func (Instance) _slider_joint_get_param(impl func(ptr gdclass.Receiver, joint RI
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer3D.SliderJointParam](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, joint, param)
+		ret := impl(self, RID.Joint3D(joint), param)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -2063,7 +2063,7 @@ func (Instance) _joint_make_cone_twist(impl func(ptr gdclass.Receiver, joint RID
 		var body_B = gd.UnsafeGet[RID.Any](p_args, 3)
 		var local_ref_B = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 4))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, body_A, local_ref_A, body_B, local_ref_B)
+		impl(self, RID.Joint3D(joint), RID.Body3D(body_A), local_ref_A, RID.Body3D(body_B), local_ref_B)
 	}
 }
 func (Instance) _cone_twist_joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Joint3D, param PhysicsServer3D.ConeTwistJointParam, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -2072,7 +2072,7 @@ func (Instance) _cone_twist_joint_set_param(impl func(ptr gdclass.Receiver, join
 		var param = gd.UnsafeGet[PhysicsServer3D.ConeTwistJointParam](p_args, 1)
 		var value = gd.UnsafeGet[float64](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, param, Float.X(value))
+		impl(self, RID.Joint3D(joint), param, Float.X(value))
 	}
 }
 func (Instance) _cone_twist_joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Joint3D, param PhysicsServer3D.ConeTwistJointParam) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -2080,7 +2080,7 @@ func (Instance) _cone_twist_joint_get_param(impl func(ptr gdclass.Receiver, join
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var param = gd.UnsafeGet[PhysicsServer3D.ConeTwistJointParam](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, joint, param)
+		ret := impl(self, RID.Joint3D(joint), param)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -2092,7 +2092,7 @@ func (Instance) _joint_make_generic_6dof(impl func(ptr gdclass.Receiver, joint R
 		var body_B = gd.UnsafeGet[RID.Any](p_args, 3)
 		var local_ref_B = gd.Transposed(gd.UnsafeGet[Transform3D.BasisOrigin](p_args, 4))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, body_A, local_ref_A, body_B, local_ref_B)
+		impl(self, RID.Joint3D(joint), RID.Body3D(body_A), local_ref_A, RID.Body3D(body_B), local_ref_B)
 	}
 }
 func (Instance) _generic_6dof_joint_set_param(impl func(ptr gdclass.Receiver, joint RID.Joint3D, axis Vector3.Axis, param PhysicsServer3D.G6DOFJointAxisParam, value Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -2102,7 +2102,7 @@ func (Instance) _generic_6dof_joint_set_param(impl func(ptr gdclass.Receiver, jo
 		var param = gd.UnsafeGet[PhysicsServer3D.G6DOFJointAxisParam](p_args, 2)
 		var value = gd.UnsafeGet[float64](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, axis, param, Float.X(value))
+		impl(self, RID.Joint3D(joint), axis, param, Float.X(value))
 	}
 }
 func (Instance) _generic_6dof_joint_get_param(impl func(ptr gdclass.Receiver, joint RID.Joint3D, axis Vector3.Axis, param PhysicsServer3D.G6DOFJointAxisParam) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -2111,7 +2111,7 @@ func (Instance) _generic_6dof_joint_get_param(impl func(ptr gdclass.Receiver, jo
 		var axis = gd.UnsafeGet[Vector3.Axis](p_args, 1)
 		var param = gd.UnsafeGet[PhysicsServer3D.G6DOFJointAxisParam](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, joint, axis, param)
+		ret := impl(self, RID.Joint3D(joint), axis, param)
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
@@ -2122,7 +2122,7 @@ func (Instance) _generic_6dof_joint_set_flag(impl func(ptr gdclass.Receiver, joi
 		var flag = gd.UnsafeGet[PhysicsServer3D.G6DOFJointAxisFlag](p_args, 2)
 		var enable = gd.UnsafeGet[bool](p_args, 3)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, axis, flag, enable)
+		impl(self, RID.Joint3D(joint), axis, flag, enable)
 	}
 }
 func (Instance) _generic_6dof_joint_get_flag(impl func(ptr gdclass.Receiver, joint RID.Joint3D, axis Vector3.Axis, flag PhysicsServer3D.G6DOFJointAxisFlag) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -2131,7 +2131,7 @@ func (Instance) _generic_6dof_joint_get_flag(impl func(ptr gdclass.Receiver, joi
 		var axis = gd.UnsafeGet[Vector3.Axis](p_args, 1)
 		var flag = gd.UnsafeGet[PhysicsServer3D.G6DOFJointAxisFlag](p_args, 2)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, joint, axis, flag)
+		ret := impl(self, RID.Joint3D(joint), axis, flag)
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -2139,7 +2139,7 @@ func (Instance) _joint_get_type(impl func(ptr gdclass.Receiver, joint RID.Joint3
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, joint)
+		ret := impl(self, RID.Joint3D(joint))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -2148,14 +2148,14 @@ func (Instance) _joint_set_solver_priority(impl func(ptr gdclass.Receiver, joint
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var priority = gd.UnsafeGet[int64](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, int(priority))
+		impl(self, RID.Joint3D(joint), int(priority))
 	}
 }
 func (Instance) _joint_get_solver_priority(impl func(ptr gdclass.Receiver, joint RID.Joint3D) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, joint)
+		ret := impl(self, RID.Joint3D(joint))
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
@@ -2164,14 +2164,14 @@ func (Instance) _joint_disable_collisions_between_bodies(impl func(ptr gdclass.R
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		var disable = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, joint, disable)
+		impl(self, RID.Joint3D(joint), disable)
 	}
 }
 func (Instance) _joint_is_disabled_collisions_between_bodies(impl func(ptr gdclass.Receiver, joint RID.Joint3D) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var joint = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, joint)
+		ret := impl(self, RID.Joint3D(joint))
 		gd.UnsafeSet(p_back, ret)
 	}
 }
@@ -2179,7 +2179,7 @@ func (Instance) _free_rid(impl func(ptr gdclass.Receiver, rid RID.Any)) (cb gd.E
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var rid = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, rid)
+		impl(self, RID.Any(rid))
 	}
 }
 func (Instance) _set_active(impl func(ptr gdclass.Receiver, active bool)) (cb gd.ExtensionClassCallVirtualFunc) {

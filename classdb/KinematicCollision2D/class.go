@@ -187,7 +187,7 @@ func (self Instance) GetColliderId() int { //gd:KinematicCollision2D.get_collide
 Returns the colliding body's [Resource.ID] used by the [graphics.gd/classdb/PhysicsServer2D].
 */
 func (self Instance) GetColliderRid() RID.Body2D { //gd:KinematicCollision2D.get_collider_rid
-	return RID.Body2D(Advanced(self).GetColliderRid())
+	return RID.Body2D(RID.Body2D(Advanced(self).GetColliderRid()))
 }
 
 /*

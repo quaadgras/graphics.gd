@@ -498,7 +498,7 @@ func (Instance) _on_pre_draw_viewport(impl func(ptr gdclass.Receiver, viewport R
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var viewport = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, viewport)
+		impl(self, RID.Viewport(viewport))
 	}
 }
 
@@ -511,7 +511,7 @@ func (Instance) _on_post_draw_viewport(impl func(ptr gdclass.Receiver, viewport 
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var viewport = gd.UnsafeGet[RID.Any](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, viewport)
+		impl(self, RID.Viewport(viewport))
 	}
 }
 

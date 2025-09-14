@@ -144,7 +144,7 @@ func New() Instance {
 }
 
 func (self Instance) TextureRdRid() RID.Any {
-	return RID.Any(class(self).GetTextureRdRid())
+	return RID.Any(RID.Any(class(self).GetTextureRdRid()))
 }
 
 func (self Instance) SetTextureRdRid(value RID.Any) {

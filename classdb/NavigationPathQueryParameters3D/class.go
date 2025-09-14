@@ -158,7 +158,7 @@ func New() Instance {
 }
 
 func (self Instance) Map() RID.Any {
-	return RID.Any(class(self).GetMap())
+	return RID.Any(RID.Any(class(self).GetMap()))
 }
 
 func (self Instance) SetMap(value RID.Any) {

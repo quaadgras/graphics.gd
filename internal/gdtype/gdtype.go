@@ -153,7 +153,7 @@ func (name Name) ConvertToGo(val string, simple string) string {
 		return fmt.Sprintf("%v.String()", val)
 	case "Error.Code":
 		return fmt.Sprintf("gd.ToError(%v)", val)
-	case "int64":
+	case "int64", "RID.Any":
 		return fmt.Sprintf("%s(%v)", simple, val)
 	case "float64":
 		return fmt.Sprintf("Float.X(%v)", val)

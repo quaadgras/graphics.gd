@@ -161,7 +161,7 @@ func New() Instance {
 }
 
 func (self Instance) RenderTarget() RID.Any {
-	return RID.Any(class(self).GetRenderTarget())
+	return RID.Any(RID.Any(class(self).GetRenderTarget()))
 }
 
 func (self Instance) SetRenderTarget(value RID.Any) {

@@ -139,14 +139,14 @@ func (self Instance) SetBase(base RID.VisualInstance) { //gd:VisualInstance3D.se
 Returns the RID of the resource associated with this [graphics.gd/classdb/VisualInstance3D]. For example, if the Node is a [graphics.gd/classdb/MeshInstance3D], this will return the RID of the associated [graphics.gd/classdb/Mesh].
 */
 func (self Instance) GetBase() RID.VisualInstance { //gd:VisualInstance3D.get_base
-	return RID.VisualInstance(Advanced(self).GetBase())
+	return RID.VisualInstance(RID.VisualInstance(Advanced(self).GetBase()))
 }
 
 /*
 Returns the RID of this instance. This RID is the same as the RID returned by [graphics.gd/classdb/RenderingServer.InstanceCreate]. This RID is needed if you want to call [graphics.gd/classdb/RenderingServer] functions directly on this [graphics.gd/classdb/VisualInstance3D].
 */
 func (self Instance) GetInstance() RID.VisualInstance { //gd:VisualInstance3D.get_instance
-	return RID.VisualInstance(Advanced(self).GetInstance())
+	return RID.VisualInstance(RID.VisualInstance(Advanced(self).GetInstance()))
 }
 
 /*

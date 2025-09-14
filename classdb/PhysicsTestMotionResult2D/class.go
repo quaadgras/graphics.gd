@@ -155,7 +155,7 @@ func (self Instance) GetColliderId() int { //gd:PhysicsTestMotionResult2D.get_co
 Returns the colliding body's [Resource.ID] used by the [graphics.gd/classdb/PhysicsServer2D], if a collision occurred.
 */
 func (self Instance) GetColliderRid() RID.Body2D { //gd:PhysicsTestMotionResult2D.get_collider_rid
-	return RID.Body2D(Advanced(self).GetColliderRid())
+	return RID.Body2D(RID.Body2D(Advanced(self).GetColliderRid()))
 }
 
 /*
