@@ -142,8 +142,8 @@ func manageSignals(instance Object.ID, signals []signalChan) {
 		}
 		signal := signals[chosen]
 		gd.NewCallable(func() {
-			lookup := Object.ID(instance).Instance()
-			if lookup == ([1]gd.Object{}) {
+			lookup, ok := Object.ID(instance).Instance()
+			if !ok {
 				panic("manageSignals: object freed")
 			}
 			pointers.End(lookup[0])
