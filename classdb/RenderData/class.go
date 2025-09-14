@@ -189,7 +189,7 @@ Returns the [graphics.gd/classdb/RenderSceneData] object managing this frames sc
 //go:nosplit
 func (self class) GetRenderSceneData() [1]gdclass.RenderSceneData { //gd:RenderData.get_render_scene_data
 	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_render_scene_data, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.RenderSceneData{gd.PointerBorrowedTemporarily[gdclass.RenderSceneData](r_ret)}
+	var ret = [1]gdclass.RenderSceneData{gd.PointerMustAssertInstanceID[gdclass.RenderSceneData](r_ret)}
 	return ret
 }
 

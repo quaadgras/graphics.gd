@@ -111,7 +111,7 @@ type Interface interface {
 	// Implement this in GDExtension to return the view [Projection.XYZW] for the given 'view'.
 	GetViewProjection(view int) Projection.XYZW
 	// Implement this in GDExtension to return the [Resource.ID] of the uniform buffer containing the scene data as a UBO.
-	GetUniformBuffer() RID.Any
+	GetUniformBuffer() RID.UniformSet
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -124,7 +124,7 @@ func (self implementation) GetCamProjection() (_ Projection.XYZW)          { ret
 func (self implementation) GetViewCount() (_ int)                          { return }
 func (self implementation) GetViewEyeOffset(view int) (_ Vector3.XYZ)      { return }
 func (self implementation) GetViewProjection(view int) (_ Projection.XYZW) { return }
-func (self implementation) GetUniformBuffer() (_ RID.Any)                  { return }
+func (self implementation) GetUniformBuffer() (_ RID.UniformSet)           { return }
 
 /*
 Implement this in GDExtension to return the camera [Transform3D.BasisOrigin].
@@ -186,7 +186,7 @@ func (Instance) _get_view_projection(impl func(ptr gdclass.Receiver, view int) P
 /*
 Implement this in GDExtension to return the [Resource.ID] of the uniform buffer containing the scene data as a UBO.
 */
-func (Instance) _get_uniform_buffer(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_uniform_buffer(impl func(ptr gdclass.Receiver) RID.UniformSet) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)

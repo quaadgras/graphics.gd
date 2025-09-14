@@ -262,6 +262,10 @@ Clears the given undo history. You can clear history for a specific scene, globa
 
 If 'increase_version' is true, the undo history version will be increased, marking it as unsaved. Useful for operations that modify the scene, but don't support undo.
 
+	var scene_root = EditorInterface.GetEditedSceneRoot()
+	var undo_redo = EditorInterface.GetEditorUndoRedo()
+	EditorUndoRedoManager.Expanded(undo_redo).ClearHistory(undo_redo.GetObjectHistoryId(scene_root.AsObject()), false)
+
 Note: If you want to mark an edited scene as unsaved without clearing its history, use [graphics.gd/classdb/EditorInterface.MarkSceneAsUnsaved] instead.
 */
 func (self Instance) ClearHistory() { //gd:EditorUndoRedoManager.clear_history
@@ -272,6 +276,10 @@ func (self Instance) ClearHistory() { //gd:EditorUndoRedoManager.clear_history
 Clears the given undo history. You can clear history for a specific scene, global history, or for all scenes at once if 'id' is [InvalidHistory].
 
 If 'increase_version' is true, the undo history version will be increased, marking it as unsaved. Useful for operations that modify the scene, but don't support undo.
+
+	var scene_root = EditorInterface.GetEditedSceneRoot()
+	var undo_redo = EditorInterface.GetEditorUndoRedo()
+	EditorUndoRedoManager.Expanded(undo_redo).ClearHistory(undo_redo.GetObjectHistoryId(scene_root.AsObject()), false)
 
 Note: If you want to mark an edited scene as unsaved without clearing its history, use [graphics.gd/classdb/EditorInterface.MarkSceneAsUnsaved] instead.
 */
@@ -479,6 +487,10 @@ Clears the given undo history. You can clear history for a specific scene, globa
 
 If 'increase_version' is true, the undo history version will be increased, marking it as unsaved. Useful for operations that modify the scene, but don't support undo.
 
+
+	var scene_root = EditorInterface.GetEditedSceneRoot()
+	var undo_redo = EditorInterface.GetEditorUndoRedo()
+	EditorUndoRedoManager.Expanded(undo_redo).ClearHistory(undo_redo.GetObjectHistoryId(scene_root.AsObject()), false)
 
 
 Note: If you want to mark an edited scene as unsaved without clearing its history, use [graphics.gd/classdb/EditorInterface.MarkSceneAsUnsaved] instead.

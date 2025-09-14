@@ -52,6 +52,9 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"shape_owner_get_owner": {
 			"return value": MustAssertInstanceID,
 		},
+		"_input_event": {
+			"viewport": IsTemporaryReference,
+		},
 	},
 	"CollisionObject3D": {
 		"create_shape_owner": {
@@ -59,6 +62,14 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		},
 		"shape_owner_get_owner": {
 			"return value": MustAssertInstanceID,
+		},
+		"_input_event": {
+			"camera": IsTemporaryReference,
+		},
+	},
+	"CompositorEffect": {
+		"_render_callback": {
+			"render_data": IsTemporaryReference,
 		},
 	},
 	"ClassDB": {
@@ -239,6 +250,9 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"get_shortcut_context": {
 			"return value": MustAssertInstanceID,
 		},
+		"_make_custom_tooltip": {
+			"return value": OwnershipTransferred,
+		},
 	},
 	"EditorDebuggerSession": {
 		"add_session_tab": {
@@ -246,6 +260,12 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		},
 		"remove_session_tab": {
 			"control": ReversesTheOwnership,
+		},
+	},
+	"EditorExportPlugin": {
+		"_customize_scene": {
+			"scene":        IsTemporaryReference,
+			"return value": OwnershipTransferred,
 		},
 	},
 	"EditorFileDialog": {
@@ -306,6 +326,24 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		},
 		"add_property_editor_for_multiple_properties": {
 			"editor": OwnershipTransferred,
+		},
+		"_can_handle": {
+			"object": IsTemporaryReference,
+		},
+		"_parse_begin": {
+			"object": IsTemporaryReference,
+		},
+		"_parse_category": {
+			"object": IsTemporaryReference,
+		},
+		"_parse_group": {
+			"object": IsTemporaryReference,
+		},
+		"_parse_property": {
+			"object": IsTemporaryReference,
+		},
+		"_parse_end": {
+			"object": IsTemporaryReference,
 		},
 	},
 	"EditorInterface": {
@@ -389,6 +427,32 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"get_node_3d": {
 			"return value": LifetimeBoundToClass,
 		},
+		"_set_handle": {
+			"camera": IsTemporaryReference,
+		},
+		"_subgizmos_intersect_ray": {
+			"camera": IsTemporaryReference,
+		},
+		"_subgizmos_intersect_frustum": {
+			"camera": IsTemporaryReference,
+		},
+	},
+	"EditorNode3DGizmoPlugin": {
+		"_has_gizmo": {
+			"for_node_3d": IsTemporaryReference,
+		},
+		"_create_gizmo": {
+			"for_node_3d": IsTemporaryReference,
+		},
+		"_set_handle": {
+			"camera": IsTemporaryReference,
+		},
+		"_subgizmos_intersect_ray": {
+			"camera": IsTemporaryReference,
+		},
+		"_subgizmos_intersect_frustum": {
+			"camera": IsTemporaryReference,
+		},
 	},
 	"EditorPlugin": {
 		"add_control_to_container": {
@@ -431,6 +495,55 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"set_dock_tab_icon": {
 			"control": IsTemporaryReference,
 		},
+		"_forward_canvas_draw_over_viewport": {
+			"viewport_control": IsTemporaryReference,
+		},
+		"_forward_canvas_force_draw_over_viewport": {
+			"viewport_control": IsTemporaryReference,
+		},
+		"_forward_3d_gui_input": {
+			"viewport_camera": IsTemporaryReference,
+		},
+		"_forward_3d_draw_over_viewport": {
+			"viewport_control": IsTemporaryReference,
+		},
+		"_forward_3d_force_draw_over_viewport": {
+			"viewport_control": IsTemporaryReference,
+		},
+		"_edit": {
+			"object": IsTemporaryReference,
+		},
+		"_handles": {
+			"object": IsTemporaryReference,
+		},
+	},
+	"EditorResourcePicker": {
+		"_set_create_options": {
+			"menu_node": IsTemporaryReference,
+		},
+	},
+	"EditorSceneFormatImporter": {
+		"_import_scene": {
+			"return value": OwnershipTransferred,
+		},
+	},
+	"EditorScenePostImport": {
+		"_post_import": {
+			"scene":        IsTemporaryReference,
+			"return value": OwnershipTransferred,
+		},
+	},
+	"EditorScenePostImportPlugin": {
+		"_internal_process": {
+			"base_node": IsTemporaryReference,
+			"node":      IsTemporaryReference,
+		},
+		"_pre_process": {
+			"scene": IsTemporaryReference,
+		},
+		"_post_process": {
+			"scene": IsTemporaryReference,
+		},
 	},
 	"EngineDebugger": {
 		"script_debug": {
@@ -457,6 +570,10 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 	"EditorResourceTooltipPlugin": {
 		"request_thumbnail": {
 			"control": MustAssertInstanceID,
+		},
+		"_make_tooltip_for_path": {
+			"base":         IsTemporaryReference,
+			"return value": OwnershipTransferred,
 		},
 	},
 	"EditorScript": {
@@ -562,6 +679,34 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 			"godot_node": IsTemporaryReference,
 		},
 	},
+	"GLTFDocumentExtension": {
+		"_generate_scene_node": {
+			"scene_parent": IsTemporaryReference,
+			"return value": OwnershipTransferred,
+		},
+		"_import_node": {
+			"node": IsTemporaryReference,
+		},
+		"_import_post": {
+			"root": IsTemporaryReference,
+		},
+		"_export_preflight": {
+			"root": IsTemporaryReference,
+		},
+		"_convert_scene_node": {
+			"scene_node": IsTemporaryReference,
+		},
+		"_export_post_convert": {
+			"root": IsTemporaryReference,
+		},
+		"_export_object_model_property": {
+			"godot_node":    IsTemporaryReference,
+			"target_object": IsTemporaryReference,
+		},
+		"_export_node": {
+			"node": IsTemporaryReference,
+		},
+	},
 	"GLTFLight": {
 		"from_node": {
 			"light_node": IsTemporaryReference,
@@ -628,6 +773,12 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"set_selected": {
 			"node": IsTemporaryReference,
 		},
+		"_is_in_input_hotzone": {
+			"in_node": IsTemporaryReference,
+		},
+		"_is_in_output_hotzone": {
+			"in_node": IsTemporaryReference,
+		},
 	},
 	"GraphFrame": {
 		"get_titlebar_hbox": {
@@ -675,6 +826,17 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 	"MultiplayerSpawner": {
 		"spawn": {
 			"return value": OwnershipTransferred,
+		},
+	},
+	"MultiplayerAPIExtension": {
+		"_rpc": {
+			"object": IsTemporaryReference,
+		},
+		"_object_configuration_add": {
+			"object": LifetimeBoundToClass,
+		},
+		"_object_configuration_remove": {
+			"object": ReversesTheOwnership,
 		},
 	},
 	"NavigationMeshGenerator": {
@@ -872,9 +1034,54 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 			"rendering_server_handler": IsTemporaryReference,
 		},
 	},
+	"PhysicalBone3D": {
+		"_integrate_forces": {
+			"state": IsTemporaryReference,
+		},
+	},
+	"PhysicsDirectBodyState2DExtension": {
+		"_get_contact_collider_object": {
+			"return value": MustAssertInstanceID,
+		},
+		"_get_space_state": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"PhysicsDirectBodyState3DExtension": {
+		"_get_contact_collider_object": {
+			"return value": MustAssertInstanceID,
+		},
+		"_get_space_state": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"PhysicsServer2DExtension": {
+		"_space_get_direct_state": {
+			"return value": MustAssertInstanceID,
+		},
+		"_body_get_direct_state": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"PhysicsServer3DExtension": {
+		"_space_get_direct_state": {
+			"return value": MustAssertInstanceID,
+		},
+		"_body_get_direct_state": {
+			"return value": MustAssertInstanceID,
+		},
+		"_soft_body_update_rendering_server": {
+			"rendering_server_handler": IsTemporaryReference,
+		},
+	},
 	"RenderData": {
 		"get_render_scene_data": {
-			"return value": IsTemporaryReference,
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"RenderDataExtension": {
+		"_get_render_scene_data": {
+			"return value": MustAssertInstanceID,
 		},
 	},
 	"Range": {
@@ -930,6 +1137,16 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 			"return value": LifetimeBoundToClass,
 		},
 	},
+	"RigidBody2D": {
+		"_integrate_forces": {
+			"state": IsTemporaryReference,
+		},
+	},
+	"RigidBody3D": {
+		"_integrate_forces": {
+			"state": IsTemporaryReference,
+		},
+	},
 	"SceneTree": {
 		"get_root": {
 			"return value": MustAssertInstanceID,
@@ -961,6 +1178,31 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 	"Script": {
 		"instance_has": {
 			"base_object": IsTemporaryReference,
+		},
+	},
+	"ScriptExtension": {
+		"_instance_create": {
+			"return value": OwnershipTransferred,
+		},
+		"_placeholder_instance_create": {
+			"for_object": IsTemporaryReference,
+		},
+		"_instance_has": {
+			"object": IsTemporaryReference,
+		},
+		"_get_language": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"ScriptLanguageExtension": {
+		"_create_script": {
+			"return value": OwnershipTransferred,
+		},
+		"_complete_code": {
+			"owner": IsTemporaryReference,
+		},
+		"_lookup_code": {
+			"owner": IsTemporaryReference,
 		},
 	},
 	"ScriptEditor": {
@@ -1048,6 +1290,9 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"get_cell_tile_data": {
 			"return value": MustAssertInstanceID,
 		},
+		"_tile_data_runtime_update": {
+			"tile_data": IsTemporaryReference,
+		},
 	},
 	"TabContainer": {
 		"get_current_tab_control": {
@@ -1083,6 +1328,9 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 	"TileMap": {
 		"get_cell_tile_data": {
 			"return value": MustAssertInstanceID,
+		},
+		"_tile_data_runtime_update": {
+			"tile_data": IsTemporaryReference,
 		},
 	},
 	"TileSetAtlasSource": {

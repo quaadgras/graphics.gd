@@ -791,6 +791,18 @@ func (Instance) _forward_3d_gui_input(impl func(ptr gdclass.Receiver, viewport_c
 
 /*
 Called by the engine when the 3D editor's viewport is updated. Use the overlay [graphics.gd/classdb/Control] for drawing. You can update the viewport manually by calling [Instance.UpdateOverlays].
+
+	Forward3dDrawOverViewport := func(overlay Control.Instance) {
+		// Draw a circle at cursor position.
+		overlay.AsCanvasItem().DrawCircle(overlay.AsCanvasItem().GetLocalMousePosition(), 64, Color.W3C.White)
+	}
+	Forward3dGuiInput := func(viewport_camera Camera3D.Instance, event InputEvent.Instance) EditorPlugin.AfterGUIInput {
+		if Object.Is[InputEventMouseMotion.Instance](event) {
+			// Redraw viewport when cursor is moved.
+			editorPlugin.UpdateOverlays()
+			return EditorPlugin.AfterGuiInputStop
+		}
+		return EditorPlugin.AfterGuiInputPass
 */
 func (Instance) _forward_3d_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control Control.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -841,6 +853,12 @@ Override this method in your plugin to return a [graphics.gd/classdb/Texture2D] 
 For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
 
 Ideally, the plugin icon should be white with a transparent background and 16×16 pixels in size.
+
+	GetPluginIcon := func() Texture2D.Instance {
+		// You can use a custom icon:
+		return Resource.Load[Texture2D.Instance]("res://addons/my_plugin/my_plugin_icon.svg")
+		// Or use a built-in icon:
+		return EditorInterface.GetEditorTheme().GetIcon("Node", "EditorIcons")
 */
 func (Instance) _get_plugin_icon(impl func(ptr gdclass.Receiver) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -861,6 +879,41 @@ Returns true if this is a main screen editor plugin (it goes in the workspace se
 When the plugin's workspace is selected, other main screen plugins will be hidden, but your plugin will not appear automatically. It needs to be added as a child of [graphics.gd/classdb/EditorInterface.GetEditorMainScreen] and made visible inside [Interface.MakeVisible].
 
 Use [Interface.GetPluginName] and [Interface.GetPluginIcon] to customize the plugin button's appearance.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Control"
+		"graphics.gd/classdb/EditorInterface"
+		"graphics.gd/classdb/EditorPlugin"
+		"graphics.gd/classdb/PackedScene"
+		"graphics.gd/classdb/Resource"
+		"graphics.gd/classdb/Texture2D"
+	)
+
+	type EditorPluginWithMainScreen struct {
+		EditorPlugin.Extension[EditorPluginWithMainScreen]
+
+		pluginControl Control.Instance
+	}
+
+	func (e *EditorPluginWithMainScreen) EnterTree() {
+		e.pluginControl = Resource.Load[PackedScene.Is[Control.Instance]]("my_plugin_control.tscn").Instantiate()
+		EditorInterface.GetEditorMainScreen().AsNode().AddChild(e.pluginControl.AsNode())
+		e.pluginControl.AsCanvasItem().Hide()
+	}
+
+	func (e *EditorPluginWithMainScreen) HasMainScreen() bool { return true }
+
+	func (e *EditorPluginWithMainScreen) MakeVisible(visible bool) {
+		e.pluginControl.AsCanvasItem().SetVisible(visible)
+	}
+
+	func (e *EditorPluginWithMainScreen) GetPluginName() string { return "My Super Cool Plugin 3000" }
+
+	func (e *EditorPluginWithMainScreen) GetPluginIcon() Texture2D.Instance {
+		return EditorInterface.GetEditorTheme().GetIcon("Node", "EditorIcons")
+	}
 */
 func (Instance) _has_main_screen(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -920,6 +973,9 @@ Use [Interface.SetState] to restore your saved state.
 Note: This method should not be used to save important settings that should persist with the project.
 
 Note: You must implement [Interface.GetPluginName] for the state to be stored and restored correctly.
+
+	GetState := func() map[any]any {
+		return map[any]any{"zoom": nil, "preferred_color": nil}
 */
 func (Instance) _get_state(impl func(ptr gdclass.Receiver) map[interface{}]interface{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -938,6 +994,12 @@ func (Instance) _get_state(impl func(ptr gdclass.Receiver) map[interface{}]inter
 Restore the state saved by [Interface.GetState]. This method is called when the current scene tab is changed in the editor.
 
 Note: Your plugin must implement [Interface.GetPluginName], otherwise it will not be recognized and this method will not be called.
+
+	var zoom float64
+	var preferred_color Color.RGBA
+	SetState := func(data map[any]any) {
+		zoom = data["zoom"].(float64)
+		preferred_color = data["my_color"].(Color.RGBA)
 */
 func (Instance) _set_state(impl func(ptr gdclass.Receiver, state map[interface{}]interface{})) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -964,6 +1026,19 @@ Override this method to provide a custom message that lists unsaved changes. The
 When closing a scene, 'for_scene' is the path to the scene being closed. You can use it to handle built-in resources in that scene.
 
 If the user confirms saving, [Interface.SaveExternalData] will be called, before closing the editor.
+
+	var unsaved bool
+	GetUnsavedStatus := func(for_scene string) string {
+		if !unsaved {
+			return ""
+		}
+		if for_scene == "" {
+			return "Save changes in MyCustomPlugin before closing?"
+		}
+		return "Scene " + filepath.Base(for_scene) + " has changes from MyCustomPlugin. Save before closing?"
+	}
+	SaveExternalData := func() {
+		unsaved = false
 
 If the plugin has no scene-specific changes, you can ignore the calls when closing scenes:
 */
@@ -1022,6 +1097,10 @@ func (Instance) _get_breakpoints(impl func(ptr gdclass.Receiver) []string) (cb g
 
 /*
 Restore the plugin GUI layout and data saved by [Interface.GetWindowLayout]. This method is called for every plugin on editor startup. Use the provided 'configuration' file to read your saved data.
+
+	SetWindowLayout := func(configuration ConfigFile.Instance) {
+		window.SetPosition(ConfigFile.Expanded(configuration).GetValue("MyPlugin", "window_position", Vector2i.Zero).(Vector2i.XY))
+		control.AsCanvasItem().SetModulate(ConfigFile.Expanded(configuration).GetValue("MyPlugin", "icon_color", Color.W3C.White).(Color.RGBA))
 */
 func (Instance) _set_window_layout(impl func(ptr gdclass.Receiver, configuration ConfigFile.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1037,6 +1116,10 @@ func (Instance) _set_window_layout(impl func(ptr gdclass.Receiver, configuration
 Override this method to provide the GUI layout of the plugin or any other data you want to be stored. This is used to save the project's editor layout when [Instance.QueueSaveLayout] is called or the editor layout was changed (for example changing the position of a dock). The data is stored in the editor_layout.cfg file in the editor metadata directory.
 
 Use [Interface.SetWindowLayout] to restore your saved layout.
+
+	GetWindowLayout := func(configuration ConfigFile.Instance) {
+		configuration.SetValue("MyPlugin", "window_position", window.Position())
+		configuration.SetValue("MyPlugin", "icon_color", control.AsCanvasItem().Modulate())
 */
 func (Instance) _get_window_layout(impl func(ptr gdclass.Receiver, configuration ConfigFile.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1428,6 +1511,32 @@ func (self Instance) RemoveNode3dGizmoPlugin(plugin EditorNode3DGizmoPlugin.Inst
 Registers a new [graphics.gd/classdb/EditorInspectorPlugin]. Inspector plugins are used to extend [graphics.gd/classdb/EditorInspector] and provide custom configuration tools for your object's properties.
 
 Note: Always use [Instance.RemoveInspectorPlugin] to remove the registered [graphics.gd/classdb/EditorInspectorPlugin] when your [graphics.gd/classdb/EditorPlugin] is disabled to prevent leaks and an unexpected behavior.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/EditorInspectorPlugin"
+		"graphics.gd/classdb/EditorPlugin"
+	)
+
+	type MyInspectorPlugin struct {
+		EditorInspectorPlugin.Extension[MyInspectorPlugin]
+	}
+
+	type MyEditorPlugin struct {
+		EditorPlugin.Extension[MyEditorPlugin]
+
+		inspector_plugin *MyInspectorPlugin
+	}
+
+	func (e *MyEditorPlugin) EnterTree() {
+		e.inspector_plugin = new(MyInspectorPlugin)
+		e.AsEditorPlugin().AddInspectorPlugin(e.inspector_plugin.AsEditorInspectorPlugin())
+	}
+
+	func (e *MyEditorPlugin) ExitTree() {
+		e.AsEditorPlugin().RemoveInspectorPlugin(e.inspector_plugin.AsEditorInspectorPlugin())
+	}
 */
 func (self Instance) AddInspectorPlugin(plugin EditorInspectorPlugin.Instance) { //gd:EditorPlugin.add_inspector_plugin
 	Advanced(self).AddInspectorPlugin(plugin)
@@ -1652,6 +1761,18 @@ func (class) _forward_3d_gui_input(impl func(ptr gdclass.Receiver, viewport_came
 
 /*
 Called by the engine when the 3D editor's viewport is updated. Use the overlay [graphics.gd/classdb/Control] for drawing. You can update the viewport manually by calling [Instance.UpdateOverlays].
+
+	Forward3dDrawOverViewport := func(overlay Control.Instance) {
+		// Draw a circle at cursor position.
+		overlay.AsCanvasItem().DrawCircle(overlay.AsCanvasItem().GetLocalMousePosition(), 64, Color.W3C.White)
+	}
+	Forward3dGuiInput := func(viewport_camera Camera3D.Instance, event InputEvent.Instance) EditorPlugin.AfterGUIInput {
+		if Object.Is[InputEventMouseMotion.Instance](event) {
+			// Redraw viewport when cursor is moved.
+			editorPlugin.UpdateOverlays()
+			return EditorPlugin.AfterGuiInputStop
+		}
+		return EditorPlugin.AfterGuiInputPass
 */
 func (class) _forward_3d_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1702,6 +1823,12 @@ Override this method in your plugin to return a [graphics.gd/classdb/Texture2D] 
 For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
 
 Ideally, the plugin icon should be white with a transparent background and 16×16 pixels in size.
+
+	GetPluginIcon := func() Texture2D.Instance {
+		// You can use a custom icon:
+		return Resource.Load[Texture2D.Instance]("res://addons/my_plugin/my_plugin_icon.svg")
+		// Or use a built-in icon:
+		return EditorInterface.GetEditorTheme().GetIcon("Node", "EditorIcons")
 */
 func (class) _get_plugin_icon(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1722,6 +1849,41 @@ Returns true if this is a main screen editor plugin (it goes in the workspace se
 When the plugin's workspace is selected, other main screen plugins will be hidden, but your plugin will not appear automatically. It needs to be added as a child of [graphics.gd/classdb/EditorInterface.GetEditorMainScreen] and made visible inside [Interface.MakeVisible].
 
 Use [Interface.GetPluginName] and [Interface.GetPluginIcon] to customize the plugin button's appearance.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Control"
+		"graphics.gd/classdb/EditorInterface"
+		"graphics.gd/classdb/EditorPlugin"
+		"graphics.gd/classdb/PackedScene"
+		"graphics.gd/classdb/Resource"
+		"graphics.gd/classdb/Texture2D"
+	)
+
+	type EditorPluginWithMainScreen struct {
+		EditorPlugin.Extension[EditorPluginWithMainScreen]
+
+		pluginControl Control.Instance
+	}
+
+	func (e *EditorPluginWithMainScreen) EnterTree() {
+		e.pluginControl = Resource.Load[PackedScene.Is[Control.Instance]]("my_plugin_control.tscn").Instantiate()
+		EditorInterface.GetEditorMainScreen().AsNode().AddChild(e.pluginControl.AsNode())
+		e.pluginControl.AsCanvasItem().Hide()
+	}
+
+	func (e *EditorPluginWithMainScreen) HasMainScreen() bool { return true }
+
+	func (e *EditorPluginWithMainScreen) MakeVisible(visible bool) {
+		e.pluginControl.AsCanvasItem().SetVisible(visible)
+	}
+
+	func (e *EditorPluginWithMainScreen) GetPluginName() string { return "My Super Cool Plugin 3000" }
+
+	func (e *EditorPluginWithMainScreen) GetPluginIcon() Texture2D.Instance {
+		return EditorInterface.GetEditorTheme().GetIcon("Node", "EditorIcons")
+	}
 */
 func (class) _has_main_screen(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1781,6 +1943,9 @@ Use [Interface.SetState] to restore your saved state.
 Note: This method should not be used to save important settings that should persist with the project.
 
 Note: You must implement [Interface.GetPluginName] for the state to be stored and restored correctly.
+
+	GetState := func() map[any]any {
+		return map[any]any{"zoom": nil, "preferred_color": nil}
 */
 func (class) _get_state(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1799,6 +1964,12 @@ func (class) _get_state(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.E
 Restore the state saved by [Interface.GetState]. This method is called when the current scene tab is changed in the editor.
 
 Note: Your plugin must implement [Interface.GetPluginName], otherwise it will not be recognized and this method will not be called.
+
+	var zoom float64
+	var preferred_color Color.RGBA
+	SetState := func(data map[any]any) {
+		zoom = data["zoom"].(float64)
+		preferred_color = data["my_color"].(Color.RGBA)
 */
 func (class) _set_state(impl func(ptr gdclass.Receiver, state Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1825,6 +1996,19 @@ Override this method to provide a custom message that lists unsaved changes. The
 When closing a scene, 'for_scene' is the path to the scene being closed. You can use it to handle built-in resources in that scene.
 
 If the user confirms saving, [Interface.SaveExternalData] will be called, before closing the editor.
+
+	var unsaved bool
+	GetUnsavedStatus := func(for_scene string) string {
+		if !unsaved {
+			return ""
+		}
+		if for_scene == "" {
+			return "Save changes in MyCustomPlugin before closing?"
+		}
+		return "Scene " + filepath.Base(for_scene) + " has changes from MyCustomPlugin. Save before closing?"
+	}
+	SaveExternalData := func() {
+		unsaved = false
 
 If the plugin has no scene-specific changes, you can ignore the calls when closing scenes:
 */
@@ -1883,6 +2067,10 @@ func (class) _get_breakpoints(impl func(ptr gdclass.Receiver) Packed.Strings) (c
 
 /*
 Restore the plugin GUI layout and data saved by [Interface.GetWindowLayout]. This method is called for every plugin on editor startup. Use the provided 'configuration' file to read your saved data.
+
+	SetWindowLayout := func(configuration ConfigFile.Instance) {
+		window.SetPosition(ConfigFile.Expanded(configuration).GetValue("MyPlugin", "window_position", Vector2i.Zero).(Vector2i.XY))
+		control.AsCanvasItem().SetModulate(ConfigFile.Expanded(configuration).GetValue("MyPlugin", "icon_color", Color.W3C.White).(Color.RGBA))
 */
 func (class) _set_window_layout(impl func(ptr gdclass.Receiver, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1898,6 +2086,10 @@ func (class) _set_window_layout(impl func(ptr gdclass.Receiver, configuration [1
 Override this method to provide the GUI layout of the plugin or any other data you want to be stored. This is used to save the project's editor layout when [Instance.QueueSaveLayout] is called or the editor layout was changed (for example changing the position of a dock). The data is stored in the editor_layout.cfg file in the editor metadata directory.
 
 Use [Interface.SetWindowLayout] to restore your saved layout.
+
+	GetWindowLayout := func(configuration ConfigFile.Instance) {
+		configuration.SetValue("MyPlugin", "window_position", window.Position())
+		configuration.SetValue("MyPlugin", "icon_color", control.AsCanvasItem().Modulate())
 */
 func (class) _get_window_layout(impl func(ptr gdclass.Receiver, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -2321,6 +2513,31 @@ Registers a new [graphics.gd/classdb/EditorInspectorPlugin]. Inspector plugins a
 
 Note: Always use [Instance.RemoveInspectorPlugin] to remove the registered [graphics.gd/classdb/EditorInspectorPlugin] when your [graphics.gd/classdb/EditorPlugin] is disabled to prevent leaks and an unexpected behavior.
 
+	package main
+
+	import (
+		"graphics.gd/classdb/EditorInspectorPlugin"
+		"graphics.gd/classdb/EditorPlugin"
+	)
+
+	type MyInspectorPlugin struct {
+		EditorInspectorPlugin.Extension[MyInspectorPlugin]
+	}
+
+	type MyEditorPlugin struct {
+		EditorPlugin.Extension[MyEditorPlugin]
+
+		inspector_plugin *MyInspectorPlugin
+	}
+
+	func (e *MyEditorPlugin) EnterTree() {
+		e.inspector_plugin = new(MyInspectorPlugin)
+		e.AsEditorPlugin().AddInspectorPlugin(e.inspector_plugin.AsEditorInspectorPlugin())
+	}
+
+	func (e *MyEditorPlugin) ExitTree() {
+		e.AsEditorPlugin().RemoveInspectorPlugin(e.inspector_plugin.AsEditorInspectorPlugin())
+	}
 
 */
 //go:nosplit

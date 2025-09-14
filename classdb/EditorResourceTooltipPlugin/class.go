@@ -162,6 +162,12 @@ The 'metadata' dictionary is provided by preview generator (see [graphics.gd/cla
 Note: It's unadvised to use [graphics.gd/classdb/ResourceLoader.Load], especially with heavy resources like models or textures, because it will make the editor unresponsive when creating the tooltip. You can use [Instance.RequestThumbnail] if you want to display a preview in your tooltip.
 
 Note: If you decide to discard the 'base', make sure to call [graphics.gd/classdb/Node.Instance.QueueFree], because it's not freed automatically.
+
+	MakeTooltipForPath := func(path string, metadata map[string]any, base Control.Instance) Control.Instance {
+		var t_rect = TextureRect.New()
+		editorResourceTooltipPlugin.RequestThumbnail(path, t_rect)
+		base.AsNode().AddChild(t_rect.AsNode())
+		return base
 */
 func (Instance) _make_tooltip_for_path(impl func(ptr gdclass.Receiver, path string, metadata map[string]interface{}, base Control.Instance) Control.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -256,6 +262,12 @@ The 'metadata' dictionary is provided by preview generator (see [graphics.gd/cla
 Note: It's unadvised to use [graphics.gd/classdb/ResourceLoader.Load], especially with heavy resources like models or textures, because it will make the editor unresponsive when creating the tooltip. You can use [Instance.RequestThumbnail] if you want to display a preview in your tooltip.
 
 Note: If you decide to discard the 'base', make sure to call [graphics.gd/classdb/Node.Instance.QueueFree], because it's not freed automatically.
+
+	MakeTooltipForPath := func(path string, metadata map[string]any, base Control.Instance) Control.Instance {
+		var t_rect = TextureRect.New()
+		editorResourceTooltipPlugin.RequestThumbnail(path, t_rect)
+		base.AsNode().AddChild(t_rect.AsNode())
+		return base
 */
 func (class) _make_tooltip_for_path(impl func(ptr gdclass.Receiver, path String.Readable, metadata Dictionary.Any, base [1]gdclass.Control) [1]gdclass.Control) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
