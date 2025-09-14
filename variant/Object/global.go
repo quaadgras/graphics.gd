@@ -55,8 +55,7 @@ func InstanceIsValid(obj Any) bool { //gd:is_instance_valid
 	if !pointers.Bad(obj.AsObject()[0]) {
 		return false
 	}
-	_, ok := Instance(obj.AsObject()).ID().Instance()
-	return ok
+	return Instance(obj.AsObject()).ID().Instance() != Nil
 }
 
 // GetPropertyList returns a list of all property names in the object.
