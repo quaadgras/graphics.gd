@@ -18,15 +18,15 @@ import (
 type ID uint64
 
 // Instance returns the Object instance identified by this ID.
-func (id ID) Instance() (Instance, bool) { //gd:instance_from_id is_instance_id_valid
+func (id ID) Instance() Instance { //gd:instance_from_id is_instance_id_valid
 	if id == 0 {
-		return Nil, false
+		return Nil
 	}
 	instance := gdextension.Host.Objects.Lookup(gdextension.ObjectID(id))
 	if instance == 0 {
-		return Nil, false
+		return Nil
 	}
-	return Instance([1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](instance)}), true
+	return Instance([1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](instance)})
 }
 
 type Notification int
