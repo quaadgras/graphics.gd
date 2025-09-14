@@ -2,10 +2,14 @@
 
 /*
 Captures its surroundings as a cubemap, and stores versions of it with increasing levels of blur to simulate different material roughnesses.
-The [ReflectionProbe] is used to create high-quality reflections at a low performance cost (when [member update_mode] is [UpdateOnce]). [ReflectionProbe]s can be blended together and with the rest of the scene smoothly. [ReflectionProbe]s can also be combined with [VoxelGI], SDFGI ([member Environment.sdfgi_enabled]) and screen-space reflections ([member Environment.ssr_enabled]) to get more accurate reflections in specific areas. [ReflectionProbe]s render all objects within their [member cull_mask], so updating them can be quite expensive. It is best to update them once with the important static objects and then leave them as-is.
-Note: Unlike [VoxelGI] and SDFGI, [ReflectionProbe]s only source their environment from a [WorldEnvironment] node. If you specify an [Environment] resource within a [Camera3D] node, it will be ignored by the [ReflectionProbe]. This can lead to incorrect lighting within the [ReflectionProbe].
+
+The [graphics.gd/classdb/ReflectionProbe] is used to create high-quality reflections at a low performance cost (when [Instance.UpdateMode] is [UpdateOnce]). [graphics.gd/classdb/ReflectionProbe]s can be blended together and with the rest of the scene smoothly. [graphics.gd/classdb/ReflectionProbe]s can also be combined with [graphics.gd/classdb/VoxelGI], SDFGI ([graphics.gd/classdb/Environment.Instance.SdfgiEnabled]) and screen-space reflections ([graphics.gd/classdb/Environment.Instance.SsrEnabled]) to get more accurate reflections in specific areas. [graphics.gd/classdb/ReflectionProbe]s render all objects within their [Instance.CullMask], so updating them can be quite expensive. It is best to update them once with the important static objects and then leave them as-is.
+
+Note: Unlike [graphics.gd/classdb/VoxelGI] and SDFGI, [graphics.gd/classdb/ReflectionProbe]s only source their environment from a [graphics.gd/classdb/WorldEnvironment] node. If you specify an [graphics.gd/classdb/Environment] resource within a [graphics.gd/classdb/Camera3D] node, it will be ignored by the [graphics.gd/classdb/ReflectionProbe]. This can lead to incorrect lighting within the [graphics.gd/classdb/ReflectionProbe].
+
 Note: Reflection probes are only supported in the Forward+ and Mobile rendering methods, not Compatibility. When using the Mobile rendering method, only 8 reflection probes can be displayed on each mesh resource. Attempting to display more than 8 reflection probes on a single mesh resource will result in reflection probes flickering in and out as the camera moves.
-Note: When using the Mobile rendering method, reflection probes will only correctly affect meshes whose visibility AABB intersects with the reflection probe's AABB. If using a shader to deform the mesh in a way that makes it go outside its AABB, [member GeometryInstance3D.extra_cull_margin] must be increased on the mesh. Otherwise, the reflection probe may not be visible on the mesh.
+
+Note: When using the Mobile rendering method, reflection probes will only correctly affect meshes whose visibility AABB intersects with the reflection probe's AABB. If using a shader to deform the mesh in a way that makes it go outside its AABB, [graphics.gd/classdb/GeometryInstance3D.Instance.ExtraCullMargin] must be increased on the mesh. Otherwise, the reflection probe may not be visible on the mesh.
 */
 package ReflectionProbe
 
@@ -524,19 +528,19 @@ func init() {
 type UpdateMode int //gd:ReflectionProbe.UpdateMode
 
 const (
-	/*Update the probe once on the next frame (recommended for most objects). The corresponding radiance map will be generated over the following six frames. This takes more time to update than [constant UPDATE_ALWAYS], but it has a lower performance cost and can result in higher-quality reflections. The ReflectionProbe is updated when its transform changes, but not when nearby geometry changes. You can force a [ReflectionProbe] update by moving the [ReflectionProbe] slightly in any direction.*/
+	// Update the probe once on the next frame (recommended for most objects). The corresponding radiance map will be generated over the following six frames. This takes more time to update than [UpdateAlways], but it has a lower performance cost and can result in higher-quality reflections. The ReflectionProbe is updated when its transform changes, but not when nearby geometry changes. You can force a [graphics.gd/classdb/ReflectionProbe] update by moving the [graphics.gd/classdb/ReflectionProbe] slightly in any direction.
 	UpdateOnce UpdateMode = 0
-	/*Update the probe every frame. This provides better results for fast-moving dynamic objects (such as cars). However, it has a significant performance cost. Due to the cost, it's recommended to only use one ReflectionProbe with [constant UPDATE_ALWAYS] at most per scene. For all other use cases, use [constant UPDATE_ONCE].*/
+	// Update the probe every frame. This provides better results for fast-moving dynamic objects (such as cars). However, it has a significant performance cost. Due to the cost, it's recommended to only use one ReflectionProbe with [UpdateAlways] at most per scene. For all other use cases, use [UpdateOnce].
 	UpdateAlways UpdateMode = 1
 )
 
 type AmbientMode int //gd:ReflectionProbe.AmbientMode
 
 const (
-	/*Do not apply any ambient lighting inside the [ReflectionProbe]'s box defined by its [member size].*/
+	// Do not apply any ambient lighting inside the [graphics.gd/classdb/ReflectionProbe]'s box defined by its [Instance.Size].
 	AmbientDisabled AmbientMode = 0
-	/*Apply automatically-sourced environment lighting inside the [ReflectionProbe]'s box defined by its [member size].*/
+	// Apply automatically-sourced environment lighting inside the [graphics.gd/classdb/ReflectionProbe]'s box defined by its [Instance.Size].
 	AmbientEnvironment AmbientMode = 1
-	/*Apply custom ambient lighting inside the [ReflectionProbe]'s box defined by its [member size]. See [member ambient_color] and [member ambient_color_energy].*/
+	// Apply custom ambient lighting inside the [graphics.gd/classdb/ReflectionProbe]'s box defined by its [Instance.Size]. See [Instance.AmbientColor] and [Instance.AmbientColorEnergy].
 	AmbientColor AmbientMode = 2
 )

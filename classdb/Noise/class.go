@@ -2,7 +2,9 @@
 
 /*
 This class defines the interface for noise generation libraries to inherit from.
+
 A default [Instance.GetSeamlessImage] implementation is provided for libraries that do not provide seamless noise. This function requests a larger image from the [Instance.GetImage] method, reverses the quadrants of the image, then uses the strips of extra width to blend over the seams.
+
 Inheriting noise classes can optionally override this function to provide a more optimal algorithm.
 */
 package Noise
@@ -148,7 +150,8 @@ func (self Instance) GetNoise3dv(v Vector3.XYZ) Float.X { //gd:Noise.get_noise_3
 }
 
 /*
-Returns an [Image] containing 2D noise values.
+Returns an [graphics.gd/classdb/Image] containing 2D noise values.
+
 Note: With 'normalize' set to false, the default implementation expects the noise generator to return values in the range -1.0 to 1.0.
 */
 func (self Instance) GetImage(width int, height int) Image.Instance { //gd:Noise.get_image
@@ -156,7 +159,8 @@ func (self Instance) GetImage(width int, height int) Image.Instance { //gd:Noise
 }
 
 /*
-Returns an [Image] containing 2D noise values.
+Returns an [graphics.gd/classdb/Image] containing 2D noise values.
+
 Note: With 'normalize' set to false, the default implementation expects the noise generator to return values in the range -1.0 to 1.0.
 */
 func (self Expanded) GetImage(width int, height int, invert bool, in_3d_space bool, normalize bool) Image.Instance { //gd:Noise.get_image
@@ -164,7 +168,8 @@ func (self Expanded) GetImage(width int, height int, invert bool, in_3d_space bo
 }
 
 /*
-Returns an [Image] containing seamless 2D noise values.
+Returns an [graphics.gd/classdb/Image] containing seamless 2D noise values.
+
 Note: With 'normalize' set to false, the default implementation expects the noise generator to return values in the range -1.0 to 1.0.
 */
 func (self Instance) GetSeamlessImage(width int, height int) Image.Instance { //gd:Noise.get_seamless_image
@@ -172,7 +177,8 @@ func (self Instance) GetSeamlessImage(width int, height int) Image.Instance { //
 }
 
 /*
-Returns an [Image] containing seamless 2D noise values.
+Returns an [graphics.gd/classdb/Image] containing seamless 2D noise values.
+
 Note: With 'normalize' set to false, the default implementation expects the noise generator to return values in the range -1.0 to 1.0.
 */
 func (self Expanded) GetSeamlessImage(width int, height int, invert bool, in_3d_space bool, skirt Float.X, normalize bool) Image.Instance { //gd:Noise.get_seamless_image
@@ -180,7 +186,8 @@ func (self Expanded) GetSeamlessImage(width int, height int, invert bool, in_3d_
 }
 
 /*
-Returns an [Array] of [Image]s containing 3D noise values for use with [Instance.Imagetexture3d.Create].
+Returns an slice of [graphics.gd/classdb/Image]s containing 3D noise values for use with [graphics.gd/classdb/ImageTexture3D.Instance.Create].
+
 Note: With 'normalize' set to false, the default implementation expects the noise generator to return values in the range -1.0 to 1.0.
 */
 func (self Instance) GetImage3d(width int, height int, depth int) []Image.Instance { //gd:Noise.get_image_3d
@@ -188,7 +195,8 @@ func (self Instance) GetImage3d(width int, height int, depth int) []Image.Instan
 }
 
 /*
-Returns an [Array] of [Image]s containing 3D noise values for use with [Instance.Imagetexture3d.Create].
+Returns an slice of [graphics.gd/classdb/Image]s containing 3D noise values for use with [graphics.gd/classdb/ImageTexture3D.Instance.Create].
+
 Note: With 'normalize' set to false, the default implementation expects the noise generator to return values in the range -1.0 to 1.0.
 */
 func (self Expanded) GetImage3d(width int, height int, depth int, invert bool, normalize bool) []Image.Instance { //gd:Noise.get_image_3d
@@ -196,7 +204,8 @@ func (self Expanded) GetImage3d(width int, height int, depth int, invert bool, n
 }
 
 /*
-Returns an [Array] of [Image]s containing seamless 3D noise values for use with [Instance.Imagetexture3d.Create].
+Returns an slice of [graphics.gd/classdb/Image]s containing seamless 3D noise values for use with [graphics.gd/classdb/ImageTexture3D.Instance.Create].
+
 Note: With 'normalize' set to false, the default implementation expects the noise generator to return values in the range -1.0 to 1.0.
 */
 func (self Instance) GetSeamlessImage3d(width int, height int, depth int) []Image.Instance { //gd:Noise.get_seamless_image_3d
@@ -204,7 +213,8 @@ func (self Instance) GetSeamlessImage3d(width int, height int, depth int) []Imag
 }
 
 /*
-Returns an [Array] of [Image]s containing seamless 3D noise values for use with [Instance.Imagetexture3d.Create].
+Returns an slice of [graphics.gd/classdb/Image]s containing seamless 3D noise values for use with [graphics.gd/classdb/ImageTexture3D.Instance.Create].
+
 Note: With 'normalize' set to false, the default implementation expects the noise generator to return values in the range -1.0 to 1.0.
 */
 func (self Expanded) GetSeamlessImage3d(width int, height int, depth int, invert bool, skirt Float.X, normalize bool) []Image.Instance { //gd:Noise.get_seamless_image_3d
@@ -312,7 +322,8 @@ func (self class) GetNoise3dv(v Vector3.XYZ) float64 { //gd:Noise.get_noise_3dv
 }
 
 /*
-Returns an [Image] containing 2D noise values.
+Returns an [graphics.gd/classdb/Image] containing 2D noise values.
+
 Note: With 'normalize' set to false, the default implementation expects the noise generator to return values in the range -1.0 to 1.0.
 */
 //go:nosplit
@@ -329,7 +340,8 @@ func (self class) GetImage(width int64, height int64, invert bool, in_3d_space b
 }
 
 /*
-Returns an [Image] containing seamless 2D noise values.
+Returns an [graphics.gd/classdb/Image] containing seamless 2D noise values.
+
 Note: With 'normalize' set to false, the default implementation expects the noise generator to return values in the range -1.0 to 1.0.
 */
 //go:nosplit
@@ -347,7 +359,8 @@ func (self class) GetSeamlessImage(width int64, height int64, invert bool, in_3d
 }
 
 /*
-Returns an [Array] of [Image]s containing 3D noise values for use with [Instance.Imagetexture3d.Create].
+Returns an slice of [graphics.gd/classdb/Image]s containing 3D noise values for use with [graphics.gd/classdb/ImageTexture3D.Instance.Create].
+
 Note: With 'normalize' set to false, the default implementation expects the noise generator to return values in the range -1.0 to 1.0.
 */
 //go:nosplit
@@ -364,7 +377,8 @@ func (self class) GetImage3d(width int64, height int64, depth int64, invert bool
 }
 
 /*
-Returns an [Array] of [Image]s containing seamless 3D noise values for use with [Instance.Imagetexture3d.Create].
+Returns an slice of [graphics.gd/classdb/Image]s containing seamless 3D noise values for use with [graphics.gd/classdb/ImageTexture3D.Instance.Create].
+
 Note: With 'normalize' set to false, the default implementation expects the noise generator to return values in the range -1.0 to 1.0.
 */
 //go:nosplit

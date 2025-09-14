@@ -17,16 +17,6 @@ func Call[T any](object Object, method MethodForClass, shape Shape, args any) T 
 	return result
 }
 
-func CallStatic[T any](method MethodForClass, shape Shape, args any) T {
-	var argptr unsafe.Pointer = nil
-	var result T
-	if args != nil {
-		argptr = reflect.ValueOf(args).UnsafePointer()
-	}
-	call_noescape(0, method, unsafe.Pointer(&result), shape, argptr)
-	return result
-}
-
 //go:noescape
 func call_noescape(object Object, method MethodForClass, result unsafe.Pointer, shape Shape, args unsafe.Pointer)
 

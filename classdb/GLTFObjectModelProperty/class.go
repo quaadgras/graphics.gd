@@ -2,8 +2,10 @@
 
 /*
 GLTFObjectModelProperty defines a mapping between a property in the glTF object model and a NodePath in the Godot scene tree. This can be used to animate properties in a glTF file using the KHR_animation_pointer extension, or to access them through an engine-agnostic script such as a behavior graph as defined by the KHR_interactivity extension.
-The glTF property is identified by JSON pointer(s) stored in [member json_pointers], while the Godot property it maps to is defined by [member node_paths]. In most cases [member json_pointers] and [member node_paths] will each only have one item, but in some cases a single glTF JSON pointer will map to multiple Godot properties, or a single Godot property will be mapped to multiple glTF JSON pointers, or it might be a many-to-many relationship.
-[Expression] objects can be used to define conversions between the data, such as when glTF defines an angle in radians and Godot uses degrees. The [member object_model_type] property defines the type of data stored in the glTF file as defined by the object model, see [GLTFObjectModelType] for possible values.
+
+The glTF property is identified by JSON pointer(s) stored in [Instance.JsonPointers], while the Godot property it maps to is defined by [Instance.NodePaths]. In most cases [Instance.JsonPointers] and [Instance.NodePaths] will each only have one item, but in some cases a single glTF JSON pointer will map to multiple Godot properties, or a single Godot property will be mapped to multiple glTF JSON pointers, or it might be a many-to-many relationship.
+
+[graphics.gd/classdb/Expression] objects can be used to define conversions between the data, such as when glTF defines an angle in radians and Godot uses degrees. The [Instance.ObjectModelType] property defines the type of data stored in the glTF file as defined by the object model, see [GLTFObjectModelType] for possible values.
 */
 package GLTFObjectModelProperty
 
@@ -118,42 +120,42 @@ type Any interface {
 }
 
 /*
-Appends a [NodePath] to [member node_paths]. This can be used by [GLTFDocumentExtension] classes to define how a glTF object model property maps to a Godot property, or multiple Godot properties. Prefer using [Instance.AppendPathToProperty] for simple cases. Be sure to also call [Instance.SetTypes] once (the order does not matter).
+Appends a node path to [Instance.NodePaths]. This can be used by [graphics.gd/classdb/GLTFDocumentExtension] classes to define how a glTF object model property maps to a Godot property, or multiple Godot properties. Prefer using [Instance.AppendPathToProperty] for simple cases. Be sure to also call [Instance.SetTypes] once (the order does not matter).
 */
 func (self Instance) AppendNodePath(node_path string) { //gd:GLTFObjectModelProperty.append_node_path
 	Advanced(self).AppendNodePath(Path.ToNode(String.New(node_path)))
 }
 
 /*
-High-level wrapper over [Instance.AppendNodePath] that handles the most common cases. It constructs a new [NodePath] using 'node_path' as a base and appends 'prop_name' to the subpath. Be sure to also call [Instance.SetTypes] once (the order does not matter).
+High-level wrapper over [Instance.AppendNodePath] that handles the most common cases. It constructs a new node path using 'node_path' as a base and appends 'prop_name' to the subpath. Be sure to also call [Instance.SetTypes] once (the order does not matter).
 */
 func (self Instance) AppendPathToProperty(node_path string, prop_name string) { //gd:GLTFObjectModelProperty.append_path_to_property
 	Advanced(self).AppendPathToProperty(Path.ToNode(String.New(node_path)), String.Name(String.New(prop_name)))
 }
 
 /*
-The GLTF accessor type associated with this property's [member object_model_type]. See [member GLTFAccessor.accessor_type] for possible values, and see [GLTFObjectModelType] for how the object model type maps to accessor types.
+The GLTF accessor type associated with this property's [Instance.ObjectModelType]. See [graphics.gd/classdb/GLTFAccessor.Instance.AccessorType] for possible values, and see [GLTFObjectModelType] for how the object model type maps to accessor types.
 */
 func (self Instance) GetAccessorType() GLTFAccessor.GLTFAccessorType { //gd:GLTFObjectModelProperty.get_accessor_type
 	return GLTFAccessor.GLTFAccessorType(Advanced(self).GetAccessorType())
 }
 
 /*
-Returns true if [member node_paths] is not empty. This is used during import to determine if a [GLTFObjectModelProperty] can handle converting a glTF object model property to a Godot property.
+Returns true if [Instance.NodePaths] is not empty. This is used during import to determine if a [graphics.gd/classdb/GLTFObjectModelProperty] can handle converting a glTF object model property to a Godot property.
 */
 func (self Instance) HasNodePaths() bool { //gd:GLTFObjectModelProperty.has_node_paths
 	return bool(Advanced(self).HasNodePaths())
 }
 
 /*
-Returns true if [member json_pointers] is not empty. This is used during export to determine if a [GLTFObjectModelProperty] can handle converting a Godot property to a glTF object model property.
+Returns true if [Instance.JsonPointers] is not empty. This is used during export to determine if a [graphics.gd/classdb/GLTFObjectModelProperty] can handle converting a Godot property to a glTF object model property.
 */
 func (self Instance) HasJsonPointers() bool { //gd:GLTFObjectModelProperty.has_json_pointers
 	return bool(Advanced(self).HasJsonPointers())
 }
 
 /*
-Sets the [member variant_type] and [member object_model_type] properties. This is a convenience method to set both properties at once, since they are almost always known at the same time. This method should be called once. Calling it again with the same values will have no effect.
+Sets the [Instance.VariantType] and [Instance.ObjectModelType] properties. This is a convenience method to set both properties at once, since they are almost always known at the same time. This method should be called once. Calling it again with the same values will have no effect.
 */
 func (self Instance) SetTypes(variant_type variant.Type, obj_model_type GLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_types
 	Advanced(self).SetTypes(variant_type, obj_model_type)
@@ -251,7 +253,7 @@ func (self Instance) SetVariantType(value variant.Type) {
 }
 
 /*
-Appends a [NodePath] to [member node_paths]. This can be used by [GLTFDocumentExtension] classes to define how a glTF object model property maps to a Godot property, or multiple Godot properties. Prefer using [Instance.AppendPathToProperty] for simple cases. Be sure to also call [Instance.SetTypes] once (the order does not matter).
+Appends a node path to [Instance.NodePaths]. This can be used by [graphics.gd/classdb/GLTFDocumentExtension] classes to define how a glTF object model property maps to a Godot property, or multiple Godot properties. Prefer using [Instance.AppendPathToProperty] for simple cases. Be sure to also call [Instance.SetTypes] once (the order does not matter).
 */
 //go:nosplit
 func (self class) AppendNodePath(node_path Path.ToNode) { //gd:GLTFObjectModelProperty.append_node_path
@@ -259,7 +261,7 @@ func (self class) AppendNodePath(node_path Path.ToNode) { //gd:GLTFObjectModelPr
 }
 
 /*
-High-level wrapper over [Instance.AppendNodePath] that handles the most common cases. It constructs a new [NodePath] using 'node_path' as a base and appends 'prop_name' to the subpath. Be sure to also call [Instance.SetTypes] once (the order does not matter).
+High-level wrapper over [Instance.AppendNodePath] that handles the most common cases. It constructs a new node path using 'node_path' as a base and appends 'prop_name' to the subpath. Be sure to also call [Instance.SetTypes] once (the order does not matter).
 */
 //go:nosplit
 func (self class) AppendPathToProperty(node_path Path.ToNode, prop_name String.Name) { //gd:GLTFObjectModelProperty.append_path_to_property
@@ -270,7 +272,7 @@ func (self class) AppendPathToProperty(node_path Path.ToNode, prop_name String.N
 }
 
 /*
-The GLTF accessor type associated with this property's [member object_model_type]. See [member GLTFAccessor.accessor_type] for possible values, and see [GLTFObjectModelType] for how the object model type maps to accessor types.
+The GLTF accessor type associated with this property's [Instance.ObjectModelType]. See [graphics.gd/classdb/GLTFAccessor.Instance.AccessorType] for possible values, and see [GLTFObjectModelType] for how the object model type maps to accessor types.
 */
 //go:nosplit
 func (self class) GetAccessorType() GLTFAccessor.GLTFAccessorType { //gd:GLTFObjectModelProperty.get_accessor_type
@@ -311,7 +313,7 @@ func (self class) GetNodePaths() Array.Contains[Path.ToNode] { //gd:GLTFObjectMo
 }
 
 /*
-Returns true if [member node_paths] is not empty. This is used during import to determine if a [GLTFObjectModelProperty] can handle converting a glTF object model property to a Godot property.
+Returns true if [Instance.NodePaths] is not empty. This is used during import to determine if a [graphics.gd/classdb/GLTFObjectModelProperty] can handle converting a glTF object model property to a Godot property.
 */
 //go:nosplit
 func (self class) HasNodePaths() bool { //gd:GLTFObjectModelProperty.has_node_paths
@@ -345,7 +347,7 @@ func (self class) GetJsonPointers() Array.Contains[Packed.Strings] { //gd:GLTFOb
 }
 
 /*
-Returns true if [member json_pointers] is not empty. This is used during export to determine if a [GLTFObjectModelProperty] can handle converting a Godot property to a glTF object model property.
+Returns true if [Instance.JsonPointers] is not empty. This is used during export to determine if a [graphics.gd/classdb/GLTFObjectModelProperty] can handle converting a Godot property to a glTF object model property.
 */
 //go:nosplit
 func (self class) HasJsonPointers() bool { //gd:GLTFObjectModelProperty.has_json_pointers
@@ -372,7 +374,7 @@ func (self class) SetVariantType(variant_type variant.Type) { //gd:GLTFObjectMod
 }
 
 /*
-Sets the [member variant_type] and [member object_model_type] properties. This is a convenience method to set both properties at once, since they are almost always known at the same time. This method should be called once. Calling it again with the same values will have no effect.
+Sets the [Instance.VariantType] and [Instance.ObjectModelType] properties. This is a convenience method to set both properties at once, since they are almost always known at the same time. This method should be called once. Calling it again with the same values will have no effect.
 */
 //go:nosplit
 func (self class) SetTypes(variant_type variant.Type, obj_model_type GLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_types
@@ -418,26 +420,26 @@ func init() {
 type GLTFObjectModelType int //gd:GLTFObjectModelProperty.GLTFObjectModelType
 
 const (
-	/*Unknown or not set object model type. If the object model type is set to this value, the real type still needs to be determined.*/
+	// Unknown or not set object model type. If the object model type is set to this value, the real type still needs to be determined.
 	GltfObjectModelTypeUnknown GLTFObjectModelType = 0
-	/*Object model type "bool". Represented in the glTF JSON as a boolean, and encoded in a [GLTFAccessor] as "SCALAR". When encoded in an accessor, a value of [code]0[/code] is [code]false[/code], and any other value is [code]true[/code].*/
+	// Object model type "bool". Represented in the glTF JSON as a boolean, and encoded in a [graphics.gd/classdb/GLTFAccessor] as "SCALAR". When encoded in an accessor, a value of 0 is false, and any other value is true.
 	GltfObjectModelTypeBool GLTFObjectModelType = 1
-	/*Object model type "float". Represented in the glTF JSON as a number, and encoded in a [GLTFAccessor] as "SCALAR".*/
+	// Object model type "float". Represented in the glTF JSON as a number, and encoded in a [graphics.gd/classdb/GLTFAccessor] as "SCALAR".
 	GltfObjectModelTypeFloat GLTFObjectModelType = 2
-	/*Object model type "float[lb][rb]". Represented in the glTF JSON as an array of numbers, and encoded in a [GLTFAccessor] as "SCALAR".*/
+	// Object model type "float[]". Represented in the glTF JSON as an array of numbers, and encoded in a [graphics.gd/classdb/GLTFAccessor] as "SCALAR".
 	GltfObjectModelTypeFloatArray GLTFObjectModelType = 3
-	/*Object model type "float2". Represented in the glTF JSON as an array of two numbers, and encoded in a [GLTFAccessor] as "VEC2".*/
+	// Object model type "float2". Represented in the glTF JSON as an array of two numbers, and encoded in a [graphics.gd/classdb/GLTFAccessor] as "VEC2".
 	GltfObjectModelTypeFloat2 GLTFObjectModelType = 4
-	/*Object model type "float3". Represented in the glTF JSON as an array of three numbers, and encoded in a [GLTFAccessor] as "VEC3".*/
+	// Object model type "float3". Represented in the glTF JSON as an array of three numbers, and encoded in a [graphics.gd/classdb/GLTFAccessor] as "VEC3".
 	GltfObjectModelTypeFloat3 GLTFObjectModelType = 5
-	/*Object model type "float4". Represented in the glTF JSON as an array of four numbers, and encoded in a [GLTFAccessor] as "VEC4".*/
+	// Object model type "float4". Represented in the glTF JSON as an array of four numbers, and encoded in a [graphics.gd/classdb/GLTFAccessor] as "VEC4".
 	GltfObjectModelTypeFloat4 GLTFObjectModelType = 6
-	/*Object model type "float2x2". Represented in the glTF JSON as an array of four numbers, and encoded in a [GLTFAccessor] as "MAT2".*/
+	// Object model type "float2x2". Represented in the glTF JSON as an array of four numbers, and encoded in a [graphics.gd/classdb/GLTFAccessor] as "MAT2".
 	GltfObjectModelTypeFloat2x2 GLTFObjectModelType = 7
-	/*Object model type "float3x3". Represented in the glTF JSON as an array of nine numbers, and encoded in a [GLTFAccessor] as "MAT3".*/
+	// Object model type "float3x3". Represented in the glTF JSON as an array of nine numbers, and encoded in a [graphics.gd/classdb/GLTFAccessor] as "MAT3".
 	GltfObjectModelTypeFloat3x3 GLTFObjectModelType = 8
-	/*Object model type "float4x4". Represented in the glTF JSON as an array of sixteen numbers, and encoded in a [GLTFAccessor] as "MAT4".*/
+	// Object model type "float4x4". Represented in the glTF JSON as an array of sixteen numbers, and encoded in a [graphics.gd/classdb/GLTFAccessor] as "MAT4".
 	GltfObjectModelTypeFloat4x4 GLTFObjectModelType = 9
-	/*Object model type "int". Represented in the glTF JSON as a number, and encoded in a [GLTFAccessor] as "SCALAR". The range of values is limited to signed integers. For [code]KHR_interactivity[/code], only 32-bit integers are supported.*/
+	// Object model type "int". Represented in the glTF JSON as a number, and encoded in a [graphics.gd/classdb/GLTFAccessor] as "SCALAR". The range of values is limited to signed integers. For KHR_interactivity, only 32-bit integers are supported.
 	GltfObjectModelTypeInt GLTFObjectModelType = 10
 )

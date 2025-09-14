@@ -2,7 +2,8 @@
 
 /*
 AudioStream that lets the user play custom streams at any time from code, simultaneously using a single player.
-Playback control is done via the [AudioStreamPlaybackPolyphonic] instance set inside the player, which can be obtained via [Instance.Audiostreamplayer.GetStreamPlayback], [Instance.Audiostreamplayer2d.GetStreamPlayback] or [Instance.Audiostreamplayer3d.GetStreamPlayback] methods. Obtaining the playback instance is only valid after the stream property is set as an [AudioStreamPolyphonic] in those players.
+
+Playback control is done via the [graphics.gd/classdb/AudioStreamPlaybackPolyphonic] instance set inside the player, which can be obtained via [graphics.gd/classdb/AudioStreamPlayer.Instance.GetStreamPlayback], [graphics.gd/classdb/AudioStreamPlayer2D.Instance.GetStreamPlayback] or [graphics.gd/classdb/AudioStreamPlayer3D.Instance.GetStreamPlayback] methods. Obtaining the playback instance is only valid after the stream property is set as an [graphics.gd/classdb/AudioStreamPolyphonic] in those players.
 */
 package AudioStreamPolyphonic
 

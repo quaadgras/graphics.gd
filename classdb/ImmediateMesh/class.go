@@ -2,6 +2,7 @@
 
 /*
 A mesh type optimized for creating geometry manually, similar to OpenGL 1.x immediate mode.
+
 Here's a sample on how to generate a triangular face:
 
 	package main
@@ -21,7 +22,7 @@ Here's a sample on how to generate a triangular face:
 		mesh.SurfaceEnd()
 	}
 
-Note: Generating complex geometries with [ImmediateMesh] is highly inefficient. Instead, it is designed to generate simple geometry that changes often.
+Note: Generating complex geometries with [graphics.gd/classdb/ImmediateMesh] is highly inefficient. Instead, it is designed to generate simple geometry that changes often.
 */
 package ImmediateMesh
 

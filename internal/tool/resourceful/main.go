@@ -37,9 +37,6 @@ func work() error {
 	}
 	for _, class := range spec.Classes {
 		for _, method := range class.Methods {
-			if method.IsVirtual {
-				continue
-			}
 			for _, arg := range method.Arguments {
 				check(class, method, arg.Name, arg.Type)
 			}

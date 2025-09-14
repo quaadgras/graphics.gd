@@ -239,7 +239,7 @@ func (self class) SetUniqueNames(unique_names Array.Contains[String.Readable]) {
 }
 
 /*
-Returns a [Dictionary] that maps skeleton bone indices to the indices of glTF nodes. This property is unused during import, and only set during export. In a glTF file, a bone is a node, so Godot converts skeleton bones to glTF nodes.
+Returns a data structure that maps skeleton bone indices to the indices of glTF nodes. This property is unused during import, and only set during export. In a glTF file, a bone is a node, so Godot converts skeleton bones to glTF nodes.
 */
 //go:nosplit
 func (self class) GetGodotBoneNode() Dictionary.Any { //gd:GLTFSkeleton.get_godot_bone_node
@@ -249,7 +249,7 @@ func (self class) GetGodotBoneNode() Dictionary.Any { //gd:GLTFSkeleton.get_godo
 }
 
 /*
-Sets a [Dictionary] that maps skeleton bone indices to the indices of glTF nodes. This property is unused during import, and only set during export. In a glTF file, a bone is a node, so Godot converts skeleton bones to glTF nodes.
+Sets a data structure that maps skeleton bone indices to the indices of glTF nodes. This property is unused during import, and only set during export. In a glTF file, a bone is a node, so Godot converts skeleton bones to glTF nodes.
 */
 //go:nosplit
 func (self class) SetGodotBoneNode(godot_bone_node Dictionary.Any) { //gd:GLTFSkeleton.set_godot_bone_node

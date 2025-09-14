@@ -2,7 +2,8 @@
 
 /*
 Stores the factor of a magnifying touch gesture. This is usually performed when the user pinches the touch screen and used for zooming in/out.
-Note: On Android, this requires the [member ProjectSettings.input_devices/pointing/android/enable_pan_and_scale_gestures] project setting to be enabled.
+
+Note: On Android, this requires the [graphics.gd/classdb/ProjectSettings] "input_devices/pointing/android/enable_pan_and_scale_gestures" project setting to be enabled.
 */
 package InputEventMagnifyGesture
 

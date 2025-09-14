@@ -2,7 +2,8 @@
 
 /*
 Arranges child controls into a tabbed view, creating a tab for each one. The active tab's corresponding control is made visible, while all other child controls are hidden. Ignores non-control children.
-Note: The drawing of the clickable tabs is handled by this node; [TabBar] is not needed.
+
+Note: The drawing of the clickable tabs is handled by this node; [graphics.gd/classdb/TabBar] is not needed.
 */
 package TabContainer
 
@@ -182,22 +183,23 @@ func (self Instance) SelectNextAvailable() bool { //gd:TabContainer.select_next_
 }
 
 /*
-Returns the child [Control] node located at the active tab index.
+Returns the child [graphics.gd/classdb/Control] node located at the active tab index.
 */
 func (self Instance) GetCurrentTabControl() Control.Instance { //gd:TabContainer.get_current_tab_control
 	return Control.Instance(Advanced(self).GetCurrentTabControl())
 }
 
 /*
-Returns the [TabBar] contained in this container.
-Warning: This is a required internal node, removing and freeing it or editing its tabs may cause a crash. If you wish to edit the tabs, use the methods provided in [TabContainer].
+Returns the [graphics.gd/classdb/TabBar] contained in this container.
+
+Warning: This is a required internal node, removing and freeing it or editing its tabs may cause a crash. If you wish to edit the tabs, use the methods provided in [graphics.gd/classdb/TabContainer].
 */
 func (self Instance) GetTabBar() TabBar.Instance { //gd:TabContainer.get_tab_bar
 	return TabBar.Instance(Advanced(self).GetTabBar())
 }
 
 /*
-Returns the [Control] node from the tab at index 'tab_idx'.
+Returns the [graphics.gd/classdb/Control] node from the tab at index 'tab_idx'.
 */
 func (self Instance) GetTabControl(tab_idx int) Control.Instance { //gd:TabContainer.get_tab_control
 	return Control.Instance(Advanced(self).GetTabControl(int64(tab_idx)))
@@ -219,6 +221,7 @@ func (self Instance) GetTabTitle(tab_idx int) string { //gd:TabContainer.get_tab
 
 /*
 Sets a custom tooltip text for tab at index 'tab_idx'.
+
 Note: By default, if the 'tooltip' is empty and the tab text is truncated (not all characters fit into the tab), the title will be displayed as a tooltip. To hide the tooltip, assign " " as the 'tooltip' text.
 */
 func (self Instance) SetTabTooltip(tab_idx int, tooltip string) { //gd:TabContainer.set_tab_tooltip
@@ -240,14 +243,14 @@ func (self Instance) SetTabIcon(tab_idx int, icon Texture2D.Instance) { //gd:Tab
 }
 
 /*
-Returns the [Texture2D] for the tab at index 'tab_idx' or null if the tab has no [Texture2D].
+Returns the [graphics.gd/classdb/Texture2D] for the tab at index 'tab_idx' or null if the tab has no [graphics.gd/classdb/Texture2D].
 */
 func (self Instance) GetTabIcon(tab_idx int) Texture2D.Instance { //gd:TabContainer.get_tab_icon
 	return Texture2D.Instance(Advanced(self).GetTabIcon(int64(tab_idx)))
 }
 
 /*
-Sets the maximum allowed width of the icon for the tab at index 'tab_idx'. This limit is applied on top of the default size of the icon and on top of [theme_item icon_max_width]. The height is adjusted according to the icon's ratio.
+Sets the maximum allowed width of the icon for the tab at index 'tab_idx'. This limit is applied on top of the default size of the icon and on top of theme's 'icon_max_width'. The height is adjusted according to the icon's ratio.
 */
 func (self Instance) SetTabIconMaxWidth(tab_idx int, width int) { //gd:TabContainer.set_tab_icon_max_width
 	Advanced(self).SetTabIconMaxWidth(int64(tab_idx), int64(width))
@@ -324,22 +327,23 @@ func (self Instance) GetTabIdxAtPoint(point Vector2.XY) int { //gd:TabContainer.
 }
 
 /*
-Returns the index of the tab tied to the given 'control'. The control must be a child of the [TabContainer].
+Returns the index of the tab tied to the given 'control'. The control must be a child of the [graphics.gd/classdb/TabContainer].
 */
 func (self Instance) GetTabIdxFromControl(control Control.Instance) int { //gd:TabContainer.get_tab_idx_from_control
 	return int(int(Advanced(self).GetTabIdxFromControl(control)))
 }
 
 /*
-If set on a [Popup] node instance, a popup menu icon appears in the top-right corner of the [TabContainer] (setting it to null will make it go away). Clicking it will expand the [Popup] node.
+If set on a [graphics.gd/classdb/Popup] node instance, a popup menu icon appears in the top-right corner of the [graphics.gd/classdb/TabContainer] (setting it to null will make it go away). Clicking it will expand the [graphics.gd/classdb/Popup] node.
 */
 func (self Instance) SetPopup(popup Node.Instance) { //gd:TabContainer.set_popup
 	Advanced(self).SetPopup(popup)
 }
 
 /*
-Returns the [Popup] node instance if one has been set already with [Instance.SetPopup].
-Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
+Returns the [graphics.gd/classdb/Popup] node instance if one has been set already with [Instance.SetPopup].
+
+Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [graphics.gd/classdb/Window.Instance.Visible] property.
 */
 func (self Instance) GetPopup() Popup.Instance { //gd:TabContainer.get_popup
 	return Popup.Instance(Advanced(self).GetPopup())
@@ -528,7 +532,7 @@ func (self class) SelectNextAvailable() bool { //gd:TabContainer.select_next_ava
 }
 
 /*
-Returns the child [Control] node located at the active tab index.
+Returns the child [graphics.gd/classdb/Control] node located at the active tab index.
 */
 //go:nosplit
 func (self class) GetCurrentTabControl() [1]gdclass.Control { //gd:TabContainer.get_current_tab_control
@@ -538,8 +542,9 @@ func (self class) GetCurrentTabControl() [1]gdclass.Control { //gd:TabContainer.
 }
 
 /*
-Returns the [TabBar] contained in this container.
-Warning: This is a required internal node, removing and freeing it or editing its tabs may cause a crash. If you wish to edit the tabs, use the methods provided in [TabContainer].
+Returns the [graphics.gd/classdb/TabBar] contained in this container.
+
+Warning: This is a required internal node, removing and freeing it or editing its tabs may cause a crash. If you wish to edit the tabs, use the methods provided in [graphics.gd/classdb/TabContainer].
 */
 //go:nosplit
 func (self class) GetTabBar() [1]gdclass.TabBar { //gd:TabContainer.get_tab_bar
@@ -549,7 +554,7 @@ func (self class) GetTabBar() [1]gdclass.TabBar { //gd:TabContainer.get_tab_bar
 }
 
 /*
-Returns the [Control] node from the tab at index 'tab_idx'.
+Returns the [graphics.gd/classdb/Control] node from the tab at index 'tab_idx'.
 */
 //go:nosplit
 func (self class) GetTabControl(tab_idx int64) [1]gdclass.Control { //gd:TabContainer.get_tab_control
@@ -641,6 +646,7 @@ func (self class) GetTabTitle(tab_idx int64) String.Readable { //gd:TabContainer
 
 /*
 Sets a custom tooltip text for tab at index 'tab_idx'.
+
 Note: By default, if the 'tooltip' is empty and the tab text is truncated (not all characters fit into the tab), the title will be displayed as a tooltip. To hide the tooltip, assign " " as the 'tooltip' text.
 */
 //go:nosplit
@@ -673,7 +679,7 @@ func (self class) SetTabIcon(tab_idx int64, icon [1]gdclass.Texture2D) { //gd:Ta
 }
 
 /*
-Returns the [Texture2D] for the tab at index 'tab_idx' or null if the tab has no [Texture2D].
+Returns the [graphics.gd/classdb/Texture2D] for the tab at index 'tab_idx' or null if the tab has no [graphics.gd/classdb/Texture2D].
 */
 //go:nosplit
 func (self class) GetTabIcon(tab_idx int64) [1]gdclass.Texture2D { //gd:TabContainer.get_tab_icon
@@ -683,7 +689,7 @@ func (self class) GetTabIcon(tab_idx int64) [1]gdclass.Texture2D { //gd:TabConta
 }
 
 /*
-Sets the maximum allowed width of the icon for the tab at index 'tab_idx'. This limit is applied on top of the default size of the icon and on top of [theme_item icon_max_width]. The height is adjusted according to the icon's ratio.
+Sets the maximum allowed width of the icon for the tab at index 'tab_idx'. This limit is applied on top of the default size of the icon and on top of theme's 'icon_max_width'. The height is adjusted according to the icon's ratio.
 */
 //go:nosplit
 func (self class) SetTabIconMaxWidth(tab_idx int64, width int64) { //gd:TabContainer.set_tab_icon_max_width
@@ -798,7 +804,7 @@ func (self class) GetTabIdxAtPoint(point Vector2.XY) int64 { //gd:TabContainer.g
 }
 
 /*
-Returns the index of the tab tied to the given 'control'. The control must be a child of the [TabContainer].
+Returns the index of the tab tied to the given 'control'. The control must be a child of the [graphics.gd/classdb/TabContainer].
 */
 //go:nosplit
 func (self class) GetTabIdxFromControl(control [1]gdclass.Control) int64 { //gd:TabContainer.get_tab_idx_from_control
@@ -808,7 +814,7 @@ func (self class) GetTabIdxFromControl(control [1]gdclass.Control) int64 { //gd:
 }
 
 /*
-If set on a [Popup] node instance, a popup menu icon appears in the top-right corner of the [TabContainer] (setting it to null will make it go away). Clicking it will expand the [Popup] node.
+If set on a [graphics.gd/classdb/Popup] node instance, a popup menu icon appears in the top-right corner of the [graphics.gd/classdb/TabContainer] (setting it to null will make it go away). Clicking it will expand the [graphics.gd/classdb/Popup] node.
 */
 //go:nosplit
 func (self class) SetPopup(popup [1]gdclass.Node) { //gd:TabContainer.set_popup
@@ -816,8 +822,9 @@ func (self class) SetPopup(popup [1]gdclass.Node) { //gd:TabContainer.set_popup
 }
 
 /*
-Returns the [Popup] node instance if one has been set already with [Instance.SetPopup].
-Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [member Window.visible] property.
+Returns the [graphics.gd/classdb/Popup] node instance if one has been set already with [Instance.SetPopup].
+
+Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [graphics.gd/classdb/Window.Instance.Visible] property.
 */
 //go:nosplit
 func (self class) GetPopup() [1]gdclass.Popup { //gd:TabContainer.get_popup
@@ -1023,10 +1030,10 @@ func init() {
 type TabPosition int //gd:TabContainer.TabPosition
 
 const (
-	/*Places the tab bar at the top.*/
+	// Places the tab bar at the top.
 	PositionTop TabPosition = 0
-	/*Places the tab bar at the bottom. The tab bar's [StyleBox] will be flipped vertically.*/
+	// Places the tab bar at the bottom. The tab bar's [graphics.gd/classdb/StyleBox] will be flipped vertically.
 	PositionBottom TabPosition = 1
-	/*Represents the size of the [enum TabPosition] enum.*/
+	// Represents the size of the [TabPosition] enum.
 	PositionMax TabPosition = 2
 )

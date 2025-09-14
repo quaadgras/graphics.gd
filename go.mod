@@ -5,6 +5,7 @@ go 1.25.0
 require runtime.link v0.0.0-20250814043127-466c6970c4a5
 
 require (
+	github.com/ianlancetaylor/cgosymbolizer v0.0.0-20250410214317-b8ecc8b6bbe6
 	github.com/konoui/lipo v0.10.0
 	github.com/mdp/qrterminal/v3 v3.2.1
 	github.com/tetratelabs/wazero v1.8.2
@@ -14,7 +15,6 @@ require (
 )
 
 require (
-	github.com/justakit/bbparser v0.0.0-20180521072836-ce6eaaf5e50e // indirect
 	github.com/konoui/go-qsort v0.1.0 // indirect
 	golang.org/x/mod v0.24.0 // indirect
 	golang.org/x/sync v0.14.0 // indirect

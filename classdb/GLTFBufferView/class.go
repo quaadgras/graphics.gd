@@ -2,7 +2,8 @@
 
 /*
 GLTFBufferView is a data structure representing a glTF bufferView that would be found in the "bufferViews" array. A buffer is a blob of binary data. A buffer view is a slice of a buffer that can be used to identify and extract data from the buffer.
-Most custom uses of buffers only need to use the [member buffer], [member byte_length], and [member byte_offset]. The [member byte_stride] and [member indices] properties are for more advanced use cases such as interleaved mesh data encoded for the GPU.
+
+Most custom uses of buffers only need to use the [Instance.Buffer], [Instance.ByteLength], and [Instance.ByteOffset]. The [Instance.ByteStride] and [Instance.Indices] properties are for more advanced use cases such as interleaved mesh data encoded for the GPU.
 */
 package GLTFBufferView
 
@@ -202,7 +203,7 @@ func (self Instance) SetVertexAttributes(value bool) {
 }
 
 /*
-Loads the buffer view data from the buffer referenced by this buffer view in the given [GLTFState]. Interleaved data with a byte stride is not yet supported by this method. The data is returned as a byte slice.
+Loads the buffer view data from the buffer referenced by this buffer view in the given [graphics.gd/classdb/GLTFState]. Interleaved data with a byte stride is not yet supported by this method. The data is returned as a []byte.
 */
 //go:nosplit
 func (self class) LoadBufferViewData(state [1]gdclass.GLTFState) Packed.Bytes { //gd:GLTFBufferView.load_buffer_view_data

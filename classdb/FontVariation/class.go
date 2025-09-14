@@ -2,6 +2,7 @@
 
 /*
 Provides OpenType variations, simulated bold / slant, and additional font settings like OpenType features and extra spacing.
+
 To use simulated bold font variant:
 
 	package main
@@ -26,12 +27,6 @@ To use simulated bold font variant:
 	}
 
 To set the coordinate of multiple variation axes:
-[codeblock]
-var fv = FontVariation.new();
-var ts = TextServerManager.get_primary_interface()
-fv.base_font = load("res://BarlowCondensed-Regular.ttf")
-fv.variation_opentype = { ts.name_to_tag("wght"): 900, ts.name_to_tag("custom_hght"): 900 }
-[/codeblock]
 */
 package FontVariation
 

@@ -2,17 +2,10 @@
 
 /*
 This class is used to manage directories and their content, even outside of the project folder.
-[DirAccess] can't be instantiated directly. Instead it is created with a static method that takes a path for which it will be opened.
-Most of the methods have a static alternative that can be used without creating a [DirAccess]. Static methods only support absolute paths (including res:// and user://).
-[codeblock]
-# Standard
-var dir = DirAccess.open("user://levels")
-dir.make_dir("world1")
-# Static
-DirAccess.make_dir_absolute("user://levels/world1")
-[/codeblock]
-Note: Accessing project ("res://") directories once exported may behave unexpectedly as some files are converted to engine-specific formats and their original source files may not be present in the expected PCK package. Because of this, to access resources in an exported project, it is recommended to use [ResourceLoader] instead of [FileAccess].
-Here is an example on how to iterate through the files of a directory:
+
+[graphics.gd/classdb/DirAccess] can't be instantiated directly. Instead it is created with a static method that takes a path for which it will be opened.
+
+Most of the methods have a static alternative that can be used without creating a [graphics.gd/classdb/DirAccess]. Static methods only support absolute paths (including res:// and user://).
 
 	package main
 
@@ -24,7 +17,33 @@ Here is an example on how to iterate through the files of a directory:
 		DirAccess.MakeDirAbsolute("user://levels/world1")
 	}
 
-Keep in mind that file names may change or be remapped after export. If you want to see the actual resource file list as it appears in the editor, use [Instance.Resourceloader.ListDirectory] instead.
+Note: Accessing project ("res://") directories once exported may behave unexpectedly as some files are converted to engine-specific formats and their original source files may not be present in the expected PCK package. Because of this, to access resources in an exported project, it is recommended to use [graphics.gd/classdb/ResourceLoader] instead of [graphics.gd/classdb/FileAccess].
+
+Here is an example on how to iterate through the files of a directory:
+
+	package main
+
+	import "graphics.gd/classdb/DirAccess"
+
+	func ExampleDirectoryList(path string) {
+		var dir = DirAccess.Open(path)
+		if dir != DirAccess.Nil {
+			dir.ListDirBegin()
+			var fileName = dir.GetNext()
+			for fileName != "" {
+				if dir.CurrentIsDir() {
+					println("Found directory: " + fileName)
+				} else {
+					println("Found file: " + fileName)
+				}
+				fileName = dir.GetNext()
+			}
+		} else {
+			println("An error occurred when trying to access the path.")
+		}
+	}
+
+Keep in mind that file names may change or be remapped after export. If you want to see the actual resource file list as it appears in the editor, use [graphics.gd/classdb/ResourceLoader.ListDirectory] instead.
 */
 package DirAccess
 
@@ -160,8 +179,9 @@ type Any interface {
 }
 
 /*
-Creates a new [DirAccess] object and opens an existing directory of the filesystem. The 'path' argument can be within the project tree (res://folder), the user directory (user://folder) or an absolute path of the user filesystem (e.g. /tmp/folder or C:\tmp\folder).
-Returns null if opening the directory failed. You can use [Instance.GetOpenError] to check the error that occurred.
+Creates a new [graphics.gd/classdb/DirAccess] object and opens an existing directory of the filesystem. The 'path' argument can be within the project tree (res://folder), the user directory (user://folder) or an absolute path of the user filesystem (e.g. /tmp/folder or C:\tmp\folder).
+
+Returns null if opening the directory failed. You can use [GetOpenError] to check the error that occurred.
 */
 func Open(path string) Instance { //gd:DirAccess.open
 	self := Instance{}
@@ -169,7 +189,7 @@ func Open(path string) Instance { //gd:DirAccess.open
 }
 
 /*
-Returns the result of the last [Instance.Open] call in the current thread.
+Returns the result of the last [Open] call in the current thread.
 */
 func GetOpenError() error { //gd:DirAccess.get_open_error
 	self := Instance{}
@@ -177,10 +197,13 @@ func GetOpenError() error { //gd:DirAccess.get_open_error
 }
 
 /*
-Creates a temporary directory. This directory will be freed when the returned [DirAccess] is freed.
+Creates a temporary directory. This directory will be freed when the returned [graphics.gd/classdb/DirAccess] is freed.
+
 If 'prefix' is not empty, it will be prefixed to the directory name, separated by a -.
-If 'keep' is true, the directory is not deleted when the returned [DirAccess] is freed.
-Returns null if opening the directory failed. You can use [Instance.GetOpenError] to check the error that occurred.
+
+If 'keep' is true, the directory is not deleted when the returned [graphics.gd/classdb/DirAccess] is freed.
+
+Returns null if opening the directory failed. You can use [GetOpenError] to check the error that occurred.
 */
 func CreateTemp(prefix string, keep bool) Instance { //gd:DirAccess.create_temp
 	self := Instance{}
@@ -188,10 +211,13 @@ func CreateTemp(prefix string, keep bool) Instance { //gd:DirAccess.create_temp
 }
 
 /*
-Creates a temporary directory. This directory will be freed when the returned [DirAccess] is freed.
+Creates a temporary directory. This directory will be freed when the returned [graphics.gd/classdb/DirAccess] is freed.
+
 If 'prefix' is not empty, it will be prefixed to the directory name, separated by a -.
-If 'keep' is true, the directory is not deleted when the returned [DirAccess] is freed.
-Returns null if opening the directory failed. You can use [Instance.GetOpenError] to check the error that occurred.
+
+If 'keep' is true, the directory is not deleted when the returned [graphics.gd/classdb/DirAccess] is freed.
+
+Returns null if opening the directory failed. You can use [GetOpenError] to check the error that occurred.
 */
 func CreateTempOptions(prefix string, keep bool) Instance { //gd:DirAccess.create_temp
 	self := Instance{}
@@ -200,7 +226,9 @@ func CreateTempOptions(prefix string, keep bool) Instance { //gd:DirAccess.creat
 
 /*
 Initializes the stream used to list all files and directories using the [Instance.GetNext] function, closing the currently opened stream if needed. Once the stream has been processed, it should typically be closed with [Instance.ListDirEnd].
-Affected by [member include_hidden] and [member include_navigational].
+
+Affected by [Instance.IncludeHidden] and [Instance.IncludeNavigational].
+
 Note: The order of files and directories returned by this method is not deterministic, and can vary between operating systems. If you want a list of all files or folders sorted alphabetically, use [Instance.GetFiles] or [Instance.GetDirectories].
 */
 func (self Instance) ListDirBegin() error { //gd:DirAccess.list_dir_begin
@@ -209,7 +237,8 @@ func (self Instance) ListDirBegin() error { //gd:DirAccess.list_dir_begin
 
 /*
 Returns the next element (file or directory) in the current directory.
-The name of the file or directory is returned (and not its full path). Once the stream has been fully processed, the method returns an empty [String] and closes the stream automatically (i.e. [Instance.ListDirEnd] would not be mandatory in such a case).
+
+The name of the file or directory is returned (and not its full path). Once the stream has been fully processed, the method returns an empty string and closes the stream automatically (i.e. [Instance.ListDirEnd] would not be mandatory in such a case).
 */
 func (self Instance) GetNext() string { //gd:DirAccess.get_next
 	return string(Advanced(self).GetNext().String())
@@ -230,18 +259,22 @@ func (self Instance) ListDirEnd() { //gd:DirAccess.list_dir_end
 }
 
 /*
-Returns a [PackedStringArray] containing filenames of the directory contents, excluding directories. The array is sorted alphabetically.
-Affected by [member include_hidden].
-Note: When used on a res:// path in an exported project, only the files actually included in the PCK at the given folder level are returned. In practice, this means that since imported resources are stored in a top-level .godot/ folder, only paths to *.gd and *.import files are returned (plus a few files such as project.godot or project.binary and the project icon). In an exported project, the list of returned files will also vary depending on whether [member ProjectSettings.editor/export/convert_text_resources_to_binary] is true.
+Returns a []string containing filenames of the directory contents, excluding directories. The array is sorted alphabetically.
+
+Affected by [Instance.IncludeHidden].
+
+Note: When used on a res:// path in an exported project, only the files actually included in the PCK at the given folder level are returned. In practice, this means that since imported resources are stored in a top-level .godot/ folder, only paths to *.gd and *.import files are returned (plus a few files such as project.godot or project.binary and the project icon). In an exported project, the list of returned files will also vary depending on whether [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary" is true.
 */
 func (self Instance) GetFiles() []string { //gd:DirAccess.get_files
 	return []string(Advanced(self).GetFiles().Strings())
 }
 
 /*
-Returns a [PackedStringArray] containing filenames of the directory contents, excluding directories, at the given 'path'. The array is sorted alphabetically.
+Returns a []string containing filenames of the directory contents, excluding directories, at the given 'path'. The array is sorted alphabetically.
+
 Use [Instance.GetFiles] if you want more control of what gets included.
-Note: When used on a res:// path in an exported project, only the files included in the PCK at the given folder level are returned. In practice, this means that since imported resources are stored in a top-level .godot/ folder, only paths to .gd and .import files are returned (plus a few other files, such as project.godot or project.binary and the project icon). In an exported project, the list of returned files will also vary depending on [member ProjectSettings.editor/export/convert_text_resources_to_binary].
+
+Note: When used on a res:// path in an exported project, only the files included in the PCK at the given folder level are returned. In practice, this means that since imported resources are stored in a top-level .godot/ folder, only paths to .gd and .import files are returned (plus a few other files, such as project.godot or project.binary and the project icon). In an exported project, the list of returned files will also vary depending on [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary".
 */
 func GetFilesAt(path string) []string { //gd:DirAccess.get_files_at
 	self := Instance{}
@@ -249,8 +282,10 @@ func GetFilesAt(path string) []string { //gd:DirAccess.get_files_at
 }
 
 /*
-Returns a [PackedStringArray] containing filenames of the directory contents, excluding files. The array is sorted alphabetically.
-Affected by [member include_hidden] and [member include_navigational].
+Returns a []string containing filenames of the directory contents, excluding files. The array is sorted alphabetically.
+
+Affected by [Instance.IncludeHidden] and [Instance.IncludeNavigational].
+
 Note: The returned directories in the editor and after exporting in the res:// directory may differ as some files are converted to engine-specific formats when exported.
 */
 func (self Instance) GetDirectories() []string { //gd:DirAccess.get_directories
@@ -258,8 +293,10 @@ func (self Instance) GetDirectories() []string { //gd:DirAccess.get_directories
 }
 
 /*
-Returns a [PackedStringArray] containing filenames of the directory contents, excluding files, at the given 'path'. The array is sorted alphabetically.
+Returns a []string containing filenames of the directory contents, excluding files, at the given 'path'. The array is sorted alphabetically.
+
 Use [Instance.GetDirectories] if you want more control of what gets included.
+
 Note: The returned directories in the editor and after exporting in the res:// directory may differ as some files are converted to engine-specific formats when exported.
 */
 func GetDirectoriesAt(path string) []string { //gd:DirAccess.get_directories_at
@@ -269,8 +306,11 @@ func GetDirectoriesAt(path string) []string { //gd:DirAccess.get_directories_at
 
 /*
 On Windows, returns the number of drives (partitions) mounted on the current filesystem.
+
 On macOS, returns the number of mounted volumes.
+
 On Linux, returns the number of mounted volumes and GTK 3 bookmarks.
+
 On other platforms, the method returns 0.
 */
 func GetDriveCount() int { //gd:DirAccess.get_drive_count
@@ -280,8 +320,11 @@ func GetDriveCount() int { //gd:DirAccess.get_drive_count
 
 /*
 On Windows, returns the name of the drive (partition) passed as an argument (e.g. C:).
+
 On macOS, returns the path to the mounted volume passed as an argument.
+
 On Linux, returns the path to the mounted volume or GTK 3 bookmark passed as an argument.
+
 On other platforms, or if the requested drive does not exist, the method returns an empty String.
 */
 func GetDriveName(idx int) string { //gd:DirAccess.get_drive_name
@@ -290,7 +333,7 @@ func GetDriveName(idx int) string { //gd:DirAccess.get_drive_name
 }
 
 /*
-Returns the currently opened directory's drive index. See [Instance.GetDriveName] to convert returned index to the name of the drive.
+Returns the currently opened directory's drive index. See [GetDriveName] to convert returned index to the name of the drive.
 */
 func (self Instance) GetCurrentDrive() int { //gd:DirAccess.get_current_drive
 	return int(int(Advanced(self).GetCurrentDrive()))
@@ -298,8 +341,10 @@ func (self Instance) GetCurrentDrive() int { //gd:DirAccess.get_current_drive
 
 /*
 Changes the currently opened directory to the one passed as an argument. The argument can be relative to the current directory (e.g. newdir or ../newdir), or an absolute path (e.g. /tmp/newdir or res://somedir/newdir).
+
 Returns one of the [Error] code constants ([Ok] on success).
-Note: The new directory must be within the same scope, e.g. when you had opened a directory inside res://, you can't change it to user:// directory. If you need to open a directory in another access scope, use [Instance.Open] to create a new instance instead.
+
+Note: The new directory must be within the same scope, e.g. when you had opened a directory inside res://, you can't change it to user:// directory. If you need to open a directory in another access scope, use [Open] to create a new instance instead.
 */
 func (self Instance) ChangeDir(to_dir string) error { //gd:DirAccess.change_dir
 	return error(gd.ToError(Advanced(self).ChangeDir(String.New(to_dir))))
@@ -321,6 +366,7 @@ func (self Expanded) GetCurrentDir(include_drive bool) string { //gd:DirAccess.g
 
 /*
 Creates a directory. The argument can be relative to the current directory, or an absolute path. The target directory should be placed in an already existing directory (to create the full path recursively, see [Instance.MakeDirRecursive]).
+
 Returns one of the [Error] code constants ([Ok] on success).
 */
 func (self Instance) MakeDir(path string) error { //gd:DirAccess.make_dir
@@ -337,6 +383,7 @@ func MakeDirAbsolute(path string) error { //gd:DirAccess.make_dir_absolute
 
 /*
 Creates a target directory and all necessary intermediate directories in its path, by calling [Instance.MakeDir] recursively. The argument can be relative to the current directory, or an absolute path.
+
 Returns one of the [Error] code constants ([Ok] on success).
 */
 func (self Instance) MakeDirRecursive(path string) error { //gd:DirAccess.make_dir_recursive
@@ -353,8 +400,10 @@ func MakeDirRecursiveAbsolute(path string) error { //gd:DirAccess.make_dir_recur
 
 /*
 Returns whether the target file exists. The argument can be relative to the current directory, or an absolute path.
-For a static equivalent, use [Instance.Fileaccess.FileExists].
-Note: Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [Instance.Resourceloader.Exists] for an alternative approach that takes resource remapping into account.
+
+For a static equivalent, use [graphics.gd/classdb/FileAccess.Instance.FileExists].
+
+Note: Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [graphics.gd/classdb/ResourceLoader.Exists] for an alternative approach that takes resource remapping into account.
 */
 func (self Instance) FileExists(path string) bool { //gd:DirAccess.file_exists
 	return bool(Advanced(self).FileExists(String.New(path)))
@@ -362,7 +411,8 @@ func (self Instance) FileExists(path string) bool { //gd:DirAccess.file_exists
 
 /*
 Returns whether the target directory exists. The argument can be relative to the current directory, or an absolute path.
-Note: The returned [bool] in the editor and after exporting when used on a path in the res:// directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
+
+Note: The returned bool in the editor and after exporting when used on a path in the res:// directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
 */
 func (self Instance) DirExists(path string) bool { //gd:DirAccess.dir_exists
 	return bool(Advanced(self).DirExists(String.New(path)))
@@ -370,7 +420,8 @@ func (self Instance) DirExists(path string) bool { //gd:DirAccess.dir_exists
 
 /*
 Static version of [Instance.DirExists]. Supports only absolute paths.
-Note: The returned [bool] in the editor and after exporting when used on a path in the res:// directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
+
+Note: The returned bool in the editor and after exporting when used on a path in the res:// directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
 */
 func DirExistsAbsolute(path string) bool { //gd:DirAccess.dir_exists_absolute
 	self := Instance{}
@@ -386,7 +437,9 @@ func (self Instance) GetSpaceLeft() int { //gd:DirAccess.get_space_left
 
 /*
 Copies the 'from' file to the 'to' destination. Both arguments should be paths to files, either relative or absolute. If the destination file exists and is not access-protected, it will be overwritten.
+
 If 'chmod_flags' is different than -1, the Unix permissions for the destination path will be set to the provided value, if available on the current operating system.
+
 Returns one of the [Error] code constants ([Ok] on success).
 */
 func (self Instance) Copy(from string, to string) error { //gd:DirAccess.copy
@@ -395,7 +448,9 @@ func (self Instance) Copy(from string, to string) error { //gd:DirAccess.copy
 
 /*
 Copies the 'from' file to the 'to' destination. Both arguments should be paths to files, either relative or absolute. If the destination file exists and is not access-protected, it will be overwritten.
+
 If 'chmod_flags' is different than -1, the Unix permissions for the destination path will be set to the provided value, if available on the current operating system.
+
 Returns one of the [Error] code constants ([Ok] on success).
 */
 func (self Expanded) Copy(from string, to string, chmod_flags int) error { //gd:DirAccess.copy
@@ -420,6 +475,7 @@ func CopyAbsoluteOptions(from string, to string, chmod_flags int) error { //gd:D
 
 /*
 Renames (move) the 'from' file or directory to the 'to' destination. Both arguments should be paths to files or directories, either relative or absolute. If the destination file or directory exists and is not access-protected, it will be overwritten.
+
 Returns one of the [Error] code constants ([Ok] on success).
 */
 func (self Instance) Rename(from string, to string) error { //gd:DirAccess.rename
@@ -436,7 +492,9 @@ func RenameAbsolute(from string, to string) error { //gd:DirAccess.rename_absolu
 
 /*
 Permanently deletes the target file or an empty directory. The argument can be relative to the current directory, or an absolute path. If the target directory is not empty, the operation will fail.
-If you don't want to delete the file/directory permanently, use [Instance.Os.MoveToTrash] instead.
+
+If you don't want to delete the file/directory permanently, use [graphics.gd/classdb/OS.MoveToTrash] instead.
+
 Returns one of the [Error] code constants ([Ok] on success).
 */
 func (self Instance) Remove(path string) error { //gd:DirAccess.remove
@@ -453,6 +511,7 @@ func RemoveAbsolute(path string) error { //gd:DirAccess.remove_absolute
 
 /*
 Returns true if the file or directory is a symbolic link, directory junction, or other reparse point.
+
 Note: This method is implemented on macOS, Linux, and Windows.
 */
 func (self Instance) IsLink(path string) bool { //gd:DirAccess.is_link
@@ -461,6 +520,7 @@ func (self Instance) IsLink(path string) bool { //gd:DirAccess.is_link
 
 /*
 Returns target of the symbolic link.
+
 Note: This method is implemented on macOS, Linux, and Windows.
 */
 func (self Instance) ReadLink(path string) string { //gd:DirAccess.read_link
@@ -469,7 +529,9 @@ func (self Instance) ReadLink(path string) string { //gd:DirAccess.read_link
 
 /*
 Creates symbolic link between files or folders.
+
 Note: On Windows, this method works only if the application is running with elevated privileges or Developer Mode is enabled.
+
 Note: This method is implemented on macOS, Linux, and Windows.
 */
 func (self Instance) CreateLink(source string, target string) error { //gd:DirAccess.create_link
@@ -478,6 +540,7 @@ func (self Instance) CreateLink(source string, target string) error { //gd:DirAc
 
 /*
 Returns true if the directory is a macOS bundle.
+
 Note: This method is implemented on macOS.
 */
 func (self Instance) IsBundle(path string) bool { //gd:DirAccess.is_bundle
@@ -486,6 +549,7 @@ func (self Instance) IsBundle(path string) bool { //gd:DirAccess.is_bundle
 
 /*
 Returns true if the file system or directory use case sensitive file names.
+
 Note: This method is implemented on macOS, Linux (for EXT4 and F2FS filesystems only) and Windows. On other platforms, it always returns true.
 */
 func (self Instance) IsCaseSensitive(path string) bool { //gd:DirAccess.is_case_sensitive
@@ -552,8 +616,9 @@ func (self Instance) SetIncludeHidden(value bool) {
 }
 
 /*
-Creates a new [DirAccess] object and opens an existing directory of the filesystem. The 'path' argument can be within the project tree (res://folder), the user directory (user://folder) or an absolute path of the user filesystem (e.g. /tmp/folder or C:\tmp\folder).
-Returns null if opening the directory failed. You can use [Instance.GetOpenError] to check the error that occurred.
+Creates a new [graphics.gd/classdb/DirAccess] object and opens an existing directory of the filesystem. The 'path' argument can be within the project tree (res://folder), the user directory (user://folder) or an absolute path of the user filesystem (e.g. /tmp/folder or C:\tmp\folder).
+
+Returns null if opening the directory failed. You can use [GetOpenError] to check the error that occurred.
 */
 //go:nosplit
 func (self class) Open(path String.Readable) [1]gdclass.DirAccess { //gd:DirAccess.open
@@ -563,7 +628,7 @@ func (self class) Open(path String.Readable) [1]gdclass.DirAccess { //gd:DirAcce
 }
 
 /*
-Returns the result of the last [Instance.Open] call in the current thread.
+Returns the result of the last [Open] call in the current thread.
 */
 //go:nosplit
 func (self class) GetOpenError() Error.Code { //gd:DirAccess.get_open_error
@@ -573,10 +638,13 @@ func (self class) GetOpenError() Error.Code { //gd:DirAccess.get_open_error
 }
 
 /*
-Creates a temporary directory. This directory will be freed when the returned [DirAccess] is freed.
+Creates a temporary directory. This directory will be freed when the returned [graphics.gd/classdb/DirAccess] is freed.
+
 If 'prefix' is not empty, it will be prefixed to the directory name, separated by a -.
-If 'keep' is true, the directory is not deleted when the returned [DirAccess] is freed.
-Returns null if opening the directory failed. You can use [Instance.GetOpenError] to check the error that occurred.
+
+If 'keep' is true, the directory is not deleted when the returned [graphics.gd/classdb/DirAccess] is freed.
+
+Returns null if opening the directory failed. You can use [GetOpenError] to check the error that occurred.
 */
 //go:nosplit
 func (self class) CreateTemp(prefix String.Readable, keep bool) [1]gdclass.DirAccess { //gd:DirAccess.create_temp
@@ -590,7 +658,9 @@ func (self class) CreateTemp(prefix String.Readable, keep bool) [1]gdclass.DirAc
 
 /*
 Initializes the stream used to list all files and directories using the [Instance.GetNext] function, closing the currently opened stream if needed. Once the stream has been processed, it should typically be closed with [Instance.ListDirEnd].
-Affected by [member include_hidden] and [member include_navigational].
+
+Affected by [Instance.IncludeHidden] and [Instance.IncludeNavigational].
+
 Note: The order of files and directories returned by this method is not deterministic, and can vary between operating systems. If you want a list of all files or folders sorted alphabetically, use [Instance.GetFiles] or [Instance.GetDirectories].
 */
 //go:nosplit
@@ -602,7 +672,8 @@ func (self class) ListDirBegin() Error.Code { //gd:DirAccess.list_dir_begin
 
 /*
 Returns the next element (file or directory) in the current directory.
-The name of the file or directory is returned (and not its full path). Once the stream has been fully processed, the method returns an empty [String] and closes the stream automatically (i.e. [Instance.ListDirEnd] would not be mandatory in such a case).
+
+The name of the file or directory is returned (and not its full path). Once the stream has been fully processed, the method returns an empty string and closes the stream automatically (i.e. [Instance.ListDirEnd] would not be mandatory in such a case).
 */
 //go:nosplit
 func (self class) GetNext() String.Readable { //gd:DirAccess.get_next
@@ -630,9 +701,11 @@ func (self class) ListDirEnd() { //gd:DirAccess.list_dir_end
 }
 
 /*
-Returns a [PackedStringArray] containing filenames of the directory contents, excluding directories. The array is sorted alphabetically.
-Affected by [member include_hidden].
-Note: When used on a res:// path in an exported project, only the files actually included in the PCK at the given folder level are returned. In practice, this means that since imported resources are stored in a top-level .godot/ folder, only paths to *.gd and *.import files are returned (plus a few files such as project.godot or project.binary and the project icon). In an exported project, the list of returned files will also vary depending on whether [member ProjectSettings.editor/export/convert_text_resources_to_binary] is true.
+Returns a []string containing filenames of the directory contents, excluding directories. The array is sorted alphabetically.
+
+Affected by [Instance.IncludeHidden].
+
+Note: When used on a res:// path in an exported project, only the files actually included in the PCK at the given folder level are returned. In practice, this means that since imported resources are stored in a top-level .godot/ folder, only paths to *.gd and *.import files are returned (plus a few files such as project.godot or project.binary and the project icon). In an exported project, the list of returned files will also vary depending on whether [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary" is true.
 */
 //go:nosplit
 func (self class) GetFiles() Packed.Strings { //gd:DirAccess.get_files
@@ -642,9 +715,11 @@ func (self class) GetFiles() Packed.Strings { //gd:DirAccess.get_files
 }
 
 /*
-Returns a [PackedStringArray] containing filenames of the directory contents, excluding directories, at the given 'path'. The array is sorted alphabetically.
+Returns a []string containing filenames of the directory contents, excluding directories, at the given 'path'. The array is sorted alphabetically.
+
 Use [Instance.GetFiles] if you want more control of what gets included.
-Note: When used on a res:// path in an exported project, only the files included in the PCK at the given folder level are returned. In practice, this means that since imported resources are stored in a top-level .godot/ folder, only paths to .gd and .import files are returned (plus a few other files, such as project.godot or project.binary and the project icon). In an exported project, the list of returned files will also vary depending on [member ProjectSettings.editor/export/convert_text_resources_to_binary].
+
+Note: When used on a res:// path in an exported project, only the files included in the PCK at the given folder level are returned. In practice, this means that since imported resources are stored in a top-level .godot/ folder, only paths to .gd and .import files are returned (plus a few other files, such as project.godot or project.binary and the project icon). In an exported project, the list of returned files will also vary depending on [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary".
 */
 //go:nosplit
 func (self class) GetFilesAt(path String.Readable) Packed.Strings { //gd:DirAccess.get_files_at
@@ -654,8 +729,10 @@ func (self class) GetFilesAt(path String.Readable) Packed.Strings { //gd:DirAcce
 }
 
 /*
-Returns a [PackedStringArray] containing filenames of the directory contents, excluding files. The array is sorted alphabetically.
-Affected by [member include_hidden] and [member include_navigational].
+Returns a []string containing filenames of the directory contents, excluding files. The array is sorted alphabetically.
+
+Affected by [Instance.IncludeHidden] and [Instance.IncludeNavigational].
+
 Note: The returned directories in the editor and after exporting in the res:// directory may differ as some files are converted to engine-specific formats when exported.
 */
 //go:nosplit
@@ -666,8 +743,10 @@ func (self class) GetDirectories() Packed.Strings { //gd:DirAccess.get_directori
 }
 
 /*
-Returns a [PackedStringArray] containing filenames of the directory contents, excluding files, at the given 'path'. The array is sorted alphabetically.
+Returns a []string containing filenames of the directory contents, excluding files, at the given 'path'. The array is sorted alphabetically.
+
 Use [Instance.GetDirectories] if you want more control of what gets included.
+
 Note: The returned directories in the editor and after exporting in the res:// directory may differ as some files are converted to engine-specific formats when exported.
 */
 //go:nosplit
@@ -679,8 +758,11 @@ func (self class) GetDirectoriesAt(path String.Readable) Packed.Strings { //gd:D
 
 /*
 On Windows, returns the number of drives (partitions) mounted on the current filesystem.
+
 On macOS, returns the number of mounted volumes.
+
 On Linux, returns the number of mounted volumes and GTK 3 bookmarks.
+
 On other platforms, the method returns 0.
 */
 //go:nosplit
@@ -692,8 +774,11 @@ func (self class) GetDriveCount() int64 { //gd:DirAccess.get_drive_count
 
 /*
 On Windows, returns the name of the drive (partition) passed as an argument (e.g. C:).
+
 On macOS, returns the path to the mounted volume passed as an argument.
+
 On Linux, returns the path to the mounted volume or GTK 3 bookmark passed as an argument.
+
 On other platforms, or if the requested drive does not exist, the method returns an empty String.
 */
 //go:nosplit
@@ -704,7 +789,7 @@ func (self class) GetDriveName(idx int64) String.Readable { //gd:DirAccess.get_d
 }
 
 /*
-Returns the currently opened directory's drive index. See [Instance.GetDriveName] to convert returned index to the name of the drive.
+Returns the currently opened directory's drive index. See [GetDriveName] to convert returned index to the name of the drive.
 */
 //go:nosplit
 func (self class) GetCurrentDrive() int64 { //gd:DirAccess.get_current_drive
@@ -715,8 +800,10 @@ func (self class) GetCurrentDrive() int64 { //gd:DirAccess.get_current_drive
 
 /*
 Changes the currently opened directory to the one passed as an argument. The argument can be relative to the current directory (e.g. newdir or ../newdir), or an absolute path (e.g. /tmp/newdir or res://somedir/newdir).
+
 Returns one of the [Error] code constants ([Ok] on success).
-Note: The new directory must be within the same scope, e.g. when you had opened a directory inside res://, you can't change it to user:// directory. If you need to open a directory in another access scope, use [Instance.Open] to create a new instance instead.
+
+Note: The new directory must be within the same scope, e.g. when you had opened a directory inside res://, you can't change it to user:// directory. If you need to open a directory in another access scope, use [Open] to create a new instance instead.
 */
 //go:nosplit
 func (self class) ChangeDir(to_dir String.Readable) Error.Code { //gd:DirAccess.change_dir
@@ -737,6 +824,7 @@ func (self class) GetCurrentDir(include_drive bool) String.Readable { //gd:DirAc
 
 /*
 Creates a directory. The argument can be relative to the current directory, or an absolute path. The target directory should be placed in an already existing directory (to create the full path recursively, see [Instance.MakeDirRecursive]).
+
 Returns one of the [Error] code constants ([Ok] on success).
 */
 //go:nosplit
@@ -758,6 +846,7 @@ func (self class) MakeDirAbsolute(path String.Readable) Error.Code { //gd:DirAcc
 
 /*
 Creates a target directory and all necessary intermediate directories in its path, by calling [Instance.MakeDir] recursively. The argument can be relative to the current directory, or an absolute path.
+
 Returns one of the [Error] code constants ([Ok] on success).
 */
 //go:nosplit
@@ -779,8 +868,10 @@ func (self class) MakeDirRecursiveAbsolute(path String.Readable) Error.Code { //
 
 /*
 Returns whether the target file exists. The argument can be relative to the current directory, or an absolute path.
-For a static equivalent, use [Instance.Fileaccess.FileExists].
-Note: Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [Instance.Resourceloader.Exists] for an alternative approach that takes resource remapping into account.
+
+For a static equivalent, use [graphics.gd/classdb/FileAccess.Instance.FileExists].
+
+Note: Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [graphics.gd/classdb/ResourceLoader.Exists] for an alternative approach that takes resource remapping into account.
 */
 //go:nosplit
 func (self class) FileExists(path String.Readable) bool { //gd:DirAccess.file_exists
@@ -791,7 +882,8 @@ func (self class) FileExists(path String.Readable) bool { //gd:DirAccess.file_ex
 
 /*
 Returns whether the target directory exists. The argument can be relative to the current directory, or an absolute path.
-Note: The returned [bool] in the editor and after exporting when used on a path in the res:// directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
+
+Note: The returned bool in the editor and after exporting when used on a path in the res:// directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
 */
 //go:nosplit
 func (self class) DirExists(path String.Readable) bool { //gd:DirAccess.dir_exists
@@ -802,7 +894,8 @@ func (self class) DirExists(path String.Readable) bool { //gd:DirAccess.dir_exis
 
 /*
 Static version of [Instance.DirExists]. Supports only absolute paths.
-Note: The returned [bool] in the editor and after exporting when used on a path in the res:// directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
+
+Note: The returned bool in the editor and after exporting when used on a path in the res:// directory may be different. Some files are converted to engine-specific formats when exported, potentially changing the directory structure.
 */
 //go:nosplit
 func (self class) DirExistsAbsolute(path String.Readable) bool { //gd:DirAccess.dir_exists_absolute
@@ -823,7 +916,9 @@ func (self class) GetSpaceLeft() int64 { //gd:DirAccess.get_space_left
 
 /*
 Copies the 'from' file to the 'to' destination. Both arguments should be paths to files, either relative or absolute. If the destination file exists and is not access-protected, it will be overwritten.
+
 If 'chmod_flags' is different than -1, the Unix permissions for the destination path will be set to the provided value, if available on the current operating system.
+
 Returns one of the [Error] code constants ([Ok] on success).
 */
 //go:nosplit
@@ -853,6 +948,7 @@ func (self class) CopyAbsolute(from String.Readable, to String.Readable, chmod_f
 
 /*
 Renames (move) the 'from' file or directory to the 'to' destination. Both arguments should be paths to files or directories, either relative or absolute. If the destination file or directory exists and is not access-protected, it will be overwritten.
+
 Returns one of the [Error] code constants ([Ok] on success).
 */
 //go:nosplit
@@ -880,7 +976,9 @@ func (self class) RenameAbsolute(from String.Readable, to String.Readable) Error
 
 /*
 Permanently deletes the target file or an empty directory. The argument can be relative to the current directory, or an absolute path. If the target directory is not empty, the operation will fail.
-If you don't want to delete the file/directory permanently, use [Instance.Os.MoveToTrash] instead.
+
+If you don't want to delete the file/directory permanently, use [graphics.gd/classdb/OS.MoveToTrash] instead.
+
 Returns one of the [Error] code constants ([Ok] on success).
 */
 //go:nosplit
@@ -902,6 +1000,7 @@ func (self class) RemoveAbsolute(path String.Readable) Error.Code { //gd:DirAcce
 
 /*
 Returns true if the file or directory is a symbolic link, directory junction, or other reparse point.
+
 Note: This method is implemented on macOS, Linux, and Windows.
 */
 //go:nosplit
@@ -913,6 +1012,7 @@ func (self class) IsLink(path String.Readable) bool { //gd:DirAccess.is_link
 
 /*
 Returns target of the symbolic link.
+
 Note: This method is implemented on macOS, Linux, and Windows.
 */
 //go:nosplit
@@ -924,7 +1024,9 @@ func (self class) ReadLink(path String.Readable) String.Readable { //gd:DirAcces
 
 /*
 Creates symbolic link between files or folders.
+
 Note: On Windows, this method works only if the application is running with elevated privileges or Developer Mode is enabled.
+
 Note: This method is implemented on macOS, Linux, and Windows.
 */
 //go:nosplit
@@ -939,6 +1041,7 @@ func (self class) CreateLink(source String.Readable, target String.Readable) Err
 
 /*
 Returns true if the directory is a macOS bundle.
+
 Note: This method is implemented on macOS.
 */
 //go:nosplit
@@ -974,6 +1077,7 @@ func (self class) GetIncludeHidden() bool { //gd:DirAccess.get_include_hidden
 
 /*
 Returns true if the file system or directory use case sensitive file names.
+
 Note: This method is implemented on macOS, Linux (for EXT4 and F2FS filesystems only) and Windows. On other platforms, it always returns true.
 */
 //go:nosplit

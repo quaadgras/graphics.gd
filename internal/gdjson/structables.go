@@ -8,37 +8,44 @@ import (
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/Error"
 	"graphics.gd/variant/Float"
-	"graphics.gd/variant/Path"
+	"graphics.gd/variant/Object"
 	"graphics.gd/variant/RID"
+	"graphics.gd/variant/Rect2"
 	"graphics.gd/variant/Vector2"
 	"graphics.gd/variant/Vector2i"
 	"graphics.gd/variant/Vector3"
+	"graphics.gd/variant/Vector3i"
 )
 
-type PropertyInfo struct {
-	ClassName  string       `gd:"class_name"`
-	Name       string       `gd:"name"`
-	Hint       int          `gd:"hint"`
-	HintString string       `gd:"hint_string"`
-	Type       reflect.Type `gd:"type"`
-	Usage      int          `gd:"usage"`
-}
-
 type SignalInfo struct {
-	Name        string         `gd:"name"`
-	Flags       int            `gd:"flags"`
-	ID          int            `gd:"id"`
-	DefaultArgs []any          `gd:"default_args"`
-	Args        []PropertyInfo `gd:"args"`
+	Name        string                `gd:"name"`
+	Flags       int                   `gd:"flags"`
+	ID          int                   `gd:"id"`
+	DefaultArgs []any                 `gd:"default_args"`
+	Args        []Object.PropertyInfo `gd:"args"`
 }
 
 type CompletionInfo struct {
-	Kind         any             `gd:"kind" type:"CodeCompletionKind"`
-	DisplayText  string          `gd:"display_text"`
-	InsertText   string          `gd:"insert_text"`
-	FontColor    Color.RGBA      `gd:"font_color"`
-	Icon         Path.ToResource `gd:"icon"`
-	DefaultValue string          `gd:"default_value"`
+	Kind         any        `gd:"kind" type:"CodeCompletionKind"`
+	DisplayText  string     `gd:"display_text"`
+	InsertText   string     `gd:"insert_text"`
+	FontColor    Color.RGBA `gd:"font_color"`
+	Icon         string     `gd:"icon"`
+	DefaultValue string     `gd:"default_value"`
+}
+
+type Completion struct {
+	Kind         any        `gd:"kind" type:"CodeCompletionKind"`
+	Display      string     `gd:"display"`
+	InsertText   string     `gd:"insert_text"`
+	FontColor    Color.RGBA `gd:"font_color"`
+	Icon         string     `gd:"icon"`
+	DefaultValue string     `gd:"default_value"`
+	Location     string     `gd:"location"`
+	Matches      []int32    `gd:"matches"`
+	Force        bool       `gd:"force"`
+	CallHint     string     `gd:"call_hint"`
+	Result       Error.Code `gd:"result"`
 }
 
 type DiffLine map[any]any
@@ -305,6 +312,11 @@ var WavOptions = Named[struct {
 	ForceMono       bool    `gd:"force/mono"`
 }]("Options")
 
+type Zone struct {
+	Name string `gd:"name"` // is the localized name of the time zone, according to the OS locale settings of the current user
+	Bias int64  `gd:"bias"` // is the offset from UTC in minutes
+}
+
 func Named[T any](name string) reflect.Type {
 	return namedType{reflect.TypeFor[T](), name}
 }
@@ -320,13 +332,24 @@ func (nt namedType) PkgPath() string {
 
 func (nt namedType) Name() string { return nt.name }
 
-type FormatParameters struct {
-	Output string `gd:"output"`
+type writtenType struct {
+	reflect.Type
+	written string
+	pkgtype string
 }
 
-type Template struct {
-	Path  string `gd:"path"`
-	Error string `gd:"error"`
+func (wt writtenType) PkgPath() string {
+	return wt.pkgtype
+}
+
+func (wt writtenType) Name() string { return wt.written }
+
+func TypeFromString(pkgtype, written string) reflect.Type {
+	return writtenType{reflect.TypeFor[struct{}](), written, pkgtype}
+}
+
+type FormatParameters struct {
+	Output string `gd:"output"`
 }
 
 type Report struct {
@@ -342,34 +365,265 @@ type File struct {
 	TargetFolder string   `gd:"target_folder"`
 }
 
+type TutorialDoc struct {
+	Link  string `gd:"link"`
+	Title string `gd:"title"`
+}
+
+type MethodDoc struct {
+	Name                string        `gd:"name"`
+	ReturnType          string        `gd:"return_type"`
+	ReturnEnum          string        `gd:"return_enum"`
+	ReturnIsBitfield    bool          `gd:"return_is_bitfield"`
+	Qualifiers          string        `gd:"qualifiers"`
+	Description         string        `gd:"description"`
+	IsDeprecated        bool          `gd:"is_deprecated"`
+	DeprecatedMessage   string        `gd:"deprecated_message"`
+	IsExperimental      bool          `gd:"is_experimental"`
+	ExperimentalMessage string        `gd:"experimental_message"`
+	Arguments           []ArgumentDoc `gd:"arguments"`
+	ErrorsReturned      []Error.Code  `gd:"errors_returned"`
+	Keywords            string        `gd:"keywords"`
+}
+
+type ArgumentDoc struct {
+	Name         string `gd:"name"`
+	Type         string `gd:"type"`
+	Enumeration  string `gd:"enumeration"`
+	IsBitfield   bool   `gd:"is_bitfield"`
+	DefaultValue string `gd:"default_value"`
+}
+
+type ConstantDoc struct {
+	Name                string `gd:"name"`
+	Value               string `gd:"value"`
+	IsValueValid        bool   `gd:"is_value_valid"`
+	Type                string `gd:"type"`
+	Enumeration         string `gd:"enumeration"`
+	IsBitfield          bool   `gd:"is_bitfield"`
+	Description         string `gd:"description"`
+	IsDeprecated        bool   `gd:"is_deprecated"`
+	DeprecatedMessage   string `gd:"deprecated_message"`
+	IsExperimental      bool   `gd:"is_experimental"`
+	ExperimentalMessage string `gd:"experimental_message"`
+	Keywords            string `gd:"keywords"`
+}
+
+type EnumDoc struct {
+	Description         string `gd:"description"`
+	IsDeprecated        bool   `gd:"is_deprecated"`
+	DeprecatedMessage   string `gd:"deprecated_message"`
+	IsExperimental      bool   `gd:"is_experimental"`
+	ExperimentalMessage string `gd:"experimental_message"`
+}
+
+type PropertyDoc struct {
+	Name                string `gd:"name"`
+	Type                string `gd:"type"`
+	Enumeration         string `gd:"enumeration"`
+	IsBitfield          bool   `gd:"is_bitfield"`
+	Description         string `gd:"description"`
+	Setter              string `gd:"setter"`
+	Getter              string `gd:"getter"`
+	DefaultValue        string `gd:"default_value"`
+	Overridden          bool   `gd:"overridden"`
+	Overrides           bool   `gd:"overrides"`
+	IsDeprecated        bool   `gd:"is_deprecated"`
+	DeprecatedMessage   string `gd:"deprecated_message"`
+	IsExperimental      bool   `gd:"is_experimental"`
+	ExperimentalMessage string `gd:"experimental_message"`
+	Keywords            string `gd:"keywords"`
+}
+
+type ThemeItemDoc struct {
+	Name                string `gd:"name"`
+	Type                string `gd:"type"`
+	DataType            string `gd:"data_type"`
+	Description         string `gd:"description"`
+	IsDeprecated        bool   `gd:"is_deprecated"`
+	DeprecatedMessage   string `gd:"deprecated_message"`
+	IsExperimental      bool   `gd:"is_experimental"`
+	ExperimentalMessage string `gd:"experimental_message"`
+	DefaultValue        string `gd:"default_value"`
+	Keywords            string `gd:"keywords"`
+}
+
+type ClassDoc struct {
+	Name                string             `gd:"name"`
+	Inherits            string             `gd:"inherits"`
+	BriefDescription    string             `gd:"brief_description"`
+	Description         string             `gd:"description"`
+	Keywords            string             `gd:"keywords"`
+	Tutorials           []TutorialDoc      `gd:"tutorials"`
+	Constructors        []MethodDoc        `gd:"constructors"`
+	Methods             []MethodDoc        `gd:"methods"`
+	Operators           []MethodDoc        `gd:"operators"`
+	Signals             []MethodDoc        `gd:"signals"`
+	Constants           []ConstantDoc      `gd:"constants"`
+	Enums               map[string]EnumDoc `gd:"enums"`
+	Properties          []PropertyDoc      `gd:"properties"`
+	Annotations         []MethodDoc        `gd:"annotations"`
+	ThemeProperties     []ThemeItemDoc     `gd:"theme_properties"`
+	IsDeprecated        bool               `gd:"is_deprecated"`
+	DeprecatedMessage   string             `gd:"deprecated_message"`
+	IsExperimental      bool               `gd:"is_experimental"`
+	ExperimentalMessage string             `gd:"experimental_message"`
+	IsScriptDoc         bool               `gd:"is_script_doc"`
+	ScriptPath          string             `gd:"script_path"`
+}
+
+type Template struct {
+	Inherit     string           `gd:"inherit"`
+	Name        string           `gd:"name"`
+	Description string           `gd:"description"`
+	Content     string           `gd:"content"`
+	ID          int32            `gd:"id"`
+	Origin      TemplateLocation `gd:"origin"`
+}
+
+type TemplateLocation int
+
+type Validation struct {
+	Functions []string          `gd:"functions"`
+	Errors    []ValidationError `gd:"errors"`
+	Warnings  []Warning         `gd:"warnings"`
+	SafeLines []int32           `gd:"safe_lines"`
+	Valid     bool              `gd:"valid"`
+}
+
+type ValidationError struct {
+	Line    int    `gd:"line"`
+	Column  int    `gd:"column"`
+	Message string `gd:"message"`
+	Path    string `gd:"path"`
+}
+
+type Warning struct {
+	StartLine       int    `gd:"start_line"`
+	EndLine         int    `gd:"end_line"`
+	LeftMostColumn  int    `gd:"left_most_column"`
+	RightMostColumn int    `gd:"right_most_column"`
+	Code            int    `gd:"code"`
+	StringCode      string `gd:"string_code"`
+	Message         string `gd:"message"`
+}
+
+type Code struct {
+	Result              Error.Code `gd:"result"`
+	Type                int        `gd:"type"`
+	ClassName           string     `gd:"class_name"`
+	ClassMember         string     `gd:"class_member"`
+	Description         string     `gd:"description"`
+	IsDeprecated        bool       `gd:"is_deprecated"`
+	DeprecatedMessage   string     `gd:"deprecated_message"`
+	IsExperimental      bool       `gd:"is_experimental"`
+	ExperimentalMessage string     `gd:"experimental_message"`
+	DocType             string     `gd:"doc_type"`
+	Enumeration         string     `gd:"enumeration"`
+	IsBitfield          bool       `gd:"is_bitfield"`
+	Value               string     `gd:"value"`
+	Script              any        `gd:"script" type:"Script.Instance"`
+	ScriptPath          string     `gd:"script_path"`
+	Location            int        `gd:"location"`
+}
+
+type StackLevelLocals struct {
+	Locals []string `gd:"locals"`
+	Values []any    `gd:"values"`
+}
+
+type StackLevelMembers struct {
+	Members []string `gd:"members"`
+	Values  []any    `gd:"values"`
+}
+
+type Globals struct {
+	Globals []string `gd:"globals"`
+	Values  []any    `gd:"values"`
+}
+
+type StackInfo struct {
+	File string `gd:"file"`
+	Func string `gd:"func"`
+	Line int    `gd:"line"`
+}
+
+type Constant struct {
+	Name  string `gd:"name"`
+	Value any    `gd:"value"`
+}
+
+type ClassName struct {
+	Name       string `gd:"name"`
+	BaseType   string `gd:"base_type"`
+	IconPath   string `gd:"icon_path"`
+	IsAbstract bool   `gd:"is_abstract"`
+	IsTool     bool   `gd:"is_tool"`
+}
+
+type GlyphContours struct {
+	Points      []Vector3.XYZ `gd:"points"`
+	Contours    []int32       `gd:"contours"`
+	Orientation bool          `gd:"orientation"`
+}
+
+type OpenTypeFeature struct {
+	Label  string       `gd:"label"`
+	Type   reflect.Type `gd:"type"`
+	Hidden bool         `gd:"hidden"`
+}
+
+type Glyph struct {
+	Start    int32      `gd:"start"`
+	End      int32      `gd:"end"`
+	Repeat   uint8      `gd:"repeat"`
+	Count    uint8      `gd:"count"`
+	Flags    uint16     `gd:"flags"`
+	Offset   Vector2.XY `gd:"offset"`
+	Advance  Float.X    `gd:"advance"`
+	FontRID  RID.Font   `gd:"font_rid"`
+	FontSize int32      `gd:"font_size"`
+	Index    int32      `gd:"index"`
+}
+
+type Carets struct {
+	LeadingRect       Rect2.PositionSize `gd:"leading_rect"`
+	LeadingDirection  int                `gd:"leading_direction" type:"Direction"`
+	TrailingRect      Rect2.PositionSize `gd:"trailing_rect"`
+	TrailingDirection int                `gd:"trailing_direction" type:"Direction"`
+}
+
 var Structables = map[string]reflect.Type{
-	"AStarGrid2D.get_point_data_in_region.":                             reflect.TypeFor[PointData](),
-	"AudioStreamWAV.load_from_buffer.options":                           WavOptions,
-	"AudioStreamWAV.load_from_file.options":                             WavOptions,
-	"CameraFeed.set_format.parameters":                                  reflect.TypeFor[FormatParameters](),
-	"ArrayMesh.add_surface_from_arrays.lods":                            reflect.TypeFor[map[Float.X][]int32](),
-	"CharFXTransform.get_environment.":                                  reflect.TypeFor[map[string]any](),
-	"CharFXTransform.set_environment.environment":                       reflect.TypeFor[map[string]any](),
-	"ClassDB.class_get_signal.":                                         reflect.TypeFor[SignalInfo](),
-	"ClassDB.class_get_signal_list.":                                    reflect.TypeFor[SignalInfo](),
-	"ClassDB.class_get_property_list.":                                  reflect.TypeFor[PropertyInfo](),
-	"ClassDB.class_get_method_list.":                                    reflect.TypeFor[PropertyInfo](),
-	"JavaClass.get_java_method_list.":                                   reflect.TypeFor[PropertyInfo](),
-	"RenderingServer.canvas_item_get_instance_shader_parameter_list.":   reflect.TypeFor[PropertyInfo](),
-	"CodeEdit.set_auto_brace_completion_pairs.pairs":                    reflect.TypeFor[map[string]string](),
-	"CodeEdit.get_auto_brace_completion_pairs.":                         reflect.TypeFor[map[string]string](),
-	"CodeEdit.get_code_completion_option.":                              reflect.TypeFor[CompletionInfo](),
-	"CodeEdit.get_code_completion_options.":                             reflect.TypeFor[CompletionInfo](),
-	"CodeHighlighter.set_keyword_colors.keywords":                       reflect.TypeFor[map[string]Color.RGBA](),
-	"CodeHighlighter.get_keyword_colors.":                               reflect.TypeFor[map[string]Color.RGBA](),
-	"CodeHighlighter.set_member_keyword_colors.member_keyword":          reflect.TypeFor[map[string]Color.RGBA](),
-	"CodeHighlighter.get_member_keyword_colors.":                        reflect.TypeFor[map[string]Color.RGBA](),
-	"CodeHighlighter.set_color_regions.color_regions":                   reflect.TypeFor[map[string]Color.RGBA](),
-	"CodeHighlighter.get_color_regions.":                                reflect.TypeFor[map[string]Color.RGBA](),
-	"DisplayServer.global_menu_get_system_menu_roots.":                  reflect.TypeFor[map[string]string](),
-	"DisplayServer.tts_get_voices.":                                     reflect.TypeFor[TextToSpeechVoice](),
-	"DisplayServer.file_dialog_with_options_show.options":               reflect.TypeFor[FileDialogOption](),
-	"EditorExportPlatform.find_export_template.":                        reflect.TypeFor[Template](),
+	"AStarGrid2D.get_point_data_in_region.":                           reflect.TypeFor[PointData](),
+	"AudioStreamWAV.load_from_buffer.options":                         WavOptions,
+	"AudioStreamWAV.load_from_file.options":                           WavOptions,
+	"CameraFeed.set_format.parameters":                                reflect.TypeFor[FormatParameters](),
+	"ArrayMesh.add_surface_from_arrays.lods":                          reflect.TypeFor[map[Float.X][]int32](),
+	"CharFXTransform.get_environment.":                                reflect.TypeFor[map[string]any](),
+	"CharFXTransform.set_environment.environment":                     reflect.TypeFor[map[string]any](),
+	"ClassDB.class_get_signal.":                                       reflect.TypeFor[SignalInfo](),
+	"ClassDB.class_get_signal_list.":                                  reflect.TypeFor[SignalInfo](),
+	"ClassDB.class_get_property_list.":                                reflect.TypeFor[Object.PropertyInfo](),
+	"ClassDB.class_get_method_list.":                                  reflect.TypeFor[Object.PropertyInfo](),
+	"JavaClass.get_java_method_list.":                                 reflect.TypeFor[Object.PropertyInfo](),
+	"RenderingServer.canvas_item_get_instance_shader_parameter_list.": reflect.TypeFor[Object.PropertyInfo](),
+	"CodeEdit.set_auto_brace_completion_pairs.pairs":                  reflect.TypeFor[map[string]string](),
+	"CodeEdit.get_auto_brace_completion_pairs.":                       reflect.TypeFor[map[string]string](),
+	"CodeEdit.get_code_completion_option.":                            reflect.TypeFor[CompletionInfo](),
+	"CodeEdit.get_code_completion_options.":                           reflect.TypeFor[CompletionInfo](),
+	"CodeHighlighter.set_keyword_colors.keywords":                     reflect.TypeFor[map[string]Color.RGBA](),
+	"CodeHighlighter.get_keyword_colors.":                             reflect.TypeFor[map[string]Color.RGBA](),
+	"CodeHighlighter.set_member_keyword_colors.member_keyword":        reflect.TypeFor[map[string]Color.RGBA](),
+	"CodeHighlighter.get_member_keyword_colors.":                      reflect.TypeFor[map[string]Color.RGBA](),
+	"CodeHighlighter.set_color_regions.color_regions":                 reflect.TypeFor[map[string]Color.RGBA](),
+	"CodeHighlighter.get_color_regions.":                              reflect.TypeFor[map[string]Color.RGBA](),
+	"DisplayServer.global_menu_get_system_menu_roots.":                reflect.TypeFor[map[string]string](),
+	"DisplayServer.tts_get_voices.":                                   reflect.TypeFor[TextToSpeechVoice](),
+	"DisplayServer.file_dialog_with_options_show.options":             reflect.TypeFor[FileDialogOption](),
+	"EditorExportPlatform.find_export_template.": Named[struct {
+		Path  string `gd:"path"`
+		Error string `gd:"error"`
+	}]("Template"),
 	"EditorExportPlatform.save_pack.":                                   reflect.TypeFor[Report](),
 	"EditorExportPlatform.save_zip.":                                    reflect.TypeFor[Report](),
 	"EditorExportPlatform.save_pack_patch.":                             reflect.TypeFor[Report](),
@@ -378,7 +632,7 @@ var Structables = map[string]reflect.Type{
 	"EditorExportPreset.get_customized_files.":                          reflect.TypeFor[map[string]string](),
 	"EditorFileDialog.get_selected_options.":                            reflect.TypeFor[map[string]int](),
 	"EditorImportPlugin.append_import_external_resource.custom_options": reflect.TypeFor[map[string]any](),
-	"EditorSettings.add_property_info.info":                             reflect.TypeFor[PropertyInfo](),
+	"EditorSettings.add_property_info.info":                             reflect.TypeFor[Object.PropertyInfo](),
 	"EditorVCSInterface.create_diff_line.":                              reflect.TypeFor[DiffLine](),
 	"EditorVCSInterface.create_diff_hunk.":                              reflect.TypeFor[DiffHunk](),
 	"EditorVCSInterface.create_diff_file.":                              reflect.TypeFor[DiffFile](),
@@ -390,6 +644,7 @@ var Structables = map[string]reflect.Type{
 	"EditorVCSInterface.add_line_diffs_into_diff_hunk.":                 reflect.TypeFor[DiffHunk](),
 	"EditorVCSInterface.add_diff_hunks_into_diff_file.diff_hunks":       reflect.TypeFor[DiffHunk](),
 	"EditorVCSInterface.add_line_diffs_into_diff_hunk.line_diffs":       reflect.TypeFor[DiffLine](),
+	"EditorExportPlugin._get_export_options_overrides.":                 reflect.TypeFor[map[string]any](),
 	"Engine.get_version_info.":                                          reflect.TypeFor[VersionInfo](),
 	"Engine.get_author_info.":                                           reflect.TypeFor[AuthorInfo](),
 	"Engine.get_donor_info.":                                            reflect.TypeFor[DonorInfo](),
@@ -397,17 +652,17 @@ var Structables = map[string]reflect.Type{
 	"Engine.get_copyright_info.":                                        reflect.TypeFor[Copyright](),
 	"FileDialog.get_selected_options.":                                  reflect.TypeFor[map[string]int](),
 	"Font.find_variation.variation_coordinates":                         reflect.TypeFor[map[string]Float.X](),
-	"Font.get_ot_name_strings.":                                         reflect.TypeFor[map[string]string](), // FIXME
-	"Font.get_opentype_features.":                                       reflect.TypeFor[map[string]string](), // FIXME
-	"Font.get_supported_feature_list.":                                  reflect.TypeFor[map[string]string](), // FIXME
-	"Font.get_supported_variation_list.":                                reflect.TypeFor[map[string]string](), // FIXME
+	"Font.get_ot_name_strings.":                                         reflect.TypeFor[map[string]map[string]string](),
+	"Font.get_opentype_features.":                                       reflect.TypeFor[map[string][2]string](),
+	"Font.get_supported_feature_list.":                                  reflect.TypeFor[map[string]OpenTypeFeature](),
+	"Font.get_supported_variation_list.":                                reflect.TypeFor[map[string]map[string]Vector3i.XYZ](),
 	"FontFile.set_variation_coordinates.variation_coordinates":          reflect.TypeFor[map[string]Float.X](),
 	"FontFile.get_variation_coordinates.":                               reflect.TypeFor[map[string]Float.X](),
-	"FontFile.set_opentype_feature_overrides.overrides":                 reflect.TypeFor[map[string]string](), // FIXME
-	"FontFile.get_opentype_feature_overrides.":                          reflect.TypeFor[map[string]string](), // FIXME
-	"FontVariation.set_variation_opentype.coords":                       reflect.TypeFor[map[any]Float.X](),   // FIXME
-	"FontVariation.get_variation_opentype.":                             reflect.TypeFor[map[any]Float.X](),   // FIXME
-	"FontVariation.set_opentype_features.features":                      reflect.TypeFor[map[string]string](), // FIXME
+	"FontFile.set_opentype_feature_overrides.overrides":                 reflect.TypeFor[map[string][2]string](),
+	"FontFile.get_opentype_feature_overrides.":                          reflect.TypeFor[map[string][2]string](),
+	"FontVariation.set_variation_opentype.coords":                       reflect.TypeFor[map[any]Float.X](),
+	"FontVariation.get_variation_opentype.":                             reflect.TypeFor[map[any]Float.X](),
+	"FontVariation.set_opentype_features.features":                      reflect.TypeFor[map[string]uint32](),
 	"GLTFCamera.from_dictionary.dictionary":                             reflect.TypeFor[Structure](),
 	"GLTFCamera.to_dictionary.":                                         reflect.TypeFor[Structure](),
 	"GLTFLight.from_dictionary.dictionary":                              reflect.TypeFor[Structure](),
@@ -440,8 +695,8 @@ var Structables = map[string]reflect.Type{
 	"JSONRPC.make_response.":                                            reflect.TypeFor[Response](),
 	"JSONRPC.make_notification.":                                        reflect.TypeFor[Notification](),
 	"JSONRPC.make_response_error.":                                      reflect.TypeFor[ResponseError](),
-	"Object.get_property_list.":                                         reflect.TypeFor[PropertyInfo](),
-	"Object.get_method_list.":                                           reflect.TypeFor[PropertyInfo](),
+	"Object.get_property_list.":                                         reflect.TypeFor[Object.PropertyInfo](),
+	"Object.get_method_list.":                                           reflect.TypeFor[Object.PropertyInfo](),
 	"Object.get_signal_list.":                                           reflect.TypeFor[SignalInfo](),
 	"Object.get_signal_connection_list.":                                reflect.TypeFor[SignalConnection](),
 	"Object.get_incoming_connections.":                                  reflect.TypeFor[SignalConnection](),
@@ -455,7 +710,7 @@ var Structables = map[string]reflect.Type{
 	"PhysicsDirectSpaceState3D.intersect_point.":                        reflect.TypeFor[PhysicsDirectSpaceState3D_Intersection](),
 	"PhysicsDirectSpaceState3D.intersect_shape.":                        reflect.TypeFor[PhysicsDirectSpaceState3D_Intersection](),
 	"PhysicsDirectSpaceState3D.get_rest_info.":                          reflect.TypeFor[PhysicsDirectSpaceState3D_RestInfo](),
-	"ProjectSettings.add_property_info.hint":                            reflect.TypeFor[PropertyInfo](),
+	"ProjectSettings.add_property_info.hint":                            reflect.TypeFor[Object.PropertyInfo](),
 	"ProjectSettings.get_global_class_list.":                            reflect.TypeFor[GlobalClass](),
 	"RegExMatch.get_names.":                                             reflect.TypeFor[map[string]int](),
 	"RenderingServer.mesh_add_surface.surface":                          reflect.TypeFor[Surface](),
@@ -467,25 +722,25 @@ var Structables = map[string]reflect.Type{
 	"RichTextLabel.push_customfx.env":                                   reflect.TypeFor[map[string]any](),
 	"RichTextLabel.parse_expressions_for_values.":                       reflect.TypeFor[map[string]any](),
 	"Script.get_script_constant_map.":                                   reflect.TypeFor[map[string]any](),
-	"Script.get_script_property_list.":                                  reflect.TypeFor[PropertyInfo](),
-	"Script.get_script_method_list.":                                    reflect.TypeFor[PropertyInfo](),
+	"Script.get_script_property_list.":                                  reflect.TypeFor[Object.PropertyInfo](),
+	"Script.get_script_method_list.":                                    reflect.TypeFor[Object.PropertyInfo](),
 	"Script.get_script_signal_list.":                                    reflect.TypeFor[SignalInfo](),
 	"ShapeCast3D.collision_result":                                      reflect.TypeFor[[]PhysicsDirectSpaceState3D_RestInfo](),
 	"SyntaxHighlighter.get_line_syntax_highlighting.":                   reflect.TypeFor[map[int]Entry](),
-	"TextServer.font_get_ot_name_strings.":                              reflect.TypeFor[map[string]string](), // FIXME
+	"TextServer.font_get_ot_name_strings.":                              reflect.TypeFor[map[string]map[string]string](),
 	"TextServer.font_set_variation_coordinates.variation_coordinates":   reflect.TypeFor[map[string]Float.X](),
 	"TextServer.font_get_variation_coordinates.":                        reflect.TypeFor[map[string]Float.X](),
-	"TextServer.font_get_glyph_contours.":                               reflect.TypeFor[map[string]any](),     // FIXME
-	"TextServer.font_set_opentype_feature_overrides.overrides":          reflect.TypeFor[map[string]string](),  // FIXME
-	"TextServer.font_get_opentype_feature_overrides.":                   reflect.TypeFor[map[string]string](),  // FIXME
-	"TextServer.font_supported_feature_list.":                           reflect.TypeFor[map[string]string](),  // FIXME
-	"TextServer.font_supported_variation_list.":                         reflect.TypeFor[map[string]string](),  // FIXME
-	"TextServer.shaped_text_add_string.opentype_features":               reflect.TypeFor[map[string]string](),  // FIXME
-	"TextServer.shaped_set_span_update_font.opentype_features":          reflect.TypeFor[map[string]string](),  // FIXME
-	"TextServer.shaped_text_get_glyphs.":                                reflect.TypeFor[map[int]Vector2.XY](), // FIXME
-	"TextServer.shaped_text_sort_logical.":                              reflect.TypeFor[map[int]int](),        // FIXME
-	"TextServer.shaped_text_get_ellipsis_glyphs.":                       reflect.TypeFor[map[int]Vector2.XY](), // FIXME
-	"TextServer.shaped_text_get_carets.":                                reflect.TypeFor[map[int]Vector2.XY](), // FIXME
+	"TextServer.font_get_glyph_contours.":                               reflect.TypeFor[GlyphContours](),
+	"TextServer.font_set_opentype_feature_overrides.overrides":          reflect.TypeFor[map[string][2]string](),
+	"TextServer.font_get_opentype_feature_overrides.":                   reflect.TypeFor[map[string][2]string](),
+	"TextServer.font_supported_feature_list.":                           reflect.TypeFor[map[string]OpenTypeFeature](),
+	"TextServer.font_supported_variation_list.":                         reflect.TypeFor[map[string]map[string]Vector3i.XYZ](),
+	"TextServer.shaped_text_add_string.opentype_features":               reflect.TypeFor[map[string]uint32](),
+	"TextServer.shaped_set_span_update_font.opentype_features":          reflect.TypeFor[map[string]uint32](),
+	"TextServer.shaped_text_get_glyphs.":                                reflect.TypeFor[[]Glyph](),
+	"TextServer.shaped_text_sort_logical.":                              reflect.TypeFor[[]Glyph](),
+	"TextServer.shaped_text_get_ellipsis_glyphs.":                       reflect.TypeFor[[]Glyph](),
+	"TextServer.shaped_text_get_carets.":                                reflect.TypeFor[Carets](),
 	"TextServerManager.get_interfaces.":                                 reflect.TypeFor[map[int]string](),
 	"Time.get_datetime_dict_from_unix_time.":                            reflect.TypeFor[Date](),
 	"Time.get_date_dict_from_unix_time.":                                reflect.TypeFor[DateOnly](),
@@ -496,7 +751,7 @@ var Structables = map[string]reflect.Type{
 	"Time.get_datetime_dict_from_system.":                               reflect.TypeFor[Date](),
 	"Time.get_date_dict_from_system.":                                   reflect.TypeFor[DateOnly](),
 	"Time.get_time_dict_from_system.":                                   reflect.TypeFor[OnTheClock](),
-	"Time.get_time_zone_from_system.":                                   reflect.TypeFor[map[string]string](),
+	"Time.get_time_zone_from_system.":                                   reflect.TypeFor[Zone](),
 	"TreeItem.get_range_config.":                                        reflect.TypeFor[RangeConfig](),
 	"WebRTCMultiplayerPeer.get_peer.":                                   reflect.TypeFor[Conn](),
 	"VisualShader.get_node_connections.":                                reflect.TypeFor[map[string]any](),
@@ -506,4 +761,94 @@ var Structables = map[string]reflect.Type{
 	"XRInterface.get_system_info.":                                      reflect.TypeFor[map[string]any](),
 	"XRServer.get_trackers.":                                            reflect.TypeFor[map[any]any](),
 	"XRServer.get_interfaces.":                                          reflect.TypeFor[map[int]string](),
+
+	"AnimationNode._get_child_nodes.":                        reflect.MapOf(reflect.TypeFor[string](), TypeFromString("graphics.gd/classdb/Node", "Instance")),
+	"AudioStream._get_parameter_list.":                       reflect.TypeFor[[]Object.PropertyInfo](),
+	"CodeEdit._filter_code_completion_candidates.candidates": reflect.TypeFor[[]CompletionInfo](),
+	"CodeEdit._filter_code_completion_candidates.":           reflect.TypeFor[[]CompletionInfo](),
+
+	"EditorExportPlatformExtension._get_export_options.": reflect.SliceOf(Named[struct {
+		Hint             int    `gd:"hint"`
+		HintString       string `gd:"hint_string"`
+		Usage            int    `gd:"usage"`
+		ClassName        string `gd:"class_name"`
+		DefaultValue     any    `gd:"default_value"`
+		UpdateVisibility bool   `gd:"update_visibility"`
+		Required         bool   `gd:"required"`
+	}]("Option")),
+	"EditorExportPlugin._get_export_options.": reflect.SliceOf(Named[struct {
+		Option           Object.PropertyInfo `gd:"option"`
+		DefaultValue     any                 `gd:"default_value"`
+		UpdateVisibility bool                `gd:"update_visibility"`
+	}]("Option")),
+	"EditorImportPlugin._get_import_options.": reflect.SliceOf(Named[struct {
+		Name         string `gd:"name"`
+		DefaultValue any    `gd:"default_value"`
+		PropertyHint int    `gd:"property_hint"`
+		HintString   string `gd:"hint_string"`
+		Usage        int    `gd:"usage"`
+	}]("Option")),
+	"EditorImportPlugin._get_option_visibility.options":                                                               reflect.TypeFor[map[string]any](),
+	"EditorImportPlugin._import.options":                                                                              reflect.TypeFor[map[string]any](),
+	"EditorPlugin._get_state.":                                                                                        reflect.TypeFor[map[any]any](),
+	"EditorPlugin._set_state.state":                                                                                   reflect.TypeFor[map[any]any](),
+	"EditorResourcePreviewGenerator._generate.metadata":                                                               reflect.TypeFor[map[string]any](),
+	"EditorResourcePreviewGenerator._generate_from_path.metadata":                                                     reflect.TypeFor[map[string]any](),
+	"EditorResourceTooltipPlugin._make_tooltip_for_path.metadata":                                                     reflect.TypeFor[map[string]any](),
+	"EditorSceneFormatImporter._import_scene.options":                                                                 reflect.TypeFor[map[string]any](),
+	"EditorVCSInterface._get_modified_files_data.":                                                                    reflect.TypeFor[[]StatusFile](),
+	"EditorVCSInterface._get_diff.":                                                                                   reflect.TypeFor[[]DiffFile](),
+	"EditorVCSInterface._get_previous_commits.":                                                                       reflect.TypeFor[[]Commit](),
+	"EditorVCSInterface._get_line_diff.":                                                                              reflect.TypeFor[[]DiffLine](),
+	"GLTFDocumentExtension._parse_node_extensions.extensions":                                                         reflect.TypeFor[map[string]any](),
+	"GLTFDocumentExtension._parse_texture_json.texture_json":                                                          reflect.TypeFor[map[string]any](),
+	"GLTFDocumentExtension._import_node.json":                                                                         reflect.TypeFor[map[string]any](),
+	"GLTFDocumentExtension._serialize_image_to_bytes.image_dict":                                                      reflect.TypeFor[map[string][]byte](),
+	"GLTFDocumentExtension._serialize_texture_json.texture_json":                                                      reflect.TypeFor[map[string]any](),
+	"GLTFDocumentExtension._export_node.json":                                                                         reflect.TypeFor[map[string]any](),
+	"Mesh._surface_get_lods.":                                                                                         reflect.TypeFor[map[Float.X][]int32](),
+	"OpenXRExtensionWrapperExtension._get_requested_extensions.":                                                      reflect.TypeFor[map[string]*bool](),
+	"OpenXRExtensionWrapperExtension._set_viewport_composition_layer_and_get_next_pointer.property_values":            reflect.TypeFor[map[string]Object.PropertyInfo](),
+	"OpenXRExtensionWrapperExtension._get_viewport_composition_layer_extension_properties.":                           reflect.TypeFor[[]Object.PropertyInfo](),
+	"OpenXRExtensionWrapperExtension._set_android_surface_swapchain_create_info_and_get_next_pointer.property_values": reflect.TypeFor[map[string]Object.PropertyInfo](),
+	"OpenXRExtensionWrapperExtension._get_viewport_composition_layer_extension_property_defaults.":                    reflect.TypeFor[map[string]any](),
+	"ResourceFormatLoader._rename_dependencies.renames":                                                               reflect.TypeFor[map[string]string](),
+
+	"ScriptExtension._get_documentation.":        reflect.TypeFor[[]ClassDoc](),
+	"ScriptExtension._get_method_info.":          reflect.TypeFor[Object.MethodInfo](),
+	"ScriptExtension._get_script_signal_list.":   reflect.TypeFor[[]Object.MethodInfo](),
+	"ScriptExtension._get_script_method_list.":   reflect.TypeFor[[]Object.MethodInfo](),
+	"ScriptExtension._get_script_property_list.": reflect.TypeFor[[]Object.PropertyInfo](),
+	"ScriptExtension._get_constants.":            reflect.TypeFor[map[string]any](),
+
+	"ScriptLanguageExtension._get_built_in_templates.":        reflect.TypeFor[[]Template](),
+	"ScriptLanguageExtension._validate.":                      reflect.TypeFor[Validation](),
+	"ScriptLanguageExtension._complete_code.":                 reflect.TypeFor[Completion](),
+	"ScriptLanguageExtension._lookup_code.":                   reflect.TypeFor[Code](),
+	"ScriptLanguageExtension._debug_get_stack_level_locals.":  reflect.TypeFor[StackLevelLocals](),
+	"ScriptLanguageExtension._debug_get_stack_level_members.": reflect.TypeFor[StackLevelMembers](),
+	"ScriptLanguageExtension._debug_get_globals.":             reflect.TypeFor[Globals](),
+	"ScriptLanguageExtension._debug_get_current_stack_info.":  reflect.TypeFor[StackInfo](),
+	"ScriptLanguageExtension._get_public_functions.":          reflect.TypeFor[[]Object.MethodInfo](),
+	"ScriptLanguageExtension._get_public_constants.":          reflect.TypeFor[[]Constant](),
+	"ScriptLanguageExtension._get_public_annotations.":        reflect.TypeFor[[]Object.MethodInfo](),
+	"ScriptLanguageExtension._get_global_class_name.":         reflect.TypeFor[ClassName](),
+
+	"SyntaxHighlighter._get_line_syntax_highlighting.": reflect.TypeFor[map[int]Entry](),
+
+	"TextServerExtension._font_get_ot_name_strings.":                            reflect.TypeFor[map[string]map[string]string](),
+	"TextServerExtension._font_set_variation_coordinates.variation_coordinates": reflect.TypeFor[map[string]Float.X](),
+	"TextServerExtension._font_get_variation_coordinates.":                      reflect.TypeFor[map[string]Float.X](),
+	"TextServerExtension._font_get_glyph_contours.":                             reflect.TypeFor[GlyphContours](),
+	"TextServerExtension._font_set_opentype_feature_overrides.overrides":        reflect.TypeFor[map[string][2]string](),
+	"TextServerExtension._font_get_opentype_feature_overrides.":                 reflect.TypeFor[map[string][2]string](),
+	"TextServerExtension._font_supported_feature_list.":                         reflect.TypeFor[map[string]OpenTypeFeature](),
+	"TextServerExtension._font_supported_variation_list.":                       reflect.TypeFor[map[string]map[string]Vector3i.XYZ](),
+	"TextServerExtension._shaped_text_add_string.opentype_features":             reflect.TypeFor[map[string]uint32](),
+	"TextServerExtension._shaped_set_span_update_font.opentype_features":        reflect.TypeFor[map[string]uint32](),
+
+	"WebRTCPeerConnectionExtension._initialize.p_config":          reflect.TypeFor[Configuration](),
+	"WebRTCPeerConnectionExtension._create_data_channel.p_config": reflect.TypeFor[Configuration](),
+
+	"XRInterfaceExtension._get_system_info.": reflect.TypeFor[map[string]any](),
 }

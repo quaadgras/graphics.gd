@@ -2,7 +2,8 @@
 
 /*
 Godot editor's script editor.
-Note: This class shouldn't be instantiated directly. Instead, access the singleton using [Instance.Editorinterface.GetScriptEditor].
+
+Note: This class shouldn't be instantiated directly. Instead, access the singleton using [graphics.gd/classdb/EditorInterface.GetScriptEditor].
 */
 package ScriptEditor
 
@@ -116,14 +117,14 @@ type Any interface {
 }
 
 /*
-Returns the [ScriptEditorBase] object that the user is currently editing.
+Returns the [graphics.gd/classdb/ScriptEditorBase] object that the user is currently editing.
 */
 func (self Instance) GetCurrentEditor() ScriptEditorBase.Instance { //gd:ScriptEditor.get_current_editor
 	return ScriptEditorBase.Instance(Advanced(self).GetCurrentEditor())
 }
 
 /*
-Returns an array with all [ScriptEditorBase] objects which are currently open in editor.
+Returns an array with all [graphics.gd/classdb/ScriptEditorBase] objects which are currently open in editor.
 */
 func (self Instance) GetOpenScriptEditors() []ScriptEditorBase.Instance { //gd:ScriptEditor.get_open_script_editors
 	return []ScriptEditorBase.Instance(gd.ArrayAs[[]ScriptEditorBase.Instance](gd.InternalArray(Advanced(self).GetOpenScriptEditors())))
@@ -137,7 +138,8 @@ func (self Instance) GetBreakpoints() []string { //gd:ScriptEditor.get_breakpoin
 }
 
 /*
-Registers the [EditorSyntaxHighlighter] to the editor, the [EditorSyntaxHighlighter] will be available on all open scripts.
+Registers the [graphics.gd/classdb/EditorSyntaxHighlighter] to the editor, the [graphics.gd/classdb/EditorSyntaxHighlighter] will be available on all open scripts.
+
 Note: Does not apply to scripts that are already opened.
 */
 func (self Instance) RegisterSyntaxHighlighter(syntax_highlighter EditorSyntaxHighlighter.Instance) { //gd:ScriptEditor.register_syntax_highlighter
@@ -145,8 +147,9 @@ func (self Instance) RegisterSyntaxHighlighter(syntax_highlighter EditorSyntaxHi
 }
 
 /*
-Unregisters the [EditorSyntaxHighlighter] from the editor.
-Note: The [EditorSyntaxHighlighter] will still be applied to scripts that are already opened.
+Unregisters the [graphics.gd/classdb/EditorSyntaxHighlighter] from the editor.
+
+Note: The [graphics.gd/classdb/EditorSyntaxHighlighter] will still be applied to scripts that are already opened.
 */
 func (self Instance) UnregisterSyntaxHighlighter(syntax_highlighter EditorSyntaxHighlighter.Instance) { //gd:ScriptEditor.unregister_syntax_highlighter
 	Advanced(self).UnregisterSyntaxHighlighter(syntax_highlighter)
@@ -160,14 +163,14 @@ func (self Instance) GotoLine(line_number int) { //gd:ScriptEditor.goto_line
 }
 
 /*
-Returns a [Script] that is currently active in editor.
+Returns a [graphics.gd/classdb/Script] that is currently active in editor.
 */
 func (self Instance) GetCurrentScript() Script.Instance { //gd:ScriptEditor.get_current_script
 	return Script.Instance(Advanced(self).GetCurrentScript())
 }
 
 /*
-Returns an array with all [Script] objects which are currently open in editor.
+Returns an array with all [graphics.gd/classdb/Script] objects which are currently open in editor.
 */
 func (self Instance) GetOpenScripts() []Script.Instance { //gd:ScriptEditor.get_open_scripts
 	return []Script.Instance(gd.ArrayAs[[]Script.Instance](gd.InternalArray(Advanced(self).GetOpenScripts())))
@@ -182,27 +185,8 @@ func (self Instance) OpenScriptCreateDialog(base_name string, base_path string) 
 
 /*
 Opens help for the given topic. The 'topic' is an encoded string that controls which class, method, constant, signal, annotation, property, or theme item should be focused.
+
 The supported 'topic' formats include class_name:class, class_method:class:method, class_constant:class:constant, class_signal:class:signal, class_annotation:class:@annotation, class_property:class:property, and class_theme_item:class:item, where class is the class name, method is the method name, constant is the constant name, signal is the signal name, annotation is the annotation name, property is the property name, and item is the theme item.
-[codeblock]
-# Shows help for the Node class.
-class_name:Node
-# Shows help for the global min function.
-# Global objects are accessible in the `@GlobalScope` namespace, shown here.
-class_method:@GlobalScope:min
-# Shows help for get_viewport in the Node class.
-class_method:Node:get_viewport
-# Shows help for the Input constant MOUSE_BUTTON_MIDDLE.
-class_constant:Input:MOUSE_BUTTON_MIDDLE
-# Shows help for the BaseButton signal pressed.
-class_signal:BaseButton:pressed
-# Shows help for the CanvasItem property visible.
-class_property:CanvasItem:visible
-# Shows help for the GDScript annotation export.
-# Annotations should be prefixed with the `@` symbol in the descriptor, as shown here.
-class_annotation:@GDScript:@export
-# Shows help for the GraphNode theme item named panel_selected.
-class_theme_item:GraphNode:panel_selected
-[/codeblock]
 */
 func (self Instance) GotoHelp(topic string) { //gd:ScriptEditor.goto_help
 	Advanced(self).GotoHelp(String.New(topic))
@@ -210,6 +194,7 @@ func (self Instance) GotoHelp(topic string) { //gd:ScriptEditor.goto_help
 
 /*
 Updates the documentation for the given 'script' if the script's documentation is currently open.
+
 Note: This should be called whenever the script is changed to keep the open documentation state up to date.
 */
 func (self Instance) UpdateDocsFromScript(script Script.Instance) { //gd:ScriptEditor.update_docs_from_script
@@ -259,7 +244,7 @@ func New() Instance {
 }
 
 /*
-Returns the [ScriptEditorBase] object that the user is currently editing.
+Returns the [graphics.gd/classdb/ScriptEditorBase] object that the user is currently editing.
 */
 //go:nosplit
 func (self class) GetCurrentEditor() [1]gdclass.ScriptEditorBase { //gd:ScriptEditor.get_current_editor
@@ -269,7 +254,7 @@ func (self class) GetCurrentEditor() [1]gdclass.ScriptEditorBase { //gd:ScriptEd
 }
 
 /*
-Returns an array with all [ScriptEditorBase] objects which are currently open in editor.
+Returns an array with all [graphics.gd/classdb/ScriptEditorBase] objects which are currently open in editor.
 */
 //go:nosplit
 func (self class) GetOpenScriptEditors() Array.Contains[[1]gdclass.ScriptEditorBase] { //gd:ScriptEditor.get_open_script_editors
@@ -289,7 +274,8 @@ func (self class) GetBreakpoints() Packed.Strings { //gd:ScriptEditor.get_breakp
 }
 
 /*
-Registers the [EditorSyntaxHighlighter] to the editor, the [EditorSyntaxHighlighter] will be available on all open scripts.
+Registers the [graphics.gd/classdb/EditorSyntaxHighlighter] to the editor, the [graphics.gd/classdb/EditorSyntaxHighlighter] will be available on all open scripts.
+
 Note: Does not apply to scripts that are already opened.
 */
 //go:nosplit
@@ -298,8 +284,9 @@ func (self class) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.Editor
 }
 
 /*
-Unregisters the [EditorSyntaxHighlighter] from the editor.
-Note: The [EditorSyntaxHighlighter] will still be applied to scripts that are already opened.
+Unregisters the [graphics.gd/classdb/EditorSyntaxHighlighter] from the editor.
+
+Note: The [graphics.gd/classdb/EditorSyntaxHighlighter] will still be applied to scripts that are already opened.
 */
 //go:nosplit
 func (self class) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.unregister_syntax_highlighter
@@ -315,7 +302,7 @@ func (self class) GotoLine(line_number int64) { //gd:ScriptEditor.goto_line
 }
 
 /*
-Returns a [Script] that is currently active in editor.
+Returns a [graphics.gd/classdb/Script] that is currently active in editor.
 */
 //go:nosplit
 func (self class) GetCurrentScript() [1]gdclass.Script { //gd:ScriptEditor.get_current_script
@@ -325,7 +312,7 @@ func (self class) GetCurrentScript() [1]gdclass.Script { //gd:ScriptEditor.get_c
 }
 
 /*
-Returns an array with all [Script] objects which are currently open in editor.
+Returns an array with all [graphics.gd/classdb/Script] objects which are currently open in editor.
 */
 //go:nosplit
 func (self class) GetOpenScripts() Array.Contains[[1]gdclass.Script] { //gd:ScriptEditor.get_open_scripts
@@ -347,27 +334,10 @@ func (self class) OpenScriptCreateDialog(base_name String.Readable, base_path St
 
 /*
 Opens help for the given topic. The 'topic' is an encoded string that controls which class, method, constant, signal, annotation, property, or theme item should be focused.
+
 The supported 'topic' formats include class_name:class, class_method:class:method, class_constant:class:constant, class_signal:class:signal, class_annotation:class:@annotation, class_property:class:property, and class_theme_item:class:item, where class is the class name, method is the method name, constant is the constant name, signal is the signal name, annotation is the annotation name, property is the property name, and item is the theme item.
-[codeblock]
-# Shows help for the Node class.
-class_name:Node
-# Shows help for the global min function.
-# Global objects are accessible in the `@GlobalScope` namespace, shown here.
-class_method:@GlobalScope:min
-# Shows help for get_viewport in the Node class.
-class_method:Node:get_viewport
-# Shows help for the Input constant MOUSE_BUTTON_MIDDLE.
-class_constant:Input:MOUSE_BUTTON_MIDDLE
-# Shows help for the BaseButton signal pressed.
-class_signal:BaseButton:pressed
-# Shows help for the CanvasItem property visible.
-class_property:CanvasItem:visible
-# Shows help for the GDScript annotation export.
-# Annotations should be prefixed with the `@` symbol in the descriptor, as shown here.
-class_annotation:@GDScript:@export
-# Shows help for the GraphNode theme item named panel_selected.
-class_theme_item:GraphNode:panel_selected
-[/codeblock]
+
+
 */
 //go:nosplit
 func (self class) GotoHelp(topic String.Readable) { //gd:ScriptEditor.goto_help
@@ -376,6 +346,7 @@ func (self class) GotoHelp(topic String.Readable) { //gd:ScriptEditor.goto_help
 
 /*
 Updates the documentation for the given 'script' if the script's documentation is currently open.
+
 Note: This should be called whenever the script is changed to keep the open documentation state up to date.
 */
 //go:nosplit

@@ -67,12 +67,11 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 // Instance of the class with convieniently typed arguments and results.
-// See [Interface] for methods that can be overridden by a [Class] that extends it.
 type Instance [1]gdclass.RenderSceneDataExtension
 
 var otype gdextension.ObjectType
@@ -99,18 +98,19 @@ type Any interface {
 	gd.IsClass
 	AsRenderSceneDataExtension() Instance
 }
+
 type Interface interface {
-	//Implement this in GDExtension to return the camera [Transform3D].
+	// Implement this in GDExtension to return the camera [Transform3D.BasisOrigin].
 	GetCamTransform() Transform3D.BasisOrigin
-	//Implement this in GDExtension to return the camera [Projection].
+	// Implement this in GDExtension to return the camera [Projection.XYZW].
 	GetCamProjection() Projection.XYZW
-	//Implement this in GDExtension to return the view count.
+	// Implement this in GDExtension to return the view count.
 	GetViewCount() int
-	//Implement this in GDExtension to return the eye offset for the given [param view].
+	// Implement this in GDExtension to return the eye offset for the given 'view'.
 	GetViewEyeOffset(view int) Vector3.XYZ
-	//Implement this in GDExtension to return the view [Projection] for the given [param view].
+	// Implement this in GDExtension to return the view [Projection.XYZW] for the given 'view'.
 	GetViewProjection(view int) Projection.XYZW
-	//Implement this in GDExtension to return the [RID] of the uniform buffer containing the scene data as a UBO.
+	// Implement this in GDExtension to return the [Resource.ID] of the uniform buffer containing the scene data as a UBO.
 	GetUniformBuffer() RID.Any
 }
 
@@ -127,7 +127,7 @@ func (self implementation) GetViewProjection(view int) (_ Projection.XYZW) { ret
 func (self implementation) GetUniformBuffer() (_ RID.Any)                  { return }
 
 /*
-Implement this in GDExtension to return the camera [Transform3D].
+Implement this in GDExtension to return the camera [Transform3D.BasisOrigin].
 */
 func (Instance) _get_cam_transform(impl func(ptr gdclass.Receiver) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -138,7 +138,7 @@ func (Instance) _get_cam_transform(impl func(ptr gdclass.Receiver) Transform3D.B
 }
 
 /*
-Implement this in GDExtension to return the camera [Projection].
+Implement this in GDExtension to return the camera [Projection.XYZW].
 */
 func (Instance) _get_cam_projection(impl func(ptr gdclass.Receiver) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -172,7 +172,7 @@ func (Instance) _get_view_eye_offset(impl func(ptr gdclass.Receiver, view int) V
 }
 
 /*
-Implement this in GDExtension to return the view [Projection] for the given 'view'.
+Implement this in GDExtension to return the view [Projection.XYZW] for the given 'view'.
 */
 func (Instance) _get_view_projection(impl func(ptr gdclass.Receiver, view int) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -184,7 +184,7 @@ func (Instance) _get_view_projection(impl func(ptr gdclass.Receiver, view int) P
 }
 
 /*
-Implement this in GDExtension to return the [RID] of the uniform buffer containing the scene data as a UBO.
+Implement this in GDExtension to return the [Resource.ID] of the uniform buffer containing the scene data as a UBO.
 */
 func (Instance) _get_uniform_buffer(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -237,7 +237,7 @@ func New() Instance {
 }
 
 /*
-Implement this in GDExtension to return the camera [Transform3D].
+Implement this in GDExtension to return the camera [Transform3D.BasisOrigin].
 */
 func (class) _get_cam_transform(impl func(ptr gdclass.Receiver) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -248,7 +248,7 @@ func (class) _get_cam_transform(impl func(ptr gdclass.Receiver) Transform3D.Basi
 }
 
 /*
-Implement this in GDExtension to return the camera [Projection].
+Implement this in GDExtension to return the camera [Projection.XYZW].
 */
 func (class) _get_cam_projection(impl func(ptr gdclass.Receiver) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -282,7 +282,7 @@ func (class) _get_view_eye_offset(impl func(ptr gdclass.Receiver, view int64) Ve
 }
 
 /*
-Implement this in GDExtension to return the view [Projection] for the given 'view'.
+Implement this in GDExtension to return the view [Projection.XYZW] for the given 'view'.
 */
 func (class) _get_view_projection(impl func(ptr gdclass.Receiver, view int64) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -294,7 +294,7 @@ func (class) _get_view_projection(impl func(ptr gdclass.Receiver, view int64) Pr
 }
 
 /*
-Implement this in GDExtension to return the [RID] of the uniform buffer containing the scene data as a UBO.
+Implement this in GDExtension to return the [Resource.ID] of the uniform buffer containing the scene data as a UBO.
 */
 func (class) _get_uniform_buffer(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

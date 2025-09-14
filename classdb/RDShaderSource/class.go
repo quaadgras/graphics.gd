@@ -2,7 +2,8 @@
 
 /*
 Shader source code in text form.
-See also [RDShaderFile]. [RDShaderSource] is only meant to be used with the [RenderingDevice] API. It should not be confused with Godot's own [Shader] resource, which is what Godot's various nodes use for high-level shader programming.
+
+See also [graphics.gd/classdb/RDShaderFile]. [graphics.gd/classdb/RDShaderSource] is only meant to be used with the [graphics.gd/classdb/RenderingDevice] API. It should not be confused with Godot's own [graphics.gd/classdb/Shader] resource, which is what Godot's various nodes use for high-level shader programming.
 */
 package RDShaderSource
 
@@ -193,7 +194,8 @@ func (self Instance) SetLanguage(value Rendering.ShaderLanguage) {
 }
 
 /*
-Sets 'source' code for the specified shader 'stage'. Equivalent to setting one of [member source_compute], [member source_fragment], [member source_tesselation_control], [member source_tesselation_evaluation] or [member source_vertex].
+Sets 'source' code for the specified shader 'stage'. Equivalent to setting one of [Instance.SourceCompute], [Instance.SourceFragment], [Instance.SourceTesselationControl], [Instance.SourceTesselationEvaluation] or [Instance.SourceVertex].
+
 Note: If you set the compute shader source code using this method directly, remember to remove the Godot-specific hint #[compute].
 */
 //go:nosplit
@@ -205,7 +207,7 @@ func (self class) SetStageSource(stage Rendering.ShaderStage, source String.Read
 }
 
 /*
-Returns source code for the specified shader 'stage'. Equivalent to getting one of [member source_compute], [member source_fragment], [member source_tesselation_control], [member source_tesselation_evaluation] or [member source_vertex].
+Returns source code for the specified shader 'stage'. Equivalent to getting one of [Instance.SourceCompute], [Instance.SourceFragment], [Instance.SourceTesselationControl], [Instance.SourceTesselationEvaluation] or [Instance.SourceVertex].
 */
 //go:nosplit
 func (self class) GetStageSource(stage Rendering.ShaderStage) String.Readable { //gd:RDShaderSource.get_stage_source

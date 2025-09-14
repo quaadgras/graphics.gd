@@ -25,6 +25,12 @@ type XY = struct {
 // New constructs a new Vector2 from the given x and y.
 func New[X Int.Any | Float.Any](x, y X) XY { return XY{Float.X(x), Float.X(y)} } //gd:Vector2(x:float,y:float)
 
+// From constructs a new vector out of a structure with differently typed fields.
+func From[X Int.Any | Float.Any, T ~struct{ X, Y X }](value T) XY {
+	var underlying = struct{ X, Y X }(value)
+	return XY{Float.X(underlying.X), Float.X(underlying.Y)}
+}
+
 type Axis int
 
 const (

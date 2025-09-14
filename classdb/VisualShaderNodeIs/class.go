@@ -212,10 +212,10 @@ func init() {
 type Function int //gd:VisualShaderNodeIs.Function
 
 const (
-	/*Comparison with [code]INF[/code] (Infinity).*/
+	// Comparison with INF (Infinity).
 	FuncIsInf Function = 0
-	/*Comparison with [code]NaN[/code] (Not a Number; indicates invalid numeric results, such as division by zero).*/
+	// Comparison with NaN (Not a Number; indicates invalid numeric results, such as division by zero).
 	FuncIsNan Function = 1
-	/*Represents the size of the [enum Function] enum.*/
+	// Represents the size of the [Function] enum.
 	FuncMax Function = 2
 )

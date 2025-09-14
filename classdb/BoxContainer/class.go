@@ -105,7 +105,7 @@ type Any interface {
 }
 
 /*
-Adds a [Control] node to the box as a spacer. If 'begin' is true, it will insert the [Control] node in front of all other children.
+Adds a [graphics.gd/classdb/Control] node to the box as a spacer. If 'begin' is true, it will insert the [graphics.gd/classdb/Control] node in front of all other children.
 */
 func (self Instance) AddSpacer(begin bool) Control.Instance { //gd:BoxContainer.add_spacer
 	return Control.Instance(Advanced(self).AddSpacer(begin))
@@ -170,7 +170,7 @@ func (self Instance) SetVertical(value bool) {
 }
 
 /*
-Adds a [Control] node to the box as a spacer. If 'begin' is true, it will insert the [Control] node in front of all other children.
+Adds a [graphics.gd/classdb/Control] node to the box as a spacer. If 'begin' is true, it will insert the [graphics.gd/classdb/Control] node in front of all other children.
 */
 //go:nosplit
 func (self class) AddSpacer(begin bool) [1]gdclass.Control { //gd:BoxContainer.add_spacer
@@ -256,10 +256,10 @@ func init() {
 type AlignmentMode int //gd:BoxContainer.AlignmentMode
 
 const (
-	/*The child controls will be arranged at the beginning of the container, i.e. top if orientation is vertical, left if orientation is horizontal (right for RTL layout).*/
+	// The child controls will be arranged at the beginning of the container, i.e. top if orientation is vertical, left if orientation is horizontal (right for RTL layout).
 	AlignmentBegin AlignmentMode = 0
-	/*The child controls will be centered in the container.*/
+	// The child controls will be centered in the container.
 	AlignmentCenter AlignmentMode = 1
-	/*The child controls will be arranged at the end of the container, i.e. bottom if orientation is vertical, right if orientation is horizontal (left for RTL layout).*/
+	// The child controls will be arranged at the end of the container, i.e. bottom if orientation is vertical, right if orientation is horizontal (left for RTL layout).
 	AlignmentEnd AlignmentMode = 2
 )

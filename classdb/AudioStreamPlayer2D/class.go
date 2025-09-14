@@ -2,9 +2,12 @@
 
 /*
 Plays audio that is attenuated with distance to the listener.
-By default, audio is heard from the screen center. This can be changed by adding an [AudioListener2D] node to the scene and enabling it by calling [Instance.Audiolistener2d.MakeCurrent] on it.
-See also [AudioStreamPlayer] to play a sound non-positionally.
-Note: Hiding an [AudioStreamPlayer2D] node does not disable its audio output. To temporarily disable an [AudioStreamPlayer2D]'s audio output, set [member volume_db] to a very low value like -100 (which isn't audible to human hearing).
+
+By default, audio is heard from the screen center. This can be changed by adding an [graphics.gd/classdb/AudioListener2D] node to the scene and enabling it by calling [graphics.gd/classdb/AudioListener2D.Instance.MakeCurrent] on it.
+
+See also [graphics.gd/classdb/AudioStreamPlayer] to play a sound non-positionally.
+
+Note: Hiding an [graphics.gd/classdb/AudioStreamPlayer2D] node does not disable its audio output. To temporarily disable an [graphics.gd/classdb/AudioStreamPlayer2D]'s audio output, set [Instance.VolumeDb] to a very low value like -100 (which isn't audible to human hearing).
 */
 package AudioStreamPlayer2D
 
@@ -169,21 +172,21 @@ func (self Instance) Stop() { //gd:AudioStreamPlayer2D.stop
 }
 
 /*
-Returns the position in the [AudioStream].
+Returns the position in the [graphics.gd/classdb/AudioStream].
 */
 func (self Instance) GetPlaybackPosition() Float.X { //gd:AudioStreamPlayer2D.get_playback_position
 	return Float.X(Float.X(Advanced(self).GetPlaybackPosition()))
 }
 
 /*
-Returns whether the [AudioStreamPlayer] can return the [AudioStreamPlayback] object or not.
+Returns whether the [graphics.gd/classdb/AudioStreamPlayer] can return the [graphics.gd/classdb/AudioStreamPlayback] object or not.
 */
 func (self Instance) HasStreamPlayback() bool { //gd:AudioStreamPlayer2D.has_stream_playback
 	return bool(Advanced(self).HasStreamPlayback())
 }
 
 /*
-Returns the [AudioStreamPlayback] object associated with this [AudioStreamPlayer2D].
+Returns the [graphics.gd/classdb/AudioStreamPlayback] object associated with this [graphics.gd/classdb/AudioStreamPlayer2D].
 */
 func (self Instance) GetStreamPlayback() AudioStreamPlayback.Instance { //gd:AudioStreamPlayer2D.get_stream_playback
 	return AudioStreamPlayback.Instance(Advanced(self).GetStreamPlayback())
@@ -423,7 +426,7 @@ func (self class) IsPlaying() bool { //gd:AudioStreamPlayer2D.is_playing
 }
 
 /*
-Returns the position in the [AudioStream].
+Returns the position in the [graphics.gd/classdb/AudioStream].
 */
 //go:nosplit
 func (self class) GetPlaybackPosition() float64 { //gd:AudioStreamPlayer2D.get_playback_position
@@ -534,7 +537,7 @@ func (self class) GetPanningStrength() float64 { //gd:AudioStreamPlayer2D.get_pa
 }
 
 /*
-Returns whether the [AudioStreamPlayer] can return the [AudioStreamPlayback] object or not.
+Returns whether the [graphics.gd/classdb/AudioStreamPlayer] can return the [graphics.gd/classdb/AudioStreamPlayback] object or not.
 */
 //go:nosplit
 func (self class) HasStreamPlayback() bool { //gd:AudioStreamPlayer2D.has_stream_playback
@@ -544,7 +547,7 @@ func (self class) HasStreamPlayback() bool { //gd:AudioStreamPlayer2D.has_stream
 }
 
 /*
-Returns the [AudioStreamPlayback] object associated with this [AudioStreamPlayer2D].
+Returns the [graphics.gd/classdb/AudioStreamPlayback] object associated with this [graphics.gd/classdb/AudioStreamPlayer2D].
 */
 //go:nosplit
 func (self class) GetStreamPlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStreamPlayer2D.get_stream_playback

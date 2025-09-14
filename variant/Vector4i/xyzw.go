@@ -23,6 +23,12 @@ type XYZW = struct {
 	W int32 // The vector's W component.
 }
 
+// From constructs a new vector out of a structure with differently typed fields.
+func From[X Int.Any | Float.Any, T ~struct{ X, Y, Z, W X }](value T) XYZW {
+	var underlying = struct{ X, Y, Z, W X }(value)
+	return XYZW{int32(underlying.X), int32(underlying.Y), int32(underlying.Z), int32(underlying.W)}
+}
+
 type Axis int
 
 const (

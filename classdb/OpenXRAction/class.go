@@ -2,9 +2,14 @@
 
 /*
 This resource defines an OpenXR action. Actions can be used both for inputs (buttons, joysticks, triggers, etc.) and outputs (haptics).
+
 OpenXR performs automatic conversion between action type and input type whenever possible. An analog trigger bound to a boolean action will thus return false if the trigger is depressed and true if pressed fully.
-Actions are not directly bound to specific devices, instead OpenXR recognizes a limited number of top level paths that identify devices by usage. We can restrict which devices an action can be bound to by these top level paths. For instance an action that should only be used for hand held controllers can have the top level paths "/user/hand/left" and "/user/hand/right" associated with them. See the [url=https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#semantic-path-reserved]reserved path section in the OpenXR specification[/url] for more info on the top level paths.
+
+Actions are not directly bound to specific devices, instead OpenXR recognizes a limited number of top level paths that identify devices by usage. We can restrict which devices an action can be bound to by these top level paths. For instance an action that should only be used for hand held controllers can have the top level paths "/user/hand/left" and "/user/hand/right" associated with them. See the [reserved path section in the OpenXR specification] for more info on the top level paths.
+
 Note that the name of the resource is used to register the action with.
+
+[reserved path section in the OpenXR specification]: https://www.khronos.org/registry/OpenXR/specs/1.0/html/xrspec.html#semantic-path-reserved
 */
 package OpenXRAction
 
@@ -251,11 +256,11 @@ func init() {
 type ActionType int //gd:OpenXRAction.ActionType
 
 const (
-	/*This action provides a boolean value.*/
+	// This action provides a boolean value.
 	OpenxrActionBool ActionType = 0
-	/*This action provides a float value between [code]0.0[/code] and [code]1.0[/code] for any analog input such as triggers.*/
+	// This action provides a float value between 0.0 and 1.0 for any analog input such as triggers.
 	OpenxrActionFloat ActionType = 1
-	/*This action provides a [Vector2] value and can be bound to embedded trackpads and joysticks.*/
+	// This action provides a [Vector2.XY] value and can be bound to embedded trackpads and joysticks.
 	OpenxrActionVector2 ActionType = 2
 	OpenxrActionPose    ActionType = 3
 )

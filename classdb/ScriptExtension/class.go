@@ -63,12 +63,11 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 // Instance of the class with convieniently typed arguments and results.
-// See [Interface] for methods that can be overridden by a [Class] that extends it.
 type Instance [1]gdclass.ScriptExtension
 
 var otype gdextension.ObjectType
@@ -95,6 +94,7 @@ type Any interface {
 	gd.IsClass
 	AsScriptExtension() Instance
 }
+
 type Interface interface {
 	EditorCanReloadFromFile() bool
 	PlaceholderErased(placeholder gdextension.Pointer)
@@ -111,27 +111,27 @@ type Interface interface {
 	SetSourceCode(code string)
 	Reload(keep_state bool) error
 	GetDocClassName() string
-	GetDocumentation() []map[any]any
+	GetDocumentation() [][]ClassDoc
 	GetClassIconPath() string
 	HasMethod(method string) bool
 	HasStaticMethod(method string) bool
-	//Return the expected argument count for the given [param method], or [code]null[/code] if it can't be determined (which will then fall back to the default behavior).
+	// Return the expected argument count for the given 'method', or null if it can't be determined (which will then fall back to the default behavior).
 	GetScriptMethodArgumentCount(method string) any
-	GetMethodInfo(method string) map[any]any
+	GetMethodInfo(method string) Object.MethodInfo
 	IsTool() bool
 	IsValid() bool
-	//Returns [code]true[/code] if the script is an abstract script. An abstract script does not have a constructor and cannot be instantiated.
+	// Returns true if the script is an abstract script. An abstract script does not have a constructor and cannot be instantiated.
 	IsAbstract() bool
 	GetLanguage() ScriptLanguage.Instance
 	HasScriptSignal(signal string) bool
-	GetScriptSignalList() []map[any]any
+	GetScriptSignalList() [][]Object.MethodInfo
 	HasPropertyDefaultValue(property string) bool
 	GetPropertyDefaultValue(property string) any
 	UpdateExports()
-	GetScriptMethodList() []map[any]any
-	GetScriptPropertyList() []map[any]any
+	GetScriptMethodList() [][]Object.MethodInfo
+	GetScriptPropertyList() [][]Object.PropertyInfo
 	GetMemberLine(member string) int
-	GetConstants() map[any]any
+	GetConstants() map[string]interface{}
 	GetMembers() []string
 	IsPlaceholderFallbackEnabled() bool
 	GetRpcConfig() any
@@ -159,25 +159,25 @@ func (self implementation) GetSourceCode() (_ string)                          {
 func (self implementation) SetSourceCode(code string)                          { return }
 func (self implementation) Reload(keep_state bool) (_ error)                   { return }
 func (self implementation) GetDocClassName() (_ string)                        { return }
-func (self implementation) GetDocumentation() (_ []map[any]any)                { return }
+func (self implementation) GetDocumentation() (_ [][]ClassDoc)                 { return }
 func (self implementation) GetClassIconPath() (_ string)                       { return }
 func (self implementation) HasMethod(method string) (_ bool)                   { return }
 func (self implementation) HasStaticMethod(method string) (_ bool)             { return }
 func (self implementation) GetScriptMethodArgumentCount(method string) (_ any) { return }
-func (self implementation) GetMethodInfo(method string) (_ map[any]any)        { return }
+func (self implementation) GetMethodInfo(method string) (_ Object.MethodInfo)  { return }
 func (self implementation) IsTool() (_ bool)                                   { return }
 func (self implementation) IsValid() (_ bool)                                  { return }
 func (self implementation) IsAbstract() (_ bool)                               { return }
 func (self implementation) GetLanguage() (_ ScriptLanguage.Instance)           { return }
 func (self implementation) HasScriptSignal(signal string) (_ bool)             { return }
-func (self implementation) GetScriptSignalList() (_ []map[any]any)             { return }
+func (self implementation) GetScriptSignalList() (_ [][]Object.MethodInfo)     { return }
 func (self implementation) HasPropertyDefaultValue(property string) (_ bool)   { return }
 func (self implementation) GetPropertyDefaultValue(property string) (_ any)    { return }
 func (self implementation) UpdateExports()                                     { return }
-func (self implementation) GetScriptMethodList() (_ []map[any]any)             { return }
-func (self implementation) GetScriptPropertyList() (_ []map[any]any)           { return }
+func (self implementation) GetScriptMethodList() (_ [][]Object.MethodInfo)     { return }
+func (self implementation) GetScriptPropertyList() (_ [][]Object.PropertyInfo) { return }
 func (self implementation) GetMemberLine(member string) (_ int)                { return }
-func (self implementation) GetConstants() (_ map[any]any)                      { return }
+func (self implementation) GetConstants() (_ map[string]interface{})           { return }
 func (self implementation) GetMembers() (_ []string)                           { return }
 func (self implementation) IsPlaceholderFallbackEnabled() (_ bool)             { return }
 func (self implementation) GetRpcConfig() (_ any)                              { return }
@@ -327,7 +327,7 @@ func (Instance) _get_doc_class_name(impl func(ptr gdclass.Receiver) string) (cb 
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_documentation(impl func(ptr gdclass.Receiver) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_documentation(impl func(ptr gdclass.Receiver) [][]ClassDoc) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -387,7 +387,7 @@ func (Instance) _get_script_method_argument_count(impl func(ptr gdclass.Receiver
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_method_info(impl func(ptr gdclass.Receiver, method string) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_method_info(impl func(ptr gdclass.Receiver, method string) Object.MethodInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var method = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](gd.UnsafeGet[gdextension.StringName](p_args, 0)))))
 		defer pointers.End(gd.InternalStringName(method))
@@ -447,7 +447,7 @@ func (Instance) _has_script_signal(impl func(ptr gdclass.Receiver, signal string
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_script_signal_list(impl func(ptr gdclass.Receiver) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_script_signal_list(impl func(ptr gdclass.Receiver) [][]Object.MethodInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -488,7 +488,7 @@ func (Instance) _update_exports(impl func(ptr gdclass.Receiver)) (cb gd.Extensio
 		impl(self)
 	}
 }
-func (Instance) _get_script_method_list(impl func(ptr gdclass.Receiver) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_script_method_list(impl func(ptr gdclass.Receiver) [][]Object.MethodInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -500,7 +500,7 @@ func (Instance) _get_script_method_list(impl func(ptr gdclass.Receiver) []map[an
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_script_property_list(impl func(ptr gdclass.Receiver) []map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_script_property_list(impl func(ptr gdclass.Receiver) [][]Object.PropertyInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -521,7 +521,7 @@ func (Instance) _get_member_line(impl func(ptr gdclass.Receiver, member string) 
 		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
-func (Instance) _get_constants(impl func(ptr gdclass.Receiver) map[any]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_constants(impl func(ptr gdclass.Receiver) map[string]interface{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -1218,4 +1218,104 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	gdclass.Register("ScriptExtension", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.ScriptExtension](ptr)} })
+}
+
+type ArgumentDoc struct {
+	Name         string `gd:"name"`
+	Type         string `gd:"type"`
+	Enumeration  string `gd:"enumeration"`
+	IsBitfield   bool   `gd:"is_bitfield"`
+	DefaultValue string `gd:"default_value"`
+}
+type ClassDoc struct {
+	Name                string             `gd:"name"`
+	Inherits            string             `gd:"inherits"`
+	BriefDescription    string             `gd:"brief_description"`
+	Description         string             `gd:"description"`
+	Keywords            string             `gd:"keywords"`
+	Tutorials           []TutorialDoc      `gd:"tutorials"`
+	Constructors        []MethodDoc        `gd:"constructors"`
+	Methods             []MethodDoc        `gd:"methods"`
+	Operators           []MethodDoc        `gd:"operators"`
+	Signals             []MethodDoc        `gd:"signals"`
+	Constants           []ConstantDoc      `gd:"constants"`
+	Enums               map[string]EnumDoc `gd:"enums"`
+	Properties          []PropertyDoc      `gd:"properties"`
+	Annotations         []MethodDoc        `gd:"annotations"`
+	ThemeProperties     []ThemeItemDoc     `gd:"theme_properties"`
+	IsDeprecated        bool               `gd:"is_deprecated"`
+	DeprecatedMessage   string             `gd:"deprecated_message"`
+	IsExperimental      bool               `gd:"is_experimental"`
+	ExperimentalMessage string             `gd:"experimental_message"`
+	IsScriptDoc         bool               `gd:"is_script_doc"`
+	ScriptPath          string             `gd:"script_path"`
+}
+type ConstantDoc struct {
+	Name                string `gd:"name"`
+	Value               string `gd:"value"`
+	IsValueValid        bool   `gd:"is_value_valid"`
+	Type                string `gd:"type"`
+	Enumeration         string `gd:"enumeration"`
+	IsBitfield          bool   `gd:"is_bitfield"`
+	Description         string `gd:"description"`
+	IsDeprecated        bool   `gd:"is_deprecated"`
+	DeprecatedMessage   string `gd:"deprecated_message"`
+	IsExperimental      bool   `gd:"is_experimental"`
+	ExperimentalMessage string `gd:"experimental_message"`
+	Keywords            string `gd:"keywords"`
+}
+type EnumDoc struct {
+	Description         string `gd:"description"`
+	IsDeprecated        bool   `gd:"is_deprecated"`
+	DeprecatedMessage   string `gd:"deprecated_message"`
+	IsExperimental      bool   `gd:"is_experimental"`
+	ExperimentalMessage string `gd:"experimental_message"`
+}
+type MethodDoc struct {
+	Name                string        `gd:"name"`
+	ReturnType          string        `gd:"return_type"`
+	ReturnEnum          string        `gd:"return_enum"`
+	ReturnIsBitfield    bool          `gd:"return_is_bitfield"`
+	Qualifiers          string        `gd:"qualifiers"`
+	Description         string        `gd:"description"`
+	IsDeprecated        bool          `gd:"is_deprecated"`
+	DeprecatedMessage   string        `gd:"deprecated_message"`
+	IsExperimental      bool          `gd:"is_experimental"`
+	ExperimentalMessage string        `gd:"experimental_message"`
+	Arguments           []ArgumentDoc `gd:"arguments"`
+	ErrorsReturned      []Error.Code  `gd:"errors_returned"`
+	Keywords            string        `gd:"keywords"`
+}
+type PropertyDoc struct {
+	Name                string `gd:"name"`
+	Type                string `gd:"type"`
+	Enumeration         string `gd:"enumeration"`
+	IsBitfield          bool   `gd:"is_bitfield"`
+	Description         string `gd:"description"`
+	Setter              string `gd:"setter"`
+	Getter              string `gd:"getter"`
+	DefaultValue        string `gd:"default_value"`
+	Overridden          bool   `gd:"overridden"`
+	Overrides           bool   `gd:"overrides"`
+	IsDeprecated        bool   `gd:"is_deprecated"`
+	DeprecatedMessage   string `gd:"deprecated_message"`
+	IsExperimental      bool   `gd:"is_experimental"`
+	ExperimentalMessage string `gd:"experimental_message"`
+	Keywords            string `gd:"keywords"`
+}
+type ThemeItemDoc struct {
+	Name                string `gd:"name"`
+	Type                string `gd:"type"`
+	DataType            string `gd:"data_type"`
+	Description         string `gd:"description"`
+	IsDeprecated        bool   `gd:"is_deprecated"`
+	DeprecatedMessage   string `gd:"deprecated_message"`
+	IsExperimental      bool   `gd:"is_experimental"`
+	ExperimentalMessage string `gd:"experimental_message"`
+	DefaultValue        string `gd:"default_value"`
+	Keywords            string `gd:"keywords"`
+}
+type TutorialDoc struct {
+	Link  string `gd:"link"`
+	Title string `gd:"title"`
 }

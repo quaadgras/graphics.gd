@@ -2,7 +2,10 @@
 
 /*
 The analog threshold binding modifier can modify a float input to a boolean input with specified thresholds.
-See [url=https://registry.khronos.org/OpenXR/specs/1.1/html/xrspec.html#XR_VALVE_analog_threshold]XR_VALVE_analog_threshold[/url] for in-depth details.
+
+See [XR_VALVE_analog_threshold] for in-depth details.
+
+[XR_VALVE_analog_threshold]: https://registry.khronos.org/OpenXR/specs/1.1/html/xrspec.html#XR_VALVE_analog_threshold
 */
 package OpenXRAnalogThresholdModifier
 

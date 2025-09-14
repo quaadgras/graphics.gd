@@ -2,9 +2,12 @@
 
 /*
 This is a special node within the AR/VR system that maps the physical location of the center of our tracking space to the virtual location within our game world.
-Multiple origin points can be added to the scene tree, but only one can used at a time. All the [XRCamera3D], [XRController3D], and [XRAnchor3D] nodes should be direct children of this node for spatial tracking to work correctly.
+
+Multiple origin points can be added to the scene tree, but only one can used at a time. All the [graphics.gd/classdb/XRCamera3D], [graphics.gd/classdb/XRController3D], and [graphics.gd/classdb/XRAnchor3D] nodes should be direct children of this node for spatial tracking to work correctly.
+
 It is the position of this node that you update when your character needs to move through your game world while we're not moving in the real world. Movement in the real world is always in relation to this origin point.
-For example, if your character is driving a car, the [XROrigin3D] node should be a child node of this car. Or, if you're implementing a teleport system to move your character, you should change the position of this node.
+
+For example, if your character is driving a car, the [graphics.gd/classdb/XROrigin3D] node should be a child node of this car. Or, if you're implementing a teleport system to move your character, you should change the position of this node.
 */
 package XROrigin3D
 

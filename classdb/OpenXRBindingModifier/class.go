@@ -64,12 +64,11 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 // Instance of the class with convieniently typed arguments and results.
-// See [Interface] for methods that can be overridden by a [Class] that extends it.
 type Instance [1]gdclass.OpenXRBindingModifier
 
 var otype gdextension.ObjectType
@@ -96,11 +95,13 @@ type Any interface {
 	gd.IsClass
 	AsOpenXRBindingModifier() Instance
 }
+
 type Interface interface {
-	//Return the description of this class that is used for the title bar of the binding modifier editor.
+	// Return the description of this class that is used for the title bar of the binding modifier editor.
 	GetDescription() string
-	//Returns the data that is sent to OpenXR when submitting the suggested interacting bindings this modifier is a part of.
-	//[b]Note:[/b] This must be data compatible with a [code]XrBindingModificationBaseHeaderKHR[/code] structure.
+	// Returns the data that is sent to OpenXR when submitting the suggested interacting bindings this modifier is a part of.
+	//
+	// Note: This must be data compatible with a XrBindingModificationBaseHeaderKHR structure.
 	GetIpModification() []byte
 }
 
@@ -130,6 +131,7 @@ func (Instance) _get_description(impl func(ptr gdclass.Receiver) string) (cb gd.
 
 /*
 Returns the data that is sent to OpenXR when submitting the suggested interacting bindings this modifier is a part of.
+
 Note: This must be data compatible with a XrBindingModificationBaseHeaderKHR structure.
 */
 func (Instance) _get_ip_modification(impl func(ptr gdclass.Receiver) []byte) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -206,6 +208,7 @@ func (class) _get_description(impl func(ptr gdclass.Receiver) String.Readable) (
 
 /*
 Returns the data that is sent to OpenXR when submitting the suggested interacting bindings this modifier is a part of.
+
 Note: This must be data compatible with a XrBindingModificationBaseHeaderKHR structure.
 */
 func (class) _get_ip_modification(impl func(ptr gdclass.Receiver) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {

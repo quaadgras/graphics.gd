@@ -109,8 +109,10 @@ func (self Instance) RegisterProfileRename(old_name string, new_name string) { /
 
 /*
 Registers a top level path to which profiles can be bound. For instance /user/hand/left refers to the bind point for the player's left hand. Extensions can register additional top level paths, for instance a haptic vest extension might register /user/body/vest.
+
 'display_name' is the name shown to the user. 'openxr_path' is the top level path being registered. 'openxr_extension_name' is optional and ensures the top level path is only used if the specified extension is available/enabled.
-When a top level path ends up being bound by OpenXR, a [XRPositionalTracker] is instantiated to manage the state of the device.
+
+When a top level path ends up being bound by OpenXR, a [graphics.gd/classdb/XRPositionalTracker] is instantiated to manage the state of the device.
 */
 func (self Instance) RegisterTopLevelPath(display_name string, openxr_path string, openxr_extension_name string) { //gd:OpenXRInteractionProfileMetadata.register_top_level_path
 	Advanced(self).RegisterTopLevelPath(String.New(display_name), String.New(openxr_path), String.New(openxr_extension_name))
@@ -118,6 +120,7 @@ func (self Instance) RegisterTopLevelPath(display_name string, openxr_path strin
 
 /*
 Registers an interaction profile using its OpenXR designation (e.g. /interaction_profiles/khr/simple_controller is the profile for OpenXR's simple controller profile).
+
 'display_name' is the description shown to the user. 'openxr_path' is the interaction profile path being registered. 'openxr_extension_name' optionally restricts this profile to the given extension being enabled/available. If the extension is not available, the profile and all related entries used in an action map are filtered out.
 */
 func (self Instance) RegisterInteractionProfile(display_name string, openxr_path string, openxr_extension_name string) { //gd:OpenXRInteractionProfileMetadata.register_interaction_profile
@@ -186,8 +189,10 @@ func (self class) RegisterProfileRename(old_name String.Readable, new_name Strin
 
 /*
 Registers a top level path to which profiles can be bound. For instance /user/hand/left refers to the bind point for the player's left hand. Extensions can register additional top level paths, for instance a haptic vest extension might register /user/body/vest.
+
 'display_name' is the name shown to the user. 'openxr_path' is the top level path being registered. 'openxr_extension_name' is optional and ensures the top level path is only used if the specified extension is available/enabled.
-When a top level path ends up being bound by OpenXR, a [XRPositionalTracker] is instantiated to manage the state of the device.
+
+When a top level path ends up being bound by OpenXR, a [graphics.gd/classdb/XRPositionalTracker] is instantiated to manage the state of the device.
 */
 //go:nosplit
 func (self class) RegisterTopLevelPath(display_name String.Readable, openxr_path String.Readable, openxr_extension_name String.Readable) { //gd:OpenXRInteractionProfileMetadata.register_top_level_path
@@ -200,6 +205,7 @@ func (self class) RegisterTopLevelPath(display_name String.Readable, openxr_path
 
 /*
 Registers an interaction profile using its OpenXR designation (e.g. /interaction_profiles/khr/simple_controller is the profile for OpenXR's simple controller profile).
+
 'display_name' is the description shown to the user. 'openxr_path' is the interaction profile path being registered. 'openxr_extension_name' optionally restricts this profile to the given extension being enabled/available. If the extension is not available, the profile and all related entries used in an action map are filtered out.
 */
 //go:nosplit

@@ -259,23 +259,23 @@ func init() {
 type Source int //gd:VisualShaderNodeCubemap.Source
 
 const (
-	/*Use the [Cubemap] set via [member cube_map]. If this is set to [member source], the [code]samplerCube[/code] port is ignored.*/
+	// Use the [graphics.gd/classdb/Cubemap] set via [Instance.CubeMap]. If this is set to [Instance.Source], the samplerCube port is ignored.
 	SourceTexture Source = 0
-	/*Use the [Cubemap] sampler reference passed via the [code]samplerCube[/code] port. If this is set to [member source], the [member cube_map] texture is ignored.*/
+	// Use the [graphics.gd/classdb/Cubemap] sampler reference passed via the samplerCube port. If this is set to [Instance.Source], the [Instance.CubeMap] texture is ignored.
 	SourcePort Source = 1
-	/*Represents the size of the [enum Source] enum.*/
+	// Represents the size of the [Source] enum.
 	SourceMax Source = 2
 )
 
 type TextureType int //gd:VisualShaderNodeCubemap.TextureType
 
 const (
-	/*No hints are added to the uniform declaration.*/
+	// No hints are added to the uniform declaration.
 	TypeData TextureType = 0
-	/*Adds [code]source_color[/code] as hint to the uniform declaration for proper sRGB to linear conversion.*/
+	// Adds source_color as hint to the uniform declaration for proper sRGB to linear conversion.
 	TypeColor TextureType = 1
-	/*Adds [code]hint_normal[/code] as hint to the uniform declaration, which internally converts the texture for proper usage as normal map.*/
+	// Adds hint_normal as hint to the uniform declaration, which internally converts the texture for proper usage as normal map.
 	TypeNormalMap TextureType = 2
-	/*Represents the size of the [enum TextureType] enum.*/
+	// Represents the size of the [TextureType] enum.
 	TypeMax TextureType = 3
 )

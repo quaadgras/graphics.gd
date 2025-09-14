@@ -166,7 +166,7 @@ type Any interface {
 }
 
 /*
-Returns a [TriangleMesh] with the label's vertices following its current configuration (such as its [member pixel_size]).
+Returns a [graphics.gd/classdb/TriangleMesh] with the label's vertices following its current configuration (such as its [Instance.PixelSize]).
 */
 func (self Instance) GenerateTriangleMesh() TriangleMesh.Instance { //gd:Label3D.generate_triangle_mesh
 	return TriangleMesh.Instance(Advanced(self).GenerateTriangleMesh())
@@ -832,7 +832,7 @@ func (self class) GetTextureFilter() BaseMaterial3D.TextureFilter { //gd:Label3D
 }
 
 /*
-Returns a [TriangleMesh] with the label's vertices following its current configuration (such as its [member pixel_size]).
+Returns a [graphics.gd/classdb/TriangleMesh] with the label's vertices following its current configuration (such as its [Instance.PixelSize]).
 */
 //go:nosplit
 func (self class) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:Label3D.generate_triangle_mesh
@@ -894,30 +894,33 @@ func init() {
 type DrawFlags int //gd:Label3D.DrawFlags
 
 const (
-	/*If set, lights in the environment affect the label.*/
+	// If set, lights in the environment affect the label.
 	FlagShaded DrawFlags = 0
-	/*If set, text can be seen from the back as well. If not, the text is invisible when looking at it from behind.*/
+	// If set, text can be seen from the back as well. If not, the text is invisible when looking at it from behind.
 	FlagDoubleSided DrawFlags = 1
-	/*Disables the depth test, so this object is drawn on top of all others. However, objects drawn after it in the draw order may cover it.*/
+	// Disables the depth test, so this object is drawn on top of all others. However, objects drawn after it in the draw order may cover it.
 	FlagDisableDepthTest DrawFlags = 2
-	/*Label is scaled by depth so that it always appears the same size on screen.*/
+	// Label is scaled by depth so that it always appears the same size on screen.
 	FlagFixedSize DrawFlags = 3
-	/*Represents the size of the [enum DrawFlags] enum.*/
+	// Represents the size of the [DrawFlags] enum.
 	FlagMax DrawFlags = 4
 )
 
 type AlphaCutMode int //gd:Label3D.AlphaCutMode
 
 const (
-	/*This mode performs standard alpha blending. It can display translucent areas, but transparency sorting issues may be visible when multiple transparent materials are overlapping. [member GeometryInstance3D.cast_shadow] has no effect when this transparency mode is used; the [Label3D] will never cast shadows.*/
+	// This mode performs standard alpha blending. It can display translucent areas, but transparency sorting issues may be visible when multiple transparent materials are overlapping. [graphics.gd/classdb/GeometryInstance3D.Instance.CastShadow] has no effect when this transparency mode is used; the [graphics.gd/classdb/Label3D] will never cast shadows.
 	AlphaCutDisabled AlphaCutMode = 0
-	/*This mode only allows fully transparent or fully opaque pixels. Harsh edges will be visible unless some form of screen-space antialiasing is enabled (see [member ProjectSettings.rendering/anti_aliasing/quality/screen_space_aa]). This mode is also known as [i]alpha testing[/i] or [i]1-bit transparency[/i].
-	  [b]Note:[/b] This mode might have issues with anti-aliased fonts and outlines, try adjusting [member alpha_scissor_threshold] or using MSDF font.
-	  [b]Note:[/b] When using text with overlapping glyphs (e.g., cursive scripts), this mode might have transparency sorting issues between the main text and the outline.*/
+	// This mode only allows fully transparent or fully opaque pixels. Harsh edges will be visible unless some form of screen-space antialiasing is enabled (see [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/screen_space_aa"). This mode is also known as alpha testing or 1-bit transparency.
+	//
+	// Note: This mode might have issues with anti-aliased fonts and outlines, try adjusting [Instance.AlphaScissorThreshold] or using MSDF font.
+	//
+	// Note: When using text with overlapping glyphs (e.g., cursive scripts), this mode might have transparency sorting issues between the main text and the outline.
 	AlphaCutDiscard AlphaCutMode = 1
-	/*This mode draws fully opaque pixels in the depth prepass. This is slower than [constant ALPHA_CUT_DISABLED] or [constant ALPHA_CUT_DISCARD], but it allows displaying translucent areas and smooth edges while using proper sorting.
-	  [b]Note:[/b] When using text with overlapping glyphs (e.g., cursive scripts), this mode might have transparency sorting issues between the main text and the outline.*/
+	// This mode draws fully opaque pixels in the depth prepass. This is slower than [AlphaCutDisabled] or [AlphaCutDiscard], but it allows displaying translucent areas and smooth edges while using proper sorting.
+	//
+	// Note: When using text with overlapping glyphs (e.g., cursive scripts), this mode might have transparency sorting issues between the main text and the outline.
 	AlphaCutOpaquePrepass AlphaCutMode = 2
-	/*This mode draws cuts off all values below a spatially-deterministic threshold, the rest will remain opaque.*/
+	// This mode draws cuts off all values below a spatially-deterministic threshold, the rest will remain opaque.
 	AlphaCutHash AlphaCutMode = 3
 )

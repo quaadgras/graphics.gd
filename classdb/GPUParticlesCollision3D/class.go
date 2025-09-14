@@ -2,11 +2,16 @@
 
 /*
 Particle collision shapes can be used to make particles stop or bounce against them.
-Particle collision shapes work in real-time and can be moved, rotated and scaled during gameplay. Unlike attractors, non-uniform scaling of collision shapes is [i]not[/i] supported.
+
+Particle collision shapes work in real-time and can be moved, rotated and scaled during gameplay. Unlike attractors, non-uniform scaling of collision shapes is not supported.
+
 Particle collision shapes can be temporarily disabled by hiding them.
-Note: [member ParticleProcessMaterial.collision_mode] must be [Particleprocessmaterial.CollisionRigid] or [Particleprocessmaterial.CollisionHideOnContact] on the [GPUParticles3D]'s process material for collision to work.
-Note: Particle collision only affects [GPUParticles3D], not [CPUParticles3D].
-Note: Particles pushed by a collider that is being moved will not be interpolated, which can result in visible stuttering. This can be alleviated by setting [member GPUParticles3D.fixed_fps] to 0 or a value that matches or exceeds the target framerate.
+
+Note: [graphics.gd/classdb/ParticleProcessMaterial.Instance.CollisionMode] must be [Particleprocessmaterial.CollisionRigid] or [Particleprocessmaterial.CollisionHideOnContact] on the [graphics.gd/classdb/GPUParticles3D]'s process material for collision to work.
+
+Note: Particle collision only affects [graphics.gd/classdb/GPUParticles3D], not [graphics.gd/classdb/CPUParticles3D].
+
+Note: Particles pushed by a collider that is being moved will not be interpolated, which can result in visible stuttering. This can be alleviated by setting [graphics.gd/classdb/GPUParticles3D.Instance.FixedFps] to 0 or a value that matches or exceeds the target framerate.
 */
 package GPUParticlesCollision3D
 

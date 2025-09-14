@@ -214,14 +214,14 @@ func init() {
 type EmitFlags int //gd:VisualShaderNodeParticleEmit.EmitFlags
 
 const (
-	/*If enabled, the particle starts with the position defined by this node.*/
+	// If enabled, the particle starts with the position defined by this node.
 	EmitFlagPosition EmitFlags = 1
-	/*If enabled, the particle starts with the rotation and scale defined by this node.*/
+	// If enabled, the particle starts with the rotation and scale defined by this node.
 	EmitFlagRotScale EmitFlags = 2
-	/*If enabled,the particle starts with the velocity defined by this node.*/
+	// If enabled,the particle starts with the velocity defined by this node.
 	EmitFlagVelocity EmitFlags = 4
-	/*If enabled, the particle starts with the color defined by this node.*/
+	// If enabled, the particle starts with the color defined by this node.
 	EmitFlagColor EmitFlags = 8
-	/*If enabled, the particle starts with the [code]CUSTOM[/code] data defined by this node.*/
+	// If enabled, the particle starts with the CUSTOM data defined by this node.
 	EmitFlagCustom EmitFlags = 16
 )

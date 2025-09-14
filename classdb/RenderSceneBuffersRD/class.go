@@ -2,8 +2,11 @@
 
 /*
 This object manages all 3D rendering buffers for the rendering device based renderers. An instance of this object is created for every viewport that has 3D rendering enabled.
+
 All buffers are organized in contexts. The default context is called render_buffers and can contain amongst others the color buffer, depth buffer, velocity buffers, VRS density map and MSAA variants of these buffers.
+
 Buffers are only guaranteed to exist during rendering of the viewport.
+
 Note: This is an internal rendering server object, do not instantiate this from script.
 */
 package RenderSceneBuffersRD
@@ -205,6 +208,7 @@ func (self Instance) ClearContext(context string) { //gd:RenderSceneBuffersRD.cl
 
 /*
 Returns the color texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
+
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Instance) GetColorTexture() RID.Texture { //gd:RenderSceneBuffersRD.get_color_texture
@@ -213,6 +217,7 @@ func (self Instance) GetColorTexture() RID.Texture { //gd:RenderSceneBuffersRD.g
 
 /*
 Returns the color texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
+
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Expanded) GetColorTexture(msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_color_texture
@@ -221,6 +226,7 @@ func (self Expanded) GetColorTexture(msaa bool) RID.Texture { //gd:RenderSceneBu
 
 /*
 Returns the specified layer from the color texture we are rendering 3D content to.
+
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Instance) GetColorLayer(layer int) RID.Texture { //gd:RenderSceneBuffersRD.get_color_layer
@@ -229,6 +235,7 @@ func (self Instance) GetColorLayer(layer int) RID.Texture { //gd:RenderSceneBuff
 
 /*
 Returns the specified layer from the color texture we are rendering 3D content to.
+
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Expanded) GetColorLayer(layer int, msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_color_layer
@@ -237,6 +244,7 @@ func (self Expanded) GetColorLayer(layer int, msaa bool) RID.Texture { //gd:Rend
 
 /*
 Returns the depth texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
+
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Instance) GetDepthTexture() RID.Texture { //gd:RenderSceneBuffersRD.get_depth_texture
@@ -245,6 +253,7 @@ func (self Instance) GetDepthTexture() RID.Texture { //gd:RenderSceneBuffersRD.g
 
 /*
 Returns the depth texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
+
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Expanded) GetDepthTexture(msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_depth_texture
@@ -253,6 +262,7 @@ func (self Expanded) GetDepthTexture(msaa bool) RID.Texture { //gd:RenderSceneBu
 
 /*
 Returns the specified layer from the depth texture we are rendering 3D content to.
+
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Instance) GetDepthLayer(layer int) RID.Texture { //gd:RenderSceneBuffersRD.get_depth_layer
@@ -261,6 +271,7 @@ func (self Instance) GetDepthLayer(layer int) RID.Texture { //gd:RenderSceneBuff
 
 /*
 Returns the specified layer from the depth texture we are rendering 3D content to.
+
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Expanded) GetDepthLayer(layer int, msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_depth_layer
@@ -269,6 +280,7 @@ func (self Expanded) GetDepthLayer(layer int, msaa bool) RID.Texture { //gd:Rend
 
 /*
 Returns the velocity texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
+
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Instance) GetVelocityTexture() RID.Texture { //gd:RenderSceneBuffersRD.get_velocity_texture
@@ -277,6 +289,7 @@ func (self Instance) GetVelocityTexture() RID.Texture { //gd:RenderSceneBuffersR
 
 /*
 Returns the velocity texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
+
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 func (self Expanded) GetVelocityTexture(msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_velocity_texture
@@ -567,6 +580,7 @@ func (self class) ClearContext(context String.Name) { //gd:RenderSceneBuffersRD.
 
 /*
 Returns the color texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
+
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 //go:nosplit
@@ -578,6 +592,7 @@ func (self class) GetColorTexture(msaa bool) RID.Any { //gd:RenderSceneBuffersRD
 
 /*
 Returns the specified layer from the color texture we are rendering 3D content to.
+
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 //go:nosplit
@@ -592,6 +607,7 @@ func (self class) GetColorLayer(layer int64, msaa bool) RID.Any { //gd:RenderSce
 
 /*
 Returns the depth texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
+
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 //go:nosplit
@@ -603,6 +619,7 @@ func (self class) GetDepthTexture(msaa bool) RID.Any { //gd:RenderSceneBuffersRD
 
 /*
 Returns the specified layer from the depth texture we are rendering 3D content to.
+
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 //go:nosplit
@@ -617,6 +634,7 @@ func (self class) GetDepthLayer(layer int64, msaa bool) RID.Any { //gd:RenderSce
 
 /*
 Returns the velocity texture we are rendering 3D content to. If multiview is used this will be a texture array with all views.
+
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
 //go:nosplit

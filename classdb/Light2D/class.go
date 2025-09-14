@@ -132,14 +132,14 @@ type Any interface {
 }
 
 /*
-Sets the light's height, which is used in 2D normal mapping. See [member PointLight2D.height] and [member DirectionalLight2D.height].
+Sets the light's height, which is used in 2D normal mapping. See [graphics.gd/classdb/PointLight2D.Instance.Height] and [graphics.gd/classdb/DirectionalLight2D.Instance.Height].
 */
 func (self Instance) SetHeight(height Float.X) { //gd:Light2D.set_height
 	Advanced(self).SetHeight(float64(height))
 }
 
 /*
-Returns the light's height, which is used in 2D normal mapping. See [member PointLight2D.height] and [member DirectionalLight2D.height].
+Returns the light's height, which is used in 2D normal mapping. See [graphics.gd/classdb/PointLight2D.Instance.Height] and [graphics.gd/classdb/DirectionalLight2D.Instance.Height].
 */
 func (self Instance) GetHeight() Float.X { //gd:Light2D.get_height
 	return Float.X(Float.X(Advanced(self).GetHeight()))
@@ -488,7 +488,7 @@ func (self class) GetBlendMode() BlendMode { //gd:Light2D.get_blend_mode
 }
 
 /*
-Sets the light's height, which is used in 2D normal mapping. See [member PointLight2D.height] and [member DirectionalLight2D.height].
+Sets the light's height, which is used in 2D normal mapping. See [graphics.gd/classdb/PointLight2D.Instance.Height] and [graphics.gd/classdb/DirectionalLight2D.Instance.Height].
 */
 //go:nosplit
 func (self class) SetHeight(height float64) { //gd:Light2D.set_height
@@ -496,7 +496,7 @@ func (self class) SetHeight(height float64) { //gd:Light2D.set_height
 }
 
 /*
-Returns the light's height, which is used in 2D normal mapping. See [member PointLight2D.height] and [member DirectionalLight2D.height].
+Returns the light's height, which is used in 2D normal mapping. See [graphics.gd/classdb/PointLight2D.Instance.Height] and [graphics.gd/classdb/DirectionalLight2D.Instance.Height].
 */
 //go:nosplit
 func (self class) GetHeight() float64 { //gd:Light2D.get_height
@@ -547,21 +547,21 @@ func init() {
 type ShadowFilter int //gd:Light2D.ShadowFilter
 
 const (
-	/*No filter applies to the shadow map. This provides hard shadow edges and is the fastest to render. See [member shadow_filter].*/
+	// No filter applies to the shadow map. This provides hard shadow edges and is the fastest to render. See [Instance.ShadowFilter].
 	ShadowFilterNone ShadowFilter = 0
-	/*Percentage closer filtering (5 samples) applies to the shadow map. This is slower compared to hard shadow rendering. See [member shadow_filter].*/
+	// Percentage closer filtering (5 samples) applies to the shadow map. This is slower compared to hard shadow rendering. See [Instance.ShadowFilter].
 	ShadowFilterPcf5 ShadowFilter = 1
-	/*Percentage closer filtering (13 samples) applies to the shadow map. This is the slowest shadow filtering mode, and should be used sparingly. See [member shadow_filter].*/
+	// Percentage closer filtering (13 samples) applies to the shadow map. This is the slowest shadow filtering mode, and should be used sparingly. See [Instance.ShadowFilter].
 	ShadowFilterPcf13 ShadowFilter = 2
 )
 
 type BlendMode int //gd:Light2D.BlendMode
 
 const (
-	/*Adds the value of pixels corresponding to the Light2D to the values of pixels under it. This is the common behavior of a light.*/
+	// Adds the value of pixels corresponding to the Light2D to the values of pixels under it. This is the common behavior of a light.
 	BlendModeAdd BlendMode = 0
-	/*Subtracts the value of pixels corresponding to the Light2D to the values of pixels under it, resulting in inversed light effect.*/
+	// Subtracts the value of pixels corresponding to the Light2D to the values of pixels under it, resulting in inversed light effect.
 	BlendModeSub BlendMode = 1
-	/*Mix the value of pixels corresponding to the Light2D to the values of pixels under it by linear interpolation.*/
+	// Mix the value of pixels corresponding to the Light2D to the values of pixels under it by linear interpolation.
 	BlendModeMix BlendMode = 2
 )

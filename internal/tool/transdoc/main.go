@@ -65,18 +65,14 @@ func transdoc() error {
 		}
 		if len(blocks) > 0 {
 			if existing, err := os.ReadFile("./internal/gddocs/" + class.Name + ".go"); err == nil {
-				if !bytes.HasPrefix(existing, []byte("/*"+blocks[0]+"*/")) {
-					fmt.Println(class.Name + ".go")
-					fmt.Println("/*" + blocks[0] + "*/")
-					fmt.Println("\npackage main")
-					os.Exit(0)
+				if bytes.HasPrefix(existing, []byte("/*"+blocks[0]+"*/")) {
+					continue
 				}
-			} else {
-				fmt.Println(class.Name + ".go")
-				fmt.Println("/*" + blocks[0] + "*/")
-				fmt.Println("\npackage main")
-				os.Exit(0)
 			}
+			fmt.Println(class.Name + ".go")
+			fmt.Println("/*" + blocks[0] + "*/")
+			fmt.Println("\npackage main")
+			os.Exit(0)
 		}
 		if len(blocks) > 1 {
 			for i, block := range blocks[1:] {
@@ -91,6 +87,40 @@ func transdoc() error {
 				os.Exit(0)
 			}
 		}
+		for _, method := range class.Methods {
+			docs := method.Description
+			var blocks []string
+			for codeblock := range codeblocks(docs) {
+				blocks = append(blocks, codeblock)
+			}
+			if len(blocks) > 0 {
+				name := fmt.Sprintf("%s_%s.go", class.Name, gdjson.ConvertName(method.Name))
+				if existing, err := os.ReadFile("./internal/gddocs/" + name); err == nil {
+					if bytes.HasPrefix(existing, []byte("/*"+blocks[0]+"*/")) {
+						continue
+					}
+				}
+				fmt.Println(name)
+				fmt.Println("/*" + blocks[0] + "*/")
+				fmt.Println("\npackage main")
+				os.Exit(0)
+			}
+			if len(blocks) > 1 {
+				for i, block := range blocks[1:] {
+					name := fmt.Sprintf("%s_%s%d.go", class.Name, gdjson.ConvertName(method.Name), i+2)
+					if existing, err := os.ReadFile("./internal/gddocs/" + name); err == nil {
+						if bytes.HasPrefix(existing, []byte("/*"+block+"*/")) {
+							continue
+						}
+					}
+					fmt.Println(name)
+					fmt.Println("/*" + block + "*/")
+					fmt.Println("\npackage main")
+					os.Exit(0)
+				}
+			}
+		}
 	}
+
 	return nil
 }

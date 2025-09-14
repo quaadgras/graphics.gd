@@ -61,12 +61,11 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 // Instance of the class with convieniently typed arguments and results.
-// See [Interface] for methods that can be overridden by a [Class] that extends it.
 type Instance [1]gdclass.AudioStreamPlaybackResampled
 
 var otype gdextension.ObjectType
@@ -94,6 +93,7 @@ type Any interface {
 	gd.IsClass
 	AsAudioStreamPlaybackResampled() Instance
 }
+
 type Interface interface {
 	MixResampled(dst_buffer *AudioFrame, frame_count int) int
 	GetStreamSamplingRate() Float.X

@@ -207,11 +207,12 @@ func (self Instance) ConvertToImage() Image.Instance { //gd:BitMap.convert_to_im
 }
 
 /*
-Creates an [Array] of polygons covering a rectangular portion of the bitmap. It uses a marching squares algorithm, followed by Ramer-Douglas-Peucker (RDP) reduction of the number of vertices. Each polygon is described as a [PackedVector2Array] of its vertices.
+Creates an slice of polygons covering a rectangular portion of the bitmap. It uses a marching squares algorithm, followed by Ramer-Douglas-Peucker (RDP) reduction of the number of vertices. Each polygon is described as a [][Vector2.XY] of its vertices.
+
 To get polygons covering the whole bitmap, pass:
-[codeblock]
-Rect2(Vector2(), get_size())
-[/codeblock]
+
+	var size = Rect2.PositionSize{Vector2.Zero, Vector2.From(bitmap.GetSize())
+
 'epsilon' is passed to RDP to control how accurately the polygons cover the bitmap: a lower 'epsilon' corresponds to more points in the polygons.
 */
 func (self Instance) OpaqueToPolygons(rect Rect2i.PositionSize) [][]Vector2.XY { //gd:BitMap.opaque_to_polygons
@@ -219,11 +220,12 @@ func (self Instance) OpaqueToPolygons(rect Rect2i.PositionSize) [][]Vector2.XY {
 }
 
 /*
-Creates an [Array] of polygons covering a rectangular portion of the bitmap. It uses a marching squares algorithm, followed by Ramer-Douglas-Peucker (RDP) reduction of the number of vertices. Each polygon is described as a [PackedVector2Array] of its vertices.
+Creates an slice of polygons covering a rectangular portion of the bitmap. It uses a marching squares algorithm, followed by Ramer-Douglas-Peucker (RDP) reduction of the number of vertices. Each polygon is described as a [][Vector2.XY] of its vertices.
+
 To get polygons covering the whole bitmap, pass:
-[codeblock]
-Rect2(Vector2(), get_size())
-[/codeblock]
+
+	var size = Rect2.PositionSize{Vector2.Zero, Vector2.From(bitmap.GetSize())
+
 'epsilon' is passed to RDP to control how accurately the polygons cover the bitmap: a lower 'epsilon' corresponds to more points in the polygons.
 */
 func (self Expanded) OpaqueToPolygons(rect Rect2i.PositionSize, epsilon Float.X) [][]Vector2.XY { //gd:BitMap.opaque_to_polygons
@@ -399,11 +401,13 @@ func (self class) ConvertToImage() [1]gdclass.Image { //gd:BitMap.convert_to_ima
 }
 
 /*
-Creates an [Array] of polygons covering a rectangular portion of the bitmap. It uses a marching squares algorithm, followed by Ramer-Douglas-Peucker (RDP) reduction of the number of vertices. Each polygon is described as a [PackedVector2Array] of its vertices.
+Creates an slice of polygons covering a rectangular portion of the bitmap. It uses a marching squares algorithm, followed by Ramer-Douglas-Peucker (RDP) reduction of the number of vertices. Each polygon is described as a [][Vector2.XY] of its vertices.
+
 To get polygons covering the whole bitmap, pass:
-[codeblock]
-Rect2(Vector2(), get_size())
-[/codeblock]
+
+
+	var size = Rect2.PositionSize{Vector2.Zero, Vector2.From(bitmap.GetSize())
+
 'epsilon' is passed to RDP to control how accurately the polygons cover the bitmap: a lower 'epsilon' corresponds to more points in the polygons.
 */
 //go:nosplit

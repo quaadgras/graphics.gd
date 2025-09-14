@@ -2,6 +2,7 @@
 
 /*
 Has only one output port and no inputs.
+
 Translated to bool in the shader language.
 */
 package VisualShaderNodeBooleanConstant

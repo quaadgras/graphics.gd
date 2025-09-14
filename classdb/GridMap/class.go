@@ -2,10 +2,14 @@
 
 /*
 GridMap lets you place meshes on a grid interactively. It works both from the editor and from scripts, which can help you create in-game level editors.
-GridMaps use a [MeshLibrary] which contains a list of tiles. Each tile is a mesh with materials plus optional collision and navigation shapes.
-A GridMap contains a collection of cells. Each grid cell refers to a tile in the [MeshLibrary]. All cells in the map have the same dimensions.
+
+GridMaps use a [graphics.gd/classdb/MeshLibrary] which contains a list of tiles. Each tile is a mesh with materials plus optional collision and navigation shapes.
+
+A GridMap contains a collection of cells. Each grid cell refers to a tile in the [graphics.gd/classdb/MeshLibrary]. All cells in the map have the same dimensions.
+
 Internally, a GridMap is split into a sparse collection of octants for efficient rendering and physics processing. Every octant has the same dimensions and can contain several cells.
-Note: GridMap doesn't extend [VisualInstance3D] and therefore can't be hidden or cull masked based on [member VisualInstance3D.layers]. If you make a light not affect the first layer, the whole GridMap won't be lit by the light in question.
+
+Note: GridMap doesn't extend [graphics.gd/classdb/VisualInstance3D] and therefore can't be hidden or cull masked based on [graphics.gd/classdb/VisualInstance3D.Instance.Layers]. If you make a light not affect the first layer, the whole GridMap won't be lit by the light in question.
 */
 package GridMap
 
@@ -157,42 +161,43 @@ type Any interface {
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [member collision_mask], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [Instance.CollisionMask], given a 'layer_number' between 1 and 32.
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:GridMap.set_collision_mask_value
 	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
-Returns whether or not the specified layer of the [member collision_mask] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [Instance.CollisionMask] is enabled, given a 'layer_number' between 1 and 32.
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:GridMap.get_collision_mask_value
 	return bool(Advanced(self).GetCollisionMaskValue(int64(layer_number)))
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [member collision_layer], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [Instance.CollisionLayer], given a 'layer_number' between 1 and 32.
 */
 func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:GridMap.set_collision_layer_value
 	Advanced(self).SetCollisionLayerValue(int64(layer_number), value)
 }
 
 /*
-Returns whether or not the specified layer of the [member collision_layer] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [Instance.CollisionLayer] is enabled, given a 'layer_number' between 1 and 32.
 */
 func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:GridMap.get_collision_layer_value
 	return bool(Advanced(self).GetCollisionLayerValue(int64(layer_number)))
 }
 
 /*
-Sets the [RID] of the navigation map this GridMap node should use for its cell baked navigation meshes.
+Sets the [Resource.ID] of the navigation map this GridMap node should use for its cell baked navigation meshes.
 */
 func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) { //gd:GridMap.set_navigation_map
 	Advanced(self).SetNavigationMap(RID.Any(navigation_map))
 }
 
 /*
-Returns the [RID] of the navigation map this GridMap node uses for its cell baked navigation meshes.
+Returns the [Resource.ID] of the navigation map this GridMap node uses for its cell baked navigation meshes.
+
 This function returns always the map set on the GridMap node and not the map on the NavigationServer. If the map is changed directly with the NavigationServer API the GridMap node will not be aware of the map change.
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:GridMap.get_navigation_map
@@ -201,7 +206,9 @@ func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:GridMap.get_n
 
 /*
 Sets the mesh index for the cell referenced by its grid coordinates.
+
 A negative item index such as [InvalidCellItem] will clear the cell.
+
 Optionally, the item's orientation can be passed. For valid orientation values, see [Instance.GetOrthogonalIndexFromBasis].
 */
 func (self Instance) SetCellItem(position Vector3i.XYZ, item CellItem) { //gd:GridMap.set_cell_item
@@ -210,7 +217,9 @@ func (self Instance) SetCellItem(position Vector3i.XYZ, item CellItem) { //gd:Gr
 
 /*
 Sets the mesh index for the cell referenced by its grid coordinates.
+
 A negative item index such as [InvalidCellItem] will clear the cell.
+
 Optionally, the item's orientation can be passed. For valid orientation values, see [Instance.GetOrthogonalIndexFromBasis].
 */
 func (self Expanded) SetCellItem(position Vector3i.XYZ, item CellItem, orientation int) { //gd:GridMap.set_cell_item
@@ -218,17 +227,17 @@ func (self Expanded) SetCellItem(position Vector3i.XYZ, item CellItem, orientati
 }
 
 /*
-The [MeshLibrary] item index located at the given grid coordinates. If the cell is empty, [InvalidCellItem] will be returned.
+The [graphics.gd/classdb/MeshLibrary] item index located at the given grid coordinates. If the cell is empty, [InvalidCellItem] will be returned.
 */
 func (self Instance) GetCellItem(position Vector3i.XYZ) CellItem { //gd:GridMap.get_cell_item
-	return CellItem(int(Advanced(self).GetCellItem(Vector3i.XYZ(position))))
+	return CellItem(CellItem(Advanced(self).GetCellItem(Vector3i.XYZ(position))))
 }
 
 /*
 The orientation of the cell at the given grid coordinates. -1 is returned if the cell is empty.
 */
 func (self Instance) GetCellItemOrientation(position Vector3i.XYZ) CellItem { //gd:GridMap.get_cell_item_orientation
-	return CellItem(int(Advanced(self).GetCellItemOrientation(Vector3i.XYZ(position))))
+	return CellItem(CellItem(Advanced(self).GetCellItemOrientation(Vector3i.XYZ(position))))
 }
 
 /*
@@ -253,14 +262,14 @@ func (self Instance) GetOrthogonalIndexFromBasis(basis Basis.XYZ) int { //gd:Gri
 }
 
 /*
-Returns the map coordinates of the cell containing the given 'local_position'. If 'local_position' is in global coordinates, consider using [Instance.Node3d.ToLocal] before passing it to this method. See also [Instance.MapToLocal].
+Returns the map coordinates of the cell containing the given 'local_position'. If 'local_position' is in global coordinates, consider using [graphics.gd/classdb/Node3D.Instance.ToLocal] before passing it to this method. See also [Instance.MapToLocal].
 */
 func (self Instance) LocalToMap(local_position Vector3.XYZ) Vector3i.XYZ { //gd:GridMap.local_to_map
 	return Vector3i.XYZ(Advanced(self).LocalToMap(Vector3.XYZ(local_position)))
 }
 
 /*
-Returns the position of a grid cell in the GridMap's local coordinate space. To convert the returned value into global coordinates, use [Instance.Node3d.ToGlobal]. See also [Instance.LocalToMap].
+Returns the position of a grid cell in the GridMap's local coordinate space. To convert the returned value into global coordinates, use [graphics.gd/classdb/Node3D.Instance.ToGlobal]. See also [Instance.LocalToMap].
 */
 func (self Instance) MapToLocal(map_position Vector3i.XYZ) Vector3.XYZ { //gd:GridMap.map_to_local
 	return Vector3.XYZ(Advanced(self).MapToLocal(Vector3i.XYZ(map_position)))
@@ -281,7 +290,7 @@ func (self Instance) Clear() { //gd:GridMap.clear
 }
 
 /*
-Returns an array of [Vector3] with the non-empty cell coordinates in the grid map.
+Returns an array of [Vector3.XYZ] with the non-empty cell coordinates in the grid map.
 */
 func (self Instance) GetUsedCells() []Vector3i.XYZ { //gd:GridMap.get_used_cells
 	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(Advanced(self).GetUsedCells())))
@@ -295,21 +304,21 @@ func (self Instance) GetUsedCellsByItem(item CellItem) []Vector3i.XYZ { //gd:Gri
 }
 
 /*
-Returns an array of [Transform3D] and [Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space.
+Returns an array of [Transform3D.BasisOrigin] and [graphics.gd/classdb/Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space.
 */
 func (self Instance) GetMeshes() []any { //gd:GridMap.get_meshes
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetMeshes())))
 }
 
 /*
-Returns an array of [ArrayMesh]es and [Transform3D] references of all bake meshes that exist within the current GridMap.
+Returns an array of [graphics.gd/classdb/ArrayMesh]es and [Transform3D.BasisOrigin] references of all bake meshes that exist within the current GridMap.
 */
 func (self Instance) GetBakeMeshes() []any { //gd:GridMap.get_bake_meshes
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetBakeMeshes())))
 }
 
 /*
-Returns [RID] of a baked mesh with the given 'idx'.
+Returns [Resource.ID] of a baked mesh with the given 'idx'.
 */
 func (self Instance) GetBakeMeshInstance(idx int) RID.Mesh { //gd:GridMap.get_bake_mesh_instance
 	return RID.Mesh(Advanced(self).GetBakeMeshInstance(int64(idx)))
@@ -323,14 +332,14 @@ func (self Instance) ClearBakedMeshes() { //gd:GridMap.clear_baked_meshes
 }
 
 /*
-Bakes lightmap data for all meshes in the assigned [MeshLibrary].
+Bakes lightmap data for all meshes in the assigned [graphics.gd/classdb/MeshLibrary].
 */
 func (self Instance) MakeBakedMeshes() { //gd:GridMap.make_baked_meshes
 	Advanced(self).MakeBakedMeshes(false, float64(0.1))
 }
 
 /*
-Bakes lightmap data for all meshes in the assigned [MeshLibrary].
+Bakes lightmap data for all meshes in the assigned [graphics.gd/classdb/MeshLibrary].
 */
 func (self Expanded) MakeBakedMeshes(gen_lightmap_uv bool, lightmap_uv_texel_size Float.X) { //gd:GridMap.make_baked_meshes
 	Advanced(self).MakeBakedMeshes(gen_lightmap_uv, float64(lightmap_uv_texel_size))
@@ -499,7 +508,7 @@ func (self class) GetCollisionMask() int64 { //gd:GridMap.get_collision_mask
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [member collision_mask], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [Instance.CollisionMask], given a 'layer_number' between 1 and 32.
 */
 //go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:GridMap.set_collision_mask_value
@@ -510,7 +519,7 @@ func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:G
 }
 
 /*
-Returns whether or not the specified layer of the [member collision_mask] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [Instance.CollisionMask] is enabled, given a 'layer_number' between 1 and 32.
 */
 //go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:GridMap.get_collision_mask_value
@@ -520,7 +529,7 @@ func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:GridMap.
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [member collision_layer], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [Instance.CollisionLayer], given a 'layer_number' between 1 and 32.
 */
 //go:nosplit
 func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:GridMap.set_collision_layer_value
@@ -531,7 +540,7 @@ func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:
 }
 
 /*
-Returns whether or not the specified layer of the [member collision_layer] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [Instance.CollisionLayer] is enabled, given a 'layer_number' between 1 and 32.
 */
 //go:nosplit
 func (self class) GetCollisionLayerValue(layer_number int64) bool { //gd:GridMap.get_collision_layer_value
@@ -577,7 +586,7 @@ func (self class) IsBakingNavigation() bool { //gd:GridMap.is_baking_navigation
 }
 
 /*
-Sets the [RID] of the navigation map this GridMap node should use for its cell baked navigation meshes.
+Sets the [Resource.ID] of the navigation map this GridMap node should use for its cell baked navigation meshes.
 */
 //go:nosplit
 func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:GridMap.set_navigation_map
@@ -585,7 +594,8 @@ func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:GridMap.set_na
 }
 
 /*
-Returns the [RID] of the navigation map this GridMap node uses for its cell baked navigation meshes.
+Returns the [Resource.ID] of the navigation map this GridMap node uses for its cell baked navigation meshes.
+
 This function returns always the map set on the GridMap node and not the map on the NavigationServer. If the map is changed directly with the NavigationServer API the GridMap node will not be aware of the map change.
 */
 //go:nosplit
@@ -645,7 +655,9 @@ func (self class) GetOctantSize() int64 { //gd:GridMap.get_octant_size
 
 /*
 Sets the mesh index for the cell referenced by its grid coordinates.
+
 A negative item index such as [InvalidCellItem] will clear the cell.
+
 Optionally, the item's orientation can be passed. For valid orientation values, see [Instance.GetOrthogonalIndexFromBasis].
 */
 //go:nosplit
@@ -658,7 +670,7 @@ func (self class) SetCellItem(position Vector3i.XYZ, item int64, orientation int
 }
 
 /*
-The [MeshLibrary] item index located at the given grid coordinates. If the cell is empty, [InvalidCellItem] will be returned.
+The [graphics.gd/classdb/MeshLibrary] item index located at the given grid coordinates. If the cell is empty, [InvalidCellItem] will be returned.
 */
 //go:nosplit
 func (self class) GetCellItem(position Vector3i.XYZ) int64 { //gd:GridMap.get_cell_item
@@ -708,7 +720,7 @@ func (self class) GetOrthogonalIndexFromBasis(basis Basis.XYZ) int64 { //gd:Grid
 }
 
 /*
-Returns the map coordinates of the cell containing the given 'local_position'. If 'local_position' is in global coordinates, consider using [Instance.Node3d.ToLocal] before passing it to this method. See also [Instance.MapToLocal].
+Returns the map coordinates of the cell containing the given 'local_position'. If 'local_position' is in global coordinates, consider using [graphics.gd/classdb/Node3D.Instance.ToLocal] before passing it to this method. See also [Instance.MapToLocal].
 */
 //go:nosplit
 func (self class) LocalToMap(local_position Vector3.XYZ) Vector3i.XYZ { //gd:GridMap.local_to_map
@@ -718,7 +730,7 @@ func (self class) LocalToMap(local_position Vector3.XYZ) Vector3i.XYZ { //gd:Gri
 }
 
 /*
-Returns the position of a grid cell in the GridMap's local coordinate space. To convert the returned value into global coordinates, use [Instance.Node3d.ToGlobal]. See also [Instance.LocalToMap].
+Returns the position of a grid cell in the GridMap's local coordinate space. To convert the returned value into global coordinates, use [graphics.gd/classdb/Node3D.Instance.ToGlobal]. See also [Instance.LocalToMap].
 */
 //go:nosplit
 func (self class) MapToLocal(map_position Vector3i.XYZ) Vector3.XYZ { //gd:GridMap.map_to_local
@@ -780,7 +792,7 @@ func (self class) Clear() { //gd:GridMap.clear
 }
 
 /*
-Returns an array of [Vector3] with the non-empty cell coordinates in the grid map.
+Returns an array of [Vector3.XYZ] with the non-empty cell coordinates in the grid map.
 */
 //go:nosplit
 func (self class) GetUsedCells() Array.Contains[Vector3i.XYZ] { //gd:GridMap.get_used_cells
@@ -800,7 +812,7 @@ func (self class) GetUsedCellsByItem(item int64) Array.Contains[Vector3i.XYZ] { 
 }
 
 /*
-Returns an array of [Transform3D] and [Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space.
+Returns an array of [Transform3D.BasisOrigin] and [graphics.gd/classdb/Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space.
 */
 //go:nosplit
 func (self class) GetMeshes() Array.Any { //gd:GridMap.get_meshes
@@ -810,7 +822,7 @@ func (self class) GetMeshes() Array.Any { //gd:GridMap.get_meshes
 }
 
 /*
-Returns an array of [ArrayMesh]es and [Transform3D] references of all bake meshes that exist within the current GridMap.
+Returns an array of [graphics.gd/classdb/ArrayMesh]es and [Transform3D.BasisOrigin] references of all bake meshes that exist within the current GridMap.
 */
 //go:nosplit
 func (self class) GetBakeMeshes() Array.Any { //gd:GridMap.get_bake_meshes
@@ -820,7 +832,7 @@ func (self class) GetBakeMeshes() Array.Any { //gd:GridMap.get_bake_meshes
 }
 
 /*
-Returns [RID] of a baked mesh with the given 'idx'.
+Returns [Resource.ID] of a baked mesh with the given 'idx'.
 */
 //go:nosplit
 func (self class) GetBakeMeshInstance(idx int64) RID.Any { //gd:GridMap.get_bake_mesh_instance
@@ -838,7 +850,7 @@ func (self class) ClearBakedMeshes() { //gd:GridMap.clear_baked_meshes
 }
 
 /*
-Bakes lightmap data for all meshes in the assigned [MeshLibrary].
+Bakes lightmap data for all meshes in the assigned [graphics.gd/classdb/MeshLibrary].
 */
 //go:nosplit
 func (self class) MakeBakedMeshes(gen_lightmap_uv bool, lightmap_uv_texel_size float64) { //gd:GridMap.make_baked_meshes

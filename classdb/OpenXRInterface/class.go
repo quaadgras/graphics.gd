@@ -2,6 +2,7 @@
 
 /*
 The OpenXR interface allows Godot to interact with OpenXR runtimes and make it possible to create XR experiences and games.
+
 Due to the needs of OpenXR this interface works slightly different than other plugin based XR interfaces. It needs to be initialized when Godot starts. You need to enable OpenXR, settings for this can be found in your games project settings under the XR heading. You do need to mark a viewport for use with XR in order for Godot to know which render result should be output to the headset.
 */
 package OpenXRInterface
@@ -130,7 +131,8 @@ type Any interface {
 
 /*
 Returns true if OpenXR's foveation extension is supported, the interface must be initialized before this returns a valid value.
-Note: This feature is only available on the compatibility renderer and currently only available on some stand alone headsets. For Vulkan set [member Viewport.vrs_mode] to VRS_XR on desktop.
+
+Note: This feature is only available on the compatibility renderer and currently only available on some stand alone headsets. For Vulkan set [graphics.gd/classdb/Viewport.Instance.VrsMode] to VRS_XR on desktop.
 */
 func (self Instance) IsFoveationSupported() bool { //gd:OpenXRInterface.is_foveation_supported
 	return bool(Advanced(self).IsFoveationSupported())
@@ -200,7 +202,7 @@ func (self Instance) GetHandJointRotation(hand Hand, joint HandJoints) Quaternio
 }
 
 /*
-If handtracking is enabled, returns the position of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
+If handtracking is enabled, returns the position of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [graphics.gd/classdb/XROrigin3D] without worldscale applied!
 */
 func (self Instance) GetHandJointPosition(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_position
 	return Vector3.XYZ(Advanced(self).GetHandJointPosition(hand, joint))
@@ -214,14 +216,14 @@ func (self Instance) GetHandJointRadius(hand Hand, joint HandJoints) Float.X { /
 }
 
 /*
-If handtracking is enabled, returns the linear velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
+If handtracking is enabled, returns the linear velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [graphics.gd/classdb/XROrigin3D] without worldscale applied!
 */
 func (self Instance) GetHandJointLinearVelocity(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_linear_velocity
 	return Vector3.XYZ(Advanced(self).GetHandJointLinearVelocity(hand, joint))
 }
 
 /*
-If handtracking is enabled, returns the angular velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [XROrigin3D]!
+If handtracking is enabled, returns the angular velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [graphics.gd/classdb/XROrigin3D]!
 */
 func (self Instance) GetHandJointAngularVelocity(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_angular_velocity
 	return Vector3.XYZ(Advanced(self).GetHandJointAngularVelocity(hand, joint))
@@ -229,6 +231,7 @@ func (self Instance) GetHandJointAngularVelocity(hand Hand, joint HandJoints) Ve
 
 /*
 Returns true if OpenXR's hand tracking is supported and enabled.
+
 Note: This only returns a valid value after OpenXR has been initialized.
 */
 func (self Instance) IsHandTrackingSupported() bool { //gd:OpenXRInterface.is_hand_tracking_supported
@@ -237,6 +240,7 @@ func (self Instance) IsHandTrackingSupported() bool { //gd:OpenXRInterface.is_ha
 
 /*
 Returns true if OpenXR's hand interaction profile is supported and enabled.
+
 Note: This only returns a valid value after OpenXR has been initialized.
 */
 func (self Instance) IsHandInteractionSupported() bool { //gd:OpenXRInterface.is_hand_interaction_supported
@@ -245,6 +249,7 @@ func (self Instance) IsHandInteractionSupported() bool { //gd:OpenXRInterface.is
 
 /*
 Returns the capabilities of the eye gaze interaction extension.
+
 Note: This only returns a valid value after OpenXR has been initialized.
 */
 func (self Instance) IsEyeGazeInteractionSupported() bool { //gd:OpenXRInterface.is_eye_gaze_interaction_supported
@@ -368,7 +373,8 @@ func (self class) SetRenderTargetSizeMultiplier(multiplier float64) { //gd:OpenX
 
 /*
 Returns true if OpenXR's foveation extension is supported, the interface must be initialized before this returns a valid value.
-Note: This feature is only available on the compatibility renderer and currently only available on some stand alone headsets. For Vulkan set [member Viewport.vrs_mode] to VRS_XR on desktop.
+
+Note: This feature is only available on the compatibility renderer and currently only available on some stand alone headsets. For Vulkan set [graphics.gd/classdb/Viewport.Instance.VrsMode] to VRS_XR on desktop.
 */
 //go:nosplit
 func (self class) IsFoveationSupported() bool { //gd:OpenXRInterface.is_foveation_supported
@@ -500,7 +506,7 @@ func (self class) GetHandJointRotation(hand Hand, joint HandJoints) Quaternion.I
 }
 
 /*
-If handtracking is enabled, returns the position of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
+If handtracking is enabled, returns the position of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [graphics.gd/classdb/XROrigin3D] without worldscale applied!
 */
 //go:nosplit
 func (self class) GetHandJointPosition(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_position
@@ -526,7 +532,7 @@ func (self class) GetHandJointRadius(hand Hand, joint HandJoints) float64 { //gd
 }
 
 /*
-If handtracking is enabled, returns the linear velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
+If handtracking is enabled, returns the linear velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [graphics.gd/classdb/XROrigin3D] without worldscale applied!
 */
 //go:nosplit
 func (self class) GetHandJointLinearVelocity(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_linear_velocity
@@ -539,7 +545,7 @@ func (self class) GetHandJointLinearVelocity(hand Hand, joint HandJoints) Vector
 }
 
 /*
-If handtracking is enabled, returns the angular velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [XROrigin3D]!
+If handtracking is enabled, returns the angular velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [graphics.gd/classdb/XROrigin3D]!
 */
 //go:nosplit
 func (self class) GetHandJointAngularVelocity(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_angular_velocity
@@ -553,6 +559,7 @@ func (self class) GetHandJointAngularVelocity(hand Hand, joint HandJoints) Vecto
 
 /*
 Returns true if OpenXR's hand tracking is supported and enabled.
+
 Note: This only returns a valid value after OpenXR has been initialized.
 */
 //go:nosplit
@@ -564,6 +571,7 @@ func (self class) IsHandTrackingSupported() bool { //gd:OpenXRInterface.is_hand_
 
 /*
 Returns true if OpenXR's hand interaction profile is supported and enabled.
+
 Note: This only returns a valid value after OpenXR has been initialized.
 */
 //go:nosplit
@@ -575,6 +583,7 @@ func (self class) IsHandInteractionSupported() bool { //gd:OpenXRInterface.is_ha
 
 /*
 Returns the capabilities of the eye gaze interaction extension.
+
 Note: This only returns a valid value after OpenXR has been initialized.
 */
 //go:nosplit
@@ -745,112 +754,112 @@ func init() {
 type Hand int //gd:OpenXRInterface.Hand
 
 const (
-	/*Left hand.*/
+	// Left hand.
 	HandLeft Hand = 0
-	/*Right hand.*/
+	// Right hand.
 	HandRight Hand = 1
-	/*Maximum value for the hand enum.*/
+	// Maximum value for the hand enum.
 	HandMax Hand = 2
 )
 
 type HandMotionRange int //gd:OpenXRInterface.HandMotionRange
 
 const (
-	/*Full hand range, if user closes their hands, we make a full fist.*/
+	// Full hand range, if user closes their hands, we make a full fist.
 	HandMotionRangeUnobstructed HandMotionRange = 0
-	/*Conform to controller, if user closes their hands, the tracked data conforms to the shape of the controller.*/
+	// Conform to controller, if user closes their hands, the tracked data conforms to the shape of the controller.
 	HandMotionRangeConformToController HandMotionRange = 1
-	/*Maximum value for the motion range enum.*/
+	// Maximum value for the motion range enum.
 	HandMotionRangeMax HandMotionRange = 2
 )
 
 type HandTrackedSource int //gd:OpenXRInterface.HandTrackedSource
 
 const (
-	/*The source of hand tracking data is unknown (the extension is likely unsupported).*/
+	// The source of hand tracking data is unknown (the extension is likely unsupported).
 	HandTrackedSourceUnknown HandTrackedSource = 0
-	/*The source of hand tracking is unobstructed, this means that an accurate method of hand tracking is used, e.g. optical hand tracking, data gloves, etc.*/
+	// The source of hand tracking is unobstructed, this means that an accurate method of hand tracking is used, e.g. optical hand tracking, data gloves, etc.
 	HandTrackedSourceUnobstructed HandTrackedSource = 1
-	/*The source of hand tracking is a controller, bone positions are inferred from controller inputs.*/
+	// The source of hand tracking is a controller, bone positions are inferred from controller inputs.
 	HandTrackedSourceController HandTrackedSource = 2
-	/*Maximum value for the hand tracked source enum.*/
+	// Maximum value for the hand tracked source enum.
 	HandTrackedSourceMax HandTrackedSource = 3
 )
 
 type HandJoints int //gd:OpenXRInterface.HandJoints
 
 const (
-	/*Palm joint.*/
+	// Palm joint.
 	HandJointPalm HandJoints = 0
-	/*Wrist joint.*/
+	// Wrist joint.
 	HandJointWrist HandJoints = 1
-	/*Thumb metacarpal joint.*/
+	// Thumb metacarpal joint.
 	HandJointThumbMetacarpal HandJoints = 2
-	/*Thumb proximal joint.*/
+	// Thumb proximal joint.
 	HandJointThumbProximal HandJoints = 3
-	/*Thumb distal joint.*/
+	// Thumb distal joint.
 	HandJointThumbDistal HandJoints = 4
-	/*Thumb tip joint.*/
+	// Thumb tip joint.
 	HandJointThumbTip HandJoints = 5
-	/*Index metacarpal joint.*/
+	// Index metacarpal joint.
 	HandJointIndexMetacarpal HandJoints = 6
-	/*Index proximal joint.*/
+	// Index proximal joint.
 	HandJointIndexProximal HandJoints = 7
-	/*Index intermediate joint.*/
+	// Index intermediate joint.
 	HandJointIndexIntermediate HandJoints = 8
-	/*Index distal joint.*/
+	// Index distal joint.
 	HandJointIndexDistal HandJoints = 9
-	/*Index tip joint.*/
+	// Index tip joint.
 	HandJointIndexTip HandJoints = 10
-	/*Middle metacarpal joint.*/
+	// Middle metacarpal joint.
 	HandJointMiddleMetacarpal HandJoints = 11
-	/*Middle proximal joint.*/
+	// Middle proximal joint.
 	HandJointMiddleProximal HandJoints = 12
-	/*Middle intermediate joint.*/
+	// Middle intermediate joint.
 	HandJointMiddleIntermediate HandJoints = 13
-	/*Middle distal joint.*/
+	// Middle distal joint.
 	HandJointMiddleDistal HandJoints = 14
-	/*Middle tip joint.*/
+	// Middle tip joint.
 	HandJointMiddleTip HandJoints = 15
-	/*Ring metacarpal joint.*/
+	// Ring metacarpal joint.
 	HandJointRingMetacarpal HandJoints = 16
-	/*Ring proximal joint.*/
+	// Ring proximal joint.
 	HandJointRingProximal HandJoints = 17
-	/*Ring intermediate joint.*/
+	// Ring intermediate joint.
 	HandJointRingIntermediate HandJoints = 18
-	/*Ring distal joint.*/
+	// Ring distal joint.
 	HandJointRingDistal HandJoints = 19
-	/*Ring tip joint.*/
+	// Ring tip joint.
 	HandJointRingTip HandJoints = 20
-	/*Little metacarpal joint.*/
+	// Little metacarpal joint.
 	HandJointLittleMetacarpal HandJoints = 21
-	/*Little proximal joint.*/
+	// Little proximal joint.
 	HandJointLittleProximal HandJoints = 22
-	/*Little intermediate joint.*/
+	// Little intermediate joint.
 	HandJointLittleIntermediate HandJoints = 23
-	/*Little distal joint.*/
+	// Little distal joint.
 	HandJointLittleDistal HandJoints = 24
-	/*Little tip joint.*/
+	// Little tip joint.
 	HandJointLittleTip HandJoints = 25
-	/*Maximum value for the hand joint enum.*/
+	// Maximum value for the hand joint enum.
 	HandJointMax HandJoints = 26
 )
 
 type HandJointFlags int //gd:OpenXRInterface.HandJointFlags
 
 const (
-	/*No flags are set.*/
+	// No flags are set.
 	HandJointNone HandJointFlags = 0
-	/*If set, the orientation data is valid, otherwise, the orientation data is unreliable and should not be used.*/
+	// If set, the orientation data is valid, otherwise, the orientation data is unreliable and should not be used.
 	HandJointOrientationValid HandJointFlags = 1
-	/*If set, the orientation data comes from tracking data, otherwise, the orientation data contains predicted data.*/
+	// If set, the orientation data comes from tracking data, otherwise, the orientation data contains predicted data.
 	HandJointOrientationTracked HandJointFlags = 2
-	/*If set, the positional data is valid, otherwise, the positional data is unreliable and should not be used.*/
+	// If set, the positional data is valid, otherwise, the positional data is unreliable and should not be used.
 	HandJointPositionValid HandJointFlags = 4
-	/*If set, the positional data comes from tracking data, otherwise, the positional data contains predicted data.*/
+	// If set, the positional data comes from tracking data, otherwise, the positional data contains predicted data.
 	HandJointPositionTracked HandJointFlags = 8
-	/*If set, our linear velocity data is valid, otherwise, the linear velocity data is unreliable and should not be used.*/
+	// If set, our linear velocity data is valid, otherwise, the linear velocity data is unreliable and should not be used.
 	HandJointLinearVelocityValid HandJointFlags = 16
-	/*If set, our angular velocity data is valid, otherwise, the angular velocity data is unreliable and should not be used.*/
+	// If set, our angular velocity data is valid, otherwise, the angular velocity data is unreliable and should not be used.
 	HandJointAngularVelocityValid HandJointFlags = 32
 )

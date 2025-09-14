@@ -2,6 +2,7 @@
 
 /*
 Object that holds all the available Commands and their shortcuts text. These Commands can be accessed through Editor > Command Palette menu.
+
 Command key names use slash delimiters to distinguish sections, for example: "example/command1" then example will be the section name.
 
 	package main
@@ -16,7 +17,7 @@ Command key names use slash delimiters to distinguish sections, for example: "ex
 		})
 	}
 
-Note: This class shouldn't be instantiated directly. Instead, access the singleton using [Instance.Editorinterface.GetCommandPalette].
+Note: This class shouldn't be instantiated directly. Instead, access the singleton using [graphics.gd/classdb/EditorInterface.GetCommandPalette].
 */
 package EditorCommandPalette
 
@@ -121,10 +122,14 @@ type Any interface {
 
 /*
 Adds a custom command to EditorCommandPalette.
-- 'command_name': [String] (Name of the Command. This is displayed to the user.)
-- 'key_name': [String] (Name of the key for a particular Command. This is used to uniquely identify the Command.)
-- 'binded_callable': [Callable] (Callable of the Command. This will be executed when the Command is selected.)
-- 'shortcut_text': [String] (Shortcut text of the Command if available.)
+
+- 'command_name': string (Name of the Command. This is displayed to the user.)
+
+- 'key_name': string (Name of the key for a particular Command. This is used to uniquely identify the Command.)
+
+- 'binded_callable': func (Callable of the Command. This will be executed when the Command is selected.)
+
+- 'shortcut_text': string (Shortcut text of the Command if available.)
 */
 func (self Instance) AddCommand(command_name string, key_name string, binded_callable func()) { //gd:EditorCommandPalette.add_command
 	Advanced(self).AddCommand(String.New(command_name), String.New(key_name), Callable.New(binded_callable), String.New("None"))
@@ -132,10 +137,14 @@ func (self Instance) AddCommand(command_name string, key_name string, binded_cal
 
 /*
 Adds a custom command to EditorCommandPalette.
-- 'command_name': [String] (Name of the Command. This is displayed to the user.)
-- 'key_name': [String] (Name of the key for a particular Command. This is used to uniquely identify the Command.)
-- 'binded_callable': [Callable] (Callable of the Command. This will be executed when the Command is selected.)
-- 'shortcut_text': [String] (Shortcut text of the Command if available.)
+
+- 'command_name': string (Name of the Command. This is displayed to the user.)
+
+- 'key_name': string (Name of the key for a particular Command. This is used to uniquely identify the Command.)
+
+- 'binded_callable': func (Callable of the Command. This will be executed when the Command is selected.)
+
+- 'shortcut_text': string (Shortcut text of the Command if available.)
 */
 func (self Expanded) AddCommand(command_name string, key_name string, binded_callable func(), shortcut_text string) { //gd:EditorCommandPalette.add_command
 	Advanced(self).AddCommand(String.New(command_name), String.New(key_name), Callable.New(binded_callable), String.New(shortcut_text))
@@ -143,7 +152,8 @@ func (self Expanded) AddCommand(command_name string, key_name string, binded_cal
 
 /*
 Removes the custom command from EditorCommandPalette.
-- 'key_name': [String] (Name of the key for a particular Command.)
+
+- 'key_name': string (Name of the key for a particular Command.)
 */
 func (self Instance) RemoveCommand(key_name string) { //gd:EditorCommandPalette.remove_command
 	Advanced(self).RemoveCommand(String.New(key_name))
@@ -193,10 +203,14 @@ func New() Instance {
 
 /*
 Adds a custom command to EditorCommandPalette.
-- 'command_name': [String] (Name of the Command. This is displayed to the user.)
-- 'key_name': [String] (Name of the key for a particular Command. This is used to uniquely identify the Command.)
-- 'binded_callable': [Callable] (Callable of the Command. This will be executed when the Command is selected.)
-- 'shortcut_text': [String] (Shortcut text of the Command if available.)
+
+- 'command_name': string (Name of the Command. This is displayed to the user.)
+
+- 'key_name': string (Name of the key for a particular Command. This is used to uniquely identify the Command.)
+
+- 'binded_callable': func (Callable of the Command. This will be executed when the Command is selected.)
+
+- 'shortcut_text': string (Shortcut text of the Command if available.)
 */
 //go:nosplit
 func (self class) AddCommand(command_name String.Readable, key_name String.Readable, binded_callable Callable.Function, shortcut_text String.Readable) { //gd:EditorCommandPalette.add_command
@@ -210,7 +224,8 @@ func (self class) AddCommand(command_name String.Readable, key_name String.Reada
 
 /*
 Removes the custom command from EditorCommandPalette.
-- 'key_name': [String] (Name of the key for a particular Command.)
+
+- 'key_name': string (Name of the key for a particular Command.)
 */
 //go:nosplit
 func (self class) RemoveCommand(key_name String.Readable) { //gd:EditorCommandPalette.remove_command

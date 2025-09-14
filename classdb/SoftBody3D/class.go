@@ -2,8 +2,10 @@
 
 /*
 A deformable 3D physics mesh. Used to create elastic or deformable objects such as cloth, rubber, or other flexible materials.
-Additionally, [SoftBody3D] is subject to wind forces defined in [Area3D] (see [member Area3D.wind_source_path], [member Area3D.wind_force_magnitude], and [member Area3D.wind_attenuation_factor]).
-Note: There are many known bugs in [SoftBody3D]. Therefore, it's not recommended to use them for things that can affect gameplay (such as trampolines).
+
+Additionally, [graphics.gd/classdb/SoftBody3D] is subject to wind forces defined in [graphics.gd/classdb/Area3D] (see [graphics.gd/classdb/Area3D.Instance.WindSourcePath], [graphics.gd/classdb/Area3D.Instance.WindForceMagnitude], and [graphics.gd/classdb/Area3D.Instance.WindAttenuationFactor]).
+
+Note: There are many known bugs in [graphics.gd/classdb/SoftBody3D]. Therefore, it's not recommended to use them for things that can affect gameplay (such as trampolines).
 */
 package SoftBody3D
 
@@ -140,35 +142,35 @@ type Any interface {
 }
 
 /*
-Returns the internal [RID] used by the [PhysicsServer3D] for this body.
+Returns the internal [Resource.ID] used by the [graphics.gd/classdb/PhysicsServer3D] for this body.
 */
 func (self Instance) GetPhysicsRid() RID.SoftBody3D { //gd:SoftBody3D.get_physics_rid
 	return RID.SoftBody3D(Advanced(self).GetPhysicsRid())
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [member collision_mask], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [Instance.CollisionMask], given a 'layer_number' between 1 and 32.
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:SoftBody3D.set_collision_mask_value
 	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
-Returns whether or not the specified layer of the [member collision_mask] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [Instance.CollisionMask] is enabled, given a 'layer_number' between 1 and 32.
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:SoftBody3D.get_collision_mask_value
 	return bool(Advanced(self).GetCollisionMaskValue(int64(layer_number)))
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [member collision_layer], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [Instance.CollisionLayer], given a 'layer_number' between 1 and 32.
 */
 func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:SoftBody3D.set_collision_layer_value
 	Advanced(self).SetCollisionLayerValue(int64(layer_number), value)
 }
 
 /*
-Returns whether or not the specified layer of the [member collision_layer] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [Instance.CollisionLayer] is enabled, given a 'layer_number' between 1 and 32.
 */
 func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:SoftBody3D.get_collision_layer_value
 	return bool(Advanced(self).GetCollisionLayerValue(int64(layer_number)))
@@ -203,14 +205,14 @@ func (self Instance) GetPointTransform(point_index int) Vector3.XYZ { //gd:SoftB
 }
 
 /*
-Sets the pinned state of a surface vertex. When set to true, the optional 'attachment_path' can define a [Node3D] the pinned vertex will be attached to.
+Sets the pinned state of a surface vertex. When set to true, the optional 'attachment_path' can define a [graphics.gd/classdb/Node3D] the pinned vertex will be attached to.
 */
 func (self Instance) SetPointPinned(point_index int, pinned bool) { //gd:SoftBody3D.set_point_pinned
 	Advanced(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.New("")), int64(-1))
 }
 
 /*
-Sets the pinned state of a surface vertex. When set to true, the optional 'attachment_path' can define a [Node3D] the pinned vertex will be attached to.
+Sets the pinned state of a surface vertex. When set to true, the optional 'attachment_path' can define a [graphics.gd/classdb/Node3D] the pinned vertex will be attached to.
 */
 func (self Expanded) SetPointPinned(point_index int, pinned bool, attachment_path string, insert_at int) { //gd:SoftBody3D.set_point_pinned
 	Advanced(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.New(attachment_path)), int64(insert_at))
@@ -354,7 +356,7 @@ func (self Instance) SetDisableMode(value DisableMode) {
 }
 
 /*
-Returns the internal [RID] used by the [PhysicsServer3D] for this body.
+Returns the internal [Resource.ID] used by the [graphics.gd/classdb/PhysicsServer3D] for this body.
 */
 //go:nosplit
 func (self class) GetPhysicsRid() RID.Any { //gd:SoftBody3D.get_physics_rid
@@ -388,7 +390,7 @@ func (self class) GetCollisionLayer() int64 { //gd:SoftBody3D.get_collision_laye
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [member collision_mask], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [Instance.CollisionMask], given a 'layer_number' between 1 and 32.
 */
 //go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:SoftBody3D.set_collision_mask_value
@@ -399,7 +401,7 @@ func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:S
 }
 
 /*
-Returns whether or not the specified layer of the [member collision_mask] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [Instance.CollisionMask] is enabled, given a 'layer_number' between 1 and 32.
 */
 //go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:SoftBody3D.get_collision_mask_value
@@ -409,7 +411,7 @@ func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:SoftBody
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [member collision_layer], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [Instance.CollisionLayer], given a 'layer_number' between 1 and 32.
 */
 //go:nosplit
 func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:SoftBody3D.set_collision_layer_value
@@ -420,7 +422,7 @@ func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:
 }
 
 /*
-Returns whether or not the specified layer of the [member collision_layer] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [Instance.CollisionLayer] is enabled, given a 'layer_number' between 1 and 32.
 */
 //go:nosplit
 func (self class) GetCollisionLayerValue(layer_number int64) bool { //gd:SoftBody3D.get_collision_layer_value
@@ -562,7 +564,7 @@ func (self class) GetPointTransform(point_index int64) Vector3.XYZ { //gd:SoftBo
 }
 
 /*
-Sets the pinned state of a surface vertex. When set to true, the optional 'attachment_path' can define a [Node3D] the pinned vertex will be attached to.
+Sets the pinned state of a surface vertex. When set to true, the optional 'attachment_path' can define a [graphics.gd/classdb/Node3D] the pinned vertex will be attached to.
 */
 //go:nosplit
 func (self class) SetPointPinned(point_index int64, pinned bool, attachment_path Path.ToNode, insert_at int64) { //gd:SoftBody3D.set_point_pinned
@@ -660,9 +662,10 @@ func init() {
 type DisableMode int //gd:SoftBody3D.DisableMode
 
 const (
-	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], remove from the physics simulation to stop all physics interactions with this [SoftBody3D].
-	  Automatically re-added to the physics simulation when the [Node] is processed again.*/
+	// When [graphics.gd/classdb/Node.Instance.ProcessMode] is set to [Node.ProcessModeDisabled], remove from the physics simulation to stop all physics interactions with this [graphics.gd/classdb/SoftBody3D].
+	//
+	// Automatically re-added to the physics simulation when the [graphics.gd/classdb/Node] is processed again.
 	DisableModeRemove DisableMode = 0
-	/*When [member Node.process_mode] is set to [constant Node.PROCESS_MODE_DISABLED], do not affect the physics simulation.*/
+	// When [graphics.gd/classdb/Node.Instance.ProcessMode] is set to [Node.ProcessModeDisabled], do not affect the physics simulation.
 	DisableModeKeepActive DisableMode = 1
 )

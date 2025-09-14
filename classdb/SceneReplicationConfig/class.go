@@ -109,7 +109,7 @@ type Any interface {
 }
 
 /*
-Returns a list of synchronized property [NodePath]s.
+Returns a list of synchronized property node paths.
 */
 func (self Instance) GetProperties() []string { //gd:SceneReplicationConfig.get_properties
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetProperties())))
@@ -117,7 +117,8 @@ func (self Instance) GetProperties() []string { //gd:SceneReplicationConfig.get_
 
 /*
 Adds the property identified by the given 'path' to the list of the properties being synchronized, optionally passing an 'index'.
-Note: For details on restrictions and limitations on property synchronization, see [MultiplayerSynchronizer].
+
+Note: For details on restrictions and limitations on property synchronization, see [graphics.gd/classdb/MultiplayerSynchronizer].
 */
 func (self Instance) AddProperty(path string) { //gd:SceneReplicationConfig.add_property
 	Advanced(self).AddProperty(Path.ToNode(String.New(path)), int64(-1))
@@ -125,7 +126,8 @@ func (self Instance) AddProperty(path string) { //gd:SceneReplicationConfig.add_
 
 /*
 Adds the property identified by the given 'path' to the list of the properties being synchronized, optionally passing an 'index'.
-Note: For details on restrictions and limitations on property synchronization, see [MultiplayerSynchronizer].
+
+Note: For details on restrictions and limitations on property synchronization, see [graphics.gd/classdb/MultiplayerSynchronizer].
 */
 func (self Expanded) AddProperty(path string, index int) { //gd:SceneReplicationConfig.add_property
 	Advanced(self).AddProperty(Path.ToNode(String.New(path)), int64(index))
@@ -252,7 +254,7 @@ func New() Instance {
 }
 
 /*
-Returns a list of synchronized property [NodePath]s.
+Returns a list of synchronized property node paths.
 */
 //go:nosplit
 func (self class) GetProperties() Array.Contains[Path.ToNode] { //gd:SceneReplicationConfig.get_properties
@@ -263,7 +265,8 @@ func (self class) GetProperties() Array.Contains[Path.ToNode] { //gd:SceneReplic
 
 /*
 Adds the property identified by the given 'path' to the list of the properties being synchronized, optionally passing an 'index'.
-Note: For details on restrictions and limitations on property synchronization, see [MultiplayerSynchronizer].
+
+Note: For details on restrictions and limitations on property synchronization, see [graphics.gd/classdb/MultiplayerSynchronizer].
 */
 //go:nosplit
 func (self class) AddProperty(path Path.ToNode, index int64) { //gd:SceneReplicationConfig.add_property
@@ -428,10 +431,10 @@ func init() {
 type ReplicationMode int //gd:SceneReplicationConfig.ReplicationMode
 
 const (
-	/*Do not keep the given property synchronized.*/
+	// Do not keep the given property synchronized.
 	ReplicationModeNever ReplicationMode = 0
-	/*Replicate the given property on process by constantly sending updates using unreliable transfer mode.*/
+	// Replicate the given property on process by constantly sending updates using unreliable transfer mode.
 	ReplicationModeAlways ReplicationMode = 1
-	/*Replicate the given property on process by sending updates using reliable transfer mode when its value changes.*/
+	// Replicate the given property on process by sending updates using reliable transfer mode when its value changes.
 	ReplicationModeOnChange ReplicationMode = 2
 )

@@ -2,9 +2,13 @@
 
 /*
 This class allows storing compressed textures as self contained (not imported) resources.
+
 For 2D usage (compressed on disk, uncompressed on VRAM), the lossy and lossless modes are recommended. For 3D usage (compressed on VRAM) it depends on the target platform.
+
 If you intend to only use desktop, S3TC or BPTC are recommended. For only mobile, ETC2 is recommended.
+
 For portable, self contained 3D textures that work on both desktop and mobile, Basis Universal is recommended (although it has a small quality cost and longer compression time as a tradeoff).
+
 This resource is intended to be created from code.
 */
 package PortableCompressedTexture2D
@@ -117,7 +121,9 @@ type Any interface {
 
 /*
 Initializes the compressed texture from a base image. The compression mode must be provided.
+
 'normal_map' is recommended to ensure optimum quality if this image will be used as a normal map.
+
 If lossy compression is requested, the quality setting can optionally be provided. This maps to Lossy WebP compression quality.
 */
 func (self Instance) CreateFromImage(image Image.Instance, compression_mode CompressionMode) { //gd:PortableCompressedTexture2D.create_from_image
@@ -126,7 +132,9 @@ func (self Instance) CreateFromImage(image Image.Instance, compression_mode Comp
 
 /*
 Initializes the compressed texture from a base image. The compression mode must be provided.
+
 'normal_map' is recommended to ensure optimum quality if this image will be used as a normal map.
+
 If lossy compression is requested, the quality setting can optionally be provided. This maps to Lossy WebP compression quality.
 */
 func (self Expanded) CreateFromImage(image Image.Instance, compression_mode CompressionMode, normal_map bool, lossy_quality Float.X) { //gd:PortableCompressedTexture2D.create_from_image
@@ -224,7 +232,9 @@ func (self Instance) SetKeepCompressedBuffer(value bool) {
 
 /*
 Initializes the compressed texture from a base image. The compression mode must be provided.
+
 'normal_map' is recommended to ensure optimum quality if this image will be used as a normal map.
+
 If lossy compression is requested, the quality setting can optionally be provided. This maps to Lossy WebP compression quality.
 */
 //go:nosplit

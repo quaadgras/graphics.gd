@@ -300,23 +300,23 @@ func init() {
 type AlignmentMode int //gd:FlowContainer.AlignmentMode
 
 const (
-	/*The child controls will be arranged at the beginning of the container, i.e. top if orientation is vertical, left if orientation is horizontal (right for RTL layout).*/
+	// The child controls will be arranged at the beginning of the container, i.e. top if orientation is vertical, left if orientation is horizontal (right for RTL layout).
 	AlignmentBegin AlignmentMode = 0
-	/*The child controls will be centered in the container.*/
+	// The child controls will be centered in the container.
 	AlignmentCenter AlignmentMode = 1
-	/*The child controls will be arranged at the end of the container, i.e. bottom if orientation is vertical, right if orientation is horizontal (left for RTL layout).*/
+	// The child controls will be arranged at the end of the container, i.e. bottom if orientation is vertical, right if orientation is horizontal (left for RTL layout).
 	AlignmentEnd AlignmentMode = 2
 )
 
 type LastWrapAlignmentMode int //gd:FlowContainer.LastWrapAlignmentMode
 
 const (
-	/*The last partially filled row or column will wrap aligned to the previous row or column in accordance with [member alignment].*/
+	// The last partially filled row or column will wrap aligned to the previous row or column in accordance with [Instance.Alignment].
 	LastWrapAlignmentInherit LastWrapAlignmentMode = 0
-	/*The last partially filled row or column will wrap aligned to the beginning of the previous row or column.*/
+	// The last partially filled row or column will wrap aligned to the beginning of the previous row or column.
 	LastWrapAlignmentBegin LastWrapAlignmentMode = 1
-	/*The last partially filled row or column will wrap aligned to the center of the previous row or column.*/
+	// The last partially filled row or column will wrap aligned to the center of the previous row or column.
 	LastWrapAlignmentCenter LastWrapAlignmentMode = 2
-	/*The last partially filled row or column will wrap aligned to the end of the previous row or column.*/
+	// The last partially filled row or column will wrap aligned to the end of the previous row or column.
 	LastWrapAlignmentEnd LastWrapAlignmentMode = 3
 )

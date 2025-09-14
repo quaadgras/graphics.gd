@@ -2,6 +2,7 @@
 
 /*
 PacketPeer is an abstraction and base class for packet-based protocols (such as UDP). It provides an API for sending and receiving packets both as raw data or variables. This makes it easy to transfer data over a protocol, without having to encode data as low-level bytes or having to worry about network ordering.
+
 Note: When exporting to Android, make sure to enable the INTERNET permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 package PacketPeer
@@ -108,7 +109,9 @@ type Any interface {
 
 /*
 Gets a Variant. If 'allow_objects' is true, decoding objects is allowed.
-Internally, this uses the same decoding mechanism as the [Instance.@Globalscope.BytesToVar] method.
+
+Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 func (self Instance) GetVar() any { //gd:PacketPeer.get_var
@@ -117,7 +120,9 @@ func (self Instance) GetVar() any { //gd:PacketPeer.get_var
 
 /*
 Gets a Variant. If 'allow_objects' is true, decoding objects is allowed.
-Internally, this uses the same decoding mechanism as the [Instance.@Globalscope.BytesToVar] method.
+
+Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 func (self Expanded) GetVar(allow_objects bool) any { //gd:PacketPeer.get_var
@@ -125,16 +130,18 @@ func (self Expanded) GetVar(allow_objects bool) any { //gd:PacketPeer.get_var
 }
 
 /*
-Sends a [Variant] as a packet. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
-Internally, this uses the same encoding mechanism as the [Instance.@Globalscope.VarToBytes] method.
+Sends a any as a packet. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
+
+Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
 */
 func (self Instance) PutVar(v any) error { //gd:PacketPeer.put_var
 	return error(gd.ToError(Advanced(self).PutVar(variant.New(v), false)))
 }
 
 /*
-Sends a [Variant] as a packet. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
-Internally, this uses the same encoding mechanism as the [Instance.@Globalscope.VarToBytes] method.
+Sends a any as a packet. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
+
+Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
 */
 func (self Expanded) PutVar(v any, full_objects bool) error { //gd:PacketPeer.put_var
 	return error(gd.ToError(Advanced(self).PutVar(variant.New(v), full_objects)))
@@ -221,7 +228,9 @@ func (self Instance) SetEncodeBufferMaxSize(value int) {
 
 /*
 Gets a Variant. If 'allow_objects' is true, decoding objects is allowed.
-Internally, this uses the same decoding mechanism as the [Instance.@Globalscope.BytesToVar] method.
+
+Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 //go:nosplit
@@ -232,8 +241,9 @@ func (self class) GetVar(allow_objects bool) variant.Any { //gd:PacketPeer.get_v
 }
 
 /*
-Sends a [Variant] as a packet. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
-Internally, this uses the same encoding mechanism as the [Instance.@Globalscope.VarToBytes] method.
+Sends a any as a packet. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
+
+Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
 */
 //go:nosplit
 func (self class) PutVar(v variant.Any, full_objects bool) Error.Code { //gd:PacketPeer.put_var

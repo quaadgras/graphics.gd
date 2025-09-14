@@ -2,7 +2,8 @@
 
 /*
 A button that represents a link. This type of button is primarily used for interactions that cause a context change (like linking to a web page).
-See also [BaseButton] which contains common properties and methods associated with this node.
+
+See also [graphics.gd/classdb/BaseButton] which contains common properties and methods associated with this node.
 */
 package LinkButton
 
@@ -350,10 +351,10 @@ func init() {
 type UnderlineMode int //gd:LinkButton.UnderlineMode
 
 const (
-	/*The LinkButton will always show an underline at the bottom of its text.*/
+	// The LinkButton will always show an underline at the bottom of its text.
 	UnderlineModeAlways UnderlineMode = 0
-	/*The LinkButton will show an underline at the bottom of its text when the mouse cursor is over it.*/
+	// The LinkButton will show an underline at the bottom of its text when the mouse cursor is over it.
 	UnderlineModeOnHover UnderlineMode = 1
-	/*The LinkButton will never show an underline at the bottom of its text.*/
+	// The LinkButton will never show an underline at the bottom of its text.
 	UnderlineModeNever UnderlineMode = 2
 )

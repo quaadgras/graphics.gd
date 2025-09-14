@@ -214,20 +214,20 @@ func init() {
 type OpType int //gd:VisualShaderNodeMix.OpType
 
 const (
-	/*A floating-point scalar.*/
+	// A floating-point scalar.
 	OpTypeScalar OpType = 0
-	/*A 2D vector type.*/
+	// A 2D vector type.
 	OpTypeVector2d OpType = 1
-	/*The [code]a[/code] and [code]b[/code] ports use a 2D vector type. The [code]weight[/code] port uses a scalar type.*/
+	// The a and b ports use a 2D vector type. The weight port uses a scalar type.
 	OpTypeVector2dScalar OpType = 2
-	/*A 3D vector type.*/
+	// A 3D vector type.
 	OpTypeVector3d OpType = 3
-	/*The [code]a[/code] and [code]b[/code] ports use a 3D vector type. The [code]weight[/code] port uses a scalar type.*/
+	// The a and b ports use a 3D vector type. The weight port uses a scalar type.
 	OpTypeVector3dScalar OpType = 4
-	/*A 4D vector type.*/
+	// A 4D vector type.
 	OpTypeVector4d OpType = 5
-	/*The [code]a[/code] and [code]b[/code] ports use a 4D vector type. The [code]weight[/code] port uses a scalar type.*/
+	// The a and b ports use a 4D vector type. The weight port uses a scalar type.
 	OpTypeVector4dScalar OpType = 6
-	/*Represents the size of the [enum OpType] enum.*/
+	// Represents the size of the [OpType] enum.
 	OpTypeMax OpType = 7
 )

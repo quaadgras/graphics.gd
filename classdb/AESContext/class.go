@@ -164,7 +164,8 @@ func (self Expanded) Start(mode Mode, key []byte, iv []byte) error { //gd:AESCon
 }
 
 /*
-Run the desired operation for this AES context. Will return a byte slice containing the result of encrypting (or decrypting) the given 'src'. See [Instance.Start] for mode of operation.
+Run the desired operation for this AES context. Will return a []byte containing the result of encrypting (or decrypting) the given 'src'. See [Instance.Start] for mode of operation.
+
 Note: The size of 'src' must be a multiple of 16. Apply some padding if needed.
 */
 func (self Instance) Update(src []byte) []byte { //gd:AESContext.update
@@ -173,6 +174,7 @@ func (self Instance) Update(src []byte) []byte { //gd:AESContext.update
 
 /*
 Get the current IV state for this context (IV gets updated when calling [Instance.Update]). You normally don't need this function.
+
 Note: This function only makes sense when the context is started with [ModeCbcEncrypt] or [ModeCbcDecrypt].
 */
 func (self Instance) GetIvState() []byte { //gd:AESContext.get_iv_state
@@ -244,7 +246,8 @@ func (self class) Start(mode Mode, key Packed.Bytes, iv Packed.Bytes) Error.Code
 }
 
 /*
-Run the desired operation for this AES context. Will return a byte slice containing the result of encrypting (or decrypting) the given 'src'. See [Instance.Start] for mode of operation.
+Run the desired operation for this AES context. Will return a []byte containing the result of encrypting (or decrypting) the given 'src'. See [Instance.Start] for mode of operation.
+
 Note: The size of 'src' must be a multiple of 16. Apply some padding if needed.
 */
 //go:nosplit
@@ -256,6 +259,7 @@ func (self class) Update(src Packed.Bytes) Packed.Bytes { //gd:AESContext.update
 
 /*
 Get the current IV state for this context (IV gets updated when calling [Instance.Update]). You normally don't need this function.
+
 Note: This function only makes sense when the context is started with [ModeCbcEncrypt] or [ModeCbcDecrypt].
 */
 //go:nosplit
@@ -305,14 +309,14 @@ func init() {
 type Mode int //gd:AESContext.Mode
 
 const (
-	/*AES electronic codebook encryption mode.*/
+	// AES electronic codebook encryption mode.
 	ModeEcbEncrypt Mode = 0
-	/*AES electronic codebook decryption mode.*/
+	// AES electronic codebook decryption mode.
 	ModeEcbDecrypt Mode = 1
-	/*AES cipher blocker chaining encryption mode.*/
+	// AES cipher blocker chaining encryption mode.
 	ModeCbcEncrypt Mode = 2
-	/*AES cipher blocker chaining decryption mode.*/
+	// AES cipher blocker chaining decryption mode.
 	ModeCbcDecrypt Mode = 3
-	/*Maximum value for the mode enum.*/
+	// Maximum value for the mode enum.
 	ModeMax Mode = 4
 )

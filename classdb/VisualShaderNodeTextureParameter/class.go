@@ -312,80 +312,84 @@ func init() {
 type TextureType int //gd:VisualShaderNodeTextureParameter.TextureType
 
 const (
-	/*No hints are added to the uniform declaration.*/
+	// No hints are added to the uniform declaration.
 	TypeData TextureType = 0
-	/*Adds [code]source_color[/code] as hint to the uniform declaration for proper sRGB to linear conversion.*/
+	// Adds source_color as hint to the uniform declaration for proper sRGB to linear conversion.
 	TypeColor TextureType = 1
-	/*Adds [code]hint_normal[/code] as hint to the uniform declaration, which internally converts the texture for proper usage as normal map.*/
+	// Adds hint_normal as hint to the uniform declaration, which internally converts the texture for proper usage as normal map.
 	TypeNormalMap TextureType = 2
-	/*Adds [code]hint_anisotropy[/code] as hint to the uniform declaration to use for a flowmap.*/
+	// Adds hint_anisotropy as hint to the uniform declaration to use for a flowmap.
 	TypeAnisotropy TextureType = 3
-	/*Represents the size of the [enum TextureType] enum.*/
+	// Represents the size of the [TextureType] enum.
 	TypeMax TextureType = 4
 )
 
 type ColorDefault int //gd:VisualShaderNodeTextureParameter.ColorDefault
 
 const (
-	/*Defaults to fully opaque white color.*/
+	// Defaults to fully opaque white color.
 	ColorDefaultWhite ColorDefault = 0
-	/*Defaults to fully opaque black color.*/
+	// Defaults to fully opaque black color.
 	ColorDefaultBlack ColorDefault = 1
-	/*Defaults to fully transparent black color.*/
+	// Defaults to fully transparent black color.
 	ColorDefaultTransparent ColorDefault = 2
-	/*Represents the size of the [enum ColorDefault] enum.*/
+	// Represents the size of the [ColorDefault] enum.
 	ColorDefaultMax ColorDefault = 3
 )
 
 type TextureFilter int //gd:VisualShaderNodeTextureParameter.TextureFilter
 
 const (
-	/*Sample the texture using the filter determined by the node this shader is attached to.*/
+	// Sample the texture using the filter determined by the node this shader is attached to.
 	FilterDefault TextureFilter = 0
-	/*The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).*/
+	// The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).
 	FilterNearest TextureFilter = 1
-	/*The texture filter blends between the nearest 4 pixels. This makes the texture look smooth from up close, and grainy from a distance (due to mipmaps not being sampled).*/
+	// The texture filter blends between the nearest 4 pixels. This makes the texture look smooth from up close, and grainy from a distance (due to mipmaps not being sampled).
 	FilterLinear TextureFilter = 2
-	/*The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]). This makes the texture look pixelated from up close, and smooth from a distance.
-	  Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.*/
+	// The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look pixelated from up close, and smooth from a distance.
+	//
+	// Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [graphics.gd/classdb/Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.
 	FilterNearestMipmap TextureFilter = 3
-	/*The texture filter blends between the nearest 4 pixels and between the nearest 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]). This makes the texture look smooth from up close, and smooth from a distance.
-	  Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.*/
+	// The texture filter blends between the nearest 4 pixels and between the nearest 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look smooth from up close, and smooth from a distance.
+	//
+	// Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [graphics.gd/classdb/Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.
 	FilterLinearMipmap TextureFilter = 4
-	/*The texture filter reads from the nearest pixel and blends between 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]) based on the angle between the surface and the camera view. This makes the texture look pixelated from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].
-	  [b]Note:[/b] This texture filter is rarely useful in 2D projects. [constant FILTER_NEAREST_MIPMAP] is usually more appropriate in this case.*/
+	// The texture filter reads from the nearest pixel and blends between 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look pixelated from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	//
+	// Note: This texture filter is rarely useful in 2D projects. [FilterNearestMipmap] is usually more appropriate in this case.
 	FilterNearestMipmapAnisotropic TextureFilter = 5
-	/*The texture filter blends between the nearest 4 pixels and blends between 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]) based on the angle between the surface and the camera view. This makes the texture look smooth from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].
-	  [b]Note:[/b] This texture filter is rarely useful in 2D projects. [constant FILTER_LINEAR_MIPMAP] is usually more appropriate in this case.*/
+	// The texture filter blends between the nearest 4 pixels and blends between 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look smooth from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	//
+	// Note: This texture filter is rarely useful in 2D projects. [FilterLinearMipmap] is usually more appropriate in this case.
 	FilterLinearMipmapAnisotropic TextureFilter = 6
-	/*Represents the size of the [enum TextureFilter] enum.*/
+	// Represents the size of the [TextureFilter] enum.
 	FilterMax TextureFilter = 7
 )
 
 type TextureRepeat int //gd:VisualShaderNodeTextureParameter.TextureRepeat
 
 const (
-	/*Sample the texture using the repeat mode determined by the node this shader is attached to.*/
+	// Sample the texture using the repeat mode determined by the node this shader is attached to.
 	RepeatDefault TextureRepeat = 0
-	/*Texture will repeat normally.*/
+	// Texture will repeat normally.
 	RepeatEnabled TextureRepeat = 1
-	/*Texture will not repeat.*/
+	// Texture will not repeat.
 	RepeatDisabled TextureRepeat = 2
-	/*Represents the size of the [enum TextureRepeat] enum.*/
+	// Represents the size of the [TextureRepeat] enum.
 	RepeatMax TextureRepeat = 3
 )
 
 type TextureSource int //gd:VisualShaderNodeTextureParameter.TextureSource
 
 const (
-	/*The texture source is not specified in the shader.*/
+	// The texture source is not specified in the shader.
 	SourceNone TextureSource = 0
-	/*The texture source is the screen texture which captures all opaque objects drawn this frame.*/
+	// The texture source is the screen texture which captures all opaque objects drawn this frame.
 	SourceScreen TextureSource = 1
-	/*The texture source is the depth texture from the depth prepass.*/
+	// The texture source is the depth texture from the depth prepass.
 	SourceDepth TextureSource = 2
-	/*The texture source is the normal-roughness buffer from the depth prepass.*/
+	// The texture source is the normal-roughness buffer from the depth prepass.
 	SourceNormalRoughness TextureSource = 3
-	/*Represents the size of the [enum TextureSource] enum.*/
+	// Represents the size of the [TextureSource] enum.
 	SourceMax TextureSource = 4
 )

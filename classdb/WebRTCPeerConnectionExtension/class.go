@@ -62,12 +62,11 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 // Instance of the class with convieniently typed arguments and results.
-// See [Interface] for methods that can be overridden by a [Class] that extends it.
 type Instance [1]gdclass.WebRTCPeerConnectionExtension
 
 var otype gdextension.ObjectType
@@ -94,12 +93,13 @@ type Any interface {
 	gd.IsClass
 	AsWebRTCPeerConnectionExtension() Instance
 }
+
 type Interface interface {
 	GetConnectionState() WebRTCPeerConnection.ConnectionState
 	GetGatheringState() WebRTCPeerConnection.GatheringState
 	GetSignalingState() WebRTCPeerConnection.SignalingState
-	Initialize(p_config map[any]any) error
-	CreateDataChannel(p_label string, p_config map[any]any) WebRTCDataChannel.Instance
+	Initialize(p_config Configuration) error
+	CreateDataChannel(p_label string, p_config Configuration) WebRTCDataChannel.Instance
 	CreateOffer() error
 	SetRemoteDescription(p_type string, p_sdp string) error
 	SetLocalDescription(p_type string, p_sdp string) error
@@ -116,8 +116,8 @@ type implementation struct{}
 func (self implementation) GetConnectionState() (_ WebRTCPeerConnection.ConnectionState) { return }
 func (self implementation) GetGatheringState() (_ WebRTCPeerConnection.GatheringState)   { return }
 func (self implementation) GetSignalingState() (_ WebRTCPeerConnection.SignalingState)   { return }
-func (self implementation) Initialize(p_config map[any]any) (_ error)                    { return }
-func (self implementation) CreateDataChannel(p_label string, p_config map[any]any) (_ WebRTCDataChannel.Instance) {
+func (self implementation) Initialize(p_config Configuration) (_ error)                  { return }
+func (self implementation) CreateDataChannel(p_label string, p_config Configuration) (_ WebRTCDataChannel.Instance) {
 	return
 }
 func (self implementation) CreateOffer() (_ error)                                     { return }
@@ -149,12 +149,12 @@ func (Instance) _get_signaling_state(impl func(ptr gdclass.Receiver) WebRTCPeerC
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _initialize(impl func(ptr gdclass.Receiver, p_config map[any]any) error) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _initialize(impl func(ptr gdclass.Receiver, p_config Configuration) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_config = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 0))))
 		defer pointers.End(gd.InternalDictionary(p_config))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, gd.DictionaryAs[map[any]any](p_config))
+		ret := impl(self, gd.DictionaryAs[Configuration](p_config))
 		ptr, ok := func(e Error.Code) (int64, bool) { return int64(e), true }(Error.New(ret))
 
 		if !ok {
@@ -163,14 +163,14 @@ func (Instance) _initialize(impl func(ptr gdclass.Receiver, p_config map[any]any
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _create_data_channel(impl func(ptr gdclass.Receiver, p_label string, p_config map[any]any) WebRTCDataChannel.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _create_data_channel(impl func(ptr gdclass.Receiver, p_label string, p_config Configuration) WebRTCDataChannel.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var p_label = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
 		defer pointers.End(gd.InternalString(p_label))
 		var p_config = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](gd.UnsafeGet[gdextension.Dictionary](p_args, 1))))
 		defer pointers.End(gd.InternalDictionary(p_config))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		ret := impl(self, p_label.String(), gd.DictionaryAs[map[any]any](p_config))
+		ret := impl(self, p_label.String(), gd.DictionaryAs[Configuration](p_config))
 		ptr, ok := pointers.End(ret[0])
 
 		if !ok {
@@ -528,4 +528,13 @@ func (self Instance) Virtual(name string) reflect.Value {
 }
 func init() {
 	gdclass.Register("WebRTCPeerConnectionExtension", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.WebRTCPeerConnectionExtension](ptr)} })
+}
+
+type Configuration struct {
+	IceServers []IceServer `gd:"ice_servers"`
+}
+type IceServer struct {
+	URLs       []string `gd:"urls"`
+	Username   string   `gd:"username"`
+	Credential string   `gd:"credential"`
 }

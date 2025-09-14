@@ -1621,7 +1621,7 @@ func (self class) GetTextureFilter() TextureFilter { //gd:BaseMaterial3D.get_tex
 }
 
 /*
-If true, enables the specified [Feature]. Many features that are available in [BaseMaterial3D]s need to be enabled before use. This way the cost for using the feature is only incurred when specified. Features can also be enabled by setting the corresponding member to true.
+If true, enables the specified [Feature]. Many features that are available in [graphics.gd/classdb/BaseMaterial3D]s need to be enabled before use. This way the cost for using the feature is only incurred when specified. Features can also be enabled by setting the corresponding member to true.
 */
 //go:nosplit
 func (self class) SetFeature(feature Feature, enable bool) { //gd:BaseMaterial3D.set_feature
@@ -1653,7 +1653,7 @@ func (self class) SetTexture(param TextureParam, texture [1]gdclass.Texture2D) {
 }
 
 /*
-Returns the [Texture2D] associated with the specified [TextureParam].
+Returns the [graphics.gd/classdb/Texture2D] associated with the specified [TextureParam].
 */
 //go:nosplit
 func (self class) GetTexture(param TextureParam) [1]gdclass.Texture2D { //gd:BaseMaterial3D.get_texture
@@ -2106,307 +2106,310 @@ func init() {
 type TextureParam int //gd:BaseMaterial3D.TextureParam
 
 const (
-	/*Texture specifying per-pixel color.*/
+	// Texture specifying per-pixel color.
 	TextureAlbedo TextureParam = 0
-	/*Texture specifying per-pixel metallic value.*/
+	// Texture specifying per-pixel metallic value.
 	TextureMetallic TextureParam = 1
-	/*Texture specifying per-pixel roughness value.*/
+	// Texture specifying per-pixel roughness value.
 	TextureRoughness TextureParam = 2
-	/*Texture specifying per-pixel emission color.*/
+	// Texture specifying per-pixel emission color.
 	TextureEmission TextureParam = 3
-	/*Texture specifying per-pixel normal vector.*/
+	// Texture specifying per-pixel normal vector.
 	TextureNormal TextureParam = 4
-	/*Texture specifying per-pixel rim value.*/
+	// Texture specifying per-pixel rim value.
 	TextureRim TextureParam = 5
-	/*Texture specifying per-pixel clearcoat value.*/
+	// Texture specifying per-pixel clearcoat value.
 	TextureClearcoat TextureParam = 6
-	/*Texture specifying per-pixel flowmap direction for use with [member anisotropy].*/
+	// Texture specifying per-pixel flowmap direction for use with [Instance.Anisotropy].
 	TextureFlowmap TextureParam = 7
-	/*Texture specifying per-pixel ambient occlusion value.*/
+	// Texture specifying per-pixel ambient occlusion value.
 	TextureAmbientOcclusion TextureParam = 8
-	/*Texture specifying per-pixel height.*/
+	// Texture specifying per-pixel height.
 	TextureHeightmap TextureParam = 9
-	/*Texture specifying per-pixel subsurface scattering.*/
+	// Texture specifying per-pixel subsurface scattering.
 	TextureSubsurfaceScattering TextureParam = 10
-	/*Texture specifying per-pixel transmittance for subsurface scattering.*/
+	// Texture specifying per-pixel transmittance for subsurface scattering.
 	TextureSubsurfaceTransmittance TextureParam = 11
-	/*Texture specifying per-pixel backlight color.*/
+	// Texture specifying per-pixel backlight color.
 	TextureBacklight TextureParam = 12
-	/*Texture specifying per-pixel refraction strength.*/
+	// Texture specifying per-pixel refraction strength.
 	TextureRefraction TextureParam = 13
-	/*Texture specifying per-pixel detail mask blending value.*/
+	// Texture specifying per-pixel detail mask blending value.
 	TextureDetailMask TextureParam = 14
-	/*Texture specifying per-pixel detail color.*/
+	// Texture specifying per-pixel detail color.
 	TextureDetailAlbedo TextureParam = 15
-	/*Texture specifying per-pixel detail normal.*/
+	// Texture specifying per-pixel detail normal.
 	TextureDetailNormal TextureParam = 16
-	/*Texture holding ambient occlusion, roughness, and metallic.*/
+	// Texture holding ambient occlusion, roughness, and metallic.
 	TextureOrm TextureParam = 17
-	/*Represents the size of the [enum TextureParam] enum.*/
+	// Represents the size of the [TextureParam] enum.
 	TextureMax TextureParam = 18
 )
 
 type TextureFilter int //gd:BaseMaterial3D.TextureFilter
 
 const (
-	/*The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).*/
+	// The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).
 	TextureFilterNearest TextureFilter = 0
-	/*The texture filter blends between the nearest 4 pixels. This makes the texture look smooth from up close, and grainy from a distance (due to mipmaps not being sampled).*/
+	// The texture filter blends between the nearest 4 pixels. This makes the texture look smooth from up close, and grainy from a distance (due to mipmaps not being sampled).
 	TextureFilterLinear TextureFilter = 1
-	/*The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]). This makes the texture look pixelated from up close, and smooth from a distance.*/
+	// The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look pixelated from up close, and smooth from a distance.
 	TextureFilterNearestWithMipmaps TextureFilter = 2
-	/*The texture filter blends between the nearest 4 pixels and between the nearest 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]). This makes the texture look smooth from up close, and smooth from a distance.*/
+	// The texture filter blends between the nearest 4 pixels and between the nearest 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look smooth from up close, and smooth from a distance.
 	TextureFilterLinearWithMipmaps TextureFilter = 3
-	/*The texture filter reads from the nearest pixel and blends between 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]) based on the angle between the surface and the camera view. This makes the texture look pixelated from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].*/
+	// The texture filter reads from the nearest pixel and blends between 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look pixelated from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
 	TextureFilterNearestWithMipmapsAnisotropic TextureFilter = 4
-	/*The texture filter blends between the nearest 4 pixels and blends between 2 mipmaps (or uses the nearest mipmap if [member ProjectSettings.rendering/textures/default_filters/use_nearest_mipmap_filter] is [code]true[/code]) based on the angle between the surface and the camera view. This makes the texture look smooth from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [member ProjectSettings.rendering/textures/default_filters/anisotropic_filtering_level].*/
+	// The texture filter blends between the nearest 4 pixels and blends between 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look smooth from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
 	TextureFilterLinearWithMipmapsAnisotropic TextureFilter = 5
-	/*Represents the size of the [enum TextureFilter] enum.*/
+	// Represents the size of the [TextureFilter] enum.
 	TextureFilterMax TextureFilter = 6
 )
 
 type DetailUV int //gd:BaseMaterial3D.DetailUV
 
 const (
-	/*Use [code]UV[/code] with the detail texture.*/
+	// Use UV with the detail texture.
 	DetailUv1 DetailUV = 0
-	/*Use [code]UV2[/code] with the detail texture.*/
+	// Use UV2 with the detail texture.
 	DetailUv2 DetailUV = 1
 )
 
 type Transparency int //gd:BaseMaterial3D.Transparency
 
 const (
-	/*The material will not use transparency. This is the fastest to render.*/
+	// The material will not use transparency. This is the fastest to render.
 	TransparencyDisabled Transparency = 0
-	/*The material will use the texture's alpha values for transparency. This is the slowest to render, and disables shadow casting.*/
+	// The material will use the texture's alpha values for transparency. This is the slowest to render, and disables shadow casting.
 	TransparencyAlpha Transparency = 1
-	/*The material will cut off all values below a threshold, the rest will remain opaque. The opaque portions will be rendered in the depth prepass. This is faster to render than alpha blending, but slower than opaque rendering. This also supports casting shadows.*/
+	// The material will cut off all values below a threshold, the rest will remain opaque. The opaque portions will be rendered in the depth prepass. This is faster to render than alpha blending, but slower than opaque rendering. This also supports casting shadows.
 	TransparencyAlphaScissor Transparency = 2
-	/*The material will cut off all values below a spatially-deterministic threshold, the rest will remain opaque. This is faster to render than alpha blending, but slower than opaque rendering. This also supports casting shadows. Alpha hashing is suited for hair rendering.*/
+	// The material will cut off all values below a spatially-deterministic threshold, the rest will remain opaque. This is faster to render than alpha blending, but slower than opaque rendering. This also supports casting shadows. Alpha hashing is suited for hair rendering.
 	TransparencyAlphaHash Transparency = 3
-	/*The material will use the texture's alpha value for transparency, but will discard fragments with an alpha of less than 0.99 during the depth prepass and fragments with an alpha less than 0.1 during the shadow pass. This also supports casting shadows.*/
+	// The material will use the texture's alpha value for transparency, but will discard fragments with an alpha of less than 0.99 during the depth prepass and fragments with an alpha less than 0.1 during the shadow pass. This also supports casting shadows.
 	TransparencyAlphaDepthPrePass Transparency = 4
-	/*Represents the size of the [enum Transparency] enum.*/
+	// Represents the size of the [Transparency] enum.
 	TransparencyMax Transparency = 5
 )
 
 type ShadingMode int //gd:BaseMaterial3D.ShadingMode
 
 const (
-	/*The object will not receive shadows. This is the fastest to render, but it disables all interactions with lights.*/
+	// The object will not receive shadows. This is the fastest to render, but it disables all interactions with lights.
 	ShadingModeUnshaded ShadingMode = 0
-	/*The object will be shaded per pixel. Useful for realistic shading effects.*/
+	// The object will be shaded per pixel. Useful for realistic shading effects.
 	ShadingModePerPixel ShadingMode = 1
-	/*The object will be shaded per vertex. Useful when you want cheaper shaders and do not care about visual quality.*/
+	// The object will be shaded per vertex. Useful when you want cheaper shaders and do not care about visual quality.
 	ShadingModePerVertex ShadingMode = 2
-	/*Represents the size of the [enum ShadingMode] enum.*/
+	// Represents the size of the [ShadingMode] enum.
 	ShadingModeMax ShadingMode = 3
 )
 
 type Feature int //gd:BaseMaterial3D.Feature
 
 const (
-	/*Constant for setting [member emission_enabled].*/
+	// Constant for setting [Instance.EmissionEnabled].
 	FeatureEmission Feature = 0
-	/*Constant for setting [member normal_enabled].*/
+	// Constant for setting [Instance.NormalEnabled].
 	FeatureNormalMapping Feature = 1
-	/*Constant for setting [member rim_enabled].*/
+	// Constant for setting [Instance.RimEnabled].
 	FeatureRim Feature = 2
-	/*Constant for setting [member clearcoat_enabled].*/
+	// Constant for setting [Instance.ClearcoatEnabled].
 	FeatureClearcoat Feature = 3
-	/*Constant for setting [member anisotropy_enabled].*/
+	// Constant for setting [Instance.AnisotropyEnabled].
 	FeatureAnisotropy Feature = 4
-	/*Constant for setting [member ao_enabled].*/
+	// Constant for setting [Instance.AoEnabled].
 	FeatureAmbientOcclusion Feature = 5
-	/*Constant for setting [member heightmap_enabled].*/
+	// Constant for setting [Instance.HeightmapEnabled].
 	FeatureHeightMapping Feature = 6
-	/*Constant for setting [member subsurf_scatter_enabled].*/
+	// Constant for setting [Instance.SubsurfScatterEnabled].
 	FeatureSubsurfaceScattering Feature = 7
-	/*Constant for setting [member subsurf_scatter_transmittance_enabled].*/
+	// Constant for setting [Instance.SubsurfScatterTransmittanceEnabled].
 	FeatureSubsurfaceTransmittance Feature = 8
-	/*Constant for setting [member backlight_enabled].*/
+	// Constant for setting [Instance.BacklightEnabled].
 	FeatureBacklight Feature = 9
-	/*Constant for setting [member refraction_enabled].*/
+	// Constant for setting [Instance.RefractionEnabled].
 	FeatureRefraction Feature = 10
-	/*Constant for setting [member detail_enabled].*/
+	// Constant for setting [Instance.DetailEnabled].
 	FeatureDetail Feature = 11
-	/*Represents the size of the [enum Feature] enum.*/
+	// Represents the size of the [Feature] enum.
 	FeatureMax Feature = 12
 )
 
 type BlendMode int //gd:BaseMaterial3D.BlendMode
 
 const (
-	/*Default blend mode. The color of the object is blended over the background based on the object's alpha value.*/
+	// Default blend mode. The color of the object is blended over the background based on the object's alpha value.
 	BlendModeMix BlendMode = 0
-	/*The color of the object is added to the background.*/
+	// The color of the object is added to the background.
 	BlendModeAdd BlendMode = 1
-	/*The color of the object is subtracted from the background.*/
+	// The color of the object is subtracted from the background.
 	BlendModeSub BlendMode = 2
-	/*The color of the object is multiplied by the background.*/
+	// The color of the object is multiplied by the background.
 	BlendModeMul BlendMode = 3
-	/*The color of the object is added to the background and the alpha channel is used to mask out the background. This is effectively a hybrid of the blend mix and add modes, useful for effects like fire where you want the flame to add but the smoke to mix. By default, this works with unshaded materials using premultiplied textures. For shaded materials, use the [code]PREMUL_ALPHA_FACTOR[/code] built-in so that lighting can be modulated as well.*/
+	// The color of the object is added to the background and the alpha channel is used to mask out the background. This is effectively a hybrid of the blend mix and add modes, useful for effects like fire where you want the flame to add but the smoke to mix. By default, this works with unshaded materials using premultiplied textures. For shaded materials, use the PREMUL_ALPHA_FACTOR built-in so that lighting can be modulated as well.
 	BlendModePremultAlpha BlendMode = 4
 )
 
 type AlphaAntiAliasing int //gd:BaseMaterial3D.AlphaAntiAliasing
 
 const (
-	/*Disables Alpha AntiAliasing for the material.*/
+	// Disables Alpha AntiAliasing for the material.
 	AlphaAntialiasingOff AlphaAntiAliasing = 0
-	/*Enables AlphaToCoverage. Alpha values in the material are passed to the AntiAliasing sample mask.*/
+	// Enables AlphaToCoverage. Alpha values in the material are passed to the AntiAliasing sample mask.
 	AlphaAntialiasingAlphaToCoverage AlphaAntiAliasing = 1
-	/*Enables AlphaToCoverage and forces all non-zero alpha values to [code]1[/code]. Alpha values in the material are passed to the AntiAliasing sample mask.*/
+	// Enables AlphaToCoverage and forces all non-zero alpha values to 1. Alpha values in the material are passed to the AntiAliasing sample mask.
 	AlphaAntialiasingAlphaToCoverageAndToOne AlphaAntiAliasing = 2
 )
 
 type DepthDrawMode int //gd:BaseMaterial3D.DepthDrawMode
 
 const (
-	/*Default depth draw mode. Depth is drawn only for opaque objects during the opaque prepass (if any) and during the opaque pass.*/
+	// Default depth draw mode. Depth is drawn only for opaque objects during the opaque prepass (if any) and during the opaque pass.
 	DepthDrawOpaqueOnly DepthDrawMode = 0
-	/*Objects will write to depth during the opaque and the transparent passes. Transparent objects that are close to the camera may obscure other transparent objects behind them.
-	  [b]Note:[/b] This does not influence whether transparent objects are included in the depth prepass or not. For that, see [enum Transparency].*/
+	// Objects will write to depth during the opaque and the transparent passes. Transparent objects that are close to the camera may obscure other transparent objects behind them.
+	//
+	// Note: This does not influence whether transparent objects are included in the depth prepass or not. For that, see [Transparency].
 	DepthDrawAlways DepthDrawMode = 1
-	/*Objects will not write their depth to the depth buffer, even during the depth prepass (if enabled).*/
+	// Objects will not write their depth to the depth buffer, even during the depth prepass (if enabled).
 	DepthDrawDisabled DepthDrawMode = 2
 )
 
 type CullMode int //gd:BaseMaterial3D.CullMode
 
 const (
-	/*Default cull mode. The back of the object is culled when not visible. Back face triangles will be culled when facing the camera. This results in only the front side of triangles being drawn. For closed-surface meshes, this means that only the exterior of the mesh will be visible.*/
+	// Default cull mode. The back of the object is culled when not visible. Back face triangles will be culled when facing the camera. This results in only the front side of triangles being drawn. For closed-surface meshes, this means that only the exterior of the mesh will be visible.
 	CullBack CullMode = 0
-	/*Front face triangles will be culled when facing the camera. This results in only the back side of triangles being drawn. For closed-surface meshes, this means that the interior of the mesh will be drawn instead of the exterior.*/
+	// Front face triangles will be culled when facing the camera. This results in only the back side of triangles being drawn. For closed-surface meshes, this means that the interior of the mesh will be drawn instead of the exterior.
 	CullFront CullMode = 1
-	/*No face culling is performed; both the front face and back face will be visible.*/
+	// No face culling is performed; both the front face and back face will be visible.
 	CullDisabled CullMode = 2
 )
 
 type Flags int //gd:BaseMaterial3D.Flags
 
 const (
-	/*Disables the depth test, so this object is drawn on top of all others drawn before it. This puts the object in the transparent draw pass where it is sorted based on distance to camera. Objects drawn after it in the draw order may cover it. This also disables writing to depth.*/
+	// Disables the depth test, so this object is drawn on top of all others drawn before it. This puts the object in the transparent draw pass where it is sorted based on distance to camera. Objects drawn after it in the draw order may cover it. This also disables writing to depth.
 	FlagDisableDepthTest Flags = 0
-	/*Set [code]ALBEDO[/code] to the per-vertex color specified in the mesh.*/
+	// Set ALBEDO to the per-vertex color specified in the mesh.
 	FlagAlbedoFromVertexColor Flags = 1
-	/*Vertex colors are considered to be stored in sRGB color space and are converted to linear color space during rendering. See also [member vertex_color_is_srgb].
-	  [b]Note:[/b] Only effective when using the Forward+ and Mobile rendering methods.*/
+	// Vertex colors are considered to be stored in sRGB color space and are converted to linear color space during rendering. See also [Instance.VertexColorIsSrgb].
+	//
+	// Note: Only effective when using the Forward+ and Mobile rendering methods.
 	FlagSrgbVertexColor Flags = 2
-	/*Uses point size to alter the size of primitive points. Also changes the albedo texture lookup to use [code]POINT_COORD[/code] instead of [code]UV[/code].*/
+	// Uses point size to alter the size of primitive points. Also changes the albedo texture lookup to use POINT_COORD instead of UV.
 	FlagUsePointSize Flags = 3
-	/*Object is scaled by depth so that it always appears the same size on screen.*/
+	// Object is scaled by depth so that it always appears the same size on screen.
 	FlagFixedSize Flags = 4
-	/*Shader will keep the scale set for the mesh. Otherwise the scale is lost when billboarding. Only applies when [member billboard_mode] is [constant BILLBOARD_ENABLED].*/
+	// Shader will keep the scale set for the mesh. Otherwise the scale is lost when billboarding. Only applies when [Instance.BillboardMode] is [BillboardEnabled].
 	FlagBillboardKeepScale Flags = 5
-	/*Use triplanar texture lookup for all texture lookups that would normally use [code]UV[/code].*/
+	// Use triplanar texture lookup for all texture lookups that would normally use UV.
 	FlagUv1UseTriplanar Flags = 6
-	/*Use triplanar texture lookup for all texture lookups that would normally use [code]UV2[/code].*/
+	// Use triplanar texture lookup for all texture lookups that would normally use UV2.
 	FlagUv2UseTriplanar Flags = 7
-	/*Use triplanar texture lookup for all texture lookups that would normally use [code]UV[/code].*/
+	// Use triplanar texture lookup for all texture lookups that would normally use UV.
 	FlagUv1UseWorldTriplanar Flags = 8
-	/*Use triplanar texture lookup for all texture lookups that would normally use [code]UV2[/code].*/
+	// Use triplanar texture lookup for all texture lookups that would normally use UV2.
 	FlagUv2UseWorldTriplanar Flags = 9
-	/*Use [code]UV2[/code] coordinates to look up from the [member ao_texture].*/
+	// Use UV2 coordinates to look up from the [Instance.AoTexture].
 	FlagAoOnUv2 Flags = 10
-	/*Use [code]UV2[/code] coordinates to look up from the [member emission_texture].*/
+	// Use UV2 coordinates to look up from the [Instance.EmissionTexture].
 	FlagEmissionOnUv2 Flags = 11
-	/*Forces the shader to convert albedo from sRGB space to linear space. See also [member albedo_texture_force_srgb].*/
+	// Forces the shader to convert albedo from sRGB space to linear space. See also [Instance.AlbedoTextureForceSrgb].
 	FlagAlbedoTextureForceSrgb Flags = 12
-	/*Disables receiving shadows from other objects.*/
+	// Disables receiving shadows from other objects.
 	FlagDontReceiveShadows Flags = 13
-	/*Disables receiving ambient light.*/
+	// Disables receiving ambient light.
 	FlagDisableAmbientLight Flags = 14
-	/*Enables the shadow to opacity feature.*/
+	// Enables the shadow to opacity feature.
 	FlagUseShadowToOpacity Flags = 15
-	/*Enables the texture to repeat when UV coordinates are outside the 0-1 range. If using one of the linear filtering modes, this can result in artifacts at the edges of a texture when the sampler filters across the edges of the texture.*/
+	// Enables the texture to repeat when UV coordinates are outside the 0-1 range. If using one of the linear filtering modes, this can result in artifacts at the edges of a texture when the sampler filters across the edges of the texture.
 	FlagUseTextureRepeat Flags = 16
-	/*Invert values read from a depth texture to convert them to height values (heightmap).*/
+	// Invert values read from a depth texture to convert them to height values (heightmap).
 	FlagInvertHeightmap Flags = 17
-	/*Enables the skin mode for subsurface scattering which is used to improve the look of subsurface scattering when used for human skin.*/
+	// Enables the skin mode for subsurface scattering which is used to improve the look of subsurface scattering when used for human skin.
 	FlagSubsurfaceModeSkin Flags = 18
-	/*Enables parts of the shader required for [GPUParticles3D] trails to function. This also requires using a mesh with appropriate skinning, such as [RibbonTrailMesh] or [TubeTrailMesh]. Enabling this feature outside of materials used in [GPUParticles3D] meshes will break material rendering.*/
+	// Enables parts of the shader required for [graphics.gd/classdb/GPUParticles3D] trails to function. This also requires using a mesh with appropriate skinning, such as [graphics.gd/classdb/RibbonTrailMesh] or [graphics.gd/classdb/TubeTrailMesh]. Enabling this feature outside of materials used in [graphics.gd/classdb/GPUParticles3D] meshes will break material rendering.
 	FlagParticleTrailsMode Flags = 19
-	/*Enables multichannel signed distance field rendering shader.*/
+	// Enables multichannel signed distance field rendering shader.
 	FlagAlbedoTextureMsdf Flags = 20
-	/*Disables receiving depth-based or volumetric fog.*/
+	// Disables receiving depth-based or volumetric fog.
 	FlagDisableFog Flags = 21
-	/*Represents the size of the [enum Flags] enum.*/
+	// Represents the size of the [Flags] enum.
 	FlagMax Flags = 22
 )
 
 type DiffuseMode int //gd:BaseMaterial3D.DiffuseMode
 
 const (
-	/*Default diffuse scattering algorithm.*/
+	// Default diffuse scattering algorithm.
 	DiffuseBurley DiffuseMode = 0
-	/*Diffuse scattering ignores roughness.*/
+	// Diffuse scattering ignores roughness.
 	DiffuseLambert DiffuseMode = 1
-	/*Extends Lambert to cover more than 90 degrees when roughness increases.*/
+	// Extends Lambert to cover more than 90 degrees when roughness increases.
 	DiffuseLambertWrap DiffuseMode = 2
-	/*Uses a hard cut for lighting, with smoothing affected by roughness.*/
+	// Uses a hard cut for lighting, with smoothing affected by roughness.
 	DiffuseToon DiffuseMode = 3
 )
 
 type SpecularMode int //gd:BaseMaterial3D.SpecularMode
 
 const (
-	/*Default specular blob.*/
+	// Default specular blob.
 	SpecularSchlickGgx SpecularMode = 0
-	/*Toon blob which changes size based on roughness.*/
+	// Toon blob which changes size based on roughness.
 	SpecularToon SpecularMode = 1
-	/*No specular blob. This is slightly faster to render than other specular modes.*/
+	// No specular blob. This is slightly faster to render than other specular modes.
 	SpecularDisabled SpecularMode = 2
 )
 
 type BillboardMode int //gd:BaseMaterial3D.BillboardMode
 
 const (
-	/*Billboard mode is disabled.*/
+	// Billboard mode is disabled.
 	BillboardDisabled BillboardMode = 0
-	/*The object's Z axis will always face the camera.*/
+	// The object's Z axis will always face the camera.
 	BillboardEnabled BillboardMode = 1
-	/*The object's X axis will always face the camera.*/
+	// The object's X axis will always face the camera.
 	BillboardFixedY BillboardMode = 2
-	/*Used for particle systems when assigned to [GPUParticles3D] and [CPUParticles3D] nodes (flipbook animation). Enables [code]particles_anim_*[/code] properties.
-	  The [member ParticleProcessMaterial.anim_speed_min] or [member CPUParticles3D.anim_speed_min] should also be set to a value bigger than zero for the animation to play.*/
+	// Used for particle systems when assigned to [graphics.gd/classdb/GPUParticles3D] and [graphics.gd/classdb/CPUParticles3D] nodes (flipbook animation). Enables particles_anim_* properties.
+	//
+	// The [graphics.gd/classdb/ParticleProcessMaterial.Instance.AnimSpeedMin] or [graphics.gd/classdb/CPUParticles3D.Instance.AnimSpeedMin] should also be set to a value bigger than zero for the animation to play.
 	BillboardParticles BillboardMode = 3
 )
 
 type TextureChannel int //gd:BaseMaterial3D.TextureChannel
 
 const (
-	/*Used to read from the red channel of a texture.*/
+	// Used to read from the red channel of a texture.
 	TextureChannelRed TextureChannel = 0
-	/*Used to read from the green channel of a texture.*/
+	// Used to read from the green channel of a texture.
 	TextureChannelGreen TextureChannel = 1
-	/*Used to read from the blue channel of a texture.*/
+	// Used to read from the blue channel of a texture.
 	TextureChannelBlue TextureChannel = 2
-	/*Used to read from the alpha channel of a texture.*/
+	// Used to read from the alpha channel of a texture.
 	TextureChannelAlpha TextureChannel = 3
-	/*Used to read from the linear (non-perceptual) average of the red, green and blue channels of a texture.*/
+	// Used to read from the linear (non-perceptual) average of the red, green and blue channels of a texture.
 	TextureChannelGrayscale TextureChannel = 4
 )
 
 type EmissionOperator int //gd:BaseMaterial3D.EmissionOperator
 
 const (
-	/*Adds the emission color to the color from the emission texture.*/
+	// Adds the emission color to the color from the emission texture.
 	EmissionOpAdd EmissionOperator = 0
-	/*Multiplies the emission color by the color from the emission texture.*/
+	// Multiplies the emission color by the color from the emission texture.
 	EmissionOpMultiply EmissionOperator = 1
 )
 
 type DistanceFadeMode int //gd:BaseMaterial3D.DistanceFadeMode
 
 const (
-	/*Do not use distance fade.*/
+	// Do not use distance fade.
 	DistanceFadeDisabled DistanceFadeMode = 0
-	/*Smoothly fades the object out based on each pixel's distance from the camera using the alpha channel.*/
+	// Smoothly fades the object out based on each pixel's distance from the camera using the alpha channel.
 	DistanceFadePixelAlpha DistanceFadeMode = 1
-	/*Smoothly fades the object out based on each pixel's distance from the camera using a dithering approach. Dithering discards pixels based on a set pattern to smoothly fade without enabling transparency. On certain hardware, this can be faster than [constant DISTANCE_FADE_PIXEL_ALPHA].*/
+	// Smoothly fades the object out based on each pixel's distance from the camera using a dithering approach. Dithering discards pixels based on a set pattern to smoothly fade without enabling transparency. On certain hardware, this can be faster than [DistanceFadePixelAlpha].
 	DistanceFadePixelDither DistanceFadeMode = 2
-	/*Smoothly fades the object out based on the object's distance from the camera using a dithering approach. Dithering discards pixels based on a set pattern to smoothly fade without enabling transparency. On certain hardware, this can be faster than [constant DISTANCE_FADE_PIXEL_ALPHA] and [constant DISTANCE_FADE_PIXEL_DITHER].*/
+	// Smoothly fades the object out based on the object's distance from the camera using a dithering approach. Dithering discards pixels based on a set pattern to smoothly fade without enabling transparency. On certain hardware, this can be faster than [DistanceFadePixelAlpha] and [DistanceFadePixelDither].
 	DistanceFadeObjectDither DistanceFadeMode = 3
 )

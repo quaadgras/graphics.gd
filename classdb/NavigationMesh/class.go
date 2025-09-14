@@ -158,14 +158,14 @@ type Any interface {
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [member geometry_collision_mask], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [Instance.GeometryCollisionMask], given a 'layer_number' between 1 and 32.
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:NavigationMesh.set_collision_mask_value
 	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
-Returns whether or not the specified layer of the [member geometry_collision_mask] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [Instance.GeometryCollisionMask] is enabled, given a 'layer_number' between 1 and 32.
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:NavigationMesh.get_collision_mask_value
 	return bool(Advanced(self).GetCollisionMaskValue(int64(layer_number)))
@@ -186,7 +186,7 @@ func (self Instance) GetPolygonCount() int { //gd:NavigationMesh.get_polygon_cou
 }
 
 /*
-Returns a [PackedInt32Array] containing the indices of the vertices of a created polygon.
+Returns a []int32 containing the indices of the vertices of a created polygon.
 */
 func (self Instance) GetPolygon(idx int) []int32 { //gd:NavigationMesh.get_polygon
 	return []int32(slices.Collect(Advanced(self).GetPolygon(int64(idx)).Values()))
@@ -200,7 +200,8 @@ func (self Instance) ClearPolygons() { //gd:NavigationMesh.clear_polygons
 }
 
 /*
-Initializes the navigation mesh by setting the vertices and indices according to a [Mesh].
+Initializes the navigation mesh by setting the vertices and indices according to a [graphics.gd/classdb/Mesh].
+
 Note: The given 'mesh' must be of type [Mesh.PrimitiveTriangles] and have an index array.
 */
 func (self Instance) CreateFromMesh(mesh Mesh.Instance) { //gd:NavigationMesh.create_from_mesh
@@ -494,7 +495,7 @@ func (self class) GetCollisionMask() int64 { //gd:NavigationMesh.get_collision_m
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [member geometry_collision_mask], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [Instance.GeometryCollisionMask], given a 'layer_number' between 1 and 32.
 */
 //go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:NavigationMesh.set_collision_mask_value
@@ -505,7 +506,7 @@ func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:N
 }
 
 /*
-Returns whether or not the specified layer of the [member geometry_collision_mask] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [Instance.GeometryCollisionMask] is enabled, given a 'layer_number' between 1 and 32.
 */
 //go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:NavigationMesh.get_collision_mask_value
@@ -777,7 +778,7 @@ func (self class) SetVertices(vertices Packed.Array[Vector3.XYZ]) { //gd:Navigat
 }
 
 /*
-Returns a [PackedVector3Array] containing all the vertices being used to create the polygons.
+Returns a [][Vector3.XYZ] containing all the vertices being used to create the polygons.
 */
 //go:nosplit
 func (self class) GetVertices() Packed.Array[Vector3.XYZ] { //gd:NavigationMesh.get_vertices
@@ -807,7 +808,7 @@ func (self class) GetPolygonCount() int64 { //gd:NavigationMesh.get_polygon_coun
 }
 
 /*
-Returns a [PackedInt32Array] containing the indices of the vertices of a created polygon.
+Returns a []int32 containing the indices of the vertices of a created polygon.
 */
 //go:nosplit
 func (self class) GetPolygon(idx int64) Packed.Array[int32] { //gd:NavigationMesh.get_polygon
@@ -825,7 +826,8 @@ func (self class) ClearPolygons() { //gd:NavigationMesh.clear_polygons
 }
 
 /*
-Initializes the navigation mesh by setting the vertices and indices according to a [Mesh].
+Initializes the navigation mesh by setting the vertices and indices according to a [graphics.gd/classdb/Mesh].
+
 Note: The given 'mesh' must be of type [Mesh.PrimitiveTriangles] and have an index array.
 */
 //go:nosplit
@@ -882,38 +884,38 @@ func init() {
 type SamplePartitionType int //gd:NavigationMesh.SamplePartitionType
 
 const (
-	/*Watershed partitioning. Generally the best choice if you precompute the navigation mesh, use this if you have large open areas.*/
+	// Watershed partitioning. Generally the best choice if you precompute the navigation mesh, use this if you have large open areas.
 	SamplePartitionWatershed SamplePartitionType = 0
-	/*Monotone partitioning. Use this if you want fast navigation mesh generation.*/
+	// Monotone partitioning. Use this if you want fast navigation mesh generation.
 	SamplePartitionMonotone SamplePartitionType = 1
-	/*Layer partitioning. Good choice to use for tiled navigation mesh with medium and small sized tiles.*/
+	// Layer partitioning. Good choice to use for tiled navigation mesh with medium and small sized tiles.
 	SamplePartitionLayers SamplePartitionType = 2
-	/*Represents the size of the [enum SamplePartitionType] enum.*/
+	// Represents the size of the [SamplePartitionType] enum.
 	SamplePartitionMax SamplePartitionType = 3
 )
 
 type ParsedGeometryType int //gd:NavigationMesh.ParsedGeometryType
 
 const (
-	/*Parses mesh instances as geometry. This includes [MeshInstance3D], [CSGShape3D], and [GridMap] nodes.*/
+	// Parses mesh instances as geometry. This includes [graphics.gd/classdb/MeshInstance3D], [graphics.gd/classdb/CSGShape3D], and [graphics.gd/classdb/GridMap] nodes.
 	ParsedGeometryMeshInstances ParsedGeometryType = 0
-	/*Parses [StaticBody3D] colliders as geometry. The collider should be in any of the layers specified by [member geometry_collision_mask].*/
+	// Parses [graphics.gd/classdb/StaticBody3D] colliders as geometry. The collider should be in any of the layers specified by [Instance.GeometryCollisionMask].
 	ParsedGeometryStaticColliders ParsedGeometryType = 1
-	/*Both [constant PARSED_GEOMETRY_MESH_INSTANCES] and [constant PARSED_GEOMETRY_STATIC_COLLIDERS].*/
+	// Both [ParsedGeometryMeshInstances] and [ParsedGeometryStaticColliders].
 	ParsedGeometryBoth ParsedGeometryType = 2
-	/*Represents the size of the [enum ParsedGeometryType] enum.*/
+	// Represents the size of the [ParsedGeometryType] enum.
 	ParsedGeometryMax ParsedGeometryType = 3
 )
 
 type SourceGeometryMode int //gd:NavigationMesh.SourceGeometryMode
 
 const (
-	/*Scans the child nodes of the root node recursively for geometry.*/
+	// Scans the child nodes of the root node recursively for geometry.
 	SourceGeometryRootNodeChildren SourceGeometryMode = 0
-	/*Scans nodes in a group and their child nodes recursively for geometry. The group is specified by [member geometry_source_group_name].*/
+	// Scans nodes in a group and their child nodes recursively for geometry. The group is specified by [Instance.GeometrySourceGroupName].
 	SourceGeometryGroupsWithChildren SourceGeometryMode = 1
-	/*Uses nodes in a group for geometry. The group is specified by [member geometry_source_group_name].*/
+	// Uses nodes in a group for geometry. The group is specified by [Instance.GeometrySourceGroupName].
 	SourceGeometryGroupsExplicit SourceGeometryMode = 2
-	/*Represents the size of the [enum SourceGeometryMode] enum.*/
+	// Represents the size of the [SourceGeometryMode] enum.
 	SourceGeometryMax SourceGeometryMode = 3
 )

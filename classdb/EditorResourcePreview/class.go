@@ -2,7 +2,8 @@
 
 /*
 This node is used to generate previews for resources or files.
-Note: This class shouldn't be instantiated directly. Instead, access the singleton using [Instance.Editorinterface.GetResourcePreviewer].
+
+Note: This class shouldn't be instantiated directly. Instead, access the singleton using [graphics.gd/classdb/EditorInterface.GetResourcePreviewer].
 */
 package EditorResourcePreview
 
@@ -105,7 +106,8 @@ type Any interface {
 }
 
 /*
-Queue a resource file located at 'path' for preview. Once the preview is ready, the 'receiver”s 'receiver_func' will be called. The 'receiver_func' must take the following four arguments: [String] path, [Texture2D] preview, [Texture2D] thumbnail_preview, [Variant] userdata. 'userdata' can be anything, and will be returned when 'receiver_func' is called.
+Queue a resource file located at 'path' for preview. Once the preview is ready, the 'receiver”s 'receiver_func' will be called. The 'receiver_func' must take the following four arguments: string path, [graphics.gd/classdb/Texture2D] preview, [graphics.gd/classdb/Texture2D] thumbnail_preview, any userdata. 'userdata' can be anything, and will be returned when 'receiver_func' is called.
+
 Note: If it was not possible to create the preview the 'receiver_func' will still be called, but the preview will be null.
 */
 func (self Instance) QueueResourcePreview(path string, receiver Object.Instance, receiver_func string, userdata any) { //gd:EditorResourcePreview.queue_resource_preview
@@ -113,7 +115,8 @@ func (self Instance) QueueResourcePreview(path string, receiver Object.Instance,
 }
 
 /*
-Queue the 'resource' being edited for preview. Once the preview is ready, the 'receiver”s 'receiver_func' will be called. The 'receiver_func' must take the following four arguments: [String] path, [Texture2D] preview, [Texture2D] thumbnail_preview, [Variant] userdata. 'userdata' can be anything, and will be returned when 'receiver_func' is called.
+Queue the 'resource' being edited for preview. Once the preview is ready, the 'receiver”s 'receiver_func' will be called. The 'receiver_func' must take the following four arguments: string path, [graphics.gd/classdb/Texture2D] preview, [graphics.gd/classdb/Texture2D] thumbnail_preview, any userdata. 'userdata' can be anything, and will be returned when 'receiver_func' is called.
+
 Note: If it was not possible to create the preview the 'receiver_func' will still be called, but the preview will be null.
 */
 func (self Instance) QueueEditedResourcePreview(resource Resource.Instance, receiver Object.Instance, receiver_func string, userdata any) { //gd:EditorResourcePreview.queue_edited_resource_preview
@@ -184,7 +187,8 @@ func New() Instance {
 }
 
 /*
-Queue a resource file located at 'path' for preview. Once the preview is ready, the 'receiver''s 'receiver_func' will be called. The 'receiver_func' must take the following four arguments: [String] path, [Texture2D] preview, [Texture2D] thumbnail_preview, [Variant] userdata. 'userdata' can be anything, and will be returned when 'receiver_func' is called.
+Queue a resource file located at 'path' for preview. Once the preview is ready, the 'receiver''s 'receiver_func' will be called. The 'receiver_func' must take the following four arguments: string path, [graphics.gd/classdb/Texture2D] preview, [graphics.gd/classdb/Texture2D] thumbnail_preview, any userdata. 'userdata' can be anything, and will be returned when 'receiver_func' is called.
+
 Note: If it was not possible to create the preview the 'receiver_func' will still be called, but the preview will be null.
 */
 //go:nosplit
@@ -198,7 +202,8 @@ func (self class) QueueResourcePreview(path String.Readable, receiver [1]gd.Obje
 }
 
 /*
-Queue the 'resource' being edited for preview. Once the preview is ready, the 'receiver''s 'receiver_func' will be called. The 'receiver_func' must take the following four arguments: [String] path, [Texture2D] preview, [Texture2D] thumbnail_preview, [Variant] userdata. 'userdata' can be anything, and will be returned when 'receiver_func' is called.
+Queue the 'resource' being edited for preview. Once the preview is ready, the 'receiver''s 'receiver_func' will be called. The 'receiver_func' must take the following four arguments: string path, [graphics.gd/classdb/Texture2D] preview, [graphics.gd/classdb/Texture2D] thumbnail_preview, any userdata. 'userdata' can be anything, and will be returned when 'receiver_func' is called.
+
 Note: If it was not possible to create the preview the 'receiver_func' will still be called, but the preview will be null.
 */
 //go:nosplit

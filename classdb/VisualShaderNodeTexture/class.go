@@ -259,35 +259,35 @@ func init() {
 type Source int //gd:VisualShaderNodeTexture.Source
 
 const (
-	/*Use the texture given as an argument for this function.*/
+	// Use the texture given as an argument for this function.
 	SourceTexture Source = 0
-	/*Use the current viewport's texture as the source.*/
+	// Use the current viewport's texture as the source.
 	SourceScreen Source = 1
-	/*Use the texture from this shader's texture built-in (e.g. a texture of a [Sprite2D]).*/
+	// Use the texture from this shader's texture built-in (e.g. a texture of a [graphics.gd/classdb/Sprite2D]).
 	Source2dTexture Source = 2
-	/*Use the texture from this shader's normal map built-in.*/
+	// Use the texture from this shader's normal map built-in.
 	Source2dNormal Source = 3
-	/*Use the depth texture captured during the depth prepass. Only available when the depth prepass is used (i.e. in spatial shaders and in the forward_plus or gl_compatibility renderers).*/
+	// Use the depth texture captured during the depth prepass. Only available when the depth prepass is used (i.e. in spatial shaders and in the forward_plus or gl_compatibility renderers).
 	SourceDepth Source = 4
-	/*Use the texture provided in the input port for this function.*/
+	// Use the texture provided in the input port for this function.
 	SourcePort Source = 5
-	/*Use the normal buffer captured during the depth prepass. Only available when the normal-roughness buffer is available (i.e. in spatial shaders and in the forward_plus renderer).*/
+	// Use the normal buffer captured during the depth prepass. Only available when the normal-roughness buffer is available (i.e. in spatial shaders and in the forward_plus renderer).
 	Source3dNormal Source = 6
-	/*Use the roughness buffer captured during the depth prepass. Only available when the normal-roughness buffer is available (i.e. in spatial shaders and in the forward_plus renderer).*/
+	// Use the roughness buffer captured during the depth prepass. Only available when the normal-roughness buffer is available (i.e. in spatial shaders and in the forward_plus renderer).
 	SourceRoughness Source = 7
-	/*Represents the size of the [enum Source] enum.*/
+	// Represents the size of the [Source] enum.
 	SourceMax Source = 8
 )
 
 type TextureType int //gd:VisualShaderNodeTexture.TextureType
 
 const (
-	/*No hints are added to the uniform declaration.*/
+	// No hints are added to the uniform declaration.
 	TypeData TextureType = 0
-	/*Adds [code]source_color[/code] as hint to the uniform declaration for proper sRGB to linear conversion.*/
+	// Adds source_color as hint to the uniform declaration for proper sRGB to linear conversion.
 	TypeColor TextureType = 1
-	/*Adds [code]hint_normal[/code] as hint to the uniform declaration, which internally converts the texture for proper usage as normal map.*/
+	// Adds hint_normal as hint to the uniform declaration, which internally converts the texture for proper usage as normal map.
 	TypeNormalMap TextureType = 2
-	/*Represents the size of the [enum TextureType] enum.*/
+	// Represents the size of the [TextureType] enum.
 	TypeMax TextureType = 3
 )

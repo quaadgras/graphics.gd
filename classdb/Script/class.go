@@ -2,8 +2,10 @@
 
 /*
 A class stored as a resource. A script extends the functionality of all objects that instantiate it.
+
 This is the base class for all scripts and should not be used directly. Trying to create a new script with this class will result in an error.
-The new method of a script subclass creates a new instance. [Instance.Object.SetScript] extends an existing object, if that object's class matches one of the script's base classes.
+
+The new method of a script subclass creates a new instance. [graphics.gd/classdb/Object.Instance.SetScript] extends an existing object, if that object's class matches one of the script's base classes.
 */
 package Script
 
@@ -134,7 +136,8 @@ func (self Instance) InstanceHas(base_object Object.Instance) bool { //gd:Script
 
 /*
 Returns true if the script contains non-empty source code.
-Note: If a script does not have source code, this does not mean that it is invalid or unusable. For example, a [GDScript] that was exported with binary tokenization has no source code, but still behaves as expected and could be instantiated. This can be checked with [Instance.CanInstantiate].
+
+Note: If a script does not have source code, this does not mean that it is invalid or unusable. For example, a [graphics.gd/classdb/GDScript] that was exported with binary tokenization has no source code, but still behaves as expected and could be instantiated. This can be checked with [Instance.CanInstantiate].
 */
 func (self Instance) HasSourceCode() bool { //gd:Script.has_source_code
 	return bool(Advanced(self).HasSourceCode())
@@ -170,20 +173,8 @@ func (self Instance) GetInstanceBaseType() string { //gd:Script.get_instance_bas
 
 /*
 Returns the class name associated with the script, if there is one. Returns an empty string otherwise.
+
 To give the script a global name, you can use the class_name keyword in GDScript and the [GlobalClass] attribute in C#.
-
-[gdscript]
-class_name MyNode
-extends Node
-[/gdscript]
-[csharp]
-using Godot;
-
-[GlobalClass]
-public partial class MyNode : Node
-{
-}
-[/csharp]
 */
 func (self Instance) GetGlobalName() string { //gd:Script.get_global_name
 	return string(Advanced(self).GetGlobalName().String())
@@ -197,21 +188,21 @@ func (self Instance) HasScriptSignal(signal_name string) bool { //gd:Script.has_
 }
 
 /*
-Returns the list of properties in this [Script].
+Returns the list of properties in this [graphics.gd/classdb/Script].
 */
-func (self Instance) GetScriptPropertyList() []PropertyInfo { //gd:Script.get_script_property_list
-	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(Advanced(self).GetScriptPropertyList())))
+func (self Instance) GetScriptPropertyList() []Object.PropertyInfo { //gd:Script.get_script_property_list
+	return []Object.PropertyInfo(gd.ArrayAs[[]Object.PropertyInfo](gd.InternalArray(Advanced(self).GetScriptPropertyList())))
 }
 
 /*
-Returns the list of methods in this [Script].
+Returns the list of methods in this [graphics.gd/classdb/Script].
 */
-func (self Instance) GetScriptMethodList() []PropertyInfo { //gd:Script.get_script_method_list
-	return []PropertyInfo(gd.ArrayAs[[]PropertyInfo](gd.InternalArray(Advanced(self).GetScriptMethodList())))
+func (self Instance) GetScriptMethodList() []Object.PropertyInfo { //gd:Script.get_script_method_list
+	return []Object.PropertyInfo(gd.ArrayAs[[]Object.PropertyInfo](gd.InternalArray(Advanced(self).GetScriptMethodList())))
 }
 
 /*
-Returns the list of user signals defined in this [Script].
+Returns the list of user signals defined in this [graphics.gd/classdb/Script].
 */
 func (self Instance) GetScriptSignalList() []SignalInfo { //gd:Script.get_script_signal_list
 	return []SignalInfo(gd.ArrayAs[[]SignalInfo](gd.InternalArray(Advanced(self).GetScriptSignalList())))
@@ -246,7 +237,7 @@ func (self Instance) IsAbstract() bool { //gd:Script.is_abstract
 }
 
 /*
-Returns a [Dictionary] mapping method names to their RPC configuration defined by this script.
+Returns a data structure mapping method names to their RPC configuration defined by this script.
 */
 func (self Instance) GetRpcConfig() any { //gd:Script.get_rpc_config
 	return any(Advanced(self).GetRpcConfig().Interface())
@@ -325,7 +316,8 @@ func (self class) InstanceHas(base_object [1]gd.Object) bool { //gd:Script.insta
 
 /*
 Returns true if the script contains non-empty source code.
-Note: If a script does not have source code, this does not mean that it is invalid or unusable. For example, a [GDScript] that was exported with binary tokenization has no source code, but still behaves as expected and could be instantiated. This can be checked with [Instance.CanInstantiate].
+
+Note: If a script does not have source code, this does not mean that it is invalid or unusable. For example, a [graphics.gd/classdb/GDScript] that was exported with binary tokenization has no source code, but still behaves as expected and could be instantiated. This can be checked with [Instance.CanInstantiate].
 */
 //go:nosplit
 func (self class) HasSourceCode() bool { //gd:Script.has_source_code
@@ -378,20 +370,9 @@ func (self class) GetInstanceBaseType() String.Name { //gd:Script.get_instance_b
 
 /*
 Returns the class name associated with the script, if there is one. Returns an empty string otherwise.
+
 To give the script a global name, you can use the class_name keyword in GDScript and the [GlobalClass] attribute in C#.
 
-[gdscript]
-class_name MyNode
-extends Node
-[/gdscript]
-[csharp]
-using Godot;
-
-[GlobalClass]
-public partial class MyNode : Node
-{
-}
-[/csharp]
 
 */
 //go:nosplit
@@ -412,7 +393,7 @@ func (self class) HasScriptSignal(signal_name String.Name) bool { //gd:Script.ha
 }
 
 /*
-Returns the list of properties in this [Script].
+Returns the list of properties in this [graphics.gd/classdb/Script].
 */
 //go:nosplit
 func (self class) GetScriptPropertyList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_property_list
@@ -422,7 +403,7 @@ func (self class) GetScriptPropertyList() Array.Contains[Dictionary.Any] { //gd:
 }
 
 /*
-Returns the list of methods in this [Script].
+Returns the list of methods in this [graphics.gd/classdb/Script].
 */
 //go:nosplit
 func (self class) GetScriptMethodList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_method_list
@@ -432,7 +413,7 @@ func (self class) GetScriptMethodList() Array.Contains[Dictionary.Any] { //gd:Sc
 }
 
 /*
-Returns the list of user signals defined in this [Script].
+Returns the list of user signals defined in this [graphics.gd/classdb/Script].
 */
 //go:nosplit
 func (self class) GetScriptSignalList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_signal_list
@@ -482,7 +463,7 @@ func (self class) IsAbstract() bool { //gd:Script.is_abstract
 }
 
 /*
-Returns a [Dictionary] mapping method names to their RPC configuration defined by this script.
+Returns a data structure mapping method names to their RPC configuration defined by this script.
 */
 //go:nosplit
 func (self class) GetRpcConfig() variant.Any { //gd:Script.get_rpc_config
@@ -525,18 +506,10 @@ func init() {
 	gdclass.Register("Script", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Script](ptr)} })
 }
 
-type PropertyInfo struct {
-	ClassName  string       `gd:"class_name"`
-	Name       string       `gd:"name"`
-	Hint       int          `gd:"hint"`
-	HintString string       `gd:"hint_string"`
-	Type       reflect.Type `gd:"type"`
-	Usage      int          `gd:"usage"`
-}
 type SignalInfo struct {
-	Name        string         `gd:"name"`
-	Flags       int            `gd:"flags"`
-	ID          int            `gd:"id"`
-	DefaultArgs []interface{}  `gd:"default_args"`
-	Args        []PropertyInfo `gd:"args"`
+	Name        string                `gd:"name"`
+	Flags       int                   `gd:"flags"`
+	ID          int                   `gd:"id"`
+	DefaultArgs []interface{}         `gd:"default_args"`
+	Args        []Object.PropertyInfo `gd:"args"`
 }

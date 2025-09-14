@@ -2,10 +2,16 @@
 
 /*
 The Time singleton allows converting time between various formats and also getting time information from the system.
+
 This class conforms with as many of the ISO 8601 standards as possible. All dates follow the Proleptic Gregorian calendar. As such, the day before 1582-10-15 is 1582-10-14, not 1582-10-04. The year before 1 AD (aka 1 BC) is number 0, with the year before that (2 BC) being -1, etc.
+
 Conversion methods assume "the same timezone", and do not handle timezone conversions or DST automatically. Leap seconds are also not handled, they must be done manually if desired. Suffixes such as "Z" are not handled, you need to strip them away manually.
-When getting time information from the system, the time can either be in the local timezone or UTC depending on the utc parameter. However, the [Instance.GetUnixTimeFromSystem] method always uses UTC as it returns the seconds passed since the [url=https://en.wikipedia.org/wiki/Unix_time]Unix epoch[/url].
-Important: The _from_system methods use the system clock that the user can manually set. Never use this method for precise time calculation since its results are subject to automatic adjustments by the user or the operating system. Always use [Instance.GetTicksUsec] or [Instance.GetTicksMsec] for precise time calculation instead, since they are guaranteed to be monotonic (i.e. never decrease).
+
+When getting time information from the system, the time can either be in the local timezone or UTC depending on the utc parameter. However, the [GetUnixTimeFromSystem] method always uses UTC as it returns the seconds passed since the [Unix epoch].
+
+Important: The _from_system methods use the system clock that the user can manually set. Never use this method for precise time calculation since its results are subject to automatic adjustments by the user or the operating system. Always use [GetTicksUsec] or [GetTicksMsec] for precise time calculation instead, since they are guaranteed to be monotonic (i.e. never decrease).
+
+[Unix epoch]: https://en.wikipedia.org/wiki/Unix_time
 */
 package Time
 
@@ -122,7 +128,8 @@ func singleton() {
 
 /*
 Converts the given Unix timestamp to a dictionary of keys: year, month, day, weekday, hour, minute, and second.
-The returned Dictionary's values will be the same as the [Instance.GetDatetimeDictFromSystem] if the Unix timestamp is the current time, with the exception of Daylight Savings Time as it cannot be determined from the epoch.
+
+The returned Dictionary's values will be the same as the [GetDatetimeDictFromSystem] if the Unix timestamp is the current time, with the exception of Daylight Savings Time as it cannot be determined from the epoch.
 */
 func GetDatetimeDictFromUnixTime(unix_time_val int) Date { //gd:Time.get_datetime_dict_from_unix_time
 	once.Do(singleton)
@@ -147,6 +154,7 @@ func GetTimeDictFromUnixTime(unix_time_val int) OnTheClock { //gd:Time.get_time_
 
 /*
 Converts the given Unix timestamp to an ISO 8601 date and time string (YYYY-MM-DDTHH:MM:SS).
+
 If 'use_space' is true, the date and time bits are separated by an empty space character instead of the letter T.
 */
 func GetDatetimeStringFromUnixTime(unix_time_val int, use_space bool) string { //gd:Time.get_datetime_string_from_unix_time
@@ -156,6 +164,7 @@ func GetDatetimeStringFromUnixTime(unix_time_val int, use_space bool) string { /
 
 /*
 Converts the given Unix timestamp to an ISO 8601 date and time string (YYYY-MM-DDTHH:MM:SS).
+
 If 'use_space' is true, the date and time bits are separated by an empty space character instead of the letter T.
 */
 func GetDatetimeStringFromUnixTimeOptions(unix_time_val int, use_space bool) string { //gd:Time.get_datetime_string_from_unix_time
@@ -181,7 +190,9 @@ func GetTimeStringFromUnixTime(unix_time_val int) string { //gd:Time.get_time_st
 
 /*
 Converts the given ISO 8601 date and time string (YYYY-MM-DDTHH:MM:SS) to a dictionary of keys: year, month, day, weekday, hour, minute, and second.
+
 If 'weekday' is false, then the weekday entry is excluded (the calculation is relatively expensive).
+
 Note: Any decimal fraction in the time string will be ignored silently.
 */
 func GetDatetimeDictFromDatetimeString(datetime string, weekday bool) Date { //gd:Time.get_datetime_dict_from_datetime_string
@@ -191,8 +202,11 @@ func GetDatetimeDictFromDatetimeString(datetime string, weekday bool) Date { //g
 
 /*
 Converts the given dictionary of keys to an ISO 8601 date and time string (YYYY-MM-DDTHH:MM:SS).
+
 The given dictionary can be populated with the following keys: year, month, day, hour, minute, and second. Any other entries (including dst) are ignored.
+
 If the dictionary is empty, 0 is returned. If some keys are omitted, they default to the equivalent values for the Unix epoch timestamp 0 (1970-01-01 at 00:00:00).
+
 If 'use_space' is true, the date and time bits are separated by an empty space character instead of the letter T.
 */
 func GetDatetimeStringFromDatetimeDict(datetime Date, use_space bool) string { //gd:Time.get_datetime_string_from_datetime_dict
@@ -202,9 +216,13 @@ func GetDatetimeStringFromDatetimeDict(datetime Date, use_space bool) string { /
 
 /*
 Converts a dictionary of time values to a Unix timestamp.
+
 The given dictionary can be populated with the following keys: year, month, day, hour, minute, and second. Any other entries (including dst) are ignored.
+
 If the dictionary is empty, 0 is returned. If some keys are omitted, they default to the equivalent values for the Unix epoch timestamp 0 (1970-01-01 at 00:00:00).
-You can pass the output from [Instance.GetDatetimeDictFromUnixTime] directly into this function and get the same as what was put in.
+
+You can pass the output from [GetDatetimeDictFromUnixTime] directly into this function and get the same as what was put in.
+
 Note: Unix timestamps are often in UTC. This method does not do any timezone conversion, so the timestamp will be in the same timezone as the given datetime dictionary.
 */
 func GetUnixTimeFromDatetimeDict(datetime Date) int { //gd:Time.get_unix_time_from_datetime_dict
@@ -214,7 +232,9 @@ func GetUnixTimeFromDatetimeDict(datetime Date) int { //gd:Time.get_unix_time_fr
 
 /*
 Converts the given ISO 8601 date and/or time string to a Unix timestamp. The string can contain a date only, a time only, or both.
+
 Note: Unix timestamps are often in UTC. This method does not do any timezone conversion, so the timestamp will be in the same timezone as the given datetime string.
+
 Note: Any decimal fraction in the time string will be ignored silently.
 */
 func GetUnixTimeFromDatetimeString(datetime string) int { //gd:Time.get_unix_time_from_datetime_string
@@ -248,6 +268,7 @@ func GetDatetimeDictFromSystemOptions(utc bool) Date { //gd:Time.get_datetime_di
 
 /*
 Returns the current date as a dictionary of keys: year, month, day, and weekday.
+
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
 */
 func GetDateDictFromSystem(utc bool) DateOnly { //gd:Time.get_date_dict_from_system
@@ -257,6 +278,7 @@ func GetDateDictFromSystem(utc bool) DateOnly { //gd:Time.get_date_dict_from_sys
 
 /*
 Returns the current date as a dictionary of keys: year, month, day, and weekday.
+
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
 */
 func GetDateDictFromSystemOptions(utc bool) DateOnly { //gd:Time.get_date_dict_from_system
@@ -266,6 +288,7 @@ func GetDateDictFromSystemOptions(utc bool) DateOnly { //gd:Time.get_date_dict_f
 
 /*
 Returns the current time as a dictionary of keys: hour, minute, and second.
+
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
 */
 func GetTimeDictFromSystem(utc bool) OnTheClock { //gd:Time.get_time_dict_from_system
@@ -275,6 +298,7 @@ func GetTimeDictFromSystem(utc bool) OnTheClock { //gd:Time.get_time_dict_from_s
 
 /*
 Returns the current time as a dictionary of keys: hour, minute, and second.
+
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
 */
 func GetTimeDictFromSystemOptions(utc bool) OnTheClock { //gd:Time.get_time_dict_from_system
@@ -284,7 +308,9 @@ func GetTimeDictFromSystemOptions(utc bool) OnTheClock { //gd:Time.get_time_dict
 
 /*
 Returns the current date and time as an ISO 8601 date and time string (YYYY-MM-DDTHH:MM:SS).
+
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
+
 If 'use_space' is true, the date and time bits are separated by an empty space character instead of the letter T.
 */
 func GetDatetimeStringFromSystem(utc bool, use_space bool) string { //gd:Time.get_datetime_string_from_system
@@ -294,7 +320,9 @@ func GetDatetimeStringFromSystem(utc bool, use_space bool) string { //gd:Time.ge
 
 /*
 Returns the current date and time as an ISO 8601 date and time string (YYYY-MM-DDTHH:MM:SS).
+
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
+
 If 'use_space' is true, the date and time bits are separated by an empty space character instead of the letter T.
 */
 func GetDatetimeStringFromSystemOptions(utc bool, use_space bool) string { //gd:Time.get_datetime_string_from_system
@@ -304,6 +332,7 @@ func GetDatetimeStringFromSystemOptions(utc bool, use_space bool) string { //gd:
 
 /*
 Returns the current date as an ISO 8601 date string (YYYY-MM-DD).
+
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
 */
 func GetDateStringFromSystem(utc bool) string { //gd:Time.get_date_string_from_system
@@ -313,6 +342,7 @@ func GetDateStringFromSystem(utc bool) string { //gd:Time.get_date_string_from_s
 
 /*
 Returns the current date as an ISO 8601 date string (YYYY-MM-DD).
+
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
 */
 func GetDateStringFromSystemOptions(utc bool) string { //gd:Time.get_date_string_from_system
@@ -322,6 +352,7 @@ func GetDateStringFromSystemOptions(utc bool) string { //gd:Time.get_date_string
 
 /*
 Returns the current time as an ISO 8601 time string (HH:MM:SS).
+
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
 */
 func GetTimeStringFromSystem(utc bool) string { //gd:Time.get_time_string_from_system
@@ -331,6 +362,7 @@ func GetTimeStringFromSystem(utc bool) string { //gd:Time.get_time_string_from_s
 
 /*
 Returns the current time as an ISO 8601 time string (HH:MM:SS).
+
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
 */
 func GetTimeStringFromSystemOptions(utc bool) string { //gd:Time.get_time_string_from_system
@@ -340,17 +372,22 @@ func GetTimeStringFromSystemOptions(utc bool) string { //gd:Time.get_time_string
 
 /*
 Returns the current time zone as a dictionary of keys: bias and name.
+
 - bias is the offset from UTC in minutes, since not all time zones are multiples of an hour from UTC.
+
 - name is the localized name of the time zone, according to the OS locale settings of the current user.
 */
-func GetTimeZoneFromSystem() map[string]string { //gd:Time.get_time_zone_from_system
+func GetTimeZoneFromSystem() Zone { //gd:Time.get_time_zone_from_system
 	once.Do(singleton)
-	return map[string]string(gd.DictionaryAs[map[string]string](Advanced().GetTimeZoneFromSystem()))
+	return Zone(gd.DictionaryAs[Zone](Advanced().GetTimeZoneFromSystem()))
 }
 
 /*
-Returns the current Unix timestamp in seconds based on the system time in UTC. This method is implemented by the operating system and always returns the time in UTC. The Unix timestamp is the number of seconds passed since 1970-01-01 at 00:00:00, the [url=https://en.wikipedia.org/wiki/Unix_time]Unix epoch[/url].
-Note: Unlike other methods that use integer timestamps, this method returns the timestamp as a [float] for sub-second precision.
+Returns the current Unix timestamp in seconds based on the system time in UTC. This method is implemented by the operating system and always returns the time in UTC. The Unix timestamp is the number of seconds passed since 1970-01-01 at 00:00:00, the [Unix epoch].
+
+Note: Unlike other methods that use integer timestamps, this method returns the timestamp as a [Float.X] for sub-second precision.
+
+[Unix epoch]: https://en.wikipedia.org/wiki/Unix_time
 */
 func GetUnixTimeFromSystem() Float.X { //gd:Time.get_unix_time_from_system
 	once.Do(singleton)
@@ -359,6 +396,7 @@ func GetUnixTimeFromSystem() Float.X { //gd:Time.get_unix_time_from_system
 
 /*
 Returns the amount of time passed in milliseconds since the engine started.
+
 Will always be positive or 0 and uses a 64-bit value (it will wrap after roughly 500 million years).
 */
 func GetTicksMsec() int { //gd:Time.get_ticks_msec
@@ -368,6 +406,7 @@ func GetTicksMsec() int { //gd:Time.get_ticks_msec
 
 /*
 Returns the amount of time passed in microseconds since the engine started.
+
 Will always be positive or 0 and uses a 64-bit value (it will wrap after roughly half a million years).
 */
 func GetTicksUsec() int { //gd:Time.get_ticks_usec
@@ -400,7 +439,8 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 
 /*
 Converts the given Unix timestamp to a dictionary of keys: year, month, day, weekday, hour, minute, and second.
-The returned Dictionary's values will be the same as the [Instance.GetDatetimeDictFromSystem] if the Unix timestamp is the current time, with the exception of Daylight Savings Time as it cannot be determined from the epoch.
+
+The returned Dictionary's values will be the same as the [GetDatetimeDictFromSystem] if the Unix timestamp is the current time, with the exception of Daylight Savings Time as it cannot be determined from the epoch.
 */
 //go:nosplit
 func (self class) GetDatetimeDictFromUnixTime(unix_time_val int64) Dictionary.Any { //gd:Time.get_datetime_dict_from_unix_time
@@ -431,6 +471,7 @@ func (self class) GetTimeDictFromUnixTime(unix_time_val int64) Dictionary.Any { 
 
 /*
 Converts the given Unix timestamp to an ISO 8601 date and time string (YYYY-MM-DDTHH:MM:SS).
+
 If 'use_space' is true, the date and time bits are separated by an empty space character instead of the letter T.
 */
 //go:nosplit
@@ -465,7 +506,9 @@ func (self class) GetTimeStringFromUnixTime(unix_time_val int64) String.Readable
 
 /*
 Converts the given ISO 8601 date and time string (YYYY-MM-DDTHH:MM:SS) to a dictionary of keys: year, month, day, weekday, hour, minute, and second.
+
 If 'weekday' is false, then the weekday entry is excluded (the calculation is relatively expensive).
+
 Note: Any decimal fraction in the time string will be ignored silently.
 */
 //go:nosplit
@@ -480,8 +523,11 @@ func (self class) GetDatetimeDictFromDatetimeString(datetime String.Readable, we
 
 /*
 Converts the given dictionary of keys to an ISO 8601 date and time string (YYYY-MM-DDTHH:MM:SS).
+
 The given dictionary can be populated with the following keys: year, month, day, hour, minute, and second. Any other entries (including dst) are ignored.
+
 If the dictionary is empty, 0 is returned. If some keys are omitted, they default to the equivalent values for the Unix epoch timestamp 0 (1970-01-01 at 00:00:00).
+
 If 'use_space' is true, the date and time bits are separated by an empty space character instead of the letter T.
 */
 //go:nosplit
@@ -496,9 +542,13 @@ func (self class) GetDatetimeStringFromDatetimeDict(datetime Dictionary.Any, use
 
 /*
 Converts a dictionary of time values to a Unix timestamp.
+
 The given dictionary can be populated with the following keys: year, month, day, hour, minute, and second. Any other entries (including dst) are ignored.
+
 If the dictionary is empty, 0 is returned. If some keys are omitted, they default to the equivalent values for the Unix epoch timestamp 0 (1970-01-01 at 00:00:00).
-You can pass the output from [Instance.GetDatetimeDictFromUnixTime] directly into this function and get the same as what was put in.
+
+You can pass the output from [GetDatetimeDictFromUnixTime] directly into this function and get the same as what was put in.
+
 Note: Unix timestamps are often in UTC. This method does not do any timezone conversion, so the timestamp will be in the same timezone as the given datetime dictionary.
 */
 //go:nosplit
@@ -510,7 +560,9 @@ func (self class) GetUnixTimeFromDatetimeDict(datetime Dictionary.Any) int64 { /
 
 /*
 Converts the given ISO 8601 date and/or time string to a Unix timestamp. The string can contain a date only, a time only, or both.
+
 Note: Unix timestamps are often in UTC. This method does not do any timezone conversion, so the timestamp will be in the same timezone as the given datetime string.
+
 Note: Any decimal fraction in the time string will be ignored silently.
 */
 //go:nosplit
@@ -542,6 +594,7 @@ func (self class) GetDatetimeDictFromSystem(utc bool) Dictionary.Any { //gd:Time
 
 /*
 Returns the current date as a dictionary of keys: year, month, day, and weekday.
+
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
 */
 //go:nosplit
@@ -553,6 +606,7 @@ func (self class) GetDateDictFromSystem(utc bool) Dictionary.Any { //gd:Time.get
 
 /*
 Returns the current time as a dictionary of keys: hour, minute, and second.
+
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
 */
 //go:nosplit
@@ -564,7 +618,9 @@ func (self class) GetTimeDictFromSystem(utc bool) Dictionary.Any { //gd:Time.get
 
 /*
 Returns the current date and time as an ISO 8601 date and time string (YYYY-MM-DDTHH:MM:SS).
+
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
+
 If 'use_space' is true, the date and time bits are separated by an empty space character instead of the letter T.
 */
 //go:nosplit
@@ -579,6 +635,7 @@ func (self class) GetDatetimeStringFromSystem(utc bool, use_space bool) String.R
 
 /*
 Returns the current date as an ISO 8601 date string (YYYY-MM-DD).
+
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
 */
 //go:nosplit
@@ -590,6 +647,7 @@ func (self class) GetDateStringFromSystem(utc bool) String.Readable { //gd:Time.
 
 /*
 Returns the current time as an ISO 8601 time string (HH:MM:SS).
+
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
 */
 //go:nosplit
@@ -601,7 +659,9 @@ func (self class) GetTimeStringFromSystem(utc bool) String.Readable { //gd:Time.
 
 /*
 Returns the current time zone as a dictionary of keys: bias and name.
+
 - bias is the offset from UTC in minutes, since not all time zones are multiples of an hour from UTC.
+
 - name is the localized name of the time zone, according to the OS locale settings of the current user.
 */
 //go:nosplit
@@ -612,8 +672,11 @@ func (self class) GetTimeZoneFromSystem() Dictionary.Any { //gd:Time.get_time_zo
 }
 
 /*
-Returns the current Unix timestamp in seconds based on the system time in UTC. This method is implemented by the operating system and always returns the time in UTC. The Unix timestamp is the number of seconds passed since 1970-01-01 at 00:00:00, the [url=https://en.wikipedia.org/wiki/Unix_time]Unix epoch[/url].
-Note: Unlike other methods that use integer timestamps, this method returns the timestamp as a [float] for sub-second precision.
+Returns the current Unix timestamp in seconds based on the system time in UTC. This method is implemented by the operating system and always returns the time in UTC. The Unix timestamp is the number of seconds passed since 1970-01-01 at 00:00:00, the [Unix epoch].
+
+Note: Unlike other methods that use integer timestamps, this method returns the timestamp as a [Float.X] for sub-second precision.
+
+[Unix epoch]: https://en.wikipedia.org/wiki/Unix_time
 */
 //go:nosplit
 func (self class) GetUnixTimeFromSystem() float64 { //gd:Time.get_unix_time_from_system
@@ -624,6 +687,7 @@ func (self class) GetUnixTimeFromSystem() float64 { //gd:Time.get_unix_time_from
 
 /*
 Returns the amount of time passed in milliseconds since the engine started.
+
 Will always be positive or 0 and uses a 64-bit value (it will wrap after roughly 500 million years).
 */
 //go:nosplit
@@ -635,6 +699,7 @@ func (self class) GetTicksMsec() int64 { //gd:Time.get_ticks_msec
 
 /*
 Returns the amount of time passed in microseconds since the engine started.
+
 Will always be positive or 0 and uses a 64-bit value (it will wrap after roughly half a million years).
 */
 //go:nosplit
@@ -663,48 +728,48 @@ func init() {
 type Month int //gd:Time.Month
 
 const (
-	/*The month of January, represented numerically as [code]01[/code].*/
+	// The month of January, represented numerically as 01.
 	MonthJanuary Month = 1
-	/*The month of February, represented numerically as [code]02[/code].*/
+	// The month of February, represented numerically as 02.
 	MonthFebruary Month = 2
-	/*The month of March, represented numerically as [code]03[/code].*/
+	// The month of March, represented numerically as 03.
 	MonthMarch Month = 3
-	/*The month of April, represented numerically as [code]04[/code].*/
+	// The month of April, represented numerically as 04.
 	MonthApril Month = 4
-	/*The month of May, represented numerically as [code]05[/code].*/
+	// The month of May, represented numerically as 05.
 	MonthMay Month = 5
-	/*The month of June, represented numerically as [code]06[/code].*/
+	// The month of June, represented numerically as 06.
 	MonthJune Month = 6
-	/*The month of July, represented numerically as [code]07[/code].*/
+	// The month of July, represented numerically as 07.
 	MonthJuly Month = 7
-	/*The month of August, represented numerically as [code]08[/code].*/
+	// The month of August, represented numerically as 08.
 	MonthAugust Month = 8
-	/*The month of September, represented numerically as [code]09[/code].*/
+	// The month of September, represented numerically as 09.
 	MonthSeptember Month = 9
-	/*The month of October, represented numerically as [code]10[/code].*/
+	// The month of October, represented numerically as 10.
 	MonthOctober Month = 10
-	/*The month of November, represented numerically as [code]11[/code].*/
+	// The month of November, represented numerically as 11.
 	MonthNovember Month = 11
-	/*The month of December, represented numerically as [code]12[/code].*/
+	// The month of December, represented numerically as 12.
 	MonthDecember Month = 12
 )
 
 type Weekday int //gd:Time.Weekday
 
 const (
-	/*The day of the week Sunday, represented numerically as [code]0[/code].*/
+	// The day of the week Sunday, represented numerically as 0.
 	WeekdaySunday Weekday = 0
-	/*The day of the week Monday, represented numerically as [code]1[/code].*/
+	// The day of the week Monday, represented numerically as 1.
 	WeekdayMonday Weekday = 1
-	/*The day of the week Tuesday, represented numerically as [code]2[/code].*/
+	// The day of the week Tuesday, represented numerically as 2.
 	WeekdayTuesday Weekday = 2
-	/*The day of the week Wednesday, represented numerically as [code]3[/code].*/
+	// The day of the week Wednesday, represented numerically as 3.
 	WeekdayWednesday Weekday = 3
-	/*The day of the week Thursday, represented numerically as [code]4[/code].*/
+	// The day of the week Thursday, represented numerically as 4.
 	WeekdayThursday Weekday = 4
-	/*The day of the week Friday, represented numerically as [code]5[/code].*/
+	// The day of the week Friday, represented numerically as 5.
 	WeekdayFriday Weekday = 5
-	/*The day of the week Saturday, represented numerically as [code]6[/code].*/
+	// The day of the week Saturday, represented numerically as 6.
 	WeekdaySaturday Weekday = 6
 )
 
@@ -727,4 +792,8 @@ type OnTheClock struct {
 	Hour   int `gd:"hour"`
 	Minute int `gd:"minute"`
 	Second int `gd:"second"`
+}
+type Zone struct {
+	Name string `gd:"name"`
+	Bias int64  `gd:"bias"`
 }

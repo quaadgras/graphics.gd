@@ -189,6 +189,9 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 		if rtype.Name() == "" {
 			return strings.Replace(rtype.String(), "gdjson.", "", -1)
 		}
+		if rtype.PkgPath() != "" && rtype.PkgPath() != "graphics.gd/internal/gdjson" {
+			return rtype.String()
+		}
 		return strings.Replace(rtype.Name(), "gdjson.", "", -1)
 	case "Array":
 		rtype, ok := gdjson.Structables[lookup]

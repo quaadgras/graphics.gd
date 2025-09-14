@@ -334,12 +334,12 @@ func init() {
 type Hint int //gd:VisualShaderNodeFloatParameter.Hint
 
 const (
-	/*No hint used.*/
+	// No hint used.
 	HintNone Hint = 0
-	/*A range hint for scalar value, which limits possible input values between [member min] and [member max]. Translated to [code]hint_range(min, max)[/code] in shader code.*/
+	// A range hint for scalar value, which limits possible input values between [Instance.Min] and [Instance.Max]. Translated to hint_range(min, max) in shader code.
 	HintRange Hint = 1
-	/*A range hint for scalar value with step, which limits possible input values between [member min] and [member max], with a step (increment) of [member step]). Translated to [code]hint_range(min, max, step)[/code] in shader code.*/
+	// A range hint for scalar value with step, which limits possible input values between [Instance.Min] and [Instance.Max], with a step (increment) of [Instance.Step]). Translated to hint_range(min, max, step) in shader code.
 	HintRangeStep Hint = 2
-	/*Represents the size of the [enum Hint] enum.*/
+	// Represents the size of the [Hint] enum.
 	HintMax Hint = 3
 )

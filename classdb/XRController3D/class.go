@@ -2,8 +2,11 @@
 
 /*
 This is a helper 3D node that is linked to the tracking of controllers. It also offers several handy passthroughs to the state of buttons and such on the controllers.
+
 Controllers are linked by their ID. You can create controller nodes before the controllers are available. If your game always uses two controllers (one for each hand), you can predefine the controllers with ID 1 and 2; they will become active as soon as the controllers are identified. If you expect additional controllers to be used, you should react to the signals and add XRController3D nodes to your scene.
-The position of the controller node is automatically updated by the [XRServer]. This makes this node ideal to add child nodes to visualize the controller.
+
+The position of the controller node is automatically updated by the [graphics.gd/classdb/XRServer]. This makes this node ideal to add child nodes to visualize the controller.
+
 As many XR runtimes now use a configurable action map all inputs are named.
 */
 package XRController3D
@@ -116,7 +119,7 @@ func (self Instance) IsButtonPressed(name string) bool { //gd:XRController3D.is_
 }
 
 /*
-Returns a [Variant] for the input with the given 'name'. This works for any input type, the variant will be typed according to the actions configuration.
+Returns a any for the input with the given 'name'. This works for any input type, the variant will be typed according to the actions configuration.
 */
 func (self Instance) GetInput(name string) any { //gd:XRController3D.get_input
 	return any(Advanced(self).GetInput(String.Name(String.New(name))).Interface())
@@ -130,7 +133,7 @@ func (self Instance) GetFloat(name string) Float.X { //gd:XRController3D.get_flo
 }
 
 /*
-Returns a [Vector2] for the input with the given 'name'. This is used for thumbsticks and thumbpads found on many controllers.
+Returns a [Vector2.XY] for the input with the given 'name'. This is used for thumbsticks and thumbpads found on many controllers.
 */
 func (self Instance) GetVector2(name string) Vector2.XY { //gd:XRController3D.get_vector2
 	return Vector2.XY(Advanced(self).GetVector2(String.Name(String.New(name))))
@@ -196,7 +199,7 @@ func (self class) IsButtonPressed(name String.Name) bool { //gd:XRController3D.i
 }
 
 /*
-Returns a [Variant] for the input with the given 'name'. This works for any input type, the variant will be typed according to the actions configuration.
+Returns a any for the input with the given 'name'. This works for any input type, the variant will be typed according to the actions configuration.
 */
 //go:nosplit
 func (self class) GetInput(name String.Name) variant.Any { //gd:XRController3D.get_input
@@ -216,7 +219,7 @@ func (self class) GetFloat(name String.Name) float64 { //gd:XRController3D.get_f
 }
 
 /*
-Returns a [Vector2] for the input with the given 'name'. This is used for thumbsticks and thumbpads found on many controllers.
+Returns a [Vector2.XY] for the input with the given 'name'. This is used for thumbsticks and thumbpads found on many controllers.
 */
 //go:nosplit
 func (self class) GetVector2(name String.Name) Vector2.XY { //gd:XRController3D.get_vector2

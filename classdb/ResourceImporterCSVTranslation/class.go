@@ -2,14 +2,8 @@
 
 /*
 Comma-separated values are a plain text table storage format. The format's simplicity makes it easy to edit in any text editor or spreadsheet software. This makes it a common choice for game localization.
+
 Example CSV file:
-[codeblock lang=text]
-keys,en,es,ja
-GREET,"Hello, friend!","Hola, amigo!",こんにちは
-ASK,How are you?,Cómo está?,元気ですか
-BYE,Goodbye,Adiós,さようなら
-QUOTE,"""Hello"" said the man.","""Hola"" dijo el hombre.",「こんにちは」男は言いました
-[/codeblock]
 */
 package ResourceImporterCSVTranslation
 

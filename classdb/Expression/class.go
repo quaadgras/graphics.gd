@@ -2,8 +2,10 @@
 
 /*
 An expression can be made of any arithmetic operation, built-in math function call, method call of a passed instance, or built-in type construction call.
+
 An example expression text using the built-in math functions could be sqrt(pow(3, 2) + pow(4, 2)).
-In the following example we use a [LineEdit] node to write our expression and show the result.
+
+In the following example we use a [graphics.gd/classdb/LineEdit] node to write our expression and show the result.
 
 	package main
 
@@ -135,6 +137,7 @@ type Any interface {
 
 /*
 Parses the expression and returns an [Error] code.
+
 You can optionally specify names of variables that may appear in the expression with 'input_names', so that you can bind them when it gets executed.
 */
 func (self Instance) Parse(expression string) error { //gd:Expression.parse
@@ -143,6 +146,7 @@ func (self Instance) Parse(expression string) error { //gd:Expression.parse
 
 /*
 Parses the expression and returns an [Error] code.
+
 You can optionally specify names of variables that may appear in the expression with 'input_names', so that you can bind them when it gets executed.
 */
 func (self Expanded) Parse(expression string, input_names []string) error { //gd:Expression.parse
@@ -151,6 +155,7 @@ func (self Expanded) Parse(expression string, input_names []string) error { //gd
 
 /*
 Executes the expression that was previously parsed by [Instance.Parse] and returns the result. Before you use the returned object, you should check if the method failed by calling [Instance.HasExecuteFailed].
+
 If you defined input variables in [Instance.Parse], you can specify their values in the inputs array, in the same order.
 */
 func (self Instance) Execute() any { //gd:Expression.execute
@@ -159,6 +164,7 @@ func (self Instance) Execute() any { //gd:Expression.execute
 
 /*
 Executes the expression that was previously parsed by [Instance.Parse] and returns the result. Before you use the returned object, you should check if the method failed by calling [Instance.HasExecuteFailed].
+
 If you defined input variables in [Instance.Parse], you can specify their values in the inputs array, in the same order.
 */
 func (self Expanded) Execute(inputs []any, base_instance Object.Instance, show_error bool, const_calls_only bool) any { //gd:Expression.execute
@@ -224,6 +230,7 @@ func New() Instance {
 
 /*
 Parses the expression and returns an [Error] code.
+
 You can optionally specify names of variables that may appear in the expression with 'input_names', so that you can bind them when it gets executed.
 */
 //go:nosplit
@@ -238,6 +245,7 @@ func (self class) Parse(expression String.Readable, input_names Packed.Strings) 
 
 /*
 Executes the expression that was previously parsed by [Instance.Parse] and returns the result. Before you use the returned object, you should check if the method failed by calling [Instance.HasExecuteFailed].
+
 If you defined input variables in [Instance.Parse], you can specify their values in the inputs array, in the same order.
 */
 //go:nosplit

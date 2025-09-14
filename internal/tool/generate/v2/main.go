@@ -88,7 +88,7 @@ func generate() error {
 	return nil
 }
 
-func generateEnum(code io.Writer, prefix string, enum gdjson.Enum, original string) {
+func generateEnum(code io.Writer, classDB map[string]gdjson.Class, prefix string, enum gdjson.Enum, original string) {
 	rename, _ := gdtype.EnumNameOf(prefix, enum.Name)
 	if enum.Name == "Error" {
 		return
@@ -106,9 +106,11 @@ func generateEnum(code io.Writer, prefix string, enum gdjson.Enum, original stri
 			n += "Default"
 		}
 		if value.Description != "" {
-			fmt.Fprint(code, "/*")
-			fmt.Fprint(code, value.Description)
-			fmt.Fprintln(code, "*/")
+			description := strings.Replace(value.Description, "*/", "", -1)
+			description = strings.TrimSpace(description)
+			description = gdjson.DocsToGoDoc(description, classDB, "", "")
+			description = strings.ReplaceAll(description, "\n", "\n\t\t// ")
+			fmt.Fprintln(code, "\t\t// "+description)
 		}
 		fmt.Fprintf(code, "\t%v %v = %v\n", n, rename, value.Value)
 	}
@@ -135,7 +137,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	fmt.Fprintln(file)
 	if class.Description != "" {
 		fmt.Fprintln(file, "/*")
-		fmt.Fprint(file, gdjson.DocsToGoDoc(class.Description, class.Name, class.Name+".go"))
+		fmt.Fprint(file, gdjson.DocsToGoDoc(class.Description, classDB, class.Name, class.Name))
 		fmt.Fprintln(file)
 		fmt.Fprint(file, "\n*/")
 	}
@@ -200,12 +202,12 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		fmt.Fprintf(file, "/*\n")
 		fmt.Fprintf(file, "Extension can be embedded in a new struct to create an extension of this class.\n")
 		fmt.Fprintf(file, "T should be the type that is embedding this [Extension]")
+		if hasVirtual {
+			fmt.Fprintf(file, "See [Interface] for methods that can be overridden by T.\n")
+		}
 		fmt.Fprintf(file, "*/\n")
 		fmt.Fprintf(file, "type Extension[T gdclass.Interface] struct { gdclass.Extension[T, Instance] }\n")
 		fmt.Fprintf(file, "// Instance of the class with convieniently typed arguments and results.\n")
-		if hasVirtual {
-			fmt.Fprintf(file, "// See [Interface] for methods that can be overridden by a [Class] that extends it.\n")
-		}
 		fmt.Fprintf(file, "type Instance [1]gdclass.%s\n", class.Name)
 		fmt.Fprintf(file, "var otype gdextension.ObjectType\n")
 		fmt.Fprintf(file, "var sname gdextension.StringName\n")
@@ -272,48 +274,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			fmt.Fprintf(file, "\tAs%s() Instance\n", class.Name)
 			fmt.Fprintf(file, "}\n")
 			if hasVirtual {
-				fmt.Fprintf(file, "type Interface interface {\n")
-				for _, method := range class.Methods {
-					if method.IsVirtual {
-						if method.Description != "" {
-							description := strings.Replace(method.Description, "*/", "", -1)
-							description = strings.TrimSpace(description)
-							description = strings.Replace(description, "\n", "\n\t\t//", -1)
-							fmt.Fprintln(file, "\t\t//"+description)
-						}
-						fmt.Fprintf(file, "\t%s(", convertName(method.Name))
-						for i, arg := range method.Arguments {
-							if i > 0 {
-								fmt.Fprint(file, ", ")
-							}
-							fmt.Fprint(file, fixReserved(arg.Name), " ", classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type))
-						}
-						fmt.Fprint(file, ") ", classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type))
-						fmt.Fprintln(file)
-					}
-				}
-				fmt.Fprintf(file, "}\n")
-
-				fmt.Fprintf(file, "// Implementation implements [Interface] with empty methods.\n")
-				fmt.Fprintf(file, "type Implementation = implementation\n\n")
-				fmt.Fprintf(file, "type implementation struct{}\n")
-
-				for _, method := range class.Methods {
-					if method.IsVirtual {
-						fmt.Fprintf(file, "func (self implementation) %[1]v(", convertName(method.Name))
-						for i, arg := range method.Arguments {
-							if i > 0 {
-								fmt.Fprint(file, ", ")
-							}
-							fmt.Fprint(file, fixReserved(arg.Name), " ", classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type))
-						}
-						fmt.Fprint(file, ")")
-						if method.ReturnValue.Type != "" {
-							fmt.Fprintf(file, "(_ %s)", classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type))
-						}
-						fmt.Fprintln(file, " { return }")
-					}
-				}
+				generateInterface(file, classDB, class, true)
 			}
 		}
 		var getter_setters = make(map[string]bool)
@@ -479,7 +440,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 		if class.Name != "RenderingDevice" {
 			for _, enum := range class.Enums {
 				if _, ok := gdjson.Renumeration[class.Name+"."+enum.Name]; !ok {
-					generateEnum(file, class.Name, enum, class.Name+"."+enum.Name)
+					generateEnum(file, classDB, class.Name, enum, class.Name+"."+enum.Name)
 				}
 			}
 		}
@@ -490,7 +451,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 				continue
 			}
 			if _, ok := gdjson.Renumeration[class.Name+"."+enum.Name]; !ok {
-				generateEnum(file, class.Name, enum, "RenderingDevice."+enum.Name)
+				generateEnum(file, classDB, class.Name, enum, "RenderingDevice."+enum.Name)
 			}
 		}
 	}
@@ -507,7 +468,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			for _, enum := range enums {
 				if enum.Name == old_name {
 					enum.Name = new_name
-					generateEnum(file, class.Name, enum, key)
+					generateEnum(file, classDB, class.Name, enum, key)
 					break
 				}
 			}
@@ -515,7 +476,7 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 	}
 	for _, key := range slices.Sorted(maps.Keys(local_enums)) {
 		enum := global_enums[key]
-		generateEnum(file, "", enum, "")
+		generateEnum(file, classDB, "", enum, "")
 	}
 	generateStructables(file)
 	var constTypes = make(map[string]bool)
@@ -591,4 +552,54 @@ func generateStructables(file io.Writer) {
 		fmt.Fprint(file, s)
 	}
 	clear(StructablesInThisPackageGlobalHack)
+}
+
+func generateInterface(file io.Writer, classDB ClassDB, class gdjson.Class, impl bool) {
+	fmt.Fprintf(file, "\ntype Interface interface {\n")
+	for _, method := range class.Methods {
+		if method.IsVirtual {
+			if method.Description != "" {
+				description := strings.Replace(method.Description, "*/", "", -1)
+				description = strings.TrimSpace(description)
+				description = gdjson.DocsToGoDoc(description, classDB, class.Name, "")
+				description = strings.ReplaceAll(description, "\n", "\n\t\t// ")
+				fmt.Fprintln(file, "\t\t// "+description)
+			}
+			fmt.Fprintf(file, "\t%s(", convertName(method.Name))
+			for i, arg := range method.Arguments {
+				if i > 0 {
+					fmt.Fprint(file, ", ")
+				}
+				fmt.Fprint(file, fixReserved(arg.Name), " ", classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type))
+			}
+			fmt.Fprint(file, ") ", classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type))
+			fmt.Fprintln(file)
+		}
+	}
+	fmt.Fprintf(file, "}\n")
+
+	if !impl {
+		return
+	}
+
+	fmt.Fprintf(file, "// Implementation implements [Interface] with empty methods.\n")
+	fmt.Fprintf(file, "type Implementation = implementation\n\n")
+	fmt.Fprintf(file, "type implementation struct{}\n")
+
+	for _, method := range class.Methods {
+		if method.IsVirtual {
+			fmt.Fprintf(file, "func (self implementation) %[1]v(", convertName(method.Name))
+			for i, arg := range method.Arguments {
+				if i > 0 {
+					fmt.Fprint(file, ", ")
+				}
+				fmt.Fprint(file, fixReserved(arg.Name), " ", classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type))
+			}
+			fmt.Fprint(file, ")")
+			if method.ReturnValue.Type != "" {
+				fmt.Fprintf(file, "(_ %s)", classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type))
+			}
+			fmt.Fprintln(file, " { return }")
+		}
+	}
 }

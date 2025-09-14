@@ -130,6 +130,7 @@ type Any interface {
 
 /*
 Returns true, if the pixel at the given position is opaque and false in other case. The position is in local coordinates.
+
 Note: It also returns false, if the sprite's texture is null or if the given position is invalid.
 */
 func (self Instance) IsPixelOpaque(pos Vector2.XY) bool { //gd:Sprite2D.is_pixel_opaque
@@ -137,34 +138,9 @@ func (self Instance) IsPixelOpaque(pos Vector2.XY) bool { //gd:Sprite2D.is_pixel
 }
 
 /*
-Returns a [Rect2] representing the Sprite2D's boundary in local coordinates.
+Returns a [Rect2.PositionSize] representing the Sprite2D's boundary in local coordinates.
+
 Example: Detect if the Sprite2D was clicked:
-
-[gdscript]
-func _input(event):
-
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-	    if get_rect().has_point(to_local(event.position)):
-	        print("A click!")
-
-[/gdscript]
-[csharp]
-public override void _Input(InputEvent @event)
-
-	{
-	    if (@event is InputEventMouseButton inputEventMouse)
-	    {
-	        if (inputEventMouse.Pressed && inputEventMouse.ButtonIndex == MouseButton.Left)
-	        {
-	            if (GetRect().HasPoint(ToLocal(inputEventMouse.Position)))
-	            {
-	                GD.Print("A click!");
-	            }
-	        }
-	    }
-	}
-
-[/csharp]
 */
 func (self Instance) GetRect() Rect2.PositionSize { //gd:Sprite2D.get_rect
 	return Rect2.PositionSize(Advanced(self).GetRect())
@@ -382,6 +358,7 @@ func (self class) IsRegionEnabled() bool { //gd:Sprite2D.is_region_enabled
 
 /*
 Returns true, if the pixel at the given position is opaque and false in other case. The position is in local coordinates.
+
 Note: It also returns false, if the sprite's texture is null or if the given position is invalid.
 */
 //go:nosplit
@@ -464,30 +441,10 @@ func (self class) GetHframes() int64 { //gd:Sprite2D.get_hframes
 }
 
 /*
-Returns a [Rect2] representing the Sprite2D's boundary in local coordinates.
+Returns a [Rect2.PositionSize] representing the Sprite2D's boundary in local coordinates.
+
 Example: Detect if the Sprite2D was clicked:
 
-[gdscript]
-func _input(event):
-    if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-        if get_rect().has_point(to_local(event.position)):
-            print("A click!")
-[/gdscript]
-[csharp]
-public override void _Input(InputEvent @event)
-{
-    if (@event is InputEventMouseButton inputEventMouse)
-    {
-        if (inputEventMouse.Pressed && inputEventMouse.ButtonIndex == MouseButton.Left)
-        {
-            if (GetRect().HasPoint(ToLocal(inputEventMouse.Position)))
-            {
-                GD.Print("A click!");
-            }
-        }
-    }
-}
-[/csharp]
 
 */
 //go:nosplit

@@ -106,6 +106,7 @@ type Any interface {
 
 /*
 Generates the VRS texture based on a render 'target_size' adjusted by our VRS tile size. For each eyes focal point passed in 'eye_foci' a layer is created. Focal point should be in NDC.
+
 The result will be cached, requesting a VRS texture with unchanged parameters and settings will return the cached RID.
 */
 func (self Instance) MakeVrsTexture(target_size Vector2.XY, eye_foci []Vector2.XY) RID.Texture { //gd:XRVRS.make_vrs_texture
@@ -216,6 +217,7 @@ func (self class) SetVrsRenderRegion(render_region Rect2i.PositionSize) { //gd:X
 
 /*
 Generates the VRS texture based on a render 'target_size' adjusted by our VRS tile size. For each eyes focal point passed in 'eye_foci' a layer is created. Focal point should be in NDC.
+
 The result will be cached, requesting a VRS texture with unchanged parameters and settings will return the cached RID.
 */
 //go:nosplit

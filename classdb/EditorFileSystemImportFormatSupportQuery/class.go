@@ -63,12 +63,11 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 // Instance of the class with convieniently typed arguments and results.
-// See [Interface] for methods that can be overridden by a [Class] that extends it.
 type Instance [1]gdclass.EditorFileSystemImportFormatSupportQuery
 
 var otype gdextension.ObjectType
@@ -95,12 +94,13 @@ type Any interface {
 	gd.IsClass
 	AsEditorFileSystemImportFormatSupportQuery() Instance
 }
+
 type Interface interface {
-	//Return whether this importer is active.
+	// Return whether this importer is active.
 	IsActive() bool
-	//Return the file extensions supported.
+	// Return the file extensions supported.
 	GetFileExtensions() []string
-	//Query support. Return [code]false[/code] if import must not continue.
+	// Query support. Return false if import must not continue.
 	Query() bool
 }
 

@@ -2,6 +2,7 @@
 
 /*
 StreamPeer is an abstract base class mostly used for stream-based protocols (such as TCP). It provides an API for sending and receiving data through streams as raw data or strings.
+
 Note: When exporting to Android, make sure to enable the INTERNET permission in the Android export preset before exporting the project or using one-click deploy. Otherwise, network communication of any kind will be blocked by Android.
 */
 package StreamPeer
@@ -162,7 +163,7 @@ func (self Instance) GetPartialData(bytes int) []any { //gd:StreamPeer.get_parti
 }
 
 /*
-Returns the number of bytes this [StreamPeer] has available.
+Returns the number of bytes this [graphics.gd/classdb/StreamPeer] has available.
 */
 func (self Instance) GetAvailableBytes() int { //gd:StreamPeer.get_available_bytes
 	return int(int(Advanced(self).GetAvailableBytes()))
@@ -247,14 +248,8 @@ func (self Instance) PutDouble(value Float.X) { //gd:StreamPeer.put_double
 
 /*
 Puts a zero-terminated ASCII string into the stream prepended by a 32-bit unsigned integer representing its size.
-Note: To put an ASCII string without prepending its size, you can use [Instance.PutData]:
 
-[gdscript]
-put_data("Hello world".to_ascii_buffer())
-[/gdscript]
-[csharp]
-PutData("Hello World".ToAsciiBuffer());
-[/csharp]
+Note: To put an ASCII string without prepending its size, you can use [Instance.PutData]:
 */
 func (self Instance) PutString(value string) { //gd:StreamPeer.put_string
 	Advanced(self).PutString(String.New(value))
@@ -262,14 +257,8 @@ func (self Instance) PutString(value string) { //gd:StreamPeer.put_string
 
 /*
 Puts a zero-terminated UTF-8 string into the stream prepended by a 32 bits unsigned integer representing its size.
-Note: To put a UTF-8 string without prepending its size, you can use [Instance.PutData]:
 
-[gdscript]
-put_data("Hello world".to_utf8_buffer())
-[/gdscript]
-[csharp]
-PutData("Hello World".ToUtf8Buffer());
-[/csharp]
+Note: To put a UTF-8 string without prepending its size, you can use [Instance.PutData]:
 */
 func (self Instance) PutUtf8String(value string) { //gd:StreamPeer.put_utf8_string
 	Advanced(self).PutUtf8String(String.New(value))
@@ -277,7 +266,8 @@ func (self Instance) PutUtf8String(value string) { //gd:StreamPeer.put_utf8_stri
 
 /*
 Puts a Variant into the stream. If 'full_objects' is true encoding objects is allowed (and can potentially include code).
-Internally, this uses the same encoding mechanism as the [Instance.@Globalscope.VarToBytes] method.
+
+Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
 */
 func (self Instance) PutVar(value any) { //gd:StreamPeer.put_var
 	Advanced(self).PutVar(variant.New(value), false)
@@ -285,7 +275,8 @@ func (self Instance) PutVar(value any) { //gd:StreamPeer.put_var
 
 /*
 Puts a Variant into the stream. If 'full_objects' is true encoding objects is allowed (and can potentially include code).
-Internally, this uses the same encoding mechanism as the [Instance.@Globalscope.VarToBytes] method.
+
+Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
 */
 func (self Expanded) PutVar(value any, full_objects bool) { //gd:StreamPeer.put_var
 	Advanced(self).PutVar(variant.New(value), full_objects)
@@ -398,7 +389,9 @@ func (self Expanded) GetUtf8String(bytes int) string { //gd:StreamPeer.get_utf8_
 
 /*
 Gets a Variant from the stream. If 'allow_objects' is true, decoding objects is allowed.
-Internally, this uses the same decoding mechanism as the [Instance.@Globalscope.BytesToVar] method.
+
+Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 func (self Instance) GetVar() any { //gd:StreamPeer.get_var
@@ -407,7 +400,9 @@ func (self Instance) GetVar() any { //gd:StreamPeer.get_var
 
 /*
 Gets a Variant from the stream. If 'allow_objects' is true, decoding objects is allowed.
-Internally, this uses the same decoding mechanism as the [Instance.@Globalscope.BytesToVar] method.
+
+Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 func (self Expanded) GetVar(allow_objects bool) any { //gd:StreamPeer.get_var
@@ -506,7 +501,7 @@ func (self class) GetPartialData(bytes int64) Array.Any { //gd:StreamPeer.get_pa
 }
 
 /*
-Returns the number of bytes this [StreamPeer] has available.
+Returns the number of bytes this [graphics.gd/classdb/StreamPeer] has available.
 */
 //go:nosplit
 func (self class) GetAvailableBytes() int64 { //gd:StreamPeer.get_available_bytes
@@ -617,14 +612,9 @@ func (self class) PutDouble(value float64) { //gd:StreamPeer.put_double
 
 /*
 Puts a zero-terminated ASCII string into the stream prepended by a 32-bit unsigned integer representing its size.
+
 Note: To put an ASCII string without prepending its size, you can use [Instance.PutData]:
 
-[gdscript]
-put_data("Hello world".to_ascii_buffer())
-[/gdscript]
-[csharp]
-PutData("Hello World".ToAsciiBuffer());
-[/csharp]
 
 */
 //go:nosplit
@@ -634,14 +624,9 @@ func (self class) PutString(value String.Readable) { //gd:StreamPeer.put_string
 
 /*
 Puts a zero-terminated UTF-8 string into the stream prepended by a 32 bits unsigned integer representing its size.
+
 Note: To put a UTF-8 string without prepending its size, you can use [Instance.PutData]:
 
-[gdscript]
-put_data("Hello world".to_utf8_buffer())
-[/gdscript]
-[csharp]
-PutData("Hello World".ToUtf8Buffer());
-[/csharp]
 
 */
 //go:nosplit
@@ -651,7 +636,8 @@ func (self class) PutUtf8String(value String.Readable) { //gd:StreamPeer.put_utf
 
 /*
 Puts a Variant into the stream. If 'full_objects' is true encoding objects is allowed (and can potentially include code).
-Internally, this uses the same encoding mechanism as the [Instance.@Globalscope.VarToBytes] method.
+
+Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
 */
 //go:nosplit
 func (self class) PutVar(value variant.Any, full_objects bool) { //gd:StreamPeer.put_var
@@ -793,7 +779,9 @@ func (self class) GetUtf8String(bytes int64) String.Readable { //gd:StreamPeer.g
 
 /*
 Gets a Variant from the stream. If 'allow_objects' is true, decoding objects is allowed.
-Internally, this uses the same decoding mechanism as the [Instance.@Globalscope.BytesToVar] method.
+
+Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 */
 //go:nosplit

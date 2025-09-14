@@ -127,3 +127,8 @@ func load(path String.Readable, type_hint String.Readable, cache_mode int) [1]gd
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }
+
+// Duplicate this resource, returning a new resource with its exported or PROPERTY_USAGE_STORAGE properties copied from the original.
+func Duplicate[T Any](res T) T {
+	return Object.To[T](res.AsResource().Duplicate())
+}

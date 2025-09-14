@@ -214,12 +214,12 @@ func init() {
 type OpType int //gd:VisualShaderNodeVectorBase.OpType
 
 const (
-	/*A 2D vector type.*/
+	// A 2D vector type.
 	OpTypeVector2d OpType = 0
-	/*A 3D vector type.*/
+	// A 3D vector type.
 	OpTypeVector3d OpType = 1
-	/*A 4D vector type.*/
+	// A 4D vector type.
 	OpTypeVector4d OpType = 2
-	/*Represents the size of the [enum OpType] enum.*/
+	// Represents the size of the [OpType] enum.
 	OpTypeMax OpType = 3
 )

@@ -2,7 +2,8 @@
 
 /*
 This class can be used to implement custom profilers that are able to interact with the engine and editor debugger.
-See [EngineDebugger] and [EditorDebuggerPlugin] for more information.
+
+See [graphics.gd/classdb/EngineDebugger] and [graphics.gd/classdb/EditorDebuggerPlugin] for more information.
 */
 package EngineProfiler
 
@@ -64,12 +65,11 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
 // Instance of the class with convieniently typed arguments and results.
-// See [Interface] for methods that can be overridden by a [Class] that extends it.
 type Instance [1]gdclass.EngineProfiler
 
 var otype gdextension.ObjectType
@@ -96,12 +96,13 @@ type Any interface {
 	gd.IsClass
 	AsEngineProfiler() Instance
 }
+
 type Interface interface {
-	//Called when the profiler is enabled/disabled, along with a set of [param options].
+	// Called when the profiler is enabled/disabled, along with a set of 'options'.
 	Toggle(enable bool, options []any)
-	//Called when data is added to profiler using [method EngineDebugger.profiler_add_frame_data].
+	// Called when data is added to profiler using [graphics.gd/classdb/EngineDebugger.ProfilerAddFrameData].
 	AddFrame(data []any)
-	//Called once every engine iteration when the profiler is active with information about the current frame. All time values are in seconds. Lower values represent faster processing times and are therefore considered better.
+	// Called once every engine iteration when the profiler is active with information about the current frame. All time values are in seconds. Lower values represent faster processing times and are therefore considered better.
 	Tick(frame_time Float.X, process_time Float.X, physics_time Float.X, physics_frame_time Float.X)
 }
 
@@ -130,7 +131,7 @@ func (Instance) _toggle(impl func(ptr gdclass.Receiver, enable bool, options []a
 }
 
 /*
-Called when data is added to profiler using [Instance.Enginedebugger.ProfilerAddFrameData].
+Called when data is added to profiler using [graphics.gd/classdb/EngineDebugger.ProfilerAddFrameData].
 */
 func (Instance) _add_frame(impl func(ptr gdclass.Receiver, data []any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -212,7 +213,7 @@ func (class) _toggle(impl func(ptr gdclass.Receiver, enable bool, options Array.
 }
 
 /*
-Called when data is added to profiler using [Instance.Enginedebugger.ProfilerAddFrameData].
+Called when data is added to profiler using [graphics.gd/classdb/EngineDebugger.ProfilerAddFrameData].
 */
 func (class) _add_frame(impl func(ptr gdclass.Receiver, data Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

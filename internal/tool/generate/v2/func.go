@@ -41,7 +41,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 	}
 	if method.Description != "" {
 		fmt.Fprintln(w, "\n/*")
-		fmt.Fprint(w, gdjson.DocsToGoDoc(method.Description, class.Name, ""))
+		fmt.Fprint(w, gdjson.DocsToGoDoc(method.Description, classDB, class.Name, class.Name+"_"+convertName(method.Name)))
 		fmt.Fprintln(w, "\n*/")
 	}
 	if method.IsVirtual {
@@ -293,7 +293,7 @@ func (classDB ClassDB) simpleRelocatedCall(w io.Writer, class gdjson.Class, meth
 }
 
 func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method gdjson.Method) {
-	resultSimple := classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultSimple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type)
 	resultExpert := gdtype.EngineTypeAsGoType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
 	_, needsLifetime := gdtype.Name(resultExpert).IsPointer()
 	if method.IsStatic {
@@ -302,7 +302,7 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	fmt.Fprintf(w, "func (Instance) %s(impl func(ptr gdclass.Receiver", method.Name)
 	for _, arg := range method.Arguments {
 		fmt.Fprint(w, ", ")
-		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, "", arg.Meta, arg.Type))
+		fmt.Fprintf(w, "%v %v", fixReserved(arg.Name), classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type))
 	}
 	fmt.Fprintf(w, ") %v) (cb gd.ExtensionClassCallVirtualFunc) {\n", resultSimple)
 	fmt.Fprintf(w, "\treturn func(class any, p_args, p_back gdextension.Pointer) {\n")
@@ -325,13 +325,13 @@ func (classDB ClassDB) simpleVirtualCall(w io.Writer, class gdjson.Class, method
 	}
 	fmt.Fprintf(w, "impl(self")
 	for _, arg := range method.Arguments {
-		simple := classDB.convertTypeSimple(class, "", arg.Meta, arg.Type)
+		simple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+"."+arg.Name, arg.Meta, arg.Type)
 		fmt.Fprint(w, ", ")
 		fmt.Fprintf(w, "%v", gdtype.Name(gdtype.EngineTypeAsGoType(class.Name, arg.Meta, arg.Type)).ConvertToGo(fixReserved(arg.Name), simple))
 	}
 	fmt.Fprintf(w, ")\n")
 	if resultSimple != "" {
-		simple := classDB.convertTypeSimple(class, "", method.ReturnValue.Meta, method.ReturnValue.Type)
+		simple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type)
 		ret := gdtype.Name(resultExpert).ToUnderlying(gdtype.Name(resultExpert).ConvertToSimple("ret", simple))
 		if needsLifetime {
 			fmt.Fprintf(w, "ptr, ok := %s\n", gdtype.Name(resultExpert).EndPointer(ret))

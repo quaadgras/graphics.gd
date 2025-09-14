@@ -2,6 +2,7 @@
 
 /*
 An editor feature profile can be used to disable specific features of the Godot editor. When disabled, the features won't appear in the editor, which makes the editor less cluttered. This is useful in education settings to reduce confusion or when working in a team. For example, artists and level designers could use a feature profile that disables the script editor to avoid accidentally making changes to files they aren't supposed to edit.
+
 To manage editor feature profiles visually, use Editor > Manage Feature Profiles... at the top of the editor window.
 */
 package EditorFeatureProfile
@@ -172,7 +173,8 @@ func (self Instance) GetFeatureName(feature Feature) string { //gd:EditorFeature
 
 /*
 Saves the editor feature profile to a file in JSON format. It can then be imported using the feature profile manager's Import button or the [Instance.LoadFromFile] method.
-Note: Feature profiles created via the user interface are saved in the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [Instance.Editorpaths.GetConfigDir].
+
+Note: Feature profiles created via the user interface are saved in the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [graphics.gd/classdb/EditorPaths.Instance.GetConfigDir].
 */
 func (self Instance) SaveToFile(path string) error { //gd:EditorFeatureProfile.save_to_file
 	return error(gd.ToError(Advanced(self).SaveToFile(String.New(path))))
@@ -180,7 +182,8 @@ func (self Instance) SaveToFile(path string) error { //gd:EditorFeatureProfile.s
 
 /*
 Loads an editor feature profile from a file. The file must follow the JSON format obtained by using the feature profile manager's Export button or the [Instance.SaveToFile] method.
-Note: Feature profiles created via the user interface are loaded from the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [Instance.Editorpaths.GetConfigDir].
+
+Note: Feature profiles created via the user interface are loaded from the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [graphics.gd/classdb/EditorPaths.Instance.GetConfigDir].
 */
 func (self Instance) LoadFromFile(path string) error { //gd:EditorFeatureProfile.load_from_file
 	return error(gd.ToError(Advanced(self).LoadFromFile(String.New(path))))
@@ -329,7 +332,8 @@ func (self class) GetFeatureName(feature Feature) String.Readable { //gd:EditorF
 
 /*
 Saves the editor feature profile to a file in JSON format. It can then be imported using the feature profile manager's Import button or the [Instance.LoadFromFile] method.
-Note: Feature profiles created via the user interface are saved in the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [Instance.Editorpaths.GetConfigDir].
+
+Note: Feature profiles created via the user interface are saved in the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [graphics.gd/classdb/EditorPaths.Instance.GetConfigDir].
 */
 //go:nosplit
 func (self class) SaveToFile(path String.Readable) Error.Code { //gd:EditorFeatureProfile.save_to_file
@@ -340,7 +344,8 @@ func (self class) SaveToFile(path String.Readable) Error.Code { //gd:EditorFeatu
 
 /*
 Loads an editor feature profile from a file. The file must follow the JSON format obtained by using the feature profile manager's Export button or the [Instance.SaveToFile] method.
-Note: Feature profiles created via the user interface are loaded from the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [Instance.Editorpaths.GetConfigDir].
+
+Note: Feature profiles created via the user interface are loaded from the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [graphics.gd/classdb/EditorPaths.Instance.GetConfigDir].
 */
 //go:nosplit
 func (self class) LoadFromFile(path String.Readable) Error.Code { //gd:EditorFeatureProfile.load_from_file
@@ -385,24 +390,24 @@ func init() {
 type Feature int //gd:EditorFeatureProfile.Feature
 
 const (
-	/*The 3D editor. If this feature is disabled, the 3D editor won't display but 3D nodes will still display in the Create New Node dialog.*/
+	// The 3D editor. If this feature is disabled, the 3D editor won't display but 3D nodes will still display in the Create New Node dialog.
 	Feature3d Feature = 0
-	/*The Script tab, which contains the script editor and class reference browser. If this feature is disabled, the Script tab won't display.*/
+	// The Script tab, which contains the script editor and class reference browser. If this feature is disabled, the Script tab won't display.
 	FeatureScript Feature = 1
-	/*The AssetLib tab. If this feature is disabled, the AssetLib tab won't display.*/
+	// The AssetLib tab. If this feature is disabled, the AssetLib tab won't display.
 	FeatureAssetLib Feature = 2
-	/*Scene tree editing. If this feature is disabled, the Scene tree dock will still be visible but will be read-only.*/
+	// Scene tree editing. If this feature is disabled, the Scene tree dock will still be visible but will be read-only.
 	FeatureSceneTree Feature = 3
-	/*The Node dock. If this feature is disabled, signals and groups won't be visible and modifiable from the editor.*/
+	// The Node dock. If this feature is disabled, signals and groups won't be visible and modifiable from the editor.
 	FeatureNodeDock Feature = 4
-	/*The FileSystem dock. If this feature is disabled, the FileSystem dock won't be visible.*/
+	// The FileSystem dock. If this feature is disabled, the FileSystem dock won't be visible.
 	FeatureFilesystemDock Feature = 5
-	/*The Import dock. If this feature is disabled, the Import dock won't be visible.*/
+	// The Import dock. If this feature is disabled, the Import dock won't be visible.
 	FeatureImportDock Feature = 6
-	/*The History dock. If this feature is disabled, the History dock won't be visible.*/
+	// The History dock. If this feature is disabled, the History dock won't be visible.
 	FeatureHistoryDock Feature = 7
-	/*The Game tab, which allows embedding the game window and selecting nodes by clicking inside of it. If this feature is disabled, the Game tab won't display.*/
+	// The Game tab, which allows embedding the game window and selecting nodes by clicking inside of it. If this feature is disabled, the Game tab won't display.
 	FeatureGame Feature = 8
-	/*Represents the size of the [enum Feature] enum.*/
+	// Represents the size of the [Feature] enum.
 	FeatureMax Feature = 9
 )
