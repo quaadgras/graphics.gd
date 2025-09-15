@@ -196,7 +196,7 @@ The 'flags' argument is the bitwise OR of, as required: One value of [Mesh.Array
 
 Note: When using indices, it is recommended to only use points, lines, or triangles.
 */
-func (self Expanded) AddSurface(primitive Mesh.PrimitiveType, arrays []any, blend_shapes [][]any, lods map[float32][]int32, material Material.Instance, name string, flags int) { //gd:ImporterMesh.add_surface
+func (self Expanded) AddSurface(primitive Mesh.PrimitiveType, arrays []any, blend_shapes [][][]interface{}, lods map[float32][]int32, material Material.Instance, name string, flags int) { //gd:ImporterMesh.add_surface
 	Advanced(self).AddSurface(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]](blend_shapes), gd.DictionaryFromMap(lods), material, String.New(name), int64(flags))
 }
 
@@ -231,8 +231,8 @@ func (self Instance) GetSurfaceArrays(surface_idx int) []any { //gd:ImporterMesh
 /*
 Returns a single set of blend shape arrays for the requested blend shape index for a surface.
 */
-func (self Instance) GetSurfaceBlendShapeArrays(surface_idx int, blend_shape_idx int) []any { //gd:ImporterMesh.get_surface_blend_shape_arrays
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetSurfaceBlendShapeArrays(int64(surface_idx), int64(blend_shape_idx)))))
+func (self Instance) GetSurfaceBlendShapeArrays(surface_idx int, blend_shape_idx int) [][]interface{} { //gd:ImporterMesh.get_surface_blend_shape_arrays
+	return [][]interface{}(gd.ArrayAs[[][]interface{}](gd.InternalArray(Advanced(self).GetSurfaceBlendShapeArrays(int64(surface_idx), int64(blend_shape_idx)))))
 }
 
 /*
@@ -295,7 +295,30 @@ The number of generated lods can be accessed using [Instance.GetSurfaceLodCount]
 
 'bone_transform_array' is an slice which can be either empty or contain [Transform3D.BasisOrigin]s which, for each of the mesh's bone IDs, will apply mesh skinning when generating the LOD mesh variations. This is usually used to account for discrepancies in scale between the mesh itself and its skinning data.
 */
-func (self Instance) GenerateLods(normal_merge_angle Angle.Degrees, normal_split_angle Angle.Degrees, bone_transform_array []any) { //gd:ImporterMesh.generate_lods
+func (self Instance) GenerateLods(normal_merge_angle Angle.Degrees, normal_split_angle Angle.Degrees, bone_transform_array []struct {
+	Basis struct {
+		X struct {
+			X float32
+			Y float32
+			Z float32
+		}
+		Y struct {
+			X float32
+			Y float32
+			Z float32
+		}
+		Z struct {
+			X float32
+			Y float32
+			Z float32
+		}
+	}
+	Origin struct {
+		X float32
+		Y float32
+		Z float32
+	}
+}) { //gd:ImporterMesh.generate_lods
 	Advanced(self).GenerateLods(float64(normal_merge_angle), float64(normal_split_angle), gd.EngineArrayFromSlice(bone_transform_array))
 }
 

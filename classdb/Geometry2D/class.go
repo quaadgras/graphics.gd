@@ -149,6 +149,17 @@ func SegmentIntersectsSegment(from_a Vector2.XY, to_a Vector2.XY, from_b Vector2
 Returns the point of intersection between the two lines ('from_a', 'dir_a') and ('from_b', 'dir_b'). Returns a [Vector2.XY], or null if the lines are parallel.
 
 from and dir are not endpoints of a line segment or ray but the slope (dir) and a known point (from) on that line.
+
+	var fromA = Vector2.Zero
+	var dirA = Vector2.Right
+	var fromB = Vector2.Down
+
+	// Returns new Vector2(1, 0)
+	Geometry2D.LineIntersectsLine(fromA, dirA, fromB, Vector2.New(1, -1))
+	// Returns new Vector2(-1, 0)
+	Geometry2D.LineIntersectsLine(fromA, dirA, fromB, Vector2.New(-1, -1))
+	// Returns null
+	Geometry2D.LineIntersectsLine(fromA, dirA, fromB, Vector2.Right)
 */
 func LineIntersectsLine(from_a Vector2.XY, dir_a Vector2.XY, from_b Vector2.XY, dir_b Vector2.XY) any { //gd:Geometry2D.line_intersects_line
 	once.Do(singleton)
@@ -301,6 +312,13 @@ Each polygon's vertices will be rounded as determined by 'join_type', see [PolyJ
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [IsPolygonClockwise].
 
 Note: To translate the polygon's vertices specifically, multiply them to a [Transform2D.OriginXY]:
+
+	var polygon = []Vector2.XY{Vector2.New(0, 0), Vector2.New(100, 0), Vector2.New(100, 100), Vector2.New(0, 100)}
+	var offset = Vector2.New(50, 50)
+	for i := range polygon {
+		polygon[i] = Transform2D.Vector(polygon[i], Transform2D.OriginXY{Origin: offset})
+	}
+	fmt.Println(polygon) // Prints [(50, 50), (150, 50), (150, 150), (50, 150)]
 */
 func OffsetPolygon(polygon []Vector2.XY, delta Float.X, join_type PolyJoinType) [][]Vector2.XY { //gd:Geometry2D.offset_polygon
 	once.Do(singleton)
@@ -315,6 +333,13 @@ Each polygon's vertices will be rounded as determined by 'join_type', see [PolyJ
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [IsPolygonClockwise].
 
 Note: To translate the polygon's vertices specifically, multiply them to a [Transform2D.OriginXY]:
+
+	var polygon = []Vector2.XY{Vector2.New(0, 0), Vector2.New(100, 0), Vector2.New(100, 100), Vector2.New(0, 100)}
+	var offset = Vector2.New(50, 50)
+	for i := range polygon {
+		polygon[i] = Transform2D.Vector(polygon[i], Transform2D.OriginXY{Origin: offset})
+	}
+	fmt.Println(polygon) // Prints [(50, 50), (150, 50), (150, 150), (50, 150)]
 */
 func OffsetPolygonOptions(polygon []Vector2.XY, delta Float.X, join_type PolyJoinType) [][]Vector2.XY { //gd:Geometry2D.offset_polygon
 	once.Do(singleton)
@@ -361,6 +386,12 @@ func MakeAtlas(sizes []Vector2.XY) Atlas { //gd:Geometry2D.make_atlas
 Returns the [Bresenham line] between the 'from' and 'to' points. A Bresenham line is a series of pixels that draws a line and is always 1-pixel thick on every row and column of the drawing (never more, never less).
 
 Example code to draw a line between two [graphics.gd/classdb/Marker2D] nodes using a series of [graphics.gd/classdb/CanvasItem.Instance.DrawRect] calls:
+
+	Draw := func() {
+		for _, pixel := range Geometry2D.BresenhamLine(Vector2i.From(markerA.AsNode2D().Position()), Vector2i.From(markerB.AsNode2D().Position())) {
+			canvas.DrawRect(Rect2.PositionSize{Vector2.From(pixel), Vector2.One}, Color.W3C.White)
+		}
+	}
 
 [Bresenham line]: https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
 */
@@ -441,6 +472,17 @@ Returns the point of intersection between the two lines ('from_a', 'dir_a') and 
 
 from and dir are not endpoints of a line segment or ray but the slope (dir) and a known point (from) on that line.
 
+
+	var fromA = Vector2.Zero
+	var dirA = Vector2.Right
+	var fromB = Vector2.Down
+
+	// Returns new Vector2(1, 0)
+	Geometry2D.LineIntersectsLine(fromA, dirA, fromB, Vector2.New(1, -1))
+	// Returns new Vector2(-1, 0)
+	Geometry2D.LineIntersectsLine(fromA, dirA, fromB, Vector2.New(-1, -1))
+	// Returns null
+	Geometry2D.LineIntersectsLine(fromA, dirA, fromB, Vector2.Right)
 
 */
 //go:nosplit
@@ -684,6 +726,13 @@ The operation may result in an outer polygon (boundary) and inner polygon (hole)
 Note: To translate the polygon's vertices specifically, multiply them to a [Transform2D.OriginXY]:
 
 
+	var polygon = []Vector2.XY{Vector2.New(0, 0), Vector2.New(100, 0), Vector2.New(100, 100), Vector2.New(0, 100)}
+	var offset = Vector2.New(50, 50)
+	for i := range polygon {
+		polygon[i] = Transform2D.Vector(polygon[i], Transform2D.OriginXY{Origin: offset})
+	}
+	fmt.Println(polygon) // Prints [(50, 50), (150, 50), (150, 150), (50, 150)]
+
 */
 //go:nosplit
 func (self class) OffsetPolygon(polygon Packed.Array[Vector2.XY], delta float64, join_type PolyJoinType) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.offset_polygon
@@ -734,6 +783,12 @@ Returns the [Bresenham line] between the 'from' and 'to' points. A Bresenham lin
 
 Example code to draw a line between two [graphics.gd/classdb/Marker2D] nodes using a series of [graphics.gd/classdb/CanvasItem.Instance.DrawRect] calls:
 
+
+	Draw := func() {
+		for _, pixel := range Geometry2D.BresenhamLine(Vector2i.From(markerA.AsNode2D().Position()), Vector2i.From(markerB.AsNode2D().Position())) {
+			canvas.DrawRect(Rect2.PositionSize{Vector2.From(pixel), Vector2.One}, Color.W3C.White)
+		}
+	}
 
 
 [Bresenham line]: https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm

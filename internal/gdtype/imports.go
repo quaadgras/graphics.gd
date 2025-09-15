@@ -25,6 +25,16 @@ func ImportsForClass(class gdjson.Class) iter.Seq[string] {
 			"graphics.gd/variant/Packed":     true,
 			"graphics.gd/variant/Error":      true,
 		}
+		if class.Name == "CSGShape3D" {
+			imports["graphics.gd/classdb/Mesh"] = true
+			imports["graphics.gd/variant/Transform3D"] = true
+		}
+		if class.Name == "OpenXRInterface" {
+			imports["graphics.gd/classdb/OpenXRActionSet"] = true
+		}
+		if class.Name == "MeshLibrary" {
+			imports["graphics.gd/classdb/Shape3D"] = true
+		}
 		if class.Name == "TextEdit" {
 			imports["graphics.gd/variant/Rect2"] = true
 		}

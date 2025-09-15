@@ -187,6 +187,10 @@ func (Instance) _get_audio_speaker_mode(impl func(ptr gdclass.Receiver) AudioSer
 
 /*
 Called when the engine determines whether this [graphics.gd/classdb/MovieWriter] is able to handle the file at 'path'. Must return true if this [graphics.gd/classdb/MovieWriter] is able to handle the given file path, false otherwise. Typically, [Interface.HandlesFile] is overridden as follows to allow the user to record a file at any path with a given file extension:
+
+	HandlesFile := func(path string) bool {
+		return strings.ToLower(filepath.Ext(path)) == ".mkv"
+	}
 */
 func (Instance) _handles_file(impl func(ptr gdclass.Receiver, path string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -328,6 +332,10 @@ func (class) _get_audio_speaker_mode(impl func(ptr gdclass.Receiver) AudioServer
 
 /*
 Called when the engine determines whether this [graphics.gd/classdb/MovieWriter] is able to handle the file at 'path'. Must return true if this [graphics.gd/classdb/MovieWriter] is able to handle the given file path, false otherwise. Typically, [Interface.HandlesFile] is overridden as follows to allow the user to record a file at any path with a given file extension:
+
+	HandlesFile := func(path string) bool {
+		return strings.ToLower(filepath.Ext(path)) == ".mkv"
+	}
 */
 func (class) _handles_file(impl func(ptr gdclass.Receiver, path String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

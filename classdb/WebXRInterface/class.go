@@ -288,8 +288,8 @@ func (self Instance) SetDisplayRefreshRate(refresh_rate Float.X) { //gd:WebXRInt
 /*
 Returns display refresh rates supported by the current HMD. Only returned if this feature is supported by the web browser and after the interface has been initialized.
 */
-func (self Instance) GetAvailableDisplayRefreshRates() []any { //gd:WebXRInterface.get_available_display_refresh_rates
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetAvailableDisplayRefreshRates())))
+func (self Instance) GetAvailableDisplayRefreshRates() []float32 { //gd:WebXRInterface.get_available_display_refresh_rates
+	return []float32(gd.ArrayAs[[]float32](gd.InternalArray(Advanced(self).GetAvailableDisplayRefreshRates())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

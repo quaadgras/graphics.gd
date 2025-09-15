@@ -20,6 +20,7 @@ import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/NavigationMesh"
 import "graphics.gd/classdb/RenderingServer"
 import "graphics.gd/classdb/Resource"
+import "graphics.gd/classdb/Shape3D"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -190,7 +191,7 @@ Sets an item's collision shapes.
 
 The array should consist of [graphics.gd/classdb/Shape3D] objects, each followed by a [Transform3D.BasisOrigin] that will be applied to it. For shapes that should not have a transform, use [Transform3d.Identity].
 */
-func (self Instance) SetItemShapes(id int, shapes []any) { //gd:MeshLibrary.set_item_shapes
+func (self Instance) SetItemShapes(id int, shapes []Shape3D.Instance) { //gd:MeshLibrary.set_item_shapes
 	Advanced(self).SetItemShapes(int64(id), gd.EngineArrayFromSlice(shapes))
 }
 
@@ -255,8 +256,8 @@ Returns an item's collision shapes.
 
 The array consists of each [graphics.gd/classdb/Shape3D] followed by its [Transform3D.BasisOrigin].
 */
-func (self Instance) GetItemShapes(id int) []any { //gd:MeshLibrary.get_item_shapes
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetItemShapes(int64(id)))))
+func (self Instance) GetItemShapes(id int) []Shape3D.Instance { //gd:MeshLibrary.get_item_shapes
+	return []Shape3D.Instance(gd.ArrayAs[[]Shape3D.Instance](gd.InternalArray(Advanced(self).GetItemShapes(int64(id)))))
 }
 
 /*

@@ -711,6 +711,7 @@ Called when there is a root node in the current edited scene, [Interface.Handles
 
 	ForwardCanvasGuiInput := func(event InputEvent.Instance) bool {
 		return true // Prevents the InputEvent from reaching other Editor classes.
+	}
 
 This method must return false in order to forward the [graphics.gd/classdb/InputEvent] to other Editor classes.
 */
@@ -741,6 +742,7 @@ Called by the engine when the 2D editor's viewport is updated. Use the overlay [
 			return true
 		}
 		return false
+	}
 */
 func (Instance) _forward_canvas_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control Control.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -772,6 +774,7 @@ Called when there is a root node in the current edited scene, [Interface.Handles
 
 	Forward3dGuiInput := func(viewport_camera Camera3D.Instance, event InputEvent.Instance) EditorPlugin.AfterGUIInput {
 		return EditorPlugin.AfterGuiInputStop
+	}
 
 This method must return [AfterGuiInputPass] in order to forward the [graphics.gd/classdb/InputEvent] to other Editor classes.
 */
@@ -803,6 +806,7 @@ Called by the engine when the 3D editor's viewport is updated. Use the overlay [
 			return EditorPlugin.AfterGuiInputStop
 		}
 		return EditorPlugin.AfterGuiInputPass
+	}
 */
 func (Instance) _forward_3d_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control Control.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -859,6 +863,7 @@ Ideally, the plugin icon should be white with a transparent background and 16×1
 		return Resource.Load[Texture2D.Instance]("res://addons/my_plugin/my_plugin_icon.svg")
 		// Or use a built-in icon:
 		return EditorInterface.GetEditorTheme().GetIcon("Node", "EditorIcons")
+	}
 */
 func (Instance) _get_plugin_icon(impl func(ptr gdclass.Receiver) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -976,6 +981,7 @@ Note: You must implement [Interface.GetPluginName] for the state to be stored an
 
 	GetState := func() map[any]any {
 		return map[any]any{"zoom": nil, "preferred_color": nil}
+	}
 */
 func (Instance) _get_state(impl func(ptr gdclass.Receiver) map[interface{}]interface{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1000,6 +1006,7 @@ Note: Your plugin must implement [Interface.GetPluginName], otherwise it will no
 	SetState := func(data map[any]any) {
 		zoom = data["zoom"].(float64)
 		preferred_color = data["my_color"].(Color.RGBA)
+	}
 */
 func (Instance) _set_state(impl func(ptr gdclass.Receiver, state map[interface{}]interface{})) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1039,6 +1046,7 @@ If the user confirms saving, [Interface.SaveExternalData] will be called, before
 	}
 	SaveExternalData := func() {
 		unsaved = false
+	}
 
 If the plugin has no scene-specific changes, you can ignore the calls when closing scenes:
 */
@@ -1101,6 +1109,7 @@ Restore the plugin GUI layout and data saved by [Interface.GetWindowLayout]. Thi
 	SetWindowLayout := func(configuration ConfigFile.Instance) {
 		window.SetPosition(ConfigFile.Expanded(configuration).GetValue("MyPlugin", "window_position", Vector2i.Zero).(Vector2i.XY))
 		control.AsCanvasItem().SetModulate(ConfigFile.Expanded(configuration).GetValue("MyPlugin", "icon_color", Color.W3C.White).(Color.RGBA))
+	}
 */
 func (Instance) _set_window_layout(impl func(ptr gdclass.Receiver, configuration ConfigFile.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1120,6 +1129,7 @@ Use [Interface.SetWindowLayout] to restore your saved layout.
 	GetWindowLayout := func(configuration ConfigFile.Instance) {
 		configuration.SetValue("MyPlugin", "window_position", window.Position())
 		configuration.SetValue("MyPlugin", "icon_color", control.AsCanvasItem().Modulate())
+	}
 */
 func (Instance) _get_window_layout(impl func(ptr gdclass.Receiver, configuration ConfigFile.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1681,6 +1691,7 @@ Called when there is a root node in the current edited scene, [Interface.Handles
 
 	ForwardCanvasGuiInput := func(event InputEvent.Instance) bool {
 		return true // Prevents the InputEvent from reaching other Editor classes.
+	}
 
 This method must return false in order to forward the [graphics.gd/classdb/InputEvent] to other Editor classes.
 */
@@ -1711,6 +1722,7 @@ Called by the engine when the 2D editor's viewport is updated. Use the overlay [
 			return true
 		}
 		return false
+	}
 */
 func (class) _forward_canvas_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1742,6 +1754,7 @@ Called when there is a root node in the current edited scene, [Interface.Handles
 
 	Forward3dGuiInput := func(viewport_camera Camera3D.Instance, event InputEvent.Instance) EditorPlugin.AfterGUIInput {
 		return EditorPlugin.AfterGuiInputStop
+	}
 
 This method must return [AfterGuiInputPass] in order to forward the [graphics.gd/classdb/InputEvent] to other Editor classes.
 */
@@ -1773,6 +1786,7 @@ Called by the engine when the 3D editor's viewport is updated. Use the overlay [
 			return EditorPlugin.AfterGuiInputStop
 		}
 		return EditorPlugin.AfterGuiInputPass
+	}
 */
 func (class) _forward_3d_draw_over_viewport(impl func(ptr gdclass.Receiver, viewport_control [1]gdclass.Control)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1829,6 +1843,7 @@ Ideally, the plugin icon should be white with a transparent background and 16×1
 		return Resource.Load[Texture2D.Instance]("res://addons/my_plugin/my_plugin_icon.svg")
 		// Or use a built-in icon:
 		return EditorInterface.GetEditorTheme().GetIcon("Node", "EditorIcons")
+	}
 */
 func (class) _get_plugin_icon(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1946,6 +1961,7 @@ Note: You must implement [Interface.GetPluginName] for the state to be stored an
 
 	GetState := func() map[any]any {
 		return map[any]any{"zoom": nil, "preferred_color": nil}
+	}
 */
 func (class) _get_state(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1970,6 +1986,7 @@ Note: Your plugin must implement [Interface.GetPluginName], otherwise it will no
 	SetState := func(data map[any]any) {
 		zoom = data["zoom"].(float64)
 		preferred_color = data["my_color"].(Color.RGBA)
+	}
 */
 func (class) _set_state(impl func(ptr gdclass.Receiver, state Dictionary.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -2009,6 +2026,7 @@ If the user confirms saving, [Interface.SaveExternalData] will be called, before
 	}
 	SaveExternalData := func() {
 		unsaved = false
+	}
 
 If the plugin has no scene-specific changes, you can ignore the calls when closing scenes:
 */
@@ -2071,6 +2089,7 @@ Restore the plugin GUI layout and data saved by [Interface.GetWindowLayout]. Thi
 	SetWindowLayout := func(configuration ConfigFile.Instance) {
 		window.SetPosition(ConfigFile.Expanded(configuration).GetValue("MyPlugin", "window_position", Vector2i.Zero).(Vector2i.XY))
 		control.AsCanvasItem().SetModulate(ConfigFile.Expanded(configuration).GetValue("MyPlugin", "icon_color", Color.W3C.White).(Color.RGBA))
+	}
 */
 func (class) _set_window_layout(impl func(ptr gdclass.Receiver, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -2090,6 +2109,7 @@ Use [Interface.SetWindowLayout] to restore your saved layout.
 	GetWindowLayout := func(configuration ConfigFile.Instance) {
 		configuration.SetValue("MyPlugin", "window_position", window.Position())
 		configuration.SetValue("MyPlugin", "icon_color", control.AsCanvasItem().Modulate())
+	}
 */
 func (class) _get_window_layout(impl func(ptr gdclass.Receiver, configuration [1]gdclass.ConfigFile)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

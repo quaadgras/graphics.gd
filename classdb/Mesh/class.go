@@ -129,7 +129,7 @@ type Interface interface {
 	// Virtual method to override the surface arrays for a custom class extending [graphics.gd/classdb/Mesh].
 	SurfaceGetArrays(index int) []any
 	// Virtual method to override the blend shape arrays for a custom class extending [graphics.gd/classdb/Mesh].
-	SurfaceGetBlendShapeArrays(index int) [][]any
+	SurfaceGetBlendShapeArrays(index int) [][][]interface{}
 	// Virtual method to override the surface LODs for a custom class extending [graphics.gd/classdb/Mesh].
 	SurfaceGetLods(index int) map[float32][]int32
 	// Virtual method to override the surface format for a custom class extending [graphics.gd/classdb/Mesh].
@@ -155,20 +155,20 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) GetSurfaceCount() (_ int)                                 { return }
-func (self implementation) SurfaceGetArrayLen(index int) (_ int)                     { return }
-func (self implementation) SurfaceGetArrayIndexLen(index int) (_ int)                { return }
-func (self implementation) SurfaceGetArrays(index int) (_ []any)                     { return }
-func (self implementation) SurfaceGetBlendShapeArrays(index int) (_ [][]any)         { return }
-func (self implementation) SurfaceGetLods(index int) (_ map[float32][]int32)         { return }
-func (self implementation) SurfaceGetFormat(index int) (_ int)                       { return }
-func (self implementation) SurfaceGetPrimitiveType(index int) (_ int)                { return }
-func (self implementation) SurfaceSetMaterial(index int, material Material.Instance) { return }
-func (self implementation) SurfaceGetMaterial(index int) (_ Material.Instance)       { return }
-func (self implementation) GetBlendShapeCount() (_ int)                              { return }
-func (self implementation) GetBlendShapeName(index int) (_ string)                   { return }
-func (self implementation) SetBlendShapeName(index int, name string)                 { return }
-func (self implementation) GetAabb() (_ AABB.PositionSize)                           { return }
+func (self implementation) GetSurfaceCount() (_ int)                                   { return }
+func (self implementation) SurfaceGetArrayLen(index int) (_ int)                       { return }
+func (self implementation) SurfaceGetArrayIndexLen(index int) (_ int)                  { return }
+func (self implementation) SurfaceGetArrays(index int) (_ []any)                       { return }
+func (self implementation) SurfaceGetBlendShapeArrays(index int) (_ [][][]interface{}) { return }
+func (self implementation) SurfaceGetLods(index int) (_ map[float32][]int32)           { return }
+func (self implementation) SurfaceGetFormat(index int) (_ int)                         { return }
+func (self implementation) SurfaceGetPrimitiveType(index int) (_ int)                  { return }
+func (self implementation) SurfaceSetMaterial(index int, material Material.Instance)   { return }
+func (self implementation) SurfaceGetMaterial(index int) (_ Material.Instance)         { return }
+func (self implementation) GetBlendShapeCount() (_ int)                                { return }
+func (self implementation) GetBlendShapeName(index int) (_ string)                     { return }
+func (self implementation) SetBlendShapeName(index int, name string)                   { return }
+func (self implementation) GetAabb() (_ AABB.PositionSize)                             { return }
 
 /*
 Virtual method to override the surface count for a custom class extending [graphics.gd/classdb/Mesh].
@@ -225,7 +225,7 @@ func (Instance) _surface_get_arrays(impl func(ptr gdclass.Receiver, index int) [
 /*
 Virtual method to override the blend shape arrays for a custom class extending [graphics.gd/classdb/Mesh].
 */
-func (Instance) _surface_get_blend_shape_arrays(impl func(ptr gdclass.Receiver, index int) [][]any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _surface_get_blend_shape_arrays(impl func(ptr gdclass.Receiver, index int) [][][]interface{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var index = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -396,8 +396,8 @@ func (self Instance) SurfaceGetArrays(surf_idx int) []any { //gd:Mesh.surface_ge
 /*
 Returns the blend shape arrays for the requested surface.
 */
-func (self Instance) SurfaceGetBlendShapeArrays(surf_idx int) [][]any { //gd:Mesh.surface_get_blend_shape_arrays
-	return [][]any(gd.ArrayAs[[][]any](gd.InternalArray(Advanced(self).SurfaceGetBlendShapeArrays(int64(surf_idx)))))
+func (self Instance) SurfaceGetBlendShapeArrays(surf_idx int) [][][]interface{} { //gd:Mesh.surface_get_blend_shape_arrays
+	return [][][]interface{}(gd.ArrayAs[[][][]interface{}](gd.InternalArray(Advanced(self).SurfaceGetBlendShapeArrays(int64(surf_idx)))))
 }
 
 /*

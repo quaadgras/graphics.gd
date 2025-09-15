@@ -40,8 +40,11 @@ func DocsToGoDoc(docs string, classdb map[string]Class, className, codeblock str
 			_, s, _ = strings.Cut(s, "package main\n")
 			if strings.Contains(s, "func "+parser_sample+"() {") {
 				_, s, _ = strings.Cut(s, "func "+parser_sample+"() {")
-				s, _, _ = strings.Cut(s, "	_ = ")
-				s = strings.TrimSuffix(s, "}\n")
+				var hasEquals bool
+				s, _, hasEquals = strings.Cut(s, "	_ = ")
+				if !hasEquals {
+					s = strings.TrimSuffix(s, "}\n")
+				}
 				return s
 			}
 			if err == nil {

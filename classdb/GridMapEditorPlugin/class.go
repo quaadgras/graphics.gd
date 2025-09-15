@@ -146,8 +146,20 @@ func (self Instance) HasSelection() bool { //gd:GridMapEditorPlugin.has_selectio
 /*
 Returns an array of [Vector3i.XYZ]s with the selected cells' coordinates.
 */
-func (self Instance) GetSelectedCells() []any { //gd:GridMapEditorPlugin.get_selected_cells
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetSelectedCells())))
+func (self Instance) GetSelectedCells() []struct {
+	X int32
+	Y int32
+	Z int32
+} { //gd:GridMapEditorPlugin.get_selected_cells
+	return []struct {
+		X int32
+		Y int32
+		Z int32
+	}(gd.ArrayAs[[]struct {
+		X int32
+		Y int32
+		Z int32
+	}](gd.InternalArray(Advanced(self).GetSelectedCells())))
 }
 
 /*

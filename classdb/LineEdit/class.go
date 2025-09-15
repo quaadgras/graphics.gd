@@ -308,6 +308,11 @@ func (self Instance) Clear() { //gd:LineEdit.clear
 
 /*
 Selects characters inside [graphics.gd/classdb/LineEdit] between 'from' and 'to'. By default, 'from' is at the beginning and 'to' at the end.
+
+	line_edit.SetText("Welcome")
+	line_edit.Select()                         // Will select "Welcome".
+	LineEdit.Expanded(line_edit).Select(4, -1) // Will select "ome".
+	LineEdit.Expanded(line_edit).Select(2, 5)  // Will select "lco".
 */
 func (self Instance) Select() { //gd:LineEdit.select
 	Advanced(self).Select(int64(0), int64(-1))
@@ -315,6 +320,11 @@ func (self Instance) Select() { //gd:LineEdit.select
 
 /*
 Selects characters inside [graphics.gd/classdb/LineEdit] between 'from' and 'to'. By default, 'from' is at the beginning and 'to' at the end.
+
+	line_edit.SetText("Welcome")
+	line_edit.Select()                         // Will select "Welcome".
+	LineEdit.Expanded(line_edit).Select(4, -1) // Will select "ome".
+	LineEdit.Expanded(line_edit).Select(2, 5)  // Will select "lco".
 */
 func (self Expanded) Select(from int, to int) { //gd:LineEdit.select
 	Advanced(self).Select(int64(from), int64(to))
@@ -415,6 +425,21 @@ func (self Instance) MenuOption(option int) { //gd:LineEdit.menu_option
 Returns the [graphics.gd/classdb/PopupMenu] of this [graphics.gd/classdb/LineEdit]. By default, this menu is displayed when right-clicking on the [graphics.gd/classdb/LineEdit].
 
 You can add custom menu items or remove standard ones. Make sure your IDs don't conflict with the standard ones (see [MenuItems]). For example:
+
+	Ready := func() {
+		var menu = line_edit.GetMenu()
+		// Remove all items after "Redo".
+		menu.SetItemCount(menu.GetItemIndex(int(LineEdit.MenuRedo)) + 1)
+		// Add custom items.
+		menu.AddSeparator()
+		PopupMenu.Expanded(menu).AddItem("Insert Date", int(LineEdit.MenuMax)+1, 0)
+		// Connect callback.
+		menu.OnIdPressed(func(id int) {
+			if id == int(LineEdit.MenuMax)+1 {
+				line_edit.InsertTextAtCaret(Time.GetDateStringFromSystem(false))
+			}
+		})
+	}
 
 Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [graphics.gd/classdb/Window.Instance.Visible] property.
 */
@@ -823,6 +848,11 @@ func (self class) Clear() { //gd:LineEdit.clear
 Selects characters inside [graphics.gd/classdb/LineEdit] between 'from' and 'to'. By default, 'from' is at the beginning and 'to' at the end.
 
 
+	line_edit.SetText("Welcome")
+	line_edit.Select()                         // Will select "Welcome".
+	LineEdit.Expanded(line_edit).Select(4, -1) // Will select "ome".
+	LineEdit.Expanded(line_edit).Select(2, 5)  // Will select "lco".
+
 */
 //go:nosplit
 func (self class) Select(from int64, to int64) { //gd:LineEdit.select_
@@ -1164,6 +1194,21 @@ Returns the [graphics.gd/classdb/PopupMenu] of this [graphics.gd/classdb/LineEdi
 
 You can add custom menu items or remove standard ones. Make sure your IDs don't conflict with the standard ones (see [MenuItems]). For example:
 
+
+	Ready := func() {
+		var menu = line_edit.GetMenu()
+		// Remove all items after "Redo".
+		menu.SetItemCount(menu.GetItemIndex(int(LineEdit.MenuRedo)) + 1)
+		// Add custom items.
+		menu.AddSeparator()
+		PopupMenu.Expanded(menu).AddItem("Insert Date", int(LineEdit.MenuMax)+1, 0)
+		// Connect callback.
+		menu.OnIdPressed(func(id int) {
+			if id == int(LineEdit.MenuMax)+1 {
+				line_edit.InsertTextAtCaret(Time.GetDateStringFromSystem(false))
+			}
+		})
+	}
 
 
 Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [graphics.gd/classdb/Window.Instance.Visible] property.

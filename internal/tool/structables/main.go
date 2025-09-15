@@ -28,6 +28,12 @@ func check(class gdjson.Class, method gdjson.Method, name string, gdtype string)
 			fmt.Printf("%q\n", key)
 		}
 	}
+	if gdtype == "Array" {
+		key := (class.Name + "." + method.Name + "." + name)
+		if _, ok := gdjson.Structables[key]; !ok {
+			fmt.Printf("%q\n", key)
+		}
+	}
 }
 
 func work() error {

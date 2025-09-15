@@ -105,6 +105,40 @@ type Any interface {
 Creates an [graphics.gd/classdb/ImageTextureLayered] from an array of [graphics.gd/classdb/Image]s. See [graphics.gd/classdb/Image.Instance.Create] for the expected data format. The first image decides the width, height, image format and mipmapping setting. The other images must have the same width, height, image format and mipmapping setting.
 
 Each [graphics.gd/classdb/Image] represents one layer.
+
+	// Fill in an array of Images with different colors.
+	var images []Image.Instance
+	const LAYERS = 6
+	for i := range LAYERS {
+		var image = Image.CreateEmpty(128, 128, false, Image.FormatRgb8)
+		if i%3 == 0 {
+			image.Fill(Color.W3C.Red)
+		} else if i%3 == 1 {
+			image.Fill(Color.W3C.Green)
+		} else {
+			image.Fill(Color.W3C.Blue)
+		}
+		images = append(images, image)
+	}
+
+	// Create and save a 2D texture array. The array of images must have at least 1 Image.
+	var texture2DArray = ImageTextureLayered.New()
+	texture2DArray.CreateFromImages(images)
+	ResourceSaver.Save(texture2DArray.AsResource(), "res://texture_2d_array.res", ResourceSaver.FlagCompress)
+
+	// Create and save a cubemap. The array of images must have exactly 6 Images.
+	// The cubemap's images are specified in this order: X+, X-, Y+, Y-, Z+, Z-
+	// (in Godot's coordinate system, so Y+ is "up" and Z- is "forward").
+	var cubemap = Cubemap.New()
+	cubemap.AsImageTextureLayered().CreateFromImages(images)
+	ResourceSaver.Save(cubemap.AsResource(), "res://cubemap.res", ResourceSaver.FlagCompress)
+
+	// Create and save a cubemap array. The array of images must have a multiple of 6 Images.
+	// Each cubemap's images are specified in this order: X+, X-, Y+, Y-, Z+, Z-
+	// (in Godot's coordinate system, so Y+ is "up" and Z- is "forward").
+	var cubemapArray = Cubemap.New()
+	cubemapArray.AsImageTextureLayered().CreateFromImages(images)
+	ResourceSaver.Save(cubemapArray.AsResource(), "res://cubemap_array.res", ResourceSaver.FlagCompress)
 */
 func (self Instance) CreateFromImages(images []Image.Instance) error { //gd:ImageTextureLayered.create_from_images
 	return error(gd.ToError(Advanced(self).CreateFromImages(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](images))))
@@ -171,6 +205,40 @@ Creates an [graphics.gd/classdb/ImageTextureLayered] from an array of [graphics.
 
 Each [graphics.gd/classdb/Image] represents one layer.
 
+
+	// Fill in an array of Images with different colors.
+	var images []Image.Instance
+	const LAYERS = 6
+	for i := range LAYERS {
+		var image = Image.CreateEmpty(128, 128, false, Image.FormatRgb8)
+		if i%3 == 0 {
+			image.Fill(Color.W3C.Red)
+		} else if i%3 == 1 {
+			image.Fill(Color.W3C.Green)
+		} else {
+			image.Fill(Color.W3C.Blue)
+		}
+		images = append(images, image)
+	}
+
+	// Create and save a 2D texture array. The array of images must have at least 1 Image.
+	var texture2DArray = ImageTextureLayered.New()
+	texture2DArray.CreateFromImages(images)
+	ResourceSaver.Save(texture2DArray.AsResource(), "res://texture_2d_array.res", ResourceSaver.FlagCompress)
+
+	// Create and save a cubemap. The array of images must have exactly 6 Images.
+	// The cubemap's images are specified in this order: X+, X-, Y+, Y-, Z+, Z-
+	// (in Godot's coordinate system, so Y+ is "up" and Z- is "forward").
+	var cubemap = Cubemap.New()
+	cubemap.AsImageTextureLayered().CreateFromImages(images)
+	ResourceSaver.Save(cubemap.AsResource(), "res://cubemap.res", ResourceSaver.FlagCompress)
+
+	// Create and save a cubemap array. The array of images must have a multiple of 6 Images.
+	// Each cubemap's images are specified in this order: X+, X-, Y+, Y-, Z+, Z-
+	// (in Godot's coordinate system, so Y+ is "up" and Z- is "forward").
+	var cubemapArray = Cubemap.New()
+	cubemapArray.AsImageTextureLayered().CreateFromImages(images)
+	ResourceSaver.Save(cubemapArray.AsResource(), "res://cubemap_array.res", ResourceSaver.FlagCompress)
 
 */
 //go:nosplit

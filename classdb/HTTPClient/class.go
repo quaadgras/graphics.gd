@@ -183,6 +183,11 @@ Headers are HTTP request headers. For available HTTP methods, see [Method].
 
 To create a POST request with query strings to push to the server, do:
 
+	var fields = map[string]string{"username": "user", "password": "pass"}
+	var queryString = http_client.QueryStringFromDict(fields)
+	var headers = []string{"Content-Type: application/x-www-form-urlencoded", "Content-Length: " + fmt.Sprint(len(queryString))}
+	var result = HTTPClient.Expanded(http_client).Request(HTTPClient.MethodPost, "/index.php", headers, queryString)
+
 Note: The 'body' parameter is ignored if 'method' is [Httpclient.MethodGet]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [graphics.gd/classdb/String.Instance.UriEncode] for an example.
 */
 func (self Instance) Request(method Method, url string, headers []string) error { //gd:HTTPClient.request
@@ -197,6 +202,11 @@ The URL parameter is usually just the part after the host, so for https://exampl
 Headers are HTTP request headers. For available HTTP methods, see [Method].
 
 To create a POST request with query strings to push to the server, do:
+
+	var fields = map[string]string{"username": "user", "password": "pass"}
+	var queryString = http_client.QueryStringFromDict(fields)
+	var headers = []string{"Content-Type: application/x-www-form-urlencoded", "Content-Length: " + fmt.Sprint(len(queryString))}
+	var result = HTTPClient.Expanded(http_client).Request(HTTPClient.MethodPost, "/index.php", headers, queryString)
 
 Note: The 'body' parameter is ignored if 'method' is [Httpclient.MethodGet]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [graphics.gd/classdb/String.Instance.UriEncode] for an example.
 */
@@ -241,6 +251,11 @@ func (self Instance) GetResponseHeaders() []string { //gd:HTTPClient.get_respons
 
 /*
 Returns all response headers as a data structure. Each entry is composed by the header name, and a string containing the values separated by "; ". The casing is kept the same as the headers were received.
+
+	headers := map[string]string{
+		"Content-Length": "12",
+		"Content-Type":   "application/json; charset=UTF-8",
+	}
 */
 func (self Instance) GetResponseHeadersAsDictionary() map[string]string { //gd:HTTPClient.get_response_headers_as_dictionary
 	return map[string]string(gd.DictionaryAs[map[string]string](Advanced(self).GetResponseHeadersAsDictionary()))
@@ -298,6 +313,10 @@ func (self Instance) SetHttpsProxy(host string, port int) { //gd:HTTPClient.set_
 
 /*
 Generates a GET/POST application/x-www-form-urlencoded style query string from a provided dictionary, e.g.:
+
+	var fields = map[string]string{"username": "user", "password": "pass"}
+	var queryString = http_client.QueryStringFromDict(fields)
+	// Returns "username=user&password=pass"
 
 Furthermore, if a key has a null value, only the key itself is added, without equal sign and value. If the value is an array, for each value in it a pair with the same key is added.
 */
@@ -431,6 +450,11 @@ Headers are HTTP request headers. For available HTTP methods, see [Method].
 To create a POST request with query strings to push to the server, do:
 
 
+	var fields = map[string]string{"username": "user", "password": "pass"}
+	var queryString = http_client.QueryStringFromDict(fields)
+	var headers = []string{"Content-Type: application/x-www-form-urlencoded", "Content-Length: " + fmt.Sprint(len(queryString))}
+	var result = HTTPClient.Expanded(http_client).Request(HTTPClient.MethodPost, "/index.php", headers, queryString)
+
 
 Note: The 'body' parameter is ignored if 'method' is [Httpclient.MethodGet]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [graphics.gd/classdb/String.Instance.UriEncode] for an example.
 */
@@ -497,6 +521,11 @@ func (self class) GetResponseHeaders() Packed.Strings { //gd:HTTPClient.get_resp
 /*
 Returns all response headers as a data structure. Each entry is composed by the header name, and a string containing the values separated by "; ". The casing is kept the same as the headers were received.
 
+
+	headers := map[string]string{
+		"Content-Length": "12",
+		"Content-Type":   "application/json; charset=UTF-8",
+	}
 
 */
 //go:nosplit
@@ -603,6 +632,10 @@ func (self class) SetHttpsProxy(host String.Readable, port int64) { //gd:HTTPCli
 /*
 Generates a GET/POST application/x-www-form-urlencoded style query string from a provided dictionary, e.g.:
 
+
+	var fields = map[string]string{"username": "user", "password": "pass"}
+	var queryString = http_client.QueryStringFromDict(fields)
+	// Returns "username=user&password=pass"
 
 
 Furthermore, if a key has a null value, only the key itself is added, without equal sign and value. If the value is an array, for each value in it a pair with the same key is added.

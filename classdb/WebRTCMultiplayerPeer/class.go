@@ -128,7 +128,7 @@ Initialize the multiplayer peer as a server (with unique ID of 1). This mode ena
 
 You can optionally specify a 'channels_config' array of [MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
-func (self Expanded) CreateServer(channels_config []any) error { //gd:WebRTCMultiplayerPeer.create_server
+func (self Expanded) CreateServer(channels_config []MultiplayerPeer.TransferMode) error { //gd:WebRTCMultiplayerPeer.create_server
 	return error(gd.ToError(Advanced(self).CreateServer(gd.EngineArrayFromSlice(channels_config))))
 }
 
@@ -146,7 +146,7 @@ Initialize the multiplayer peer as a client with the given 'peer_id' (must be be
 
 You can optionally specify a 'channels_config' array of [MultiplayerPeer.TransferMode] which will be used to create extra channels (WebRTC only supports one transfer mode per channel).
 */
-func (self Expanded) CreateClient(peer_id int, channels_config []any) error { //gd:WebRTCMultiplayerPeer.create_client
+func (self Expanded) CreateClient(peer_id int, channels_config []MultiplayerPeer.TransferMode) error { //gd:WebRTCMultiplayerPeer.create_client
 	return error(gd.ToError(Advanced(self).CreateClient(int64(peer_id), gd.EngineArrayFromSlice(channels_config))))
 }
 
@@ -160,7 +160,7 @@ func (self Instance) CreateMesh(peer_id int) error { //gd:WebRTCMultiplayerPeer.
 /*
 Initialize the multiplayer peer as a mesh (i.e. all peers connect to each other) with the given 'peer_id' (must be between 1 and 2147483647).
 */
-func (self Expanded) CreateMesh(peer_id int, channels_config []any) error { //gd:WebRTCMultiplayerPeer.create_mesh
+func (self Expanded) CreateMesh(peer_id int, channels_config []MultiplayerPeer.TransferMode) error { //gd:WebRTCMultiplayerPeer.create_mesh
 	return error(gd.ToError(Advanced(self).CreateMesh(int64(peer_id), gd.EngineArrayFromSlice(channels_config))))
 }
 

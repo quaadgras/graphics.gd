@@ -142,7 +142,7 @@ type Interface interface {
 	// When inheriting from [graphics.gd/classdb/AnimationRootNode], implement this virtual method to return all child animation nodes in order as a name: node dictionary.
 	GetChildNodes() map[string]struct{}
 	// When inheriting from [graphics.gd/classdb/AnimationRootNode], implement this virtual method to return a list of the properties on this animation node. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees. Format is similar to [graphics.gd/classdb/Object.Instance.GetPropertyList].
-	GetParameterList() []any
+	GetParameterList() []Object.PropertyInfo
 	// When inheriting from [graphics.gd/classdb/AnimationRootNode], implement this virtual method to return a child animation node by its 'name'.
 	GetChildByName(name string) Instance
 	// When inheriting from [graphics.gd/classdb/AnimationRootNode], implement this virtual method to return the default value of a 'parameter'. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees.
@@ -167,7 +167,7 @@ type Implementation = implementation
 type implementation struct{}
 
 func (self implementation) GetChildNodes() (_ map[string]struct{})            { return }
-func (self implementation) GetParameterList() (_ []any)                       { return }
+func (self implementation) GetParameterList() (_ []Object.PropertyInfo)       { return }
 func (self implementation) GetChildByName(name string) (_ Instance)           { return }
 func (self implementation) GetParameterDefaultValue(parameter string) (_ any) { return }
 func (self implementation) IsParameterReadOnly(parameter string) (_ bool)     { return }
@@ -196,7 +196,7 @@ func (Instance) _get_child_nodes(impl func(ptr gdclass.Receiver) map[string]stru
 /*
 When inheriting from [graphics.gd/classdb/AnimationRootNode], implement this virtual method to return a list of the properties on this animation node. Parameters are custom local memory used for your animation nodes, given a resource can be reused in multiple trees. Format is similar to [graphics.gd/classdb/Object.Instance.GetPropertyList].
 */
-func (Instance) _get_parameter_list(impl func(ptr gdclass.Receiver) []any) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_parameter_list(impl func(ptr gdclass.Receiver) []Object.PropertyInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)

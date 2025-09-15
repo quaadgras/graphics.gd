@@ -144,7 +144,7 @@ An array variable can optionally be passed via 'progress', and will return a one
 
 Note: The recommended way of using this method is to call it during different frames (e.g., in [graphics.gd/classdb/Node.Instance.Process], instead of a loop).
 */
-func LoadThreadedGetStatus(path string, progress []any) ThreadLoadStatus { //gd:ResourceLoader.load_threaded_get_status
+func LoadThreadedGetStatus(path string, progress []float32) ThreadLoadStatus { //gd:ResourceLoader.load_threaded_get_status
 	once.Do(singleton)
 	return ThreadLoadStatus(Advanced().LoadThreadedGetStatus(String.New(path), gd.EngineArrayFromSlice(progress)))
 }
@@ -156,7 +156,7 @@ An array variable can optionally be passed via 'progress', and will return a one
 
 Note: The recommended way of using this method is to call it during different frames (e.g., in [graphics.gd/classdb/Node.Instance.Process], instead of a loop).
 */
-func LoadThreadedGetStatusOptions(path string, progress []any) ThreadLoadStatus { //gd:ResourceLoader.load_threaded_get_status
+func LoadThreadedGetStatusOptions(path string, progress []float32) ThreadLoadStatus { //gd:ResourceLoader.load_threaded_get_status
 	once.Do(singleton)
 	return ThreadLoadStatus(Advanced().LoadThreadedGetStatus(String.New(path), gd.EngineArrayFromSlice(progress)))
 }

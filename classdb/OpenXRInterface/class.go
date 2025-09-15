@@ -18,6 +18,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
+import "graphics.gd/classdb/OpenXRActionSet"
 import "graphics.gd/classdb/XRInterface"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -155,15 +156,15 @@ func (self Instance) SetActionSetActive(name string, active bool) { //gd:OpenXRI
 /*
 Returns a list of action sets registered with Godot (loaded from the action map at runtime).
 */
-func (self Instance) GetActionSets() []any { //gd:OpenXRInterface.get_action_sets
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetActionSets())))
+func (self Instance) GetActionSets() []OpenXRActionSet.Instance { //gd:OpenXRInterface.get_action_sets
+	return []OpenXRActionSet.Instance(gd.ArrayAs[[]OpenXRActionSet.Instance](gd.InternalArray(Advanced(self).GetActionSets())))
 }
 
 /*
 Returns display refresh rates supported by the current HMD. Only returned if this feature is supported by the OpenXR runtime and after the interface has been initialized.
 */
-func (self Instance) GetAvailableDisplayRefreshRates() []any { //gd:OpenXRInterface.get_available_display_refresh_rates
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetAvailableDisplayRefreshRates())))
+func (self Instance) GetAvailableDisplayRefreshRates() []float32 { //gd:OpenXRInterface.get_available_display_refresh_rates
+	return []float32(gd.ArrayAs[[]float32](gd.InternalArray(Advanced(self).GetAvailableDisplayRefreshRates())))
 }
 
 /*
