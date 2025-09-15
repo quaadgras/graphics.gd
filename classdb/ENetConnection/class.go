@@ -189,8 +189,9 @@ Call this function regularly to handle connections, disconnections, and to recei
 
 Note: This method must be called on both ends involved in the event (sending and receiving hosts).
 */
-func (self Instance) Service() []any { //gd:ENetConnection.service
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).Service(int64(0)))))
+func (self Instance) Service() (EventType, ENetPacketPeer.Instance, int, int) { //gd:ENetConnection.service
+	results := gd.InternalArray(Advanced(self).Service(int64(0)))
+	return gd.VariantAs[EventType](results.Index(0)), gd.VariantAs[ENetPacketPeer.Instance](results.Index(1)), gd.VariantAs[int](results.Index(2)), gd.VariantAs[int](results.Index(3))
 }
 
 /*
@@ -200,8 +201,9 @@ Call this function regularly to handle connections, disconnections, and to recei
 
 Note: This method must be called on both ends involved in the event (sending and receiving hosts).
 */
-func (self Expanded) Service(timeout int) []any { //gd:ENetConnection.service
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).Service(int64(timeout)))))
+func (self Expanded) Service(timeout int) (EventType, ENetPacketPeer.Instance, int, int) { //gd:ENetConnection.service
+	results := gd.InternalArray(Advanced(self).Service(int64(timeout)))
+	return gd.VariantAs[EventType](results.Index(0)), gd.VariantAs[ENetPacketPeer.Instance](results.Index(1)), gd.VariantAs[int](results.Index(2)), gd.VariantAs[int](results.Index(3))
 }
 
 /*

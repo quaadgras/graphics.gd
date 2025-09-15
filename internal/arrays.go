@@ -72,7 +72,7 @@ func ArrayFromSlice[T ArrayVariant.Contains[A], A, B any](slice []B) T {
 	return T(array)
 }
 
-func EngineArrayFromSlice(slice []any) ArrayVariant.Any {
+func EngineArrayFromSlice[T any](slice []T) ArrayVariant.Any {
 	var array = ArrayVariant.Through(NewArrayProxy[VariantPkg.Any]())
 	array.Resize(len(slice))
 	for i, value := range slice {

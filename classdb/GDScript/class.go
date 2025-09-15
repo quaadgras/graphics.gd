@@ -104,6 +104,11 @@ type Any interface {
 
 /*
 Returns a new instance of the script.
+
+	var MyClass = Resource.Load[GDScript.Instance]("myclass.gd")
+	var instance = MyClass.New()
+	script, _ := Script.Get(instance.(Object.Instance))
+	fmt.Println(Object.Aliases(MyClass, script)) // Prints true
 */
 func (self Instance) New(args ...any) any { //gd:GDScript.new
 	var converted_variants = make([]gd.Variant, len(args))
@@ -159,6 +164,11 @@ func New() Instance {
 /*
 Returns a new instance of the script.
 
+
+	var MyClass = Resource.Load[GDScript.Instance]("myclass.gd")
+	var instance = MyClass.New()
+	script, _ := Script.Get(instance.(Object.Instance))
+	fmt.Println(Object.Aliases(MyClass, script)) // Prints true
 
 */
 //go:nosplit

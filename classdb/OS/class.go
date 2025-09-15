@@ -451,7 +451,7 @@ Note: On macOS, sandboxed applications are limited to run only embedded helper e
 
 Note: On Android, system commands such as dumpsys can only be run on a rooted device.
 */
-func Execute(path string, arguments []string, output []any, read_stderr bool, open_console bool) int { //gd:OS.execute
+func Execute(path string, arguments []string, output []string, read_stderr bool, open_console bool) int { //gd:OS.execute
 	once.Do(singleton)
 	return int(int(Advanced().Execute(String.New(path), Packed.MakeStrings(arguments...), gd.EngineArrayFromSlice(output), read_stderr, open_console)))
 }
@@ -483,7 +483,7 @@ Note: On macOS, sandboxed applications are limited to run only embedded helper e
 
 Note: On Android, system commands such as dumpsys can only be run on a rooted device.
 */
-func ExecuteOptions(path string, arguments []string, output []any, read_stderr bool, open_console bool) int { //gd:OS.execute
+func ExecuteOptions(path string, arguments []string, output []string, read_stderr bool, open_console bool) int { //gd:OS.execute
 	once.Do(singleton)
 	return int(int(Advanced().Execute(String.New(path), Packed.MakeStrings(arguments...), gd.EngineArrayFromSlice(output), read_stderr, open_console)))
 }

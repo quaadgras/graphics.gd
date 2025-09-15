@@ -372,6 +372,11 @@ func (self class) ClearProjectedObstructions() { //gd:NavigationMeshSourceGeomet
 Sets the projected obstructions with an Array of Dictionaries with the following key value pairs:
 
 
+	type ProjectedObstruction struct {
+		Vertices []float32 `gd:"vertices"`
+		Carve    bool      `gd:"carve"`
+	}
+
 */
 //go:nosplit
 func (self class) SetProjectedObstructions(projected_obstructions Array.Any) { //gd:NavigationMeshSourceGeometryData2D.set_projected_obstructions

@@ -151,8 +151,8 @@ func (self Instance) FindExportTemplate(template_file_name string) Template { //
 /*
 Returns array of [graphics.gd/classdb/EditorExportPreset]s for this platform.
 */
-func (self Instance) GetCurrentPresets() []any { //gd:EditorExportPlatform.get_current_presets
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetCurrentPresets())))
+func (self Instance) GetCurrentPresets() []EditorExportPreset.Instance { //gd:EditorExportPlatform.get_current_presets
+	return []EditorExportPreset.Instance(gd.ArrayAs[[]EditorExportPreset.Instance](gd.InternalArray(Advanced(self).GetCurrentPresets())))
 }
 
 /*
@@ -364,7 +364,7 @@ func (self Instance) SshRunOnRemote(host string, port string, ssh_arg []string, 
 /*
 Executes specified command on the remote host via SSH protocol and returns command output in the 'output'.
 */
-func (self Expanded) SshRunOnRemote(host string, port string, ssh_arg []string, cmd_args string, output []any, port_fwd int) error { //gd:EditorExportPlatform.ssh_run_on_remote
+func (self Expanded) SshRunOnRemote(host string, port string, ssh_arg []string, cmd_args string, output []string, port_fwd int) error { //gd:EditorExportPlatform.ssh_run_on_remote
 	return error(gd.ToError(Advanced(self).SshRunOnRemote(String.New(host), String.New(port), Packed.MakeStrings(ssh_arg...), String.New(cmd_args), gd.EngineArrayFromSlice(output), int64(port_fwd))))
 }
 

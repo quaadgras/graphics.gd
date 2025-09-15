@@ -1088,11 +1088,11 @@ func MeshAddSurface(mesh RID.Mesh, surface Surface) { //gd:RenderingServer.mesh_
 	once.Do(singleton)
 	Advanced().MeshAddSurface(RID.Any(mesh), gd.DictionaryFromMap(surface))
 }
-func MeshAddSurfaceFromArrays(mesh RID.Mesh, primitive PrimitiveType, arrays []any, blend_shapes []any, lods map[float32][]int32, compress_format ArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
+func MeshAddSurfaceFromArrays(mesh RID.Mesh, primitive PrimitiveType, arrays []any, blend_shapes [][]interface{}, lods map[float32][]int32, compress_format ArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
 	once.Do(singleton)
 	Advanced().MeshAddSurfaceFromArrays(RID.Any(mesh), primitive, gd.EngineArrayFromSlice(arrays), gd.EngineArrayFromSlice(blend_shapes), gd.DictionaryFromMap(lods), compress_format)
 }
-func MeshAddSurfaceFromArraysOptions(mesh RID.Mesh, primitive PrimitiveType, arrays []any, blend_shapes []any, lods map[float32][]int32, compress_format ArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
+func MeshAddSurfaceFromArraysOptions(mesh RID.Mesh, primitive PrimitiveType, arrays []any, blend_shapes [][]interface{}, lods map[float32][]int32, compress_format ArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
 	once.Do(singleton)
 	Advanced().MeshAddSurfaceFromArrays(RID.Any(mesh), primitive, gd.EngineArrayFromSlice(arrays), gd.EngineArrayFromSlice(blend_shapes), gd.DictionaryFromMap(lods), compress_format)
 }
@@ -1152,9 +1152,9 @@ func MeshSurfaceGetArrays(mesh RID.Mesh, surface int) []any { //gd:RenderingServ
 /*
 Returns a mesh's surface's arrays for blend shapes.
 */
-func MeshSurfaceGetBlendShapeArrays(mesh RID.Mesh, surface int) [][]any { //gd:RenderingServer.mesh_surface_get_blend_shape_arrays
+func MeshSurfaceGetBlendShapeArrays(mesh RID.Mesh, surface int) [][][]interface{} { //gd:RenderingServer.mesh_surface_get_blend_shape_arrays
 	once.Do(singleton)
-	return [][]any(gd.ArrayAs[[][]any](gd.InternalArray(Advanced().MeshSurfaceGetBlendShapeArrays(RID.Any(mesh), int64(surface)))))
+	return [][][]interface{}(gd.ArrayAs[[][][]interface{}](gd.InternalArray(Advanced().MeshSurfaceGetBlendShapeArrays(RID.Any(mesh), int64(surface)))))
 }
 
 /*

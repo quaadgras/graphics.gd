@@ -313,8 +313,8 @@ Returns an array of [graphics.gd/classdb/EditorDebuggerSession] currently availa
 
 Note: Sessions in the array may be inactive, check their state via [graphics.gd/classdb/EditorDebuggerSession.Instance.IsActive].
 */
-func (self Instance) GetSessions() []any { //gd:EditorDebuggerPlugin.get_sessions
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetSessions())))
+func (self Instance) GetSessions() []EditorDebuggerSession.Instance { //gd:EditorDebuggerPlugin.get_sessions
+	return []EditorDebuggerSession.Instance(gd.ArrayAs[[]EditorDebuggerSession.Instance](gd.InternalArray(Advanced(self).GetSessions())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.

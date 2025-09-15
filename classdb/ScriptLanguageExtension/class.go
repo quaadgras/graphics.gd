@@ -143,7 +143,7 @@ type Interface interface {
 	DebugParseStackLevelExpression(level int, expression string, max_subitems int, max_depth int) string
 	DebugGetCurrentStackInfo() []StackInfo
 	ReloadAllScripts()
-	ReloadScripts(scripts []any, soft_reload bool)
+	ReloadScripts(scripts []Script.Instance, soft_reload bool)
 	ReloadToolScript(script Script.Instance, soft_reload bool)
 	GetRecognizedExtensions() []string
 	GetPublicFunctions() [][]Object.MethodInfo
@@ -228,7 +228,7 @@ func (self implementation) DebugParseStackLevelExpression(level int, expression 
 }
 func (self implementation) DebugGetCurrentStackInfo() (_ []StackInfo)                 { return }
 func (self implementation) ReloadAllScripts()                                         { return }
-func (self implementation) ReloadScripts(scripts []any, soft_reload bool)             { return }
+func (self implementation) ReloadScripts(scripts []Script.Instance, soft_reload bool) { return }
 func (self implementation) ReloadToolScript(script Script.Instance, soft_reload bool) { return }
 func (self implementation) GetRecognizedExtensions() (_ []string)                     { return }
 func (self implementation) GetPublicFunctions() (_ [][]Object.MethodInfo)             { return }
@@ -773,13 +773,13 @@ func (Instance) _reload_all_scripts(impl func(ptr gdclass.Receiver)) (cb gd.Exte
 		impl(self)
 	}
 }
-func (Instance) _reload_scripts(impl func(ptr gdclass.Receiver, scripts []any, soft_reload bool)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _reload_scripts(impl func(ptr gdclass.Receiver, scripts []Script.Instance, soft_reload bool)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var scripts = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](gd.UnsafeGet[gdextension.Array](p_args, 0))))
 		defer pointers.End(gd.InternalArray(scripts))
 		var soft_reload = gd.UnsafeGet[bool](p_args, 1)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, gd.ArrayAs[[]any](gd.InternalArray(scripts)), soft_reload)
+		impl(self, gd.ArrayAs[[]Script.Instance](gd.InternalArray(scripts)), soft_reload)
 	}
 }
 func (Instance) _reload_tool_script(impl func(ptr gdclass.Receiver, script Script.Instance, soft_reload bool)) (cb gd.ExtensionClassCallVirtualFunc) {

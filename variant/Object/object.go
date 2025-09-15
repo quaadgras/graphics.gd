@@ -155,12 +155,6 @@ func (obj Instance) ID() ID {
 	return ID(id)
 }
 
-// ScriptInstance returns the object's Script instance, or false if no script is attached.
-func (obj Instance) Script() ([1]gdclass.Script, bool) {
-	script, ok := obj[0].GetScript().Interface().([1]gdclass.Script)
-	return script, ok
-}
-
 // SignalsBlocked returns true if the object is blocking its signals from being emitted.
 // See [Instance.SetSignalsBlocked].
 func (obj Instance) SignalsBlocked() bool {

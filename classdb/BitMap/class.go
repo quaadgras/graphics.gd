@@ -211,7 +211,7 @@ Creates an slice of polygons covering a rectangular portion of the bitmap. It us
 
 To get polygons covering the whole bitmap, pass:
 
-	var size = Rect2.PositionSize{Vector2.Zero, Vector2.From(bitmap.GetSize())
+	var size = Rect2.PositionSize{Vector2.Zero, Vector2.From(bitmap.GetSize())}
 
 'epsilon' is passed to RDP to control how accurately the polygons cover the bitmap: a lower 'epsilon' corresponds to more points in the polygons.
 */
@@ -224,7 +224,7 @@ Creates an slice of polygons covering a rectangular portion of the bitmap. It us
 
 To get polygons covering the whole bitmap, pass:
 
-	var size = Rect2.PositionSize{Vector2.Zero, Vector2.From(bitmap.GetSize())
+	var size = Rect2.PositionSize{Vector2.Zero, Vector2.From(bitmap.GetSize())}
 
 'epsilon' is passed to RDP to control how accurately the polygons cover the bitmap: a lower 'epsilon' corresponds to more points in the polygons.
 */
@@ -406,7 +406,8 @@ Creates an slice of polygons covering a rectangular portion of the bitmap. It us
 To get polygons covering the whole bitmap, pass:
 
 
-	var size = Rect2.PositionSize{Vector2.Zero, Vector2.From(bitmap.GetSize())
+	var size = Rect2.PositionSize{Vector2.Zero, Vector2.From(bitmap.GetSize())}
+
 
 'epsilon' is passed to RDP to control how accurately the polygons cover the bitmap: a lower 'epsilon' corresponds to more points in the polygons.
 */

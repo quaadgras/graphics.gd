@@ -173,9 +173,9 @@ func GetResolveItemAddress(id int) string { //gd:IP.get_resolve_item_address
 /*
 Returns resolved addresses, or an empty array if an error happened or resolution didn't happen yet (see [GetResolveItemStatus]).
 */
-func GetResolveItemAddresses(id int) []any { //gd:IP.get_resolve_item_addresses
+func GetResolveItemAddresses(id int) []string { //gd:IP.get_resolve_item_addresses
 	once.Do(singleton)
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced().GetResolveItemAddresses(int64(id)))))
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced().GetResolveItemAddresses(int64(id)))))
 }
 
 /*
@@ -198,6 +198,13 @@ func GetLocalAddresses() []string { //gd:IP.get_local_addresses
 Returns all network adapters as an array.
 
 Each adapter is a dictionary of the form:
+
+	example := IP.LocalInterface{
+		Index:     "1",
+		Name:      "eth0",
+		Friendly:  "Ethernet One",
+		Addresses: []netip.Addr{netip.MustParseAddr("192.168.1.101")},
+	}
 */
 func GetLocalInterfaces() []LocalInterface { //gd:IP.get_local_interfaces
 	once.Do(singleton)
@@ -335,6 +342,13 @@ Returns all network adapters as an array.
 
 Each adapter is a dictionary of the form:
 
+
+	example := IP.LocalInterface{
+		Index:     "1",
+		Name:      "eth0",
+		Friendly:  "Ethernet One",
+		Addresses: []netip.Addr{netip.MustParseAddr("192.168.1.101")},
+	}
 
 */
 //go:nosplit

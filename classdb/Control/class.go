@@ -629,6 +629,7 @@ A preview that will follow the mouse that should represent the data can be set w
 		var mydata = make_data() // This is your custom method generating the drag data.
 		control.SetDragPreview(make_preview(mydata))
 		return mydata
+	}
 */
 func (Instance) _get_drag_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY) any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -651,6 +652,7 @@ This method should only be used to test the data. Process the data in [Interface
 
 	CanDropData := func(position Vector2.XY, data any) bool {
 		return reflect.TypeOf(data).Kind() == reflect.Map && data.(map[any]any)["expected"] != nil
+	}
 */
 func (Instance) _can_drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY, data any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -671,6 +673,7 @@ Godot calls this method to pass you the 'data' from a control's [Interface.GetDr
 	}
 	DropData := func(position Vector2.XY, data any) {
 		color = data.(map[any]any)["color"].(Color.RGBA)
+	}
 */
 func (Instance) _drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY, data any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -701,6 +704,7 @@ Example: Use a constructed node as a tooltip:
 		var label = Label.New()
 		label.SetText(forText)
 		return label.AsControl()
+	}
 
 Example: Usa a scene instance as a tooltip:
 */
@@ -730,6 +734,7 @@ Example: Click on the control to print a message:
 				fmt.Println("I've been clicked D:")
 			}
 		}
+	}
 
 If the 'event' inherits [graphics.gd/classdb/InputEventMouse], this method will not be called when:
 
@@ -1571,6 +1576,7 @@ Shows the given control at the mouse pointer. A good time to call this method is
 		cpb.AsControl().SetSize(Vector2.XY{50, 50})
 		control.SetDragPreview(cpb.AsControl())
 		return cpb.Color()
+	}
 */
 func (self Instance) SetDragPreview(control Instance) { //gd:Control.set_drag_preview
 	Advanced(self).SetDragPreview(control)
@@ -2023,6 +2029,7 @@ A preview that will follow the mouse that should represent the data can be set w
 		var mydata = make_data() // This is your custom method generating the drag data.
 		control.SetDragPreview(make_preview(mydata))
 		return mydata
+	}
 */
 func (class) _get_drag_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY) variant.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -2045,6 +2052,7 @@ This method should only be used to test the data. Process the data in [Interface
 
 	CanDropData := func(position Vector2.XY, data any) bool {
 		return reflect.TypeOf(data).Kind() == reflect.Map && data.(map[any]any)["expected"] != nil
+	}
 */
 func (class) _can_drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY, data variant.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -2065,6 +2073,7 @@ Godot calls this method to pass you the 'data' from a control's [Interface.GetDr
 	}
 	DropData := func(position Vector2.XY, data any) {
 		color = data.(map[any]any)["color"].(Color.RGBA)
+	}
 */
 func (class) _drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.XY, data variant.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -2095,6 +2104,7 @@ Example: Use a constructed node as a tooltip:
 		var label = Label.New()
 		label.SetText(forText)
 		return label.AsControl()
+	}
 
 Example: Usa a scene instance as a tooltip:
 */
@@ -2124,6 +2134,7 @@ Example: Click on the control to print a message:
 				fmt.Println("I've been clicked D:")
 			}
 		}
+	}
 
 If the 'event' inherits [graphics.gd/classdb/InputEventMouse], this method will not be called when:
 
@@ -3330,6 +3341,7 @@ Shows the given control at the mouse pointer. A good time to call this method is
 		cpb.AsControl().SetSize(Vector2.XY{50, 50})
 		control.SetDragPreview(cpb.AsControl())
 		return cpb.Color()
+	}
 
 */
 //go:nosplit

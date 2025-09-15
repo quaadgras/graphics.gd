@@ -318,6 +318,9 @@ Returns the size of a bounding box of a single-line string, taking kerning, adva
 
 For example, to get the string size as displayed by a single-line Label, use:
 
+	var string_size = Font.Expanded(label.AsControl().GetThemeFont("font")).GetStringSize(label.Text(), GUI.HorizontalAlignmentLeft, -1, label.AsControl().GetThemeFontSize("font_size"),
+		TextServer.JustificationKashida|TextServer.JustificationWordBound, 0, 0)
+
 Note: Since kerning, advance and subpixel positioning are taken into account by [Instance.GetStringSize], using separate [Instance.GetStringSize] calls on substrings of a string then adding the results together will return a different result compared to using a single [Instance.GetStringSize] call on the full string.
 
 Note: Real height of the string is context-dependent and can be significantly different from the value returned by [Instance.GetHeight].
@@ -330,6 +333,9 @@ func (self Instance) GetStringSize(text string) Vector2.XY { //gd:Font.get_strin
 Returns the size of a bounding box of a single-line string, taking kerning, advance and subpixel positioning into account. See also [Instance.GetMultilineStringSize] and [Instance.DrawString].
 
 For example, to get the string size as displayed by a single-line Label, use:
+
+	var string_size = Font.Expanded(label.AsControl().GetThemeFont("font")).GetStringSize(label.Text(), GUI.HorizontalAlignmentLeft, -1, label.AsControl().GetThemeFontSize("font_size"),
+		TextServer.JustificationKashida|TextServer.JustificationWordBound, 0, 0)
 
 Note: Since kerning, advance and subpixel positioning are taken into account by [Instance.GetStringSize], using separate [Instance.GetStringSize] calls on substrings of a string then adding the results together will return a different result compared to using a single [Instance.GetStringSize] call on the full string.
 
@@ -522,20 +528,29 @@ Font variations allow for continuous change of glyph characteristics along some 
 
 To print available variation axes of a variable font:
 
+	var fv = FontVariation.New()
+	fv.AsFontVariation().SetBaseFont(Resource.Load[Font.Instance]("res://RobotoFlex.ttf"))
+	var variation_list = fv.AsFont().GetSupportedVariationList()
+	for tag := range variation_list {
+		var name = TextServerManager.GetPrimaryInterface().TagToName(tag)
+		var values = variation_list[tag]
+		fmt.Printf("variation axis: %s (%d)\n\tmin, max, default: %v\n", name, tag, values)
+	}
+
 Note: To set and get variation coordinates of a [graphics.gd/classdb/FontVariation], use [graphics.gd/classdb/FontVariation.Instance.VariationOpentype].
 
 [variation coordinates]: https://docs.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg
 */
-func (self Instance) GetSupportedVariationList() map[string]map[string]struct {
+func (self Instance) GetSupportedVariationList() map[int]struct {
 	X int32
 	Y int32
 	Z int32
 } { //gd:Font.get_supported_variation_list
-	return map[string]map[string]struct {
+	return map[int]struct {
 		X int32
 		Y int32
 		Z int32
-	}(gd.DictionaryAs[map[string]map[string]struct {
+	}(gd.DictionaryAs[map[int]struct {
 		X int32
 		Y int32
 		Z int32
@@ -801,6 +816,9 @@ Returns the size of a bounding box of a single-line string, taking kerning, adva
 For example, to get the string size as displayed by a single-line Label, use:
 
 
+	var string_size = Font.Expanded(label.AsControl().GetThemeFont("font")).GetStringSize(label.Text(), GUI.HorizontalAlignmentLeft, -1, label.AsControl().GetThemeFontSize("font_size"),
+		TextServer.JustificationKashida|TextServer.JustificationWordBound, 0, 0)
+
 
 Note: Since kerning, advance and subpixel positioning are taken into account by [Instance.GetStringSize], using separate [Instance.GetStringSize] calls on substrings of a string then adding the results together will return a different result compared to using a single [Instance.GetStringSize] call on the full string.
 
@@ -1048,6 +1066,15 @@ Font variations allow for continuous change of glyph characteristics along some 
 
 To print available variation axes of a variable font:
 
+
+	var fv = FontVariation.New()
+	fv.AsFontVariation().SetBaseFont(Resource.Load[Font.Instance]("res://RobotoFlex.ttf"))
+	var variation_list = fv.AsFont().GetSupportedVariationList()
+	for tag := range variation_list {
+		var name = TextServerManager.GetPrimaryInterface().TagToName(tag)
+		var values = variation_list[tag]
+		fmt.Printf("variation axis: %s (%d)\n\tmin, max, default: %v\n", name, tag, values)
+	}
 
 
 Note: To set and get variation coordinates of a [graphics.gd/classdb/FontVariation], use [graphics.gd/classdb/FontVariation.Instance.VariationOpentype].

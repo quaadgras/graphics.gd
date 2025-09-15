@@ -48,8 +48,6 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		classDB.simpleVirtualCall(w, class, method)
 		return
 	}
-	resultSimple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type)
-	resultExpert := gdtype.EngineTypeAsGoType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
 	if singleton || method.IsStatic {
 		if defaults {
 			fmt.Fprintf(w, "func %v(", convertName(method.Name))
@@ -80,8 +78,23 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		fmt.Fprint(w, "args ...any")
 	}
 	fmt.Fprint(w, ") ")
-	if method.ReturnValue.Type != "" {
-		fmt.Fprintf(w, "%v ", resultSimple)
+	resultSimple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultExpert := gdtype.EngineTypeAsGoType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultsSimple := []string{resultSimple}
+	if multiple, ok := gdjson.Unpackables[class.Name+"."+method.Name]; ok {
+		fmt.Fprintf(w, "(")
+		for i, ret := range multiple {
+			if i > 0 {
+				fmt.Fprint(w, ", ")
+			}
+			resultsSimple = append(resultsSimple, ret.String())
+			fmt.Fprint(w, ret)
+		}
+		fmt.Fprintf(w, ") ")
+	} else {
+		if method.ReturnValue.Type != "" {
+			fmt.Fprintf(w, "%v ", resultSimple)
+		}
 	}
 	fmt.Fprintf(w, "{ //gd:%s.%s\n\t", class.Name, method.Name)
 	if singleton {
@@ -96,8 +109,13 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		fmt.Fprint(w, "\tconverted_variants[i] = gd.NewVariant(arg)\n")
 		fmt.Fprint(w, "}\n")
 	}
-	if method.ReturnValue.Type != "" {
-		fmt.Fprintf(w, "return %s(", resultSimple)
+	if len(resultsSimple) == 1 {
+		if method.ReturnValue.Type != "" {
+			fmt.Fprintf(w, "return %s(", resultSimple)
+		}
+	}
+	if len(resultsSimple) > 1 {
+		fmt.Fprintf(w, "results := ")
 	}
 	var call strings.Builder
 	if singleton {
@@ -160,9 +178,24 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		fmt.Fprint(&call, "converted_variants...")
 	}
 	fmt.Fprint(&call, ")")
-	fmt.Fprint(w, gdtype.Name(resultExpert).ConvertToGo(call.String(), resultSimple))
-	if method.ReturnValue.Type != "" {
-		fmt.Fprint(w, ")")
+	if len(resultsSimple) < 2 {
+		fmt.Fprint(w, gdtype.Name(resultExpert).ConvertToGo(call.String(), resultSimple))
+	} else {
+		fmt.Fprint(w, "gd.InternalArray(", call.String(), ")")
+	}
+	if len(resultsSimple) == 1 {
+		if method.ReturnValue.Type != "" {
+			fmt.Fprint(w, ")")
+		}
+	}
+	if len(resultsSimple) > 1 {
+		fmt.Fprint(w, "\n\treturn ")
+		for i, ret := range resultsSimple[1:] {
+			if i > 0 {
+				fmt.Fprint(w, ",")
+			}
+			fmt.Fprintf(w, "gd.VariantAs[%s](results.Index(%d))", ret, i)
+		}
 	}
 	fmt.Fprintf(w, "\n}\n")
 }

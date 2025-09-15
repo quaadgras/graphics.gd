@@ -283,6 +283,15 @@ Returns whether the 'mouse_position' is in the input hot zone.
 By default, a hot zone is a [Rect2.PositionSize] positioned such that its center is at 'in_node'.[graphics.gd/classdb/GraphNode.Instance.GetInputPortPosition]('in_port') (For output's case, call [graphics.gd/classdb/GraphNode.Instance.GetOutputPortPosition] instead). The hot zone's width is twice the Theme Property port_grab_distance_horizontal, and its height is twice the port_grab_distance_vertical.
 
 Below is a sample code to help get started:
+
+	IsInInputHotzone := func(in Object.Instance, in_port int, mouse_position Vector2.XY) bool {
+		in_node := Object.To[GraphNode.Instance](in)
+		port_size := Vector2.New(control.GetThemeConstant("port_grab_distance_horizontal"), control.GetThemeConstant("port_grab_distance_vertical"))
+		port_pos := Vector2.Sub(Vector2.Add(in_node.AsControl().Position(), in_node.GetInputPortPosition(in_port)), Vector2.DivX(port_size, 2))
+		var rect = Rect2.PositionSize{port_pos, port_size}
+
+		return Rect2.HasPoint(rect, mouse_position)
+	}
 */
 func (Instance) _is_in_input_hotzone(impl func(ptr gdclass.Receiver, in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -300,6 +309,15 @@ func (Instance) _is_in_input_hotzone(impl func(ptr gdclass.Receiver, in_node Obj
 Returns whether the 'mouse_position' is in the output hot zone. For more information on hot zones, see [Interface.IsInInputHotzone].
 
 Below is a sample code to help get started:
+
+	IsInInputHotzone := func(in Object.Instance, in_port int, mouse_position Vector2.XY) bool {
+		var in_node = Object.To[GraphNode.Instance](in)
+		var port_size = Vector2.New(control.GetThemeConstant("port_grab_distance_horizontal"), control.GetThemeConstant("port_grab_distance_vertical"))
+		var port_pos = Vector2.Sub(Vector2.Add(in_node.AsControl().Position(), in_node.GetOutputPortPosition(in_port)), Vector2.DivX(port_size, 2))
+		var rect = Rect2.PositionSize{port_pos, port_size}
+
+		return Rect2.HasPoint(rect, mouse_position)
+	}
 */
 func (Instance) _is_in_output_hotzone(impl func(ptr gdclass.Receiver, in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -337,6 +355,10 @@ This virtual method can be used to insert additional error detection while the u
 Return true if the connection is indeed valid or return false if the connection is impossible. If the connection is impossible, no snapping to the port and thus no connection request to that port will happen.
 
 In this example a connection to same node is suppressed:
+
+	IsNodeHoverValid := func(from string, from_port int, to string, to_port int) bool {
+		return from != to
+	}
 */
 func (Instance) _is_node_hover_valid(impl func(ptr gdclass.Receiver, from_node string, from_port int, to_node string, to_port int) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -403,6 +425,14 @@ Returns the closest connection to the given point in screen space. If no connect
 
 A connection is represented as a data structure in the form of:
 
+	type Connection struct {
+		FromNode  string `gd:"from_node"`
+		FromPort  int    `gd:"from_port"`
+		ToNode    string `gd:"to_node"`
+		ToPort    int    `gd:"to_port"`
+		KeepAlive bool   `gd:"keep_alive"`
+	}
+
 For example, getting a connection at a given mouse position can be achieved like this:
 */
 func (self Instance) GetClosestConnectionAtPoint(point Vector2.XY) Connection { //gd:GraphEdit.get_closest_connection_at_point
@@ -414,6 +444,14 @@ Returns the closest connection to the given point in screen space. If no connect
 
 A connection is represented as a data structure in the form of:
 
+	type Connection struct {
+		FromNode  string `gd:"from_node"`
+		FromPort  int    `gd:"from_port"`
+		ToNode    string `gd:"to_node"`
+		ToPort    int    `gd:"to_port"`
+		KeepAlive bool   `gd:"keep_alive"`
+	}
+
 For example, getting a connection at a given mouse position can be achieved like this:
 */
 func (self Expanded) GetClosestConnectionAtPoint(point Vector2.XY, max_distance Float.X) Connection { //gd:GraphEdit.get_closest_connection_at_point
@@ -424,6 +462,14 @@ func (self Expanded) GetClosestConnectionAtPoint(point Vector2.XY, max_distance 
 Returns an slice containing the list of connections that intersect with the given [Rect2.PositionSize].
 
 A connection is represented as a data structure in the form of:
+
+	type Connection struct {
+		FromNode  string `gd:"from_node"`
+		FromPort  int    `gd:"from_port"`
+		ToNode    string `gd:"to_node"`
+		ToPort    int    `gd:"to_port"`
+		KeepAlive bool   `gd:"keep_alive"`
+	}
 */
 func (self Instance) GetConnectionsIntersectingWithRect(rect Rect2.PositionSize) []Connection { //gd:GraphEdit.get_connections_intersecting_with_rect
 	return []Connection(gd.ArrayAs[[]Connection](gd.InternalArray(Advanced(self).GetConnectionsIntersectingWithRect(Rect2.PositionSize(rect)))))
@@ -800,6 +846,15 @@ Returns whether the 'mouse_position' is in the input hot zone.
 By default, a hot zone is a [Rect2.PositionSize] positioned such that its center is at 'in_node'.[graphics.gd/classdb/GraphNode.Instance.GetInputPortPosition]('in_port') (For output's case, call [graphics.gd/classdb/GraphNode.Instance.GetOutputPortPosition] instead). The hot zone's width is twice the Theme Property port_grab_distance_horizontal, and its height is twice the port_grab_distance_vertical.
 
 Below is a sample code to help get started:
+
+	IsInInputHotzone := func(in Object.Instance, in_port int, mouse_position Vector2.XY) bool {
+		in_node := Object.To[GraphNode.Instance](in)
+		port_size := Vector2.New(control.GetThemeConstant("port_grab_distance_horizontal"), control.GetThemeConstant("port_grab_distance_vertical"))
+		port_pos := Vector2.Sub(Vector2.Add(in_node.AsControl().Position(), in_node.GetInputPortPosition(in_port)), Vector2.DivX(port_size, 2))
+		var rect = Rect2.PositionSize{port_pos, port_size}
+
+		return Rect2.HasPoint(rect, mouse_position)
+	}
 */
 func (class) _is_in_input_hotzone(impl func(ptr gdclass.Receiver, in_node [1]gd.Object, in_port int64, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -817,6 +872,15 @@ func (class) _is_in_input_hotzone(impl func(ptr gdclass.Receiver, in_node [1]gd.
 Returns whether the 'mouse_position' is in the output hot zone. For more information on hot zones, see [Interface.IsInInputHotzone].
 
 Below is a sample code to help get started:
+
+	IsInInputHotzone := func(in Object.Instance, in_port int, mouse_position Vector2.XY) bool {
+		var in_node = Object.To[GraphNode.Instance](in)
+		var port_size = Vector2.New(control.GetThemeConstant("port_grab_distance_horizontal"), control.GetThemeConstant("port_grab_distance_vertical"))
+		var port_pos = Vector2.Sub(Vector2.Add(in_node.AsControl().Position(), in_node.GetOutputPortPosition(in_port)), Vector2.DivX(port_size, 2))
+		var rect = Rect2.PositionSize{port_pos, port_size}
+
+		return Rect2.HasPoint(rect, mouse_position)
+	}
 */
 func (class) _is_in_output_hotzone(impl func(ptr gdclass.Receiver, in_node [1]gd.Object, in_port int64, mouse_position Vector2.XY) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -854,6 +918,10 @@ This virtual method can be used to insert additional error detection while the u
 Return true if the connection is indeed valid or return false if the connection is impossible. If the connection is impossible, no snapping to the port and thus no connection request to that port will happen.
 
 In this example a connection to same node is suppressed:
+
+	IsNodeHoverValid := func(from string, from_port int, to string, to_port int) bool {
+		return from != to
+	}
 */
 func (class) _is_node_hover_valid(impl func(ptr gdclass.Receiver, from_node String.Name, from_port int64, to_node String.Name, to_port int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -960,6 +1028,14 @@ Returns the closest connection to the given point in screen space. If no connect
 A connection is represented as a data structure in the form of:
 
 
+	type Connection struct {
+		FromNode  string `gd:"from_node"`
+		FromPort  int    `gd:"from_port"`
+		ToNode    string `gd:"to_node"`
+		ToPort    int    `gd:"to_port"`
+		KeepAlive bool   `gd:"keep_alive"`
+	}
+
 
 For example, getting a connection at a given mouse position can be achieved like this:
 
@@ -980,6 +1056,14 @@ Returns an slice containing the list of connections that intersect with the give
 
 A connection is represented as a data structure in the form of:
 
+
+	type Connection struct {
+		FromNode  string `gd:"from_node"`
+		FromPort  int    `gd:"from_port"`
+		ToNode    string `gd:"to_node"`
+		ToPort    int    `gd:"to_port"`
+		KeepAlive bool   `gd:"keep_alive"`
+	}
 
 */
 //go:nosplit

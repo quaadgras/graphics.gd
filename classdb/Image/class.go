@@ -762,6 +762,11 @@ func (self Instance) GetPixel(x int, y int) Color.RGBA { //gd:Image.get_pixel
 /*
 Sets the [Color.RGBA] of the pixel at 'point' to 'color'.
 
+	var imgWidth = 10
+	var imgHeight = 5
+	var img = Image.Create(imgWidth, imgHeight, false, Image.FormatRgba8)
+	img.SetPixelv(Vector2i.New(1, 2), Color.W3C.Red) // Sets the color at (1, 2) to red.
+
 This is the same as [Instance.SetPixel], but with a [Vector2i.XY] argument instead of two integer arguments.
 */
 func (self Instance) SetPixelv(point Vector2i.XY, color Color.RGBA) { //gd:Image.set_pixelv
@@ -770,6 +775,11 @@ func (self Instance) SetPixelv(point Vector2i.XY, color Color.RGBA) { //gd:Image
 
 /*
 Sets the [Color.RGBA] of the pixel at (x, y) to 'color'.
+
+	var imgWidth = 10
+	var imgHeight = 5
+	var img = Image.Create(imgWidth, imgHeight, false, Image.FormatRgba8)
+	img.SetPixelv(Vector2i.New(1, 2), Color.W3C.Red) // Sets the color at (1, 2) to red.
 
 This is the same as [Instance.SetPixelv], but with a two integer arguments instead of a [Vector2i.XY] argument.
 */
@@ -1605,6 +1615,11 @@ func (self class) GetPixel(x int64, y int64) Color.RGBA { //gd:Image.get_pixel
 Sets the [Color.RGBA] of the pixel at 'point' to 'color'.
 
 
+	var imgWidth = 10
+	var imgHeight = 5
+	var img = Image.Create(imgWidth, imgHeight, false, Image.FormatRgba8)
+	img.SetPixelv(Vector2i.New(1, 2), Color.W3C.Red) // Sets the color at (1, 2) to red.
+
 
 This is the same as [Instance.SetPixel], but with a [Vector2i.XY] argument instead of two integer arguments.
 */
@@ -1619,6 +1634,11 @@ func (self class) SetPixelv(point Vector2i.XY, color Color.RGBA) { //gd:Image.se
 /*
 Sets the [Color.RGBA] of the pixel at (x, y) to 'color'.
 
+
+	var imgWidth = 10
+	var imgHeight = 5
+	var img = Image.Create(imgWidth, imgHeight, false, Image.FormatRgba8)
+	img.SetPixelv(Vector2i.New(1, 2), Color.W3C.Red) // Sets the color at (1, 2) to red.
 
 
 This is the same as [Instance.SetPixelv], but with a two integer arguments instead of a [Vector2i.XY] argument.

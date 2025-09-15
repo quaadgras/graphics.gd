@@ -745,8 +745,9 @@ Returns the coordinate-level proxy for the given identifiers. The returned array
 
 If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
-func (self Instance) GetCoordsLevelTileProxy(source_from int, coords_from Vector2i.XY) []any { //gd:TileSet.get_coords_level_tile_proxy
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetCoordsLevelTileProxy(int64(source_from), Vector2i.XY(coords_from)))))
+func (self Instance) GetCoordsLevelTileProxy(source_from int, coords_from Vector2i.XY) (int, Vector2i.XY) { //gd:TileSet.get_coords_level_tile_proxy
+	results := gd.InternalArray(Advanced(self).GetCoordsLevelTileProxy(int64(source_from), Vector2i.XY(coords_from)))
+	return gd.VariantAs[int](results.Index(0)), gd.VariantAs[Vector2i.XY](results.Index(1))
 }
 
 /*
@@ -779,8 +780,9 @@ Returns the alternative-level proxy for the given identifiers. The returned arra
 
 If the TileSet has no proxy for the given identifiers, returns an empty Array.
 */
-func (self Instance) GetAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) []any { //gd:TileSet.get_alternative_level_tile_proxy
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetAlternativeLevelTileProxy(int64(source_from), Vector2i.XY(coords_from), int64(alternative_from)))))
+func (self Instance) GetAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) (int, Vector2i.XY, int) { //gd:TileSet.get_alternative_level_tile_proxy
+	results := gd.InternalArray(Advanced(self).GetAlternativeLevelTileProxy(int64(source_from), Vector2i.XY(coords_from), int64(alternative_from)))
+	return gd.VariantAs[int](results.Index(0)), gd.VariantAs[Vector2i.XY](results.Index(1)), gd.VariantAs[int](results.Index(2))
 }
 
 /*
@@ -804,8 +806,9 @@ This function first look for matching alternative-level proxies, then coordinate
 
 If no proxy corresponding to provided identifiers are found, returns the same values the ones used as arguments.
 */
-func (self Instance) MapTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) []any { //gd:TileSet.map_tile_proxy
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).MapTileProxy(int64(source_from), Vector2i.XY(coords_from), int64(alternative_from)))))
+func (self Instance) MapTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int) (int, Vector2i.XY, int) { //gd:TileSet.map_tile_proxy
+	results := gd.InternalArray(Advanced(self).MapTileProxy(int64(source_from), Vector2i.XY(coords_from), int64(alternative_from)))
+	return gd.VariantAs[int](results.Index(0)), gd.VariantAs[Vector2i.XY](results.Index(1)), gd.VariantAs[int](results.Index(2))
 }
 
 /*

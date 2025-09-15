@@ -85,3 +85,8 @@ func Iter(object Any) iter.Seq[any] {
 		}
 	}
 }
+
+// Aliases returns true if a and b refer to the same object instance.
+func Aliases(a, b Any) bool {
+	return pointers.Get(a.AsObject()[0])[0] == pointers.Get(b.AsObject()[0])[0]
+}

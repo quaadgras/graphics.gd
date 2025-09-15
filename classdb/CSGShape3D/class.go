@@ -29,6 +29,7 @@ import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/ArrayMesh"
 import "graphics.gd/classdb/ConcavePolygonShape3D"
 import "graphics.gd/classdb/GeometryInstance3D"
+import "graphics.gd/classdb/Mesh"
 import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/VisualInstance3D"
@@ -43,6 +44,7 @@ import "graphics.gd/variant/Path"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform3D"
 
 var _ Object.ID
 
@@ -171,8 +173,9 @@ func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:CSGSha
 /*
 Returns an slice with two elements, the first is the [Transform3D.BasisOrigin] of this node and the second is the root [graphics.gd/classdb/Mesh] of this node. Only works when this node is the root shape.
 */
-func (self Instance) GetMeshes() []any { //gd:CSGShape3D.get_meshes
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetMeshes())))
+func (self Instance) GetMeshes() (Transform3D.BasisOrigin, Mesh.Instance) { //gd:CSGShape3D.get_meshes
+	results := gd.InternalArray(Advanced(self).GetMeshes())
+	return gd.VariantAs[Transform3D.BasisOrigin](results.Index(0)), gd.VariantAs[Mesh.Instance](results.Index(1))
 }
 
 /*

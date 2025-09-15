@@ -818,6 +818,11 @@ func SetCustomMouseCursorOptions(image Resource.Instance, shape CursorShape, hot
 /*
 Feeds an [graphics.gd/classdb/InputEvent] to the game. Can be used to artificially trigger input events from code. Also generates [graphics.gd/classdb/Node.Instance.Input] calls.
 
+	var cancelEvent = InputEventAction.New()
+	cancelEvent.SetAction("ui_cancel")
+	cancelEvent.SetPressed(true)
+	Input.ParseInputEvent(cancelEvent.AsInputEvent())
+
 Note: Calling this function has no influence on the operating system. So for example sending an [graphics.gd/classdb/InputEventMouseMotion] will not move the OS mouse cursor to the specified position (use [WarpMouse] instead) and sending Alt/Cmd + Tab as [graphics.gd/classdb/InputEventKey] won't toggle between active windows.
 */
 func ParseInputEvent(event InputEvent.Instance) { //gd:Input.parse_input_event
@@ -1520,6 +1525,11 @@ func (self class) SetCustomMouseCursor(image [1]gdclass.Resource, shape CursorSh
 /*
 Feeds an [graphics.gd/classdb/InputEvent] to the game. Can be used to artificially trigger input events from code. Also generates [graphics.gd/classdb/Node.Instance.Input] calls.
 
+
+	var cancelEvent = InputEventAction.New()
+	cancelEvent.SetAction("ui_cancel")
+	cancelEvent.SetPressed(true)
+	Input.ParseInputEvent(cancelEvent.AsInputEvent())
 
 
 Note: Calling this function has no influence on the operating system. So for example sending an [graphics.gd/classdb/InputEventMouseMotion] will not move the OS mouse cursor to the specified position (use [WarpMouse] instead) and sending Alt/Cmd + Tab as [graphics.gd/classdb/InputEventKey] won't toggle between active windows.

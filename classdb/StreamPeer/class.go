@@ -144,22 +144,25 @@ func (self Instance) PutData(data []byte) error { //gd:StreamPeer.put_data
 /*
 Sends a chunk of data through the connection. If all the data could not be sent at once, only part of it will. This function returns two values, an [Error] code and an integer, describing how much data was actually sent.
 */
-func (self Instance) PutPartialData(data []byte) []any { //gd:StreamPeer.put_partial_data
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).PutPartialData(Packed.Bytes(Packed.New(data...))))))
+func (self Instance) PutPartialData(data []byte) (error, int) { //gd:StreamPeer.put_partial_data
+	results := gd.InternalArray(Advanced(self).PutPartialData(Packed.Bytes(Packed.New(data...))))
+	return gd.VariantAs[error](results.Index(0)), gd.VariantAs[int](results.Index(1))
 }
 
 /*
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the 'bytes' argument. If not enough bytes are available, the function will block until the desired amount is received. This function returns two values, an [Error] code and a data array.
 */
-func (self Instance) GetData(bytes int) []any { //gd:StreamPeer.get_data
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetData(int64(bytes)))))
+func (self Instance) GetData(bytes int) (error, []uint8) { //gd:StreamPeer.get_data
+	results := gd.InternalArray(Advanced(self).GetData(int64(bytes)))
+	return gd.VariantAs[error](results.Index(0)), gd.VariantAs[[]uint8](results.Index(1))
 }
 
 /*
 Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the "bytes" argument. If not enough bytes are available, the function will return how many were actually received. This function returns two values, an [Error] code, and a data array.
 */
-func (self Instance) GetPartialData(bytes int) []any { //gd:StreamPeer.get_partial_data
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetPartialData(int64(bytes)))))
+func (self Instance) GetPartialData(bytes int) (error, []uint8) { //gd:StreamPeer.get_partial_data
+	results := gd.InternalArray(Advanced(self).GetPartialData(int64(bytes)))
+	return gd.VariantAs[error](results.Index(0)), gd.VariantAs[[]uint8](results.Index(1))
 }
 
 /*

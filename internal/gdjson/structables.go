@@ -11,6 +11,7 @@ import (
 	"graphics.gd/variant/Object"
 	"graphics.gd/variant/RID"
 	"graphics.gd/variant/Rect2"
+	"graphics.gd/variant/Transform3D"
 	"graphics.gd/variant/Vector2"
 	"graphics.gd/variant/Vector2i"
 	"graphics.gd/variant/Vector3"
@@ -344,8 +345,32 @@ func (wt writtenType) PkgPath() string {
 
 func (wt writtenType) Name() string { return wt.written }
 
+func (wt writtenType) String() string {
+	if wt.pkgtype != "" {
+		return wt.pkgtype + "." + wt.written
+	}
+	return wt.written
+}
+
 func TypeFromString(pkgtype, written string) reflect.Type {
 	return writtenType{reflect.TypeFor[struct{}](), written, pkgtype}
+}
+
+type sliceType struct {
+	reflect.Type
+	elem reflect.Type
+}
+
+func SliceOf(elem reflect.Type) reflect.Type {
+	return sliceType{reflect.SliceOf(elem), elem}
+}
+
+func (st sliceType) PkgPath() string {
+	return ""
+}
+
+func (st sliceType) String() string {
+	return "[]" + st.elem.String()
 }
 
 type FormatParameters struct {
@@ -593,6 +618,26 @@ type Carets struct {
 	TrailingDirection int                `gd:"trailing_direction" type:"Direction"`
 }
 
+type ProjectedObstruction2D struct {
+	Vertices []float32 `gd:"vertices"`
+	Carve    bool      `gd:"carve"`
+}
+
+type ProjectedObstruction3D struct {
+	Vertices  []float32 `gd:"vertices"`
+	Elevation Float.X   `gd:"elevation"`
+	Height    Float.X   `gd:"height"`
+	Carve     bool      `gd:"carve"`
+}
+
+type Format struct {
+	Width            int    `gd:"width"`
+	Height           int    `gd:"height"`
+	Format           string `gd:"format"`
+	FrameNumerator   int    `gd:"frame_numerator"`
+	FrameDenominator int    `gd:"frame_denominator"`
+}
+
 var Structables = map[string]reflect.Type{
 	"AStarGrid2D.get_point_data_in_region.":                           reflect.TypeFor[PointData](),
 	"AudioStreamWAV.load_from_buffer.options":                         WavOptions,
@@ -655,7 +700,7 @@ var Structables = map[string]reflect.Type{
 	"Font.get_ot_name_strings.":                                         reflect.TypeFor[map[string]map[string]string](),
 	"Font.get_opentype_features.":                                       reflect.TypeFor[map[string][2]string](),
 	"Font.get_supported_feature_list.":                                  reflect.TypeFor[map[string]OpenTypeFeature](),
-	"Font.get_supported_variation_list.":                                reflect.TypeFor[map[string]map[string]Vector3i.XYZ](),
+	"Font.get_supported_variation_list.":                                reflect.TypeFor[map[int]Vector3i.XYZ](),
 	"FontFile.set_variation_coordinates.variation_coordinates":          reflect.TypeFor[map[string]Float.X](),
 	"FontFile.get_variation_coordinates.":                               reflect.TypeFor[map[string]Float.X](),
 	"FontFile.set_opentype_feature_overrides.overrides":                 reflect.TypeFor[map[string][2]string](),
@@ -734,7 +779,7 @@ var Structables = map[string]reflect.Type{
 	"TextServer.font_set_opentype_feature_overrides.overrides":          reflect.TypeFor[map[string][2]string](),
 	"TextServer.font_get_opentype_feature_overrides.":                   reflect.TypeFor[map[string][2]string](),
 	"TextServer.font_supported_feature_list.":                           reflect.TypeFor[map[string]OpenTypeFeature](),
-	"TextServer.font_supported_variation_list.":                         reflect.TypeFor[map[string]map[string]Vector3i.XYZ](),
+	"TextServer.font_supported_variation_list.":                         reflect.TypeFor[map[int]Vector3i.XYZ](),
 	"TextServer.shaped_text_add_string.opentype_features":               reflect.TypeFor[map[string]uint32](),
 	"TextServer.shaped_set_span_update_font.opentype_features":          reflect.TypeFor[map[string]uint32](),
 	"TextServer.shaped_text_get_glyphs.":                                reflect.TypeFor[[]Glyph](),
@@ -767,7 +812,7 @@ var Structables = map[string]reflect.Type{
 	"CodeEdit._filter_code_completion_candidates.candidates": reflect.TypeFor[[]CompletionInfo](),
 	"CodeEdit._filter_code_completion_candidates.":           reflect.TypeFor[[]CompletionInfo](),
 
-	"EditorExportPlatformExtension._get_export_options.": reflect.SliceOf(Named[struct {
+	"EditorExportPlatformExtension._get_export_options.": SliceOf(Named[struct {
 		Hint             int    `gd:"hint"`
 		HintString       string `gd:"hint_string"`
 		Usage            int    `gd:"usage"`
@@ -776,12 +821,12 @@ var Structables = map[string]reflect.Type{
 		UpdateVisibility bool   `gd:"update_visibility"`
 		Required         bool   `gd:"required"`
 	}]("Option")),
-	"EditorExportPlugin._get_export_options.": reflect.SliceOf(Named[struct {
+	"EditorExportPlugin._get_export_options.": SliceOf(Named[struct {
 		Option           Object.PropertyInfo `gd:"option"`
 		DefaultValue     any                 `gd:"default_value"`
 		UpdateVisibility bool                `gd:"update_visibility"`
 	}]("Option")),
-	"EditorImportPlugin._get_import_options.": reflect.SliceOf(Named[struct {
+	"EditorImportPlugin._get_import_options.": SliceOf(Named[struct {
 		Name         string `gd:"name"`
 		DefaultValue any    `gd:"default_value"`
 		PropertyHint int    `gd:"property_hint"`
@@ -843,7 +888,7 @@ var Structables = map[string]reflect.Type{
 	"TextServerExtension._font_set_opentype_feature_overrides.overrides":        reflect.TypeFor[map[string][2]string](),
 	"TextServerExtension._font_get_opentype_feature_overrides.":                 reflect.TypeFor[map[string][2]string](),
 	"TextServerExtension._font_supported_feature_list.":                         reflect.TypeFor[map[string]OpenTypeFeature](),
-	"TextServerExtension._font_supported_variation_list.":                       reflect.TypeFor[map[string]map[string]Vector3i.XYZ](),
+	"TextServerExtension._font_supported_variation_list.":                       reflect.TypeFor[map[int]Vector3i.XYZ](),
 	"TextServerExtension._shaped_text_add_string.opentype_features":             reflect.TypeFor[map[string]uint32](),
 	"TextServerExtension._shaped_set_span_update_font.opentype_features":        reflect.TypeFor[map[string]uint32](),
 
@@ -851,4 +896,120 @@ var Structables = map[string]reflect.Type{
 	"WebRTCPeerConnectionExtension._create_data_channel.p_config": reflect.TypeFor[Configuration](),
 
 	"XRInterfaceExtension._get_system_info.": reflect.TypeFor[map[string]any](),
+
+	"Animation.method_track_get_params.":                                                   reflect.TypeFor[[]any](),
+	"AnimationNode._get_parameter_list.":                                                   reflect.TypeFor[[]Object.PropertyInfo](),
+	"ArrayMesh.add_surface_from_arrays.arrays":                                             reflect.TypeFor[[]any](),
+	"ArrayMesh.add_surface_from_arrays.blend_shapes":                                       reflect.TypeFor[[][]any](),
+	"CameraFeed.get_formats.":                                                              reflect.TypeFor[[]Format](),
+	"Control._structured_text_parser.args":                                                 reflect.TypeFor[[]any](),
+	"EditorDebuggerPlugin._capture.data":                                                   reflect.TypeFor[[]any](),
+	"EditorDebuggerPlugin.get_sessions.":                                                   SliceOf(TypeFromString("EditorDebuggerSession", "Instance")),
+	"EditorDebuggerSession.send_message.data":                                              reflect.TypeFor[[]any](),
+	"EditorDebuggerSession.toggle_profiler.data":                                           reflect.TypeFor[[]any](),
+	"EditorExportPlatform.get_current_presets.":                                            SliceOf(TypeFromString("EditorExportPreset", "Instance")),
+	"EditorExportPlatform.ssh_run_on_remote.output":                                        reflect.TypeFor[[]string](), // FIXME
+	"EngineDebugger.profiler_add_frame_data.data":                                          reflect.TypeFor[[]any](),
+	"EngineDebugger.profiler_enable.arguments":                                             reflect.TypeFor[[]any](),
+	"EngineDebugger.send_message.data":                                                     reflect.TypeFor[[]any](),
+	"EngineProfiler._toggle.options":                                                       reflect.TypeFor[[]any](),
+	"EngineProfiler._add_frame.data":                                                       reflect.TypeFor[[]any](),
+	"Expression.execute.inputs":                                                            reflect.TypeFor[[]any](),
+	"GridMap.get_meshes.":                                                                  reflect.TypeFor[[]any](),
+	"GridMap.get_bake_meshes.":                                                             reflect.TypeFor[[]any](),
+	"GridMapEditorPlugin.get_selected_cells.":                                              reflect.TypeFor[[]Vector3i.XYZ](),
+	"IP.get_resolve_item_addresses.":                                                       reflect.TypeFor[[]string](),
+	"ImporterMesh.add_surface.arrays":                                                      reflect.TypeFor[[]any](),
+	"ImporterMesh.add_surface.blend_shapes":                                                reflect.TypeFor[[][]any](),
+	"ImporterMesh.get_surface_arrays.":                                                     reflect.TypeFor[[]any](),
+	"ImporterMesh.get_surface_blend_shape_arrays.":                                         reflect.TypeFor[[][]any](),
+	"ImporterMesh.generate_lods.bone_transform_array":                                      reflect.TypeFor[[]Transform3D.BasisOrigin](),
+	"Label.set_structured_text_bidi_override_options.args":                                 reflect.TypeFor[[]any](),
+	"Label.get_structured_text_bidi_override_options.":                                     reflect.TypeFor[[]any](),
+	"Label3D.set_structured_text_bidi_override_options.args":                               reflect.TypeFor[[]any](),
+	"Label3D.get_structured_text_bidi_override_options.":                                   reflect.TypeFor[[]any](),
+	"LineEdit.set_structured_text_bidi_override_options.args":                              reflect.TypeFor[[]any](),
+	"LineEdit.get_structured_text_bidi_override_options.":                                  reflect.TypeFor[[]any](),
+	"LinkButton.set_structured_text_bidi_override_options.args":                            reflect.TypeFor[[]any](),
+	"LinkButton.get_structured_text_bidi_override_options.":                                reflect.TypeFor[[]any](),
+	"Mesh._surface_get_arrays.":                                                            reflect.TypeFor[[]any](),
+	"Mesh._surface_get_blend_shape_arrays.":                                                reflect.TypeFor[[][]any](),
+	"Mesh.surface_get_arrays.":                                                             reflect.TypeFor[[]any](),
+	"Mesh.surface_get_blend_shape_arrays.":                                                 reflect.TypeFor[[][]any](),
+	"MeshLibrary.set_item_shapes.shapes":                                                   SliceOf(TypeFromString("Shape3D", "Instance")),
+	"MeshLibrary.get_item_shapes.":                                                         SliceOf(TypeFromString("Shape3D", "Instance")),
+	"MultiplayerAPI.rpc.arguments":                                                         reflect.TypeFor[[]any](),
+	"MultiplayerAPIExtension._rpc.args":                                                    reflect.TypeFor[[]any](),
+	"NavigationMeshSourceGeometryData2D.set_projected_obstructions.projected_obstructions": reflect.TypeFor[[]ProjectedObstruction2D](),
+	"NavigationMeshSourceGeometryData2D.get_projected_obstructions.":                       reflect.TypeFor[[]ProjectedObstruction2D](),
+	"NavigationMeshSourceGeometryData3D.set_projected_obstructions.projected_obstructions": reflect.TypeFor[[]ProjectedObstruction3D](),
+	"NavigationMeshSourceGeometryData3D.add_mesh_array.mesh_array":                         reflect.TypeFor[[]any](),
+	"NavigationMeshSourceGeometryData3D.get_projected_obstructions.":                       reflect.TypeFor[[]ProjectedObstruction3D](),
+	"Node.propagate_call.args":                                                             reflect.TypeFor[[]any](),
+	"OS.execute.output":                                                                    reflect.TypeFor[[]string](), // FIXME
+	"Object.add_user_signal.arguments":                                                     reflect.TypeFor[[]any](),
+	"Object.callv.arg_array":                                                               reflect.TypeFor[[]any](),
+	"OggPacketSequence.set_packet_data.packet_data":                                        reflect.TypeFor[[][]any](),
+	"OggPacketSequence.get_packet_data.":                                                   reflect.TypeFor[[][]any](),
+	"OpenXRAPIExtension.xr_result.args":                                                    reflect.TypeFor[[]any](),
+	"OpenXRActionMap.set_action_sets.action_sets":                                          SliceOf(TypeFromString("OpenXRActionSet", "Instance")),
+	"OpenXRActionMap.get_action_sets.":                                                     SliceOf(TypeFromString("OpenXRActionSet", "Instance")),
+	"OpenXRActionMap.set_interaction_profiles.interaction_profiles":                        SliceOf(TypeFromString("OpenXRInteractionProfile", "Instance")),
+	"OpenXRActionMap.get_interaction_profiles.":                                            SliceOf(TypeFromString("OpenXRInteractionProfile", "Instance")),
+	"OpenXRActionSet.set_actions.actions":                                                  SliceOf(TypeFromString("OpenXRAction", "Instance")),
+	"OpenXRActionSet.get_actions.":                                                         SliceOf(TypeFromString("OpenXRAction", "Instance")),
+	"OpenXRIPBinding.set_binding_modifiers.binding_modifiers":                              SliceOf(TypeFromString("OpenXRActionBindingModifier", "Instance")),
+	"OpenXRIPBinding.get_binding_modifiers.":                                               SliceOf(TypeFromString("OpenXRActionBindingModifier", "Instance")),
+	"OpenXRInteractionProfile.set_bindings.bindings":                                       SliceOf(TypeFromString("OpenXRIPBinding", "Instance")),
+	"OpenXRInteractionProfile.get_bindings.":                                               SliceOf(TypeFromString("OpenXRIPBinding", "Instance")),
+	"OpenXRInteractionProfile.set_binding_modifiers.binding_modifiers":                     SliceOf(TypeFromString("OpenXRIPBindingModifier", "Instance")),
+	"OpenXRInteractionProfile.get_binding_modifiers.":                                      SliceOf(TypeFromString("OpenXRIPBindingModifier", "Instance")),
+	"OpenXRInterface.get_action_sets.":                                                     SliceOf(TypeFromString("OpenXRActionSet", "Instance")),
+	"OpenXRInterface.get_available_display_refresh_rates.":                                 reflect.TypeFor[[]Float.X](),
+	"Performance.add_custom_monitor.arguments":                                             reflect.TypeFor[[]any](),
+	"Polygon2D.set_polygons.polygons":                                                      reflect.TypeFor[[][]int32](),
+	"Polygon2D.get_polygons.":                                                              reflect.TypeFor[[][]int32](),
+	"PrimitiveMesh._create_mesh_array.":                                                    reflect.TypeFor[[][]any](),
+	"PrimitiveMesh.get_mesh_arrays.":                                                       reflect.TypeFor[[]any](),
+	"RenderingServer.mesh_add_surface_from_arrays.arrays":                                  reflect.TypeFor[[]any](),
+	"RenderingServer.mesh_add_surface_from_arrays.blend_shapes":                            reflect.TypeFor[[][]any](),
+	"RenderingServer.mesh_surface_get_arrays.":                                             reflect.TypeFor[[]any](),
+	"RenderingServer.mesh_surface_get_blend_shape_arrays.":                                 reflect.TypeFor[[][]any](),
+	"ResourceLoader.load_threaded_get_status.progress":                                     reflect.TypeFor[[]Float.X](), // FIXME
+	"RichTextLabel.set_structured_text_bidi_override_options.args":                         reflect.TypeFor[[]any](),
+	"RichTextLabel.get_structured_text_bidi_override_options.":                             reflect.TypeFor[[]any](),
+	"RichTextLabel.set_effects.effects":                                                    SliceOf(TypeFromString("RichTextEffect", "Instance")),
+	"RichTextLabel.get_effects.":                                                           SliceOf(TypeFromString("RichTextEffect", "Instance")),
+	"SceneState.get_connection_binds.":                                                     reflect.TypeFor[[]any](),
+	"ScriptLanguageExtension._reload_scripts.scripts":                                      SliceOf(TypeFromString("Script", "Instance")),
+	"Shader.get_shader_uniform_list.":                                                      reflect.TypeFor[[]Object.PropertyInfo](),
+	"ShapeCast2D.get_collision_result.":                                                    reflect.TypeFor[[]PhysicsDirectSpaceState2D_RestInfo](),
+	"ShapeCast3D.get_collision_result.":                                                    reflect.TypeFor[[]PhysicsDirectSpaceState3D_RestInfo](),
+	"Shortcut.set_events.events":                                                           SliceOf(TypeFromString("InputEvent", "Instance")),
+	"Shortcut.get_events.":                                                                 SliceOf(TypeFromString("InputEvent", "Instance")),
+	"SurfaceTool.create_from_arrays.arrays":                                                reflect.TypeFor[[]any](),
+	"SurfaceTool.commit_to_arrays.":                                                        reflect.TypeFor[[]any](),
+	"TextEdit.set_structured_text_bidi_override_options.args":                              reflect.TypeFor[[]any](),
+	"TextEdit.get_structured_text_bidi_override_options.":                                  reflect.TypeFor[[]any](),
+	"TextLine.set_bidi_override.override":                                                  reflect.TypeFor[[]any](),
+	"TextLine.get_objects.":                                                                reflect.TypeFor[[]any](),
+	"TextMesh.set_structured_text_bidi_override_options.args":                              reflect.TypeFor[[]any](),
+	"TextMesh.get_structured_text_bidi_override_options.":                                  reflect.TypeFor[[]any](),
+	"TextParagraph.set_bidi_override.override":                                             reflect.TypeFor[[]any](),
+	"TextParagraph.get_line_objects.":                                                      reflect.TypeFor[[]any](),
+	"TextServer.shaped_text_set_bidi_override.override":                                    reflect.TypeFor[[]any](),
+	"TextServer.shaped_text_get_objects.":                                                  reflect.TypeFor[[]any](),
+	"TextServer.parse_structured_text.args":                                                reflect.TypeFor[[]any](),
+	"TextServerExtension._shaped_text_set_bidi_override.override":                          reflect.TypeFor[[]any](),
+	"TextServerExtension._shaped_text_get_objects.":                                        reflect.TypeFor[[]any](),
+	"TextServerExtension._parse_structured_text.args":                                      reflect.TypeFor[[]any](),
+	"TreeItem.set_structured_text_bidi_override_options.args":                              reflect.TypeFor[[]any](),
+	"TreeItem.get_structured_text_bidi_override_options.":                                  reflect.TypeFor[[]any](),
+	"VisualShaderNode.set_default_input_values.values":                                     reflect.TypeFor[[]any](),
+	"VisualShaderNode.get_default_input_values.":                                           reflect.TypeFor[[]any](),
+	"WebRTCMultiplayerPeer.create_server.channels_config":                                  SliceOf(TypeFromString("MultiplayerPeer", "TransferMode")),
+	"WebRTCMultiplayerPeer.create_client.channels_config":                                  SliceOf(TypeFromString("MultiplayerPeer", "TransferMode")),
+	"WebRTCMultiplayerPeer.create_mesh.channels_config":                                    SliceOf(TypeFromString("MultiplayerPeer", "TransferMode")),
+	"WebXRInterface.get_available_display_refresh_rates.":                                  reflect.TypeFor[[]Float.X](),
+	"XRInterface.get_supported_environment_blend_modes.":                                   SliceOf(TypeFromString("", "EnvironmentBlendMode")),
 }

@@ -845,8 +845,9 @@ Fetches a node and its most nested resource as specified by the node path's subn
 
 Example: Assume that the child's [graphics.gd/classdb/Sprite2D.Instance.Texture] has been assigned a [graphics.gd/classdb/AtlasTexture]:
 */
-func (self Instance) GetNodeAndResource(path string) []any { //gd:Node.get_node_and_resource
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetNodeAndResource(Path.ToNode(String.New(path))))))
+func (self Instance) GetNodeAndResource(path string) (Instance, Resource.Instance, string) { //gd:Node.get_node_and_resource
+	results := gd.InternalArray(Advanced(self).GetNodeAndResource(Path.ToNode(String.New(path))))
+	return gd.VariantAs[Instance](results.Index(0)), gd.VariantAs[Resource.Instance](results.Index(1)), gd.VariantAs[string](results.Index(2))
 }
 
 /*

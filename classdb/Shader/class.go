@@ -164,8 +164,8 @@ Returns the list of shader uniforms that can be assigned to a [graphics.gd/class
 
 If argument 'get_groups' is true, parameter grouping hints are also included in the list.
 */
-func (self Instance) GetShaderUniformList() []any { //gd:Shader.get_shader_uniform_list
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetShaderUniformList(false))))
+func (self Instance) GetShaderUniformList() []Object.PropertyInfo { //gd:Shader.get_shader_uniform_list
+	return []Object.PropertyInfo(gd.ArrayAs[[]Object.PropertyInfo](gd.InternalArray(Advanced(self).GetShaderUniformList(false))))
 }
 
 /*
@@ -173,8 +173,8 @@ Returns the list of shader uniforms that can be assigned to a [graphics.gd/class
 
 If argument 'get_groups' is true, parameter grouping hints are also included in the list.
 */
-func (self Expanded) GetShaderUniformList(get_groups bool) []any { //gd:Shader.get_shader_uniform_list
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetShaderUniformList(get_groups))))
+func (self Expanded) GetShaderUniformList(get_groups bool) []Object.PropertyInfo { //gd:Shader.get_shader_uniform_list
+	return []Object.PropertyInfo(gd.ArrayAs[[]Object.PropertyInfo](gd.InternalArray(Advanced(self).GetShaderUniformList(get_groups))))
 }
 
 /*

@@ -636,7 +636,7 @@ type Interface interface {
 	// Optional.
 	//
 	// Returns the dictionary of the supported OpenType variation coordinates.
-	FontSupportedVariationList(font_rid RID.Font) map[string]map[string]struct {
+	FontSupportedVariationList(font_rid RID.Font) map[int]struct {
 		X int32
 		Y int32
 		Z int32
@@ -1237,7 +1237,7 @@ func (self implementation) FontGetOpentypeFeatureOverrides(font_rid RID.Font) (_
 func (self implementation) FontSupportedFeatureList(font_rid RID.Font) (_ map[string]OpenTypeFeature) {
 	return
 }
-func (self implementation) FontSupportedVariationList(font_rid RID.Font) (_ map[string]map[string]struct {
+func (self implementation) FontSupportedVariationList(font_rid RID.Font) (_ map[int]struct {
 	X int32
 	Y int32
 	Z int32
@@ -3452,7 +3452,7 @@ Optional.
 
 Returns the dictionary of the supported OpenType variation coordinates.
 */
-func (Instance) _font_supported_variation_list(impl func(ptr gdclass.Receiver, font_rid RID.Font) map[string]map[string]struct {
+func (Instance) _font_supported_variation_list(impl func(ptr gdclass.Receiver, font_rid RID.Font) map[int]struct {
 	X int32
 	Y int32
 	Z int32

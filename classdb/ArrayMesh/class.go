@@ -233,7 +233,7 @@ The 'flags' argument is the bitwise OR of, as required: One value of [Mesh.Array
 
 Note: When using indices, it is recommended to only use points, lines, or triangles.
 */
-func (self Expanded) AddSurfaceFromArrays(primitive Mesh.PrimitiveType, arrays []any, blend_shapes [][]any, lods map[float32][]int32, flags Mesh.ArrayFormat) { //gd:ArrayMesh.add_surface_from_arrays
+func (self Expanded) AddSurfaceFromArrays(primitive Mesh.PrimitiveType, arrays []any, blend_shapes [][][]interface{}, lods map[float32][]int32, flags Mesh.ArrayFormat) { //gd:ArrayMesh.add_surface_from_arrays
 	Advanced(self).AddSurfaceFromArrays(primitive, gd.EngineArrayFromSlice(arrays), gd.ArrayFromSlice[Array.Contains[Array.Any]](blend_shapes), gd.DictionaryFromMap(lods), flags)
 }
 

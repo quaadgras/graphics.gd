@@ -1334,16 +1334,16 @@ func (self Instance) FontSupportedFeatureList(font_rid RID.Font) map[string]Open
 /*
 Returns the dictionary of the supported OpenType variation coordinates.
 */
-func (self Instance) FontSupportedVariationList(font_rid RID.Font) map[string]map[string]struct {
+func (self Instance) FontSupportedVariationList(font_rid RID.Font) map[int]struct {
 	X int32
 	Y int32
 	Z int32
 } { //gd:TextServer.font_supported_variation_list
-	return map[string]map[string]struct {
+	return map[int]struct {
 		X int32
 		Y int32
 		Z int32
-	}(gd.DictionaryAs[map[string]map[string]struct {
+	}(gd.DictionaryAs[map[int]struct {
 		X int32
 		Y int32
 		Z int32

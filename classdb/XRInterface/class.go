@@ -293,8 +293,8 @@ func (self Instance) GetProjectionForView(view int, aspect Float.X, near Float.X
 /*
 Returns the an array of supported environment blend modes, see [XRInterface.EnvironmentBlendMode].
 */
-func (self Instance) GetSupportedEnvironmentBlendModes() []any { //gd:XRInterface.get_supported_environment_blend_modes
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetSupportedEnvironmentBlendModes())))
+func (self Instance) GetSupportedEnvironmentBlendModes() []EnvironmentBlendMode { //gd:XRInterface.get_supported_environment_blend_modes
+	return []EnvironmentBlendMode(gd.ArrayAs[[]EnvironmentBlendMode](gd.InternalArray(Advanced(self).GetSupportedEnvironmentBlendModes())))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
