@@ -102,6 +102,9 @@ func ConvieniantGoTypeOf(vtype gdextension.VariantType) reflect.Type {
 }
 
 func VariantTypeOf(rtype reflect.Type) (vtype gdextension.VariantType, ok bool) {
+	if rtype == reflect.TypeFor[error]() {
+		return gdextension.TypeInt, true
+	}
 	switch rtype.Kind() {
 	case reflect.Bool:
 		return gdextension.TypeBool, true
