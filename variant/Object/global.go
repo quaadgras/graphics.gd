@@ -4,6 +4,7 @@ import (
 	"iter"
 
 	gd "graphics.gd/internal"
+	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/pointers"
 )
 
@@ -89,4 +90,46 @@ func Iter(object Any) iter.Seq[any] {
 // Aliases returns true if a and b refer to the same object instance.
 func Aliases(a, b Any) bool {
 	return pointers.Get(a.AsObject()[0])[0] == pointers.Get(b.AsObject()[0])[0]
+}
+
+// Leak prevents an engine reference from being invalidated until [Free] is
+// called on it.
+//
+// The typical use is to replicate GDScript leak-by-default semantics by
+// immediately wrapping a newly created object with this function.
+//
+//	var obj = Object.Leak(Object.New())
+func Leak[T Any](obj T) T {
+	_, kind := pointers.Ask(obj.AsObject()[0])
+	switch kind {
+	case pointers.Normal:
+		pointers.Pin(obj.AsObject()[0])
+		fallthrough
+	case pointers.Pinned, pointers.Static, pointers.Unsafe:
+		return obj
+	default:
+		panic("Object.Leak called on a pointer owned by the engine")
+	}
+}
+
+// Free immediately invalidates an object reference, enabling any resources
+// associated with it to be released, any subsequent use of the object may
+// result in a panic. May not have an effect if the object is still in use
+// by the engine.
+//
+// This function is safe to call multiple times on the same object.
+func Free(obj Any) {
+	ptr := obj.AsObject()[0]
+	if pointers.Bad(ptr) {
+		return
+	}
+	raw, kind := pointers.Ask(ptr)
+	switch kind {
+	case pointers.Normal:
+		ptr.Free()
+	case pointers.Pinned:
+		if gd.ExtensionInstanceLookup(gdextension.Object(raw[0])) == nil {
+			ptr.Free()
+		}
+	}
 }
