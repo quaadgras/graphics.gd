@@ -114,7 +114,7 @@ func Leak[T Any](obj T) T {
 
 // Free immediately invalidates an object reference, enabling any resources
 // associated with it to be released, any subsequent use of the object may
-// result in a panic. May not have an effect if the object is still in use
+// result in a panic. May not have any effect if the object is still in use
 // by the engine.
 //
 // Free is safe to call at any time on any object (invalidated or not).
