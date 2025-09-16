@@ -4,25 +4,35 @@ slug: guide/memory
 sidebar:
   order: 21
 ---
+import { Aside } from '@astrojs/starlight/components';
 
-Thanks to the garbage collector in Go, you shouldn't need to worry about memory management.
+
+Thanks to the garbage collector in Go, you shouldn't need to worry too much about memory management.
 
 `graphics.gd` will track any Godot references that you access each frame and will invalidate them once
-they've remained unused for two entire frames. As such, if you need to keep any Objects
-or high-performance reference types (`Array.Any`, `Packed.Array[T]`, `Dictionary.Any`, `Signal.Any`,
-`Callable.Function`, `String.Readable`, `String.Name`, `Path.ToNode`) around in Go for longer than a frame, you should either do something with the
-reference each frame to keep it alive, or, in the case of Objects, store the ID of the object
-instead of the `Object.Instance` itself.
+they've remained unused for two or more frames. As such, if you need to keep any Objects or high-performance
+reference types (`Array.Any`, `Packed.Array[T]`, `Dictionary.Any`, `Signal.Any`, `Callable.Function`,
+`String.Readable`, `String.Name`, `Path.ToNode`) around in Go for longer than a frame, do something
+with the reference each frame or explicitly call `Object.Use` to keep it alive.
 
-If you are sticking with convienence types and `Object.ID` (each classdb object has it's own typed ID available), you won't run into any problems here.
+In some cases, iterating over each object to keep it alive may be too constraining. In these scenarios
+you can choose to leak the object and call `Object.Free` when you're done with it. Leaked objects
+will not be collected by `graphics.gd` and will remain valid until you explicitly free them (ie. this is
+how non-RefCounted objects work in `.gd` scripts).
+
+```go
+	node := Object.Leak(Node.New())
+	/// many frames later...
+	Object.Free(node)
+```
 
 In the worst case, `graphics.gd` will produce a panic if you try to use an Engine reference
-that has been invalidated, (this may terminate your application). `graphics.gd` has been designed
+that has been invalidated (this could terminate your application). Bear in mind `graphics.gd` has been designed
 to provide the best possible memory safety protections when working with the engine, if you run into
 a memory safety issue, this means either `graphics.gd` or the engine is at fault, please [open an issue](https://github.com/quaadgras/graphics.gd/issues/new/choose).
 
 ### Globals
-If you initialise an object as a global, the underlying reference will not be invalidated until shutdown. These objects
+When you initialise an object as a global, the underlying reference will not be invalidated until shutdown. These objects
 are only valid after:
 
   * `startup.LoadingScene` is called, or
@@ -43,6 +53,18 @@ var global = Sprite2D.New()
 If you assign newly created objects to these globals, they still need to be used every frame and unless you made a copy first,
 the original reference will be lost. Therefore, unless you really know what you are doing, do not assign new objects to any
 global variables after the engine has started up.
+
+### Object IDs
+
+Each `Object` has a unique ID that is valid for the lifetime of the object. If you receive objects from callbacks made by the
+engine, and you intend to use them infrequently, an `Object.ID` can be a good way to store them without needing to keep their
+reference alive.
+
+Each classdb object has it's own `ID` type.
+
+<Aside type="caution">
+    Object ID look ups are relatively expensive to use when compared to using an instance directly.
+</Aside>
 
 ### Goroutines
 
