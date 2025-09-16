@@ -13,7 +13,7 @@ Thanks to the garbage collector in Go, you shouldn't need to worry too much abou
 they've remained unused for two or more frames. As such, if you need to keep any Objects or high-performance
 reference types (`Array.Any`, `Packed.Array[T]`, `Dictionary.Any`, `Signal.Any`, `Callable.Function`,
 `String.Readable`, `String.Name`, `Path.ToNode`) around in Go for longer than a frame, do something
-with the reference each frame or explicitly call [Object.Use]((https://pkg.go.dev/graphics.gd/variant/Object#Use)) to keep it alive.
+with the reference each frame or explicitly call [Object.Use](https://pkg.go.dev/graphics.gd/variant/Object#Use) to keep it alive.
 
 In some cases, iterating over each object to keep it alive may be too constraining. In these scenarios
 you can [Object.Leak](https://pkg.go.dev/graphics.gd/variant/Object#Leak) an object and call [Object.Free](https://pkg.go.dev/graphics.gd/variant/Object#Free) when you're done with it. Leaked objects
