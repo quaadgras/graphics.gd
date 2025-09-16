@@ -41,16 +41,13 @@ _Why use graphics.gd?_
 * Neither Xcode nor MacOS is needed to build iOS apps.
 * Drop in `gd` command, a cross-platform build tool compatible with GDScript-based Godot projects.
 
-Not just a wrapper! graphics.gd has been designed from the ground up to provide a cohesively curated graphics
-runtime for Go on top of Godot + GDExtension.
-
-Building a Go UI framework or a higher level game engine? Implement a graphics.gd driver for 
-seamless cross-platform support and access to an extensive amount of ready-to-use functionality. 
+This project is not just a wrapper! graphics.gd has been designed from the ground up to provide a cohesive 
+and curated experience for using Go on top of Godot + GDExtension.
 
 Join us in our [active discussions forum](https://github.com/quaadgras/graphics.gd/discussions)
 with any questions, comments or feedback you may have. Show us what you're building!
 
-You can help fund the project, motivate development and prioritise issues [by sponsoring the project](https://buy.stripe.com/4gw14maETbnX3vOcMM)
+You can also help support the project, motivate development and prioritise issues [by sponsoring](https://buy.stripe.com/4gw14maETbnX3vOcMM).
 
 ## Getting Started
 The module includes a drop-in replacement for the go command called `gd` that
@@ -78,7 +75,7 @@ where `project.godot` is located.
 
 ## Next Steps
 
-Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which covers much, much more!.
+Check out the [the.graphics.gd/guide](https://the.graphics.gd/guide) which covers much, much more!
 
 ## TLDR
 
