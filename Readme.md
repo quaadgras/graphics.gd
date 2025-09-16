@@ -58,9 +58,7 @@ makes it easy to work with projects that run within the runtime.
 It enables you to start developing a new project from a single `main.go` file,
 to install it, make sure that your `$GOPATH/bin` is in your `$PATH` and run:
 
-```sh
-	go install graphics.gd/cmd/gd@release
-```
+$ `go install graphics.gd/cmd/gd@release`
 
 Now when you can run `gd run`, `gd test` on the main package in your project's
 directory, things will work as expected. The tool will create a "graphics"
@@ -71,9 +69,7 @@ Running the command without any arguments will startup the editor.
 If you don't want to use the `gd` command, you can build a shared library with
 the `go` command directly:
 
-```sh
-go build -o example.so -buildmode=c-shared
-```
+$ `go build -o example.so -buildmode=c-shared`
 
 The `gd` command is also compatible with standard GDScript-based Godot projects
 and can be used to initialise export configurations and launch projects on Web,
