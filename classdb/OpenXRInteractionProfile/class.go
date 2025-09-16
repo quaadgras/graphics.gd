@@ -191,19 +191,19 @@ func (self Instance) SetInteractionProfilePath(value string) {
 	class(self).SetInteractionProfilePath(String.New(value))
 }
 
-func (self Instance) Bindings() []any {
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetBindings())))
+func (self Instance) Bindings() []OpenXRIPBinding.Instance {
+	return []OpenXRIPBinding.Instance(gd.ArrayAs[[]OpenXRIPBinding.Instance](gd.InternalArray(class(self).GetBindings())))
 }
 
-func (self Instance) SetBindings(value []any) {
+func (self Instance) SetBindings(value []OpenXRIPBinding.Instance) {
 	class(self).SetBindings(gd.EngineArrayFromSlice(value))
 }
 
-func (self Instance) BindingModifiers() []any {
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetBindingModifiers())))
+func (self Instance) BindingModifiers() []OpenXRIPBindingModifier.Instance {
+	return []OpenXRIPBindingModifier.Instance(gd.ArrayAs[[]OpenXRIPBindingModifier.Instance](gd.InternalArray(class(self).GetBindingModifiers())))
 }
 
-func (self Instance) SetBindingModifiers(value []any) {
+func (self Instance) SetBindingModifiers(value []OpenXRIPBindingModifier.Instance) {
 	class(self).SetBindingModifiers(gd.EngineArrayFromSlice(value))
 }
 

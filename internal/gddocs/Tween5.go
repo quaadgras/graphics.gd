@@ -2,18 +2,18 @@
 [gdscript]
 var tween
 func animate():
-    if tween:
-        tween.kill() # Abort the previous animation.
-    tween = create_tween()
+	if tween:
+		tween.kill() # Abort the previous animation.
+	tween = create_tween()
 [/gdscript]
 [csharp]
 private Tween _tween;
 
 public void Animate()
 {
-    if (_tween != null)
-        _tween.Kill(); // Abort the previous animation
-    _tween = CreateTween();
+	if (_tween != null)
+		_tween.Kill(); // Abort the previous animation
+	_tween = CreateTween();
 }
 [/csharp]
 */

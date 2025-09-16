@@ -1,6 +1,6 @@
 /*
 func _init():
-    add_menu_shortcut(SHORTCUT, handle)
+	add_menu_shortcut(SHORTCUT, handle)
 */
 
 package main

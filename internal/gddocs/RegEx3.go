@@ -3,7 +3,7 @@ var regex = RegEx.new()
 regex.compile("d(?<digit>[0-9]+)|x(?<digit>[0-9a-f]+)")
 var result = regex.search("the number is x2f")
 if result:
-    print(result.get_string("digit")) # Would print 2f
+	print(result.get_string("digit")) # Would print 2f
 */
 
 package main

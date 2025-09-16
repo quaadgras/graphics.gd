@@ -1,32 +1,32 @@
 /*
 [gdscript]
 func _forward_3d_draw_over_viewport(overlay):
-    # Draw a circle at cursor position.
-    overlay.draw_circle(overlay.get_local_mouse_position(), 64, Color.WHITE)
+	# Draw a circle at the cursor's position.
+	overlay.draw_circle(overlay.get_local_mouse_position(), 64, Color.WHITE)
 
 func _forward_3d_gui_input(camera, event):
-    if event is InputEventMouseMotion:
-        # Redraw viewport when cursor is moved.
-        update_overlays()
-        return EditorPlugin.AFTER_GUI_INPUT_STOP
-    return EditorPlugin.AFTER_GUI_INPUT_PASS
+	if event is InputEventMouseMotion:
+		# Redraw the viewport when the cursor is moved.
+		update_overlays()
+		return EditorPlugin.AFTER_GUI_INPUT_STOP
+	return EditorPlugin.AFTER_GUI_INPUT_PASS
 [/gdscript]
 [csharp]
 public override void _Forward3DDrawOverViewport(Control viewportControl)
 {
-    // Draw a circle at cursor position.
-    viewportControl.DrawCircle(viewportControl.GetLocalMousePosition(), 64, Colors.White);
+	// Draw a circle at the cursor's position.
+	viewportControl.DrawCircle(viewportControl.GetLocalMousePosition(), 64, Colors.White);
 }
 
 public override EditorPlugin.AfterGuiInput _Forward3DGuiInput(Camera3D viewportCamera, InputEvent @event)
 {
-    if (@event is InputEventMouseMotion)
-    {
-        // Redraw viewport when cursor is moved.
-        UpdateOverlays();
-        return EditorPlugin.AfterGuiInput.Stop;
-    }
-    return EditorPlugin.AfterGuiInput.Pass;
+	if (@event is InputEventMouseMotion)
+	{
+		// Redraw the viewport when the cursor is moved.
+		UpdateOverlays();
+		return EditorPlugin.AfterGuiInput.Stop;
+	}
+	return EditorPlugin.AfterGuiInput.Pass;
 }
 [/csharp]
 */

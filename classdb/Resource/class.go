@@ -132,7 +132,7 @@ type Interface interface {
 	//
 	// func _setup_local_to_scene():
 	//
-	// damage = randi_range(10, 40)
+	// 	damage = randi_range(10, 40)
 	//
 	//
 	SetupLocalToScene()

@@ -8,15 +8,15 @@ var udp = PacketPeerUDP.new()
 var connected = false
 
 func _ready():
-    udp.connect_to_host("127.0.0.1", 4242)
+	udp.connect_to_host("127.0.0.1", 4242)
 
 func _process(delta):
-    if !connected:
-        # Try to contact server
-        udp.put_packet("The answer is... 42!".to_utf8_buffer())
-    if udp.get_available_packet_count() > 0:
-        print("Connected: %s" % udp.get_packet().get_string_from_utf8())
-        connected = true
+	if !connected:
+		# Try to contact server
+		udp.put_packet("The answer is... 42!".to_utf8_buffer())
+	if udp.get_available_packet_count() > 0:
+		print("Connected: %s" % udp.get_packet().get_string_from_utf8())
+		connected = true
 [/gdscript]
 [csharp]
 // ClientNode.cs
@@ -24,27 +24,27 @@ using Godot;
 
 public partial class ClientNode : Node
 {
-    private PacketPeerUdp _udp = new PacketPeerUdp();
-    private bool _connected = false;
+	private PacketPeerUdp _udp = new PacketPeerUdp();
+	private bool _connected = false;
 
-    public override void _Ready()
-    {
-        _udp.ConnectToHost("127.0.0.1", 4242);
-    }
+	public override void _Ready()
+	{
+		_udp.ConnectToHost("127.0.0.1", 4242);
+	}
 
-    public override void _Process(double delta)
-    {
-        if (!_connected)
-        {
-            // Try to contact server
-            _udp.PutPacket("The Answer Is..42!".ToUtf8Buffer());
-        }
-        if (_udp.GetAvailablePacketCount() > 0)
-        {
-            GD.Print($"Connected: {_udp.GetPacket().GetStringFromUtf8()}");
-            _connected = true;
-        }
-    }
+	public override void _Process(double delta)
+	{
+		if (!_connected)
+		{
+			// Try to contact server
+			_udp.PutPacket("The Answer Is..42!".ToUtf8Buffer());
+		}
+		if (_udp.GetAvailablePacketCount() > 0)
+		{
+			GD.Print($"Connected: {_udp.GetPacket().GetStringFromUtf8()}");
+			_connected = true;
+		}
+	}
 }
 [/csharp]
 */

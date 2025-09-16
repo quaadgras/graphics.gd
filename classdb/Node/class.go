@@ -299,23 +299,23 @@ type Interface interface {
 	//
 	// @export var energy = 0:
 	//
-	// set(value):
+	// 	set(value):
 	//
-	// energy = value
+	// 		energy = value
 	//
-	// update_configuration_warnings()
+	// 		update_configuration_warnings()
 	//
 	//
 	//
 	// func _get_configuration_warnings():
 	//
-	// if energy < 0:
+	// 	if energy < 0:
 	//
-	// return ["Energy must be 0 or greater."]
+	// 		return ["Energy must be 0 or greater."]
 	//
-	// else:
+	// 	else:
 	//
-	// return []
+	// 		return []
 	//
 	//
 	GetConfigurationWarnings() []string

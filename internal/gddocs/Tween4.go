@@ -2,12 +2,12 @@
 [gdscript]
 var tween = create_tween()
 for sprite in get_children():
-    tween.tween_property(sprite, "position", Vector2(0, 0), 1)
+	tween.tween_property(sprite, "position", Vector2(0, 0), 1)
 [/gdscript]
 [csharp]
 Tween tween = CreateTween();
 foreach (Node sprite in GetChildren())
-    tween.TweenProperty(sprite, "position", Vector2.Zero, 1.0f);
+	tween.TweenProperty(sprite, "position", Vector2.Zero, 1.0f);
 [/csharp]
 */
 

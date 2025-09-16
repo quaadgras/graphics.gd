@@ -196,15 +196,15 @@ type Interface interface {
 	//
 	// func _is_in_input_hotzone(in_node, in_port, mouse_position):
 	//
-	// var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
+	// 	var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
 	//
-	// var port_pos = in_node.get_position() + in_node.get_input_port_position(in_port) - port_size / 2
+	// 	var port_pos = in_node.get_position() + in_node.get_input_port_position(in_port) - port_size / 2
 	//
-	// var rect = Rect2(port_pos, port_size)
+	// 	var rect = Rect2(port_pos, port_size)
 	//
 	//
 	//
-	// return rect.has_point(mouse_position)
+	// 	return rect.has_point(mouse_position)
 	//
 	//
 	IsInInputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool
@@ -216,15 +216,15 @@ type Interface interface {
 	//
 	// func _is_in_output_hotzone(in_node, in_port, mouse_position):
 	//
-	// var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
+	// 	var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
 	//
-	// var port_pos = in_node.get_position() + in_node.get_output_port_position(in_port) - port_size / 2
+	// 	var port_pos = in_node.get_position() + in_node.get_output_port_position(in_port) - port_size / 2
 	//
-	// var rect = Rect2(port_pos, port_size)
+	// 	var rect = Rect2(port_pos, port_size)
 	//
 	//
 	//
-	// return rect.has_point(mouse_position)
+	// 	return rect.has_point(mouse_position)
 	//
 	//
 	IsInOutputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool
@@ -242,7 +242,7 @@ type Interface interface {
 	//
 	// func _is_node_hover_valid(from, from_port, to, to_port):
 	//
-	// return from != to
+	// 	return from != to
 	//
 	// [/gdscript]
 	//
@@ -252,7 +252,7 @@ type Interface interface {
 	//
 	// {
 	//
-	// return fromNode != toNode;
+	// 	return fromNode != toNode;
 	//
 	// }
 	//
@@ -465,6 +465,14 @@ func (self Expanded) GetClosestConnectionAtPoint(point Vector2.XY, max_distance 
 Returns an slice containing a list of all connections for 'node'.
 
 A connection is represented as a data structure in the form of:
+
+	type Connection struct {
+		FromNode  string `json:"from_node"`
+		FromPort  int    `json:"from_port"`
+		ToNode    string `json:"to_node"`
+		ToPort    int    `json:"to_port"`
+		KeepAlive bool   `json:"keep_alive"`
+	}
 
 Example: Get all connections on a specific port:
 */
@@ -718,11 +726,11 @@ func (self Instance) SetRightDisconnects(value bool) {
 	class(self).SetRightDisconnects(value)
 }
 
-func (self Instance) TypeNames() map[any]any {
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetTypeNames()))
+func (self Instance) TypeNames() map[int]string {
+	return map[int]string(gd.DictionaryAs[map[int]string](class(self).GetTypeNames()))
 }
 
-func (self Instance) SetTypeNames(value map[any]any) {
+func (self Instance) SetTypeNames(value map[int]string) {
 	class(self).SetTypeNames(gd.DictionaryFromMap(value))
 }
 
@@ -750,11 +758,11 @@ func (self Instance) SetConnectionLinesAntialiased(value bool) {
 	class(self).SetConnectionLinesAntialiased(value)
 }
 
-func (self Instance) Connections() []map[any]any {
-	return []map[any]any(gd.ArrayAs[[]map[any]any](gd.InternalArray(class(self).GetConnectionList())))
+func (self Instance) Connections() []Connection {
+	return []Connection(gd.ArrayAs[[]Connection](gd.InternalArray(class(self).GetConnectionList())))
 }
 
-func (self Instance) SetConnections(value []map[any]any) {
+func (self Instance) SetConnections(value []Connection) {
 	class(self).SetConnections(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](value))
 }
 
@@ -1078,6 +1086,14 @@ Returns an slice containing a list of all connections for 'node'.
 
 A connection is represented as a data structure in the form of:
 
+
+	type Connection struct {
+		FromNode  string `json:"from_node"`
+		FromPort  int    `json:"from_port"`
+		ToNode    string `json:"to_node"`
+		ToPort    int    `json:"to_port"`
+		KeepAlive bool   `json:"keep_alive"`
+	}
 
 
 Example: Get all connections on a specific port:

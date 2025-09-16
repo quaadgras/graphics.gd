@@ -214,19 +214,19 @@ func (self Instance) SetSkeleton(value int) {
 	class(self).SetSkeleton(int64(value))
 }
 
-func (self Instance) JointIToBoneI() map[any]any {
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetJointIToBoneI()))
+func (self Instance) JointIToBoneI() map[int]int {
+	return map[int]int(gd.DictionaryAs[map[int]int](class(self).GetJointIToBoneI()))
 }
 
-func (self Instance) SetJointIToBoneI(value map[any]any) {
+func (self Instance) SetJointIToBoneI(value map[int]int) {
 	class(self).SetJointIToBoneI(gd.DictionaryFromMap(value))
 }
 
-func (self Instance) JointIToName() map[any]any {
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetJointIToName()))
+func (self Instance) JointIToName() map[int]string {
+	return map[int]string(gd.DictionaryAs[map[int]string](class(self).GetJointIToName()))
 }
 
-func (self Instance) SetJointIToName(value map[any]any) {
+func (self Instance) SetJointIToName(value map[int]string) {
 	class(self).SetJointIToName(gd.DictionaryFromMap(value))
 }
 

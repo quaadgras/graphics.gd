@@ -264,11 +264,11 @@ func (self Instance) SetRelativeIndex(value int) {
 	class(self).SetRelativeIndex(int64(value))
 }
 
-func (self Instance) Font() RID.Any {
-	return RID.Any(RID.Any(class(self).GetFont()))
+func (self Instance) Font() RID.Font {
+	return RID.Font(RID.Font(class(self).GetFont()))
 }
 
-func (self Instance) SetFont(value RID.Any) {
+func (self Instance) SetFont(value RID.Font) {
 	class(self).SetFont(RID.Any(value))
 }
 

@@ -1,16 +1,16 @@
 /*
 [gdscript]
 func _make_custom_tooltip(for_text):
-    var label = Label.new()
-    label.text = for_text
-    return label
+	var label = Label.new()
+	label.text = for_text
+	return label
 [/gdscript]
 [csharp]
 public override Control _MakeCustomTooltip(string forText)
 {
-    var label = new Label();
-    label.Text = forText;
-    return label;
+	var label = new Label();
+	label.Text = forText;
+	return label;
 }
 [/csharp]
 */

@@ -1,18 +1,18 @@
 /*
 [gdscript]
 func _get_plugin_icon():
-    # You can use a custom icon:
-    return preload("res://addons/my_plugin/my_plugin_icon.svg")
-    # Or use a built-in icon:
-    return EditorInterface.get_editor_theme().get_icon("Node", "EditorIcons")
+	# You can use a custom icon:
+	return preload("res://addons/my_plugin/my_plugin_icon.svg")
+	# Or use a built-in icon:
+	return EditorInterface.get_editor_theme().get_icon("Node", "EditorIcons")
 [/gdscript]
 [csharp]
 public override Texture2D _GetPluginIcon()
 {
-    // You can use a custom icon:
-    return ResourceLoader.Load<Texture2D>("res://addons/my_plugin/my_plugin_icon.svg");
-    // Or use a built-in icon:
-    return EditorInterface.Singleton.GetEditorTheme().GetIcon("Node", "EditorIcons");
+	// You can use a custom icon:
+	return ResourceLoader.Load<Texture2D>("res://addons/my_plugin/my_plugin_icon.svg");
+	// Or use a built-in icon:
+	return EditorInterface.Singleton.GetEditorTheme().GetIcon("Node", "EditorIcons");
 }
 [/csharp]
 */

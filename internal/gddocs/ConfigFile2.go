@@ -8,14 +8,14 @@ var err = config.load("user://scores.cfg")
 
 # If the file didn't load, ignore it.
 if err != OK:
-    return
+	return
 
 # Iterate over all sections.
 for player in config.get_sections():
-    # Fetch the data for each section.
-    var player_name = config.get_value(player, "player_name")
-    var player_score = config.get_value(player, "best_score")
-    score_data[player_name] = player_score
+	# Fetch the data for each section.
+	var player_name = config.get_value(player, "player_name")
+	var player_score = config.get_value(player, "best_score")
+	score_data[player_name] = player_score
 [/gdscript]
 [csharp]
 var score_data = new Godot.Collections.Dictionary();
@@ -27,16 +27,16 @@ Error err = config.Load("user://scores.cfg");
 // If the file didn't load, ignore it.
 if (err != Error.Ok)
 {
-    return;
+	return;
 }
 
 // Iterate over all sections.
 foreach (String player in config.GetSections())
 {
-    // Fetch the data for each section.
-    var player_name = (String)config.GetValue(player, "player_name");
-    var player_score = (int)config.GetValue(player, "best_score");
-    score_data[player_name] = player_score;
+	// Fetch the data for each section.
+	var player_name = (String)config.GetValue(player, "player_name");
+	var player_score = (int)config.GetValue(player, "best_score");
+	score_data[player_name] = player_score;
 }
 [/csharp]
 */

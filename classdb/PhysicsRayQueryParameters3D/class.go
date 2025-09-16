@@ -196,11 +196,11 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
-func (self Instance) Exclude() []RID.Any {
-	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetExclude())))
+func (self Instance) Exclude() [][]RID.Body3D {
+	return [][]RID.Body3D(gd.ArrayAs[[][]RID.Body3D](gd.InternalArray(class(self).GetExclude())))
 }
 
-func (self Instance) SetExclude(value []RID.Any) {
+func (self Instance) SetExclude(value [][]RID.Body3D) {
 	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 }
 

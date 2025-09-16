@@ -170,11 +170,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Events() []any {
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetEvents())))
+func (self Instance) Events() []InputEvent.Instance {
+	return []InputEvent.Instance(gd.ArrayAs[[]InputEvent.Instance](gd.InternalArray(class(self).GetEvents())))
 }
 
-func (self Instance) SetEvents(value []any) {
+func (self Instance) SetEvents(value []InputEvent.Instance) {
 	class(self).SetEvents(gd.EngineArrayFromSlice(value))
 }
 

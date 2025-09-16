@@ -213,11 +213,11 @@ func (self Instance) SetBindingPath(value string) {
 	class(self).SetBindingPath(String.New(value))
 }
 
-func (self Instance) BindingModifiers() []any {
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetBindingModifiers())))
+func (self Instance) BindingModifiers() []OpenXRActionBindingModifier.Instance {
+	return []OpenXRActionBindingModifier.Instance(gd.ArrayAs[[]OpenXRActionBindingModifier.Instance](gd.InternalArray(class(self).GetBindingModifiers())))
 }
 
-func (self Instance) SetBindingModifiers(value []any) {
+func (self Instance) SetBindingModifiers(value []OpenXRActionBindingModifier.Instance) {
 	class(self).SetBindingModifiers(gd.EngineArrayFromSlice(value))
 }
 

@@ -1,7 +1,7 @@
 /*
 func _get_state():
-    var state = {"zoom": zoom, "preferred_color": my_color}
-    return state
+	var state = { "zoom": zoom, "preferred_color": my_color }
+	return state
 */
 
 package main

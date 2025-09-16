@@ -19,9 +19,9 @@ m.mesh = arr_mesh
 [csharp]
 Vector3[] vertices =
 [
-    new Vector3(0, 1, 0),
-    new Vector3(1, 0, 0),
-    new Vector3(0, 0, 1),
+	new Vector3(0, 1, 0),
+	new Vector3(1, 0, 0),
+	new Vector3(0, 0, 1),
 ];
 
 // Initialize the ArrayMesh.

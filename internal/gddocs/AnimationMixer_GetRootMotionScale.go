@@ -4,12 +4,12 @@ var current_scale = Vector3(1, 1, 1)
 var scale_accum = Vector3(1, 1, 1)
 
 func _process(delta):
-    if Input.is_action_just_pressed("animate"):
-        current_scale = get_scale()
-        scale_accum = Vector3(1, 1, 1)
-        state_machine.travel("Animate")
-    scale_accum += animation_tree.get_root_motion_scale()
-    set_scale(current_scale * scale_accum)
+	if Input.is_action_just_pressed("animate"):
+		current_scale = get_scale()
+		scale_accum = Vector3(1, 1, 1)
+		state_machine.travel("Animate")
+	scale_accum += animation_tree.get_root_motion_scale()
+	set_scale(current_scale * scale_accum)
 [/gdscript]
 */
 

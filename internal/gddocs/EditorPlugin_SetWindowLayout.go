@@ -1,7 +1,7 @@
 /*
 func _set_window_layout(configuration):
-    $Window.position = configuration.get_value("MyPlugin", "window_position", Vector2())
-    $Icon.modulate = configuration.get_value("MyPlugin", "icon_color", Color.WHITE)
+	$Window.position = configuration.get_value("MyPlugin", "window_position", Vector2())
+	$Icon.modulate = configuration.get_value("MyPlugin", "icon_color", Color.WHITE)
 */
 
 package main

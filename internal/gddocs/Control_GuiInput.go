@@ -1,20 +1,20 @@
 /*
 [gdscript]
 func _gui_input(event):
-    if event is InputEventMouseButton:
-        if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-            print("I've been clicked D:")
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			print("I've been clicked D:")
 [/gdscript]
 [csharp]
 public override void _GuiInput(InputEvent @event)
 {
-    if (@event is InputEventMouseButton mb)
-    {
-        if (mb.ButtonIndex == MouseButton.Left && mb.Pressed)
-        {
-            GD.Print("I've been clicked D:");
-        }
-    }
+	if (@event is InputEventMouseButton mb)
+	{
+		if (mb.ButtonIndex == MouseButton.Left && mb.Pressed)
+		{
+			GD.Print("I've been clicked D:");
+		}
+	}
 }
 [/csharp]
 */

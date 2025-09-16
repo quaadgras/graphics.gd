@@ -1,16 +1,16 @@
 /*
 [gdscript]
 func _get_drag_data(position):
-    var mydata = make_data() # This is your custom method generating the drag data.
-    set_drag_preview(make_preview(mydata)) # This is your custom method generating the preview of the drag data.
-    return mydata
+	var mydata = make_data() # This is your custom method generating the drag data.
+	set_drag_preview(make_preview(mydata)) # This is your custom method generating the preview of the drag data.
+	return mydata
 [/gdscript]
 [csharp]
 public override Variant _GetDragData(Vector2 atPosition)
 {
-    var myData = MakeData(); // This is your custom method generating the drag data.
-    SetDragPreview(MakePreview(myData)); // This is your custom method generating the preview of the drag data.
-    return myData;
+	var myData = MakeData(); // This is your custom method generating the drag data.
+	SetDragPreview(MakePreview(myData)); // This is your custom method generating the preview of the drag data.
+	return myData;
 }
 [/csharp]
 */

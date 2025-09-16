@@ -334,11 +334,31 @@ func (self Instance) SetMemberKeywordColors(value map[any]any) {
 	class(self).SetMemberKeywordColors(gd.DictionaryFromMap(value))
 }
 
-func (self Instance) ColorRegions() map[any]any {
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetColorRegions()))
+func (self Instance) ColorRegions() map[string]struct {
+	R float32
+	G float32
+	B float32
+	A float32
+} {
+	return map[string]struct {
+		R float32
+		G float32
+		B float32
+		A float32
+	}(gd.DictionaryAs[map[string]struct {
+		R float32
+		G float32
+		B float32
+		A float32
+	}](class(self).GetColorRegions()))
 }
 
-func (self Instance) SetColorRegions(value map[any]any) {
+func (self Instance) SetColorRegions(value map[string]struct {
+	R float32
+	G float32
+	B float32
+	A float32
+}) {
 	class(self).SetColorRegions(gd.DictionaryFromMap(value))
 }
 

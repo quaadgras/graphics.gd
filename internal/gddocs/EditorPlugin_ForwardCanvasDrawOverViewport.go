@@ -1,32 +1,32 @@
 /*
 [gdscript]
 func _forward_canvas_draw_over_viewport(overlay):
-    # Draw a circle at cursor position.
-    overlay.draw_circle(overlay.get_local_mouse_position(), 64, Color.WHITE)
+	# Draw a circle at the cursor's position.
+	overlay.draw_circle(overlay.get_local_mouse_position(), 64, Color.WHITE)
 
 func _forward_canvas_gui_input(event):
-    if event is InputEventMouseMotion:
-        # Redraw viewport when cursor is moved.
-        update_overlays()
-        return true
-    return false
+	if event is InputEventMouseMotion:
+		# Redraw the viewport when the cursor is moved.
+		update_overlays()
+		return true
+	return false
 [/gdscript]
 [csharp]
 public override void _ForwardCanvasDrawOverViewport(Control viewportControl)
 {
-    // Draw a circle at cursor position.
-    viewportControl.DrawCircle(viewportControl.GetLocalMousePosition(), 64, Colors.White);
+	// Draw a circle at the cursor's position.
+	viewportControl.DrawCircle(viewportControl.GetLocalMousePosition(), 64, Colors.White);
 }
 
 public override bool _ForwardCanvasGuiInput(InputEvent @event)
 {
-    if (@event is InputEventMouseMotion)
-    {
-        // Redraw viewport when cursor is moved.
-        UpdateOverlays();
-        return true;
-    }
-    return false;
+	if (@event is InputEventMouseMotion)
+	{
+		// Redraw the viewport when the cursor is moved.
+		UpdateOverlays();
+		return true;
+	}
+	return false;
 }
 [/csharp]
 */

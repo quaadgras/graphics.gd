@@ -169,11 +169,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Map() RID.Any {
-	return RID.Any(RID.Any(class(self).GetMap()))
+func (self Instance) Map() RID.NavigationMap2D {
+	return RID.NavigationMap2D(RID.NavigationMap2D(class(self).GetMap()))
 }
 
-func (self Instance) SetMap(value RID.Any) {
+func (self Instance) SetMap(value RID.NavigationMap2D) {
 	class(self).SetMap(RID.Any(value))
 }
 

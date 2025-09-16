@@ -175,7 +175,7 @@ func (classDB ClassDB) convertTypeSimple(class gdjson.Class, lookup, meta string
 			if typed == reflect.TypeFor[RID.Any]() {
 				return "RID.Any"
 			}
-			return typed.String()
+			return strings.ReplaceAll(typed.String(), "graphics.gd/variant/", "")
 		}
 		return "RID.Any"
 	case "ObjectID":

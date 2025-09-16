@@ -1,12 +1,12 @@
 /*
 [gdscript]
 func _is_node_hover_valid(from, from_port, to, to_port):
-    return from != to
+	return from != to
 [/gdscript]
 [csharp]
 public override bool _IsNodeHoverValid(StringName fromNode, int fromPort, StringName toNode, int toPort)
 {
-    return fromNode != toNode;
+	return fromNode != toNode;
 }
 [/csharp]
 */

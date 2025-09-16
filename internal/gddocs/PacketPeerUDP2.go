@@ -2,15 +2,15 @@
 var peer
 
 func _ready():
-    peer = PacketPeerUDP.new()
-    peer.bind(4433)
+	peer = PacketPeerUDP.new()
+	peer.bind(4433)
 
 
 func _process(_delta):
-    if peer.get_available_packet_count() > 0:
-        var array_bytes = peer.get_packet()
-        var packet_string = array_bytes.get_string_from_ascii()
-        print("Received message: ", packet_string)
+	if peer.get_available_packet_count() > 0:
+		var array_bytes = peer.get_packet()
+		var packet_string = array_bytes.get_string_from_ascii()
+		print("Received message: ", packet_string)
 */
 
 package main

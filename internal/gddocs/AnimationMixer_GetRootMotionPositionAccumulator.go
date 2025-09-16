@@ -3,12 +3,12 @@
 var prev_root_motion_position_accumulator
 
 func _process(delta):
-    if Input.is_action_just_pressed("animate"):
-        state_machine.travel("Animate")
-    var current_root_motion_position_accumulator = animation_tree.get_root_motion_position_accumulator()
-    var difference = current_root_motion_position_accumulator - prev_root_motion_position_accumulator
-    prev_root_motion_position_accumulator = current_root_motion_position_accumulator
-    transform.origin += difference
+	if Input.is_action_just_pressed("animate"):
+		state_machine.travel("Animate")
+	var current_root_motion_position_accumulator = animation_tree.get_root_motion_position_accumulator()
+	var difference = current_root_motion_position_accumulator - prev_root_motion_position_accumulator
+	prev_root_motion_position_accumulator = current_root_motion_position_accumulator
+	transform.origin += difference
 [/gdscript]
 */
 

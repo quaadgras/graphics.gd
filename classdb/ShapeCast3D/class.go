@@ -375,8 +375,8 @@ func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
-func (self Instance) CollisionResult() []PhysicsDirectSpaceState3D_RestInfo {
-	return []PhysicsDirectSpaceState3D_RestInfo(gd.ArrayAs[[]PhysicsDirectSpaceState3D_RestInfo](gd.InternalArray(class(self).GetCollisionResult())))
+func (self Instance) CollisionResult() []any {
+	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetCollisionResult())))
 }
 
 func (self Instance) CollideWithAreas() bool {

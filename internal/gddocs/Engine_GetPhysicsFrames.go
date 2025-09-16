@@ -1,18 +1,18 @@
 /*
 [gdscript]
 func _physics_process(_delta):
-    if Engine.get_physics_frames() % 2 == 0:
-        pass # Run expensive logic only once every 2 physics frames here.
+	if Engine.get_physics_frames() % 2 == 0:
+		pass # Run expensive logic only once every 2 physics frames here.
 [/gdscript]
 [csharp]
 public override void _PhysicsProcess(double delta)
 {
-    base._PhysicsProcess(delta);
+	base._PhysicsProcess(delta);
 
-    if (Engine.GetPhysicsFrames() % 2 == 0)
-    {
-        // Run expensive logic only once every 2 physics frames here.
-    }
+	if (Engine.GetPhysicsFrames() % 2 == 0)
+	{
+		// Run expensive logic only once every 2 physics frames here.
+	}
 }
 [/csharp]
 */

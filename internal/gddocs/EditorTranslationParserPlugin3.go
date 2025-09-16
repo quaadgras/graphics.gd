@@ -1,24 +1,24 @@
 /*
 [gdscript]
 func _parse_file(path):
-    var res = ResourceLoader.load(path, "Script")
-    var text = res.source_code
-    # Parsing logic.
+	var res = ResourceLoader.load(path, "Script")
+	var text = res.source_code
+	# Parsing logic.
 
 func _get_recognized_extensions():
-    return ["gd"]
+	return ["gd"]
 [/gdscript]
 [csharp]
 public override Godot.Collections.Array<string[]> _ParseFile(string path)
 {
-    var res = ResourceLoader.Load<Script>(path, "Script");
-    string text = res.SourceCode;
-    // Parsing logic.
+	var res = ResourceLoader.Load<Script>(path, "Script");
+	string text = res.SourceCode;
+	// Parsing logic.
 }
 
 public override string[] _GetRecognizedExtensions()
 {
-    return ["gd"];
+	return ["gd"];
 }
 [/csharp]
 */

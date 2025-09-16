@@ -245,11 +245,11 @@ func (self Instance) SetIndices(value []int32) {
 	class(self).SetIndices(Packed.New(value...))
 }
 
-func (self Instance) ProjectedObstructions() []any {
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetProjectedObstructions())))
+func (self Instance) ProjectedObstructions() []ProjectedObstruction3D {
+	return []ProjectedObstruction3D(gd.ArrayAs[[]ProjectedObstruction3D](gd.InternalArray(class(self).GetProjectedObstructions())))
 }
 
-func (self Instance) SetProjectedObstructions(value []any) {
+func (self Instance) SetProjectedObstructions(value []ProjectedObstruction3D) {
 	class(self).SetProjectedObstructions(gd.EngineArrayFromSlice(value))
 }
 
@@ -466,4 +466,11 @@ func init() {
 	gdclass.Register("NavigationMeshSourceGeometryData3D", func(ptr gd.Object) any {
 		return Instance{pointers.AsA[gdclass.NavigationMeshSourceGeometryData3D](ptr)}
 	})
+}
+
+type ProjectedObstruction3D struct {
+	Vertices  []float32 `gd:"vertices"`
+	Elevation float32   `gd:"elevation"`
+	Height    float32   `gd:"height"`
+	Carve     bool      `gd:"carve"`
 }

@@ -243,11 +243,11 @@ func (self Instance) SetObstructionOutlines(value [][]Vector2.XY) {
 	class(self).SetObstructionOutlines(gd.ArrayFromSlice[Array.Contains[Packed.Array[Vector2.XY]]](value))
 }
 
-func (self Instance) ProjectedObstructions() []any {
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetProjectedObstructions())))
+func (self Instance) ProjectedObstructions() []ProjectedObstruction2D {
+	return []ProjectedObstruction2D(gd.ArrayAs[[]ProjectedObstruction2D](gd.InternalArray(class(self).GetProjectedObstructions())))
 }
 
-func (self Instance) SetProjectedObstructions(value []any) {
+func (self Instance) SetProjectedObstructions(value []ProjectedObstruction2D) {
 	class(self).SetProjectedObstructions(gd.EngineArrayFromSlice(value))
 }
 
@@ -372,7 +372,7 @@ func (self class) ClearProjectedObstructions() { //gd:NavigationMeshSourceGeomet
 Sets the projected obstructions with an Array of Dictionaries with the following key value pairs:
 
 
-	type ProjectedObstruction struct {
+	type ProjectedObstruction2D struct {
 		Vertices []float32 `gd:"vertices"`
 		Carve    bool      `gd:"carve"`
 	}
@@ -447,4 +447,9 @@ func init() {
 	gdclass.Register("NavigationMeshSourceGeometryData2D", func(ptr gd.Object) any {
 		return Instance{pointers.AsA[gdclass.NavigationMeshSourceGeometryData2D](ptr)}
 	})
+}
+
+type ProjectedObstruction2D struct {
+	Vertices []float32 `gd:"vertices"`
+	Carve    bool      `gd:"carve"`
 }

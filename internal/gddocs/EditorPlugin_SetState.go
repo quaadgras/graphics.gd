@@ -1,7 +1,7 @@
 /*
 func _set_state(data):
-    zoom = data.get("zoom", 1.0)
-    preferred_color = data.get("my_color", Color.WHITE)
+	zoom = data.get("zoom", 1.0)
+	preferred_color = data.get("my_color", Color.WHITE)
 */
 
 package main

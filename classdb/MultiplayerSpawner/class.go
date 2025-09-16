@@ -217,11 +217,11 @@ func (self Instance) SetSpawnLimit(value int) {
 	class(self).SetSpawnLimit(int64(value))
 }
 
-func (self Instance) SpawnFunction() Callable.Function {
-	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(class(self).GetSpawnFunction())))
+func (self Instance) SpawnFunction() func(data any) Node.Instance {
+	return (func(data any) Node.Instance)(gd.CallableAs[func(data any) Node.Instance](gd.InternalCallable(class(self).GetSpawnFunction())))
 }
 
-func (self Instance) SetSpawnFunction(value Callable.Function) {
+func (self Instance) SetSpawnFunction(value func(data any) Node.Instance) {
 	class(self).SetSpawnFunction(Callable.New(value))
 }
 

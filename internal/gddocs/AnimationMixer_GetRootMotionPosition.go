@@ -3,12 +3,12 @@
 var current_rotation
 
 func _process(delta):
-    if Input.is_action_just_pressed("animate"):
-        current_rotation = get_quaternion()
-        state_machine.travel("Animate")
-    var velocity = current_rotation * animation_tree.get_root_motion_position() / delta
-    set_velocity(velocity)
-    move_and_slide()
+	if Input.is_action_just_pressed("animate"):
+		current_rotation = get_quaternion()
+		state_machine.travel("Animate")
+	var velocity = current_rotation * animation_tree.get_root_motion_position() / delta
+	set_velocity(velocity)
+	move_and_slide()
 [/gdscript]
 */
 

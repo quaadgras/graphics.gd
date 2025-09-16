@@ -1,15 +1,15 @@
 /*
 [gdscript]
 if Engine.is_editor_hint():
-    draw_gizmos()
+	draw_gizmos()
 else:
-    simulate_physics()
+	simulate_physics()
 [/gdscript]
 [csharp]
 if (Engine.IsEditorHint())
-    DrawGizmos();
+	DrawGizmos();
 else
-    SimulatePhysics();
+	SimulatePhysics();
 [/csharp]
 */
 

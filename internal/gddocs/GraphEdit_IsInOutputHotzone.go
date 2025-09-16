@@ -1,10 +1,10 @@
 /*
 func _is_in_output_hotzone(in_node, in_port, mouse_position):
-    var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
-    var port_pos = in_node.get_position() + in_node.get_output_port_position(in_port) - port_size / 2
-    var rect = Rect2(port_pos, port_size)
+	var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
+	var port_pos = in_node.get_position() + in_node.get_output_port_position(in_port) - port_size / 2
+	var rect = Rect2(port_pos, port_size)
 
-    return rect.has_point(mouse_position)
+	return rect.has_point(mouse_position)
 */
 
 package main

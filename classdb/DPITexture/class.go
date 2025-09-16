@@ -233,11 +233,51 @@ func (self Instance) SetSaturation(value Float.X) {
 	class(self).SetSaturation(float64(value))
 }
 
-func (self Instance) ColorMap() map[any]any {
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetColorMap()))
+func (self Instance) ColorMap() map[struct {
+	R float32
+	G float32
+	B float32
+	A float32
+}]struct {
+	R float32
+	G float32
+	B float32
+	A float32
+} {
+	return map[struct {
+		R float32
+		G float32
+		B float32
+		A float32
+	}]struct {
+		R float32
+		G float32
+		B float32
+		A float32
+	}(gd.DictionaryAs[map[struct {
+		R float32
+		G float32
+		B float32
+		A float32
+	}]struct {
+		R float32
+		G float32
+		B float32
+		A float32
+	}](class(self).GetColorMap()))
 }
 
-func (self Instance) SetColorMap(value map[any]any) {
+func (self Instance) SetColorMap(value map[struct {
+	R float32
+	G float32
+	B float32
+	A float32
+}]struct {
+	R float32
+	G float32
+	B float32
+	A float32
+}) {
 	class(self).SetColorMap(gd.DictionaryFromMap(value))
 }
 

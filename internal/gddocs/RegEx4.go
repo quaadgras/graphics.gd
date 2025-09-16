@@ -1,6 +1,6 @@
 /*
 for result in regex.search_all("d01, d03, d0c, x3f and x42"):
-    print(result.get_string("digit"))
+	print(result.get_string("digit"))
 # Would print 01 03 0 3f 42
 */
 
