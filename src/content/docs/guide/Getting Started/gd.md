@@ -5,7 +5,8 @@ sidebar:
   order: 2
 ---
 
-The `gd` command can be installed using `go install`, this command is a drop in replacement for the `go` command for working with `graphics.gd` projects.
+The `gd` command can be installed using `go install`, this command is a drop in replacement for the `go` command for working
+with `graphics.gd` projects.
 
 ```sh
 go install graphics.gd/cmd/gd@release
@@ -13,8 +14,9 @@ go install graphics.gd/cmd/gd@release
 
 Run this command again whenever you update `graphics.gd` (it doesn't currently stay in sync with your project version).
 
-The `gd` command is also fully compatible with standard GDScript-based Godot projects and can be used to initialise cross-platform export configurations
-and to easily launch projects on Web, Android and iOS (on any platform). To use it this way, run it inside the directory where `project.godot` is located.
+The `gd` command is also fully compatible with standard GDScript-based Godot projects and can be used to initialise
+cross-platform export configurations and to easily launch projects on Web, Android and iOS (on any platform). To use it
+this way, run it inside the directory where `project.godot` is located.
 
 #### Quick Rundown
 
@@ -27,9 +29,11 @@ gd test  # run your Go tests.
 
 #### Why a new command?
 
-The `gd` command takes care of all the build flags and configuration files needed to setup Go + Godot so that things will "just work" in the same way that the `go` command does.
+The `gd` command takes care of all the build flags and configuration files needed to setup Go + Godot so that things
+will "just work" in the same way that the `go` command does.
 
-If you are already well versed in Godot and GDExtension, or you want to use your own build tools, you can use the `go` command to build the shared library yourself:
+If you are already well versed in Godot and GDExtension, or you want to use your own build tools, you can use the
+`go` command to build the shared library yourself:
 
 ```sh
 CC="zig cc" go build -o example.so -buildmode=c-shared

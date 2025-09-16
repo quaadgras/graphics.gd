@@ -9,9 +9,9 @@ The gdextension interface to the engine supports a fixed set of underlying data 
 them have an equivalent convenience type in Go and a high-performance type (this type is
 allocation efficient and suitable for use in hot functions).
 
-All of the data types have a package underneath `graphics.gd/variant`. With the exception
-of `Object`, all these packages are implemented in pure Go to avoid any coupling or
-overhead when making calls to the engine. You can import these packages in any Go project.
+All of the data types have a package underneath [graphics.gd/variant](https://pkg.go.dev/graphics.gd/variant).
+With the exception of `Object` and `RefCounted`, all these packages are implemented in pure Go to avoid any
+coupling or overhead when making calls to the engine. You can import these packages in any Go project.
 
 ### Core Types
 

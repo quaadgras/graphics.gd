@@ -3,7 +3,8 @@ title: Declarative Children
 slug: guide/classdb/children
 ---
 
-If a Go structs extends a `Node`-derived class, any exported `Node`-derived fields will be populated automatically.
+If a Go structs extends a [Node](https://pkg.go.dev/graphics.gd/classdb/Node)-derived class, any exported
+[Node](https://pkg.go.dev/graphics.gd/classdb/Node)-derived fields will be populated automatically.
 This means `graphics.gd` will look for any children that match the same name as the field (or the name within the `gd`
 struct tag) and either populate the field with the first child found or create a new instance of the field's type if
 no child is found.

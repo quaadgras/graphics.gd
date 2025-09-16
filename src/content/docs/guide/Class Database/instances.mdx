@@ -8,11 +8,12 @@ import { Aside } from '@astrojs/starlight/components';
 
 <Aside>ClassDB extensions registered by Go can be instantiated with the builtin `new` function.</Aside>
 
-Each object provided by the engine is available under the `graphics.gd/classdb`, they can be instantiated using the `New` function defined in their respective package.
+Each object provided by the engine is available under the [graphics.gd/classdb](https://pkg.go.dev/graphics.gd/classdb),
+they can be instantiated using the `New` function defined in their respective package.
 
-The `New` function will return the convenient `Instance` type, which will include all of the methods available on that object (which will be exclusively
-using convienience types and do not include any optional arguments). `Instance` values can be converted to both `Advanced` types for low-level use and
-`Expanded` types (which include all optional arguments).
+The `New` function will return the convenient `Instance` type, which will include all of the methods available on that
+object (which will be exclusively using convienience types and do not include any optional arguments). `Instance` values
+can be converted to both `Advanced` types for low-level use and `Expanded` types (which include all optional arguments).
 
 ```go
 package main

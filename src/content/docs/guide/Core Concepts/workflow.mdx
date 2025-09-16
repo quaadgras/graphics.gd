@@ -32,8 +32,9 @@ type Project struct {
 ````
 
 Keep creating more data structures to represent the concepts of what you are aiming to
-build. Explore the `classdb` to discover all the functionality the engine provides.
-Think about how you can use these features to build your project.
+build. Explore the [classdb](https://pkg.go.dev/graphics.gd/classdb) to discover all the
+functionality that the engine provides. Think about how you can use these features to
+build your project.
 
 When you want to organise the visual appearance of the project, use the `gd` command to
 launch the engine's editor. The editor is excellent for importing media, managing assets
@@ -52,11 +53,13 @@ make any changes to Go source files whilst the project or editor is running, the
 be recompiled into either a wasm binary or a Go plugin and the running application will
 switch over to using any newly compiled code.
 
-If you stick to using exported struct fields, `startup.Scene` and avoid depending on
-globals or anonymous functions, this may "just work" for you, otherwise, if you are using
-`startup.Rendering` or require globals or persistent callables, then there will be internal
-state not available to the new version of the code. Register `startup.OnSuspend` and
-`startup.OnRestore` functions to coordinate and transfer this state.
+If you stick to using exported struct fields, [startup.Scene](https://pkg.go.dev/graphics.gd/startup#Scene)
+and avoid depending on globals or anonymous functions, this may "just work" for you, otherwise, if you are
+using [startup.Rendering](https://pkg.go.dev/graphics.gd/startup#Rendering) or require globals or persistent
+callables, then there will be internal state not available to the new version of the code. Register
+[startup.OnSuspend](https://pkg.go.dev/graphics.gd/startup#OnSuspend) and
+[startup.OnRestore](https://pkg.go.dev/graphics.gd/startup#OnRestore) functions to coordinate and transfer
+this state.
 
 If any non-serializable state is required for specific class extensions, you can also implement
 `Suspend(Dictionary.Any)` and `Restore(Dictionary.Any)` methods in order to record any required

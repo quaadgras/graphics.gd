@@ -3,8 +3,8 @@ title: Language Differences
 slug: guide/go
 ---
 
-`graphics.gd` works together with the builtin `.gd` scripting language of the engine, please refer to this
-page for general information on the differences and similarities between Go and `.gd` scripts.
+`graphics.gd` works together with the builtin `.gd` scripting language of the engine, please refer
+to this page for general information on the differences and similarities between Go and `.gd` scripts.
 
 
 ### Identifiers
@@ -37,10 +37,10 @@ var _private_property
 ```
 
 ### Programming Paradigms
-Go is a statically typed procedural programming language, code is organised into packages, these are directories
-with one or more `.go` files each with a collection of types and functions that can all reference each other. Each
-Go file can independently import other Go packages by their path (typically a Github repository, or a path within
-the Go module).
+Go is a statically typed procedural programming language, code is organised into packages, these are
+directories with one or more `.go` files each with a collection of types and functions that can all
+reference each other. Each Go file can independently import other Go packages by their path (typically
+a Github repository, or a path within the Go module).
 
 ```go
 package logic
@@ -56,9 +56,9 @@ func (d MyData) DoSomething() {
 }
 ```
 
-`.gd` scripts are dynamically-typed and object-oriented, each file corresponds to a class which can have a number
-of properties and methods. Other classes can be loaded into the script by their resource path. Global classes can
-be references without loading (this includes classes defined by Go).
+`.gd` scripts are dynamically-typed and object-oriented, each file corresponds to a class which can have
+a number of properties and methods. Other classes can be loaded into the script by their resource path.
+Global classes can be references without loading (this includes classes defined by Go).
 
 ```gdscript
 extends Object
@@ -72,7 +72,8 @@ func do_something():
 ```
 
 ### Mathematical Functions
-Go has a standard libary `math` package. `graphics.gd` includes packages for each variant type with common functions.
+Go has a standard libary `math` package. `graphics.gd` includes packages for each variant type with
+common functions.
 
 ```go
 import "math" // float64 math
@@ -82,8 +83,8 @@ var r = math.Sin(0.5)
 var d = Vector2.Dot(Vector2.New(1, 2), Vector2.New(3, 4))
 ```
 
-`.gd` scripts have builtin math functions that can be used with any supported variant type. These are the same
-functions that are available in the Go `variant` packages.
+`.gd` scripts have builtin math functions that can be used with any supported variant type. These are the
+same functions that are available in the Go `variant` packages.
 
 ```gdscript
 extends Object
@@ -93,8 +94,9 @@ var d = dot(Vector2(1, 2), Vector2(3, 4))
 ```
 
 ### Resource Loading
-In Go, resources can be pre-loaded using the `Resource` package, unlike most `classdb` functionality, this can be
-performed in a global variable instead of inside a function. Note that the resource type needs to be specified.
+In Go, resources can be pre-loaded using the [Resource.Load](https://pkg.go.dev/graphics.gd/classdb/Resource) function,
+unlike  most `classdb` functions, this can be performed in a global variable instead of inside a function. Note that the
+resource type needs to be specified.
 
 ```go
 package main

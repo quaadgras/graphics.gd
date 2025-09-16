@@ -8,29 +8,30 @@ sidebar:
 import { Aside } from '@astrojs/starlight/components';
 
 <Aside type="caution">
-    The API for this feature is complete and you can write code for it today, however, you may not observe any
-    performance improvements/functionality until this feature has been fully implemented.
+    The API for this feature is complete and you can write code for it today, however, you may \
+    not observe any performance improvements/functionality until this feature has been fully implemented.
 </Aside>
 
 <Aside>
-Any well known 'virtual' callbacks (ie. `Ready()` and `Process(delta Float.X)`) do not need trampolines
-as they have already been optimised to avoid allocations.
+Any well known 'virtual' callbacks (ie. `Ready()` and `Process(delta Float.X)`) do not need
+trampolines as they have already been optimised to avoid allocations.
 
-Getters and Setters (ie. `func() T` or `func(T)`) where T is a high-performance type do not need
-trampolines either, as these functions are also already handled by `graphics.gd`.
-
+Getters and Setters (ie. `func() T` or `func(T)`) where T is a high-performance type do not
+need trampolines either, as these functions are also already handled by `graphics.gd`.
 </Aside>
 
-Trampolines help to keep baseline memory allocations low, occasional memory allocations are absolutely fine but
-you do not want to be allocating memory for thousands of objects every frame. A downside of the automatic script exports
-created by `graphics.gd` for methods and functions, is that they use reflection calls under the hood which *always* allocate.
+Trampolines help to keep baseline memory allocations low, occasional memory allocations are
+absolutely fine but you do not want to be allocating memory for thousands of objects every frame.
+A downside of the automatic script exports created by `graphics.gd` for methods and functions, is
+that they use reflection calls under the hood which *always* allocate.
 
-If a class has any exported methods intended for use in high performance scenarios (called by scripts many many
-times per frame), then you should create a trampoline for it. This is a special function that accepts
-raw `variant.Arguments` values from the engine and calls your function with them.
+If a class has any exported methods intended for use in high performance scenarios (called by
+scripts many many times per frame), then you should create a trampoline for it. This is a special
+function that accepts raw [variant.Arguments](https://pkg.go.dev/graphics.gd/variant#Arguments)
+values from the engine and calls your function with them.
 
-You only need to create one trampoline per combination of arguments, so if you have two different methods with the same signature,
-you only need to create one trampoline for both methods.
+You only need to create one trampoline per combination of arguments, so if you have two different
+methods with the same signature, you only need to create one trampoline for both methods.
 
 ```go
 package main

@@ -9,4 +9,4 @@ The Rendering Server is a lower-level retained-rendering API suitable for render
 
 For more information on this API, see the Godot reference for it:
 
-https://docs.godotengine.org/en/4.4/classes/class_renderingserver.html
+https://pkg.go.dev/graphics.gd/classdb/RenderingServer

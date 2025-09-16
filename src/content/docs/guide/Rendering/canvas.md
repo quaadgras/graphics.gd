@@ -5,12 +5,13 @@ sidebar:
   order: 24
 ---
 
-A high-level immediate-mode 2D rendering option is available by implementing the `Draw()` method on a `Node2D` extension.
+A high-level immediate-mode 2D rendering option is available by implementing the `Draw()` method on a
+[Node2D.Extension](https://pkg.go.dev/graphics.gd/classdb/Node2D#Extension).
 
-You can structure the entire project with a single `Node2D` root added to the default scene, and pass down the `CanvasItem`
-as needed for rendering everything, along with implementing `Ready()` and `Process(Float.X)` this will give you a familiar
-development experience to something like [Love2D](https://love2d.org/) or [Ebiten](https://ebiten.org/).
-
+You can structure the entire project with a single [Node2D](https://pkg.go.dev/graphics.gd/classdb/Node2D) root
+added to the default scene, and pass down the [CanvasItem](https://pkg.go.dev/graphics.gd/classdb/CanvasItem)
+as needed for rendering everything, along with implementing `Ready()` and `Process(Float.X)` this will give you
+a familiar development experience to something like [Love2D](https://love2d.org/) or [Ebiten](https://ebiten.org/).
 
 ```go
 package main
