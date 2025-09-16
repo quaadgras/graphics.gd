@@ -1,6 +1,6 @@
 /*
 [gdscript]
-var fields = {"username": "user", "password": "pass"}
+var fields = { "username": "user", "password": "pass" }
 var query_string = http_client.query_string_from_dict(fields)
 # Returns "username=user&password=pass"
 [/gdscript]

@@ -2,13 +2,13 @@
 [gdscript]
 # Prevents the InputEvent from reaching other Editor classes.
 func _forward_canvas_gui_input(event):
-    return true
+	return true
 [/gdscript]
 [csharp]
 // Prevents the InputEvent from reaching other Editor classes.
 public override bool ForwardCanvasGuiInput(InputEvent @event)
 {
-    return true;
+	return true;
 }
 [/csharp]
 */

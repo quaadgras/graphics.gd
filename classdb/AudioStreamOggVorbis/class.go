@@ -205,11 +205,11 @@ func (self Instance) SetBarBeats(value int) {
 	class(self).SetBarBeats(int64(value))
 }
 
-func (self Instance) Tags() map[any]any {
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetTags()))
+func (self Instance) Tags() map[string]interface{} {
+	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetTags()))
 }
 
-func (self Instance) SetTags(value map[any]any) {
+func (self Instance) SetTags(value map[string]interface{}) {
 	class(self).SetTags(gd.DictionaryFromMap(value))
 }
 

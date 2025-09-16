@@ -335,19 +335,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) ClipCount() int {
-	return int(int(class(self).GetClipCount()))
+func (self Instance) ClipCount() Clip {
+	return Clip(Clip(class(self).GetClipCount()))
 }
 
-func (self Instance) SetClipCount(value int) {
+func (self Instance) SetClipCount(value Clip) {
 	class(self).SetClipCount(int64(value))
 }
 
-func (self Instance) InitialClip() int {
-	return int(int(class(self).GetInitialClip()))
+func (self Instance) InitialClip() Clip {
+	return Clip(Clip(class(self).GetInitialClip()))
 }
 
-func (self Instance) SetInitialClip(value int) {
+func (self Instance) SetInitialClip(value Clip) {
 	class(self).SetInitialClip(int64(value))
 }
 

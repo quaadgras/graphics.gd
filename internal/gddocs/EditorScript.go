@@ -4,7 +4,7 @@
 extends EditorScript
 
 func _run():
-    print("Hello from the Godot Editor!")
+	print("Hello from the Godot Editor!")
 [/gdscript]
 [csharp]
 using Godot;
@@ -12,10 +12,10 @@ using Godot;
 [Tool]
 public partial class HelloEditor : EditorScript
 {
-    public override void _Run()
-    {
-        GD.Print("Hello from the Godot Editor!");
-    }
+	public override void _Run()
+	{
+		GD.Print("Hello from the Godot Editor!");
+	}
 }
 [/csharp]
 */

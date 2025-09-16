@@ -89,7 +89,7 @@ Example: Split a string using a RegEx:
 		var regex = RegEx.New()
 		regex.Compile(`\S+`) // Negated whitespace character class.
 		var results = []string{}
-		for _, result := range regex.SearchAll("One  Two \n\tThree") {
+		for _, result := range regex.SearchAll("One	 Two \n\tThree") {
 			results = append(results, result.GetString())
 		}
 		fmt.Println(results)

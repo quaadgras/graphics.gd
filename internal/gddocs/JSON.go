@@ -7,13 +7,13 @@ var json_string = JSON.stringify(data_to_send)
 var json = JSON.new()
 var error = json.parse(json_string)
 if error == OK:
-    var data_received = json.data
-    if typeof(data_received) == TYPE_ARRAY:
-        print(data_received) # Prints the array.
-    else:
-        print("Unexpected data")
+	var data_received = json.data
+	if typeof(data_received) == TYPE_ARRAY:
+		print(data_received) # Prints the array.
+	else:
+		print("Unexpected data")
 else:
-    print("JSON Parse Error: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
+	print("JSON Parse Error: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
 */
 
 package main

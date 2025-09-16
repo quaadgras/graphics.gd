@@ -400,7 +400,7 @@ const (
 	//
 	// func _popup_menu(paths):
 	//
-	// var code_edit = Engine.get_main_loop().root.get_node(paths[0]);
+	// 	var code_edit = Engine.get_main_loop().root.get_node(paths[0]);
 	//
 	//
 	//
@@ -414,7 +414,7 @@ const (
 	//
 	// func _popup_menu(paths):
 	//
-	// var canvas_item = Engine.get_main_loop().root.get_node(paths[0]); # Replace 0 with the desired index.
+	// 	var canvas_item = Engine.get_main_loop().root.get_node(paths[0]); # Replace 0 with the desired index.
 	//
 	//
 	//

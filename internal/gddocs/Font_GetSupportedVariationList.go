@@ -3,9 +3,9 @@ var fv = FontVariation.new()
 fv.base_font = load("res://RobotoFlex.ttf")
 var variation_list = fv.get_supported_variation_list()
 for tag in variation_list:
-    var name = TextServerManager.get_primary_interface().tag_to_name(tag)
-    var values = variation_list[tag]
-    print("variation axis: %s (%d)\n\tmin, max, default: %s" % [name, tag, values])
+	var name = TextServerManager.get_primary_interface().tag_to_name(tag)
+	var values = variation_list[tag]
+	print("variation axis: %s (%d)\n\tmin, max, default: %s" % [name, tag, values])
 */
 
 package main

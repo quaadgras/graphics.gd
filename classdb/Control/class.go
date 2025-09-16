@@ -314,11 +314,11 @@ type Interface interface {
 	//
 	// func _get_drag_data(position):
 	//
-	// var mydata = make_data() # This is your custom method generating the drag data.
+	// 	var mydata = make_data() # This is your custom method generating the drag data.
 	//
-	// set_drag_preview(make_preview(mydata)) # This is your custom method generating the preview of the drag data.
+	// 	set_drag_preview(make_preview(mydata)) # This is your custom method generating the preview of the drag data.
 	//
-	// return mydata
+	// 	return mydata
 	//
 	// [/gdscript]
 	//
@@ -328,11 +328,11 @@ type Interface interface {
 	//
 	// {
 	//
-	// var myData = MakeData(); // This is your custom method generating the drag data.
+	// 	var myData = MakeData(); // This is your custom method generating the drag data.
 	//
-	// SetDragPreview(MakePreview(myData)); // This is your custom method generating the preview of the drag data.
+	// 	SetDragPreview(MakePreview(myData)); // This is your custom method generating the preview of the drag data.
 	//
-	// return myData;
+	// 	return myData;
 	//
 	// }
 	//
@@ -352,11 +352,11 @@ type Interface interface {
 	//
 	// func _can_drop_data(position, data):
 	//
-	// # Check position if it is relevant to you
+	// 	# Check position if it is relevant to you
 	//
-	// # Otherwise, just check data
+	// 	# Otherwise, just check data
 	//
-	// return typeof(data) == TYPE_DICTIONARY and data.has("expected")
+	// 	return typeof(data) == TYPE_DICTIONARY and data.has("expected")
 	//
 	// [/gdscript]
 	//
@@ -366,11 +366,11 @@ type Interface interface {
 	//
 	// {
 	//
-	// // Check position if it is relevant to you
+	// 	// Check position if it is relevant to you
 	//
-	// // Otherwise, just check data
+	// 	// Otherwise, just check data
 	//
-	// return data.VariantType == Variant.Type.Dictionary && data.AsGodotDictionary().ContainsKey("expected");
+	// 	return data.VariantType == Variant.Type.Dictionary && data.AsGodotDictionary().ContainsKey("expected");
 	//
 	// }
 	//
@@ -388,13 +388,13 @@ type Interface interface {
 	//
 	// func _can_drop_data(position, data):
 	//
-	// return typeof(data) == TYPE_DICTIONARY and data.has("color")
+	// 	return typeof(data) == TYPE_DICTIONARY and data.has("color")
 	//
 	//
 	//
 	// func _drop_data(position, data):
 	//
-	// var color = data["color"]
+	// 	var color = data["color"]
 	//
 	// [/gdscript]
 	//
@@ -404,7 +404,7 @@ type Interface interface {
 	//
 	// {
 	//
-	// return data.VariantType == Variant.Type.Dictionary && data.AsGodotDictionary().ContainsKey("color");
+	// 	return data.VariantType == Variant.Type.Dictionary && data.AsGodotDictionary().ContainsKey("color");
 	//
 	// }
 	//
@@ -414,7 +414,7 @@ type Interface interface {
 	//
 	// {
 	//
-	// Color color = data.AsGodotDictionary()["color"].AsColor();
+	// 	Color color = data.AsGodotDictionary()["color"].AsColor();
 	//
 	// }
 	//
@@ -442,11 +442,11 @@ type Interface interface {
 	//
 	// func _make_custom_tooltip(for_text):
 	//
-	// var label = Label.new()
+	// 	var label = Label.new()
 	//
-	// label.text = for_text
+	// 	label.text = for_text
 	//
-	// return label
+	// 	return label
 	//
 	// [/gdscript]
 	//
@@ -456,11 +456,11 @@ type Interface interface {
 	//
 	// {
 	//
-	// var label = new Label();
+	// 	var label = new Label();
 	//
-	// label.Text = forText;
+	// 	label.Text = forText;
 	//
-	// return label;
+	// 	return label;
 	//
 	// }
 	//
@@ -476,11 +476,11 @@ type Interface interface {
 	//
 	// func _make_custom_tooltip(for_text):
 	//
-	// var tooltip = preload("res://some_tooltip_scene.tscn").instantiate()
+	// 	var tooltip = preload("res://some_tooltip_scene.tscn").instantiate()
 	//
-	// tooltip.get_node("Label").text = for_text
+	// 	tooltip.get_node("Label").text = for_text
 	//
-	// return tooltip
+	// 	return tooltip
 	//
 	// [/gdscript]
 	//
@@ -490,11 +490,11 @@ type Interface interface {
 	//
 	// {
 	//
-	// Node tooltip = ResourceLoader.Load<PackedScene>("res://some_tooltip_scene.tscn").Instantiate();
+	// 	Node tooltip = ResourceLoader.Load<PackedScene>("res://some_tooltip_scene.tscn").Instantiate();
 	//
-	// tooltip.GetNode<Label>("Label").Text = forText;
+	// 	tooltip.GetNode<Label>("Label").Text = forText;
 	//
-	// return tooltip;
+	// 	return tooltip;
 	//
 	// }
 	//
@@ -516,11 +516,11 @@ type Interface interface {
 	//
 	// func _gui_input(event):
 	//
-	// if event is InputEventMouseButton:
+	// 	if event is InputEventMouseButton:
 	//
-	// if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+	// 		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 	//
-	// print("I've been clicked D:")
+	// 			print("I've been clicked D:")
 	//
 	// [/gdscript]
 	//
@@ -530,19 +530,19 @@ type Interface interface {
 	//
 	// {
 	//
-	// if (@event is InputEventMouseButton mb)
+	// 	if (@event is InputEventMouseButton mb)
 	//
-	// {
+	// 	{
 	//
-	// if (mb.ButtonIndex == MouseButton.Left && mb.Pressed)
+	// 		if (mb.ButtonIndex == MouseButton.Left && mb.Pressed)
 	//
-	// {
+	// 		{
 	//
-	// GD.Print("I've been clicked D:");
+	// 			GD.Print("I've been clicked D:");
 	//
-	// }
+	// 		}
 	//
-	// }
+	// 	}
 	//
 	// }
 	//
@@ -1860,19 +1860,19 @@ func (self Instance) GlobalPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetGlobalPosition())
 }
 
-func (self Instance) Rotation() Angle.Radians {
-	return Angle.Radians(Float.X(class(self).GetRotation()))
+func (self Instance) Rotation() Float.X {
+	return Float.X(Float.X(class(self).GetRotation()))
 }
 
-func (self Instance) SetRotation(value Angle.Radians) {
+func (self Instance) SetRotation(value Float.X) {
 	class(self).SetRotation(float64(value))
 }
 
-func (self Instance) RotationDegrees() Angle.Radians {
-	return Angle.Radians(Float.X(class(self).GetRotationDegrees()))
+func (self Instance) RotationDegrees() Float.X {
+	return Float.X(Float.X(class(self).GetRotationDegrees()))
 }
 
-func (self Instance) SetRotationDegrees(value Angle.Radians) {
+func (self Instance) SetRotationDegrees(value Float.X) {
 	class(self).SetRotationDegrees(float64(value))
 }
 

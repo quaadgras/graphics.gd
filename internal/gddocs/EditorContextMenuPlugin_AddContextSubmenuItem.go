@@ -1,11 +1,11 @@
 /*
 func _popup_menu(paths):
-    var popup_menu = PopupMenu.new()
-    popup_menu.add_item("Blue")
-    popup_menu.add_item("White")
-    popup_menu.id_pressed.connect(_on_color_submenu_option)
+	var popup_menu = PopupMenu.new()
+	popup_menu.add_item("Blue")
+	popup_menu.add_item("White")
+	popup_menu.id_pressed.connect(_on_color_submenu_option)
 
-    add_context_submenu_item("Set Node Color", popup_menu)
+	add_context_submenu_item("Set Node Color", popup_menu)
 */
 
 package main

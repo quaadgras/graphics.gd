@@ -1,6 +1,6 @@
 /*
 [gdscript]
-var fields = {"username" : "user", "password" : "pass"}
+var fields = { "username": "user", "password": "pass" }
 var query_string = http_client.query_string_from_dict(fields)
 var headers = ["Content-Type: application/x-www-form-urlencoded", "Content-Length: " + str(query_string.length())]
 var result = http_client.request(http_client.METHOD_POST, "/index.php", headers, query_string)

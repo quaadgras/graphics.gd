@@ -325,11 +325,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) Json() map[any]any {
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetJson()))
+func (self Instance) Json() map[string]interface{} {
+	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetJson()))
 }
 
-func (self Instance) SetJson(value map[any]any) {
+func (self Instance) SetJson(value map[string]interface{}) {
 	class(self).SetJson(gd.DictionaryFromMap(value))
 }
 

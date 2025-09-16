@@ -151,11 +151,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) RenderModel() RID.Any {
-	return RID.Any(RID.Any(class(self).GetRenderModel()))
+func (self Instance) RenderModel() RID.RenderModel {
+	return RID.RenderModel(RID.RenderModel(class(self).GetRenderModel()))
 }
 
-func (self Instance) SetRenderModel(value RID.Any) {
+func (self Instance) SetRenderModel(value RID.RenderModel) {
 	class(self).SetRenderModel(RID.Any(value))
 }
 

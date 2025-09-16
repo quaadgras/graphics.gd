@@ -1,16 +1,16 @@
 /*
 [gdscript]
 func _can_drop_data(position, data):
-    # Check position if it is relevant to you
-    # Otherwise, just check data
-    return typeof(data) == TYPE_DICTIONARY and data.has("expected")
+	# Check position if it is relevant to you
+	# Otherwise, just check data
+	return typeof(data) == TYPE_DICTIONARY and data.has("expected")
 [/gdscript]
 [csharp]
 public override bool _CanDropData(Vector2 atPosition, Variant data)
 {
-    // Check position if it is relevant to you
-    // Otherwise, just check data
-    return data.VariantType == Variant.Type.Dictionary && data.AsGodotDictionary().ContainsKey("expected");
+	// Check position if it is relevant to you
+	// Otherwise, just check data
+	return data.VariantType == Variant.Type.Dictionary && data.AsGodotDictionary().ContainsKey("expected");
 }
 [/csharp]
 */

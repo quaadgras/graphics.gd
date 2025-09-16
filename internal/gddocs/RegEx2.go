@@ -3,7 +3,7 @@ var regex = RegEx.new()
 regex.compile("\\w-(\\d+)")
 var result = regex.search("abc n-0123")
 if result:
-    print(result.get_string()) # Would print n-0123
+	print(result.get_string()) # Would print n-0123
 */
 
 package main

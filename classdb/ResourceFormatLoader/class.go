@@ -130,17 +130,17 @@ type Interface interface {
 	//
 	// func _get_dependencies(path, add_types):
 	//
-	// return [
+	// 	return [
 	//
-	// "uid://fqgvuwrkuixh::Script::res://script.gd",
+	// 		"uid://fqgvuwrkuixh::Script::res://script.gd",
 	//
-	// "uid://fqgvuwrkuixh::::res://script.gd",
+	// 		"uid://fqgvuwrkuixh::::res://script.gd",
 	//
-	// "res://script.gd::Script",
+	// 		"res://script.gd::Script",
 	//
-	// "res://script.gd",
+	// 		"res://script.gd",
 	//
-	// ]
+	// 	]
 	//
 	//
 	//

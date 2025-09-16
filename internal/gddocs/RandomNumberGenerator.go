@@ -1,7 +1,7 @@
 /*
 var rng = RandomNumberGenerator.new()
 func _ready():
-    var my_random_number = rng.randf_range(-10.0, 10.0)
+	var my_random_number = rng.randf_range(-10.0, 10.0)
 */
 
 package main

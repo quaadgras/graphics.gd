@@ -1,6 +1,6 @@
 /*
 func _on_timer_timeout():
-    print("Time to attack!")
+	print("Time to attack!")
 */
 
 package main

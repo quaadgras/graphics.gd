@@ -188,11 +188,11 @@ func (self Instance) SetPriority(value int) {
 	class(self).SetPriority(int64(value))
 }
 
-func (self Instance) Actions() []any {
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetActions())))
+func (self Instance) Actions() []OpenXRAction.Instance {
+	return []OpenXRAction.Instance(gd.ArrayAs[[]OpenXRAction.Instance](gd.InternalArray(class(self).GetActions())))
 }
 
-func (self Instance) SetActions(value []any) {
+func (self Instance) SetActions(value []OpenXRAction.Instance) {
 	class(self).SetActions(gd.EngineArrayFromSlice(value))
 }
 

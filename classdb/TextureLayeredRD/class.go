@@ -143,11 +143,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) TextureRdRid() RID.Any {
-	return RID.Any(RID.Any(class(self).GetTextureRdRid()))
+func (self Instance) TextureRdRid() RID.Texture {
+	return RID.Texture(RID.Texture(class(self).GetTextureRdRid()))
 }
 
-func (self Instance) SetTextureRdRid(value RID.Any) {
+func (self Instance) SetTextureRdRid(value RID.Texture) {
 	class(self).SetTextureRdRid(RID.Any(value))
 }
 

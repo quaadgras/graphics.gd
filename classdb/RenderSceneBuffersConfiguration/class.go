@@ -160,11 +160,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) RenderTarget() RID.Any {
-	return RID.Any(RID.Any(class(self).GetRenderTarget()))
+func (self Instance) RenderTarget() RID.Framebuffer {
+	return RID.Framebuffer(RID.Framebuffer(class(self).GetRenderTarget()))
 }
 
-func (self Instance) SetRenderTarget(value RID.Any) {
+func (self Instance) SetRenderTarget(value RID.Framebuffer) {
 	class(self).SetRenderTarget(RID.Any(value))
 }
 

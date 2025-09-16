@@ -4,18 +4,18 @@
 extends EditorTranslationParserPlugin
 
 func _parse_file(path):
-    var ret: Array[PackedStringArray] = []
-    var file = FileAccess.open(path, FileAccess.READ)
-    var text = file.get_as_text()
-    var split_strs = text.split(",", false)
-    for s in split_strs:
-        ret.append(PackedStringArray([s]))
-        #print("Extracted string: " + s)
+	var ret: Array[PackedStringArray] = []
+	var file = FileAccess.open(path, FileAccess.READ)
+	var text = file.get_as_text()
+	var split_strs = text.split(",", false)
+	for s in split_strs:
+		ret.append(PackedStringArray([s]))
+		#print("Extracted string: " + s)
 
-    return ret
+	return ret
 
 func _get_recognized_extensions():
-    return ["csv"]
+	return ["csv"]
 [/gdscript]
 [csharp]
 using Godot;
@@ -23,24 +23,24 @@ using Godot;
 [Tool]
 public partial class CustomParser : EditorTranslationParserPlugin
 {
-    public override Godot.Collections.Array<string[]> _ParseFile(string path)
-    {
-        Godot.Collections.Array<string[]> ret;
-        using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
-        string text = file.GetAsText();
-        string[] splitStrs = text.Split(",", allowEmpty: false);
-        foreach (string s in splitStrs)
-        {
-            ret.Add([s]);
-            //GD.Print($"Extracted string: {s}");
-        }
-        return ret;
-    }
+	public override Godot.Collections.Array<string[]> _ParseFile(string path)
+	{
+		Godot.Collections.Array<string[]> ret;
+		using var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
+		string text = file.GetAsText();
+		string[] splitStrs = text.Split(",", allowEmpty: false);
+		foreach (string s in splitStrs)
+		{
+			ret.Add([s]);
+			//GD.Print($"Extracted string: {s}");
+		}
+		return ret;
+	}
 
-    public override string[] _GetRecognizedExtensions()
-    {
-        return ["csv"];
-    }
+	public override string[] _GetRecognizedExtensions()
+	{
+		return ["csv"];
+	}
 }
 [/csharp]
 */

@@ -1,9 +1,9 @@
 /*
 [gdscript]
 func _process(delta):
-    if Input.is_action_just_pressed("animate"):
-        state_machine.travel("Animate")
-    set_quaternion(get_quaternion() * animation_tree.get_root_motion_rotation())
+	if Input.is_action_just_pressed("animate"):
+		state_machine.travel("Animate")
+	set_quaternion(get_quaternion() * animation_tree.get_root_motion_rotation())
 [/gdscript]
 */
 

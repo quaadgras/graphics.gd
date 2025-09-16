@@ -133,11 +133,11 @@ type Interface interface {
 	//
 	// func _handles_file(path):
 	//
-	// # Allows specifying an output file with a `.mkv` file extension (case-insensitive),
+	// 	# Allows specifying an output file with a `.mkv` file extension (case-insensitive),
 	//
-	// # either in the Project Settings or with the `--write-movie <path>` command line argument.
+	// 	# either in the Project Settings or with the `--write-movie <path>` command line argument.
 	//
-	// return path.get_extension().to_lower() == "mkv"
+	// 	return path.get_extension().to_lower() == "mkv"
 	//
 	//
 	HandlesFile(path string) bool

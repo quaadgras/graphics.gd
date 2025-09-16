@@ -1,7 +1,7 @@
 /*
 var interface = XRServer.find_interface("Native mobile")
 if interface and interface.initialize():
-    get_viewport().use_xr = true
+	get_viewport().use_xr = true
 */
 
 package main

@@ -2,8 +2,8 @@
 [gdscript]
 # autoload.gd
 func _enter_tree():
-    # Sets our custom multiplayer as the main one in SceneTree.
-    get_tree().set_multiplayer(LogMultiplayer.new())
+	# Sets our custom multiplayer as the main one in SceneTree.
+	get_tree().set_multiplayer(LogMultiplayer.new())
 [/gdscript]
 */
 

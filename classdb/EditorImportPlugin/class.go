@@ -181,15 +181,15 @@ type Interface interface {
 	//
 	// func _get_option_visibility(path, option_name, options):
 	//
-	// # Only show the lossy quality setting if the compression mode is set to "Lossy".
+	// 	# Only show the lossy quality setting if the compression mode is set to "Lossy".
 	//
-	// if option_name == "compress/lossy_quality" and options.has("compress/mode"):
+	// 	if option_name == "compress/lossy_quality" and options.has("compress/mode"):
 	//
-	// return int(options["compress/mode"]) == COMPRESS_LOSSY # This is a constant that you set
+	// 		return int(options["compress/mode"]) == COMPRESS_LOSSY # This is a constant that you set
 	//
 	//
 	//
-	// return true
+	// 	return true
 	//
 	// [/gdscript]
 	//
@@ -199,19 +199,19 @@ type Interface interface {
 	//
 	// {
 	//
-	// // Only show the lossy quality setting if the compression mode is set to "Lossy".
+	// 	// Only show the lossy quality setting if the compression mode is set to "Lossy".
 	//
-	// if (optionName == "compress/lossy_quality" && options.ContainsKey("compress/mode"))
+	// 	if (optionName == "compress/lossy_quality" && options.ContainsKey("compress/mode"))
 	//
-	// {
+	// 	{
 	//
-	// return (int)options["compress/mode"] == CompressLossy; // This is a constant you set
+	// 		return (int)options["compress/mode"] == CompressLossy; // This is a constant you set
 	//
-	// }
+	// 	}
 	//
 	//
 	//
-	// return true;
+	// 	return true;
 	//
 	// }
 	//

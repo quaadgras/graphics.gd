@@ -1,9 +1,9 @@
 /*
 func _make_tooltip_for_path(path, metadata, base):
-    var t_rect = TextureRect.new()
-    request_thumbnail(path, t_rect)
-    base.add_child(t_rect) # The TextureRect will appear at the bottom of the tooltip.
-    return base
+	var t_rect = TextureRect.new()
+	request_thumbnail(path, t_rect)
+	base.add_child(t_rect) # The TextureRect will appear at the bottom of the tooltip.
+	return base
 */
 
 package main

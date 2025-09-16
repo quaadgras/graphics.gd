@@ -1,6 +1,6 @@
 /*
 func _popup_menu(paths):
-    add_context_menu_item("File Custom options", handle, ICON)
+	add_context_menu_item("File Custom options", handle, ICON)
 */
 
 package main

@@ -237,19 +237,19 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) ActionSets() []any {
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetActionSets())))
+func (self Instance) ActionSets() []OpenXRActionSet.Instance {
+	return []OpenXRActionSet.Instance(gd.ArrayAs[[]OpenXRActionSet.Instance](gd.InternalArray(class(self).GetActionSets())))
 }
 
-func (self Instance) SetActionSets(value []any) {
+func (self Instance) SetActionSets(value []OpenXRActionSet.Instance) {
 	class(self).SetActionSets(gd.EngineArrayFromSlice(value))
 }
 
-func (self Instance) InteractionProfiles() []any {
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetInteractionProfiles())))
+func (self Instance) InteractionProfiles() []OpenXRInteractionProfile.Instance {
+	return []OpenXRInteractionProfile.Instance(gd.ArrayAs[[]OpenXRInteractionProfile.Instance](gd.InternalArray(class(self).GetInteractionProfiles())))
 }
 
-func (self Instance) SetInteractionProfiles(value []any) {
+func (self Instance) SetInteractionProfiles(value []OpenXRInteractionProfile.Instance) {
 	class(self).SetInteractionProfiles(gd.EngineArrayFromSlice(value))
 }
 

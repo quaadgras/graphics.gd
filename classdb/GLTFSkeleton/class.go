@@ -183,11 +183,11 @@ func (self Instance) SetUniqueNames(value []string) {
 	class(self).SetUniqueNames(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 }
 
-func (self Instance) GodotBoneNode() map[any]any {
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetGodotBoneNode()))
+func (self Instance) GodotBoneNode() map[int]int {
+	return map[int]int(gd.DictionaryAs[map[int]int](class(self).GetGodotBoneNode()))
 }
 
-func (self Instance) SetGodotBoneNode(value map[any]any) {
+func (self Instance) SetGodotBoneNode(value map[int]int) {
 	class(self).SetGodotBoneNode(gd.DictionaryFromMap(value))
 }
 

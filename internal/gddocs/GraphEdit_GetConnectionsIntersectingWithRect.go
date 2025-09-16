@@ -1,10 +1,10 @@
 /*
 {
-    from_node: StringName,
-    from_port: int,
-    to_node: StringName,
-    to_port: int,
-    keep_alive: bool
+	from_node: StringName,
+	from_port: int,
+	to_node: StringName,
+	to_port: int,
+	keep_alive: bool
 }
 */
 

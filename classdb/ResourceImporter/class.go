@@ -102,19 +102,19 @@ type Interface interface {
 	//
 	// func _get_build_dependencies(path):
 	//
-	// var resource = load(path)
+	// 	var resource = load(path)
 	//
-	// var dependencies = PackedStringArray()
-	//
-	//
-	//
-	// if resource.multichannel_signed_distance_field:
-	//
-	// dependencies.push_back("module_msdfgen_enabled")
+	// 	var dependencies = PackedStringArray()
 	//
 	//
 	//
-	// return dependencies
+	// 	if resource.multichannel_signed_distance_field:
+	//
+	// 		dependencies.push_back("module_msdfgen_enabled")
+	//
+	//
+	//
+	// 	return dependencies
 	//
 	//
 	GetBuildDependencies(path string) []string

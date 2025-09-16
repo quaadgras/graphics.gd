@@ -1,12 +1,12 @@
 /*
 [gdscript]
 func _process(delta):
-    grab_click_focus() # When clicking another Control node, this node will be clicked instead.
+	grab_click_focus() # When clicking another Control node, this node will be clicked instead.
 [/gdscript]
 [csharp]
 public override void _Process(double delta)
 {
-    GrabClickFocus(); // When clicking another Control node, this node will be clicked instead.
+	GrabClickFocus(); // When clicking another Control node, this node will be clicked instead.
 }
 [/csharp]
 */

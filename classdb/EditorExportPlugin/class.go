@@ -193,33 +193,33 @@ type Interface interface {
 	//
 	// class MyExportPlugin extends EditorExportPlugin:
 	//
-	// func _get_name() -> String:
+	// 	func _get_name() -> String:
 	//
-	// return "MyExportPlugin"
-	//
-	//
-	//
-	// func _supports_platform(platform) -> bool:
-	//
-	// if platform is EditorExportPlatformPC:
-	//
-	// # Run on all desktop platforms including Windows, MacOS and Linux.
-	//
-	// return true
-	//
-	// return false
+	// 		return "MyExportPlugin"
 	//
 	//
 	//
-	// func _get_export_options_overrides(platform) -> Dictionary:
+	// 	func _supports_platform(platform) -> bool:
 	//
-	// # Override "Embed PCK" to always be enabled.
+	// 		if platform is EditorExportPlatformPC:
 	//
-	// return {
+	// 			# Run on all desktop platforms including Windows, MacOS and Linux.
 	//
-	// "binary_format/embed_pck": true,
+	// 			return true
 	//
-	// }
+	// 		return false
+	//
+	//
+	//
+	// 	func _get_export_options_overrides(platform) -> Dictionary:
+	//
+	// 		# Override "Embed PCK" to always be enabled.
+	//
+	// 		return {
+	//
+	// 			"binary_format/embed_pck": true,
+	//
+	// 		}
 	//
 	//
 	GetExportOptionsOverrides(platform EditorExportPlatform.Instance) map[string]interface{}

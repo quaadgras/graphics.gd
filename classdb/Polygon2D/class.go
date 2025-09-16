@@ -341,11 +341,11 @@ func (self Instance) SetVertexColors(value []Color.RGBA) {
 	class(self).SetVertexColors(Packed.New(value...))
 }
 
-func (self Instance) Polygons() []any {
-	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetPolygons())))
+func (self Instance) Polygons() [][]int32 {
+	return [][]int32(gd.ArrayAs[[][]int32](gd.InternalArray(class(self).GetPolygons())))
 }
 
-func (self Instance) SetPolygons(value []any) {
+func (self Instance) SetPolygons(value [][]int32) {
 	class(self).SetPolygons(gd.EngineArrayFromSlice(value))
 }
 

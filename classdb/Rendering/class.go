@@ -817,9 +817,9 @@ const (
 	//
 	// if rd.has_feature(RenderingDevice.SUPPORTS_BUFFER_DEVICE_ADDRESS):
 	//
-	// storage_buffer = rd.storage_buffer_create(bytes.size(), bytes, RenderingDevice.STORAGE_BUFFER_USAGE_SHADER_DEVICE_ADDRESS)
+	// 	storage_buffer = rd.storage_buffer_create(bytes.size(), bytes, RenderingDevice.STORAGE_BUFFER_USAGE_SHADER_DEVICE_ADDRESS)
 	//
-	// storage_buffer_address = rd.buffer_get_device_address(storage_buffer)
+	// 	storage_buffer_address = rd.buffer_get_device_address(storage_buffer)
 	//
 	// [/gdscript]
 	//

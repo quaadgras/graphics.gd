@@ -173,11 +173,11 @@ func (self Instance) SetPathTypes(value []int32) {
 	class(self).SetPathTypes(Packed.New(value...))
 }
 
-func (self Instance) PathRids() []RID.Any {
-	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetPathRids())))
+func (self Instance) PathRids() [][]RID.Either[RID.NavigationLink3D, RID.NavigationRegion3D] {
+	return [][]RID.Either[RID.NavigationLink3D, RID.NavigationRegion3D](gd.ArrayAs[[][]RID.Either[RID.NavigationLink3D, RID.NavigationRegion3D]](gd.InternalArray(class(self).GetPathRids())))
 }
 
-func (self Instance) SetPathRids(value []RID.Any) {
+func (self Instance) SetPathRids(value [][]RID.Either[RID.NavigationLink3D, RID.NavigationRegion3D]) {
 	class(self).SetPathRids(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 }
 

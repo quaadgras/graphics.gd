@@ -153,11 +153,11 @@ func New() Instance {
 	return casted
 }
 
-func (self Instance) PacketData() [][]any {
-	return [][]any(gd.ArrayAs[[][]any](gd.InternalArray(class(self).GetPacketData())))
+func (self Instance) PacketData() [][][]interface{} {
+	return [][][]interface{}(gd.ArrayAs[[][][]interface{}](gd.InternalArray(class(self).GetPacketData())))
 }
 
-func (self Instance) SetPacketData(value [][]any) {
+func (self Instance) SetPacketData(value [][][]interface{}) {
 	class(self).SetPacketData(gd.ArrayFromSlice[Array.Contains[Array.Any]](value))
 }
 

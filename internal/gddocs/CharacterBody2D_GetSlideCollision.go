@@ -1,14 +1,14 @@
 /*
 [gdscript]
 for i in get_slide_collision_count():
-    var collision = get_slide_collision(i)
-    print("Collided with: ", collision.get_collider().name)
+	var collision = get_slide_collision(i)
+	print("Collided with: ", collision.get_collider().name)
 [/gdscript]
 [csharp]
 for (int i = 0; i < GetSlideCollisionCount(); i++)
 {
-    KinematicCollision2D collision = GetSlideCollision(i);
-    GD.Print("Collided with: ", (collision.GetCollider() as Node).Name);
+	KinematicCollision2D collision = GetSlideCollision(i);
+	GD.Print("Collided with: ", (collision.GetCollider() as Node).Name);
 }
 [/csharp]
 */

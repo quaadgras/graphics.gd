@@ -1,14 +1,14 @@
 /*
 func _enter_tree():
-    # Depending on when the node is added to the tree,
-    # prints either "true" or "false".
-    print(Engine.is_in_physics_frame())
+	# Depending on when the node is added to the tree,
+	# prints either "true" or "false".
+	print(Engine.is_in_physics_frame())
 
 func _process(delta):
-    print(Engine.is_in_physics_frame()) # Prints false
+	print(Engine.is_in_physics_frame()) # Prints false
 
 func _physics_process(delta):
-    print(Engine.is_in_physics_frame()) # Prints true
+	print(Engine.is_in_physics_frame()) # Prints true
 */
 
 package main

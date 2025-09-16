@@ -2,21 +2,21 @@
 var plugin_control
 
 func _enter_tree():
-    plugin_control = preload("my_plugin_control.tscn").instantiate()
-    EditorInterface.get_editor_main_screen().add_child(plugin_control)
-    plugin_control.hide()
+	plugin_control = preload("my_plugin_control.tscn").instantiate()
+	EditorInterface.get_editor_main_screen().add_child(plugin_control)
+	plugin_control.hide()
 
 func _has_main_screen():
-    return true
+	return true
 
 func _make_visible(visible):
-    plugin_control.visible = visible
+	plugin_control.visible = visible
 
 func _get_plugin_name():
-    return "My Super Cool Plugin 3000"
+	return "My Super Cool Plugin 3000"
 
 func _get_plugin_icon():
-    return EditorInterface.get_editor_theme().get_icon("Node", "EditorIcons")
+	return EditorInterface.get_editor_theme().get_icon("Node", "EditorIcons")
 */
 
 package main
