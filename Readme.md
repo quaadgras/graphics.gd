@@ -6,7 +6,7 @@ multimedia applications, games and more!
 _Why use graphics.gd?_
 
 * [Write shaders in Go!](./shaders/Readme.md)
-* Unlike C++/C#/GDScript/Rust/Swift equivalents, all Godot RIDs, callables and dictionary arguments are concretely typed.
+* Unlike C++/C#/GDScript/Rust/Swift, all RIDs, Callables and Dictionary arguments are strongly typed.
 * A good balance of performance and convenience.
 * General purpose pure-Go 'variant' math packages, reuse them in any Go project.
 * After the first build, recompile quickly, with an experience similar to a scripting language.
@@ -14,10 +14,12 @@ _Why use graphics.gd?_
 * Neither Java, nor an Android SDK/NDK is needed to build Android apps.
 * Neither Xcode nor MacOS is needed to build iOS apps.
 * Drop in `gd` command, a cross-platform build tool compatible with GDScript-based Godot projects.
-* Building a UI framework in Go or a game engine? Implement a graphics.gd driver for seamless cross-platform support. 
 
 Not just a wrapper! graphics.gd has been designed from the ground up to provide a cohesively curated graphics
 runtime for Go on top of Godot + GDExtension.
+
+Building a Go UI framework or a higher level game engine? Implement a graphics.gd driver for 
+seamless cross-platform support and access to an extensive amount of ready-to-use functionality. 
 
 Join us in our [active discussions forum](https://github.com/quaadgras/graphics.gd/discussions)
 with any questions, comments or feedback you may have. Show us what you're building!
