@@ -117,8 +117,11 @@ func Leak[T Any](obj T) T {
 // result in a panic. May not have an effect if the object is still in use
 // by the engine.
 //
-// This function is safe to call multiple times on the same object.
+// Free is safe to call at any time on any object (invalidated or not).
 func Free(obj Any) {
+	if obj == nil {
+		return
+	}
 	ptr := obj.AsObject()[0]
 	if pointers.Bad(ptr) {
 		return
