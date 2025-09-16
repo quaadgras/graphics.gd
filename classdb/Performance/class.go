@@ -354,36 +354,76 @@ const (
 	Physics3dIslandCount Monitor = 22
 	// Output latency of the [graphics.gd/classdb/AudioServer]. Equivalent to calling [graphics.gd/classdb/AudioServer.GetOutputLatency], it is not recommended to call this every frame.
 	AudioOutputLatency Monitor = 23
-	// Number of active navigation maps in the [graphics.gd/classdb/NavigationServer3D]. This also includes the two empty default navigation maps created by World2D and World3D.
+	// Number of active navigation maps in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D]. This also includes the two empty default navigation maps created by World2D and World3D.
 	NavigationActiveMaps Monitor = 24
-	// Number of active navigation regions in the [graphics.gd/classdb/NavigationServer3D].
+	// Number of active navigation regions in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
 	NavigationRegionCount Monitor = 25
-	// Number of active navigation agents processing avoidance in the [graphics.gd/classdb/NavigationServer3D].
+	// Number of active navigation agents processing avoidance in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
 	NavigationAgentCount Monitor = 26
-	// Number of active navigation links in the [graphics.gd/classdb/NavigationServer3D].
+	// Number of active navigation links in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
 	NavigationLinkCount Monitor = 27
-	// Number of navigation mesh polygons in the [graphics.gd/classdb/NavigationServer3D].
+	// Number of navigation mesh polygons in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
 	NavigationPolygonCount Monitor = 28
-	// Number of navigation mesh polygon edges in the [graphics.gd/classdb/NavigationServer3D].
+	// Number of navigation mesh polygon edges in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
 	NavigationEdgeCount Monitor = 29
-	// Number of navigation mesh polygon edges that were merged due to edge key overlap in the [graphics.gd/classdb/NavigationServer3D].
+	// Number of navigation mesh polygon edges that were merged due to edge key overlap in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
 	NavigationEdgeMergeCount Monitor = 30
-	// Number of polygon edges that are considered connected by edge proximity [graphics.gd/classdb/NavigationServer3D].
+	// Number of polygon edges that are considered connected by edge proximity [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
 	NavigationEdgeConnectionCount Monitor = 31
-	// Number of navigation mesh polygon edges that could not be merged in the [graphics.gd/classdb/NavigationServer3D]. The edges still may be connected by edge proximity or with links.
+	// Number of navigation mesh polygon edges that could not be merged in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D]. The edges still may be connected by edge proximity or with links.
 	NavigationEdgeFreeCount Monitor = 32
-	// Number of active navigation obstacles in the [graphics.gd/classdb/NavigationServer3D].
+	// Number of active navigation obstacles in the [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
 	NavigationObstacleCount Monitor = 33
 	// Number of pipeline compilations that were triggered by the 2D canvas renderer.
 	PipelineCompilationsCanvas Monitor = 34
 	// Number of pipeline compilations that were triggered by loading meshes. These compilations will show up as longer loading times the first time a user runs the game and the pipeline is required.
 	PipelineCompilationsMesh Monitor = 35
-	// Number of pipeline compilations that were triggered by building the surface cache before rendering the scene. These compilations will show up as a stutter when loading an scene the first time a user runs the game and the pipeline is required.
+	// Number of pipeline compilations that were triggered by building the surface cache before rendering the scene. These compilations will show up as a stutter when loading a scene the first time a user runs the game and the pipeline is required.
 	PipelineCompilationsSurface Monitor = 36
 	// Number of pipeline compilations that were triggered while drawing the scene. These compilations will show up as stutters during gameplay the first time a user runs the game and the pipeline is required.
 	PipelineCompilationsDraw Monitor = 37
 	// Number of pipeline compilations that were triggered to optimize the current scene. These compilations are done in the background and should not cause any stutters whatsoever.
 	PipelineCompilationsSpecialization Monitor = 38
+	// Number of active navigation maps in the [graphics.gd/classdb/NavigationServer2D]. This also includes the two empty default navigation maps created by World2D.
+	Navigation2dActiveMaps Monitor = 39
+	// Number of active navigation regions in the [graphics.gd/classdb/NavigationServer2D].
+	Navigation2dRegionCount Monitor = 40
+	// Number of active navigation agents processing avoidance in the [graphics.gd/classdb/NavigationServer2D].
+	Navigation2dAgentCount Monitor = 41
+	// Number of active navigation links in the [graphics.gd/classdb/NavigationServer2D].
+	Navigation2dLinkCount Monitor = 42
+	// Number of navigation mesh polygons in the [graphics.gd/classdb/NavigationServer2D].
+	Navigation2dPolygonCount Monitor = 43
+	// Number of navigation mesh polygon edges in the [graphics.gd/classdb/NavigationServer2D].
+	Navigation2dEdgeCount Monitor = 44
+	// Number of navigation mesh polygon edges that were merged due to edge key overlap in the [graphics.gd/classdb/NavigationServer2D].
+	Navigation2dEdgeMergeCount Monitor = 45
+	// Number of polygon edges that are considered connected by edge proximity [graphics.gd/classdb/NavigationServer2D].
+	Navigation2dEdgeConnectionCount Monitor = 46
+	// Number of navigation mesh polygon edges that could not be merged in the [graphics.gd/classdb/NavigationServer2D]. The edges still may be connected by edge proximity or with links.
+	Navigation2dEdgeFreeCount Monitor = 47
+	// Number of active navigation obstacles in the [graphics.gd/classdb/NavigationServer2D].
+	Navigation2dObstacleCount Monitor = 48
+	// Number of active navigation maps in the [graphics.gd/classdb/NavigationServer3D]. This also includes the two empty default navigation maps created by World3D.
+	Navigation3dActiveMaps Monitor = 49
+	// Number of active navigation regions in the [graphics.gd/classdb/NavigationServer3D].
+	Navigation3dRegionCount Monitor = 50
+	// Number of active navigation agents processing avoidance in the [graphics.gd/classdb/NavigationServer3D].
+	Navigation3dAgentCount Monitor = 51
+	// Number of active navigation links in the [graphics.gd/classdb/NavigationServer3D].
+	Navigation3dLinkCount Monitor = 52
+	// Number of navigation mesh polygons in the [graphics.gd/classdb/NavigationServer3D].
+	Navigation3dPolygonCount Monitor = 53
+	// Number of navigation mesh polygon edges in the [graphics.gd/classdb/NavigationServer3D].
+	Navigation3dEdgeCount Monitor = 54
+	// Number of navigation mesh polygon edges that were merged due to edge key overlap in the [graphics.gd/classdb/NavigationServer3D].
+	Navigation3dEdgeMergeCount Monitor = 55
+	// Number of polygon edges that are considered connected by edge proximity [graphics.gd/classdb/NavigationServer3D].
+	Navigation3dEdgeConnectionCount Monitor = 56
+	// Number of navigation mesh polygon edges that could not be merged in the [graphics.gd/classdb/NavigationServer3D]. The edges still may be connected by edge proximity or with links.
+	Navigation3dEdgeFreeCount Monitor = 57
+	// Number of active navigation obstacles in the [graphics.gd/classdb/NavigationServer3D].
+	Navigation3dObstacleCount Monitor = 58
 	// Represents the size of the [Monitor] enum.
-	MonitorMax Monitor = 39
+	MonitorMax Monitor = 59
 )

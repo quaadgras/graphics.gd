@@ -37,5 +37,5 @@ func CanvasItem_DrawString() {
 	var defaultFont = ThemeDB.FallbackFont()
 	var defaultFontSize = ThemeDB.FallbackFontSize()
 	CanvasItem.Expanded(canvas_item).DrawString(defaultFont, Vector2.New(64, 64), "Hello world", GUI.HorizontalAlignmentLeft, -1, defaultFontSize,
-		Color.W3C.White, TextServer.JustificationKashida|TextServer.JustificationWordBound, 0, 0)
+		Color.W3C.White, TextServer.JustificationKashida|TextServer.JustificationWordBound, 0, 0, 0)
 }

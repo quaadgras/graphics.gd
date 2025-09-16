@@ -217,7 +217,9 @@ func (self Instance) SetPerspective(fov Float.X, z_near Float.X, z_far Float.X) 
 }
 
 /*
-Sets the camera projection to orthogonal mode (see [ProjectionOrthogonal]), by specifying a 'size', and the 'z_near' and 'z_far' clip planes in world space units. (As a hint, 2D games often use this projection, with values specified in pixels.)
+Sets the camera projection to orthogonal mode (see [ProjectionOrthogonal]), by specifying a 'size', and the 'z_near' and 'z_far' clip planes in world space units.
+
+As a hint, 3D games that look 2D often use this projection, with 'size' specified in pixels.
 */
 func (self Instance) SetOrthogonal(size Float.X, z_near Float.X, z_far Float.X) { //gd:Camera3D.set_orthogonal
 	Advanced(self).SetOrthogonal(float64(size), float64(z_near), float64(z_far))
@@ -560,7 +562,9 @@ func (self class) SetPerspective(fov float64, z_near float64, z_far float64) { /
 }
 
 /*
-Sets the camera projection to orthogonal mode (see [ProjectionOrthogonal]), by specifying a 'size', and the 'z_near' and 'z_far' clip planes in world space units. (As a hint, 2D games often use this projection, with values specified in pixels.)
+Sets the camera projection to orthogonal mode (see [ProjectionOrthogonal]), by specifying a 'size', and the 'z_near' and 'z_far' clip planes in world space units.
+
+As a hint, 3D games that look 2D often use this projection, with 'size' specified in pixels.
 */
 //go:nosplit
 func (self class) SetOrthogonal(size float64, z_near float64, z_far float64) { //gd:Camera3D.set_orthogonal

@@ -76,6 +76,8 @@ type Instance [1]gdclass.SceneState
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
+	get_path                      gdextension.MethodForClass `hash:"201670096"`
+	get_base_scene_state          gdextension.MethodForClass `hash:"3479783971"`
 	get_node_count                gdextension.MethodForClass `hash:"3905245786"`
 	get_node_type                 gdextension.MethodForClass `hash:"659327637"`
 	get_node_name                 gdextension.MethodForClass `hash:"659327637"`
@@ -119,6 +121,20 @@ var Nil Instance
 type Any interface {
 	gd.IsClass
 	AsSceneState() Instance
+}
+
+/*
+Returns the resource path to the represented [graphics.gd/classdb/PackedScene].
+*/
+func (self Instance) GetPath() string { //gd:SceneState.get_path
+	return string(Advanced(self).GetPath().String())
+}
+
+/*
+Returns the [graphics.gd/classdb/SceneState] of the scene that this scene inherits from, or null if it doesn't inherit from any scene.
+*/
+func (self Instance) GetBaseSceneState() Instance { //gd:SceneState.get_base_scene_state
+	return Instance(Advanced(self).GetBaseSceneState())
 }
 
 /*
@@ -333,6 +349,26 @@ func New() Instance {
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
+}
+
+/*
+Returns the resource path to the represented [graphics.gd/classdb/PackedScene].
+*/
+//go:nosplit
+func (self class) GetPath() String.Readable { //gd:SceneState.get_path
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeString, &struct{}{})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+/*
+Returns the [graphics.gd/classdb/SceneState] of the scene that this scene inherits from, or null if it doesn't inherit from any scene.
+*/
+//go:nosplit
+func (self class) GetBaseSceneState() [1]gdclass.SceneState { //gd:SceneState.get_base_scene_state
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_scene_state, gdextension.SizeObject, &struct{}{})
+	var ret = [1]gdclass.SceneState{gd.PointerWithOwnershipTransferredToGo[gdclass.SceneState](r_ret)}
+	return ret
 }
 
 /*

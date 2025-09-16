@@ -212,4 +212,6 @@ exports:
     - __ZNKSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE4findEcm
     - __ZNKSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE4copyEPcmm
     - __ZNKSt13runtime_error4whatEv
+    - __ZdlPvm
+    - __ZdaPvm
 ...

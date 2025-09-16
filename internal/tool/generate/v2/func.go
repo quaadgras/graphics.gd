@@ -100,7 +100,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 	if singleton {
 		fmt.Fprintf(w, "once.Do(singleton)\n\t")
 	}
-	if method.IsStatic {
+	if method.IsStatic && !singleton {
 		fmt.Fprintf(w, "self := Instance{}\n")
 	}
 	if method.IsVararg {

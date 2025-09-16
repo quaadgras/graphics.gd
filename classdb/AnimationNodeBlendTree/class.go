@@ -86,6 +86,7 @@ var methods struct {
 	has_node          gdextension.MethodForClass `hash:"2619796661"`
 	connect_node      gdextension.MethodForClass `hash:"2168001410"`
 	disconnect_node   gdextension.MethodForClass `hash:"2415702435"`
+	get_node_list     gdextension.MethodForClass `hash:"3995934104"`
 	set_node_position gdextension.MethodForClass `hash:"1999414630"`
 	get_node_position gdextension.MethodForClass `hash:"3100822709"`
 	set_graph_offset  gdextension.MethodForClass `hash:"743155724"`
@@ -168,6 +169,13 @@ Disconnects the animation node connected to the specified input.
 */
 func (self Instance) DisconnectNode(input_node string, input_index int) { //gd:AnimationNodeBlendTree.disconnect_node
 	Advanced(self).DisconnectNode(String.Name(String.New(input_node)), int64(input_index))
+}
+
+/*
+Returns a list containing the names of all sub animation nodes in this blend tree.
+*/
+func (self Instance) GetNodeList() []string { //gd:AnimationNodeBlendTree.get_node_list
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetNodeList())))
 }
 
 /*
@@ -307,6 +315,16 @@ func (self class) DisconnectNode(input_node String.Name, input_index int64) { //
 		input_node  gdextension.StringName
 		input_index int64
 	}{pointers.Get(gd.InternalStringName(input_node)), input_index})
+}
+
+/*
+Returns a list containing the names of all sub animation nodes in this blend tree.
+*/
+//go:nosplit
+func (self class) GetNodeList() Array.Contains[String.Name] { //gd:AnimationNodeBlendTree.get_node_list
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_node_list, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
 }
 
 /*

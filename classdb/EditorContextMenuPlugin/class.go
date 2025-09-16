@@ -378,7 +378,21 @@ const (
 	ContextSlotFilesystem ContextMenuSlot = 1
 	// Context menu of Script editor's script tabs. [Instance.PopupMenu] will be called with the path to the currently edited script, while option callback will receive reference to that script.
 	ContextSlotScriptEditor ContextMenuSlot = 2
-	// The "Create..." submenu of FileSystem dock's context menu. [Instance.PopupMenu] and option callback will be called with list of paths of the currently selected files.
+	// The "Create..." submenu of FileSystem dock's context menu, or the "New" section of the main context menu when empty space is clicked. [Instance.PopupMenu] and option callback will be called with the path of the currently selected folder. When clicking the empty space, the list of paths for popup method will be empty.
+	//
+	//
+	//
+	// func _popup_menu(paths):
+	//
+	//     if paths.is_empty():
+	//
+	//         add_context_menu_item("New Image File...", create_image)
+	//
+	//     else:
+	//
+	//         add_context_menu_item("Image File...", create_image)
+	//
+	//
 	ContextSlotFilesystemCreate ContextMenuSlot = 3
 	// Context menu of Script editor's code editor. [Instance.PopupMenu] will be called with the path to the [graphics.gd/classdb/CodeEdit] node. You can fetch it using this code:
 	//
@@ -386,7 +400,7 @@ const (
 	//
 	// func _popup_menu(paths):
 	//
-	//     var code_edit = Engine.get_main_loop().root.get_node(paths[0]);
+	// var code_edit = Engine.get_main_loop().root.get_node(paths[0]);
 	//
 	//
 	//
@@ -400,7 +414,7 @@ const (
 	//
 	// func _popup_menu(paths):
 	//
-	//     var canvas_item = Engine.get_main_loop().root.get_node(paths[0]); # Replace 0 with the desired index.
+	// var canvas_item = Engine.get_main_loop().root.get_node(paths[0]); # Replace 0 with the desired index.
 	//
 	//
 	//

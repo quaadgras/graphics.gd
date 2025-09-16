@@ -253,6 +253,9 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"_make_custom_tooltip": {
 			"return value": OwnershipTransferred,
 		},
+		"_get_accessibility_container_name": {
+			"node": IsTemporaryReference,
+		},
 	},
 	"EditorDebuggerSession": {
 		"add_session_tab": {
@@ -293,11 +296,6 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		},
 		"get_parent": {
 			"return value": MustAssertInstanceID,
-		},
-	},
-	"JSONRPC": {
-		"set_scope": {
-			"target": MustAssertInstanceID,
 		},
 	},
 	"Expression": {
@@ -649,6 +647,19 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 			"language": ReversesTheOwnership,
 		},
 		"get_script_language": {
+			"return value": MustAssertInstanceID,
+		},
+	},
+	"FoldableContainer": {
+		"add_title_bar_control": {
+			"control": LifetimeBoundToClass,
+		},
+		"remove_title_bar_control": {
+			"control": ReversesTheOwnership,
+		},
+	},
+	"FoldableGroup": {
+		"get_expanded_container": {
 			"return value": MustAssertInstanceID,
 		},
 	},
@@ -1174,6 +1185,10 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"get_skeleton": {
 			"return value": MustAssertInstanceID,
 		},
+		"_skeleton_changed": {
+			"old_skeleton": IsTemporaryReference,
+			"new_skeleton": IsTemporaryReference,
+		},
 	},
 	"Script": {
 		"instance_has": {
@@ -1473,6 +1488,9 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		"popup_exclusive_centered_clamped": {
 			"from_node": IsTemporaryReference,
 		},
+		"get_focused_window": {
+			"return value": MustAssertInstanceID,
+		},
 	},
 	"World2D": {
 		"get_direct_space_state": {
@@ -1496,6 +1514,17 @@ var ClassMethodOwnership = map[string]map[string]map[string]OwnershipSemantics{
 		},
 		"unregister_projection_views_extension": {
 			"extension": ReversesTheOwnership,
+		},
+		"register_frame_info_extension": {
+			"extension": OwnershipTransferred,
+		},
+		"unregister_frame_info_extension": {
+			"extension": ReversesTheOwnership,
+		},
+	},
+	"OpenXRRenderModelExtension": {
+		"render_model_new_scene_instance": {
+			"return value": OwnershipTransferred,
 		},
 	},
 	"OpenXRCompositionLayer": {

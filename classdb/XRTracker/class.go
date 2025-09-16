@@ -236,7 +236,7 @@ func init() {
 type Type int //gd:XRServer.TrackerType
 
 const (
-	// The tracker tracks the location of the players head. This is usually a location centered between the players eyes. Note that for handheld AR devices this can be the current location of the device.
+	// The tracker tracks the location of the player's head. This is usually a location centered between the player's eyes. Note that for handheld AR devices this can be the current location of the device.
 	TrackerHead Type = 1
 	// The tracker tracks the location of a controller.
 	TrackerController Type = 2

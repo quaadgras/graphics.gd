@@ -80,6 +80,8 @@ var methods struct {
 	clear_current          gdextension.MethodForClass `hash:"3218959716"`
 	is_current             gdextension.MethodForClass `hash:"36873697"`
 	get_listener_transform gdextension.MethodForClass `hash:"3229777777"`
+	set_doppler_tracking   gdextension.MethodForClass `hash:"2365921740"`
+	get_doppler_tracking   gdextension.MethodForClass `hash:"550229039"`
 }
 
 func init() {
@@ -174,6 +176,14 @@ func New() Instance {
 	return casted
 }
 
+func (self Instance) DopplerTracking() DopplerTracking {
+	return DopplerTracking(class(self).GetDopplerTracking())
+}
+
+func (self Instance) SetDopplerTracking(value DopplerTracking) {
+	class(self).SetDopplerTracking(value)
+}
+
 /*
 Enables the listener. This will override the current camera's listener.
 */
@@ -209,6 +219,18 @@ Returns the listener's global orthonormalized [Transform3D.BasisOrigin].
 func (self class) GetListenerTransform() Transform3D.BasisOrigin { //gd:AudioListener3D.get_listener_transform
 	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_listener_transform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
+	return ret
+}
+
+//go:nosplit
+func (self class) SetDopplerTracking(mode DopplerTracking) { //gd:AudioListener3D.set_doppler_tracking
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_doppler_tracking, 0|(gdextension.SizeInt<<4), &struct{ mode DopplerTracking }{mode})
+}
+
+//go:nosplit
+func (self class) GetDopplerTracking() DopplerTracking { //gd:AudioListener3D.get_doppler_tracking
+	var r_ret = gdextension.Call[DopplerTracking](gd.ObjectChecked(self.AsObject()), methods.get_doppler_tracking, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
 	return ret
 }
 func (self class) AsAudioListener3D() Advanced {
@@ -247,3 +269,20 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("AudioListener3D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.AudioListener3D](ptr)} })
 }
+
+type DopplerTracking int //gd:AudioListener3D.DopplerTracking
+
+const (
+	// Disables [Doppler effect] simulation (default).
+	//
+	// [Doppler effect]: https://en.wikipedia.org/wiki/Doppler_effect
+	DopplerTrackingDisabled DopplerTracking = 0
+	// Simulate [Doppler effect] by tracking positions of objects that are changed in _process. Changes in the relative velocity of this listener compared to those objects affect how audio is perceived (changing the audio's [graphics.gd/classdb/AudioStreamPlayer3D.Instance.PitchScale]).
+	//
+	// [Doppler effect]: https://en.wikipedia.org/wiki/Doppler_effect
+	DopplerTrackingIdleStep DopplerTracking = 1
+	// Simulate [Doppler effect] by tracking positions of objects that are changed in _physics_process. Changes in the relative velocity of this listener compared to those objects affect how audio is perceived (changing the audio's [graphics.gd/classdb/AudioStreamPlayer3D.Instance.PitchScale]).
+	//
+	// [Doppler effect]: https://en.wikipedia.org/wiki/Doppler_effect
+	DopplerTrackingPhysicsStep DopplerTracking = 2
+)

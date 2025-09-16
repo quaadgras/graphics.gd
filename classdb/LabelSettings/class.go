@@ -77,26 +77,46 @@ type Instance [1]gdclass.LabelSettings
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_line_spacing      gdextension.MethodForClass `hash:"373806689"`
-	get_line_spacing      gdextension.MethodForClass `hash:"1740695150"`
-	set_paragraph_spacing gdextension.MethodForClass `hash:"373806689"`
-	get_paragraph_spacing gdextension.MethodForClass `hash:"1740695150"`
-	set_font              gdextension.MethodForClass `hash:"1262170328"`
-	get_font              gdextension.MethodForClass `hash:"3229501585"`
-	set_font_size         gdextension.MethodForClass `hash:"1286410249"`
-	get_font_size         gdextension.MethodForClass `hash:"3905245786"`
-	set_font_color        gdextension.MethodForClass `hash:"2920490490"`
-	get_font_color        gdextension.MethodForClass `hash:"3444240500"`
-	set_outline_size      gdextension.MethodForClass `hash:"1286410249"`
-	get_outline_size      gdextension.MethodForClass `hash:"3905245786"`
-	set_outline_color     gdextension.MethodForClass `hash:"2920490490"`
-	get_outline_color     gdextension.MethodForClass `hash:"3444240500"`
-	set_shadow_size       gdextension.MethodForClass `hash:"1286410249"`
-	get_shadow_size       gdextension.MethodForClass `hash:"3905245786"`
-	set_shadow_color      gdextension.MethodForClass `hash:"2920490490"`
-	get_shadow_color      gdextension.MethodForClass `hash:"3444240500"`
-	set_shadow_offset     gdextension.MethodForClass `hash:"743155724"`
-	get_shadow_offset     gdextension.MethodForClass `hash:"3341600327"`
+	set_line_spacing                gdextension.MethodForClass `hash:"373806689"`
+	get_line_spacing                gdextension.MethodForClass `hash:"1740695150"`
+	set_paragraph_spacing           gdextension.MethodForClass `hash:"373806689"`
+	get_paragraph_spacing           gdextension.MethodForClass `hash:"1740695150"`
+	set_font                        gdextension.MethodForClass `hash:"1262170328"`
+	get_font                        gdextension.MethodForClass `hash:"3229501585"`
+	set_font_size                   gdextension.MethodForClass `hash:"1286410249"`
+	get_font_size                   gdextension.MethodForClass `hash:"3905245786"`
+	set_font_color                  gdextension.MethodForClass `hash:"2920490490"`
+	get_font_color                  gdextension.MethodForClass `hash:"3444240500"`
+	set_outline_size                gdextension.MethodForClass `hash:"1286410249"`
+	get_outline_size                gdextension.MethodForClass `hash:"3905245786"`
+	set_outline_color               gdextension.MethodForClass `hash:"2920490490"`
+	get_outline_color               gdextension.MethodForClass `hash:"3444240500"`
+	set_shadow_size                 gdextension.MethodForClass `hash:"1286410249"`
+	get_shadow_size                 gdextension.MethodForClass `hash:"3905245786"`
+	set_shadow_color                gdextension.MethodForClass `hash:"2920490490"`
+	get_shadow_color                gdextension.MethodForClass `hash:"3444240500"`
+	set_shadow_offset               gdextension.MethodForClass `hash:"743155724"`
+	get_shadow_offset               gdextension.MethodForClass `hash:"3341600327"`
+	get_stacked_outline_count       gdextension.MethodForClass `hash:"3905245786"`
+	set_stacked_outline_count       gdextension.MethodForClass `hash:"1286410249"`
+	add_stacked_outline             gdextension.MethodForClass `hash:"1025054187"`
+	move_stacked_outline            gdextension.MethodForClass `hash:"3937882851"`
+	remove_stacked_outline          gdextension.MethodForClass `hash:"1286410249"`
+	set_stacked_outline_size        gdextension.MethodForClass `hash:"3937882851"`
+	get_stacked_outline_size        gdextension.MethodForClass `hash:"923996154"`
+	set_stacked_outline_color       gdextension.MethodForClass `hash:"2878471219"`
+	get_stacked_outline_color       gdextension.MethodForClass `hash:"3457211756"`
+	get_stacked_shadow_count        gdextension.MethodForClass `hash:"3905245786"`
+	set_stacked_shadow_count        gdextension.MethodForClass `hash:"1286410249"`
+	add_stacked_shadow              gdextension.MethodForClass `hash:"1025054187"`
+	move_stacked_shadow             gdextension.MethodForClass `hash:"3937882851"`
+	remove_stacked_shadow           gdextension.MethodForClass `hash:"1286410249"`
+	set_stacked_shadow_offset       gdextension.MethodForClass `hash:"163021252"`
+	get_stacked_shadow_offset       gdextension.MethodForClass `hash:"2299179447"`
+	set_stacked_shadow_color        gdextension.MethodForClass `hash:"2878471219"`
+	get_stacked_shadow_color        gdextension.MethodForClass `hash:"3457211756"`
+	set_stacked_shadow_outline_size gdextension.MethodForClass `hash:"3937882851"`
+	get_stacked_shadow_outline_size gdextension.MethodForClass `hash:"923996154"`
 }
 
 func init() {
@@ -111,12 +131,140 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
+type Expanded [1]gdclass.LabelSettings
+
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
 
 type Any interface {
 	gd.IsClass
 	AsLabelSettings() Instance
+}
+
+/*
+Adds a new stacked outline to the label at the given 'index'. If 'index' is -1, the new stacked outline will be added at the end of the list.
+*/
+func (self Instance) AddStackedOutline() { //gd:LabelSettings.add_stacked_outline
+	Advanced(self).AddStackedOutline(int64(-1))
+}
+
+/*
+Adds a new stacked outline to the label at the given 'index'. If 'index' is -1, the new stacked outline will be added at the end of the list.
+*/
+func (self Expanded) AddStackedOutline(index int) { //gd:LabelSettings.add_stacked_outline
+	Advanced(self).AddStackedOutline(int64(index))
+}
+
+/*
+Moves the stacked outline at index 'from_index' to the given position 'to_position' in the array.
+*/
+func (self Instance) MoveStackedOutline(from_index int, to_position int) { //gd:LabelSettings.move_stacked_outline
+	Advanced(self).MoveStackedOutline(int64(from_index), int64(to_position))
+}
+
+/*
+Removes the stacked outline at index 'index'.
+*/
+func (self Instance) RemoveStackedOutline(index int) { //gd:LabelSettings.remove_stacked_outline
+	Advanced(self).RemoveStackedOutline(int64(index))
+}
+
+/*
+Sets the size of the stacked outline identified by the given 'index' to 'size'.
+*/
+func (self Instance) SetStackedOutlineSize(index int, size int) { //gd:LabelSettings.set_stacked_outline_size
+	Advanced(self).SetStackedOutlineSize(int64(index), int64(size))
+}
+
+/*
+Returns the size of the stacked outline at 'index'.
+*/
+func (self Instance) GetStackedOutlineSize(index int) int { //gd:LabelSettings.get_stacked_outline_size
+	return int(int(Advanced(self).GetStackedOutlineSize(int64(index))))
+}
+
+/*
+Sets the color of the stacked outline identified by the given 'index' to 'color'.
+*/
+func (self Instance) SetStackedOutlineColor(index int, color Color.RGBA) { //gd:LabelSettings.set_stacked_outline_color
+	Advanced(self).SetStackedOutlineColor(int64(index), Color.RGBA(color))
+}
+
+/*
+Returns the color of the stacked outline at 'index'.
+*/
+func (self Instance) GetStackedOutlineColor(index int) Color.RGBA { //gd:LabelSettings.get_stacked_outline_color
+	return Color.RGBA(Advanced(self).GetStackedOutlineColor(int64(index)))
+}
+
+/*
+Adds a new stacked shadow to the label at the given 'index'. If 'index' is -1, the new stacked shadow will be added at the end of the list.
+*/
+func (self Instance) AddStackedShadow() { //gd:LabelSettings.add_stacked_shadow
+	Advanced(self).AddStackedShadow(int64(-1))
+}
+
+/*
+Adds a new stacked shadow to the label at the given 'index'. If 'index' is -1, the new stacked shadow will be added at the end of the list.
+*/
+func (self Expanded) AddStackedShadow(index int) { //gd:LabelSettings.add_stacked_shadow
+	Advanced(self).AddStackedShadow(int64(index))
+}
+
+/*
+Moves the stacked shadow at index 'from_index' to the given position 'to_position' in the array.
+*/
+func (self Instance) MoveStackedShadow(from_index int, to_position int) { //gd:LabelSettings.move_stacked_shadow
+	Advanced(self).MoveStackedShadow(int64(from_index), int64(to_position))
+}
+
+/*
+Removes the stacked shadow at index 'index'.
+*/
+func (self Instance) RemoveStackedShadow(index int) { //gd:LabelSettings.remove_stacked_shadow
+	Advanced(self).RemoveStackedShadow(int64(index))
+}
+
+/*
+Sets the offset of the stacked shadow identified by the given 'index' to 'offset'.
+*/
+func (self Instance) SetStackedShadowOffset(index int, offset Vector2.XY) { //gd:LabelSettings.set_stacked_shadow_offset
+	Advanced(self).SetStackedShadowOffset(int64(index), Vector2.XY(offset))
+}
+
+/*
+Returns the offset of the stacked shadow at 'index'.
+*/
+func (self Instance) GetStackedShadowOffset(index int) Vector2.XY { //gd:LabelSettings.get_stacked_shadow_offset
+	return Vector2.XY(Advanced(self).GetStackedShadowOffset(int64(index)))
+}
+
+/*
+Sets the color of the stacked shadow identified by the given 'index' to 'color'.
+*/
+func (self Instance) SetStackedShadowColor(index int, color Color.RGBA) { //gd:LabelSettings.set_stacked_shadow_color
+	Advanced(self).SetStackedShadowColor(int64(index), Color.RGBA(color))
+}
+
+/*
+Returns the color of the stacked shadow at 'index'.
+*/
+func (self Instance) GetStackedShadowColor(index int) Color.RGBA { //gd:LabelSettings.get_stacked_shadow_color
+	return Color.RGBA(Advanced(self).GetStackedShadowColor(int64(index)))
+}
+
+/*
+Sets the outline size of the stacked shadow identified by the given 'index' to 'size'.
+*/
+func (self Instance) SetStackedShadowOutlineSize(index int, size int) { //gd:LabelSettings.set_stacked_shadow_outline_size
+	Advanced(self).SetStackedShadowOutlineSize(int64(index), int64(size))
+}
+
+/*
+Returns the outline size of the stacked shadow at 'index'.
+*/
+func (self Instance) GetStackedShadowOutlineSize(index int) int { //gd:LabelSettings.get_stacked_shadow_outline_size
+	return int(int(Advanced(self).GetStackedShadowOutlineSize(int64(index))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -242,6 +390,22 @@ func (self Instance) SetShadowOffset(value Vector2.XY) {
 	class(self).SetShadowOffset(Vector2.XY(value))
 }
 
+func (self Instance) StackedOutlineCount() int {
+	return int(int(class(self).GetStackedOutlineCount()))
+}
+
+func (self Instance) SetStackedOutlineCount(value int) {
+	class(self).SetStackedOutlineCount(int64(value))
+}
+
+func (self Instance) StackedShadowCount() int {
+	return int(int(class(self).GetStackedShadowCount()))
+}
+
+func (self Instance) SetStackedShadowCount(value int) {
+	class(self).SetStackedShadowCount(int64(value))
+}
+
 //go:nosplit
 func (self class) SetLineSpacing(spacing float64) { //gd:LabelSettings.set_line_spacing
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_line_spacing, 0|(gdextension.SizeFloat<<4), &struct{ spacing float64 }{spacing})
@@ -358,6 +522,189 @@ func (self class) SetShadowOffset(offset Vector2.XY) { //gd:LabelSettings.set_sh
 //go:nosplit
 func (self class) GetShadowOffset() Vector2.XY { //gd:LabelSettings.get_shadow_offset
 	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_shadow_offset, gdextension.SizeVector2, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) GetStackedOutlineCount() int64 { //gd:LabelSettings.get_stacked_outline_count
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stacked_outline_count, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetStackedOutlineCount(count int64) { //gd:LabelSettings.set_stacked_outline_count
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stacked_outline_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+}
+
+/*
+Adds a new stacked outline to the label at the given 'index'. If 'index' is -1, the new stacked outline will be added at the end of the list.
+*/
+//go:nosplit
+func (self class) AddStackedOutline(index int64) { //gd:LabelSettings.add_stacked_outline
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_stacked_outline, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+}
+
+/*
+Moves the stacked outline at index 'from_index' to the given position 'to_position' in the array.
+*/
+//go:nosplit
+func (self class) MoveStackedOutline(from_index int64, to_position int64) { //gd:LabelSettings.move_stacked_outline
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_stacked_outline, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		from_index  int64
+		to_position int64
+	}{from_index, to_position})
+}
+
+/*
+Removes the stacked outline at index 'index'.
+*/
+//go:nosplit
+func (self class) RemoveStackedOutline(index int64) { //gd:LabelSettings.remove_stacked_outline
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_stacked_outline, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+}
+
+/*
+Sets the size of the stacked outline identified by the given 'index' to 'size'.
+*/
+//go:nosplit
+func (self class) SetStackedOutlineSize(index int64, size int64) { //gd:LabelSettings.set_stacked_outline_size
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stacked_outline_size, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		index int64
+		size  int64
+	}{index, size})
+}
+
+/*
+Returns the size of the stacked outline at 'index'.
+*/
+//go:nosplit
+func (self class) GetStackedOutlineSize(index int64) int64 { //gd:LabelSettings.get_stacked_outline_size
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stacked_outline_size, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Sets the color of the stacked outline identified by the given 'index' to 'color'.
+*/
+//go:nosplit
+func (self class) SetStackedOutlineColor(index int64, color Color.RGBA) { //gd:LabelSettings.set_stacked_outline_color
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stacked_outline_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
+		index int64
+		color Color.RGBA
+	}{index, color})
+}
+
+/*
+Returns the color of the stacked outline at 'index'.
+*/
+//go:nosplit
+func (self class) GetStackedOutlineColor(index int64) Color.RGBA { //gd:LabelSettings.get_stacked_outline_color
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_stacked_outline_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) GetStackedShadowCount() int64 { //gd:LabelSettings.get_stacked_shadow_count
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stacked_shadow_count, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetStackedShadowCount(count int64) { //gd:LabelSettings.set_stacked_shadow_count
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stacked_shadow_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+}
+
+/*
+Adds a new stacked shadow to the label at the given 'index'. If 'index' is -1, the new stacked shadow will be added at the end of the list.
+*/
+//go:nosplit
+func (self class) AddStackedShadow(index int64) { //gd:LabelSettings.add_stacked_shadow
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_stacked_shadow, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+}
+
+/*
+Moves the stacked shadow at index 'from_index' to the given position 'to_position' in the array.
+*/
+//go:nosplit
+func (self class) MoveStackedShadow(from_index int64, to_position int64) { //gd:LabelSettings.move_stacked_shadow
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.move_stacked_shadow, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		from_index  int64
+		to_position int64
+	}{from_index, to_position})
+}
+
+/*
+Removes the stacked shadow at index 'index'.
+*/
+//go:nosplit
+func (self class) RemoveStackedShadow(index int64) { //gd:LabelSettings.remove_stacked_shadow
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_stacked_shadow, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+}
+
+/*
+Sets the offset of the stacked shadow identified by the given 'index' to 'offset'.
+*/
+//go:nosplit
+func (self class) SetStackedShadowOffset(index int64, offset Vector2.XY) { //gd:LabelSettings.set_stacked_shadow_offset
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stacked_shadow_offset, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), &struct {
+		index  int64
+		offset Vector2.XY
+	}{index, offset})
+}
+
+/*
+Returns the offset of the stacked shadow at 'index'.
+*/
+//go:nosplit
+func (self class) GetStackedShadowOffset(index int64) Vector2.XY { //gd:LabelSettings.get_stacked_shadow_offset
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_stacked_shadow_offset, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Sets the color of the stacked shadow identified by the given 'index' to 'color'.
+*/
+//go:nosplit
+func (self class) SetStackedShadowColor(index int64, color Color.RGBA) { //gd:LabelSettings.set_stacked_shadow_color
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stacked_shadow_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
+		index int64
+		color Color.RGBA
+	}{index, color})
+}
+
+/*
+Returns the color of the stacked shadow at 'index'.
+*/
+//go:nosplit
+func (self class) GetStackedShadowColor(index int64) Color.RGBA { //gd:LabelSettings.get_stacked_shadow_color
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_stacked_shadow_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Sets the outline size of the stacked shadow identified by the given 'index' to 'size'.
+*/
+//go:nosplit
+func (self class) SetStackedShadowOutlineSize(index int64, size int64) { //gd:LabelSettings.set_stacked_shadow_outline_size
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stacked_shadow_outline_size, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		index int64
+		size  int64
+	}{index, size})
+}
+
+/*
+Returns the outline size of the stacked shadow at 'index'.
+*/
+//go:nosplit
+func (self class) GetStackedShadowOutlineSize(index int64) int64 { //gd:LabelSettings.get_stacked_shadow_outline_size
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stacked_shadow_outline_size, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }

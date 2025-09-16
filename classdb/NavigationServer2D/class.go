@@ -102,6 +102,8 @@ var methods struct {
 	map_is_active                        gdextension.MethodForClass `hash:"4155700596"`
 	map_set_cell_size                    gdextension.MethodForClass `hash:"1794382983"`
 	map_get_cell_size                    gdextension.MethodForClass `hash:"866169185"`
+	map_set_merge_rasterizer_cell_scale  gdextension.MethodForClass `hash:"1794382983"`
+	map_get_merge_rasterizer_cell_scale  gdextension.MethodForClass `hash:"866169185"`
 	map_set_use_edge_connections         gdextension.MethodForClass `hash:"1265174801"`
 	map_get_use_edge_connections         gdextension.MethodForClass `hash:"4155700596"`
 	map_set_edge_connection_margin       gdextension.MethodForClass `hash:"1794382983"`
@@ -122,6 +124,9 @@ var methods struct {
 	map_get_random_point                 gdextension.MethodForClass `hash:"3271000763"`
 	query_path                           gdextension.MethodForClass `hash:"1254915886"`
 	region_create                        gdextension.MethodForClass `hash:"529393457"`
+	region_get_iteration_id              gdextension.MethodForClass `hash:"2198884583"`
+	region_set_use_async_iterations      gdextension.MethodForClass `hash:"1265174801"`
+	region_get_use_async_iterations      gdextension.MethodForClass `hash:"4155700596"`
 	region_set_enabled                   gdextension.MethodForClass `hash:"1265174801"`
 	region_get_enabled                   gdextension.MethodForClass `hash:"4155700596"`
 	region_set_use_edge_connections      gdextension.MethodForClass `hash:"1265174801"`
@@ -147,6 +152,7 @@ var methods struct {
 	region_get_random_point              gdextension.MethodForClass `hash:"3271000763"`
 	region_get_bounds                    gdextension.MethodForClass `hash:"1097232729"`
 	link_create                          gdextension.MethodForClass `hash:"529393457"`
+	link_get_iteration_id                gdextension.MethodForClass `hash:"2198884583"`
 	link_set_map                         gdextension.MethodForClass `hash:"395945892"`
 	link_get_map                         gdextension.MethodForClass `hash:"3814569979"`
 	link_set_enabled                     gdextension.MethodForClass `hash:"1265174801"`
@@ -223,8 +229,10 @@ var methods struct {
 	source_geometry_parser_set_callback  gdextension.MethodForClass `hash:"3379118538"`
 	simplify_path                        gdextension.MethodForClass `hash:"2457191505"`
 	free_rid                             gdextension.MethodForClass `hash:"2722037293"`
+	set_active                           gdextension.MethodForClass `hash:"2586408642"`
 	set_debug_enabled                    gdextension.MethodForClass `hash:"2586408642"`
 	get_debug_enabled                    gdextension.MethodForClass `hash:"36873697"`
+	get_process_info                     gdextension.MethodForClass `hash:"1640219858"`
 }
 
 func init() {
@@ -292,6 +300,22 @@ Returns the map cell size used to rasterize the navigation mesh vertices.
 func MapGetCellSize(map_ RID.NavigationMap2D) Float.X { //gd:NavigationServer2D.map_get_cell_size
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().MapGetCellSize(RID.Any(map_))))
+}
+
+/*
+Set the map's internal merge rasterizer cell scale used to control merging sensitivity.
+*/
+func MapSetMergeRasterizerCellScale(map_ RID.NavigationMap2D, scale Float.X) { //gd:NavigationServer2D.map_set_merge_rasterizer_cell_scale
+	once.Do(singleton)
+	Advanced().MapSetMergeRasterizerCellScale(RID.Any(map_), float64(scale))
+}
+
+/*
+Returns map's internal merge rasterizer cell scale.
+*/
+func MapGetMergeRasterizerCellScale(map_ RID.NavigationMap2D) Float.X { //gd:NavigationServer2D.map_get_merge_rasterizer_cell_scale
+	once.Do(singleton)
+	return Float.X(Float.X(Advanced().MapGetMergeRasterizerCellScale(RID.Any(map_))))
 }
 
 /*
@@ -480,6 +504,32 @@ Creates a new region.
 func RegionCreate() RID.NavigationRegion2D { //gd:NavigationServer2D.region_create
 	once.Do(singleton)
 	return RID.NavigationRegion2D(RID.NavigationRegion2D(Advanced().RegionCreate()))
+}
+
+/*
+Returns the current iteration ID of the navigation region. Every time the navigation region changes and synchronizes, the iteration ID increases. An iteration ID of 0 means the navigation region has never synchronized.
+
+Note: The iteration ID will wrap around to 1 after reaching its range limit.
+*/
+func RegionGetIterationId(region RID.NavigationRegion2D) int { //gd:NavigationServer2D.region_get_iteration_id
+	once.Do(singleton)
+	return int(int(Advanced().RegionGetIterationId(RID.Any(region))))
+}
+
+/*
+If 'enabled' is true the 'region' uses an async synchronization process that runs on a background thread.
+*/
+func RegionSetUseAsyncIterations(region RID.NavigationRegion2D, enabled bool) { //gd:NavigationServer2D.region_set_use_async_iterations
+	once.Do(singleton)
+	Advanced().RegionSetUseAsyncIterations(RID.Any(region), enabled)
+}
+
+/*
+Returns true if the 'region' uses an async synchronization process that runs on a background thread.
+*/
+func RegionGetUseAsyncIterations(region RID.NavigationRegion2D) bool { //gd:NavigationServer2D.region_get_use_async_iterations
+	once.Do(singleton)
+	return bool(Advanced().RegionGetUseAsyncIterations(RID.Any(region)))
 }
 
 /*
@@ -691,6 +741,16 @@ func LinkCreate() RID.NavigationLink2D { //gd:NavigationServer2D.link_create
 }
 
 /*
+Returns the current iteration ID of the navigation link. Every time the navigation link changes and synchronizes, the iteration ID increases. An iteration ID of 0 means the navigation link has never synchronized.
+
+Note: The iteration ID will wrap around to 1 after reaching its range limit.
+*/
+func LinkGetIterationId(link RID.NavigationLink2D) int { //gd:NavigationServer2D.link_get_iteration_id
+	once.Do(singleton)
+	return int(int(Advanced().LinkGetIterationId(RID.Any(link))))
+}
+
+/*
 Sets the navigation map [Resource.ID] for the link.
 */
 func LinkSetMap(link RID.NavigationLink2D, map_ RID.NavigationMap2D) { //gd:NavigationServer2D.link_set_map
@@ -875,7 +935,7 @@ func AgentGetMap(agent RID.NavigationAgent2D) RID.NavigationMap2D { //gd:Navigat
 }
 
 /*
-If 'paused' is true the specified 'agent' will not be processed, e.g. calculate avoidance velocities or receive avoidance callbacks.
+If 'paused' is true the specified 'agent' will not be processed. For example, it will not calculate avoidance velocities or receive avoidance callbacks.
 */
 func AgentSetPaused(agent RID.NavigationAgent2D, paused bool) { //gd:NavigationServer2D.agent_set_paused
 	once.Do(singleton)
@@ -1143,7 +1203,7 @@ func ObstacleGetMap(obstacle RID.NavigationObstacle2D) RID.NavigationMap2D { //g
 }
 
 /*
-If 'paused' is true the specified 'obstacle' will not be processed, e.g. affect avoidance velocities.
+If 'paused' is true the specified 'obstacle' will not be processed. For example, it will no longer affect avoidance velocities.
 */
 func ObstacleSetPaused(obstacle RID.NavigationObstacle2D, paused bool) { //gd:NavigationServer2D.obstacle_set_paused
 	once.Do(singleton)
@@ -1343,6 +1403,14 @@ func FreeRid(rid RID.Any) { //gd:NavigationServer2D.free_rid
 }
 
 /*
+Control activation of this server.
+*/
+func SetActive(active bool) { //gd:NavigationServer2D.set_active
+	once.Do(singleton)
+	Advanced().SetActive(active)
+}
+
+/*
 If true enables debug mode on the NavigationServer.
 */
 func SetDebugEnabled(enabled bool) { //gd:NavigationServer2D.set_debug_enabled
@@ -1356,6 +1424,14 @@ Returns true when the NavigationServer has debug enabled.
 func GetDebugEnabled() bool { //gd:NavigationServer2D.get_debug_enabled
 	once.Do(singleton)
 	return bool(Advanced().GetDebugEnabled())
+}
+
+/*
+Returns information about the current state of the NavigationServer.
+*/
+func GetProcessInfo(process_info ProcessInfo) int { //gd:NavigationServer2D.get_process_info
+	once.Do(singleton)
+	return int(int(Advanced().GetProcessInfo(process_info)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -1439,6 +1515,27 @@ Returns the map cell size used to rasterize the navigation mesh vertices.
 //go:nosplit
 func (self class) MapGetCellSize(mapping RID.Any) float64 { //gd:NavigationServer2D.map_get_cell_size
 	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.map_get_cell_size, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Set the map's internal merge rasterizer cell scale used to control merging sensitivity.
+*/
+//go:nosplit
+func (self class) MapSetMergeRasterizerCellScale(mapping RID.Any, scale float64) { //gd:NavigationServer2D.map_set_merge_rasterizer_cell_scale
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.map_set_merge_rasterizer_cell_scale, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+		mapping RID.Any
+		scale   float64
+	}{mapping, scale})
+}
+
+/*
+Returns map's internal merge rasterizer cell scale.
+*/
+//go:nosplit
+func (self class) MapGetMergeRasterizerCellScale(mapping RID.Any) float64 { //gd:NavigationServer2D.map_get_merge_rasterizer_cell_scale
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.map_get_merge_rasterizer_cell_scale, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 	var ret = r_ret
 	return ret
 }
@@ -1671,6 +1768,39 @@ Creates a new region.
 //go:nosplit
 func (self class) RegionCreate() RID.Any { //gd:NavigationServer2D.region_create
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.region_create, gdextension.SizeRID, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the current iteration ID of the navigation region. Every time the navigation region changes and synchronizes, the iteration ID increases. An iteration ID of 0 means the navigation region has never synchronized.
+
+Note: The iteration ID will wrap around to 1 after reaching its range limit.
+*/
+//go:nosplit
+func (self class) RegionGetIterationId(region RID.Any) int64 { //gd:NavigationServer2D.region_get_iteration_id
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.region_get_iteration_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
+	var ret = r_ret
+	return ret
+}
+
+/*
+If 'enabled' is true the 'region' uses an async synchronization process that runs on a background thread.
+*/
+//go:nosplit
+func (self class) RegionSetUseAsyncIterations(region RID.Any, enabled bool) { //gd:NavigationServer2D.region_set_use_async_iterations
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.region_set_use_async_iterations, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+		region  RID.Any
+		enabled bool
+	}{region, enabled})
+}
+
+/*
+Returns true if the 'region' uses an async synchronization process that runs on a background thread.
+*/
+//go:nosplit
+func (self class) RegionGetUseAsyncIterations(region RID.Any) bool { //gd:NavigationServer2D.region_get_use_async_iterations
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.region_get_use_async_iterations, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
 	var ret = r_ret
 	return ret
 }
@@ -1959,6 +2089,18 @@ func (self class) LinkCreate() RID.Any { //gd:NavigationServer2D.link_create
 }
 
 /*
+Returns the current iteration ID of the navigation link. Every time the navigation link changes and synchronizes, the iteration ID increases. An iteration ID of 0 means the navigation link has never synchronized.
+
+Note: The iteration ID will wrap around to 1 after reaching its range limit.
+*/
+//go:nosplit
+func (self class) LinkGetIterationId(link RID.Any) int64 { //gd:NavigationServer2D.link_get_iteration_id
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.link_get_iteration_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
+	var ret = r_ret
+	return ret
+}
+
+/*
 Sets the navigation map [Resource.ID] for the link.
 */
 //go:nosplit
@@ -2200,7 +2342,7 @@ func (self class) AgentGetMap(agent RID.Any) RID.Any { //gd:NavigationServer2D.a
 }
 
 /*
-If 'paused' is true the specified 'agent' will not be processed, e.g. calculate avoidance velocities or receive avoidance callbacks.
+If 'paused' is true the specified 'agent' will not be processed. For example, it will not calculate avoidance velocities or receive avoidance callbacks.
 */
 //go:nosplit
 func (self class) AgentSetPaused(agent RID.Any, paused bool) { //gd:NavigationServer2D.agent_set_paused
@@ -2550,7 +2692,7 @@ func (self class) ObstacleGetMap(obstacle RID.Any) RID.Any { //gd:NavigationServ
 }
 
 /*
-If 'paused' is true the specified 'obstacle' will not be processed, e.g. affect avoidance velocities.
+If 'paused' is true the specified 'obstacle' will not be processed. For example, it will no longer affect avoidance velocities.
 */
 //go:nosplit
 func (self class) ObstacleSetPaused(obstacle RID.Any, paused bool) { //gd:NavigationServer2D.obstacle_set_paused
@@ -2777,6 +2919,14 @@ func (self class) FreeRid(rid RID.Any) { //gd:NavigationServer2D.free_rid
 }
 
 /*
+Control activation of this server.
+*/
+//go:nosplit
+func (self class) SetActive(active bool) { //gd:NavigationServer2D.set_active
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
+}
+
+/*
 If true enables debug mode on the NavigationServer.
 */
 //go:nosplit
@@ -2790,6 +2940,16 @@ Returns true when the NavigationServer has debug enabled.
 //go:nosplit
 func (self class) GetDebugEnabled() bool { //gd:NavigationServer2D.get_debug_enabled
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_debug_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns information about the current state of the NavigationServer.
+*/
+//go:nosplit
+func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:NavigationServer2D.get_process_info
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_process_info, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ process_info ProcessInfo }{process_info})
 	var ret = r_ret
 	return ret
 }
@@ -2817,6 +2977,18 @@ func (self class) NavigationDebugChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NavigationDebugChanged`))))
 }
 
+func OnAvoidanceDebugChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("avoidance_debug_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) AvoidanceDebugChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AvoidanceDebugChanged`))))
+}
+
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
@@ -2833,3 +3005,28 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("NavigationServer2D", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.NavigationServer2D](ptr)} })
 }
+
+type ProcessInfo int //gd:NavigationServer2D.ProcessInfo
+
+const (
+	// Constant to get the number of active navigation maps.
+	InfoActiveMaps ProcessInfo = 0
+	// Constant to get the number of active navigation regions.
+	InfoRegionCount ProcessInfo = 1
+	// Constant to get the number of active navigation agents processing avoidance.
+	InfoAgentCount ProcessInfo = 2
+	// Constant to get the number of active navigation links.
+	InfoLinkCount ProcessInfo = 3
+	// Constant to get the number of navigation mesh polygons.
+	InfoPolygonCount ProcessInfo = 4
+	// Constant to get the number of navigation mesh polygon edges.
+	InfoEdgeCount ProcessInfo = 5
+	// Constant to get the number of navigation mesh polygon edges that were merged due to edge key overlap.
+	InfoEdgeMergeCount ProcessInfo = 6
+	// Constant to get the number of navigation mesh polygon edges that are considered connected by edge proximity.
+	InfoEdgeConnectionCount ProcessInfo = 7
+	// Constant to get the number of navigation mesh polygon edges that could not be merged but may be still connected by edge proximity or with links.
+	InfoEdgeFreeCount ProcessInfo = 8
+	// Constant to get the number of active navigation obstacles.
+	InfoObstacleCount ProcessInfo = 9
+)

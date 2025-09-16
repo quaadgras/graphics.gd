@@ -11,6 +11,26 @@ exports:
     - _GCHapticDurationInfinite
     - _GCControllerDidDisconnectNotification
     - _GCControllerDidConnectNotification
+    - _GCInputXboxPaddleTwo
+    - _GCInputXboxPaddleThree
+    - _GCInputXboxPaddleOne
+    - _GCInputXboxPaddleFour
+    - _GCInputRightTrigger
+    - _GCInputRightThumbstickButton
+    - _GCInputRightThumbstick
+    - _GCInputRightShoulder
+    - _GCInputLeftTrigger
+    - _GCInputLeftThumbstickButton
+    - _GCInputLeftThumbstick
+    - _GCInputLeftShoulder
+    - _GCInputButtonY
+    - _GCInputButtonX
+    - _GCInputButtonShare
+    - _GCInputButtonOptions
+    - _GCInputButtonMenu
+    - _GCInputButtonHome
+    - _GCInputButtonB
+    - _GCInputButtonA
    objc-classes:
     - GCXboxGamepad
     - GCKeyboard

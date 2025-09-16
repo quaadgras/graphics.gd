@@ -157,8 +157,8 @@ type Interface interface {
 	AreaGetCollisionMask(area RID.Area3D) int
 	AreaSetMonitorable(area RID.Area3D, monitorable bool)
 	AreaSetRayPickable(area RID.Area3D, enable bool)
-	AreaSetMonitorCallback(area RID.Area3D, callback Callable.Function)
-	AreaSetAreaMonitorCallback(area RID.Area3D, callback Callable.Function)
+	AreaSetMonitorCallback(area RID.Area3D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int))
+	AreaSetAreaMonitorCallback(area RID.Area3D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int))
 	BodyCreate() RID.Body3D
 	BodySetSpace(body RID.Body3D, space RID.Space3D)
 	BodyGetSpace(body RID.Body3D) RID.Space3D
@@ -215,8 +215,8 @@ type Interface interface {
 	BodyGetContactsReportedDepthThreshold(body RID.Body3D) Float.X
 	BodySetOmitForceIntegration(body RID.Body3D, enable bool)
 	BodyIsOmittingForceIntegration(body RID.Body3D) bool
-	BodySetStateSyncCallback(body RID.Body3D, callable Callable.Function)
-	BodySetForceIntegrationCallback(body RID.Body3D, callable Callable.Function, userdata any)
+	BodySetStateSyncCallback(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance))
+	BodySetForceIntegrationCallback(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance, userdata any), userdata any)
 	BodySetRayPickable(body RID.Body3D, enable bool)
 	BodyTestMotion(body RID.Body3D, from Transform3D.BasisOrigin, motion Vector3.XYZ, margin Float.X, max_collisions int, collide_separation_ray bool, recovery_as_collision bool, result *MotionResult) bool
 	BodyGetDirectState(body RID.Body3D) PhysicsDirectBodyState3D.Instance
@@ -241,6 +241,8 @@ type Interface interface {
 	SoftBodyGetTotalMass(body RID.SoftBody3D) Float.X
 	SoftBodySetLinearStiffness(body RID.SoftBody3D, linear_stiffness Float.X)
 	SoftBodyGetLinearStiffness(body RID.SoftBody3D) Float.X
+	SoftBodySetShrinkingFactor(body RID.Body3D, shrinking_factor Float.X)
+	SoftBodyGetShrinkingFactor(body RID.Body3D) Float.X
 	SoftBodySetPressureCoefficient(body RID.SoftBody3D, pressure_coefficient Float.X)
 	SoftBodyGetPressureCoefficient(body RID.SoftBody3D) Float.X
 	SoftBodySetDampingCoefficient(body RID.SoftBody3D, damping_coefficient Float.X)
@@ -254,6 +256,10 @@ type Interface interface {
 	SoftBodyRemoveAllPinnedPoints(body RID.SoftBody3D)
 	SoftBodyPinPoint(body RID.SoftBody3D, point_index int, pin bool)
 	SoftBodyIsPointPinned(body RID.SoftBody3D, point_index int) bool
+	SoftBodyApplyPointImpulse(body RID.Body3D, point_index int, impulse Vector3.XYZ)
+	SoftBodyApplyPointForce(body RID.Body3D, point_index int, force Vector3.XYZ)
+	SoftBodyApplyCentralImpulse(body RID.Body3D, impulse Vector3.XYZ)
+	SoftBodyApplyCentralForce(body RID.Body3D, force Vector3.XYZ)
 	JointCreate() RID.Joint3D
 	JointClear(joint RID.Joint3D)
 	JointMakePin(joint RID.Joint3D, body_A RID.Body3D, local_A Vector3.XYZ, body_B RID.Body3D, local_B Vector3.XYZ)
@@ -372,10 +378,10 @@ func (self implementation) AreaSetCollisionMask(area RID.Area3D, mask int)      
 func (self implementation) AreaGetCollisionMask(area RID.Area3D) (_ int)                 { return }
 func (self implementation) AreaSetMonitorable(area RID.Area3D, monitorable bool)         { return }
 func (self implementation) AreaSetRayPickable(area RID.Area3D, enable bool)              { return }
-func (self implementation) AreaSetMonitorCallback(area RID.Area3D, callback Callable.Function) {
+func (self implementation) AreaSetMonitorCallback(area RID.Area3D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) {
 	return
 }
-func (self implementation) AreaSetAreaMonitorCallback(area RID.Area3D, callback Callable.Function) {
+func (self implementation) AreaSetAreaMonitorCallback(area RID.Area3D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) {
 	return
 }
 func (self implementation) BodyCreate() (_ RID.Body3D)                                 { return }
@@ -470,10 +476,10 @@ func (self implementation) BodySetContactsReportedDepthThreshold(body RID.Body3D
 func (self implementation) BodyGetContactsReportedDepthThreshold(body RID.Body3D) (_ Float.X) { return }
 func (self implementation) BodySetOmitForceIntegration(body RID.Body3D, enable bool)          { return }
 func (self implementation) BodyIsOmittingForceIntegration(body RID.Body3D) (_ bool)           { return }
-func (self implementation) BodySetStateSyncCallback(body RID.Body3D, callable Callable.Function) {
+func (self implementation) BodySetStateSyncCallback(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance)) {
 	return
 }
-func (self implementation) BodySetForceIntegrationCallback(body RID.Body3D, callable Callable.Function, userdata any) {
+func (self implementation) BodySetForceIntegrationCallback(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance, userdata any), userdata any) {
 	return
 }
 func (self implementation) BodySetRayPickable(body RID.Body3D, enable bool) { return }
@@ -522,6 +528,10 @@ func (self implementation) SoftBodySetLinearStiffness(body RID.SoftBody3D, linea
 	return
 }
 func (self implementation) SoftBodyGetLinearStiffness(body RID.SoftBody3D) (_ Float.X) { return }
+func (self implementation) SoftBodySetShrinkingFactor(body RID.Body3D, shrinking_factor Float.X) {
+	return
+}
+func (self implementation) SoftBodyGetShrinkingFactor(body RID.Body3D) (_ Float.X) { return }
 func (self implementation) SoftBodySetPressureCoefficient(body RID.SoftBody3D, pressure_coefficient Float.X) {
 	return
 }
@@ -547,8 +557,16 @@ func (self implementation) SoftBodyPinPoint(body RID.SoftBody3D, point_index int
 func (self implementation) SoftBodyIsPointPinned(body RID.SoftBody3D, point_index int) (_ bool) {
 	return
 }
-func (self implementation) JointCreate() (_ RID.Joint3D) { return }
-func (self implementation) JointClear(joint RID.Joint3D) { return }
+func (self implementation) SoftBodyApplyPointImpulse(body RID.Body3D, point_index int, impulse Vector3.XYZ) {
+	return
+}
+func (self implementation) SoftBodyApplyPointForce(body RID.Body3D, point_index int, force Vector3.XYZ) {
+	return
+}
+func (self implementation) SoftBodyApplyCentralImpulse(body RID.Body3D, impulse Vector3.XYZ) { return }
+func (self implementation) SoftBodyApplyCentralForce(body RID.Body3D, force Vector3.XYZ)     { return }
+func (self implementation) JointCreate() (_ RID.Joint3D)                                     { return }
+func (self implementation) JointClear(joint RID.Joint3D)                                     { return }
 func (self implementation) JointMakePin(joint RID.Joint3D, body_A RID.Body3D, local_A Vector3.XYZ, body_B RID.Body3D, local_B Vector3.XYZ) {
 	return
 }
@@ -1050,22 +1068,22 @@ func (Instance) _area_set_ray_pickable(impl func(ptr gdclass.Receiver, area RID.
 		impl(self, RID.Area3D(area), enable)
 	}
 }
-func (Instance) _area_set_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Area3D, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Area3D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int))) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callback))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, RID.Area3D(area), callback)
+		impl(self, RID.Area3D(area), gd.CallableAs[func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)](gd.InternalCallable(callback)))
 	}
 }
-func (Instance) _area_set_area_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Area3D, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_area_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Area3D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int))) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callback))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, RID.Area3D(area), callback)
+		impl(self, RID.Area3D(area), gd.CallableAs[func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)](gd.InternalCallable(callback)))
 	}
 }
 func (Instance) _body_create(impl func(ptr gdclass.Receiver) RID.Body3D) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1546,16 +1564,16 @@ func (Instance) _body_is_omitting_force_integration(impl func(ptr gdclass.Receiv
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _body_set_state_sync_callback(impl func(ptr gdclass.Receiver, body RID.Body3D, callable Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_state_sync_callback(impl func(ptr gdclass.Receiver, body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance))) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callable))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, RID.Body3D(body), callable)
+		impl(self, RID.Body3D(body), gd.CallableAs[func(state PhysicsDirectBodyState3D.Instance)](gd.InternalCallable(callable)))
 	}
 }
-func (Instance) _body_set_force_integration_callback(impl func(ptr gdclass.Receiver, body RID.Body3D, callable Callable.Function, userdata any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_force_integration_callback(impl func(ptr gdclass.Receiver, body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance, userdata any), userdata any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
@@ -1563,7 +1581,7 @@ func (Instance) _body_set_force_integration_callback(impl func(ptr gdclass.Recei
 		var userdata = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(userdata))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, RID.Body3D(body), callable, userdata.Interface())
+		impl(self, RID.Body3D(body), gd.CallableAs[func(state PhysicsDirectBodyState3D.Instance, userdata any)](gd.InternalCallable(callable)), userdata.Interface())
 	}
 }
 func (Instance) _body_set_ray_pickable(impl func(ptr gdclass.Receiver, body RID.Body3D, enable bool)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1784,6 +1802,22 @@ func (Instance) _soft_body_get_linear_stiffness(impl func(ptr gdclass.Receiver, 
 		gd.UnsafeSet(p_back, float64(ret))
 	}
 }
+func (Instance) _soft_body_set_shrinking_factor(impl func(ptr gdclass.Receiver, body RID.Body3D, shrinking_factor Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
+		var shrinking_factor = gd.UnsafeGet[float64](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, RID.Body3D(body), Float.X(shrinking_factor))
+	}
+}
+func (Instance) _soft_body_get_shrinking_factor(impl func(ptr gdclass.Receiver, body RID.Body3D) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, RID.Body3D(body))
+		gd.UnsafeSet(p_back, float64(ret))
+	}
+}
 func (Instance) _soft_body_set_pressure_coefficient(impl func(ptr gdclass.Receiver, body RID.SoftBody3D, pressure_coefficient Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -1889,6 +1923,40 @@ func (Instance) _soft_body_is_point_pinned(impl func(ptr gdclass.Receiver, body 
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, RID.SoftBody3D(body), int(point_index))
 		gd.UnsafeSet(p_back, ret)
+	}
+}
+func (Instance) _soft_body_apply_point_impulse(impl func(ptr gdclass.Receiver, body RID.Body3D, point_index int, impulse Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
+		var point_index = gd.UnsafeGet[int64](p_args, 1)
+		var impulse = gd.UnsafeGet[Vector3.XYZ](p_args, 2)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, RID.Body3D(body), int(point_index), impulse)
+	}
+}
+func (Instance) _soft_body_apply_point_force(impl func(ptr gdclass.Receiver, body RID.Body3D, point_index int, force Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
+		var point_index = gd.UnsafeGet[int64](p_args, 1)
+		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 2)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, RID.Body3D(body), int(point_index), force)
+	}
+}
+func (Instance) _soft_body_apply_central_impulse(impl func(ptr gdclass.Receiver, body RID.Body3D, impulse Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
+		var impulse = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, RID.Body3D(body), impulse)
+	}
+}
+func (Instance) _soft_body_apply_central_force(impl func(ptr gdclass.Receiver, body RID.Body3D, force Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
+		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, RID.Body3D(body), force)
 	}
 }
 func (Instance) _joint_create(impl func(ptr gdclass.Receiver) RID.Joint3D) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -3578,6 +3646,24 @@ func (class) _soft_body_get_linear_stiffness(impl func(ptr gdclass.Receiver, bod
 	}
 }
 
+func (class) _soft_body_set_shrinking_factor(impl func(ptr gdclass.Receiver, body RID.Any, shrinking_factor float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
+		var shrinking_factor = gd.UnsafeGet[float64](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, body, shrinking_factor)
+	}
+}
+
+func (class) _soft_body_get_shrinking_factor(impl func(ptr gdclass.Receiver, body RID.Any) float64) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, body)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
 func (class) _soft_body_set_pressure_coefficient(impl func(ptr gdclass.Receiver, body RID.Any, pressure_coefficient float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
@@ -3695,6 +3781,44 @@ func (class) _soft_body_is_point_pinned(impl func(ptr gdclass.Receiver, body RID
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, body, point_index)
 		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+func (class) _soft_body_apply_point_impulse(impl func(ptr gdclass.Receiver, body RID.Any, point_index int64, impulse Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
+		var point_index = gd.UnsafeGet[int64](p_args, 1)
+		var impulse = gd.UnsafeGet[Vector3.XYZ](p_args, 2)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, body, point_index, impulse)
+	}
+}
+
+func (class) _soft_body_apply_point_force(impl func(ptr gdclass.Receiver, body RID.Any, point_index int64, force Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
+		var point_index = gd.UnsafeGet[int64](p_args, 1)
+		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 2)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, body, point_index, force)
+	}
+}
+
+func (class) _soft_body_apply_central_impulse(impl func(ptr gdclass.Receiver, body RID.Any, impulse Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
+		var impulse = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, body, impulse)
+	}
+}
+
+func (class) _soft_body_apply_central_force(impl func(ptr gdclass.Receiver, body RID.Any, force Vector3.XYZ)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var body = gd.UnsafeGet[RID.Any](p_args, 0)
+		var force = gd.UnsafeGet[Vector3.XYZ](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, body, force)
 	}
 }
 
@@ -4382,6 +4506,10 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._soft_body_set_linear_stiffness)
 	case "_soft_body_get_linear_stiffness":
 		return reflect.ValueOf(self._soft_body_get_linear_stiffness)
+	case "_soft_body_set_shrinking_factor":
+		return reflect.ValueOf(self._soft_body_set_shrinking_factor)
+	case "_soft_body_get_shrinking_factor":
+		return reflect.ValueOf(self._soft_body_get_shrinking_factor)
 	case "_soft_body_set_pressure_coefficient":
 		return reflect.ValueOf(self._soft_body_set_pressure_coefficient)
 	case "_soft_body_get_pressure_coefficient":
@@ -4408,6 +4536,14 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._soft_body_pin_point)
 	case "_soft_body_is_point_pinned":
 		return reflect.ValueOf(self._soft_body_is_point_pinned)
+	case "_soft_body_apply_point_impulse":
+		return reflect.ValueOf(self._soft_body_apply_point_impulse)
+	case "_soft_body_apply_point_force":
+		return reflect.ValueOf(self._soft_body_apply_point_force)
+	case "_soft_body_apply_central_impulse":
+		return reflect.ValueOf(self._soft_body_apply_central_impulse)
+	case "_soft_body_apply_central_force":
+		return reflect.ValueOf(self._soft_body_apply_central_force)
 	case "_joint_create":
 		return reflect.ValueOf(self._joint_create)
 	case "_joint_clear":
@@ -4765,6 +4901,10 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._soft_body_set_linear_stiffness)
 	case "_soft_body_get_linear_stiffness":
 		return reflect.ValueOf(self._soft_body_get_linear_stiffness)
+	case "_soft_body_set_shrinking_factor":
+		return reflect.ValueOf(self._soft_body_set_shrinking_factor)
+	case "_soft_body_get_shrinking_factor":
+		return reflect.ValueOf(self._soft_body_get_shrinking_factor)
 	case "_soft_body_set_pressure_coefficient":
 		return reflect.ValueOf(self._soft_body_set_pressure_coefficient)
 	case "_soft_body_get_pressure_coefficient":
@@ -4791,6 +4931,14 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._soft_body_pin_point)
 	case "_soft_body_is_point_pinned":
 		return reflect.ValueOf(self._soft_body_is_point_pinned)
+	case "_soft_body_apply_point_impulse":
+		return reflect.ValueOf(self._soft_body_apply_point_impulse)
+	case "_soft_body_apply_point_force":
+		return reflect.ValueOf(self._soft_body_apply_point_force)
+	case "_soft_body_apply_central_impulse":
+		return reflect.ValueOf(self._soft_body_apply_central_impulse)
+	case "_soft_body_apply_central_force":
+		return reflect.ValueOf(self._soft_body_apply_central_force)
 	case "_joint_create":
 		return reflect.ValueOf(self._joint_create)
 	case "_joint_clear":

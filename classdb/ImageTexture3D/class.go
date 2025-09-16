@@ -104,7 +104,7 @@ type Any interface {
 }
 
 /*
-Creates the [graphics.gd/classdb/ImageTexture3D] with specified 'width', 'height', and 'depth'. See [Image.Format] for 'format' options. If 'use_mipmaps' is true, then generate mipmaps for the [graphics.gd/classdb/ImageTexture3D].
+Creates the [graphics.gd/classdb/ImageTexture3D] with specified 'format', 'width', 'height', and 'depth'. If 'use_mipmaps' is true, generates mipmaps for the [graphics.gd/classdb/ImageTexture3D].
 */
 func (self Instance) Create(format Image.Format, width int, height int, depth int, use_mipmaps bool, data []Image.Instance) error { //gd:ImageTexture3D.create
 	return error(gd.ToError(Advanced(self).Create(format, int64(width), int64(height), int64(depth), use_mipmaps, gd.ArrayFromSlice[Array.Contains[[1]gdclass.Image]](data))))
@@ -161,7 +161,7 @@ func New() Instance {
 }
 
 /*
-Creates the [graphics.gd/classdb/ImageTexture3D] with specified 'width', 'height', and 'depth'. See [Image.Format] for 'format' options. If 'use_mipmaps' is true, then generate mipmaps for the [graphics.gd/classdb/ImageTexture3D].
+Creates the [graphics.gd/classdb/ImageTexture3D] with specified 'format', 'width', 'height', and 'depth'. If 'use_mipmaps' is true, generates mipmaps for the [graphics.gd/classdb/ImageTexture3D].
 */
 //go:nosplit
 func (self class) Create(format Image.Format, width int64, height int64, depth int64, use_mipmaps bool, data Array.Contains[[1]gdclass.Image]) Error.Code { //gd:ImageTexture3D.create

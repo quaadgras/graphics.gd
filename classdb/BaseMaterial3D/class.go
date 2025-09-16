@@ -134,6 +134,8 @@ var methods struct {
 	get_blend_mode                            gdextension.MethodForClass `hash:"4022690962"`
 	set_depth_draw_mode                       gdextension.MethodForClass `hash:"1456584748"`
 	get_depth_draw_mode                       gdextension.MethodForClass `hash:"2578197639"`
+	set_depth_test                            gdextension.MethodForClass `hash:"3918692338"`
+	get_depth_test                            gdextension.MethodForClass `hash:"3434785811"`
 	set_cull_mode                             gdextension.MethodForClass `hash:"2338909218"`
 	get_cull_mode                             gdextension.MethodForClass `hash:"1941499586"`
 	set_diffuse_mode                          gdextension.MethodForClass `hash:"1045299638"`
@@ -214,6 +216,22 @@ var methods struct {
 	get_distance_fade_max_distance            gdextension.MethodForClass `hash:"1740695150"`
 	set_distance_fade_min_distance            gdextension.MethodForClass `hash:"373806689"`
 	get_distance_fade_min_distance            gdextension.MethodForClass `hash:"1740695150"`
+	set_z_clip_scale                          gdextension.MethodForClass `hash:"373806689"`
+	get_z_clip_scale                          gdextension.MethodForClass `hash:"1740695150"`
+	set_fov_override                          gdextension.MethodForClass `hash:"373806689"`
+	get_fov_override                          gdextension.MethodForClass `hash:"1740695150"`
+	set_stencil_mode                          gdextension.MethodForClass `hash:"2272367200"`
+	get_stencil_mode                          gdextension.MethodForClass `hash:"2908443456"`
+	set_stencil_flags                         gdextension.MethodForClass `hash:"1286410249"`
+	get_stencil_flags                         gdextension.MethodForClass `hash:"3905245786"`
+	set_stencil_compare                       gdextension.MethodForClass `hash:"3741726481"`
+	get_stencil_compare                       gdextension.MethodForClass `hash:"2824600492"`
+	set_stencil_reference                     gdextension.MethodForClass `hash:"1286410249"`
+	get_stencil_reference                     gdextension.MethodForClass `hash:"3905245786"`
+	set_stencil_effect_color                  gdextension.MethodForClass `hash:"2920490490"`
+	get_stencil_effect_color                  gdextension.MethodForClass `hash:"3444240500"`
+	set_stencil_effect_outline_thickness      gdextension.MethodForClass `hash:"373806689"`
+	get_stencil_effect_outline_thickness      gdextension.MethodForClass `hash:"1740695150"`
 }
 
 func init() {
@@ -351,6 +369,14 @@ func (self Instance) SetNoDepthTest(value bool) {
 	class(self).SetFlag(0, value)
 }
 
+func (self Instance) DepthTest() DepthTest {
+	return DepthTest(class(self).GetDepthTest())
+}
+
+func (self Instance) SetDepthTest(value DepthTest) {
+	class(self).SetDepthTest(value)
+}
+
 func (self Instance) ShadingMode() ShadingMode {
 	return ShadingMode(class(self).GetShadingMode())
 }
@@ -389,6 +415,14 @@ func (self Instance) DisableFog() bool {
 
 func (self Instance) SetDisableFog(value bool) {
 	class(self).SetFlag(21, value)
+}
+
+func (self Instance) DisableSpecularOcclusion() bool {
+	return bool(class(self).GetFlag(22))
+}
+
+func (self Instance) SetDisableSpecularOcclusion(value bool) {
+	class(self).SetFlag(22, value)
 }
 
 func (self Instance) VertexColorUseAsAlbedo() bool {
@@ -581,6 +615,22 @@ func (self Instance) NormalTexture() Texture2D.Instance {
 
 func (self Instance) SetNormalTexture(value Texture2D.Instance) {
 	class(self).SetTexture(4, value)
+}
+
+func (self Instance) BentNormalEnabled() bool {
+	return bool(class(self).GetFeature(12))
+}
+
+func (self Instance) SetBentNormalEnabled(value bool) {
+	class(self).SetFeature(12, value)
+}
+
+func (self Instance) BentNormalTexture() Texture2D.Instance {
+	return Texture2D.Instance(class(self).GetTexture(18))
+}
+
+func (self Instance) SetBentNormalTexture(value Texture2D.Instance) {
+	class(self).SetTexture(18, value)
 }
 
 func (self Instance) RimEnabled() bool {
@@ -1159,6 +1209,38 @@ func (self Instance) SetUseParticleTrails(value bool) {
 	class(self).SetFlag(19, value)
 }
 
+func (self Instance) UseZClipScale() bool {
+	return bool(class(self).GetFlag(23))
+}
+
+func (self Instance) SetUseZClipScale(value bool) {
+	class(self).SetFlag(23, value)
+}
+
+func (self Instance) ZClipScale() Float.X {
+	return Float.X(Float.X(class(self).GetZClipScale()))
+}
+
+func (self Instance) SetZClipScale(value Float.X) {
+	class(self).SetZClipScale(float64(value))
+}
+
+func (self Instance) UseFovOverride() bool {
+	return bool(class(self).GetFlag(24))
+}
+
+func (self Instance) SetUseFovOverride(value bool) {
+	class(self).SetFlag(24, value)
+}
+
+func (self Instance) FovOverride() Float.X {
+	return Float.X(Float.X(class(self).GetFovOverride()))
+}
+
+func (self Instance) SetFovOverride(value Float.X) {
+	class(self).SetFovOverride(float64(value))
+}
+
 func (self Instance) ProximityFadeEnabled() bool {
 	return bool(class(self).IsProximityFadeEnabled())
 }
@@ -1213,6 +1295,54 @@ func (self Instance) DistanceFadeMaxDistance() Float.X {
 
 func (self Instance) SetDistanceFadeMaxDistance(value Float.X) {
 	class(self).SetDistanceFadeMaxDistance(float64(value))
+}
+
+func (self Instance) StencilMode() StencilMode {
+	return StencilMode(class(self).GetStencilMode())
+}
+
+func (self Instance) SetStencilMode(value StencilMode) {
+	class(self).SetStencilMode(value)
+}
+
+func (self Instance) StencilFlags() int {
+	return int(int(class(self).GetStencilFlags()))
+}
+
+func (self Instance) SetStencilFlags(value int) {
+	class(self).SetStencilFlags(int64(value))
+}
+
+func (self Instance) StencilCompare() StencilCompare {
+	return StencilCompare(class(self).GetStencilCompare())
+}
+
+func (self Instance) SetStencilCompare(value StencilCompare) {
+	class(self).SetStencilCompare(value)
+}
+
+func (self Instance) StencilReference() int {
+	return int(int(class(self).GetStencilReference()))
+}
+
+func (self Instance) SetStencilReference(value int) {
+	class(self).SetStencilReference(int64(value))
+}
+
+func (self Instance) StencilColor() Color.RGBA {
+	return Color.RGBA(class(self).GetStencilEffectColor())
+}
+
+func (self Instance) SetStencilColor(value Color.RGBA) {
+	class(self).SetStencilEffectColor(Color.RGBA(value))
+}
+
+func (self Instance) StencilOutlineThickness() Float.X {
+	return Float.X(Float.X(class(self).GetStencilEffectOutlineThickness()))
+}
+
+func (self Instance) SetStencilOutlineThickness(value Float.X) {
+	class(self).SetStencilEffectOutlineThickness(float64(value))
 }
 
 //go:nosplit
@@ -1552,6 +1682,18 @@ func (self class) GetDepthDrawMode() DepthDrawMode { //gd:BaseMaterial3D.get_dep
 }
 
 //go:nosplit
+func (self class) SetDepthTest(depth_test DepthTest) { //gd:BaseMaterial3D.set_depth_test
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth_test, 0|(gdextension.SizeInt<<4), &struct{ depth_test DepthTest }{depth_test})
+}
+
+//go:nosplit
+func (self class) GetDepthTest() DepthTest { //gd:BaseMaterial3D.get_depth_test
+	var r_ret = gdextension.Call[DepthTest](gd.ObjectChecked(self.AsObject()), methods.get_depth_test, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
 func (self class) SetCullMode(cull_mode CullMode) { //gd:BaseMaterial3D.set_cull_mode
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mode, 0|(gdextension.SizeInt<<4), &struct{ cull_mode CullMode }{cull_mode})
 }
@@ -1588,7 +1730,7 @@ func (self class) GetSpecularMode() SpecularMode { //gd:BaseMaterial3D.get_specu
 }
 
 /*
-If true, enables the specified flag. Flags are optional behavior that can be turned on and off. Only one flag can be enabled at a time with this function, the flag enumerators cannot be bit-masked together to enable or disable multiple flags at once. Flags can also be enabled by setting the corresponding member to true. See [Flags] enumerator for options.
+If true, enables the specified flag. Flags are optional behavior that can be turned on and off. Only one flag can be enabled at a time with this function, the flag enumerators cannot be bit-masked together to enable or disable multiple flags at once. Flags can also be enabled by setting the corresponding member to true.
 */
 //go:nosplit
 func (self class) SetFlag(flag Flags, enable bool) { //gd:BaseMaterial3D.set_flag
@@ -1599,7 +1741,7 @@ func (self class) SetFlag(flag Flags, enable bool) { //gd:BaseMaterial3D.set_fla
 }
 
 /*
-Returns true, if the specified flag is enabled. See [Flags] enumerator for options.
+Returns true if the specified flag is enabled.
 */
 //go:nosplit
 func (self class) GetFlag(flag Flags) bool { //gd:BaseMaterial3D.get_flag
@@ -1642,7 +1784,7 @@ func (self class) GetFeature(feature Feature) bool { //gd:BaseMaterial3D.get_fea
 }
 
 /*
-Sets the texture for the slot specified by 'param'. See [TextureParam] for available slots.
+Sets the texture for the slot specified by 'param'.
 */
 //go:nosplit
 func (self class) SetTexture(param TextureParam, texture [1]gdclass.Texture2D) { //gd:BaseMaterial3D.set_texture
@@ -2057,6 +2199,102 @@ func (self class) GetDistanceFadeMinDistance() float64 { //gd:BaseMaterial3D.get
 	var ret = r_ret
 	return ret
 }
+
+//go:nosplit
+func (self class) SetZClipScale(scale float64) { //gd:BaseMaterial3D.set_z_clip_scale
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_z_clip_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
+}
+
+//go:nosplit
+func (self class) GetZClipScale() float64 { //gd:BaseMaterial3D.get_z_clip_scale
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_z_clip_scale, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetFovOverride(scale float64) { //gd:BaseMaterial3D.set_fov_override
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fov_override, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
+}
+
+//go:nosplit
+func (self class) GetFovOverride() float64 { //gd:BaseMaterial3D.get_fov_override
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fov_override, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetStencilMode(stencil_mode StencilMode) { //gd:BaseMaterial3D.set_stencil_mode
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stencil_mode, 0|(gdextension.SizeInt<<4), &struct{ stencil_mode StencilMode }{stencil_mode})
+}
+
+//go:nosplit
+func (self class) GetStencilMode() StencilMode { //gd:BaseMaterial3D.get_stencil_mode
+	var r_ret = gdextension.Call[StencilMode](gd.ObjectChecked(self.AsObject()), methods.get_stencil_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetStencilFlags(stencil_flags int64) { //gd:BaseMaterial3D.set_stencil_flags
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stencil_flags, 0|(gdextension.SizeInt<<4), &struct{ stencil_flags int64 }{stencil_flags})
+}
+
+//go:nosplit
+func (self class) GetStencilFlags() int64 { //gd:BaseMaterial3D.get_stencil_flags
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stencil_flags, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetStencilCompare(stencil_compare StencilCompare) { //gd:BaseMaterial3D.set_stencil_compare
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stencil_compare, 0|(gdextension.SizeInt<<4), &struct{ stencil_compare StencilCompare }{stencil_compare})
+}
+
+//go:nosplit
+func (self class) GetStencilCompare() StencilCompare { //gd:BaseMaterial3D.get_stencil_compare
+	var r_ret = gdextension.Call[StencilCompare](gd.ObjectChecked(self.AsObject()), methods.get_stencil_compare, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetStencilReference(stencil_reference int64) { //gd:BaseMaterial3D.set_stencil_reference
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stencil_reference, 0|(gdextension.SizeInt<<4), &struct{ stencil_reference int64 }{stencil_reference})
+}
+
+//go:nosplit
+func (self class) GetStencilReference() int64 { //gd:BaseMaterial3D.get_stencil_reference
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stencil_reference, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetStencilEffectColor(stencil_color Color.RGBA) { //gd:BaseMaterial3D.set_stencil_effect_color
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stencil_effect_color, 0|(gdextension.SizeColor<<4), &struct{ stencil_color Color.RGBA }{stencil_color})
+}
+
+//go:nosplit
+func (self class) GetStencilEffectColor() Color.RGBA { //gd:BaseMaterial3D.get_stencil_effect_color
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_stencil_effect_color, gdextension.SizeColor, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetStencilEffectOutlineThickness(stencil_outline_thickness float64) { //gd:BaseMaterial3D.set_stencil_effect_outline_thickness
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stencil_effect_outline_thickness, 0|(gdextension.SizeFloat<<4), &struct{ stencil_outline_thickness float64 }{stencil_outline_thickness})
+}
+
+//go:nosplit
+func (self class) GetStencilEffectOutlineThickness() float64 { //gd:BaseMaterial3D.get_stencil_effect_outline_thickness
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_stencil_effect_outline_thickness, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
 func (self class) AsBaseMaterial3D() Advanced {
 	return Advanced{pointers.AsA[gdclass.BaseMaterial3D](self[0])}
 }
@@ -2116,6 +2354,8 @@ const (
 	TextureEmission TextureParam = 3
 	// Texture specifying per-pixel normal vector.
 	TextureNormal TextureParam = 4
+	// Texture specifying per-pixel bent normal vector.
+	TextureBentNormal TextureParam = 18
 	// Texture specifying per-pixel rim value.
 	TextureRim TextureParam = 5
 	// Texture specifying per-pixel clearcoat value.
@@ -2143,7 +2383,7 @@ const (
 	// Texture holding ambient occlusion, roughness, and metallic.
 	TextureOrm TextureParam = 17
 	// Represents the size of the [TextureParam] enum.
-	TextureMax TextureParam = 18
+	TextureMax TextureParam = 19
 )
 
 type TextureFilter int //gd:BaseMaterial3D.TextureFilter
@@ -2231,8 +2471,10 @@ const (
 	FeatureRefraction Feature = 10
 	// Constant for setting [Instance.DetailEnabled].
 	FeatureDetail Feature = 11
+	// Constant for setting [Instance.BentNormalEnabled].
+	FeatureBentNormalMapping Feature = 12
 	// Represents the size of the [Feature] enum.
-	FeatureMax Feature = 12
+	FeatureMax Feature = 13
 )
 
 type BlendMode int //gd:BaseMaterial3D.BlendMode
@@ -2272,6 +2514,15 @@ const (
 	DepthDrawAlways DepthDrawMode = 1
 	// Objects will not write their depth to the depth buffer, even during the depth prepass (if enabled).
 	DepthDrawDisabled DepthDrawMode = 2
+)
+
+type DepthTest int //gd:BaseMaterial3D.DepthTest
+
+const (
+	// Depth test will discard the pixel if it is behind other pixels.
+	DepthTestDefault DepthTest = 0
+	// Depth test will discard the pixel if it is in front of other pixels. Useful for stencil effects.
+	DepthTestInverted DepthTest = 1
 )
 
 type CullMode int //gd:BaseMaterial3D.CullMode
@@ -2334,8 +2585,14 @@ const (
 	FlagAlbedoTextureMsdf Flags = 20
 	// Disables receiving depth-based or volumetric fog.
 	FlagDisableFog Flags = 21
+	// Disables specular occlusion.
+	FlagDisableSpecularOcclusion Flags = 22
+	// Enables using [Instance.ZClipScale].
+	FlagUseZClipScale Flags = 23
+	// Enables using [Instance.FovOverride].
+	FlagUseFovOverride Flags = 24
 	// Represents the size of the [Flags] enum.
-	FlagMax Flags = 22
+	FlagMax Flags = 25
 )
 
 type DiffuseMode int //gd:BaseMaterial3D.DiffuseMode
@@ -2355,6 +2612,10 @@ type SpecularMode int //gd:BaseMaterial3D.SpecularMode
 
 const (
 	// Default specular blob.
+	//
+	// Note: Forward+ uses multiscattering for more accurate reflections, although the impact of multiscattering is more noticeable on rough metallic surfaces than on smooth, non-metallic surfaces.
+	//
+	// Note: Mobile and Compatibility don't perform multiscattering for performance reasons. Instead, they perform single scattering, which means rough metallic surfaces may look slightly darker than intended.
 	SpecularSchlickGgx SpecularMode = 0
 	// Toon blob which changes size based on roughness.
 	SpecularToon SpecularMode = 1
@@ -2412,4 +2673,51 @@ const (
 	DistanceFadePixelDither DistanceFadeMode = 2
 	// Smoothly fades the object out based on the object's distance from the camera using a dithering approach. Dithering discards pixels based on a set pattern to smoothly fade without enabling transparency. On certain hardware, this can be faster than [DistanceFadePixelAlpha] and [DistanceFadePixelDither].
 	DistanceFadeObjectDither DistanceFadeMode = 3
+)
+
+type StencilMode int //gd:BaseMaterial3D.StencilMode
+
+const (
+	// Disables stencil operations.
+	StencilModeDisabled StencilMode = 0
+	// Stencil preset which applies an outline to the object.
+	//
+	// Note: Requires a [graphics.gd/classdb/Material.Instance.NextPass] material which will be automatically applied. Any manual changes made to [graphics.gd/classdb/Material.Instance.NextPass] will be lost when the stencil properties are modified or the scene is reloaded. To safely apply a [graphics.gd/classdb/Material.Instance.NextPass] material on a material that uses stencil presets, use [graphics.gd/classdb/GeometryInstance3D.Instance.MaterialOverlay] instead.
+	StencilModeOutline StencilMode = 1
+	// Stencil preset which shows a silhouette of the object behind walls.
+	//
+	// Note: Requires a [graphics.gd/classdb/Material.Instance.NextPass] material which will be automatically applied. Any manual changes made to [graphics.gd/classdb/Material.Instance.NextPass] will be lost when the stencil properties are modified or the scene is reloaded. To safely apply a [graphics.gd/classdb/Material.Instance.NextPass] material on a material that uses stencil presets, use [graphics.gd/classdb/GeometryInstance3D.Instance.MaterialOverlay] instead.
+	StencilModeXray StencilMode = 2
+	// Enables stencil operations without a preset.
+	StencilModeCustom StencilMode = 3
+)
+
+type StencilFlags int //gd:BaseMaterial3D.StencilFlags
+
+const (
+	// The material will only be rendered where it passes a stencil comparison with existing stencil buffer values. See [StencilCompare].
+	StencilFlagRead StencilFlags = 1
+	// The material will write the reference value to the stencil buffer where it passes the depth test.
+	StencilFlagWrite StencilFlags = 2
+	// The material will write the reference value to the stencil buffer where it fails the depth test.
+	StencilFlagWriteDepthFail StencilFlags = 4
+)
+
+type StencilCompare int //gd:BaseMaterial3D.StencilCompare
+
+const (
+	// Always passes the stencil test.
+	StencilCompareAlways StencilCompare = 0
+	// Passes the stencil test when the reference value is less than the existing stencil value.
+	StencilCompareLess StencilCompare = 1
+	// Passes the stencil test when the reference value is equal to the existing stencil value.
+	StencilCompareEqual StencilCompare = 2
+	// Passes the stencil test when the reference value is less than or equal to the existing stencil value.
+	StencilCompareLessOrEqual StencilCompare = 3
+	// Passes the stencil test when the reference value is greater than the existing stencil value.
+	StencilCompareGreater StencilCompare = 4
+	// Passes the stencil test when the reference value is not equal to the existing stencil value.
+	StencilCompareNotEqual StencilCompare = 5
+	// Passes the stencil test when the reference value is greater than or equal to the existing stencil value.
+	StencilCompareGreaterOrEqual StencilCompare = 6
 )

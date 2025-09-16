@@ -80,6 +80,7 @@ var methods struct {
 	add_node                         gdextension.MethodForClass `hash:"1078189570"`
 	remove_node                      gdextension.MethodForClass `hash:"1078189570"`
 	get_selected_nodes               gdextension.MethodForClass `hash:"2915620761"`
+	get_top_selected_nodes           gdextension.MethodForClass `hash:"2915620761"`
 	get_transformable_selected_nodes gdextension.MethodForClass `hash:"2915620761"`
 }
 
@@ -134,7 +135,16 @@ func (self Instance) GetSelectedNodes() []Node.Instance { //gd:EditorSelection.g
 }
 
 /*
-Returns the list of selected nodes, optimized for transform operations (i.e. moving them, rotating, etc.). This list can be used to avoid situations where a node is selected and is also a child/grandchild.
+Returns the list of top selected nodes only, excluding any children. This is useful for performing transform operations (moving them, rotating, etc.).
+
+For example, if there is a node A with a child B and a sibling C, then selecting all three will cause this method to return only A and C. Changing the global transform of A will affect the global transform of B, so there is no need to change B separately.
+*/
+func (self Instance) GetTopSelectedNodes() []Node.Instance { //gd:EditorSelection.get_top_selected_nodes
+	return []Node.Instance(gd.ArrayAs[[]Node.Instance](gd.InternalArray(Advanced(self).GetTopSelectedNodes())))
+}
+
+/*
+Returns the list of top selected nodes only, excluding any children. This is useful for performing transform operations (moving them, rotating, etc.). See [Instance.GetTopSelectedNodes].
 */
 func (self Instance) GetTransformableSelectedNodes() []Node.Instance { //gd:EditorSelection.get_transformable_selected_nodes
 	return []Node.Instance(gd.ArrayAs[[]Node.Instance](gd.InternalArray(Advanced(self).GetTransformableSelectedNodes())))
@@ -219,7 +229,19 @@ func (self class) GetSelectedNodes() Array.Contains[[1]gdclass.Node] { //gd:Edit
 }
 
 /*
-Returns the list of selected nodes, optimized for transform operations (i.e. moving them, rotating, etc.). This list can be used to avoid situations where a node is selected and is also a child/grandchild.
+Returns the list of top selected nodes only, excluding any children. This is useful for performing transform operations (moving them, rotating, etc.).
+
+For example, if there is a node A with a child B and a sibling C, then selecting all three will cause this method to return only A and C. Changing the global transform of A will affect the global transform of B, so there is no need to change B separately.
+*/
+//go:nosplit
+func (self class) GetTopSelectedNodes() Array.Contains[[1]gdclass.Node] { //gd:EditorSelection.get_top_selected_nodes
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_top_selected_nodes, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+
+/*
+Returns the list of top selected nodes only, excluding any children. This is useful for performing transform operations (moving them, rotating, etc.). See [Instance.GetTopSelectedNodes].
 */
 //go:nosplit
 func (self class) GetTransformableSelectedNodes() Array.Contains[[1]gdclass.Node] { //gd:EditorSelection.get_transformable_selected_nodes

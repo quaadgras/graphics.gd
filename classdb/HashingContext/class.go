@@ -138,7 +138,7 @@ func (self Instance) Start(atype HashType) error { //gd:HashingContext.start
 Updates the computation with the given 'chunk' of data.
 */
 func (self Instance) Update(chunk []byte) error { //gd:HashingContext.update
-	return error(gd.ToError(Advanced(self).Update(Packed.Bytes(Packed.New(chunk...)))))
+	return error(gd.ToError(Advanced(self).Update(Packed.BytesFrom(chunk...))))
 }
 
 /*
@@ -206,7 +206,7 @@ Updates the computation with the given 'chunk' of data.
 */
 //go:nosplit
 func (self class) Update(chunk Packed.Bytes) Error.Code { //gd:HashingContext.update
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ chunk gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](chunk)))})
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ chunk gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](chunk.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -217,7 +217,7 @@ Closes the current context, and return the computed hash.
 //go:nosplit
 func (self class) Finish() Packed.Bytes { //gd:HashingContext.finish
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.finish, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 func (self class) AsHashingContext() Advanced {

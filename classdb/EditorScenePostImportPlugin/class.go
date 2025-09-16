@@ -116,11 +116,11 @@ type Interface interface {
 	GetImportOptions(path string)
 	// Should return true to show the given option, false to hide the given option, or null to ignore.
 	GetOptionVisibility(path string, for_animation bool, option string) any
-	// Pre Process the scene. This function is called right after the scene format loader loaded the scene and no changes have been made.
+	// Pre-process the scene. This function is called right after the scene format loader loaded the scene and no changes have been made.
 	//
-	// Pre process may be used to adjust internal import options in the "nodes", "meshes", "animations" or "materials" keys inside get_option_value("_subresources").
+	// Pre-process may be used to adjust internal import options in the "nodes", "meshes", "animations" or "materials" keys inside get_option_value("_subresources").
 	PreProcess(scene Node.Instance)
-	// Post process the scene. This function is called after the final scene has been configured.
+	// Post-process the scene. This function is called after the final scene has been configured.
 	PostProcess(scene Node.Instance)
 }
 
@@ -250,9 +250,9 @@ func (Instance) _get_option_visibility(impl func(ptr gdclass.Receiver, path stri
 }
 
 /*
-Pre Process the scene. This function is called right after the scene format loader loaded the scene and no changes have been made.
+Pre-process the scene. This function is called right after the scene format loader loaded the scene and no changes have been made.
 
-Pre process may be used to adjust internal import options in the "nodes", "meshes", "animations" or "materials" keys inside get_option_value("_subresources").
+Pre-process may be used to adjust internal import options in the "nodes", "meshes", "animations" or "materials" keys inside get_option_value("_subresources").
 */
 func (Instance) _pre_process(impl func(ptr gdclass.Receiver, scene Node.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -265,7 +265,7 @@ func (Instance) _pre_process(impl func(ptr gdclass.Receiver, scene Node.Instance
 }
 
 /*
-Post process the scene. This function is called after the final scene has been configured.
+Post-process the scene. This function is called after the final scene has been configured.
 */
 func (Instance) _post_process(impl func(ptr gdclass.Receiver, scene Node.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -452,9 +452,9 @@ func (class) _get_option_visibility(impl func(ptr gdclass.Receiver, path String.
 }
 
 /*
-Pre Process the scene. This function is called right after the scene format loader loaded the scene and no changes have been made.
+Pre-process the scene. This function is called right after the scene format loader loaded the scene and no changes have been made.
 
-Pre process may be used to adjust internal import options in the "nodes", "meshes", "animations" or "materials" keys inside get_option_value("_subresources").
+Pre-process may be used to adjust internal import options in the "nodes", "meshes", "animations" or "materials" keys inside get_option_value("_subresources").
 */
 func (class) _pre_process(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -467,7 +467,7 @@ func (class) _pre_process(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node)
 }
 
 /*
-Post process the scene. This function is called after the final scene has been configured.
+Post-process the scene. This function is called after the final scene has been configured.
 */
 func (class) _post_process(impl func(ptr gdclass.Receiver, scene [1]gdclass.Node)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

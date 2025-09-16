@@ -30,7 +30,8 @@ func check(class gdjson.Class, method gdjson.Method, name string, gdtype string)
 	}
 	if gdtype == "Array" {
 		key := (class.Name + "." + method.Name + "." + name)
-		if _, ok := gdjson.Structables[key]; !ok {
+		_, unpackable := gdjson.Unpackables[strings.TrimSuffix(key, ".")]
+		if _, ok := gdjson.Structables[key]; !ok && !unpackable {
 			fmt.Printf("%q\n", key)
 		}
 	}

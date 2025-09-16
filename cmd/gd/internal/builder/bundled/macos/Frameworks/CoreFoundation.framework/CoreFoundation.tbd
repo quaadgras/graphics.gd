@@ -45,4 +45,7 @@ exports:
     - _CFDictionaryCreateMutable
     - _CFDictionaryAddValue
     - _CFBundleGetVersionNumber
+    - _CFStringGetCStringPtr
+    - _CFStringGetFastestEncoding
+    - _CFStringGetBytes
 ...

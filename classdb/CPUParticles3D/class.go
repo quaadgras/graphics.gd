@@ -1268,7 +1268,7 @@ func (self class) GetColorInitialRamp() [1]gdclass.Gradient { //gd:CPUParticles3
 }
 
 /*
-Enables or disables the given particle flag (see [ParticleFlags] for options).
+Enables or disables the given particle flag.
 */
 //go:nosplit
 func (self class) SetParticleFlag(particle_flag ParticleFlags, enable bool) { //gd:CPUParticles3D.set_particle_flag
@@ -1279,7 +1279,7 @@ func (self class) SetParticleFlag(particle_flag ParticleFlags, enable bool) { //
 }
 
 /*
-Returns the enabled state of the given particle flag (see [ParticleFlags] for options).
+Returns the enabled state of the given particle flag.
 */
 //go:nosplit
 func (self class) GetParticleFlag(particle_flag ParticleFlags) bool { //gd:CPUParticles3D.get_particle_flag

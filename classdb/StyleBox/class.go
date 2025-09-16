@@ -209,7 +209,7 @@ func (self Instance) TestMask(point Vector2.XY, rect Rect2.PositionSize) bool { 
 }
 
 /*
-Draws a styled rectangle.
+Draws a styled rectangle. The [param rect] is defined in local space.
 */
 func (self Instance) Draw(peer CanvasItem.Instance, rect Rect2.PositionSize) { //gd:CanvasItem.draw_style_box
 	CanvasItem.Advanced(peer).DrawStyleBox(self, Rect2.PositionSize(rect))

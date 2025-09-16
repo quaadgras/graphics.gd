@@ -5,7 +5,7 @@ Dynamic range compressor reduces the level of the sound when the amplitude goes 
 
 Compressor has many uses in the mix:
 
-- In the Master bus to compress the whole output (although an [graphics.gd/classdb/AudioEffectLimiter] is probably better).
+- In the Master bus to compress the whole output (although an [graphics.gd/classdb/AudioEffectHardLimiter] is probably better).
 
 - In voice channels to ensure they sound as balanced as possible.
 

@@ -5,7 +5,7 @@ A camera feed gives you access to a single physical camera attached to your devi
 
 Note: Many cameras will return YCbCr images which are split into two textures and need to be combined in a shader. Godot does this automatically for you if you set the environment to show the camera image in the background.
 
-Note: This class is currently only implemented on Linux, macOS, and iOS. On other platforms no [graphics.gd/classdb/CameraFeed]s will be available. To get a [graphics.gd/classdb/CameraFeed] on iOS, the camera plugin from [godot-ios-plugins] is required.
+Note: This class is currently only implemented on Linux, Android, macOS, and iOS. On other platforms no [graphics.gd/classdb/CameraFeed]s will be available. To get a [graphics.gd/classdb/CameraFeed] on iOS, the camera plugin from [godot-ios-plugins] is required.
 
 [godot-ios-plugins]: https://github.com/godotengine/godot-ios-plugins
 */
@@ -226,13 +226,13 @@ func (self Instance) GetDatatype() FeedDataType { //gd:CameraFeed.get_datatype
 }
 
 /*
-Sets the feed format parameters for the given index in the [Instance.Formats] array. Returns true on success. By default YUYV encoded stream is transformed to FEED_RGB. YUYV encoded stream output format can be changed with 'parameters'.output value:
+Sets the feed format parameters for the given 'index' in the [Instance.Formats] array. Returns true on success. By default, the YUYV encoded stream is transformed to [FeedRgb]. The YUYV encoded stream output format can be changed by setting 'parameters”s output entry to one of the following:
 
-separate will result in FEED_YCBCR_SEP
+- "separate" will result in [FeedYcbcrSep];
 
-grayscale will result in desaturated FEED_RGB
+- "grayscale" will result in desaturated [FeedRgb];
 
-copy will result in FEED_YCBCR
+- "copy" will result in [FeedYcbcr].
 */
 func (self Instance) SetFormat(index int, parameters FormatParameters) bool { //gd:CameraFeed.set_format
 	return bool(Advanced(self).SetFormat(int64(index), gd.DictionaryFromMap(parameters)))
@@ -447,13 +447,13 @@ func (self class) GetFormats() Array.Any { //gd:CameraFeed.get_formats
 }
 
 /*
-Sets the feed format parameters for the given index in the [Instance.Formats] array. Returns true on success. By default YUYV encoded stream is transformed to FEED_RGB. YUYV encoded stream output format can be changed with 'parameters'.output value:
+Sets the feed format parameters for the given 'index' in the [Instance.Formats] array. Returns true on success. By default, the YUYV encoded stream is transformed to [FeedRgb]. The YUYV encoded stream output format can be changed by setting 'parameters''s output entry to one of the following:
 
-separate will result in FEED_YCBCR_SEP
+- "separate" will result in [FeedYcbcrSep];
 
-grayscale will result in desaturated FEED_RGB
+- "grayscale" will result in desaturated [FeedRgb];
 
-copy will result in FEED_YCBCR
+- "copy" will result in [FeedYcbcr].
 */
 //go:nosplit
 func (self class) SetFormat(index int64, parameters Dictionary.Any) bool { //gd:CameraFeed.set_format

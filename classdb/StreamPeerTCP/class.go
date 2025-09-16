@@ -142,7 +142,7 @@ func (self Instance) Poll() error { //gd:StreamPeerTCP.poll
 }
 
 /*
-Returns the status of the connection, see [Status].
+Returns the status of the connection.
 */
 func (self Instance) GetStatus() Status { //gd:StreamPeerTCP.get_status
 	return Status(Advanced(self).GetStatus())
@@ -269,7 +269,7 @@ func (self class) Poll() Error.Code { //gd:StreamPeerTCP.poll
 }
 
 /*
-Returns the status of the connection, see [Status].
+Returns the status of the connection.
 */
 //go:nosplit
 func (self class) GetStatus() Status { //gd:StreamPeerTCP.get_status

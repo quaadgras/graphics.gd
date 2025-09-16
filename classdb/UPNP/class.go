@@ -605,7 +605,7 @@ const (
 	UpnpResultPortMappingNotFound UPNPResult = 2
 	// Inconsistent parameters.
 	UpnpResultInconsistentParameters UPNPResult = 3
-	// No such entry in array. May be returned if a given port, protocol combination is not found on an [graphics.gd/classdb/UPNPDevice].
+	// No such entry in array. May be returned if a given port, protocol combination is not found on a [graphics.gd/classdb/UPNPDevice].
 	UpnpResultNoSuchEntryInArray UPNPResult = 4
 	// The action failed.
 	UpnpResultActionFailed UPNPResult = 5

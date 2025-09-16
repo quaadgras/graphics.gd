@@ -190,6 +190,10 @@ func (self Expanded) AddMessage(src_message string, xlated_message string, conte
 Adds a message involving plural translation if nonexistent, followed by its translation.
 
 An additional context could be used to specify the translation context or differentiate polysemic words.
+
+Note: Plurals are only supported in [gettext-based translations (PO)], not CSV.
+
+[gettext-based translations (PO)]: https://docs.godotengine.org/tutorials/i18n/localization_using_gettext.html
 */
 func (self Instance) AddPluralMessage(src_message string, xlated_messages []string) { //gd:Translation.add_plural_message
 	Advanced(self).AddPluralMessage(String.Name(String.New(src_message)), Packed.MakeStrings(xlated_messages...), String.Name(String.New("")))
@@ -199,6 +203,10 @@ func (self Instance) AddPluralMessage(src_message string, xlated_messages []stri
 Adds a message involving plural translation if nonexistent, followed by its translation.
 
 An additional context could be used to specify the translation context or differentiate polysemic words.
+
+Note: Plurals are only supported in [gettext-based translations (PO)], not CSV.
+
+[gettext-based translations (PO)]: https://docs.godotengine.org/tutorials/i18n/localization_using_gettext.html
 */
 func (self Expanded) AddPluralMessage(src_message string, xlated_messages []string, context string) { //gd:Translation.add_plural_message
 	Advanced(self).AddPluralMessage(String.Name(String.New(src_message)), Packed.MakeStrings(xlated_messages...), String.Name(String.New(context)))
@@ -222,6 +230,10 @@ func (self Expanded) GetMessage(src_message string, context string) string { //g
 Returns a message's translation involving plurals.
 
 The number 'n' is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
+
+Note: Plurals are only supported in [gettext-based translations (PO)], not CSV.
+
+[gettext-based translations (PO)]: https://docs.godotengine.org/tutorials/i18n/localization_using_gettext.html
 */
 func (self Instance) GetPluralMessage(src_message string, src_plural_message string, n int) string { //gd:Translation.get_plural_message
 	return string(Advanced(self).GetPluralMessage(String.Name(String.New(src_message)), String.Name(String.New(src_plural_message)), int64(n), String.Name(String.New(""))).String())
@@ -231,6 +243,10 @@ func (self Instance) GetPluralMessage(src_message string, src_plural_message str
 Returns a message's translation involving plurals.
 
 The number 'n' is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
+
+Note: Plurals are only supported in [gettext-based translations (PO)], not CSV.
+
+[gettext-based translations (PO)]: https://docs.godotengine.org/tutorials/i18n/localization_using_gettext.html
 */
 func (self Expanded) GetPluralMessage(src_message string, src_plural_message string, n int, context string) string { //gd:Translation.get_plural_message
 	return string(Advanced(self).GetPluralMessage(String.Name(String.New(src_message)), String.Name(String.New(src_plural_message)), int64(n), String.Name(String.New(context))).String())
@@ -395,6 +411,10 @@ func (self class) AddMessage(src_message String.Name, xlated_message String.Name
 Adds a message involving plural translation if nonexistent, followed by its translation.
 
 An additional context could be used to specify the translation context or differentiate polysemic words.
+
+Note: Plurals are only supported in [gettext-based translations (PO)], not CSV.
+
+[gettext-based translations (PO)]: https://docs.godotengine.org/tutorials/i18n/localization_using_gettext.html
 */
 //go:nosplit
 func (self class) AddPluralMessage(src_message String.Name, xlated_messages Packed.Strings, context String.Name) { //gd:Translation.add_plural_message
@@ -422,6 +442,10 @@ func (self class) GetMessage(src_message String.Name, context String.Name) Strin
 Returns a message's translation involving plurals.
 
 The number 'n' is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
+
+Note: Plurals are only supported in [gettext-based translations (PO)], not CSV.
+
+[gettext-based translations (PO)]: https://docs.godotengine.org/tutorials/i18n/localization_using_gettext.html
 */
 //go:nosplit
 func (self class) GetPluralMessage(src_message String.Name, src_plural_message String.Name, n int64, context String.Name) String.Name { //gd:Translation.get_plural_message

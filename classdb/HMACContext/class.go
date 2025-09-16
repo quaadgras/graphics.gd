@@ -142,14 +142,14 @@ type Any interface {
 Initializes the HMACContext. This method cannot be called again on the same HMACContext until [Instance.Finish] has been called.
 */
 func (self Instance) Start(hash_type HashingContext.HashType, key []byte) error { //gd:HMACContext.start
-	return error(gd.ToError(Advanced(self).Start(hash_type, Packed.Bytes(Packed.New(key...)))))
+	return error(gd.ToError(Advanced(self).Start(hash_type, Packed.BytesFrom(key...))))
 }
 
 /*
 Updates the message to be HMACed. This can be called multiple times before [Instance.Finish] is called to append 'data' to the message, but cannot be called until [Instance.Start] has been called.
 */
 func (self Instance) Update(data []byte) error { //gd:HMACContext.update
-	return error(gd.ToError(Advanced(self).Update(Packed.Bytes(Packed.New(data...)))))
+	return error(gd.ToError(Advanced(self).Update(Packed.BytesFrom(data...))))
 }
 
 /*
@@ -210,7 +210,7 @@ func (self class) Start(hash_type HashingContext.HashType, key Packed.Bytes) Err
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
 		hash_type HashingContext.HashType
 		key       gdextension.PackedArray[byte]
-	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key)))})
+	}{hash_type, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -220,7 +220,7 @@ Updates the message to be HMACed. This can be called multiple times before [Inst
 */
 //go:nosplit
 func (self class) Update(data Packed.Bytes) Error.Code { //gd:HMACContext.update
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -231,7 +231,7 @@ Returns the resulting HMAC. If the HMAC failed, an empty []byte is returned.
 //go:nosplit
 func (self class) Finish() Packed.Bytes { //gd:HMACContext.finish
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.finish, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 func (self class) AsHMACContext() Advanced {

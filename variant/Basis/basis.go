@@ -510,18 +510,51 @@ func Rotated(b XYZ, axis Vector3.XYZ, angle Angle.Radians) XYZ { //gd:Basis.rota
 	return Mul(rotation, b)
 }
 
-// Scaled introduce an additional scaling specified by the given 3D scaling factor.
+// Scaled returns this basis with each axis's components scaled by the given scale's components.
+//
+// The basis matrix's rows are multiplied by scale's components. This operation is a global scale
+// (relative to the parent).
 func Scaled(b XYZ, scale Vector3.XYZ) XYZ { //gd:Basis.scaled
-	b.X.X *= scale.X
-	b.X.Y *= scale.X
-	b.X.Z *= scale.X
-	b.Y.X *= scale.Y
-	b.Y.Y *= scale.Y
-	b.Y.Z *= scale.Y
-	b.Z.X *= scale.Z
-	b.Z.Y *= scale.Z
-	b.Z.Z *= scale.Z
-	return b
+	return XYZ{
+		X: Vector3.XYZ{
+			X: b.X.X * scale.X,
+			Y: b.X.Y * scale.Y,
+			Z: b.X.Z * scale.Z,
+		},
+		Y: Vector3.XYZ{
+			X: b.Y.X * scale.X,
+			Y: b.Y.Y * scale.Y,
+			Z: b.Y.Z * scale.Z,
+		},
+		Z: Vector3.XYZ{
+			X: b.Z.X * scale.X,
+			Y: b.Z.Y * scale.Y,
+			Z: b.Z.Z * scale.Z,
+		},
+	}
+}
+
+// ScaledLocal returns this basis with each axis scaled by the corresponding component in the given scale.
+//
+// The basis matrix's columns are multiplied by scale's components. This operation is a local scale (relative to self).
+func ScaledLocal(b XYZ, scale Vector3.XYZ) XYZ { //gd:Basis.scaled_local
+	return XYZ{
+		X: Vector3.XYZ{
+			X: b.X.X * scale.X,
+			Y: b.X.Y * scale.X,
+			Z: b.X.Z * scale.X,
+		},
+		Y: Vector3.XYZ{
+			X: b.Y.X * scale.Y,
+			Y: b.Y.Y * scale.Y,
+			Z: b.Y.Z * scale.Y,
+		},
+		Z: Vector3.XYZ{
+			X: b.Z.X * scale.Z,
+			Y: b.Z.Y * scale.Z,
+			Z: b.Z.Z * scale.Z,
+		},
+	}
 }
 
 // Slerp assuming that the matrix is a proper rotation matrix, slerp performs a spherical-linear interpolation

@@ -150,7 +150,7 @@ Returns a Base64-encoded string of a given []byte.
 */
 func RawToBase64(array []byte) string { //gd:Marshalls.raw_to_base64
 	once.Do(singleton)
-	return string(Advanced().RawToBase64(Packed.Bytes(Packed.New(array...))).String())
+	return string(Advanced().RawToBase64(Packed.BytesFrom(array...)).String())
 }
 
 /*
@@ -237,7 +237,7 @@ Returns a Base64-encoded string of a given []byte.
 */
 //go:nosplit
 func (self class) RawToBase64(array Packed.Bytes) String.Readable { //gd:Marshalls.raw_to_base64
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.raw_to_base64, gdextension.SizeString|(gdextension.SizePackedArray<<4), &struct{ array gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](array)))})
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.raw_to_base64, gdextension.SizeString|(gdextension.SizePackedArray<<4), &struct{ array gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](array.Array)))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -248,7 +248,7 @@ Returns a decoded []byte corresponding to the Base64-encoded string 'base64_str'
 //go:nosplit
 func (self class) Base64ToRaw(base64_str String.Readable) Packed.Bytes { //gd:Marshalls.base64_to_raw
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.base64_to_raw, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ base64_str gdextension.String }{pointers.Get(gd.InternalString(base64_str))})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 

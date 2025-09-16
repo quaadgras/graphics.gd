@@ -282,7 +282,7 @@ GDExtensionsInterfaceEditorHelpLoadXmlFromUtf8CharsAndLen gdextension_editor_hel
 GDExtensionInterfaceImagePtrw gdextension_image_ptrw = NULL;
 GDExtensionInterfaceImagePtr gdextension_image_ptr = NULL;
 GDExtensionInterfaceRegisterMainLoopCallbacks gdextension_register_main_loop_callbacks = NULL;
-GDExtensionInterfaceGetGodotVersion gdextension_get_godot_version = NULL;
+GDExtensionInterfaceGetGodotVersion2 gdextension_get_godot_version2 = NULL;
 
 
 EXPORT GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
@@ -295,7 +295,7 @@ EXPORT GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_g
 	LOAD_PROC_ADDRESS(print_script_error, GDExtensionInterfacePrintScriptError);
 	LOAD_PROC_ADDRESS(print_script_error_with_message, GDExtensionInterfacePrintScriptErrorWithMessage);
 	LOAD_PROC_ADDRESS(get_native_struct_size, GDExtensionInterfaceGetNativeStructSize);
-	LOAD_PROC_ADDRESS(get_godot_version, GDExtensionInterfaceGetGodotVersion);
+	LOAD_PROC_ADDRESS(get_godot_version2, GDExtensionInterfaceGetGodotVersion2);
 	LOAD_PROC_ADDRESS(variant_new_copy, GDExtensionInterfaceVariantNewCopy);
 	LOAD_PROC_ADDRESS(variant_new_nil, GDExtensionInterfaceVariantNewNil);
 	LOAD_PROC_ADDRESS(variant_destroy, GDExtensionInterfaceVariantDestroy);
@@ -424,7 +424,7 @@ EXPORT GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_g
 	LOAD_PROC_ADDRESS(placeholder_script_instance_create, GDExtensionInterfacePlaceHolderScriptInstanceCreate);
 	LOAD_PROC_ADDRESS(placeholder_script_instance_update, GDExtensionInterfacePlaceHolderScriptInstanceUpdate);
 	LOAD_PROC_ADDRESS(object_get_script_instance, GDExtensionInterfaceObjectGetScriptInstance);
-	//LOAD_PROC_ADDRESS(object_set_script_instance, GDExtensionInterfaceObjectSetScriptInstance);
+	LOAD_PROC_ADDRESS(object_set_script_instance, GDExtensionInterfaceObjectSetScriptInstance);
 	LOAD_PROC_ADDRESS(classdb_construct_object2, GDExtensionInterfaceClassdbConstructObject2);
 	LOAD_PROC_ADDRESS(classdb_get_method_bind, GDExtensionInterfaceClassdbGetMethodBind);
 	LOAD_PROC_ADDRESS(classdb_get_class_tag, GDExtensionInterfaceClassdbGetClassTag);
@@ -441,25 +441,19 @@ EXPORT GDExtensionBool cgo_extension_init(GDExtensionInterfaceGetProcAddress p_g
 	LOAD_PROC_ADDRESS(get_library_path, GDExtensionInterfaceGetLibraryPath);
 	LOAD_PROC_ADDRESS(editor_add_plugin, GDExtensionInterfaceEditorAddPlugin);
 	LOAD_PROC_ADDRESS(editor_remove_plugin, GDExtensionInterfaceEditorRemovePlugin);
-	//LOAD_PROC_ADDRESS(editor_register_get_classes_used_callback, GDExtensionInterfaceEditorRegisterGetClassesUsedCallback);
+	LOAD_PROC_ADDRESS(editor_register_get_classes_used_callback, GDExtensionInterfaceEditorRegisterGetClassesUsedCallback);
 	LOAD_PROC_ADDRESS(editor_help_load_xml_from_utf8_chars, GDExtensionsInterfaceEditorHelpLoadXmlFromUtf8Chars);
 	LOAD_PROC_ADDRESS(editor_help_load_xml_from_utf8_chars_and_len, GDExtensionsInterfaceEditorHelpLoadXmlFromUtf8CharsAndLen);
 	LOAD_PROC_ADDRESS(image_ptrw, GDExtensionInterfaceImagePtrw);
 	LOAD_PROC_ADDRESS(image_ptr, GDExtensionInterfaceImagePtr);
-	//LOAD_PROC_ADDRESS(register_main_loop_callbacks, GDExtensionInterfaceRegisterMainLoopCallbacks);
+	LOAD_PROC_ADDRESS(register_main_loop_callbacks, GDExtensionInterfaceRegisterMainLoopCallbacks);
     cgo_library = p_library;
     r_initialization->userdata = 0;
     r_initialization->minimum_initialization_level = GDEXTENSION_INITIALIZATION_CORE;
     r_initialization->initialize = cgo_initialize;
     r_initialization->deinitialize = cgo_deinitialize;
 
-    // polyfill
-    GDExtensionGodotVersion version;
-    gdextension_get_godot_version(&version);
-    cgo_cached_godot_version.major = version.major;
-    cgo_cached_godot_version.minor = version.minor;
-    cgo_cached_godot_version.patch = version.patch;
-    cgo_cached_godot_version.string = version.string;
+    gdextension_get_godot_version2(&cgo_cached_godot_version);
 
     for (int i = 1; i < GDEXTENSION_VARIANT_TYPE_VARIANT_MAX; i++) {
     	GDExtensionVariantType v = (GDExtensionVariantType)i;
@@ -1905,11 +1899,3 @@ EMSCRIPTEN_BINDINGS(my_module) {
 	function("gd_version_string", &gd_version_string, allow_raw_pointers());
 }
 #endif // __EMSCRIPTEN__
-
-
-/* needed for standalone IOS builds.
-#ifdef TARGET_OS_IOS
-    void _Z28godot_ios_plugins_initializev() {};
-    void _Z30godot_ios_plugins_deinitializev() {};
-#endif
-*/

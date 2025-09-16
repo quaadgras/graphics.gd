@@ -238,7 +238,7 @@ func (self Instance) ChannelLimit(limit int) { //gd:ENetConnection.channel_limit
 Queues a 'packet' to be sent to all peers associated with the host over the specified 'channel'. See [graphics.gd/classdb/ENetPacketPeer] FLAG_* constants for available packet flags.
 */
 func (self Instance) Broadcast(channel int, packet []byte, flags int) { //gd:ENetConnection.broadcast
-	Advanced(self).Broadcast(int64(channel), Packed.Bytes(Packed.New(packet...)), int64(flags))
+	Advanced(self).Broadcast(int64(channel), Packed.BytesFrom(packet...), int64(flags))
 }
 
 /*
@@ -283,7 +283,7 @@ func (self Instance) RefuseNewConnections(refuse bool) { //gd:ENetConnection.ref
 }
 
 /*
-Returns and resets host statistics. See [HostStatistic] for more info.
+Returns and resets host statistics.
 */
 func (self Instance) PopStatistic(statistic HostStatistic) Float.X { //gd:ENetConnection.pop_statistic
 	return Float.X(Float.X(Advanced(self).PopStatistic(statistic)))
@@ -322,7 +322,7 @@ This requires forward knowledge of a prospective client's address and communicat
 [STUN]: https://en.wikipedia.org/wiki/STUN
 */
 func (self Instance) SocketSend(destination_address string, destination_port int, packet []byte) { //gd:ENetConnection.socket_send
-	Advanced(self).SocketSend(String.New(destination_address), int64(destination_port), Packed.Bytes(Packed.New(packet...)))
+	Advanced(self).SocketSend(String.New(destination_address), int64(destination_port), Packed.BytesFrom(packet...))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -481,7 +481,7 @@ func (self class) Broadcast(channel int64, packet Packed.Bytes, flags int64) { /
 		channel int64
 		packet  gdextension.PackedArray[byte]
 		flags   int64
-	}{channel, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet))), flags})
+	}{channel, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet.Array))), flags})
 }
 
 /*
@@ -530,7 +530,7 @@ func (self class) RefuseNewConnections(refuse bool) { //gd:ENetConnection.refuse
 }
 
 /*
-Returns and resets host statistics. See [HostStatistic] for more info.
+Returns and resets host statistics.
 */
 //go:nosplit
 func (self class) PopStatistic(statistic HostStatistic) float64 { //gd:ENetConnection.pop_statistic
@@ -586,7 +586,7 @@ func (self class) SocketSend(destination_address String.Readable, destination_po
 		destination_address gdextension.String
 		destination_port    int64
 		packet              gdextension.PackedArray[byte]
-	}{pointers.Get(gd.InternalString(destination_address)), destination_port, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet)))})
+	}{pointers.Get(gd.InternalString(destination_address)), destination_port, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet.Array)))})
 }
 func (self class) AsENetConnection() Advanced {
 	return Advanced{pointers.AsA[gdclass.ENetConnection](self[0])}

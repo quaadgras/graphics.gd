@@ -111,7 +111,7 @@ type Any interface {
 }
 
 /*
-Get parent or external [graphics.gd/classdb/Skeleton3D] node if found.
+Returns the parent or external [graphics.gd/classdb/Skeleton3D] node if it exists, otherwise returns null.
 */
 func (self Instance) GetSkeleton() Skeleton3D.Instance { //gd:BoneAttachment3D.get_skeleton
 	return Skeleton3D.Instance(Advanced(self).GetSkeleton())
@@ -122,34 +122,6 @@ A function that is called automatically when the [graphics.gd/classdb/Skeleton3D
 */
 func (self Instance) OnSkeletonUpdate() { //gd:BoneAttachment3D.on_skeleton_update
 	Advanced(self).OnSkeletonUpdate()
-}
-
-/*
-Sets whether the BoneAttachment3D node will use an external [graphics.gd/classdb/Skeleton3D] node rather than attempting to use its parent node as the [graphics.gd/classdb/Skeleton3D]. When set to true, the BoneAttachment3D node will use the external [graphics.gd/classdb/Skeleton3D] node set in [Instance.SetExternalSkeleton].
-*/
-func (self Instance) SetUseExternalSkeleton(use_external_skeleton bool) { //gd:BoneAttachment3D.set_use_external_skeleton
-	Advanced(self).SetUseExternalSkeleton(use_external_skeleton)
-}
-
-/*
-Returns whether the BoneAttachment3D node is using an external [graphics.gd/classdb/Skeleton3D] rather than attempting to use its parent node as the [graphics.gd/classdb/Skeleton3D].
-*/
-func (self Instance) GetUseExternalSkeleton() bool { //gd:BoneAttachment3D.get_use_external_skeleton
-	return bool(Advanced(self).GetUseExternalSkeleton())
-}
-
-/*
-Sets the node path to the external skeleton that the BoneAttachment3D node should use. See [Instance.SetUseExternalSkeleton] to enable the external [graphics.gd/classdb/Skeleton3D] node.
-*/
-func (self Instance) SetExternalSkeleton(external_skeleton string) { //gd:BoneAttachment3D.set_external_skeleton
-	Advanced(self).SetExternalSkeleton(Path.ToNode(String.New(external_skeleton)))
-}
-
-/*
-Returns the node path to the external [graphics.gd/classdb/Skeleton3D] node, if one has been set.
-*/
-func (self Instance) GetExternalSkeleton() string { //gd:BoneAttachment3D.get_external_skeleton
-	return string(Advanced(self).GetExternalSkeleton().String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -218,8 +190,24 @@ func (self Instance) SetOverridePose(value bool) {
 	class(self).SetOverridePose(value)
 }
 
+func (self Instance) UseExternalSkeleton() bool {
+	return bool(class(self).GetUseExternalSkeleton())
+}
+
+func (self Instance) SetUseExternalSkeleton(value bool) {
+	class(self).SetUseExternalSkeleton(value)
+}
+
+func (self Instance) ExternalSkeleton() string {
+	return string(class(self).GetExternalSkeleton().String())
+}
+
+func (self Instance) SetExternalSkeleton(value string) {
+	class(self).SetExternalSkeleton(Path.ToNode(String.New(value)))
+}
+
 /*
-Get parent or external [graphics.gd/classdb/Skeleton3D] node if found.
+Returns the parent or external [graphics.gd/classdb/Skeleton3D] node if it exists, otherwise returns null.
 */
 //go:nosplit
 func (self class) GetSkeleton() [1]gdclass.Skeleton3D { //gd:BoneAttachment3D.get_skeleton
@@ -272,17 +260,11 @@ func (self class) GetOverridePose() bool { //gd:BoneAttachment3D.get_override_po
 	return ret
 }
 
-/*
-Sets whether the BoneAttachment3D node will use an external [graphics.gd/classdb/Skeleton3D] node rather than attempting to use its parent node as the [graphics.gd/classdb/Skeleton3D]. When set to true, the BoneAttachment3D node will use the external [graphics.gd/classdb/Skeleton3D] node set in [Instance.SetExternalSkeleton].
-*/
 //go:nosplit
 func (self class) SetUseExternalSkeleton(use_external_skeleton bool) { //gd:BoneAttachment3D.set_use_external_skeleton
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_external_skeleton, 0|(gdextension.SizeBool<<4), &struct{ use_external_skeleton bool }{use_external_skeleton})
 }
 
-/*
-Returns whether the BoneAttachment3D node is using an external [graphics.gd/classdb/Skeleton3D] rather than attempting to use its parent node as the [graphics.gd/classdb/Skeleton3D].
-*/
 //go:nosplit
 func (self class) GetUseExternalSkeleton() bool { //gd:BoneAttachment3D.get_use_external_skeleton
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_external_skeleton, gdextension.SizeBool, &struct{}{})
@@ -290,17 +272,11 @@ func (self class) GetUseExternalSkeleton() bool { //gd:BoneAttachment3D.get_use_
 	return ret
 }
 
-/*
-Sets the node path to the external skeleton that the BoneAttachment3D node should use. See [Instance.SetUseExternalSkeleton] to enable the external [graphics.gd/classdb/Skeleton3D] node.
-*/
 //go:nosplit
 func (self class) SetExternalSkeleton(external_skeleton Path.ToNode) { //gd:BoneAttachment3D.set_external_skeleton
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_external_skeleton, 0|(gdextension.SizeNodePath<<4), &struct{ external_skeleton gdextension.NodePath }{pointers.Get(gd.InternalNodePath(external_skeleton))})
 }
 
-/*
-Returns the node path to the external [graphics.gd/classdb/Skeleton3D] node, if one has been set.
-*/
 //go:nosplit
 func (self class) GetExternalSkeleton() Path.ToNode { //gd:BoneAttachment3D.get_external_skeleton
 	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_external_skeleton, gdextension.SizeNodePath, &struct{}{})

@@ -1076,7 +1076,7 @@ const (
 	ArrayCompressFlagsBase ArrayFormat = 25
 	// Flag used to mark that the array contains 2D vertices.
 	ArrayFlagUse2dVertices ArrayFormat = 33554432
-	// Flag indices that the mesh data will use GL_DYNAMIC_DRAW on GLES. Unused on Vulkan.
+	// Flag used to mark that the mesh data will use GL_DYNAMIC_DRAW on GLES. Unused on Vulkan.
 	ArrayFlagUseDynamicUpdate ArrayFormat = 67108864
 	// Flag used to mark that the mesh contains up to 8 bone influences per vertex. This flag indicates that [ArrayBones] and [ArrayWeights] elements will have double length.
 	ArrayFlagUse8BoneWeights ArrayFormat = 134217728

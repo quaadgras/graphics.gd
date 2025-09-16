@@ -114,6 +114,7 @@ var methods struct {
 	set_item_text                        gdextension.MethodForClass `hash:"501894301"`
 	set_item_text_direction              gdextension.MethodForClass `hash:"1707680378"`
 	set_item_language                    gdextension.MethodForClass `hash:"501894301"`
+	set_item_auto_translate_mode         gdextension.MethodForClass `hash:"287402019"`
 	set_item_icon                        gdextension.MethodForClass `hash:"666127730"`
 	set_item_icon_max_width              gdextension.MethodForClass `hash:"3937882851"`
 	set_item_icon_modulate               gdextension.MethodForClass `hash:"2878471219"`
@@ -138,6 +139,7 @@ var methods struct {
 	get_item_text                        gdextension.MethodForClass `hash:"844755477"`
 	get_item_text_direction              gdextension.MethodForClass `hash:"4235602388"`
 	get_item_language                    gdextension.MethodForClass `hash:"844755477"`
+	get_item_auto_translate_mode         gdextension.MethodForClass `hash:"906302372"`
 	get_item_icon                        gdextension.MethodForClass `hash:"3536238170"`
 	get_item_icon_max_width              gdextension.MethodForClass `hash:"923996154"`
 	get_item_icon_modulate               gdextension.MethodForClass `hash:"3457211756"`
@@ -564,6 +566,15 @@ func (self Instance) SetItemLanguage(index int, language string) { //gd:PopupMen
 }
 
 /*
+Sets the auto translate mode of the item at the given 'index'.
+
+Items use [Node.AutoTranslateModeInherit] by default, which uses the same auto translate mode as the [graphics.gd/classdb/PopupMenu] itself.
+*/
+func (self Instance) SetItemAutoTranslateMode(index int, mode Node.AutoTranslateMode) { //gd:PopupMenu.set_item_auto_translate_mode
+	Advanced(self).SetItemAutoTranslateMode(int64(index), mode)
+}
+
+/*
 Replaces the [graphics.gd/classdb/Texture2D] icon of the item at the given 'index'.
 */
 func (self Instance) SetItemIcon(index int, icon Texture2D.Instance) { //gd:PopupMenu.set_item_icon
@@ -740,6 +751,13 @@ Returns item's text language code.
 */
 func (self Instance) GetItemLanguage(index int) string { //gd:PopupMenu.get_item_language
 	return string(Advanced(self).GetItemLanguage(int64(index)).String())
+}
+
+/*
+Returns the auto translate mode of the item at the given 'index'.
+*/
+func (self Instance) GetItemAutoTranslateMode(index int) Node.AutoTranslateMode { //gd:PopupMenu.get_item_auto_translate_mode
+	return Node.AutoTranslateMode(Advanced(self).GetItemAutoTranslateMode(int64(index)))
 }
 
 /*
@@ -1380,6 +1398,19 @@ func (self class) SetItemLanguage(index int64, language String.Readable) { //gd:
 }
 
 /*
+Sets the auto translate mode of the item at the given 'index'.
+
+Items use [Node.AutoTranslateModeInherit] by default, which uses the same auto translate mode as the [graphics.gd/classdb/PopupMenu] itself.
+*/
+//go:nosplit
+func (self class) SetItemAutoTranslateMode(index int64, mode Node.AutoTranslateMode) { //gd:PopupMenu.set_item_auto_translate_mode
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_auto_translate_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		index int64
+		mode  Node.AutoTranslateMode
+	}{index, mode})
+}
+
+/*
 Replaces the [graphics.gd/classdb/Texture2D] icon of the item at the given 'index'.
 */
 //go:nosplit
@@ -1636,6 +1667,16 @@ Returns item's text language code.
 func (self class) GetItemLanguage(index int64) String.Readable { //gd:PopupMenu.get_item_language
 	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_language, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+/*
+Returns the auto translate mode of the item at the given 'index'.
+*/
+//go:nosplit
+func (self class) GetItemAutoTranslateMode(index int64) Node.AutoTranslateMode { //gd:PopupMenu.get_item_auto_translate_mode
+	var r_ret = gdextension.Call[Node.AutoTranslateMode](gd.ObjectChecked(self.AsObject()), methods.get_item_auto_translate_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var ret = r_ret
 	return ret
 }
 

@@ -20,7 +20,6 @@ import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/EditorExportPlatform"
 import "graphics.gd/classdb/EditorExportPreset"
-import "graphics.gd/classdb/ImageTexture"
 import "graphics.gd/classdb/Texture2D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -106,16 +105,10 @@ type Any interface {
 }
 
 type Interface interface {
-	// Required.
-	//
 	// Returns array of platform specific features for the specified 'preset'.
 	GetPresetFeatures(preset EditorExportPreset.Instance) []string
-	// Optional.
-	//
 	// Returns true if specified file is a valid executable (native executable or script) for the target platform.
 	IsExecutable(path string) bool
-	// Optional.
-	//
 	// Returns a property list, as an slice of dictionaries. Each data structure must at least contain the name: StringName and type: Variant.Type entries.
 	//
 	// Additionally, the following keys are supported:
@@ -144,132 +137,78 @@ type Interface interface {
 		UpdateVisibility bool        "gd:\"update_visibility\""
 		Required         bool        "gd:\"required\""
 	}
-	// Optional.
-	//
 	// Returns true if export options list is changed and presets should be updated.
 	ShouldUpdateExportOptions() bool
-	// Optional.
-	//
 	// Validates 'option' and returns visibility for the specified 'preset'. Default implementation return true for all options.
 	GetExportOptionVisibility(preset EditorExportPreset.Instance, option string) bool
-	// Optional.
-	//
 	// Validates 'option' and returns warning message for the specified 'preset'. Default implementation return empty string for all options.
 	GetExportOptionWarning(preset EditorExportPreset.Instance, option string) string
-	// Required.
-	//
 	// Returns target OS name.
 	GetOsName() string
-	// Required.
-	//
 	// Returns export platform name.
 	GetName() string
-	// Required.
-	//
-	// Returns platform logo displayed in the export dialog, logo should be 32x32 adjusted to the current editor scale, see [graphics.gd/classdb/EditorInterface.GetEditorScale].
+	// Returns the platform logo displayed in the export dialog. The logo should be 32×32 pixels, adjusted for the current editor scale (see [graphics.gd/classdb/EditorInterface.GetEditorScale]).
 	GetLogo() Texture2D.Instance
-	// Optional.
-	//
 	// Returns true if one-click deploy options are changed and editor interface should be updated.
 	PollExport() bool
-	// Optional.
-	//
-	// Returns number one-click deploy devices (or other one-click option displayed in the menu).
+	// Returns the number of devices (or other options) available in the one-click deploy menu.
 	GetOptionsCount() int
-	// Optional.
-	//
 	// Returns tooltip of the one-click deploy menu button.
 	GetOptionsTooltip() string
-	// Optional.
-	//
-	// Returns one-click deploy menu item icon for the specified 'device', icon should be 16x16 adjusted to the current editor scale, see [graphics.gd/classdb/EditorInterface.GetEditorScale].
-	GetOptionIcon(device int) ImageTexture.Instance
-	// Optional.
-	//
+	// Returns the item icon for the specified 'device' in the one-click deploy menu. The icon should be 16×16 pixels, adjusted for the current editor scale (see [graphics.gd/classdb/EditorInterface.GetEditorScale]).
+	GetOptionIcon(device int) Texture2D.Instance
 	// Returns one-click deploy menu item label for the specified 'device'.
 	GetOptionLabel(device int) string
-	// Optional.
-	//
 	// Returns one-click deploy menu item tooltip for the specified 'device'.
 	GetOptionTooltip(device int) string
-	// Optional.
-	//
 	// Returns device architecture for one-click deploy.
 	GetDeviceArchitecture(device int) string
-	// Optional.
-	//
 	// Called by the editor before platform is unregistered.
 	Cleanup()
-	// Optional.
-	//
 	// This method is called when 'device' one-click deploy menu option is selected.
 	//
 	// Implementation should export project to a temporary location, upload and run it on the specific 'device', or perform another action associated with the menu item.
 	Run(preset EditorExportPreset.Instance, device int, debug_flags EditorExportPlatform.DebugFlags) error
-	// Optional.
-	//
-	// Returns icon of the one-click deploy menu button, icon should be 16x16 adjusted to the current editor scale, see [graphics.gd/classdb/EditorInterface.GetEditorScale].
+	// Returns the icon of the one-click deploy menu button. The icon should be 16×16 pixels, adjusted for the current editor scale (see [graphics.gd/classdb/EditorInterface.GetEditorScale]).
 	GetRunIcon() Texture2D.Instance
-	// Optional.
-	//
 	// Returns true, if specified 'preset' is valid and can be exported. Use [Instance.SetConfigError] and [Instance.SetConfigMissingTemplates] to set error details.
 	//
 	// Usual implementation can call [Interface.HasValidExportConfiguration] and [Interface.HasValidProjectConfiguration] to determine if export is possible.
 	CanExport(preset EditorExportPreset.Instance, debug bool) bool
-	// Required.
-	//
 	// Returns true if export configuration is valid.
 	HasValidExportConfiguration(preset EditorExportPreset.Instance, debug bool) bool
-	// Required.
-	//
 	// Returns true if project configuration is valid.
 	HasValidProjectConfiguration(preset EditorExportPreset.Instance) bool
-	// Required.
-	//
 	// Returns array of supported binary extensions for the full project export.
 	GetBinaryExtensions(preset EditorExportPreset.Instance) []string
-	// Required.
-	//
 	// Creates a full project at 'path' for the specified 'preset'.
 	//
 	// This method is called when "Export" button is pressed in the export dialog.
 	//
 	// This method implementation can call [graphics.gd/classdb/EditorExportPlatform.Instance.SavePack] or [graphics.gd/classdb/EditorExportPlatform.Instance.SaveZip] to use default PCK/ZIP export process, or calls [graphics.gd/classdb/EditorExportPlatform.Instance.ExportProjectFiles] and implement custom callback for processing each exported file.
 	ExportProject(preset EditorExportPreset.Instance, debug bool, path string, flags EditorExportPlatform.DebugFlags) error
-	// Optional.
-	//
 	// Creates a PCK archive at 'path' for the specified 'preset'.
 	//
 	// This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and PCK is selected as a file type.
 	ExportPack(preset EditorExportPreset.Instance, debug bool, path string, flags EditorExportPlatform.DebugFlags) error
-	// Optional.
-	//
 	// Create a ZIP archive at 'path' for the specified 'preset'.
 	//
 	// This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and ZIP is selected as a file type.
 	ExportZip(preset EditorExportPreset.Instance, debug bool, path string, flags EditorExportPlatform.DebugFlags) error
-	// Optional.
-	//
 	// Creates a patch PCK archive at 'path' for the specified 'preset', containing only the files that have changed since the last patch.
 	//
 	// This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and PCK is selected as a file type.
 	//
 	// Note: The patches provided in 'patches' have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
 	ExportPackPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags EditorExportPlatform.DebugFlags) error
-	// Optional.
-	//
 	// Create a ZIP archive at 'path' for the specified 'preset', containing only the files that have changed since the last patch.
 	//
 	// This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and ZIP is selected as a file type.
 	//
 	// Note: The patches provided in 'patches' have already been loaded when this method is called and are merely provided as context. When empty the patches defined in the export preset have been loaded instead.
 	ExportZipPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags EditorExportPlatform.DebugFlags) error
-	// Required.
-	//
 	// Returns array of platform specific features.
 	GetPlatformFeatures() []string
-	// Optional.
-	//
 	// Returns protocol used for remote debugging. Default implementation return tcp://.
 	GetDebugProtocol() string
 }
@@ -297,17 +236,17 @@ func (self implementation) GetExportOptionVisibility(preset EditorExportPreset.I
 func (self implementation) GetExportOptionWarning(preset EditorExportPreset.Instance, option string) (_ string) {
 	return
 }
-func (self implementation) GetOsName() (_ string)                              { return }
-func (self implementation) GetName() (_ string)                                { return }
-func (self implementation) GetLogo() (_ Texture2D.Instance)                    { return }
-func (self implementation) PollExport() (_ bool)                               { return }
-func (self implementation) GetOptionsCount() (_ int)                           { return }
-func (self implementation) GetOptionsTooltip() (_ string)                      { return }
-func (self implementation) GetOptionIcon(device int) (_ ImageTexture.Instance) { return }
-func (self implementation) GetOptionLabel(device int) (_ string)               { return }
-func (self implementation) GetOptionTooltip(device int) (_ string)             { return }
-func (self implementation) GetDeviceArchitecture(device int) (_ string)        { return }
-func (self implementation) Cleanup()                                           { return }
+func (self implementation) GetOsName() (_ string)                           { return }
+func (self implementation) GetName() (_ string)                             { return }
+func (self implementation) GetLogo() (_ Texture2D.Instance)                 { return }
+func (self implementation) PollExport() (_ bool)                            { return }
+func (self implementation) GetOptionsCount() (_ int)                        { return }
+func (self implementation) GetOptionsTooltip() (_ string)                   { return }
+func (self implementation) GetOptionIcon(device int) (_ Texture2D.Instance) { return }
+func (self implementation) GetOptionLabel(device int) (_ string)            { return }
+func (self implementation) GetOptionTooltip(device int) (_ string)          { return }
+func (self implementation) GetDeviceArchitecture(device int) (_ string)     { return }
+func (self implementation) Cleanup()                                        { return }
 func (self implementation) Run(preset EditorExportPreset.Instance, device int, debug_flags EditorExportPlatform.DebugFlags) (_ error) {
 	return
 }
@@ -341,8 +280,6 @@ func (self implementation) GetPlatformFeatures() (_ []string) { return }
 func (self implementation) GetDebugProtocol() (_ string)      { return }
 
 /*
-Required.
-
 Returns array of platform specific features for the specified 'preset'.
 */
 func (Instance) _get_preset_features(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance) []string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -362,8 +299,6 @@ func (Instance) _get_preset_features(impl func(ptr gdclass.Receiver, preset Edit
 }
 
 /*
-Optional.
-
 Returns true if specified file is a valid executable (native executable or script) for the target platform.
 */
 func (Instance) _is_executable(impl func(ptr gdclass.Receiver, path string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -377,8 +312,6 @@ func (Instance) _is_executable(impl func(ptr gdclass.Receiver, path string) bool
 }
 
 /*
-Optional.
-
 Returns a property list, as an slice of dictionaries. Each data structure must at least contain the name: StringName and type: Variant.Type entries.
 
 Additionally, the following keys are supported:
@@ -421,8 +354,6 @@ func (Instance) _get_export_options(impl func(ptr gdclass.Receiver) [][]struct {
 }
 
 /*
-Optional.
-
 Returns true if export options list is changed and presets should be updated.
 */
 func (Instance) _should_update_export_options(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -434,8 +365,6 @@ func (Instance) _should_update_export_options(impl func(ptr gdclass.Receiver) bo
 }
 
 /*
-Optional.
-
 Validates 'option' and returns visibility for the specified 'preset'. Default implementation return true for all options.
 */
 func (Instance) _get_export_option_visibility(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance, option string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -452,8 +381,6 @@ func (Instance) _get_export_option_visibility(impl func(ptr gdclass.Receiver, pr
 }
 
 /*
-Optional.
-
 Validates 'option' and returns warning message for the specified 'preset'. Default implementation return empty string for all options.
 */
 func (Instance) _get_export_option_warning(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance, option string) string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -475,8 +402,6 @@ func (Instance) _get_export_option_warning(impl func(ptr gdclass.Receiver, prese
 }
 
 /*
-Required.
-
 Returns target OS name.
 */
 func (Instance) _get_os_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -493,8 +418,6 @@ func (Instance) _get_os_name(impl func(ptr gdclass.Receiver) string) (cb gd.Exte
 }
 
 /*
-Required.
-
 Returns export platform name.
 */
 func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -511,9 +434,7 @@ func (Instance) _get_name(impl func(ptr gdclass.Receiver) string) (cb gd.Extensi
 }
 
 /*
-Required.
-
-Returns platform logo displayed in the export dialog, logo should be 32x32 adjusted to the current editor scale, see [graphics.gd/classdb/EditorInterface.GetEditorScale].
+Returns the platform logo displayed in the export dialog. The logo should be 32×32 pixels, adjusted for the current editor scale (see [graphics.gd/classdb/EditorInterface.GetEditorScale]).
 */
 func (Instance) _get_logo(impl func(ptr gdclass.Receiver) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -529,8 +450,6 @@ func (Instance) _get_logo(impl func(ptr gdclass.Receiver) Texture2D.Instance) (c
 }
 
 /*
-Optional.
-
 Returns true if one-click deploy options are changed and editor interface should be updated.
 */
 func (Instance) _poll_export(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -542,9 +461,7 @@ func (Instance) _poll_export(impl func(ptr gdclass.Receiver) bool) (cb gd.Extens
 }
 
 /*
-Optional.
-
-Returns number one-click deploy devices (or other one-click option displayed in the menu).
+Returns the number of devices (or other options) available in the one-click deploy menu.
 */
 func (Instance) _get_options_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -555,8 +472,6 @@ func (Instance) _get_options_count(impl func(ptr gdclass.Receiver) int) (cb gd.E
 }
 
 /*
-Optional.
-
 Returns tooltip of the one-click deploy menu button.
 */
 func (Instance) _get_options_tooltip(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -573,11 +488,9 @@ func (Instance) _get_options_tooltip(impl func(ptr gdclass.Receiver) string) (cb
 }
 
 /*
-Optional.
-
-Returns one-click deploy menu item icon for the specified 'device', icon should be 16x16 adjusted to the current editor scale, see [graphics.gd/classdb/EditorInterface.GetEditorScale].
+Returns the item icon for the specified 'device' in the one-click deploy menu. The icon should be 16×16 pixels, adjusted for the current editor scale (see [graphics.gd/classdb/EditorInterface.GetEditorScale]).
 */
-func (Instance) _get_option_icon(impl func(ptr gdclass.Receiver, device int) ImageTexture.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_option_icon(impl func(ptr gdclass.Receiver, device int) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -592,8 +505,6 @@ func (Instance) _get_option_icon(impl func(ptr gdclass.Receiver, device int) Ima
 }
 
 /*
-Optional.
-
 Returns one-click deploy menu item label for the specified 'device'.
 */
 func (Instance) _get_option_label(impl func(ptr gdclass.Receiver, device int) string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -611,8 +522,6 @@ func (Instance) _get_option_label(impl func(ptr gdclass.Receiver, device int) st
 }
 
 /*
-Optional.
-
 Returns one-click deploy menu item tooltip for the specified 'device'.
 */
 func (Instance) _get_option_tooltip(impl func(ptr gdclass.Receiver, device int) string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -630,8 +539,6 @@ func (Instance) _get_option_tooltip(impl func(ptr gdclass.Receiver, device int) 
 }
 
 /*
-Optional.
-
 Returns device architecture for one-click deploy.
 */
 func (Instance) _get_device_architecture(impl func(ptr gdclass.Receiver, device int) string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -649,8 +556,6 @@ func (Instance) _get_device_architecture(impl func(ptr gdclass.Receiver, device 
 }
 
 /*
-Optional.
-
 Called by the editor before platform is unregistered.
 */
 func (Instance) _cleanup(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -661,8 +566,6 @@ func (Instance) _cleanup(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassC
 }
 
 /*
-Optional.
-
 This method is called when 'device' one-click deploy menu option is selected.
 
 Implementation should export project to a temporary location, upload and run it on the specific 'device', or perform another action associated with the menu item.
@@ -686,9 +589,7 @@ func (Instance) _run(impl func(ptr gdclass.Receiver, preset EditorExportPreset.I
 }
 
 /*
-Optional.
-
-Returns icon of the one-click deploy menu button, icon should be 16x16 adjusted to the current editor scale, see [graphics.gd/classdb/EditorInterface.GetEditorScale].
+Returns the icon of the one-click deploy menu button. The icon should be 16×16 pixels, adjusted for the current editor scale (see [graphics.gd/classdb/EditorInterface.GetEditorScale]).
 */
 func (Instance) _get_run_icon(impl func(ptr gdclass.Receiver) Texture2D.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -704,8 +605,6 @@ func (Instance) _get_run_icon(impl func(ptr gdclass.Receiver) Texture2D.Instance
 }
 
 /*
-Optional.
-
 Returns true, if specified 'preset' is valid and can be exported. Use [Instance.SetConfigError] and [Instance.SetConfigMissingTemplates] to set error details.
 
 Usual implementation can call [Interface.HasValidExportConfiguration] and [Interface.HasValidProjectConfiguration] to determine if export is possible.
@@ -723,8 +622,6 @@ func (Instance) _can_export(impl func(ptr gdclass.Receiver, preset EditorExportP
 }
 
 /*
-Required.
-
 Returns true if export configuration is valid.
 */
 func (Instance) _has_valid_export_configuration(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance, debug bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -740,8 +637,6 @@ func (Instance) _has_valid_export_configuration(impl func(ptr gdclass.Receiver, 
 }
 
 /*
-Required.
-
 Returns true if project configuration is valid.
 */
 func (Instance) _has_valid_project_configuration(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -756,8 +651,6 @@ func (Instance) _has_valid_project_configuration(impl func(ptr gdclass.Receiver,
 }
 
 /*
-Required.
-
 Returns array of supported binary extensions for the full project export.
 */
 func (Instance) _get_binary_extensions(impl func(ptr gdclass.Receiver, preset EditorExportPreset.Instance) []string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -777,8 +670,6 @@ func (Instance) _get_binary_extensions(impl func(ptr gdclass.Receiver, preset Ed
 }
 
 /*
-Required.
-
 Creates a full project at 'path' for the specified 'preset'.
 
 This method is called when "Export" button is pressed in the export dialog.
@@ -806,8 +697,6 @@ func (Instance) _export_project(impl func(ptr gdclass.Receiver, preset EditorExp
 }
 
 /*
-Optional.
-
 Creates a PCK archive at 'path' for the specified 'preset'.
 
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and PCK is selected as a file type.
@@ -833,8 +722,6 @@ func (Instance) _export_pack(impl func(ptr gdclass.Receiver, preset EditorExport
 }
 
 /*
-Optional.
-
 Create a ZIP archive at 'path' for the specified 'preset'.
 
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and ZIP is selected as a file type.
@@ -860,8 +747,6 @@ func (Instance) _export_zip(impl func(ptr gdclass.Receiver, preset EditorExportP
 }
 
 /*
-Optional.
-
 Creates a patch PCK archive at 'path' for the specified 'preset', containing only the files that have changed since the last patch.
 
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and PCK is selected as a file type.
@@ -891,8 +776,6 @@ func (Instance) _export_pack_patch(impl func(ptr gdclass.Receiver, preset Editor
 }
 
 /*
-Optional.
-
 Create a ZIP archive at 'path' for the specified 'preset', containing only the files that have changed since the last patch.
 
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and ZIP is selected as a file type.
@@ -922,8 +805,6 @@ func (Instance) _export_zip_patch(impl func(ptr gdclass.Receiver, preset EditorE
 }
 
 /*
-Required.
-
 Returns array of platform specific features.
 */
 func (Instance) _get_platform_features(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -940,8 +821,6 @@ func (Instance) _get_platform_features(impl func(ptr gdclass.Receiver) []string)
 }
 
 /*
-Optional.
-
 Returns protocol used for remote debugging. Default implementation return tcp://.
 */
 func (Instance) _get_debug_protocol(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1029,8 +908,6 @@ func New() Instance {
 }
 
 /*
-Required.
-
 Returns array of platform specific features for the specified 'preset'.
 */
 func (class) _get_preset_features(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1050,8 +927,6 @@ func (class) _get_preset_features(impl func(ptr gdclass.Receiver, preset [1]gdcl
 }
 
 /*
-Optional.
-
 Returns true if specified file is a valid executable (native executable or script) for the target platform.
 */
 func (class) _is_executable(impl func(ptr gdclass.Receiver, path String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1065,8 +940,6 @@ func (class) _is_executable(impl func(ptr gdclass.Receiver, path String.Readable
 }
 
 /*
-Optional.
-
 Returns a property list, as an slice of dictionaries. Each data structure must at least contain the name: StringName and type: Variant.Type entries.
 
 Additionally, the following keys are supported:
@@ -1101,8 +974,6 @@ func (class) _get_export_options(impl func(ptr gdclass.Receiver) Array.Contains[
 }
 
 /*
-Optional.
-
 Returns true if export options list is changed and presets should be updated.
 */
 func (class) _should_update_export_options(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1114,8 +985,6 @@ func (class) _should_update_export_options(impl func(ptr gdclass.Receiver) bool)
 }
 
 /*
-Optional.
-
 Validates 'option' and returns visibility for the specified 'preset'. Default implementation return true for all options.
 */
 func (class) _get_export_option_visibility(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset, option String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1132,8 +1001,6 @@ func (class) _get_export_option_visibility(impl func(ptr gdclass.Receiver, prese
 }
 
 /*
-Optional.
-
 Validates 'option' and returns warning message for the specified 'preset'. Default implementation return empty string for all options.
 */
 func (class) _get_export_option_warning(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset, option String.Name) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1155,8 +1022,6 @@ func (class) _get_export_option_warning(impl func(ptr gdclass.Receiver, preset [
 }
 
 /*
-Required.
-
 Returns target OS name.
 */
 func (class) _get_os_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1173,8 +1038,6 @@ func (class) _get_os_name(impl func(ptr gdclass.Receiver) String.Readable) (cb g
 }
 
 /*
-Required.
-
 Returns export platform name.
 */
 func (class) _get_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1191,9 +1054,7 @@ func (class) _get_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.E
 }
 
 /*
-Required.
-
-Returns platform logo displayed in the export dialog, logo should be 32x32 adjusted to the current editor scale, see [graphics.gd/classdb/EditorInterface.GetEditorScale].
+Returns the platform logo displayed in the export dialog. The logo should be 32×32 pixels, adjusted for the current editor scale (see [graphics.gd/classdb/EditorInterface.GetEditorScale]).
 */
 func (class) _get_logo(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1209,8 +1070,6 @@ func (class) _get_logo(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D) (cb
 }
 
 /*
-Optional.
-
 Returns true if one-click deploy options are changed and editor interface should be updated.
 */
 func (class) _poll_export(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1222,9 +1081,7 @@ func (class) _poll_export(impl func(ptr gdclass.Receiver) bool) (cb gd.Extension
 }
 
 /*
-Optional.
-
-Returns number one-click deploy devices (or other one-click option displayed in the menu).
+Returns the number of devices (or other options) available in the one-click deploy menu.
 */
 func (class) _get_options_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1235,8 +1092,6 @@ func (class) _get_options_count(impl func(ptr gdclass.Receiver) int64) (cb gd.Ex
 }
 
 /*
-Optional.
-
 Returns tooltip of the one-click deploy menu button.
 */
 func (class) _get_options_tooltip(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1253,11 +1108,9 @@ func (class) _get_options_tooltip(impl func(ptr gdclass.Receiver) String.Readabl
 }
 
 /*
-Optional.
-
-Returns one-click deploy menu item icon for the specified 'device', icon should be 16x16 adjusted to the current editor scale, see [graphics.gd/classdb/EditorInterface.GetEditorScale].
+Returns the item icon for the specified 'device' in the one-click deploy menu. The icon should be 16×16 pixels, adjusted for the current editor scale (see [graphics.gd/classdb/EditorInterface.GetEditorScale]).
 */
-func (class) _get_option_icon(impl func(ptr gdclass.Receiver, device int64) [1]gdclass.ImageTexture) (cb gd.ExtensionClassCallVirtualFunc) {
+func (class) _get_option_icon(impl func(ptr gdclass.Receiver, device int64) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var device = gd.UnsafeGet[int64](p_args, 0)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1272,8 +1125,6 @@ func (class) _get_option_icon(impl func(ptr gdclass.Receiver, device int64) [1]g
 }
 
 /*
-Optional.
-
 Returns one-click deploy menu item label for the specified 'device'.
 */
 func (class) _get_option_label(impl func(ptr gdclass.Receiver, device int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1291,8 +1142,6 @@ func (class) _get_option_label(impl func(ptr gdclass.Receiver, device int64) Str
 }
 
 /*
-Optional.
-
 Returns one-click deploy menu item tooltip for the specified 'device'.
 */
 func (class) _get_option_tooltip(impl func(ptr gdclass.Receiver, device int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1310,8 +1159,6 @@ func (class) _get_option_tooltip(impl func(ptr gdclass.Receiver, device int64) S
 }
 
 /*
-Optional.
-
 Returns device architecture for one-click deploy.
 */
 func (class) _get_device_architecture(impl func(ptr gdclass.Receiver, device int64) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1329,8 +1176,6 @@ func (class) _get_device_architecture(impl func(ptr gdclass.Receiver, device int
 }
 
 /*
-Optional.
-
 Called by the editor before platform is unregistered.
 */
 func (class) _cleanup(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1341,8 +1186,6 @@ func (class) _cleanup(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCall
 }
 
 /*
-Optional.
-
 This method is called when 'device' one-click deploy menu option is selected.
 
 Implementation should export project to a temporary location, upload and run it on the specific 'device', or perform another action associated with the menu item.
@@ -1366,9 +1209,7 @@ func (class) _run(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExport
 }
 
 /*
-Optional.
-
-Returns icon of the one-click deploy menu button, icon should be 16x16 adjusted to the current editor scale, see [graphics.gd/classdb/EditorInterface.GetEditorScale].
+Returns the icon of the one-click deploy menu button. The icon should be 16×16 pixels, adjusted for the current editor scale (see [graphics.gd/classdb/EditorInterface.GetEditorScale]).
 */
 func (class) _get_run_icon(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1384,8 +1225,6 @@ func (class) _get_run_icon(impl func(ptr gdclass.Receiver) [1]gdclass.Texture2D)
 }
 
 /*
-Optional.
-
 Returns true, if specified 'preset' is valid and can be exported. Use [Instance.SetConfigError] and [Instance.SetConfigMissingTemplates] to set error details.
 
 Usual implementation can call [Interface.HasValidExportConfiguration] and [Interface.HasValidProjectConfiguration] to determine if export is possible.
@@ -1403,8 +1242,6 @@ func (class) _can_export(impl func(ptr gdclass.Receiver, preset [1]gdclass.Edito
 }
 
 /*
-Required.
-
 Returns true if export configuration is valid.
 */
 func (class) _has_valid_export_configuration(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset, debug bool) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1420,8 +1257,6 @@ func (class) _has_valid_export_configuration(impl func(ptr gdclass.Receiver, pre
 }
 
 /*
-Required.
-
 Returns true if project configuration is valid.
 */
 func (class) _has_valid_project_configuration(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1436,8 +1271,6 @@ func (class) _has_valid_project_configuration(impl func(ptr gdclass.Receiver, pr
 }
 
 /*
-Required.
-
 Returns array of supported binary extensions for the full project export.
 */
 func (class) _get_binary_extensions(impl func(ptr gdclass.Receiver, preset [1]gdclass.EditorExportPreset) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1457,8 +1290,6 @@ func (class) _get_binary_extensions(impl func(ptr gdclass.Receiver, preset [1]gd
 }
 
 /*
-Required.
-
 Creates a full project at 'path' for the specified 'preset'.
 
 This method is called when "Export" button is pressed in the export dialog.
@@ -1486,8 +1317,6 @@ func (class) _export_project(impl func(ptr gdclass.Receiver, preset [1]gdclass.E
 }
 
 /*
-Optional.
-
 Creates a PCK archive at 'path' for the specified 'preset'.
 
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and PCK is selected as a file type.
@@ -1513,8 +1342,6 @@ func (class) _export_pack(impl func(ptr gdclass.Receiver, preset [1]gdclass.Edit
 }
 
 /*
-Optional.
-
 Create a ZIP archive at 'path' for the specified 'preset'.
 
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" disabled, and ZIP is selected as a file type.
@@ -1540,8 +1367,6 @@ func (class) _export_zip(impl func(ptr gdclass.Receiver, preset [1]gdclass.Edito
 }
 
 /*
-Optional.
-
 Creates a patch PCK archive at 'path' for the specified 'preset', containing only the files that have changed since the last patch.
 
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and PCK is selected as a file type.
@@ -1571,8 +1396,6 @@ func (class) _export_pack_patch(impl func(ptr gdclass.Receiver, preset [1]gdclas
 }
 
 /*
-Optional.
-
 Create a ZIP archive at 'path' for the specified 'preset', containing only the files that have changed since the last patch.
 
 This method is called when "Export PCK/ZIP" button is pressed in the export dialog, with "Export as Patch" enabled, and ZIP is selected as a file type.
@@ -1602,8 +1425,6 @@ func (class) _export_zip_patch(impl func(ptr gdclass.Receiver, preset [1]gdclass
 }
 
 /*
-Required.
-
 Returns array of platform specific features.
 */
 func (class) _get_platform_features(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1620,8 +1441,6 @@ func (class) _get_platform_features(impl func(ptr gdclass.Receiver) Packed.Strin
 }
 
 /*
-Optional.
-
 Returns protocol used for remote debugging. Default implementation return tcp://.
 */
 func (class) _get_debug_protocol(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {

@@ -80,6 +80,18 @@ func (array Strings) Has(value String.Readable) bool { //gd:PackedStringArray.ha
 	return array.Find(value) != -1
 }
 
+// Erase Removes the first occurrence of a value from the array and returns true. If the value does not exist in the array, nothing
+// happens and false is returned. To remove an element by index, use [Array.RemoveAt] instead.
+func (array Strings) Erase(value String.Readable) bool { //gd:PackedStringArray.erase
+	for i := 0; i < array.Len(); i++ {
+		if String.Comparison(array.Index(i), value) == 0 {
+			array.RemoveAt(i)
+			return true
+		}
+	}
+	return false
+}
+
 // Insert inserts a new element at a given position in the array. String.Readablehe position must be
 // valid, or at the end of the array (idx == size()).
 func (array *Strings) Insert(idx int, value String.Readable) { //gd:PackedStringArray.insert

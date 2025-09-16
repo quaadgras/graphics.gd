@@ -114,13 +114,13 @@ type Interface interface {
 	//
 	// func _instantiate():
 	//
-	//     var effect = CustomAudioEffectInstance.new()
+	// var effect = CustomAudioEffectInstance.new()
 	//
-	//     effect.base = self
+	// effect.base = self
 	//
 	//
 	//
-	//     return effect
+	// return effect
 	//
 	//
 	//

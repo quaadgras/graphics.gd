@@ -155,10 +155,12 @@ var methods struct {
 	open_scene_from_path             gdextension.MethodForClass `hash:"1168363258"`
 	reload_scene_from_path           gdextension.MethodForClass `hash:"83702148"`
 	get_open_scenes                  gdextension.MethodForClass `hash:"1139954409"`
+	get_open_scene_roots             gdextension.MethodForClass `hash:"3995934104"`
 	get_edited_scene_root            gdextension.MethodForClass `hash:"3160264692"`
 	save_scene                       gdextension.MethodForClass `hash:"166280745"`
 	save_scene_as                    gdextension.MethodForClass `hash:"3647332257"`
 	save_all_scenes                  gdextension.MethodForClass `hash:"3218959716"`
+	close_scene                      gdextension.MethodForClass `hash:"166280745"`
 	mark_scene_as_unsaved            gdextension.MethodForClass `hash:"3218959716"`
 	play_main_scene                  gdextension.MethodForClass `hash:"3218959716"`
 	play_current_scene               gdextension.MethodForClass `hash:"3218959716"`
@@ -362,7 +364,7 @@ func GetEditorViewport3dOptions(idx int) SubViewport.Instance { //gd:EditorInter
 }
 
 /*
-Sets the editor's current main screen to the one specified in 'name'. 'name' must match the title of the tab in question exactly (e.g. 2D, 3D, Script, or AssetLib for default tabs).
+Sets the editor's current main screen to the one specified in 'name'. 'name' must match the title of the tab in question exactly (e.g. 2D, 3D, Script, Game, or AssetLib for default tabs).
 */
 func SetMainScreenEditor(name string) { //gd:EditorInterface.set_main_screen_editor
 	once.Do(singleton)
@@ -388,7 +390,7 @@ func IsMultiWindowEnabled() bool { //gd:EditorInterface.is_multi_window_enabled
 /*
 Returns the actual scale of the editor UI (1.0 being 100% scale). This can be used to adjust position and dimensions of the UI added by plugins.
 
-Note: This value is set via the interface/editor/display_scale and interface/editor/custom_display_scale editor settings. Editor must be restarted for changes to be properly applied.
+Note: This value is set via the [graphics.gd/classdb/EditorSettings.Instance] "interface/editor/display_scale" and [graphics.gd/classdb/EditorSettings.Instance] "interface/editor/custom_display_scale" settings. The editor must be restarted for changes to be properly applied.
 */
 func GetEditorScale() Float.X { //gd:EditorInterface.get_editor_scale
 	once.Do(singleton)
@@ -732,11 +734,19 @@ func ReloadSceneFromPath(scene_filepath string) { //gd:EditorInterface.reload_sc
 }
 
 /*
-Returns an slice with the file paths of the currently opened scenes.
+Returns an array with the file paths of the currently opened scenes.
 */
 func GetOpenScenes() []string { //gd:EditorInterface.get_open_scenes
 	once.Do(singleton)
 	return []string(Advanced().GetOpenScenes().Strings())
+}
+
+/*
+Returns an array with references to the root nodes of the currently opened scenes.
+*/
+func GetOpenSceneRoots() []Node.Instance { //gd:EditorInterface.get_open_scene_roots
+	once.Do(singleton)
+	return []Node.Instance(gd.ArrayAs[[]Node.Instance](gd.InternalArray(Advanced().GetOpenSceneRoots())))
 }
 
 /*
@@ -777,6 +787,14 @@ Saves all opened scenes in the editor.
 func SaveAllScenes() { //gd:EditorInterface.save_all_scenes
 	once.Do(singleton)
 	Advanced().SaveAllScenes()
+}
+
+/*
+Closes the currently active scene, discarding any pending changes in the process. Returns [Ok] on success or [ErrDoesNotExist] if there is no scene to close.
+*/
+func CloseScene() error { //gd:EditorInterface.close_scene
+	once.Do(singleton)
+	return error(gd.ToError(Advanced().CloseScene()))
 }
 
 /*
@@ -1073,7 +1091,7 @@ func (self class) GetEditorViewport3d(idx int64) [1]gdclass.SubViewport { //gd:E
 }
 
 /*
-Sets the editor's current main screen to the one specified in 'name'. 'name' must match the title of the tab in question exactly (e.g. 2D, 3D, Script, or AssetLib for default tabs).
+Sets the editor's current main screen to the one specified in 'name'. 'name' must match the title of the tab in question exactly (e.g. 2D, 3D, Script, Game, or AssetLib for default tabs).
 */
 //go:nosplit
 func (self class) SetMainScreenEditor(name String.Readable) { //gd:EditorInterface.set_main_screen_editor
@@ -1113,7 +1131,7 @@ func (self class) IsMultiWindowEnabled() bool { //gd:EditorInterface.is_multi_wi
 /*
 Returns the actual scale of the editor UI (1.0 being 100% scale). This can be used to adjust position and dimensions of the UI added by plugins.
 
-Note: This value is set via the interface/editor/display_scale and interface/editor/custom_display_scale editor settings. Editor must be restarted for changes to be properly applied.
+Note: This value is set via the [graphics.gd/classdb/EditorSettings.Instance] "interface/editor/display_scale" and [graphics.gd/classdb/EditorSettings.Instance] "interface/editor/custom_display_scale" settings. The editor must be restarted for changes to be properly applied.
 */
 //go:nosplit
 func (self class) GetEditorScale() float64 { //gd:EditorInterface.get_editor_scale
@@ -1404,12 +1422,22 @@ func (self class) ReloadSceneFromPath(scene_filepath String.Readable) { //gd:Edi
 }
 
 /*
-Returns an slice with the file paths of the currently opened scenes.
+Returns an array with the file paths of the currently opened scenes.
 */
 //go:nosplit
 func (self class) GetOpenScenes() Packed.Strings { //gd:EditorInterface.get_open_scenes
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_open_scenes, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+	return ret
+}
+
+/*
+Returns an array with references to the root nodes of the currently opened scenes.
+*/
+//go:nosplit
+func (self class) GetOpenSceneRoots() Array.Contains[[1]gdclass.Node] { //gd:EditorInterface.get_open_scene_roots
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_open_scene_roots, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Node]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -1450,6 +1478,16 @@ Saves all opened scenes in the editor.
 //go:nosplit
 func (self class) SaveAllScenes() { //gd:EditorInterface.save_all_scenes
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.save_all_scenes, 0, &struct{}{})
+}
+
+/*
+Closes the currently active scene, discarding any pending changes in the process. Returns [Ok] on success or [ErrDoesNotExist] if there is no scene to close.
+*/
+//go:nosplit
+func (self class) CloseScene() Error.Code { //gd:EditorInterface.close_scene
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close_scene, gdextension.SizeInt, &struct{}{})
+	var ret = Error.Code(r_ret)
+	return ret
 }
 
 /*

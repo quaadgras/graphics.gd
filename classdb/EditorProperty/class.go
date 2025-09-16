@@ -174,21 +174,25 @@ func (Instance) _set_read_only(impl func(ptr gdclass.Receiver, read_only bool)) 
 }
 
 /*
-Gets the edited property. If your editor is for a single property (added via [graphics.gd/classdb/EditorInspectorPlugin.Instance.ParseProperty]), then this will return the property.
+Returns the edited property. If your editor is for a single property (added via [graphics.gd/classdb/EditorInspectorPlugin.Instance.ParseProperty]), then this will return the property.
+
+Note: This method could return null if the editor has not yet been associated with a property. However, in [Interface.UpdateProperty] and [Interface.SetReadOnly], this value is guaranteed to be non-null.
 */
 func (self Instance) GetEditedProperty() string { //gd:EditorProperty.get_edited_property
 	return string(Advanced(self).GetEditedProperty().String())
 }
 
 /*
-Gets the edited object.
+Returns the edited object.
+
+Note: This method could return null if the editor has not yet been associated with a property. However, in [Interface.UpdateProperty] and [Interface.SetReadOnly], this value is guaranteed to be non-null.
 */
 func (self Instance) GetEditedObject() Object.Instance { //gd:EditorProperty.get_edited_object
 	return Object.Instance(Advanced(self).GetEditedObject())
 }
 
 /*
-Forces refresh of the property display.
+Forces a refresh of the property display.
 */
 func (self Instance) UpdateProperty() { //gd:EditorProperty.update_property
 	Advanced(self).UpdateProperty()
@@ -528,7 +532,9 @@ func (self class) IsDeletable() bool { //gd:EditorProperty.is_deletable
 }
 
 /*
-Gets the edited property. If your editor is for a single property (added via [graphics.gd/classdb/EditorInspectorPlugin.Instance.ParseProperty]), then this will return the property.
+Returns the edited property. If your editor is for a single property (added via [graphics.gd/classdb/EditorInspectorPlugin.Instance.ParseProperty]), then this will return the property.
+
+Note: This method could return null if the editor has not yet been associated with a property. However, in [Interface.UpdateProperty] and [Interface.SetReadOnly], this value is guaranteed to be non-null.
 */
 //go:nosplit
 func (self class) GetEditedProperty() String.Name { //gd:EditorProperty.get_edited_property
@@ -538,7 +544,9 @@ func (self class) GetEditedProperty() String.Name { //gd:EditorProperty.get_edit
 }
 
 /*
-Gets the edited object.
+Returns the edited object.
+
+Note: This method could return null if the editor has not yet been associated with a property. However, in [Interface.UpdateProperty] and [Interface.SetReadOnly], this value is guaranteed to be non-null.
 */
 //go:nosplit
 func (self class) GetEditedObject() [1]gd.Object { //gd:EditorProperty.get_edited_object
@@ -548,7 +556,7 @@ func (self class) GetEditedObject() [1]gd.Object { //gd:EditorProperty.get_edite
 }
 
 /*
-Forces refresh of the property display.
+Forces a refresh of the property display.
 */
 //go:nosplit
 func (self class) UpdateProperty() { //gd:EditorProperty.update_property
@@ -734,6 +742,18 @@ func (self Instance) OnPropertyChecked(cb func(property string, checked bool), f
 
 func (self class) PropertyChecked() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyChecked`))))
+}
+
+func (self Instance) OnPropertyOverridden(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("property_overridden"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) PropertyOverridden() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyOverridden`))))
 }
 
 func (self Instance) OnPropertyFavorited(cb func(property string, favorited bool), flags ...Signal.Flags) {

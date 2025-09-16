@@ -117,13 +117,13 @@ type Interface interface {
 	//
 	// func _make_tooltip_for_path(path, metadata, base):
 	//
-	//     var t_rect = TextureRect.new()
+	// var t_rect = TextureRect.new()
 	//
-	//     request_thumbnail(path, t_rect)
+	// request_thumbnail(path, t_rect)
 	//
-	//     base.add_child(t_rect) # The TextureRect will appear at the bottom of the tooltip.
+	// base.add_child(t_rect) # The TextureRect will appear at the bottom of the tooltip.
 	//
-	//     return base
+	// return base
 	//
 	//
 	MakeTooltipForPath(path string, metadata map[string]interface{}, base Control.Instance) Control.Instance

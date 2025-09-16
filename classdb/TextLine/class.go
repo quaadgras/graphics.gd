@@ -82,6 +82,7 @@ var methods struct {
 	clear                        gdextension.MethodForClass `hash:"3218959716"`
 	set_direction                gdextension.MethodForClass `hash:"1418190634"`
 	get_direction                gdextension.MethodForClass `hash:"2516697328"`
+	get_inferred_direction       gdextension.MethodForClass `hash:"2516697328"`
 	set_orientation              gdextension.MethodForClass `hash:"42823726"`
 	get_orientation              gdextension.MethodForClass `hash:"175768116"`
 	set_preserve_invalid         gdextension.MethodForClass `hash:"2586408642"`
@@ -112,8 +113,8 @@ var methods struct {
 	get_line_width               gdextension.MethodForClass `hash:"1740695150"`
 	get_line_underline_position  gdextension.MethodForClass `hash:"1740695150"`
 	get_line_underline_thickness gdextension.MethodForClass `hash:"1740695150"`
-	draw                         gdextension.MethodForClass `hash:"856975658"`
-	draw_outline                 gdextension.MethodForClass `hash:"1343401456"`
+	draw                         gdextension.MethodForClass `hash:"3625105422"`
+	draw_outline                 gdextension.MethodForClass `hash:"2592177763"`
 	hit_test                     gdextension.MethodForClass `hash:"2401831903"`
 }
 
@@ -144,6 +145,13 @@ Clears text line (removes text and inline objects).
 */
 func (self Instance) Clear() { //gd:TextLine.clear
 	Advanced(self).Clear()
+}
+
+/*
+Returns the text writing direction inferred by the BiDi algorithm.
+*/
+func (self Instance) GetInferredDirection() TextServer.Direction { //gd:TextLine.get_inferred_direction
+	return TextServer.Direction(Advanced(self).GetInferredDirection())
 }
 
 /*
@@ -268,31 +276,31 @@ func (self Instance) GetLineUnderlineThickness() Float.X { //gd:TextLine.get_lin
 }
 
 /*
-Draw text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 func (self Instance) Draw(canvas RID.Canvas, pos Vector2.XY) { //gd:TextLine.draw
-	Advanced(self).Draw(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).Draw(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
 }
 
 /*
-Draw text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
-func (self Expanded) Draw(canvas RID.Canvas, pos Vector2.XY, color Color.RGBA) { //gd:TextLine.draw
-	Advanced(self).Draw(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(color))
+func (self Expanded) Draw(canvas RID.Canvas, pos Vector2.XY, color Color.RGBA, oversampling Float.X) { //gd:TextLine.draw
+	Advanced(self).Draw(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(color), float64(oversampling))
 }
 
 /*
-Draw text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 func (self Instance) DrawOutline(canvas RID.Canvas, pos Vector2.XY) { //gd:TextLine.draw_outline
-	Advanced(self).DrawOutline(RID.Any(canvas), Vector2.XY(pos), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).DrawOutline(RID.Any(canvas), Vector2.XY(pos), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
 }
 
 /*
-Draw text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
-func (self Expanded) DrawOutline(canvas RID.Canvas, pos Vector2.XY, outline_size int, color Color.RGBA) { //gd:TextLine.draw_outline
-	Advanced(self).DrawOutline(RID.Any(canvas), Vector2.XY(pos), int64(outline_size), Color.RGBA(color))
+func (self Expanded) DrawOutline(canvas RID.Canvas, pos Vector2.XY, outline_size int, color Color.RGBA, oversampling Float.X) { //gd:TextLine.draw_outline
+	Advanced(self).DrawOutline(RID.Any(canvas), Vector2.XY(pos), int64(outline_size), Color.RGBA(color), float64(oversampling))
 }
 
 /*
@@ -433,6 +441,16 @@ func (self class) SetDirection(direction TextServer.Direction) { //gd:TextLine.s
 //go:nosplit
 func (self class) GetDirection() TextServer.Direction { //gd:TextLine.get_direction
 	var r_ret = gdextension.Call[TextServer.Direction](gd.ObjectChecked(self.AsObject()), methods.get_direction, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the text writing direction inferred by the BiDi algorithm.
+*/
+//go:nosplit
+func (self class) GetInferredDirection() TextServer.Direction { //gd:TextLine.get_inferred_direction
+	var r_ret = gdextension.Call[TextServer.Direction](gd.ObjectChecked(self.AsObject()), methods.get_inferred_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -691,28 +709,30 @@ func (self class) GetLineUnderlineThickness() float64 { //gd:TextLine.get_line_u
 }
 
 /*
-Draw text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 //go:nosplit
-func (self class) Draw(canvas RID.Any, pos Vector2.XY, color Color.RGBA) { //gd:TextLine.draw
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12), &struct {
-		canvas RID.Any
-		pos    Vector2.XY
-		color  Color.RGBA
-	}{canvas, pos, color})
+func (self class) Draw(canvas RID.Any, pos Vector2.XY, color Color.RGBA, oversampling float64) { //gd:TextLine.draw
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeFloat<<16), &struct {
+		canvas       RID.Any
+		pos          Vector2.XY
+		color        Color.RGBA
+		oversampling float64
+	}{canvas, pos, color, oversampling})
 }
 
 /*
-Draw text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 //go:nosplit
-func (self class) DrawOutline(canvas RID.Any, pos Vector2.XY, outline_size int64, color Color.RGBA) { //gd:TextLine.draw_outline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16), &struct {
+func (self class) DrawOutline(canvas RID.Any, pos Vector2.XY, outline_size int64, color Color.RGBA, oversampling float64) { //gd:TextLine.draw_outline
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeFloat<<20), &struct {
 		canvas       RID.Any
 		pos          Vector2.XY
 		outline_size int64
 		color        Color.RGBA
-	}{canvas, pos, outline_size, color})
+		oversampling float64
+	}{canvas, pos, outline_size, color, oversampling})
 }
 
 /*

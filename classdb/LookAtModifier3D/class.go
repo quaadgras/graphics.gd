@@ -171,7 +171,7 @@ func (self Instance) GetInterpolationRemaining() Float.X { //gd:LookAtModifier3D
 }
 
 /*
-Returns whether the time-based interpolation is running or not. If true, it is equivalent to [Instance.GetInterpolationRemaining] being 0.
+Returns true if time-based interpolation is running. If true, it is equivalent to [Instance.GetInterpolationRemaining] returning 0.0.
 
 This is useful to determine whether a [graphics.gd/classdb/LookAtModifier3D] can be removed safely.
 */
@@ -821,7 +821,7 @@ func (self class) GetInterpolationRemaining() float64 { //gd:LookAtModifier3D.ge
 }
 
 /*
-Returns whether the time-based interpolation is running or not. If true, it is equivalent to [Instance.GetInterpolationRemaining] being 0.
+Returns true if time-based interpolation is running. If true, it is equivalent to [Instance.GetInterpolationRemaining] returning 0.0.
 
 This is useful to determine whether a [graphics.gd/classdb/LookAtModifier3D] can be removed safely.
 */

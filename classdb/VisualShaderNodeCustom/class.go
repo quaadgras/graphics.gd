@@ -131,7 +131,7 @@ type Interface interface {
 	//
 	// Defining this method is required. If not overridden, the node has no input ports.
 	GetInputPortCount() int
-	// Override this method to define the returned type of each input port of the associated custom node (see [VisualShaderNode.PortType] for possible types).
+	// Override this method to define the returned type of each input port of the associated custom node.
 	//
 	// Defining this method is optional, but recommended. If not overridden, input ports will return the [Visualshadernode.PortTypeScalar] type.
 	GetInputPortType(port int) VisualShaderNode.PortType
@@ -151,7 +151,7 @@ type Interface interface {
 	//
 	// Defining this method is required. If not overridden, the node has no output ports.
 	GetOutputPortCount() int
-	// Override this method to define the returned type of each output port of the associated custom node (see [VisualShaderNode.PortType] for possible types).
+	// Override this method to define the returned type of each output port of the associated custom node.
 	//
 	// Defining this method is optional, but recommended. If not overridden, output ports will return the [Visualshadernode.PortTypeScalar] type.
 	GetOutputPortType(port int) VisualShaderNode.PortType
@@ -181,7 +181,7 @@ type Interface interface {
 	//
 	// The output ports can be assigned values in the shader code. For example, return output_vars[0] + " = " + input_vars[0] + ";".
 	//
-	// You can customize the generated code based on the shader 'mode' (see [Shader.Mode]) and/or 'type' (see [VisualShader.Type]).
+	// You can customize the generated code based on the shader 'mode' and/or 'type'.
 	//
 	// Defining this method is required.
 	GetCode(input_vars []string, output_vars []string, mode Shader.Mode, atype VisualShader.Type) string
@@ -189,7 +189,7 @@ type Interface interface {
 	//
 	// If there are multiple custom nodes of different types which use this feature the order of each insertion is undefined.
 	//
-	// You can customize the generated code based on the shader 'mode' (see [Shader.Mode]) and/or 'type' (see [VisualShader.Type]).
+	// You can customize the generated code based on the shader 'mode' and/or 'type'.
 	//
 	// Defining this method is optional.
 	GetFuncCode(mode Shader.Mode, atype VisualShader.Type) string
@@ -197,7 +197,7 @@ type Interface interface {
 	//
 	// Be careful with this functionality as it can cause name conflicts with other custom nodes, so be sure to give the defined entities unique names.
 	//
-	// You can customize the generated code based on the shader 'mode' (see [Shader.Mode]).
+	// You can customize the generated code based on the shader 'mode'.
 	//
 	// Defining this method is optional.
 	GetGlobalCode(mode Shader.Mode) string
@@ -205,7 +205,7 @@ type Interface interface {
 	//
 	// Defining this method is optional. If not overridden, it's false.
 	IsHighend() bool
-	// Override this method to prevent the node to be visible in the member dialog for the certain 'mode' (see [Shader.Mode]) and/or 'type' (see [VisualShader.Type]).
+	// Override this method to prevent the node to be visible in the member dialog for the certain 'mode' and/or 'type'.
 	//
 	// Defining this method is optional. If not overridden, it's true.
 	IsAvailable(mode Shader.Mode, atype VisualShader.Type) bool
@@ -321,7 +321,7 @@ func (Instance) _get_input_port_count(impl func(ptr gdclass.Receiver) int) (cb g
 }
 
 /*
-Override this method to define the returned type of each input port of the associated custom node (see [VisualShaderNode.PortType] for possible types).
+Override this method to define the returned type of each input port of the associated custom node.
 
 Defining this method is optional, but recommended. If not overridden, input ports will return the [Visualshadernode.PortTypeScalar] type.
 */
@@ -400,7 +400,7 @@ func (Instance) _get_output_port_count(impl func(ptr gdclass.Receiver) int) (cb 
 }
 
 /*
-Override this method to define the returned type of each output port of the associated custom node (see [VisualShaderNode.PortType] for possible types).
+Override this method to define the returned type of each output port of the associated custom node.
 
 Defining this method is optional, but recommended. If not overridden, output ports will return the [Visualshadernode.PortTypeScalar] type.
 */
@@ -504,7 +504,7 @@ The 'input_vars' and 'output_vars' arrays contain the string names of the variou
 
 The output ports can be assigned values in the shader code. For example, return output_vars[0] + " = " + input_vars[0] + ";".
 
-You can customize the generated code based on the shader 'mode' (see [Shader.Mode]) and/or 'type' (see [VisualShader.Type]).
+You can customize the generated code based on the shader 'mode' and/or 'type'.
 
 Defining this method is required.
 */
@@ -532,7 +532,7 @@ Override this method to add a shader code to the beginning of each shader functi
 
 If there are multiple custom nodes of different types which use this feature the order of each insertion is undefined.
 
-You can customize the generated code based on the shader 'mode' (see [Shader.Mode]) and/or 'type' (see [VisualShader.Type]).
+You can customize the generated code based on the shader 'mode' and/or 'type'.
 
 Defining this method is optional.
 */
@@ -556,7 +556,7 @@ Override this method to add shader code on top of the global shader, to define y
 
 Be careful with this functionality as it can cause name conflicts with other custom nodes, so be sure to give the defined entities unique names.
 
-You can customize the generated code based on the shader 'mode' (see [Shader.Mode]).
+You can customize the generated code based on the shader 'mode'.
 
 Defining this method is optional.
 */
@@ -588,7 +588,7 @@ func (Instance) _is_highend(impl func(ptr gdclass.Receiver) bool) (cb gd.Extensi
 }
 
 /*
-Override this method to prevent the node to be visible in the member dialog for the certain 'mode' (see [Shader.Mode]) and/or 'type' (see [VisualShader.Type]).
+Override this method to prevent the node to be visible in the member dialog for the certain 'mode' and/or 'type'.
 
 Defining this method is optional. If not overridden, it's true.
 */
@@ -733,7 +733,7 @@ func (class) _get_input_port_count(impl func(ptr gdclass.Receiver) int64) (cb gd
 }
 
 /*
-Override this method to define the returned type of each input port of the associated custom node (see [VisualShaderNode.PortType] for possible types).
+Override this method to define the returned type of each input port of the associated custom node.
 
 Defining this method is optional, but recommended. If not overridden, input ports will return the [Visualshadernode.PortTypeScalar] type.
 */
@@ -812,7 +812,7 @@ func (class) _get_output_port_count(impl func(ptr gdclass.Receiver) int64) (cb g
 }
 
 /*
-Override this method to define the returned type of each output port of the associated custom node (see [VisualShaderNode.PortType] for possible types).
+Override this method to define the returned type of each output port of the associated custom node.
 
 Defining this method is optional, but recommended. If not overridden, output ports will return the [Visualshadernode.PortTypeScalar] type.
 */
@@ -916,7 +916,7 @@ The 'input_vars' and 'output_vars' arrays contain the string names of the variou
 
 The output ports can be assigned values in the shader code. For example, return output_vars[0] + " = " + input_vars[0] + ";".
 
-You can customize the generated code based on the shader 'mode' (see [Shader.Mode]) and/or 'type' (see [VisualShader.Type]).
+You can customize the generated code based on the shader 'mode' and/or 'type'.
 
 Defining this method is required.
 */
@@ -944,7 +944,7 @@ Override this method to add a shader code to the beginning of each shader functi
 
 If there are multiple custom nodes of different types which use this feature the order of each insertion is undefined.
 
-You can customize the generated code based on the shader 'mode' (see [Shader.Mode]) and/or 'type' (see [VisualShader.Type]).
+You can customize the generated code based on the shader 'mode' and/or 'type'.
 
 Defining this method is optional.
 */
@@ -968,7 +968,7 @@ Override this method to add shader code on top of the global shader, to define y
 
 Be careful with this functionality as it can cause name conflicts with other custom nodes, so be sure to give the defined entities unique names.
 
-You can customize the generated code based on the shader 'mode' (see [Shader.Mode]).
+You can customize the generated code based on the shader 'mode'.
 
 Defining this method is optional.
 */
@@ -1000,7 +1000,7 @@ func (class) _is_highend(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionC
 }
 
 /*
-Override this method to prevent the node to be visible in the member dialog for the certain 'mode' (see [Shader.Mode]) and/or 'type' (see [VisualShader.Type]).
+Override this method to prevent the node to be visible in the member dialog for the certain 'mode' and/or 'type'.
 
 Defining this method is optional. If not overridden, it's true.
 */

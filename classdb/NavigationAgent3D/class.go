@@ -6,6 +6,8 @@ A 3D agent used to pathfind to a position while avoiding static and dynamic obst
 Dynamic obstacles are avoided using RVO collision avoidance. Avoidance is computed before physics, so the pathfinding information can be used safely in the physics step.
 
 Note: After setting the [Instance.TargetPosition] property, the [Instance.GetNextPathPosition] method must be used once every physics frame to update the internal path logic of the navigation agent. The vector position it returns should be used as the next movement position for the agent's parent node.
+
+Note: Several methods of this class, such as [Instance.GetNextPathPosition], can trigger a new path calculation. Calling these in your callback to an agent's signal, such as [Instance.OnWaypointReached], can cause infinite recursion. It is recommended to call these methods in the physics step or, alternatively, delay their call until the end of the frame (see [graphics.gd/classdb/Object.Instance.CallDeferred] or [Object.ConnectDeferred]).
 */
 package NavigationAgent3D
 
@@ -129,6 +131,15 @@ var methods struct {
 	get_simplify_path                 gdextension.MethodForClass `hash:"36873697"`
 	set_simplify_epsilon              gdextension.MethodForClass `hash:"373806689"`
 	get_simplify_epsilon              gdextension.MethodForClass `hash:"1740695150"`
+	set_path_return_max_length        gdextension.MethodForClass `hash:"373806689"`
+	get_path_return_max_length        gdextension.MethodForClass `hash:"1740695150"`
+	set_path_return_max_radius        gdextension.MethodForClass `hash:"373806689"`
+	get_path_return_max_radius        gdextension.MethodForClass `hash:"1740695150"`
+	set_path_search_max_polygons      gdextension.MethodForClass `hash:"1286410249"`
+	get_path_search_max_polygons      gdextension.MethodForClass `hash:"3905245786"`
+	set_path_search_max_distance      gdextension.MethodForClass `hash:"373806689"`
+	get_path_search_max_distance      gdextension.MethodForClass `hash:"1740695150"`
+	get_path_length                   gdextension.MethodForClass `hash:"1740695150"`
 	get_next_path_position            gdextension.MethodForClass `hash:"3783033775"`
 	set_velocity_forced               gdextension.MethodForClass `hash:"3460891852"`
 	set_velocity                      gdextension.MethodForClass `hash:"3460891852"`
@@ -214,6 +225,13 @@ Returns the [Resource.ID] of the navigation map for this NavigationAgent node. T
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:NavigationAgent3D.get_navigation_map
 	return RID.NavigationMap3D(RID.NavigationMap3D(Advanced(self).GetNavigationMap()))
+}
+
+/*
+Returns the length of the currently calculated path. The returned value is 0.0, if the path is still calculating or no calculation has been requested yet.
+*/
+func (self Instance) GetPathLength() Float.X { //gd:NavigationAgent3D.get_path_length
+	return Float.X(Float.X(Advanced(self).GetPathLength()))
 }
 
 /*
@@ -444,6 +462,38 @@ func (self Instance) SimplifyEpsilon() Float.X {
 
 func (self Instance) SetSimplifyEpsilon(value Float.X) {
 	class(self).SetSimplifyEpsilon(float64(value))
+}
+
+func (self Instance) PathReturnMaxLength() Float.X {
+	return Float.X(Float.X(class(self).GetPathReturnMaxLength()))
+}
+
+func (self Instance) SetPathReturnMaxLength(value Float.X) {
+	class(self).SetPathReturnMaxLength(float64(value))
+}
+
+func (self Instance) PathReturnMaxRadius() Float.X {
+	return Float.X(Float.X(class(self).GetPathReturnMaxRadius()))
+}
+
+func (self Instance) SetPathReturnMaxRadius(value Float.X) {
+	class(self).SetPathReturnMaxRadius(float64(value))
+}
+
+func (self Instance) PathSearchMaxPolygons() int {
+	return int(int(class(self).GetPathSearchMaxPolygons()))
+}
+
+func (self Instance) SetPathSearchMaxPolygons(value int) {
+	class(self).SetPathSearchMaxPolygons(int64(value))
+}
+
+func (self Instance) PathSearchMaxDistance() Float.X {
+	return Float.X(Float.X(class(self).GetPathSearchMaxDistance()))
+}
+
+func (self Instance) SetPathSearchMaxDistance(value Float.X) {
+	class(self).SetPathSearchMaxDistance(float64(value))
 }
 
 func (self Instance) AvoidanceEnabled() bool {
@@ -893,6 +943,64 @@ func (self class) SetSimplifyEpsilon(epsilon float64) { //gd:NavigationAgent3D.s
 //go:nosplit
 func (self class) GetSimplifyEpsilon() float64 { //gd:NavigationAgent3D.get_simplify_epsilon
 	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_simplify_epsilon, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPathReturnMaxLength(length float64) { //gd:NavigationAgent3D.set_path_return_max_length
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_return_max_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
+}
+
+//go:nosplit
+func (self class) GetPathReturnMaxLength() float64 { //gd:NavigationAgent3D.get_path_return_max_length
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_return_max_length, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPathReturnMaxRadius(radius float64) { //gd:NavigationAgent3D.set_path_return_max_radius
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_return_max_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
+}
+
+//go:nosplit
+func (self class) GetPathReturnMaxRadius() float64 { //gd:NavigationAgent3D.get_path_return_max_radius
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_return_max_radius, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPathSearchMaxPolygons(max_polygons int64) { //gd:NavigationAgent3D.set_path_search_max_polygons
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_search_max_polygons, 0|(gdextension.SizeInt<<4), &struct{ max_polygons int64 }{max_polygons})
+}
+
+//go:nosplit
+func (self class) GetPathSearchMaxPolygons() int64 { //gd:NavigationAgent3D.get_path_search_max_polygons
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_path_search_max_polygons, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPathSearchMaxDistance(distance float64) { //gd:NavigationAgent3D.set_path_search_max_distance
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_search_max_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
+}
+
+//go:nosplit
+func (self class) GetPathSearchMaxDistance() float64 { //gd:NavigationAgent3D.get_path_search_max_distance
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_search_max_distance, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the length of the currently calculated path. The returned value is 0.0, if the path is still calculating or no calculation has been requested yet.
+*/
+//go:nosplit
+func (self class) GetPathLength() float64 { //gd:NavigationAgent3D.get_path_length
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

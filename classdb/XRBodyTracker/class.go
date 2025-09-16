@@ -116,7 +116,7 @@ func (self Instance) SetJointFlags(joint Joint, flags JointFlags) { //gd:XRBodyT
 }
 
 /*
-Returns flags about the validity of the tracking data for the given body joint (see [XRBodyTracker.JointFlags]).
+Returns flags about the validity of the tracking data for the given body joint.
 */
 func (self Instance) GetJointFlags(joint Joint) JointFlags { //gd:XRBodyTracker.get_joint_flags
 	return JointFlags(Advanced(self).GetJointFlags(joint))
@@ -231,7 +231,7 @@ func (self class) SetJointFlags(joint Joint, flags JointFlags) { //gd:XRBodyTrac
 }
 
 /*
-Returns flags about the validity of the tracking data for the given body joint (see [XRBodyTracker.JointFlags]).
+Returns flags about the validity of the tracking data for the given body joint.
 */
 //go:nosplit
 func (self class) GetJointFlags(joint Joint) JointFlags { //gd:XRBodyTracker.get_joint_flags
@@ -474,8 +474,30 @@ const (
 	JointRightPinkyFingerPhalanxDistal Joint = 74
 	// Right pinky finger tip joint.
 	JointRightPinkyFingerTip Joint = 75
+	// Lower chest joint.
+	JointLowerChest Joint = 76
+	// Left scapula joint.
+	JointLeftScapula Joint = 77
+	// Left wrist twist joint.
+	JointLeftWristTwist Joint = 78
+	// Right scapula joint.
+	JointRightScapula Joint = 79
+	// Right wrist twist joint.
+	JointRightWristTwist Joint = 80
+	// Left foot twist joint.
+	JointLeftFootTwist Joint = 81
+	// Left heel joint.
+	JointLeftHeel Joint = 82
+	// Left middle foot joint.
+	JointLeftMiddleFoot Joint = 83
+	// Right foot twist joint.
+	JointRightFootTwist Joint = 84
+	// Right heel joint.
+	JointRightHeel Joint = 85
+	// Right middle foot joint.
+	JointRightMiddleFoot Joint = 86
 	// Represents the size of the [Joint] enum.
-	JointMax Joint = 76
+	JointMax Joint = 87
 )
 
 type JointFlags int //gd:XRBodyTracker.JointFlags

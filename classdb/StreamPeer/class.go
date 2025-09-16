@@ -138,14 +138,14 @@ type Any interface {
 Sends a chunk of data through the connection, blocking if necessary until the data is done sending. This function returns an [Error] code.
 */
 func (self Instance) PutData(data []byte) error { //gd:StreamPeer.put_data
-	return error(gd.ToError(Advanced(self).PutData(Packed.Bytes(Packed.New(data...)))))
+	return error(gd.ToError(Advanced(self).PutData(Packed.BytesFrom(data...))))
 }
 
 /*
 Sends a chunk of data through the connection. If all the data could not be sent at once, only part of it will. This function returns two values, an [Error] code and an integer, describing how much data was actually sent.
 */
 func (self Instance) PutPartialData(data []byte) (error, int) { //gd:StreamPeer.put_partial_data
-	results := gd.InternalArray(Advanced(self).PutPartialData(Packed.Bytes(Packed.New(data...))))
+	results := gd.InternalArray(Advanced(self).PutPartialData(Packed.BytesFrom(data...)))
 	return gd.VariantAs[error](results.Index(0)), gd.VariantAs[int](results.Index(1))
 }
 
@@ -158,7 +158,7 @@ func (self Instance) GetData(bytes int) (error, []uint8) { //gd:StreamPeer.get_d
 }
 
 /*
-Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the "bytes" argument. If not enough bytes are available, the function will return how many were actually received. This function returns two values, an [Error] code, and a data array.
+Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the 'bytes' argument. If not enough bytes are available, the function will return how many were actually received. This function returns two values: an [Error] code and a data array.
 */
 func (self Instance) GetPartialData(bytes int) (error, []uint8) { //gd:StreamPeer.get_partial_data
 	results := gd.InternalArray(Advanced(self).GetPartialData(int64(bytes)))
@@ -468,7 +468,7 @@ Sends a chunk of data through the connection, blocking if necessary until the da
 */
 //go:nosplit
 func (self class) PutData(data Packed.Bytes) Error.Code { //gd:StreamPeer.put_data
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.put_data, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.put_data, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -478,7 +478,7 @@ Sends a chunk of data through the connection. If all the data could not be sent 
 */
 //go:nosplit
 func (self class) PutPartialData(data Packed.Bytes) Array.Any { //gd:StreamPeer.put_partial_data
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.put_partial_data, gdextension.SizeArray|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.put_partial_data, gdextension.SizeArray|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -494,7 +494,7 @@ func (self class) GetData(bytes int64) Array.Any { //gd:StreamPeer.get_data
 }
 
 /*
-Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the "bytes" argument. If not enough bytes are available, the function will return how many were actually received. This function returns two values, an [Error] code, and a data array.
+Returns a chunk data with the received bytes. The number of bytes to be received can be requested in the 'bytes' argument. If not enough bytes are available, the function will return how many were actually received. This function returns two values: an [Error] code and a data array.
 */
 //go:nosplit
 func (self class) GetPartialData(bytes int64) Array.Any { //gd:StreamPeer.get_partial_data

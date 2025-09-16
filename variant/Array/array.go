@@ -346,7 +346,7 @@ func (a *Contains[T]) MakeReadOnly() { //gd:Array.make_read_only
 
 // Map calls the given function for each element in the array and returns a new array
 // filled with values returned by the method.
-func Map[T, U any](fn func(T) U, array Contains[T]) Contains[U] { //gd:Array.map
+func Map[T, U any](fn func(T) U, array Contains[T]) Contains[U] { //gd:Array.map Array.duplicate_deep
 	var result = New[U]()
 	result.Resize(array.Len())
 	for i, v := range array.Iter() {

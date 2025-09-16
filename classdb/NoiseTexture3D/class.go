@@ -99,18 +99,18 @@ var methods struct {
 	set_width                gdextension.MethodForClass `hash:"1286410249"`
 	set_height               gdextension.MethodForClass `hash:"1286410249"`
 	set_depth                gdextension.MethodForClass `hash:"1286410249"`
-	set_invert               gdextension.MethodForClass `hash:"2586408642"`
-	get_invert               gdextension.MethodForClass `hash:"36873697"`
-	set_seamless             gdextension.MethodForClass `hash:"2586408642"`
-	get_seamless             gdextension.MethodForClass `hash:"2240911060"`
-	set_seamless_blend_skirt gdextension.MethodForClass `hash:"373806689"`
-	get_seamless_blend_skirt gdextension.MethodForClass `hash:"191475506"`
-	set_normalize            gdextension.MethodForClass `hash:"2586408642"`
-	is_normalized            gdextension.MethodForClass `hash:"36873697"`
-	set_color_ramp           gdextension.MethodForClass `hash:"2756054477"`
-	get_color_ramp           gdextension.MethodForClass `hash:"132272999"`
 	set_noise                gdextension.MethodForClass `hash:"4135492439"`
 	get_noise                gdextension.MethodForClass `hash:"185851837"`
+	set_color_ramp           gdextension.MethodForClass `hash:"2756054477"`
+	get_color_ramp           gdextension.MethodForClass `hash:"132272999"`
+	set_seamless             gdextension.MethodForClass `hash:"2586408642"`
+	get_seamless             gdextension.MethodForClass `hash:"2240911060"`
+	set_invert               gdextension.MethodForClass `hash:"2586408642"`
+	get_invert               gdextension.MethodForClass `hash:"36873697"`
+	set_normalize            gdextension.MethodForClass `hash:"2586408642"`
+	is_normalized            gdextension.MethodForClass `hash:"36873697"`
+	set_seamless_blend_skirt gdextension.MethodForClass `hash:"373806689"`
+	get_seamless_blend_skirt gdextension.MethodForClass `hash:"191475506"`
 }
 
 func init() {
@@ -188,36 +188,12 @@ func (self Instance) SetDepth(value int) {
 	class(self).SetDepth(int64(value))
 }
 
-func (self Instance) Invert() bool {
-	return bool(class(self).GetInvert())
+func (self Instance) Noise() Noise.Instance {
+	return Noise.Instance(class(self).GetNoise())
 }
 
-func (self Instance) SetInvert(value bool) {
-	class(self).SetInvert(value)
-}
-
-func (self Instance) Seamless() bool {
-	return bool(class(self).GetSeamless())
-}
-
-func (self Instance) SetSeamless(value bool) {
-	class(self).SetSeamless(value)
-}
-
-func (self Instance) SeamlessBlendSkirt() Float.X {
-	return Float.X(Float.X(class(self).GetSeamlessBlendSkirt()))
-}
-
-func (self Instance) SetSeamlessBlendSkirt(value Float.X) {
-	class(self).SetSeamlessBlendSkirt(float64(value))
-}
-
-func (self Instance) Normalize() bool {
-	return bool(class(self).IsNormalized())
-}
-
-func (self Instance) SetNormalize(value bool) {
-	class(self).SetNormalize(value)
+func (self Instance) SetNoise(value Noise.Instance) {
+	class(self).SetNoise(value)
 }
 
 func (self Instance) ColorRamp() Gradient.Instance {
@@ -228,12 +204,36 @@ func (self Instance) SetColorRamp(value Gradient.Instance) {
 	class(self).SetColorRamp(value)
 }
 
-func (self Instance) Noise() Noise.Instance {
-	return Noise.Instance(class(self).GetNoise())
+func (self Instance) Seamless() bool {
+	return bool(class(self).GetSeamless())
 }
 
-func (self Instance) SetNoise(value Noise.Instance) {
-	class(self).SetNoise(value)
+func (self Instance) SetSeamless(value bool) {
+	class(self).SetSeamless(value)
+}
+
+func (self Instance) Invert() bool {
+	return bool(class(self).GetInvert())
+}
+
+func (self Instance) SetInvert(value bool) {
+	class(self).SetInvert(value)
+}
+
+func (self Instance) Normalize() bool {
+	return bool(class(self).IsNormalized())
+}
+
+func (self Instance) SetNormalize(value bool) {
+	class(self).SetNormalize(value)
+}
+
+func (self Instance) SeamlessBlendSkirt() Float.X {
+	return Float.X(Float.X(class(self).GetSeamlessBlendSkirt()))
+}
+
+func (self Instance) SetSeamlessBlendSkirt(value Float.X) {
+	class(self).SetSeamlessBlendSkirt(float64(value))
 }
 
 //go:nosplit
@@ -252,14 +252,26 @@ func (self class) SetDepth(depth int64) { //gd:NoiseTexture3D.set_depth
 }
 
 //go:nosplit
-func (self class) SetInvert(invert bool) { //gd:NoiseTexture3D.set_invert
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_invert, 0|(gdextension.SizeBool<<4), &struct{ invert bool }{invert})
+func (self class) SetNoise(noise [1]gdclass.Noise) { //gd:NoiseTexture3D.set_noise
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_noise, 0|(gdextension.SizeObject<<4), &struct{ noise gdextension.Object }{gdextension.Object(gd.ObjectChecked(noise[0].AsObject()))})
 }
 
 //go:nosplit
-func (self class) GetInvert() bool { //gd:NoiseTexture3D.get_invert
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_invert, gdextension.SizeBool, &struct{}{})
-	var ret = r_ret
+func (self class) GetNoise() [1]gdclass.Noise { //gd:NoiseTexture3D.get_noise
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_noise, gdextension.SizeObject, &struct{}{})
+	var ret = [1]gdclass.Noise{gd.PointerWithOwnershipTransferredToGo[gdclass.Noise](r_ret)}
+	return ret
+}
+
+//go:nosplit
+func (self class) SetColorRamp(gradient [1]gdclass.Gradient) { //gd:NoiseTexture3D.set_color_ramp
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gradient[0].AsObject()))})
+}
+
+//go:nosplit
+func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:NoiseTexture3D.get_color_ramp
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
+	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret)}
 	return ret
 }
 
@@ -276,13 +288,13 @@ func (self class) GetSeamless() bool { //gd:NoiseTexture3D.get_seamless
 }
 
 //go:nosplit
-func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt float64) { //gd:NoiseTexture3D.set_seamless_blend_skirt
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seamless_blend_skirt, 0|(gdextension.SizeFloat<<4), &struct{ seamless_blend_skirt float64 }{seamless_blend_skirt})
+func (self class) SetInvert(invert bool) { //gd:NoiseTexture3D.set_invert
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_invert, 0|(gdextension.SizeBool<<4), &struct{ invert bool }{invert})
 }
 
 //go:nosplit
-func (self class) GetSeamlessBlendSkirt() float64 { //gd:NoiseTexture3D.get_seamless_blend_skirt
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_seamless_blend_skirt, gdextension.SizeFloat, &struct{}{})
+func (self class) GetInvert() bool { //gd:NoiseTexture3D.get_invert
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_invert, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -300,26 +312,14 @@ func (self class) IsNormalized() bool { //gd:NoiseTexture3D.is_normalized
 }
 
 //go:nosplit
-func (self class) SetColorRamp(gradient [1]gdclass.Gradient) { //gd:NoiseTexture3D.set_color_ramp
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gradient[0].AsObject()))})
+func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt float64) { //gd:NoiseTexture3D.set_seamless_blend_skirt
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seamless_blend_skirt, 0|(gdextension.SizeFloat<<4), &struct{ seamless_blend_skirt float64 }{seamless_blend_skirt})
 }
 
 //go:nosplit
-func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:NoiseTexture3D.get_color_ramp
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret)}
-	return ret
-}
-
-//go:nosplit
-func (self class) SetNoise(noise [1]gdclass.Noise) { //gd:NoiseTexture3D.set_noise
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_noise, 0|(gdextension.SizeObject<<4), &struct{ noise gdextension.Object }{gdextension.Object(gd.ObjectChecked(noise[0].AsObject()))})
-}
-
-//go:nosplit
-func (self class) GetNoise() [1]gdclass.Noise { //gd:NoiseTexture3D.get_noise
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_noise, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Noise{gd.PointerWithOwnershipTransferredToGo[gdclass.Noise](r_ret)}
+func (self class) GetSeamlessBlendSkirt() float64 { //gd:NoiseTexture3D.get_seamless_blend_skirt
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_seamless_blend_skirt, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
 	return ret
 }
 func (self class) AsNoiseTexture3D() Advanced {

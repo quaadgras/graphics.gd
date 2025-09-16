@@ -23,6 +23,7 @@ import "graphics.gd/classdb/Node"
 import "graphics.gd/classdb/Node3D"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
@@ -78,8 +79,10 @@ type Instance [1]gdclass.Path3D
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_curve gdextension.MethodForClass `hash:"408955118"`
-	get_curve gdextension.MethodForClass `hash:"4244715212"`
+	set_curve              gdextension.MethodForClass `hash:"408955118"`
+	get_curve              gdextension.MethodForClass `hash:"4244715212"`
+	set_debug_custom_color gdextension.MethodForClass `hash:"2920490490"`
+	get_debug_custom_color gdextension.MethodForClass `hash:"3444240500"`
 }
 
 func init() {
@@ -152,6 +155,14 @@ func (self Instance) SetCurve(value Curve3D.Instance) {
 	class(self).SetCurve(value)
 }
 
+func (self Instance) DebugCustomColor() Color.RGBA {
+	return Color.RGBA(class(self).GetDebugCustomColor())
+}
+
+func (self Instance) SetDebugCustomColor(value Color.RGBA) {
+	class(self).SetDebugCustomColor(Color.RGBA(value))
+}
+
 //go:nosplit
 func (self class) SetCurve(curve [1]gdclass.Curve3D) { //gd:Path3D.set_curve
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))})
@@ -161,6 +172,18 @@ func (self class) SetCurve(curve [1]gdclass.Curve3D) { //gd:Path3D.set_curve
 func (self class) GetCurve() [1]gdclass.Curve3D { //gd:Path3D.get_curve
 	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve3D](r_ret)}
+	return ret
+}
+
+//go:nosplit
+func (self class) SetDebugCustomColor(debug_custom_color Color.RGBA) { //gd:Path3D.set_debug_custom_color
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_custom_color, 0|(gdextension.SizeColor<<4), &struct{ debug_custom_color Color.RGBA }{debug_custom_color})
+}
+
+//go:nosplit
+func (self class) GetDebugCustomColor() Color.RGBA { //gd:Path3D.get_debug_custom_color
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_debug_custom_color, gdextension.SizeColor, &struct{}{})
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnCurveChanged(cb func(), flags ...Signal.Flags) {
@@ -173,6 +196,18 @@ func (self Instance) OnCurveChanged(cb func(), flags ...Signal.Flags) {
 
 func (self class) CurveChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CurveChanged`))))
+}
+
+func (self Instance) OnDebugColorChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("debug_color_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) DebugColorChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DebugColorChanged`))))
 }
 
 func (self class) AsPath3D() Advanced         { return Advanced{pointers.AsA[gdclass.Path3D](self[0])} }

@@ -189,6 +189,8 @@ func (self Instance) HasScriptSignal(signal_name string) bool { //gd:Script.has_
 
 /*
 Returns the list of properties in this [graphics.gd/classdb/Script].
+
+Note: The dictionaries returned by this method are formatted identically to those returned by [graphics.gd/classdb/Object.Instance.GetPropertyList].
 */
 func (self Instance) GetScriptPropertyList() []Object.PropertyInfo { //gd:Script.get_script_property_list
 	return []Object.PropertyInfo(gd.ArrayAs[[]Object.PropertyInfo](gd.InternalArray(Advanced(self).GetScriptPropertyList())))
@@ -196,6 +198,8 @@ func (self Instance) GetScriptPropertyList() []Object.PropertyInfo { //gd:Script
 
 /*
 Returns the list of methods in this [graphics.gd/classdb/Script].
+
+Note: The dictionaries returned by this method are formatted identically to those returned by [graphics.gd/classdb/Object.Instance.GetMethodList].
 */
 func (self Instance) GetScriptMethodList() []Object.PropertyInfo { //gd:Script.get_script_method_list
 	return []Object.PropertyInfo(gd.ArrayAs[[]Object.PropertyInfo](gd.InternalArray(Advanced(self).GetScriptMethodList())))
@@ -203,6 +207,8 @@ func (self Instance) GetScriptMethodList() []Object.PropertyInfo { //gd:Script.g
 
 /*
 Returns the list of user signals defined in this [graphics.gd/classdb/Script].
+
+Note: The dictionaries returned by this method are formatted identically to those returned by [graphics.gd/classdb/Object.Instance.GetSignalList].
 */
 func (self Instance) GetScriptSignalList() []SignalInfo { //gd:Script.get_script_signal_list
 	return []SignalInfo(gd.ArrayAs[[]SignalInfo](gd.InternalArray(Advanced(self).GetScriptSignalList())))
@@ -394,6 +400,8 @@ func (self class) HasScriptSignal(signal_name String.Name) bool { //gd:Script.ha
 
 /*
 Returns the list of properties in this [graphics.gd/classdb/Script].
+
+Note: The dictionaries returned by this method are formatted identically to those returned by [graphics.gd/classdb/Object.Instance.GetPropertyList].
 */
 //go:nosplit
 func (self class) GetScriptPropertyList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_property_list
@@ -404,6 +412,8 @@ func (self class) GetScriptPropertyList() Array.Contains[Dictionary.Any] { //gd:
 
 /*
 Returns the list of methods in this [graphics.gd/classdb/Script].
+
+Note: The dictionaries returned by this method are formatted identically to those returned by [graphics.gd/classdb/Object.Instance.GetMethodList].
 */
 //go:nosplit
 func (self class) GetScriptMethodList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_method_list
@@ -414,6 +424,8 @@ func (self class) GetScriptMethodList() Array.Contains[Dictionary.Any] { //gd:Sc
 
 /*
 Returns the list of user signals defined in this [graphics.gd/classdb/Script].
+
+Note: The dictionaries returned by this method are formatted identically to those returned by [graphics.gd/classdb/Object.Instance.GetSignalList].
 */
 //go:nosplit
 func (self class) GetScriptSignalList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_signal_list

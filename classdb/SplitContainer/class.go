@@ -97,6 +97,8 @@ var methods struct {
 	set_drag_area_highlight_in_editor        gdextension.MethodForClass `hash:"2586408642"`
 	is_drag_area_highlight_in_editor_enabled gdextension.MethodForClass `hash:"36873697"`
 	get_drag_area_control                    gdextension.MethodForClass `hash:"829782337"`
+	set_touch_dragger_enabled                gdextension.MethodForClass `hash:"2586408642"`
+	is_touch_dragger_enabled                 gdextension.MethodForClass `hash:"36873697"`
 }
 
 func init() {
@@ -217,6 +219,14 @@ func (self Instance) Vertical() bool {
 
 func (self Instance) SetVertical(value bool) {
 	class(self).SetVertical(value)
+}
+
+func (self Instance) TouchDraggerEnabled() bool {
+	return bool(class(self).IsTouchDraggerEnabled())
+}
+
+func (self Instance) SetTouchDraggerEnabled(value bool) {
+	class(self).SetTouchDraggerEnabled(value)
 }
 
 func (self Instance) DragAreaMarginBegin() int {
@@ -380,6 +390,18 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 func (self class) GetDragAreaControl() [1]gdclass.Control { //gd:SplitContainer.get_drag_area_control
 	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_drag_area_control, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret)}
+	return ret
+}
+
+//go:nosplit
+func (self class) SetTouchDraggerEnabled(enabled bool) { //gd:SplitContainer.set_touch_dragger_enabled
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_touch_dragger_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+
+//go:nosplit
+func (self class) IsTouchDraggerEnabled() bool { //gd:SplitContainer.is_touch_dragger_enabled
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_touch_dragger_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
 	return ret
 }
 func (self Instance) OnDragged(cb func(offset int), flags ...Signal.Flags) {

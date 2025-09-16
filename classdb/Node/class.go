@@ -100,8 +100,9 @@ var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
 	print_orphan_nodes                  gdextension.MethodForClass `hash:"3218959716"`
+	get_orphan_node_ids                 gdextension.MethodForClass `hash:"2915620761"`
 	add_sibling                         gdextension.MethodForClass `hash:"2570952461"`
-	set_name                            gdextension.MethodForClass `hash:"83702148"`
+	set_name                            gdextension.MethodForClass `hash:"3304788590"`
 	get_name                            gdextension.MethodForClass `hash:"2002593661"`
 	add_child                           gdextension.MethodForClass `hash:"3863233950"`
 	remove_child                        gdextension.MethodForClass `hash:"1078189570"`
@@ -167,6 +168,8 @@ var methods struct {
 	get_process_thread_messages         gdextension.MethodForClass `hash:"4228993612"`
 	set_process_thread_group_order      gdextension.MethodForClass `hash:"1286410249"`
 	get_process_thread_group_order      gdextension.MethodForClass `hash:"3905245786"`
+	queue_accessibility_update          gdextension.MethodForClass `hash:"3218959716"`
+	get_accessibility_element           gdextension.MethodForClass `hash:"2944877500"`
 	set_display_folded                  gdextension.MethodForClass `hash:"2586408642"`
 	is_displayed_folded                 gdextension.MethodForClass `hash:"36873697"`
 	set_process_internal                gdextension.MethodForClass `hash:"2586408642"`
@@ -180,6 +183,7 @@ var methods struct {
 	reset_physics_interpolation         gdextension.MethodForClass `hash:"3218959716"`
 	set_auto_translate_mode             gdextension.MethodForClass `hash:"776149714"`
 	get_auto_translate_mode             gdextension.MethodForClass `hash:"2498906432"`
+	can_auto_translate                  gdextension.MethodForClass `hash:"36873697"`
 	set_translation_domain_inherited    gdextension.MethodForClass `hash:"3218959716"`
 	get_window                          gdextension.MethodForClass `hash:"1757182445"`
 	get_last_exclusive_window           gdextension.MethodForClass `hash:"1757182445"`
@@ -200,7 +204,7 @@ var methods struct {
 	is_multiplayer_authority            gdextension.MethodForClass `hash:"36873697"`
 	get_multiplayer                     gdextension.MethodForClass `hash:"406750475"`
 	rpc_config                          gdextension.MethodForClass `hash:"3776071444"`
-	get_rpc_config                      gdextension.MethodForClass `hash:"1214101251"`
+	get_node_rpc_config                 gdextension.MethodForClass `hash:"1214101251"`
 	set_editor_description              gdextension.MethodForClass `hash:"83702148"`
 	get_editor_description              gdextension.MethodForClass `hash:"201670096"`
 	set_unique_name_in_owner            gdextension.MethodForClass `hash:"2586408642"`
@@ -241,9 +245,9 @@ type Any interface {
 }
 
 type Interface interface {
-	// Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the 'delta' time since the previous frame is not constant. 'delta' is in seconds.
+	// Called on each idle frame, prior to rendering, and after physics ticks have been processed. 'delta' is the time between frames in seconds.
 	//
-	// It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcess].
+	// It is only called if processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcess].
 	//
 	// Processing happens in order of [Instance.ProcessPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 	//
@@ -251,11 +255,15 @@ type Interface interface {
 	//
 	// Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 	//
-	// Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
-	Process(delta Float.X)
-	// Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the 'delta' parameter will generally be constant (see exceptions below). 'delta' is in seconds.
+	// Note: When the engine is struggling and the frame rate is lowered, 'delta' will increase. When 'delta' is increased, it's capped at a maximum of [graphics.gd/classdb/Engine.TimeScale] * [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond]. As a result, accumulated 'delta' may not represent real world time.
 	//
-	// It is only called if physics processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetPhysicsProcess].
+	// Note: When --fixed-fps is enabled or the engine is running in Movie Maker mode (see [graphics.gd/classdb/MovieWriter]), process 'delta' will always be the same for every frame, regardless of how much time the frame took to render.
+	//
+	// Note: Frame delta may be post-processed by [graphics.gd/classdb/OS.DeltaSmoothing] if this is enabled for the project.
+	Process(delta Float.X)
+	// Called once on each physics tick, and allows Nodes to synchronize their logic with physics ticks. 'delta' is the logical time between physics ticks in seconds and is equal to [graphics.gd/classdb/Engine.TimeScale] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond].
+	//
+	// It is only called if physics processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [Instance.SetPhysicsProcess].
 	//
 	// Processing happens in order of [Instance.ProcessPhysicsPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 	//
@@ -263,7 +271,7 @@ type Interface interface {
 	//
 	// Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 	//
-	// Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+	// Note: Accumulated 'delta' may diverge from real world seconds.
 	PhysicsProcess(delta Float.X)
 	// Called when the node enters the [graphics.gd/classdb/SceneTree] (e.g. upon instantiating, scene changing, or after calling [Instance.AddChild] in a script). If the node has children, its [Interface.EnterTree] callback will be called first, and then that of the children.
 	//
@@ -291,26 +299,30 @@ type Interface interface {
 	//
 	// @export var energy = 0:
 	//
-	//     set(value):
+	// set(value):
 	//
-	//         energy = value
+	// energy = value
 	//
-	//         update_configuration_warnings()
+	// update_configuration_warnings()
 	//
 	//
 	//
 	// func _get_configuration_warnings():
 	//
-	//     if energy < 0:
+	// if energy < 0:
 	//
-	//         return ["Energy must be 0 or greater."]
+	// return ["Energy must be 0 or greater."]
 	//
-	//     else:
+	// else:
 	//
-	//         return []
+	// return []
 	//
 	//
 	GetConfigurationWarnings() []string
+	// The elements in the array returned from this method are displayed as warnings in the Scene dock if the script that overrides it is a tool script, and accessibility warnings are enabled in the editor settings.
+	//
+	// Returning an empty array produces no warnings.
+	GetAccessibilityConfigurationWarnings() []string
 	// Called when there is an input event. The input event propagates up through the node tree until a node consumes it.
 	//
 	// It is only called if input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessInput].
@@ -353,6 +365,8 @@ type Interface interface {
 	//
 	// Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 	UnhandledKeyInput(event InputEvent.Instance)
+	// Called during accessibility information updates to determine the currently focused sub-element, should return a sub-element RID or the value returned by [Instance.GetAccessibilityElement].
+	GetFocusedAccessibilityElement() RID.AccessibilityElement
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -360,21 +374,23 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) Process(delta Float.X)                       { return }
-func (self implementation) PhysicsProcess(delta Float.X)                { return }
-func (self implementation) EnterTree()                                  { return }
-func (self implementation) ExitTree()                                   { return }
-func (self implementation) Ready()                                      { return }
-func (self implementation) GetConfigurationWarnings() (_ []string)      { return }
-func (self implementation) Input(event InputEvent.Instance)             { return }
-func (self implementation) ShortcutInput(event InputEvent.Instance)     { return }
-func (self implementation) UnhandledInput(event InputEvent.Instance)    { return }
-func (self implementation) UnhandledKeyInput(event InputEvent.Instance) { return }
+func (self implementation) Process(delta Float.X)                                        { return }
+func (self implementation) PhysicsProcess(delta Float.X)                                 { return }
+func (self implementation) EnterTree()                                                   { return }
+func (self implementation) ExitTree()                                                    { return }
+func (self implementation) Ready()                                                       { return }
+func (self implementation) GetConfigurationWarnings() (_ []string)                       { return }
+func (self implementation) GetAccessibilityConfigurationWarnings() (_ []string)          { return }
+func (self implementation) Input(event InputEvent.Instance)                              { return }
+func (self implementation) ShortcutInput(event InputEvent.Instance)                      { return }
+func (self implementation) UnhandledInput(event InputEvent.Instance)                     { return }
+func (self implementation) UnhandledKeyInput(event InputEvent.Instance)                  { return }
+func (self implementation) GetFocusedAccessibilityElement() (_ RID.AccessibilityElement) { return }
 
 /*
-Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the 'delta' time since the previous frame is not constant. 'delta' is in seconds.
+Called on each idle frame, prior to rendering, and after physics ticks have been processed. 'delta' is the time between frames in seconds.
 
-It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcess].
+It is only called if processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcess].
 
 Processing happens in order of [Instance.ProcessPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 
@@ -382,7 +398,11 @@ Corresponds to the [NotificationProcess] notification in [graphics.gd/classdb/Ob
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 
-Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+Note: When the engine is struggling and the frame rate is lowered, 'delta' will increase. When 'delta' is increased, it's capped at a maximum of [graphics.gd/classdb/Engine.TimeScale] * [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond]. As a result, accumulated 'delta' may not represent real world time.
+
+Note: When --fixed-fps is enabled or the engine is running in Movie Maker mode (see [graphics.gd/classdb/MovieWriter]), process 'delta' will always be the same for every frame, regardless of how much time the frame took to render.
+
+Note: Frame delta may be post-processed by [graphics.gd/classdb/OS.DeltaSmoothing] if this is enabled for the project.
 */
 func (Instance) _process(impl func(ptr gdclass.Receiver, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -393,9 +413,9 @@ func (Instance) _process(impl func(ptr gdclass.Receiver, delta Float.X)) (cb gd.
 }
 
 /*
-Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the 'delta' parameter will generally be constant (see exceptions below). 'delta' is in seconds.
+Called once on each physics tick, and allows Nodes to synchronize their logic with physics ticks. 'delta' is the logical time between physics ticks in seconds and is equal to [graphics.gd/classdb/Engine.TimeScale] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond].
 
-It is only called if physics processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetPhysicsProcess].
+It is only called if physics processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [Instance.SetPhysicsProcess].
 
 Processing happens in order of [Instance.ProcessPhysicsPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 
@@ -403,7 +423,7 @@ Corresponds to the [NotificationPhysicsProcess] notification in [graphics.gd/cla
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 
-Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+Note: Accumulated 'delta' may diverge from real world seconds.
 */
 func (Instance) _physics_process(impl func(ptr gdclass.Receiver, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -461,6 +481,24 @@ Returning an empty array produces no warnings.
 Call [Instance.UpdateConfigurationWarnings] when the warnings need to be updated for this node.
 */
 func (Instance) _get_configuration_warnings(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+The elements in the array returned from this method are displayed as warnings in the Scene dock if the script that overrides it is a tool script, and accessibility warnings are enabled in the editor settings.
+
+Returning an empty array produces no warnings.
+*/
+func (Instance) _get_accessibility_configuration_warnings(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -560,6 +598,17 @@ func (Instance) _unhandled_key_input(impl func(ptr gdclass.Receiver, event Input
 }
 
 /*
+Called during accessibility information updates to determine the currently focused sub-element, should return a sub-element RID or the value returned by [Instance.GetAccessibilityElement].
+*/
+func (Instance) _get_focused_accessibility_element(impl func(ptr gdclass.Receiver) RID.AccessibilityElement) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, RID.Any(ret))
+	}
+}
+
+/*
 Prints all orphan nodes (nodes outside the [graphics.gd/classdb/SceneTree]). Useful for debugging.
 
 Note: This method only works in debug builds. Does nothing in a project exported in release mode.
@@ -567,6 +616,16 @@ Note: This method only works in debug builds. Does nothing in a project exported
 func PrintOrphanNodes() { //gd:Node.print_orphan_nodes
 	self := Instance{}
 	Advanced(self).PrintOrphanNodes()
+}
+
+/*
+Returns object IDs of all orphan nodes (nodes outside the [graphics.gd/classdb/SceneTree]). Used for debugging.
+
+Note: [GetOrphanNodeIds] only works in debug builds. When called in a project exported in release mode, [GetOrphanNodeIds] will return an empty array.
+*/
+func GetOrphanNodeIds() []int { //gd:Node.get_orphan_node_ids
+	self := Instance{}
+	return []int(gd.ArrayAs[[]int](gd.InternalArray(Advanced(self).GetOrphanNodeIds())))
 }
 
 /*
@@ -600,7 +659,7 @@ Adds a child 'node'. Nodes can have any number of children, but every child must
 
 If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [Instance.Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
 
-If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [Instance.GetChildren], unless their parameter include_internal is true. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [graphics.gd/classdb/ColorPicker]. See [InternalMode] for available modes.
+If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [Instance.GetChildren], unless their parameter include_internal is true. It also prevents these nodes being duplicated with their parent. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [graphics.gd/classdb/ColorPicker].
 
 Note: If 'node' already has a parent, this method will fail. Use [Instance.RemoveChild] first to remove 'node' from its current parent. For example:
 
@@ -620,7 +679,7 @@ Adds a child 'node'. Nodes can have any number of children, but every child must
 
 If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [Instance.Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
 
-If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [Instance.GetChildren], unless their parameter include_internal is true. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [graphics.gd/classdb/ColorPicker]. See [InternalMode] for available modes.
+If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [Instance.GetChildren], unless their parameter include_internal is true. It also prevents these nodes being duplicated with their parent. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [graphics.gd/classdb/ColorPicker].
 
 Note: If 'node' already has a parent, this method will fail. Use [Instance.RemoveChild] first to remove 'node' from its current parent. For example:
 
@@ -699,7 +758,7 @@ func (self Expanded) GetChildren(include_internal bool) []Instance { //gd:Node.g
 }
 
 /*
-Fetches a child node by its index. Each child node has an index relative its siblings (see [Instance.GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [Instance.GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
+Fetches a child node by its index. Each child node has an index relative to its siblings (see [Instance.GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [Instance.GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
 
 If 'include_internal' is false, internal children are ignored (see [Instance.AddChild]'s internal parameter).
 
@@ -710,7 +769,7 @@ func (self Instance) GetChild(idx int) Instance { //gd:Node.get_child
 }
 
 /*
-Fetches a child node by its index. Each child node has an index relative its siblings (see [Instance.GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [Instance.GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
+Fetches a child node by its index. Each child node has an index relative to its siblings (see [Instance.GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [Instance.GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
 
 If 'include_internal' is false, internal children are ignored (see [Instance.AddChild]'s internal parameter).
 
@@ -843,7 +902,7 @@ Fetches a node and its most nested resource as specified by the node path's subn
 
 - Element 2 is the remaining node path, referring to an existing, non-[graphics.gd/classdb/Resource] property (see [graphics.gd/classdb/Object.Instance.GetIndexed]).
 
-Example: Assume that the child's [graphics.gd/classdb/Sprite2D.Instance.Texture] has been assigned a [graphics.gd/classdb/AtlasTexture]:
+Example: Assume that the child's [graphics.gd/classdb/Sprite2D.Instance.Texture] has been assigned an [graphics.gd/classdb/AtlasTexture]:
 */
 func (self Instance) GetNodeAndResource(path string) (Instance, Resource.Instance, string) { //gd:Node.get_node_and_resource
 	results := gd.InternalArray(Advanced(self).GetNodeAndResource(Path.ToNode(String.New(path))))
@@ -1182,6 +1241,22 @@ func (self Instance) CanProcess() bool { //gd:Node.can_process
 }
 
 /*
+Queues an accessibility information update for this node.
+*/
+func (self Instance) QueueAccessibilityUpdate() { //gd:Node.queue_accessibility_update
+	Advanced(self).QueueAccessibilityUpdate()
+}
+
+/*
+Returns main accessibility element RID.
+
+Note: This method should be called only during accessibility information updates ([NotificationAccessibilityUpdate]).
+*/
+func (self Instance) GetAccessibilityElement() RID.AccessibilityElement { //gd:Node.get_accessibility_element
+	return RID.AccessibilityElement(RID.AccessibilityElement(Advanced(self).GetAccessibilityElement()))
+}
+
+/*
 If set to true, the node appears folded in the Scene dock. As a result, all of its children are hidden. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [Instance.IsDisplayedFolded].
 */
 func (self Instance) SetDisplayFolded(fold bool) { //gd:Node.set_display_folded
@@ -1261,6 +1336,13 @@ func (self Instance) ResetPhysicsInterpolation() { //gd:Node.reset_physics_inter
 }
 
 /*
+Returns true if this node can automatically translate messages depending on the current locale. See [Instance.AutoTranslateMode], [Instance.Atr], and [Instance.AtrN].
+*/
+func (self Instance) CanAutoTranslate() bool { //gd:Node.can_auto_translate
+	return bool(Advanced(self).CanAutoTranslate())
+}
+
+/*
 Makes this node inherit the translation domain from its parent node. If this node has no parent, the main translation domain will be used.
 
 This is the default behavior for all nodes. Calling [graphics.gd/classdb/Object.Instance.SetTranslationDomain] disables this behavior.
@@ -1283,7 +1365,7 @@ func (self Instance) CreateTween() Tween.Instance { //gd:Node.create_tween
 }
 
 /*
-Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]).
+Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]). Internal nodes are not duplicated.
 
 Note: For nodes with a [graphics.gd/classdb/Script] attached, if [graphics.gd/classdb/Object.Instance.Init] has been defined with required parameters, the duplicated node will not have a [graphics.gd/classdb/Script].
 */
@@ -1292,7 +1374,7 @@ func (self Instance) Duplicate() Instance { //gd:Node.duplicate
 }
 
 /*
-Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]).
+Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]). Internal nodes are not duplicated.
 
 Note: For nodes with a [graphics.gd/classdb/Script] attached, if [graphics.gd/classdb/Object.Instance.Init] has been defined with required parameters, the duplicated node will not have a [graphics.gd/classdb/Script].
 */
@@ -1323,7 +1405,7 @@ func (self Expanded) ReplaceBy(node Instance, keep_groups bool) { //gd:Node.repl
 }
 
 /*
-If set to true, the node becomes a [graphics.gd/classdb/InstancePlaceholder] when packed and instantiated from a [graphics.gd/classdb/PackedScene]. See also [Instance.GetSceneInstanceLoadPlaceholder].
+If set to true, the node becomes an [graphics.gd/classdb/InstancePlaceholder] when packed and instantiated from a [graphics.gd/classdb/PackedScene]. See also [Instance.GetSceneInstanceLoadPlaceholder].
 */
 func (self Instance) SetSceneInstanceLoadPlaceholder(load_placeholder bool) { //gd:Node.set_scene_instance_load_placeholder
 	Advanced(self).SetSceneInstanceLoadPlaceholder(load_placeholder)
@@ -1436,9 +1518,11 @@ func (self Instance) RpcConfig(method string, config any) { //gd:Node.rpc_config
 
 /*
 Returns a data structure mapping method names to their RPC configuration defined for this node using [Instance.RpcConfig].
+
+Note: This method only returns the RPC configuration assigned via [Instance.RpcConfig]. See [graphics.gd/classdb/Script.Instance.GetRpcConfig] to retrieve the RPCs defined by the [graphics.gd/classdb/Script].
 */
-func (self Instance) GetRpcConfig() any { //gd:Node.get_rpc_config
-	return any(Advanced(self).GetRpcConfig().Interface())
+func (self Instance) GetNodeRpcConfig() any { //gd:Node.get_node_rpc_config
+	return any(Advanced(self).GetNodeRpcConfig().Interface())
 }
 
 /*
@@ -1660,7 +1744,7 @@ func (self Instance) Name() string {
 }
 
 func (self Instance) SetName(value string) {
-	class(self).SetName(String.New(value))
+	class(self).SetName(String.Name(String.New(value)))
 }
 
 func (self Instance) UniqueNameInOwner() bool {
@@ -1764,9 +1848,9 @@ func (self Instance) SetEditorDescription(value string) {
 }
 
 /*
-Called during the processing step of the main loop. Processing happens at every frame and as fast as possible, so the 'delta' time since the previous frame is not constant. 'delta' is in seconds.
+Called on each idle frame, prior to rendering, and after physics ticks have been processed. 'delta' is the time between frames in seconds.
 
-It is only called if processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcess].
+It is only called if processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcess].
 
 Processing happens in order of [Instance.ProcessPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 
@@ -1774,7 +1858,11 @@ Corresponds to the [NotificationProcess] notification in [graphics.gd/classdb/Ob
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 
-Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+Note: When the engine is struggling and the frame rate is lowered, 'delta' will increase. When 'delta' is increased, it's capped at a maximum of [graphics.gd/classdb/Engine.TimeScale] * [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond]. As a result, accumulated 'delta' may not represent real world time.
+
+Note: When --fixed-fps is enabled or the engine is running in Movie Maker mode (see [graphics.gd/classdb/MovieWriter]), process 'delta' will always be the same for every frame, regardless of how much time the frame took to render.
+
+Note: Frame delta may be post-processed by [graphics.gd/classdb/OS.DeltaSmoothing] if this is enabled for the project.
 */
 func (class) _process(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1785,9 +1873,9 @@ func (class) _process(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.Ext
 }
 
 /*
-Called during the physics processing step of the main loop. Physics processing means that the frame rate is synced to the physics, i.e. the 'delta' parameter will generally be constant (see exceptions below). 'delta' is in seconds.
+Called once on each physics tick, and allows Nodes to synchronize their logic with physics ticks. 'delta' is the logical time between physics ticks in seconds and is equal to [graphics.gd/classdb/Engine.TimeScale] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond].
 
-It is only called if physics processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetPhysicsProcess].
+It is only called if physics processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [Instance.SetPhysicsProcess].
 
 Processing happens in order of [Instance.ProcessPhysicsPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 
@@ -1795,7 +1883,7 @@ Corresponds to the [NotificationPhysicsProcess] notification in [graphics.gd/cla
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 
-Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+Note: Accumulated 'delta' may diverge from real world seconds.
 */
 func (class) _physics_process(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1853,6 +1941,24 @@ Returning an empty array produces no warnings.
 Call [Instance.UpdateConfigurationWarnings] when the warnings need to be updated for this node.
 */
 func (class) _get_configuration_warnings(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+The elements in the array returned from this method are displayed as warnings in the Scene dock if the script that overrides it is a tool script, and accessibility warnings are enabled in the editor settings.
+
+Returning an empty array produces no warnings.
+*/
+func (class) _get_accessibility_configuration_warnings(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -1952,6 +2058,17 @@ func (class) _unhandled_key_input(impl func(ptr gdclass.Receiver, event [1]gdcla
 }
 
 /*
+Called during accessibility information updates to determine the currently focused sub-element, should return a sub-element RID or the value returned by [Instance.GetAccessibilityElement].
+*/
+func (class) _get_focused_accessibility_element(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
 Prints all orphan nodes (nodes outside the [graphics.gd/classdb/SceneTree]). Useful for debugging.
 
 Note: This method only works in debug builds. Does nothing in a project exported in release mode.
@@ -1959,6 +2076,18 @@ Note: This method only works in debug builds. Does nothing in a project exported
 //go:nosplit
 func (self class) PrintOrphanNodes() { //gd:Node.print_orphan_nodes
 	gdextension.CallStatic[struct{}](methods.print_orphan_nodes, 0, &struct{}{})
+}
+
+/*
+Returns object IDs of all orphan nodes (nodes outside the [graphics.gd/classdb/SceneTree]). Used for debugging.
+
+Note: [GetOrphanNodeIds] only works in debug builds. When called in a project exported in release mode, [GetOrphanNodeIds] will return an empty array.
+*/
+//go:nosplit
+func (self class) GetOrphanNodeIds() Array.Contains[int64] { //gd:Node.get_orphan_node_ids
+	var r_ret = gdextension.CallStatic[gdextension.Array](methods.get_orphan_node_ids, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[int64]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
 }
 
 /*
@@ -1979,8 +2108,8 @@ func (self class) AddSibling(sibling [1]gdclass.Node, force_readable_name bool) 
 }
 
 //go:nosplit
-func (self class) SetName(name String.Readable) { //gd:Node.set_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+func (self class) SetName(name String.Name) { //gd:Node.set_name
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 //go:nosplit
@@ -1995,7 +2124,7 @@ Adds a child 'node'. Nodes can have any number of children, but every child must
 
 If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [Instance.Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
 
-If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [Instance.GetChildren], unless their parameter include_internal is true. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [graphics.gd/classdb/ColorPicker]. See [InternalMode] for available modes.
+If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [Instance.GetChildren], unless their parameter include_internal is true. It also prevents these nodes being duplicated with their parent. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [graphics.gd/classdb/ColorPicker].
 
 Note: If 'node' already has a parent, this method will fail. Use [Instance.RemoveChild] first to remove 'node' from its current parent. For example:
 
@@ -2065,7 +2194,7 @@ func (self class) GetChildren(include_internal bool) Array.Contains[[1]gdclass.N
 }
 
 /*
-Fetches a child node by its index. Each child node has an index relative its siblings (see [Instance.GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [Instance.GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
+Fetches a child node by its index. Each child node has an index relative to its siblings (see [Instance.GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [Instance.GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
 
 If 'include_internal' is false, internal children are ignored (see [Instance.AddChild]'s internal parameter).
 
@@ -2211,7 +2340,7 @@ Fetches a node and its most nested resource as specified by the node path's subn
 
 - Element 2 is the remaining node path, referring to an existing, non-[graphics.gd/classdb/Resource] property (see [graphics.gd/classdb/Object.Instance.GetIndexed]).
 
-Example: Assume that the child's [graphics.gd/classdb/Sprite2D.Instance.Texture] has been assigned a [graphics.gd/classdb/AtlasTexture]:
+Example: Assume that the child's [graphics.gd/classdb/Sprite2D.Instance.Texture] has been assigned an [graphics.gd/classdb/AtlasTexture]:
 
 
 */
@@ -2704,6 +2833,26 @@ func (self class) GetProcessThreadGroupOrder() int64 { //gd:Node.get_process_thr
 }
 
 /*
+Queues an accessibility information update for this node.
+*/
+//go:nosplit
+func (self class) QueueAccessibilityUpdate() { //gd:Node.queue_accessibility_update
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_accessibility_update, 0, &struct{}{})
+}
+
+/*
+Returns main accessibility element RID.
+
+Note: This method should be called only during accessibility information updates ([NotificationAccessibilityUpdate]).
+*/
+//go:nosplit
+func (self class) GetAccessibilityElement() RID.Any { //gd:Node.get_accessibility_element
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_element, gdextension.SizeRID, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
 If set to true, the node appears folded in the Scene dock. As a result, all of its children are hidden. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [Instance.IsDisplayedFolded].
 */
 //go:nosplit
@@ -2826,6 +2975,16 @@ func (self class) GetAutoTranslateMode() AutoTranslateMode { //gd:Node.get_auto_
 }
 
 /*
+Returns true if this node can automatically translate messages depending on the current locale. See [Instance.AutoTranslateMode], [Instance.Atr], and [Instance.AtrN].
+*/
+//go:nosplit
+func (self class) CanAutoTranslate() bool { //gd:Node.can_auto_translate
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_auto_translate, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
 Makes this node inherit the translation domain from its parent node. If this node has no parent, the main translation domain will be used.
 
 This is the default behavior for all nodes. Calling [graphics.gd/classdb/Object.Instance.SetTranslationDomain] disables this behavior.
@@ -2884,7 +3043,7 @@ func (self class) CreateTween() [1]gdclass.Tween { //gd:Node.create_tween
 }
 
 /*
-Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]).
+Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]). Internal nodes are not duplicated.
 
 Note: For nodes with a [graphics.gd/classdb/Script] attached, if [graphics.gd/classdb/Object.Instance.Init] has been defined with required parameters, the duplicated node will not have a [graphics.gd/classdb/Script].
 */
@@ -2911,7 +3070,7 @@ func (self class) ReplaceBy(node [1]gdclass.Node, keep_groups bool) { //gd:Node.
 }
 
 /*
-If set to true, the node becomes a [graphics.gd/classdb/InstancePlaceholder] when packed and instantiated from a [graphics.gd/classdb/PackedScene]. See also [Instance.GetSceneInstanceLoadPlaceholder].
+If set to true, the node becomes an [graphics.gd/classdb/InstancePlaceholder] when packed and instantiated from a [graphics.gd/classdb/PackedScene]. See also [Instance.GetSceneInstanceLoadPlaceholder].
 */
 //go:nosplit
 func (self class) SetSceneInstanceLoadPlaceholder(load_placeholder bool) { //gd:Node.set_scene_instance_load_placeholder
@@ -3061,10 +3220,12 @@ func (self class) RpcConfig(method String.Name, config variant.Any) { //gd:Node.
 
 /*
 Returns a data structure mapping method names to their RPC configuration defined for this node using [Instance.RpcConfig].
+
+Note: This method only returns the RPC configuration assigned via [Instance.RpcConfig]. See [graphics.gd/classdb/Script.Instance.GetRpcConfig] to retrieve the RPCs defined by the [graphics.gd/classdb/Script].
 */
 //go:nosplit
-func (self class) GetRpcConfig() variant.Any { //gd:Node.get_rpc_config
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_rpc_config, gdextension.SizeVariant, &struct{}{})
+func (self class) GetNodeRpcConfig() variant.Any { //gd:Node.get_node_rpc_config
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_node_rpc_config, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -3414,6 +3575,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._ready)
 	case "_get_configuration_warnings":
 		return reflect.ValueOf(self._get_configuration_warnings)
+	case "_get_accessibility_configuration_warnings":
+		return reflect.ValueOf(self._get_accessibility_configuration_warnings)
 	case "_input":
 		return reflect.ValueOf(self._input)
 	case "_shortcut_input":
@@ -3422,6 +3585,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._unhandled_input)
 	case "_unhandled_key_input":
 		return reflect.ValueOf(self._unhandled_key_input)
+	case "_get_focused_accessibility_element":
+		return reflect.ValueOf(self._get_focused_accessibility_element)
 	default:
 		return gd.VirtualByName(Object.Advanced(self.AsObject()), name)
 	}
@@ -3441,6 +3606,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._ready)
 	case "_get_configuration_warnings":
 		return reflect.ValueOf(self._get_configuration_warnings)
+	case "_get_accessibility_configuration_warnings":
+		return reflect.ValueOf(self._get_accessibility_configuration_warnings)
 	case "_input":
 		return reflect.ValueOf(self._input)
 	case "_shortcut_input":
@@ -3449,6 +3616,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._unhandled_input)
 	case "_unhandled_key_input":
 		return reflect.ValueOf(self._unhandled_key_input)
+	case "_get_focused_accessibility_element":
+		return reflect.ValueOf(self._get_focused_accessibility_element)
 	default:
 		return gd.VirtualByName(Object.Instance(self.AsObject()), name)
 	}
@@ -3508,7 +3677,7 @@ const (
 type DuplicateFlags int //gd:Node.DuplicateFlags
 
 const (
-	// Duplicate the node's signal connections.
+	// Duplicate the node's signal connections that are connected with the [Object.ConnectPersist] flag.
 	DuplicateSignals DuplicateFlags = 1
 	// Duplicate the node's groups.
 	DuplicateGroups DuplicateFlags = 2
@@ -3574,6 +3743,7 @@ const NotificationWmSizeChanged Object.Notification = 1008             //gd:Node
 const NotificationWmDpiChange Object.Notification = 1009               //gd:Node.NOTIFICATION_WM_DPI_CHANGE
 const NotificationVpMouseEnter Object.Notification = 1010              //gd:Node.NOTIFICATION_VP_MOUSE_ENTER
 const NotificationVpMouseExit Object.Notification = 1011               //gd:Node.NOTIFICATION_VP_MOUSE_EXIT
+const NotificationWmPositionChanged Object.Notification = 1012         //gd:Node.NOTIFICATION_WM_POSITION_CHANGED
 const NotificationOsMemoryWarning Object.Notification = 2009           //gd:Node.NOTIFICATION_OS_MEMORY_WARNING
 const NotificationTranslationChanged Object.Notification = 2010        //gd:Node.NOTIFICATION_TRANSLATION_CHANGED
 const NotificationWmAbout Object.Notification = 2011                   //gd:Node.NOTIFICATION_WM_ABOUT
@@ -3584,3 +3754,5 @@ const NotificationApplicationPaused Object.Notification = 2015         //gd:Node
 const NotificationApplicationFocusIn Object.Notification = 2016        //gd:Node.NOTIFICATION_APPLICATION_FOCUS_IN
 const NotificationApplicationFocusOut Object.Notification = 2017       //gd:Node.NOTIFICATION_APPLICATION_FOCUS_OUT
 const NotificationTextServerChanged Object.Notification = 2018         //gd:Node.NOTIFICATION_TEXT_SERVER_CHANGED
+const NotificationAccessibilityUpdate Object.Notification = 3000       //gd:Node.NOTIFICATION_ACCESSIBILITY_UPDATE
+const NotificationAccessibilityInvalidate Object.Notification = 3001   //gd:Node.NOTIFICATION_ACCESSIBILITY_INVALIDATE

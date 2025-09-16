@@ -272,7 +272,7 @@ The most basic example is applying position to [graphics.gd/classdb/CharacterBod
 
 By using this in combination with [Instance.GetRootMotionRotationAccumulator], you can apply the root motion position more correctly to account for the rotation of the node.
 
-If [Instance.RootMotionLocal] is true, return the pre-multiplied translation value with the inverted rotation.
+If [Instance.RootMotionLocal] is true, returns the pre-multiplied translation value with the inverted rotation.
 
 In this case, the code can be written as follows:
 */
@@ -824,7 +824,7 @@ By using this in combination with [Instance.GetRootMotionRotationAccumulator], y
 
 
 
-If [Instance.RootMotionLocal] is true, return the pre-multiplied translation value with the inverted rotation.
+If [Instance.RootMotionLocal] is true, returns the pre-multiplied translation value with the inverted rotation.
 
 In this case, the code can be written as follows:
 

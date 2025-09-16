@@ -3,6 +3,14 @@
 /*
 A multiline text editor. It also has limited facilities for editing code, such as syntax highlighting support. For more advanced facilities for editing code, see [graphics.gd/classdb/CodeEdit].
 
+While entering text, it is possible to insert special characters using Unicode, OEM or Windows alt codes:
+
+- To enter Unicode codepoints, hold Alt and type the codepoint on the numpad. For example, to enter the character á (U+00E1), hold Alt and type +E1 on the numpad (the leading zeroes can be omitted).
+
+- To enter OEM codepoints, hold Alt and type the code on the numpad. For example, to enter the character á (OEM 160), hold Alt and type 160 on the numpad.
+
+- To enter Windows codepoints, hold Alt and type the code on the numpad. For example, to enter the character á (Windows 0225), hold Alt and type 0, 2, 2, 5 on the numpad. The leading zero here must not be omitted, as this is how Windows codepoints are distinguished from OEM codepoints.
+
 Note: Most viewport, caret, and edit methods contain a caret_index argument for [Instance.CaretMultiple] support. The argument should be one of the following: -1 for all carets, 0 for the main caret, or greater than 0 for secondary carets in the order they were created.
 
 Note: When holding down Alt, the vertical scroll wheel will scroll 5 times as fast as it would normally do. This also works in the Godot script editor.
@@ -90,246 +98,254 @@ type Instance [1]gdclass.TextEdit
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	has_ime_text                              gdextension.MethodForClass `hash:"36873697"`
-	cancel_ime                                gdextension.MethodForClass `hash:"3218959716"`
-	apply_ime                                 gdextension.MethodForClass `hash:"3218959716"`
-	set_editable                              gdextension.MethodForClass `hash:"2586408642"`
-	is_editable                               gdextension.MethodForClass `hash:"36873697"`
-	set_text_direction                        gdextension.MethodForClass `hash:"119160795"`
-	get_text_direction                        gdextension.MethodForClass `hash:"797257663"`
-	set_language                              gdextension.MethodForClass `hash:"83702148"`
-	get_language                              gdextension.MethodForClass `hash:"201670096"`
-	set_structured_text_bidi_override         gdextension.MethodForClass `hash:"55961453"`
-	get_structured_text_bidi_override         gdextension.MethodForClass `hash:"3385126229"`
-	set_structured_text_bidi_override_options gdextension.MethodForClass `hash:"381264803"`
-	get_structured_text_bidi_override_options gdextension.MethodForClass `hash:"3995934104"`
-	set_tab_size                              gdextension.MethodForClass `hash:"1286410249"`
-	get_tab_size                              gdextension.MethodForClass `hash:"3905245786"`
-	set_indent_wrapped_lines                  gdextension.MethodForClass `hash:"2586408642"`
-	is_indent_wrapped_lines                   gdextension.MethodForClass `hash:"36873697"`
-	set_overtype_mode_enabled                 gdextension.MethodForClass `hash:"2586408642"`
-	is_overtype_mode_enabled                  gdextension.MethodForClass `hash:"36873697"`
-	set_context_menu_enabled                  gdextension.MethodForClass `hash:"2586408642"`
-	is_context_menu_enabled                   gdextension.MethodForClass `hash:"36873697"`
-	set_emoji_menu_enabled                    gdextension.MethodForClass `hash:"2586408642"`
-	is_emoji_menu_enabled                     gdextension.MethodForClass `hash:"36873697"`
-	set_shortcut_keys_enabled                 gdextension.MethodForClass `hash:"2586408642"`
-	is_shortcut_keys_enabled                  gdextension.MethodForClass `hash:"36873697"`
-	set_virtual_keyboard_enabled              gdextension.MethodForClass `hash:"2586408642"`
-	is_virtual_keyboard_enabled               gdextension.MethodForClass `hash:"36873697"`
-	set_middle_mouse_paste_enabled            gdextension.MethodForClass `hash:"2586408642"`
-	is_middle_mouse_paste_enabled             gdextension.MethodForClass `hash:"36873697"`
-	set_empty_selection_clipboard_enabled     gdextension.MethodForClass `hash:"2586408642"`
-	is_empty_selection_clipboard_enabled      gdextension.MethodForClass `hash:"36873697"`
-	clear                                     gdextension.MethodForClass `hash:"3218959716"`
-	set_text                                  gdextension.MethodForClass `hash:"83702148"`
-	get_text                                  gdextension.MethodForClass `hash:"201670096"`
-	get_line_count                            gdextension.MethodForClass `hash:"3905245786"`
-	set_placeholder                           gdextension.MethodForClass `hash:"83702148"`
-	get_placeholder                           gdextension.MethodForClass `hash:"201670096"`
-	set_line                                  gdextension.MethodForClass `hash:"501894301"`
-	get_line                                  gdextension.MethodForClass `hash:"844755477"`
-	get_line_with_ime                         gdextension.MethodForClass `hash:"844755477"`
-	get_line_width                            gdextension.MethodForClass `hash:"688195400"`
-	get_line_height                           gdextension.MethodForClass `hash:"3905245786"`
-	get_indent_level                          gdextension.MethodForClass `hash:"923996154"`
-	get_first_non_whitespace_column           gdextension.MethodForClass `hash:"923996154"`
-	swap_lines                                gdextension.MethodForClass `hash:"3937882851"`
-	insert_line_at                            gdextension.MethodForClass `hash:"501894301"`
-	remove_line_at                            gdextension.MethodForClass `hash:"972357352"`
-	insert_text_at_caret                      gdextension.MethodForClass `hash:"2697778442"`
-	insert_text                               gdextension.MethodForClass `hash:"1881564334"`
-	remove_text                               gdextension.MethodForClass `hash:"4275841770"`
-	get_last_unhidden_line                    gdextension.MethodForClass `hash:"3905245786"`
-	get_next_visible_line_offset_from         gdextension.MethodForClass `hash:"3175239445"`
-	get_next_visible_line_index_offset_from   gdextension.MethodForClass `hash:"3386475622"`
-	backspace                                 gdextension.MethodForClass `hash:"1025054187"`
-	cut                                       gdextension.MethodForClass `hash:"1025054187"`
-	copy                                      gdextension.MethodForClass `hash:"1025054187"`
-	paste                                     gdextension.MethodForClass `hash:"1025054187"`
-	paste_primary_clipboard                   gdextension.MethodForClass `hash:"1025054187"`
-	start_action                              gdextension.MethodForClass `hash:"2834827583"`
-	end_action                                gdextension.MethodForClass `hash:"3218959716"`
-	begin_complex_operation                   gdextension.MethodForClass `hash:"3218959716"`
-	end_complex_operation                     gdextension.MethodForClass `hash:"3218959716"`
-	has_undo                                  gdextension.MethodForClass `hash:"36873697"`
-	has_redo                                  gdextension.MethodForClass `hash:"36873697"`
-	undo                                      gdextension.MethodForClass `hash:"3218959716"`
-	redo                                      gdextension.MethodForClass `hash:"3218959716"`
-	clear_undo_history                        gdextension.MethodForClass `hash:"3218959716"`
-	tag_saved_version                         gdextension.MethodForClass `hash:"3218959716"`
-	get_version                               gdextension.MethodForClass `hash:"3905245786"`
-	get_saved_version                         gdextension.MethodForClass `hash:"3905245786"`
-	set_search_text                           gdextension.MethodForClass `hash:"83702148"`
-	set_search_flags                          gdextension.MethodForClass `hash:"1286410249"`
-	search                                    gdextension.MethodForClass `hash:"1203739136"`
-	set_tooltip_request_func                  gdextension.MethodForClass `hash:"1611583062"`
-	get_local_mouse_pos                       gdextension.MethodForClass `hash:"3341600327"`
-	get_word_at_pos                           gdextension.MethodForClass `hash:"3674420000"`
-	get_line_column_at_pos                    gdextension.MethodForClass `hash:"3472935744"`
-	get_pos_at_line_column                    gdextension.MethodForClass `hash:"410388347"`
-	get_rect_at_line_column                   gdextension.MethodForClass `hash:"3256618057"`
-	get_minimap_line_at_pos                   gdextension.MethodForClass `hash:"2485466453"`
-	is_dragging_cursor                        gdextension.MethodForClass `hash:"36873697"`
-	is_mouse_over_selection                   gdextension.MethodForClass `hash:"1840282309"`
-	set_caret_type                            gdextension.MethodForClass `hash:"1211596914"`
-	get_caret_type                            gdextension.MethodForClass `hash:"2830252959"`
-	set_caret_blink_enabled                   gdextension.MethodForClass `hash:"2586408642"`
-	is_caret_blink_enabled                    gdextension.MethodForClass `hash:"36873697"`
-	set_caret_blink_interval                  gdextension.MethodForClass `hash:"373806689"`
-	get_caret_blink_interval                  gdextension.MethodForClass `hash:"1740695150"`
-	set_draw_caret_when_editable_disabled     gdextension.MethodForClass `hash:"2586408642"`
-	is_drawing_caret_when_editable_disabled   gdextension.MethodForClass `hash:"36873697"`
-	set_move_caret_on_right_click_enabled     gdextension.MethodForClass `hash:"2586408642"`
-	is_move_caret_on_right_click_enabled      gdextension.MethodForClass `hash:"36873697"`
-	set_caret_mid_grapheme_enabled            gdextension.MethodForClass `hash:"2586408642"`
-	is_caret_mid_grapheme_enabled             gdextension.MethodForClass `hash:"36873697"`
-	set_multiple_carets_enabled               gdextension.MethodForClass `hash:"2586408642"`
-	is_multiple_carets_enabled                gdextension.MethodForClass `hash:"36873697"`
-	add_caret                                 gdextension.MethodForClass `hash:"50157827"`
-	remove_caret                              gdextension.MethodForClass `hash:"1286410249"`
-	remove_secondary_carets                   gdextension.MethodForClass `hash:"3218959716"`
-	get_caret_count                           gdextension.MethodForClass `hash:"3905245786"`
-	add_caret_at_carets                       gdextension.MethodForClass `hash:"2586408642"`
-	get_sorted_carets                         gdextension.MethodForClass `hash:"2131714034"`
-	collapse_carets                           gdextension.MethodForClass `hash:"228654177"`
-	merge_overlapping_carets                  gdextension.MethodForClass `hash:"3218959716"`
-	begin_multicaret_edit                     gdextension.MethodForClass `hash:"3218959716"`
-	end_multicaret_edit                       gdextension.MethodForClass `hash:"3218959716"`
-	is_in_mulitcaret_edit                     gdextension.MethodForClass `hash:"36873697"`
-	multicaret_edit_ignore_caret              gdextension.MethodForClass `hash:"1116898809"`
-	is_caret_visible                          gdextension.MethodForClass `hash:"1051549951"`
-	get_caret_draw_pos                        gdextension.MethodForClass `hash:"478253731"`
-	set_caret_line                            gdextension.MethodForClass `hash:"1302582944"`
-	get_caret_line                            gdextension.MethodForClass `hash:"1591665591"`
-	set_caret_column                          gdextension.MethodForClass `hash:"3796796178"`
-	get_caret_column                          gdextension.MethodForClass `hash:"1591665591"`
-	get_caret_wrap_index                      gdextension.MethodForClass `hash:"1591665591"`
-	get_word_under_caret                      gdextension.MethodForClass `hash:"3929349208"`
-	set_use_default_word_separators           gdextension.MethodForClass `hash:"2586408642"`
-	is_default_word_separators_enabled        gdextension.MethodForClass `hash:"36873697"`
-	set_use_custom_word_separators            gdextension.MethodForClass `hash:"2586408642"`
-	is_custom_word_separators_enabled         gdextension.MethodForClass `hash:"36873697"`
-	set_custom_word_separators                gdextension.MethodForClass `hash:"83702148"`
-	get_custom_word_separators                gdextension.MethodForClass `hash:"201670096"`
-	set_selecting_enabled                     gdextension.MethodForClass `hash:"2586408642"`
-	is_selecting_enabled                      gdextension.MethodForClass `hash:"36873697"`
-	set_deselect_on_focus_loss_enabled        gdextension.MethodForClass `hash:"2586408642"`
-	is_deselect_on_focus_loss_enabled         gdextension.MethodForClass `hash:"36873697"`
-	set_drag_and_drop_selection_enabled       gdextension.MethodForClass `hash:"2586408642"`
-	is_drag_and_drop_selection_enabled        gdextension.MethodForClass `hash:"36873697"`
-	set_selection_mode                        gdextension.MethodForClass `hash:"1658801786"`
-	get_selection_mode                        gdextension.MethodForClass `hash:"3750106938"`
-	select_all                                gdextension.MethodForClass `hash:"3218959716"`
-	select_word_under_caret                   gdextension.MethodForClass `hash:"1025054187"`
-	add_selection_for_next_occurrence         gdextension.MethodForClass `hash:"3218959716"`
-	skip_selection_for_next_occurrence        gdextension.MethodForClass `hash:"3218959716"`
-	select_                                   gdextension.MethodForClass `hash:"2560984452"`
-	has_selection                             gdextension.MethodForClass `hash:"2824505868"`
-	get_selected_text                         gdextension.MethodForClass `hash:"2309358862"`
-	get_selection_at_line_column              gdextension.MethodForClass `hash:"1810224333"`
-	get_line_ranges_from_carets               gdextension.MethodForClass `hash:"2393089247"`
-	get_selection_origin_line                 gdextension.MethodForClass `hash:"1591665591"`
-	get_selection_origin_column               gdextension.MethodForClass `hash:"1591665591"`
-	set_selection_origin_line                 gdextension.MethodForClass `hash:"195434140"`
-	set_selection_origin_column               gdextension.MethodForClass `hash:"2230941749"`
-	get_selection_from_line                   gdextension.MethodForClass `hash:"1591665591"`
-	get_selection_from_column                 gdextension.MethodForClass `hash:"1591665591"`
-	get_selection_to_line                     gdextension.MethodForClass `hash:"1591665591"`
-	get_selection_to_column                   gdextension.MethodForClass `hash:"1591665591"`
-	is_caret_after_selection_origin           gdextension.MethodForClass `hash:"1051549951"`
-	deselect                                  gdextension.MethodForClass `hash:"1025054187"`
-	delete_selection                          gdextension.MethodForClass `hash:"1025054187"`
-	set_line_wrapping_mode                    gdextension.MethodForClass `hash:"2525115309"`
-	get_line_wrapping_mode                    gdextension.MethodForClass `hash:"3562716114"`
-	set_autowrap_mode                         gdextension.MethodForClass `hash:"3289138044"`
-	get_autowrap_mode                         gdextension.MethodForClass `hash:"1549071663"`
-	is_line_wrapped                           gdextension.MethodForClass `hash:"1116898809"`
-	get_line_wrap_count                       gdextension.MethodForClass `hash:"923996154"`
-	get_line_wrap_index_at_column             gdextension.MethodForClass `hash:"3175239445"`
-	get_line_wrapped_text                     gdextension.MethodForClass `hash:"647634434"`
-	set_smooth_scroll_enabled                 gdextension.MethodForClass `hash:"2586408642"`
-	is_smooth_scroll_enabled                  gdextension.MethodForClass `hash:"36873697"`
-	get_v_scroll_bar                          gdextension.MethodForClass `hash:"3226026593"`
-	get_h_scroll_bar                          gdextension.MethodForClass `hash:"3774687988"`
-	set_v_scroll                              gdextension.MethodForClass `hash:"373806689"`
-	get_v_scroll                              gdextension.MethodForClass `hash:"1740695150"`
-	set_h_scroll                              gdextension.MethodForClass `hash:"1286410249"`
-	get_h_scroll                              gdextension.MethodForClass `hash:"3905245786"`
-	set_scroll_past_end_of_file_enabled       gdextension.MethodForClass `hash:"2586408642"`
-	is_scroll_past_end_of_file_enabled        gdextension.MethodForClass `hash:"36873697"`
-	set_v_scroll_speed                        gdextension.MethodForClass `hash:"373806689"`
-	get_v_scroll_speed                        gdextension.MethodForClass `hash:"1740695150"`
-	set_fit_content_height_enabled            gdextension.MethodForClass `hash:"2586408642"`
-	is_fit_content_height_enabled             gdextension.MethodForClass `hash:"36873697"`
-	set_fit_content_width_enabled             gdextension.MethodForClass `hash:"2586408642"`
-	is_fit_content_width_enabled              gdextension.MethodForClass `hash:"36873697"`
-	get_scroll_pos_for_line                   gdextension.MethodForClass `hash:"3929084198"`
-	set_line_as_first_visible                 gdextension.MethodForClass `hash:"2230941749"`
-	get_first_visible_line                    gdextension.MethodForClass `hash:"3905245786"`
-	set_line_as_center_visible                gdextension.MethodForClass `hash:"2230941749"`
-	set_line_as_last_visible                  gdextension.MethodForClass `hash:"2230941749"`
-	get_last_full_visible_line                gdextension.MethodForClass `hash:"3905245786"`
-	get_last_full_visible_line_wrap_index     gdextension.MethodForClass `hash:"3905245786"`
-	get_visible_line_count                    gdextension.MethodForClass `hash:"3905245786"`
-	get_visible_line_count_in_range           gdextension.MethodForClass `hash:"3175239445"`
-	get_total_visible_line_count              gdextension.MethodForClass `hash:"3905245786"`
-	adjust_viewport_to_caret                  gdextension.MethodForClass `hash:"1995695955"`
-	center_viewport_to_caret                  gdextension.MethodForClass `hash:"1995695955"`
-	set_draw_minimap                          gdextension.MethodForClass `hash:"2586408642"`
-	is_drawing_minimap                        gdextension.MethodForClass `hash:"36873697"`
-	set_minimap_width                         gdextension.MethodForClass `hash:"1286410249"`
-	get_minimap_width                         gdextension.MethodForClass `hash:"3905245786"`
-	get_minimap_visible_lines                 gdextension.MethodForClass `hash:"3905245786"`
-	add_gutter                                gdextension.MethodForClass `hash:"1025054187"`
-	remove_gutter                             gdextension.MethodForClass `hash:"1286410249"`
-	get_gutter_count                          gdextension.MethodForClass `hash:"3905245786"`
-	set_gutter_name                           gdextension.MethodForClass `hash:"501894301"`
-	get_gutter_name                           gdextension.MethodForClass `hash:"844755477"`
-	set_gutter_type                           gdextension.MethodForClass `hash:"1088959071"`
-	get_gutter_type                           gdextension.MethodForClass `hash:"1159699127"`
-	set_gutter_width                          gdextension.MethodForClass `hash:"3937882851"`
-	get_gutter_width                          gdextension.MethodForClass `hash:"923996154"`
-	set_gutter_draw                           gdextension.MethodForClass `hash:"300928843"`
-	is_gutter_drawn                           gdextension.MethodForClass `hash:"1116898809"`
-	set_gutter_clickable                      gdextension.MethodForClass `hash:"300928843"`
-	is_gutter_clickable                       gdextension.MethodForClass `hash:"1116898809"`
-	set_gutter_overwritable                   gdextension.MethodForClass `hash:"300928843"`
-	is_gutter_overwritable                    gdextension.MethodForClass `hash:"1116898809"`
-	merge_gutters                             gdextension.MethodForClass `hash:"3937882851"`
-	set_gutter_custom_draw                    gdextension.MethodForClass `hash:"957362965"`
-	get_total_gutter_width                    gdextension.MethodForClass `hash:"3905245786"`
-	set_line_gutter_metadata                  gdextension.MethodForClass `hash:"2060538656"`
-	get_line_gutter_metadata                  gdextension.MethodForClass `hash:"678354945"`
-	set_line_gutter_text                      gdextension.MethodForClass `hash:"2285447957"`
-	get_line_gutter_text                      gdextension.MethodForClass `hash:"1391810591"`
-	set_line_gutter_icon                      gdextension.MethodForClass `hash:"176101966"`
-	get_line_gutter_icon                      gdextension.MethodForClass `hash:"2584904275"`
-	set_line_gutter_item_color                gdextension.MethodForClass `hash:"3733378741"`
-	get_line_gutter_item_color                gdextension.MethodForClass `hash:"2165839948"`
-	set_line_gutter_clickable                 gdextension.MethodForClass `hash:"1383440665"`
-	is_line_gutter_clickable                  gdextension.MethodForClass `hash:"2522259332"`
-	set_line_background_color                 gdextension.MethodForClass `hash:"2878471219"`
-	get_line_background_color                 gdextension.MethodForClass `hash:"3457211756"`
-	set_syntax_highlighter                    gdextension.MethodForClass `hash:"2765644541"`
-	get_syntax_highlighter                    gdextension.MethodForClass `hash:"2721131626"`
-	set_highlight_current_line                gdextension.MethodForClass `hash:"2586408642"`
-	is_highlight_current_line_enabled         gdextension.MethodForClass `hash:"36873697"`
-	set_highlight_all_occurrences             gdextension.MethodForClass `hash:"2586408642"`
-	is_highlight_all_occurrences_enabled      gdextension.MethodForClass `hash:"36873697"`
-	get_draw_control_chars                    gdextension.MethodForClass `hash:"36873697"`
-	set_draw_control_chars                    gdextension.MethodForClass `hash:"2586408642"`
-	set_draw_tabs                             gdextension.MethodForClass `hash:"2586408642"`
-	is_drawing_tabs                           gdextension.MethodForClass `hash:"36873697"`
-	set_draw_spaces                           gdextension.MethodForClass `hash:"2586408642"`
-	is_drawing_spaces                         gdextension.MethodForClass `hash:"36873697"`
-	get_menu                                  gdextension.MethodForClass `hash:"229722558"`
-	is_menu_visible                           gdextension.MethodForClass `hash:"36873697"`
-	menu_option                               gdextension.MethodForClass `hash:"1286410249"`
-	adjust_carets_after_edit                  gdextension.MethodForClass `hash:"1770277138"`
-	get_caret_index_edit_order                gdextension.MethodForClass `hash:"969006518"`
-	get_selection_line                        gdextension.MethodForClass `hash:"1591665591"`
-	get_selection_column                      gdextension.MethodForClass `hash:"1591665591"`
+	has_ime_text                                      gdextension.MethodForClass `hash:"36873697"`
+	cancel_ime                                        gdextension.MethodForClass `hash:"3218959716"`
+	apply_ime                                         gdextension.MethodForClass `hash:"3218959716"`
+	set_editable                                      gdextension.MethodForClass `hash:"2586408642"`
+	is_editable                                       gdextension.MethodForClass `hash:"36873697"`
+	set_text_direction                                gdextension.MethodForClass `hash:"119160795"`
+	get_text_direction                                gdextension.MethodForClass `hash:"797257663"`
+	set_language                                      gdextension.MethodForClass `hash:"83702148"`
+	get_language                                      gdextension.MethodForClass `hash:"201670096"`
+	set_structured_text_bidi_override                 gdextension.MethodForClass `hash:"55961453"`
+	get_structured_text_bidi_override                 gdextension.MethodForClass `hash:"3385126229"`
+	set_structured_text_bidi_override_options         gdextension.MethodForClass `hash:"381264803"`
+	get_structured_text_bidi_override_options         gdextension.MethodForClass `hash:"3995934104"`
+	set_tab_size                                      gdextension.MethodForClass `hash:"1286410249"`
+	get_tab_size                                      gdextension.MethodForClass `hash:"3905245786"`
+	set_indent_wrapped_lines                          gdextension.MethodForClass `hash:"2586408642"`
+	is_indent_wrapped_lines                           gdextension.MethodForClass `hash:"36873697"`
+	set_tab_input_mode                                gdextension.MethodForClass `hash:"2586408642"`
+	get_tab_input_mode                                gdextension.MethodForClass `hash:"36873697"`
+	set_overtype_mode_enabled                         gdextension.MethodForClass `hash:"2586408642"`
+	is_overtype_mode_enabled                          gdextension.MethodForClass `hash:"36873697"`
+	set_context_menu_enabled                          gdextension.MethodForClass `hash:"2586408642"`
+	is_context_menu_enabled                           gdextension.MethodForClass `hash:"36873697"`
+	set_emoji_menu_enabled                            gdextension.MethodForClass `hash:"2586408642"`
+	is_emoji_menu_enabled                             gdextension.MethodForClass `hash:"36873697"`
+	set_backspace_deletes_composite_character_enabled gdextension.MethodForClass `hash:"2586408642"`
+	is_backspace_deletes_composite_character_enabled  gdextension.MethodForClass `hash:"36873697"`
+	set_shortcut_keys_enabled                         gdextension.MethodForClass `hash:"2586408642"`
+	is_shortcut_keys_enabled                          gdextension.MethodForClass `hash:"36873697"`
+	set_virtual_keyboard_enabled                      gdextension.MethodForClass `hash:"2586408642"`
+	is_virtual_keyboard_enabled                       gdextension.MethodForClass `hash:"36873697"`
+	set_virtual_keyboard_show_on_focus                gdextension.MethodForClass `hash:"2586408642"`
+	get_virtual_keyboard_show_on_focus                gdextension.MethodForClass `hash:"36873697"`
+	set_middle_mouse_paste_enabled                    gdextension.MethodForClass `hash:"2586408642"`
+	is_middle_mouse_paste_enabled                     gdextension.MethodForClass `hash:"36873697"`
+	set_empty_selection_clipboard_enabled             gdextension.MethodForClass `hash:"2586408642"`
+	is_empty_selection_clipboard_enabled              gdextension.MethodForClass `hash:"36873697"`
+	clear                                             gdextension.MethodForClass `hash:"3218959716"`
+	set_text                                          gdextension.MethodForClass `hash:"83702148"`
+	get_text                                          gdextension.MethodForClass `hash:"201670096"`
+	get_line_count                                    gdextension.MethodForClass `hash:"3905245786"`
+	set_placeholder                                   gdextension.MethodForClass `hash:"83702148"`
+	get_placeholder                                   gdextension.MethodForClass `hash:"201670096"`
+	set_line                                          gdextension.MethodForClass `hash:"501894301"`
+	get_line                                          gdextension.MethodForClass `hash:"844755477"`
+	get_line_with_ime                                 gdextension.MethodForClass `hash:"844755477"`
+	get_line_width                                    gdextension.MethodForClass `hash:"688195400"`
+	get_line_height                                   gdextension.MethodForClass `hash:"3905245786"`
+	get_indent_level                                  gdextension.MethodForClass `hash:"923996154"`
+	get_first_non_whitespace_column                   gdextension.MethodForClass `hash:"923996154"`
+	swap_lines                                        gdextension.MethodForClass `hash:"3937882851"`
+	insert_line_at                                    gdextension.MethodForClass `hash:"501894301"`
+	remove_line_at                                    gdextension.MethodForClass `hash:"972357352"`
+	insert_text_at_caret                              gdextension.MethodForClass `hash:"2697778442"`
+	insert_text                                       gdextension.MethodForClass `hash:"1881564334"`
+	remove_text                                       gdextension.MethodForClass `hash:"4275841770"`
+	get_last_unhidden_line                            gdextension.MethodForClass `hash:"3905245786"`
+	get_next_visible_line_offset_from                 gdextension.MethodForClass `hash:"3175239445"`
+	get_next_visible_line_index_offset_from           gdextension.MethodForClass `hash:"3386475622"`
+	backspace                                         gdextension.MethodForClass `hash:"1025054187"`
+	cut                                               gdextension.MethodForClass `hash:"1025054187"`
+	copy                                              gdextension.MethodForClass `hash:"1025054187"`
+	paste                                             gdextension.MethodForClass `hash:"1025054187"`
+	paste_primary_clipboard                           gdextension.MethodForClass `hash:"1025054187"`
+	start_action                                      gdextension.MethodForClass `hash:"2834827583"`
+	end_action                                        gdextension.MethodForClass `hash:"3218959716"`
+	begin_complex_operation                           gdextension.MethodForClass `hash:"3218959716"`
+	end_complex_operation                             gdextension.MethodForClass `hash:"3218959716"`
+	has_undo                                          gdextension.MethodForClass `hash:"36873697"`
+	has_redo                                          gdextension.MethodForClass `hash:"36873697"`
+	undo                                              gdextension.MethodForClass `hash:"3218959716"`
+	redo                                              gdextension.MethodForClass `hash:"3218959716"`
+	clear_undo_history                                gdextension.MethodForClass `hash:"3218959716"`
+	tag_saved_version                                 gdextension.MethodForClass `hash:"3218959716"`
+	get_version                                       gdextension.MethodForClass `hash:"3905245786"`
+	get_saved_version                                 gdextension.MethodForClass `hash:"3905245786"`
+	set_search_text                                   gdextension.MethodForClass `hash:"83702148"`
+	set_search_flags                                  gdextension.MethodForClass `hash:"1286410249"`
+	search                                            gdextension.MethodForClass `hash:"1203739136"`
+	set_tooltip_request_func                          gdextension.MethodForClass `hash:"1611583062"`
+	get_local_mouse_pos                               gdextension.MethodForClass `hash:"3341600327"`
+	get_word_at_pos                                   gdextension.MethodForClass `hash:"3674420000"`
+	get_line_column_at_pos                            gdextension.MethodForClass `hash:"3472935744"`
+	get_pos_at_line_column                            gdextension.MethodForClass `hash:"410388347"`
+	get_rect_at_line_column                           gdextension.MethodForClass `hash:"3256618057"`
+	get_minimap_line_at_pos                           gdextension.MethodForClass `hash:"2485466453"`
+	is_dragging_cursor                                gdextension.MethodForClass `hash:"36873697"`
+	is_mouse_over_selection                           gdextension.MethodForClass `hash:"1840282309"`
+	set_caret_type                                    gdextension.MethodForClass `hash:"1211596914"`
+	get_caret_type                                    gdextension.MethodForClass `hash:"2830252959"`
+	set_caret_blink_enabled                           gdextension.MethodForClass `hash:"2586408642"`
+	is_caret_blink_enabled                            gdextension.MethodForClass `hash:"36873697"`
+	set_caret_blink_interval                          gdextension.MethodForClass `hash:"373806689"`
+	get_caret_blink_interval                          gdextension.MethodForClass `hash:"1740695150"`
+	set_draw_caret_when_editable_disabled             gdextension.MethodForClass `hash:"2586408642"`
+	is_drawing_caret_when_editable_disabled           gdextension.MethodForClass `hash:"36873697"`
+	set_move_caret_on_right_click_enabled             gdextension.MethodForClass `hash:"2586408642"`
+	is_move_caret_on_right_click_enabled              gdextension.MethodForClass `hash:"36873697"`
+	set_caret_mid_grapheme_enabled                    gdextension.MethodForClass `hash:"2586408642"`
+	is_caret_mid_grapheme_enabled                     gdextension.MethodForClass `hash:"36873697"`
+	set_multiple_carets_enabled                       gdextension.MethodForClass `hash:"2586408642"`
+	is_multiple_carets_enabled                        gdextension.MethodForClass `hash:"36873697"`
+	add_caret                                         gdextension.MethodForClass `hash:"50157827"`
+	remove_caret                                      gdextension.MethodForClass `hash:"1286410249"`
+	remove_secondary_carets                           gdextension.MethodForClass `hash:"3218959716"`
+	get_caret_count                                   gdextension.MethodForClass `hash:"3905245786"`
+	add_caret_at_carets                               gdextension.MethodForClass `hash:"2586408642"`
+	get_sorted_carets                                 gdextension.MethodForClass `hash:"2131714034"`
+	collapse_carets                                   gdextension.MethodForClass `hash:"228654177"`
+	merge_overlapping_carets                          gdextension.MethodForClass `hash:"3218959716"`
+	begin_multicaret_edit                             gdextension.MethodForClass `hash:"3218959716"`
+	end_multicaret_edit                               gdextension.MethodForClass `hash:"3218959716"`
+	is_in_mulitcaret_edit                             gdextension.MethodForClass `hash:"36873697"`
+	multicaret_edit_ignore_caret                      gdextension.MethodForClass `hash:"1116898809"`
+	is_caret_visible                                  gdextension.MethodForClass `hash:"1051549951"`
+	get_caret_draw_pos                                gdextension.MethodForClass `hash:"478253731"`
+	set_caret_line                                    gdextension.MethodForClass `hash:"1302582944"`
+	get_caret_line                                    gdextension.MethodForClass `hash:"1591665591"`
+	set_caret_column                                  gdextension.MethodForClass `hash:"3796796178"`
+	get_caret_column                                  gdextension.MethodForClass `hash:"1591665591"`
+	get_next_composite_character_column               gdextension.MethodForClass `hash:"3175239445"`
+	get_previous_composite_character_column           gdextension.MethodForClass `hash:"3175239445"`
+	get_caret_wrap_index                              gdextension.MethodForClass `hash:"1591665591"`
+	get_word_under_caret                              gdextension.MethodForClass `hash:"3929349208"`
+	set_use_default_word_separators                   gdextension.MethodForClass `hash:"2586408642"`
+	is_default_word_separators_enabled                gdextension.MethodForClass `hash:"36873697"`
+	set_use_custom_word_separators                    gdextension.MethodForClass `hash:"2586408642"`
+	is_custom_word_separators_enabled                 gdextension.MethodForClass `hash:"36873697"`
+	set_custom_word_separators                        gdextension.MethodForClass `hash:"83702148"`
+	get_custom_word_separators                        gdextension.MethodForClass `hash:"201670096"`
+	set_selecting_enabled                             gdextension.MethodForClass `hash:"2586408642"`
+	is_selecting_enabled                              gdextension.MethodForClass `hash:"36873697"`
+	set_deselect_on_focus_loss_enabled                gdextension.MethodForClass `hash:"2586408642"`
+	is_deselect_on_focus_loss_enabled                 gdextension.MethodForClass `hash:"36873697"`
+	set_drag_and_drop_selection_enabled               gdextension.MethodForClass `hash:"2586408642"`
+	is_drag_and_drop_selection_enabled                gdextension.MethodForClass `hash:"36873697"`
+	set_selection_mode                                gdextension.MethodForClass `hash:"1658801786"`
+	get_selection_mode                                gdextension.MethodForClass `hash:"3750106938"`
+	select_all                                        gdextension.MethodForClass `hash:"3218959716"`
+	select_word_under_caret                           gdextension.MethodForClass `hash:"1025054187"`
+	add_selection_for_next_occurrence                 gdextension.MethodForClass `hash:"3218959716"`
+	skip_selection_for_next_occurrence                gdextension.MethodForClass `hash:"3218959716"`
+	select_                                           gdextension.MethodForClass `hash:"2560984452"`
+	has_selection                                     gdextension.MethodForClass `hash:"2824505868"`
+	get_selected_text                                 gdextension.MethodForClass `hash:"2309358862"`
+	get_selection_at_line_column                      gdextension.MethodForClass `hash:"1810224333"`
+	get_line_ranges_from_carets                       gdextension.MethodForClass `hash:"2393089247"`
+	get_selection_origin_line                         gdextension.MethodForClass `hash:"1591665591"`
+	get_selection_origin_column                       gdextension.MethodForClass `hash:"1591665591"`
+	set_selection_origin_line                         gdextension.MethodForClass `hash:"195434140"`
+	set_selection_origin_column                       gdextension.MethodForClass `hash:"2230941749"`
+	get_selection_from_line                           gdextension.MethodForClass `hash:"1591665591"`
+	get_selection_from_column                         gdextension.MethodForClass `hash:"1591665591"`
+	get_selection_to_line                             gdextension.MethodForClass `hash:"1591665591"`
+	get_selection_to_column                           gdextension.MethodForClass `hash:"1591665591"`
+	is_caret_after_selection_origin                   gdextension.MethodForClass `hash:"1051549951"`
+	deselect                                          gdextension.MethodForClass `hash:"1025054187"`
+	delete_selection                                  gdextension.MethodForClass `hash:"1025054187"`
+	set_line_wrapping_mode                            gdextension.MethodForClass `hash:"2525115309"`
+	get_line_wrapping_mode                            gdextension.MethodForClass `hash:"3562716114"`
+	set_autowrap_mode                                 gdextension.MethodForClass `hash:"3289138044"`
+	get_autowrap_mode                                 gdextension.MethodForClass `hash:"1549071663"`
+	is_line_wrapped                                   gdextension.MethodForClass `hash:"1116898809"`
+	get_line_wrap_count                               gdextension.MethodForClass `hash:"923996154"`
+	get_line_wrap_index_at_column                     gdextension.MethodForClass `hash:"3175239445"`
+	get_line_wrapped_text                             gdextension.MethodForClass `hash:"647634434"`
+	set_smooth_scroll_enabled                         gdextension.MethodForClass `hash:"2586408642"`
+	is_smooth_scroll_enabled                          gdextension.MethodForClass `hash:"36873697"`
+	get_v_scroll_bar                                  gdextension.MethodForClass `hash:"3226026593"`
+	get_h_scroll_bar                                  gdextension.MethodForClass `hash:"3774687988"`
+	set_v_scroll                                      gdextension.MethodForClass `hash:"373806689"`
+	get_v_scroll                                      gdextension.MethodForClass `hash:"1740695150"`
+	set_h_scroll                                      gdextension.MethodForClass `hash:"1286410249"`
+	get_h_scroll                                      gdextension.MethodForClass `hash:"3905245786"`
+	set_scroll_past_end_of_file_enabled               gdextension.MethodForClass `hash:"2586408642"`
+	is_scroll_past_end_of_file_enabled                gdextension.MethodForClass `hash:"36873697"`
+	set_v_scroll_speed                                gdextension.MethodForClass `hash:"373806689"`
+	get_v_scroll_speed                                gdextension.MethodForClass `hash:"1740695150"`
+	set_fit_content_height_enabled                    gdextension.MethodForClass `hash:"2586408642"`
+	is_fit_content_height_enabled                     gdextension.MethodForClass `hash:"36873697"`
+	set_fit_content_width_enabled                     gdextension.MethodForClass `hash:"2586408642"`
+	is_fit_content_width_enabled                      gdextension.MethodForClass `hash:"36873697"`
+	get_scroll_pos_for_line                           gdextension.MethodForClass `hash:"3929084198"`
+	set_line_as_first_visible                         gdextension.MethodForClass `hash:"2230941749"`
+	get_first_visible_line                            gdextension.MethodForClass `hash:"3905245786"`
+	set_line_as_center_visible                        gdextension.MethodForClass `hash:"2230941749"`
+	set_line_as_last_visible                          gdextension.MethodForClass `hash:"2230941749"`
+	get_last_full_visible_line                        gdextension.MethodForClass `hash:"3905245786"`
+	get_last_full_visible_line_wrap_index             gdextension.MethodForClass `hash:"3905245786"`
+	get_visible_line_count                            gdextension.MethodForClass `hash:"3905245786"`
+	get_visible_line_count_in_range                   gdextension.MethodForClass `hash:"3175239445"`
+	get_total_visible_line_count                      gdextension.MethodForClass `hash:"3905245786"`
+	adjust_viewport_to_caret                          gdextension.MethodForClass `hash:"1995695955"`
+	center_viewport_to_caret                          gdextension.MethodForClass `hash:"1995695955"`
+	set_draw_minimap                                  gdextension.MethodForClass `hash:"2586408642"`
+	is_drawing_minimap                                gdextension.MethodForClass `hash:"36873697"`
+	set_minimap_width                                 gdextension.MethodForClass `hash:"1286410249"`
+	get_minimap_width                                 gdextension.MethodForClass `hash:"3905245786"`
+	get_minimap_visible_lines                         gdextension.MethodForClass `hash:"3905245786"`
+	add_gutter                                        gdextension.MethodForClass `hash:"1025054187"`
+	remove_gutter                                     gdextension.MethodForClass `hash:"1286410249"`
+	get_gutter_count                                  gdextension.MethodForClass `hash:"3905245786"`
+	set_gutter_name                                   gdextension.MethodForClass `hash:"501894301"`
+	get_gutter_name                                   gdextension.MethodForClass `hash:"844755477"`
+	set_gutter_type                                   gdextension.MethodForClass `hash:"1088959071"`
+	get_gutter_type                                   gdextension.MethodForClass `hash:"1159699127"`
+	set_gutter_width                                  gdextension.MethodForClass `hash:"3937882851"`
+	get_gutter_width                                  gdextension.MethodForClass `hash:"923996154"`
+	set_gutter_draw                                   gdextension.MethodForClass `hash:"300928843"`
+	is_gutter_drawn                                   gdextension.MethodForClass `hash:"1116898809"`
+	set_gutter_clickable                              gdextension.MethodForClass `hash:"300928843"`
+	is_gutter_clickable                               gdextension.MethodForClass `hash:"1116898809"`
+	set_gutter_overwritable                           gdextension.MethodForClass `hash:"300928843"`
+	is_gutter_overwritable                            gdextension.MethodForClass `hash:"1116898809"`
+	merge_gutters                                     gdextension.MethodForClass `hash:"3937882851"`
+	set_gutter_custom_draw                            gdextension.MethodForClass `hash:"957362965"`
+	get_total_gutter_width                            gdextension.MethodForClass `hash:"3905245786"`
+	set_line_gutter_metadata                          gdextension.MethodForClass `hash:"2060538656"`
+	get_line_gutter_metadata                          gdextension.MethodForClass `hash:"678354945"`
+	set_line_gutter_text                              gdextension.MethodForClass `hash:"2285447957"`
+	get_line_gutter_text                              gdextension.MethodForClass `hash:"1391810591"`
+	set_line_gutter_icon                              gdextension.MethodForClass `hash:"176101966"`
+	get_line_gutter_icon                              gdextension.MethodForClass `hash:"2584904275"`
+	set_line_gutter_item_color                        gdextension.MethodForClass `hash:"3733378741"`
+	get_line_gutter_item_color                        gdextension.MethodForClass `hash:"2165839948"`
+	set_line_gutter_clickable                         gdextension.MethodForClass `hash:"1383440665"`
+	is_line_gutter_clickable                          gdextension.MethodForClass `hash:"2522259332"`
+	set_line_background_color                         gdextension.MethodForClass `hash:"2878471219"`
+	get_line_background_color                         gdextension.MethodForClass `hash:"3457211756"`
+	set_syntax_highlighter                            gdextension.MethodForClass `hash:"2765644541"`
+	get_syntax_highlighter                            gdextension.MethodForClass `hash:"2721131626"`
+	set_highlight_current_line                        gdextension.MethodForClass `hash:"2586408642"`
+	is_highlight_current_line_enabled                 gdextension.MethodForClass `hash:"36873697"`
+	set_highlight_all_occurrences                     gdextension.MethodForClass `hash:"2586408642"`
+	is_highlight_all_occurrences_enabled              gdextension.MethodForClass `hash:"36873697"`
+	get_draw_control_chars                            gdextension.MethodForClass `hash:"36873697"`
+	set_draw_control_chars                            gdextension.MethodForClass `hash:"2586408642"`
+	set_draw_tabs                                     gdextension.MethodForClass `hash:"2586408642"`
+	is_drawing_tabs                                   gdextension.MethodForClass `hash:"36873697"`
+	set_draw_spaces                                   gdextension.MethodForClass `hash:"2586408642"`
+	is_drawing_spaces                                 gdextension.MethodForClass `hash:"36873697"`
+	get_menu                                          gdextension.MethodForClass `hash:"229722558"`
+	is_menu_visible                                   gdextension.MethodForClass `hash:"36873697"`
+	menu_option                                       gdextension.MethodForClass `hash:"1286410249"`
+	adjust_carets_after_edit                          gdextension.MethodForClass `hash:"1770277138"`
+	get_caret_index_edit_order                        gdextension.MethodForClass `hash:"969006518"`
+	get_selection_line                                gdextension.MethodForClass `hash:"1591665591"`
+	get_selection_column                              gdextension.MethodForClass `hash:"1591665591"`
 }
 
 func init() {
@@ -1180,6 +1196,24 @@ func (self Expanded) GetCaretColumn(caret_index int) int { //gd:TextEdit.get_car
 }
 
 /*
+Returns the correct column at the end of a composite character like ❤️‍🩹 (mending heart; Unicode: U+2764 U+FE0F U+200D U+1FA79) which is comprised of more than one Unicode code point, if the caret is at the start of the composite character. Also returns the correct column with the caret at mid grapheme and for non-composite characters.
+
+Note: To check at caret location use get_next_composite_character_column(get_caret_line(), get_caret_column())
+*/
+func (self Instance) GetNextCompositeCharacterColumn(line int, column int) int { //gd:TextEdit.get_next_composite_character_column
+	return int(int(Advanced(self).GetNextCompositeCharacterColumn(int64(line), int64(column))))
+}
+
+/*
+Returns the correct column at the start of a composite character like ❤️‍🩹 (mending heart; Unicode: U+2764 U+FE0F U+200D U+1FA79) which is comprised of more than one Unicode code point, if the caret is at the end of the composite character. Also returns the correct column with the caret at mid grapheme and for non-composite characters.
+
+Note: To check at caret location use get_previous_composite_character_column(get_caret_line(), get_caret_column())
+*/
+func (self Instance) GetPreviousCompositeCharacterColumn(line int, column int) int { //gd:TextEdit.get_previous_composite_character_column
+	return int(int(Advanced(self).GetPreviousCompositeCharacterColumn(int64(line), int64(column))))
+}
+
+/*
 Returns the wrap index the editing caret is on.
 */
 func (self Instance) GetCaretWrapIndex() int { //gd:TextEdit.get_caret_wrap_index
@@ -1724,14 +1758,14 @@ func (self Instance) GetGutterName(gutter int) string { //gd:TextEdit.get_gutter
 }
 
 /*
-Sets the type of gutter at the given index. Gutters can contain icons, text, or custom visuals. See [TextEdit.GutterType] for options.
+Sets the type of gutter at the given index. Gutters can contain icons, text, or custom visuals.
 */
 func (self Instance) SetGutterType(gutter int, atype GutterType) { //gd:TextEdit.set_gutter_type
 	Advanced(self).SetGutterType(int64(gutter), atype)
 }
 
 /*
-Returns the type of the gutter at the given index. Gutters can contain icons, text, or custom visuals. See [TextEdit.GutterType] for options.
+Returns the type of the gutter at the given index. Gutters can contain icons, text, or custom visuals.
 */
 func (self Instance) GetGutterType(gutter int) GutterType { //gd:TextEdit.get_gutter_type
 	return GutterType(Advanced(self).GetGutterType(int64(gutter)))
@@ -2047,6 +2081,14 @@ func (self Instance) SetEmojiMenuEnabled(value bool) {
 	class(self).SetEmojiMenuEnabled(value)
 }
 
+func (self Instance) BackspaceDeletesCompositeCharacterEnabled() bool {
+	return bool(class(self).IsBackspaceDeletesCompositeCharacterEnabled())
+}
+
+func (self Instance) SetBackspaceDeletesCompositeCharacterEnabled(value bool) {
+	class(self).SetBackspaceDeletesCompositeCharacterEnabled(value)
+}
+
 func (self Instance) ShortcutKeysEnabled() bool {
 	return bool(class(self).IsShortcutKeysEnabled())
 }
@@ -2087,6 +2129,14 @@ func (self Instance) SetVirtualKeyboardEnabled(value bool) {
 	class(self).SetVirtualKeyboardEnabled(value)
 }
 
+func (self Instance) VirtualKeyboardShowOnFocus() bool {
+	return bool(class(self).GetVirtualKeyboardShowOnFocus())
+}
+
+func (self Instance) SetVirtualKeyboardShowOnFocus(value bool) {
+	class(self).SetVirtualKeyboardShowOnFocus(value)
+}
+
 func (self Instance) MiddleMousePasteEnabled() bool {
 	return bool(class(self).IsMiddleMousePasteEnabled())
 }
@@ -2125,6 +2175,14 @@ func (self Instance) IndentWrappedLines() bool {
 
 func (self Instance) SetIndentWrappedLines(value bool) {
 	class(self).SetIndentWrappedLines(value)
+}
+
+func (self Instance) TabInputMode() bool {
+	return bool(class(self).GetTabInputMode())
+}
+
+func (self Instance) SetTabInputMode(value bool) {
+	class(self).SetTabInputMode(value)
 }
 
 func (self Instance) ScrollSmooth() bool {
@@ -2544,6 +2602,18 @@ func (self class) IsIndentWrappedLines() bool { //gd:TextEdit.is_indent_wrapped_
 	return ret
 }
 
+//go:nosplit
+func (self class) SetTabInputMode(enabled bool) { //gd:TextEdit.set_tab_input_mode
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_input_mode, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+
+//go:nosplit
+func (self class) GetTabInputMode() bool { //gd:TextEdit.get_tab_input_mode
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_tab_input_mode, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
 /*
 If true, enables overtype mode. In this mode, typing overrides existing text instead of inserting text. The [graphics.gd/classdb/ProjectSettings] "input/ui_text_toggle_insert_mode" action toggles overtype mode. See [Instance.IsOvertypeModeEnabled].
 */
@@ -2587,6 +2657,18 @@ func (self class) IsEmojiMenuEnabled() bool { //gd:TextEdit.is_emoji_menu_enable
 }
 
 //go:nosplit
+func (self class) SetBackspaceDeletesCompositeCharacterEnabled(enable bool) { //gd:TextEdit.set_backspace_deletes_composite_character_enabled
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_backspace_deletes_composite_character_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+}
+
+//go:nosplit
+func (self class) IsBackspaceDeletesCompositeCharacterEnabled() bool { //gd:TextEdit.is_backspace_deletes_composite_character_enabled
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_backspace_deletes_composite_character_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
 func (self class) SetShortcutKeysEnabled(enabled bool) { //gd:TextEdit.set_shortcut_keys_enabled
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_keys_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
@@ -2606,6 +2688,18 @@ func (self class) SetVirtualKeyboardEnabled(enabled bool) { //gd:TextEdit.set_vi
 //go:nosplit
 func (self class) IsVirtualKeyboardEnabled() bool { //gd:TextEdit.is_virtual_keyboard_enabled
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_virtual_keyboard_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetVirtualKeyboardShowOnFocus(show_on_focus bool) { //gd:TextEdit.set_virtual_keyboard_show_on_focus
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_virtual_keyboard_show_on_focus, 0|(gdextension.SizeBool<<4), &struct{ show_on_focus bool }{show_on_focus})
+}
+
+//go:nosplit
+func (self class) GetVirtualKeyboardShowOnFocus() bool { //gd:TextEdit.get_virtual_keyboard_show_on_focus
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_virtual_keyboard_show_on_focus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3456,6 +3550,36 @@ func (self class) GetCaretColumn(caret_index int64) int64 { //gd:TextEdit.get_ca
 }
 
 /*
+Returns the correct column at the end of a composite character like ❤️‍🩹 (mending heart; Unicode: U+2764 U+FE0F U+200D U+1FA79) which is comprised of more than one Unicode code point, if the caret is at the start of the composite character. Also returns the correct column with the caret at mid grapheme and for non-composite characters.
+
+Note: To check at caret location use get_next_composite_character_column(get_caret_line(), get_caret_column())
+*/
+//go:nosplit
+func (self class) GetNextCompositeCharacterColumn(line int64, column int64) int64 { //gd:TextEdit.get_next_composite_character_column
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_next_composite_character_column, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		line   int64
+		column int64
+	}{line, column})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the correct column at the start of a composite character like ❤️‍🩹 (mending heart; Unicode: U+2764 U+FE0F U+200D U+1FA79) which is comprised of more than one Unicode code point, if the caret is at the end of the composite character. Also returns the correct column with the caret at mid grapheme and for non-composite characters.
+
+Note: To check at caret location use get_previous_composite_character_column(get_caret_line(), get_caret_column())
+*/
+//go:nosplit
+func (self class) GetPreviousCompositeCharacterColumn(line int64, column int64) int64 { //gd:TextEdit.get_previous_composite_character_column
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_previous_composite_character_column, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		line   int64
+		column int64
+	}{line, column})
+	var ret = r_ret
+	return ret
+}
+
+/*
 Returns the wrap index the editing caret is on.
 */
 //go:nosplit
@@ -4161,7 +4285,7 @@ func (self class) GetGutterName(gutter int64) String.Readable { //gd:TextEdit.ge
 }
 
 /*
-Sets the type of gutter at the given index. Gutters can contain icons, text, or custom visuals. See [TextEdit.GutterType] for options.
+Sets the type of gutter at the given index. Gutters can contain icons, text, or custom visuals.
 */
 //go:nosplit
 func (self class) SetGutterType(gutter int64, atype GutterType) { //gd:TextEdit.set_gutter_type
@@ -4172,7 +4296,7 @@ func (self class) SetGutterType(gutter int64, atype GutterType) { //gd:TextEdit.
 }
 
 /*
-Returns the type of the gutter at the given index. Gutters can contain icons, text, or custom visuals. See [TextEdit.GutterType] for options.
+Returns the type of the gutter at the given index. Gutters can contain icons, text, or custom visuals.
 */
 //go:nosplit
 func (self class) GetGutterType(gutter int64) GutterType { //gd:TextEdit.get_gutter_type

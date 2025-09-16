@@ -102,7 +102,7 @@ var methods struct {
 	ssh_run_on_remote_no_wait gdextension.MethodForClass `hash:"3606362233"`
 	ssh_push_to_remote        gdextension.MethodForClass `hash:"218756989"`
 	get_internal_export_files gdextension.MethodForClass `hash:"89550086"`
-	get_forced_export_files   gdextension.MethodForClass `hash:"2981934095"`
+	get_forced_export_files   gdextension.MethodForClass `hash:"1939331020"`
 }
 
 func init() {
@@ -399,9 +399,17 @@ func (self Instance) GetInternalExportFiles(preset EditorExportPreset.Instance, 
 /*
 Returns array of core file names that always should be exported regardless of preset config.
 */
-func GetForcedExportFiles() []string { //gd:EditorExportPlatform.get_forced_export_files
+func GetForcedExportFiles(preset EditorExportPreset.Instance) []string { //gd:EditorExportPlatform.get_forced_export_files
 	self := Instance{}
-	return []string(Advanced(self).GetForcedExportFiles().Strings())
+	return []string(Advanced(self).GetForcedExportFiles(preset).Strings())
+}
+
+/*
+Returns array of core file names that always should be exported regardless of preset config.
+*/
+func GetForcedExportFilesOptions(preset EditorExportPreset.Instance) []string { //gd:EditorExportPlatform.get_forced_export_files
+	self := Instance{}
+	return []string(Advanced(self).GetForcedExportFiles(preset).Strings())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -794,8 +802,8 @@ func (self class) GetInternalExportFiles(preset [1]gdclass.EditorExportPreset, d
 Returns array of core file names that always should be exported regardless of preset config.
 */
 //go:nosplit
-func (self class) GetForcedExportFiles() Packed.Strings { //gd:EditorExportPlatform.get_forced_export_files
-	var r_ret = gdextension.CallStatic[gd.PackedPointers](methods.get_forced_export_files, gdextension.SizePackedArray, &struct{}{})
+func (self class) GetForcedExportFiles(preset [1]gdclass.EditorExportPreset) Packed.Strings { //gd:EditorExportPlatform.get_forced_export_files
+	var r_ret = gdextension.CallStatic[gd.PackedPointers](methods.get_forced_export_files, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ preset gdextension.Object }{gdextension.Object(gd.ObjectChecked(preset[0].AsObject()))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -849,15 +857,15 @@ const (
 type DebugFlags int //gd:EditorExportPlatform.DebugFlags
 
 const (
-	// Flag is set if remotely debugged project is expected to use remote file system. If set, [Instance.GenExportFlags] will add --remote-fs and --remote-fs-password (if password is set in the editor settings) command line arguments to the list.
+	// Flag is set if the remotely debugged project is expected to use the remote file system. If set, [Instance.GenExportFlags] will append --remote-fs and --remote-fs-password (if [graphics.gd/classdb/EditorSettings.Instance] "filesystem/file_server/password" is defined) command line arguments to the returned list.
 	DebugFlagDumbClient DebugFlags = 1
-	// Flag is set if remote debug is enabled. If set, [Instance.GenExportFlags] will add --remote-debug and --breakpoints (if breakpoints are selected in the script editor or added by the plugin) command line arguments to the list.
+	// Flag is set if remote debug is enabled. If set, [Instance.GenExportFlags] will append --remote-debug and --breakpoints (if breakpoints are selected in the script editor or added by the plugin) command line arguments to the returned list.
 	DebugFlagRemoteDebug DebugFlags = 2
 	// Flag is set if remotely debugged project is running on the localhost. If set, [Instance.GenExportFlags] will use localhost instead of [graphics.gd/classdb/EditorSettings.Instance] "network/debug/remote_host" as remote debugger host.
 	DebugFlagRemoteDebugLocalhost DebugFlags = 4
-	// Flag is set if "Visible Collision Shapes" remote debug option is enabled. If set, [Instance.GenExportFlags] will add --debug-collisions command line arguments to the list.
+	// Flag is set if the "Visible Collision Shapes" remote debug option is enabled. If set, [Instance.GenExportFlags] will append the --debug-collisions command line argument to the returned list.
 	DebugFlagViewCollisions DebugFlags = 8
-	// Flag is set if Visible Navigation" remote debug option is enabled. If set, [Instance.GenExportFlags] will add --debug-navigation command line arguments to the list.
+	// Flag is set if the "Visible Navigation" remote debug option is enabled. If set, [Instance.GenExportFlags] will append the --debug-navigation command line argument to the returned list.
 	DebugFlagViewNavigation DebugFlags = 16
 )
 

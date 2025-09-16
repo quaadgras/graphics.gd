@@ -3,7 +3,7 @@
 /*
 [graphics.gd/classdb/SkeletonModifier3D] retrieves a target [graphics.gd/classdb/Skeleton3D] by having a [graphics.gd/classdb/Skeleton3D] parent.
 
-If there is [graphics.gd/classdb/AnimationMixer], modification always performs after playback process of the [graphics.gd/classdb/AnimationMixer].
+If there is an [graphics.gd/classdb/AnimationMixer], a modification always performs after playback process of the [graphics.gd/classdb/AnimationMixer].
 
 This node should be used to implement custom IK solvers, constraints, or skeleton physics.
 */
@@ -110,8 +110,18 @@ type Any interface {
 type Interface interface {
 	// Override this virtual method to implement a custom skeleton modifier. You should do things like get the [graphics.gd/classdb/Skeleton3D]'s current pose and apply the pose here.
 	//
+	// [Interface.ProcessModificationWithDelta] must not apply [Instance.Influence] to bone poses because the [graphics.gd/classdb/Skeleton3D] automatically applies influence to all bone poses set by the modifier.
+	//
+	// 'delta' is passed from parent [graphics.gd/classdb/Skeleton3D]. See also [graphics.gd/classdb/Skeleton3D.Instance.Advance].
+	ProcessModificationWithDelta(delta Float.X)
+	// Override this virtual method to implement a custom skeleton modifier. You should do things like get the [graphics.gd/classdb/Skeleton3D]'s current pose and apply the pose here.
+	//
 	// [Interface.ProcessModification] must not apply [Instance.Influence] to bone poses because the [graphics.gd/classdb/Skeleton3D] automatically applies influence to all bone poses set by the modifier.
 	ProcessModification()
+	// Called when the skeleton is changed.
+	SkeletonChanged(old_skeleton Skeleton3D.Instance, new_skeleton Skeleton3D.Instance)
+	// Called when bone name and index need to be validated such as the timing of the entering tree or changing skeleton.
+	ValidateBoneNames()
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -119,7 +129,27 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) ProcessModification() { return }
+func (self implementation) ProcessModificationWithDelta(delta Float.X) { return }
+func (self implementation) ProcessModification()                       { return }
+func (self implementation) SkeletonChanged(old_skeleton Skeleton3D.Instance, new_skeleton Skeleton3D.Instance) {
+	return
+}
+func (self implementation) ValidateBoneNames() { return }
+
+/*
+Override this virtual method to implement a custom skeleton modifier. You should do things like get the [graphics.gd/classdb/Skeleton3D]'s current pose and apply the pose here.
+
+[Interface.ProcessModificationWithDelta] must not apply [Instance.Influence] to bone poses because the [graphics.gd/classdb/Skeleton3D] automatically applies influence to all bone poses set by the modifier.
+
+'delta' is passed from parent [graphics.gd/classdb/Skeleton3D]. See also [graphics.gd/classdb/Skeleton3D.Instance.Advance].
+*/
+func (Instance) _process_modification_with_delta(impl func(ptr gdclass.Receiver, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var delta = gd.UnsafeGet[float64](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, Float.X(delta))
+	}
+}
 
 /*
 Override this virtual method to implement a custom skeleton modifier. You should do things like get the [graphics.gd/classdb/Skeleton3D]'s current pose and apply the pose here.
@@ -127,6 +157,32 @@ Override this virtual method to implement a custom skeleton modifier. You should
 [Interface.ProcessModification] must not apply [Instance.Influence] to bone poses because the [graphics.gd/classdb/Skeleton3D] automatically applies influence to all bone poses set by the modifier.
 */
 func (Instance) _process_modification(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self)
+	}
+}
+
+/*
+Called when the skeleton is changed.
+*/
+func (Instance) _skeleton_changed(impl func(ptr gdclass.Receiver, old_skeleton Skeleton3D.Instance, new_skeleton Skeleton3D.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var old_skeleton = [1]gdclass.Skeleton3D{pointers.New[gdclass.Skeleton3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+
+		defer pointers.End(old_skeleton[0])
+		var new_skeleton = [1]gdclass.Skeleton3D{pointers.New[gdclass.Skeleton3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+
+		defer pointers.End(new_skeleton[0])
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, old_skeleton, new_skeleton)
+	}
+}
+
+/*
+Called when bone name and index need to be validated such as the timing of the entering tree or changing skeleton.
+*/
+func (Instance) _validate_bone_names(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
@@ -201,9 +257,50 @@ func (self Instance) SetInfluence(value Float.X) {
 /*
 Override this virtual method to implement a custom skeleton modifier. You should do things like get the [graphics.gd/classdb/Skeleton3D]'s current pose and apply the pose here.
 
+[Interface.ProcessModificationWithDelta] must not apply [Instance.Influence] to bone poses because the [graphics.gd/classdb/Skeleton3D] automatically applies influence to all bone poses set by the modifier.
+
+'delta' is passed from parent [graphics.gd/classdb/Skeleton3D]. See also [graphics.gd/classdb/Skeleton3D.Instance.Advance].
+*/
+func (class) _process_modification_with_delta(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var delta = gd.UnsafeGet[float64](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, delta)
+	}
+}
+
+/*
+Override this virtual method to implement a custom skeleton modifier. You should do things like get the [graphics.gd/classdb/Skeleton3D]'s current pose and apply the pose here.
+
 [Interface.ProcessModification] must not apply [Instance.Influence] to bone poses because the [graphics.gd/classdb/Skeleton3D] automatically applies influence to all bone poses set by the modifier.
 */
 func (class) _process_modification(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self)
+	}
+}
+
+/*
+Called when the skeleton is changed.
+*/
+func (class) _skeleton_changed(impl func(ptr gdclass.Receiver, old_skeleton [1]gdclass.Skeleton3D, new_skeleton [1]gdclass.Skeleton3D)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var old_skeleton = [1]gdclass.Skeleton3D{pointers.New[gdclass.Skeleton3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+
+		defer pointers.End(old_skeleton[0])
+		var new_skeleton = [1]gdclass.Skeleton3D{pointers.New[gdclass.Skeleton3D]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 1))})}
+
+		defer pointers.End(new_skeleton[0])
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, old_skeleton, new_skeleton)
+	}
+}
+
+/*
+Called when bone name and index need to be validated such as the timing of the entering tree or changing skeleton.
+*/
+func (class) _validate_bone_names(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		impl(self)
@@ -277,8 +374,14 @@ func (self Instance) AsNode() Node.Instance {
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
+	case "_process_modification_with_delta":
+		return reflect.ValueOf(self._process_modification_with_delta)
 	case "_process_modification":
 		return reflect.ValueOf(self._process_modification)
+	case "_skeleton_changed":
+		return reflect.ValueOf(self._skeleton_changed)
+	case "_validate_bone_names":
+		return reflect.ValueOf(self._validate_bone_names)
 	default:
 		return gd.VirtualByName(Node3D.Advanced(self.AsNode3D()), name)
 	}
@@ -286,8 +389,14 @@ func (self class) Virtual(name string) reflect.Value {
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
+	case "_process_modification_with_delta":
+		return reflect.ValueOf(self._process_modification_with_delta)
 	case "_process_modification":
 		return reflect.ValueOf(self._process_modification)
+	case "_skeleton_changed":
+		return reflect.ValueOf(self._skeleton_changed)
+	case "_validate_bone_names":
+		return reflect.ValueOf(self._validate_bone_names)
 	default:
 		return gd.VirtualByName(Node3D.Instance(self.AsNode3D()), name)
 	}

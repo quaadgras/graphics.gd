@@ -131,14 +131,14 @@ func (self Expanded) PckStart(pck_path string, alignment int, key string, encryp
 }
 
 /*
-Adds the 'source_path' file to the current PCK package at the 'target_path' internal path. The res:// prefix for 'target_path' is optional and stripped internally.
+Adds the 'source_path' file to the current PCK package at the 'target_path' internal path. The res:// prefix for 'target_path' is optional and stripped internally. File content is immediately written to the PCK.
 */
 func (self Instance) AddFile(target_path string, source_path string) error { //gd:PCKPacker.add_file
 	return error(gd.ToError(Advanced(self).AddFile(String.New(target_path), String.New(source_path), false)))
 }
 
 /*
-Adds the 'source_path' file to the current PCK package at the 'target_path' internal path. The res:// prefix for 'target_path' is optional and stripped internally.
+Adds the 'source_path' file to the current PCK package at the 'target_path' internal path. The res:// prefix for 'target_path' is optional and stripped internally. File content is immediately written to the PCK.
 */
 func (self Expanded) AddFile(target_path string, source_path string, encrypt bool) error { //gd:PCKPacker.add_file
 	return error(gd.ToError(Advanced(self).AddFile(String.New(target_path), String.New(source_path), encrypt)))
@@ -152,14 +152,18 @@ func (self Instance) AddFileRemoval(target_path string) error { //gd:PCKPacker.a
 }
 
 /*
-Writes the files specified using all [Instance.AddFile] calls since the last flush. If 'verbose' is true, a list of files added will be printed to the console for easier debugging.
+Writes the file directory and closes the PCK. If 'verbose' is true, a list of files added will be printed to the console for easier debugging.
+
+Note: [graphics.gd/classdb/PCKPacker] will automatically flush when it's freed, which happens when it goes out of scope or when it gets assigned with null. In C# the reference must be disposed after use, either with the using statement or by calling the Dispose method directly.
 */
 func (self Instance) Flush() error { //gd:PCKPacker.flush
 	return error(gd.ToError(Advanced(self).Flush(false)))
 }
 
 /*
-Writes the files specified using all [Instance.AddFile] calls since the last flush. If 'verbose' is true, a list of files added will be printed to the console for easier debugging.
+Writes the file directory and closes the PCK. If 'verbose' is true, a list of files added will be printed to the console for easier debugging.
+
+Note: [graphics.gd/classdb/PCKPacker] will automatically flush when it's freed, which happens when it goes out of scope or when it gets assigned with null. In C# the reference must be disposed after use, either with the using statement or by calling the Dispose method directly.
 */
 func (self Expanded) Flush(verbose bool) error { //gd:PCKPacker.flush
 	return error(gd.ToError(Advanced(self).Flush(verbose)))
@@ -224,7 +228,7 @@ func (self class) PckStart(pck_path String.Readable, alignment int64, key String
 }
 
 /*
-Adds the 'source_path' file to the current PCK package at the 'target_path' internal path. The res:// prefix for 'target_path' is optional and stripped internally.
+Adds the 'source_path' file to the current PCK package at the 'target_path' internal path. The res:// prefix for 'target_path' is optional and stripped internally. File content is immediately written to the PCK.
 */
 //go:nosplit
 func (self class) AddFile(target_path String.Readable, source_path String.Readable, encrypt bool) Error.Code { //gd:PCKPacker.add_file
@@ -248,7 +252,9 @@ func (self class) AddFileRemoval(target_path String.Readable) Error.Code { //gd:
 }
 
 /*
-Writes the files specified using all [Instance.AddFile] calls since the last flush. If 'verbose' is true, a list of files added will be printed to the console for easier debugging.
+Writes the file directory and closes the PCK. If 'verbose' is true, a list of files added will be printed to the console for easier debugging.
+
+Note: [graphics.gd/classdb/PCKPacker] will automatically flush when it's freed, which happens when it goes out of scope or when it gets assigned with null. In C# the reference must be disposed after use, either with the using statement or by calling the Dispose method directly.
 */
 //go:nosplit
 func (self class) Flush(verbose bool) Error.Code { //gd:PCKPacker.flush

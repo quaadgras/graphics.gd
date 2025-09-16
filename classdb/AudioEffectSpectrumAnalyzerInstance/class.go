@@ -105,7 +105,7 @@ type Any interface {
 /*
 Returns the magnitude of the frequencies from 'from_hz' to 'to_hz' in linear energy as a Vector2. The x component of the return value represents the left stereo channel, and y represents the right channel.
 
-'mode' determines how the frequency range will be processed. See [MagnitudeMode].
+'mode' determines how the frequency range will be processed.
 */
 func (self Instance) GetMagnitudeForFrequencyRange(from_hz Float.X, to_hz Float.X) Vector2.XY { //gd:AudioEffectSpectrumAnalyzerInstance.get_magnitude_for_frequency_range
 	return Vector2.XY(Advanced(self).GetMagnitudeForFrequencyRange(float64(from_hz), float64(to_hz), 1))
@@ -114,7 +114,7 @@ func (self Instance) GetMagnitudeForFrequencyRange(from_hz Float.X, to_hz Float.
 /*
 Returns the magnitude of the frequencies from 'from_hz' to 'to_hz' in linear energy as a Vector2. The x component of the return value represents the left stereo channel, and y represents the right channel.
 
-'mode' determines how the frequency range will be processed. See [MagnitudeMode].
+'mode' determines how the frequency range will be processed.
 */
 func (self Expanded) GetMagnitudeForFrequencyRange(from_hz Float.X, to_hz Float.X, mode MagnitudeMode) Vector2.XY { //gd:AudioEffectSpectrumAnalyzerInstance.get_magnitude_for_frequency_range
 	return Vector2.XY(Advanced(self).GetMagnitudeForFrequencyRange(float64(from_hz), float64(to_hz), mode))
@@ -166,7 +166,7 @@ func New() Instance {
 /*
 Returns the magnitude of the frequencies from 'from_hz' to 'to_hz' in linear energy as a Vector2. The x component of the return value represents the left stereo channel, and y represents the right channel.
 
-'mode' determines how the frequency range will be processed. See [MagnitudeMode].
+'mode' determines how the frequency range will be processed.
 */
 //go:nosplit
 func (self class) GetMagnitudeForFrequencyRange(from_hz float64, to_hz float64, mode MagnitudeMode) Vector2.XY { //gd:AudioEffectSpectrumAnalyzerInstance.get_magnitude_for_frequency_range

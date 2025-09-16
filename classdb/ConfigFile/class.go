@@ -273,7 +273,7 @@ Loads the encrypted config file specified as a parameter, using the provided 'ke
 Returns [Ok] on success, or one of the other [Error] values if the operation failed.
 */
 func (self Instance) LoadEncrypted(path string, key []byte) error { //gd:ConfigFile.load_encrypted
-	return error(gd.ToError(Advanced(self).LoadEncrypted(String.New(path), Packed.Bytes(Packed.New(key...)))))
+	return error(gd.ToError(Advanced(self).LoadEncrypted(String.New(path), Packed.BytesFrom(key...))))
 }
 
 /*
@@ -291,7 +291,7 @@ Saves the contents of the [graphics.gd/classdb/ConfigFile] object to the AES-256
 Returns [Ok] on success, or one of the other [Error] values if the operation failed.
 */
 func (self Instance) SaveEncrypted(path string, key []byte) error { //gd:ConfigFile.save_encrypted
-	return error(gd.ToError(Advanced(self).SaveEncrypted(String.New(path), Packed.Bytes(Packed.New(key...)))))
+	return error(gd.ToError(Advanced(self).SaveEncrypted(String.New(path), Packed.BytesFrom(key...))))
 }
 
 /*
@@ -497,7 +497,7 @@ func (self class) LoadEncrypted(path String.Readable, key Packed.Bytes) Error.Co
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_encrypted, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), &struct {
 		path gdextension.String
 		key  gdextension.PackedArray[byte]
-	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key)))})
+	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -527,7 +527,7 @@ func (self class) SaveEncrypted(path String.Readable, key Packed.Bytes) Error.Co
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_encrypted, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), &struct {
 		path gdextension.String
 		key  gdextension.PackedArray[byte]
-	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key)))})
+	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

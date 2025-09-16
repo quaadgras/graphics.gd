@@ -77,10 +77,12 @@ type Instance [1]gdclass.CapsuleShape3D
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_radius gdextension.MethodForClass `hash:"373806689"`
-	get_radius gdextension.MethodForClass `hash:"1740695150"`
-	set_height gdextension.MethodForClass `hash:"373806689"`
-	get_height gdextension.MethodForClass `hash:"1740695150"`
+	set_radius     gdextension.MethodForClass `hash:"373806689"`
+	get_radius     gdextension.MethodForClass `hash:"1740695150"`
+	set_height     gdextension.MethodForClass `hash:"373806689"`
+	get_height     gdextension.MethodForClass `hash:"1740695150"`
+	set_mid_height gdextension.MethodForClass `hash:"373806689"`
+	get_mid_height gdextension.MethodForClass `hash:"1740695150"`
 }
 
 func init() {
@@ -162,6 +164,14 @@ func (self Instance) SetHeight(value Float.X) {
 	class(self).SetHeight(float64(value))
 }
 
+func (self Instance) MidHeight() Float.X {
+	return Float.X(Float.X(class(self).GetMidHeight()))
+}
+
+func (self Instance) SetMidHeight(value Float.X) {
+	class(self).SetMidHeight(float64(value))
+}
+
 //go:nosplit
 func (self class) SetRadius(radius float64) { //gd:CapsuleShape3D.set_radius
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
@@ -182,6 +192,18 @@ func (self class) SetHeight(height float64) { //gd:CapsuleShape3D.set_height
 //go:nosplit
 func (self class) GetHeight() float64 { //gd:CapsuleShape3D.get_height
 	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetMidHeight(mid_height float64) { //gd:CapsuleShape3D.set_mid_height
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mid_height, 0|(gdextension.SizeFloat<<4), &struct{ mid_height float64 }{mid_height})
+}
+
+//go:nosplit
+func (self class) GetMidHeight() float64 { //gd:CapsuleShape3D.get_mid_height
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mid_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

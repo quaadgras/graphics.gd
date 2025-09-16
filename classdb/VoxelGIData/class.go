@@ -123,7 +123,7 @@ type Any interface {
 }
 
 func (self Instance) Allocate(to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3.XYZ, octree_cells []byte, data_cells []byte, distance_field []byte, level_counts []int32) { //gd:VoxelGIData.allocate
-	Advanced(self).Allocate(Transform3D.BasisOrigin(to_cell_xform), AABB.PositionSize(aabb), Vector3.XYZ(octree_size), Packed.Bytes(Packed.New(octree_cells...)), Packed.Bytes(Packed.New(data_cells...)), Packed.Bytes(Packed.New(distance_field...)), Packed.New(level_counts...))
+	Advanced(self).Allocate(Transform3D.BasisOrigin(to_cell_xform), AABB.PositionSize(aabb), Vector3.XYZ(octree_size), Packed.BytesFrom(octree_cells...), Packed.BytesFrom(data_cells...), Packed.BytesFrom(distance_field...), Packed.New(level_counts...))
 }
 
 /*
@@ -259,7 +259,7 @@ func (self class) Allocate(to_cell_xform Transform3D.BasisOrigin, aabb AABB.Posi
 		data_cells     gdextension.PackedArray[byte]
 		distance_field gdextension.PackedArray[byte]
 		level_counts   gdextension.PackedArray[int32]
-	}{gd.Transposed(to_cell_xform), aabb, octree_size, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](octree_cells))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data_cells))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](distance_field))), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](level_counts))})
+	}{gd.Transposed(to_cell_xform), aabb, octree_size, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](octree_cells.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data_cells.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](distance_field.Array))), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](level_counts))})
 }
 
 /*
@@ -291,14 +291,14 @@ func (self class) GetToCellXform() Transform3D.BasisOrigin { //gd:VoxelGIData.ge
 //go:nosplit
 func (self class) GetOctreeCells() Packed.Bytes { //gd:VoxelGIData.get_octree_cells
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_octree_cells, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetDataCells() Packed.Bytes { //gd:VoxelGIData.get_data_cells
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data_cells, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 

@@ -131,17 +131,23 @@ type Any interface {
 type Interface interface {
 	// Called once during initialization.
 	Initialize()
-	// Called each physics frame with the time since the last physics frame as argument ('delta', in seconds). Equivalent to [graphics.gd/classdb/Node.Instance.PhysicsProcess].
+	// Called each physics tick. 'delta' is the logical time between physics ticks in seconds and is equal to [graphics.gd/classdb/Engine.TimeScale] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond]. Equivalent to [graphics.gd/classdb/Node.Instance.PhysicsProcess].
 	//
-	// If implemented, the method must return a boolean value. true ends the main loop, while false lets it proceed to the next frame.
+	// If implemented, the method must return a boolean value. true ends the main loop, while false lets it proceed to the next step.
 	//
-	// Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+	// Note: [Interface.PhysicsProcess] may be called up to [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] times per (idle) frame. This step limit may be reached when the engine is suffering performance issues.
+	//
+	// Note: Accumulated 'delta' may diverge from real world seconds.
 	PhysicsProcess(delta Float.X) bool
-	// Called each process (idle) frame with the time since the last process frame as argument (in seconds). Equivalent to [graphics.gd/classdb/Node.Instance.Process].
+	// Called on each idle frame, prior to rendering, and after physics ticks have been processed. 'delta' is the time between frames in seconds. Equivalent to [graphics.gd/classdb/Node.Instance.Process].
 	//
 	// If implemented, the method must return a boolean value. true ends the main loop, while false lets it proceed to the next frame.
 	//
-	// Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+	// Note: When the engine is struggling and the frame rate is lowered, 'delta' will increase. When 'delta' is increased, it's capped at a maximum of [graphics.gd/classdb/Engine.TimeScale] * [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond]. As a result, accumulated 'delta' may not represent real world time.
+	//
+	// Note: When --fixed-fps is enabled or the engine is running in Movie Maker mode (see [graphics.gd/classdb/MovieWriter]), process 'delta' will always be the same for every frame, regardless of how much time the frame took to render.
+	//
+	// Note: Frame delta may be post-processed by [graphics.gd/classdb/OS.DeltaSmoothing] if this is enabled for the project.
 	Process(delta Float.X) bool
 	// Called before the program exits.
 	Finalize()
@@ -168,11 +174,13 @@ func (Instance) _initialize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionCla
 }
 
 /*
-Called each physics frame with the time since the last physics frame as argument ('delta', in seconds). Equivalent to [graphics.gd/classdb/Node.Instance.PhysicsProcess].
+Called each physics tick. 'delta' is the logical time between physics ticks in seconds and is equal to [graphics.gd/classdb/Engine.TimeScale] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond]. Equivalent to [graphics.gd/classdb/Node.Instance.PhysicsProcess].
 
-If implemented, the method must return a boolean value. true ends the main loop, while false lets it proceed to the next frame.
+If implemented, the method must return a boolean value. true ends the main loop, while false lets it proceed to the next step.
 
-Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+Note: [Interface.PhysicsProcess] may be called up to [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] times per (idle) frame. This step limit may be reached when the engine is suffering performance issues.
+
+Note: Accumulated 'delta' may diverge from real world seconds.
 */
 func (Instance) _physics_process(impl func(ptr gdclass.Receiver, delta Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -184,11 +192,15 @@ func (Instance) _physics_process(impl func(ptr gdclass.Receiver, delta Float.X) 
 }
 
 /*
-Called each process (idle) frame with the time since the last process frame as argument (in seconds). Equivalent to [graphics.gd/classdb/Node.Instance.Process].
+Called on each idle frame, prior to rendering, and after physics ticks have been processed. 'delta' is the time between frames in seconds. Equivalent to [graphics.gd/classdb/Node.Instance.Process].
 
 If implemented, the method must return a boolean value. true ends the main loop, while false lets it proceed to the next frame.
 
-Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+Note: When the engine is struggling and the frame rate is lowered, 'delta' will increase. When 'delta' is increased, it's capped at a maximum of [graphics.gd/classdb/Engine.TimeScale] * [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond]. As a result, accumulated 'delta' may not represent real world time.
+
+Note: When --fixed-fps is enabled or the engine is running in Movie Maker mode (see [graphics.gd/classdb/MovieWriter]), process 'delta' will always be the same for every frame, regardless of how much time the frame took to render.
+
+Note: Frame delta may be post-processed by [graphics.gd/classdb/OS.DeltaSmoothing] if this is enabled for the project.
 */
 func (Instance) _process(impl func(ptr gdclass.Receiver, delta Float.X) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -262,11 +274,13 @@ func (class) _initialize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassC
 }
 
 /*
-Called each physics frame with the time since the last physics frame as argument ('delta', in seconds). Equivalent to [graphics.gd/classdb/Node.Instance.PhysicsProcess].
+Called each physics tick. 'delta' is the logical time between physics ticks in seconds and is equal to [graphics.gd/classdb/Engine.TimeScale] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond]. Equivalent to [graphics.gd/classdb/Node.Instance.PhysicsProcess].
 
-If implemented, the method must return a boolean value. true ends the main loop, while false lets it proceed to the next frame.
+If implemented, the method must return a boolean value. true ends the main loop, while false lets it proceed to the next step.
 
-Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+Note: [Interface.PhysicsProcess] may be called up to [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] times per (idle) frame. This step limit may be reached when the engine is suffering performance issues.
+
+Note: Accumulated 'delta' may diverge from real world seconds.
 */
 func (class) _physics_process(impl func(ptr gdclass.Receiver, delta float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -278,11 +292,15 @@ func (class) _physics_process(impl func(ptr gdclass.Receiver, delta float64) boo
 }
 
 /*
-Called each process (idle) frame with the time since the last process frame as argument (in seconds). Equivalent to [graphics.gd/classdb/Node.Instance.Process].
+Called on each idle frame, prior to rendering, and after physics ticks have been processed. 'delta' is the time between frames in seconds. Equivalent to [graphics.gd/classdb/Node.Instance.Process].
 
 If implemented, the method must return a boolean value. true ends the main loop, while false lets it proceed to the next frame.
 
-Note: 'delta' will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using 'delta' for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+Note: When the engine is struggling and the frame rate is lowered, 'delta' will increase. When 'delta' is increased, it's capped at a maximum of [graphics.gd/classdb/Engine.TimeScale] * [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond]. As a result, accumulated 'delta' may not represent real world time.
+
+Note: When --fixed-fps is enabled or the engine is running in Movie Maker mode (see [graphics.gd/classdb/MovieWriter]), process 'delta' will always be the same for every frame, regardless of how much time the frame took to render.
+
+Note: Frame delta may be post-processed by [graphics.gd/classdb/OS.DeltaSmoothing] if this is enabled for the project.
 */
 func (class) _process(impl func(ptr gdclass.Receiver, delta float64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

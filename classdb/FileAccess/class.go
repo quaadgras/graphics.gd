@@ -3,7 +3,7 @@
 /*
 This class can be used to permanently store data in the user device's file system and to read from it. This is useful for storing game save data or player configuration files.
 
-Here's a sample on how to write and read from a file:
+Example: How to write and read from a file. The file named "save_game.dat" will be stored in the user data folder, as specified in the [Data paths] documentation:
 
 	package main
 
@@ -20,9 +20,9 @@ Here's a sample on how to write and read from a file:
 		return content
 	}
 
-In the example above, the file will be saved in the user data folder as specified in the [Data paths] documentation.
+A [graphics.gd/classdb/FileAccess] instance has its own file cursor, which is the position in bytes in the file where the next read/write operation will occur. Functions such as [Instance.Get8], [Instance.Get16], [Instance.Store8], and [Instance.Store16] will move the file cursor forward by the number of bytes read/written. The file cursor can be moved to a specific position using [Instance.SeekTo] or [Instance.SeekEnd], and its position can be retrieved using [Instance.GetPosition].
 
-[graphics.gd/classdb/FileAccess] will close when it's freed, which happens when it goes out of scope or when it gets assigned with null. [Instance.Close] can be used to close it before then explicitly. In C# the reference must be disposed manually, which can be done with the using statement or by calling the Dispose method directly.
+A [graphics.gd/classdb/FileAccess] instance will close its file when the instance is freed. Since it inherits [graphics.gd/classdb/RefCounted], this happens automatically when it is no longer in use. [Instance.Close] can be called to close it earlier. In C#, the reference must be disposed manually, which can be done with the using statement or by calling the Dispose method directly.
 
 Note: To access project resources once exported, it is recommended to use [graphics.gd/classdb/ResourceLoader] instead of [graphics.gd/classdb/FileAccess], as some files are converted to engine-specific formats and their original source files might not be present in the exported PCK package. If using [graphics.gd/classdb/FileAccess], make sure the file is included in the export by changing its import mode to Keep File (exported as is) in the Import dock, or, for files where this option is not available, change the non-resource export filter in the Export dialog to include the file's extension (e.g. *.txt).
 
@@ -154,6 +154,8 @@ var methods struct {
 	close                    gdextension.MethodForClass `hash:"3218959716"`
 	file_exists              gdextension.MethodForClass `hash:"2323990056"`
 	get_modified_time        gdextension.MethodForClass `hash:"1597066294"`
+	get_access_time          gdextension.MethodForClass `hash:"1597066294"`
+	get_size                 gdextension.MethodForClass `hash:"1597066294"`
 	get_unix_permissions     gdextension.MethodForClass `hash:"524341837"`
 	set_unix_permissions     gdextension.MethodForClass `hash:"846038644"`
 	get_hidden_attribute     gdextension.MethodForClass `hash:"2323990056"`
@@ -203,7 +205,7 @@ Returns null if opening the file failed. You can use [GetOpenError] to check the
 */
 func OpenEncrypted(path string, mode_flags ModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
 	self := Instance{}
-	return Instance(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...))))
+	return Instance(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.BytesFrom(key...), Packed.BytesFrom(iv...)))
 }
 
 /*
@@ -215,7 +217,7 @@ Returns null if opening the file failed. You can use [GetOpenError] to check the
 */
 func OpenEncryptedOptions(path string, mode_flags ModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
 	self := Instance{}
-	return Instance(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...))))
+	return Instance(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.BytesFrom(key...), Packed.BytesFrom(iv...)))
 }
 
 /*
@@ -354,32 +356,32 @@ func (self Instance) IsOpen() bool { //gd:FileAccess.is_open
 }
 
 /*
-Changes the file reading/writing cursor to the specified position (in bytes from the beginning of the file).
+Changes the file reading/writing cursor to the specified position (in bytes from the beginning of the file). This changes the value returned by [Instance.GetPosition].
 */
 func (self Instance) SeekTo(position int) { //gd:FileAccess.seek
 	Advanced(self).SeekTo(int64(position))
 }
 
 /*
-Changes the file reading/writing cursor to the specified position (in bytes from the end of the file).
+Changes the file reading/writing cursor to the specified position (in bytes from the end of the file). This changes the value returned by [Instance.GetPosition].
 
-Note: This is an offset, so you should use negative numbers or the cursor will be at the end of the file.
+Note: This is an offset, so you should use negative numbers or the file cursor will be at the end of the file.
 */
 func (self Instance) SeekEnd() { //gd:FileAccess.seek_end
 	Advanced(self).SeekEnd(int64(0))
 }
 
 /*
-Changes the file reading/writing cursor to the specified position (in bytes from the end of the file).
+Changes the file reading/writing cursor to the specified position (in bytes from the end of the file). This changes the value returned by [Instance.GetPosition].
 
-Note: This is an offset, so you should use negative numbers or the cursor will be at the end of the file.
+Note: This is an offset, so you should use negative numbers or the file cursor will be at the end of the file.
 */
 func (self Expanded) SeekEnd(position int) { //gd:FileAccess.seek_end
 	Advanced(self).SeekEnd(int64(position))
 }
 
 /*
-Returns the file cursor's position.
+Returns the file cursor's position in bytes from the beginning of the file. This is the file reading/writing cursor set by [Instance.SeekTo] or [Instance.SeekEnd] and advanced by read/write operations.
 */
 func (self Instance) GetPosition() int { //gd:FileAccess.get_position
 	return int(int(Advanced(self).GetPosition()))
@@ -402,70 +404,72 @@ func (self Instance) EofReached() bool { //gd:FileAccess.eof_reached
 }
 
 /*
-Returns the next 8 bits from the file as an integer. See [Instance.Store8] for details on what values can be stored and retrieved this way.
+Returns the next 8 bits from the file as an integer. This advances the file cursor by 1 byte. See [Instance.Store8] for details on what values can be stored and retrieved this way.
 */
 func (self Instance) Get8() int { //gd:FileAccess.get_8
 	return int(int(Advanced(self).Get8()))
 }
 
 /*
-Returns the next 16 bits from the file as an integer. See [Instance.Store16] for details on what values can be stored and retrieved this way.
+Returns the next 16 bits from the file as an integer. This advances the file cursor by 2 bytes. See [Instance.Store16] for details on what values can be stored and retrieved this way.
 */
 func (self Instance) Get16() int { //gd:FileAccess.get_16
 	return int(int(Advanced(self).Get16()))
 }
 
 /*
-Returns the next 32 bits from the file as an integer. See [Instance.Store32] for details on what values can be stored and retrieved this way.
+Returns the next 32 bits from the file as an integer. This advances the file cursor by 4 bytes. See [Instance.Store32] for details on what values can be stored and retrieved this way.
 */
 func (self Instance) Get32() int { //gd:FileAccess.get_32
 	return int(int(Advanced(self).Get32()))
 }
 
 /*
-Returns the next 64 bits from the file as an integer. See [Instance.Store64] for details on what values can be stored and retrieved this way.
+Returns the next 64 bits from the file as an integer. This advances the file cursor by 8 bytes. See [Instance.Store64] for details on what values can be stored and retrieved this way.
 */
 func (self Instance) Get64() int { //gd:FileAccess.get_64
 	return int(int(Advanced(self).Get64()))
 }
 
 /*
-Returns the next 16 bits from the file as a half-precision floating-point number.
+Returns the next 16 bits from the file as a half-precision floating-point number. This advances the file cursor by 2 bytes.
 */
 func (self Instance) GetHalf() Float.X { //gd:FileAccess.get_half
 	return Float.X(Float.X(Advanced(self).GetHalf()))
 }
 
 /*
-Returns the next 32 bits from the file as a floating-point number.
+Returns the next 32 bits from the file as a floating-point number. This advances the file cursor by 4 bytes.
 */
 func (self Instance) GetFloat() Float.X { //gd:FileAccess.get_float
 	return Float.X(Float.X(Advanced(self).GetFloat()))
 }
 
 /*
-Returns the next 64 bits from the file as a floating-point number.
+Returns the next 64 bits from the file as a floating-point number. This advances the file cursor by 8 bytes.
 */
 func (self Instance) GetDouble() Float.X { //gd:FileAccess.get_double
 	return Float.X(Float.X(Advanced(self).GetDouble()))
 }
 
 /*
-Returns the next bits from the file as a floating-point number.
+Returns the next bits from the file as a floating-point number. This advances the file cursor by either 4 or 8 bytes, depending on the precision used by the Godot build that saved the file.
+
+If the file was saved by a Godot build compiled with the precision=single option (the default), the number of read bits for that file is 32. Otherwise, if compiled with the precision=double option, the number of read bits is 64.
 */
 func (self Instance) GetReal() Float.X { //gd:FileAccess.get_real
 	return Float.X(Float.X(Advanced(self).GetReal()))
 }
 
 /*
-Returns next 'length' bytes of the file as a []byte.
+Returns next 'length' bytes of the file as a []byte. This advances the file cursor by 'length' bytes.
 */
 func (self Instance) GetBuffer(length int) []byte { //gd:FileAccess.get_buffer
 	return []byte(Advanced(self).GetBuffer(int64(length)).Bytes())
 }
 
 /*
-Returns the next line of the file as a string. The returned string doesn't include newline (\n) or carriage return (\r) characters, but does include any other leading or trailing whitespace.
+Returns the next line of the file as a string. The returned string doesn't include newline (\n) or carriage return (\r) characters, but does include any other leading or trailing whitespace. This advances the file cursor to after the newline character at the end of the line.
 
 Text is interpreted as being UTF-8 encoded.
 */
@@ -476,7 +480,7 @@ func (self Instance) GetLine() string { //gd:FileAccess.get_line
 /*
 Returns the next value of the file in CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long, and cannot be a double quotation mark.
 
-Text is interpreted as being UTF-8 encoded. Text values must be enclosed in double quotes if they include the delimiter character. Double quotes within a text value can be escaped by doubling their occurrence.
+Text is interpreted as being UTF-8 encoded. Text values must be enclosed in double quotes if they include the delimiter character. Double quotes within a text value can be escaped by doubling their occurrence. This advances the file cursor to after the newline character at the end of the line.
 
 For example, the following CSV lines are valid and will be properly parsed as two strings each:
 
@@ -489,7 +493,7 @@ func (self Instance) GetCsvLine() []string { //gd:FileAccess.get_csv_line
 /*
 Returns the next value of the file in CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long, and cannot be a double quotation mark.
 
-Text is interpreted as being UTF-8 encoded. Text values must be enclosed in double quotes if they include the delimiter character. Double quotes within a text value can be escaped by doubling their occurrence.
+Text is interpreted as being UTF-8 encoded. Text values must be enclosed in double quotes if they include the delimiter character. Double quotes within a text value can be escaped by doubling their occurrence. This advances the file cursor to after the newline character at the end of the line.
 
 For example, the following CSV lines are valid and will be properly parsed as two strings each:
 
@@ -500,7 +504,7 @@ func (self Expanded) GetCsvLine(delim string) []string { //gd:FileAccess.get_csv
 }
 
 /*
-Returns the whole file as a string. Text is interpreted as being UTF-8 encoded.
+Returns the whole file as a string. Text is interpreted as being UTF-8 encoded. This ignores the file cursor and does not affect it.
 
 If 'skip_cr' is true, carriage return characters (\r, CR) will be ignored when parsing the UTF-8, so that only line feed characters (\n, LF) represent a new line (Unix convention).
 */
@@ -509,7 +513,7 @@ func (self Instance) GetAsText() string { //gd:FileAccess.get_as_text
 }
 
 /*
-Returns the whole file as a string. Text is interpreted as being UTF-8 encoded.
+Returns the whole file as a string. Text is interpreted as being UTF-8 encoded. This ignores the file cursor and does not affect it.
 
 If 'skip_cr' is true, carriage return characters (\r, CR) will be ignored when parsing the UTF-8, so that only line feed characters (\n, LF) represent a new line (Unix convention).
 */
@@ -541,29 +545,33 @@ func (self Instance) GetError() error { //gd:FileAccess.get_error
 }
 
 /*
-Returns the next any value from the file. If 'allow_objects' is true, decoding objects is allowed.
+Returns the next any value from the file. If 'allow_objects' is true, decoding objects is allowed. This advances the file cursor by the number of bytes read.
 
-Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method, as described in the [Binary serialization API] documentation.
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+
+[Binary serialization API]: https://docs.godotengine.org/tutorials/io/binary_serialization_api.html
 */
 func (self Instance) GetVar() any { //gd:FileAccess.get_var
 	return any(Advanced(self).GetVar(false).Interface())
 }
 
 /*
-Returns the next any value from the file. If 'allow_objects' is true, decoding objects is allowed.
+Returns the next any value from the file. If 'allow_objects' is true, decoding objects is allowed. This advances the file cursor by the number of bytes read.
 
-Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method, as described in the [Binary serialization API] documentation.
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+
+[Binary serialization API]: https://docs.godotengine.org/tutorials/io/binary_serialization_api.html
 */
 func (self Expanded) GetVar(allow_objects bool) any { //gd:FileAccess.get_var
 	return any(Advanced(self).GetVar(allow_objects).Interface())
 }
 
 /*
-Stores an integer as 8 bits in the file.
+Stores an integer as 8 bits in the file. This advances the file cursor by 1 byte. Returns true if the operation is successful.
 
 Note: The 'value' should lie in the interval [0, 255]. Any other value will overflow and wrap around.
 
@@ -576,7 +584,7 @@ func (self Instance) Store8(value int) bool { //gd:FileAccess.store_8
 }
 
 /*
-Stores an integer as 16 bits in the file.
+Stores an integer as 16 bits in the file. This advances the file cursor by 2 bytes. Returns true if the operation is successful.
 
 Note: The 'value' should lie in the interval [0, 2^16 - 1]. Any other value will overflow and wrap around.
 
@@ -589,7 +597,7 @@ func (self Instance) Store16(value int) bool { //gd:FileAccess.store_16
 }
 
 /*
-Stores an integer as 32 bits in the file.
+Stores an integer as 32 bits in the file. This advances the file cursor by 4 bytes. Returns true if the operation is successful.
 
 Note: The 'value' should lie in the interval [0, 2^32 - 1]. Any other value will overflow and wrap around.
 
@@ -602,7 +610,7 @@ func (self Instance) Store32(value int) bool { //gd:FileAccess.store_32
 }
 
 /*
-Stores an integer as 64 bits in the file.
+Stores an integer as 64 bits in the file. This advances the file cursor by 8 bytes. Returns true if the operation is successful.
 
 Note: The 'value' must lie in the interval [-2^63, 2^63 - 1] (i.e. be a valid int value).
 
@@ -613,14 +621,16 @@ func (self Instance) Store64(value int) bool { //gd:FileAccess.store_64
 }
 
 /*
-Stores a half-precision floating-point number as 16 bits in the file.
+Stores a half-precision floating-point number as 16 bits in the file. This advances the file cursor by 2 bytes. Returns true if the operation is successful.
+
+Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreHalf(value Float.X) bool { //gd:FileAccess.store_half
 	return bool(Advanced(self).StoreHalf(float64(value)))
 }
 
 /*
-Stores a floating-point number as 32 bits in the file.
+Stores a floating-point number as 32 bits in the file. This advances the file cursor by 4 bytes. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
@@ -629,7 +639,7 @@ func (self Instance) StoreFloat(value Float.X) bool { //gd:FileAccess.store_floa
 }
 
 /*
-Stores a floating-point number as 64 bits in the file.
+Stores a floating-point number as 64 bits in the file. This advances the file cursor by 8 bytes. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
@@ -638,7 +648,9 @@ func (self Instance) StoreDouble(value Float.X) bool { //gd:FileAccess.store_dou
 }
 
 /*
-Stores a floating-point number in the file.
+Stores a floating-point number in the file. This advances the file cursor by either 4 or 8 bytes, depending on the precision used by the current Godot build.
+
+If using a Godot build compiled with the precision=single option (the default), this method will save a 32-bit float. Otherwise, if compiled with the precision=double option, this will save a 64-bit float. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
@@ -647,16 +659,16 @@ func (self Instance) StoreReal(value Float.X) bool { //gd:FileAccess.store_real
 }
 
 /*
-Stores the given array of bytes in the file.
+Stores the given array of bytes in the file. This advances the file cursor by the number of bytes written. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 func (self Instance) StoreBuffer(buffer []byte) bool { //gd:FileAccess.store_buffer
-	return bool(Advanced(self).StoreBuffer(Packed.Bytes(Packed.New(buffer...))))
+	return bool(Advanced(self).StoreBuffer(Packed.BytesFrom(buffer...)))
 }
 
 /*
-Stores 'line' in the file followed by a newline character (\n), encoding the text as UTF-8.
+Stores 'line' in the file followed by a newline character (\n), encoding the text as UTF-8. This advances the file cursor by the length of the line, after the newline character. The amount of bytes written depends on the UTF-8 encoded bytes, which may be different from [graphics.gd/classdb/String.Instance.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
@@ -667,7 +679,7 @@ func (self Instance) StoreLine(line string) bool { //gd:FileAccess.store_line
 /*
 Store the given []string in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long.
 
-Text will be encoded as UTF-8.
+Text will be encoded as UTF-8. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
@@ -678,7 +690,7 @@ func (self Instance) StoreCsvLine(values []string) bool { //gd:FileAccess.store_
 /*
 Store the given []string in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long.
 
-Text will be encoded as UTF-8.
+Text will be encoded as UTF-8. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
@@ -687,7 +699,7 @@ func (self Expanded) StoreCsvLine(values []string, delim string) bool { //gd:Fil
 }
 
 /*
-Stores 'string' in the file without a newline character (\n), encoding the text as UTF-8.
+Stores 'string' in the file without a newline character (\n), encoding the text as UTF-8. This advances the file cursor by the length of the string in UTF-8 encoded bytes, which may be different from [graphics.gd/classdb/String.Instance.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
 
 Note: This method is intended to be used to write text files. The string is stored as a UTF-8 encoded buffer without string length or terminating zero, which means that it can't be loaded back easily. If you want to store a retrievable string in a binary file, consider using [Instance.StorePascalString] instead. For retrieving strings from a text file, you can use get_buffer(length).get_string_from_utf8() (if you know the length) or [Instance.GetAsText].
 
@@ -698,35 +710,37 @@ func (self Instance) StoreString(s string) bool { //gd:FileAccess.store_string
 }
 
 /*
-Stores any Variant value in the file. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
+Stores any Variant value in the file. If 'full_objects' is true, encoding objects is allowed (and can potentially include code). This advances the file cursor by the number of bytes written. Returns true if the operation is successful.
 
-Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
+Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method, as described in the [Binary serialization API] documentation.
 
 Note: Not all properties are included. Only properties that are configured with the [PropertyUsageStorage] flag set will be serialized. You can add a new usage flag to a property by overriding the [graphics.gd/classdb/Object.Instance.GetPropertyList] method in your class. You can also check how property usage is configured by calling [graphics.gd/classdb/Object.Instance.GetPropertyList]. See [PropertyUsageFlags] for the possible usage flags.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
+
+[Binary serialization API]: https://docs.godotengine.org/tutorials/io/binary_serialization_api.html
 */
 func (self Instance) StoreVar(value any) bool { //gd:FileAccess.store_var
 	return bool(Advanced(self).StoreVar(variant.New(value), false))
 }
 
 /*
-Stores any Variant value in the file. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
+Stores any Variant value in the file. If 'full_objects' is true, encoding objects is allowed (and can potentially include code). This advances the file cursor by the number of bytes written. Returns true if the operation is successful.
 
-Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
+Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method, as described in the [Binary serialization API] documentation.
 
 Note: Not all properties are included. Only properties that are configured with the [PropertyUsageStorage] flag set will be serialized. You can add a new usage flag to a property by overriding the [graphics.gd/classdb/Object.Instance.GetPropertyList] method in your class. You can also check how property usage is configured by calling [graphics.gd/classdb/Object.Instance.GetPropertyList]. See [PropertyUsageFlags] for the possible usage flags.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
+
+[Binary serialization API]: https://docs.godotengine.org/tutorials/io/binary_serialization_api.html
 */
 func (self Expanded) StoreVar(value any, full_objects bool) bool { //gd:FileAccess.store_var
 	return bool(Advanced(self).StoreVar(variant.New(value), full_objects))
 }
 
 /*
-Stores the given string as a line in the file in Pascal format (i.e. also store the length of the string).
-
-Text will be encoded as UTF-8.
+Stores the given string as a line in the file in Pascal format (i.e. also store the length of the string). Text will be encoded as UTF-8. This advances the file cursor by the number of bytes written depending on the UTF-8 encoded bytes, which may be different from [graphics.gd/classdb/String.Instance.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
@@ -735,7 +749,7 @@ func (self Instance) StorePascalString(s string) bool { //gd:FileAccess.store_pa
 }
 
 /*
-Returns a string saved in Pascal format from the file.
+Returns a string saved in Pascal format from the file, meaning that the length of the string is explicitly stored at the start. See [Instance.StorePascalString]. This may include newline characters. The file cursor is advanced after the bytes read.
 
 Text is interpreted as being UTF-8 encoded.
 */
@@ -770,6 +784,22 @@ Returns the last time the 'file' was modified in Unix timestamp format, or 0 on 
 func GetModifiedTime(file string) int { //gd:FileAccess.get_modified_time
 	self := Instance{}
 	return int(int(Advanced(self).GetModifiedTime(String.New(file))))
+}
+
+/*
+Returns the last time the 'file' was accessed in Unix timestamp format, or 0 on error. This Unix timestamp can be converted to another format using the [graphics.gd/classdb/Time] singleton.
+*/
+func GetAccessTime(file string) int { //gd:FileAccess.get_access_time
+	self := Instance{}
+	return int(int(Advanced(self).GetAccessTime(String.New(file))))
+}
+
+/*
+Returns file size in bytes, or -1 on error.
+*/
+func GetSize(file string) int { //gd:FileAccess.get_size
+	self := Instance{}
+	return int(int(Advanced(self).GetSize(String.New(file))))
 }
 
 /*
@@ -912,7 +942,7 @@ func (self class) OpenEncrypted(path String.Readable, mode_flags ModeFlags, key 
 		mode_flags ModeFlags
 		key        gdextension.PackedArray[byte]
 		iv         gdextension.PackedArray[byte]
-	}{pointers.Get(gd.InternalString(path)), mode_flags, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](iv)))})
+	}{pointers.Get(gd.InternalString(path)), mode_flags, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](iv.Array)))})
 	var ret = [1]gdclass.FileAccess{gd.PointerWithOwnershipTransferredToGo[gdclass.FileAccess](r_ret)}
 	return ret
 }
@@ -994,7 +1024,7 @@ Returns an empty []byte if an error occurred while opening the file. You can use
 //go:nosplit
 func (self class) GetFileAsBytes(path String.Readable) Packed.Bytes { //gd:FileAccess.get_file_as_bytes
 	var r_ret = gdextension.CallStatic[gd.PackedPointers](methods.get_file_as_bytes, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -1061,7 +1091,7 @@ func (self class) IsOpen() bool { //gd:FileAccess.is_open
 }
 
 /*
-Changes the file reading/writing cursor to the specified position (in bytes from the beginning of the file).
+Changes the file reading/writing cursor to the specified position (in bytes from the beginning of the file). This changes the value returned by [Instance.GetPosition].
 */
 //go:nosplit
 func (self class) SeekTo(position int64) { //gd:FileAccess.seek
@@ -1069,9 +1099,9 @@ func (self class) SeekTo(position int64) { //gd:FileAccess.seek
 }
 
 /*
-Changes the file reading/writing cursor to the specified position (in bytes from the end of the file).
+Changes the file reading/writing cursor to the specified position (in bytes from the end of the file). This changes the value returned by [Instance.GetPosition].
 
-Note: This is an offset, so you should use negative numbers or the cursor will be at the end of the file.
+Note: This is an offset, so you should use negative numbers or the file cursor will be at the end of the file.
 */
 //go:nosplit
 func (self class) SeekEnd(position int64) { //gd:FileAccess.seek_end
@@ -1079,7 +1109,7 @@ func (self class) SeekEnd(position int64) { //gd:FileAccess.seek_end
 }
 
 /*
-Returns the file cursor's position.
+Returns the file cursor's position in bytes from the beginning of the file. This is the file reading/writing cursor set by [Instance.SeekTo] or [Instance.SeekEnd] and advanced by read/write operations.
 */
 //go:nosplit
 func (self class) GetPosition() int64 { //gd:FileAccess.get_position
@@ -1113,7 +1143,7 @@ func (self class) EofReached() bool { //gd:FileAccess.eof_reached
 }
 
 /*
-Returns the next 8 bits from the file as an integer. See [Instance.Store8] for details on what values can be stored and retrieved this way.
+Returns the next 8 bits from the file as an integer. This advances the file cursor by 1 byte. See [Instance.Store8] for details on what values can be stored and retrieved this way.
 */
 //go:nosplit
 func (self class) Get8() int64 { //gd:FileAccess.get_8
@@ -1123,7 +1153,7 @@ func (self class) Get8() int64 { //gd:FileAccess.get_8
 }
 
 /*
-Returns the next 16 bits from the file as an integer. See [Instance.Store16] for details on what values can be stored and retrieved this way.
+Returns the next 16 bits from the file as an integer. This advances the file cursor by 2 bytes. See [Instance.Store16] for details on what values can be stored and retrieved this way.
 */
 //go:nosplit
 func (self class) Get16() int64 { //gd:FileAccess.get_16
@@ -1133,7 +1163,7 @@ func (self class) Get16() int64 { //gd:FileAccess.get_16
 }
 
 /*
-Returns the next 32 bits from the file as an integer. See [Instance.Store32] for details on what values can be stored and retrieved this way.
+Returns the next 32 bits from the file as an integer. This advances the file cursor by 4 bytes. See [Instance.Store32] for details on what values can be stored and retrieved this way.
 */
 //go:nosplit
 func (self class) Get32() int64 { //gd:FileAccess.get_32
@@ -1143,7 +1173,7 @@ func (self class) Get32() int64 { //gd:FileAccess.get_32
 }
 
 /*
-Returns the next 64 bits from the file as an integer. See [Instance.Store64] for details on what values can be stored and retrieved this way.
+Returns the next 64 bits from the file as an integer. This advances the file cursor by 8 bytes. See [Instance.Store64] for details on what values can be stored and retrieved this way.
 */
 //go:nosplit
 func (self class) Get64() int64 { //gd:FileAccess.get_64
@@ -1153,7 +1183,7 @@ func (self class) Get64() int64 { //gd:FileAccess.get_64
 }
 
 /*
-Returns the next 16 bits from the file as a half-precision floating-point number.
+Returns the next 16 bits from the file as a half-precision floating-point number. This advances the file cursor by 2 bytes.
 */
 //go:nosplit
 func (self class) GetHalf() float64 { //gd:FileAccess.get_half
@@ -1163,7 +1193,7 @@ func (self class) GetHalf() float64 { //gd:FileAccess.get_half
 }
 
 /*
-Returns the next 32 bits from the file as a floating-point number.
+Returns the next 32 bits from the file as a floating-point number. This advances the file cursor by 4 bytes.
 */
 //go:nosplit
 func (self class) GetFloat() float64 { //gd:FileAccess.get_float
@@ -1173,7 +1203,7 @@ func (self class) GetFloat() float64 { //gd:FileAccess.get_float
 }
 
 /*
-Returns the next 64 bits from the file as a floating-point number.
+Returns the next 64 bits from the file as a floating-point number. This advances the file cursor by 8 bytes.
 */
 //go:nosplit
 func (self class) GetDouble() float64 { //gd:FileAccess.get_double
@@ -1183,7 +1213,9 @@ func (self class) GetDouble() float64 { //gd:FileAccess.get_double
 }
 
 /*
-Returns the next bits from the file as a floating-point number.
+Returns the next bits from the file as a floating-point number. This advances the file cursor by either 4 or 8 bytes, depending on the precision used by the Godot build that saved the file.
+
+If the file was saved by a Godot build compiled with the precision=single option (the default), the number of read bits for that file is 32. Otherwise, if compiled with the precision=double option, the number of read bits is 64.
 */
 //go:nosplit
 func (self class) GetReal() float64 { //gd:FileAccess.get_real
@@ -1193,17 +1225,17 @@ func (self class) GetReal() float64 { //gd:FileAccess.get_real
 }
 
 /*
-Returns next 'length' bytes of the file as a []byte.
+Returns next 'length' bytes of the file as a []byte. This advances the file cursor by 'length' bytes.
 */
 //go:nosplit
 func (self class) GetBuffer(length int64) Packed.Bytes { //gd:FileAccess.get_buffer
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_buffer, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ length int64 }{length})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
 /*
-Returns the next line of the file as a string. The returned string doesn't include newline (\n) or carriage return (\r) characters, but does include any other leading or trailing whitespace.
+Returns the next line of the file as a string. The returned string doesn't include newline (\n) or carriage return (\r) characters, but does include any other leading or trailing whitespace. This advances the file cursor to after the newline character at the end of the line.
 
 Text is interpreted as being UTF-8 encoded.
 */
@@ -1217,7 +1249,7 @@ func (self class) GetLine() String.Readable { //gd:FileAccess.get_line
 /*
 Returns the next value of the file in CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long, and cannot be a double quotation mark.
 
-Text is interpreted as being UTF-8 encoded. Text values must be enclosed in double quotes if they include the delimiter character. Double quotes within a text value can be escaped by doubling their occurrence.
+Text is interpreted as being UTF-8 encoded. Text values must be enclosed in double quotes if they include the delimiter character. Double quotes within a text value can be escaped by doubling their occurrence. This advances the file cursor to after the newline character at the end of the line.
 
 For example, the following CSV lines are valid and will be properly parsed as two strings each:
 
@@ -1233,7 +1265,7 @@ func (self class) GetCsvLine(delim String.Readable) Packed.Strings { //gd:FileAc
 }
 
 /*
-Returns the whole file as a string. Text is interpreted as being UTF-8 encoded.
+Returns the whole file as a string. Text is interpreted as being UTF-8 encoded. This ignores the file cursor and does not affect it.
 
 If 'skip_cr' is true, carriage return characters (\r, CR) will be ignored when parsing the UTF-8, so that only line feed characters (\n, LF) represent a new line (Unix convention).
 */
@@ -1287,11 +1319,13 @@ func (self class) GetError() Error.Code { //gd:FileAccess.get_error
 }
 
 /*
-Returns the next any value from the file. If 'allow_objects' is true, decoding objects is allowed.
+Returns the next any value from the file. If 'allow_objects' is true, decoding objects is allowed. This advances the file cursor by the number of bytes read.
 
-Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method, as described in the [Binary serialization API] documentation.
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+
+[Binary serialization API]: https://docs.godotengine.org/tutorials/io/binary_serialization_api.html
 */
 //go:nosplit
 func (self class) GetVar(allow_objects bool) variant.Any { //gd:FileAccess.get_var
@@ -1301,7 +1335,7 @@ func (self class) GetVar(allow_objects bool) variant.Any { //gd:FileAccess.get_v
 }
 
 /*
-Stores an integer as 8 bits in the file.
+Stores an integer as 8 bits in the file. This advances the file cursor by 1 byte. Returns true if the operation is successful.
 
 Note: The 'value' should lie in the interval [0, 255]. Any other value will overflow and wrap around.
 
@@ -1317,7 +1351,7 @@ func (self class) Store8(value int64) bool { //gd:FileAccess.store_8
 }
 
 /*
-Stores an integer as 16 bits in the file.
+Stores an integer as 16 bits in the file. This advances the file cursor by 2 bytes. Returns true if the operation is successful.
 
 Note: The 'value' should lie in the interval [0, 2^16 - 1]. Any other value will overflow and wrap around.
 
@@ -1335,7 +1369,7 @@ func (self class) Store16(value int64) bool { //gd:FileAccess.store_16
 }
 
 /*
-Stores an integer as 32 bits in the file.
+Stores an integer as 32 bits in the file. This advances the file cursor by 4 bytes. Returns true if the operation is successful.
 
 Note: The 'value' should lie in the interval [0, 2^32 - 1]. Any other value will overflow and wrap around.
 
@@ -1351,7 +1385,7 @@ func (self class) Store32(value int64) bool { //gd:FileAccess.store_32
 }
 
 /*
-Stores an integer as 64 bits in the file.
+Stores an integer as 64 bits in the file. This advances the file cursor by 8 bytes. Returns true if the operation is successful.
 
 Note: The 'value' must lie in the interval [-2^63, 2^63 - 1] (i.e. be a valid int value).
 
@@ -1365,7 +1399,9 @@ func (self class) Store64(value int64) bool { //gd:FileAccess.store_64
 }
 
 /*
-Stores a half-precision floating-point number as 16 bits in the file.
+Stores a half-precision floating-point number as 16 bits in the file. This advances the file cursor by 2 bytes. Returns true if the operation is successful.
+
+Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
 func (self class) StoreHalf(value float64) bool { //gd:FileAccess.store_half
@@ -1375,7 +1411,7 @@ func (self class) StoreHalf(value float64) bool { //gd:FileAccess.store_half
 }
 
 /*
-Stores a floating-point number as 32 bits in the file.
+Stores a floating-point number as 32 bits in the file. This advances the file cursor by 4 bytes. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
@@ -1387,7 +1423,7 @@ func (self class) StoreFloat(value float64) bool { //gd:FileAccess.store_float
 }
 
 /*
-Stores a floating-point number as 64 bits in the file.
+Stores a floating-point number as 64 bits in the file. This advances the file cursor by 8 bytes. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
@@ -1399,7 +1435,9 @@ func (self class) StoreDouble(value float64) bool { //gd:FileAccess.store_double
 }
 
 /*
-Stores a floating-point number in the file.
+Stores a floating-point number in the file. This advances the file cursor by either 4 or 8 bytes, depending on the precision used by the current Godot build.
+
+If using a Godot build compiled with the precision=single option (the default), this method will save a 32-bit float. Otherwise, if compiled with the precision=double option, this will save a 64-bit float. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
@@ -1411,19 +1449,19 @@ func (self class) StoreReal(value float64) bool { //gd:FileAccess.store_real
 }
 
 /*
-Stores the given array of bytes in the file.
+Stores the given array of bytes in the file. This advances the file cursor by the number of bytes written. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
 //go:nosplit
 func (self class) StoreBuffer(buffer Packed.Bytes) bool { //gd:FileAccess.store_buffer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_buffer, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))})
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.store_buffer, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = r_ret
 	return ret
 }
 
 /*
-Stores 'line' in the file followed by a newline character (\n), encoding the text as UTF-8.
+Stores 'line' in the file followed by a newline character (\n), encoding the text as UTF-8. This advances the file cursor by the length of the line, after the newline character. The amount of bytes written depends on the UTF-8 encoded bytes, which may be different from [graphics.gd/classdb/String.Instance.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
@@ -1437,7 +1475,7 @@ func (self class) StoreLine(line String.Readable) bool { //gd:FileAccess.store_l
 /*
 Store the given []string in the file as a line formatted in the CSV (Comma-Separated Values) format. You can pass a different delimiter 'delim' to use other than the default "," (comma). This delimiter must be one-character long.
 
-Text will be encoded as UTF-8.
+Text will be encoded as UTF-8. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
@@ -1452,7 +1490,7 @@ func (self class) StoreCsvLine(values Packed.Strings, delim String.Readable) boo
 }
 
 /*
-Stores 'string' in the file without a newline character (\n), encoding the text as UTF-8.
+Stores 'string' in the file without a newline character (\n), encoding the text as UTF-8. This advances the file cursor by the length of the string in UTF-8 encoded bytes, which may be different from [graphics.gd/classdb/String.Instance.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
 
 Note: This method is intended to be used to write text files. The string is stored as a UTF-8 encoded buffer without string length or terminating zero, which means that it can't be loaded back easily. If you want to store a retrievable string in a binary file, consider using [Instance.StorePascalString] instead. For retrieving strings from a text file, you can use get_buffer(length).get_string_from_utf8() (if you know the length) or [Instance.GetAsText].
 
@@ -1466,13 +1504,15 @@ func (self class) StoreString(s String.Readable) bool { //gd:FileAccess.store_st
 }
 
 /*
-Stores any Variant value in the file. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
+Stores any Variant value in the file. If 'full_objects' is true, encoding objects is allowed (and can potentially include code). This advances the file cursor by the number of bytes written. Returns true if the operation is successful.
 
-Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
+Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method, as described in the [Binary serialization API] documentation.
 
 Note: Not all properties are included. Only properties that are configured with the [PropertyUsageStorage] flag set will be serialized. You can add a new usage flag to a property by overriding the [graphics.gd/classdb/Object.Instance.GetPropertyList] method in your class. You can also check how property usage is configured by calling [graphics.gd/classdb/Object.Instance.GetPropertyList]. See [PropertyUsageFlags] for the possible usage flags.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
+
+[Binary serialization API]: https://docs.godotengine.org/tutorials/io/binary_serialization_api.html
 */
 //go:nosplit
 func (self class) StoreVar(value variant.Any, full_objects bool) bool { //gd:FileAccess.store_var
@@ -1485,9 +1525,7 @@ func (self class) StoreVar(value variant.Any, full_objects bool) bool { //gd:Fil
 }
 
 /*
-Stores the given string as a line in the file in Pascal format (i.e. also store the length of the string).
-
-Text will be encoded as UTF-8.
+Stores the given string as a line in the file in Pascal format (i.e. also store the length of the string). Text will be encoded as UTF-8. This advances the file cursor by the number of bytes written depending on the UTF-8 encoded bytes, which may be different from [graphics.gd/classdb/String.Instance.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
@@ -1499,7 +1537,7 @@ func (self class) StorePascalString(s String.Readable) bool { //gd:FileAccess.st
 }
 
 /*
-Returns a string saved in Pascal format from the file.
+Returns a string saved in Pascal format from the file, meaning that the length of the string is explicitly stored at the start. See [Instance.StorePascalString]. This may include newline characters. The file cursor is advanced after the bytes read.
 
 Text is interpreted as being UTF-8 encoded.
 */
@@ -1540,6 +1578,26 @@ Returns the last time the 'file' was modified in Unix timestamp format, or 0 on 
 //go:nosplit
 func (self class) GetModifiedTime(file String.Readable) int64 { //gd:FileAccess.get_modified_time
 	var r_ret = gdextension.CallStatic[int64](methods.get_modified_time, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the last time the 'file' was accessed in Unix timestamp format, or 0 on error. This Unix timestamp can be converted to another format using the [graphics.gd/classdb/Time] singleton.
+*/
+//go:nosplit
+func (self class) GetAccessTime(file String.Readable) int64 { //gd:FileAccess.get_access_time
+	var r_ret = gdextension.CallStatic[int64](methods.get_access_time, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns file size in bytes, or -1 on error.
+*/
+//go:nosplit
+func (self class) GetSize(file String.Readable) int64 { //gd:FileAccess.get_size
+	var r_ret = gdextension.CallStatic[int64](methods.get_size, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ file gdextension.String }{pointers.Get(gd.InternalString(file))})
 	var ret = r_ret
 	return ret
 }
@@ -1657,15 +1715,15 @@ func init() {
 type ModeFlags int //gd:FileAccess.ModeFlags
 
 const (
-	// Opens the file for read operations. The cursor is positioned at the beginning of the file.
+	// Opens the file for read operations. The file cursor is positioned at the beginning of the file.
 	Read ModeFlags = 1
 	// Opens the file for write operations. The file is created if it does not exist, and truncated if it does.
 	//
 	// Note: When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [graphics.gd/classdb/DirAccess.Instance.MakeDirRecursive].
 	Write ModeFlags = 2
-	// Opens the file for read and write operations. Does not truncate the file. The cursor is positioned at the beginning of the file.
+	// Opens the file for read and write operations. Does not truncate the file. The file cursor is positioned at the beginning of the file.
 	ReadWrite ModeFlags = 3
-	// Opens the file for read and write operations. The file is created if it does not exist, and truncated if it does. The cursor is positioned at the beginning of the file.
+	// Opens the file for read and write operations. The file is created if it does not exist, and truncated if it does. The file cursor is positioned at the beginning of the file.
 	//
 	// Note: When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [graphics.gd/classdb/DirAccess.Instance.MakeDirRecursive].
 	WriteRead ModeFlags = 7

@@ -377,18 +377,18 @@ func (self Instance) IsProcessTesting() bool { //gd:AnimationNode.is_process_tes
 }
 
 /*
-Blend an animation by 'blend' amount (name must be valid in the linked [graphics.gd/classdb/AnimationPlayer]). A 'time' and 'delta' may be passed, as well as whether 'seeked' happened.
+Blends an animation by 'blend' amount (name must be valid in the linked [graphics.gd/classdb/AnimationPlayer]). A 'time' and 'delta' may be passed, as well as whether 'seeked' happened.
 
-A 'looped_flag' is used by internal processing immediately after the loop. See also [Animation.LoopedFlag].
+A 'looped_flag' is used by internal processing immediately after the loop.
 */
 func (self Instance) BlendAnimation(animation string, time Float.X, delta Float.X, seeked bool, is_external_seeking bool, blend Float.X) { //gd:AnimationNode.blend_animation
 	Advanced(self).BlendAnimation(String.Name(String.New(animation)), float64(time), float64(delta), seeked, is_external_seeking, float64(blend), 0)
 }
 
 /*
-Blend an animation by 'blend' amount (name must be valid in the linked [graphics.gd/classdb/AnimationPlayer]). A 'time' and 'delta' may be passed, as well as whether 'seeked' happened.
+Blends an animation by 'blend' amount (name must be valid in the linked [graphics.gd/classdb/AnimationPlayer]). A 'time' and 'delta' may be passed, as well as whether 'seeked' happened.
 
-A 'looped_flag' is used by internal processing immediately after the loop. See also [Animation.LoopedFlag].
+A 'looped_flag' is used by internal processing immediately after the loop.
 */
 func (self Expanded) BlendAnimation(animation string, time Float.X, delta Float.X, seeked bool, is_external_seeking bool, blend Float.X, looped_flag Animation.LoopedFlag) { //gd:AnimationNode.blend_animation
 	Advanced(self).BlendAnimation(String.Name(String.New(animation)), float64(time), float64(delta), seeked, is_external_seeking, float64(blend), looped_flag)
@@ -409,14 +409,14 @@ func (self Expanded) BlendNode(name string, node Instance, time Float.X, seek bo
 }
 
 /*
-Blend an input. This is only useful for animation nodes created for an [graphics.gd/classdb/AnimationNodeBlendTree]. The 'time' parameter is a relative delta, unless 'seek' is true, in which case it is absolute. A filter mode may be optionally passed (see [FilterAction] for options).
+Blends an input. This is only useful for animation nodes created for an [graphics.gd/classdb/AnimationNodeBlendTree]. The 'time' parameter is a relative delta, unless 'seek' is true, in which case it is absolute. A filter mode may be optionally passed.
 */
 func (self Instance) BlendInput(input_index int, time Float.X, seek bool, is_external_seeking bool, blend Float.X) Float.X { //gd:AnimationNode.blend_input
 	return Float.X(Float.X(Advanced(self).BlendInput(int64(input_index), float64(time), seek, is_external_seeking, float64(blend), 0, true, false)))
 }
 
 /*
-Blend an input. This is only useful for animation nodes created for an [graphics.gd/classdb/AnimationNodeBlendTree]. The 'time' parameter is a relative delta, unless 'seek' is true, in which case it is absolute. A filter mode may be optionally passed (see [FilterAction] for options).
+Blends an input. This is only useful for animation nodes created for an [graphics.gd/classdb/AnimationNodeBlendTree]. The 'time' parameter is a relative delta, unless 'seek' is true, in which case it is absolute. A filter mode may be optionally passed.
 */
 func (self Expanded) BlendInput(input_index int, time Float.X, seek bool, is_external_seeking bool, blend Float.X, filter FilterAction, sync bool, test_only bool) Float.X { //gd:AnimationNode.blend_input
 	return Float.X(Float.X(Advanced(self).BlendInput(int64(input_index), float64(time), seek, is_external_seeking, float64(blend), filter, sync, test_only)))
@@ -731,9 +731,9 @@ func (self class) IsProcessTesting() bool { //gd:AnimationNode.is_process_testin
 }
 
 /*
-Blend an animation by 'blend' amount (name must be valid in the linked [graphics.gd/classdb/AnimationPlayer]). A 'time' and 'delta' may be passed, as well as whether 'seeked' happened.
+Blends an animation by 'blend' amount (name must be valid in the linked [graphics.gd/classdb/AnimationPlayer]). A 'time' and 'delta' may be passed, as well as whether 'seeked' happened.
 
-A 'looped_flag' is used by internal processing immediately after the loop. See also [Animation.LoopedFlag].
+A 'looped_flag' is used by internal processing immediately after the loop.
 */
 //go:nosplit
 func (self class) BlendAnimation(animation String.Name, time float64, delta float64, seeked bool, is_external_seeking bool, blend float64, looped_flag Animation.LoopedFlag) { //gd:AnimationNode.blend_animation
@@ -769,7 +769,7 @@ func (self class) BlendNode(name String.Name, node [1]gdclass.AnimationNode, tim
 }
 
 /*
-Blend an input. This is only useful for animation nodes created for an [graphics.gd/classdb/AnimationNodeBlendTree]. The 'time' parameter is a relative delta, unless 'seek' is true, in which case it is absolute. A filter mode may be optionally passed (see [FilterAction] for options).
+Blends an input. This is only useful for animation nodes created for an [graphics.gd/classdb/AnimationNodeBlendTree]. The 'time' parameter is a relative delta, unless 'seek' is true, in which case it is absolute. A filter mode may be optionally passed.
 */
 //go:nosplit
 func (self class) BlendInput(input_index int64, time float64, seek bool, is_external_seeking bool, blend float64, filter FilterAction, sync bool, test_only bool) float64 { //gd:AnimationNode.blend_input

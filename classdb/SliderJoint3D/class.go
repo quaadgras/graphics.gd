@@ -101,14 +101,14 @@ type Any interface {
 }
 
 /*
-Assigns 'value' to the given parameter (see [Param] constants).
+Assigns 'value' to the given parameter.
 */
 func (self Instance) SetParam(param Param, value Float.X) { //gd:SliderJoint3D.set_param
 	Advanced(self).SetParam(param, float64(value))
 }
 
 /*
-Returns the value of the given parameter (see [Param] constants).
+Returns the value of the given parameter.
 */
 func (self Instance) GetParam(param Param) Float.X { //gd:SliderJoint3D.get_param
 	return Float.X(Float.X(Advanced(self).GetParam(param)))
@@ -157,7 +157,7 @@ func New() Instance {
 }
 
 /*
-Assigns 'value' to the given parameter (see [Param] constants).
+Assigns 'value' to the given parameter.
 */
 //go:nosplit
 func (self class) SetParam(param Param, value float64) { //gd:SliderJoint3D.set_param
@@ -168,7 +168,7 @@ func (self class) SetParam(param Param, value float64) { //gd:SliderJoint3D.set_
 }
 
 /*
-Returns the value of the given parameter (see [Param] constants).
+Returns the value of the given parameter.
 */
 //go:nosplit
 func (self class) GetParam(param Param) float64 { //gd:SliderJoint3D.get_param

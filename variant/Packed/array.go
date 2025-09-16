@@ -93,6 +93,18 @@ func (array Array[T]) RemoveAt(idx int) { //gd:PackedArray.remove_at
 	GenericArray.Remove((GenericArray.Contains[T])(array), idx)
 }
 
+// Erase Removes the first occurrence of a value from the array and returns true. If the value does not exist in the array, nothing
+// happens and false is returned. To remove an element by index, use [Array.RemoveAt] instead.
+func (array *Array[T]) Erase(value T) bool { //gd:PackedArray.erase
+	for i := 0; i < array.Len(); i++ {
+		if array.Index(i) == value {
+			array.RemoveAt(i)
+			return true
+		}
+	}
+	return false
+}
+
 // Resize sets the size of the array. If the array is grown, reserves elements at the end of the array.
 // If the array is shrunk, truncates the array to the new size. Calling resize once and assigning the
 // new values is faster than adding new elements one by one.

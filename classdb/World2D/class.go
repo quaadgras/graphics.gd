@@ -76,8 +76,8 @@ var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
 	get_canvas             gdextension.MethodForClass `hash:"2944877500"`
-	get_space              gdextension.MethodForClass `hash:"2944877500"`
 	get_navigation_map     gdextension.MethodForClass `hash:"2944877500"`
+	get_space              gdextension.MethodForClass `hash:"2944877500"`
 	get_direct_space_state gdextension.MethodForClass `hash:"2506717822"`
 }
 
@@ -148,12 +148,12 @@ func (self Instance) Canvas() RID.Any {
 	return RID.Any(RID.Any(class(self).GetCanvas()))
 }
 
-func (self Instance) Space() RID.Any {
-	return RID.Any(RID.Any(class(self).GetSpace()))
-}
-
 func (self Instance) NavigationMap() RID.Any {
 	return RID.Any(RID.Any(class(self).GetNavigationMap()))
+}
+
+func (self Instance) Space() RID.Any {
+	return RID.Any(RID.Any(class(self).GetSpace()))
 }
 
 func (self Instance) DirectSpaceState() PhysicsDirectSpaceState2D.Instance {
@@ -168,15 +168,15 @@ func (self class) GetCanvas() RID.Any { //gd:World2D.get_canvas
 }
 
 //go:nosplit
-func (self class) GetSpace() RID.Any { //gd:World2D.get_space
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_space, gdextension.SizeRID, &struct{}{})
+func (self class) GetNavigationMap() RID.Any { //gd:World2D.get_navigation_map
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
-func (self class) GetNavigationMap() RID.Any { //gd:World2D.get_navigation_map
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID, &struct{}{})
+func (self class) GetSpace() RID.Any { //gd:World2D.get_space
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_space, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }

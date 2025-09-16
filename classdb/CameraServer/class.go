@@ -5,7 +5,7 @@ The [graphics.gd/classdb/CameraServer] keeps track of different cameras accessib
 
 It is notably used to provide AR modules with a video feed from the camera.
 
-Note: This class is currently only implemented on Linux, macOS, and iOS. On other platforms no [graphics.gd/classdb/CameraFeed]s will be available. To get a [graphics.gd/classdb/CameraFeed] on iOS, the camera plugin from [godot-ios-plugins] is required.
+Note: This class is currently only implemented on Linux, Android, macOS, and iOS. On other platforms no [graphics.gd/classdb/CameraFeed]s will be available. To get a [graphics.gd/classdb/CameraFeed] on iOS, the camera plugin from [godot-ios-plugins] is required.
 
 [godot-ios-plugins]: https://github.com/godotengine/godot-ios-plugins
 */
@@ -81,11 +81,13 @@ type Instance [1]gdclass.CameraServer
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	get_feed       gdextension.MethodForClass `hash:"361927068"`
-	get_feed_count gdextension.MethodForClass `hash:"2455072627"`
-	feeds          gdextension.MethodForClass `hash:"2915620761"`
-	add_feed       gdextension.MethodForClass `hash:"3204782488"`
-	remove_feed    gdextension.MethodForClass `hash:"3204782488"`
+	set_monitoring_feeds gdextension.MethodForClass `hash:"2586408642"`
+	is_monitoring_feeds  gdextension.MethodForClass `hash:"36873697"`
+	get_feed             gdextension.MethodForClass `hash:"361927068"`
+	get_feed_count       gdextension.MethodForClass `hash:"2455072627"`
+	feeds                gdextension.MethodForClass `hash:"2915620761"`
+	add_feed             gdextension.MethodForClass `hash:"3204782488"`
+	remove_feed          gdextension.MethodForClass `hash:"3204782488"`
 }
 
 func init() {
@@ -170,6 +172,28 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
+func MonitoringFeeds() bool {
+	once.Do(singleton)
+	return bool(class(self).IsMonitoringFeeds())
+}
+
+func SetMonitoringFeeds(value bool) {
+	once.Do(singleton)
+	class(self).SetMonitoringFeeds(value)
+}
+
+//go:nosplit
+func (self class) SetMonitoringFeeds(is_monitoring_feeds bool) { //gd:CameraServer.set_monitoring_feeds
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_monitoring_feeds, 0|(gdextension.SizeBool<<4), &struct{ is_monitoring_feeds bool }{is_monitoring_feeds})
+}
+
+//go:nosplit
+func (self class) IsMonitoringFeeds() bool { //gd:CameraServer.is_monitoring_feeds
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monitoring_feeds, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
 /*
 Returns the [graphics.gd/classdb/CameraFeed] corresponding to the camera with the given 'index'.
 */
@@ -237,6 +261,18 @@ func OnCameraFeedRemoved(cb func(id int), flags ...Signal.Flags) {
 
 func (self class) CameraFeedRemoved() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CameraFeedRemoved`))))
+}
+
+func OnCameraFeedsUpdated(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("camera_feeds_updated"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) CameraFeedsUpdated() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CameraFeedsUpdated`))))
 }
 
 func (self class) Virtual(name string) reflect.Value {

@@ -129,6 +129,7 @@ var methods struct {
 	is_show_rest_only                         gdextension.MethodForClass `hash:"36873697"`
 	set_modifier_callback_mode_process        gdextension.MethodForClass `hash:"3916362634"`
 	get_modifier_callback_mode_process        gdextension.MethodForClass `hash:"997182536"`
+	advance                                   gdextension.MethodForClass `hash:"373806689"`
 	clear_bones_global_pose_override          gdextension.MethodForClass `hash:"3218959716"`
 	set_bone_global_pose_override             gdextension.MethodForClass `hash:"3483398371"`
 	get_bone_global_pose_override             gdextension.MethodForClass `hash:"1965739696"`
@@ -194,28 +195,28 @@ func (self Instance) SetBoneName(bone_idx int, name string) { //gd:Skeleton3D.se
 }
 
 /*
-Returns bone metadata for 'bone_idx' with 'key'.
+Returns the metadata for the bone at index 'bone_idx' with 'key'.
 */
 func (self Instance) GetBoneMeta(bone_idx int, key string) any { //gd:Skeleton3D.get_bone_meta
 	return any(Advanced(self).GetBoneMeta(int64(bone_idx), String.Name(String.New(key))).Interface())
 }
 
 /*
-Returns a list of all metadata keys for 'bone_idx'.
+Returns the list of all metadata keys for the bone at index 'bone_idx'.
 */
 func (self Instance) GetBoneMetaList(bone_idx int) []string { //gd:Skeleton3D.get_bone_meta_list
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetBoneMetaList(int64(bone_idx)))))
 }
 
 /*
-Returns whether there exists any bone metadata for 'bone_idx' with key 'key'.
+Returns true if the bone at index 'bone_idx' has metadata with the key 'key'.
 */
 func (self Instance) HasBoneMeta(bone_idx int, key string) bool { //gd:Skeleton3D.has_bone_meta
 	return bool(Advanced(self).HasBoneMeta(int64(bone_idx), String.Name(String.New(key))))
 }
 
 /*
-Sets bone metadata for 'bone_idx', will set the 'key' meta to 'value'.
+Sets the metadata for the bone at index 'bone_idx', setting the 'key' meta to 'value'.
 */
 func (self Instance) SetBoneMeta(bone_idx int, key string, value any) { //gd:Skeleton3D.set_bone_meta
 	Advanced(self).SetBoneMeta(int64(bone_idx), String.Name(String.New(key)), variant.New(value))
@@ -458,6 +459,15 @@ func (self Instance) ForceUpdateBoneChildTransform(bone_idx int) { //gd:Skeleton
 }
 
 /*
+Manually advance the child [graphics.gd/classdb/SkeletonModifier3D]s by the specified time (in seconds).
+
+Note: The 'delta' is temporarily accumulated in the [graphics.gd/classdb/Skeleton3D], and the deferred process uses the accumulated value to process the modification.
+*/
+func (self Instance) Advance(delta Float.X) { //gd:Skeleton3D.advance
+	Advanced(self).Advance(float64(delta))
+}
+
+/*
 Removes the global pose override on all bones in the skeleton.
 */
 func (self Instance) ClearBonesGlobalPoseOverride() { //gd:Skeleton3D.clear_bones_global_pose_override
@@ -661,7 +671,7 @@ func (self class) SetBoneName(bone_idx int64, name String.Readable) { //gd:Skele
 }
 
 /*
-Returns bone metadata for 'bone_idx' with 'key'.
+Returns the metadata for the bone at index 'bone_idx' with 'key'.
 */
 //go:nosplit
 func (self class) GetBoneMeta(bone_idx int64, key String.Name) variant.Any { //gd:Skeleton3D.get_bone_meta
@@ -674,7 +684,7 @@ func (self class) GetBoneMeta(bone_idx int64, key String.Name) variant.Any { //g
 }
 
 /*
-Returns a list of all metadata keys for 'bone_idx'.
+Returns the list of all metadata keys for the bone at index 'bone_idx'.
 */
 //go:nosplit
 func (self class) GetBoneMetaList(bone_idx int64) Array.Contains[String.Name] { //gd:Skeleton3D.get_bone_meta_list
@@ -684,7 +694,7 @@ func (self class) GetBoneMetaList(bone_idx int64) Array.Contains[String.Name] { 
 }
 
 /*
-Returns whether there exists any bone metadata for 'bone_idx' with key 'key'.
+Returns true if the bone at index 'bone_idx' has metadata with the key 'key'.
 */
 //go:nosplit
 func (self class) HasBoneMeta(bone_idx int64, key String.Name) bool { //gd:Skeleton3D.has_bone_meta
@@ -697,7 +707,7 @@ func (self class) HasBoneMeta(bone_idx int64, key String.Name) bool { //gd:Skele
 }
 
 /*
-Sets bone metadata for 'bone_idx', will set the 'key' meta to 'value'.
+Sets the metadata for the bone at index 'bone_idx', setting the 'key' meta to 'value'.
 */
 //go:nosplit
 func (self class) SetBoneMeta(bone_idx int64, key String.Name, value variant.Any) { //gd:Skeleton3D.set_bone_meta
@@ -1062,6 +1072,16 @@ func (self class) GetModifierCallbackModeProcess() ModifierCallbackModeProcess {
 }
 
 /*
+Manually advance the child [graphics.gd/classdb/SkeletonModifier3D]s by the specified time (in seconds).
+
+Note: The 'delta' is temporarily accumulated in the [graphics.gd/classdb/Skeleton3D], and the deferred process uses the accumulated value to process the modification.
+*/
+//go:nosplit
+func (self class) Advance(delta float64) { //gd:Skeleton3D.advance
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.advance, 0|(gdextension.SizeFloat<<4), &struct{ delta float64 }{delta})
+}
+
+/*
 Removes the global pose override on all bones in the skeleton.
 */
 //go:nosplit
@@ -1269,5 +1289,7 @@ const (
 	ModifierCallbackModeProcessPhysics ModifierCallbackModeProcess = 0
 	// Set a flag to process modification during process frames (see [Node.NotificationInternalProcess]).
 	ModifierCallbackModeProcessIdle ModifierCallbackModeProcess = 1
+	// Do not process modification. Use [Instance.Advance] to process the modification manually.
+	ModifierCallbackModeProcessManual ModifierCallbackModeProcess = 2
 )
 const NotificationUpdateSkeleton Object.Notification = 50 //gd:Skeleton3D.NOTIFICATION_UPDATE_SKELETON

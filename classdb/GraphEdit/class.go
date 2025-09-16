@@ -94,6 +94,7 @@ var methods struct {
 	get_connection_list                    gdextension.MethodForClass `hash:"3995934104"`
 	get_connection_count                   gdextension.MethodForClass `hash:"861718734"`
 	get_closest_connection_at_point        gdextension.MethodForClass `hash:"453879819"`
+	get_connection_list_from_node          gdextension.MethodForClass `hash:"3147814860"`
 	get_connections_intersecting_with_rect gdextension.MethodForClass `hash:"2709748719"`
 	clear_connections                      gdextension.MethodForClass `hash:"3218959716"`
 	force_connection_drag_end              gdextension.MethodForClass `hash:"3218959716"`
@@ -155,6 +156,8 @@ var methods struct {
 	is_showing_arrange_button              gdextension.MethodForClass `hash:"36873697"`
 	set_right_disconnects                  gdextension.MethodForClass `hash:"2586408642"`
 	is_right_disconnects_enabled           gdextension.MethodForClass `hash:"36873697"`
+	set_type_names                         gdextension.MethodForClass `hash:"4155329257"`
+	get_type_names                         gdextension.MethodForClass `hash:"3102165223"`
 	get_menu_hbox                          gdextension.MethodForClass `hash:"3590609951"`
 	arrange_nodes                          gdextension.MethodForClass `hash:"3218959716"`
 	set_selected                           gdextension.MethodForClass `hash:"1078189570"`
@@ -193,15 +196,15 @@ type Interface interface {
 	//
 	// func _is_in_input_hotzone(in_node, in_port, mouse_position):
 	//
-	//     var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
+	// var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
 	//
-	//     var port_pos = in_node.get_position() + in_node.get_input_port_position(in_port) - port_size / 2
+	// var port_pos = in_node.get_position() + in_node.get_input_port_position(in_port) - port_size / 2
 	//
-	//     var rect = Rect2(port_pos, port_size)
+	// var rect = Rect2(port_pos, port_size)
 	//
 	//
 	//
-	//     return rect.has_point(mouse_position)
+	// return rect.has_point(mouse_position)
 	//
 	//
 	IsInInputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool
@@ -213,15 +216,15 @@ type Interface interface {
 	//
 	// func _is_in_output_hotzone(in_node, in_port, mouse_position):
 	//
-	//     var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
+	// var port_size = Vector2(get_theme_constant("port_grab_distance_horizontal"), get_theme_constant("port_grab_distance_vertical"))
 	//
-	//     var port_pos = in_node.get_position() + in_node.get_output_port_position(in_port) - port_size / 2
+	// var port_pos = in_node.get_position() + in_node.get_output_port_position(in_port) - port_size / 2
 	//
-	//     var rect = Rect2(port_pos, port_size)
+	// var rect = Rect2(port_pos, port_size)
 	//
 	//
 	//
-	//     return rect.has_point(mouse_position)
+	// return rect.has_point(mouse_position)
 	//
 	//
 	IsInOutputHotzone(in_node Object.Instance, in_port int, mouse_position Vector2.XY) bool
@@ -239,7 +242,7 @@ type Interface interface {
 	//
 	// func _is_node_hover_valid(from, from_port, to, to_port):
 	//
-	//     return from != to
+	// return from != to
 	//
 	// [/gdscript]
 	//
@@ -249,7 +252,7 @@ type Interface interface {
 	//
 	// {
 	//
-	//     return fromNode != toNode;
+	// return fromNode != toNode;
 	//
 	// }
 	//
@@ -456,6 +459,17 @@ For example, getting a connection at a given mouse position can be achieved like
 */
 func (self Expanded) GetClosestConnectionAtPoint(point Vector2.XY, max_distance Float.X) Connection { //gd:GraphEdit.get_closest_connection_at_point
 	return Connection(gd.DictionaryAs[Connection](Advanced(self).GetClosestConnectionAtPoint(Vector2.XY(point), float64(max_distance))))
+}
+
+/*
+Returns an slice containing a list of all connections for 'node'.
+
+A connection is represented as a data structure in the form of:
+
+Example: Get all connections on a specific port:
+*/
+func (self Instance) GetConnectionListFromNode(node string) [][]Connection { //gd:GraphEdit.get_connection_list_from_node
+	return [][]Connection(gd.ArrayAs[[][]Connection](gd.InternalArray(Advanced(self).GetConnectionListFromNode(String.Name(String.New(node))))))
 }
 
 /*
@@ -702,6 +716,14 @@ func (self Instance) RightDisconnects() bool {
 
 func (self Instance) SetRightDisconnects(value bool) {
 	class(self).SetRightDisconnects(value)
+}
+
+func (self Instance) TypeNames() map[any]any {
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetTypeNames()))
+}
+
+func (self Instance) SetTypeNames(value map[any]any) {
+	class(self).SetTypeNames(gd.DictionaryFromMap(value))
 }
 
 func (self Instance) ConnectionLinesCurvature() Float.X {
@@ -1048,6 +1070,24 @@ func (self class) GetClosestConnectionAtPoint(point Vector2.XY, max_distance flo
 		max_distance float64
 	}{point, max_distance})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
+	return ret
+}
+
+/*
+Returns an slice containing a list of all connections for 'node'.
+
+A connection is represented as a data structure in the form of:
+
+
+
+Example: Get all connections on a specific port:
+
+
+*/
+//go:nosplit
+func (self class) GetConnectionListFromNode(node String.Name) Array.Contains[Dictionary.Any] { //gd:GraphEdit.get_connection_list_from_node
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_connection_list_from_node, gdextension.SizeArray|(gdextension.SizeStringName<<4), &struct{ node gdextension.StringName }{pointers.Get(gd.InternalStringName(node))})
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
@@ -1491,6 +1531,18 @@ func (self class) SetRightDisconnects(enable bool) { //gd:GraphEdit.set_right_di
 func (self class) IsRightDisconnectsEnabled() bool { //gd:GraphEdit.is_right_disconnects_enabled
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_right_disconnects_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetTypeNames(type_names Dictionary.Any) { //gd:GraphEdit.set_type_names
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_type_names, 0|(gdextension.SizeDictionary<<4), &struct{ type_names gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(type_names))})
+}
+
+//go:nosplit
+func (self class) GetTypeNames() Dictionary.Any { //gd:GraphEdit.get_type_names
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_type_names, gdextension.SizeDictionary, &struct{}{})
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 

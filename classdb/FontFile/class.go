@@ -142,6 +142,8 @@ var methods struct {
 	is_allow_system_fallback               gdextension.MethodForClass `hash:"36873697"`
 	set_force_autohinter                   gdextension.MethodForClass `hash:"2586408642"`
 	is_force_autohinter                    gdextension.MethodForClass `hash:"36873697"`
+	set_modulate_color_glyphs              gdextension.MethodForClass `hash:"2586408642"`
+	is_modulate_color_glyphs               gdextension.MethodForClass `hash:"36873697"`
 	set_hinting                            gdextension.MethodForClass `hash:"1827459492"`
 	get_hinting                            gdextension.MethodForClass `hash:"3683214614"`
 	set_subpixel_positioning               gdextension.MethodForClass `hash:"4225742182"`
@@ -342,14 +344,14 @@ func (self Instance) GetTransform(cache_index int) Transform2D.OriginXY { //gd:F
 }
 
 /*
-Sets the spacing for 'spacing' (see [TextServer.SpacingType]) to 'value' in pixels (not relative to the font size).
+Sets the spacing for 'spacing' to 'value' in pixels (not relative to the font size).
 */
 func (self Instance) SetExtraSpacing(cache_index int, spacing TextServer.SpacingType, value int) { //gd:FontFile.set_extra_spacing
 	Advanced(self).SetExtraSpacing(int64(cache_index), spacing, int64(value))
 }
 
 /*
-Returns spacing for 'spacing' (see [TextServer.SpacingType]) in pixels (not relative to the font size).
+Returns spacing for 'spacing' in pixels (not relative to the font size).
 */
 func (self Instance) GetExtraSpacing(cache_index int, spacing TextServer.SpacingType) int { //gd:FontFile.get_extra_spacing
 	return int(int(Advanced(self).GetExtraSpacing(int64(cache_index), spacing)))
@@ -772,7 +774,7 @@ func (self Instance) Data() []byte {
 }
 
 func (self Instance) SetData(value []byte) {
-	class(self).SetData(Packed.Bytes(Packed.New(value...)))
+	class(self).SetData(Packed.BytesFrom(value...))
 }
 
 func (self Instance) GenerateMipmaps() bool {
@@ -875,20 +877,20 @@ func (self Instance) SetForceAutohinter(value bool) {
 	class(self).SetForceAutohinter(value)
 }
 
+func (self Instance) ModulateColorGlyphs() bool {
+	return bool(class(self).IsModulateColorGlyphs())
+}
+
+func (self Instance) SetModulateColorGlyphs(value bool) {
+	class(self).SetModulateColorGlyphs(value)
+}
+
 func (self Instance) Hinting() TextServer.Hinting {
 	return TextServer.Hinting(class(self).GetHinting())
 }
 
 func (self Instance) SetHinting(value TextServer.Hinting) {
 	class(self).SetHinting(value)
-}
-
-func (self Instance) Oversampling() Float.X {
-	return Float.X(Float.X(class(self).GetOversampling()))
-}
-
-func (self Instance) SetOversampling(value Float.X) {
-	class(self).SetOversampling(float64(value))
 }
 
 func (self Instance) FixedSize() int {
@@ -913,6 +915,14 @@ func (self Instance) OpentypeFeatureOverrides() map[any]any {
 
 func (self Instance) SetOpentypeFeatureOverrides(value map[any]any) {
 	class(self).SetOpentypeFeatureOverrides(gd.DictionaryFromMap(value))
+}
+
+func (self Instance) Oversampling() Float.X {
+	return Float.X(Float.X(class(self).GetOversampling()))
+}
+
+func (self Instance) SetOversampling(value Float.X) {
+	class(self).SetOversampling(float64(value))
 }
 
 /*
@@ -941,13 +951,13 @@ func (self class) LoadDynamicFont(path String.Readable) Error.Code { //gd:FontFi
 
 //go:nosplit
 func (self class) SetData(data Packed.Bytes) { //gd:FontFile.set_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
 
 //go:nosplit
 func (self class) GetData() Packed.Bytes { //gd:FontFile.get_data
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -1092,6 +1102,18 @@ func (self class) SetForceAutohinter(force_autohinter bool) { //gd:FontFile.set_
 //go:nosplit
 func (self class) IsForceAutohinter() bool { //gd:FontFile.is_force_autohinter
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_force_autohinter, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetModulateColorGlyphs(modulate bool) { //gd:FontFile.set_modulate_color_glyphs
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate_color_glyphs, 0|(gdextension.SizeBool<<4), &struct{ modulate bool }{modulate})
+}
+
+//go:nosplit
+func (self class) IsModulateColorGlyphs() bool { //gd:FontFile.is_modulate_color_glyphs
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_modulate_color_glyphs, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1265,7 +1287,7 @@ func (self class) GetTransform(cache_index int64) Transform2D.OriginXY { //gd:Fo
 }
 
 /*
-Sets the spacing for 'spacing' (see [TextServer.SpacingType]) to 'value' in pixels (not relative to the font size).
+Sets the spacing for 'spacing' to 'value' in pixels (not relative to the font size).
 */
 //go:nosplit
 func (self class) SetExtraSpacing(cache_index int64, spacing TextServer.SpacingType, value int64) { //gd:FontFile.set_extra_spacing
@@ -1277,7 +1299,7 @@ func (self class) SetExtraSpacing(cache_index int64, spacing TextServer.SpacingT
 }
 
 /*
-Returns spacing for 'spacing' (see [TextServer.SpacingType]) in pixels (not relative to the font size).
+Returns spacing for 'spacing' in pixels (not relative to the font size).
 */
 //go:nosplit
 func (self class) GetExtraSpacing(cache_index int64, spacing TextServer.SpacingType) int64 { //gd:FontFile.get_extra_spacing

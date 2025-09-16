@@ -452,7 +452,7 @@ func (self class) GetAxis() Vector3.Axis { //gd:SpriteBase3D.get_axis
 }
 
 /*
-If true, the specified flag will be enabled. See [SpriteBase3D.DrawFlags] for a list of flags.
+If true, the specified flag will be enabled.
 */
 //go:nosplit
 func (self class) SetDrawFlag(flag DrawFlags, enabled bool) { //gd:SpriteBase3D.set_draw_flag

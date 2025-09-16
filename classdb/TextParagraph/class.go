@@ -83,6 +83,7 @@ var methods struct {
 	clear                        gdextension.MethodForClass `hash:"3218959716"`
 	set_direction                gdextension.MethodForClass `hash:"1418190634"`
 	get_direction                gdextension.MethodForClass `hash:"2516697328"`
+	get_inferred_direction       gdextension.MethodForClass `hash:"2516697328"`
 	set_custom_punctuation       gdextension.MethodForClass `hash:"83702148"`
 	get_custom_punctuation       gdextension.MethodForClass `hash:"201670096"`
 	set_orientation              gdextension.MethodForClass `hash:"42823726"`
@@ -115,6 +116,7 @@ var methods struct {
 	get_rid                      gdextension.MethodForClass `hash:"2944877500"`
 	get_line_rid                 gdextension.MethodForClass `hash:"495598643"`
 	get_dropcap_rid              gdextension.MethodForClass `hash:"2944877500"`
+	get_range                    gdextension.MethodForClass `hash:"3690982128"`
 	get_line_count               gdextension.MethodForClass `hash:"3905245786"`
 	set_max_lines_visible        gdextension.MethodForClass `hash:"1286410249"`
 	get_max_lines_visible        gdextension.MethodForClass `hash:"3905245786"`
@@ -131,12 +133,12 @@ var methods struct {
 	get_line_underline_thickness gdextension.MethodForClass `hash:"2339986948"`
 	get_dropcap_size             gdextension.MethodForClass `hash:"3341600327"`
 	get_dropcap_lines            gdextension.MethodForClass `hash:"3905245786"`
-	draw                         gdextension.MethodForClass `hash:"1567802413"`
-	draw_outline                 gdextension.MethodForClass `hash:"1893131224"`
-	draw_line                    gdextension.MethodForClass `hash:"1242169894"`
-	draw_line_outline            gdextension.MethodForClass `hash:"2664926980"`
-	draw_dropcap                 gdextension.MethodForClass `hash:"856975658"`
-	draw_dropcap_outline         gdextension.MethodForClass `hash:"1343401456"`
+	draw                         gdextension.MethodForClass `hash:"1492808103"`
+	draw_outline                 gdextension.MethodForClass `hash:"3820500590"`
+	draw_line                    gdextension.MethodForClass `hash:"828033758"`
+	draw_line_outline            gdextension.MethodForClass `hash:"2822696703"`
+	draw_dropcap                 gdextension.MethodForClass `hash:"3625105422"`
+	draw_dropcap_outline         gdextension.MethodForClass `hash:"2592177763"`
 	hit_test                     gdextension.MethodForClass `hash:"3820158470"`
 }
 
@@ -167,6 +169,13 @@ Clears text paragraph (removes text and inline objects).
 */
 func (self Instance) Clear() { //gd:TextParagraph.clear
 	Advanced(self).Clear()
+}
+
+/*
+Returns the text writing direction inferred by the BiDi algorithm.
+*/
+func (self Instance) GetInferredDirection() TextServer.Direction { //gd:TextParagraph.get_inferred_direction
+	return TextServer.Direction(Advanced(self).GetInferredDirection())
 }
 
 /*
@@ -284,6 +293,13 @@ func (self Instance) GetDropcapRid() RID.TextBuffer { //gd:TextParagraph.get_dro
 }
 
 /*
+Returns the character range of the paragraph.
+*/
+func (self Instance) GetRange() Vector2i.XY { //gd:TextParagraph.get_range
+	return Vector2i.XY(Advanced(self).GetRange())
+}
+
+/*
 Returns number of lines in the paragraph.
 */
 func (self Instance) GetLineCount() int { //gd:TextParagraph.get_line_count
@@ -368,87 +384,87 @@ func (self Instance) GetDropcapLines() int { //gd:TextParagraph.get_dropcap_line
 }
 
 /*
-Draw all lines of the text and drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw all lines of the text and drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 func (self Instance) Draw(canvas RID.Canvas, pos Vector2.XY) { //gd:TextParagraph.draw
-	Advanced(self).Draw(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(gd.Color{1, 1, 1, 1}), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).Draw(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(gd.Color{1, 1, 1, 1}), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
 }
 
 /*
-Draw all lines of the text and drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw all lines of the text and drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
-func (self Expanded) Draw(canvas RID.Canvas, pos Vector2.XY, color Color.RGBA, dc_color Color.RGBA) { //gd:TextParagraph.draw
-	Advanced(self).Draw(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(color), Color.RGBA(dc_color))
+func (self Expanded) Draw(canvas RID.Canvas, pos Vector2.XY, color Color.RGBA, dc_color Color.RGBA, oversampling Float.X) { //gd:TextParagraph.draw
+	Advanced(self).Draw(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(color), Color.RGBA(dc_color), float64(oversampling))
 }
 
 /*
-Draw outlines of all lines of the text and drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw outlines of all lines of the text and drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 func (self Instance) DrawOutline(canvas RID.Canvas, pos Vector2.XY) { //gd:TextParagraph.draw_outline
-	Advanced(self).DrawOutline(RID.Any(canvas), Vector2.XY(pos), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).DrawOutline(RID.Any(canvas), Vector2.XY(pos), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
 }
 
 /*
-Draw outlines of all lines of the text and drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw outlines of all lines of the text and drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
-func (self Expanded) DrawOutline(canvas RID.Canvas, pos Vector2.XY, outline_size int, color Color.RGBA, dc_color Color.RGBA) { //gd:TextParagraph.draw_outline
-	Advanced(self).DrawOutline(RID.Any(canvas), Vector2.XY(pos), int64(outline_size), Color.RGBA(color), Color.RGBA(dc_color))
+func (self Expanded) DrawOutline(canvas RID.Canvas, pos Vector2.XY, outline_size int, color Color.RGBA, dc_color Color.RGBA, oversampling Float.X) { //gd:TextParagraph.draw_outline
+	Advanced(self).DrawOutline(RID.Any(canvas), Vector2.XY(pos), int64(outline_size), Color.RGBA(color), Color.RGBA(dc_color), float64(oversampling))
 }
 
 /*
-Draw single line of text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw single line of text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 func (self Instance) DrawLine(canvas RID.Canvas, pos Vector2.XY, line int) { //gd:TextParagraph.draw_line
-	Advanced(self).DrawLine(RID.Any(canvas), Vector2.XY(pos), int64(line), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).DrawLine(RID.Any(canvas), Vector2.XY(pos), int64(line), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
 }
 
 /*
-Draw single line of text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw single line of text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
-func (self Expanded) DrawLine(canvas RID.Canvas, pos Vector2.XY, line int, color Color.RGBA) { //gd:TextParagraph.draw_line
-	Advanced(self).DrawLine(RID.Any(canvas), Vector2.XY(pos), int64(line), Color.RGBA(color))
+func (self Expanded) DrawLine(canvas RID.Canvas, pos Vector2.XY, line int, color Color.RGBA, oversampling Float.X) { //gd:TextParagraph.draw_line
+	Advanced(self).DrawLine(RID.Any(canvas), Vector2.XY(pos), int64(line), Color.RGBA(color), float64(oversampling))
 }
 
 /*
-Draw outline of the single line of text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw outline of the single line of text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 func (self Instance) DrawLineOutline(canvas RID.Canvas, pos Vector2.XY, line int) { //gd:TextParagraph.draw_line_outline
-	Advanced(self).DrawLineOutline(RID.Any(canvas), Vector2.XY(pos), int64(line), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).DrawLineOutline(RID.Any(canvas), Vector2.XY(pos), int64(line), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
 }
 
 /*
-Draw outline of the single line of text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw outline of the single line of text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
-func (self Expanded) DrawLineOutline(canvas RID.Canvas, pos Vector2.XY, line int, outline_size int, color Color.RGBA) { //gd:TextParagraph.draw_line_outline
-	Advanced(self).DrawLineOutline(RID.Any(canvas), Vector2.XY(pos), int64(line), int64(outline_size), Color.RGBA(color))
+func (self Expanded) DrawLineOutline(canvas RID.Canvas, pos Vector2.XY, line int, outline_size int, color Color.RGBA, oversampling Float.X) { //gd:TextParagraph.draw_line_outline
+	Advanced(self).DrawLineOutline(RID.Any(canvas), Vector2.XY(pos), int64(line), int64(outline_size), Color.RGBA(color), float64(oversampling))
 }
 
 /*
-Draw drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 func (self Instance) DrawDropcap(canvas RID.Canvas, pos Vector2.XY) { //gd:TextParagraph.draw_dropcap
-	Advanced(self).DrawDropcap(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).DrawDropcap(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
 }
 
 /*
-Draw drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
-func (self Expanded) DrawDropcap(canvas RID.Canvas, pos Vector2.XY, color Color.RGBA) { //gd:TextParagraph.draw_dropcap
-	Advanced(self).DrawDropcap(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(color))
+func (self Expanded) DrawDropcap(canvas RID.Canvas, pos Vector2.XY, color Color.RGBA, oversampling Float.X) { //gd:TextParagraph.draw_dropcap
+	Advanced(self).DrawDropcap(RID.Any(canvas), Vector2.XY(pos), Color.RGBA(color), float64(oversampling))
 }
 
 /*
-Draw drop cap outline into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw drop cap outline into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 func (self Instance) DrawDropcapOutline(canvas RID.Canvas, pos Vector2.XY) { //gd:TextParagraph.draw_dropcap_outline
-	Advanced(self).DrawDropcapOutline(RID.Any(canvas), Vector2.XY(pos), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).DrawDropcapOutline(RID.Any(canvas), Vector2.XY(pos), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
 }
 
 /*
-Draw drop cap outline into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw drop cap outline into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
-func (self Expanded) DrawDropcapOutline(canvas RID.Canvas, pos Vector2.XY, outline_size int, color Color.RGBA) { //gd:TextParagraph.draw_dropcap_outline
-	Advanced(self).DrawDropcapOutline(RID.Any(canvas), Vector2.XY(pos), int64(outline_size), Color.RGBA(color))
+func (self Expanded) DrawDropcapOutline(canvas RID.Canvas, pos Vector2.XY, outline_size int, color Color.RGBA, oversampling Float.X) { //gd:TextParagraph.draw_dropcap_outline
+	Advanced(self).DrawDropcapOutline(RID.Any(canvas), Vector2.XY(pos), int64(outline_size), Color.RGBA(color), float64(oversampling))
 }
 
 /*
@@ -621,6 +637,16 @@ func (self class) SetDirection(direction TextServer.Direction) { //gd:TextParagr
 //go:nosplit
 func (self class) GetDirection() TextServer.Direction { //gd:TextParagraph.get_direction
 	var r_ret = gdextension.Call[TextServer.Direction](gd.ObjectChecked(self.AsObject()), methods.get_direction, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the text writing direction inferred by the BiDi algorithm.
+*/
+//go:nosplit
+func (self class) GetInferredDirection() TextServer.Direction { //gd:TextParagraph.get_inferred_direction
+	var r_ret = gdextension.Call[TextServer.Direction](gd.ObjectChecked(self.AsObject()), methods.get_inferred_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -887,6 +913,16 @@ func (self class) GetDropcapRid() RID.Any { //gd:TextParagraph.get_dropcap_rid
 }
 
 /*
+Returns the character range of the paragraph.
+*/
+//go:nosplit
+func (self class) GetRange() Vector2i.XY { //gd:TextParagraph.get_range
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_range, gdextension.SizeVector2i, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
 Returns number of lines in the paragraph.
 */
 //go:nosplit
@@ -1034,82 +1070,88 @@ func (self class) GetDropcapLines() int64 { //gd:TextParagraph.get_dropcap_lines
 }
 
 /*
-Draw all lines of the text and drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw all lines of the text and drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 //go:nosplit
-func (self class) Draw(canvas RID.Any, pos Vector2.XY, color Color.RGBA, dc_color Color.RGBA) { //gd:TextParagraph.draw
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeColor<<16), &struct {
-		canvas   RID.Any
-		pos      Vector2.XY
-		color    Color.RGBA
-		dc_color Color.RGBA
-	}{canvas, pos, color, dc_color})
+func (self class) Draw(canvas RID.Any, pos Vector2.XY, color Color.RGBA, dc_color Color.RGBA, oversampling float64) { //gd:TextParagraph.draw
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeFloat<<20), &struct {
+		canvas       RID.Any
+		pos          Vector2.XY
+		color        Color.RGBA
+		dc_color     Color.RGBA
+		oversampling float64
+	}{canvas, pos, color, dc_color, oversampling})
 }
 
 /*
-Draw outlines of all lines of the text and drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw outlines of all lines of the text and drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 //go:nosplit
-func (self class) DrawOutline(canvas RID.Any, pos Vector2.XY, outline_size int64, color Color.RGBA, dc_color Color.RGBA) { //gd:TextParagraph.draw_outline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeColor<<20), &struct {
+func (self class) DrawOutline(canvas RID.Any, pos Vector2.XY, outline_size int64, color Color.RGBA, dc_color Color.RGBA, oversampling float64) { //gd:TextParagraph.draw_outline
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeFloat<<24), &struct {
 		canvas       RID.Any
 		pos          Vector2.XY
 		outline_size int64
 		color        Color.RGBA
 		dc_color     Color.RGBA
-	}{canvas, pos, outline_size, color, dc_color})
+		oversampling float64
+	}{canvas, pos, outline_size, color, dc_color, oversampling})
 }
 
 /*
-Draw single line of text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw single line of text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 //go:nosplit
-func (self class) DrawLine(canvas RID.Any, pos Vector2.XY, line int64, color Color.RGBA) { //gd:TextParagraph.draw_line
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16), &struct {
-		canvas RID.Any
-		pos    Vector2.XY
-		line   int64
-		color  Color.RGBA
-	}{canvas, pos, line, color})
+func (self class) DrawLine(canvas RID.Any, pos Vector2.XY, line int64, color Color.RGBA, oversampling float64) { //gd:TextParagraph.draw_line
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeFloat<<20), &struct {
+		canvas       RID.Any
+		pos          Vector2.XY
+		line         int64
+		color        Color.RGBA
+		oversampling float64
+	}{canvas, pos, line, color, oversampling})
 }
 
 /*
-Draw outline of the single line of text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw outline of the single line of text into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 //go:nosplit
-func (self class) DrawLineOutline(canvas RID.Any, pos Vector2.XY, line int64, outline_size int64, color Color.RGBA) { //gd:TextParagraph.draw_line_outline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_line_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeColor<<20), &struct {
+func (self class) DrawLineOutline(canvas RID.Any, pos Vector2.XY, line int64, outline_size int64, color Color.RGBA, oversampling float64) { //gd:TextParagraph.draw_line_outline
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_line_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeFloat<<24), &struct {
 		canvas       RID.Any
 		pos          Vector2.XY
 		line         int64
 		outline_size int64
 		color        Color.RGBA
-	}{canvas, pos, line, outline_size, color})
+		oversampling float64
+	}{canvas, pos, line, outline_size, color, oversampling})
 }
 
 /*
-Draw drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw drop cap into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 //go:nosplit
-func (self class) DrawDropcap(canvas RID.Any, pos Vector2.XY, color Color.RGBA) { //gd:TextParagraph.draw_dropcap
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_dropcap, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12), &struct {
-		canvas RID.Any
-		pos    Vector2.XY
-		color  Color.RGBA
-	}{canvas, pos, color})
+func (self class) DrawDropcap(canvas RID.Any, pos Vector2.XY, color Color.RGBA, oversampling float64) { //gd:TextParagraph.draw_dropcap
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_dropcap, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeFloat<<16), &struct {
+		canvas       RID.Any
+		pos          Vector2.XY
+		color        Color.RGBA
+		oversampling float64
+	}{canvas, pos, color, oversampling})
 }
 
 /*
-Draw drop cap outline into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box.
+Draw drop cap outline into a canvas item at a given position, with 'color'. 'pos' specifies the top left corner of the bounding box. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 */
 //go:nosplit
-func (self class) DrawDropcapOutline(canvas RID.Any, pos Vector2.XY, outline_size int64, color Color.RGBA) { //gd:TextParagraph.draw_dropcap_outline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_dropcap_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16), &struct {
+func (self class) DrawDropcapOutline(canvas RID.Any, pos Vector2.XY, outline_size int64, color Color.RGBA, oversampling float64) { //gd:TextParagraph.draw_dropcap_outline
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_dropcap_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeFloat<<20), &struct {
 		canvas       RID.Any
 		pos          Vector2.XY
 		outline_size int64
 		color        Color.RGBA
-	}{canvas, pos, outline_size, color})
+		oversampling float64
+	}{canvas, pos, outline_size, color, oversampling})
 }
 
 /*

@@ -112,7 +112,7 @@ Registers a top level path to which profiles can be bound. For instance /user/ha
 
 'display_name' is the name shown to the user. 'openxr_path' is the top level path being registered. 'openxr_extension_name' is optional and ensures the top level path is only used if the specified extension is available/enabled.
 
-When a top level path ends up being bound by OpenXR, a [graphics.gd/classdb/XRPositionalTracker] is instantiated to manage the state of the device.
+When a top level path ends up being bound by OpenXR, an [graphics.gd/classdb/XRPositionalTracker] is instantiated to manage the state of the device.
 */
 func (self Instance) RegisterTopLevelPath(display_name string, openxr_path string, openxr_extension_name string) { //gd:OpenXRInteractionProfileMetadata.register_top_level_path
 	Advanced(self).RegisterTopLevelPath(String.New(display_name), String.New(openxr_path), String.New(openxr_extension_name))
@@ -192,7 +192,7 @@ Registers a top level path to which profiles can be bound. For instance /user/ha
 
 'display_name' is the name shown to the user. 'openxr_path' is the top level path being registered. 'openxr_extension_name' is optional and ensures the top level path is only used if the specified extension is available/enabled.
 
-When a top level path ends up being bound by OpenXR, a [graphics.gd/classdb/XRPositionalTracker] is instantiated to manage the state of the device.
+When a top level path ends up being bound by OpenXR, an [graphics.gd/classdb/XRPositionalTracker] is instantiated to manage the state of the device.
 */
 //go:nosplit
 func (self class) RegisterTopLevelPath(display_name String.Readable, openxr_path String.Readable, openxr_extension_name String.Readable) { //gd:OpenXRInteractionProfileMetadata.register_top_level_path

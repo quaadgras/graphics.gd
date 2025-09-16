@@ -170,7 +170,7 @@ type Any interface {
 /*
 Create a new action. After this is called, do all your calls to [Instance.AddDoMethod], [Instance.AddUndoMethod], [Instance.AddDoProperty], and [Instance.AddUndoProperty], then commit the action with [Instance.CommitAction].
 
-The way actions are merged is dictated by 'merge_mode'. See [MergeMode] for details.
+The way actions are merged is dictated by 'merge_mode'.
 
 The way undo operation are ordered in actions is dictated by 'backward_undo_ops'. When 'backward_undo_ops' is false undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
@@ -181,7 +181,7 @@ func (self Instance) CreateAction(name string) { //gd:UndoRedo.create_action
 /*
 Create a new action. After this is called, do all your calls to [Instance.AddDoMethod], [Instance.AddUndoMethod], [Instance.AddDoProperty], and [Instance.AddUndoProperty], then commit the action with [Instance.CommitAction].
 
-The way actions are merged is dictated by 'merge_mode'. See [MergeMode] for details.
+The way actions are merged is dictated by 'merge_mode'.
 
 The way undo operation are ordered in actions is dictated by 'backward_undo_ops'. When 'backward_undo_ops' is false undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */
@@ -406,7 +406,7 @@ func (self Instance) SetMaxSteps(value int) {
 /*
 Create a new action. After this is called, do all your calls to [Instance.AddDoMethod], [Instance.AddUndoMethod], [Instance.AddDoProperty], and [Instance.AddUndoProperty], then commit the action with [Instance.CommitAction].
 
-The way actions are merged is dictated by 'merge_mode'. See [MergeMode] for details.
+The way actions are merged is dictated by 'merge_mode'.
 
 The way undo operation are ordered in actions is dictated by 'backward_undo_ops'. When 'backward_undo_ops' is false undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
 */

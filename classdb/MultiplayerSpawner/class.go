@@ -218,7 +218,7 @@ func (self Instance) SetSpawnLimit(value int) {
 }
 
 func (self Instance) SpawnFunction() Callable.Function {
-	return Callable.Function(class(self).GetSpawnFunction())
+	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(class(self).GetSpawnFunction())))
 }
 
 func (self Instance) SetSpawnFunction(value Callable.Function) {

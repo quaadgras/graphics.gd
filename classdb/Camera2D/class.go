@@ -7,7 +7,7 @@ Cameras register themselves in the nearest [graphics.gd/classdb/Viewport] node (
 
 This node is intended to be a simple helper to get things going quickly, but more functionality may be desired to change how the camera works. To make your own custom camera node, inherit it from [graphics.gd/classdb/Node2D] and change the transform of the canvas by setting [graphics.gd/classdb/Viewport.Instance.CanvasTransform] in [graphics.gd/classdb/Viewport] (you can obtain the current [graphics.gd/classdb/Viewport] by using [graphics.gd/classdb/Node.Instance.GetViewport]).
 
-Note that the [graphics.gd/classdb/Camera2D] node's position doesn't represent the actual position of the screen, which may differ due to applied smoothing or limits. You can use [Instance.GetScreenCenterPosition] to get the real position.
+Note that the [graphics.gd/classdb/Camera2D] node's [graphics.gd/classdb/Node2D.Instance.GlobalPosition] doesn't represent the actual position of the screen, which may differ due to applied smoothing or limits. You can use [Instance.GetScreenCenterPosition] to get the real position. Same for the node's [graphics.gd/classdb/Node2D.Instance.GlobalRotation] which may be different due to applied rotation smoothing. You can use [Instance.GetScreenRotation] to get the current rotation of the screen.
 */
 package Camera2D
 
@@ -96,6 +96,8 @@ var methods struct {
 	is_enabled                     gdextension.MethodForClass `hash:"36873697"`
 	make_current                   gdextension.MethodForClass `hash:"3218959716"`
 	is_current                     gdextension.MethodForClass `hash:"36873697"`
+	set_limit_enabled              gdextension.MethodForClass `hash:"2586408642"`
+	is_limit_enabled               gdextension.MethodForClass `hash:"36873697"`
 	set_limit                      gdextension.MethodForClass `hash:"437707142"`
 	get_limit                      gdextension.MethodForClass `hash:"1983885014"`
 	set_limit_smoothing_enabled    gdextension.MethodForClass `hash:"2586408642"`
@@ -112,6 +114,7 @@ var methods struct {
 	get_drag_margin                gdextension.MethodForClass `hash:"2869120046"`
 	get_target_position            gdextension.MethodForClass `hash:"3341600327"`
 	get_screen_center_position     gdextension.MethodForClass `hash:"3341600327"`
+	get_screen_rotation            gdextension.MethodForClass `hash:"1740695150"`
 	set_zoom                       gdextension.MethodForClass `hash:"743155724"`
 	get_zoom                       gdextension.MethodForClass `hash:"3341600327"`
 	set_custom_viewport            gdextension.MethodForClass `hash:"1078189570"`
@@ -185,6 +188,15 @@ Note: The exact targeted position of the camera may be different. See [Instance.
 */
 func (self Instance) GetScreenCenterPosition() Vector2.XY { //gd:Camera2D.get_screen_center_position
 	return Vector2.XY(Advanced(self).GetScreenCenterPosition())
+}
+
+/*
+Returns the current screen rotation from this camera's point of view.
+
+Note: The screen rotation can be different from [graphics.gd/classdb/Node2D.Instance.GlobalRotation] if the camera is rotating smoothly due to [Instance.RotationSmoothingEnabled].
+*/
+func (self Instance) GetScreenRotation() Float.X { //gd:Camera2D.get_screen_rotation
+	return Float.X(Float.X(Advanced(self).GetScreenRotation()))
 }
 
 /*
@@ -306,6 +318,14 @@ func (self Instance) ProcessCallback() Camera2DProcessCallback {
 
 func (self Instance) SetProcessCallback(value Camera2DProcessCallback) {
 	class(self).SetProcessCallback(value)
+}
+
+func (self Instance) LimitEnabled() bool {
+	return bool(class(self).IsLimitEnabled())
+}
+
+func (self Instance) SetLimitEnabled(value bool) {
+	class(self).SetLimitEnabled(value)
 }
 
 func (self Instance) LimitLeft() int {
@@ -546,6 +566,18 @@ func (self class) IsCurrent() bool { //gd:Camera2D.is_current
 	return ret
 }
 
+//go:nosplit
+func (self class) SetLimitEnabled(limit_enabled bool) { //gd:Camera2D.set_limit_enabled
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_enabled, 0|(gdextension.SizeBool<<4), &struct{ limit_enabled bool }{limit_enabled})
+}
+
+//go:nosplit
+func (self class) IsLimitEnabled() bool { //gd:Camera2D.is_limit_enabled
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_limit_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
 /*
 Sets the camera limit for the specified [Side]. See also [Instance.LimitBottom], [Instance.LimitTop], [Instance.LimitLeft], and [Instance.LimitRight].
 */
@@ -672,6 +704,18 @@ func (self class) GetScreenCenterPosition() Vector2.XY { //gd:Camera2D.get_scree
 	return ret
 }
 
+/*
+Returns the current screen rotation from this camera's point of view.
+
+Note: The screen rotation can be different from [graphics.gd/classdb/Node2D.Instance.GlobalRotation] if the camera is rotating smoothly due to [Instance.RotationSmoothingEnabled].
+*/
+//go:nosplit
+func (self class) GetScreenRotation() float64 { //gd:Camera2D.get_screen_rotation
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_screen_rotation, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
 //go:nosplit
 func (self class) SetZoom(zoom Vector2.XY) { //gd:Camera2D.set_zoom
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_zoom, 0|(gdextension.SizeVector2<<4), &struct{ zoom Vector2.XY }{zoom})
@@ -709,8 +753,8 @@ func (self class) GetPositionSmoothingSpeed() float64 { //gd:Camera2D.get_positi
 }
 
 //go:nosplit
-func (self class) SetPositionSmoothingEnabled(position_smoothing_speed bool) { //gd:Camera2D.set_position_smoothing_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_smoothing_enabled, 0|(gdextension.SizeBool<<4), &struct{ position_smoothing_speed bool }{position_smoothing_speed})
+func (self class) SetPositionSmoothingEnabled(enabled bool) { //gd:Camera2D.set_position_smoothing_enabled
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position_smoothing_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit

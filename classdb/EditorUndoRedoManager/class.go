@@ -88,7 +88,7 @@ type Instance [1]gdclass.EditorUndoRedoManager
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	create_action         gdextension.MethodForClass `hash:"2107025470"`
+	create_action         gdextension.MethodForClass `hash:"796197507"`
 	commit_action         gdextension.MethodForClass `hash:"3216645846"`
 	is_committing_action  gdextension.MethodForClass `hash:"36873697"`
 	force_fixed_history   gdextension.MethodForClass `hash:"3218959716"`
@@ -128,27 +128,31 @@ type Any interface {
 /*
 Create a new action. After this is called, do all your calls to [Instance.AddDoMethod], [Instance.AddUndoMethod], [Instance.AddDoProperty], and [Instance.AddUndoProperty], then commit the action with [Instance.CommitAction].
 
-The way actions are merged is dictated by the 'merge_mode' argument. See [UndoRedo.MergeMode] for details.
+The way actions are merged is dictated by the 'merge_mode' argument.
 
 If 'custom_context' object is provided, it will be used for deducing target history (instead of using the first operation).
 
 The way undo operation are ordered in actions is dictated by 'backward_undo_ops'. When 'backward_undo_ops' is false undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
+
+If 'mark_unsaved' is false, the action will not mark the history as unsaved. This is useful for example for actions that change a selection, or a setting that will be saved automatically. Otherwise, this should be left to true if the action requires saving by the user or if it can cause data loss when left unsaved.
 */
 func (self Instance) CreateAction(name string) { //gd:EditorUndoRedoManager.create_action
-	Advanced(self).CreateAction(String.New(name), 0, [1]Object.Instance{}[0], false)
+	Advanced(self).CreateAction(String.New(name), 0, [1]Object.Instance{}[0], false, true)
 }
 
 /*
 Create a new action. After this is called, do all your calls to [Instance.AddDoMethod], [Instance.AddUndoMethod], [Instance.AddDoProperty], and [Instance.AddUndoProperty], then commit the action with [Instance.CommitAction].
 
-The way actions are merged is dictated by the 'merge_mode' argument. See [UndoRedo.MergeMode] for details.
+The way actions are merged is dictated by the 'merge_mode' argument.
 
 If 'custom_context' object is provided, it will be used for deducing target history (instead of using the first operation).
 
 The way undo operation are ordered in actions is dictated by 'backward_undo_ops'. When 'backward_undo_ops' is false undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
+
+If 'mark_unsaved' is false, the action will not mark the history as unsaved. This is useful for example for actions that change a selection, or a setting that will be saved automatically. Otherwise, this should be left to true if the action requires saving by the user or if it can cause data loss when left unsaved.
 */
-func (self Expanded) CreateAction(name string, merge_mode UndoRedo.MergeMode, custom_context Object.Instance, backward_undo_ops bool) { //gd:EditorUndoRedoManager.create_action
-	Advanced(self).CreateAction(String.New(name), merge_mode, custom_context, backward_undo_ops)
+func (self Expanded) CreateAction(name string, merge_mode UndoRedo.MergeMode, custom_context Object.Instance, backward_undo_ops bool, mark_unsaved bool) { //gd:EditorUndoRedoManager.create_action
+	Advanced(self).CreateAction(String.New(name), merge_mode, custom_context, backward_undo_ops, mark_unsaved)
 }
 
 /*
@@ -332,20 +336,23 @@ func New() Instance {
 /*
 Create a new action. After this is called, do all your calls to [Instance.AddDoMethod], [Instance.AddUndoMethod], [Instance.AddDoProperty], and [Instance.AddUndoProperty], then commit the action with [Instance.CommitAction].
 
-The way actions are merged is dictated by the 'merge_mode' argument. See [UndoRedo.MergeMode] for details.
+The way actions are merged is dictated by the 'merge_mode' argument.
 
 If 'custom_context' object is provided, it will be used for deducing target history (instead of using the first operation).
 
 The way undo operation are ordered in actions is dictated by 'backward_undo_ops'. When 'backward_undo_ops' is false undo option are ordered in the same order they were added. Which means the first operation to be added will be the first to be undone.
+
+If 'mark_unsaved' is false, the action will not mark the history as unsaved. This is useful for example for actions that change a selection, or a setting that will be saved automatically. Otherwise, this should be left to true if the action requires saving by the user or if it can cause data loss when left unsaved.
 */
 //go:nosplit
-func (self class) CreateAction(name String.Readable, merge_mode UndoRedo.MergeMode, custom_context [1]gd.Object, backward_undo_ops bool) { //gd:EditorUndoRedoManager.create_action
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_action, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeBool<<16), &struct {
+func (self class) CreateAction(name String.Readable, merge_mode UndoRedo.MergeMode, custom_context [1]gd.Object, backward_undo_ops bool, mark_unsaved bool) { //gd:EditorUndoRedoManager.create_action
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.create_action, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeBool<<20), &struct {
 		name              gdextension.String
 		merge_mode        UndoRedo.MergeMode
 		custom_context    gdextension.Object
 		backward_undo_ops bool
-	}{pointers.Get(gd.InternalString(name)), merge_mode, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(custom_context[0].AsObject()[0])), backward_undo_ops})
+		mark_unsaved      bool
+	}{pointers.Get(gd.InternalString(name)), merge_mode, gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(custom_context[0].AsObject()[0])), backward_undo_ops, mark_unsaved})
 }
 
 /*

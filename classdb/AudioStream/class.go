@@ -121,6 +121,10 @@ type Interface interface {
 	//
 	// Ideally, the returned value should be based off the stream's sample rate ([graphics.gd/classdb/AudioStreamWAV.Instance.MixRate], for example).
 	GetBeatCount() int
+	// Override this method to customize the tags for this audio stream. Should return a data structure of strings with the tag as the key and its content as the value.
+	//
+	// Commonly used tags include title, artist, album, tracknumber, and date.
+	GetTags() map[string]interface{}
 	// Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [graphics.gd/classdb/Object.Instance.GetPropertyList]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
 	GetParameterList() [][]Object.PropertyInfo
 	// Override this method to return true if this stream has a loop.
@@ -140,6 +144,7 @@ func (self implementation) GetLength() (_ Float.X)                              
 func (self implementation) IsMonophonic() (_ bool)                                { return }
 func (self implementation) GetBpm() (_ Float.X)                                   { return }
 func (self implementation) GetBeatCount() (_ int)                                 { return }
+func (self implementation) GetTags() (_ map[string]interface{})                   { return }
 func (self implementation) GetParameterList() (_ [][]Object.PropertyInfo)         { return }
 func (self implementation) HasLoop() (_ bool)                                     { return }
 func (self implementation) GetBarBeats() (_ int)                                  { return }
@@ -225,6 +230,24 @@ func (Instance) _get_beat_count(impl func(ptr gdclass.Receiver) int) (cb gd.Exte
 }
 
 /*
+Override this method to customize the tags for this audio stream. Should return a data structure of strings with the tag as the key and its content as the value.
+
+Commonly used tags include title, artist, album, tracknumber, and date.
+*/
+func (Instance) _get_tags(impl func(ptr gdclass.Receiver) map[string]interface{}) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalDictionary(gd.DictionaryFromMap(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
 Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [graphics.gd/classdb/Object.Instance.GetPropertyList]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
 */
 func (Instance) _get_parameter_list(impl func(ptr gdclass.Receiver) [][]Object.PropertyInfo) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -263,7 +286,7 @@ func (Instance) _get_bar_beats(impl func(ptr gdclass.Receiver) int) (cb gd.Exten
 }
 
 /*
-Returns the length of the audio stream in seconds.
+Returns the length of the audio stream in seconds. If this stream is an [graphics.gd/classdb/AudioStreamRandomizer], returns the length of the last played stream. If this stream has an indefinite length (such as for [graphics.gd/classdb/AudioStreamGenerator] and [graphics.gd/classdb/AudioStreamMicrophone]), returns 0.0.
 */
 func (self Instance) GetLength() Float.X { //gd:AudioStream.get_length
 	return Float.X(Float.X(Advanced(self).GetLength()))
@@ -428,6 +451,24 @@ func (class) _get_beat_count(impl func(ptr gdclass.Receiver) int64) (cb gd.Exten
 }
 
 /*
+Override this method to customize the tags for this audio stream. Should return a data structure of strings with the tag as the key and its content as the value.
+
+Commonly used tags include title, artist, album, tracknumber, and date.
+*/
+func (class) _get_tags(impl func(ptr gdclass.Receiver) Dictionary.Any) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalDictionary(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
 Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [graphics.gd/classdb/Object.Instance.GetPropertyList]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
 */
 func (class) _get_parameter_list(impl func(ptr gdclass.Receiver) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -466,7 +507,7 @@ func (class) _get_bar_beats(impl func(ptr gdclass.Receiver) int64) (cb gd.Extens
 }
 
 /*
-Returns the length of the audio stream in seconds.
+Returns the length of the audio stream in seconds. If this stream is an [graphics.gd/classdb/AudioStreamRandomizer], returns the length of the last played stream. If this stream has an indefinite length (such as for [graphics.gd/classdb/AudioStreamGenerator] and [graphics.gd/classdb/AudioStreamMicrophone]), returns 0.0.
 */
 //go:nosplit
 func (self class) GetLength() float64 { //gd:AudioStream.get_length
@@ -572,6 +613,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_bpm)
 	case "_get_beat_count":
 		return reflect.ValueOf(self._get_beat_count)
+	case "_get_tags":
+		return reflect.ValueOf(self._get_tags)
 	case "_get_parameter_list":
 		return reflect.ValueOf(self._get_parameter_list)
 	case "_has_loop":
@@ -597,6 +640,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_bpm)
 	case "_get_beat_count":
 		return reflect.ValueOf(self._get_beat_count)
+	case "_get_tags":
+		return reflect.ValueOf(self._get_tags)
 	case "_get_parameter_list":
 		return reflect.ValueOf(self._get_parameter_list)
 	case "_has_loop":

@@ -381,9 +381,9 @@ func (self Instance) GetVertexFaces(idx int) []int32 { //gd:MeshDataTool.get_ver
 }
 
 /*
-Returns index of specified vertex connected to given edge.
+Returns the index of the specified 'vertex' connected to the edge at index 'idx'.
 
-Vertex argument can only be 0 or 1 because edges are comprised of two vertices.
+'vertex' can only be 0 or 1, as edges are composed of two vertices.
 */
 func (self Instance) GetEdgeVertex(idx int, vertex int) int { //gd:MeshDataTool.get_edge_vertex
 	return int(int(Advanced(self).GetEdgeVertex(int64(idx), int64(vertex))))
@@ -420,9 +420,9 @@ func (self Instance) GetFaceVertex(idx int, vertex int) int { //gd:MeshDataTool.
 }
 
 /*
-Returns specified edge associated with given face.
+Returns the edge associated with the face at index 'idx'.
 
-Edge argument must be either 0, 1, or 2 because a face only has three edges.
+'edge' argument must be either 0, 1, or 2 because a face only has three edges.
 */
 func (self Instance) GetFaceEdge(idx int, edge int) int { //gd:MeshDataTool.get_face_edge
 	return int(int(Advanced(self).GetFaceEdge(int64(idx), int64(edge))))
@@ -792,9 +792,9 @@ func (self class) GetVertexFaces(idx int64) Packed.Array[int32] { //gd:MeshDataT
 }
 
 /*
-Returns index of specified vertex connected to given edge.
+Returns the index of the specified 'vertex' connected to the edge at index 'idx'.
 
-Vertex argument can only be 0 or 1 because edges are comprised of two vertices.
+'vertex' can only be 0 or 1, as edges are composed of two vertices.
 */
 //go:nosplit
 func (self class) GetEdgeVertex(idx int64, vertex int64) int64 { //gd:MeshDataTool.get_edge_vertex
@@ -855,9 +855,9 @@ func (self class) GetFaceVertex(idx int64, vertex int64) int64 { //gd:MeshDataTo
 }
 
 /*
-Returns specified edge associated with given face.
+Returns the edge associated with the face at index 'idx'.
 
-Edge argument must be either 0, 1, or 2 because a face only has three edges.
+'edge' argument must be either 0, 1, or 2 because a face only has three edges.
 */
 //go:nosplit
 func (self class) GetFaceEdge(idx int64, edge int64) int64 { //gd:MeshDataTool.get_face_edge

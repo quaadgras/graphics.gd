@@ -19,7 +19,7 @@ The expected image order is X+, X-, Y+, Y-, Z+, Z- (in Godot's coordinate system
 
 - [6×1 cubemap template]
 
-Multiple layers are stacked on top of each other when using the default vertical import option (with the first layer at the top). Alternatively, you can choose an horizontal layout in the import options (with the first layer at the left).
+Multiple layers are stacked on top of each other when using the default vertical import option (with the first layer at the top). Alternatively, you can choose a horizontal layout in the import options (with the first layer at the left).
 
 Note: [graphics.gd/classdb/CubemapArray] is not supported in the Compatibility renderer due to graphics API limitations.
 

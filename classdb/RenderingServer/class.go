@@ -150,6 +150,7 @@ var methods struct {
 	mesh_surface_get_format_normal_tangent_stride             gdextension.MethodForClass `hash:"3188363337"`
 	mesh_surface_get_format_attribute_stride                  gdextension.MethodForClass `hash:"3188363337"`
 	mesh_surface_get_format_skin_stride                       gdextension.MethodForClass `hash:"3188363337"`
+	mesh_surface_get_format_index_stride                      gdextension.MethodForClass `hash:"3188363337"`
 	mesh_add_surface                                          gdextension.MethodForClass `hash:"1217542888"`
 	mesh_add_surface_from_arrays                              gdextension.MethodForClass `hash:"2342446560"`
 	mesh_get_blend_shape_count                                gdextension.MethodForClass `hash:"2198884583"`
@@ -168,6 +169,7 @@ var methods struct {
 	mesh_surface_update_vertex_region                         gdextension.MethodForClass `hash:"2900195149"`
 	mesh_surface_update_attribute_region                      gdextension.MethodForClass `hash:"2900195149"`
 	mesh_surface_update_skin_region                           gdextension.MethodForClass `hash:"2900195149"`
+	mesh_surface_update_index_region                          gdextension.MethodForClass `hash:"2900195149"`
 	mesh_set_shadow_mesh                                      gdextension.MethodForClass `hash:"395945892"`
 	multimesh_create                                          gdextension.MethodForClass `hash:"529393457"`
 	multimesh_allocate_data                                   gdextension.MethodForClass `hash:"557240154"`
@@ -429,6 +431,7 @@ var methods struct {
 	environment_set_ssr                                       gdextension.MethodForClass `hash:"3607294374"`
 	environment_set_ssao                                      gdextension.MethodForClass `hash:"3994732740"`
 	environment_set_fog                                       gdextension.MethodForClass `hash:"105051629"`
+	environment_set_fog_depth                                 gdextension.MethodForClass `hash:"157498339"`
 	environment_set_sdfgi                                     gdextension.MethodForClass `hash:"3519144388"`
 	environment_set_volumetric_fog                            gdextension.MethodForClass `hash:"1553633833"`
 	environment_glow_set_use_bicubic_upscale                  gdextension.MethodForClass `hash:"2586408642"`
@@ -462,13 +465,12 @@ var methods struct {
 	instance_set_layer_mask                                   gdextension.MethodForClass `hash:"3411492887"`
 	instance_set_pivot_data                                   gdextension.MethodForClass `hash:"1280615259"`
 	instance_set_transform                                    gdextension.MethodForClass `hash:"3935195649"`
-	instance_set_interpolated                                 gdextension.MethodForClass `hash:"1265174801"`
-	instance_reset_physics_interpolation                      gdextension.MethodForClass `hash:"2722037293"`
 	instance_attach_object_instance_id                        gdextension.MethodForClass `hash:"3411492887"`
 	instance_set_blend_shape_weight                           gdextension.MethodForClass `hash:"1892459533"`
 	instance_set_surface_override_material                    gdextension.MethodForClass `hash:"2310537182"`
 	instance_set_visible                                      gdextension.MethodForClass `hash:"1265174801"`
 	instance_geometry_set_transparency                        gdextension.MethodForClass `hash:"1794382983"`
+	instance_teleport                                         gdextension.MethodForClass `hash:"2722037293"`
 	instance_set_custom_aabb                                  gdextension.MethodForClass `hash:"3696536120"`
 	instance_attach_skeleton                                  gdextension.MethodForClass `hash:"395945892"`
 	instance_set_extra_visibility_margin                      gdextension.MethodForClass `hash:"1794382983"`
@@ -1084,6 +1086,14 @@ func MeshSurfaceGetFormatSkinStride(format ArrayFormat, vertex_count int) int { 
 	once.Do(singleton)
 	return int(int(Advanced().MeshSurfaceGetFormatSkinStride(format, int64(vertex_count))))
 }
+
+/*
+Returns the stride of the index buffer for a mesh with the given 'format'.
+*/
+func MeshSurfaceGetFormatIndexStride(format ArrayFormat, vertex_count int) int { //gd:RenderingServer.mesh_surface_get_format_index_stride
+	once.Do(singleton)
+	return int(int(Advanced().MeshSurfaceGetFormatIndexStride(format, int64(vertex_count))))
+}
 func MeshAddSurface(mesh RID.Mesh, surface Surface) { //gd:RenderingServer.mesh_add_surface
 	once.Do(singleton)
 	Advanced().MeshAddSurface(RID.Any(mesh), gd.DictionaryFromMap(surface))
@@ -1198,15 +1208,23 @@ func MeshClear(mesh RID.Mesh) { //gd:RenderingServer.mesh_clear
 }
 func MeshSurfaceUpdateVertexRegion(mesh RID.Mesh, surface int, offset int, data []byte) { //gd:RenderingServer.mesh_surface_update_vertex_region
 	once.Do(singleton)
-	Advanced().MeshSurfaceUpdateVertexRegion(RID.Any(mesh), int64(surface), int64(offset), Packed.Bytes(Packed.New(data...)))
+	Advanced().MeshSurfaceUpdateVertexRegion(RID.Any(mesh), int64(surface), int64(offset), Packed.BytesFrom(data...))
 }
 func MeshSurfaceUpdateAttributeRegion(mesh RID.Mesh, surface int, offset int, data []byte) { //gd:RenderingServer.mesh_surface_update_attribute_region
 	once.Do(singleton)
-	Advanced().MeshSurfaceUpdateAttributeRegion(RID.Any(mesh), int64(surface), int64(offset), Packed.Bytes(Packed.New(data...)))
+	Advanced().MeshSurfaceUpdateAttributeRegion(RID.Any(mesh), int64(surface), int64(offset), Packed.BytesFrom(data...))
 }
 func MeshSurfaceUpdateSkinRegion(mesh RID.Mesh, surface int, offset int, data []byte) { //gd:RenderingServer.mesh_surface_update_skin_region
 	once.Do(singleton)
-	Advanced().MeshSurfaceUpdateSkinRegion(RID.Any(mesh), int64(surface), int64(offset), Packed.Bytes(Packed.New(data...)))
+	Advanced().MeshSurfaceUpdateSkinRegion(RID.Any(mesh), int64(surface), int64(offset), Packed.BytesFrom(data...))
+}
+
+/*
+Updates the index buffer of the mesh surface with the given 'data'. The expected data are 16 or 32-bit unsigned integers, which can be determined with [MeshSurfaceGetFormatIndexStride].
+*/
+func MeshSurfaceUpdateIndexRegion(mesh RID.Mesh, surface int, offset int, data []byte) { //gd:RenderingServer.mesh_surface_update_index_region
+	once.Do(singleton)
+	Advanced().MeshSurfaceUpdateIndexRegion(RID.Any(mesh), int64(surface), int64(offset), Packed.BytesFrom(data...))
 }
 func MeshSetShadowMesh(mesh RID.Mesh, shadow_mesh RID.Mesh) { //gd:RenderingServer.mesh_set_shadow_mesh
 	once.Do(singleton)
@@ -1558,7 +1576,7 @@ func LightSetColor(light RID.Light, color Color.RGBA) { //gd:RenderingServer.lig
 }
 
 /*
-Sets the specified 3D light parameter. See [LightParam] for options. Equivalent to [graphics.gd/classdb/Light3D.Instance.SetParam].
+Sets the specified 3D light parameter. Equivalent to [graphics.gd/classdb/Light3D.Instance.SetParam].
 */
 func LightSetParam(light RID.Light, param LightParam, value Float.X) { //gd:RenderingServer.light_set_param
 	once.Do(singleton)
@@ -1646,7 +1664,7 @@ func LightOmniSetShadowMode(light RID.Light, mode LightOmniShadowMode) { //gd:Re
 }
 
 /*
-Sets the shadow mode for this directional light. Equivalent to [graphics.gd/classdb/DirectionalLight3D.Instance.DirectionalShadowMode]. See [LightDirectionalShadowMode] for options.
+Sets the shadow mode for this directional light. Equivalent to [graphics.gd/classdb/DirectionalLight3D.Instance.DirectionalShadowMode].
 */
 func LightDirectionalSetShadowMode(light RID.Light, mode LightDirectionalShadowMode) { //gd:RenderingServer.light_directional_set_shadow_mode
 	once.Do(singleton)
@@ -1724,7 +1742,7 @@ func ReflectionProbeCreate() RID.ReflectionProbe { //gd:RenderingServer.reflecti
 }
 
 /*
-Sets how often the reflection probe updates. Can either be once or every frame. See [ReflectionProbeUpdateMode] for options.
+Sets how often the reflection probe updates. Can either be once or every frame.
 */
 func ReflectionProbeSetUpdateMode(probe RID.ReflectionProbe, mode ReflectionProbeUpdateMode) { //gd:RenderingServer.reflection_probe_set_update_mode
 	once.Do(singleton)
@@ -1966,7 +1984,7 @@ func VoxelGiCreate() RID.VoxelGI { //gd:RenderingServer.voxel_gi_create
 }
 func VoxelGiAllocateData(voxel_gi RID.VoxelGI, to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3i.XYZ, octree_cells []byte, data_cells []byte, distance_field []byte, level_counts []int32) { //gd:RenderingServer.voxel_gi_allocate_data
 	once.Do(singleton)
-	Advanced().VoxelGiAllocateData(RID.Any(voxel_gi), Transform3D.BasisOrigin(to_cell_xform), AABB.PositionSize(aabb), Vector3i.XYZ(octree_size), Packed.Bytes(Packed.New(octree_cells...)), Packed.Bytes(Packed.New(data_cells...)), Packed.Bytes(Packed.New(distance_field...)), Packed.New(level_counts...))
+	Advanced().VoxelGiAllocateData(RID.Any(voxel_gi), Transform3D.BasisOrigin(to_cell_xform), AABB.PositionSize(aabb), Vector3i.XYZ(octree_size), Packed.BytesFrom(octree_cells...), Packed.BytesFrom(data_cells...), Packed.BytesFrom(distance_field...), Packed.New(level_counts...))
 }
 func VoxelGiGetOctreeSize(voxel_gi RID.VoxelGI) Vector3i.XYZ { //gd:RenderingServer.voxel_gi_get_octree_size
 	once.Do(singleton)
@@ -2356,7 +2374,7 @@ func ParticlesEmit(particles RID.Particles, transform Transform3D.BasisOrigin, v
 }
 
 /*
-Sets the draw order of the particles to one of the named enums from [ParticlesDrawOrder]. See [ParticlesDrawOrder] for options. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.DrawOrder].
+Sets the draw order of the particles. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.DrawOrder].
 */
 func ParticlesSetDrawOrder(particles RID.Particles, order ParticlesDrawOrder) { //gd:RenderingServer.particles_set_draw_order
 	once.Do(singleton)
@@ -2790,7 +2808,7 @@ func ViewportSetAnisotropicFilteringLevel(viewport RID.Viewport, anisotropic_fil
 }
 
 /*
-Sets when the viewport should be updated. See [ViewportUpdateMode] constants for options.
+Sets when the viewport should be updated.
 */
 func ViewportSetUpdateMode(viewport RID.Viewport, update_mode ViewportUpdateMode) { //gd:RenderingServer.viewport_set_update_mode
 	once.Do(singleton)
@@ -2798,7 +2816,7 @@ func ViewportSetUpdateMode(viewport RID.Viewport, update_mode ViewportUpdateMode
 }
 
 /*
-Returns the viewport's update mode. See [ViewportUpdateMode] constants for options.
+Returns the viewport's update mode.
 
 Warning: Calling this from any thread other than the rendering thread will be detrimental to performance.
 */
@@ -2808,7 +2826,7 @@ func ViewportGetUpdateMode(viewport RID.Viewport) ViewportUpdateMode { //gd:Rend
 }
 
 /*
-Sets the clear mode of a viewport. See [ViewportClearMode] for options.
+Sets the clear mode of a viewport.
 */
 func ViewportSetClearMode(viewport RID.Viewport, clear_mode ViewportClearMode) { //gd:RenderingServer.viewport_set_clear_mode
 	once.Do(singleton)
@@ -2904,7 +2922,7 @@ func ViewportSetSnap2dVerticesToPixel(viewport RID.Viewport, enabled bool) { //g
 }
 
 /*
-Sets the default texture filtering mode for the specified 'viewport' RID. See [CanvasItemTextureFilter] for options.
+Sets the default texture filtering mode for the specified 'viewport' RID.
 */
 func ViewportSetDefaultCanvasItemTextureFilter(viewport RID.Viewport, filter CanvasItemTextureFilter) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_filter
 	once.Do(singleton)
@@ -2912,7 +2930,7 @@ func ViewportSetDefaultCanvasItemTextureFilter(viewport RID.Viewport, filter Can
 }
 
 /*
-Sets the default texture repeat mode for the specified 'viewport' RID. See [CanvasItemTextureRepeat] for options.
+Sets the default texture repeat mode for the specified 'viewport' RID.
 */
 func ViewportSetDefaultCanvasItemTextureRepeat(viewport RID.Viewport, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_repeat
 	once.Do(singleton)
@@ -2931,6 +2949,8 @@ func ViewportSetCanvasTransform(viewport RID.Viewport, canvas RID.Canvas, offset
 Sets the stacking order for a viewport's canvas.
 
 'layer' is the actual canvas layer, while 'sublayer' specifies the stacking order of the canvas among those in the same layer.
+
+Note: 'layer' should be between [CanvasLayerMin] and [CanvasLayerMax] (inclusive). Any other value will wrap around.
 */
 func ViewportSetCanvasStacking(viewport RID.Viewport, canvas RID.Canvas, layer int, sublayer int) { //gd:RenderingServer.viewport_set_canvas_stacking
 	once.Do(singleton)
@@ -2990,7 +3010,7 @@ func ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport RID.Viewport, 
 }
 
 /*
-Sets the multisample antialiasing mode for 3D on the specified 'viewport' RID. See [ViewportMSAA] for options. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/msaa_3d" or [graphics.gd/classdb/Viewport.Instance.Msaa3d].
+Sets the multisample antialiasing mode for 3D on the specified 'viewport' RID. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/msaa_3d" or [graphics.gd/classdb/Viewport.Instance.Msaa3d].
 */
 func ViewportSetMsaa3d(viewport RID.Viewport, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_3d
 	once.Do(singleton)
@@ -2998,7 +3018,7 @@ func ViewportSetMsaa3d(viewport RID.Viewport, msaa ViewportMSAA) { //gd:Renderin
 }
 
 /*
-Sets the multisample antialiasing mode for 2D/Canvas on the specified 'viewport' RID. See [ViewportMSAA] for options. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/msaa_2d" or [graphics.gd/classdb/Viewport.Instance.Msaa2d].
+Sets the multisample antialiasing mode for 2D/Canvas on the specified 'viewport' RID. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/msaa_2d" or [graphics.gd/classdb/Viewport.Instance.Msaa2d].
 */
 func ViewportSetMsaa2d(viewport RID.Viewport, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_2d
 	once.Do(singleton)
@@ -3006,9 +3026,11 @@ func ViewportSetMsaa2d(viewport RID.Viewport, msaa ViewportMSAA) { //gd:Renderin
 }
 
 /*
-If true, 2D rendering will use a high dynamic range (HDR) format framebuffer matching the bit depth of the 3D framebuffer. When using the Forward+ renderer this will be an RGBA16 framebuffer, while when using the Mobile renderer it will be an RGB10_A2 framebuffer. Additionally, 2D rendering will take place in linear color space and will be converted to sRGB space immediately before blitting to the screen (if the Viewport is attached to the screen). Practically speaking, this means that the end result of the Viewport will not be clamped into the 0-1 range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients. This setting has the same effect as [graphics.gd/classdb/Viewport.Instance.UseHdr2d].
+If true, 2D rendering will use a high dynamic range (HDR) format framebuffer matching the bit depth of the 3D framebuffer. When using the Forward+ or Compatibility renderer, this will be an RGBA16 framebuffer. When using the Mobile renderer, it will be an RGB10_A2 framebuffer.
 
-Note: This setting will have no effect when using the Compatibility renderer, which always renders in low dynamic range for performance reasons.
+Additionally, 2D rendering will take place in linear color space and will be converted to sRGB space immediately before blitting to the screen (if the Viewport is attached to the screen).
+
+Practically speaking, this means that the end result of the Viewport will not be clamped to the 0-1 range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients. This setting has the same effect as [graphics.gd/classdb/Viewport.Instance.UseHdr2d].
 */
 func ViewportSetUseHdr2d(viewport RID.Viewport, enabled bool) { //gd:RenderingServer.viewport_set_use_hdr_2d
 	once.Do(singleton)
@@ -3032,7 +3054,7 @@ func ViewportSetUseTaa(viewport RID.Viewport, enable bool) { //gd:RenderingServe
 }
 
 /*
-If true, enables debanding on the specified viewport. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/use_debanding" or [graphics.gd/classdb/Viewport.Instance.UseDebanding].
+Equivalent to [graphics.gd/classdb/Viewport.Instance.UseDebanding]. See also [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/use_debanding".
 */
 func ViewportSetUseDebanding(viewport RID.Viewport, enable bool) { //gd:RenderingServer.viewport_set_use_debanding
 	once.Do(singleton)
@@ -3064,7 +3086,7 @@ func ViewportSetOcclusionCullingBuildQuality(quality ViewportOcclusionCullingBui
 }
 
 /*
-Returns a statistic about the rendering engine which can be used for performance profiling. This is separated into render pass 'type's, each of them having the same 'info's you can query (different passes will return different values). See [RenderingServer.ViewportRenderInfoType] for a list of render pass types and [RenderingServer.ViewportRenderInfo] for a list of information that can be queried.
+Returns a statistic about the rendering engine which can be used for performance profiling. This is separated into render pass 'type's, each of them having the same 'info's you can query (different passes will return different values).
 
 See also [GetRenderingInfo], which returns global information across all viewports.
 
@@ -3076,7 +3098,7 @@ func ViewportGetRenderInfo(viewport RID.Viewport, atype ViewportRenderInfoType, 
 }
 
 /*
-Sets the debug draw mode of a viewport. See [ViewportDebugDraw] for options.
+Sets the debug draw mode of a viewport.
 */
 func ViewportSetDebugDraw(viewport RID.Viewport, draw ViewportDebugDraw) { //gd:RenderingServer.viewport_set_debug_draw
 	once.Do(singleton)
@@ -3386,6 +3408,14 @@ func EnvironmentSetFogOptions(env RID.Environment, enable bool, light_color Colo
 }
 
 /*
+Configures fog depth for the specified environment RID. Only has an effect when the fog mode of the environment is [EnvFogModeDepth]. See fog_depth_* properties in [graphics.gd/classdb/Environment] for more information.
+*/
+func EnvironmentSetFogDepth(env RID.Environment, curve Float.X, begin Float.X, end Float.X) { //gd:RenderingServer.environment_set_fog_depth
+	once.Do(singleton)
+	Advanced().EnvironmentSetFogDepth(RID.Any(env), float64(curve), float64(begin), float64(end))
+}
+
+/*
 Configures signed distance field global illumination for the specified environment RID. See sdfgi_* properties in [graphics.gd/classdb/Environment] for more information.
 */
 func EnvironmentSetSdfgi(env RID.Environment, enable bool, cascades int, min_cell_size Float.X, y_scale EnvironmentSDFGIYScale, use_occlusion bool, bounce_feedback Float.X, read_sky bool, energy Float.X, normal_bias Float.X, probe_bias Float.X) { //gd:RenderingServer.environment_set_sdfgi
@@ -3403,6 +3433,8 @@ func EnvironmentSetVolumetricFog(env RID.Environment, enable bool, density Float
 
 /*
 If 'enable' is true, enables bicubic upscaling for glow which improves quality at the cost of performance. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/environment/glow/upscale_mode".
+
+Note: This setting is only effective when using the Forward+ or Mobile rendering methods, as Compatibility uses a different glow implementation.
 */
 func EnvironmentGlowSetUseBicubicUpscale(enable bool) { //gd:RenderingServer.environment_glow_set_use_bicubic_upscale
 	once.Do(singleton)
@@ -3518,7 +3550,7 @@ func CameraAttributesCreate() RID.CameraAttributes { //gd:RenderingServer.camera
 }
 
 /*
-Sets the quality level of the DOF blur effect to one of the options in [DOFBlurQuality]. 'use_jitter' can be used to jitter samples taken during the blur pass to hide artifacts at the cost of looking more fuzzy.
+Sets the quality level of the DOF blur effect to 'quality'. 'use_jitter' can be used to jitter samples taken during the blur pass to hide artifacts at the cost of looking more fuzzy.
 */
 func CameraAttributesSetDofBlurQuality(quality DOFBlurQuality, use_jitter bool) { //gd:RenderingServer.camera_attributes_set_dof_blur_quality
 	once.Do(singleton)
@@ -3526,7 +3558,7 @@ func CameraAttributesSetDofBlurQuality(quality DOFBlurQuality, use_jitter bool) 
 }
 
 /*
-Sets the shape of the DOF bokeh pattern. Different shapes may be used to achieve artistic effect, or to meet performance targets. For more detail on available options see [DOFBokehShape].
+Sets the shape of the DOF bokeh pattern to 'shape'. Different shapes may be used to achieve artistic effect, or to meet performance targets.
 */
 func CameraAttributesSetDofBlurBokehShape(shape DOFBokehShape) { //gd:RenderingServer.camera_attributes_set_dof_blur_bokeh_shape
 	once.Do(singleton)
@@ -3670,24 +3702,6 @@ func InstanceSetTransform(instance RID.VisualInstance, transform Transform3D.Bas
 }
 
 /*
-Turns on and off physics interpolation for the instance.
-*/
-func InstanceSetInterpolated(instance RID.VisualInstance, interpolated bool) { //gd:RenderingServer.instance_set_interpolated
-	once.Do(singleton)
-	Advanced().InstanceSetInterpolated(RID.Any(instance), interpolated)
-}
-
-/*
-Prevents physics interpolation for the current physics tick.
-
-This is useful when moving an instance to a new location, to give an instantaneous change rather than interpolation from the previous location.
-*/
-func InstanceResetPhysicsInterpolation(instance RID.VisualInstance) { //gd:RenderingServer.instance_reset_physics_interpolation
-	once.Do(singleton)
-	Advanced().InstanceResetPhysicsInterpolation(RID.Any(instance))
-}
-
-/*
 Attaches a unique Object ID to instance. Object ID must be attached to instance for proper culling with [InstancesCullAabb], [InstancesCullConvex], and [InstancesCullRay].
 */
 func InstanceAttachObjectInstanceId(instance RID.VisualInstance, id int) { //gd:RenderingServer.instance_attach_object_instance_id
@@ -3734,6 +3748,14 @@ func InstanceGeometrySetTransparency(instance RID.VisualInstance, transparency F
 }
 
 /*
+Resets motion vectors and other interpolated values. Use this after teleporting a mesh from one position to another to avoid ghosting artifacts.
+*/
+func InstanceTeleport(instance RID.VisualInstance) { //gd:RenderingServer.instance_teleport
+	once.Do(singleton)
+	Advanced().InstanceTeleport(RID.Any(instance))
+}
+
+/*
 Sets a custom AABB to use when culling objects from the view frustum. Equivalent to setting [graphics.gd/classdb/GeometryInstance3D.Instance.CustomAabb].
 */
 func InstanceSetCustomAabb(instance RID.VisualInstance, aabb AABB.PositionSize) { //gd:RenderingServer.instance_set_custom_aabb
@@ -3774,7 +3796,7 @@ func InstanceSetIgnoreCulling(instance RID.VisualInstance, enabled bool) { //gd:
 }
 
 /*
-Sets the flag for a given [InstanceFlags]. See [InstanceFlags] for more details.
+Sets the 'flag' for a given 'instance' to 'enabled'.
 */
 func InstanceGeometrySetFlag(instance RID.VisualInstance, flag InstanceFlags, enabled bool) { //gd:RenderingServer.instance_geometry_set_flag
 	once.Do(singleton)
@@ -3782,7 +3804,7 @@ func InstanceGeometrySetFlag(instance RID.VisualInstance, flag InstanceFlags, en
 }
 
 /*
-Sets the shadow casting setting to one of [ShadowCastingSetting]. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.CastShadow].
+Sets the shadow casting setting. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.CastShadow].
 */
 func InstanceGeometrySetCastShadowsSetting(instance RID.VisualInstance, shadow_casting_setting ShadowCastingSetting) { //gd:RenderingServer.instance_geometry_set_cast_shadows_setting
 	once.Do(singleton)
@@ -4356,7 +4378,7 @@ func CanvasItemAddPolygonOptions(item RID.CanvasItem, points []Vector2.XY, color
 /*
 Draws a triangle array on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. This is internally used by [graphics.gd/classdb/Line2D] and [graphics.gd/classdb/StyleBoxFlat] for rendering. [CanvasItemAddTriangleArray] is highly flexible, but more complex to use than [CanvasItemAddPolygon].
 
-Note: 'count' is unused and can be left unspecified.
+Note: If 'count' is set to a non-negative value, only the first count * 3 indices (corresponding to count triangles) will be drawn. Otherwise, all indices are drawn.
 */
 func CanvasItemAddTriangleArray(item RID.CanvasItem, indices []int32, points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, bones []int32, weights []float32, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_item_add_triangle_array
 	once.Do(singleton)
@@ -4366,7 +4388,7 @@ func CanvasItemAddTriangleArray(item RID.CanvasItem, indices []int32, points []V
 /*
 Draws a triangle array on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. This is internally used by [graphics.gd/classdb/Line2D] and [graphics.gd/classdb/StyleBoxFlat] for rendering. [CanvasItemAddTriangleArray] is highly flexible, but more complex to use than [CanvasItemAddPolygon].
 
-Note: 'count' is unused and can be left unspecified.
+Note: If 'count' is set to a non-negative value, only the first count * 3 indices (corresponding to count triangles) will be drawn. Otherwise, all indices are drawn.
 */
 func CanvasItemAddTriangleArrayOptions(item RID.CanvasItem, indices []int32, points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, bones []int32, weights []float32, texture RID.CanvasTexture, count int) { //gd:RenderingServer.canvas_item_add_triangle_array
 	once.Do(singleton)
@@ -4708,7 +4730,7 @@ func CanvasLightSetItemShadowCullMask(light RID.CanvasLight, mask int) { //gd:Re
 }
 
 /*
-The mode of the light, see [CanvasLightMode] constants.
+Sets the mode of the canvas light.
 */
 func CanvasLightSetMode(light RID.CanvasLight, mode CanvasLightMode) { //gd:RenderingServer.canvas_light_set_mode
 	once.Do(singleton)
@@ -4724,7 +4746,7 @@ func CanvasLightSetShadowEnabled(light RID.CanvasLight, enabled bool) { //gd:Ren
 }
 
 /*
-Sets the canvas light's shadow's filter, see [CanvasLightShadowFilter] constants.
+Sets the canvas light's shadow's filter.
 */
 func CanvasLightSetShadowFilter(light RID.CanvasLight, filter CanvasLightShadowFilter) { //gd:RenderingServer.canvas_light_set_shadow_filter
 	once.Do(singleton)
@@ -4748,7 +4770,7 @@ func CanvasLightSetShadowSmooth(light RID.CanvasLight, smooth Float.X) { //gd:Re
 }
 
 /*
-Sets the blend mode for the given canvas light. See [CanvasLightBlendMode] for options. Equivalent to [graphics.gd/classdb/Light2D.Instance.BlendMode].
+Sets the blend mode for the given canvas light to 'mode'. Equivalent to [graphics.gd/classdb/Light2D.Instance.BlendMode].
 */
 func CanvasLightSetBlendMode(light RID.CanvasLight, mode CanvasLightBlendMode) { //gd:RenderingServer.canvas_light_set_blend_mode
 	once.Do(singleton)
@@ -4888,7 +4910,7 @@ func CanvasOccluderPolygonSetShape(occluder_polygon RID.CanvasLightOccluderPolyg
 }
 
 /*
-Sets an occluder polygons cull mode. See [CanvasOccluderPolygonCullMode] constants.
+Sets an occluder polygon's cull mode.
 */
 func CanvasOccluderPolygonSetCullMode(occluder_polygon RID.CanvasLightOccluderPolygon, mode CanvasOccluderPolygonCullMode) { //gd:RenderingServer.canvas_occluder_polygon_set_cull_mode
 	once.Do(singleton)
@@ -4992,7 +5014,7 @@ func HasChanged() bool { //gd:RenderingServer.has_changed
 }
 
 /*
-Returns a statistic about the rendering engine which can be used for performance profiling. See [RenderingServer.RenderingInfo] for a list of values that can be queried. See also [ViewportGetRenderInfo], which returns information specific to a viewport.
+Returns a statistic about the rendering engine which can be used for performance profiling. See also [ViewportGetRenderInfo], which returns information specific to a viewport.
 
 Note: Only 3D rendering is currently taken into account by some of these values, such as the number of draw calls.
 
@@ -5048,7 +5070,11 @@ func GetVideoAdapterApiVersion() string { //gd:RenderingServer.get_video_adapter
 /*
 Returns the name of the current rendering driver. This can be vulkan, d3d12, metal, opengl3, opengl3_es, or opengl3_angle. See also [GetCurrentRenderingMethod].
 
-The rendering driver is determined by [graphics.gd/classdb/ProjectSettings] "rendering/rendering_device/driver", the --rendering-driver command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
+When [graphics.gd/classdb/ProjectSettings] "rendering/renderer/rendering_method" is forward_plus or mobile, the rendering driver is determined by [graphics.gd/classdb/ProjectSettings] "rendering/rendering_device/driver".
+
+When [graphics.gd/classdb/ProjectSettings] "rendering/renderer/rendering_method" is gl_compatibility, the rendering driver is determined by [graphics.gd/classdb/ProjectSettings] "rendering/gl_compatibility/driver".
+
+The rendering driver is also determined by the --rendering-driver command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
 */
 func GetCurrentRenderingDriverName() string { //gd:RenderingServer.get_current_rendering_driver_name
 	once.Do(singleton)
@@ -5212,7 +5238,7 @@ func IsOnRenderThread() bool { //gd:RenderingServer.is_on_render_thread
 }
 
 /*
-As the RenderingServer actual logic may run on an separate thread, accessing its internals from the main (or any other) thread will result in errors. To make it easier to run code that can safely access the rendering internals (such as [graphics.gd/classdb/RenderingDevice] and similar RD classes), push a callable via this function so it will be executed on the render thread.
+As the RenderingServer actual logic may run on a separate thread, accessing its internals from the main (or any other) thread will result in errors. To make it easier to run code that can safely access the rendering internals (such as [graphics.gd/classdb/RenderingDevice] and similar RD classes), push a callable via this function so it will be executed on the render thread.
 */
 func CallOnRenderThread(callable func()) { //gd:RenderingServer.call_on_render_thread
 	once.Do(singleton)
@@ -5814,6 +5840,19 @@ func (self class) MeshSurfaceGetFormatSkinStride(format ArrayFormat, vertex_coun
 	return ret
 }
 
+/*
+Returns the stride of the index buffer for a mesh with the given 'format'.
+*/
+//go:nosplit
+func (self class) MeshSurfaceGetFormatIndexStride(format ArrayFormat, vertex_count int64) int64 { //gd:RenderingServer.mesh_surface_get_format_index_stride
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_get_format_index_stride, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		format       ArrayFormat
+		vertex_count int64
+	}{format, vertex_count})
+	var ret = r_ret
+	return ret
+}
+
 //go:nosplit
 func (self class) MeshAddSurface(mesh RID.Any, surface Dictionary.Any) { //gd:RenderingServer.mesh_add_surface
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mesh_add_surface, 0|(gdextension.SizeRID<<4)|(gdextension.SizeDictionary<<8), &struct {
@@ -5983,7 +6022,7 @@ func (self class) MeshSurfaceUpdateVertexRegion(mesh RID.Any, surface int64, off
 		surface int64
 		offset  int64
 		data    gdextension.PackedArray[byte]
-	}{mesh, surface, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	}{mesh, surface, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
 
 //go:nosplit
@@ -5993,7 +6032,7 @@ func (self class) MeshSurfaceUpdateAttributeRegion(mesh RID.Any, surface int64, 
 		surface int64
 		offset  int64
 		data    gdextension.PackedArray[byte]
-	}{mesh, surface, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	}{mesh, surface, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
 
 //go:nosplit
@@ -6003,7 +6042,20 @@ func (self class) MeshSurfaceUpdateSkinRegion(mesh RID.Any, surface int64, offse
 		surface int64
 		offset  int64
 		data    gdextension.PackedArray[byte]
-	}{mesh, surface, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	}{mesh, surface, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
+}
+
+/*
+Updates the index buffer of the mesh surface with the given 'data'. The expected data are 16 or 32-bit unsigned integers, which can be determined with [MeshSurfaceGetFormatIndexStride].
+*/
+//go:nosplit
+func (self class) MeshSurfaceUpdateIndexRegion(mesh RID.Any, surface int64, offset int64, data Packed.Bytes) { //gd:RenderingServer.mesh_surface_update_index_region
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mesh_surface_update_index_region, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), &struct {
+		mesh    RID.Any
+		surface int64
+		offset  int64
+		data    gdextension.PackedArray[byte]
+	}{mesh, surface, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
 
 //go:nosplit
@@ -6482,7 +6534,7 @@ func (self class) LightSetColor(light RID.Any, color Color.RGBA) { //gd:Renderin
 }
 
 /*
-Sets the specified 3D light parameter. See [LightParam] for options. Equivalent to [graphics.gd/classdb/Light3D.Instance.SetParam].
+Sets the specified 3D light parameter. Equivalent to [graphics.gd/classdb/Light3D.Instance.SetParam].
 */
 //go:nosplit
 func (self class) LightSetParam(light RID.Any, param LightParam, value float64) { //gd:RenderingServer.light_set_param
@@ -6607,7 +6659,7 @@ func (self class) LightOmniSetShadowMode(light RID.Any, mode LightOmniShadowMode
 }
 
 /*
-Sets the shadow mode for this directional light. Equivalent to [graphics.gd/classdb/DirectionalLight3D.Instance.DirectionalShadowMode]. See [LightDirectionalShadowMode] for options.
+Sets the shadow mode for this directional light. Equivalent to [graphics.gd/classdb/DirectionalLight3D.Instance.DirectionalShadowMode].
 */
 //go:nosplit
 func (self class) LightDirectionalSetShadowMode(light RID.Any, mode LightDirectionalShadowMode) { //gd:RenderingServer.light_directional_set_shadow_mode
@@ -6699,7 +6751,7 @@ func (self class) ReflectionProbeCreate() RID.Any { //gd:RenderingServer.reflect
 }
 
 /*
-Sets how often the reflection probe updates. Can either be once or every frame. See [ReflectionProbeUpdateMode] for options.
+Sets how often the reflection probe updates. Can either be once or every frame.
 */
 //go:nosplit
 func (self class) ReflectionProbeSetUpdateMode(probe RID.Any, mode ReflectionProbeUpdateMode) { //gd:RenderingServer.reflection_probe_set_update_mode
@@ -7034,7 +7086,7 @@ func (self class) VoxelGiAllocateData(voxel_gi RID.Any, to_cell_xform Transform3
 		data_cells     gdextension.PackedArray[byte]
 		distance_field gdextension.PackedArray[byte]
 		level_counts   gdextension.PackedArray[int32]
-	}{voxel_gi, gd.Transposed(to_cell_xform), aabb, octree_size, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](octree_cells))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data_cells))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](distance_field))), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](level_counts))})
+	}{voxel_gi, gd.Transposed(to_cell_xform), aabb, octree_size, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](octree_cells.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data_cells.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](distance_field.Array))), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](level_counts))})
 }
 
 //go:nosplit
@@ -7047,21 +7099,21 @@ func (self class) VoxelGiGetOctreeSize(voxel_gi RID.Any) Vector3i.XYZ { //gd:Ren
 //go:nosplit
 func (self class) VoxelGiGetOctreeCells(voxel_gi RID.Any) Packed.Bytes { //gd:RenderingServer.voxel_gi_get_octree_cells
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_get_octree_cells, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ voxel_gi RID.Any }{voxel_gi})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
 //go:nosplit
 func (self class) VoxelGiGetDataCells(voxel_gi RID.Any) Packed.Bytes { //gd:RenderingServer.voxel_gi_get_data_cells
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_get_data_cells, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ voxel_gi RID.Any }{voxel_gi})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
 //go:nosplit
 func (self class) VoxelGiGetDistanceField(voxel_gi RID.Any) Packed.Bytes { //gd:RenderingServer.voxel_gi_get_distance_field
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.voxel_gi_get_distance_field, gdextension.SizePackedArray|(gdextension.SizeRID<<4), &struct{ voxel_gi RID.Any }{voxel_gi})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -7594,7 +7646,7 @@ func (self class) ParticlesEmit(particles RID.Any, transform Transform3D.BasisOr
 }
 
 /*
-Sets the draw order of the particles to one of the named enums from [ParticlesDrawOrder]. See [ParticlesDrawOrder] for options. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.DrawOrder].
+Sets the draw order of the particles. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.DrawOrder].
 */
 //go:nosplit
 func (self class) ParticlesSetDrawOrder(particles RID.Any, order ParticlesDrawOrder) { //gd:RenderingServer.particles_set_draw_order
@@ -8169,7 +8221,7 @@ func (self class) ViewportSetAnisotropicFilteringLevel(viewport RID.Any, anisotr
 }
 
 /*
-Sets when the viewport should be updated. See [ViewportUpdateMode] constants for options.
+Sets when the viewport should be updated.
 */
 //go:nosplit
 func (self class) ViewportSetUpdateMode(viewport RID.Any, update_mode ViewportUpdateMode) { //gd:RenderingServer.viewport_set_update_mode
@@ -8180,7 +8232,7 @@ func (self class) ViewportSetUpdateMode(viewport RID.Any, update_mode ViewportUp
 }
 
 /*
-Returns the viewport's update mode. See [ViewportUpdateMode] constants for options.
+Returns the viewport's update mode.
 
 Warning: Calling this from any thread other than the rendering thread will be detrimental to performance.
 */
@@ -8192,7 +8244,7 @@ func (self class) ViewportGetUpdateMode(viewport RID.Any) ViewportUpdateMode { /
 }
 
 /*
-Sets the clear mode of a viewport. See [ViewportClearMode] for options.
+Sets the clear mode of a viewport.
 */
 //go:nosplit
 func (self class) ViewportSetClearMode(viewport RID.Any, clear_mode ViewportClearMode) { //gd:RenderingServer.viewport_set_clear_mode
@@ -8322,7 +8374,7 @@ func (self class) ViewportSetSnap2dVerticesToPixel(viewport RID.Any, enabled boo
 }
 
 /*
-Sets the default texture filtering mode for the specified 'viewport' RID. See [CanvasItemTextureFilter] for options.
+Sets the default texture filtering mode for the specified 'viewport' RID.
 */
 //go:nosplit
 func (self class) ViewportSetDefaultCanvasItemTextureFilter(viewport RID.Any, filter CanvasItemTextureFilter) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_filter
@@ -8333,7 +8385,7 @@ func (self class) ViewportSetDefaultCanvasItemTextureFilter(viewport RID.Any, fi
 }
 
 /*
-Sets the default texture repeat mode for the specified 'viewport' RID. See [CanvasItemTextureRepeat] for options.
+Sets the default texture repeat mode for the specified 'viewport' RID.
 */
 //go:nosplit
 func (self class) ViewportSetDefaultCanvasItemTextureRepeat(viewport RID.Any, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.viewport_set_default_canvas_item_texture_repeat
@@ -8359,6 +8411,8 @@ func (self class) ViewportSetCanvasTransform(viewport RID.Any, canvas RID.Any, o
 Sets the stacking order for a viewport's canvas.
 
 'layer' is the actual canvas layer, while 'sublayer' specifies the stacking order of the canvas among those in the same layer.
+
+Note: 'layer' should be between [CanvasLayerMin] and [CanvasLayerMax] (inclusive). Any other value will wrap around.
 */
 //go:nosplit
 func (self class) ViewportSetCanvasStacking(viewport RID.Any, canvas RID.Any, layer int64, sublayer int64) { //gd:RenderingServer.viewport_set_canvas_stacking
@@ -8431,7 +8485,7 @@ func (self class) ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport R
 }
 
 /*
-Sets the multisample antialiasing mode for 3D on the specified 'viewport' RID. See [ViewportMSAA] for options. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/msaa_3d" or [graphics.gd/classdb/Viewport.Instance.Msaa3d].
+Sets the multisample antialiasing mode for 3D on the specified 'viewport' RID. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/msaa_3d" or [graphics.gd/classdb/Viewport.Instance.Msaa3d].
 */
 //go:nosplit
 func (self class) ViewportSetMsaa3d(viewport RID.Any, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_3d
@@ -8442,7 +8496,7 @@ func (self class) ViewportSetMsaa3d(viewport RID.Any, msaa ViewportMSAA) { //gd:
 }
 
 /*
-Sets the multisample antialiasing mode for 2D/Canvas on the specified 'viewport' RID. See [ViewportMSAA] for options. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/msaa_2d" or [graphics.gd/classdb/Viewport.Instance.Msaa2d].
+Sets the multisample antialiasing mode for 2D/Canvas on the specified 'viewport' RID. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/msaa_2d" or [graphics.gd/classdb/Viewport.Instance.Msaa2d].
 */
 //go:nosplit
 func (self class) ViewportSetMsaa2d(viewport RID.Any, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_2d
@@ -8453,9 +8507,11 @@ func (self class) ViewportSetMsaa2d(viewport RID.Any, msaa ViewportMSAA) { //gd:
 }
 
 /*
-If true, 2D rendering will use a high dynamic range (HDR) format framebuffer matching the bit depth of the 3D framebuffer. When using the Forward+ renderer this will be an RGBA16 framebuffer, while when using the Mobile renderer it will be an RGB10_A2 framebuffer. Additionally, 2D rendering will take place in linear color space and will be converted to sRGB space immediately before blitting to the screen (if the Viewport is attached to the screen). Practically speaking, this means that the end result of the Viewport will not be clamped into the 0-1 range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients. This setting has the same effect as [graphics.gd/classdb/Viewport.Instance.UseHdr2d].
+If true, 2D rendering will use a high dynamic range (HDR) format framebuffer matching the bit depth of the 3D framebuffer. When using the Forward+ or Compatibility renderer, this will be an RGBA16 framebuffer. When using the Mobile renderer, it will be an RGB10_A2 framebuffer.
 
-Note: This setting will have no effect when using the Compatibility renderer, which always renders in low dynamic range for performance reasons.
+Additionally, 2D rendering will take place in linear color space and will be converted to sRGB space immediately before blitting to the screen (if the Viewport is attached to the screen).
+
+Practically speaking, this means that the end result of the Viewport will not be clamped to the 0-1 range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients. This setting has the same effect as [graphics.gd/classdb/Viewport.Instance.UseHdr2d].
 */
 //go:nosplit
 func (self class) ViewportSetUseHdr2d(viewport RID.Any, enabled bool) { //gd:RenderingServer.viewport_set_use_hdr_2d
@@ -8488,7 +8544,7 @@ func (self class) ViewportSetUseTaa(viewport RID.Any, enable bool) { //gd:Render
 }
 
 /*
-If true, enables debanding on the specified viewport. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/use_debanding" or [graphics.gd/classdb/Viewport.Instance.UseDebanding].
+Equivalent to [graphics.gd/classdb/Viewport.Instance.UseDebanding]. See also [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/use_debanding".
 */
 //go:nosplit
 func (self class) ViewportSetUseDebanding(viewport RID.Any, enable bool) { //gd:RenderingServer.viewport_set_use_debanding
@@ -8528,7 +8584,7 @@ func (self class) ViewportSetOcclusionCullingBuildQuality(quality ViewportOcclus
 }
 
 /*
-Returns a statistic about the rendering engine which can be used for performance profiling. This is separated into render pass 'type's, each of them having the same 'info's you can query (different passes will return different values). See [RenderingServer.ViewportRenderInfoType] for a list of render pass types and [RenderingServer.ViewportRenderInfo] for a list of information that can be queried.
+Returns a statistic about the rendering engine which can be used for performance profiling. This is separated into render pass 'type's, each of them having the same 'info's you can query (different passes will return different values).
 
 See also [GetRenderingInfo], which returns global information across all viewports.
 
@@ -8548,7 +8604,7 @@ func (self class) ViewportGetRenderInfo(viewport RID.Any, atype ViewportRenderIn
 }
 
 /*
-Sets the debug draw mode of a viewport. See [ViewportDebugDraw] for options.
+Sets the debug draw mode of a viewport.
 */
 //go:nosplit
 func (self class) ViewportSetDebugDraw(viewport RID.Any, draw ViewportDebugDraw) { //gd:RenderingServer.viewport_set_debug_draw
@@ -8988,6 +9044,19 @@ func (self class) EnvironmentSetFog(env RID.Any, enable bool, light_color Color.
 }
 
 /*
+Configures fog depth for the specified environment RID. Only has an effect when the fog mode of the environment is [EnvFogModeDepth]. See fog_depth_* properties in [graphics.gd/classdb/Environment] for more information.
+*/
+//go:nosplit
+func (self class) EnvironmentSetFogDepth(env RID.Any, curve float64, begin float64, end float64) { //gd:RenderingServer.environment_set_fog_depth
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.environment_set_fog_depth, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
+		env   RID.Any
+		curve float64
+		begin float64
+		end   float64
+	}{env, curve, begin, end})
+}
+
+/*
 Configures signed distance field global illumination for the specified environment RID. See sdfgi_* properties in [graphics.gd/classdb/Environment] for more information.
 */
 //go:nosplit
@@ -9032,6 +9101,8 @@ func (self class) EnvironmentSetVolumetricFog(env RID.Any, enable bool, density 
 
 /*
 If 'enable' is true, enables bicubic upscaling for glow which improves quality at the cost of performance. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/environment/glow/upscale_mode".
+
+Note: This setting is only effective when using the Forward+ or Mobile rendering methods, as Compatibility uses a different glow implementation.
 */
 //go:nosplit
 func (self class) EnvironmentGlowSetUseBicubicUpscale(enable bool) { //gd:RenderingServer.environment_glow_set_use_bicubic_upscale
@@ -9186,7 +9257,7 @@ func (self class) CameraAttributesCreate() RID.Any { //gd:RenderingServer.camera
 }
 
 /*
-Sets the quality level of the DOF blur effect to one of the options in [DOFBlurQuality]. 'use_jitter' can be used to jitter samples taken during the blur pass to hide artifacts at the cost of looking more fuzzy.
+Sets the quality level of the DOF blur effect to 'quality'. 'use_jitter' can be used to jitter samples taken during the blur pass to hide artifacts at the cost of looking more fuzzy.
 */
 //go:nosplit
 func (self class) CameraAttributesSetDofBlurQuality(quality DOFBlurQuality, use_jitter bool) { //gd:RenderingServer.camera_attributes_set_dof_blur_quality
@@ -9197,7 +9268,7 @@ func (self class) CameraAttributesSetDofBlurQuality(quality DOFBlurQuality, use_
 }
 
 /*
-Sets the shape of the DOF bokeh pattern. Different shapes may be used to achieve artistic effect, or to meet performance targets. For more detail on available options see [DOFBokehShape].
+Sets the shape of the DOF bokeh pattern to 'shape'. Different shapes may be used to achieve artistic effect, or to meet performance targets.
 */
 //go:nosplit
 func (self class) CameraAttributesSetDofBlurBokehShape(shape DOFBokehShape) { //gd:RenderingServer.camera_attributes_set_dof_blur_bokeh_shape
@@ -9402,27 +9473,6 @@ func (self class) InstanceSetTransform(instance RID.Any, transform Transform3D.B
 }
 
 /*
-Turns on and off physics interpolation for the instance.
-*/
-//go:nosplit
-func (self class) InstanceSetInterpolated(instance RID.Any, interpolated bool) { //gd:RenderingServer.instance_set_interpolated
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_set_interpolated, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
-		instance     RID.Any
-		interpolated bool
-	}{instance, interpolated})
-}
-
-/*
-Prevents physics interpolation for the current physics tick.
-
-This is useful when moving an instance to a new location, to give an instantaneous change rather than interpolation from the previous location.
-*/
-//go:nosplit
-func (self class) InstanceResetPhysicsInterpolation(instance RID.Any) { //gd:RenderingServer.instance_reset_physics_interpolation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_reset_physics_interpolation, 0|(gdextension.SizeRID<<4), &struct{ instance RID.Any }{instance})
-}
-
-/*
 Attaches a unique Object ID to instance. Object ID must be attached to instance for proper culling with [InstancesCullAabb], [InstancesCullConvex], and [InstancesCullRay].
 */
 //go:nosplit
@@ -9486,6 +9536,14 @@ func (self class) InstanceGeometrySetTransparency(instance RID.Any, transparency
 }
 
 /*
+Resets motion vectors and other interpolated values. Use this after teleporting a mesh from one position to another to avoid ghosting artifacts.
+*/
+//go:nosplit
+func (self class) InstanceTeleport(instance RID.Any) { //gd:RenderingServer.instance_teleport
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.instance_teleport, 0|(gdextension.SizeRID<<4), &struct{ instance RID.Any }{instance})
+}
+
+/*
 Sets a custom AABB to use when culling objects from the view frustum. Equivalent to setting [graphics.gd/classdb/GeometryInstance3D.Instance.CustomAabb].
 */
 //go:nosplit
@@ -9541,7 +9599,7 @@ func (self class) InstanceSetIgnoreCulling(instance RID.Any, enabled bool) { //g
 }
 
 /*
-Sets the flag for a given [InstanceFlags]. See [InstanceFlags] for more details.
+Sets the 'flag' for a given 'instance' to 'enabled'.
 */
 //go:nosplit
 func (self class) InstanceGeometrySetFlag(instance RID.Any, flag InstanceFlags, enabled bool) { //gd:RenderingServer.instance_geometry_set_flag
@@ -9553,7 +9611,7 @@ func (self class) InstanceGeometrySetFlag(instance RID.Any, flag InstanceFlags, 
 }
 
 /*
-Sets the shadow casting setting to one of [ShadowCastingSetting]. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.CastShadow].
+Sets the shadow casting setting. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.CastShadow].
 */
 //go:nosplit
 func (self class) InstanceGeometrySetCastShadowsSetting(instance RID.Any, shadow_casting_setting ShadowCastingSetting) { //gd:RenderingServer.instance_geometry_set_cast_shadows_setting
@@ -10230,7 +10288,7 @@ func (self class) CanvasItemAddPolygon(item RID.Any, points Packed.Array[Vector2
 /*
 Draws a triangle array on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. This is internally used by [graphics.gd/classdb/Line2D] and [graphics.gd/classdb/StyleBoxFlat] for rendering. [CanvasItemAddTriangleArray] is highly flexible, but more complex to use than [CanvasItemAddPolygon].
 
-Note: 'count' is unused and can be left unspecified.
+Note: If 'count' is set to a non-negative value, only the first count * 3 indices (corresponding to count triangles) will be drawn. Otherwise, all indices are drawn.
 */
 //go:nosplit
 func (self class) CanvasItemAddTriangleArray(item RID.Any, indices Packed.Array[int32], points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], bones Packed.Array[int32], weights Packed.Array[float32], texture RID.Any, count int64) { //gd:RenderingServer.canvas_item_add_triangle_array
@@ -10673,7 +10731,7 @@ func (self class) CanvasLightSetItemShadowCullMask(light RID.Any, mask int64) { 
 }
 
 /*
-The mode of the light, see [CanvasLightMode] constants.
+Sets the mode of the canvas light.
 */
 //go:nosplit
 func (self class) CanvasLightSetMode(light RID.Any, mode CanvasLightMode) { //gd:RenderingServer.canvas_light_set_mode
@@ -10695,7 +10753,7 @@ func (self class) CanvasLightSetShadowEnabled(light RID.Any, enabled bool) { //g
 }
 
 /*
-Sets the canvas light's shadow's filter, see [CanvasLightShadowFilter] constants.
+Sets the canvas light's shadow's filter.
 */
 //go:nosplit
 func (self class) CanvasLightSetShadowFilter(light RID.Any, filter CanvasLightShadowFilter) { //gd:RenderingServer.canvas_light_set_shadow_filter
@@ -10728,7 +10786,7 @@ func (self class) CanvasLightSetShadowSmooth(light RID.Any, smooth float64) { //
 }
 
 /*
-Sets the blend mode for the given canvas light. See [CanvasLightBlendMode] for options. Equivalent to [graphics.gd/classdb/Light2D.Instance.BlendMode].
+Sets the blend mode for the given canvas light to 'mode'. Equivalent to [graphics.gd/classdb/Light2D.Instance.BlendMode].
 */
 //go:nosplit
 func (self class) CanvasLightSetBlendMode(light RID.Any, mode CanvasLightBlendMode) { //gd:RenderingServer.canvas_light_set_blend_mode
@@ -10910,7 +10968,7 @@ func (self class) CanvasOccluderPolygonSetShape(occluder_polygon RID.Any, shape 
 }
 
 /*
-Sets an occluder polygons cull mode. See [CanvasOccluderPolygonCullMode] constants.
+Sets an occluder polygon's cull mode.
 */
 //go:nosplit
 func (self class) CanvasOccluderPolygonSetCullMode(occluder_polygon RID.Any, mode CanvasOccluderPolygonCullMode) { //gd:RenderingServer.canvas_occluder_polygon_set_cull_mode
@@ -11035,7 +11093,7 @@ func (self class) HasChanged() bool { //gd:RenderingServer.has_changed
 }
 
 /*
-Returns a statistic about the rendering engine which can be used for performance profiling. See [RenderingServer.RenderingInfo] for a list of values that can be queried. See also [ViewportGetRenderInfo], which returns information specific to a viewport.
+Returns a statistic about the rendering engine which can be used for performance profiling. See also [ViewportGetRenderInfo], which returns information specific to a viewport.
 
 Note: Only 3D rendering is currently taken into account by some of these values, such as the number of draw calls.
 
@@ -11103,7 +11161,11 @@ func (self class) GetVideoAdapterApiVersion() String.Readable { //gd:RenderingSe
 /*
 Returns the name of the current rendering driver. This can be vulkan, d3d12, metal, opengl3, opengl3_es, or opengl3_angle. See also [GetCurrentRenderingMethod].
 
-The rendering driver is determined by [graphics.gd/classdb/ProjectSettings] "rendering/rendering_device/driver", the --rendering-driver command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
+When [graphics.gd/classdb/ProjectSettings] "rendering/renderer/rendering_method" is forward_plus or mobile, the rendering driver is determined by [graphics.gd/classdb/ProjectSettings] "rendering/rendering_device/driver".
+
+When [graphics.gd/classdb/ProjectSettings] "rendering/renderer/rendering_method" is gl_compatibility, the rendering driver is determined by [graphics.gd/classdb/ProjectSettings] "rendering/gl_compatibility/driver".
+
+The rendering driver is also determined by the --rendering-driver command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
 */
 //go:nosplit
 func (self class) GetCurrentRenderingDriverName() String.Readable { //gd:RenderingServer.get_current_rendering_driver_name
@@ -11303,7 +11365,7 @@ func (self class) IsOnRenderThread() bool { //gd:RenderingServer.is_on_render_th
 }
 
 /*
-As the RenderingServer actual logic may run on an separate thread, accessing its internals from the main (or any other) thread will result in errors. To make it easier to run code that can safely access the rendering internals (such as [graphics.gd/classdb/RenderingDevice] and similar RD classes), push a callable via this function so it will be executed on the render thread.
+As the RenderingServer actual logic may run on a separate thread, accessing its internals from the main (or any other) thread will result in errors. To make it easier to run code that can safely access the rendering internals (such as [graphics.gd/classdb/RenderingDevice] and similar RD classes), push a callable via this function so it will be executed on the render thread.
 */
 //go:nosplit
 func (self class) CallOnRenderThread(callable Callable.Function) { //gd:RenderingServer.call_on_render_thread
@@ -11521,7 +11583,7 @@ const (
 	ArrayCompressFlagsBase ArrayFormat = 25
 	// Flag used to mark that the array contains 2D vertices.
 	ArrayFlagUse2dVertices ArrayFormat = 33554432
-	// Flag indices that the mesh data will use GL_DYNAMIC_DRAW on GLES. Unused on Vulkan.
+	// Flag used to mark that the mesh data will use GL_DYNAMIC_DRAW on GLES. Unused on Vulkan.
 	ArrayFlagUseDynamicUpdate ArrayFormat = 67108864
 	// Flag used to mark that the array uses 8 bone weights instead of 4.
 	ArrayFlagUse8BoneWeights ArrayFormat = 134217728
@@ -11648,7 +11710,7 @@ const (
 	LightParamShadowFadeStart LightParam = 13
 	// Normal bias used to offset shadow lookup by object normal. Can be used to fix self-shadowing artifacts.
 	LightParamShadowNormalBias LightParam = 14
-	// Bias the shadow lookup to fix self-shadowing artifacts.
+	// Bias for the shadow lookup to fix self-shadowing artifacts.
 	LightParamShadowBias LightParam = 15
 	// Sets the size of the directional shadow pancake. The pancake offsets the start of the shadow's camera frustum to provide a higher effective depth resolution for the shadow. However, a high pancake size can cause artifacts in the shadows of large objects that are close to the edge of the frustum. Reducing the pancake size can help. Setting the size to 0 turns off the pancaking effect.
 	LightParamShadowPancakeSize LightParam = 16
@@ -11865,15 +11927,15 @@ type ViewportScaling3DMode int //gd:RenderingServer.ViewportScaling3DMode
 const (
 	// Use bilinear scaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will result in undersampling while values greater than 1.0 will result in supersampling. A value of 1.0 disables scaling.
 	ViewportScaling3dModeBilinear ViewportScaling3DMode = 0
-	// Use AMD FidelityFX Super Resolution 1.0 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will be result in the viewport being upscaled using FSR. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 disables scaling.
+	// Use AMD FidelityFX Super Resolution 1.0 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will result in the viewport being upscaled using FSR. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 disables scaling.
 	ViewportScaling3dModeFsr ViewportScaling3DMode = 1
-	// Use AMD FidelityFX Super Resolution 2.2 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will be result in the viewport being upscaled using FSR2. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 will use FSR2 at native resolution as a TAA solution.
+	// Use AMD FidelityFX Super Resolution 2.2 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will result in the viewport being upscaled using FSR2. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 will use FSR2 at native resolution as a TAA solution.
 	ViewportScaling3dModeFsr2 ViewportScaling3DMode = 2
-	// Use MetalFX spatial upscaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will be result in the viewport being upscaled using MetalFX. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 disables scaling.
+	// Use MetalFX spatial upscaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will result in the viewport being upscaled using MetalFX. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 disables scaling.
 	//
 	// Note: Only supported when the Metal rendering driver is in use, which limits this scaling mode to macOS and iOS.
 	ViewportScaling3dModeMetalfxSpatial ViewportScaling3DMode = 3
-	// Use MetalFX temporal upscaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will be result in the viewport being upscaled using MetalFX. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 will use MetalFX at native resolution as a TAA solution.
+	// Use MetalFX temporal upscaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will result in the viewport being upscaled using MetalFX. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 will use MetalFX at native resolution as a TAA solution.
 	//
 	// Note: Only supported when the Metal rendering driver is in use, which limits this scaling mode to macOS and iOS.
 	ViewportScaling3dModeMetalfxTemporal ViewportScaling3DMode = 4
@@ -11987,8 +12049,10 @@ const (
 	ViewportScreenSpaceAaDisabled ViewportScreenSpaceAA = 0
 	// Use fast approximate antialiasing. FXAA is a popular screen-space antialiasing method, which is fast but will make the image look blurry, especially at lower resolutions. It can still work relatively well at large resolutions such as 1440p and 4K.
 	ViewportScreenSpaceAaFxaa ViewportScreenSpaceAA = 1
+	// Use subpixel morphological antialiasing. SMAA may produce clearer results than FXAA, but at a slightly higher performance cost.
+	ViewportScreenSpaceAaSmaa ViewportScreenSpaceAA = 2
 	// Represents the size of the [ViewportScreenSpaceAA] enum.
-	ViewportScreenSpaceAaMax ViewportScreenSpaceAA = 2
+	ViewportScreenSpaceAaMax ViewportScreenSpaceAA = 3
 )
 
 type ViewportOcclusionCullingBuildQuality int //gd:RenderingServer.ViewportOcclusionCullingBuildQuality
@@ -12036,10 +12100,12 @@ const (
 	// Objects are displayed without light information.
 	ViewportDebugDrawUnshaded ViewportDebugDraw = 1
 	// Objects are displayed with only light information.
+	//
+	// Note: When using this debug draw mode, custom shaders are ignored since all materials in the scene temporarily use a debug material. This means the result from custom shader functions (such as vertex displacement) won't be visible anymore when using this debug draw mode.
 	ViewportDebugDrawLighting ViewportDebugDraw = 2
 	// Objects are displayed semi-transparent with additive blending so you can see where they are drawing over top of one another. A higher overdraw (represented by brighter colors) means you are wasting performance on drawing pixels that are being hidden behind others.
 	//
-	// Note: When using this debug draw mode, custom shaders will be ignored. This means vertex displacement won't be visible anymore.
+	// Note: When using this debug draw mode, custom shaders are ignored since all materials in the scene temporarily use a debug material. This means the result from custom shader functions (such as vertex displacement) won't be visible anymore when using this debug draw mode.
 	ViewportDebugDrawOverdraw ViewportDebugDraw = 3
 	// Debug draw draws objects in wireframe.
 	//
@@ -12047,11 +12113,17 @@ const (
 	ViewportDebugDrawWireframe ViewportDebugDraw = 4
 	// Normal buffer is drawn instead of regular scene so you can see the per-pixel normals that will be used by post-processing effects.
 	ViewportDebugDrawNormalBuffer ViewportDebugDraw = 5
-	// Objects are displayed with only the albedo value from [graphics.gd/classdb/VoxelGI]s.
+	// Objects are displayed with only the albedo value from [graphics.gd/classdb/VoxelGI]s. Requires at least one visible [graphics.gd/classdb/VoxelGI] node that has been baked to have a visible effect.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	ViewportDebugDrawVoxelGiAlbedo ViewportDebugDraw = 6
-	// Objects are displayed with only the lighting value from [graphics.gd/classdb/VoxelGI]s.
+	// Objects are displayed with only the lighting value from [graphics.gd/classdb/VoxelGI]s. Requires at least one visible [graphics.gd/classdb/VoxelGI] node that has been baked to have a visible effect.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	ViewportDebugDrawVoxelGiLighting ViewportDebugDraw = 7
-	// Objects are displayed with only the emission color from [graphics.gd/classdb/VoxelGI]s.
+	// Objects are displayed with only the emission color from [graphics.gd/classdb/VoxelGI]s. Requires at least one visible [graphics.gd/classdb/VoxelGI] node that has been baked to have a visible effect.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	ViewportDebugDrawVoxelGiEmission ViewportDebugDraw = 8
 	// Draws the shadow atlas that stores shadows from [graphics.gd/classdb/OmniLight3D]s and [graphics.gd/classdb/SpotLight3D]s in the upper left quadrant of the [graphics.gd/classdb/Viewport].
 	ViewportDebugDrawShadowAtlas ViewportDebugDraw = 9
@@ -12062,36 +12134,68 @@ const (
 	// The last cascade shows all frustum slices to illustrate the coverage of all slices.
 	ViewportDebugDrawDirectionalShadowAtlas ViewportDebugDraw = 10
 	// Draws the estimated scene luminance. This is a 1×1 texture that is generated when autoexposure is enabled to control the scene's exposure.
+	//
+	// Note: Only supported when using the Forward+ or Mobile rendering methods.
 	ViewportDebugDrawSceneLuminance ViewportDebugDraw = 11
 	// Draws the screen space ambient occlusion texture instead of the scene so that you can clearly see how it is affecting objects. In order for this display mode to work, you must have [graphics.gd/classdb/Environment.Instance.SsaoEnabled] set in your [graphics.gd/classdb/WorldEnvironment].
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	ViewportDebugDrawSsao ViewportDebugDraw = 12
 	// Draws the screen space indirect lighting texture instead of the scene so that you can clearly see how it is affecting objects. In order for this display mode to work, you must have [graphics.gd/classdb/Environment.Instance.SsilEnabled] set in your [graphics.gd/classdb/WorldEnvironment].
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	ViewportDebugDrawSsil ViewportDebugDraw = 13
-	// Colors each PSSM split for the [graphics.gd/classdb/DirectionalLight3D]s in the scene a different color so you can see where the splits are. In order they will be colored red, green, blue, yellow.
+	// Colors each PSSM split for the [graphics.gd/classdb/DirectionalLight3D]s in the scene a different color so you can see where the splits are. In order (from closest to furthest from the camera), they are colored red, green, blue, and yellow.
+	//
+	// Note: When using this debug draw mode, custom shaders are ignored since all materials in the scene temporarily use a debug material. This means the result from custom shader functions (such as vertex displacement) won't be visible anymore when using this debug draw mode.
+	//
+	// Note: Only supported when using the Forward+ or Mobile rendering methods.
 	ViewportDebugDrawPssmSplits ViewportDebugDraw = 14
 	// Draws the decal atlas that stores decal textures from [graphics.gd/classdb/Decal]s.
+	//
+	// Note: Only supported when using the Forward+ or Mobile rendering methods.
 	ViewportDebugDrawDecalAtlas ViewportDebugDraw = 15
 	// Draws SDFGI cascade data. This is the data structure that is used to bounce lighting against and create reflections.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	ViewportDebugDrawSdfgi ViewportDebugDraw = 16
 	// Draws SDFGI probe data. This is the data structure that is used to give indirect lighting dynamic objects moving within the scene.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	ViewportDebugDrawSdfgiProbes ViewportDebugDraw = 17
-	// Draws the global illumination buffer ([graphics.gd/classdb/VoxelGI] or SDFGI).
+	// Draws the global illumination buffer from [graphics.gd/classdb/VoxelGI] or SDFGI. Requires [graphics.gd/classdb/VoxelGI] (at least one visible baked VoxelGI node) or SDFGI ([graphics.gd/classdb/Environment.Instance.SdfgiEnabled]) to be enabled to have a visible effect.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	ViewportDebugDrawGiBuffer ViewportDebugDraw = 18
 	// Disable mesh LOD. All meshes are drawn with full detail, which can be used to compare performance.
 	ViewportDebugDrawDisableLod ViewportDebugDraw = 19
 	// Draws the [graphics.gd/classdb/OmniLight3D] cluster. Clustering determines where lights are positioned in screen-space, which allows the engine to only process these portions of the screen for lighting.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	ViewportDebugDrawClusterOmniLights ViewportDebugDraw = 20
 	// Draws the [graphics.gd/classdb/SpotLight3D] cluster. Clustering determines where lights are positioned in screen-space, which allows the engine to only process these portions of the screen for lighting.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	ViewportDebugDrawClusterSpotLights ViewportDebugDraw = 21
 	// Draws the [graphics.gd/classdb/Decal] cluster. Clustering determines where decals are positioned in screen-space, which allows the engine to only process these portions of the screen for decals.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	ViewportDebugDrawClusterDecals ViewportDebugDraw = 22
 	// Draws the [graphics.gd/classdb/ReflectionProbe] cluster. Clustering determines where reflection probes are positioned in screen-space, which allows the engine to only process these portions of the screen for reflection probes.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	ViewportDebugDrawClusterReflectionProbes ViewportDebugDraw = 23
 	// Draws the occlusion culling buffer. This low-resolution occlusion culling buffer is rasterized on the CPU and is used to check whether instances are occluded by other objects.
+	//
+	// Note: Only supported when using the Forward+ or Mobile rendering methods.
 	ViewportDebugDrawOccluders ViewportDebugDraw = 24
 	// Draws the motion vectors buffer. This is used by temporal antialiasing to correct for motion that occurs during gameplay.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	ViewportDebugDrawMotionVectors ViewportDebugDraw = 25
 	// Internal buffer is drawn instead of regular scene so you can see the per-pixel output that will be used by post-processing effects.
+	//
+	// Note: Only supported when using the Forward+ or Mobile rendering methods.
 	ViewportDebugDrawInternalBuffer ViewportDebugDraw = 26
 )
 
@@ -12671,7 +12775,7 @@ const (
 	GlobalVarTypeSampler3d GlobalShaderParameterType = 26
 	// Cubemap sampler global shader parameter (global uniform samplerCube ...). Exposed as a [graphics.gd/classdb/Cubemap] in the editor UI.
 	GlobalVarTypeSamplercube GlobalShaderParameterType = 27
-	// External sampler global shader parameter (global uniform samplerExternalOES ...). Exposed as a [graphics.gd/classdb/ExternalTexture] in the editor UI.
+	// External sampler global shader parameter (global uniform samplerExternalOES ...). Exposed as an [graphics.gd/classdb/ExternalTexture] in the editor UI.
 	GlobalVarTypeSamplerext GlobalShaderParameterType = 28
 	// Represents the size of the [GlobalShaderParameterType] enum.
 	GlobalVarTypeMax GlobalShaderParameterType = 29
@@ -12696,7 +12800,7 @@ const (
 	RenderingInfoPipelineCompilationsCanvas RenderingInfo = 6
 	// Number of pipeline compilations that were triggered by loading meshes. These compilations will show up as longer loading times the first time a user runs the game and the pipeline is required.
 	RenderingInfoPipelineCompilationsMesh RenderingInfo = 7
-	// Number of pipeline compilations that were triggered by building the surface cache before rendering the scene. These compilations will show up as a stutter when loading an scene the first time a user runs the game and the pipeline is required.
+	// Number of pipeline compilations that were triggered by building the surface cache before rendering the scene. These compilations will show up as a stutter when loading a scene the first time a user runs the game and the pipeline is required.
 	RenderingInfoPipelineCompilationsSurface RenderingInfo = 8
 	// Number of pipeline compilations that were triggered while drawing the scene. These compilations will show up as stutters during gameplay the first time a user runs the game and the pipeline is required.
 	RenderingInfoPipelineCompilationsDraw RenderingInfo = 9
@@ -12734,6 +12838,8 @@ type ParticlesEmitFlag int
 const ArrayWeightsSize int = 4                             //gd:RenderingServer.ARRAY_WEIGHTS_SIZE
 const CanvasItemZMin int = -4096                           //gd:RenderingServer.CANVAS_ITEM_Z_MIN
 const CanvasItemZMax int = 4096                            //gd:RenderingServer.CANVAS_ITEM_Z_MAX
+const CanvasLayerMin int = -2.147483648e+09                //gd:RenderingServer.CANVAS_LAYER_MIN
+const CanvasLayerMax int = 2.147483647e+09                 //gd:RenderingServer.CANVAS_LAYER_MAX
 const MaxGlowLevels int = 7                                //gd:RenderingServer.MAX_GLOW_LEVELS
 const MaxCursors int = 8                                   //gd:RenderingServer.MAX_CURSORS
 const Max2dDirectionalLights int = 8                       //gd:RenderingServer.MAX_2D_DIRECTIONAL_LIGHTS

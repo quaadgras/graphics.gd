@@ -131,6 +131,9 @@ var methods struct {
 	map_get_random_point                 gdextension.MethodForClass `hash:"722801526"`
 	query_path                           gdextension.MethodForClass `hash:"2146930868"`
 	region_create                        gdextension.MethodForClass `hash:"529393457"`
+	region_get_iteration_id              gdextension.MethodForClass `hash:"2198884583"`
+	region_set_use_async_iterations      gdextension.MethodForClass `hash:"1265174801"`
+	region_get_use_async_iterations      gdextension.MethodForClass `hash:"4155700596"`
 	region_set_enabled                   gdextension.MethodForClass `hash:"1265174801"`
 	region_get_enabled                   gdextension.MethodForClass `hash:"4155700596"`
 	region_set_use_edge_connections      gdextension.MethodForClass `hash:"1265174801"`
@@ -159,6 +162,7 @@ var methods struct {
 	region_get_random_point              gdextension.MethodForClass `hash:"722801526"`
 	region_get_bounds                    gdextension.MethodForClass `hash:"974181306"`
 	link_create                          gdextension.MethodForClass `hash:"529393457"`
+	link_get_iteration_id                gdextension.MethodForClass `hash:"2198884583"`
 	link_set_map                         gdextension.MethodForClass `hash:"395945892"`
 	link_get_map                         gdextension.MethodForClass `hash:"3814569979"`
 	link_set_enabled                     gdextension.MethodForClass `hash:"1265174801"`
@@ -581,6 +585,32 @@ func RegionCreate() RID.NavigationRegion3D { //gd:NavigationServer3D.region_crea
 }
 
 /*
+Returns the current iteration ID of the navigation region. Every time the navigation region changes and synchronizes, the iteration ID increases. An iteration ID of 0 means the navigation region has never synchronized.
+
+Note: The iteration ID will wrap around to 1 after reaching its range limit.
+*/
+func RegionGetIterationId(region RID.NavigationRegion3D) int { //gd:NavigationServer3D.region_get_iteration_id
+	once.Do(singleton)
+	return int(int(Advanced().RegionGetIterationId(RID.Any(region))))
+}
+
+/*
+If 'enabled' is true the 'region' uses an async synchronization process that runs on a background thread.
+*/
+func RegionSetUseAsyncIterations(region RID.NavigationRegion3D, enabled bool) { //gd:NavigationServer3D.region_set_use_async_iterations
+	once.Do(singleton)
+	Advanced().RegionSetUseAsyncIterations(RID.Any(region), enabled)
+}
+
+/*
+Returns true if the 'region' uses an async synchronization process that runs on a background thread.
+*/
+func RegionGetUseAsyncIterations(region RID.NavigationRegion3D) bool { //gd:NavigationServer3D.region_get_use_async_iterations
+	once.Do(singleton)
+	return bool(Advanced().RegionGetUseAsyncIterations(RID.Any(region)))
+}
+
+/*
 If 'enabled' is true, the specified 'region' will contribute to its current navigation map.
 */
 func RegionSetEnabled(region RID.NavigationRegion3D, enabled bool) { //gd:NavigationServer3D.region_set_enabled
@@ -825,6 +855,16 @@ func LinkCreate() RID.NavigationLink3D { //gd:NavigationServer3D.link_create
 }
 
 /*
+Returns the current iteration ID of the navigation link. Every time the navigation link changes and synchronizes, the iteration ID increases. An iteration ID of 0 means the navigation link has never synchronized.
+
+Note: The iteration ID will wrap around to 1 after reaching its range limit.
+*/
+func LinkGetIterationId(link RID.NavigationLink3D) int { //gd:NavigationServer3D.link_get_iteration_id
+	once.Do(singleton)
+	return int(int(Advanced().LinkGetIterationId(RID.Any(link))))
+}
+
+/*
 Sets the navigation map [Resource.ID] for the link.
 */
 func LinkSetMap(link RID.NavigationLink3D, map_ RID.NavigationMap3D) { //gd:NavigationServer3D.link_set_map
@@ -1029,7 +1069,7 @@ func AgentGetMap(agent RID.NavigationAgent3D) RID.NavigationMap3D { //gd:Navigat
 }
 
 /*
-If 'paused' is true the specified 'agent' will not be processed, e.g. calculate avoidance velocities or receive avoidance callbacks.
+If 'paused' is true the specified 'agent' will not be processed. For example, it will not calculate avoidance velocities or receive avoidance callbacks.
 */
 func AgentSetPaused(agent RID.NavigationAgent3D, paused bool) { //gd:NavigationServer3D.agent_set_paused
 	once.Do(singleton)
@@ -1329,7 +1369,7 @@ func ObstacleGetMap(obstacle RID.NavigationObstacle3D) RID.NavigationMap3D { //g
 }
 
 /*
-If 'paused' is true the specified 'obstacle' will not be processed, e.g. affect avoidance velocities.
+If 'paused' is true the specified 'obstacle' will not be processed. For example, it will no longer affect avoidance velocities.
 */
 func ObstacleSetPaused(obstacle RID.NavigationObstacle3D, paused bool) { //gd:NavigationServer3D.obstacle_set_paused
 	once.Do(singleton)
@@ -1569,7 +1609,7 @@ func GetDebugEnabled() bool { //gd:NavigationServer3D.get_debug_enabled
 }
 
 /*
-Returns information about the current state of the NavigationServer. See [ProcessInfo] for a list of available states.
+Returns information about the current state of the NavigationServer.
 */
 func GetProcessInfo(process_info ProcessInfo) int { //gd:NavigationServer3D.get_process_info
 	once.Do(singleton)
@@ -1987,6 +2027,39 @@ func (self class) RegionCreate() RID.Any { //gd:NavigationServer3D.region_create
 }
 
 /*
+Returns the current iteration ID of the navigation region. Every time the navigation region changes and synchronizes, the iteration ID increases. An iteration ID of 0 means the navigation region has never synchronized.
+
+Note: The iteration ID will wrap around to 1 after reaching its range limit.
+*/
+//go:nosplit
+func (self class) RegionGetIterationId(region RID.Any) int64 { //gd:NavigationServer3D.region_get_iteration_id
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.region_get_iteration_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
+	var ret = r_ret
+	return ret
+}
+
+/*
+If 'enabled' is true the 'region' uses an async synchronization process that runs on a background thread.
+*/
+//go:nosplit
+func (self class) RegionSetUseAsyncIterations(region RID.Any, enabled bool) { //gd:NavigationServer3D.region_set_use_async_iterations
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.region_set_use_async_iterations, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+		region  RID.Any
+		enabled bool
+	}{region, enabled})
+}
+
+/*
+Returns true if the 'region' uses an async synchronization process that runs on a background thread.
+*/
+//go:nosplit
+func (self class) RegionGetUseAsyncIterations(region RID.Any) bool { //gd:NavigationServer3D.region_get_use_async_iterations
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.region_get_use_async_iterations, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ region RID.Any }{region})
+	var ret = r_ret
+	return ret
+}
+
+/*
 If 'enabled' is true, the specified 'region' will contribute to its current navigation map.
 */
 //go:nosplit
@@ -2311,6 +2384,18 @@ func (self class) LinkCreate() RID.Any { //gd:NavigationServer3D.link_create
 }
 
 /*
+Returns the current iteration ID of the navigation link. Every time the navigation link changes and synchronizes, the iteration ID increases. An iteration ID of 0 means the navigation link has never synchronized.
+
+Note: The iteration ID will wrap around to 1 after reaching its range limit.
+*/
+//go:nosplit
+func (self class) LinkGetIterationId(link RID.Any) int64 { //gd:NavigationServer3D.link_get_iteration_id
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.link_get_iteration_id, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ link RID.Any }{link})
+	var ret = r_ret
+	return ret
+}
+
+/*
 Sets the navigation map [Resource.ID] for the link.
 */
 //go:nosplit
@@ -2577,7 +2662,7 @@ func (self class) AgentGetMap(agent RID.Any) RID.Any { //gd:NavigationServer3D.a
 }
 
 /*
-If 'paused' is true the specified 'agent' will not be processed, e.g. calculate avoidance velocities or receive avoidance callbacks.
+If 'paused' is true the specified 'agent' will not be processed. For example, it will not calculate avoidance velocities or receive avoidance callbacks.
 */
 //go:nosplit
 func (self class) AgentSetPaused(agent RID.Any, paused bool) { //gd:NavigationServer3D.agent_set_paused
@@ -2969,7 +3054,7 @@ func (self class) ObstacleGetMap(obstacle RID.Any) RID.Any { //gd:NavigationServ
 }
 
 /*
-If 'paused' is true the specified 'obstacle' will not be processed, e.g. affect avoidance velocities.
+If 'paused' is true the specified 'obstacle' will not be processed. For example, it will no longer affect avoidance velocities.
 */
 //go:nosplit
 func (self class) ObstacleSetPaused(obstacle RID.Any, paused bool) { //gd:NavigationServer3D.obstacle_set_paused
@@ -3243,7 +3328,7 @@ func (self class) GetDebugEnabled() bool { //gd:NavigationServer3D.get_debug_ena
 }
 
 /*
-Returns information about the current state of the NavigationServer. See [ProcessInfo] for a list of available states.
+Returns information about the current state of the NavigationServer.
 */
 //go:nosplit
 func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:NavigationServer3D.get_process_info

@@ -63,7 +63,7 @@ func (id ID) Instance() (Instance, bool) { return Object.As[Instance](Object.ID(
 
 /*
 Extension can be embedded in a new struct to create an extension of this class.
-T should be the type that is embedding this [Extension]
+T should be the type that is embedding this [Extension]See [Interface] for methods that can be overridden by T.
 */
 type Extension[T gdclass.Interface] struct{ gdclass.Extension[T, Instance] }
 
@@ -93,6 +93,56 @@ var Nil Instance
 type Any interface {
 	gd.IsClass
 	AsResourceImporter() Instance
+}
+
+type Interface interface {
+	// Called when the engine compilation profile editor wants to check what build options an imported resource needs. For example, [graphics.gd/classdb/ResourceImporterDynamicFont] has a property called [graphics.gd/classdb/ResourceImporterDynamicFont.Instance.MultichannelSignedDistanceField], that depends on the engine to be build with the "msdfgen" module. If that resource happened to be a custom one, it would be handled like this:
+	//
+	//
+	//
+	// func _get_build_dependencies(path):
+	//
+	// var resource = load(path)
+	//
+	// var dependencies = PackedStringArray()
+	//
+	//
+	//
+	// if resource.multichannel_signed_distance_field:
+	//
+	// dependencies.push_back("module_msdfgen_enabled")
+	//
+	//
+	//
+	// return dependencies
+	//
+	//
+	GetBuildDependencies(path string) []string
+}
+
+// Implementation implements [Interface] with empty methods.
+type Implementation = implementation
+
+type implementation struct{}
+
+func (self implementation) GetBuildDependencies(path string) (_ []string) { return }
+
+/*
+Called when the engine compilation profile editor wants to check what build options an imported resource needs. For example, [graphics.gd/classdb/ResourceImporterDynamicFont] has a property called [graphics.gd/classdb/ResourceImporterDynamicFont.Instance.MultichannelSignedDistanceField], that depends on the engine to be build with the "msdfgen" module. If that resource happened to be a custom one, it would be handled like this:
+*/
+func (Instance) _get_build_dependencies(impl func(ptr gdclass.Receiver, path string) []string) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, path.String())
+		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -138,6 +188,24 @@ func New() Instance {
 	return casted
 }
 
+/*
+Called when the engine compilation profile editor wants to check what build options an imported resource needs. For example, [graphics.gd/classdb/ResourceImporterDynamicFont] has a property called [graphics.gd/classdb/ResourceImporterDynamicFont.Instance.MultichannelSignedDistanceField], that depends on the engine to be build with the "msdfgen" module. If that resource happened to be a custom one, it would be handled like this:
+*/
+func (class) _get_build_dependencies(impl func(ptr gdclass.Receiver, path String.Readable) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var path = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 0))))
+		defer pointers.End(gd.InternalString(path))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, path)
+		ptr, ok := pointers.End(gd.InternalPackedStrings(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
 func (self class) AsResourceImporter() Advanced {
 	return Advanced{pointers.AsA[gdclass.ResourceImporter](self[0])}
 }
@@ -155,6 +223,8 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
+	case "_get_build_dependencies":
+		return reflect.ValueOf(self._get_build_dependencies)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -162,6 +232,8 @@ func (self class) Virtual(name string) reflect.Value {
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
+	case "_get_build_dependencies":
+		return reflect.ValueOf(self._get_build_dependencies)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

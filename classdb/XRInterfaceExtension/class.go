@@ -138,6 +138,8 @@ type Interface interface {
 	// Returns the projection matrix for the given view as a []float64.
 	GetProjectionForView(view int, aspect Float.X, z_near Float.X, z_far Float.X) []float64
 	GetVrsTexture() RID.Texture
+	// Returns the format of the texture returned by [Interface.GetVrsTexture].
+	GetVrsTextureFormat() XRInterface.VRSTextureFormat
 	// Called if this [graphics.gd/classdb/XRInterfaceExtension] is active before our physics and game process is called. Most XR interfaces will update its [graphics.gd/classdb/XRPositionalTracker]s at this point in time.
 	Process()
 	// Called if this [graphics.gd/classdb/XRInterfaceExtension] is active before rendering starts. Most XR interfaces will sync tracking at this point in time.
@@ -152,7 +154,7 @@ type Interface interface {
 	GetSuggestedTrackerNames() []string
 	// Returns a []string with pose names configured by this interface. Note that user configuration can override this list.
 	GetSuggestedPoseNames(tracker_name string) []string
-	// Returns a [XRInterface.TrackingStatus] specifying the current status of our tracking.
+	// Returns an [XRInterface.TrackingStatus] specifying the current status of our tracking.
 	GetTrackingStatus() XRInterface.TrackingStatus
 	// Triggers a haptic pulse to be emitted on the specified tracker.
 	TriggerHapticPulse(action_name string, tracker_name string, frequency Float.X, amplitude Float.X, duration_sec Float.X, delay_sec Float.X)
@@ -195,6 +197,7 @@ func (self implementation) GetProjectionForView(view int, aspect Float.X, z_near
 	return
 }
 func (self implementation) GetVrsTexture() (_ RID.Texture)                         { return }
+func (self implementation) GetVrsTextureFormat() (_ XRInterface.VRSTextureFormat)  { return }
 func (self implementation) Process()                                               { return }
 func (self implementation) PreRender()                                             { return }
 func (self implementation) PreDrawViewport(render_target RID.Framebuffer) (_ bool) { return }
@@ -415,6 +418,17 @@ func (Instance) _get_vrs_texture(impl func(ptr gdclass.Receiver) RID.Texture) (c
 }
 
 /*
+Returns the format of the texture returned by [Interface.GetVrsTexture].
+*/
+func (Instance) _get_vrs_texture_format(impl func(ptr gdclass.Receiver) XRInterface.VRSTextureFormat) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
 Called if this [graphics.gd/classdb/XRInterfaceExtension] is active before our physics and game process is called. Most XR interfaces will update its [graphics.gd/classdb/XRPositionalTracker]s at this point in time.
 */
 func (Instance) _process(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -503,7 +517,7 @@ func (Instance) _get_suggested_pose_names(impl func(ptr gdclass.Receiver, tracke
 }
 
 /*
-Returns a [XRInterface.TrackingStatus] specifying the current status of our tracking.
+Returns an [XRInterface.TrackingStatus] specifying the current status of our tracking.
 */
 func (Instance) _get_tracking_status(impl func(ptr gdclass.Receiver) XRInterface.TrackingStatus) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -864,6 +878,17 @@ func (class) _get_vrs_texture(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.Ex
 }
 
 /*
+Returns the format of the texture returned by [Interface.GetVrsTexture].
+*/
+func (class) _get_vrs_texture_format(impl func(ptr gdclass.Receiver) XRInterface.VRSTextureFormat) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+/*
 Called if this [graphics.gd/classdb/XRInterfaceExtension] is active before our physics and game process is called. Most XR interfaces will update its [graphics.gd/classdb/XRPositionalTracker]s at this point in time.
 */
 func (class) _process(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -952,7 +977,7 @@ func (class) _get_suggested_pose_names(impl func(ptr gdclass.Receiver, tracker_n
 }
 
 /*
-Returns a [XRInterface.TrackingStatus] specifying the current status of our tracking.
+Returns an [XRInterface.TrackingStatus] specifying the current status of our tracking.
 */
 func (class) _get_tracking_status(impl func(ptr gdclass.Receiver) XRInterface.TrackingStatus) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1154,6 +1179,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_projection_for_view)
 	case "_get_vrs_texture":
 		return reflect.ValueOf(self._get_vrs_texture)
+	case "_get_vrs_texture_format":
+		return reflect.ValueOf(self._get_vrs_texture_format)
 	case "_process":
 		return reflect.ValueOf(self._process)
 	case "_pre_render":
@@ -1223,6 +1250,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_projection_for_view)
 	case "_get_vrs_texture":
 		return reflect.ValueOf(self._get_vrs_texture)
+	case "_get_vrs_texture_format":
+		return reflect.ValueOf(self._get_vrs_texture_format)
 	case "_process":
 		return reflect.ValueOf(self._process)
 	case "_pre_render":

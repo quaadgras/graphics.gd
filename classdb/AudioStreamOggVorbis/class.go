@@ -90,6 +90,8 @@ var methods struct {
 	get_beat_count      gdextension.MethodForClass `hash:"3905245786"`
 	set_bar_beats       gdextension.MethodForClass `hash:"1286410249"`
 	get_bar_beats       gdextension.MethodForClass `hash:"3905245786"`
+	set_tags            gdextension.MethodForClass `hash:"4155329257"`
+	get_tags            gdextension.MethodForClass `hash:"3102165223"`
 }
 
 func init() {
@@ -117,7 +119,7 @@ Creates a new [graphics.gd/classdb/AudioStreamOggVorbis] instance from the given
 */
 func LoadFromBuffer(stream_data []byte) Instance { //gd:AudioStreamOggVorbis.load_from_buffer
 	self := Instance{}
-	return Instance(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...))))
+	return Instance(Advanced(self).LoadFromBuffer(Packed.BytesFrom(stream_data...)))
 }
 
 /*
@@ -203,6 +205,14 @@ func (self Instance) SetBarBeats(value int) {
 	class(self).SetBarBeats(int64(value))
 }
 
+func (self Instance) Tags() map[any]any {
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetTags()))
+}
+
+func (self Instance) SetTags(value map[any]any) {
+	class(self).SetTags(gd.DictionaryFromMap(value))
+}
+
 func (self Instance) Loop() bool {
 	return bool(class(self).HasLoop())
 }
@@ -224,7 +234,7 @@ Creates a new [graphics.gd/classdb/AudioStreamOggVorbis] instance from the given
 */
 //go:nosplit
 func (self class) LoadFromBuffer(stream_data Packed.Bytes) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_buffer
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4), &struct{ stream_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data)))})
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4), &struct{ stream_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data.Array)))})
 	var ret = [1]gdclass.AudioStreamOggVorbis{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamOggVorbis](r_ret)}
 	return ret
 }
@@ -308,6 +318,18 @@ func (self class) SetBarBeats(count int64) { //gd:AudioStreamOggVorbis.set_bar_b
 func (self class) GetBarBeats() int64 { //gd:AudioStreamOggVorbis.get_bar_beats
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bar_beats, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetTags(tags Dictionary.Any) { //gd:AudioStreamOggVorbis.set_tags
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tags, 0|(gdextension.SizeDictionary<<4), &struct{ tags gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(tags))})
+}
+
+//go:nosplit
+func (self class) GetTags() Dictionary.Any { //gd:AudioStreamOggVorbis.get_tags
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_tags, gdextension.SizeDictionary, &struct{}{})
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 func (self class) AsAudioStreamOggVorbis() Advanced {

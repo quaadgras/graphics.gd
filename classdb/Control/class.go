@@ -37,6 +37,7 @@ import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/CanvasItem"
+import "graphics.gd/classdb/DisplayServer"
 import "graphics.gd/classdb/Font"
 import "graphics.gd/classdb/InputEvent"
 import "graphics.gd/classdb/Node"
@@ -104,136 +105,158 @@ type Instance [1]gdclass.Control
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	accept_event                    gdextension.MethodForClass `hash:"3218959716"`
-	get_minimum_size                gdextension.MethodForClass `hash:"3341600327"`
-	get_combined_minimum_size       gdextension.MethodForClass `hash:"3341600327"`
-	set_anchors_preset              gdextension.MethodForClass `hash:"509135270"`
-	set_offsets_preset              gdextension.MethodForClass `hash:"3724524307"`
-	set_anchors_and_offsets_preset  gdextension.MethodForClass `hash:"3724524307"`
-	set_anchor                      gdextension.MethodForClass `hash:"2302782885"`
-	get_anchor                      gdextension.MethodForClass `hash:"2869120046"`
-	set_offset                      gdextension.MethodForClass `hash:"4290182280"`
-	get_offset                      gdextension.MethodForClass `hash:"2869120046"`
-	set_anchor_and_offset           gdextension.MethodForClass `hash:"4031722181"`
-	set_begin                       gdextension.MethodForClass `hash:"743155724"`
-	set_end                         gdextension.MethodForClass `hash:"743155724"`
-	set_position                    gdextension.MethodForClass `hash:"2436320129"`
-	set_size                        gdextension.MethodForClass `hash:"2436320129"`
-	reset_size                      gdextension.MethodForClass `hash:"3218959716"`
-	set_custom_minimum_size         gdextension.MethodForClass `hash:"743155724"`
-	set_global_position             gdextension.MethodForClass `hash:"2436320129"`
-	set_rotation                    gdextension.MethodForClass `hash:"373806689"`
-	set_rotation_degrees            gdextension.MethodForClass `hash:"373806689"`
-	set_scale                       gdextension.MethodForClass `hash:"743155724"`
-	set_pivot_offset                gdextension.MethodForClass `hash:"743155724"`
-	get_begin                       gdextension.MethodForClass `hash:"3341600327"`
-	get_end                         gdextension.MethodForClass `hash:"3341600327"`
-	get_position                    gdextension.MethodForClass `hash:"3341600327"`
-	get_size                        gdextension.MethodForClass `hash:"3341600327"`
-	get_rotation                    gdextension.MethodForClass `hash:"1740695150"`
-	get_rotation_degrees            gdextension.MethodForClass `hash:"1740695150"`
-	get_scale                       gdextension.MethodForClass `hash:"3341600327"`
-	get_pivot_offset                gdextension.MethodForClass `hash:"3341600327"`
-	get_custom_minimum_size         gdextension.MethodForClass `hash:"3341600327"`
-	get_parent_area_size            gdextension.MethodForClass `hash:"3341600327"`
-	get_global_position             gdextension.MethodForClass `hash:"3341600327"`
-	get_screen_position             gdextension.MethodForClass `hash:"3341600327"`
-	get_rect                        gdextension.MethodForClass `hash:"1639390495"`
-	get_global_rect                 gdextension.MethodForClass `hash:"1639390495"`
-	set_focus_mode                  gdextension.MethodForClass `hash:"3232914922"`
-	get_focus_mode                  gdextension.MethodForClass `hash:"2132829277"`
-	has_focus                       gdextension.MethodForClass `hash:"36873697"`
-	grab_focus                      gdextension.MethodForClass `hash:"3218959716"`
-	release_focus                   gdextension.MethodForClass `hash:"3218959716"`
-	find_prev_valid_focus           gdextension.MethodForClass `hash:"2783021301"`
-	find_next_valid_focus           gdextension.MethodForClass `hash:"2783021301"`
-	find_valid_focus_neighbor       gdextension.MethodForClass `hash:"1543910170"`
-	set_h_size_flags                gdextension.MethodForClass `hash:"394851643"`
-	get_h_size_flags                gdextension.MethodForClass `hash:"3781367401"`
-	set_stretch_ratio               gdextension.MethodForClass `hash:"373806689"`
-	get_stretch_ratio               gdextension.MethodForClass `hash:"1740695150"`
-	set_v_size_flags                gdextension.MethodForClass `hash:"394851643"`
-	get_v_size_flags                gdextension.MethodForClass `hash:"3781367401"`
-	set_theme                       gdextension.MethodForClass `hash:"2326690814"`
-	get_theme                       gdextension.MethodForClass `hash:"3846893731"`
-	set_theme_type_variation        gdextension.MethodForClass `hash:"3304788590"`
-	get_theme_type_variation        gdextension.MethodForClass `hash:"2002593661"`
-	begin_bulk_theme_override       gdextension.MethodForClass `hash:"3218959716"`
-	end_bulk_theme_override         gdextension.MethodForClass `hash:"3218959716"`
-	add_theme_icon_override         gdextension.MethodForClass `hash:"1373065600"`
-	add_theme_stylebox_override     gdextension.MethodForClass `hash:"4188838905"`
-	add_theme_font_override         gdextension.MethodForClass `hash:"3518018674"`
-	add_theme_font_size_override    gdextension.MethodForClass `hash:"2415702435"`
-	add_theme_color_override        gdextension.MethodForClass `hash:"4260178595"`
-	add_theme_constant_override     gdextension.MethodForClass `hash:"2415702435"`
-	remove_theme_icon_override      gdextension.MethodForClass `hash:"3304788590"`
-	remove_theme_stylebox_override  gdextension.MethodForClass `hash:"3304788590"`
-	remove_theme_font_override      gdextension.MethodForClass `hash:"3304788590"`
-	remove_theme_font_size_override gdextension.MethodForClass `hash:"3304788590"`
-	remove_theme_color_override     gdextension.MethodForClass `hash:"3304788590"`
-	remove_theme_constant_override  gdextension.MethodForClass `hash:"3304788590"`
-	get_theme_icon                  gdextension.MethodForClass `hash:"3163973443"`
-	get_theme_stylebox              gdextension.MethodForClass `hash:"604739069"`
-	get_theme_font                  gdextension.MethodForClass `hash:"2826986490"`
-	get_theme_font_size             gdextension.MethodForClass `hash:"1327056374"`
-	get_theme_color                 gdextension.MethodForClass `hash:"2798751242"`
-	get_theme_constant              gdextension.MethodForClass `hash:"1327056374"`
-	has_theme_icon_override         gdextension.MethodForClass `hash:"2619796661"`
-	has_theme_stylebox_override     gdextension.MethodForClass `hash:"2619796661"`
-	has_theme_font_override         gdextension.MethodForClass `hash:"2619796661"`
-	has_theme_font_size_override    gdextension.MethodForClass `hash:"2619796661"`
-	has_theme_color_override        gdextension.MethodForClass `hash:"2619796661"`
-	has_theme_constant_override     gdextension.MethodForClass `hash:"2619796661"`
-	has_theme_icon                  gdextension.MethodForClass `hash:"866386512"`
-	has_theme_stylebox              gdextension.MethodForClass `hash:"866386512"`
-	has_theme_font                  gdextension.MethodForClass `hash:"866386512"`
-	has_theme_font_size             gdextension.MethodForClass `hash:"866386512"`
-	has_theme_color                 gdextension.MethodForClass `hash:"866386512"`
-	has_theme_constant              gdextension.MethodForClass `hash:"866386512"`
-	get_theme_default_base_scale    gdextension.MethodForClass `hash:"1740695150"`
-	get_theme_default_font          gdextension.MethodForClass `hash:"3229501585"`
-	get_theme_default_font_size     gdextension.MethodForClass `hash:"3905245786"`
-	get_parent_control              gdextension.MethodForClass `hash:"2783021301"`
-	set_h_grow_direction            gdextension.MethodForClass `hash:"2022385301"`
-	get_h_grow_direction            gdextension.MethodForClass `hash:"3635610155"`
-	set_v_grow_direction            gdextension.MethodForClass `hash:"2022385301"`
-	get_v_grow_direction            gdextension.MethodForClass `hash:"3635610155"`
-	set_tooltip_auto_translate_mode gdextension.MethodForClass `hash:"776149714"`
-	get_tooltip_auto_translate_mode gdextension.MethodForClass `hash:"2498906432"`
-	set_tooltip_text                gdextension.MethodForClass `hash:"83702148"`
-	get_tooltip_text                gdextension.MethodForClass `hash:"201670096"`
-	get_tooltip                     gdextension.MethodForClass `hash:"2895288280"`
-	set_default_cursor_shape        gdextension.MethodForClass `hash:"217062046"`
-	get_default_cursor_shape        gdextension.MethodForClass `hash:"2359535750"`
-	get_cursor_shape                gdextension.MethodForClass `hash:"1395773853"`
-	set_focus_neighbor              gdextension.MethodForClass `hash:"2024461774"`
-	get_focus_neighbor              gdextension.MethodForClass `hash:"2757935761"`
-	set_focus_next                  gdextension.MethodForClass `hash:"1348162250"`
-	get_focus_next                  gdextension.MethodForClass `hash:"4075236667"`
-	set_focus_previous              gdextension.MethodForClass `hash:"1348162250"`
-	get_focus_previous              gdextension.MethodForClass `hash:"4075236667"`
-	force_drag                      gdextension.MethodForClass `hash:"3191844692"`
-	set_mouse_filter                gdextension.MethodForClass `hash:"3891156122"`
-	get_mouse_filter                gdextension.MethodForClass `hash:"1572545674"`
-	set_force_pass_scroll_events    gdextension.MethodForClass `hash:"2586408642"`
-	is_force_pass_scroll_events     gdextension.MethodForClass `hash:"36873697"`
-	set_clip_contents               gdextension.MethodForClass `hash:"2586408642"`
-	is_clipping_contents            gdextension.MethodForClass `hash:"2240911060"`
-	grab_click_focus                gdextension.MethodForClass `hash:"3218959716"`
-	set_drag_forwarding             gdextension.MethodForClass `hash:"1076571380"`
-	set_drag_preview                gdextension.MethodForClass `hash:"1496901182"`
-	is_drag_successful              gdextension.MethodForClass `hash:"36873697"`
-	warp_mouse                      gdextension.MethodForClass `hash:"743155724"`
-	set_shortcut_context            gdextension.MethodForClass `hash:"1078189570"`
-	get_shortcut_context            gdextension.MethodForClass `hash:"3160264692"`
-	update_minimum_size             gdextension.MethodForClass `hash:"3218959716"`
-	set_layout_direction            gdextension.MethodForClass `hash:"3310692370"`
-	get_layout_direction            gdextension.MethodForClass `hash:"1546772008"`
-	is_layout_rtl                   gdextension.MethodForClass `hash:"36873697"`
-	set_auto_translate              gdextension.MethodForClass `hash:"2586408642"`
-	is_auto_translating             gdextension.MethodForClass `hash:"36873697"`
-	set_localize_numeral_system     gdextension.MethodForClass `hash:"2586408642"`
-	is_localizing_numeral_system    gdextension.MethodForClass `hash:"36873697"`
+	accept_event                         gdextension.MethodForClass `hash:"3218959716"`
+	get_minimum_size                     gdextension.MethodForClass `hash:"3341600327"`
+	get_combined_minimum_size            gdextension.MethodForClass `hash:"3341600327"`
+	set_anchors_preset                   gdextension.MethodForClass `hash:"509135270"`
+	set_offsets_preset                   gdextension.MethodForClass `hash:"3724524307"`
+	set_anchors_and_offsets_preset       gdextension.MethodForClass `hash:"3724524307"`
+	set_anchor                           gdextension.MethodForClass `hash:"2302782885"`
+	get_anchor                           gdextension.MethodForClass `hash:"2869120046"`
+	set_offset                           gdextension.MethodForClass `hash:"4290182280"`
+	get_offset                           gdextension.MethodForClass `hash:"2869120046"`
+	set_anchor_and_offset                gdextension.MethodForClass `hash:"4031722181"`
+	set_begin                            gdextension.MethodForClass `hash:"743155724"`
+	set_end                              gdextension.MethodForClass `hash:"743155724"`
+	set_position                         gdextension.MethodForClass `hash:"2436320129"`
+	set_size                             gdextension.MethodForClass `hash:"2436320129"`
+	reset_size                           gdextension.MethodForClass `hash:"3218959716"`
+	set_custom_minimum_size              gdextension.MethodForClass `hash:"743155724"`
+	set_global_position                  gdextension.MethodForClass `hash:"2436320129"`
+	set_rotation                         gdextension.MethodForClass `hash:"373806689"`
+	set_rotation_degrees                 gdextension.MethodForClass `hash:"373806689"`
+	set_scale                            gdextension.MethodForClass `hash:"743155724"`
+	set_pivot_offset                     gdextension.MethodForClass `hash:"743155724"`
+	get_begin                            gdextension.MethodForClass `hash:"3341600327"`
+	get_end                              gdextension.MethodForClass `hash:"3341600327"`
+	get_position                         gdextension.MethodForClass `hash:"3341600327"`
+	get_size                             gdextension.MethodForClass `hash:"3341600327"`
+	get_rotation                         gdextension.MethodForClass `hash:"1740695150"`
+	get_rotation_degrees                 gdextension.MethodForClass `hash:"1740695150"`
+	get_scale                            gdextension.MethodForClass `hash:"3341600327"`
+	get_pivot_offset                     gdextension.MethodForClass `hash:"3341600327"`
+	get_custom_minimum_size              gdextension.MethodForClass `hash:"3341600327"`
+	get_parent_area_size                 gdextension.MethodForClass `hash:"3341600327"`
+	get_global_position                  gdextension.MethodForClass `hash:"3341600327"`
+	get_screen_position                  gdextension.MethodForClass `hash:"3341600327"`
+	get_rect                             gdextension.MethodForClass `hash:"1639390495"`
+	get_global_rect                      gdextension.MethodForClass `hash:"1639390495"`
+	set_focus_mode                       gdextension.MethodForClass `hash:"3232914922"`
+	get_focus_mode                       gdextension.MethodForClass `hash:"2132829277"`
+	get_focus_mode_with_override         gdextension.MethodForClass `hash:"2132829277"`
+	set_focus_behavior_recursive         gdextension.MethodForClass `hash:"4256832521"`
+	get_focus_behavior_recursive         gdextension.MethodForClass `hash:"2435707181"`
+	has_focus                            gdextension.MethodForClass `hash:"36873697"`
+	grab_focus                           gdextension.MethodForClass `hash:"3218959716"`
+	release_focus                        gdextension.MethodForClass `hash:"3218959716"`
+	find_prev_valid_focus                gdextension.MethodForClass `hash:"2783021301"`
+	find_next_valid_focus                gdextension.MethodForClass `hash:"2783021301"`
+	find_valid_focus_neighbor            gdextension.MethodForClass `hash:"1543910170"`
+	set_h_size_flags                     gdextension.MethodForClass `hash:"394851643"`
+	get_h_size_flags                     gdextension.MethodForClass `hash:"3781367401"`
+	set_stretch_ratio                    gdextension.MethodForClass `hash:"373806689"`
+	get_stretch_ratio                    gdextension.MethodForClass `hash:"1740695150"`
+	set_v_size_flags                     gdextension.MethodForClass `hash:"394851643"`
+	get_v_size_flags                     gdextension.MethodForClass `hash:"3781367401"`
+	set_theme                            gdextension.MethodForClass `hash:"2326690814"`
+	get_theme                            gdextension.MethodForClass `hash:"3846893731"`
+	set_theme_type_variation             gdextension.MethodForClass `hash:"3304788590"`
+	get_theme_type_variation             gdextension.MethodForClass `hash:"2002593661"`
+	begin_bulk_theme_override            gdextension.MethodForClass `hash:"3218959716"`
+	end_bulk_theme_override              gdextension.MethodForClass `hash:"3218959716"`
+	add_theme_icon_override              gdextension.MethodForClass `hash:"1373065600"`
+	add_theme_stylebox_override          gdextension.MethodForClass `hash:"4188838905"`
+	add_theme_font_override              gdextension.MethodForClass `hash:"3518018674"`
+	add_theme_font_size_override         gdextension.MethodForClass `hash:"2415702435"`
+	add_theme_color_override             gdextension.MethodForClass `hash:"4260178595"`
+	add_theme_constant_override          gdextension.MethodForClass `hash:"2415702435"`
+	remove_theme_icon_override           gdextension.MethodForClass `hash:"3304788590"`
+	remove_theme_stylebox_override       gdextension.MethodForClass `hash:"3304788590"`
+	remove_theme_font_override           gdextension.MethodForClass `hash:"3304788590"`
+	remove_theme_font_size_override      gdextension.MethodForClass `hash:"3304788590"`
+	remove_theme_color_override          gdextension.MethodForClass `hash:"3304788590"`
+	remove_theme_constant_override       gdextension.MethodForClass `hash:"3304788590"`
+	get_theme_icon                       gdextension.MethodForClass `hash:"3163973443"`
+	get_theme_stylebox                   gdextension.MethodForClass `hash:"604739069"`
+	get_theme_font                       gdextension.MethodForClass `hash:"2826986490"`
+	get_theme_font_size                  gdextension.MethodForClass `hash:"1327056374"`
+	get_theme_color                      gdextension.MethodForClass `hash:"2798751242"`
+	get_theme_constant                   gdextension.MethodForClass `hash:"1327056374"`
+	has_theme_icon_override              gdextension.MethodForClass `hash:"2619796661"`
+	has_theme_stylebox_override          gdextension.MethodForClass `hash:"2619796661"`
+	has_theme_font_override              gdextension.MethodForClass `hash:"2619796661"`
+	has_theme_font_size_override         gdextension.MethodForClass `hash:"2619796661"`
+	has_theme_color_override             gdextension.MethodForClass `hash:"2619796661"`
+	has_theme_constant_override          gdextension.MethodForClass `hash:"2619796661"`
+	has_theme_icon                       gdextension.MethodForClass `hash:"866386512"`
+	has_theme_stylebox                   gdextension.MethodForClass `hash:"866386512"`
+	has_theme_font                       gdextension.MethodForClass `hash:"866386512"`
+	has_theme_font_size                  gdextension.MethodForClass `hash:"866386512"`
+	has_theme_color                      gdextension.MethodForClass `hash:"866386512"`
+	has_theme_constant                   gdextension.MethodForClass `hash:"866386512"`
+	get_theme_default_base_scale         gdextension.MethodForClass `hash:"1740695150"`
+	get_theme_default_font               gdextension.MethodForClass `hash:"3229501585"`
+	get_theme_default_font_size          gdextension.MethodForClass `hash:"3905245786"`
+	get_parent_control                   gdextension.MethodForClass `hash:"2783021301"`
+	set_h_grow_direction                 gdextension.MethodForClass `hash:"2022385301"`
+	get_h_grow_direction                 gdextension.MethodForClass `hash:"3635610155"`
+	set_v_grow_direction                 gdextension.MethodForClass `hash:"2022385301"`
+	get_v_grow_direction                 gdextension.MethodForClass `hash:"3635610155"`
+	set_tooltip_auto_translate_mode      gdextension.MethodForClass `hash:"776149714"`
+	get_tooltip_auto_translate_mode      gdextension.MethodForClass `hash:"2498906432"`
+	set_tooltip_text                     gdextension.MethodForClass `hash:"83702148"`
+	get_tooltip_text                     gdextension.MethodForClass `hash:"201670096"`
+	get_tooltip                          gdextension.MethodForClass `hash:"2895288280"`
+	set_default_cursor_shape             gdextension.MethodForClass `hash:"217062046"`
+	get_default_cursor_shape             gdextension.MethodForClass `hash:"2359535750"`
+	get_cursor_shape                     gdextension.MethodForClass `hash:"1395773853"`
+	set_focus_neighbor                   gdextension.MethodForClass `hash:"2024461774"`
+	get_focus_neighbor                   gdextension.MethodForClass `hash:"2757935761"`
+	set_focus_next                       gdextension.MethodForClass `hash:"1348162250"`
+	get_focus_next                       gdextension.MethodForClass `hash:"4075236667"`
+	set_focus_previous                   gdextension.MethodForClass `hash:"1348162250"`
+	get_focus_previous                   gdextension.MethodForClass `hash:"4075236667"`
+	force_drag                           gdextension.MethodForClass `hash:"3191844692"`
+	accessibility_drag                   gdextension.MethodForClass `hash:"3218959716"`
+	accessibility_drop                   gdextension.MethodForClass `hash:"3218959716"`
+	set_accessibility_name               gdextension.MethodForClass `hash:"83702148"`
+	get_accessibility_name               gdextension.MethodForClass `hash:"201670096"`
+	set_accessibility_description        gdextension.MethodForClass `hash:"83702148"`
+	get_accessibility_description        gdextension.MethodForClass `hash:"201670096"`
+	set_accessibility_live               gdextension.MethodForClass `hash:"1720261470"`
+	get_accessibility_live               gdextension.MethodForClass `hash:"3311037003"`
+	set_accessibility_controls_nodes     gdextension.MethodForClass `hash:"381264803"`
+	get_accessibility_controls_nodes     gdextension.MethodForClass `hash:"3995934104"`
+	set_accessibility_described_by_nodes gdextension.MethodForClass `hash:"381264803"`
+	get_accessibility_described_by_nodes gdextension.MethodForClass `hash:"3995934104"`
+	set_accessibility_labeled_by_nodes   gdextension.MethodForClass `hash:"381264803"`
+	get_accessibility_labeled_by_nodes   gdextension.MethodForClass `hash:"3995934104"`
+	set_accessibility_flow_to_nodes      gdextension.MethodForClass `hash:"381264803"`
+	get_accessibility_flow_to_nodes      gdextension.MethodForClass `hash:"3995934104"`
+	set_mouse_filter                     gdextension.MethodForClass `hash:"3891156122"`
+	get_mouse_filter                     gdextension.MethodForClass `hash:"1572545674"`
+	get_mouse_filter_with_override       gdextension.MethodForClass `hash:"1572545674"`
+	set_mouse_behavior_recursive         gdextension.MethodForClass `hash:"849284636"`
+	get_mouse_behavior_recursive         gdextension.MethodForClass `hash:"3779367402"`
+	set_force_pass_scroll_events         gdextension.MethodForClass `hash:"2586408642"`
+	is_force_pass_scroll_events          gdextension.MethodForClass `hash:"36873697"`
+	set_clip_contents                    gdextension.MethodForClass `hash:"2586408642"`
+	is_clipping_contents                 gdextension.MethodForClass `hash:"2240911060"`
+	grab_click_focus                     gdextension.MethodForClass `hash:"3218959716"`
+	set_drag_forwarding                  gdextension.MethodForClass `hash:"1076571380"`
+	set_drag_preview                     gdextension.MethodForClass `hash:"1496901182"`
+	is_drag_successful                   gdextension.MethodForClass `hash:"36873697"`
+	warp_mouse                           gdextension.MethodForClass `hash:"743155724"`
+	set_shortcut_context                 gdextension.MethodForClass `hash:"1078189570"`
+	get_shortcut_context                 gdextension.MethodForClass `hash:"3160264692"`
+	update_minimum_size                  gdextension.MethodForClass `hash:"3218959716"`
+	set_layout_direction                 gdextension.MethodForClass `hash:"3310692370"`
+	get_layout_direction                 gdextension.MethodForClass `hash:"1546772008"`
+	is_layout_rtl                        gdextension.MethodForClass `hash:"36873697"`
+	set_auto_translate                   gdextension.MethodForClass `hash:"2586408642"`
+	is_auto_translating                  gdextension.MethodForClass `hash:"36873697"`
+	set_localize_numeral_system          gdextension.MethodForClass `hash:"2586408642"`
+	is_localizing_numeral_system         gdextension.MethodForClass `hash:"36873697"`
 }
 
 func init() {
@@ -283,17 +306,19 @@ type Interface interface {
 	//
 	// A preview that will follow the mouse that should represent the data can be set with [Instance.SetDragPreview]. A good time to set the preview is in this method.
 	//
+	// Note: If the drag was initiated by a keyboard shortcut or [Instance.AccessibilityDrag], 'at_position' is set to [Vector2.Inf], and the currently selected item/text position should be used as the drag position.
+	//
 	//
 	//
 	// [gdscript]
 	//
 	// func _get_drag_data(position):
 	//
-	//     var mydata = make_data() # This is your custom method generating the drag data.
+	// var mydata = make_data() # This is your custom method generating the drag data.
 	//
-	//     set_drag_preview(make_preview(mydata)) # This is your custom method generating the preview of the drag data.
+	// set_drag_preview(make_preview(mydata)) # This is your custom method generating the preview of the drag data.
 	//
-	//     return mydata
+	// return mydata
 	//
 	// [/gdscript]
 	//
@@ -303,11 +328,11 @@ type Interface interface {
 	//
 	// {
 	//
-	//     var myData = MakeData(); // This is your custom method generating the drag data.
+	// var myData = MakeData(); // This is your custom method generating the drag data.
 	//
-	//     SetDragPreview(MakePreview(myData)); // This is your custom method generating the preview of the drag data.
+	// SetDragPreview(MakePreview(myData)); // This is your custom method generating the preview of the drag data.
 	//
-	//     return myData;
+	// return myData;
 	//
 	// }
 	//
@@ -319,17 +344,19 @@ type Interface interface {
 	//
 	// This method should only be used to test the data. Process the data in [Interface.DropData].
 	//
+	// Note: If the drag was initiated by a keyboard shortcut or [Instance.AccessibilityDrag], 'at_position' is set to [Vector2.Inf], and the currently selected item/text position should be used as the drop position.
+	//
 	//
 	//
 	// [gdscript]
 	//
 	// func _can_drop_data(position, data):
 	//
-	//     # Check position if it is relevant to you
+	// # Check position if it is relevant to you
 	//
-	//     # Otherwise, just check data
+	// # Otherwise, just check data
 	//
-	//     return typeof(data) == TYPE_DICTIONARY and data.has("expected")
+	// return typeof(data) == TYPE_DICTIONARY and data.has("expected")
 	//
 	// [/gdscript]
 	//
@@ -339,11 +366,11 @@ type Interface interface {
 	//
 	// {
 	//
-	//     // Check position if it is relevant to you
+	// // Check position if it is relevant to you
 	//
-	//     // Otherwise, just check data
+	// // Otherwise, just check data
 	//
-	//     return data.VariantType == Variant.Type.Dictionary && data.AsGodotDictionary().ContainsKey("expected");
+	// return data.VariantType == Variant.Type.Dictionary && data.AsGodotDictionary().ContainsKey("expected");
 	//
 	// }
 	//
@@ -353,19 +380,21 @@ type Interface interface {
 	CanDropData(at_position Vector2.XY, data any) bool
 	// Godot calls this method to pass you the 'data' from a control's [Interface.GetDragData] result. Godot first calls [Interface.CanDropData] to test if 'data' is allowed to drop at 'at_position' where 'at_position' is local to this control.
 	//
+	// Note: If the drag was initiated by a keyboard shortcut or [Instance.AccessibilityDrag], 'at_position' is set to [Vector2.Inf], and the currently selected item/text position should be used as the drop position.
+	//
 	//
 	//
 	// [gdscript]
 	//
 	// func _can_drop_data(position, data):
 	//
-	//     return typeof(data) == TYPE_DICTIONARY and data.has("color")
+	// return typeof(data) == TYPE_DICTIONARY and data.has("color")
 	//
 	//
 	//
 	// func _drop_data(position, data):
 	//
-	//     var color = data["color"]
+	// var color = data["color"]
 	//
 	// [/gdscript]
 	//
@@ -375,7 +404,7 @@ type Interface interface {
 	//
 	// {
 	//
-	//     return data.VariantType == Variant.Type.Dictionary && data.AsGodotDictionary().ContainsKey("color");
+	// return data.VariantType == Variant.Type.Dictionary && data.AsGodotDictionary().ContainsKey("color");
 	//
 	// }
 	//
@@ -385,7 +414,7 @@ type Interface interface {
 	//
 	// {
 	//
-	//     Color color = data.AsGodotDictionary()["color"].AsColor();
+	// Color color = data.AsGodotDictionary()["color"].AsColor();
 	//
 	// }
 	//
@@ -413,11 +442,11 @@ type Interface interface {
 	//
 	// func _make_custom_tooltip(for_text):
 	//
-	//     var label = Label.new()
+	// var label = Label.new()
 	//
-	//     label.text = for_text
+	// label.text = for_text
 	//
-	//     return label
+	// return label
 	//
 	// [/gdscript]
 	//
@@ -427,11 +456,11 @@ type Interface interface {
 	//
 	// {
 	//
-	//     var label = new Label();
+	// var label = new Label();
 	//
-	//     label.Text = forText;
+	// label.Text = forText;
 	//
-	//     return label;
+	// return label;
 	//
 	// }
 	//
@@ -447,11 +476,11 @@ type Interface interface {
 	//
 	// func _make_custom_tooltip(for_text):
 	//
-	//     var tooltip = preload("res://some_tooltip_scene.tscn").instantiate()
+	// var tooltip = preload("res://some_tooltip_scene.tscn").instantiate()
 	//
-	//     tooltip.get_node("Label").text = for_text
+	// tooltip.get_node("Label").text = for_text
 	//
-	//     return tooltip
+	// return tooltip
 	//
 	// [/gdscript]
 	//
@@ -461,11 +490,11 @@ type Interface interface {
 	//
 	// {
 	//
-	//     Node tooltip = ResourceLoader.Load<PackedScene>("res://some_tooltip_scene.tscn").Instantiate();
+	// Node tooltip = ResourceLoader.Load<PackedScene>("res://some_tooltip_scene.tscn").Instantiate();
 	//
-	//     tooltip.GetNode<Label>("Label").Text = forText;
+	// tooltip.GetNode<Label>("Label").Text = forText;
 	//
-	//     return tooltip;
+	// return tooltip;
 	//
 	// }
 	//
@@ -473,6 +502,10 @@ type Interface interface {
 	//
 	//
 	MakeCustomTooltip(for_text string) Object.Instance
+	// Return the description of the keyboard shortcuts and other contextual help for this control.
+	AccessibilityGetContextualInfo() string
+	// Override this method to return a human-readable description of the position of the child 'node' in the custom container, added to the [Instance.AccessibilityName].
+	GetAccessibilityContainerName(node Node.Instance) string
 	// Virtual method to be implemented by the user. Override this method to handle and accept inputs on UI elements. See also [Instance.AcceptEvent].
 	//
 	// Example: Click on the control to print a message:
@@ -483,11 +516,11 @@ type Interface interface {
 	//
 	// func _gui_input(event):
 	//
-	//     if event is InputEventMouseButton:
+	// if event is InputEventMouseButton:
 	//
-	//         if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+	// if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 	//
-	//             print("I've been clicked D:")
+	// print("I've been clicked D:")
 	//
 	// [/gdscript]
 	//
@@ -497,19 +530,19 @@ type Interface interface {
 	//
 	// {
 	//
-	//     if (@event is InputEventMouseButton mb)
+	// if (@event is InputEventMouseButton mb)
 	//
-	//     {
+	// {
 	//
-	//         if (mb.ButtonIndex == MouseButton.Left && mb.Pressed)
+	// if (mb.ButtonIndex == MouseButton.Left && mb.Pressed)
 	//
-	//         {
+	// {
 	//
-	//             GD.Print("I've been clicked D:");
+	// GD.Print("I've been clicked D:");
 	//
-	//         }
+	// }
 	//
-	//     }
+	// }
 	//
 	// }
 	//
@@ -546,6 +579,8 @@ func (self implementation) GetDragData(at_position Vector2.XY) (_ any)          
 func (self implementation) CanDropData(at_position Vector2.XY, data any) (_ bool)           { return }
 func (self implementation) DropData(at_position Vector2.XY, data any)                       { return }
 func (self implementation) MakeCustomTooltip(for_text string) (_ Object.Instance)           { return }
+func (self implementation) AccessibilityGetContextualInfo() (_ string)                      { return }
+func (self implementation) GetAccessibilityContainerName(node Node.Instance) (_ string)     { return }
 func (self implementation) GuiInput(event InputEvent.Instance)                              { return }
 
 /*
@@ -625,6 +660,8 @@ Godot calls this method to get data that can be dragged and dropped onto control
 
 A preview that will follow the mouse that should represent the data can be set with [Instance.SetDragPreview]. A good time to set the preview is in this method.
 
+Note: If the drag was initiated by a keyboard shortcut or [Instance.AccessibilityDrag], 'at_position' is set to [Vector2.Inf], and the currently selected item/text position should be used as the drag position.
+
 	GetDragData := func(position Vector2.XY) any {
 		var mydata = make_data() // This is your custom method generating the drag data.
 		control.SetDragPreview(make_preview(mydata))
@@ -650,6 +687,8 @@ Godot calls this method to test if 'data' from a control's [Interface.GetDragDat
 
 This method should only be used to test the data. Process the data in [Interface.DropData].
 
+Note: If the drag was initiated by a keyboard shortcut or [Instance.AccessibilityDrag], 'at_position' is set to [Vector2.Inf], and the currently selected item/text position should be used as the drop position.
+
 	CanDropData := func(position Vector2.XY, data any) bool {
 		return reflect.TypeOf(data).Kind() == reflect.Map && data.(map[any]any)["expected"] != nil
 	}
@@ -667,6 +706,8 @@ func (Instance) _can_drop_data(impl func(ptr gdclass.Receiver, at_position Vecto
 
 /*
 Godot calls this method to pass you the 'data' from a control's [Interface.GetDragData] result. Godot first calls [Interface.CanDropData] to test if 'data' is allowed to drop at 'at_position' where 'at_position' is local to this control.
+
+Note: If the drag was initiated by a keyboard shortcut or [Instance.AccessibilityDrag], 'at_position' is set to [Vector2.Inf], and the currently selected item/text position should be used as the drop position.
 
 	CanDropData := func(position Vector2.XY, data any) bool {
 		return reflect.TypeOf(data).Kind() == reflect.Map && data.(map[any]any)["color"] != nil
@@ -715,6 +756,41 @@ func (Instance) _make_custom_tooltip(impl func(ptr gdclass.Receiver, for_text st
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_text.String())
 		ptr, ok := pointers.End(ret[0])
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Return the description of the keyboard shortcuts and other contextual help for this control.
+*/
+func (Instance) _accessibility_get_contextual_info(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Override this method to return a human-readable description of the position of the child 'node' in the custom container, added to the [Instance.AccessibilityName].
+*/
+func (Instance) _get_accessibility_container_name(impl func(ptr gdclass.Receiver, node Node.Instance) string) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+
+		defer pointers.End(node[0])
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, node)
+		ptr, ok := pointers.End(gd.InternalString(String.New(ret)))
 
 		if !ok {
 			return
@@ -1004,6 +1080,13 @@ Note: Setting [graphics.gd/classdb/Viewport.Instance.GuiSnapControlsToPixels] to
 */
 func (self Instance) GetGlobalRect() Rect2.PositionSize { //gd:Control.get_global_rect
 	return Rect2.PositionSize(Advanced(self).GetGlobalRect())
+}
+
+/*
+Returns the [Instance.FocusMode], but takes the [Instance.FocusBehaviorRecursive] into account. If [Instance.FocusBehaviorRecursive] is set to [FocusBehaviorDisabled], or it is set to [FocusBehaviorInherited] and its ancestor is set to [FocusBehaviorDisabled], then this returns [FocusNone].
+*/
+func (self Instance) GetFocusModeWithOverride() FocusMode { //gd:Control.get_focus_mode_with_override
+	return FocusMode(Advanced(self).GetFocusModeWithOverride())
 }
 
 /*
@@ -1520,14 +1603,14 @@ func (self Expanded) GetTooltip(at_position Vector2.XY) string { //gd:Control.ge
 }
 
 /*
-Returns the mouse cursor shape the control displays on mouse hover. See [CursorShape].
+Returns the mouse cursor shape for this control when hovered over 'position' in local coordinates. For most controls, this is the same as [Instance.MouseDefaultCursorShape], but some built-in controls implement more complex logic.
 */
 func (self Instance) GetCursorShape() CursorShape { //gd:Control.get_cursor_shape
 	return CursorShape(Advanced(self).GetCursorShape(Vector2.XY(gd.Vector2{0, 0})))
 }
 
 /*
-Returns the mouse cursor shape the control displays on mouse hover. See [CursorShape].
+Returns the mouse cursor shape for this control when hovered over 'position' in local coordinates. For most controls, this is the same as [Instance.MouseDefaultCursorShape], but some built-in controls implement more complex logic.
 */
 func (self Expanded) GetCursorShape(position Vector2.XY) CursorShape { //gd:Control.get_cursor_shape
 	return CursorShape(Advanced(self).GetCursorShape(Vector2.XY(position)))
@@ -1540,6 +1623,27 @@ The methods [Interface.CanDropData] and [Interface.DropData] must be implemented
 */
 func (self Instance) ForceDrag(data any, preview Instance) { //gd:Control.force_drag
 	Advanced(self).ForceDrag(variant.New(data), preview)
+}
+
+/*
+Starts drag-and-drop operation without using a mouse.
+*/
+func (self Instance) AccessibilityDrag() { //gd:Control.accessibility_drag
+	Advanced(self).AccessibilityDrag()
+}
+
+/*
+Ends drag-and-drop operation without using a mouse.
+*/
+func (self Instance) AccessibilityDrop() { //gd:Control.accessibility_drop
+	Advanced(self).AccessibilityDrop()
+}
+
+/*
+Returns the [Instance.MouseFilter], but takes the [Instance.MouseBehaviorRecursive] into account. If [Instance.MouseBehaviorRecursive] is set to [MouseBehaviorDisabled], or it is set to [MouseBehaviorInherited] and its ancestor is set to [MouseBehaviorDisabled], then this returns [MouseFilterIgnore].
+*/
+func (self Instance) GetMouseFilterWithOverride() MouseFilter { //gd:Control.get_mouse_filter_with_override
+	return MouseFilter(Advanced(self).GetMouseFilterWithOverride())
 }
 
 /*
@@ -1608,7 +1712,7 @@ func (self Instance) UpdateMinimumSize() { //gd:Control.update_minimum_size
 }
 
 /*
-Returns true if layout is right-to-left. See also [Instance.LayoutDirection].
+Returns true if the layout is right-to-left. See also [Instance.LayoutDirection].
 */
 func (self Instance) IsLayoutRtl() bool { //gd:Control.is_layout_rtl
 	return bool(Advanced(self).IsLayoutRtl())
@@ -1900,12 +2004,28 @@ func (self Instance) SetFocusMode(value FocusMode) {
 	class(self).SetFocusMode(value)
 }
 
+func (self Instance) FocusBehaviorRecursive() FocusBehaviorRecursive {
+	return FocusBehaviorRecursive(class(self).GetFocusBehaviorRecursive())
+}
+
+func (self Instance) SetFocusBehaviorRecursive(value FocusBehaviorRecursive) {
+	class(self).SetFocusBehaviorRecursive(value)
+}
+
 func (self Instance) MouseFilter() MouseFilter {
 	return MouseFilter(class(self).GetMouseFilter())
 }
 
 func (self Instance) SetMouseFilter(value MouseFilter) {
 	class(self).SetMouseFilter(value)
+}
+
+func (self Instance) MouseBehaviorRecursive() MouseBehaviorRecursive {
+	return MouseBehaviorRecursive(class(self).GetMouseBehaviorRecursive())
+}
+
+func (self Instance) SetMouseBehaviorRecursive(value MouseBehaviorRecursive) {
+	class(self).SetMouseBehaviorRecursive(value)
 }
 
 func (self Instance) MouseForcePassScrollEvents() bool {
@@ -1930,6 +2050,62 @@ func (self Instance) ShortcutContext() Node.Instance {
 
 func (self Instance) SetShortcutContext(value Node.Instance) {
 	class(self).SetShortcutContext(value)
+}
+
+func (self Instance) AccessibilityName() string {
+	return string(class(self).GetAccessibilityName().String())
+}
+
+func (self Instance) SetAccessibilityName(value string) {
+	class(self).SetAccessibilityName(String.New(value))
+}
+
+func (self Instance) AccessibilityDescription() string {
+	return string(class(self).GetAccessibilityDescription().String())
+}
+
+func (self Instance) SetAccessibilityDescription(value string) {
+	class(self).SetAccessibilityDescription(String.New(value))
+}
+
+func (self Instance) AccessibilityLive() DisplayServer.AccessibilityLiveMode {
+	return DisplayServer.AccessibilityLiveMode(class(self).GetAccessibilityLive())
+}
+
+func (self Instance) SetAccessibilityLive(value DisplayServer.AccessibilityLiveMode) {
+	class(self).SetAccessibilityLive(value)
+}
+
+func (self Instance) AccessibilityControlsNodes() []string {
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityControlsNodes())))
+}
+
+func (self Instance) SetAccessibilityControlsNodes(value []string) {
+	class(self).SetAccessibilityControlsNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
+}
+
+func (self Instance) AccessibilityDescribedByNodes() []string {
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityDescribedByNodes())))
+}
+
+func (self Instance) SetAccessibilityDescribedByNodes(value []string) {
+	class(self).SetAccessibilityDescribedByNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
+}
+
+func (self Instance) AccessibilityLabeledByNodes() []string {
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityLabeledByNodes())))
+}
+
+func (self Instance) SetAccessibilityLabeledByNodes(value []string) {
+	class(self).SetAccessibilityLabeledByNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
+}
+
+func (self Instance) AccessibilityFlowToNodes() []string {
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAccessibilityFlowToNodes())))
+}
+
+func (self Instance) SetAccessibilityFlowToNodes(value []string) {
+	class(self).SetAccessibilityFlowToNodes(gd.ArrayFromSlice[Array.Contains[Path.ToNode]](value))
 }
 
 func (self Instance) Theme() Theme.Instance {
@@ -2025,6 +2201,8 @@ Godot calls this method to get data that can be dragged and dropped onto control
 
 A preview that will follow the mouse that should represent the data can be set with [Instance.SetDragPreview]. A good time to set the preview is in this method.
 
+Note: If the drag was initiated by a keyboard shortcut or [Instance.AccessibilityDrag], 'at_position' is set to [Vector2.Inf], and the currently selected item/text position should be used as the drag position.
+
 	GetDragData := func(position Vector2.XY) any {
 		var mydata = make_data() // This is your custom method generating the drag data.
 		control.SetDragPreview(make_preview(mydata))
@@ -2050,6 +2228,8 @@ Godot calls this method to test if 'data' from a control's [Interface.GetDragDat
 
 This method should only be used to test the data. Process the data in [Interface.DropData].
 
+Note: If the drag was initiated by a keyboard shortcut or [Instance.AccessibilityDrag], 'at_position' is set to [Vector2.Inf], and the currently selected item/text position should be used as the drop position.
+
 	CanDropData := func(position Vector2.XY, data any) bool {
 		return reflect.TypeOf(data).Kind() == reflect.Map && data.(map[any]any)["expected"] != nil
 	}
@@ -2067,6 +2247,8 @@ func (class) _can_drop_data(impl func(ptr gdclass.Receiver, at_position Vector2.
 
 /*
 Godot calls this method to pass you the 'data' from a control's [Interface.GetDragData] result. Godot first calls [Interface.CanDropData] to test if 'data' is allowed to drop at 'at_position' where 'at_position' is local to this control.
+
+Note: If the drag was initiated by a keyboard shortcut or [Instance.AccessibilityDrag], 'at_position' is set to [Vector2.Inf], and the currently selected item/text position should be used as the drop position.
 
 	CanDropData := func(position Vector2.XY, data any) bool {
 		return reflect.TypeOf(data).Kind() == reflect.Map && data.(map[any]any)["color"] != nil
@@ -2115,6 +2297,41 @@ func (class) _make_custom_tooltip(impl func(ptr gdclass.Receiver, for_text Strin
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, for_text)
 		ptr, ok := pointers.End(ret[0])
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Return the description of the keyboard shortcuts and other contextual help for this control.
+*/
+func (class) _accessibility_get_contextual_info(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		ptr, ok := pointers.End(gd.InternalString(ret))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Override this method to return a human-readable description of the position of the child 'node' in the custom container, added to the [Instance.AccessibilityName].
+*/
+func (class) _get_accessibility_container_name(impl func(ptr gdclass.Receiver, node [1]gdclass.Node) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var node = [1]gdclass.Node{pointers.New[gdclass.Node]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+
+		defer pointers.End(node[0])
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, node)
+		ptr, ok := pointers.End(gd.InternalString(ret))
 
 		if !ok {
 			return
@@ -2522,6 +2739,28 @@ func (self class) SetFocusMode(mode FocusMode) { //gd:Control.set_focus_mode
 //go:nosplit
 func (self class) GetFocusMode() FocusMode { //gd:Control.get_focus_mode
 	var r_ret = gdextension.Call[FocusMode](gd.ObjectChecked(self.AsObject()), methods.get_focus_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the [Instance.FocusMode], but takes the [Instance.FocusBehaviorRecursive] into account. If [Instance.FocusBehaviorRecursive] is set to [FocusBehaviorDisabled], or it is set to [FocusBehaviorInherited] and its ancestor is set to [FocusBehaviorDisabled], then this returns [FocusNone].
+*/
+//go:nosplit
+func (self class) GetFocusModeWithOverride() FocusMode { //gd:Control.get_focus_mode_with_override
+	var r_ret = gdextension.Call[FocusMode](gd.ObjectChecked(self.AsObject()), methods.get_focus_mode_with_override, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetFocusBehaviorRecursive(focus_behavior_recursive FocusBehaviorRecursive) { //gd:Control.set_focus_behavior_recursive
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_behavior_recursive, 0|(gdextension.SizeInt<<4), &struct{ focus_behavior_recursive FocusBehaviorRecursive }{focus_behavior_recursive})
+}
+
+//go:nosplit
+func (self class) GetFocusBehaviorRecursive() FocusBehaviorRecursive { //gd:Control.get_focus_behavior_recursive
+	var r_ret = gdextension.Call[FocusBehaviorRecursive](gd.ObjectChecked(self.AsObject()), methods.get_focus_behavior_recursive, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3193,7 +3432,7 @@ func (self class) GetDefaultCursorShape() CursorShape { //gd:Control.get_default
 }
 
 /*
-Returns the mouse cursor shape the control displays on mouse hover. See [CursorShape].
+Returns the mouse cursor shape for this control when hovered over 'position' in local coordinates. For most controls, this is the same as [Instance.MouseDefaultCursorShape], but some built-in controls implement more complex logic.
 */
 //go:nosplit
 func (self class) GetCursorShape(position Vector2.XY) CursorShape { //gd:Control.get_cursor_shape
@@ -3262,6 +3501,108 @@ func (self class) ForceDrag(data variant.Any, preview [1]gdclass.Control) { //gd
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(data))), gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(preview[0].AsObject()[0]))})
 }
 
+/*
+Starts drag-and-drop operation without using a mouse.
+*/
+//go:nosplit
+func (self class) AccessibilityDrag() { //gd:Control.accessibility_drag
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_drag, 0, &struct{}{})
+}
+
+/*
+Ends drag-and-drop operation without using a mouse.
+*/
+//go:nosplit
+func (self class) AccessibilityDrop() { //gd:Control.accessibility_drop
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_drop, 0, &struct{}{})
+}
+
+//go:nosplit
+func (self class) SetAccessibilityName(name String.Readable) { //gd:Control.set_accessibility_name
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+}
+
+//go:nosplit
+func (self class) GetAccessibilityName() String.Readable { //gd:Control.get_accessibility_name
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_name, gdextension.SizeString, &struct{}{})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+//go:nosplit
+func (self class) SetAccessibilityDescription(description String.Readable) { //gd:Control.set_accessibility_description
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_description, 0|(gdextension.SizeString<<4), &struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))})
+}
+
+//go:nosplit
+func (self class) GetAccessibilityDescription() String.Readable { //gd:Control.get_accessibility_description
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_description, gdextension.SizeString, &struct{}{})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+//go:nosplit
+func (self class) SetAccessibilityLive(mode DisplayServer.AccessibilityLiveMode) { //gd:Control.set_accessibility_live
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_live, 0|(gdextension.SizeInt<<4), &struct {
+		mode DisplayServer.AccessibilityLiveMode
+	}{mode})
+}
+
+//go:nosplit
+func (self class) GetAccessibilityLive() DisplayServer.AccessibilityLiveMode { //gd:Control.get_accessibility_live
+	var r_ret = gdextension.Call[DisplayServer.AccessibilityLiveMode](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_live, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetAccessibilityControlsNodes(node_path Array.Contains[Path.ToNode]) { //gd:Control.set_accessibility_controls_nodes
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_controls_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
+}
+
+//go:nosplit
+func (self class) GetAccessibilityControlsNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_controls_nodes
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_controls_nodes, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+
+//go:nosplit
+func (self class) SetAccessibilityDescribedByNodes(node_path Array.Contains[Path.ToNode]) { //gd:Control.set_accessibility_described_by_nodes
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_described_by_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
+}
+
+//go:nosplit
+func (self class) GetAccessibilityDescribedByNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_described_by_nodes
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_described_by_nodes, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+
+//go:nosplit
+func (self class) SetAccessibilityLabeledByNodes(node_path Array.Contains[Path.ToNode]) { //gd:Control.set_accessibility_labeled_by_nodes
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_labeled_by_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
+}
+
+//go:nosplit
+func (self class) GetAccessibilityLabeledByNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_labeled_by_nodes
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_labeled_by_nodes, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+
+//go:nosplit
+func (self class) SetAccessibilityFlowToNodes(node_path Array.Contains[Path.ToNode]) { //gd:Control.set_accessibility_flow_to_nodes
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_flow_to_nodes, 0|(gdextension.SizeArray<<4), &struct{ node_path gdextension.Array }{pointers.Get(gd.InternalArray(node_path))})
+}
+
+//go:nosplit
+func (self class) GetAccessibilityFlowToNodes() Array.Contains[Path.ToNode] { //gd:Control.get_accessibility_flow_to_nodes
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_flow_to_nodes, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+
 //go:nosplit
 func (self class) SetMouseFilter(filter MouseFilter) { //gd:Control.set_mouse_filter
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_filter, 0|(gdextension.SizeInt<<4), &struct{ filter MouseFilter }{filter})
@@ -3270,6 +3611,28 @@ func (self class) SetMouseFilter(filter MouseFilter) { //gd:Control.set_mouse_fi
 //go:nosplit
 func (self class) GetMouseFilter() MouseFilter { //gd:Control.get_mouse_filter
 	var r_ret = gdextension.Call[MouseFilter](gd.ObjectChecked(self.AsObject()), methods.get_mouse_filter, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the [Instance.MouseFilter], but takes the [Instance.MouseBehaviorRecursive] into account. If [Instance.MouseBehaviorRecursive] is set to [MouseBehaviorDisabled], or it is set to [MouseBehaviorInherited] and its ancestor is set to [MouseBehaviorDisabled], then this returns [MouseFilterIgnore].
+*/
+//go:nosplit
+func (self class) GetMouseFilterWithOverride() MouseFilter { //gd:Control.get_mouse_filter_with_override
+	var r_ret = gdextension.Call[MouseFilter](gd.ObjectChecked(self.AsObject()), methods.get_mouse_filter_with_override, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetMouseBehaviorRecursive(mouse_behavior_recursive MouseBehaviorRecursive) { //gd:Control.set_mouse_behavior_recursive
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_behavior_recursive, 0|(gdextension.SizeInt<<4), &struct{ mouse_behavior_recursive MouseBehaviorRecursive }{mouse_behavior_recursive})
+}
+
+//go:nosplit
+func (self class) GetMouseBehaviorRecursive() MouseBehaviorRecursive { //gd:Control.get_mouse_behavior_recursive
+	var r_ret = gdextension.Call[MouseBehaviorRecursive](gd.ObjectChecked(self.AsObject()), methods.get_mouse_behavior_recursive, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3404,7 +3767,7 @@ func (self class) GetLayoutDirection() LayoutDirection { //gd:Control.get_layout
 }
 
 /*
-Returns true if layout is right-to-left. See also [Instance.LayoutDirection].
+Returns true if the layout is right-to-left. See also [Instance.LayoutDirection].
 */
 //go:nosplit
 func (self class) IsLayoutRtl() bool { //gd:Control.is_layout_rtl
@@ -3578,6 +3941,10 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._drop_data)
 	case "_make_custom_tooltip":
 		return reflect.ValueOf(self._make_custom_tooltip)
+	case "_accessibility_get_contextual_info":
+		return reflect.ValueOf(self._accessibility_get_contextual_info)
+	case "_get_accessibility_container_name":
+		return reflect.ValueOf(self._get_accessibility_container_name)
 	case "_gui_input":
 		return reflect.ValueOf(self._gui_input)
 	default:
@@ -3603,6 +3970,10 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._drop_data)
 	case "_make_custom_tooltip":
 		return reflect.ValueOf(self._make_custom_tooltip)
+	case "_accessibility_get_contextual_info":
+		return reflect.ValueOf(self._accessibility_get_contextual_info)
+	case "_get_accessibility_container_name":
+		return reflect.ValueOf(self._get_accessibility_container_name)
 	case "_gui_input":
 		return reflect.ValueOf(self._gui_input)
 	default:
@@ -3622,6 +3993,30 @@ const (
 	FocusClick FocusMode = 1
 	// The node can grab focus on mouse click, using the arrows and the Tab keys on the keyboard, or using the D-pad buttons on a gamepad. Use with [Instance.FocusMode].
 	FocusAll FocusMode = 2
+	// The node can grab focus only when screen reader is active. Use with [Instance.FocusMode].
+	FocusAccessibility FocusMode = 3
+)
+
+type FocusBehaviorRecursive int //gd:Control.FocusBehaviorRecursive
+
+const (
+	// Inherits the [Instance.FocusBehaviorRecursive] from the parent control. If there is no parent control, this is the same as [FocusBehaviorEnabled].
+	FocusBehaviorInherited FocusBehaviorRecursive = 0
+	// Prevents the control from getting focused. [Instance.GetFocusModeWithOverride] will return [FocusNone].
+	FocusBehaviorDisabled FocusBehaviorRecursive = 1
+	// Allows the control to be focused, depending on the [Instance.FocusMode]. This can be used to ignore the parent's [Instance.FocusBehaviorRecursive]. [Instance.GetFocusModeWithOverride] will return the [Instance.FocusMode].
+	FocusBehaviorEnabled FocusBehaviorRecursive = 2
+)
+
+type MouseBehaviorRecursive int //gd:Control.MouseBehaviorRecursive
+
+const (
+	// Inherits the [Instance.MouseBehaviorRecursive] from the parent control. If there is no parent control, this is the same as [MouseBehaviorEnabled].
+	MouseBehaviorInherited MouseBehaviorRecursive = 0
+	// Prevents the control from receiving mouse input. [Instance.GetMouseFilterWithOverride] will return [MouseFilterIgnore].
+	MouseBehaviorDisabled MouseBehaviorRecursive = 1
+	// Allows the control to be receive mouse input, depending on the [Instance.MouseFilter]. This can be used to ignore the parent's [Instance.MouseBehaviorRecursive]. [Instance.GetMouseFilterWithOverride] will return the [Instance.MouseFilter].
+	MouseBehaviorEnabled MouseBehaviorRecursive = 2
 )
 
 type CursorShape int //gd:Control.CursorShape
@@ -3778,7 +4173,7 @@ const (
 	LayoutDirectionLtr LayoutDirection = 2
 	// Right-to-left layout direction.
 	LayoutDirectionRtl LayoutDirection = 3
-	// Automatic layout direction, determined from the system locale. Right-to-left layout direction is automatically used for languages that require it such as Arabic and Hebrew, but only if a valid translation file is loaded for the given language.. For all other languages (or if no valid translation file is found by Godot), left-to-right layout direction is used. If using [graphics.gd/classdb/TextServerFallback] ([graphics.gd/classdb/ProjectSettings] "internationalization/rendering/text_driver"), left-to-right layout direction is always used regardless of the language.
+	// Automatic layout direction, determined from the system locale. Right-to-left layout direction is automatically used for languages that require it such as Arabic and Hebrew, but only if a valid translation file is loaded for the given language. For all other languages (or if no valid translation file is found by Godot), left-to-right layout direction is used. If using [graphics.gd/classdb/TextServerFallback] ([graphics.gd/classdb/ProjectSettings] "internationalization/rendering/text_driver"), left-to-right layout direction is always used regardless of the language.
 	LayoutDirectionSystemLocale LayoutDirection = 4
 	// Represents the size of the [LayoutDirection] enum.
 	LayoutDirectionMax    LayoutDirection = 5

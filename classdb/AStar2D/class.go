@@ -86,6 +86,8 @@ var methods struct {
 	has_point                       gdextension.MethodForClass `hash:"1116898809"`
 	get_point_connections           gdextension.MethodForClass `hash:"2865087369"`
 	get_point_ids                   gdextension.MethodForClass `hash:"3851388692"`
+	set_neighbor_filter_enabled     gdextension.MethodForClass `hash:"2586408642"`
+	is_neighbor_filter_enabled      gdextension.MethodForClass `hash:"36873697"`
 	set_point_disabled              gdextension.MethodForClass `hash:"972357352"`
 	is_point_disabled               gdextension.MethodForClass `hash:"1116898809"`
 	connect_points                  gdextension.MethodForClass `hash:"3710494224"`
@@ -124,6 +126,10 @@ type Any interface {
 }
 
 type Interface interface {
+	// Called when neighboring enters processing and if [Instance.NeighborFilterEnabled] is true. If true is returned the point will not be processed.
+	//
+	// Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
+	FilterNeighbor(from_id Point, neighbor_id Point) bool
 	// Called when estimating the cost between a point and the path's ending point.
 	//
 	// Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
@@ -139,8 +145,24 @@ type Implementation = implementation
 
 type implementation struct{}
 
-func (self implementation) EstimateCost(from_id Point, end_id Point) (_ Float.X) { return }
-func (self implementation) ComputeCost(from_id Point, to_id Point) (_ Float.X)   { return }
+func (self implementation) FilterNeighbor(from_id Point, neighbor_id Point) (_ bool) { return }
+func (self implementation) EstimateCost(from_id Point, end_id Point) (_ Float.X)     { return }
+func (self implementation) ComputeCost(from_id Point, to_id Point) (_ Float.X)       { return }
+
+/*
+Called when neighboring enters processing and if [Instance.NeighborFilterEnabled] is true. If true is returned the point will not be processed.
+
+Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
+*/
+func (Instance) _filter_neighbor(impl func(ptr gdclass.Receiver, from_id Point, neighbor_id Point) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var from_id = gd.UnsafeGet[int64](p_args, 0)
+		var neighbor_id = gd.UnsafeGet[int64](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, Point(from_id), Point(neighbor_id))
+		gd.UnsafeSet(p_back, ret)
+	}
+}
 
 /*
 Called when estimating the cost between a point and the path's ending point.
@@ -362,7 +384,7 @@ func (self Instance) GetPointCapacity() int { //gd:AStar2D.get_point_capacity
 }
 
 /*
-Reserves space internally for 'num_nodes' points. Useful if you're adding a known large number of points at once, such as points on a grid. The new capacity must be greater or equal to the old capacity.
+Reserves space internally for 'num_nodes' points. Useful if you're adding a known large number of points at once, such as points on a grid.
 */
 func (self Instance) ReserveSpace(num_nodes int) { //gd:AStar2D.reserve_space
 	Advanced(self).ReserveSpace(int64(num_nodes))
@@ -413,7 +435,7 @@ Returns an array with the points that are in the path found by AStar2D between t
 
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
 
-Note: This method is not thread-safe. If called from a [graphics.gd/classdb/Thread], it will return an empty array and will print an error message.
+Note: This method is not thread-safe; it can only be used from a single [graphics.gd/classdb/Thread] at a given time. Consider using [graphics.gd/classdb/Mutex] to ensure exclusive access to one thread to avoid race conditions.
 
 Additionally, when 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
 */
@@ -426,7 +448,7 @@ Returns an array with the points that are in the path found by AStar2D between t
 
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
 
-Note: This method is not thread-safe. If called from a [graphics.gd/classdb/Thread], it will return an empty array and will print an error message.
+Note: This method is not thread-safe; it can only be used from a single [graphics.gd/classdb/Thread] at a given time. Consider using [graphics.gd/classdb/Mutex] to ensure exclusive access to one thread to avoid race conditions.
 
 Additionally, when 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
 */
@@ -527,6 +549,29 @@ func New() Instance {
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
+}
+
+func (self Instance) NeighborFilterEnabled() bool {
+	return bool(class(self).IsNeighborFilterEnabled())
+}
+
+func (self Instance) SetNeighborFilterEnabled(value bool) {
+	class(self).SetNeighborFilterEnabled(value)
+}
+
+/*
+Called when neighboring enters processing and if [Instance.NeighborFilterEnabled] is true. If true is returned the point will not be processed.
+
+Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
+*/
+func (class) _filter_neighbor(impl func(ptr gdclass.Receiver, from_id int64, neighbor_id int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var from_id = gd.UnsafeGet[int64](p_args, 0)
+		var neighbor_id = gd.UnsafeGet[int64](p_args, 1)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, from_id, neighbor_id)
+		gd.UnsafeSet(p_back, ret)
+	}
 }
 
 /*
@@ -683,6 +728,18 @@ func (self class) GetPointIds() Packed.Array[int64] { //gd:AStar2D.get_point_ids
 	return ret
 }
 
+//go:nosplit
+func (self class) SetNeighborFilterEnabled(enabled bool) { //gd:AStar2D.set_neighbor_filter_enabled
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_neighbor_filter_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+
+//go:nosplit
+func (self class) IsNeighborFilterEnabled() bool { //gd:AStar2D.is_neighbor_filter_enabled
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_neighbor_filter_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
 /*
 Disables or enables the specified point for pathfinding. Useful for making a temporary obstacle.
 */
@@ -770,7 +827,7 @@ func (self class) GetPointCapacity() int64 { //gd:AStar2D.get_point_capacity
 }
 
 /*
-Reserves space internally for 'num_nodes' points. Useful if you're adding a known large number of points at once, such as points on a grid. The new capacity must be greater or equal to the old capacity.
+Reserves space internally for 'num_nodes' points. Useful if you're adding a known large number of points at once, such as points on a grid.
 */
 //go:nosplit
 func (self class) ReserveSpace(num_nodes int64) { //gd:AStar2D.reserve_space
@@ -825,7 +882,7 @@ Returns an array with the points that are in the path found by AStar2D between t
 
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
 
-Note: This method is not thread-safe. If called from a [graphics.gd/classdb/Thread], it will return an empty array and will print an error message.
+Note: This method is not thread-safe; it can only be used from a single [graphics.gd/classdb/Thread] at a given time. Consider using [graphics.gd/classdb/Mutex] to ensure exclusive access to one thread to avoid race conditions.
 
 Additionally, when 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
 */
@@ -887,6 +944,8 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
+	case "_filter_neighbor":
+		return reflect.ValueOf(self._filter_neighbor)
 	case "_estimate_cost":
 		return reflect.ValueOf(self._estimate_cost)
 	case "_compute_cost":
@@ -898,6 +957,8 @@ func (self class) Virtual(name string) reflect.Value {
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
+	case "_filter_neighbor":
+		return reflect.ValueOf(self._filter_neighbor)
 	case "_estimate_cost":
 		return reflect.ValueOf(self._estimate_cost)
 	case "_compute_cost":

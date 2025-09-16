@@ -18,6 +18,7 @@ import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/MainLoop"
+import "graphics.gd/classdb/ScriptBacktrace"
 import "graphics.gd/classdb/ScriptLanguage"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
@@ -109,6 +110,7 @@ var methods struct {
 	unregister_script_language         gdextension.MethodForClass `hash:"1850254898"`
 	get_script_language_count          gdextension.MethodForClass `hash:"2455072627"`
 	get_script_language                gdextension.MethodForClass `hash:"2151255799"`
+	capture_script_backtraces          gdextension.MethodForClass `hash:"873284517"`
 	is_editor_hint                     gdextension.MethodForClass `hash:"36873697"`
 	is_embedded_in_editor              gdextension.MethodForClass `hash:"36873697"`
 	get_write_movie_path               gdextension.MethodForClass `hash:"201670096"`
@@ -293,7 +295,7 @@ func GetLicenseText() string { //gd:Engine.get_license_text
 }
 
 /*
-Returns the name of the CPU architecture the Godot binary was built for. Possible return values include "x86_64", "x86_32", "arm64", "arm32", "rv64", "riscv", "ppc64", "ppc", "wasm64", and "wasm32".
+Returns the name of the CPU architecture the Godot binary was built for. Possible return values include "x86_64", "x86_32", "arm64", "arm32", "rv64", "ppc64", "loongarch64", "wasm64", and "wasm32".
 
 To detect whether the current build is 64-bit, or the type of architecture, don't use the architecture name. Instead, use [graphics.gd/classdb/OS.HasFeature] to check for the "64" feature tag, or tags such as "x86" or "arm". See the [Feature Tags] documentation for more details.
 
@@ -434,6 +436,34 @@ Returns an instance of a [graphics.gd/classdb/ScriptLanguage] with the given 'in
 func GetScriptLanguage(index int) ScriptLanguage.Instance { //gd:Engine.get_script_language
 	once.Do(singleton)
 	return ScriptLanguage.Instance(Advanced().GetScriptLanguage(int64(index)))
+}
+
+/*
+Captures and returns backtraces from all registered script languages.
+
+By default, the returned [graphics.gd/classdb/ScriptBacktrace] will only contain stack frames in editor builds and debug builds. To enable them for release builds as well, you need to enable [graphics.gd/classdb/ProjectSettings] "debug/settings/gdscript/always_track_call_stacks".
+
+If 'include_variables' is true, the backtrace will also include the names and values of any global variables (e.g. autoload singletons) at the point of the capture, as well as local variables and class member variables at each stack frame. This will however will only be respected when running the game with a debugger attached, like when running the game from the editor. To enable it for export builds as well, you need to enable [graphics.gd/classdb/ProjectSettings] "debug/settings/gdscript/always_track_local_variables".
+
+Warning: When 'include_variables' is true, any captured variables can potentially (e.g. with GDScript backtraces) be their actual values, including any object references. This means that storing such a [graphics.gd/classdb/ScriptBacktrace] will prevent those objects from being deallocated, so it's generally recommended not to do so.
+*/
+func CaptureScriptBacktraces(include_variables bool) []ScriptBacktrace.Instance { //gd:Engine.capture_script_backtraces
+	once.Do(singleton)
+	return []ScriptBacktrace.Instance(gd.ArrayAs[[]ScriptBacktrace.Instance](gd.InternalArray(Advanced().CaptureScriptBacktraces(include_variables))))
+}
+
+/*
+Captures and returns backtraces from all registered script languages.
+
+By default, the returned [graphics.gd/classdb/ScriptBacktrace] will only contain stack frames in editor builds and debug builds. To enable them for release builds as well, you need to enable [graphics.gd/classdb/ProjectSettings] "debug/settings/gdscript/always_track_call_stacks".
+
+If 'include_variables' is true, the backtrace will also include the names and values of any global variables (e.g. autoload singletons) at the point of the capture, as well as local variables and class member variables at each stack frame. This will however will only be respected when running the game with a debugger attached, like when running the game from the editor. To enable it for export builds as well, you need to enable [graphics.gd/classdb/ProjectSettings] "debug/settings/gdscript/always_track_local_variables".
+
+Warning: When 'include_variables' is true, any captured variables can potentially (e.g. with GDScript backtraces) be their actual values, including any object references. This means that storing such a [graphics.gd/classdb/ScriptBacktrace] will prevent those objects from being deallocated, so it's generally recommended not to do so.
+*/
+func CaptureScriptBacktracesOptions(include_variables bool) []ScriptBacktrace.Instance { //gd:Engine.capture_script_backtraces
+	once.Do(singleton)
+	return []ScriptBacktrace.Instance(gd.ArrayAs[[]ScriptBacktrace.Instance](gd.InternalArray(Advanced().CaptureScriptBacktraces(include_variables))))
 }
 
 /*
@@ -811,7 +841,7 @@ func (self class) GetLicenseText() String.Readable { //gd:Engine.get_license_tex
 }
 
 /*
-Returns the name of the CPU architecture the Godot binary was built for. Possible return values include "x86_64", "x86_32", "arm64", "arm32", "rv64", "riscv", "ppc64", "ppc", "wasm64", and "wasm32".
+Returns the name of the CPU architecture the Godot binary was built for. Possible return values include "x86_64", "x86_32", "arm64", "arm32", "rv64", "ppc64", "loongarch64", "wasm64", and "wasm32".
 
 To detect whether the current build is 64-bit, or the type of architecture, don't use the architecture name. Instead, use [graphics.gd/classdb/OS.HasFeature] to check for the "64" feature tag, or tags such as "x86" or "arm". See the [Feature Tags] documentation for more details.
 
@@ -975,6 +1005,22 @@ Returns an instance of a [graphics.gd/classdb/ScriptLanguage] with the given 'in
 func (self class) GetScriptLanguage(index int64) [1]gdclass.ScriptLanguage { //gd:Engine.get_script_language
 	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_script_language, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = [1]gdclass.ScriptLanguage{gd.PointerMustAssertInstanceID[gdclass.ScriptLanguage](r_ret)}
+	return ret
+}
+
+/*
+Captures and returns backtraces from all registered script languages.
+
+By default, the returned [graphics.gd/classdb/ScriptBacktrace] will only contain stack frames in editor builds and debug builds. To enable them for release builds as well, you need to enable [graphics.gd/classdb/ProjectSettings] "debug/settings/gdscript/always_track_call_stacks".
+
+If 'include_variables' is true, the backtrace will also include the names and values of any global variables (e.g. autoload singletons) at the point of the capture, as well as local variables and class member variables at each stack frame. This will however will only be respected when running the game with a debugger attached, like when running the game from the editor. To enable it for export builds as well, you need to enable [graphics.gd/classdb/ProjectSettings] "debug/settings/gdscript/always_track_local_variables".
+
+Warning: When 'include_variables' is true, any captured variables can potentially (e.g. with GDScript backtraces) be their actual values, including any object references. This means that storing such a [graphics.gd/classdb/ScriptBacktrace] will prevent those objects from being deallocated, so it's generally recommended not to do so.
+*/
+//go:nosplit
+func (self class) CaptureScriptBacktraces(include_variables bool) Array.Contains[[1]gdclass.ScriptBacktrace] { //gd:Engine.capture_script_backtraces
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.capture_script_backtraces, gdextension.SizeArray|(gdextension.SizeBool<<4), &struct{ include_variables bool }{include_variables})
+	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.ScriptBacktrace]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 

@@ -173,57 +173,61 @@ type Interface interface {
 	GetImportOrder() int
 	// Gets the format version of this importer. Increment this version when making incompatible changes to the format of the imported resources.
 	GetFormatVersion() int
-	// This method can be overridden to hide specific import options if conditions are met. This is mainly useful for hiding options that depend on others if one of them is disabled.
+	// Gets whether the import option specified by 'option_name' should be visible in the Import dock. The default implementation always returns true, making all options visible. This is mainly useful for hiding options that depend on others if one of them is disabled.
 	//
 	//
 	//
 	// [gdscript]
 	//
-	// func _get_option_visibility(option, options):
+	// func _get_option_visibility(path, option_name, options):
 	//
-	//     # Only show the lossy quality setting if the compression mode is set to "Lossy".
+	// # Only show the lossy quality setting if the compression mode is set to "Lossy".
 	//
-	//     if option == "compress/lossy_quality" and options.has("compress/mode"):
+	// if option_name == "compress/lossy_quality" and options.has("compress/mode"):
 	//
-	//         return int(options["compress/mode"]) == COMPRESS_LOSSY # This is a constant that you set
+	// return int(options["compress/mode"]) == COMPRESS_LOSSY # This is a constant that you set
 	//
 	//
 	//
-	//     return true
+	// return true
 	//
 	// [/gdscript]
 	//
 	// [csharp]
 	//
-	// public void _GetOptionVisibility(string option, Godot.Collections.Dictionary options)
+	// public override bool _GetOptionVisibility(string path, StringName optionName, Godot.Collections.Dictionary options)
 	//
 	// {
 	//
-	//     // Only show the lossy quality setting if the compression mode is set to "Lossy".
+	// // Only show the lossy quality setting if the compression mode is set to "Lossy".
 	//
-	//     if (option == "compress/lossy_quality" && options.ContainsKey("compress/mode"))
+	// if (optionName == "compress/lossy_quality" && options.ContainsKey("compress/mode"))
 	//
-	//     {
+	// {
 	//
-	//         return (int)options["compress/mode"] == CompressLossy; // This is a constant you set
+	// return (int)options["compress/mode"] == CompressLossy; // This is a constant you set
 	//
-	//     }
+	// }
 	//
 	//
 	//
-	//     return true;
+	// return true;
 	//
 	// }
 	//
 	// [/csharp]
 	//
 	//
-	//
-	// Returns true to make all options always visible.
 	GetOptionVisibility(path string, option_name string, options map[string]interface{}) bool
-	// Imports 'source_file' into 'save_path' with the import 'options' specified. The 'platform_variants' and 'gen_files' arrays will be modified by this function.
+	// Imports 'source_file' with the import 'options' specified. Should return [@Globalscope.Ok] if the import is successful, other values indicate failure.
+	//
+	// The imported resource is expected to be saved to save_path + "." + _get_save_extension(). If a different variant is preferred for a [feature tag], save the variant to save_path + "." + tag + "." + _get_save_extension() and add the feature tag to 'platform_variants'.
+	//
+	// If additional resource files are generated in the resource filesystem (res://), add their full path to 'gen_files' so that the editor knows they depend on 'source_file'.
 	//
 	// This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
+	//
+	// [feature tag]: https://docs.godotengine.org/tutorials/export/feature_tags.html
 	Import(source_file string, save_path string, options map[string]interface{}, platform_variants []string, gen_files []string) error
 	// Tells whether this importer can be run in parallel on threads, or, on the contrary, it's only safe for the editor to call it from the main thread, for one file at a time.
 	//
@@ -430,9 +434,7 @@ func (Instance) _get_format_version(impl func(ptr gdclass.Receiver) int) (cb gd.
 }
 
 /*
-This method can be overridden to hide specific import options if conditions are met. This is mainly useful for hiding options that depend on others if one of them is disabled.
-
-Returns true to make all options always visible.
+Gets whether the import option specified by 'option_name' should be visible in the Import dock. The default implementation always returns true, making all options visible. This is mainly useful for hiding options that depend on others if one of them is disabled.
 */
 func (Instance) _get_option_visibility(impl func(ptr gdclass.Receiver, path string, option_name string, options map[string]interface{}) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -449,9 +451,15 @@ func (Instance) _get_option_visibility(impl func(ptr gdclass.Receiver, path stri
 }
 
 /*
-Imports 'source_file' into 'save_path' with the import 'options' specified. The 'platform_variants' and 'gen_files' arrays will be modified by this function.
+Imports 'source_file' with the import 'options' specified. Should return [@Globalscope.Ok] if the import is successful, other values indicate failure.
+
+The imported resource is expected to be saved to save_path + "." + _get_save_extension(). If a different variant is preferred for a [feature tag], save the variant to save_path + "." + tag + "." + _get_save_extension() and add the feature tag to 'platform_variants'.
+
+If additional resource files are generated in the resource filesystem (res://), add their full path to 'gen_files' so that the editor knows they depend on 'source_file'.
 
 This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
+
+[feature tag]: https://docs.godotengine.org/tutorials/export/feature_tags.html
 */
 func (Instance) _import(impl func(ptr gdclass.Receiver, source_file string, save_path string, options map[string]interface{}, platform_variants []string, gen_files []string) error) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -709,9 +717,7 @@ func (class) _get_format_version(impl func(ptr gdclass.Receiver) int64) (cb gd.E
 }
 
 /*
-This method can be overridden to hide specific import options if conditions are met. This is mainly useful for hiding options that depend on others if one of them is disabled.
-
-Returns true to make all options always visible.
+Gets whether the import option specified by 'option_name' should be visible in the Import dock. The default implementation always returns true, making all options visible. This is mainly useful for hiding options that depend on others if one of them is disabled.
 */
 func (class) _get_option_visibility(impl func(ptr gdclass.Receiver, path String.Readable, option_name String.Name, options Dictionary.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -728,9 +734,15 @@ func (class) _get_option_visibility(impl func(ptr gdclass.Receiver, path String.
 }
 
 /*
-Imports 'source_file' into 'save_path' with the import 'options' specified. The 'platform_variants' and 'gen_files' arrays will be modified by this function.
+Imports 'source_file' with the import 'options' specified. Should return [@Globalscope.Ok] if the import is successful, other values indicate failure.
+
+The imported resource is expected to be saved to save_path + "." + _get_save_extension(). If a different variant is preferred for a [feature tag], save the variant to save_path + "." + tag + "." + _get_save_extension() and add the feature tag to 'platform_variants'.
+
+If additional resource files are generated in the resource filesystem (res://), add their full path to 'gen_files' so that the editor knows they depend on 'source_file'.
 
 This method must be overridden to do the actual importing work. See this class' description for an example of overriding this method.
+
+[feature tag]: https://docs.godotengine.org/tutorials/export/feature_tags.html
 */
 func (class) _import(impl func(ptr gdclass.Receiver, source_file String.Readable, save_path String.Readable, options Dictionary.Any, platform_variants Array.Contains[String.Readable], gen_files Array.Contains[String.Readable]) Error.Code) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

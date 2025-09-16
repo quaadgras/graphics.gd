@@ -96,6 +96,8 @@ var methods struct {
 	get_paragraph_separator                   gdextension.MethodForClass `hash:"201670096"`
 	set_autowrap_mode                         gdextension.MethodForClass `hash:"3289138044"`
 	get_autowrap_mode                         gdextension.MethodForClass `hash:"1549071663"`
+	set_autowrap_trim_flags                   gdextension.MethodForClass `hash:"2809697122"`
+	get_autowrap_trim_flags                   gdextension.MethodForClass `hash:"2340632602"`
 	set_justification_flags                   gdextension.MethodForClass `hash:"2877345813"`
 	get_justification_flags                   gdextension.MethodForClass `hash:"1583363614"`
 	set_clip_text                             gdextension.MethodForClass `hash:"2586408642"`
@@ -281,6 +283,14 @@ func (self Instance) AutowrapMode() TextServer.AutowrapMode {
 
 func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
 	class(self).SetAutowrapMode(value)
+}
+
+func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag {
+	return TextServer.LineBreakFlag(class(self).GetAutowrapTrimFlags())
+}
+
+func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) {
+	class(self).SetAutowrapTrimFlags(value)
 }
 
 func (self Instance) JustificationFlags() TextServer.JustificationFlag {
@@ -503,6 +513,18 @@ func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:
 //go:nosplit
 func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:Label.get_autowrap_mode
 	var r_ret = gdextension.Call[TextServer.AutowrapMode](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetAutowrapTrimFlags(autowrap_trim_flags TextServer.LineBreakFlag) { //gd:Label.set_autowrap_trim_flags
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_trim_flags, 0|(gdextension.SizeInt<<4), &struct{ autowrap_trim_flags TextServer.LineBreakFlag }{autowrap_trim_flags})
+}
+
+//go:nosplit
+func (self class) GetAutowrapTrimFlags() TextServer.LineBreakFlag { //gd:Label.get_autowrap_trim_flags
+	var r_ret = gdextension.Call[TextServer.LineBreakFlag](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_trim_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

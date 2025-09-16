@@ -351,7 +351,7 @@ func (self Instance) SetProcessMode(mode TweenProcessMode) Instance { //gd:Tween
 }
 
 /*
-Determines the behavior of the [graphics.gd/classdb/Tween] when the [graphics.gd/classdb/SceneTree] is paused. Check [TweenPauseMode] for options.
+Determines the behavior of the [graphics.gd/classdb/Tween] when the [graphics.gd/classdb/SceneTree] is paused.
 
 Default value is [TweenPauseBound].
 */
@@ -733,7 +733,7 @@ func (self class) SetProcessMode(mode TweenProcessMode) [1]gdclass.Tween { //gd:
 }
 
 /*
-Determines the behavior of the [graphics.gd/classdb/Tween] when the [graphics.gd/classdb/SceneTree] is paused. Check [TweenPauseMode] for options.
+Determines the behavior of the [graphics.gd/classdb/Tween] when the [graphics.gd/classdb/SceneTree] is paused.
 
 Default value is [TweenPauseBound].
 */

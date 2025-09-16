@@ -3,7 +3,7 @@
 /*
 Node for 2D tile-based maps. A [graphics.gd/classdb/TileMapLayer] uses a [graphics.gd/classdb/TileSet] which contain a list of tiles which are used to create grid-based maps. Unlike the [graphics.gd/classdb/TileMap] node, which is deprecated, [graphics.gd/classdb/TileMapLayer] has only one layer of tiles. You can use several [graphics.gd/classdb/TileMapLayer] to achieve the same result as a [graphics.gd/classdb/TileMap] node.
 
-For performance reasons, all TileMap updates are batched at the end of a frame. Notably, this means that scene tiles from a [graphics.gd/classdb/TileSetScenesCollectionSource] may be initialized after their parent. This is only queued when inside the scene tree.
+For performance reasons, all TileMap updates are batched at the end of a frame. Notably, this means that scene tiles from a [graphics.gd/classdb/TileSetScenesCollectionSource] are initialized after their parent. This is only queued when inside the scene tree.
 
 To force an update earlier on, call [Instance.UpdateInternals].
 
@@ -133,6 +133,8 @@ var methods struct {
 	is_using_kinematic_bodies       gdextension.MethodForClass `hash:"36873697"`
 	set_collision_visibility_mode   gdextension.MethodForClass `hash:"3508099847"`
 	get_collision_visibility_mode   gdextension.MethodForClass `hash:"338220793"`
+	set_physics_quadrant_size       gdextension.MethodForClass `hash:"1286410249"`
+	get_physics_quadrant_size       gdextension.MethodForClass `hash:"3905245786"`
 	set_occlusion_enabled           gdextension.MethodForClass `hash:"2586408642"`
 	is_occlusion_enabled            gdextension.MethodForClass `hash:"36873697"`
 	set_navigation_enabled          gdextension.MethodForClass `hash:"2586408642"`
@@ -474,7 +476,7 @@ func (self Instance) HasBodyRid(body RID.Body2D) bool { //gd:TileMapLayer.has_bo
 }
 
 /*
-Returns the coordinates of the tile for given physics body [Resource.ID]. Such an [Resource.ID] can be retrieved from [graphics.gd/classdb/KinematicCollision2D.Instance.GetColliderRid], when colliding with a tile.
+Returns the coordinates of the physics quadrant (see [Instance.PhysicsQuadrantSize]) for given physics body [Resource.ID]. Such an [Resource.ID] can be retrieved from [graphics.gd/classdb/KinematicCollision2D.Instance.GetColliderRid], when colliding with a tile.
 */
 func (self Instance) GetCoordsForBodyRid(body RID.Body2D) Vector2i.XY { //gd:TileMapLayer.get_coords_for_body_rid
 	return Vector2i.XY(Advanced(self).GetCoordsForBodyRid(RID.Any(body)))
@@ -602,7 +604,7 @@ func (self Instance) TileMapData() []byte {
 }
 
 func (self Instance) SetTileMapData(value []byte) {
-	class(self).SetTileMapDataFromArray(Packed.Bytes(Packed.New(value...)))
+	class(self).SetTileMapDataFromArray(Packed.BytesFrom(value...))
 }
 
 func (self Instance) Enabled() bool {
@@ -675,6 +677,14 @@ func (self Instance) CollisionVisibilityMode() DebugVisibilityMode {
 
 func (self Instance) SetCollisionVisibilityMode(value DebugVisibilityMode) {
 	class(self).SetCollisionVisibilityMode(value)
+}
+
+func (self Instance) PhysicsQuadrantSize() int {
+	return int(int(class(self).GetPhysicsQuadrantSize()))
+}
+
+func (self Instance) SetPhysicsQuadrantSize(value int) {
+	class(self).SetPhysicsQuadrantSize(int64(value))
 }
 
 func (self Instance) NavigationEnabled() bool {
@@ -977,7 +987,7 @@ func (self class) HasBodyRid(body RID.Any) bool { //gd:TileMapLayer.has_body_rid
 }
 
 /*
-Returns the coordinates of the tile for given physics body [Resource.ID]. Such an [Resource.ID] can be retrieved from [graphics.gd/classdb/KinematicCollision2D.Instance.GetColliderRid], when colliding with a tile.
+Returns the coordinates of the physics quadrant (see [Instance.PhysicsQuadrantSize]) for given physics body [Resource.ID]. Such an [Resource.ID] can be retrieved from [graphics.gd/classdb/KinematicCollision2D.Instance.GetColliderRid], when colliding with a tile.
 */
 //go:nosplit
 func (self class) GetCoordsForBodyRid(body RID.Any) Vector2i.XY { //gd:TileMapLayer.get_coords_for_body_rid
@@ -1071,13 +1081,13 @@ func (self class) LocalToMap(local_position Vector2.XY) Vector2i.XY { //gd:TileM
 
 //go:nosplit
 func (self class) SetTileMapDataFromArray(tile_map_layer_data Packed.Bytes) { //gd:TileMapLayer.set_tile_map_data_from_array
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_map_data_from_array, 0|(gdextension.SizePackedArray<<4), &struct{ tile_map_layer_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](tile_map_layer_data)))})
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tile_map_data_from_array, 0|(gdextension.SizePackedArray<<4), &struct{ tile_map_layer_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](tile_map_layer_data.Array)))})
 }
 
 //go:nosplit
 func (self class) GetTileMapDataAsArray() Packed.Bytes { //gd:TileMapLayer.get_tile_map_data_as_array
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_tile_map_data_as_array, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -1173,6 +1183,18 @@ func (self class) SetCollisionVisibilityMode(visibility_mode DebugVisibilityMode
 //go:nosplit
 func (self class) GetCollisionVisibilityMode() DebugVisibilityMode { //gd:TileMapLayer.get_collision_visibility_mode
 	var r_ret = gdextension.Call[DebugVisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_collision_visibility_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPhysicsQuadrantSize(size int64) { //gd:TileMapLayer.set_physics_quadrant_size
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_quadrant_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
+}
+
+//go:nosplit
+func (self class) GetPhysicsQuadrantSize() int64 { //gd:TileMapLayer.get_physics_quadrant_size
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_physics_quadrant_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

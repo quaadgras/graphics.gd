@@ -166,7 +166,7 @@ func (self Instance) Merge(other_geometry Instance) { //gd:NavigationMeshSourceG
 }
 
 /*
-Adds a projected obstruction shape to the source geometry. The 'vertices' are considered projected on a xz-axes plane, placed at the global y-axis 'elevation' and extruded by 'height'. If 'carve' is true the carved shape will not be affected by additional offsets (e.g. agent radius) of the navigation mesh baking process.
+Adds a projected obstruction shape to the source geometry. The 'vertices' are considered projected on an xz-axes plane, placed at the global y-axis 'elevation' and extruded by 'height'. If 'carve' is true the carved shape will not be affected by additional offsets (e.g. agent radius) of the navigation mesh baking process.
 */
 func (self Instance) AddProjectedObstruction(vertices []Vector3.XYZ, elevation Float.X, height Float.X, carve bool) { //gd:NavigationMeshSourceGeometryData3D.add_projected_obstruction
 	Advanced(self).AddProjectedObstruction(Packed.New(vertices...), float64(elevation), float64(height), carve)
@@ -368,7 +368,7 @@ func (self class) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometryDa
 }
 
 /*
-Adds a projected obstruction shape to the source geometry. The 'vertices' are considered projected on a xz-axes plane, placed at the global y-axis 'elevation' and extruded by 'height'. If 'carve' is true the carved shape will not be affected by additional offsets (e.g. agent radius) of the navigation mesh baking process.
+Adds a projected obstruction shape to the source geometry. The 'vertices' are considered projected on an xz-axes plane, placed at the global y-axis 'elevation' and extruded by 'height'. If 'carve' is true the carved shape will not be affected by additional offsets (e.g. agent radius) of the navigation mesh baking process.
 */
 //go:nosplit
 func (self class) AddProjectedObstruction(vertices Packed.Array[Vector3.XYZ], elevation float64, height float64, carve bool) { //gd:NavigationMeshSourceGeometryData3D.add_projected_obstruction

@@ -7,9 +7,11 @@ The body's behavior can be adjusted via [Instance.LockRotation], [Instance.Freez
 
 A rigid body will always maintain its shape and size, even when forces are applied to it. It is useful for objects that can be interacted with in an environment, such as a tree that can be knocked over or a stack of crates that can be pushed around.
 
+If you need to directly affect the body, prefer [Interface.IntegrateForces] as it allows you to directly access the physics state.
+
 If you need to override the default physics behavior, you can write a custom force integration function. See [Instance.CustomIntegrator].
 
-Note: Changing the 2D transform or [Instance.LinearVelocity] of a [graphics.gd/classdb/RigidBody2D] very often may lead to some unpredictable behaviors. If you need to directly affect the body, prefer [Interface.IntegrateForces] as it allows you to directly access the physics state.
+Note: Changing the 2D transform or [Instance.LinearVelocity] of a [graphics.gd/classdb/RigidBody2D] very often may lead to some unpredictable behaviors. This also happens when a [graphics.gd/classdb/RigidBody2D] is the descendant of a constantly moving node, like another [graphics.gd/classdb/RigidBody2D], as that will cause its global transform to be set whenever its ancestor moves.
 */
 package RigidBody2D
 

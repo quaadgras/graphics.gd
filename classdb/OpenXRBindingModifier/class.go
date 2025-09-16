@@ -101,7 +101,7 @@ type Interface interface {
 	GetDescription() string
 	// Returns the data that is sent to OpenXR when submitting the suggested interacting bindings this modifier is a part of.
 	//
-	// Note: This must be data compatible with a XrBindingModificationBaseHeaderKHR structure.
+	// Note: This must be data compatible with an XrBindingModificationBaseHeaderKHR structure.
 	GetIpModification() []byte
 }
 
@@ -132,13 +132,13 @@ func (Instance) _get_description(impl func(ptr gdclass.Receiver) string) (cb gd.
 /*
 Returns the data that is sent to OpenXR when submitting the suggested interacting bindings this modifier is a part of.
 
-Note: This must be data compatible with a XrBindingModificationBaseHeaderKHR structure.
+Note: This must be data compatible with an XrBindingModificationBaseHeaderKHR structure.
 */
 func (Instance) _get_ip_modification(impl func(ptr gdclass.Receiver) []byte) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](Packed.Bytes(Packed.New(ret...)))))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](Packed.BytesFrom(ret...).Array)))
 
 		if !ok {
 			return
@@ -209,13 +209,13 @@ func (class) _get_description(impl func(ptr gdclass.Receiver) String.Readable) (
 /*
 Returns the data that is sent to OpenXR when submitting the suggested interacting bindings this modifier is a part of.
 
-Note: This must be data compatible with a XrBindingModificationBaseHeaderKHR structure.
+Note: This must be data compatible with an XrBindingModificationBaseHeaderKHR structure.
 */
 func (class) _get_ip_modification(impl func(ptr gdclass.Receiver) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
-		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ret)))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ret.Array)))
 
 		if !ok {
 			return

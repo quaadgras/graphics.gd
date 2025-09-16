@@ -254,7 +254,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args, p_ret gdextension.P
 			case gdextension.TypePackedByteArray:
 				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedByteArray](ptr)
-				value = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(val)))
+				value = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(val)))}
 			case gdextension.TypePackedInt32Array:
 				ptr := gd.UnsafeGet[gd.PackedPointers](p_args, i-offset)
 				val := pointers.Let[gd.PackedInt32Array](ptr)
@@ -444,7 +444,7 @@ func slowCall(hasContext bool, method reflect.Value, p_args, p_ret gdextension.P
 				gd.UnsafeSet[gdextension.Array](p_ret, pointers.Get(in))
 			}
 		case Packed.Bytes:
-			in := gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](val))
+			in := gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](val.Array))
 			raw, ok := pointers.End(in)
 			if ok {
 				gd.UnsafeSet[gd.PackedPointers](p_ret, raw)

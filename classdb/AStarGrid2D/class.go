@@ -330,7 +330,7 @@ Returns an array with the points that are in the path found by [graphics.gd/clas
 
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
 
-Note: This method is not thread-safe. If called from a [graphics.gd/classdb/Thread], it will return an empty array and will print an error message.
+Note: This method is not thread-safe; it can only be used from a single [graphics.gd/classdb/Thread] at a given time. Consider using [graphics.gd/classdb/Mutex] to ensure exclusive access to one thread to avoid race conditions.
 
 Additionally, when 'allow_partial_path' is true and 'to_id' is solid the search may take an unusually long time to finish.
 */
@@ -343,7 +343,7 @@ Returns an array with the points that are in the path found by [graphics.gd/clas
 
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
 
-Note: This method is not thread-safe. If called from a [graphics.gd/classdb/Thread], it will return an empty array and will print an error message.
+Note: This method is not thread-safe; it can only be used from a single [graphics.gd/classdb/Thread] at a given time. Consider using [graphics.gd/classdb/Mutex] to ensure exclusive access to one thread to avoid race conditions.
 
 Additionally, when 'allow_partial_path' is true and 'to_id' is solid the search may take an unusually long time to finish.
 */
@@ -774,7 +774,7 @@ Returns an array with the points that are in the path found by [graphics.gd/clas
 
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
 
-Note: This method is not thread-safe. If called from a [graphics.gd/classdb/Thread], it will return an empty array and will print an error message.
+Note: This method is not thread-safe; it can only be used from a single [graphics.gd/classdb/Thread] at a given time. Consider using [graphics.gd/classdb/Mutex] to ensure exclusive access to one thread to avoid race conditions.
 
 Additionally, when 'allow_partial_path' is true and 'to_id' is solid the search may take an unusually long time to finish.
 */

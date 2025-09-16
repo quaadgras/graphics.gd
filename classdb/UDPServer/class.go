@@ -196,7 +196,7 @@ func (self Expanded) Listen(port int, bind_address string) error { //gd:UDPServe
 }
 
 /*
-Call this method at regular intervals (e.g. inside [graphics.gd/classdb/Node.Instance.Process]) to process new packets. And packet from known address/port pair will be delivered to the appropriate [graphics.gd/classdb/PacketPeerUDP], any packet received from an unknown address/port pair will be added as a pending connection (see [Instance.IsConnectionAvailable], [Instance.TakeConnection]). The maximum number of pending connection is defined via [Instance.MaxPendingConnections].
+Call this method at regular intervals (e.g. inside [graphics.gd/classdb/Node.Instance.Process]) to process new packets. Any packet from a known address/port pair will be delivered to the appropriate [graphics.gd/classdb/PacketPeerUDP], while any packet received from an unknown address/port pair will be added as a pending connection (see [Instance.IsConnectionAvailable] and [Instance.TakeConnection]). The maximum number of pending connections is defined via [Instance.MaxPendingConnections].
 */
 func (self Instance) Poll() error { //gd:UDPServer.poll
 	return error(gd.ToError(Advanced(self).Poll()))
@@ -302,7 +302,7 @@ func (self class) Listen(port int64, bind_address String.Readable) Error.Code { 
 }
 
 /*
-Call this method at regular intervals (e.g. inside [graphics.gd/classdb/Node.Instance.Process]) to process new packets. And packet from known address/port pair will be delivered to the appropriate [graphics.gd/classdb/PacketPeerUDP], any packet received from an unknown address/port pair will be added as a pending connection (see [Instance.IsConnectionAvailable], [Instance.TakeConnection]). The maximum number of pending connection is defined via [Instance.MaxPendingConnections].
+Call this method at regular intervals (e.g. inside [graphics.gd/classdb/Node.Instance.Process]) to process new packets. Any packet from a known address/port pair will be delivered to the appropriate [graphics.gd/classdb/PacketPeerUDP], while any packet received from an unknown address/port pair will be added as a pending connection (see [Instance.IsConnectionAvailable] and [Instance.TakeConnection]). The maximum number of pending connections is defined via [Instance.MaxPendingConnections].
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:UDPServer.poll

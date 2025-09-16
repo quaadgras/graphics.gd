@@ -138,4 +138,18 @@ var Callables = map[string][]string{
 	"NavigationServer3D.query_path.callback":          {"void"},
 	"RenderingDevice.texture_get_data_async.callback": {"void", "PackedByteArray data"},
 	"RenderingDevice.buffer_get_data_async.callback":  {"void", "PackedByteArray data"},
+
+	"DisplayServer.accessibility_update_add_action.callable":                  {"void", "Variant action_data"},
+	"DisplayServer.set_hardware_keyboard_connection_change_callback.callable": {"void", "bool connected"},
+	"DisplayServer.color_picker.callback":                                     {"void", "bool status", "Color color"},
+	"JSONRPC.set_method.callback":                                             {},
+	"OpenXRFutureExtension.register_future.on_success":                        {"void"},
+	"PhysicsServer2DExtension._area_set_monitor_callback.callback":            {"void", "int status", "RID body_rid", "ObjectID instance_id", "int body_shape_idx", "int self_shape_idx"},
+	"PhysicsServer2DExtension._area_set_area_monitor_callback.callback":       {"void", "int status", "RID body_rid", "ObjectID instance_id", "int body_shape_idx", "int self_shape_idx"},
+	"PhysicsServer2DExtension._body_set_state_sync_callback.callable":         {"void", "PhysicsDirectBodyState2D state"},
+	"PhysicsServer2DExtension._body_set_force_integration_callback.callable":  {"void", "PhysicsDirectBodyState2D state", "Variant userdata"},
+	"PhysicsServer3DExtension._area_set_monitor_callback.callback":            {"void", "int status", "RID body_rid", "ObjectID instance_id", "int body_shape_idx", "int self_shape_idx"},
+	"PhysicsServer3DExtension._area_set_area_monitor_callback.callback":       {"void", "int status", "RID body_rid", "ObjectID instance_id", "int body_shape_idx", "int self_shape_idx"},
+	"PhysicsServer3DExtension._body_set_state_sync_callback.callable":         {"void", "PhysicsDirectBodyState3D state"},
+	"PhysicsServer3DExtension._body_set_force_integration_callback.callable":  {"void", "PhysicsDirectBodyState3D state", "Variant userdata"},
 }

@@ -5,7 +5,7 @@ The JavaScriptBridge singleton is implemented only in the Web export. It's used 
 
 Note: This singleton can be disabled at build-time to improve security. By default, the JavaScriptBridge singleton is enabled. Official export templates also have the JavaScriptBridge singleton enabled. See [Compiling for the Web] in the documentation for more information.
 
-[Compiling for the Web]: https://docs.godotengine.org/contributing/development/compiling/compiling_for_web.html
+[Compiling for the Web]: https://docs.godotengine.org/engine_details/development/compiling/compiling_for_web.html
 */
 package JavaScriptBridge
 
@@ -196,7 +196,7 @@ Note: Browsers might ask the user for permission or block the download if multip
 */
 func DownloadBuffer(buffer []byte, name string) { //gd:JavaScriptBridge.download_buffer
 	once.Do(singleton)
-	Advanced().DownloadBuffer(Packed.Bytes(Packed.New(buffer...)), String.New(name), String.New("application/octet-stream"))
+	Advanced().DownloadBuffer(Packed.BytesFrom(buffer...), String.New(name), String.New("application/octet-stream"))
 }
 
 /*
@@ -212,7 +212,7 @@ Note: Browsers might ask the user for permission or block the download if multip
 */
 func DownloadBufferOptions(buffer []byte, name string, mime string) { //gd:JavaScriptBridge.download_buffer
 	once.Do(singleton)
-	Advanced().DownloadBuffer(Packed.Bytes(Packed.New(buffer...)), String.New(name), String.New(mime))
+	Advanced().DownloadBuffer(Packed.BytesFrom(buffer...), String.New(name), String.New(mime))
 }
 
 /*
@@ -329,7 +329,7 @@ Returns a copy of 'javascript_buffer''s contents as a []byte. See also [IsJsBuff
 //go:nosplit
 func (self class) JsBufferToPackedByteArray(javascript_buffer [1]gdclass.JavaScriptObject) Packed.Bytes { //gd:JavaScriptBridge.js_buffer_to_packed_byte_array
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.js_buffer_to_packed_byte_array, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ javascript_buffer gdextension.Object }{gdextension.Object(gd.ObjectChecked(javascript_buffer[0].AsObject()))})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -367,7 +367,7 @@ func (self class) DownloadBuffer(buffer Packed.Bytes, name String.Readable, mime
 		buffer gdextension.PackedArray[byte]
 		name   gdextension.String
 		mime   gdextension.String
-	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))), pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalString(mime))})
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array))), pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalString(mime))})
 }
 
 /*

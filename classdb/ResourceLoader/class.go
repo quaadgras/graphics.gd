@@ -120,7 +120,7 @@ func singleton() {
 /*
 Loads the resource using threads. If 'use_sub_threads' is true, multiple threads will be used to load the resource, which makes loading faster, but may affect the main thread (and thus cause game slowdowns).
 
-The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource. See [CacheMode] for details.
+The 'cache_mode' parameter defines whether and how the cache should be used or updated when loading the resource.
 */
 func LoadThreadedRequest(path string, type_hint string, use_sub_threads bool) error { //gd:ResourceLoader.load_threaded_request
 	once.Do(singleton)
@@ -130,7 +130,7 @@ func LoadThreadedRequest(path string, type_hint string, use_sub_threads bool) er
 /*
 Loads the resource using threads. If 'use_sub_threads' is true, multiple threads will be used to load the resource, which makes loading faster, but may affect the main thread (and thus cause game slowdowns).
 
-The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource. See [CacheMode] for details.
+The 'cache_mode' parameter defines whether and how the cache should be used or updated when loading the resource.
 */
 func LoadThreadedRequestOptions(path string, type_hint string, use_sub_threads bool, cache_mode CacheMode) error { //gd:ResourceLoader.load_threaded_request
 	once.Do(singleton)
@@ -138,7 +138,7 @@ func LoadThreadedRequestOptions(path string, type_hint string, use_sub_threads b
 }
 
 /*
-Returns the status of a threaded loading operation started with [LoadThreadedRequest] for the resource at 'path'. See [ThreadLoadStatus] for possible return values.
+Returns the status of a threaded loading operation started with [LoadThreadedRequest] for the resource at 'path'.
 
 An array variable can optionally be passed via 'progress', and will return a one-element array containing the ratio of completion of the threaded loading (between 0.0 and 1.0).
 
@@ -150,7 +150,7 @@ func LoadThreadedGetStatus(path string, progress []float32) ThreadLoadStatus { /
 }
 
 /*
-Returns the status of a threaded loading operation started with [LoadThreadedRequest] for the resource at 'path'. See [ThreadLoadStatus] for possible return values.
+Returns the status of a threaded loading operation started with [LoadThreadedRequest] for the resource at 'path'.
 
 An array variable can optionally be passed via 'progress', and will return a one-element array containing the ratio of completion of the threaded loading (between 0.0 and 1.0).
 
@@ -178,7 +178,7 @@ The registered [graphics.gd/classdb/ResourceFormatLoader]s are queried sequentia
 
 An optional 'type_hint' can be used to further specify the [graphics.gd/classdb/Resource] type that should be handled by the [graphics.gd/classdb/ResourceFormatLoader]. Anything that inherits from [graphics.gd/classdb/Resource] can be used as a type hint, for example [graphics.gd/classdb/Image].
 
-The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource. See [CacheMode] for details.
+The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource.
 
 Returns an empty resource if no [graphics.gd/classdb/ResourceFormatLoader] could handle the file, and prints an error if no file is found at the specified path.
 
@@ -200,7 +200,7 @@ The registered [graphics.gd/classdb/ResourceFormatLoader]s are queried sequentia
 
 An optional 'type_hint' can be used to further specify the [graphics.gd/classdb/Resource] type that should be handled by the [graphics.gd/classdb/ResourceFormatLoader]. Anything that inherits from [graphics.gd/classdb/Resource] can be used as a type hint, for example [graphics.gd/classdb/Image].
 
-The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource. See [CacheMode] for details.
+The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource.
 
 Returns an empty resource if no [graphics.gd/classdb/ResourceFormatLoader] could handle the file, and prints an error if no file is found at the specified path.
 
@@ -262,7 +262,7 @@ func SetAbortOnMissingResources(abort bool) { //gd:ResourceLoader.set_abort_on_m
 /*
 Returns the dependencies for the resource at the given 'path'.
 
-Note: The dependencies are returned with slices separated by ::. You can use [graphics.gd/classdb/String.Instance.GetSlice] to get their components.
+Each dependency is a string that can be divided into sections by ::. There can be either one section or three sections, with the second section always being empty. When there is one section, it contains the file path. When there are three sections, the first section contains the UID and the third section contains the fallback path.
 */
 func GetDependencies(path string) []string { //gd:ResourceLoader.get_dependencies
 	once.Do(singleton)
@@ -322,7 +322,11 @@ func GetResourceUid(path string) int { //gd:ResourceLoader.get_resource_uid
 }
 
 /*
-Lists a directory (as example: "res://assets/enemies"), returning all resources contained within. The resource files are the original file names as visible in the editor before exporting.
+Lists a directory, returning all resources and subdirectories contained within. The resource files have the original file names as visible in the editor before exporting. The directories have "/" appended.
+
+Note: The order of files and directories returned by this method is not deterministic, and can vary between operating systems.
+
+Note: To normally traverse the filesystem, see [graphics.gd/classdb/DirAccess].
 */
 func ListDirectory(directory_path string) []string { //gd:ResourceLoader.list_directory
 	once.Do(singleton)
@@ -355,7 +359,7 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 /*
 Loads the resource using threads. If 'use_sub_threads' is true, multiple threads will be used to load the resource, which makes loading faster, but may affect the main thread (and thus cause game slowdowns).
 
-The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource. See [CacheMode] for details.
+The 'cache_mode' parameter defines whether and how the cache should be used or updated when loading the resource.
 */
 //go:nosplit
 func (self class) LoadThreadedRequest(path String.Readable, type_hint String.Readable, use_sub_threads bool, cache_mode CacheMode) Error.Code { //gd:ResourceLoader.load_threaded_request
@@ -370,7 +374,7 @@ func (self class) LoadThreadedRequest(path String.Readable, type_hint String.Rea
 }
 
 /*
-Returns the status of a threaded loading operation started with [LoadThreadedRequest] for the resource at 'path'. See [ThreadLoadStatus] for possible return values.
+Returns the status of a threaded loading operation started with [LoadThreadedRequest] for the resource at 'path'.
 
 An array variable can optionally be passed via 'progress', and will return a one-element array containing the ratio of completion of the threaded loading (between 0.0 and 1.0).
 
@@ -405,7 +409,7 @@ The registered [graphics.gd/classdb/ResourceFormatLoader]s are queried sequentia
 
 An optional 'type_hint' can be used to further specify the [graphics.gd/classdb/Resource] type that should be handled by the [graphics.gd/classdb/ResourceFormatLoader]. Anything that inherits from [graphics.gd/classdb/Resource] can be used as a type hint, for example [graphics.gd/classdb/Image].
 
-The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource. See [CacheMode] for details.
+The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource.
 
 Returns an empty resource if no [graphics.gd/classdb/ResourceFormatLoader] could handle the file, and prints an error if no file is found at the specified path.
 
@@ -468,7 +472,7 @@ func (self class) SetAbortOnMissingResources(abort bool) { //gd:ResourceLoader.s
 /*
 Returns the dependencies for the resource at the given 'path'.
 
-Note: The dependencies are returned with slices separated by ::. You can use [graphics.gd/classdb/String.Instance.GetSlice] to get their components.
+Each dependency is a string that can be divided into sections by ::. There can be either one section or three sections, with the second section always being empty. When there is one section, it contains the file path. When there are three sections, the first section contains the UID and the third section contains the fallback path.
 
 
 */
@@ -531,7 +535,13 @@ func (self class) GetResourceUid(path String.Readable) int64 { //gd:ResourceLoad
 }
 
 /*
-Lists a directory (as example: "res://assets/enemies"), returning all resources contained within. The resource files are the original file names as visible in the editor before exporting.
+Lists a directory, returning all resources and subdirectories contained within. The resource files have the original file names as visible in the editor before exporting. The directories have "/" appended.
+
+
+
+Note: The order of files and directories returned by this method is not deterministic, and can vary between operating systems.
+
+Note: To normally traverse the filesystem, see [graphics.gd/classdb/DirAccess].
 */
 //go:nosplit
 func (self class) ListDirectory(directory_path String.Readable) Packed.Strings { //gd:ResourceLoader.list_directory

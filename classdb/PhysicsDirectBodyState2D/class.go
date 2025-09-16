@@ -105,6 +105,10 @@ var methods struct {
 	get_constant_torque                       gdextension.MethodForClass `hash:"1740695150"`
 	set_sleep_state                           gdextension.MethodForClass `hash:"2586408642"`
 	is_sleeping                               gdextension.MethodForClass `hash:"36873697"`
+	set_collision_layer                       gdextension.MethodForClass `hash:"1286410249"`
+	get_collision_layer                       gdextension.MethodForClass `hash:"3905245786"`
+	set_collision_mask                        gdextension.MethodForClass `hash:"1286410249"`
+	get_collision_mask                        gdextension.MethodForClass `hash:"3905245786"`
 	get_contact_count                         gdextension.MethodForClass `hash:"3905245786"`
 	get_contact_local_position                gdextension.MethodForClass `hash:"2299179447"`
 	get_contact_local_normal                  gdextension.MethodForClass `hash:"2299179447"`
@@ -517,6 +521,22 @@ func (self Instance) SetSleeping(value bool) {
 	class(self).SetSleepState(value)
 }
 
+func (self Instance) CollisionLayer() int {
+	return int(int(class(self).GetCollisionLayer()))
+}
+
+func (self Instance) SetCollisionLayer(value int) {
+	class(self).SetCollisionLayer(int64(value))
+}
+
+func (self Instance) CollisionMask() int {
+	return int(int(class(self).GetCollisionMask()))
+}
+
+func (self Instance) SetCollisionMask(value int) {
+	class(self).SetCollisionMask(int64(value))
+}
+
 func (self Instance) Transform() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetTransform())
 }
@@ -775,6 +795,30 @@ func (self class) SetSleepState(enabled bool) { //gd:PhysicsDirectBodyState2D.se
 //go:nosplit
 func (self class) IsSleeping() bool { //gd:PhysicsDirectBodyState2D.is_sleeping
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sleeping, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetCollisionLayer(layer int64) { //gd:PhysicsDirectBodyState2D.set_collision_layer
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+}
+
+//go:nosplit
+func (self class) GetCollisionLayer() int64 { //gd:PhysicsDirectBodyState2D.get_collision_layer
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetCollisionMask(mask int64) { //gd:PhysicsDirectBodyState2D.set_collision_mask
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
+}
+
+//go:nosplit
+func (self class) GetCollisionMask() int64 { //gd:PhysicsDirectBodyState2D.get_collision_mask
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

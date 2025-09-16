@@ -106,7 +106,7 @@ var methods struct {
 	texture_create                         gdextension.MethodForClass `hash:"3709173589"`
 	texture_create_shared                  gdextension.MethodForClass `hash:"3178156134"`
 	texture_create_shared_from_slice       gdextension.MethodForClass `hash:"1808971279"`
-	texture_create_from_extension          gdextension.MethodForClass `hash:"1397171480"`
+	texture_create_from_extension          gdextension.MethodForClass `hash:"3732868568"`
 	texture_update                         gdextension.MethodForClass `hash:"1349464008"`
 	texture_get_data                       gdextension.MethodForClass `hash:"1859412099"`
 	texture_get_data_async                 gdextension.MethodForClass `hash:"498832090"`
@@ -249,6 +249,8 @@ Creates a new texture. It can be accessed with the RID that is returned.
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 
+Note: 'data' takes an slice of []bytes. For [TextureType1d], [TextureType2d], and [TextureType3d] types, this array should only have one element, a []byte containing all the data for the texture. For _ARRAY and _CUBE types, the length should be the same as the number of [graphics.gd/classdb/RDTextureFormat.Instance.ArrayLayers] in 'format'.
+
 Note: Not to be confused with [graphics.gd/classdb/RenderingServer.Texture2dCreate], which creates the Godot-specific [graphics.gd/classdb/Texture2D] resource as opposed to the graphics API's own texture type.
 */
 func (self Instance) TextureCreate(format RDTextureFormat.Instance, view RDTextureView.Instance) RID.Texture { //gd:RenderingDevice.texture_create
@@ -259,6 +261,8 @@ func (self Instance) TextureCreate(format RDTextureFormat.Instance, view RDTextu
 Creates a new texture. It can be accessed with the RID that is returned.
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
+
+Note: 'data' takes an slice of []bytes. For [TextureType1d], [TextureType2d], and [TextureType3d] types, this array should only have one element, a []byte containing all the data for the texture. For _ARRAY and _CUBE types, the length should be the same as the number of [graphics.gd/classdb/RDTextureFormat.Instance.ArrayLayers] in 'format'.
 
 Note: Not to be confused with [graphics.gd/classdb/RenderingServer.Texture2dCreate], which creates the Godot-specific [graphics.gd/classdb/Texture2D] resource as opposed to the graphics API's own texture type.
 */
@@ -296,10 +300,17 @@ func (self Expanded) TextureCreateSharedFromSlice(view RDTextureView.Instance, w
 }
 
 /*
-Returns an RID for an existing 'image' (VkImage) with the given 'type', 'format', 'samples', 'usage_flags', 'width', 'height', 'depth', and 'layers'. This can be used to allow Godot to render onto foreign images.
+Returns an RID for an existing 'image' (VkImage) with the given 'type', 'format', 'samples', 'usage_flags', 'width', 'height', 'depth', 'layers', and 'mipmaps'. This can be used to allow Godot to render onto foreign images.
 */
 func (self Instance) TextureCreateFromExtension(atype Rendering.TextureType, format Rendering.DataFormat, samples Rendering.TextureSamples, usage_flags Rendering.TextureUsageBits, image int, width int, height int, depth int, layers int) RID.Texture { //gd:RenderingDevice.texture_create_from_extension
-	return RID.Texture(RID.Texture(Advanced(self).TextureCreateFromExtension(atype, format, samples, usage_flags, int64(image), int64(width), int64(height), int64(depth), int64(layers))))
+	return RID.Texture(RID.Texture(Advanced(self).TextureCreateFromExtension(atype, format, samples, usage_flags, int64(image), int64(width), int64(height), int64(depth), int64(layers), int64(1))))
+}
+
+/*
+Returns an RID for an existing 'image' (VkImage) with the given 'type', 'format', 'samples', 'usage_flags', 'width', 'height', 'depth', 'layers', and 'mipmaps'. This can be used to allow Godot to render onto foreign images.
+*/
+func (self Expanded) TextureCreateFromExtension(atype Rendering.TextureType, format Rendering.DataFormat, samples Rendering.TextureSamples, usage_flags Rendering.TextureUsageBits, image int, width int, height int, depth int, layers int, mipmaps int) RID.Texture { //gd:RenderingDevice.texture_create_from_extension
+	return RID.Texture(RID.Texture(Advanced(self).TextureCreateFromExtension(atype, format, samples, usage_flags, int64(image), int64(width), int64(height), int64(depth), int64(layers), int64(mipmaps))))
 }
 
 /*
@@ -312,15 +323,15 @@ Note: The existing 'texture' can't be updated while a draw list that uses it as 
 Note: The existing 'texture' requires the [TextureUsageCanUpdateBit] to be updatable.
 */
 func (self Instance) TextureUpdate(texture RID.Texture, layer int, data []byte) error { //gd:RenderingDevice.texture_update
-	return error(gd.ToError(Advanced(self).TextureUpdate(RID.Any(texture), int64(layer), Packed.Bytes(Packed.New(data...)))))
+	return error(gd.ToError(Advanced(self).TextureUpdate(RID.Any(texture), int64(layer), Packed.BytesFrom(data...))))
 }
 
 /*
 Returns the 'texture' data for the specified 'layer' as raw binary data. For 2D textures (which only have one layer), 'layer' must be 0.
 
-Note: 'texture' can't be retrieved while a draw list that uses it as part of a framebuffer is being created. Ensure the draw list is finalized (and that the color/depth texture using it is not set to [FinalActionContinue]) to retrieve this texture. Otherwise, an error is printed and a empty []byte is returned.
+Note: 'texture' can't be retrieved while a draw list that uses it as part of a framebuffer is being created. Ensure the draw list is finalized (and that the color/depth texture using it is not set to [FinalActionContinue]) to retrieve this texture. Otherwise, an error is printed and an empty []byte is returned.
 
-Note: 'texture' requires the [TextureUsageCanCopyFromBit] to be retrieved. Otherwise, an error is printed and a empty []byte is returned.
+Note: 'texture' requires the [TextureUsageCanCopyFromBit] to be retrieved. Otherwise, an error is printed and an empty []byte is returned.
 
 Note: This method will block the GPU from working until the data is retrieved. Refer to [Instance.TextureGetDataAsync] for an alternative that returns the data in more performant way.
 */
@@ -586,21 +597,21 @@ func (self Instance) SamplerIsFormatSupportedForFilter(format Rendering.DataForm
 }
 
 /*
-It can be accessed with the RID that is returned.
+Creates a new vertex buffer. It can be accessed with the RID that is returned.
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) VertexBufferCreate(size_bytes int) RID.VertexBuffer { //gd:RenderingDevice.vertex_buffer_create
-	return RID.VertexBuffer(RID.VertexBuffer(Advanced(self).VertexBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), 0)))
+	return RID.VertexBuffer(RID.VertexBuffer(Advanced(self).VertexBufferCreate(int64(size_bytes), Packed.BytesFrom([1][]byte{}[0]...), 0)))
 }
 
 /*
-It can be accessed with the RID that is returned.
+Creates a new vertex buffer. It can be accessed with the RID that is returned.
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Expanded) VertexBufferCreate(size_bytes int, data []byte, creation_bits Rendering.BufferCreationBits) RID.VertexBuffer { //gd:RenderingDevice.vertex_buffer_create
-	return RID.VertexBuffer(RID.VertexBuffer(Advanced(self).VertexBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New(data...)), creation_bits)))
+	return RID.VertexBuffer(RID.VertexBuffer(Advanced(self).VertexBufferCreate(int64(size_bytes), Packed.BytesFrom(data...), creation_bits)))
 }
 
 /*
@@ -630,7 +641,7 @@ Creates a new index buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) IndexBufferCreate(size_indices int, format Rendering.IndexBufferFormat) RID.IndexBuffer { //gd:RenderingDevice.index_buffer_create
-	return RID.IndexBuffer(RID.IndexBuffer(Advanced(self).IndexBufferCreate(int64(size_indices), format, Packed.Bytes(Packed.New([1][]byte{}[0]...)), false, 0)))
+	return RID.IndexBuffer(RID.IndexBuffer(Advanced(self).IndexBufferCreate(int64(size_indices), format, Packed.BytesFrom([1][]byte{}[0]...), false, 0)))
 }
 
 /*
@@ -639,7 +650,7 @@ Creates a new index buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Expanded) IndexBufferCreate(size_indices int, format Rendering.IndexBufferFormat, data []byte, use_restart_indices bool, creation_bits Rendering.BufferCreationBits) RID.IndexBuffer { //gd:RenderingDevice.index_buffer_create
-	return RID.IndexBuffer(RID.IndexBuffer(Advanced(self).IndexBufferCreate(int64(size_indices), format, Packed.Bytes(Packed.New(data...)), use_restart_indices, creation_bits)))
+	return RID.IndexBuffer(RID.IndexBuffer(Advanced(self).IndexBufferCreate(int64(size_indices), format, Packed.BytesFrom(data...), use_restart_indices, creation_bits)))
 }
 
 /*
@@ -652,7 +663,7 @@ func (self Instance) IndexArrayCreate(index_buffer RID.IndexBuffer, index_offset
 }
 
 /*
-Compiles a SPIR-V from the shader source code in 'shader_source' and returns the SPIR-V as a [graphics.gd/classdb/RDShaderSPIRV]. This intermediate language shader is portable across different GPU models and driver versions, but cannot be run directly by GPUs until compiled into a binary shader using [Instance.ShaderCompileBinaryFromSpirv].
+Compiles a SPIR-V from the shader source code in 'shader_source' and returns the SPIR-V as an [graphics.gd/classdb/RDShaderSPIRV]. This intermediate language shader is portable across different GPU models and driver versions, but cannot be run directly by GPUs until compiled into a binary shader using [Instance.ShaderCompileBinaryFromSpirv].
 
 If 'allow_cache' is true, make use of the shader cache generated by Godot. This avoids a potentially lengthy shader compilation step if the shader is already in cache. If 'allow_cache' is false, Godot's shader cache is ignored and the shader will always be recompiled.
 */
@@ -661,7 +672,7 @@ func (self Instance) ShaderCompileSpirvFromSource(shader_source RDShaderSource.I
 }
 
 /*
-Compiles a SPIR-V from the shader source code in 'shader_source' and returns the SPIR-V as a [graphics.gd/classdb/RDShaderSPIRV]. This intermediate language shader is portable across different GPU models and driver versions, but cannot be run directly by GPUs until compiled into a binary shader using [Instance.ShaderCompileBinaryFromSpirv].
+Compiles a SPIR-V from the shader source code in 'shader_source' and returns the SPIR-V as an [graphics.gd/classdb/RDShaderSPIRV]. This intermediate language shader is portable across different GPU models and driver versions, but cannot be run directly by GPUs until compiled into a binary shader using [Instance.ShaderCompileBinaryFromSpirv].
 
 If 'allow_cache' is true, make use of the shader cache generated by Godot. This avoids a potentially lengthy shader compilation step if the shader is already in cache. If 'allow_cache' is false, Godot's shader cache is ignored and the shader will always be recompiled.
 */
@@ -711,7 +722,7 @@ Creates a new shader instance from a binary compiled shader. It can be accessed 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method. See also [Instance.ShaderCompileBinaryFromSpirv] and [Instance.ShaderCreateFromSpirv].
 */
 func (self Instance) ShaderCreateFromBytecode(binary_data []byte) RID.Shader { //gd:RenderingDevice.shader_create_from_bytecode
-	return RID.Shader(RID.Shader(Advanced(self).ShaderCreateFromBytecode(Packed.Bytes(Packed.New(binary_data...)), RID.Any([1]RID.Any{}[0]))))
+	return RID.Shader(RID.Shader(Advanced(self).ShaderCreateFromBytecode(Packed.BytesFrom(binary_data...), RID.Any([1]RID.Any{}[0]))))
 }
 
 /*
@@ -720,7 +731,7 @@ Creates a new shader instance from a binary compiled shader. It can be accessed 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method. See also [Instance.ShaderCompileBinaryFromSpirv] and [Instance.ShaderCreateFromSpirv].
 */
 func (self Expanded) ShaderCreateFromBytecode(binary_data []byte, placeholder_rid RID.ShaderPlaceholder) RID.Shader { //gd:RenderingDevice.shader_create_from_bytecode
-	return RID.Shader(RID.Shader(Advanced(self).ShaderCreateFromBytecode(Packed.Bytes(Packed.New(binary_data...)), RID.Any(placeholder_rid))))
+	return RID.Shader(RID.Shader(Advanced(self).ShaderCreateFromBytecode(Packed.BytesFrom(binary_data...), RID.Any(placeholder_rid))))
 }
 
 /*
@@ -743,7 +754,7 @@ Creates a new uniform buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) UniformBufferCreate(size_bytes int) RID.UniformBuffer { //gd:RenderingDevice.uniform_buffer_create
-	return RID.UniformBuffer(RID.UniformBuffer(Advanced(self).UniformBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), 0)))
+	return RID.UniformBuffer(RID.UniformBuffer(Advanced(self).UniformBufferCreate(int64(size_bytes), Packed.BytesFrom([1][]byte{}[0]...), 0)))
 }
 
 /*
@@ -752,7 +763,7 @@ Creates a new uniform buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Expanded) UniformBufferCreate(size_bytes int, data []byte, creation_bits Rendering.BufferCreationBits) RID.UniformBuffer { //gd:RenderingDevice.uniform_buffer_create
-	return RID.UniformBuffer(RID.UniformBuffer(Advanced(self).UniformBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New(data...)), creation_bits)))
+	return RID.UniformBuffer(RID.UniformBuffer(Advanced(self).UniformBufferCreate(int64(size_bytes), Packed.BytesFrom(data...), creation_bits)))
 }
 
 /*
@@ -763,7 +774,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 [storage buffer]: https://vkguide.dev/docs/chapter-4/storage_buffers/
 */
 func (self Instance) StorageBufferCreate(size_bytes int) RID.StorageBuffer { //gd:RenderingDevice.storage_buffer_create
-	return RID.StorageBuffer(RID.StorageBuffer(Advanced(self).StorageBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New([1][]byte{}[0]...)), 0, 0)))
+	return RID.StorageBuffer(RID.StorageBuffer(Advanced(self).StorageBufferCreate(int64(size_bytes), Packed.BytesFrom([1][]byte{}[0]...), 0, 0)))
 }
 
 /*
@@ -774,7 +785,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 [storage buffer]: https://vkguide.dev/docs/chapter-4/storage_buffers/
 */
 func (self Expanded) StorageBufferCreate(size_bytes int, data []byte, usage Rendering.StorageBufferUsage, creation_bits Rendering.BufferCreationBits) RID.StorageBuffer { //gd:RenderingDevice.storage_buffer_create
-	return RID.StorageBuffer(RID.StorageBuffer(Advanced(self).StorageBufferCreate(int64(size_bytes), Packed.Bytes(Packed.New(data...)), usage, creation_bits)))
+	return RID.StorageBuffer(RID.StorageBuffer(Advanced(self).StorageBufferCreate(int64(size_bytes), Packed.BytesFrom(data...), usage, creation_bits)))
 }
 
 /*
@@ -783,7 +794,7 @@ Creates a new texture buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Instance) TextureBufferCreate(size_bytes int, format Rendering.DataFormat) RID.TextureBuffer { //gd:RenderingDevice.texture_buffer_create
-	return RID.TextureBuffer(RID.TextureBuffer(Advanced(self).TextureBufferCreate(int64(size_bytes), format, Packed.Bytes(Packed.New([1][]byte{}[0]...)))))
+	return RID.TextureBuffer(RID.TextureBuffer(Advanced(self).TextureBufferCreate(int64(size_bytes), format, Packed.BytesFrom([1][]byte{}[0]...))))
 }
 
 /*
@@ -792,7 +803,7 @@ Creates a new texture buffer. It can be accessed with the RID that is returned.
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
 func (self Expanded) TextureBufferCreate(size_bytes int, format Rendering.DataFormat, data []byte) RID.TextureBuffer { //gd:RenderingDevice.texture_buffer_create
-	return RID.TextureBuffer(RID.TextureBuffer(Advanced(self).TextureBufferCreate(int64(size_bytes), format, Packed.Bytes(Packed.New(data...)))))
+	return RID.TextureBuffer(RID.TextureBuffer(Advanced(self).TextureBufferCreate(int64(size_bytes), format, Packed.BytesFrom(data...))))
 }
 
 /*
@@ -838,7 +849,7 @@ Prints an error if:
 - a compute list is currently active (created by [Instance.ComputeListBegin])
 */
 func (self Instance) BufferUpdate(buffer RID.Buffer, offset int, size_bytes int, data []byte) error { //gd:RenderingDevice.buffer_update
-	return error(gd.ToError(Advanced(self).BufferUpdate(RID.Any(buffer), int64(offset), int64(size_bytes), Packed.Bytes(Packed.New(data...)))))
+	return error(gd.ToError(Advanced(self).BufferUpdate(RID.Any(buffer), int64(offset), int64(size_bytes), Packed.BytesFrom(data...))))
 }
 
 /*
@@ -1116,7 +1127,7 @@ func (self Instance) DrawListBindIndexArray(draw_list int, index_array RID.Index
 Sets the push constant data to 'buffer' for the specified 'draw_list'. The shader determines how this binary data is used. The buffer's size in bytes must also be specified in 'size_bytes' (this can be obtained by calling the [graphics.gd/classdb/PackedByteArray.Instance.Size] method on the passed 'buffer').
 */
 func (self Instance) DrawListSetPushConstant(draw_list int, buffer []byte, size_bytes int) { //gd:RenderingDevice.draw_list_set_push_constant
-	Advanced(self).DrawListSetPushConstant(int64(draw_list), Packed.Bytes(Packed.New(buffer...)), int64(size_bytes))
+	Advanced(self).DrawListSetPushConstant(int64(draw_list), Packed.BytesFrom(buffer...), int64(size_bytes))
 }
 
 /*
@@ -1215,7 +1226,7 @@ func (self Instance) ComputeListBindComputePipeline(compute_list int, compute_pi
 Sets the push constant data to 'buffer' for the specified 'compute_list'. The shader determines how this binary data is used. The buffer's size in bytes must also be specified in 'size_bytes' (this can be obtained by calling the [graphics.gd/classdb/PackedByteArray.Instance.Size] method on the passed 'buffer').
 */
 func (self Instance) ComputeListSetPushConstant(compute_list int, buffer []byte, size_bytes int) { //gd:RenderingDevice.compute_list_set_push_constant
-	Advanced(self).ComputeListSetPushConstant(int64(compute_list), Packed.Bytes(Packed.New(buffer...)), int64(size_bytes))
+	Advanced(self).ComputeListSetPushConstant(int64(compute_list), Packed.BytesFrom(buffer...), int64(size_bytes))
 }
 
 /*
@@ -1444,7 +1455,7 @@ func (self Instance) GetMemoryUsage(atype Rendering.MemoryType) int { //gd:Rende
 }
 
 /*
-Returns the unique identifier of the driver 'resource' for the specified 'rid'. Some driver resource types ignore the specified 'rid' (see [DriverResource] descriptions). 'index' is always ignored but must be specified anyway.
+Returns the unique identifier of the driver 'resource' for the specified 'rid'. Some driver resource types ignore the specified 'rid'. 'index' is always ignored but must be specified anyway.
 */
 func (self Instance) GetDriverResource(resource Rendering.DriverResource, rid RID.Any, index int) int { //gd:RenderingDevice.get_driver_resource
 	return int(int(Advanced(self).GetDriverResource(resource, RID.Any(rid), int64(index))))
@@ -1512,7 +1523,7 @@ func (self Instance) GetTrackedObjectName(type_index int) string { //gd:Renderin
 }
 
 /*
-Returns how many types of trackable objects are.
+Returns how many types of trackable objects there are.
 
 This is only used by Vulkan in debug builds. Godot must also be started with the --extra-gpu-memory-tracking [command line argument].
 
@@ -1649,6 +1660,8 @@ Creates a new texture. It can be accessed with the RID that is returned.
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 
+Note: 'data' takes an slice of []bytes. For [TextureType1d], [TextureType2d], and [TextureType3d] types, this array should only have one element, a []byte containing all the data for the texture. For _ARRAY and _CUBE types, the length should be the same as the number of [graphics.gd/classdb/RDTextureFormat.Instance.ArrayLayers] in 'format'.
+
 Note: Not to be confused with [graphics.gd/classdb/RenderingServer.Texture2dCreate], which creates the Godot-specific [graphics.gd/classdb/Texture2D] resource as opposed to the graphics API's own texture type.
 */
 //go:nosplit
@@ -1697,11 +1710,11 @@ func (self class) TextureCreateSharedFromSlice(view [1]gdclass.RDTextureView, wi
 }
 
 /*
-Returns an RID for an existing 'image' (VkImage) with the given 'type', 'format', 'samples', 'usage_flags', 'width', 'height', 'depth', and 'layers'. This can be used to allow Godot to render onto foreign images.
+Returns an RID for an existing 'image' (VkImage) with the given 'type', 'format', 'samples', 'usage_flags', 'width', 'height', 'depth', 'layers', and 'mipmaps'. This can be used to allow Godot to render onto foreign images.
 */
 //go:nosplit
-func (self class) TextureCreateFromExtension(atype Rendering.TextureType, format Rendering.DataFormat, samples Rendering.TextureSamples, usage_flags Rendering.TextureUsageBits, image int64, width int64, height int64, depth int64, layers int64) RID.Any { //gd:RenderingDevice.texture_create_from_extension
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_create_from_extension, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), &struct {
+func (self class) TextureCreateFromExtension(atype Rendering.TextureType, format Rendering.DataFormat, samples Rendering.TextureSamples, usage_flags Rendering.TextureUsageBits, image int64, width int64, height int64, depth int64, layers int64, mipmaps int64) RID.Any { //gd:RenderingDevice.texture_create_from_extension
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_create_from_extension, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40), &struct {
 		atype       Rendering.TextureType
 		format      Rendering.DataFormat
 		samples     Rendering.TextureSamples
@@ -1711,7 +1724,8 @@ func (self class) TextureCreateFromExtension(atype Rendering.TextureType, format
 		height      int64
 		depth       int64
 		layers      int64
-	}{atype, format, samples, usage_flags, image, width, height, depth, layers})
+		mipmaps     int64
+	}{atype, format, samples, usage_flags, image, width, height, depth, layers, mipmaps})
 	var ret = r_ret
 	return ret
 }
@@ -1731,7 +1745,7 @@ func (self class) TextureUpdate(texture RID.Any, layer int64, data Packed.Bytes)
 		texture RID.Any
 		layer   int64
 		data    gdextension.PackedArray[byte]
-	}{texture, layer, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	}{texture, layer, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1739,9 +1753,9 @@ func (self class) TextureUpdate(texture RID.Any, layer int64, data Packed.Bytes)
 /*
 Returns the 'texture' data for the specified 'layer' as raw binary data. For 2D textures (which only have one layer), 'layer' must be 0.
 
-Note: 'texture' can't be retrieved while a draw list that uses it as part of a framebuffer is being created. Ensure the draw list is finalized (and that the color/depth texture using it is not set to [FinalActionContinue]) to retrieve this texture. Otherwise, an error is printed and a empty []byte is returned.
+Note: 'texture' can't be retrieved while a draw list that uses it as part of a framebuffer is being created. Ensure the draw list is finalized (and that the color/depth texture using it is not set to [FinalActionContinue]) to retrieve this texture. Otherwise, an error is printed and an empty []byte is returned.
 
-Note: 'texture' requires the [TextureUsageCanCopyFromBit] to be retrieved. Otherwise, an error is printed and a empty []byte is returned.
+Note: 'texture' requires the [TextureUsageCanCopyFromBit] to be retrieved. Otherwise, an error is printed and an empty []byte is returned.
 
 Note: This method will block the GPU from working until the data is retrieved. Refer to [Instance.TextureGetDataAsync] for an alternative that returns the data in more performant way.
 */
@@ -1751,7 +1765,7 @@ func (self class) TextureGetData(texture RID.Any, layer int64) Packed.Bytes { //
 		texture RID.Any
 		layer   int64
 	}{texture, layer})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -2078,7 +2092,7 @@ func (self class) SamplerIsFormatSupportedForFilter(format Rendering.DataFormat,
 }
 
 /*
-It can be accessed with the RID that is returned.
+Creates a new vertex buffer. It can be accessed with the RID that is returned.
 
 Once finished with your RID, you will want to free the RID using the RenderingDevice's [Instance.FreeRid] method.
 */
@@ -2088,7 +2102,7 @@ func (self class) VertexBufferCreate(size_bytes int64, data Packed.Bytes, creati
 		size_bytes    int64
 		data          gdextension.PackedArray[byte]
 		creation_bits Rendering.BufferCreationBits
-	}{size_bytes, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))), creation_bits})
+	}{size_bytes, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array))), creation_bits})
 	var ret = r_ret
 	return ret
 }
@@ -2131,7 +2145,7 @@ func (self class) IndexBufferCreate(size_indices int64, format Rendering.IndexBu
 		data                gdextension.PackedArray[byte]
 		use_restart_indices bool
 		creation_bits       Rendering.BufferCreationBits
-	}{size_indices, format, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))), use_restart_indices, creation_bits})
+	}{size_indices, format, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array))), use_restart_indices, creation_bits})
 	var ret = r_ret
 	return ret
 }
@@ -2153,7 +2167,7 @@ func (self class) IndexArrayCreate(index_buffer RID.Any, index_offset int64, ind
 }
 
 /*
-Compiles a SPIR-V from the shader source code in 'shader_source' and returns the SPIR-V as a [graphics.gd/classdb/RDShaderSPIRV]. This intermediate language shader is portable across different GPU models and driver versions, but cannot be run directly by GPUs until compiled into a binary shader using [Instance.ShaderCompileBinaryFromSpirv].
+Compiles a SPIR-V from the shader source code in 'shader_source' and returns the SPIR-V as an [graphics.gd/classdb/RDShaderSPIRV]. This intermediate language shader is portable across different GPU models and driver versions, but cannot be run directly by GPUs until compiled into a binary shader using [Instance.ShaderCompileBinaryFromSpirv].
 
 If 'allow_cache' is true, make use of the shader cache generated by Godot. This avoids a potentially lengthy shader compilation step if the shader is already in cache. If 'allow_cache' is false, Godot's shader cache is ignored and the shader will always be recompiled.
 */
@@ -2178,7 +2192,7 @@ func (self class) ShaderCompileBinaryFromSpirv(spirv_data [1]gdclass.RDShaderSPI
 		spirv_data gdextension.Object
 		name       gdextension.String
 	}{gdextension.Object(gd.ObjectChecked(spirv_data[0].AsObject())), pointers.Get(gd.InternalString(name))})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -2207,7 +2221,7 @@ func (self class) ShaderCreateFromBytecode(binary_data Packed.Bytes, placeholder
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.shader_create_from_bytecode, gdextension.SizeRID|(gdextension.SizePackedArray<<4)|(gdextension.SizeRID<<8), &struct {
 		binary_data     gdextension.PackedArray[byte]
 		placeholder_rid RID.Any
-	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](binary_data))), placeholder_rid})
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](binary_data.Array))), placeholder_rid})
 	var ret = r_ret
 	return ret
 }
@@ -2243,7 +2257,7 @@ func (self class) UniformBufferCreate(size_bytes int64, data Packed.Bytes, creat
 		size_bytes    int64
 		data          gdextension.PackedArray[byte]
 		creation_bits Rendering.BufferCreationBits
-	}{size_bytes, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))), creation_bits})
+	}{size_bytes, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array))), creation_bits})
 	var ret = r_ret
 	return ret
 }
@@ -2262,7 +2276,7 @@ func (self class) StorageBufferCreate(size_bytes int64, data Packed.Bytes, usage
 		data          gdextension.PackedArray[byte]
 		usage         Rendering.StorageBufferUsage
 		creation_bits Rendering.BufferCreationBits
-	}{size_bytes, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))), usage, creation_bits})
+	}{size_bytes, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array))), usage, creation_bits})
 	var ret = r_ret
 	return ret
 }
@@ -2278,7 +2292,7 @@ func (self class) TextureBufferCreate(size_bytes int64, format Rendering.DataFor
 		size_bytes int64
 		format     Rendering.DataFormat
 		data       gdextension.PackedArray[byte]
-	}{size_bytes, format, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	}{size_bytes, format, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 	var ret = r_ret
 	return ret
 }
@@ -2351,7 +2365,7 @@ func (self class) BufferUpdate(buffer RID.Any, offset int64, size_bytes int64, d
 		offset     int64
 		size_bytes int64
 		data       gdextension.PackedArray[byte]
-	}{buffer, offset, size_bytes, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	}{buffer, offset, size_bytes, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -2392,7 +2406,7 @@ func (self class) BufferGetData(buffer RID.Any, offset_bytes int64, size_bytes i
 		offset_bytes int64
 		size_bytes   int64
 	}{buffer, offset_bytes, size_bytes})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -2658,7 +2672,7 @@ func (self class) DrawListSetPushConstant(draw_list int64, buffer Packed.Bytes, 
 		draw_list  int64
 		buffer     gdextension.PackedArray[byte]
 		size_bytes int64
-	}{draw_list, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))), size_bytes})
+	}{draw_list, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array))), size_bytes})
 }
 
 /*
@@ -2774,7 +2788,7 @@ func (self class) ComputeListSetPushConstant(compute_list int64, buffer Packed.B
 		compute_list int64
 		buffer       gdextension.PackedArray[byte]
 		size_bytes   int64
-	}{compute_list, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))), size_bytes})
+	}{compute_list, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array))), size_bytes})
 }
 
 /*
@@ -3075,7 +3089,7 @@ func (self class) GetMemoryUsage(atype Rendering.MemoryType) int64 { //gd:Render
 }
 
 /*
-Returns the unique identifier of the driver 'resource' for the specified 'rid'. Some driver resource types ignore the specified 'rid' (see [DriverResource] descriptions). 'index' is always ignored but must be specified anyway.
+Returns the unique identifier of the driver 'resource' for the specified 'rid'. Some driver resource types ignore the specified 'rid'. 'index' is always ignored but must be specified anyway.
 */
 //go:nosplit
 func (self class) GetDriverResource(resource Rendering.DriverResource, rid RID.Any, index int64) int64 { //gd:RenderingDevice.get_driver_resource
@@ -3159,7 +3173,7 @@ func (self class) GetTrackedObjectName(type_index int64) String.Readable { //gd:
 }
 
 /*
-Returns how many types of trackable objects are.
+Returns how many types of trackable objects there are.
 
 This is only used by Vulkan in debug builds. Godot must also be started with the --extra-gpu-memory-tracking [command line argument].
 

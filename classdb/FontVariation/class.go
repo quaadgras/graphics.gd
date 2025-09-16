@@ -315,7 +315,7 @@ func (self class) SetOpentypeFeatures(features Dictionary.Any) { //gd:FontVariat
 }
 
 /*
-Sets the spacing for 'spacing' (see [TextServer.SpacingType]) to 'value' in pixels (not relative to the font size).
+Sets the spacing for 'spacing' to 'value' in pixels (not relative to the font size).
 */
 //go:nosplit
 func (self class) SetSpacing(spacing TextServer.SpacingType, value int64) { //gd:FontVariation.set_spacing

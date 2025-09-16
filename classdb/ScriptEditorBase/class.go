@@ -112,7 +112,7 @@ func (self Instance) GetBaseEditor() Control.Instance { //gd:ScriptEditorBase.ge
 }
 
 /*
-Adds a [graphics.gd/classdb/EditorSyntaxHighlighter] to the open script.
+Adds an [graphics.gd/classdb/EditorSyntaxHighlighter] to the open script.
 */
 func (self Instance) AddSyntaxHighlighter(highlighter EditorSyntaxHighlighter.Instance) { //gd:ScriptEditorBase.add_syntax_highlighter
 	Advanced(self).AddSyntaxHighlighter(highlighter)
@@ -171,7 +171,7 @@ func (self class) GetBaseEditor() [1]gdclass.Control { //gd:ScriptEditorBase.get
 }
 
 /*
-Adds a [graphics.gd/classdb/EditorSyntaxHighlighter] to the open script.
+Adds an [graphics.gd/classdb/EditorSyntaxHighlighter] to the open script.
 */
 //go:nosplit
 func (self class) AddSyntaxHighlighter(highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditorBase.add_syntax_highlighter

@@ -316,11 +316,11 @@ func SetPopupOpenCallback(rid RID.NativeMenu, callback func()) { //gd:NativeMenu
 /*
 Returns global menu open callback.
 
-b]Note:[/b] This method is implemented only on macOS.
+Note: This method is implemented only on macOS.
 */
 func GetPopupOpenCallback(rid RID.NativeMenu) Callable.Function { //gd:NativeMenu.get_popup_open_callback
 	once.Do(singleton)
-	return Callable.Function(Advanced().GetPopupOpenCallback(RID.Any(rid)))
+	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(Advanced().GetPopupOpenCallback(RID.Any(rid)))))
 }
 
 /*
@@ -342,7 +342,7 @@ Note: This method is implemented on macOS and Windows.
 */
 func GetPopupCloseCallback(rid RID.NativeMenu) Callable.Function { //gd:NativeMenu.get_popup_close_callback
 	once.Do(singleton)
-	return Callable.Function(Advanced().GetPopupCloseCallback(RID.Any(rid)))
+	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(Advanced().GetPopupCloseCallback(RID.Any(rid)))))
 }
 
 /*
@@ -760,7 +760,7 @@ Note: This method is implemented on macOS and Windows.
 */
 func GetItemCallback(rid RID.NativeMenu, idx int) Callable.Function { //gd:NativeMenu.get_item_callback
 	once.Do(singleton)
-	return Callable.Function(Advanced().GetItemCallback(RID.Any(rid), int64(idx)))
+	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(Advanced().GetItemCallback(RID.Any(rid), int64(idx)))))
 }
 
 /*
@@ -770,7 +770,7 @@ Note: This method is implemented only on macOS.
 */
 func GetItemKeyCallback(rid RID.NativeMenu, idx int) Callable.Function { //gd:NativeMenu.get_item_key_callback
 	once.Do(singleton)
-	return Callable.Function(Advanced().GetItemKeyCallback(RID.Any(rid), int64(idx)))
+	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(Advanced().GetItemKeyCallback(RID.Any(rid), int64(idx)))))
 }
 
 /*
@@ -1268,7 +1268,7 @@ func (self class) SetPopupOpenCallback(rid RID.Any, callback Callable.Function) 
 /*
 Returns global menu open callback.
 
-b]Note:[/b] This method is implemented only on macOS.
+Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetPopupOpenCallback(rid RID.Any) Callable.Function { //gd:NativeMenu.get_popup_open_callback

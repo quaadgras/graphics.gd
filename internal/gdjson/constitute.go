@@ -15,6 +15,7 @@ var Consitution = map[string]map[string]string{
 		"MAIN_WINDOW_ID":       "Window",
 		"INVALID_WINDOW_ID":    "Window",
 		"INVALID_INDICATOR_ID": "StatusIndicator",
+		"INVALID_SCREEN":       "Screen",
 	},
 	"ENetPacketPeer": {
 		"PACKET_LOSS_SCALE":     "",
@@ -51,6 +52,8 @@ var Consitution = map[string]map[string]string{
 		"MATERIAL_RENDER_PRIORITY_MAX": "int",
 		"PARTICLES_EMIT_FLAG":          "ParticlesEmitFlag",
 		"NO_INDEX_ARRAY":               "-",
+		"CANVAS_LAYER_MIN":             "int",
+		"CANVAS_LAYER_MAX":             "int",
 	},
 	"ResourceUID": {
 		"INVALID_ID": "Resource.UID",

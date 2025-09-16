@@ -96,6 +96,20 @@ func Duplicate[K comparable, V any](m Map[K, V]) Map[K, V] { //gd:Dictionary.dup
 	return clone
 }
 
+// Transform creates and returns a new dictionary by applying the given function to each key-value pair
+// and writing the result to the new dictionary.
+func Transform[K comparable, V any](m Map[K, V], f func(K, V) (K, V)) Map[K, V] { //gd:Dictionary.duplicate_deep
+	if m.proxy == nil {
+		return Map[K, V]{}
+	}
+	var result = New[K, V]()
+	for key, value := range m.Iter() {
+		newKey, newValue := f(key, value)
+		result.SetIndex(newKey, newValue)
+	}
+	return result
+}
+
 // Erase removes the dictionary entry by key, if it exists. Returns true
 // if the given key existed in the dictionary, otherwise false.
 //

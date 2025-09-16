@@ -75,7 +75,7 @@ type Instance [1]gdclass.JSONRPC
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_scope           gdextension.MethodForClass `hash:"2572618360"`
+	set_method          gdextension.MethodForClass `hash:"2137474292"`
 	process_action      gdextension.MethodForClass `hash:"2963479484"`
 	process_string      gdextension.MethodForClass `hash:"1703090593"`
 	make_request        gdextension.MethodForClass `hash:"3423508980"`
@@ -106,8 +106,15 @@ type Any interface {
 	AsJSONRPC() Instance
 }
 
-func (self Instance) SetScope(scope string, target Object.Instance) { //gd:JSONRPC.set_scope
-	Advanced(self).SetScope(String.New(scope), target)
+/*
+Registers a callback for the given method name.
+
+- 'name' The name that clients can use to access the callback.
+
+- 'callback' The callback which will handle the specific method.
+*/
+func (self Instance) SetMethod(name string, callback Callable.Function) { //gd:JSONRPC.set_method
+	Advanced(self).SetMethod(String.New(name), Callable.New(callback))
 }
 
 /*
@@ -238,12 +245,19 @@ func New() Instance {
 	return casted
 }
 
+/*
+Registers a callback for the given method name.
+
+- 'name' The name that clients can use to access the callback.
+
+- 'callback' The callback which will handle the specific method.
+*/
 //go:nosplit
-func (self class) SetScope(scope String.Readable, target [1]gd.Object) { //gd:JSONRPC.set_scope
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scope, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8), &struct {
-		scope  gdextension.String
-		target gdextension.Object
-	}{pointers.Get(gd.InternalString(scope)), gdextension.Object(gd.ObjectChecked(target[0].AsObject()))})
+func (self class) SetMethod(name String.Readable, callback Callable.Function) { //gd:JSONRPC.set_method
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_method, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8), &struct {
+		name     gdextension.String
+		callback gdextension.Callable
+	}{pointers.Get(gd.InternalString(name)), pointers.Get(gd.InternalCallable(callback))})
 }
 
 /*

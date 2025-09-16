@@ -7,7 +7,7 @@ Controllers are linked by their ID. You can create controller nodes before the c
 
 The position of the controller node is automatically updated by the [graphics.gd/classdb/XRServer]. This makes this node ideal to add child nodes to visualize the controller.
 
-As many XR runtimes now use a configurable action map all inputs are named.
+The current [graphics.gd/classdb/XRInterface] defines the names of inputs. In the case of OpenXR, these are the names of actions in the current action set from the OpenXR action map.
 */
 package XRController3D
 
@@ -113,6 +113,8 @@ type Any interface {
 
 /*
 Returns true if the button with the given 'name' is pressed.
+
+Note: The current [graphics.gd/classdb/XRInterface] defines the 'name' for each input. In the case of OpenXR, these are the names of actions in the current action set.
 */
 func (self Instance) IsButtonPressed(name string) bool { //gd:XRController3D.is_button_pressed
 	return bool(Advanced(self).IsButtonPressed(String.Name(String.New(name))))
@@ -120,6 +122,8 @@ func (self Instance) IsButtonPressed(name string) bool { //gd:XRController3D.is_
 
 /*
 Returns a any for the input with the given 'name'. This works for any input type, the variant will be typed according to the actions configuration.
+
+Note: The current [graphics.gd/classdb/XRInterface] defines the 'name' for each input. In the case of OpenXR, these are the names of actions in the current action set.
 */
 func (self Instance) GetInput(name string) any { //gd:XRController3D.get_input
 	return any(Advanced(self).GetInput(String.Name(String.New(name))).Interface())
@@ -127,6 +131,8 @@ func (self Instance) GetInput(name string) any { //gd:XRController3D.get_input
 
 /*
 Returns a numeric value for the input with the given 'name'. This is used for triggers and grip sensors.
+
+Note: The current [graphics.gd/classdb/XRInterface] defines the 'name' for each input. In the case of OpenXR, these are the names of actions in the current action set.
 */
 func (self Instance) GetFloat(name string) Float.X { //gd:XRController3D.get_float
 	return Float.X(Float.X(Advanced(self).GetFloat(String.Name(String.New(name)))))
@@ -134,13 +140,15 @@ func (self Instance) GetFloat(name string) Float.X { //gd:XRController3D.get_flo
 
 /*
 Returns a [Vector2.XY] for the input with the given 'name'. This is used for thumbsticks and thumbpads found on many controllers.
+
+Note: The current [graphics.gd/classdb/XRInterface] defines the 'name' for each input. In the case of OpenXR, these are the names of actions in the current action set.
 */
 func (self Instance) GetVector2(name string) Vector2.XY { //gd:XRController3D.get_vector2
 	return Vector2.XY(Advanced(self).GetVector2(String.Name(String.New(name))))
 }
 
 /*
-Returns the hand holding this controller, if known. See [XRPositionalTracker.TrackerHand].
+Returns the hand holding this controller, if known.
 */
 func (self Instance) GetTrackerHand() XRPositionalTracker.TrackerHand { //gd:XRController3D.get_tracker_hand
 	return XRPositionalTracker.TrackerHand(Advanced(self).GetTrackerHand())
@@ -190,6 +198,8 @@ func New() Instance {
 
 /*
 Returns true if the button with the given 'name' is pressed.
+
+Note: The current [graphics.gd/classdb/XRInterface] defines the 'name' for each input. In the case of OpenXR, these are the names of actions in the current action set.
 */
 //go:nosplit
 func (self class) IsButtonPressed(name String.Name) bool { //gd:XRController3D.is_button_pressed
@@ -200,6 +210,8 @@ func (self class) IsButtonPressed(name String.Name) bool { //gd:XRController3D.i
 
 /*
 Returns a any for the input with the given 'name'. This works for any input type, the variant will be typed according to the actions configuration.
+
+Note: The current [graphics.gd/classdb/XRInterface] defines the 'name' for each input. In the case of OpenXR, these are the names of actions in the current action set.
 */
 //go:nosplit
 func (self class) GetInput(name String.Name) variant.Any { //gd:XRController3D.get_input
@@ -210,6 +222,8 @@ func (self class) GetInput(name String.Name) variant.Any { //gd:XRController3D.g
 
 /*
 Returns a numeric value for the input with the given 'name'. This is used for triggers and grip sensors.
+
+Note: The current [graphics.gd/classdb/XRInterface] defines the 'name' for each input. In the case of OpenXR, these are the names of actions in the current action set.
 */
 //go:nosplit
 func (self class) GetFloat(name String.Name) float64 { //gd:XRController3D.get_float
@@ -220,6 +234,8 @@ func (self class) GetFloat(name String.Name) float64 { //gd:XRController3D.get_f
 
 /*
 Returns a [Vector2.XY] for the input with the given 'name'. This is used for thumbsticks and thumbpads found on many controllers.
+
+Note: The current [graphics.gd/classdb/XRInterface] defines the 'name' for each input. In the case of OpenXR, these are the names of actions in the current action set.
 */
 //go:nosplit
 func (self class) GetVector2(name String.Name) Vector2.XY { //gd:XRController3D.get_vector2
@@ -229,7 +245,7 @@ func (self class) GetVector2(name String.Name) Vector2.XY { //gd:XRController3D.
 }
 
 /*
-Returns the hand holding this controller, if known. See [XRPositionalTracker.TrackerHand].
+Returns the hand holding this controller, if known.
 */
 //go:nosplit
 func (self class) GetTrackerHand() XRPositionalTracker.TrackerHand { //gd:XRController3D.get_tracker_hand
