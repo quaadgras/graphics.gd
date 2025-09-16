@@ -82,6 +82,10 @@ var methods struct {
 	clear                                            gdextension.MethodForClass `hash:"3218959716"`
 	translate                                        gdextension.MethodForClass `hash:"1829228469"`
 	translate_plural                                 gdextension.MethodForClass `hash:"229954002"`
+	get_locale_override                              gdextension.MethodForClass `hash:"201670096"`
+	set_locale_override                              gdextension.MethodForClass `hash:"83702148"`
+	is_enabled                                       gdextension.MethodForClass `hash:"36873697"`
+	set_enabled                                      gdextension.MethodForClass `hash:"2586408642"`
 	is_pseudolocalization_enabled                    gdextension.MethodForClass `hash:"36873697"`
 	set_pseudolocalization_enabled                   gdextension.MethodForClass `hash:"2586408642"`
 	is_pseudolocalization_accents_enabled            gdextension.MethodForClass `hash:"36873697"`
@@ -186,6 +190,24 @@ func (self Expanded) TranslatePlural(message string, message_plural string, n in
 }
 
 /*
+Returns the locale override of the domain. Returns an empty string if locale override is disabled.
+*/
+func (self Instance) GetLocaleOverride() string { //gd:TranslationDomain.get_locale_override
+	return string(Advanced(self).GetLocaleOverride().String())
+}
+
+/*
+Sets the locale override of the domain.
+
+If 'locale' is an empty string, locale override is disabled. Otherwise, 'locale' will be standardized to match known locales (e.g. en-US would be matched to en_US).
+
+Note: Calling this method does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] signal manually.
+*/
+func (self Instance) SetLocaleOverride(locale string) { //gd:TranslationDomain.set_locale_override
+	Advanced(self).SetLocaleOverride(String.New(locale))
+}
+
+/*
 Returns the pseudolocalized string based on the 'message' passed in.
 */
 func (self Instance) Pseudolocalize(message string) string { //gd:TranslationDomain.pseudolocalize
@@ -233,6 +255,14 @@ func New() Instance {
 	casted.AsRefCounted()[0].InitRef()
 	casted.AsObject()[0].Notification(0, false)
 	return casted
+}
+
+func (self Instance) Enabled() bool {
+	return bool(class(self).IsEnabled())
+}
+
+func (self Instance) SetEnabled(value bool) {
+	class(self).SetEnabled(value)
 }
 
 func (self Instance) PseudolocalizationEnabled() bool {
@@ -369,6 +399,40 @@ func (self class) TranslatePlural(message String.Name, message_plural String.Nam
 	}{pointers.Get(gd.InternalStringName(message)), pointers.Get(gd.InternalStringName(message_plural)), n, pointers.Get(gd.InternalStringName(context))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
+}
+
+/*
+Returns the locale override of the domain. Returns an empty string if locale override is disabled.
+*/
+//go:nosplit
+func (self class) GetLocaleOverride() String.Readable { //gd:TranslationDomain.get_locale_override
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale_override, gdextension.SizeString, &struct{}{})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+/*
+Sets the locale override of the domain.
+
+If 'locale' is an empty string, locale override is disabled. Otherwise, 'locale' will be standardized to match known locales (e.g. en-US would be matched to en_US).
+
+Note: Calling this method does not automatically update texts in the scene tree. Please propagate the [Mainloop.NotificationTranslationChanged] signal manually.
+*/
+//go:nosplit
+func (self class) SetLocaleOverride(locale String.Readable) { //gd:TranslationDomain.set_locale_override
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_locale_override, 0|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
+}
+
+//go:nosplit
+func (self class) IsEnabled() bool { //gd:TranslationDomain.is_enabled
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetEnabled(enabled bool) { //gd:TranslationDomain.set_enabled
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit

@@ -3,6 +3,8 @@
 /*
 Scripts extending this class and implementing its [Interface.Run] method can be executed from the Script Editor's File > Run menu option (or by pressing Ctrl + Shift + X) while the editor is running. This is useful for adding custom in-editor functionality to Godot. For more complex additions, consider using [graphics.gd/classdb/EditorPlugin]s instead.
 
+If a script extending this class also has a global class name, it will be included in the editor's command palette.
+
 Note: Extending scripts need to have tool mode enabled.
 
 Example: Running the following script prints "Hello from the Godot Editor!":
@@ -22,8 +24,6 @@ Example: Running the following script prints "Hello from the Godot Editor!":
 	func (h *HelloEditor) Run() {
 		fmt.Println("Hello from the Godot Editor!")
 	}
-
-Note: The script is run in the Editor context, which means the output is visible in the console window started with the Editor (stdout) instead of the usual Godot Output dock.
 
 Note: EditorScript is [graphics.gd/classdb/RefCounted], meaning it is destroyed when nothing references it. This can cause errors during asynchronous operations if there are no references to the script.
 */

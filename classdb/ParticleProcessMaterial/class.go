@@ -1353,7 +1353,7 @@ func (self class) GetVelocityLimitCurve() [1]gdclass.Texture2D { //gd:ParticlePr
 }
 
 /*
-If true, enables the specified particle flag. See [ParticleFlags] for options.
+Sets the 'particle_flag' to 'enable'.
 */
 //go:nosplit
 func (self class) SetParticleFlag(particle_flag ParticleFlags, enable bool) { //gd:ParticleProcessMaterial.set_particle_flag
@@ -1364,7 +1364,7 @@ func (self class) SetParticleFlag(particle_flag ParticleFlags, enable bool) { //
 }
 
 /*
-Returns true if the specified particle flag is enabled. See [ParticleFlags] for options.
+Returns true if the specified particle flag is enabled.
 */
 //go:nosplit
 func (self class) GetParticleFlag(particle_flag ParticleFlags) bool { //gd:ParticleProcessMaterial.get_particle_flag

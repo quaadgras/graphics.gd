@@ -169,14 +169,14 @@ func (self Instance) PropertySetSpawn(path string, enabled bool) { //gd:SceneRep
 }
 
 /*
-Returns the replication mode for the property identified by the given 'path'. See [ReplicationMode].
+Returns the replication mode for the property identified by the given 'path'.
 */
 func (self Instance) PropertyGetReplicationMode(path string) ReplicationMode { //gd:SceneReplicationConfig.property_get_replication_mode
 	return ReplicationMode(Advanced(self).PropertyGetReplicationMode(Path.ToNode(String.New(path))))
 }
 
 /*
-Sets the synchronization mode for the property identified by the given 'path'. See [ReplicationMode].
+Sets the synchronization mode for the property identified by the given 'path'.
 */
 func (self Instance) PropertySetReplicationMode(path string, mode ReplicationMode) { //gd:SceneReplicationConfig.property_set_replication_mode
 	Advanced(self).PropertySetReplicationMode(Path.ToNode(String.New(path)), mode)
@@ -326,7 +326,7 @@ func (self class) PropertySetSpawn(path Path.ToNode, enabled bool) { //gd:SceneR
 }
 
 /*
-Returns the replication mode for the property identified by the given 'path'. See [ReplicationMode].
+Returns the replication mode for the property identified by the given 'path'.
 */
 //go:nosplit
 func (self class) PropertyGetReplicationMode(path Path.ToNode) ReplicationMode { //gd:SceneReplicationConfig.property_get_replication_mode
@@ -336,7 +336,7 @@ func (self class) PropertyGetReplicationMode(path Path.ToNode) ReplicationMode {
 }
 
 /*
-Sets the synchronization mode for the property identified by the given 'path'. See [ReplicationMode].
+Sets the synchronization mode for the property identified by the given 'path'.
 */
 //go:nosplit
 func (self class) PropertySetReplicationMode(path Path.ToNode, mode ReplicationMode) { //gd:SceneReplicationConfig.property_set_replication_mode

@@ -189,7 +189,7 @@ func (self Instance) Stop() { //gd:AnimatedSprite2D.stop
 }
 
 /*
-Sets [Instance.Frame] the [Instance.FrameProgress] to the given values. Unlike setting [Instance.Frame], this method does not reset the [Instance.FrameProgress] to 0.0 implicitly.
+Sets [Instance.Frame] and [Instance.FrameProgress] to the given values. Unlike setting [Instance.Frame], this method does not reset the [Instance.FrameProgress] to 0.0 implicitly.
 
 Example: Change the animation while keeping the same [Instance.Frame] and [Instance.FrameProgress]:
 
@@ -494,7 +494,7 @@ func (self class) GetFrameProgress() float64 { //gd:AnimatedSprite2D.get_frame_p
 }
 
 /*
-Sets [Instance.Frame] the [Instance.FrameProgress] to the given values. Unlike setting [Instance.Frame], this method does not reset the [Instance.FrameProgress] to 0.0 implicitly.
+Sets [Instance.Frame] and [Instance.FrameProgress] to the given values. Unlike setting [Instance.Frame], this method does not reset the [Instance.FrameProgress] to 0.0 implicitly.
 
 Example: Change the animation while keeping the same [Instance.Frame] and [Instance.FrameProgress]:
 

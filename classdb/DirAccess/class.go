@@ -153,7 +153,9 @@ var methods struct {
 	get_include_navigational    gdextension.MethodForClass `hash:"36873697"`
 	set_include_hidden          gdextension.MethodForClass `hash:"2586408642"`
 	get_include_hidden          gdextension.MethodForClass `hash:"36873697"`
+	get_filesystem_type         gdextension.MethodForClass `hash:"201670096"`
 	is_case_sensitive           gdextension.MethodForClass `hash:"3927539163"`
+	is_equivalent               gdextension.MethodForClass `hash:"820780508"`
 }
 
 func init() {
@@ -307,7 +309,7 @@ func GetDirectoriesAt(path string) []string { //gd:DirAccess.get_directories_at
 /*
 On Windows, returns the number of drives (partitions) mounted on the current filesystem.
 
-On macOS, returns the number of mounted volumes.
+On macOS and Android, returns the number of mounted volumes.
 
 On Linux, returns the number of mounted volumes and GTK 3 bookmarks.
 
@@ -324,6 +326,8 @@ On Windows, returns the name of the drive (partition) passed as an argument (e.g
 On macOS, returns the path to the mounted volume passed as an argument.
 
 On Linux, returns the path to the mounted volume or GTK 3 bookmark passed as an argument.
+
+On Android (API level 30+), returns the path to the mounted volume as an argument.
 
 On other platforms, or if the requested drive does not exist, the method returns an empty String.
 */
@@ -548,12 +552,28 @@ func (self Instance) IsBundle(path string) bool { //gd:DirAccess.is_bundle
 }
 
 /*
+Returns file system type name of the current directory's disk. Returned values are uppercase strings like NTFS, FAT32, EXFAT, APFS, EXT4, BTRFS, and so on.
+
+Note: This method is implemented on macOS, Linux, Windows and for PCK virtual file system.
+*/
+func (self Instance) GetFilesystemType() string { //gd:DirAccess.get_filesystem_type
+	return string(Advanced(self).GetFilesystemType().String())
+}
+
+/*
 Returns true if the file system or directory use case sensitive file names.
 
 Note: This method is implemented on macOS, Linux (for EXT4 and F2FS filesystems only) and Windows. On other platforms, it always returns true.
 */
 func (self Instance) IsCaseSensitive(path string) bool { //gd:DirAccess.is_case_sensitive
 	return bool(Advanced(self).IsCaseSensitive(String.New(path)))
+}
+
+/*
+Returns true if paths 'path_a' and 'path_b' resolve to the same file system object. Returns false otherwise, even if the files are bit-for-bit identical (e.g., identical copies of the file that are not symbolic links).
+*/
+func (self Instance) IsEquivalent(path_a string, path_b string) bool { //gd:DirAccess.is_equivalent
+	return bool(Advanced(self).IsEquivalent(String.New(path_a), String.New(path_b)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -759,7 +779,7 @@ func (self class) GetDirectoriesAt(path String.Readable) Packed.Strings { //gd:D
 /*
 On Windows, returns the number of drives (partitions) mounted on the current filesystem.
 
-On macOS, returns the number of mounted volumes.
+On macOS and Android, returns the number of mounted volumes.
 
 On Linux, returns the number of mounted volumes and GTK 3 bookmarks.
 
@@ -778,6 +798,8 @@ On Windows, returns the name of the drive (partition) passed as an argument (e.g
 On macOS, returns the path to the mounted volume passed as an argument.
 
 On Linux, returns the path to the mounted volume or GTK 3 bookmark passed as an argument.
+
+On Android (API level 30+), returns the path to the mounted volume as an argument.
 
 On other platforms, or if the requested drive does not exist, the method returns an empty String.
 */
@@ -1076,6 +1098,18 @@ func (self class) GetIncludeHidden() bool { //gd:DirAccess.get_include_hidden
 }
 
 /*
+Returns file system type name of the current directory's disk. Returned values are uppercase strings like NTFS, FAT32, EXFAT, APFS, EXT4, BTRFS, and so on.
+
+Note: This method is implemented on macOS, Linux, Windows and for PCK virtual file system.
+*/
+//go:nosplit
+func (self class) GetFilesystemType() String.Readable { //gd:DirAccess.get_filesystem_type
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_filesystem_type, gdextension.SizeString, &struct{}{})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+/*
 Returns true if the file system or directory use case sensitive file names.
 
 Note: This method is implemented on macOS, Linux (for EXT4 and F2FS filesystems only) and Windows. On other platforms, it always returns true.
@@ -1083,6 +1117,19 @@ Note: This method is implemented on macOS, Linux (for EXT4 and F2FS filesystems 
 //go:nosplit
 func (self class) IsCaseSensitive(path String.Readable) bool { //gd:DirAccess.is_case_sensitive
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_case_sensitive, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns true if paths 'path_a' and 'path_b' resolve to the same file system object. Returns false otherwise, even if the files are bit-for-bit identical (e.g., identical copies of the file that are not symbolic links).
+*/
+//go:nosplit
+func (self class) IsEquivalent(path_a String.Readable, path_b String.Readable) bool { //gd:DirAccess.is_equivalent
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_equivalent, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
+		path_a gdextension.String
+		path_b gdextension.String
+	}{pointers.Get(gd.InternalString(path_a)), pointers.Get(gd.InternalString(path_b))})
 	var ret = r_ret
 	return ret
 }

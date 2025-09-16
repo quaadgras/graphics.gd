@@ -167,7 +167,7 @@ func CreateFromImage(image Image.Instance) Instance { //gd:ImageTexture.create_f
 }
 
 /*
-Returns the format of the texture, one of [Image.Format].
+Returns the format of the texture.
 */
 func (self Instance) GetFormat() Image.Format { //gd:ImageTexture.get_format
 	return Image.Format(Advanced(self).GetFormat())
@@ -254,7 +254,7 @@ func (self class) CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTextur
 }
 
 /*
-Returns the format of the texture, one of [Image.Format].
+Returns the format of the texture.
 */
 //go:nosplit
 func (self class) GetFormat() Image.Format { //gd:ImageTexture.get_format

@@ -138,7 +138,9 @@ func (self Instance) GetLabel() Label.Instance { //gd:AcceptDialog.get_label
 }
 
 /*
-Adds a button with label 'text' and a custom 'action' to the dialog and returns the created button. 'action' will be passed to the [Instance.OnCustomAction] signal when pressed.
+Adds a button with label 'text' and a custom 'action' to the dialog and returns the created button.
+
+If 'action' is not empty, pressing the button will emit the [Instance.OnCustomAction] signal with the specified action string.
 
 If true, 'right' will place the button to the right of any sibling buttons.
 
@@ -149,7 +151,9 @@ func (self Instance) AddButton(text string) Button.Instance { //gd:AcceptDialog.
 }
 
 /*
-Adds a button with label 'text' and a custom 'action' to the dialog and returns the created button. 'action' will be passed to the [Instance.OnCustomAction] signal when pressed.
+Adds a button with label 'text' and a custom 'action' to the dialog and returns the created button.
+
+If 'action' is not empty, pressing the button will emit the [Instance.OnCustomAction] signal with the specified action string.
 
 If true, 'right' will place the button to the right of any sibling buttons.
 
@@ -313,7 +317,9 @@ func (self class) GetCloseOnEscape() bool { //gd:AcceptDialog.get_close_on_escap
 }
 
 /*
-Adds a button with label 'text' and a custom 'action' to the dialog and returns the created button. 'action' will be passed to the [Instance.OnCustomAction] signal when pressed.
+Adds a button with label 'text' and a custom 'action' to the dialog and returns the created button.
+
+If 'action' is not empty, pressing the button will emit the [Instance.OnCustomAction] signal with the specified action string.
 
 If true, 'right' will place the button to the right of any sibling buttons.
 

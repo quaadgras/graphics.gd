@@ -2,6 +2,8 @@
 
 /*
 Provides direct access to a physics space in the [graphics.gd/classdb/PhysicsServer3D]. It's used mainly to do queries against objects and areas residing in a given space.
+
+Note: This class is not meant to be instantiated directly. Use [graphics.gd/classdb/World3D.Instance.DirectSpaceState] to get the world's physics 3D space state.
 */
 package PhysicsDirectSpaceState3D
 
@@ -205,7 +207,7 @@ func (self Expanded) IntersectShape(parameters PhysicsShapeQueryParameters3D.Ins
 }
 
 /*
-Checks how far a [graphics.gd/classdb/Shape3D] can move without colliding. All the parameters for the query, including the shape, are supplied through a [graphics.gd/classdb/PhysicsShapeQueryParameters3D] object.
+Checks how far a [graphics.gd/classdb/Shape3D] can move without colliding. All the parameters for the query, including the shape and the motion, are supplied through a [graphics.gd/classdb/PhysicsShapeQueryParameters3D] object.
 
 Returns an array with the safe and unsafe proportions (between 0 and 1) of the motion. The safe proportion is the maximum fraction of the motion that can be made without a collision. The unsafe proportion is the minimum fraction of the distance that must be moved for a collision. If no collision is detected a result of [1.0, 1.0] will be returned.
 
@@ -379,7 +381,7 @@ func (self class) IntersectShape(parameters [1]gdclass.PhysicsShapeQueryParamete
 }
 
 /*
-Checks how far a [graphics.gd/classdb/Shape3D] can move without colliding. All the parameters for the query, including the shape, are supplied through a [graphics.gd/classdb/PhysicsShapeQueryParameters3D] object.
+Checks how far a [graphics.gd/classdb/Shape3D] can move without colliding. All the parameters for the query, including the shape and the motion, are supplied through a [graphics.gd/classdb/PhysicsShapeQueryParameters3D] object.
 
 Returns an array with the safe and unsafe proportions (between 0 and 1) of the motion. The safe proportion is the maximum fraction of the motion that can be made without a collision. The unsafe proportion is the minimum fraction of the distance that must be moved for a collision. If no collision is detected a result of [1.0, 1.0] will be returned.
 

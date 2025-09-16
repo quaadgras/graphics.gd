@@ -124,6 +124,11 @@ var methods struct {
 	is_using_occlusion_culling                  gdextension.MethodForClass `hash:"36873697"`
 	set_debug_draw                              gdextension.MethodForClass `hash:"1970246205"`
 	get_debug_draw                              gdextension.MethodForClass `hash:"579191299"`
+	set_use_oversampling                        gdextension.MethodForClass `hash:"2586408642"`
+	is_using_oversampling                       gdextension.MethodForClass `hash:"36873697"`
+	set_oversampling_override                   gdextension.MethodForClass `hash:"373806689"`
+	get_oversampling_override                   gdextension.MethodForClass `hash:"1740695150"`
+	get_oversampling                            gdextension.MethodForClass `hash:"1740695150"`
 	get_render_info                             gdextension.MethodForClass `hash:"481977019"`
 	get_texture                                 gdextension.MethodForClass `hash:"1746695840"`
 	set_physics_object_picking                  gdextension.MethodForClass `hash:"2586408642"`
@@ -143,6 +148,8 @@ var methods struct {
 	update_mouse_cursor_state                   gdextension.MethodForClass `hash:"3218959716"`
 	gui_cancel_drag                             gdextension.MethodForClass `hash:"3218959716"`
 	gui_get_drag_data                           gdextension.MethodForClass `hash:"1214101251"`
+	gui_get_drag_description                    gdextension.MethodForClass `hash:"201670096"`
+	gui_set_drag_description                    gdextension.MethodForClass `hash:"83702148"`
 	gui_is_dragging                             gdextension.MethodForClass `hash:"36873697"`
 	gui_is_drag_successful                      gdextension.MethodForClass `hash:"36873697"`
 	gui_release_focus                           gdextension.MethodForClass `hash:"3218959716"`
@@ -278,7 +285,14 @@ func (self Instance) GetVisibleRect() Rect2.PositionSize { //gd:Viewport.get_vis
 }
 
 /*
-Returns rendering statistics of the given type. See [RenderInfoType] and [RenderInfo] for options.
+Returns viewport oversampling factor.
+*/
+func (self Instance) GetOversampling() Float.X { //gd:Viewport.get_oversampling
+	return Float.X(Float.X(Advanced(self).GetOversampling()))
+}
+
+/*
+Returns rendering statistics of the given type.
 */
 func (self Instance) GetRenderInfo(atype RenderInfoType, info RenderInfo) int { //gd:Viewport.get_render_info
 	return int(int(Advanced(self).GetRenderInfo(atype, info)))
@@ -462,6 +476,20 @@ Returns the drag data from the GUI, that was previously returned by [graphics.gd
 */
 func (self Instance) GuiGetDragData() any { //gd:Viewport.gui_get_drag_data
 	return any(Advanced(self).GuiGetDragData().Interface())
+}
+
+/*
+Returns the drag data human-readable description.
+*/
+func (self Instance) GuiGetDragDescription() string { //gd:Viewport.gui_get_drag_description
+	return string(Advanced(self).GuiGetDragDescription().String())
+}
+
+/*
+Sets the drag data human-readable description.
+*/
+func (self Instance) GuiSetDragDescription(description string) { //gd:Viewport.gui_set_drag_description
+	Advanced(self).GuiSetDragDescription(String.New(description))
 }
 
 /*
@@ -997,6 +1025,22 @@ func (self Instance) SetCanvasCullMask(value int) {
 	class(self).SetCanvasCullMask(int64(value))
 }
 
+func (self Instance) Oversampling() bool {
+	return bool(class(self).IsUsingOversampling())
+}
+
+func (self Instance) SetOversampling(value bool) {
+	class(self).SetUseOversampling(value)
+}
+
+func (self Instance) OversamplingOverride() Float.X {
+	return Float.X(Float.X(class(self).GetOversamplingOverride()))
+}
+
+func (self Instance) SetOversamplingOverride(value Float.X) {
+	class(self).SetOversamplingOverride(float64(value))
+}
+
 //go:nosplit
 func (self class) SetWorld2d(world_2d [1]gdclass.World2D) { //gd:Viewport.set_world_2d
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_2d, 0|(gdextension.SizeObject<<4), &struct{ world_2d gdextension.Object }{gdextension.Object(gd.ObjectChecked(world_2d[0].AsObject()))})
@@ -1193,8 +1237,42 @@ func (self class) GetDebugDraw() DebugDraw { //gd:Viewport.get_debug_draw
 	return ret
 }
 
+//go:nosplit
+func (self class) SetUseOversampling(enable bool) { //gd:Viewport.set_use_oversampling
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_oversampling, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+}
+
+//go:nosplit
+func (self class) IsUsingOversampling() bool { //gd:Viewport.is_using_oversampling
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_oversampling, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetOversamplingOverride(oversampling float64) { //gd:Viewport.set_oversampling_override
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_oversampling_override, 0|(gdextension.SizeFloat<<4), &struct{ oversampling float64 }{oversampling})
+}
+
+//go:nosplit
+func (self class) GetOversamplingOverride() float64 { //gd:Viewport.get_oversampling_override
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_oversampling_override, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
 /*
-Returns rendering statistics of the given type. See [RenderInfoType] and [RenderInfo] for options.
+Returns viewport oversampling factor.
+*/
+//go:nosplit
+func (self class) GetOversampling() float64 { //gd:Viewport.get_oversampling
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_oversampling, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns rendering statistics of the given type.
 */
 //go:nosplit
 func (self class) GetRenderInfo(atype RenderInfoType, info RenderInfo) int64 { //gd:Viewport.get_render_info
@@ -1398,6 +1476,24 @@ func (self class) GuiGetDragData() variant.Any { //gd:Viewport.gui_get_drag_data
 	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.gui_get_drag_data, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
+}
+
+/*
+Returns the drag data human-readable description.
+*/
+//go:nosplit
+func (self class) GuiGetDragDescription() String.Readable { //gd:Viewport.gui_get_drag_description
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.gui_get_drag_description, gdextension.SizeString, &struct{}{})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+/*
+Sets the drag data human-readable description.
+*/
+//go:nosplit
+func (self class) GuiSetDragDescription(description String.Readable) { //gd:Viewport.gui_set_drag_description
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.gui_set_drag_description, 0|(gdextension.SizeString<<4), &struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))})
 }
 
 /*
@@ -1995,15 +2091,15 @@ type Scaling3DMode int //gd:Viewport.Scaling3DMode
 const (
 	// Use bilinear scaling for the viewport's 3D buffer. The amount of scaling can be set using [Instance.Scaling3dScale]. Values less than 1.0 will result in undersampling while values greater than 1.0 will result in supersampling. A value of 1.0 disables scaling.
 	Scaling3dModeBilinear Scaling3DMode = 0
-	// Use AMD FidelityFX Super Resolution 1.0 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [Instance.Scaling3dScale]. Values less than 1.0 will be result in the viewport being upscaled using FSR. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 disables scaling.
+	// Use AMD FidelityFX Super Resolution 1.0 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [Instance.Scaling3dScale]. Values less than 1.0 will result in the viewport being upscaled using FSR. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 disables scaling.
 	Scaling3dModeFsr Scaling3DMode = 1
-	// Use AMD FidelityFX Super Resolution 2.2 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will be result in the viewport being upscaled using FSR2. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 will use FSR2 at native resolution as a TAA solution.
+	// Use AMD FidelityFX Super Resolution 2.2 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will result in the viewport being upscaled using FSR2. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 will use FSR2 at native resolution as a TAA solution.
 	Scaling3dModeFsr2 Scaling3DMode = 2
 	// Use the [MetalFX spatial upscaler] for the viewport's 3D buffer.
 	//
 	// The amount of scaling can be set using [Instance.Scaling3dScale].
 	//
-	// Values less than 1.0 will be result in the viewport being upscaled using MetalFX. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 disables scaling.
+	// Values less than 1.0 will result in the viewport being upscaled using MetalFX. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 disables scaling.
 	//
 	// More information: [MetalFX].
 	//
@@ -2016,7 +2112,7 @@ const (
 	//
 	// The amount of scaling can be set using [Instance.Scaling3dScale]. To determine the minimum input scale, use the [graphics.gd/classdb/RenderingDevice.Instance.LimitGet] method with [Renderingdevice.LimitMetalfxTemporalScalerMinScale].
 	//
-	// Values less than 1.0 will be result in the viewport being upscaled using MetalFX. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 will use MetalFX at native resolution as a TAA solution.
+	// Values less than 1.0 will result in the viewport being upscaled using MetalFX. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 will use MetalFX at native resolution as a TAA solution.
 	//
 	// More information: [MetalFX].
 	//
@@ -2068,8 +2164,10 @@ const (
 	ScreenSpaceAaDisabled ScreenSpaceAA = 0
 	// Use fast approximate antialiasing. FXAA is a popular screen-space antialiasing method, which is fast but will make the image look blurry, especially at lower resolutions. It can still work relatively well at large resolutions such as 1440p and 4K.
 	ScreenSpaceAaFxaa ScreenSpaceAA = 1
+	// Use subpixel morphological antialiasing. SMAA may produce clearer results than FXAA, but at a slightly higher performance cost.
+	ScreenSpaceAaSmaa ScreenSpaceAA = 2
 	// Represents the size of the [ScreenSpaceAA] enum.
-	ScreenSpaceAaMax ScreenSpaceAA = 2
+	ScreenSpaceAaMax ScreenSpaceAA = 3
 )
 
 type RenderInfo int //gd:Viewport.RenderInfo
@@ -2106,60 +2204,104 @@ const (
 	// Objects are displayed without light information.
 	DebugDrawUnshaded DebugDraw = 1
 	// Objects are displayed without textures and only with lighting information.
+	//
+	// Note: When using this debug draw mode, custom shaders are ignored since all materials in the scene temporarily use a debug material. This means the result from custom shader functions (such as vertex displacement) won't be visible anymore when using this debug draw mode.
 	DebugDrawLighting DebugDraw = 2
 	// Objects are displayed semi-transparent with additive blending so you can see where they are drawing over top of one another. A higher overdraw means you are wasting performance on drawing pixels that are being hidden behind others.
+	//
+	// Note: When using this debug draw mode, custom shaders are ignored since all materials in the scene temporarily use a debug material. This means the result from custom shader functions (such as vertex displacement) won't be visible anymore when using this debug draw mode.
 	DebugDrawOverdraw DebugDraw = 3
 	// Objects are displayed as wireframe models.
 	//
 	// Note: [graphics.gd/classdb/RenderingServer.SetDebugGenerateWireframes] must be called before loading any meshes for wireframes to be visible when using the Compatibility renderer.
 	DebugDrawWireframe DebugDraw = 4
 	// Objects are displayed without lighting information and their textures replaced by normal mapping.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	DebugDrawNormalBuffer DebugDraw = 5
-	// Objects are displayed with only the albedo value from [graphics.gd/classdb/VoxelGI]s.
+	// Objects are displayed with only the albedo value from [graphics.gd/classdb/VoxelGI]s. Requires at least one visible [graphics.gd/classdb/VoxelGI] node that has been baked to have a visible effect.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	DebugDrawVoxelGiAlbedo DebugDraw = 6
-	// Objects are displayed with only the lighting value from [graphics.gd/classdb/VoxelGI]s.
+	// Objects are displayed with only the lighting value from [graphics.gd/classdb/VoxelGI]s. Requires at least one visible [graphics.gd/classdb/VoxelGI] node that has been baked to have a visible effect.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	DebugDrawVoxelGiLighting DebugDraw = 7
-	// Objects are displayed with only the emission color from [graphics.gd/classdb/VoxelGI]s.
+	// Objects are displayed with only the emission color from [graphics.gd/classdb/VoxelGI]s. Requires at least one visible [graphics.gd/classdb/VoxelGI] node that has been baked to have a visible effect.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	DebugDrawVoxelGiEmission DebugDraw = 8
 	// Draws the shadow atlas that stores shadows from [graphics.gd/classdb/OmniLight3D]s and [graphics.gd/classdb/SpotLight3D]s in the upper left quadrant of the [graphics.gd/classdb/Viewport].
 	DebugDrawShadowAtlas DebugDraw = 9
 	// Draws the shadow atlas that stores shadows from [graphics.gd/classdb/DirectionalLight3D]s in the upper left quadrant of the [graphics.gd/classdb/Viewport].
 	DebugDrawDirectionalShadowAtlas DebugDraw = 10
 	// Draws the scene luminance buffer (if available) in the upper left quadrant of the [graphics.gd/classdb/Viewport].
+	//
+	// Note: Only supported when using the Forward+ or Mobile rendering methods.
 	DebugDrawSceneLuminance DebugDraw = 11
 	// Draws the screen-space ambient occlusion texture instead of the scene so that you can clearly see how it is affecting objects. In order for this display mode to work, you must have [graphics.gd/classdb/Environment.Instance.SsaoEnabled] set in your [graphics.gd/classdb/WorldEnvironment].
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	DebugDrawSsao DebugDraw = 12
 	// Draws the screen-space indirect lighting texture instead of the scene so that you can clearly see how it is affecting objects. In order for this display mode to work, you must have [graphics.gd/classdb/Environment.Instance.SsilEnabled] set in your [graphics.gd/classdb/WorldEnvironment].
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	DebugDrawSsil DebugDraw = 13
-	// Colors each PSSM split for the [graphics.gd/classdb/DirectionalLight3D]s in the scene a different color so you can see where the splits are. In order, they will be colored red, green, blue, and yellow.
+	// Colors each PSSM split for the [graphics.gd/classdb/DirectionalLight3D]s in the scene a different color so you can see where the splits are. In order (from closest to furthest from the camera), they are colored red, green, blue, and yellow.
+	//
+	// Note: When using this debug draw mode, custom shaders are ignored since all materials in the scene temporarily use a debug material. This means the result from custom shader functions (such as vertex displacement) won't be visible anymore when using this debug draw mode.
+	//
+	// Note: Only supported when using the Forward+ or Mobile rendering methods.
 	DebugDrawPssmSplits DebugDraw = 14
 	// Draws the decal atlas used by [graphics.gd/classdb/Decal]s and light projector textures in the upper left quadrant of the [graphics.gd/classdb/Viewport].
+	//
+	// Note: Only supported when using the Forward+ or Mobile rendering methods.
 	DebugDrawDecalAtlas DebugDraw = 15
 	// Draws the cascades used to render signed distance field global illumination (SDFGI).
 	//
-	// Does nothing if the current environment's [graphics.gd/classdb/Environment.Instance.SdfgiEnabled] is false or SDFGI is not supported on the platform.
+	// Does nothing if the current environment's [graphics.gd/classdb/Environment.Instance.SdfgiEnabled] is false.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	DebugDrawSdfgi DebugDraw = 16
 	// Draws the probes used for signed distance field global illumination (SDFGI).
 	//
-	// Does nothing if the current environment's [graphics.gd/classdb/Environment.Instance.SdfgiEnabled] is false or SDFGI is not supported on the platform.
+	// Does nothing if the current environment's [graphics.gd/classdb/Environment.Instance.SdfgiEnabled] is false.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	DebugDrawSdfgiProbes DebugDraw = 17
-	// Draws the buffer used for global illumination (GI).
+	// Draws the buffer used for global illumination from [graphics.gd/classdb/VoxelGI] or SDFGI. Requires [graphics.gd/classdb/VoxelGI] (at least one visible baked VoxelGI node) or SDFGI ([graphics.gd/classdb/Environment.Instance.SdfgiEnabled]) to be enabled to have a visible effect.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	DebugDrawGiBuffer DebugDraw = 18
-	// Draws all of the objects at their highest polycount, without low level of detail (LOD).
+	// Draws all of the objects at their highest polycount regardless of their distance from the camera. No low level of detail (LOD) is applied.
 	DebugDrawDisableLod DebugDraw = 19
 	// Draws the cluster used by [graphics.gd/classdb/OmniLight3D] nodes to optimize light rendering.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	DebugDrawClusterOmniLights DebugDraw = 20
 	// Draws the cluster used by [graphics.gd/classdb/SpotLight3D] nodes to optimize light rendering.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	DebugDrawClusterSpotLights DebugDraw = 21
 	// Draws the cluster used by [graphics.gd/classdb/Decal] nodes to optimize decal rendering.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	DebugDrawClusterDecals DebugDraw = 22
-	// Draws the cluster used by [graphics.gd/classdb/ReflectionProbe] nodes to optimize decal rendering.
+	// Draws the cluster used by [graphics.gd/classdb/ReflectionProbe] nodes to optimize reflection probes.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	DebugDrawClusterReflectionProbes DebugDraw = 23
 	// Draws the buffer used for occlusion culling.
+	//
+	// Note: Only supported when using the Forward+ or Mobile rendering methods.
 	DebugDrawOccluders DebugDraw = 24
 	// Draws vector lines over the viewport to indicate the movement of pixels between frames.
+	//
+	// Note: Only supported when using the Forward+ rendering method.
 	DebugDrawMotionVectors DebugDraw = 25
-	// Draws the internal resolution buffer of the scene before post-processing is applied.
+	// Draws the internal resolution buffer of the scene in linear colorspace before tonemapping or post-processing is applied.
+	//
+	// Note: Only supported when using the Forward+ or Mobile rendering methods.
 	DebugDrawInternalBuffer DebugDraw = 26
 )
 

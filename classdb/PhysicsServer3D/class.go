@@ -221,6 +221,8 @@ var methods struct {
 	soft_body_get_total_mass                       gdextension.MethodForClass `hash:"866169185"`
 	soft_body_set_linear_stiffness                 gdextension.MethodForClass `hash:"1794382983"`
 	soft_body_get_linear_stiffness                 gdextension.MethodForClass `hash:"866169185"`
+	soft_body_set_shrinking_factor                 gdextension.MethodForClass `hash:"1794382983"`
+	soft_body_get_shrinking_factor                 gdextension.MethodForClass `hash:"866169185"`
 	soft_body_set_pressure_coefficient             gdextension.MethodForClass `hash:"1794382983"`
 	soft_body_get_pressure_coefficient             gdextension.MethodForClass `hash:"866169185"`
 	soft_body_set_damping_coefficient              gdextension.MethodForClass `hash:"1794382983"`
@@ -232,6 +234,10 @@ var methods struct {
 	soft_body_remove_all_pinned_points             gdextension.MethodForClass `hash:"2722037293"`
 	soft_body_pin_point                            gdextension.MethodForClass `hash:"2658558584"`
 	soft_body_is_point_pinned                      gdextension.MethodForClass `hash:"3120086654"`
+	soft_body_apply_point_impulse                  gdextension.MethodForClass `hash:"831953689"`
+	soft_body_apply_point_force                    gdextension.MethodForClass `hash:"831953689"`
+	soft_body_apply_central_impulse                gdextension.MethodForClass `hash:"3227306858"`
+	soft_body_apply_central_force                  gdextension.MethodForClass `hash:"3227306858"`
 	joint_create                                   gdextension.MethodForClass `hash:"529393457"`
 	joint_clear                                    gdextension.MethodForClass `hash:"2722037293"`
 	joint_make_pin                                 gdextension.MethodForClass `hash:"4280171926"`
@@ -345,7 +351,7 @@ func ShapeSetMargin(shape RID.Shape3D, margin Float.X) { //gd:PhysicsServer3D.sh
 }
 
 /*
-Returns the type of shape (see [ShapeType] constants).
+Returns the type of shape.
 */
 func ShapeGetType(shape RID.Shape3D) ShapeType { //gd:PhysicsServer3D.shape_get_type
 	once.Do(singleton)
@@ -679,7 +685,7 @@ func BodyGetSpace(body RID.Body3D) RID.Space3D { //gd:PhysicsServer3D.body_get_s
 }
 
 /*
-Sets the body mode, from one of the [BodyMode] constants.
+Sets the body mode.
 */
 func BodySetMode(body RID.Body3D, mode BodyMode) { //gd:PhysicsServer3D.body_set_mode
 	once.Do(singleton)
@@ -877,7 +883,7 @@ func BodyResetMassProperties(body RID.Body3D) { //gd:PhysicsServer3D.body_reset_
 }
 
 /*
-Sets a body state (see [BodyState] constants).
+Sets a body state.
 */
 func BodySetState(body RID.Body3D, state BodyState, value any) { //gd:PhysicsServer3D.body_set_state
 	once.Do(singleton)
@@ -1301,7 +1307,7 @@ func SoftBodyRemoveCollisionException(body RID.SoftBody3D, body_b RID.Body3D) { 
 }
 
 /*
-Sets the given body state for the given body (see [BodyState] constants).
+Sets the given body state for the given body.
 
 Note: Godot's default physics implementation does not support [BodyStateLinearVelocity], [BodyStateAngularVelocity], [BodyStateSleeping], or [BodyStateCanSleep].
 */
@@ -1311,7 +1317,7 @@ func SoftBodySetState(body RID.SoftBody3D, state BodyState, v any) { //gd:Physic
 }
 
 /*
-Returns the given soft body state (see [BodyState] constants).
+Returns the given soft body state.
 
 Note: Godot's default physics implementation does not support [BodyStateLinearVelocity], [BodyStateAngularVelocity], [BodyStateSleeping], or [BodyStateCanSleep].
 */
@@ -1382,6 +1388,22 @@ Returns the linear stiffness of the given soft body.
 func SoftBodyGetLinearStiffness(body RID.SoftBody3D) Float.X { //gd:PhysicsServer3D.soft_body_get_linear_stiffness
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().SoftBodyGetLinearStiffness(RID.Any(body))))
+}
+
+/*
+Sets the shrinking factor of the given soft body.
+*/
+func SoftBodySetShrinkingFactor(body RID.Body2D, shrinking_factor Float.X) { //gd:PhysicsServer3D.soft_body_set_shrinking_factor
+	once.Do(singleton)
+	Advanced().SoftBodySetShrinkingFactor(RID.Any(body), float64(shrinking_factor))
+}
+
+/*
+Returns the shrinking factor of the given soft body.
+*/
+func SoftBodyGetShrinkingFactor(body RID.Body2D) Float.X { //gd:PhysicsServer3D.soft_body_get_shrinking_factor
+	once.Do(singleton)
+	return Float.X(Float.X(Advanced().SoftBodyGetShrinkingFactor(RID.Any(body))))
 }
 
 /*
@@ -1475,6 +1497,42 @@ func SoftBodyIsPointPinned(body RID.SoftBody3D, point_index int) bool { //gd:Phy
 	once.Do(singleton)
 	return bool(Advanced().SoftBodyIsPointPinned(RID.Any(body), int64(point_index)))
 }
+
+/*
+Applies an impulse to a point.
+
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+*/
+func SoftBodyApplyPointImpulse(body RID.Body2D, point_index int, impulse Vector3.XYZ) { //gd:PhysicsServer3D.soft_body_apply_point_impulse
+	once.Do(singleton)
+	Advanced().SoftBodyApplyPointImpulse(RID.Any(body), int64(point_index), Vector3.XYZ(impulse))
+}
+
+/*
+Applies a force to a point. A force is time dependent and meant to be applied every physics update.
+*/
+func SoftBodyApplyPointForce(body RID.Body2D, point_index int, force Vector3.XYZ) { //gd:PhysicsServer3D.soft_body_apply_point_force
+	once.Do(singleton)
+	Advanced().SoftBodyApplyPointForce(RID.Any(body), int64(point_index), Vector3.XYZ(force))
+}
+
+/*
+Distributes and applies an impulse to all points.
+
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+*/
+func SoftBodyApplyCentralImpulse(body RID.Body2D, impulse Vector3.XYZ) { //gd:PhysicsServer3D.soft_body_apply_central_impulse
+	once.Do(singleton)
+	Advanced().SoftBodyApplyCentralImpulse(RID.Any(body), Vector3.XYZ(impulse))
+}
+
+/*
+Distributes and applies a force to all points. A force is time dependent and meant to be applied every physics update.
+*/
+func SoftBodyApplyCentralForce(body RID.Body2D, force Vector3.XYZ) { //gd:PhysicsServer3D.soft_body_apply_central_force
+	once.Do(singleton)
+	Advanced().SoftBodyApplyCentralForce(RID.Any(body), Vector3.XYZ(force))
+}
 func JointCreate() RID.Joint3D { //gd:PhysicsServer3D.joint_create
 	once.Do(singleton)
 	return RID.Joint3D(RID.Joint3D(Advanced().JointCreate()))
@@ -1489,7 +1547,7 @@ func JointMakePin(joint RID.Joint3D, body_A RID.Body3D, local_A Vector3.XYZ, bod
 }
 
 /*
-Sets a pin_joint parameter (see [PinJointParam] constants).
+Sets a pin joint parameter.
 */
 func PinJointSetParam(joint RID.Joint3D, param PinJointParam, value Float.X) { //gd:PhysicsServer3D.pin_joint_set_param
 	once.Do(singleton)
@@ -1497,7 +1555,7 @@ func PinJointSetParam(joint RID.Joint3D, param PinJointParam, value Float.X) { /
 }
 
 /*
-Gets a pin_joint parameter (see [PinJointParam] constants).
+Gets a pin joint parameter.
 */
 func PinJointGetParam(joint RID.Joint3D, param PinJointParam) Float.X { //gd:PhysicsServer3D.pin_joint_get_param
 	once.Do(singleton)
@@ -1541,7 +1599,7 @@ func JointMakeHinge(joint RID.Joint3D, body_A RID.Body3D, hinge_A Transform3D.Ba
 }
 
 /*
-Sets a hinge_joint parameter (see [HingeJointParam] constants).
+Sets a hinge joint parameter.
 */
 func HingeJointSetParam(joint RID.Joint3D, param HingeJointParam, value Float.X) { //gd:PhysicsServer3D.hinge_joint_set_param
 	once.Do(singleton)
@@ -1549,7 +1607,7 @@ func HingeJointSetParam(joint RID.Joint3D, param HingeJointParam, value Float.X)
 }
 
 /*
-Gets a hinge_joint parameter (see [HingeJointParam]).
+Gets a hinge joint parameter.
 */
 func HingeJointGetParam(joint RID.Joint3D, param HingeJointParam) Float.X { //gd:PhysicsServer3D.hinge_joint_get_param
 	once.Do(singleton)
@@ -1557,7 +1615,7 @@ func HingeJointGetParam(joint RID.Joint3D, param HingeJointParam) Float.X { //gd
 }
 
 /*
-Sets a hinge_joint flag (see [HingeJointFlag] constants).
+Sets a hinge joint flag.
 */
 func HingeJointSetFlag(joint RID.Joint3D, flag HingeJointFlag, enabled bool) { //gd:PhysicsServer3D.hinge_joint_set_flag
 	once.Do(singleton)
@@ -1565,7 +1623,7 @@ func HingeJointSetFlag(joint RID.Joint3D, flag HingeJointFlag, enabled bool) { /
 }
 
 /*
-Gets a hinge_joint flag (see [HingeJointFlag] constants).
+Gets a hinge joint flag.
 */
 func HingeJointGetFlag(joint RID.Joint3D, flag HingeJointFlag) bool { //gd:PhysicsServer3D.hinge_joint_get_flag
 	once.Do(singleton)
@@ -1577,7 +1635,7 @@ func JointMakeSlider(joint RID.Joint3D, body_A RID.Body3D, local_ref_A Transform
 }
 
 /*
-Gets a slider_joint parameter (see [SliderJointParam] constants).
+Gets a slider joint parameter.
 */
 func SliderJointSetParam(joint RID.Joint3D, param SliderJointParam, value Float.X) { //gd:PhysicsServer3D.slider_joint_set_param
 	once.Do(singleton)
@@ -1585,7 +1643,7 @@ func SliderJointSetParam(joint RID.Joint3D, param SliderJointParam, value Float.
 }
 
 /*
-Gets a slider_joint parameter (see [SliderJointParam] constants).
+Gets a slider joint parameter.
 */
 func SliderJointGetParam(joint RID.Joint3D, param SliderJointParam) Float.X { //gd:PhysicsServer3D.slider_joint_get_param
 	once.Do(singleton)
@@ -1597,7 +1655,7 @@ func JointMakeConeTwist(joint RID.Joint3D, body_A RID.Body3D, local_ref_A Transf
 }
 
 /*
-Sets a cone_twist_joint parameter (see [ConeTwistJointParam] constants).
+Sets a cone twist joint parameter.
 */
 func ConeTwistJointSetParam(joint RID.Joint3D, param ConeTwistJointParam, value Float.X) { //gd:PhysicsServer3D.cone_twist_joint_set_param
 	once.Do(singleton)
@@ -1605,7 +1663,7 @@ func ConeTwistJointSetParam(joint RID.Joint3D, param ConeTwistJointParam, value 
 }
 
 /*
-Gets a cone_twist_joint parameter (see [ConeTwistJointParam] constants).
+Gets a cone twist joint parameter.
 */
 func ConeTwistJointGetParam(joint RID.Joint3D, param ConeTwistJointParam) Float.X { //gd:PhysicsServer3D.cone_twist_joint_get_param
 	once.Do(singleton)
@@ -1661,7 +1719,7 @@ func JointMakeGeneric6dof(joint RID.Joint3D, body_A RID.Body3D, local_ref_A Tran
 }
 
 /*
-Sets the value of a given generic 6DOF joint parameter. See [G6DOFJointAxisParam] for the list of available parameters.
+Sets the value of a given generic 6DOF joint parameter.
 */
 func Generic6dofJointSetParam(joint RID.Joint3D, axis Vector3.Axis, param G6DOFJointAxisParam, value Float.X) { //gd:PhysicsServer3D.generic_6dof_joint_set_param
 	once.Do(singleton)
@@ -1669,7 +1727,7 @@ func Generic6dofJointSetParam(joint RID.Joint3D, axis Vector3.Axis, param G6DOFJ
 }
 
 /*
-Returns the value of a generic 6DOF joint parameter. See [G6DOFJointAxisParam] for the list of available parameters.
+Returns the value of a generic 6DOF joint parameter.
 */
 func Generic6dofJointGetParam(joint RID.Joint3D, axis Vector3.Axis, param G6DOFJointAxisParam) Float.X { //gd:PhysicsServer3D.generic_6dof_joint_get_param
 	once.Do(singleton)
@@ -1677,7 +1735,7 @@ func Generic6dofJointGetParam(joint RID.Joint3D, axis Vector3.Axis, param G6DOFJ
 }
 
 /*
-Sets the value of a given generic 6DOF joint flag. See [G6DOFJointAxisFlag] for the list of available flags.
+Sets the value of a given generic 6DOF joint flag.
 */
 func Generic6dofJointSetFlag(joint RID.Joint3D, axis Vector3.Axis, flag G6DOFJointAxisFlag, enable bool) { //gd:PhysicsServer3D.generic_6dof_joint_set_flag
 	once.Do(singleton)
@@ -1685,7 +1743,7 @@ func Generic6dofJointSetFlag(joint RID.Joint3D, axis Vector3.Axis, flag G6DOFJoi
 }
 
 /*
-Returns the value of a generic 6DOF joint flag. See [G6DOFJointAxisFlag] for the list of available flags.
+Returns the value of a generic 6DOF joint flag.
 */
 func Generic6dofJointGetFlag(joint RID.Joint3D, axis Vector3.Axis, flag G6DOFJointAxisFlag) bool { //gd:PhysicsServer3D.generic_6dof_joint_get_flag
 	once.Do(singleton)
@@ -1709,7 +1767,7 @@ func SetActive(active bool) { //gd:PhysicsServer3D.set_active
 }
 
 /*
-Returns information about the current state of the 3D physics engine. See [ProcessInfo] for a list of available states.
+Returns the value of a physics engine state specified by 'process_info'.
 */
 func GetProcessInfo(process_info ProcessInfo) int { //gd:PhysicsServer3D.get_process_info
 	once.Do(singleton)
@@ -1834,7 +1892,7 @@ func (self class) ShapeSetMargin(shape RID.Any, margin float64) { //gd:PhysicsSe
 }
 
 /*
-Returns the type of shape (see [ShapeType] constants).
+Returns the type of shape.
 */
 //go:nosplit
 func (self class) ShapeGetType(shape RID.Any) ShapeType { //gd:PhysicsServer3D.shape_get_type
@@ -2273,7 +2331,7 @@ func (self class) BodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer3D.body
 }
 
 /*
-Sets the body mode, from one of the [BodyMode] constants.
+Sets the body mode.
 */
 //go:nosplit
 func (self class) BodySetMode(body RID.Any, mode BodyMode) { //gd:PhysicsServer3D.body_set_mode
@@ -2535,7 +2593,7 @@ func (self class) BodyResetMassProperties(body RID.Any) { //gd:PhysicsServer3D.b
 }
 
 /*
-Sets a body state (see [BodyState] constants).
+Sets a body state.
 */
 //go:nosplit
 func (self class) BodySetState(body RID.Any, state BodyState, value variant.Any) { //gd:PhysicsServer3D.body_set_state
@@ -3029,7 +3087,7 @@ func (self class) SoftBodyRemoveCollisionException(body RID.Any, body_b RID.Any)
 }
 
 /*
-Sets the given body state for the given body (see [BodyState] constants).
+Sets the given body state for the given body.
 
 Note: Godot's default physics implementation does not support [BodyStateLinearVelocity], [BodyStateAngularVelocity], [BodyStateSleeping], or [BodyStateCanSleep].
 */
@@ -3043,7 +3101,7 @@ func (self class) SoftBodySetState(body RID.Any, state BodyState, v variant.Any)
 }
 
 /*
-Returns the given soft body state (see [BodyState] constants).
+Returns the given soft body state.
 
 Note: Godot's default physics implementation does not support [BodyStateLinearVelocity], [BodyStateAngularVelocity], [BodyStateSleeping], or [BodyStateCanSleep].
 */
@@ -3138,6 +3196,27 @@ Returns the linear stiffness of the given soft body.
 //go:nosplit
 func (self class) SoftBodyGetLinearStiffness(body RID.Any) float64 { //gd:PhysicsServer3D.soft_body_get_linear_stiffness
 	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_linear_stiffness, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Sets the shrinking factor of the given soft body.
+*/
+//go:nosplit
+func (self class) SoftBodySetShrinkingFactor(body RID.Any, shrinking_factor float64) { //gd:PhysicsServer3D.soft_body_set_shrinking_factor
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_set_shrinking_factor, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+		body             RID.Any
+		shrinking_factor float64
+	}{body, shrinking_factor})
+}
+
+/*
+Returns the shrinking factor of the given soft body.
+*/
+//go:nosplit
+func (self class) SoftBodyGetShrinkingFactor(body RID.Any) float64 { //gd:PhysicsServer3D.soft_body_get_shrinking_factor
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.soft_body_get_shrinking_factor, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
@@ -3267,6 +3346,56 @@ func (self class) SoftBodyIsPointPinned(body RID.Any, point_index int64) bool { 
 	return ret
 }
 
+/*
+Applies an impulse to a point.
+
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+*/
+//go:nosplit
+func (self class) SoftBodyApplyPointImpulse(body RID.Any, point_index int64, impulse Vector3.XYZ) { //gd:PhysicsServer3D.soft_body_apply_point_impulse
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_apply_point_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector3<<12), &struct {
+		body        RID.Any
+		point_index int64
+		impulse     Vector3.XYZ
+	}{body, point_index, impulse})
+}
+
+/*
+Applies a force to a point. A force is time dependent and meant to be applied every physics update.
+*/
+//go:nosplit
+func (self class) SoftBodyApplyPointForce(body RID.Any, point_index int64, force Vector3.XYZ) { //gd:PhysicsServer3D.soft_body_apply_point_force
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_apply_point_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector3<<12), &struct {
+		body        RID.Any
+		point_index int64
+		force       Vector3.XYZ
+	}{body, point_index, force})
+}
+
+/*
+Distributes and applies an impulse to all points.
+
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+*/
+//go:nosplit
+func (self class) SoftBodyApplyCentralImpulse(body RID.Any, impulse Vector3.XYZ) { //gd:PhysicsServer3D.soft_body_apply_central_impulse
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_apply_central_impulse, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
+		body    RID.Any
+		impulse Vector3.XYZ
+	}{body, impulse})
+}
+
+/*
+Distributes and applies a force to all points. A force is time dependent and meant to be applied every physics update.
+*/
+//go:nosplit
+func (self class) SoftBodyApplyCentralForce(body RID.Any, force Vector3.XYZ) { //gd:PhysicsServer3D.soft_body_apply_central_force
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.soft_body_apply_central_force, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector3<<8), &struct {
+		body  RID.Any
+		force Vector3.XYZ
+	}{body, force})
+}
+
 //go:nosplit
 func (self class) JointCreate() RID.Any { //gd:PhysicsServer3D.joint_create
 	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.joint_create, gdextension.SizeRID, &struct{}{})
@@ -3291,7 +3420,7 @@ func (self class) JointMakePin(joint RID.Any, body_A RID.Any, local_A Vector3.XY
 }
 
 /*
-Sets a pin_joint parameter (see [PinJointParam] constants).
+Sets a pin joint parameter.
 */
 //go:nosplit
 func (self class) PinJointSetParam(joint RID.Any, param PinJointParam, value float64) { //gd:PhysicsServer3D.pin_joint_set_param
@@ -3303,7 +3432,7 @@ func (self class) PinJointSetParam(joint RID.Any, param PinJointParam, value flo
 }
 
 /*
-Gets a pin_joint parameter (see [PinJointParam] constants).
+Gets a pin joint parameter.
 */
 //go:nosplit
 func (self class) PinJointGetParam(joint RID.Any, param PinJointParam) float64 { //gd:PhysicsServer3D.pin_joint_get_param
@@ -3369,7 +3498,7 @@ func (self class) JointMakeHinge(joint RID.Any, body_A RID.Any, hinge_A Transfor
 }
 
 /*
-Sets a hinge_joint parameter (see [HingeJointParam] constants).
+Sets a hinge joint parameter.
 */
 //go:nosplit
 func (self class) HingeJointSetParam(joint RID.Any, param HingeJointParam, value float64) { //gd:PhysicsServer3D.hinge_joint_set_param
@@ -3381,7 +3510,7 @@ func (self class) HingeJointSetParam(joint RID.Any, param HingeJointParam, value
 }
 
 /*
-Gets a hinge_joint parameter (see [HingeJointParam]).
+Gets a hinge joint parameter.
 */
 //go:nosplit
 func (self class) HingeJointGetParam(joint RID.Any, param HingeJointParam) float64 { //gd:PhysicsServer3D.hinge_joint_get_param
@@ -3394,7 +3523,7 @@ func (self class) HingeJointGetParam(joint RID.Any, param HingeJointParam) float
 }
 
 /*
-Sets a hinge_joint flag (see [HingeJointFlag] constants).
+Sets a hinge joint flag.
 */
 //go:nosplit
 func (self class) HingeJointSetFlag(joint RID.Any, flag HingeJointFlag, enabled bool) { //gd:PhysicsServer3D.hinge_joint_set_flag
@@ -3406,7 +3535,7 @@ func (self class) HingeJointSetFlag(joint RID.Any, flag HingeJointFlag, enabled 
 }
 
 /*
-Gets a hinge_joint flag (see [HingeJointFlag] constants).
+Gets a hinge joint flag.
 */
 //go:nosplit
 func (self class) HingeJointGetFlag(joint RID.Any, flag HingeJointFlag) bool { //gd:PhysicsServer3D.hinge_joint_get_flag
@@ -3430,7 +3559,7 @@ func (self class) JointMakeSlider(joint RID.Any, body_A RID.Any, local_ref_A Tra
 }
 
 /*
-Gets a slider_joint parameter (see [SliderJointParam] constants).
+Gets a slider joint parameter.
 */
 //go:nosplit
 func (self class) SliderJointSetParam(joint RID.Any, param SliderJointParam, value float64) { //gd:PhysicsServer3D.slider_joint_set_param
@@ -3442,7 +3571,7 @@ func (self class) SliderJointSetParam(joint RID.Any, param SliderJointParam, val
 }
 
 /*
-Gets a slider_joint parameter (see [SliderJointParam] constants).
+Gets a slider joint parameter.
 */
 //go:nosplit
 func (self class) SliderJointGetParam(joint RID.Any, param SliderJointParam) float64 { //gd:PhysicsServer3D.slider_joint_get_param
@@ -3466,7 +3595,7 @@ func (self class) JointMakeConeTwist(joint RID.Any, body_A RID.Any, local_ref_A 
 }
 
 /*
-Sets a cone_twist_joint parameter (see [ConeTwistJointParam] constants).
+Sets a cone twist joint parameter.
 */
 //go:nosplit
 func (self class) ConeTwistJointSetParam(joint RID.Any, param ConeTwistJointParam, value float64) { //gd:PhysicsServer3D.cone_twist_joint_set_param
@@ -3478,7 +3607,7 @@ func (self class) ConeTwistJointSetParam(joint RID.Any, param ConeTwistJointPara
 }
 
 /*
-Gets a cone_twist_joint parameter (see [ConeTwistJointParam] constants).
+Gets a cone twist joint parameter.
 */
 //go:nosplit
 func (self class) ConeTwistJointGetParam(joint RID.Any, param ConeTwistJointParam) float64 { //gd:PhysicsServer3D.cone_twist_joint_get_param
@@ -3557,7 +3686,7 @@ func (self class) JointMakeGeneric6dof(joint RID.Any, body_A RID.Any, local_ref_
 }
 
 /*
-Sets the value of a given generic 6DOF joint parameter. See [G6DOFJointAxisParam] for the list of available parameters.
+Sets the value of a given generic 6DOF joint parameter.
 */
 //go:nosplit
 func (self class) Generic6dofJointSetParam(joint RID.Any, axis Vector3.Axis, param G6DOFJointAxisParam, value float64) { //gd:PhysicsServer3D.generic_6dof_joint_set_param
@@ -3570,7 +3699,7 @@ func (self class) Generic6dofJointSetParam(joint RID.Any, axis Vector3.Axis, par
 }
 
 /*
-Returns the value of a generic 6DOF joint parameter. See [G6DOFJointAxisParam] for the list of available parameters.
+Returns the value of a generic 6DOF joint parameter.
 */
 //go:nosplit
 func (self class) Generic6dofJointGetParam(joint RID.Any, axis Vector3.Axis, param G6DOFJointAxisParam) float64 { //gd:PhysicsServer3D.generic_6dof_joint_get_param
@@ -3584,7 +3713,7 @@ func (self class) Generic6dofJointGetParam(joint RID.Any, axis Vector3.Axis, par
 }
 
 /*
-Sets the value of a given generic 6DOF joint flag. See [G6DOFJointAxisFlag] for the list of available flags.
+Sets the value of a given generic 6DOF joint flag.
 */
 //go:nosplit
 func (self class) Generic6dofJointSetFlag(joint RID.Any, axis Vector3.Axis, flag G6DOFJointAxisFlag, enable bool) { //gd:PhysicsServer3D.generic_6dof_joint_set_flag
@@ -3597,7 +3726,7 @@ func (self class) Generic6dofJointSetFlag(joint RID.Any, axis Vector3.Axis, flag
 }
 
 /*
-Returns the value of a generic 6DOF joint flag. See [G6DOFJointAxisFlag] for the list of available flags.
+Returns the value of a generic 6DOF joint flag.
 */
 //go:nosplit
 func (self class) Generic6dofJointGetFlag(joint RID.Any, axis Vector3.Axis, flag G6DOFJointAxisFlag) bool { //gd:PhysicsServer3D.generic_6dof_joint_get_flag
@@ -3627,7 +3756,7 @@ func (self class) SetActive(active bool) { //gd:PhysicsServer3D.set_active
 }
 
 /*
-Returns information about the current state of the 3D physics engine. See [ProcessInfo] for a list of available states.
+Returns the value of a physics engine state specified by 'process_info'.
 */
 //go:nosplit
 func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:PhysicsServer3D.get_process_info

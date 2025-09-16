@@ -158,7 +158,7 @@ func (self Instance) GetPacket() []byte { //gd:PacketPeer.get_packet
 Sends a raw packet.
 */
 func (self Instance) PutPacket(buffer []byte) error { //gd:PacketPeer.put_packet
-	return error(gd.ToError(Advanced(self).PutPacket(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).PutPacket(Packed.BytesFrom(buffer...))))
 }
 
 /*
@@ -261,7 +261,7 @@ Gets a raw packet.
 //go:nosplit
 func (self class) GetPacket() Packed.Bytes { //gd:PacketPeer.get_packet
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_packet, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -270,7 +270,7 @@ Sends a raw packet.
 */
 //go:nosplit
 func (self class) PutPacket(buffer Packed.Bytes) Error.Code { //gd:PacketPeer.put_packet
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.put_packet, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))})
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.put_packet, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

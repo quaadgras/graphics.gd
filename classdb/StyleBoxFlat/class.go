@@ -475,7 +475,7 @@ func (self class) SetCornerRadiusAll(radius int64) { //gd:StyleBoxFlat.set_corne
 }
 
 /*
-Sets the corner radius to 'radius' pixels for the given 'corner'. See [Corner] for possible values.
+Sets the corner radius to 'radius' pixels for the given 'corner'.
 */
 //go:nosplit
 func (self class) SetCornerRadius(corner Rect2.Corner, radius int64) { //gd:StyleBoxFlat.set_corner_radius
@@ -486,7 +486,7 @@ func (self class) SetCornerRadius(corner Rect2.Corner, radius int64) { //gd:Styl
 }
 
 /*
-Returns the given 'corner''s radius. See [Corner] for possible values.
+Returns the given 'corner''s radius.
 */
 //go:nosplit
 func (self class) GetCornerRadius(corner Rect2.Corner) int64 { //gd:StyleBoxFlat.get_corner_radius

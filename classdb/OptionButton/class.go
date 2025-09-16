@@ -5,7 +5,7 @@
 
 See also [graphics.gd/classdb/BaseButton] which contains common properties and methods associated with this node.
 
-Note: The ID values used for items are limited to 32 bits, not full 64 bits of int. This has a range of -2^32 to 2^32 - 1, i.e. -2147483648 to 2147483647.
+Note: The IDs used for items are limited to signed 32-bit integers, not the full 64 bits of int. These have a range of -2^31 to 2^31 - 1, that is, -2147483648 to 2147483647.
 
 Note: The [graphics.gd/classdb/Button.Instance.Text] and [graphics.gd/classdb/Button.Instance.Icon] properties are set automatically based on the selected item. They shouldn't be changed manually.
 */
@@ -86,40 +86,42 @@ type Instance [1]gdclass.OptionButton
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	add_item                gdextension.MethodForClass `hash:"2697778442"`
-	add_icon_item           gdextension.MethodForClass `hash:"3781678508"`
-	set_item_text           gdextension.MethodForClass `hash:"501894301"`
-	set_item_icon           gdextension.MethodForClass `hash:"666127730"`
-	set_item_disabled       gdextension.MethodForClass `hash:"300928843"`
-	set_item_id             gdextension.MethodForClass `hash:"3937882851"`
-	set_item_metadata       gdextension.MethodForClass `hash:"2152698145"`
-	set_item_tooltip        gdextension.MethodForClass `hash:"501894301"`
-	get_item_text           gdextension.MethodForClass `hash:"844755477"`
-	get_item_icon           gdextension.MethodForClass `hash:"3536238170"`
-	get_item_id             gdextension.MethodForClass `hash:"923996154"`
-	get_item_index          gdextension.MethodForClass `hash:"923996154"`
-	get_item_metadata       gdextension.MethodForClass `hash:"4227898402"`
-	get_item_tooltip        gdextension.MethodForClass `hash:"844755477"`
-	is_item_disabled        gdextension.MethodForClass `hash:"1116898809"`
-	is_item_separator       gdextension.MethodForClass `hash:"1116898809"`
-	add_separator           gdextension.MethodForClass `hash:"3005725572"`
-	clear                   gdextension.MethodForClass `hash:"3218959716"`
-	select_                 gdextension.MethodForClass `hash:"1286410249"`
-	get_selected            gdextension.MethodForClass `hash:"3905245786"`
-	get_selected_id         gdextension.MethodForClass `hash:"3905245786"`
-	get_selected_metadata   gdextension.MethodForClass `hash:"1214101251"`
-	remove_item             gdextension.MethodForClass `hash:"1286410249"`
-	get_popup               gdextension.MethodForClass `hash:"229722558"`
-	show_popup              gdextension.MethodForClass `hash:"3218959716"`
-	set_item_count          gdextension.MethodForClass `hash:"1286410249"`
-	get_item_count          gdextension.MethodForClass `hash:"3905245786"`
-	has_selectable_items    gdextension.MethodForClass `hash:"36873697"`
-	get_selectable_item     gdextension.MethodForClass `hash:"894402480"`
-	set_fit_to_longest_item gdextension.MethodForClass `hash:"2586408642"`
-	is_fit_to_longest_item  gdextension.MethodForClass `hash:"36873697"`
-	set_allow_reselect      gdextension.MethodForClass `hash:"2586408642"`
-	get_allow_reselect      gdextension.MethodForClass `hash:"36873697"`
-	set_disable_shortcuts   gdextension.MethodForClass `hash:"2586408642"`
+	add_item                     gdextension.MethodForClass `hash:"2697778442"`
+	add_icon_item                gdextension.MethodForClass `hash:"3781678508"`
+	set_item_text                gdextension.MethodForClass `hash:"501894301"`
+	set_item_icon                gdextension.MethodForClass `hash:"666127730"`
+	set_item_disabled            gdextension.MethodForClass `hash:"300928843"`
+	set_item_id                  gdextension.MethodForClass `hash:"3937882851"`
+	set_item_metadata            gdextension.MethodForClass `hash:"2152698145"`
+	set_item_tooltip             gdextension.MethodForClass `hash:"501894301"`
+	set_item_auto_translate_mode gdextension.MethodForClass `hash:"287402019"`
+	get_item_text                gdextension.MethodForClass `hash:"844755477"`
+	get_item_icon                gdextension.MethodForClass `hash:"3536238170"`
+	get_item_id                  gdextension.MethodForClass `hash:"923996154"`
+	get_item_index               gdextension.MethodForClass `hash:"923996154"`
+	get_item_metadata            gdextension.MethodForClass `hash:"4227898402"`
+	get_item_tooltip             gdextension.MethodForClass `hash:"844755477"`
+	get_item_auto_translate_mode gdextension.MethodForClass `hash:"906302372"`
+	is_item_disabled             gdextension.MethodForClass `hash:"1116898809"`
+	is_item_separator            gdextension.MethodForClass `hash:"1116898809"`
+	add_separator                gdextension.MethodForClass `hash:"3005725572"`
+	clear                        gdextension.MethodForClass `hash:"3218959716"`
+	select_                      gdextension.MethodForClass `hash:"1286410249"`
+	get_selected                 gdextension.MethodForClass `hash:"3905245786"`
+	get_selected_id              gdextension.MethodForClass `hash:"3905245786"`
+	get_selected_metadata        gdextension.MethodForClass `hash:"1214101251"`
+	remove_item                  gdextension.MethodForClass `hash:"1286410249"`
+	get_popup                    gdextension.MethodForClass `hash:"229722558"`
+	show_popup                   gdextension.MethodForClass `hash:"3218959716"`
+	set_item_count               gdextension.MethodForClass `hash:"1286410249"`
+	get_item_count               gdextension.MethodForClass `hash:"3905245786"`
+	has_selectable_items         gdextension.MethodForClass `hash:"36873697"`
+	get_selectable_item          gdextension.MethodForClass `hash:"894402480"`
+	set_fit_to_longest_item      gdextension.MethodForClass `hash:"2586408642"`
+	is_fit_to_longest_item       gdextension.MethodForClass `hash:"36873697"`
+	set_allow_reselect           gdextension.MethodForClass `hash:"2586408642"`
+	get_allow_reselect           gdextension.MethodForClass `hash:"36873697"`
+	set_disable_shortcuts        gdextension.MethodForClass `hash:"2586408642"`
 }
 
 func init() {
@@ -146,6 +148,8 @@ type Any interface {
 
 /*
 Adds an item, with text 'label' and (optionally) 'id'. If no 'id' is passed, the item index will be used as the item's ID. New items are appended at the end.
+
+Note: The item will be selected if there are no other items.
 */
 func (self Instance) AddItem(label string) { //gd:OptionButton.add_item
 	Advanced(self).AddItem(String.New(label), int64(-1))
@@ -153,6 +157,8 @@ func (self Instance) AddItem(label string) { //gd:OptionButton.add_item
 
 /*
 Adds an item, with text 'label' and (optionally) 'id'. If no 'id' is passed, the item index will be used as the item's ID. New items are appended at the end.
+
+Note: The item will be selected if there are no other items.
 */
 func (self Expanded) AddItem(label string, id int) { //gd:OptionButton.add_item
 	Advanced(self).AddItem(String.New(label), int64(id))
@@ -160,6 +166,8 @@ func (self Expanded) AddItem(label string, id int) { //gd:OptionButton.add_item
 
 /*
 Adds an item, with a 'texture' icon, text 'label' and (optionally) 'id'. If no 'id' is passed, the item index will be used as the item's ID. New items are appended at the end.
+
+Note: The item will be selected if there are no other items.
 */
 func (self Instance) AddIconItem(texture Texture2D.Instance, label string) { //gd:OptionButton.add_icon_item
 	Advanced(self).AddIconItem(texture, String.New(label), int64(-1))
@@ -167,6 +175,8 @@ func (self Instance) AddIconItem(texture Texture2D.Instance, label string) { //g
 
 /*
 Adds an item, with a 'texture' icon, text 'label' and (optionally) 'id'. If no 'id' is passed, the item index will be used as the item's ID. New items are appended at the end.
+
+Note: The item will be selected if there are no other items.
 */
 func (self Expanded) AddIconItem(texture Texture2D.Instance, label string, id int) { //gd:OptionButton.add_icon_item
 	Advanced(self).AddIconItem(texture, String.New(label), int64(id))
@@ -217,6 +227,15 @@ func (self Instance) SetItemTooltip(idx int, tooltip string) { //gd:OptionButton
 }
 
 /*
+Sets the auto translate mode of the item at index 'idx'.
+
+Items use [Node.AutoTranslateModeInherit] by default, which uses the same auto translate mode as the [graphics.gd/classdb/OptionButton] itself.
+*/
+func (self Instance) SetItemAutoTranslateMode(idx int, mode Node.AutoTranslateMode) { //gd:OptionButton.set_item_auto_translate_mode
+	Advanced(self).SetItemAutoTranslateMode(int64(idx), mode)
+}
+
+/*
 Returns the text of the item at index 'idx'.
 */
 func (self Instance) GetItemText(idx int) string { //gd:OptionButton.get_item_text
@@ -256,6 +275,13 @@ Returns the tooltip of the item at index 'idx'.
 */
 func (self Instance) GetItemTooltip(idx int) string { //gd:OptionButton.get_item_tooltip
 	return string(Advanced(self).GetItemTooltip(int64(idx)).String())
+}
+
+/*
+Returns the auto translate mode of the item at index 'idx'.
+*/
+func (self Instance) GetItemAutoTranslateMode(idx int) Node.AutoTranslateMode { //gd:OptionButton.get_item_auto_translate_mode
+	return Node.AutoTranslateMode(Advanced(self).GetItemAutoTranslateMode(int64(idx)))
 }
 
 /*
@@ -443,6 +469,8 @@ func (self Instance) SetItemCount(value int) {
 
 /*
 Adds an item, with text 'label' and (optionally) 'id'. If no 'id' is passed, the item index will be used as the item's ID. New items are appended at the end.
+
+Note: The item will be selected if there are no other items.
 */
 //go:nosplit
 func (self class) AddItem(label String.Readable, id int64) { //gd:OptionButton.add_item
@@ -454,6 +482,8 @@ func (self class) AddItem(label String.Readable, id int64) { //gd:OptionButton.a
 
 /*
 Adds an item, with a 'texture' icon, text 'label' and (optionally) 'id'. If no 'id' is passed, the item index will be used as the item's ID. New items are appended at the end.
+
+Note: The item will be selected if there are no other items.
 */
 //go:nosplit
 func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readable, id int64) { //gd:OptionButton.add_icon_item
@@ -533,6 +563,19 @@ func (self class) SetItemTooltip(idx int64, tooltip String.Readable) { //gd:Opti
 }
 
 /*
+Sets the auto translate mode of the item at index 'idx'.
+
+Items use [Node.AutoTranslateModeInherit] by default, which uses the same auto translate mode as the [graphics.gd/classdb/OptionButton] itself.
+*/
+//go:nosplit
+func (self class) SetItemAutoTranslateMode(idx int64, mode Node.AutoTranslateMode) { //gd:OptionButton.set_item_auto_translate_mode
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_auto_translate_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		idx  int64
+		mode Node.AutoTranslateMode
+	}{idx, mode})
+}
+
+/*
 Returns the text of the item at index 'idx'.
 */
 //go:nosplit
@@ -589,6 +632,16 @@ Returns the tooltip of the item at index 'idx'.
 func (self class) GetItemTooltip(idx int64) String.Readable { //gd:OptionButton.get_item_tooltip
 	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_tooltip, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+/*
+Returns the auto translate mode of the item at index 'idx'.
+*/
+//go:nosplit
+func (self class) GetItemAutoTranslateMode(idx int64) Node.AutoTranslateMode { //gd:OptionButton.get_item_auto_translate_mode
+	var r_ret = gdextension.Call[Node.AutoTranslateMode](gd.ObjectChecked(self.AsObject()), methods.get_item_auto_translate_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var ret = r_ret
 	return ret
 }
 

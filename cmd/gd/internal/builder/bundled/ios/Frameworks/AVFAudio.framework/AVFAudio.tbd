@@ -22,4 +22,5 @@ exports:
     - AVSpeechSynthesizer
     - AVSpeechSynthesisVoice
     - AVAudioSession
+    - AVAudioApplication
 ...

@@ -99,26 +99,26 @@ var sname gdextension.StringName
 var methods struct {
 	set_width                gdextension.MethodForClass `hash:"1286410249"`
 	set_height               gdextension.MethodForClass `hash:"1286410249"`
+	set_generate_mipmaps     gdextension.MethodForClass `hash:"2586408642"`
+	is_generating_mipmaps    gdextension.MethodForClass `hash:"36873697"`
+	set_noise                gdextension.MethodForClass `hash:"4135492439"`
+	get_noise                gdextension.MethodForClass `hash:"185851837"`
+	set_color_ramp           gdextension.MethodForClass `hash:"2756054477"`
+	get_color_ramp           gdextension.MethodForClass `hash:"132272999"`
+	set_seamless             gdextension.MethodForClass `hash:"2586408642"`
+	get_seamless             gdextension.MethodForClass `hash:"2240911060"`
 	set_invert               gdextension.MethodForClass `hash:"2586408642"`
 	get_invert               gdextension.MethodForClass `hash:"36873697"`
 	set_in_3d_space          gdextension.MethodForClass `hash:"2586408642"`
 	is_in_3d_space           gdextension.MethodForClass `hash:"36873697"`
-	set_generate_mipmaps     gdextension.MethodForClass `hash:"2586408642"`
-	is_generating_mipmaps    gdextension.MethodForClass `hash:"36873697"`
-	set_seamless             gdextension.MethodForClass `hash:"2586408642"`
-	get_seamless             gdextension.MethodForClass `hash:"2240911060"`
-	set_seamless_blend_skirt gdextension.MethodForClass `hash:"373806689"`
-	get_seamless_blend_skirt gdextension.MethodForClass `hash:"191475506"`
 	set_as_normal_map        gdextension.MethodForClass `hash:"2586408642"`
 	is_normal_map            gdextension.MethodForClass `hash:"2240911060"`
-	set_bump_strength        gdextension.MethodForClass `hash:"373806689"`
-	get_bump_strength        gdextension.MethodForClass `hash:"191475506"`
 	set_normalize            gdextension.MethodForClass `hash:"2586408642"`
 	is_normalized            gdextension.MethodForClass `hash:"36873697"`
-	set_color_ramp           gdextension.MethodForClass `hash:"2756054477"`
-	get_color_ramp           gdextension.MethodForClass `hash:"132272999"`
-	set_noise                gdextension.MethodForClass `hash:"4135492439"`
-	get_noise                gdextension.MethodForClass `hash:"185851837"`
+	set_seamless_blend_skirt gdextension.MethodForClass `hash:"373806689"`
+	get_seamless_blend_skirt gdextension.MethodForClass `hash:"191475506"`
+	set_bump_strength        gdextension.MethodForClass `hash:"373806689"`
+	get_bump_strength        gdextension.MethodForClass `hash:"191475506"`
 }
 
 func init() {
@@ -192,6 +192,38 @@ func (self Instance) SetHeight(value int) {
 	class(self).SetHeight(int64(value))
 }
 
+func (self Instance) GenerateMipmaps() bool {
+	return bool(class(self).IsGeneratingMipmaps())
+}
+
+func (self Instance) SetGenerateMipmaps(value bool) {
+	class(self).SetGenerateMipmaps(value)
+}
+
+func (self Instance) Noise() Noise.Instance {
+	return Noise.Instance(class(self).GetNoise())
+}
+
+func (self Instance) SetNoise(value Noise.Instance) {
+	class(self).SetNoise(value)
+}
+
+func (self Instance) ColorRamp() Gradient.Instance {
+	return Gradient.Instance(class(self).GetColorRamp())
+}
+
+func (self Instance) SetColorRamp(value Gradient.Instance) {
+	class(self).SetColorRamp(value)
+}
+
+func (self Instance) Seamless() bool {
+	return bool(class(self).GetSeamless())
+}
+
+func (self Instance) SetSeamless(value bool) {
+	class(self).SetSeamless(value)
+}
+
 func (self Instance) Invert() bool {
 	return bool(class(self).GetInvert())
 }
@@ -208,44 +240,12 @@ func (self Instance) SetIn3dSpace(value bool) {
 	class(self).SetIn3dSpace(value)
 }
 
-func (self Instance) GenerateMipmaps() bool {
-	return bool(class(self).IsGeneratingMipmaps())
-}
-
-func (self Instance) SetGenerateMipmaps(value bool) {
-	class(self).SetGenerateMipmaps(value)
-}
-
-func (self Instance) Seamless() bool {
-	return bool(class(self).GetSeamless())
-}
-
-func (self Instance) SetSeamless(value bool) {
-	class(self).SetSeamless(value)
-}
-
-func (self Instance) SeamlessBlendSkirt() Float.X {
-	return Float.X(Float.X(class(self).GetSeamlessBlendSkirt()))
-}
-
-func (self Instance) SetSeamlessBlendSkirt(value Float.X) {
-	class(self).SetSeamlessBlendSkirt(float64(value))
-}
-
 func (self Instance) AsNormalMap() bool {
 	return bool(class(self).IsNormalMap())
 }
 
 func (self Instance) SetAsNormalMap(value bool) {
 	class(self).SetAsNormalMap(value)
-}
-
-func (self Instance) BumpStrength() Float.X {
-	return Float.X(Float.X(class(self).GetBumpStrength()))
-}
-
-func (self Instance) SetBumpStrength(value Float.X) {
-	class(self).SetBumpStrength(float64(value))
 }
 
 func (self Instance) Normalize() bool {
@@ -256,20 +256,20 @@ func (self Instance) SetNormalize(value bool) {
 	class(self).SetNormalize(value)
 }
 
-func (self Instance) ColorRamp() Gradient.Instance {
-	return Gradient.Instance(class(self).GetColorRamp())
+func (self Instance) SeamlessBlendSkirt() Float.X {
+	return Float.X(Float.X(class(self).GetSeamlessBlendSkirt()))
 }
 
-func (self Instance) SetColorRamp(value Gradient.Instance) {
-	class(self).SetColorRamp(value)
+func (self Instance) SetSeamlessBlendSkirt(value Float.X) {
+	class(self).SetSeamlessBlendSkirt(float64(value))
 }
 
-func (self Instance) Noise() Noise.Instance {
-	return Noise.Instance(class(self).GetNoise())
+func (self Instance) BumpStrength() Float.X {
+	return Float.X(Float.X(class(self).GetBumpStrength()))
 }
 
-func (self Instance) SetNoise(value Noise.Instance) {
-	class(self).SetNoise(value)
+func (self Instance) SetBumpStrength(value Float.X) {
+	class(self).SetBumpStrength(float64(value))
 }
 
 //go:nosplit
@@ -280,6 +280,54 @@ func (self class) SetWidth(width int64) { //gd:NoiseTexture2D.set_width
 //go:nosplit
 func (self class) SetHeight(height int64) { //gd:NoiseTexture2D.set_height
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeInt<<4), &struct{ height int64 }{height})
+}
+
+//go:nosplit
+func (self class) SetGenerateMipmaps(invert bool) { //gd:NoiseTexture2D.set_generate_mipmaps
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_generate_mipmaps, 0|(gdextension.SizeBool<<4), &struct{ invert bool }{invert})
+}
+
+//go:nosplit
+func (self class) IsGeneratingMipmaps() bool { //gd:NoiseTexture2D.is_generating_mipmaps
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_generating_mipmaps, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetNoise(noise [1]gdclass.Noise) { //gd:NoiseTexture2D.set_noise
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_noise, 0|(gdextension.SizeObject<<4), &struct{ noise gdextension.Object }{gdextension.Object(gd.ObjectChecked(noise[0].AsObject()))})
+}
+
+//go:nosplit
+func (self class) GetNoise() [1]gdclass.Noise { //gd:NoiseTexture2D.get_noise
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_noise, gdextension.SizeObject, &struct{}{})
+	var ret = [1]gdclass.Noise{gd.PointerWithOwnershipTransferredToGo[gdclass.Noise](r_ret)}
+	return ret
+}
+
+//go:nosplit
+func (self class) SetColorRamp(gradient [1]gdclass.Gradient) { //gd:NoiseTexture2D.set_color_ramp
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gradient[0].AsObject()))})
+}
+
+//go:nosplit
+func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:NoiseTexture2D.get_color_ramp
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
+	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret)}
+	return ret
+}
+
+//go:nosplit
+func (self class) SetSeamless(seamless bool) { //gd:NoiseTexture2D.set_seamless
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seamless, 0|(gdextension.SizeBool<<4), &struct{ seamless bool }{seamless})
+}
+
+//go:nosplit
+func (self class) GetSeamless() bool { //gd:NoiseTexture2D.get_seamless
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_seamless, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
 }
 
 //go:nosplit
@@ -307,42 +355,6 @@ func (self class) IsIn3dSpace() bool { //gd:NoiseTexture2D.is_in_3d_space
 }
 
 //go:nosplit
-func (self class) SetGenerateMipmaps(invert bool) { //gd:NoiseTexture2D.set_generate_mipmaps
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_generate_mipmaps, 0|(gdextension.SizeBool<<4), &struct{ invert bool }{invert})
-}
-
-//go:nosplit
-func (self class) IsGeneratingMipmaps() bool { //gd:NoiseTexture2D.is_generating_mipmaps
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_generating_mipmaps, gdextension.SizeBool, &struct{}{})
-	var ret = r_ret
-	return ret
-}
-
-//go:nosplit
-func (self class) SetSeamless(seamless bool) { //gd:NoiseTexture2D.set_seamless
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seamless, 0|(gdextension.SizeBool<<4), &struct{ seamless bool }{seamless})
-}
-
-//go:nosplit
-func (self class) GetSeamless() bool { //gd:NoiseTexture2D.get_seamless
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_seamless, gdextension.SizeBool, &struct{}{})
-	var ret = r_ret
-	return ret
-}
-
-//go:nosplit
-func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt float64) { //gd:NoiseTexture2D.set_seamless_blend_skirt
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seamless_blend_skirt, 0|(gdextension.SizeFloat<<4), &struct{ seamless_blend_skirt float64 }{seamless_blend_skirt})
-}
-
-//go:nosplit
-func (self class) GetSeamlessBlendSkirt() float64 { //gd:NoiseTexture2D.get_seamless_blend_skirt
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_seamless_blend_skirt, gdextension.SizeFloat, &struct{}{})
-	var ret = r_ret
-	return ret
-}
-
-//go:nosplit
 func (self class) SetAsNormalMap(as_normal_map bool) { //gd:NoiseTexture2D.set_as_normal_map
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_as_normal_map, 0|(gdextension.SizeBool<<4), &struct{ as_normal_map bool }{as_normal_map})
 }
@@ -350,18 +362,6 @@ func (self class) SetAsNormalMap(as_normal_map bool) { //gd:NoiseTexture2D.set_a
 //go:nosplit
 func (self class) IsNormalMap() bool { //gd:NoiseTexture2D.is_normal_map
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_normal_map, gdextension.SizeBool, &struct{}{})
-	var ret = r_ret
-	return ret
-}
-
-//go:nosplit
-func (self class) SetBumpStrength(bump_strength float64) { //gd:NoiseTexture2D.set_bump_strength
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bump_strength, 0|(gdextension.SizeFloat<<4), &struct{ bump_strength float64 }{bump_strength})
-}
-
-//go:nosplit
-func (self class) GetBumpStrength() float64 { //gd:NoiseTexture2D.get_bump_strength
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bump_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -379,26 +379,26 @@ func (self class) IsNormalized() bool { //gd:NoiseTexture2D.is_normalized
 }
 
 //go:nosplit
-func (self class) SetColorRamp(gradient [1]gdclass.Gradient) { //gd:NoiseTexture2D.set_color_ramp
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_ramp, 0|(gdextension.SizeObject<<4), &struct{ gradient gdextension.Object }{gdextension.Object(gd.ObjectChecked(gradient[0].AsObject()))})
+func (self class) SetSeamlessBlendSkirt(seamless_blend_skirt float64) { //gd:NoiseTexture2D.set_seamless_blend_skirt
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_seamless_blend_skirt, 0|(gdextension.SizeFloat<<4), &struct{ seamless_blend_skirt float64 }{seamless_blend_skirt})
 }
 
 //go:nosplit
-func (self class) GetColorRamp() [1]gdclass.Gradient { //gd:NoiseTexture2D.get_color_ramp
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_color_ramp, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Gradient{gd.PointerWithOwnershipTransferredToGo[gdclass.Gradient](r_ret)}
+func (self class) GetSeamlessBlendSkirt() float64 { //gd:NoiseTexture2D.get_seamless_blend_skirt
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_seamless_blend_skirt, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
-func (self class) SetNoise(noise [1]gdclass.Noise) { //gd:NoiseTexture2D.set_noise
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_noise, 0|(gdextension.SizeObject<<4), &struct{ noise gdextension.Object }{gdextension.Object(gd.ObjectChecked(noise[0].AsObject()))})
+func (self class) SetBumpStrength(bump_strength float64) { //gd:NoiseTexture2D.set_bump_strength
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bump_strength, 0|(gdextension.SizeFloat<<4), &struct{ bump_strength float64 }{bump_strength})
 }
 
 //go:nosplit
-func (self class) GetNoise() [1]gdclass.Noise { //gd:NoiseTexture2D.get_noise
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_noise, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.Noise{gd.PointerWithOwnershipTransferredToGo[gdclass.Noise](r_ret)}
+func (self class) GetBumpStrength() float64 { //gd:NoiseTexture2D.get_bump_strength
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bump_strength, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
 	return ret
 }
 func (self class) AsNoiseTexture2D() Advanced {

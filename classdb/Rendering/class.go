@@ -72,35 +72,47 @@ const (
 type DriverResource int //gd:RenderingDevice.DriverResource
 
 const (
-	// Specific device object based on a physical device.
+	// Specific device object based on a physical device (rid parameter is ignored).
 	//
-	// - Vulkan: Vulkan device driver resource (VkDevice). (rid argument doesn't apply.)
+	// - Vulkan: Vulkan device driver resource (VkDevice).
+	//
+	// - D3D12: D3D12 device driver resource (ID3D12Device).
+	//
+	// - Metal: Metal device driver resource (MTLDevice).
 	DriverResourceLogicalDevice DriverResource = 0
-	// Physical device the specific logical device is based on.
+	// Physical device the specific logical device is based on (rid parameter is ignored).
 	//
-	// - Vulkan: VkDevice. (rid argument doesn't apply.)
+	// - Vulkan: VkPhysicalDevice.
+	//
+	// - D3D12: IDXGIAdapter.
 	DriverResourcePhysicalDevice DriverResource = 1
-	// Top-most graphics API entry object.
+	// Top-most graphics API entry object (rid parameter is ignored).
 	//
-	// - Vulkan: VkInstance. (rid argument doesn't apply.)
+	// - Vulkan: VkInstance.
 	DriverResourceTopmostObject DriverResource = 2
-	// The main graphics-compute command queue.
+	// The main graphics-compute command queue (rid parameter is ignored).
 	//
-	// - Vulkan: VkQueue. (rid argument doesn't apply.)
+	// - Vulkan: VkQueue.
+	//
+	// - Metal: MTLCommandQueue.
 	DriverResourceCommandQueue DriverResource = 3
-	// The specific family the main queue belongs to.
+	// The specific family the main queue belongs to (rid parameter is ignored).
 	//
-	// - Vulkan: the queue family index, an uint32_t. (rid argument doesn't apply.)
+	// - Vulkan: The queue family index, a uint32_t.
 	DriverResourceQueueFamily DriverResource = 4
 	// - Vulkan: VkImage.
 	DriverResourceTexture DriverResource = 5
 	// The view of an owned or shared texture.
 	//
 	// - Vulkan: VkImageView.
+	//
+	// - D3D12: ID3D12Resource.
 	DriverResourceTextureView DriverResource = 6
 	// The native id of the data format of the texture.
 	//
 	// - Vulkan: VkFormat.
+	//
+	// - D3D12: DXGI_FORMAT.
 	DriverResourceTextureDataFormat DriverResource = 7
 	// - Vulkan: VkSampler.
 	DriverResourceSampler DriverResource = 8
@@ -109,10 +121,16 @@ const (
 	// Buffer of any kind of (storage, vertex, etc.).
 	//
 	// - Vulkan: VkBuffer.
+	//
+	// - D3D12: ID3D12Resource.
 	DriverResourceBuffer DriverResource = 10
 	// - Vulkan: VkPipeline.
+	//
+	// - Metal: MTLComputePipelineState.
 	DriverResourceComputePipeline DriverResource = 11
 	// - Vulkan: VkPipeline.
+	//
+	// - Metal: MTLRenderPipelineState.
 	DriverResourceRenderPipeline                 DriverResource = 12
 	DriverResourceVulkanDevice                   DriverResource = 0
 	DriverResourceVulkanPhysicalDevice           DriverResource = 1
@@ -193,7 +211,7 @@ const (
 	DataFormatR8g8b8Uint DataFormat = 26
 	// 8-bit-per-channel signed integer red/green/blue channel data format. Values are in the [-127, 127] range.
 	DataFormatR8g8b8Sint DataFormat = 27
-	// 8-bit-per-channel unsigned floating-point red/green/blue/blue channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range.
+	// 8-bit-per-channel unsigned floating-point red/green/blue channel data format with normalized value and non-linear sRGB encoding. Values are in the [0.0, 1.0] range.
 	DataFormatR8g8b8Srgb DataFormat = 28
 	// 8-bit-per-channel unsigned floating-point blue/green/red channel data format with normalized value. Values are in the [0.0, 1.0] range.
 	DataFormatB8g8r8Unorm DataFormat = 29
@@ -573,8 +591,22 @@ const (
 	DataFormatG16B16r162plane422Unorm DataFormat = 216
 	// 16-bit-per-channel unsigned floating-point green/blue/red channel data with normalized value, plus 6 unused bits after each channel. Stored across 3 separate planes (green + blue + red). Values are in the [0.0, 1.0] range.
 	DataFormatG16B16R163plane444Unorm DataFormat = 217
+	DataFormatAstc4x4SfloatBlock      DataFormat = 218
+	DataFormatAstc5x4SfloatBlock      DataFormat = 219
+	DataFormatAstc5x5SfloatBlock      DataFormat = 220
+	DataFormatAstc6x5SfloatBlock      DataFormat = 221
+	DataFormatAstc6x6SfloatBlock      DataFormat = 222
+	DataFormatAstc8x5SfloatBlock      DataFormat = 223
+	DataFormatAstc8x6SfloatBlock      DataFormat = 224
+	DataFormatAstc8x8SfloatBlock      DataFormat = 225
+	DataFormatAstc10x5SfloatBlock     DataFormat = 226
+	DataFormatAstc10x6SfloatBlock     DataFormat = 227
+	DataFormatAstc10x8SfloatBlock     DataFormat = 228
+	DataFormatAstc10x10SfloatBlock    DataFormat = 229
+	DataFormatAstc12x10SfloatBlock    DataFormat = 230
+	DataFormatAstc12x12SfloatBlock    DataFormat = 231
 	// Represents the size of the [DataFormat] enum.
-	DataFormatMax DataFormat = 218
+	DataFormatMax DataFormat = 232
 )
 
 type BarrierMask int //gd:RenderingDevice.BarrierMask
@@ -732,15 +764,15 @@ type SamplerBorderColor int //gd:RenderingDevice.SamplerBorderColor
 const (
 	// Return a floating-point transparent black color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
 	SamplerBorderColorFloatTransparentBlack SamplerBorderColor = 0
-	// Return a integer transparent black color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
+	// Return an integer transparent black color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
 	SamplerBorderColorIntTransparentBlack SamplerBorderColor = 1
 	// Return a floating-point opaque black color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
 	SamplerBorderColorFloatOpaqueBlack SamplerBorderColor = 2
-	// Return a integer opaque black color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
+	// Return an integer opaque black color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
 	SamplerBorderColorIntOpaqueBlack SamplerBorderColor = 3
 	// Return a floating-point opaque white color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
 	SamplerBorderColorFloatOpaqueWhite SamplerBorderColor = 4
-	// Return a integer opaque white color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
+	// Return an integer opaque white color when sampling outside the [0.0, 1.0] range. Only effective if the sampler repeat mode is [SamplerRepeatModeClampToBorder].
 	SamplerBorderColorIntOpaqueWhite SamplerBorderColor = 5
 	// Represents the size of the [SamplerBorderColor] enum.
 	SamplerBorderColorMax SamplerBorderColor = 6
@@ -785,9 +817,9 @@ const (
 	//
 	// if rd.has_feature(RenderingDevice.SUPPORTS_BUFFER_DEVICE_ADDRESS):
 	//
-	//       storage_buffer = rd.storage_buffer_create(bytes.size(), bytes, RenderingDevice.STORAGE_BUFFER_USAGE_SHADER_DEVICE_ADDRESS):
+	// storage_buffer = rd.storage_buffer_create(bytes.size(), bytes, RenderingDevice.STORAGE_BUFFER_USAGE_SHADER_DEVICE_ADDRESS)
 	//
-	//       storage_buffer_address = rd.buffer_get_device_address(storage_buffer)
+	// storage_buffer_address = rd.buffer_get_device_address(storage_buffer)
 	//
 	// [/gdscript]
 	//
@@ -851,7 +883,7 @@ const (
 	RenderPrimitiveTriangles RenderPrimitive = 5
 	// [Triangle list rendering primitive with adjacency.]
 	//
-	//  Note: Adjacency is only useful with geometry shaders, which Godot does not expose.
+	// Note: Adjacency is only useful with geometry shaders, which Godot does not expose.
 	//
 	// [Triangle list rendering primitive with adjacency.]: https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#drawing-triangle-lists-with-adjacency
 	RenderPrimitiveTrianglesWithAdjacency RenderPrimitive = 6
@@ -1135,8 +1167,14 @@ const (
 type Features int //gd:RenderingDevice.Features
 
 const (
+	// Support for MetalFX spatial upscaling.
+	SupportsMetalfxSpatial Features = 3
+	// Support for MetalFX temporal upscaling.
+	SupportsMetalfxTemporal Features = 4
 	// Features support for buffer device address extension.
 	SupportsBufferDeviceAddress Features = 6
+	// Support for 32-bit image atomic operations.
+	SupportsImageAtomic32Bit Features = 7
 )
 
 type Limit int //gd:RenderingDevice.Limit
@@ -1244,19 +1282,32 @@ const (
 type BreadcrumbMarker int //gd:RenderingDevice.BreadcrumbMarker
 
 const (
-	None                  BreadcrumbMarker = 0
-	ReflectionProbes      BreadcrumbMarker = 65536
-	SkyPass               BreadcrumbMarker = 131072
-	LightmapperPass       BreadcrumbMarker = 196608
+	// No breadcrumb marker will be added.
+	None BreadcrumbMarker = 0
+	// During a GPU crash in dev or debug mode, Godot's error message will include "REFLECTION_PROBES" for added context as to when the crash occurred.
+	ReflectionProbes BreadcrumbMarker = 65536
+	// During a GPU crash in dev or debug mode, Godot's error message will include "SKY_PASS" for added context as to when the crash occurred.
+	SkyPass BreadcrumbMarker = 131072
+	// During a GPU crash in dev or debug mode, Godot's error message will include "LIGHTMAPPER_PASS" for added context as to when the crash occurred.
+	LightmapperPass BreadcrumbMarker = 196608
+	// During a GPU crash in dev or debug mode, Godot's error message will include "SHADOW_PASS_DIRECTIONAL" for added context as to when the crash occurred.
 	ShadowPassDirectional BreadcrumbMarker = 262144
-	ShadowPassCube        BreadcrumbMarker = 327680
-	OpaquePass            BreadcrumbMarker = 393216
-	AlphaPass             BreadcrumbMarker = 458752
-	TransparentPass       BreadcrumbMarker = 524288
-	PostProcessingPass    BreadcrumbMarker = 589824
-	BlitPass              BreadcrumbMarker = 655360
-	UiPass                BreadcrumbMarker = 720896
-	DebugPass             BreadcrumbMarker = 786432
+	// During a GPU crash in dev or debug mode, Godot's error message will include "SHADOW_PASS_CUBE" for added context as to when the crash occurred.
+	ShadowPassCube BreadcrumbMarker = 327680
+	// During a GPU crash in dev or debug mode, Godot's error message will include "OPAQUE_PASS" for added context as to when the crash occurred.
+	OpaquePass BreadcrumbMarker = 393216
+	// During a GPU crash in dev or debug mode, Godot's error message will include "ALPHA_PASS" for added context as to when the crash occurred.
+	AlphaPass BreadcrumbMarker = 458752
+	// During a GPU crash in dev or debug mode, Godot's error message will include "TRANSPARENT_PASS" for added context as to when the crash occurred.
+	TransparentPass BreadcrumbMarker = 524288
+	// During a GPU crash in dev or debug mode, Godot's error message will include "POST_PROCESSING_PASS" for added context as to when the crash occurred.
+	PostProcessingPass BreadcrumbMarker = 589824
+	// During a GPU crash in dev or debug mode, Godot's error message will include "BLIT_PASS" for added context as to when the crash occurred.
+	BlitPass BreadcrumbMarker = 655360
+	// During a GPU crash in dev or debug mode, Godot's error message will include "UI_PASS" for added context as to when the crash occurred.
+	UiPass BreadcrumbMarker = 720896
+	// During a GPU crash in dev or debug mode, Godot's error message will include "DEBUG_PASS" for added context as to when the crash occurred.
+	DebugPass BreadcrumbMarker = 786432
 )
 
 type DrawFlags int //gd:RenderingDevice.DrawFlags

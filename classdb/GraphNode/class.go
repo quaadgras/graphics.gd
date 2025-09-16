@@ -115,6 +115,8 @@ var methods struct {
 	set_slot_draw_stylebox             gdextension.MethodForClass `hash:"300928843"`
 	set_ignore_invalid_connection_type gdextension.MethodForClass `hash:"2586408642"`
 	is_ignoring_valid_connection_type  gdextension.MethodForClass `hash:"36873697"`
+	set_slots_focus_mode               gdextension.MethodForClass `hash:"3232914922"`
+	get_slots_focus_mode               gdextension.MethodForClass `hash:"2132829277"`
 	get_input_port_count               gdextension.MethodForClass `hash:"2455072627"`
 	get_input_port_position            gdextension.MethodForClass `hash:"3114997196"`
 	get_input_port_type                gdextension.MethodForClass `hash:"3744713108"`
@@ -485,6 +487,14 @@ func (self Instance) SetIgnoreInvalidConnectionType(value bool) {
 	class(self).SetIgnoreInvalidConnectionType(value)
 }
 
+func (self Instance) SlotsFocusMode() Control.FocusMode {
+	return Control.FocusMode(class(self).GetSlotsFocusMode())
+}
+
+func (self Instance) SetSlotsFocusMode(value Control.FocusMode) {
+	class(self).SetSlotsFocusMode(value)
+}
+
 func (class) _draw_port(impl func(ptr gdclass.Receiver, slot_index int64, position Vector2i.XY, left bool, color Color.RGBA)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var slot_index = gd.UnsafeGet[int64](p_args, 0)
@@ -766,6 +776,18 @@ func (self class) IsIgnoringValidConnectionType() bool { //gd:GraphNode.is_ignor
 	return ret
 }
 
+//go:nosplit
+func (self class) SetSlotsFocusMode(focus_mode Control.FocusMode) { //gd:GraphNode.set_slots_focus_mode
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slots_focus_mode, 0|(gdextension.SizeInt<<4), &struct{ focus_mode Control.FocusMode }{focus_mode})
+}
+
+//go:nosplit
+func (self class) GetSlotsFocusMode() Control.FocusMode { //gd:GraphNode.get_slots_focus_mode
+	var r_ret = gdextension.Call[Control.FocusMode](gd.ObjectChecked(self.AsObject()), methods.get_slots_focus_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
 /*
 Returns the number of slots with an enabled input port.
 */
@@ -875,6 +897,18 @@ func (self Instance) OnSlotUpdated(cb func(slot_index int), flags ...Signal.Flag
 
 func (self class) SlotUpdated() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SlotUpdated`))))
+}
+
+func (self Instance) OnSlotSizesChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("slot_sizes_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) SlotSizesChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SlotSizesChanged`))))
 }
 
 func (self class) AsGraphNode() Advanced { return Advanced{pointers.AsA[gdclass.GraphNode](self[0])} }

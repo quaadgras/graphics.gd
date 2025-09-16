@@ -192,14 +192,14 @@ func (self Instance) AddUsedExtension(extension_name string, required bool) { //
 }
 
 /*
-Appends the given byte array data to the buffers and creates a [graphics.gd/classdb/GLTFBufferView] for it. The index of the destination [graphics.gd/classdb/GLTFBufferView] is returned. If 'deduplication' is true, the buffers will first be searched for duplicate data, otherwise new bytes will always be appended.
+Appends the given byte array 'data' to the buffers and creates a [graphics.gd/classdb/GLTFBufferView] for it. The index of the destination [graphics.gd/classdb/GLTFBufferView] is returned. If 'deduplication' is true, the buffers are first searched for duplicate data, otherwise new bytes are always appended.
 */
 func (self Instance) AppendDataToBuffers(data []byte, deduplication bool) int { //gd:GLTFState.append_data_to_buffers
-	return int(int(Advanced(self).AppendDataToBuffers(Packed.Bytes(Packed.New(data...)), deduplication)))
+	return int(int(Advanced(self).AppendDataToBuffers(Packed.BytesFrom(data...), deduplication)))
 }
 
 /*
-Append the given [graphics.gd/classdb/GLTFNode] to the state, and return its new index. This can be used to export one Godot node as multiple glTF nodes, or inject new glTF nodes at import time. On import, this must be called before [graphics.gd/classdb/GLTFDocumentExtension.Instance.GenerateSceneNode] finishes for the parent node. On export, this must be called before [graphics.gd/classdb/GLTFDocumentExtension.Instance.ExportNode] runs for the parent node.
+Appends the given [graphics.gd/classdb/GLTFNode] to the state, and returns its new index. This can be used to export one Godot node as multiple glTF nodes, or inject new glTF nodes at import time. On import, this must be called before [graphics.gd/classdb/GLTFDocumentExtension.Instance.GenerateSceneNode] finishes for the parent node. On export, this must be called before [graphics.gd/classdb/GLTFDocumentExtension.Instance.ExportNode] runs for the parent node.
 
 The 'godot_scene_node' parameter is the Godot scene node that corresponds to this glTF node. This is highly recommended to be set to a valid node, but may be null if there is no corresponding Godot scene node. One Godot scene node may be used for multiple glTF nodes, so if exporting multiple glTF nodes for one Godot scene node, use the same Godot scene node for each.
 
@@ -362,7 +362,7 @@ func (self Instance) GlbData() []byte {
 }
 
 func (self Instance) SetGlbData(value []byte) {
-	class(self).SetGlbData(Packed.Bytes(Packed.New(value...)))
+	class(self).SetGlbData(Packed.BytesFrom(value...))
 }
 
 func (self Instance) UseNamedSkinBinds() bool {
@@ -577,20 +577,20 @@ func (self class) AddUsedExtension(extension_name String.Readable, required bool
 }
 
 /*
-Appends the given byte array data to the buffers and creates a [graphics.gd/classdb/GLTFBufferView] for it. The index of the destination [graphics.gd/classdb/GLTFBufferView] is returned. If 'deduplication' is true, the buffers will first be searched for duplicate data, otherwise new bytes will always be appended.
+Appends the given byte array 'data' to the buffers and creates a [graphics.gd/classdb/GLTFBufferView] for it. The index of the destination [graphics.gd/classdb/GLTFBufferView] is returned. If 'deduplication' is true, the buffers are first searched for duplicate data, otherwise new bytes are always appended.
 */
 //go:nosplit
 func (self class) AppendDataToBuffers(data Packed.Bytes, deduplication bool) int64 { //gd:GLTFState.append_data_to_buffers
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.append_data_to_buffers, gdextension.SizeInt|(gdextension.SizePackedArray<<4)|(gdextension.SizeBool<<8), &struct {
 		data          gdextension.PackedArray[byte]
 		deduplication bool
-	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data))), deduplication})
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array))), deduplication})
 	var ret = r_ret
 	return ret
 }
 
 /*
-Append the given [graphics.gd/classdb/GLTFNode] to the state, and return its new index. This can be used to export one Godot node as multiple glTF nodes, or inject new glTF nodes at import time. On import, this must be called before [graphics.gd/classdb/GLTFDocumentExtension.Instance.GenerateSceneNode] finishes for the parent node. On export, this must be called before [graphics.gd/classdb/GLTFDocumentExtension.Instance.ExportNode] runs for the parent node.
+Appends the given [graphics.gd/classdb/GLTFNode] to the state, and returns its new index. This can be used to export one Godot node as multiple glTF nodes, or inject new glTF nodes at import time. On import, this must be called before [graphics.gd/classdb/GLTFDocumentExtension.Instance.GenerateSceneNode] finishes for the parent node. On export, this must be called before [graphics.gd/classdb/GLTFDocumentExtension.Instance.ExportNode] runs for the parent node.
 
 The 'godot_scene_node' parameter is the Godot scene node that corresponds to this glTF node. This is highly recommended to be set to a valid node, but may be null if there is no corresponding Godot scene node. One Godot scene node may be used for multiple glTF nodes, so if exporting multiple glTF nodes for one Godot scene node, use the same Godot scene node for each.
 
@@ -658,13 +658,13 @@ func (self class) SetCopyright(copyright String.Readable) { //gd:GLTFState.set_c
 //go:nosplit
 func (self class) GetGlbData() Packed.Bytes { //gd:GLTFState.get_glb_data
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_glb_data, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlbData(glb_data Packed.Bytes) { //gd:GLTFState.set_glb_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_glb_data, 0|(gdextension.SizePackedArray<<4), &struct{ glb_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](glb_data)))})
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_glb_data, 0|(gdextension.SizePackedArray<<4), &struct{ glb_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](glb_data.Array)))})
 }
 
 //go:nosplit

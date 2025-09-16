@@ -118,9 +118,33 @@ type Interface interface {
 	GetResourceScriptClass(path string) string
 	// Should return the unique ID for the resource associated with the given path. If this method is not overridden, a .uid file is generated along with the resource file, containing the unique ID.
 	GetResourceUid(path string) int
-	// If implemented, gets the dependencies of a given resource. If 'add_types' is true, paths should be appended ::TypeName, where TypeName is the class name of the dependency.
+	// Should return the dependencies for the resource at the given 'path'. Each dependency is a string composed of one to three sections separated by ::, with trailing empty sections omitted:
 	//
-	// Note: Custom resource types defined by scripts aren't known by the [graphics.gd/classdb/ClassDB], so you might just return "Resource" for them.
+	// - The first section should contain the UID if the resource has one. Otherwise, it should contain the file path.
+	//
+	// - The second section should contain the class name of the dependency if 'add_types' is true. Otherwise, it should be empty.
+	//
+	// - The third section should contain the fallback path if the resource has a UID. Otherwise, it should be empty.
+	//
+	//
+	//
+	// func _get_dependencies(path, add_types):
+	//
+	// return [
+	//
+	// "uid://fqgvuwrkuixh::Script::res://script.gd",
+	//
+	// "uid://fqgvuwrkuixh::::res://script.gd",
+	//
+	// "res://script.gd::Script",
+	//
+	// "res://script.gd",
+	//
+	// ]
+	//
+	//
+	//
+	// Note: Custom resource types defined by scripts aren't known by the [graphics.gd/classdb/ClassDB], so "Resource" can be used for the class name.
 	GetDependencies(path string, add_types bool) []string
 	// If implemented, renames dependencies within the given resource and saves it. 'renames' is a dictionary { String => String } mapping old dependency paths to new paths.
 	//
@@ -255,9 +279,15 @@ func (Instance) _get_resource_uid(impl func(ptr gdclass.Receiver, path string) i
 }
 
 /*
-If implemented, gets the dependencies of a given resource. If 'add_types' is true, paths should be appended ::TypeName, where TypeName is the class name of the dependency.
+Should return the dependencies for the resource at the given 'path'. Each dependency is a string composed of one to three sections separated by ::, with trailing empty sections omitted:
 
-Note: Custom resource types defined by scripts aren't known by the [graphics.gd/classdb/ClassDB], so you might just return "Resource" for them.
+- The first section should contain the UID if the resource has one. Otherwise, it should contain the file path.
+
+- The second section should contain the class name of the dependency if 'add_types' is true. Otherwise, it should be empty.
+
+- The third section should contain the fallback path if the resource has a UID. Otherwise, it should be empty.
+
+Note: Custom resource types defined by scripts aren't known by the [graphics.gd/classdb/ClassDB], so "Resource" can be used for the class name.
 */
 func (Instance) _get_dependencies(impl func(ptr gdclass.Receiver, path string, add_types bool) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -487,9 +517,15 @@ func (class) _get_resource_uid(impl func(ptr gdclass.Receiver, path String.Reada
 }
 
 /*
-If implemented, gets the dependencies of a given resource. If 'add_types' is true, paths should be appended ::TypeName, where TypeName is the class name of the dependency.
+Should return the dependencies for the resource at the given 'path'. Each dependency is a string composed of one to three sections separated by ::, with trailing empty sections omitted:
 
-Note: Custom resource types defined by scripts aren't known by the [graphics.gd/classdb/ClassDB], so you might just return "Resource" for them.
+- The first section should contain the UID if the resource has one. Otherwise, it should contain the file path.
+
+- The second section should contain the class name of the dependency if 'add_types' is true. Otherwise, it should be empty.
+
+- The third section should contain the fallback path if the resource has a UID. Otherwise, it should be empty.
+
+Note: Custom resource types defined by scripts aren't known by the [graphics.gd/classdb/ClassDB], so "Resource" can be used for the class name.
 */
 func (class) _get_dependencies(impl func(ptr gdclass.Receiver, path String.Readable, add_types bool) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

@@ -93,6 +93,8 @@ var methods struct {
 	get_mix_rate     gdextension.MethodForClass `hash:"3905245786"`
 	set_stereo       gdextension.MethodForClass `hash:"2586408642"`
 	is_stereo        gdextension.MethodForClass `hash:"36873697"`
+	set_tags         gdextension.MethodForClass `hash:"4155329257"`
+	get_tags         gdextension.MethodForClass `hash:"3102165223"`
 	save_to_wav      gdextension.MethodForClass `hash:"166001499"`
 }
 
@@ -123,7 +125,7 @@ The keys and values of 'options' match the properties of [graphics.gd/classdb/Re
 */
 func LoadFromBuffer(stream_data []byte, options Options) Instance { //gd:AudioStreamWAV.load_from_buffer
 	self := Instance{}
-	return Instance(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...)), gd.DictionaryFromMap(options)))
+	return Instance(Advanced(self).LoadFromBuffer(Packed.BytesFrom(stream_data...), gd.DictionaryFromMap(options)))
 }
 
 /*
@@ -133,7 +135,7 @@ The keys and values of 'options' match the properties of [graphics.gd/classdb/Re
 */
 func LoadFromBufferOptions(stream_data []byte, options Options) Instance { //gd:AudioStreamWAV.load_from_buffer
 	self := Instance{}
-	return Instance(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...)), gd.DictionaryFromMap(options)))
+	return Instance(Advanced(self).LoadFromBuffer(Packed.BytesFrom(stream_data...), gd.DictionaryFromMap(options)))
 }
 
 /*
@@ -275,7 +277,7 @@ func (self Instance) Data() []byte {
 }
 
 func (self Instance) SetData(value []byte) {
-	class(self).SetData(Packed.Bytes(Packed.New(value...)))
+	class(self).SetData(Packed.BytesFrom(value...))
 }
 
 func (self Instance) Format() Format {
@@ -326,6 +328,14 @@ func (self Instance) SetStereo(value bool) {
 	class(self).SetStereo(value)
 }
 
+func (self Instance) Tags() map[any]any {
+	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetTags()))
+}
+
+func (self Instance) SetTags(value map[any]any) {
+	class(self).SetTags(gd.DictionaryFromMap(value))
+}
+
 /*
 Creates a new [graphics.gd/classdb/AudioStreamWAV] instance from the given buffer. The buffer must contain WAV data.
 
@@ -336,7 +346,7 @@ func (self class) LoadFromBuffer(stream_data Packed.Bytes, options Dictionary.An
 	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4)|(gdextension.SizeDictionary<<8), &struct {
 		stream_data gdextension.PackedArray[byte]
 		options     gdextension.Dictionary
-	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data))), pointers.Get(gd.InternalDictionary(options))})
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data.Array))), pointers.Get(gd.InternalDictionary(options))})
 	var ret = [1]gdclass.AudioStreamWAV{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamWAV](r_ret)}
 	return ret
 }
@@ -390,13 +400,13 @@ func (self class) LoadFromFile(path String.Readable, options Dictionary.Any) [1]
 
 //go:nosplit
 func (self class) SetData(data Packed.Bytes) { //gd:AudioStreamWAV.set_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
 
 //go:nosplit
 func (self class) GetData() Packed.Bytes { //gd:AudioStreamWAV.get_data
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -469,6 +479,18 @@ func (self class) SetStereo(stereo bool) { //gd:AudioStreamWAV.set_stereo
 func (self class) IsStereo() bool { //gd:AudioStreamWAV.is_stereo
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stereo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetTags(tags Dictionary.Any) { //gd:AudioStreamWAV.set_tags
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tags, 0|(gdextension.SizeDictionary<<4), &struct{ tags gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(tags))})
+}
+
+//go:nosplit
+func (self class) GetTags() Dictionary.Any { //gd:AudioStreamWAV.get_tags
+	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_tags, gdextension.SizeDictionary, &struct{}{})
+	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 

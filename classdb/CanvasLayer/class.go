@@ -7,7 +7,7 @@
 
 Note: Embedded [graphics.gd/classdb/Window]s are placed on layer 1024. [graphics.gd/classdb/CanvasItem]s on layers 1025 and higher appear in front of embedded windows.
 
-Note: Each [graphics.gd/classdb/CanvasLayer] is drawn on one specific [graphics.gd/classdb/Viewport] and cannot be shared between multiple [graphics.gd/classdb/Viewport]s, see [Instance.CustomViewport]. When using multiple [graphics.gd/classdb/Viewport]s, for example in a split-screen game, you need create an individual [graphics.gd/classdb/CanvasLayer] for each [graphics.gd/classdb/Viewport] you want it to be drawn on.
+Note: Each [graphics.gd/classdb/CanvasLayer] is drawn on one specific [graphics.gd/classdb/Viewport] and cannot be shared between multiple [graphics.gd/classdb/Viewport]s, see [Instance.CustomViewport]. When using multiple [graphics.gd/classdb/Viewport]s, for example in a split-screen game, you need to create an individual [graphics.gd/classdb/CanvasLayer] for each [graphics.gd/classdb/Viewport] you want it to be drawn on.
 */
 package CanvasLayer
 

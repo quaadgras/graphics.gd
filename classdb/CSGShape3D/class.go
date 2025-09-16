@@ -3,15 +3,13 @@
 /*
 This is the CSG base class that provides CSG operation support to the various CSG nodes in Godot.
 
-Performance: CSG nodes are only intended for prototyping as they have a significant CPU performance cost.
-
-Consider baking final CSG operation results into static geometry that replaces the CSG nodes.
+Performance: CSG nodes are only intended for prototyping as they have a significant CPU performance cost. Consider baking final CSG operation results into static geometry that replaces the CSG nodes.
 
 Individual CSG root node results can be baked to nodes with static resources with the editor menu that appears when a CSG root node is selected.
 
 Individual CSG root nodes can also be baked to static resources with scripts by calling [Instance.BakeStaticMesh] for the visual mesh or [Instance.BakeCollisionShape] for the physics collision.
 
-Entire scenes of CSG nodes can be baked to static geometry and exported with the editor gltf scene exporter.
+Entire scenes of CSG nodes can be baked to static geometry and exported with the editor glTF scene exporter: Scene > Export As... > glTF 2.0 Scene...
 */
 package CSGShape3D
 
@@ -108,11 +106,11 @@ var methods struct {
 	get_collision_layer_value gdextension.MethodForClass `hash:"1116898809"`
 	set_collision_priority    gdextension.MethodForClass `hash:"373806689"`
 	get_collision_priority    gdextension.MethodForClass `hash:"1740695150"`
+	bake_collision_shape      gdextension.MethodForClass `hash:"36102322"`
 	set_calculate_tangents    gdextension.MethodForClass `hash:"2586408642"`
 	is_calculating_tangents   gdextension.MethodForClass `hash:"36873697"`
 	get_meshes                gdextension.MethodForClass `hash:"3995934104"`
 	bake_static_mesh          gdextension.MethodForClass `hash:"1605880883"`
-	bake_collision_shape      gdextension.MethodForClass `hash:"36102322"`
 }
 
 func init() {
@@ -171,7 +169,20 @@ func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:CSGSha
 }
 
 /*
+Returns a baked physics [graphics.gd/classdb/ConcavePolygonShape3D] of this node's CSG operation result. Returns an empty shape if the node is not a CSG root node or has no valid geometry.
+
+Performance: If the CSG operation results in a very detailed geometry with many faces physics performance will be very slow. Concave shapes should in general only be used for static level geometry and not with dynamic objects that are moving.
+
+Note: CSG mesh data updates are deferred, which means they are updated with a delay of one rendered frame. To avoid getting an empty shape or outdated mesh data, make sure to call await get_tree().process_frame before using [Instance.BakeCollisionShape] in [graphics.gd/classdb/Node.Instance.Ready] or after changing properties on the [graphics.gd/classdb/CSGShape3D].
+*/
+func (self Instance) BakeCollisionShape() ConcavePolygonShape3D.Instance { //gd:CSGShape3D.bake_collision_shape
+	return ConcavePolygonShape3D.Instance(Advanced(self).BakeCollisionShape())
+}
+
+/*
 Returns an slice with two elements, the first is the [Transform3D.BasisOrigin] of this node and the second is the root [graphics.gd/classdb/Mesh] of this node. Only works when this node is the root shape.
+
+Note: CSG mesh data updates are deferred, which means they are updated with a delay of one rendered frame. To avoid getting an empty shape or outdated mesh data, make sure to call await get_tree().process_frame before using [Instance.GetMeshes] in [graphics.gd/classdb/Node.Instance.Ready] or after changing properties on the [graphics.gd/classdb/CSGShape3D].
 */
 func (self Instance) GetMeshes() (Transform3D.BasisOrigin, Mesh.Instance) { //gd:CSGShape3D.get_meshes
 	results := gd.InternalArray(Advanced(self).GetMeshes())
@@ -180,18 +191,11 @@ func (self Instance) GetMeshes() (Transform3D.BasisOrigin, Mesh.Instance) { //gd
 
 /*
 Returns a baked static [graphics.gd/classdb/ArrayMesh] of this node's CSG operation result. Materials from involved CSG nodes are added as extra mesh surfaces. Returns an empty mesh if the node is not a CSG root node or has no valid geometry.
+
+Note: CSG mesh data updates are deferred, which means they are updated with a delay of one rendered frame. To avoid getting an empty mesh or outdated mesh data, make sure to call await get_tree().process_frame before using [Instance.BakeStaticMesh] in [graphics.gd/classdb/Node.Instance.Ready] or after changing properties on the [graphics.gd/classdb/CSGShape3D].
 */
 func (self Instance) BakeStaticMesh() ArrayMesh.Instance { //gd:CSGShape3D.bake_static_mesh
 	return ArrayMesh.Instance(Advanced(self).BakeStaticMesh())
-}
-
-/*
-Returns a baked physics [graphics.gd/classdb/ConcavePolygonShape3D] of this node's CSG operation result. Returns an empty shape if the node is not a CSG root node or has no valid geometry.
-
-Performance: If the CSG operation results in a very detailed geometry with many faces physics performance will be very slow. Concave shapes should in general only be used for static level geometry and not with dynamic objects that are moving.
-*/
-func (self Instance) BakeCollisionShape() ConcavePolygonShape3D.Instance { //gd:CSGShape3D.bake_collision_shape
-	return ConcavePolygonShape3D.Instance(Advanced(self).BakeCollisionShape())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -416,6 +420,20 @@ func (self class) GetCollisionPriority() float64 { //gd:CSGShape3D.get_collision
 	return ret
 }
 
+/*
+Returns a baked physics [graphics.gd/classdb/ConcavePolygonShape3D] of this node's CSG operation result. Returns an empty shape if the node is not a CSG root node or has no valid geometry.
+
+Performance: If the CSG operation results in a very detailed geometry with many faces physics performance will be very slow. Concave shapes should in general only be used for static level geometry and not with dynamic objects that are moving.
+
+Note: CSG mesh data updates are deferred, which means they are updated with a delay of one rendered frame. To avoid getting an empty shape or outdated mesh data, make sure to call await get_tree().process_frame before using [Instance.BakeCollisionShape] in [graphics.gd/classdb/Node.Instance.Ready] or after changing properties on the [graphics.gd/classdb/CSGShape3D].
+*/
+//go:nosplit
+func (self class) BakeCollisionShape() [1]gdclass.ConcavePolygonShape3D { //gd:CSGShape3D.bake_collision_shape
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_collision_shape, gdextension.SizeObject, &struct{}{})
+	var ret = [1]gdclass.ConcavePolygonShape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.ConcavePolygonShape3D](r_ret)}
+	return ret
+}
+
 //go:nosplit
 func (self class) SetCalculateTangents(enabled bool) { //gd:CSGShape3D.set_calculate_tangents
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_calculate_tangents, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
@@ -430,6 +448,8 @@ func (self class) IsCalculatingTangents() bool { //gd:CSGShape3D.is_calculating_
 
 /*
 Returns an slice with two elements, the first is the [Transform3D.BasisOrigin] of this node and the second is the root [graphics.gd/classdb/Mesh] of this node. Only works when this node is the root shape.
+
+Note: CSG mesh data updates are deferred, which means they are updated with a delay of one rendered frame. To avoid getting an empty shape or outdated mesh data, make sure to call await get_tree().process_frame before using [Instance.GetMeshes] in [graphics.gd/classdb/Node.Instance.Ready] or after changing properties on the [graphics.gd/classdb/CSGShape3D].
 */
 //go:nosplit
 func (self class) GetMeshes() Array.Any { //gd:CSGShape3D.get_meshes
@@ -440,23 +460,13 @@ func (self class) GetMeshes() Array.Any { //gd:CSGShape3D.get_meshes
 
 /*
 Returns a baked static [graphics.gd/classdb/ArrayMesh] of this node's CSG operation result. Materials from involved CSG nodes are added as extra mesh surfaces. Returns an empty mesh if the node is not a CSG root node or has no valid geometry.
+
+Note: CSG mesh data updates are deferred, which means they are updated with a delay of one rendered frame. To avoid getting an empty mesh or outdated mesh data, make sure to call await get_tree().process_frame before using [Instance.BakeStaticMesh] in [graphics.gd/classdb/Node.Instance.Ready] or after changing properties on the [graphics.gd/classdb/CSGShape3D].
 */
 //go:nosplit
 func (self class) BakeStaticMesh() [1]gdclass.ArrayMesh { //gd:CSGShape3D.bake_static_mesh
 	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_static_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
-	return ret
-}
-
-/*
-Returns a baked physics [graphics.gd/classdb/ConcavePolygonShape3D] of this node's CSG operation result. Returns an empty shape if the node is not a CSG root node or has no valid geometry.
-
-Performance: If the CSG operation results in a very detailed geometry with many faces physics performance will be very slow. Concave shapes should in general only be used for static level geometry and not with dynamic objects that are moving.
-*/
-//go:nosplit
-func (self class) BakeCollisionShape() [1]gdclass.ConcavePolygonShape3D { //gd:CSGShape3D.bake_collision_shape
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_collision_shape, gdextension.SizeObject, &struct{}{})
-	var ret = [1]gdclass.ConcavePolygonShape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.ConcavePolygonShape3D](r_ret)}
 	return ret
 }
 func (self class) AsCSGShape3D() Advanced { return Advanced{pointers.AsA[gdclass.CSGShape3D](self[0])} }

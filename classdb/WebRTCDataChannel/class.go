@@ -129,7 +129,7 @@ func (self Instance) WasStringPacket() bool { //gd:WebRTCDataChannel.was_string_
 }
 
 /*
-Returns the current state of this channel, see [ChannelState].
+Returns the current state of this channel.
 */
 func (self Instance) GetReadyState() ChannelState { //gd:WebRTCDataChannel.get_ready_state
 	return ChannelState(Advanced(self).GetReadyState())
@@ -289,7 +289,7 @@ func (self class) GetWriteMode() WriteMode { //gd:WebRTCDataChannel.get_write_mo
 }
 
 /*
-Returns the current state of this channel, see [ChannelState].
+Returns the current state of this channel.
 */
 //go:nosplit
 func (self class) GetReadyState() ChannelState { //gd:WebRTCDataChannel.get_ready_state

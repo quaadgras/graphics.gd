@@ -178,7 +178,7 @@ func (self Expanded) DisconnectPeer(peer int, force bool) { //gd:MultiplayerPeer
 }
 
 /*
-Returns the current state of the connection. See [ConnectionStatus].
+Returns the current state of the connection.
 */
 func (self Instance) GetConnectionStatus() ConnectionStatus { //gd:MultiplayerPeer.get_connection_status
 	return ConnectionStatus(Advanced(self).GetConnectionStatus())
@@ -364,7 +364,7 @@ func (self class) DisconnectPeer(peer int64, force bool) { //gd:MultiplayerPeer.
 }
 
 /*
-Returns the current state of the connection. See [ConnectionStatus].
+Returns the current state of the connection.
 */
 //go:nosplit
 func (self class) GetConnectionStatus() ConnectionStatus { //gd:MultiplayerPeer.get_connection_status

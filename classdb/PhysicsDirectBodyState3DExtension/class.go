@@ -134,6 +134,10 @@ type Interface interface {
 	GetConstantTorque() Vector3.XYZ
 	SetSleepState(enabled bool)
 	IsSleeping() bool
+	SetCollisionLayer(layer int)
+	GetCollisionLayer() int
+	SetCollisionMask(mask int)
+	GetCollisionMask() int
 	GetContactCount() int
 	GetContactLocalPosition(contact_idx int) Vector3.XYZ
 	GetContactLocalNormal(contact_idx int) Vector3.XYZ
@@ -189,6 +193,10 @@ func (self implementation) SetConstantTorque(torque Vector3.XYZ)                
 func (self implementation) GetConstantTorque() (_ Vector3.XYZ)                                { return }
 func (self implementation) SetSleepState(enabled bool)                                        { return }
 func (self implementation) IsSleeping() (_ bool)                                              { return }
+func (self implementation) SetCollisionLayer(layer int)                                       { return }
+func (self implementation) GetCollisionLayer() (_ int)                                        { return }
+func (self implementation) SetCollisionMask(mask int)                                         { return }
+func (self implementation) GetCollisionMask() (_ int)                                         { return }
 func (self implementation) GetContactCount() (_ int)                                          { return }
 func (self implementation) GetContactLocalPosition(contact_idx int) (_ Vector3.XYZ)           { return }
 func (self implementation) GetContactLocalNormal(contact_idx int) (_ Vector3.XYZ)             { return }
@@ -425,6 +433,34 @@ func (Instance) _is_sleeping(impl func(ptr gdclass.Receiver) bool) (cb gd.Extens
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		gd.UnsafeSet(p_back, ret)
+	}
+}
+func (Instance) _set_collision_layer(impl func(ptr gdclass.Receiver, layer int)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var layer = gd.UnsafeGet[int64](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, int(layer))
+	}
+}
+func (Instance) _get_collision_layer(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, int64(ret))
+	}
+}
+func (Instance) _set_collision_mask(impl func(ptr gdclass.Receiver, mask int)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var mask = gd.UnsafeGet[int64](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, int(mask))
+	}
+}
+func (Instance) _get_collision_mask(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, int64(ret))
 	}
 }
 func (Instance) _get_contact_count(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -847,6 +883,38 @@ func (class) _is_sleeping(impl func(ptr gdclass.Receiver) bool) (cb gd.Extension
 	}
 }
 
+func (class) _set_collision_layer(impl func(ptr gdclass.Receiver, layer int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var layer = gd.UnsafeGet[int64](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, layer)
+	}
+}
+
+func (class) _get_collision_layer(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
+func (class) _set_collision_mask(impl func(ptr gdclass.Receiver, mask int64)) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var mask = gd.UnsafeGet[int64](p_args, 0)
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		impl(self, mask)
+	}
+}
+
+func (class) _get_collision_mask(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		gd.UnsafeSet(p_back, ret)
+	}
+}
+
 func (class) _get_contact_count(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
@@ -1070,6 +1138,14 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._set_sleep_state)
 	case "_is_sleeping":
 		return reflect.ValueOf(self._is_sleeping)
+	case "_set_collision_layer":
+		return reflect.ValueOf(self._set_collision_layer)
+	case "_get_collision_layer":
+		return reflect.ValueOf(self._get_collision_layer)
+	case "_set_collision_mask":
+		return reflect.ValueOf(self._set_collision_mask)
+	case "_get_collision_mask":
+		return reflect.ValueOf(self._get_collision_mask)
 	case "_get_contact_count":
 		return reflect.ValueOf(self._get_contact_count)
 	case "_get_contact_local_position":
@@ -1169,6 +1245,14 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._set_sleep_state)
 	case "_is_sleeping":
 		return reflect.ValueOf(self._is_sleeping)
+	case "_set_collision_layer":
+		return reflect.ValueOf(self._set_collision_layer)
+	case "_get_collision_layer":
+		return reflect.ValueOf(self._get_collision_layer)
+	case "_set_collision_mask":
+		return reflect.ValueOf(self._set_collision_mask)
+	case "_get_collision_mask":
+		return reflect.ValueOf(self._get_collision_mask)
 	case "_get_contact_count":
 		return reflect.ValueOf(self._get_contact_count)
 	case "_get_contact_local_position":

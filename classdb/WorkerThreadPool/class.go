@@ -107,10 +107,12 @@ var methods struct {
 	add_task                          gdextension.MethodForClass `hash:"3745067146"`
 	is_task_completed                 gdextension.MethodForClass `hash:"1116898809"`
 	wait_for_task_completion          gdextension.MethodForClass `hash:"844576869"`
+	get_caller_task_id                gdextension.MethodForClass `hash:"3905245786"`
 	add_group_task                    gdextension.MethodForClass `hash:"1801953219"`
 	is_group_task_completed           gdextension.MethodForClass `hash:"1116898809"`
 	get_group_processed_element_count gdextension.MethodForClass `hash:"923996154"`
 	wait_for_group_task_completion    gdextension.MethodForClass `hash:"1286410249"`
+	get_caller_group_id               gdextension.MethodForClass `hash:"3905245786"`
 }
 
 func init() {
@@ -181,6 +183,18 @@ func WaitForTaskCompletion(task_id int) error { //gd:WorkerThreadPool.wait_for_t
 }
 
 /*
+Returns the task ID of the current thread calling this method, or -1 if the task is a group task, invalid or the current thread is not part of the thread pool (e.g. the main thread).
+
+Can be used by a task to get its own task ID, or to determine whether the current code is running inside the worker thread pool.
+
+Note: Group tasks have their own IDs, so this method will return -1 for group tasks.
+*/
+func GetCallerTaskId() int { //gd:WorkerThreadPool.get_caller_task_id
+	once.Do(singleton)
+	return int(int(Advanced().GetCallerTaskId()))
+}
+
+/*
 Adds 'action' as a group task to be executed by the worker threads. The func will be called a number of times based on 'elements', with the first thread calling it with the value 0 as a parameter, and each consecutive execution incrementing this value by 1 until it reaches element - 1.
 
 The number of threads the task is distributed to is defined by 'tasks_needed', where the default value -1 means it is distributed to all worker threads. 'high_priority' determines if the task has a high priority or a low priority (default). You can optionally provide a 'description' to help with debugging.
@@ -234,6 +248,14 @@ Pauses the thread that calls this method until the group task with the given ID 
 func WaitForGroupTaskCompletion(group_id int) { //gd:WorkerThreadPool.wait_for_group_task_completion
 	once.Do(singleton)
 	Advanced().WaitForGroupTaskCompletion(int64(group_id))
+}
+
+/*
+Returns the task group ID of the current thread calling this method, or -1 if invalid or the current thread is not part of a task group.
+*/
+func GetCallerGroupId() int { //gd:WorkerThreadPool.get_caller_group_id
+	once.Do(singleton)
+	return int(int(Advanced().GetCallerGroupId()))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -306,6 +328,20 @@ func (self class) WaitForTaskCompletion(task_id int64) Error.Code { //gd:WorkerT
 }
 
 /*
+Returns the task ID of the current thread calling this method, or -1 if the task is a group task, invalid or the current thread is not part of the thread pool (e.g. the main thread).
+
+Can be used by a task to get its own task ID, or to determine whether the current code is running inside the worker thread pool.
+
+Note: Group tasks have their own IDs, so this method will return -1 for group tasks.
+*/
+//go:nosplit
+func (self class) GetCallerTaskId() int64 { //gd:WorkerThreadPool.get_caller_task_id
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_caller_task_id, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
 Adds 'action' as a group task to be executed by the worker threads. The func will be called a number of times based on 'elements', with the first thread calling it with the value 0 as a parameter, and each consecutive execution incrementing this value by 1 until it reaches element - 1.
 
 The number of threads the task is distributed to is defined by 'tasks_needed', where the default value -1 means it is distributed to all worker threads. 'high_priority' determines if the task has a high priority or a low priority (default). You can optionally provide a 'description' to help with debugging.
@@ -357,6 +393,16 @@ Pauses the thread that calls this method until the group task with the given ID 
 //go:nosplit
 func (self class) WaitForGroupTaskCompletion(group_id int64) { //gd:WorkerThreadPool.wait_for_group_task_completion
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.wait_for_group_task_completion, 0|(gdextension.SizeInt<<4), &struct{ group_id int64 }{group_id})
+}
+
+/*
+Returns the task group ID of the current thread calling this method, or -1 if invalid or the current thread is not part of a task group.
+*/
+//go:nosplit
+func (self class) GetCallerGroupId() int64 { //gd:WorkerThreadPool.get_caller_group_id
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_caller_group_id, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

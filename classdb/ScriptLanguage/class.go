@@ -166,4 +166,5 @@ const (
 	ScriptNameCasingPascalCase ScriptNameCasing = 1
 	ScriptNameCasingSnakeCase  ScriptNameCasing = 2
 	ScriptNameCasingKebabCase  ScriptNameCasing = 3
+	ScriptNameCasingCamelCase  ScriptNameCasing = 4
 )

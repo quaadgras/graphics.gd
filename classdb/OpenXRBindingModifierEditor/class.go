@@ -88,7 +88,7 @@ func init() {
 	gd.Links = append(gd.Links, func() {
 		sname = gdextension.Host.Strings.Intern.UTF8("OpenXRBindingModifierEditor")
 		otype = gdextension.Host.Objects.Type(sname)
-		gd.LinkMethods(sname, &methods, false)
+		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
 		gdextension.Free(gdextension.TypeStringName, &sname)

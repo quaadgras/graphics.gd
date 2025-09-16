@@ -89,7 +89,6 @@ var sname gdextension.StringName
 var methods struct {
 	set_title                        gdextension.MethodForClass `hash:"83702148"`
 	get_title                        gdextension.MethodForClass `hash:"201670096"`
-	get_window_id                    gdextension.MethodForClass `hash:"3905245786"`
 	set_initial_position             gdextension.MethodForClass `hash:"4084468099"`
 	get_initial_position             gdextension.MethodForClass `hash:"4294066647"`
 	set_current_screen               gdextension.MethodForClass `hash:"1286410249"`
@@ -147,8 +146,6 @@ var methods struct {
 	get_keep_title_visible           gdextension.MethodForClass `hash:"36873697"`
 	set_content_scale_factor         gdextension.MethodForClass `hash:"373806689"`
 	get_content_scale_factor         gdextension.MethodForClass `hash:"1740695150"`
-	set_use_font_oversampling        gdextension.MethodForClass `hash:"2586408642"`
-	is_using_font_oversampling       gdextension.MethodForClass `hash:"36873697"`
 	set_mouse_passthrough_polygon    gdextension.MethodForClass `hash:"1509147220"`
 	get_mouse_passthrough_polygon    gdextension.MethodForClass `hash:"2961356807"`
 	set_wrap_controls                gdextension.MethodForClass `hash:"2586408642"`
@@ -193,11 +190,19 @@ var methods struct {
 	get_theme_default_base_scale     gdextension.MethodForClass `hash:"1740695150"`
 	get_theme_default_font           gdextension.MethodForClass `hash:"3229501585"`
 	get_theme_default_font_size      gdextension.MethodForClass `hash:"3905245786"`
+	get_window_id                    gdextension.MethodForClass `hash:"3905245786"`
+	set_accessibility_name           gdextension.MethodForClass `hash:"83702148"`
+	get_accessibility_name           gdextension.MethodForClass `hash:"201670096"`
+	set_accessibility_description    gdextension.MethodForClass `hash:"83702148"`
+	get_accessibility_description    gdextension.MethodForClass `hash:"201670096"`
+	get_focused_window               gdextension.MethodForClass `hash:"1835468782"`
 	set_layout_direction             gdextension.MethodForClass `hash:"3094704184"`
 	get_layout_direction             gdextension.MethodForClass `hash:"3909617982"`
 	is_layout_rtl                    gdextension.MethodForClass `hash:"36873697"`
 	set_auto_translate               gdextension.MethodForClass `hash:"2586408642"`
 	is_auto_translating              gdextension.MethodForClass `hash:"36873697"`
+	set_use_font_oversampling        gdextension.MethodForClass `hash:"2586408642"`
+	is_using_font_oversampling       gdextension.MethodForClass `hash:"36873697"`
 	popup                            gdextension.MethodForClass `hash:"1680304321"`
 	popup_on_parent                  gdextension.MethodForClass `hash:"1763793166"`
 	popup_centered                   gdextension.MethodForClass `hash:"3447975422"`
@@ -253,13 +258,6 @@ func (Instance) _get_contents_minimum_size(impl func(ptr gdclass.Receiver) Vecto
 		ret := impl(self)
 		gd.UnsafeSet(p_back, Vector2.XY(ret))
 	}
-}
-
-/*
-Returns the ID of the window.
-*/
-func (self Instance) GetWindowId() int { //gd:Window.get_window_id
-	return int(int(Advanced(self).GetWindowId()))
 }
 
 /*
@@ -401,20 +399,6 @@ The value returned by this method can be overridden with [Interface.GetContentsM
 */
 func (self Instance) GetContentsMinimumSize() Vector2.XY { //gd:Window.get_contents_minimum_size
 	return Vector2.XY(Advanced(self).GetContentsMinimumSize())
-}
-
-/*
-Enables font oversampling. This makes fonts look better when they are scaled up.
-*/
-func (self Instance) SetUseFontOversampling(enable bool) { //gd:Window.set_use_font_oversampling
-	Advanced(self).SetUseFontOversampling(enable)
-}
-
-/*
-Returns true if font oversampling is enabled. See [Instance.SetUseFontOversampling].
-*/
-func (self Instance) IsUsingFontOversampling() bool { //gd:Window.is_using_font_oversampling
-	return bool(Advanced(self).IsUsingFontOversampling())
 }
 
 /*
@@ -832,6 +816,21 @@ func (self Instance) GetThemeDefaultFontSize() int { //gd:Window.get_theme_defau
 }
 
 /*
+Returns the ID of the window.
+*/
+func (self Instance) GetWindowId() int { //gd:Window.get_window_id
+	return int(int(Advanced(self).GetWindowId()))
+}
+
+/*
+Returns the focused window.
+*/
+func GetFocusedWindow() Instance { //gd:Window.get_focused_window
+	self := Instance{}
+	return Instance(Advanced(self).GetFocusedWindow())
+}
+
+/*
 Sets layout direction and text writing direction. Right-to-left layouts are necessary for certain languages (e.g. Arabic and Hebrew).
 */
 func (self Instance) SetLayoutDirection(direction LayoutDirection) { //gd:Window.set_layout_direction
@@ -846,10 +845,24 @@ func (self Instance) GetLayoutDirection() LayoutDirection { //gd:Window.get_layo
 }
 
 /*
-Returns true if layout is right-to-left.
+Returns true if the layout is right-to-left.
 */
 func (self Instance) IsLayoutRtl() bool { //gd:Window.is_layout_rtl
 	return bool(Advanced(self).IsLayoutRtl())
+}
+
+/*
+Enables font oversampling. This makes fonts look better when they are scaled up.
+*/
+func (self Instance) SetUseFontOversampling(enable bool) { //gd:Window.set_use_font_oversampling
+	Advanced(self).SetUseFontOversampling(enable)
+}
+
+/*
+Returns true if font oversampling is enabled. See [Instance.SetUseFontOversampling].
+*/
+func (self Instance) IsUsingFontOversampling() bool { //gd:Window.is_using_font_oversampling
+	return bool(Advanced(self).IsUsingFontOversampling())
 }
 
 /*
@@ -1260,6 +1273,30 @@ func (self Instance) SetExcludeFromCapture(value bool) {
 	class(self).SetFlag(9, value)
 }
 
+func (self Instance) PopupWmHint() bool {
+	return bool(class(self).GetFlag(10))
+}
+
+func (self Instance) SetPopupWmHint(value bool) {
+	class(self).SetFlag(10, value)
+}
+
+func (self Instance) MinimizeDisabled() bool {
+	return bool(class(self).GetFlag(11))
+}
+
+func (self Instance) SetMinimizeDisabled(value bool) {
+	class(self).SetFlag(11, value)
+}
+
+func (self Instance) MaximizeDisabled() bool {
+	return bool(class(self).GetFlag(12))
+}
+
+func (self Instance) SetMaximizeDisabled(value bool) {
+	class(self).SetFlag(12, value)
+}
+
 func (self Instance) ForceNative() bool {
 	return bool(class(self).GetForceNative())
 }
@@ -1340,6 +1377,22 @@ func (self Instance) SetAutoTranslate(value bool) {
 	class(self).SetAutoTranslate(value)
 }
 
+func (self Instance) AccessibilityName() string {
+	return string(class(self).GetAccessibilityName().String())
+}
+
+func (self Instance) SetAccessibilityName(value string) {
+	class(self).SetAccessibilityName(String.New(value))
+}
+
+func (self Instance) AccessibilityDescription() string {
+	return string(class(self).GetAccessibilityDescription().String())
+}
+
+func (self Instance) SetAccessibilityDescription(value string) {
+	class(self).SetAccessibilityDescription(String.New(value))
+}
+
 func (self Instance) Theme() Theme.Instance {
 	return Theme.Instance(class(self).GetTheme())
 }
@@ -1376,16 +1429,6 @@ func (self class) SetTitle(title String.Readable) { //gd:Window.set_title
 func (self class) GetTitle() String.Readable { //gd:Window.get_title
 	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_title, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
-	return ret
-}
-
-/*
-Returns the ID of the window.
-*/
-//go:nosplit
-func (self class) GetWindowId() int64 { //gd:Window.get_window_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_window_id, gdextension.SizeInt, &struct{}{})
-	var ret = r_ret
 	return ret
 }
 
@@ -1798,24 +1841,6 @@ func (self class) SetContentScaleFactor(factor float64) { //gd:Window.set_conten
 //go:nosplit
 func (self class) GetContentScaleFactor() float64 { //gd:Window.get_content_scale_factor
 	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_content_scale_factor, gdextension.SizeFloat, &struct{}{})
-	var ret = r_ret
-	return ret
-}
-
-/*
-Enables font oversampling. This makes fonts look better when they are scaled up.
-*/
-//go:nosplit
-func (self class) SetUseFontOversampling(enable bool) { //gd:Window.set_use_font_oversampling
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_font_oversampling, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
-}
-
-/*
-Returns true if font oversampling is enabled. See [Instance.SetUseFontOversampling].
-*/
-//go:nosplit
-func (self class) IsUsingFontOversampling() bool { //gd:Window.is_using_font_oversampling
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_font_oversampling, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2309,6 +2334,50 @@ func (self class) GetThemeDefaultFontSize() int64 { //gd:Window.get_theme_defaul
 }
 
 /*
+Returns the ID of the window.
+*/
+//go:nosplit
+func (self class) GetWindowId() int64 { //gd:Window.get_window_id
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_window_id, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetAccessibilityName(name String.Readable) { //gd:Window.set_accessibility_name
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+}
+
+//go:nosplit
+func (self class) GetAccessibilityName() String.Readable { //gd:Window.get_accessibility_name
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_name, gdextension.SizeString, &struct{}{})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+//go:nosplit
+func (self class) SetAccessibilityDescription(description String.Readable) { //gd:Window.set_accessibility_description
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_accessibility_description, 0|(gdextension.SizeString<<4), &struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))})
+}
+
+//go:nosplit
+func (self class) GetAccessibilityDescription() String.Readable { //gd:Window.get_accessibility_description
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_accessibility_description, gdextension.SizeString, &struct{}{})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+/*
+Returns the focused window.
+*/
+//go:nosplit
+func (self class) GetFocusedWindow() [1]gdclass.Window { //gd:Window.get_focused_window
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.get_focused_window, gdextension.SizeObject, &struct{}{})
+	var ret = [1]gdclass.Window{gd.PointerMustAssertInstanceID[gdclass.Window](r_ret)}
+	return ret
+}
+
+/*
 Sets layout direction and text writing direction. Right-to-left layouts are necessary for certain languages (e.g. Arabic and Hebrew).
 */
 //go:nosplit
@@ -2327,7 +2396,7 @@ func (self class) GetLayoutDirection() LayoutDirection { //gd:Window.get_layout_
 }
 
 /*
-Returns true if layout is right-to-left.
+Returns true if the layout is right-to-left.
 */
 //go:nosplit
 func (self class) IsLayoutRtl() bool { //gd:Window.is_layout_rtl
@@ -2344,6 +2413,24 @@ func (self class) SetAutoTranslate(enable bool) { //gd:Window.set_auto_translate
 //go:nosplit
 func (self class) IsAutoTranslating() bool { //gd:Window.is_auto_translating
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_translating, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Enables font oversampling. This makes fonts look better when they are scaled up.
+*/
+//go:nosplit
+func (self class) SetUseFontOversampling(enable bool) { //gd:Window.set_use_font_oversampling
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_font_oversampling, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+}
+
+/*
+Returns true if font oversampling is enabled. See [Instance.SetUseFontOversampling].
+*/
+//go:nosplit
+func (self class) IsUsingFontOversampling() bool { //gd:Window.is_using_font_oversampling
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_font_oversampling, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2688,8 +2775,6 @@ const (
 	//
 	// On Android: This enables immersive mode.
 	//
-	// On Windows: Multi-window full-screen mode has a 1px border of the [graphics.gd/classdb/ProjectSettings] "rendering/environment/defaults/default_clear_color" color.
-	//
 	// On macOS: A new desktop is used to display the running project.
 	//
 	// Note: Regardless of the platform, enabling full screen will change the window size to match the monitor's size. Therefore, make sure your project supports [multiple resolutions] when enabling full screen mode.
@@ -2700,6 +2785,8 @@ const (
 	//
 	// Full screen window covers the entire display area of a screen and has no border or decorations. The display's video mode is not changed.
 	//
+	// Note: This mode might not work with screen recording software.
+	//
 	// On Android: This enables immersive mode.
 	//
 	// On Windows: Depending on video driver, full screen transition might cause screens to go black for a moment.
@@ -2707,6 +2794,8 @@ const (
 	// On macOS: A new desktop is used to display the running project. Exclusive full screen mode prevents Dock and Menu from showing up when the mouse pointer is hovering the edge of the screen.
 	//
 	// On Linux (X11): Exclusive full screen mode bypasses compositor.
+	//
+	// On Linux (Wayland): Equivalent to [ModeFullscreen].
 	//
 	// Note: Regardless of the platform, enabling full screen will change the window size to match the monitor's size. Therefore, make sure your project supports [multiple resolutions] when enabling full screen mode.
 	//
@@ -2751,12 +2840,24 @@ const (
 	FlagSharpCorners Flags = 8
 	// Windows is excluded from screenshots taken by [graphics.gd/classdb/DisplayServer.ScreenGetImage], [graphics.gd/classdb/DisplayServer.ScreenGetImageRect], and [graphics.gd/classdb/DisplayServer.ScreenGetPixel].
 	//
-	// Note: This flag is implemented on macOS and Windows.
+	// Note: This flag has no effect in embedded windows.
 	//
-	// Note: Setting this flag will NOT prevent other apps from capturing an image, it should not be used as a security measure.
+	// Note: This flag is implemented on macOS and Windows (10, 20H1).
+	//
+	// Note: Setting this flag will prevent standard screenshot methods from capturing a window image, but does NOT guarantee that other apps won't be able to capture an image. It should not be used as a DRM or security measure.
 	FlagExcludeFromCapture Flags = 9
+	// Signals the window manager that this window is supposed to be an implementation-defined "popup" (usually a floating, borderless, untileable and immovable child window).
+	FlagPopupWmHint Flags = 10
+	// Window minimize button is disabled.
+	//
+	// Note: This flag is implemented on macOS and Windows.
+	FlagMinimizeDisabled Flags = 11
+	// Window maximize button is disabled.
+	//
+	// Note: This flag is implemented on macOS and Windows.
+	FlagMaximizeDisabled Flags = 12
 	// Max value of the [Flags].
-	FlagMax Flags = 10
+	FlagMax Flags = 13
 )
 
 type ContentScaleMode int //gd:Window.ContentScaleMode

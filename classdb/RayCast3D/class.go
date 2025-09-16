@@ -215,21 +215,21 @@ func (self Instance) AddExceptionRid(rid RID.Body3D) { //gd:RayCast3D.add_except
 }
 
 /*
-Adds a collision exception so the ray does not report collisions with the specified [graphics.gd/classdb/CollisionObject3D] node.
+Adds a collision exception so the ray does not report collisions with the specified 'node'.
 */
 func (self Instance) AddException(node CollisionObject3D.Instance) { //gd:RayCast3D.add_exception
 	Advanced(self).AddException(node)
 }
 
 /*
-Removes a collision exception so the ray does report collisions with the specified [Resource.ID].
+Removes a collision exception so the ray can report collisions with the specified [Resource.ID].
 */
 func (self Instance) RemoveExceptionRid(rid RID.Body3D) { //gd:RayCast3D.remove_exception_rid
 	Advanced(self).RemoveExceptionRid(RID.Any(rid))
 }
 
 /*
-Removes a collision exception so the ray does report collisions with the specified [graphics.gd/classdb/CollisionObject3D] node.
+Removes a collision exception so the ray can report collisions with the specified 'node'.
 */
 func (self Instance) RemoveException(node CollisionObject3D.Instance) { //gd:RayCast3D.remove_exception
 	Advanced(self).RemoveException(node)
@@ -501,7 +501,7 @@ func (self class) AddExceptionRid(rid RID.Any) { //gd:RayCast3D.add_exception_ri
 }
 
 /*
-Adds a collision exception so the ray does not report collisions with the specified [graphics.gd/classdb/CollisionObject3D] node.
+Adds a collision exception so the ray does not report collisions with the specified 'node'.
 */
 //go:nosplit
 func (self class) AddException(node [1]gdclass.CollisionObject3D) { //gd:RayCast3D.add_exception
@@ -509,7 +509,7 @@ func (self class) AddException(node [1]gdclass.CollisionObject3D) { //gd:RayCast
 }
 
 /*
-Removes a collision exception so the ray does report collisions with the specified [Resource.ID].
+Removes a collision exception so the ray can report collisions with the specified [Resource.ID].
 */
 //go:nosplit
 func (self class) RemoveExceptionRid(rid RID.Any) { //gd:RayCast3D.remove_exception_rid
@@ -517,7 +517,7 @@ func (self class) RemoveExceptionRid(rid RID.Any) { //gd:RayCast3D.remove_except
 }
 
 /*
-Removes a collision exception so the ray does report collisions with the specified [graphics.gd/classdb/CollisionObject3D] node.
+Removes a collision exception so the ray can report collisions with the specified 'node'.
 */
 //go:nosplit
 func (self class) RemoveException(node [1]gdclass.CollisionObject3D) { //gd:RayCast3D.remove_exception

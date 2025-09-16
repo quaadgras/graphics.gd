@@ -86,8 +86,14 @@ var methods struct {
 	get_image_format                   gdextension.MethodForClass `hash:"201670096"`
 	set_lossy_quality                  gdextension.MethodForClass `hash:"373806689"`
 	get_lossy_quality                  gdextension.MethodForClass `hash:"1740695150"`
+	set_fallback_image_format          gdextension.MethodForClass `hash:"83702148"`
+	get_fallback_image_format          gdextension.MethodForClass `hash:"201670096"`
+	set_fallback_image_quality         gdextension.MethodForClass `hash:"373806689"`
+	get_fallback_image_quality         gdextension.MethodForClass `hash:"1740695150"`
 	set_root_node_mode                 gdextension.MethodForClass `hash:"463633402"`
 	get_root_node_mode                 gdextension.MethodForClass `hash:"948057992"`
+	set_visibility_mode                gdextension.MethodForClass `hash:"2803579218"`
+	get_visibility_mode                gdextension.MethodForClass `hash:"3885445962"`
 	append_from_file                   gdextension.MethodForClass `hash:"866380864"`
 	append_from_buffer                 gdextension.MethodForClass `hash:"1616081266"`
 	append_from_scene                  gdextension.MethodForClass `hash:"1622574258"`
@@ -147,7 +153,7 @@ Takes a []byte defining a glTF and imports the data to the given [graphics.gd/cl
 Note: The 'base_path' tells [Instance.AppendFromBuffer] where to find dependencies and can be empty.
 */
 func (self Instance) AppendFromBuffer(bytes []byte, base_path string, state GLTFState.Instance) error { //gd:GLTFDocument.append_from_buffer
-	return error(gd.ToError(Advanced(self).AppendFromBuffer(Packed.Bytes(Packed.New(bytes...)), String.New(base_path), state, int64(0))))
+	return error(gd.ToError(Advanced(self).AppendFromBuffer(Packed.BytesFrom(bytes...), String.New(base_path), state, int64(0))))
 }
 
 /*
@@ -156,7 +162,7 @@ Takes a []byte defining a glTF and imports the data to the given [graphics.gd/cl
 Note: The 'base_path' tells [Instance.AppendFromBuffer] where to find dependencies and can be empty.
 */
 func (self Expanded) AppendFromBuffer(bytes []byte, base_path string, state GLTFState.Instance, flags int) error { //gd:GLTFDocument.append_from_buffer
-	return error(gd.ToError(Advanced(self).AppendFromBuffer(Packed.Bytes(Packed.New(bytes...)), String.New(base_path), state, int64(flags))))
+	return error(gd.ToError(Advanced(self).AppendFromBuffer(Packed.BytesFrom(bytes...), String.New(base_path), state, int64(flags))))
 }
 
 /*
@@ -320,12 +326,36 @@ func (self Instance) SetLossyQuality(value Float.X) {
 	class(self).SetLossyQuality(float64(value))
 }
 
+func (self Instance) FallbackImageFormat() string {
+	return string(class(self).GetFallbackImageFormat().String())
+}
+
+func (self Instance) SetFallbackImageFormat(value string) {
+	class(self).SetFallbackImageFormat(String.New(value))
+}
+
+func (self Instance) FallbackImageQuality() Float.X {
+	return Float.X(Float.X(class(self).GetFallbackImageQuality()))
+}
+
+func (self Instance) SetFallbackImageQuality(value Float.X) {
+	class(self).SetFallbackImageQuality(float64(value))
+}
+
 func (self Instance) RootNodeMode() RootNodeMode {
 	return RootNodeMode(class(self).GetRootNodeMode())
 }
 
 func (self Instance) SetRootNodeMode(value RootNodeMode) {
 	class(self).SetRootNodeMode(value)
+}
+
+func (self Instance) VisibilityMode() VisibilityMode {
+	return VisibilityMode(class(self).GetVisibilityMode())
+}
+
+func (self Instance) SetVisibilityMode(value VisibilityMode) {
+	class(self).SetVisibilityMode(value)
 }
 
 //go:nosplit
@@ -353,6 +383,30 @@ func (self class) GetLossyQuality() float64 { //gd:GLTFDocument.get_lossy_qualit
 }
 
 //go:nosplit
+func (self class) SetFallbackImageFormat(fallback_image_format String.Readable) { //gd:GLTFDocument.set_fallback_image_format
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_image_format, 0|(gdextension.SizeString<<4), &struct{ fallback_image_format gdextension.String }{pointers.Get(gd.InternalString(fallback_image_format))})
+}
+
+//go:nosplit
+func (self class) GetFallbackImageFormat() String.Readable { //gd:GLTFDocument.get_fallback_image_format
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_fallback_image_format, gdextension.SizeString, &struct{}{})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+//go:nosplit
+func (self class) SetFallbackImageQuality(fallback_image_quality float64) { //gd:GLTFDocument.set_fallback_image_quality
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fallback_image_quality, 0|(gdextension.SizeFloat<<4), &struct{ fallback_image_quality float64 }{fallback_image_quality})
+}
+
+//go:nosplit
+func (self class) GetFallbackImageQuality() float64 { //gd:GLTFDocument.get_fallback_image_quality
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fallback_image_quality, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
 func (self class) SetRootNodeMode(root_node_mode RootNodeMode) { //gd:GLTFDocument.set_root_node_mode
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root_node_mode, 0|(gdextension.SizeInt<<4), &struct{ root_node_mode RootNodeMode }{root_node_mode})
 }
@@ -360,6 +414,18 @@ func (self class) SetRootNodeMode(root_node_mode RootNodeMode) { //gd:GLTFDocume
 //go:nosplit
 func (self class) GetRootNodeMode() RootNodeMode { //gd:GLTFDocument.get_root_node_mode
 	var r_ret = gdextension.Call[RootNodeMode](gd.ObjectChecked(self.AsObject()), methods.get_root_node_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetVisibilityMode(visibility_mode VisibilityMode) { //gd:GLTFDocument.set_visibility_mode
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visibility_mode, 0|(gdextension.SizeInt<<4), &struct{ visibility_mode VisibilityMode }{visibility_mode})
+}
+
+//go:nosplit
+func (self class) GetVisibilityMode() VisibilityMode { //gd:GLTFDocument.get_visibility_mode
+	var r_ret = gdextension.Call[VisibilityMode](gd.ObjectChecked(self.AsObject()), methods.get_visibility_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -393,7 +459,7 @@ func (self class) AppendFromBuffer(bytes Packed.Bytes, base_path String.Readable
 		base_path gdextension.String
 		state     gdextension.Object
 		flags     int64
-	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes))), pointers.Get(gd.InternalString(base_path)), gdextension.Object(gd.ObjectChecked(state[0].AsObject())), flags})
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes.Array))), pointers.Get(gd.InternalString(base_path)), gdextension.Object(gd.ObjectChecked(state[0].AsObject())), flags})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -435,7 +501,7 @@ Takes a [graphics.gd/classdb/GLTFState] object through the 'state' parameter and
 //go:nosplit
 func (self class) GenerateBuffer(state [1]gdclass.GLTFState) Packed.Bytes { //gd:GLTFDocument.generate_buffer
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.generate_buffer, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ state gdextension.Object }{gdextension.Object(gd.ObjectChecked(state[0].AsObject()))})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -562,4 +628,15 @@ const (
 	RootNodeModeKeepRoot RootNodeMode = 1
 	// Treat the Godot scene's root node as the name of the glTF scene, and add all of its children as root nodes of the glTF file. This uses only vanilla glTF features. This avoids an extra root node, but only the name of the Godot scene's root node will be preserved, as it will not be saved as a node.
 	RootNodeModeMultiRoot RootNodeMode = 2
+)
+
+type VisibilityMode int //gd:GLTFDocument.VisibilityMode
+
+const (
+	// If the scene contains any non-visible nodes, include them, mark them as non-visible with KHR_node_visibility, and require that importers respect their non-visibility. Downside: If the importer does not support KHR_node_visibility, the file cannot be imported.
+	VisibilityModeIncludeRequired VisibilityMode = 0
+	// If the scene contains any non-visible nodes, include them, mark them as non-visible with KHR_node_visibility, and do not impose any requirements on importers. Downside: If the importer does not support KHR_node_visibility, invisible objects will be visible.
+	VisibilityModeIncludeOptional VisibilityMode = 1
+	// If the scene contains any non-visible nodes, do not include them in the export. This is the same as the behavior in Godot 4.4 and earlier. Downside: Invisible nodes will not exist in the exported file.
+	VisibilityModeExclude VisibilityMode = 2
 )

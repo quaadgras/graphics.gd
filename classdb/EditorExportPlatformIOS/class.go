@@ -14,6 +14,7 @@ import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/EditorExportPlatform"
+import "graphics.gd/classdb/EditorExportPlatformAppleEmbedded"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -145,6 +146,15 @@ func (self Instance) AsEditorExportPlatformIOS() Instance {
 func (self *Extension[T]) AsEditorExportPlatformIOS() Instance {
 	return self.Super().AsEditorExportPlatformIOS()
 }
+func (self class) AsEditorExportPlatformAppleEmbedded() EditorExportPlatformAppleEmbedded.Advanced {
+	return EditorExportPlatformAppleEmbedded.Advanced{pointers.AsA[gdclass.EditorExportPlatformAppleEmbedded](self[0])}
+}
+func (self *Extension[T]) AsEditorExportPlatformAppleEmbedded() EditorExportPlatformAppleEmbedded.Instance {
+	return self.Super().AsEditorExportPlatformAppleEmbedded()
+}
+func (self Instance) AsEditorExportPlatformAppleEmbedded() EditorExportPlatformAppleEmbedded.Instance {
+	return EditorExportPlatformAppleEmbedded.Instance{pointers.AsA[gdclass.EditorExportPlatformAppleEmbedded](self[0])}
+}
 func (self class) AsEditorExportPlatform() EditorExportPlatform.Advanced {
 	return EditorExportPlatform.Advanced{pointers.AsA[gdclass.EditorExportPlatform](self[0])}
 }
@@ -165,14 +175,14 @@ func (self Instance) AsRefCounted() [1]gd.RefCounted {
 func (self class) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(EditorExportPlatform.Advanced(self.AsEditorExportPlatform()), name)
+		return gd.VirtualByName(EditorExportPlatformAppleEmbedded.Advanced(self.AsEditorExportPlatformAppleEmbedded()), name)
 	}
 }
 
 func (self Instance) Virtual(name string) reflect.Value {
 	switch name {
 	default:
-		return gd.VirtualByName(EditorExportPlatform.Instance(self.AsEditorExportPlatform()), name)
+		return gd.VirtualByName(EditorExportPlatformAppleEmbedded.Instance(self.AsEditorExportPlatformAppleEmbedded()), name)
 	}
 }
 func init() {

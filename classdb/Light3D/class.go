@@ -688,7 +688,7 @@ const (
 type BakeMode int //gd:Light3D.BakeMode
 
 const (
-	// Light is ignored when baking. This is the fastest mode, but the light will be taken into account when baking global illumination. This mode should generally be used for dynamic lights that change quickly, as the effect of global illumination is less noticeable on those lights.
+	// Light is ignored when baking. This is the fastest mode, but the light will not be taken into account when baking global illumination. This mode should generally be used for dynamic lights that change quickly, as the effect of global illumination is less noticeable on those lights.
 	//
 	// Note: Hiding a light does not affect baking [graphics.gd/classdb/LightmapGI]. Hiding a light will still affect baking [graphics.gd/classdb/VoxelGI] and SDFGI (see [graphics.gd/classdb/Environment.Instance.SdfgiEnabled]).
 	BakeDisabled BakeMode = 0

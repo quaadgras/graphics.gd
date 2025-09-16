@@ -124,11 +124,12 @@ type Instance [1]gdclass.ZIPReader
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	open        gdextension.MethodForClass `hash:"166001499"`
-	close       gdextension.MethodForClass `hash:"166280745"`
-	get_files   gdextension.MethodForClass `hash:"2981934095"`
-	read_file   gdextension.MethodForClass `hash:"740857591"`
-	file_exists gdextension.MethodForClass `hash:"35364943"`
+	open                  gdextension.MethodForClass `hash:"166001499"`
+	close                 gdextension.MethodForClass `hash:"166280745"`
+	get_files             gdextension.MethodForClass `hash:"2981934095"`
+	read_file             gdextension.MethodForClass `hash:"740857591"`
+	file_exists           gdextension.MethodForClass `hash:"35364943"`
+	get_compression_level gdextension.MethodForClass `hash:"3694577386"`
 }
 
 func init() {
@@ -210,6 +211,20 @@ Must be called after [Instance.Open].
 */
 func (self Expanded) FileExists(path string, case_sensitive bool) bool { //gd:ZIPReader.file_exists
 	return bool(Advanced(self).FileExists(String.New(path), case_sensitive))
+}
+
+/*
+Returns the compression level of the file in the loaded zip archive. Returns -1 if the file doesn't exist or any other error occurs. Must be called after [Instance.Open].
+*/
+func (self Instance) GetCompressionLevel(path string) int { //gd:ZIPReader.get_compression_level
+	return int(int(Advanced(self).GetCompressionLevel(String.New(path), true)))
+}
+
+/*
+Returns the compression level of the file in the loaded zip archive. Returns -1 if the file doesn't exist or any other error occurs. Must be called after [Instance.Open].
+*/
+func (self Expanded) GetCompressionLevel(path string, case_sensitive bool) int { //gd:ZIPReader.get_compression_level
+	return int(int(Advanced(self).GetCompressionLevel(String.New(path), case_sensitive)))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -298,7 +313,7 @@ func (self class) ReadFile(path String.Readable, case_sensitive bool) Packed.Byt
 		path           gdextension.String
 		case_sensitive bool
 	}{pointers.Get(gd.InternalString(path)), case_sensitive})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -310,6 +325,19 @@ Must be called after [Instance.Open].
 //go:nosplit
 func (self class) FileExists(path String.Readable, case_sensitive bool) bool { //gd:ZIPReader.file_exists
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.file_exists, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+		path           gdextension.String
+		case_sensitive bool
+	}{pointers.Get(gd.InternalString(path)), case_sensitive})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the compression level of the file in the loaded zip archive. Returns -1 if the file doesn't exist or any other error occurs. Must be called after [Instance.Open].
+*/
+//go:nosplit
+func (self class) GetCompressionLevel(path String.Readable, case_sensitive bool) int64 { //gd:ZIPReader.get_compression_level
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_compression_level, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path           gdextension.String
 		case_sensitive bool
 	}{pointers.Get(gd.InternalString(path)), case_sensitive})

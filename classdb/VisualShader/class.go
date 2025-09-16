@@ -92,13 +92,13 @@ var methods struct {
 	disconnect_nodes       gdextension.MethodForClass `hash:"2268060358"`
 	connect_nodes_forced   gdextension.MethodForClass `hash:"2268060358"`
 	get_node_connections   gdextension.MethodForClass `hash:"1441964831"`
-	set_graph_offset       gdextension.MethodForClass `hash:"743155724"`
-	get_graph_offset       gdextension.MethodForClass `hash:"3341600327"`
 	attach_node_to_frame   gdextension.MethodForClass `hash:"2479945279"`
 	detach_node_from_frame gdextension.MethodForClass `hash:"844050912"`
 	add_varying            gdextension.MethodForClass `hash:"2084110726"`
 	remove_varying         gdextension.MethodForClass `hash:"83702148"`
 	has_varying            gdextension.MethodForClass `hash:"3927539163"`
+	set_graph_offset       gdextension.MethodForClass `hash:"743155724"`
+	get_graph_offset       gdextension.MethodForClass `hash:"3341600327"`
 }
 
 func init() {
@@ -500,18 +500,6 @@ func (self class) GetNodeConnections(atype Type) Array.Contains[Dictionary.Any] 
 	return ret
 }
 
-//go:nosplit
-func (self class) SetGraphOffset(offset Vector2.XY) { //gd:VisualShader.set_graph_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_graph_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
-}
-
-//go:nosplit
-func (self class) GetGraphOffset() Vector2.XY { //gd:VisualShader.get_graph_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_graph_offset, gdextension.SizeVector2, &struct{}{})
-	var ret = r_ret
-	return ret
-}
-
 /*
 Attaches the given node to the given frame.
 */
@@ -561,6 +549,18 @@ Returns true if the shader has a varying with the given 'name'.
 //go:nosplit
 func (self class) HasVarying(name String.Readable) bool { //gd:VisualShader.has_varying
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_varying, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetGraphOffset(offset Vector2.XY) { //gd:VisualShader.set_graph_offset
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_graph_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
+}
+
+//go:nosplit
+func (self class) GetGraphOffset() Vector2.XY { //gd:VisualShader.get_graph_offset
+	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_graph_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

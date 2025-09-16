@@ -133,7 +133,9 @@ func (self Expanded) StartDecompression(use_deflate bool, buffer_size int) error
 }
 
 /*
-Finalizes the stream, compressing or decompressing any buffered chunk left.
+Finalizes the stream, compressing any buffered chunk left.
+
+You must call it only when you are compressing.
 */
 func (self Instance) Finish() error { //gd:StreamPeerGZIP.finish
 	return error(gd.ToError(Advanced(self).Finish()))
@@ -216,7 +218,9 @@ func (self class) StartDecompression(use_deflate bool, buffer_size int64) Error.
 }
 
 /*
-Finalizes the stream, compressing or decompressing any buffered chunk left.
+Finalizes the stream, compressing any buffered chunk left.
+
+You must call it only when you are compressing.
 */
 //go:nosplit
 func (self class) Finish() Error.Code { //gd:StreamPeerGZIP.finish

@@ -82,6 +82,8 @@ var methods struct {
 	get_path_rids      gdextension.MethodForClass `hash:"3995934104"`
 	set_path_owner_ids gdextension.MethodForClass `hash:"3709968205"`
 	get_path_owner_ids gdextension.MethodForClass `hash:"235988956"`
+	set_path_length    gdextension.MethodForClass `hash:"373806689"`
+	get_path_length    gdextension.MethodForClass `hash:"1740695150"`
 	reset              gdextension.MethodForClass `hash:"3218959716"`
 }
 
@@ -187,6 +189,14 @@ func (self Instance) SetPathOwnerIds(value []int64) {
 	class(self).SetPathOwnerIds(Packed.New(value...))
 }
 
+func (self Instance) PathLength() Float.X {
+	return Float.X(Float.X(class(self).GetPathLength()))
+}
+
+func (self Instance) SetPathLength(value Float.X) {
+	class(self).SetPathLength(float64(value))
+}
+
 //go:nosplit
 func (self class) SetPath(path Packed.Array[Vector2.XY]) { //gd:NavigationPathQueryResult2D.set_path
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path, 0|(gdextension.SizePackedArray<<4), &struct {
@@ -238,6 +248,18 @@ func (self class) SetPathOwnerIds(path_owner_ids Packed.Array[int64]) { //gd:Nav
 func (self class) GetPathOwnerIds() Packed.Array[int64] { //gd:NavigationPathQueryResult2D.get_path_owner_ids
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path_owner_ids, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPathLength(length float64) { //gd:NavigationPathQueryResult2D.set_path_length
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
+}
+
+//go:nosplit
+func (self class) GetPathLength() float64 { //gd:NavigationPathQueryResult2D.get_path_length
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_length, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
 	return ret
 }
 

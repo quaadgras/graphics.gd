@@ -638,6 +638,20 @@ type Format struct {
 	FrameDenominator int    `gd:"frame_denominator"`
 }
 
+type FontSizeCacheInfo struct {
+	SizePixels           Vector2i.XY `gd:"size_px"`
+	ViewportOversampling Float.X     `gd:"viewport_oversampling"`
+	Glyphs               int         `gd:"glyphs"`
+	Textures             int         `gd:"textures"`
+	TexturesSize         int         `gd:"textures_size"`
+}
+
+type Intersection struct {
+	Position  Vector3.XYZ `gd:"position"`
+	Normal    Vector3.XYZ `gd:"normal"`
+	FaceIndex int         `gd:"face_index"`
+}
+
 var Structables = map[string]reflect.Type{
 	"AStarGrid2D.get_point_data_in_region.":                           reflect.TypeFor[PointData](),
 	"AudioStreamWAV.load_from_buffer.options":                         WavOptions,
@@ -1012,4 +1026,25 @@ var Structables = map[string]reflect.Type{
 	"WebRTCMultiplayerPeer.create_mesh.channels_config":                                    SliceOf(TypeFromString("MultiplayerPeer", "TransferMode")),
 	"WebXRInterface.get_available_display_refresh_rates.":                                  reflect.TypeFor[[]Float.X](),
 	"XRInterface.get_supported_environment_blend_modes.":                                   SliceOf(TypeFromString("", "EnvironmentBlendMode")),
+
+	"AudioStream._get_tags.":                            reflect.TypeFor[map[string]any](),
+	"AudioStreamOggVorbis.set_tags.tags":                reflect.TypeFor[map[string]any](),
+	"AudioStreamOggVorbis.get_tags.":                    reflect.TypeFor[map[string]any](),
+	"AudioStreamWAV.set_tags.tags":                      reflect.TypeFor[map[string]any](),
+	"AudioStreamWAV.get_tags.":                          reflect.TypeFor[map[string]any](),
+	"DPITexture.create_from_string.color_map":           reflect.TypeFor[map[Color.RGBA]Color.RGBA](),
+	"DPITexture.set_color_map.color_map":                reflect.TypeFor[map[Color.RGBA]Color.RGBA](),
+	"DPITexture.get_color_map.":                         reflect.TypeFor[map[Color.RGBA]Color.RGBA](),
+	"GraphEdit.get_connection_list_from_node.":          reflect.TypeFor[[]Connection](),
+	"GraphEdit.set_type_names.type_names":               reflect.TypeFor[map[int]string](),
+	"GraphEdit.get_type_names.":                         reflect.TypeFor[map[int]string](),
+	"OpenXRExtensionWrapper._get_requested_extensions.": reflect.TypeFor[map[string]*bool](),
+	"OpenXRExtensionWrapper._set_viewport_composition_layer_and_get_next_pointer.property_values":            reflect.TypeFor[Object.PropertyInfo](),
+	"OpenXRExtensionWrapper._get_viewport_composition_layer_extension_properties.":                           reflect.TypeFor[[]Object.PropertyInfo](),
+	"OpenXRExtensionWrapper._get_viewport_composition_layer_extension_property_defaults.":                    reflect.TypeFor[map[string]any](),
+	"OpenXRExtensionWrapper._set_android_surface_swapchain_create_info_and_get_next_pointer.property_values": reflect.TypeFor[Object.PropertyInfo](),
+	"TextServer.font_get_size_cache_info.":                                                                   reflect.TypeFor[FontSizeCacheInfo](),
+	"TextServerExtension._font_get_size_cache_info.":                                                         reflect.TypeFor[FontSizeCacheInfo](),
+	"TriangleMesh.intersect_segment.":                                                                        reflect.TypeFor[Intersection](),
+	"TriangleMesh.intersect_ray.":                                                                            reflect.TypeFor[Intersection](),
 }

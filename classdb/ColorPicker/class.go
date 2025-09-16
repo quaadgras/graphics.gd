@@ -90,6 +90,8 @@ var methods struct {
 	get_color_mode       gdextension.MethodForClass `hash:"392907674"`
 	set_edit_alpha       gdextension.MethodForClass `hash:"2586408642"`
 	is_editing_alpha     gdextension.MethodForClass `hash:"36873697"`
+	set_edit_intensity   gdextension.MethodForClass `hash:"2586408642"`
+	is_editing_intensity gdextension.MethodForClass `hash:"36873697"`
 	set_can_add_swatches gdextension.MethodForClass `hash:"2586408642"`
 	are_swatches_enabled gdextension.MethodForClass `hash:"36873697"`
 	set_presets_visible  gdextension.MethodForClass `hash:"2586408642"`
@@ -236,6 +238,14 @@ func (self Instance) SetEditAlpha(value bool) {
 	class(self).SetEditAlpha(value)
 }
 
+func (self Instance) EditIntensity() bool {
+	return bool(class(self).IsEditingIntensity())
+}
+
+func (self Instance) SetEditIntensity(value bool) {
+	class(self).SetEditIntensity(value)
+}
+
 func (self Instance) ColorMode() ColorModeType {
 	return ColorModeType(class(self).GetColorMode())
 }
@@ -352,6 +362,18 @@ func (self class) SetEditAlpha(show bool) { //gd:ColorPicker.set_edit_alpha
 //go:nosplit
 func (self class) IsEditingAlpha() bool { //gd:ColorPicker.is_editing_alpha
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_alpha, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetEditIntensity(show bool) { //gd:ColorPicker.set_edit_intensity
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edit_intensity, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
+}
+
+//go:nosplit
+func (self class) IsEditingIntensity() bool { //gd:ColorPicker.is_editing_intensity
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_intensity, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -603,12 +625,13 @@ func init() {
 type ColorModeType int //gd:ColorPicker.ColorModeType
 
 const (
-	// Allows editing the color with Red/Green/Blue sliders.
+	// Allows editing the color with Red/Green/Blue sliders in sRGB color space.
 	ModeRgb ColorModeType = 0
 	// Allows editing the color with Hue/Saturation/Value sliders.
 	ModeHsv ColorModeType = 1
-	// Allows the color R, G, B component values to go beyond 1.0, which can be used for certain special operations that require it (like tinting without darkening or rendering sprites in HDR).
 	ModeRaw ColorModeType = 2
+	// Allows editing the color with Red/Green/Blue sliders in linear color space.
+	ModeLinear ColorModeType = 2
 	// Allows editing the color with Hue/Saturation/Lightness sliders.
 	//
 	// OKHSL is a new color space similar to HSL but that better match perception by leveraging the Oklab color space which is designed to be simple to use, while doing a good job at predicting perceived lightness, chroma and hue.
@@ -632,4 +655,8 @@ const (
 	ShapeOkhslCircle PickerShapeType = 3
 	// The color space shape and the shape select button are hidden. Can't be selected from the shapes popup.
 	ShapeNone PickerShapeType = 4
+	// OKHSL Color Model rectangle with constant lightness.
+	ShapeOkHsRectangle PickerShapeType = 5
+	// OKHSL Color Model rectangle with constant saturation.
+	ShapeOkHlRectangle PickerShapeType = 6
 )

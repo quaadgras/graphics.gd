@@ -108,7 +108,7 @@ Creates a new [graphics.gd/classdb/AudioStreamOggVorbis] instance from the given
 */
 func LoadFromBuffer(stream_data []byte) AudioStreamOggVorbis.Instance { //gd:ResourceImporterOggVorbis.load_from_buffer
 	self := Instance{}
-	return AudioStreamOggVorbis.Instance(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...))))
+	return AudioStreamOggVorbis.Instance(Advanced(self).LoadFromBuffer(Packed.BytesFrom(stream_data...)))
 }
 
 /*
@@ -167,7 +167,7 @@ Creates a new [graphics.gd/classdb/AudioStreamOggVorbis] instance from the given
 */
 //go:nosplit
 func (self class) LoadFromBuffer(stream_data Packed.Bytes) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_buffer
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4), &struct{ stream_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data)))})
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4), &struct{ stream_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data.Array)))})
 	var ret = [1]gdclass.AudioStreamOggVorbis{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamOggVorbis](r_ret)}
 	return ret
 }

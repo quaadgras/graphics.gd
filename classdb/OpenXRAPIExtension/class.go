@@ -18,7 +18,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
-import "graphics.gd/classdb/OpenXRExtensionWrapperExtension"
+import "graphics.gd/classdb/OpenXRExtensionWrapper"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -94,6 +94,7 @@ var methods struct {
 	insert_debug_label                             gdextension.MethodForClass `hash:"83702148"`
 	is_initialized                                 gdextension.MethodForClass `hash:"2240911060"`
 	is_running                                     gdextension.MethodForClass `hash:"2240911060"`
+	set_custom_play_space                          gdextension.MethodForClass `hash:"1286410249"`
 	get_play_space                                 gdextension.MethodForClass `hash:"2455072627"`
 	get_predicted_display_time                     gdextension.MethodForClass `hash:"2455072627"`
 	get_next_frame_time                            gdextension.MethodForClass `hash:"2455072627"`
@@ -101,10 +102,12 @@ var methods struct {
 	find_action                                    gdextension.MethodForClass `hash:"4106179378"`
 	action_get_handle                              gdextension.MethodForClass `hash:"3917799429"`
 	get_hand_tracker                               gdextension.MethodForClass `hash:"3744713108"`
-	register_composition_layer_provider            gdextension.MethodForClass `hash:"1997997368"`
-	unregister_composition_layer_provider          gdextension.MethodForClass `hash:"1997997368"`
-	register_projection_views_extension            gdextension.MethodForClass `hash:"1997997368"`
-	unregister_projection_views_extension          gdextension.MethodForClass `hash:"1997997368"`
+	register_composition_layer_provider            gdextension.MethodForClass `hash:"1477360496"`
+	unregister_composition_layer_provider          gdextension.MethodForClass `hash:"1477360496"`
+	register_projection_views_extension            gdextension.MethodForClass `hash:"1477360496"`
+	unregister_projection_views_extension          gdextension.MethodForClass `hash:"1477360496"`
+	register_frame_info_extension                  gdextension.MethodForClass `hash:"1477360496"`
+	unregister_frame_info_extension                gdextension.MethodForClass `hash:"1477360496"`
 	get_render_state_z_near                        gdextension.MethodForClass `hash:"191475506"`
 	get_render_state_z_far                         gdextension.MethodForClass `hash:"191475506"`
 	set_velocity_texture                           gdextension.MethodForClass `hash:"2722037293"`
@@ -153,7 +156,7 @@ func (self Instance) GetInstance() int { //gd:OpenXRAPIExtension.get_instance
 }
 
 /*
-Returns the id of the system, which is a [XrSystemId] cast to an integer.
+Returns the id of the system, which is an [XrSystemId] cast to an integer.
 
 [XrSystemId]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSystemId.html
 */
@@ -266,6 +269,15 @@ func (self Instance) IsRunning() bool { //gd:OpenXRAPIExtension.is_running
 }
 
 /*
+Sets the reference space used by OpenXR to the given [XrSpace] (cast to a void *).
+
+[XrSpace]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSpace.html
+*/
+func (self Instance) SetCustomPlaySpace(space gdextension.Pointer) { //gd:OpenXRAPIExtension.set_custom_play_space
+	Advanced(self).SetCustomPlaySpace(space)
+}
+
+/*
 Returns the play space, which is an [XrSpace] cast to an integer.
 
 [XrSpace]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSpace.html
@@ -319,29 +331,43 @@ func (self Instance) GetHandTracker(hand_index int) int { //gd:OpenXRAPIExtensio
 /*
 Registers the given extension as a composition layer provider.
 */
-func (self Instance) RegisterCompositionLayerProvider(extension OpenXRExtensionWrapperExtension.Instance) { //gd:OpenXRAPIExtension.register_composition_layer_provider
+func (self Instance) RegisterCompositionLayerProvider(extension OpenXRExtensionWrapper.Instance) { //gd:OpenXRAPIExtension.register_composition_layer_provider
 	Advanced(self).RegisterCompositionLayerProvider(extension)
 }
 
 /*
 Unregisters the given extension as a composition layer provider.
 */
-func (self Instance) UnregisterCompositionLayerProvider(extension OpenXRExtensionWrapperExtension.Instance) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
+func (self Instance) UnregisterCompositionLayerProvider(extension OpenXRExtensionWrapper.Instance) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
 	Advanced(self).UnregisterCompositionLayerProvider(extension)
 }
 
 /*
 Registers the given extension as a provider of additional data structures to projections views.
 */
-func (self Instance) RegisterProjectionViewsExtension(extension OpenXRExtensionWrapperExtension.Instance) { //gd:OpenXRAPIExtension.register_projection_views_extension
+func (self Instance) RegisterProjectionViewsExtension(extension OpenXRExtensionWrapper.Instance) { //gd:OpenXRAPIExtension.register_projection_views_extension
 	Advanced(self).RegisterProjectionViewsExtension(extension)
 }
 
 /*
 Unregisters the given extension as a provider of additional data structures to projections views.
 */
-func (self Instance) UnregisterProjectionViewsExtension(extension OpenXRExtensionWrapperExtension.Instance) { //gd:OpenXRAPIExtension.unregister_projection_views_extension
+func (self Instance) UnregisterProjectionViewsExtension(extension OpenXRExtensionWrapper.Instance) { //gd:OpenXRAPIExtension.unregister_projection_views_extension
 	Advanced(self).UnregisterProjectionViewsExtension(extension)
+}
+
+/*
+Registers the given extension as modifying frame info via the [graphics.gd/classdb/OpenXRExtensionWrapper.Instance.SetFrameWaitInfoAndGetNextPointer], [graphics.gd/classdb/OpenXRExtensionWrapper.Instance.SetViewLocateInfoAndGetNextPointer], or [graphics.gd/classdb/OpenXRExtensionWrapper.Instance.SetFrameEndInfoAndGetNextPointer] virtual methods.
+*/
+func (self Instance) RegisterFrameInfoExtension(extension OpenXRExtensionWrapper.Instance) { //gd:OpenXRAPIExtension.register_frame_info_extension
+	Advanced(self).RegisterFrameInfoExtension(extension)
+}
+
+/*
+Unregisters the given extension as modifying frame info.
+*/
+func (self Instance) UnregisterFrameInfoExtension(extension OpenXRExtensionWrapper.Instance) { //gd:OpenXRAPIExtension.unregister_frame_info_extension
+	Advanced(self).UnregisterFrameInfoExtension(extension)
 }
 
 /*
@@ -465,8 +491,8 @@ func (self Instance) IsEnvironmentBlendModeAlphaSupported() OpenXRAlphaBlendMode
 /*
 Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR API.
 */
-func GetFromWrapperExtension(peer OpenXRExtensionWrapperExtension.Instance) Instance { //gd:OpenXRExtensionWrapperExtension.get_openxr_api
-	return Instance(OpenXRExtensionWrapperExtension.Advanced(peer).GetOpenxrApi())
+func GetFromWrapper(peer OpenXRExtensionWrapper.Instance) Instance { //gd:OpenXRExtensionWrapper.get_openxr_api
+	return Instance(OpenXRExtensionWrapper.Advanced(peer).GetOpenxrApi())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -525,7 +551,7 @@ func (self class) GetInstance() int64 { //gd:OpenXRAPIExtension.get_instance
 }
 
 /*
-Returns the id of the system, which is a [XrSystemId] cast to an integer.
+Returns the id of the system, which is an [XrSystemId] cast to an integer.
 
 [XrSystemId]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSystemId.html
 */
@@ -679,6 +705,16 @@ func (self class) IsRunning() bool { //gd:OpenXRAPIExtension.is_running
 }
 
 /*
+Sets the reference space used by OpenXR to the given [XrSpace] (cast to a void *).
+
+[XrSpace]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSpace.html
+*/
+//go:nosplit
+func (self class) SetCustomPlaySpace(space gdextension.Pointer) { //gd:OpenXRAPIExtension.set_custom_play_space
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_play_space, 0|(gdextension.SizePointer<<4), &struct{ space gdextension.Pointer }{space})
+}
+
+/*
 Returns the play space, which is an [XrSpace] cast to an integer.
 
 [XrSpace]: https://registry.khronos.org/OpenXR/specs/1.0/man/html/XrSpace.html
@@ -757,7 +793,7 @@ func (self class) GetHandTracker(hand_index int64) int64 { //gd:OpenXRAPIExtensi
 Registers the given extension as a composition layer provider.
 */
 //go:nosplit
-func (self class) RegisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.register_composition_layer_provider
+func (self class) RegisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.register_composition_layer_provider
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_composition_layer_provider, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(extension[0].AsObject()[0]))})
 }
 
@@ -765,7 +801,7 @@ func (self class) RegisterCompositionLayerProvider(extension [1]gdclass.OpenXREx
 Unregisters the given extension as a composition layer provider.
 */
 //go:nosplit
-func (self class) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
+func (self class) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.unregister_composition_layer_provider
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_composition_layer_provider, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(extension[0].AsObject()))})
 }
 
@@ -773,7 +809,7 @@ func (self class) UnregisterCompositionLayerProvider(extension [1]gdclass.OpenXR
 Registers the given extension as a provider of additional data structures to projections views.
 */
 //go:nosplit
-func (self class) RegisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.register_projection_views_extension
+func (self class) RegisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.register_projection_views_extension
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_projection_views_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(extension[0].AsObject()[0]))})
 }
 
@@ -781,8 +817,24 @@ func (self class) RegisterProjectionViewsExtension(extension [1]gdclass.OpenXREx
 Unregisters the given extension as a provider of additional data structures to projections views.
 */
 //go:nosplit
-func (self class) UnregisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapperExtension) { //gd:OpenXRAPIExtension.unregister_projection_views_extension
+func (self class) UnregisterProjectionViewsExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.unregister_projection_views_extension
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_projection_views_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(extension[0].AsObject()))})
+}
+
+/*
+Registers the given extension as modifying frame info via the [graphics.gd/classdb/OpenXRExtensionWrapper.Instance.SetFrameWaitInfoAndGetNextPointer], [graphics.gd/classdb/OpenXRExtensionWrapper.Instance.SetViewLocateInfoAndGetNextPointer], or [graphics.gd/classdb/OpenXRExtensionWrapper.Instance.SetFrameEndInfoAndGetNextPointer] virtual methods.
+*/
+//go:nosplit
+func (self class) RegisterFrameInfoExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.register_frame_info_extension
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_frame_info_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(extension[0].AsObject()[0]))})
+}
+
+/*
+Unregisters the given extension as modifying frame info.
+*/
+//go:nosplit
+func (self class) UnregisterFrameInfoExtension(extension [1]gdclass.OpenXRExtensionWrapper) { //gd:OpenXRAPIExtension.unregister_frame_info_extension
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_frame_info_extension, 0|(gdextension.SizeObject<<4), &struct{ extension gdextension.Object }{gdextension.Object(gd.ObjectChecked(extension[0].AsObject()))})
 }
 
 /*

@@ -166,8 +166,8 @@ Creates and appends a [PropertyTweener]. This method tweens a [param property] o
 [codeblocks]
 [gdscript]
 var tween = create_tween()
-tween.tween_property($Sprite, "position", Vector2(100, 200), 1)
-tween.tween_property($Sprite, "position", Vector2(200, 300), 1)
+tween.tween_property($Sprite, "position", Vector2(100, 200), 1.0)
+tween.tween_property($Sprite, "position", Vector2(200, 300), 1.0)
 [/gdscript]
 [csharp]
 Tween tween = CreateTween();
@@ -181,8 +181,8 @@ will move the sprite to position (100, 200) and then to (200, 300). If you use [
 [codeblocks]
 [gdscript]
 var tween = create_tween()
-tween.tween_property($Sprite, "position", Vector2.RIGHT * 300, 1).as_relative().set_trans(Tween.TRANS_SINE)
-tween.tween_property($Sprite, "position", Vector2.RIGHT * 300, 1).as_relative().from_current().set_trans(Tween.TRANS_EXPO)
+tween.tween_property($Sprite, "position", Vector2.RIGHT * 300, 1.0).as_relative().set_trans(Tween.TRANS_SINE)
+tween.tween_property($Sprite, "position", Vector2.RIGHT * 300, 1.0).as_relative().from_current().set_trans(Tween.TRANS_EXPO)
 [/gdscript]
 [csharp]
 Tween tween = CreateTween();

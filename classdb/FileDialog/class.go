@@ -80,45 +80,49 @@ type Instance [1]gdclass.FileDialog
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	clear_filters            gdextension.MethodForClass `hash:"3218959716"`
-	add_filter               gdextension.MethodForClass `hash:"3388804757"`
-	set_filters              gdextension.MethodForClass `hash:"4015028928"`
-	get_filters              gdextension.MethodForClass `hash:"1139954409"`
-	clear_filename_filter    gdextension.MethodForClass `hash:"3218959716"`
-	set_filename_filter      gdextension.MethodForClass `hash:"83702148"`
-	get_filename_filter      gdextension.MethodForClass `hash:"201670096"`
-	get_option_name          gdextension.MethodForClass `hash:"844755477"`
-	get_option_values        gdextension.MethodForClass `hash:"647634434"`
-	get_option_default       gdextension.MethodForClass `hash:"923996154"`
-	set_option_name          gdextension.MethodForClass `hash:"501894301"`
-	set_option_values        gdextension.MethodForClass `hash:"3353661094"`
-	set_option_default       gdextension.MethodForClass `hash:"3937882851"`
-	set_option_count         gdextension.MethodForClass `hash:"1286410249"`
-	get_option_count         gdextension.MethodForClass `hash:"3905245786"`
-	add_option               gdextension.MethodForClass `hash:"149592325"`
-	get_selected_options     gdextension.MethodForClass `hash:"3102165223"`
-	get_current_dir          gdextension.MethodForClass `hash:"201670096"`
-	get_current_file         gdextension.MethodForClass `hash:"201670096"`
-	get_current_path         gdextension.MethodForClass `hash:"201670096"`
-	set_current_dir          gdextension.MethodForClass `hash:"83702148"`
-	set_current_file         gdextension.MethodForClass `hash:"83702148"`
-	set_current_path         gdextension.MethodForClass `hash:"83702148"`
-	set_mode_overrides_title gdextension.MethodForClass `hash:"2586408642"`
-	is_mode_overriding_title gdextension.MethodForClass `hash:"36873697"`
-	set_file_mode            gdextension.MethodForClass `hash:"3654936397"`
-	get_file_mode            gdextension.MethodForClass `hash:"4074825319"`
-	get_vbox                 gdextension.MethodForClass `hash:"915758477"`
-	get_line_edit            gdextension.MethodForClass `hash:"4071694264"`
-	set_access               gdextension.MethodForClass `hash:"4104413466"`
-	get_access               gdextension.MethodForClass `hash:"3344081076"`
-	set_root_subfolder       gdextension.MethodForClass `hash:"83702148"`
-	get_root_subfolder       gdextension.MethodForClass `hash:"201670096"`
-	set_show_hidden_files    gdextension.MethodForClass `hash:"2586408642"`
-	is_showing_hidden_files  gdextension.MethodForClass `hash:"36873697"`
-	set_use_native_dialog    gdextension.MethodForClass `hash:"2586408642"`
-	get_use_native_dialog    gdextension.MethodForClass `hash:"36873697"`
-	deselect_all             gdextension.MethodForClass `hash:"3218959716"`
-	invalidate               gdextension.MethodForClass `hash:"3218959716"`
+	clear_filters                  gdextension.MethodForClass `hash:"3218959716"`
+	add_filter                     gdextension.MethodForClass `hash:"3388804757"`
+	set_filters                    gdextension.MethodForClass `hash:"4015028928"`
+	get_filters                    gdextension.MethodForClass `hash:"1139954409"`
+	clear_filename_filter          gdextension.MethodForClass `hash:"3218959716"`
+	set_filename_filter            gdextension.MethodForClass `hash:"83702148"`
+	get_filename_filter            gdextension.MethodForClass `hash:"201670096"`
+	get_option_name                gdextension.MethodForClass `hash:"844755477"`
+	get_option_values              gdextension.MethodForClass `hash:"647634434"`
+	get_option_default             gdextension.MethodForClass `hash:"923996154"`
+	set_option_name                gdextension.MethodForClass `hash:"501894301"`
+	set_option_values              gdextension.MethodForClass `hash:"3353661094"`
+	set_option_default             gdextension.MethodForClass `hash:"3937882851"`
+	set_option_count               gdextension.MethodForClass `hash:"1286410249"`
+	get_option_count               gdextension.MethodForClass `hash:"3905245786"`
+	add_option                     gdextension.MethodForClass `hash:"149592325"`
+	get_selected_options           gdextension.MethodForClass `hash:"3102165223"`
+	get_current_dir                gdextension.MethodForClass `hash:"201670096"`
+	get_current_file               gdextension.MethodForClass `hash:"201670096"`
+	get_current_path               gdextension.MethodForClass `hash:"201670096"`
+	set_current_dir                gdextension.MethodForClass `hash:"83702148"`
+	set_current_file               gdextension.MethodForClass `hash:"83702148"`
+	set_current_path               gdextension.MethodForClass `hash:"83702148"`
+	set_mode_overrides_title       gdextension.MethodForClass `hash:"2586408642"`
+	is_mode_overriding_title       gdextension.MethodForClass `hash:"36873697"`
+	set_file_mode                  gdextension.MethodForClass `hash:"3654936397"`
+	get_file_mode                  gdextension.MethodForClass `hash:"4074825319"`
+	set_display_mode               gdextension.MethodForClass `hash:"2692197101"`
+	get_display_mode               gdextension.MethodForClass `hash:"1092104624"`
+	get_vbox                       gdextension.MethodForClass `hash:"915758477"`
+	get_line_edit                  gdextension.MethodForClass `hash:"4071694264"`
+	set_access                     gdextension.MethodForClass `hash:"4104413466"`
+	get_access                     gdextension.MethodForClass `hash:"3344081076"`
+	set_root_subfolder             gdextension.MethodForClass `hash:"83702148"`
+	get_root_subfolder             gdextension.MethodForClass `hash:"201670096"`
+	set_show_hidden_files          gdextension.MethodForClass `hash:"2586408642"`
+	is_showing_hidden_files        gdextension.MethodForClass `hash:"36873697"`
+	set_use_native_dialog          gdextension.MethodForClass `hash:"2586408642"`
+	get_use_native_dialog          gdextension.MethodForClass `hash:"36873697"`
+	set_customization_flag_enabled gdextension.MethodForClass `hash:"3849177100"`
+	is_customization_flag_enabled  gdextension.MethodForClass `hash:"3722277863"`
+	deselect_all                   gdextension.MethodForClass `hash:"3218959716"`
+	invalidate                     gdextension.MethodForClass `hash:"3218959716"`
 }
 
 func init() {
@@ -151,7 +155,7 @@ func (self Instance) ClearFilters() { //gd:FileDialog.clear_filters
 }
 
 /*
-Adds a comma-delimited file name 'filter' option to the [graphics.gd/classdb/FileDialog] with an optional 'description', which restricts what files can be picked.
+Adds a comma-separated file name 'filter' option to the [graphics.gd/classdb/FileDialog] with an optional 'description', which restricts what files can be picked.
 
 A 'filter' should be of the form "filename.extension", where filename and extension can be * to match any string. Filters starting with . (i.e. empty filenames) are not allowed.
 
@@ -162,7 +166,7 @@ func (self Instance) AddFilter(filter string) { //gd:FileDialog.add_filter
 }
 
 /*
-Adds a comma-delimited file name 'filter' option to the [graphics.gd/classdb/FileDialog] with an optional 'description', which restricts what files can be picked.
+Adds a comma-separated file name 'filter' option to the [graphics.gd/classdb/FileDialog] with an optional 'description', which restricts what files can be picked.
 
 A 'filter' should be of the form "filename.extension", where filename and extension can be * to match any string. Filters starting with . (i.e. empty filenames) are not allowed.
 
@@ -331,6 +335,14 @@ func (self Instance) SetFileMode(value FileMode) {
 	class(self).SetFileMode(value)
 }
 
+func (self Instance) DisplayMode() DisplayMode {
+	return DisplayMode(class(self).GetDisplayMode())
+}
+
+func (self Instance) SetDisplayMode(value DisplayMode) {
+	class(self).SetDisplayMode(value)
+}
+
 func (self Instance) Access() Access {
 	return Access(class(self).GetAccess())
 }
@@ -363,14 +375,6 @@ func (self Instance) SetFilenameFilter(value string) {
 	class(self).SetFilenameFilter(String.New(value))
 }
 
-func (self Instance) OptionCount() int {
-	return int(int(class(self).GetOptionCount()))
-}
-
-func (self Instance) SetOptionCount(value int) {
-	class(self).SetOptionCount(int64(value))
-}
-
 func (self Instance) ShowHiddenFiles() bool {
 	return bool(class(self).IsShowingHiddenFiles())
 }
@@ -385,6 +389,70 @@ func (self Instance) UseNativeDialog() bool {
 
 func (self Instance) SetUseNativeDialog(value bool) {
 	class(self).SetUseNativeDialog(value)
+}
+
+func (self Instance) OptionCount() int {
+	return int(int(class(self).GetOptionCount()))
+}
+
+func (self Instance) SetOptionCount(value int) {
+	class(self).SetOptionCount(int64(value))
+}
+
+func (self Instance) HiddenFilesToggleEnabled() bool {
+	return bool(class(self).IsCustomizationFlagEnabled(0))
+}
+
+func (self Instance) SetHiddenFilesToggleEnabled(value bool) {
+	class(self).SetCustomizationFlagEnabled(0, value)
+}
+
+func (self Instance) FileFilterToggleEnabled() bool {
+	return bool(class(self).IsCustomizationFlagEnabled(2))
+}
+
+func (self Instance) SetFileFilterToggleEnabled(value bool) {
+	class(self).SetCustomizationFlagEnabled(2, value)
+}
+
+func (self Instance) FileSortOptionsEnabled() bool {
+	return bool(class(self).IsCustomizationFlagEnabled(3))
+}
+
+func (self Instance) SetFileSortOptionsEnabled(value bool) {
+	class(self).SetCustomizationFlagEnabled(3, value)
+}
+
+func (self Instance) FolderCreationEnabled() bool {
+	return bool(class(self).IsCustomizationFlagEnabled(1))
+}
+
+func (self Instance) SetFolderCreationEnabled(value bool) {
+	class(self).SetCustomizationFlagEnabled(1, value)
+}
+
+func (self Instance) FavoritesEnabled() bool {
+	return bool(class(self).IsCustomizationFlagEnabled(4))
+}
+
+func (self Instance) SetFavoritesEnabled(value bool) {
+	class(self).SetCustomizationFlagEnabled(4, value)
+}
+
+func (self Instance) RecentListEnabled() bool {
+	return bool(class(self).IsCustomizationFlagEnabled(5))
+}
+
+func (self Instance) SetRecentListEnabled(value bool) {
+	class(self).SetCustomizationFlagEnabled(5, value)
+}
+
+func (self Instance) LayoutToggleEnabled() bool {
+	return bool(class(self).IsCustomizationFlagEnabled(6))
+}
+
+func (self Instance) SetLayoutToggleEnabled(value bool) {
+	class(self).SetCustomizationFlagEnabled(6, value)
 }
 
 func (self Instance) CurrentDir() string {
@@ -420,7 +488,7 @@ func (self class) ClearFilters() { //gd:FileDialog.clear_filters
 }
 
 /*
-Adds a comma-delimited file name 'filter' option to the [graphics.gd/classdb/FileDialog] with an optional 'description', which restricts what files can be picked.
+Adds a comma-separated file name 'filter' option to the [graphics.gd/classdb/FileDialog] with an optional 'description', which restricts what files can be picked.
 
 A 'filter' should be of the form "filename.extension", where filename and extension can be * to match any string. Filters starting with . (i.e. empty filenames) are not allowed.
 
@@ -627,6 +695,18 @@ func (self class) GetFileMode() FileMode { //gd:FileDialog.get_file_mode
 	return ret
 }
 
+//go:nosplit
+func (self class) SetDisplayMode(mode DisplayMode) { //gd:FileDialog.set_display_mode
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_mode, 0|(gdextension.SizeInt<<4), &struct{ mode DisplayMode }{mode})
+}
+
+//go:nosplit
+func (self class) GetDisplayMode() DisplayMode { //gd:FileDialog.get_display_mode
+	var r_ret = gdextension.Call[DisplayMode](gd.ObjectChecked(self.AsObject()), methods.get_display_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
 /*
 Returns the vertical box container of the dialog, custom controls can be added to it.
 
@@ -697,6 +777,27 @@ func (self class) SetUseNativeDialog(native bool) { //gd:FileDialog.set_use_nati
 //go:nosplit
 func (self class) GetUseNativeDialog() bool { //gd:FileDialog.get_use_native_dialog
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_native_dialog, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Toggles the specified customization 'flag', allowing to customize features available in this [graphics.gd/classdb/FileDialog]. See [Customization] for options.
+*/
+//go:nosplit
+func (self class) SetCustomizationFlagEnabled(flag Customization, enabled bool) { //gd:FileDialog.set_customization_flag_enabled
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_customization_flag_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+		flag    Customization
+		enabled bool
+	}{flag, enabled})
+}
+
+/*
+Returns true if the provided 'flag' is enabled.
+*/
+//go:nosplit
+func (self class) IsCustomizationFlagEnabled(flag Customization) bool { //gd:FileDialog.is_customization_flag_enabled
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_customization_flag_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ flag Customization }{flag})
 	var ret = r_ret
 	return ret
 }
@@ -850,4 +951,46 @@ const (
 	AccessUserdata Access = 1
 	// The dialog allows accessing files on the whole file system.
 	AccessFilesystem Access = 2
+)
+
+type DisplayMode int //gd:FileDialog.DisplayMode
+
+const (
+	// The dialog displays files as a grid of thumbnails. Use theme's 'thumbnail_size' to adjust their size.
+	DisplayThumbnails DisplayMode = 0
+	// The dialog displays files as a list of filenames.
+	DisplayList DisplayMode = 1
+)
+
+type Customization int //gd:FileDialog.Customization
+
+const (
+	// Toggles visibility of the favorite button, and the favorite list on the left side of the dialog.
+	//
+	// Equivalent to [Instance.HiddenFilesToggleEnabled].
+	CustomizationHiddenFiles Customization = 0
+	// If enabled, shows the button for creating new directories (when using [FileModeOpenDir], [FileModeOpenAny], or [FileModeSaveFile]).
+	//
+	// Equivalent to [Instance.FolderCreationEnabled].
+	CustomizationCreateFolder Customization = 1
+	// If enabled, shows the toggle file filter button.
+	//
+	// Equivalent to [Instance.FileFilterToggleEnabled].
+	CustomizationFileFilter Customization = 2
+	// If enabled, shows the file sorting options button.
+	//
+	// Equivalent to [Instance.FileSortOptionsEnabled].
+	CustomizationFileSort Customization = 3
+	// If enabled, shows the toggle favorite button and favorite list on the left side of the dialog.
+	//
+	// Equivalent to [Instance.FavoritesEnabled].
+	CustomizationFavorites Customization = 4
+	// If enabled, shows the recent directories list on the left side of the dialog.
+	//
+	// Equivalent to [Instance.RecentListEnabled].
+	CustomizationRecent Customization = 5
+	// If enabled, shows the layout switch buttons (list/thumbnails).
+	//
+	// Equivalent to [Instance.LayoutToggleEnabled].
+	CustomizationLayout Customization = 6
 )

@@ -100,7 +100,7 @@ type Any interface {
 }
 
 /*
-This method is called by the rendering server when the associated viewports configuration is changed. It will discard the old buffers and recreate the internal buffers used.
+This method is called by the rendering server when the associated viewport's configuration is changed. It will discard the old buffers and recreate the internal buffers used.
 */
 func (self Instance) Configure(config RenderSceneBuffersConfiguration.Instance) { //gd:RenderSceneBuffers.configure
 	Advanced(self).Configure(config)
@@ -150,7 +150,7 @@ func New() Instance {
 }
 
 /*
-This method is called by the rendering server when the associated viewports configuration is changed. It will discard the old buffers and recreate the internal buffers used.
+This method is called by the rendering server when the associated viewport's configuration is changed. It will discard the old buffers and recreate the internal buffers used.
 */
 //go:nosplit
 func (self class) Configure(config [1]gdclass.RenderSceneBuffersConfiguration) { //gd:RenderSceneBuffers.configure

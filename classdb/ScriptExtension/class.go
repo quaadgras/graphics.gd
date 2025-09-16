@@ -120,7 +120,7 @@ type Interface interface {
 	GetMethodInfo(method string) Object.MethodInfo
 	IsTool() bool
 	IsValid() bool
-	// Returns true if the script is an abstract script. An abstract script does not have a constructor and cannot be instantiated.
+	// Returns true if the script is an abstract script. Abstract scripts cannot be instantiated directly, instead other scripts should inherit them. Abstract scripts will be either unselectable or hidden in the Create New Node dialog (unselectable if there are non-abstract classes inheriting it, otherwise hidden).
 	IsAbstract() bool
 	GetLanguage() ScriptLanguage.Instance
 	HasScriptSignal(signal string) bool
@@ -417,7 +417,7 @@ func (Instance) _is_valid(impl func(ptr gdclass.Receiver) bool) (cb gd.Extension
 }
 
 /*
-Returns true if the script is an abstract script. An abstract script does not have a constructor and cannot be instantiated.
+Returns true if the script is an abstract script. Abstract scripts cannot be instantiated directly, instead other scripts should inherit them. Abstract scripts will be either unselectable or hidden in the Create New Node dialog (unselectable if there are non-abstract classes inheriting it, otherwise hidden).
 */
 func (Instance) _is_abstract(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -865,7 +865,7 @@ func (class) _is_valid(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionCla
 }
 
 /*
-Returns true if the script is an abstract script. An abstract script does not have a constructor and cannot be instantiated.
+Returns true if the script is an abstract script. Abstract scripts cannot be instantiated directly, instead other scripts should inherit them. Abstract scripts will be either unselectable or hidden in the Create New Node dialog (unselectable if there are non-abstract classes inheriting it, otherwise hidden).
 */
 func (class) _is_abstract(impl func(ptr gdclass.Receiver) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

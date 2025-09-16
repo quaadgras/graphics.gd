@@ -94,6 +94,8 @@ var methods struct {
 	is_allow_system_fallback               gdextension.MethodForClass `hash:"36873697"`
 	set_force_autohinter                   gdextension.MethodForClass `hash:"2586408642"`
 	is_force_autohinter                    gdextension.MethodForClass `hash:"36873697"`
+	set_modulate_color_glyphs              gdextension.MethodForClass `hash:"2586408642"`
+	is_modulate_color_glyphs               gdextension.MethodForClass `hash:"36873697"`
 	set_hinting                            gdextension.MethodForClass `hash:"1827459492"`
 	get_hinting                            gdextension.MethodForClass `hash:"3683214614"`
 	set_subpixel_positioning               gdextension.MethodForClass `hash:"4225742182"`
@@ -243,6 +245,14 @@ func (self Instance) SetForceAutohinter(value bool) {
 	class(self).SetForceAutohinter(value)
 }
 
+func (self Instance) ModulateColorGlyphs() bool {
+	return bool(class(self).IsModulateColorGlyphs())
+}
+
+func (self Instance) SetModulateColorGlyphs(value bool) {
+	class(self).SetModulateColorGlyphs(value)
+}
+
 func (self Instance) Hinting() TextServer.Hinting {
 	return TextServer.Hinting(class(self).GetHinting())
 }
@@ -355,6 +365,18 @@ func (self class) SetForceAutohinter(force_autohinter bool) { //gd:SystemFont.se
 //go:nosplit
 func (self class) IsForceAutohinter() bool { //gd:SystemFont.is_force_autohinter
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_force_autohinter, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetModulateColorGlyphs(modulate bool) { //gd:SystemFont.set_modulate_color_glyphs
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate_color_glyphs, 0|(gdextension.SizeBool<<4), &struct{ modulate bool }{modulate})
+}
+
+//go:nosplit
+func (self class) IsModulateColorGlyphs() bool { //gd:SystemFont.is_modulate_color_glyphs
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_modulate_color_glyphs, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

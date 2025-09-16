@@ -142,8 +142,11 @@ var methods struct {
 	font_get_fixed_size_scale_mode              gdextension.MethodForClass `hash:"4113120379"`
 	font_set_allow_system_fallback              gdextension.MethodForClass `hash:"1265174801"`
 	font_is_allow_system_fallback               gdextension.MethodForClass `hash:"4155700596"`
+	font_clear_system_fallback_cache            gdextension.MethodForClass `hash:"3218959716"`
 	font_set_force_autohinter                   gdextension.MethodForClass `hash:"1265174801"`
 	font_is_force_autohinter                    gdextension.MethodForClass `hash:"4155700596"`
+	font_set_modulate_color_glyphs              gdextension.MethodForClass `hash:"1265174801"`
+	font_is_modulate_color_glyphs               gdextension.MethodForClass `hash:"4155700596"`
 	font_set_hinting                            gdextension.MethodForClass `hash:"1520010864"`
 	font_get_hinting                            gdextension.MethodForClass `hash:"3971592737"`
 	font_set_subpixel_positioning               gdextension.MethodForClass `hash:"3830459669"`
@@ -165,6 +168,7 @@ var methods struct {
 	font_get_size_cache_list                    gdextension.MethodForClass `hash:"2684255073"`
 	font_clear_size_cache                       gdextension.MethodForClass `hash:"2722037293"`
 	font_remove_size_cache                      gdextension.MethodForClass `hash:"2450610377"`
+	font_get_size_cache_info                    gdextension.MethodForClass `hash:"2684255073"`
 	font_set_ascent                             gdextension.MethodForClass `hash:"1892459533"`
 	font_get_ascent                             gdextension.MethodForClass `hash:"755457166"`
 	font_set_descent                            gdextension.MethodForClass `hash:"1892459533"`
@@ -210,8 +214,8 @@ var methods struct {
 	font_get_supported_glyphs                   gdextension.MethodForClass `hash:"788230395"`
 	font_render_range                           gdextension.MethodForClass `hash:"4254580980"`
 	font_render_glyph                           gdextension.MethodForClass `hash:"3810512262"`
-	font_draw_glyph                             gdextension.MethodForClass `hash:"1339057948"`
-	font_draw_glyph_outline                     gdextension.MethodForClass `hash:"2626165733"`
+	font_draw_glyph                             gdextension.MethodForClass `hash:"3103234926"`
+	font_draw_glyph_outline                     gdextension.MethodForClass `hash:"1976041553"`
 	font_is_language_supported                  gdextension.MethodForClass `hash:"3199320846"`
 	font_set_language_support_override          gdextension.MethodForClass `hash:"2313957094"`
 	font_get_language_support_override          gdextension.MethodForClass `hash:"2829184646"`
@@ -251,10 +255,21 @@ var methods struct {
 	shaped_text_add_string                      gdextension.MethodForClass `hash:"623473029"`
 	shaped_text_add_object                      gdextension.MethodForClass `hash:"3664424789"`
 	shaped_text_resize_object                   gdextension.MethodForClass `hash:"790361552"`
+	shaped_get_text                             gdextension.MethodForClass `hash:"642473191"`
 	shaped_get_span_count                       gdextension.MethodForClass `hash:"2198884583"`
 	shaped_get_span_meta                        gdextension.MethodForClass `hash:"4069510997"`
 	shaped_get_span_embedded_object             gdextension.MethodForClass `hash:"4069510997"`
+	shaped_get_span_text                        gdextension.MethodForClass `hash:"1464764419"`
+	shaped_get_span_object                      gdextension.MethodForClass `hash:"4069510997"`
 	shaped_set_span_update_font                 gdextension.MethodForClass `hash:"2022725822"`
+	shaped_get_run_count                        gdextension.MethodForClass `hash:"2198884583"`
+	shaped_get_run_text                         gdextension.MethodForClass `hash:"1464764419"`
+	shaped_get_run_range                        gdextension.MethodForClass `hash:"4069534484"`
+	shaped_get_run_font_rid                     gdextension.MethodForClass `hash:"1066463050"`
+	shaped_get_run_font_size                    gdextension.MethodForClass `hash:"1120910005"`
+	shaped_get_run_language                     gdextension.MethodForClass `hash:"1464764419"`
+	shaped_get_run_direction                    gdextension.MethodForClass `hash:"2413896864"`
+	shaped_get_run_object                       gdextension.MethodForClass `hash:"4069510997"`
 	shaped_text_substr                          gdextension.MethodForClass `hash:"1937682086"`
 	shaped_text_get_parent                      gdextension.MethodForClass `hash:"3814569979"`
 	shaped_text_fit_to_width                    gdextension.MethodForClass `hash:"530670926"`
@@ -295,8 +310,8 @@ var methods struct {
 	shaped_text_next_character_pos              gdextension.MethodForClass `hash:"1120910005"`
 	shaped_text_prev_character_pos              gdextension.MethodForClass `hash:"1120910005"`
 	shaped_text_closest_character_pos           gdextension.MethodForClass `hash:"1120910005"`
-	shaped_text_draw                            gdextension.MethodForClass `hash:"880389142"`
-	shaped_text_draw_outline                    gdextension.MethodForClass `hash:"2559184194"`
+	shaped_text_draw                            gdextension.MethodForClass `hash:"1647687596"`
+	shaped_text_draw_outline                    gdextension.MethodForClass `hash:"1217146601"`
 	shaped_text_get_dominant_direction_in_range gdextension.MethodForClass `hash:"3326907668"`
 	format_number                               gdextension.MethodForClass `hash:"2664628024"`
 	parse_number                                gdextension.MethodForClass `hash:"2664628024"`
@@ -449,7 +464,7 @@ func (self Instance) CreateFontLinkedVariation(font_rid RID.Font) RID.Font { //g
 Sets font source data, e.g contents of the dynamic font source file.
 */
 func (self Instance) FontSetData(font_rid RID.Font, data []byte) { //gd:TextServer.font_set_data
-	Advanced(self).FontSetData(RID.Any(font_rid), Packed.Bytes(Packed.New(data...)))
+	Advanced(self).FontSetData(RID.Any(font_rid), Packed.BytesFrom(data...))
 }
 
 /*
@@ -474,7 +489,7 @@ func (self Instance) FontGetFaceCount(font_rid RID.Font) int { //gd:TextServer.f
 }
 
 /*
-Sets the font style flags, see [FontStyle].
+Sets the font style flags.
 
 Note: This value is used for font matching only and will not affect font rendering. Use [Instance.FontSetFaceIndex], [Instance.FontSetVariationCoordinates], [Instance.FontSetEmbolden], or [Instance.FontSetTransform] instead.
 */
@@ -483,7 +498,7 @@ func (self Instance) FontSetStyle(font_rid RID.Font, style FontStyle) { //gd:Tex
 }
 
 /*
-Returns font style flags, see [FontStyle].
+Returns font style flags.
 */
 func (self Instance) FontGetStyle(font_rid RID.Font) FontStyle { //gd:TextServer.font_get_style
 	return FontStyle(Advanced(self).FontGetStyle(RID.Any(font_rid)))
@@ -685,6 +700,13 @@ func (self Instance) FontIsAllowSystemFallback(font_rid RID.Font) bool { //gd:Te
 }
 
 /*
+Frees all automatically loaded system fonts.
+*/
+func (self Instance) FontClearSystemFallbackCache() { //gd:TextServer.font_clear_system_fallback_cache
+	Advanced(self).FontClearSystemFallbackCache()
+}
+
+/*
 If set to true auto-hinting is preferred over font built-in hinting.
 */
 func (self Instance) FontSetForceAutohinter(font_rid RID.Font, force_autohinter bool) { //gd:TextServer.font_set_force_autohinter
@@ -696,6 +718,20 @@ Returns true if auto-hinting is supported and preferred over font built-in hinti
 */
 func (self Instance) FontIsForceAutohinter(font_rid RID.Font) bool { //gd:TextServer.font_is_force_autohinter
 	return bool(Advanced(self).FontIsForceAutohinter(RID.Any(font_rid)))
+}
+
+/*
+If set to true, color modulation is applied when drawing colored glyphs, otherwise it's applied to the monochrome glyphs only.
+*/
+func (self Instance) FontSetModulateColorGlyphs(font_rid RID.Font, force_autohinter bool) { //gd:TextServer.font_set_modulate_color_glyphs
+	Advanced(self).FontSetModulateColorGlyphs(RID.Any(font_rid), force_autohinter)
+}
+
+/*
+Returns true, if color modulation is applied when drawing colored glyphs.
+*/
+func (self Instance) FontIsModulateColorGlyphs(font_rid RID.Font) bool { //gd:TextServer.font_is_modulate_color_glyphs
+	return bool(Advanced(self).FontIsModulateColorGlyphs(RID.Any(font_rid)))
 }
 
 /*
@@ -755,14 +791,14 @@ func (self Instance) FontGetEmbolden(font_rid RID.Font) Float.X { //gd:TextServe
 }
 
 /*
-Sets the spacing for 'spacing' (see [TextServer.SpacingType]) to 'value' in pixels (not relative to the font size).
+Sets the spacing for 'spacing' to 'value' in pixels (not relative to the font size).
 */
 func (self Instance) FontSetSpacing(font_rid RID.Font, spacing SpacingType, value int) { //gd:TextServer.font_set_spacing
 	Advanced(self).FontSetSpacing(RID.Any(font_rid), spacing, int64(value))
 }
 
 /*
-Returns the spacing for 'spacing' (see [TextServer.SpacingType]) in pixels (not relative to the font size).
+Returns the spacing for 'spacing' in pixels (not relative to the font size).
 */
 func (self Instance) FontGetSpacing(font_rid RID.Font, spacing SpacingType) int { //gd:TextServer.font_get_spacing
 	return int(int(Advanced(self).FontGetSpacing(RID.Any(font_rid), spacing)))
@@ -813,14 +849,14 @@ func (self Instance) FontGetVariationCoordinates(font_rid RID.Font) map[string]f
 }
 
 /*
-Sets font oversampling factor, if set to 0.0 global oversampling factor is used instead. Used by dynamic fonts only.
+If set to a positive value, overrides the oversampling factor of the viewport this font is used in. See [graphics.gd/classdb/Viewport.Instance.Oversampling]. This value doesn't override the oversampling parameter of draw_* methods. Used by dynamic fonts only.
 */
 func (self Instance) FontSetOversampling(font_rid RID.Font, oversampling Float.X) { //gd:TextServer.font_set_oversampling
 	Advanced(self).FontSetOversampling(RID.Any(font_rid), float64(oversampling))
 }
 
 /*
-Returns font oversampling factor, if set to 0.0 global oversampling factor is used instead. Used by dynamic fonts only.
+Returns oversampling factor override. If set to a positive value, overrides the oversampling factor of the viewport this font is used in. See [graphics.gd/classdb/Viewport.Instance.Oversampling]. This value doesn't override the oversampling parameter of draw_* methods. Used by dynamic fonts only.
 */
 func (self Instance) FontGetOversampling(font_rid RID.Font) Float.X { //gd:TextServer.font_get_oversampling
 	return Float.X(Float.X(Advanced(self).FontGetOversampling(RID.Any(font_rid))))
@@ -845,6 +881,13 @@ Removes specified font size from the cache entry.
 */
 func (self Instance) FontRemoveSizeCache(font_rid RID.Font, size Vector2i.XY) { //gd:TextServer.font_remove_size_cache
 	Advanced(self).FontRemoveSizeCache(RID.Any(font_rid), Vector2i.XY(size))
+}
+
+/*
+Returns font cache information, each entry contains the following fields: Vector2i size_px - font size in pixels, float viewport_oversampling - viewport oversampling factor, int glyphs - number of rendered glyphs, int textures - number of used textures, int textures_size - size of texture data in bytes.
+*/
+func (self Instance) FontGetSizeCacheInfo(font_rid RID.Font) []FontSizeCacheInfo { //gd:TextServer.font_get_size_cache_info
+	return []FontSizeCacheInfo(gd.ArrayAs[[]FontSizeCacheInfo](gd.InternalArray(Advanced(self).FontGetSizeCacheInfo(RID.Any(font_rid)))))
 }
 
 /*
@@ -1195,47 +1238,47 @@ func (self Instance) FontRenderGlyph(font_rid RID.Font, size Vector2i.XY, index 
 }
 
 /*
-Draws single glyph into a canvas item at the position, using 'font_rid' at the size 'size'.
+Draws single glyph into a canvas item at the position, using 'font_rid' at the size 'size'. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 Note: Glyph index is specific to the font, use glyphs indices returned by [Instance.ShapedTextGetGlyphs] or [Instance.FontGetGlyphIndex].
 
 Note: If there are pending glyphs to render, calling this function might trigger the texture cache update.
 */
 func (self Instance) FontDrawGlyph(font_rid RID.Font, canvas RID.Canvas, size int, pos Vector2.XY, index int) { //gd:TextServer.font_draw_glyph
-	Advanced(self).FontDrawGlyph(RID.Any(font_rid), RID.Any(canvas), int64(size), Vector2.XY(pos), int64(index), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).FontDrawGlyph(RID.Any(font_rid), RID.Any(canvas), int64(size), Vector2.XY(pos), int64(index), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
 }
 
 /*
-Draws single glyph into a canvas item at the position, using 'font_rid' at the size 'size'.
+Draws single glyph into a canvas item at the position, using 'font_rid' at the size 'size'. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 Note: Glyph index is specific to the font, use glyphs indices returned by [Instance.ShapedTextGetGlyphs] or [Instance.FontGetGlyphIndex].
 
 Note: If there are pending glyphs to render, calling this function might trigger the texture cache update.
 */
-func (self Expanded) FontDrawGlyph(font_rid RID.Font, canvas RID.Canvas, size int, pos Vector2.XY, index int, color Color.RGBA) { //gd:TextServer.font_draw_glyph
-	Advanced(self).FontDrawGlyph(RID.Any(font_rid), RID.Any(canvas), int64(size), Vector2.XY(pos), int64(index), Color.RGBA(color))
+func (self Expanded) FontDrawGlyph(font_rid RID.Font, canvas RID.Canvas, size int, pos Vector2.XY, index int, color Color.RGBA, oversampling Float.X) { //gd:TextServer.font_draw_glyph
+	Advanced(self).FontDrawGlyph(RID.Any(font_rid), RID.Any(canvas), int64(size), Vector2.XY(pos), int64(index), Color.RGBA(color), float64(oversampling))
 }
 
 /*
-Draws single glyph outline of size 'outline_size' into a canvas item at the position, using 'font_rid' at the size 'size'.
+Draws single glyph outline of size 'outline_size' into a canvas item at the position, using 'font_rid' at the size 'size'. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 Note: Glyph index is specific to the font, use glyphs indices returned by [Instance.ShapedTextGetGlyphs] or [Instance.FontGetGlyphIndex].
 
 Note: If there are pending glyphs to render, calling this function might trigger the texture cache update.
 */
 func (self Instance) FontDrawGlyphOutline(font_rid RID.Font, canvas RID.Canvas, size int, outline_size int, pos Vector2.XY, index int) { //gd:TextServer.font_draw_glyph_outline
-	Advanced(self).FontDrawGlyphOutline(RID.Any(font_rid), RID.Any(canvas), int64(size), int64(outline_size), Vector2.XY(pos), int64(index), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).FontDrawGlyphOutline(RID.Any(font_rid), RID.Any(canvas), int64(size), int64(outline_size), Vector2.XY(pos), int64(index), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
 }
 
 /*
-Draws single glyph outline of size 'outline_size' into a canvas item at the position, using 'font_rid' at the size 'size'.
+Draws single glyph outline of size 'outline_size' into a canvas item at the position, using 'font_rid' at the size 'size'. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 Note: Glyph index is specific to the font, use glyphs indices returned by [Instance.ShapedTextGetGlyphs] or [Instance.FontGetGlyphIndex].
 
 Note: If there are pending glyphs to render, calling this function might trigger the texture cache update.
 */
-func (self Expanded) FontDrawGlyphOutline(font_rid RID.Font, canvas RID.Canvas, size int, outline_size int, pos Vector2.XY, index int, color Color.RGBA) { //gd:TextServer.font_draw_glyph_outline
-	Advanced(self).FontDrawGlyphOutline(RID.Any(font_rid), RID.Any(canvas), int64(size), int64(outline_size), Vector2.XY(pos), int64(index), Color.RGBA(color))
+func (self Expanded) FontDrawGlyphOutline(font_rid RID.Font, canvas RID.Canvas, size int, outline_size int, pos Vector2.XY, index int, color Color.RGBA, oversampling Float.X) { //gd:TextServer.font_draw_glyph_outline
+	Advanced(self).FontDrawGlyphOutline(RID.Any(font_rid), RID.Any(canvas), int64(size), int64(outline_size), Vector2.XY(pos), int64(index), Color.RGBA(color), float64(oversampling))
 }
 
 /*
@@ -1351,16 +1394,14 @@ func (self Instance) FontSupportedVariationList(font_rid RID.Font) map[int]struc
 }
 
 /*
-Returns the font oversampling factor, shared by all fonts in the TextServer.
+Deprecated. This method always returns 1.0.
 */
 func (self Instance) FontGetGlobalOversampling() Float.X { //gd:TextServer.font_get_global_oversampling
 	return Float.X(Float.X(Advanced(self).FontGetGlobalOversampling()))
 }
 
 /*
-Sets oversampling factor, shared by all font in the TextServer.
-
-Note: This value can be automatically changed by display server.
+Deprecated. This method does nothing.
 */
 func (self Instance) FontSetGlobalOversampling(oversampling Float.X) { //gd:TextServer.font_set_global_oversampling
 	Advanced(self).FontSetGlobalOversampling(float64(oversampling))
@@ -1590,6 +1631,13 @@ func (self Expanded) ShapedTextResizeObject(shaped RID.TextBuffer, key any, size
 }
 
 /*
+Returns the text buffer source text, including object replacement characters.
+*/
+func (self Instance) ShapedGetText(shaped RID.TextBuffer) string { //gd:TextServer.shaped_get_text
+	return string(Advanced(self).ShapedGetText(RID.Any(shaped)).String())
+}
+
+/*
 Returns number of text spans added using [Instance.ShapedTextAddString] or [Instance.ShapedTextAddObject].
 */
 func (self Instance) ShapedGetSpanCount(shaped RID.TextBuffer) int { //gd:TextServer.shaped_get_span_count
@@ -1611,6 +1659,20 @@ func (self Instance) ShapedGetSpanEmbeddedObject(shaped RID.TextBuffer, index in
 }
 
 /*
+Returns the text span source text.
+*/
+func (self Instance) ShapedGetSpanText(shaped RID.TextBuffer, index int) string { //gd:TextServer.shaped_get_span_text
+	return string(Advanced(self).ShapedGetSpanText(RID.Any(shaped), int64(index)).String())
+}
+
+/*
+Returns the text span embedded object key.
+*/
+func (self Instance) ShapedGetSpanObject(shaped RID.TextBuffer, index int) any { //gd:TextServer.shaped_get_span_object
+	return any(Advanced(self).ShapedGetSpanObject(RID.Any(shaped), int64(index)).Interface())
+}
+
+/*
 Changes text span font, font size, and OpenType features, without changing the text.
 */
 func (self Instance) ShapedSetSpanUpdateFont(shaped RID.TextBuffer, index int, fonts [][]RID.Font, size int) { //gd:TextServer.shaped_set_span_update_font
@@ -1622,6 +1684,62 @@ Changes text span font, font size, and OpenType features, without changing the t
 */
 func (self Expanded) ShapedSetSpanUpdateFont(shaped RID.TextBuffer, index int, fonts [][]RID.Font, size int, opentype_features map[string]uint32) { //gd:TextServer.shaped_set_span_update_font
 	Advanced(self).ShapedSetSpanUpdateFont(RID.Any(shaped), int64(index), gd.ArrayFromSlice[Array.Contains[RID.Any]](fonts), int64(size), gd.DictionaryFromMap(opentype_features))
+}
+
+/*
+Returns the number of uniform text runs in the buffer.
+*/
+func (self Instance) ShapedGetRunCount(shaped RID.TextBuffer) int { //gd:TextServer.shaped_get_run_count
+	return int(int(Advanced(self).ShapedGetRunCount(RID.Any(shaped))))
+}
+
+/*
+Returns the source text of the 'index' text run (in visual order).
+*/
+func (self Instance) ShapedGetRunText(shaped RID.TextBuffer, index int) string { //gd:TextServer.shaped_get_run_text
+	return string(Advanced(self).ShapedGetRunText(RID.Any(shaped), int64(index)).String())
+}
+
+/*
+Returns the source text range of the 'index' text run (in visual order).
+*/
+func (self Instance) ShapedGetRunRange(shaped RID.TextBuffer, index int) Vector2i.XY { //gd:TextServer.shaped_get_run_range
+	return Vector2i.XY(Advanced(self).ShapedGetRunRange(RID.Any(shaped), int64(index)))
+}
+
+/*
+Returns the font RID of the 'index' text run (in visual order).
+*/
+func (self Instance) ShapedGetRunFontRid(shaped RID.TextBuffer, index int) RID.Font { //gd:TextServer.shaped_get_run_font_rid
+	return RID.Font(RID.Font(Advanced(self).ShapedGetRunFontRid(RID.Any(shaped), int64(index))))
+}
+
+/*
+Returns the font size of the 'index' text run (in visual order).
+*/
+func (self Instance) ShapedGetRunFontSize(shaped RID.TextBuffer, index int) int { //gd:TextServer.shaped_get_run_font_size
+	return int(int(Advanced(self).ShapedGetRunFontSize(RID.Any(shaped), int64(index))))
+}
+
+/*
+Returns the language of the 'index' text run (in visual order).
+*/
+func (self Instance) ShapedGetRunLanguage(shaped RID.TextBuffer, index int) string { //gd:TextServer.shaped_get_run_language
+	return string(Advanced(self).ShapedGetRunLanguage(RID.Any(shaped), int64(index)).String())
+}
+
+/*
+Returns the direction of the 'index' text run (in visual order).
+*/
+func (self Instance) ShapedGetRunDirection(shaped RID.TextBuffer, index int) Direction { //gd:TextServer.shaped_get_run_direction
+	return Direction(Advanced(self).ShapedGetRunDirection(RID.Any(shaped), int64(index)))
+}
+
+/*
+Returns the embedded object of the 'index' text run (in visual order).
+*/
+func (self Instance) ShapedGetRunObject(shaped RID.TextBuffer, index int) any { //gd:TextServer.shaped_get_run_object
+	return any(Advanced(self).ShapedGetRunObject(RID.Any(shaped), int64(index)).Interface())
 }
 
 /*
@@ -1739,14 +1857,14 @@ func (self Expanded) ShapedTextGetLineBreaks(shaped RID.TextBuffer, width Float.
 }
 
 /*
-Breaks text into words and returns array of character ranges. Use 'grapheme_flags' to set what characters are used for breaking (see [GraphemeFlag]).
+Breaks text into words and returns array of character ranges. Use 'grapheme_flags' to set what characters are used for breaking.
 */
 func (self Instance) ShapedTextGetWordBreaks(shaped RID.TextBuffer) []int32 { //gd:TextServer.shaped_text_get_word_breaks
 	return []int32(slices.Collect(Advanced(self).ShapedTextGetWordBreaks(RID.Any(shaped), 264, 4).Values()))
 }
 
 /*
-Breaks text into words and returns array of character ranges. Use 'grapheme_flags' to set what characters are used for breaking (see [GraphemeFlag]).
+Breaks text into words and returns array of character ranges. Use 'grapheme_flags' to set what characters are used for breaking.
 */
 func (self Expanded) ShapedTextGetWordBreaks(shaped RID.TextBuffer, grapheme_flags GraphemeFlag, skip_grapheme_flags GraphemeFlag) []int32 { //gd:TextServer.shaped_text_get_word_breaks
 	return []int32(slices.Collect(Advanced(self).ShapedTextGetWordBreaks(RID.Any(shaped), grapheme_flags, skip_grapheme_flags).Values()))
@@ -1946,31 +2064,39 @@ func (self Instance) ShapedTextClosestCharacterPos(shaped RID.TextBuffer, pos in
 }
 
 /*
-Draw shaped text into a canvas item at a given position, with 'color'. 'pos' specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
+Draw shaped text into a canvas item at a given position, with 'color'. 'pos' specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout). If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
+
+'clip_l' and 'clip_r' are offsets relative to 'pos', going to the right in horizontal layout and downward in vertical layout. If 'clip_l' is not negative, glyphs starting before the offset are clipped. If 'clip_r' is not negative, glyphs ending after the offset are clipped.
 */
 func (self Instance) ShapedTextDraw(shaped RID.TextBuffer, canvas RID.Canvas, pos Vector2.XY) { //gd:TextServer.shaped_text_draw
-	Advanced(self).ShapedTextDraw(RID.Any(shaped), RID.Any(canvas), Vector2.XY(pos), float64(-1), float64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).ShapedTextDraw(RID.Any(shaped), RID.Any(canvas), Vector2.XY(pos), float64(-1), float64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
 }
 
 /*
-Draw shaped text into a canvas item at a given position, with 'color'. 'pos' specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
+Draw shaped text into a canvas item at a given position, with 'color'. 'pos' specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout). If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
+
+'clip_l' and 'clip_r' are offsets relative to 'pos', going to the right in horizontal layout and downward in vertical layout. If 'clip_l' is not negative, glyphs starting before the offset are clipped. If 'clip_r' is not negative, glyphs ending after the offset are clipped.
 */
-func (self Expanded) ShapedTextDraw(shaped RID.TextBuffer, canvas RID.Canvas, pos Vector2.XY, clip_l Float.X, clip_r Float.X, color Color.RGBA) { //gd:TextServer.shaped_text_draw
-	Advanced(self).ShapedTextDraw(RID.Any(shaped), RID.Any(canvas), Vector2.XY(pos), float64(clip_l), float64(clip_r), Color.RGBA(color))
+func (self Expanded) ShapedTextDraw(shaped RID.TextBuffer, canvas RID.Canvas, pos Vector2.XY, clip_l Float.X, clip_r Float.X, color Color.RGBA, oversampling Float.X) { //gd:TextServer.shaped_text_draw
+	Advanced(self).ShapedTextDraw(RID.Any(shaped), RID.Any(canvas), Vector2.XY(pos), float64(clip_l), float64(clip_r), Color.RGBA(color), float64(oversampling))
 }
 
 /*
-Draw the outline of the shaped text into a canvas item at a given position, with 'color'. 'pos' specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
+Draw the outline of the shaped text into a canvas item at a given position, with 'color'. 'pos' specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout). If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
+
+'clip_l' and 'clip_r' are offsets relative to 'pos', going to the right in horizontal layout and downward in vertical layout. If 'clip_l' is not negative, glyphs starting before the offset are clipped. If 'clip_r' is not negative, glyphs ending after the offset are clipped.
 */
 func (self Instance) ShapedTextDrawOutline(shaped RID.TextBuffer, canvas RID.Canvas, pos Vector2.XY) { //gd:TextServer.shaped_text_draw_outline
-	Advanced(self).ShapedTextDrawOutline(RID.Any(shaped), RID.Any(canvas), Vector2.XY(pos), float64(-1), float64(-1), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}))
+	Advanced(self).ShapedTextDrawOutline(RID.Any(shaped), RID.Any(canvas), Vector2.XY(pos), float64(-1), float64(-1), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))
 }
 
 /*
-Draw the outline of the shaped text into a canvas item at a given position, with 'color'. 'pos' specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
+Draw the outline of the shaped text into a canvas item at a given position, with 'color'. 'pos' specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout). If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
+
+'clip_l' and 'clip_r' are offsets relative to 'pos', going to the right in horizontal layout and downward in vertical layout. If 'clip_l' is not negative, glyphs starting before the offset are clipped. If 'clip_r' is not negative, glyphs ending after the offset are clipped.
 */
-func (self Expanded) ShapedTextDrawOutline(shaped RID.TextBuffer, canvas RID.Canvas, pos Vector2.XY, clip_l Float.X, clip_r Float.X, outline_size int, color Color.RGBA) { //gd:TextServer.shaped_text_draw_outline
-	Advanced(self).ShapedTextDrawOutline(RID.Any(shaped), RID.Any(canvas), Vector2.XY(pos), float64(clip_l), float64(clip_r), int64(outline_size), Color.RGBA(color))
+func (self Expanded) ShapedTextDrawOutline(shaped RID.TextBuffer, canvas RID.Canvas, pos Vector2.XY, clip_l Float.X, clip_r Float.X, outline_size int, color Color.RGBA, oversampling Float.X) { //gd:TextServer.shaped_text_draw_outline
+	Advanced(self).ShapedTextDrawOutline(RID.Any(shaped), RID.Any(canvas), Vector2.XY(pos), float64(clip_l), float64(clip_r), int64(outline_size), Color.RGBA(color), float64(oversampling))
 }
 
 /*
@@ -2184,7 +2310,7 @@ func (self Expanded) StringToTitle(s string, language string) string { //gd:Text
 }
 
 /*
-Default implementation of the BiDi algorithm override function. See [StructuredTextParser] for more info.
+Default implementation of the BiDi algorithm override function.
 */
 func (self Instance) ParseStructuredText(parser_type StructuredTextParser, args []any, text string) []Vector3i.XYZ { //gd:TextServer.parse_structured_text
 	return []Vector3i.XYZ(gd.ArrayAs[[]Vector3i.XYZ](gd.InternalArray(Advanced(self).ParseStructuredText(parser_type, gd.EngineArrayFromSlice(args), String.New(text)))))
@@ -2313,7 +2439,7 @@ Returns default TextServer database (e.g. ICU break iterators and dictionaries).
 //go:nosplit
 func (self class) GetSupportData() Packed.Bytes { //gd:TextServer.get_support_data
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_support_data, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -2393,7 +2519,7 @@ func (self class) FontSetData(font_rid RID.Any, data Packed.Bytes) { //gd:TextSe
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_set_data, 0|(gdextension.SizeRID<<4)|(gdextension.SizePackedArray<<8), &struct {
 		font_rid RID.Any
 		data     gdextension.PackedArray[byte]
-	}{font_rid, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	}{font_rid, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
 
 /*
@@ -2428,7 +2554,7 @@ func (self class) FontGetFaceCount(font_rid RID.Any) int64 { //gd:TextServer.fon
 }
 
 /*
-Sets the font style flags, see [FontStyle].
+Sets the font style flags.
 
 Note: This value is used for font matching only and will not affect font rendering. Use [Instance.FontSetFaceIndex], [Instance.FontSetVariationCoordinates], [Instance.FontSetEmbolden], or [Instance.FontSetTransform] instead.
 */
@@ -2441,7 +2567,7 @@ func (self class) FontSetStyle(font_rid RID.Any, style FontStyle) { //gd:TextSer
 }
 
 /*
-Returns font style flags, see [FontStyle].
+Returns font style flags.
 */
 //go:nosplit
 func (self class) FontGetStyle(font_rid RID.Any) FontStyle { //gd:TextServer.font_get_style
@@ -2740,6 +2866,14 @@ func (self class) FontIsAllowSystemFallback(font_rid RID.Any) bool { //gd:TextSe
 }
 
 /*
+Frees all automatically loaded system fonts.
+*/
+//go:nosplit
+func (self class) FontClearSystemFallbackCache() { //gd:TextServer.font_clear_system_fallback_cache
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_clear_system_fallback_cache, 0, &struct{}{})
+}
+
+/*
 If set to true auto-hinting is preferred over font built-in hinting.
 */
 //go:nosplit
@@ -2756,6 +2890,27 @@ Returns true if auto-hinting is supported and preferred over font built-in hinti
 //go:nosplit
 func (self class) FontIsForceAutohinter(font_rid RID.Any) bool { //gd:TextServer.font_is_force_autohinter
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.font_is_force_autohinter, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ font_rid RID.Any }{font_rid})
+	var ret = r_ret
+	return ret
+}
+
+/*
+If set to true, color modulation is applied when drawing colored glyphs, otherwise it's applied to the monochrome glyphs only.
+*/
+//go:nosplit
+func (self class) FontSetModulateColorGlyphs(font_rid RID.Any, force_autohinter bool) { //gd:TextServer.font_set_modulate_color_glyphs
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_set_modulate_color_glyphs, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+		font_rid         RID.Any
+		force_autohinter bool
+	}{font_rid, force_autohinter})
+}
+
+/*
+Returns true, if color modulation is applied when drawing colored glyphs.
+*/
+//go:nosplit
+func (self class) FontIsModulateColorGlyphs(font_rid RID.Any) bool { //gd:TextServer.font_is_modulate_color_glyphs
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.font_is_modulate_color_glyphs, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ font_rid RID.Any }{font_rid})
 	var ret = r_ret
 	return ret
 }
@@ -2845,7 +3000,7 @@ func (self class) FontGetEmbolden(font_rid RID.Any) float64 { //gd:TextServer.fo
 }
 
 /*
-Sets the spacing for 'spacing' (see [TextServer.SpacingType]) to 'value' in pixels (not relative to the font size).
+Sets the spacing for 'spacing' to 'value' in pixels (not relative to the font size).
 */
 //go:nosplit
 func (self class) FontSetSpacing(font_rid RID.Any, spacing SpacingType, value int64) { //gd:TextServer.font_set_spacing
@@ -2857,7 +3012,7 @@ func (self class) FontSetSpacing(font_rid RID.Any, spacing SpacingType, value in
 }
 
 /*
-Returns the spacing for 'spacing' (see [TextServer.SpacingType]) in pixels (not relative to the font size).
+Returns the spacing for 'spacing' in pixels (not relative to the font size).
 */
 //go:nosplit
 func (self class) FontGetSpacing(font_rid RID.Any, spacing SpacingType) int64 { //gd:TextServer.font_get_spacing
@@ -2935,7 +3090,7 @@ func (self class) FontGetVariationCoordinates(font_rid RID.Any) Dictionary.Any {
 }
 
 /*
-Sets font oversampling factor, if set to 0.0 global oversampling factor is used instead. Used by dynamic fonts only.
+If set to a positive value, overrides the oversampling factor of the viewport this font is used in. See [graphics.gd/classdb/Viewport.Instance.Oversampling]. This value doesn't override the oversampling parameter of draw_* methods. Used by dynamic fonts only.
 */
 //go:nosplit
 func (self class) FontSetOversampling(font_rid RID.Any, oversampling float64) { //gd:TextServer.font_set_oversampling
@@ -2946,7 +3101,7 @@ func (self class) FontSetOversampling(font_rid RID.Any, oversampling float64) { 
 }
 
 /*
-Returns font oversampling factor, if set to 0.0 global oversampling factor is used instead. Used by dynamic fonts only.
+Returns oversampling factor override. If set to a positive value, overrides the oversampling factor of the viewport this font is used in. See [graphics.gd/classdb/Viewport.Instance.Oversampling]. This value doesn't override the oversampling parameter of draw_* methods. Used by dynamic fonts only.
 */
 //go:nosplit
 func (self class) FontGetOversampling(font_rid RID.Any) float64 { //gd:TextServer.font_get_oversampling
@@ -2982,6 +3137,16 @@ func (self class) FontRemoveSizeCache(font_rid RID.Any, size Vector2i.XY) { //gd
 		font_rid RID.Any
 		size     Vector2i.XY
 	}{font_rid, size})
+}
+
+/*
+Returns font cache information, each entry contains the following fields: Vector2i size_px - font size in pixels, float viewport_oversampling - viewport oversampling factor, int glyphs - number of rendered glyphs, int textures - number of used textures, int textures_size - size of texture data in bytes.
+*/
+//go:nosplit
+func (self class) FontGetSizeCacheInfo(font_rid RID.Any) Array.Contains[Dictionary.Any] { //gd:TextServer.font_get_size_cache_info
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.font_get_size_cache_info, gdextension.SizeArray|(gdextension.SizeRID<<4), &struct{ font_rid RID.Any }{font_rid})
+	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
 }
 
 /*
@@ -3595,34 +3760,35 @@ func (self class) FontRenderGlyph(font_rid RID.Any, size Vector2i.XY, index int6
 }
 
 /*
-Draws single glyph into a canvas item at the position, using 'font_rid' at the size 'size'.
+Draws single glyph into a canvas item at the position, using 'font_rid' at the size 'size'. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 Note: Glyph index is specific to the font, use glyphs indices returned by [Instance.ShapedTextGetGlyphs] or [Instance.FontGetGlyphIndex].
 
 Note: If there are pending glyphs to render, calling this function might trigger the texture cache update.
 */
 //go:nosplit
-func (self class) FontDrawGlyph(font_rid RID.Any, canvas RID.Any, size int64, pos Vector2.XY, index int64, color Color.RGBA) { //gd:TextServer.font_draw_glyph
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_draw_glyph, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeVector2<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24), &struct {
-		font_rid RID.Any
-		canvas   RID.Any
-		size     int64
-		pos      Vector2.XY
-		index    int64
-		color    Color.RGBA
-	}{font_rid, canvas, size, pos, index, color})
+func (self class) FontDrawGlyph(font_rid RID.Any, canvas RID.Any, size int64, pos Vector2.XY, index int64, color Color.RGBA, oversampling float64) { //gd:TextServer.font_draw_glyph
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_draw_glyph, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeVector2<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeFloat<<28), &struct {
+		font_rid     RID.Any
+		canvas       RID.Any
+		size         int64
+		pos          Vector2.XY
+		index        int64
+		color        Color.RGBA
+		oversampling float64
+	}{font_rid, canvas, size, pos, index, color, oversampling})
 }
 
 /*
-Draws single glyph outline of size 'outline_size' into a canvas item at the position, using 'font_rid' at the size 'size'.
+Draws single glyph outline of size 'outline_size' into a canvas item at the position, using 'font_rid' at the size 'size'. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 Note: Glyph index is specific to the font, use glyphs indices returned by [Instance.ShapedTextGetGlyphs] or [Instance.FontGetGlyphIndex].
 
 Note: If there are pending glyphs to render, calling this function might trigger the texture cache update.
 */
 //go:nosplit
-func (self class) FontDrawGlyphOutline(font_rid RID.Any, canvas RID.Any, size int64, outline_size int64, pos Vector2.XY, index int64, color Color.RGBA) { //gd:TextServer.font_draw_glyph_outline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_draw_glyph_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeVector2<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28), &struct {
+func (self class) FontDrawGlyphOutline(font_rid RID.Any, canvas RID.Any, size int64, outline_size int64, pos Vector2.XY, index int64, color Color.RGBA, oversampling float64) { //gd:TextServer.font_draw_glyph_outline
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.font_draw_glyph_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeVector2<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28)|(gdextension.SizeFloat<<32), &struct {
 		font_rid     RID.Any
 		canvas       RID.Any
 		size         int64
@@ -3630,7 +3796,8 @@ func (self class) FontDrawGlyphOutline(font_rid RID.Any, canvas RID.Any, size in
 		pos          Vector2.XY
 		index        int64
 		color        Color.RGBA
-	}{font_rid, canvas, size, outline_size, pos, index, color})
+		oversampling float64
+	}{font_rid, canvas, size, outline_size, pos, index, color, oversampling})
 }
 
 /*
@@ -3795,7 +3962,7 @@ func (self class) FontSupportedVariationList(font_rid RID.Any) Dictionary.Any { 
 }
 
 /*
-Returns the font oversampling factor, shared by all fonts in the TextServer.
+Deprecated. This method always returns 1.0.
 */
 //go:nosplit
 func (self class) FontGetGlobalOversampling() float64 { //gd:TextServer.font_get_global_oversampling
@@ -3805,9 +3972,7 @@ func (self class) FontGetGlobalOversampling() float64 { //gd:TextServer.font_get
 }
 
 /*
-Sets oversampling factor, shared by all font in the TextServer.
-
-Note: This value can be automatically changed by display server.
+Deprecated. This method does nothing.
 */
 //go:nosplit
 func (self class) FontSetGlobalOversampling(oversampling float64) { //gd:TextServer.font_set_global_oversampling
@@ -4098,6 +4263,16 @@ func (self class) ShapedTextResizeObject(shaped RID.Any, key variant.Any, size V
 }
 
 /*
+Returns the text buffer source text, including object replacement characters.
+*/
+//go:nosplit
+func (self class) ShapedGetText(shaped RID.Any) String.Readable { //gd:TextServer.shaped_get_text
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.shaped_get_text, gdextension.SizeString|(gdextension.SizeRID<<4), &struct{ shaped RID.Any }{shaped})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+/*
 Returns number of text spans added using [Instance.ShapedTextAddString] or [Instance.ShapedTextAddObject].
 */
 //go:nosplit
@@ -4134,6 +4309,32 @@ func (self class) ShapedGetSpanEmbeddedObject(shaped RID.Any, index int64) varia
 }
 
 /*
+Returns the text span source text.
+*/
+//go:nosplit
+func (self class) ShapedGetSpanText(shaped RID.Any, index int64) String.Readable { //gd:TextServer.shaped_get_span_text
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.shaped_get_span_text, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		shaped RID.Any
+		index  int64
+	}{shaped, index})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+/*
+Returns the text span embedded object key.
+*/
+//go:nosplit
+func (self class) ShapedGetSpanObject(shaped RID.Any, index int64) variant.Any { //gd:TextServer.shaped_get_span_object
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.shaped_get_span_object, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		shaped RID.Any
+		index  int64
+	}{shaped, index})
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
+	return ret
+}
+
+/*
 Changes text span font, font size, and OpenType features, without changing the text.
 */
 //go:nosplit
@@ -4145,6 +4346,107 @@ func (self class) ShapedSetSpanUpdateFont(shaped RID.Any, index int64, fonts Arr
 		size              int64
 		opentype_features gdextension.Dictionary
 	}{shaped, index, pointers.Get(gd.InternalArray(fonts)), size, pointers.Get(gd.InternalDictionary(opentype_features))})
+}
+
+/*
+Returns the number of uniform text runs in the buffer.
+*/
+//go:nosplit
+func (self class) ShapedGetRunCount(shaped RID.Any) int64 { //gd:TextServer.shaped_get_run_count
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shaped_get_run_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ shaped RID.Any }{shaped})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the source text of the 'index' text run (in visual order).
+*/
+//go:nosplit
+func (self class) ShapedGetRunText(shaped RID.Any, index int64) String.Readable { //gd:TextServer.shaped_get_run_text
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.shaped_get_run_text, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		shaped RID.Any
+		index  int64
+	}{shaped, index})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+/*
+Returns the source text range of the 'index' text run (in visual order).
+*/
+//go:nosplit
+func (self class) ShapedGetRunRange(shaped RID.Any, index int64) Vector2i.XY { //gd:TextServer.shaped_get_run_range
+	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.shaped_get_run_range, gdextension.SizeVector2i|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		shaped RID.Any
+		index  int64
+	}{shaped, index})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the font RID of the 'index' text run (in visual order).
+*/
+//go:nosplit
+func (self class) ShapedGetRunFontRid(shaped RID.Any, index int64) RID.Any { //gd:TextServer.shaped_get_run_font_rid
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.shaped_get_run_font_rid, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		shaped RID.Any
+		index  int64
+	}{shaped, index})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the font size of the 'index' text run (in visual order).
+*/
+//go:nosplit
+func (self class) ShapedGetRunFontSize(shaped RID.Any, index int64) int64 { //gd:TextServer.shaped_get_run_font_size
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shaped_get_run_font_size, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		shaped RID.Any
+		index  int64
+	}{shaped, index})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the language of the 'index' text run (in visual order).
+*/
+//go:nosplit
+func (self class) ShapedGetRunLanguage(shaped RID.Any, index int64) String.Readable { //gd:TextServer.shaped_get_run_language
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.shaped_get_run_language, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		shaped RID.Any
+		index  int64
+	}{shaped, index})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+/*
+Returns the direction of the 'index' text run (in visual order).
+*/
+//go:nosplit
+func (self class) ShapedGetRunDirection(shaped RID.Any, index int64) Direction { //gd:TextServer.shaped_get_run_direction
+	var r_ret = gdextension.Call[Direction](gd.ObjectChecked(self.AsObject()), methods.shaped_get_run_direction, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		shaped RID.Any
+		index  int64
+	}{shaped, index})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the embedded object of the 'index' text run (in visual order).
+*/
+//go:nosplit
+func (self class) ShapedGetRunObject(shaped RID.Any, index int64) variant.Any { //gd:TextServer.shaped_get_run_object
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.shaped_get_run_object, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		shaped RID.Any
+		index  int64
+	}{shaped, index})
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
+	return ret
 }
 
 /*
@@ -4302,7 +4604,7 @@ func (self class) ShapedTextGetLineBreaks(shaped RID.Any, width float64, start i
 }
 
 /*
-Breaks text into words and returns array of character ranges. Use 'grapheme_flags' to set what characters are used for breaking (see [GraphemeFlag]).
+Breaks text into words and returns array of character ranges. Use 'grapheme_flags' to set what characters are used for breaking.
 */
 //go:nosplit
 func (self class) ShapedTextGetWordBreaks(shaped RID.Any, grapheme_flags GraphemeFlag, skip_grapheme_flags GraphemeFlag) Packed.Array[int32] { //gd:TextServer.shaped_text_get_word_breaks
@@ -4622,26 +4924,31 @@ func (self class) ShapedTextClosestCharacterPos(shaped RID.Any, pos int64) int64
 }
 
 /*
-Draw shaped text into a canvas item at a given position, with 'color'. 'pos' specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
+Draw shaped text into a canvas item at a given position, with 'color'. 'pos' specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout). If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
+
+'clip_l' and 'clip_r' are offsets relative to 'pos', going to the right in horizontal layout and downward in vertical layout. If 'clip_l' is not negative, glyphs starting before the offset are clipped. If 'clip_r' is not negative, glyphs ending after the offset are clipped.
 */
 //go:nosplit
-func (self class) ShapedTextDraw(shaped RID.Any, canvas RID.Any, pos Vector2.XY, clip_l float64, clip_r float64, color Color.RGBA) { //gd:TextServer.shaped_text_draw
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shaped_text_draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeColor<<24), &struct {
-		shaped RID.Any
-		canvas RID.Any
-		pos    Vector2.XY
-		clip_l float64
-		clip_r float64
-		color  Color.RGBA
-	}{shaped, canvas, pos, clip_l, clip_r, color})
+func (self class) ShapedTextDraw(shaped RID.Any, canvas RID.Any, pos Vector2.XY, clip_l float64, clip_r float64, color Color.RGBA, oversampling float64) { //gd:TextServer.shaped_text_draw
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shaped_text_draw, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeFloat<<28), &struct {
+		shaped       RID.Any
+		canvas       RID.Any
+		pos          Vector2.XY
+		clip_l       float64
+		clip_r       float64
+		color        Color.RGBA
+		oversampling float64
+	}{shaped, canvas, pos, clip_l, clip_r, color, oversampling})
 }
 
 /*
-Draw the outline of the shaped text into a canvas item at a given position, with 'color'. 'pos' specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout).
+Draw the outline of the shaped text into a canvas item at a given position, with 'color'. 'pos' specifies the leftmost point of the baseline (for horizontal layout) or topmost point of the baseline (for vertical layout). If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
+
+'clip_l' and 'clip_r' are offsets relative to 'pos', going to the right in horizontal layout and downward in vertical layout. If 'clip_l' is not negative, glyphs starting before the offset are clipped. If 'clip_r' is not negative, glyphs ending after the offset are clipped.
 */
 //go:nosplit
-func (self class) ShapedTextDrawOutline(shaped RID.Any, canvas RID.Any, pos Vector2.XY, clip_l float64, clip_r float64, outline_size int64, color Color.RGBA) { //gd:TextServer.shaped_text_draw_outline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shaped_text_draw_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28), &struct {
+func (self class) ShapedTextDrawOutline(shaped RID.Any, canvas RID.Any, pos Vector2.XY, clip_l float64, clip_r float64, outline_size int64, color Color.RGBA, oversampling float64) { //gd:TextServer.shaped_text_draw_outline
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.shaped_text_draw_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeVector2<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28)|(gdextension.SizeFloat<<32), &struct {
 		shaped       RID.Any
 		canvas       RID.Any
 		pos          Vector2.XY
@@ -4649,7 +4956,8 @@ func (self class) ShapedTextDrawOutline(shaped RID.Any, canvas RID.Any, pos Vect
 		clip_r       float64
 		outline_size int64
 		color        Color.RGBA
-	}{shaped, canvas, pos, clip_l, clip_r, outline_size, color})
+		oversampling float64
+	}{shaped, canvas, pos, clip_l, clip_r, outline_size, color, oversampling})
 }
 
 /*
@@ -4866,7 +5174,7 @@ func (self class) StringToTitle(s String.Readable, language String.Readable) Str
 }
 
 /*
-Default implementation of the BiDi algorithm override function. See [StructuredTextParser] for more info.
+Default implementation of the BiDi algorithm override function.
 */
 //go:nosplit
 func (self class) ParseStructuredText(parser_type StructuredTextParser, args Array.Any, text String.Readable) Array.Contains[Vector3i.XYZ] { //gd:TextServer.parse_structured_text
@@ -4917,7 +5225,7 @@ const (
 	FontAntialiasingGray FontAntialiasing = 1
 	// Font glyphs are rasterized for LCD screens.
 	//
-	// LCD subpixel layout is determined by the value of gui/theme/lcd_subpixel_layout project settings.
+	// LCD subpixel layout is determined by the value of the [graphics.gd/classdb/ProjectSettings] "gui/theme/lcd_subpixel_layout" setting.
 	//
 	// LCD subpixel anti-aliasing mode is suitable only for rendering horizontal, unscaled text in 2D.
 	FontAntialiasingLcd FontAntialiasing = 2
@@ -5017,6 +5325,14 @@ const (
 	BreakTrimEdgeSpaces LineBreakFlag = 16
 	// Subtract first line indentation width from all lines after the first one.
 	BreakTrimIndent LineBreakFlag = 32
+	// Remove spaces and line break characters from the start of broken line segments.
+	//
+	// E.g, after line breaking, the second segment of the following text test  \n  next, is next if the flag is set, and   next if it is not.
+	BreakTrimStartEdgeSpaces LineBreakFlag = 64
+	// Remove spaces and line break characters from the end of broken line segments.
+	//
+	// E.g, after line breaking, the first segment of the following text test  \n  next, is test if the flag is set, and test  \n if it is not.
+	BreakTrimEndEdgeSpaces LineBreakFlag = 128
 )
 
 type VisibleCharactersBehavior int //gd:TextServer.VisibleCharactersBehavior
@@ -5045,10 +5361,14 @@ const (
 	OverrunTrimChar OverrunBehavior = 1
 	// Trims the text per word.
 	OverrunTrimWord OverrunBehavior = 2
-	// Trims the text per character and adds an ellipsis to indicate that parts are hidden.
+	// Trims the text per character and adds an ellipsis to indicate that parts are hidden if trimmed text is 6 characters or longer.
 	OverrunTrimEllipsis OverrunBehavior = 3
-	// Trims the text per word and adds an ellipsis to indicate that parts are hidden.
+	// Trims the text per word and adds an ellipsis to indicate that parts are hidden if trimmed text is 6 characters or longer.
 	OverrunTrimWordEllipsis OverrunBehavior = 4
+	// Trims the text per character and adds an ellipsis to indicate that parts are hidden regardless of trimmed text length.
+	OverrunTrimEllipsisForce OverrunBehavior = 5
+	// Trims the text per word and adds an ellipsis to indicate that parts are hidden regardless of trimmed text length.
+	OverrunTrimWordEllipsisForce OverrunBehavior = 6
 )
 
 type TextOverrunFlag int //gd:TextServer.TextOverrunFlag
@@ -5131,9 +5451,9 @@ const (
 	SubpixelPositioningOneHalf SubpixelPositioning = 2
 	// Glyph horizontal position is rounded to one quarter of the pixel size, each glyph is rasterized up to four times.
 	SubpixelPositioningOneQuarter SubpixelPositioning = 3
-	// Maximum font size which will use one half of the pixel subpixel positioning in [SubpixelPositioningAuto] mode.
+	// Maximum font size which will use "one half of the pixel" subpixel positioning in [SubpixelPositioningAuto] mode.
 	SubpixelPositioningOneHalfMaxSize SubpixelPositioning = 20
-	// Maximum font size which will use one quarter of the pixel subpixel positioning in [SubpixelPositioningAuto] mode.
+	// Maximum font size which will use "one quarter of the pixel" subpixel positioning in [SubpixelPositioningAuto] mode.
 	SubpixelPositioningOneQuarterMaxSize SubpixelPositioning = 16
 )
 
@@ -5208,7 +5528,7 @@ const (
 	FontBold FontStyle = 1
 	// Font is italic or oblique.
 	FontItalic FontStyle = 2
-	// Font have fixed-width characters.
+	// Font has fixed-width characters (also known as monospace).
 	FontFixedWidth FontStyle = 4
 )
 
@@ -5265,6 +5585,16 @@ type Carets struct {
 		}
 	} `gd:"trailing_rect"`
 	TrailingDirection Direction `gd:"trailing_direction"`
+}
+type FontSizeCacheInfo struct {
+	SizePixels struct {
+		X int32
+		Y int32
+	} `gd:"size_px"`
+	ViewportOversampling float32 `gd:"viewport_oversampling"`
+	Glyphs               int     `gd:"glyphs"`
+	Textures             int     `gd:"textures"`
+	TexturesSize         int     `gd:"textures_size"`
 }
 type Glyph struct {
 	Start  int32  `gd:"start"`

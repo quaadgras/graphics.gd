@@ -168,7 +168,7 @@ func (self Instance) GetColor(point int) Color.RGBA { //gd:Gradient.get_color
 }
 
 /*
-Returns the interpolated color specified by 'offset'.
+Returns the interpolated color specified by 'offset'. 'offset' should be between 0.0 and 1.0 (inclusive). Using a value lower than 0.0 will return the same color as 0.0, and using a value higher than 1.0 will return the same color as 1.0. If your input value is not within this range, consider using [graphics.gd/classdb/@GlobalScope.Instance.Remap] on the input value with output values set to 0.0 and 1.0.
 */
 func (self Instance) Sample(offset Float.X) Color.RGBA { //gd:Gradient.sample
 	return Color.RGBA(Advanced(self).Sample(float64(offset)))
@@ -328,7 +328,7 @@ func (self class) GetColor(point int64) Color.RGBA { //gd:Gradient.get_color
 }
 
 /*
-Returns the interpolated color specified by 'offset'.
+Returns the interpolated color specified by 'offset'. 'offset' should be between 0.0 and 1.0 (inclusive). Using a value lower than 0.0 will return the same color as 0.0, and using a value higher than 1.0 will return the same color as 1.0. If your input value is not within this range, consider using [graphics.gd/classdb/@GlobalScope.Instance.Remap] on the input value with output values set to 0.0 and 1.0.
 */
 //go:nosplit
 func (self class) Sample(offset float64) Color.RGBA { //gd:Gradient.sample

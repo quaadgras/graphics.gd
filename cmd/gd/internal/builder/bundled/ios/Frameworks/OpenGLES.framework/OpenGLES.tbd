@@ -140,6 +140,10 @@ exports:
     - _glBeginTransformFeedback
     - _glAttachShader
     - _glActiveTexture
+    - _glStencilOp
+    - _glStencilMask
+    - _glStencilFunc
+    - _glClearStencil
    objc-classes:
     - EAGLContext
 ...

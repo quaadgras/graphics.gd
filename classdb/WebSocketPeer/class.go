@@ -205,14 +205,14 @@ func (self Instance) AcceptStream(stream StreamPeer.Instance) error { //gd:WebSo
 Sends the given 'message' using the desired 'write_mode'. When sending a string, prefer using [Instance.SendText].
 */
 func (self Instance) Send(message []byte) error { //gd:WebSocketPeer.send
-	return error(gd.ToError(Advanced(self).Send(Packed.Bytes(Packed.New(message...)), 1)))
+	return error(gd.ToError(Advanced(self).Send(Packed.BytesFrom(message...), 1)))
 }
 
 /*
 Sends the given 'message' using the desired 'write_mode'. When sending a string, prefer using [Instance.SendText].
 */
 func (self Expanded) Send(message []byte, write_mode WriteMode) error { //gd:WebSocketPeer.send
-	return error(gd.ToError(Advanced(self).Send(Packed.Bytes(Packed.New(message...)), write_mode)))
+	return error(gd.ToError(Advanced(self).Send(Packed.BytesFrom(message...), write_mode)))
 }
 
 /*
@@ -307,7 +307,7 @@ func (self Instance) GetCurrentOutboundBufferedAmount() int { //gd:WebSocketPeer
 }
 
 /*
-Returns the ready state of the connection. See [State].
+Returns the ready state of the connection.
 */
 func (self Instance) GetReadyState() State { //gd:WebSocketPeer.get_ready_state
 	return State(Advanced(self).GetReadyState())
@@ -455,7 +455,7 @@ func (self class) Send(message Packed.Bytes, write_mode WriteMode) Error.Code { 
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.send, gdextension.SizeInt|(gdextension.SizePackedArray<<4)|(gdextension.SizeInt<<8), &struct {
 		message    gdextension.PackedArray[byte]
 		write_mode WriteMode
-	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](message))), write_mode})
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](message.Array))), write_mode})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -568,7 +568,7 @@ func (self class) GetCurrentOutboundBufferedAmount() int64 { //gd:WebSocketPeer.
 }
 
 /*
-Returns the ready state of the connection. See [State].
+Returns the ready state of the connection.
 */
 //go:nosplit
 func (self class) GetReadyState() State { //gd:WebSocketPeer.get_ready_state

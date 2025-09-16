@@ -76,35 +76,35 @@ type Instance [1]gdclass.GLTFAccessor
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	get_buffer_view                   gdextension.MethodForClass `hash:"2455072627"`
+	get_buffer_view                   gdextension.MethodForClass `hash:"3905245786"`
 	set_buffer_view                   gdextension.MethodForClass `hash:"1286410249"`
-	get_byte_offset                   gdextension.MethodForClass `hash:"2455072627"`
+	get_byte_offset                   gdextension.MethodForClass `hash:"3905245786"`
 	set_byte_offset                   gdextension.MethodForClass `hash:"1286410249"`
-	get_component_type                gdextension.MethodForClass `hash:"2455072627"`
-	set_component_type                gdextension.MethodForClass `hash:"1286410249"`
-	get_normalized                    gdextension.MethodForClass `hash:"2240911060"`
+	get_component_type                gdextension.MethodForClass `hash:"852227802"`
+	set_component_type                gdextension.MethodForClass `hash:"1780020221"`
+	get_normalized                    gdextension.MethodForClass `hash:"36873697"`
 	set_normalized                    gdextension.MethodForClass `hash:"2586408642"`
-	get_count                         gdextension.MethodForClass `hash:"2455072627"`
+	get_count                         gdextension.MethodForClass `hash:"3905245786"`
 	set_count                         gdextension.MethodForClass `hash:"1286410249"`
-	get_accessor_type                 gdextension.MethodForClass `hash:"679305214"`
+	get_accessor_type                 gdextension.MethodForClass `hash:"1998183368"`
 	set_accessor_type                 gdextension.MethodForClass `hash:"2347728198"`
-	get_type                          gdextension.MethodForClass `hash:"2455072627"`
+	get_type                          gdextension.MethodForClass `hash:"3905245786"`
 	set_type                          gdextension.MethodForClass `hash:"1286410249"`
-	get_min                           gdextension.MethodForClass `hash:"148677866"`
+	get_min                           gdextension.MethodForClass `hash:"547233126"`
 	set_min                           gdextension.MethodForClass `hash:"2576592201"`
-	get_max                           gdextension.MethodForClass `hash:"148677866"`
+	get_max                           gdextension.MethodForClass `hash:"547233126"`
 	set_max                           gdextension.MethodForClass `hash:"2576592201"`
-	get_sparse_count                  gdextension.MethodForClass `hash:"2455072627"`
+	get_sparse_count                  gdextension.MethodForClass `hash:"3905245786"`
 	set_sparse_count                  gdextension.MethodForClass `hash:"1286410249"`
-	get_sparse_indices_buffer_view    gdextension.MethodForClass `hash:"2455072627"`
+	get_sparse_indices_buffer_view    gdextension.MethodForClass `hash:"3905245786"`
 	set_sparse_indices_buffer_view    gdextension.MethodForClass `hash:"1286410249"`
-	get_sparse_indices_byte_offset    gdextension.MethodForClass `hash:"2455072627"`
+	get_sparse_indices_byte_offset    gdextension.MethodForClass `hash:"3905245786"`
 	set_sparse_indices_byte_offset    gdextension.MethodForClass `hash:"1286410249"`
-	get_sparse_indices_component_type gdextension.MethodForClass `hash:"2455072627"`
-	set_sparse_indices_component_type gdextension.MethodForClass `hash:"1286410249"`
-	get_sparse_values_buffer_view     gdextension.MethodForClass `hash:"2455072627"`
+	get_sparse_indices_component_type gdextension.MethodForClass `hash:"852227802"`
+	set_sparse_indices_component_type gdextension.MethodForClass `hash:"1780020221"`
+	get_sparse_values_buffer_view     gdextension.MethodForClass `hash:"3905245786"`
 	set_sparse_values_buffer_view     gdextension.MethodForClass `hash:"1286410249"`
-	get_sparse_values_byte_offset     gdextension.MethodForClass `hash:"2455072627"`
+	get_sparse_values_byte_offset     gdextension.MethodForClass `hash:"3905245786"`
 	set_sparse_values_byte_offset     gdextension.MethodForClass `hash:"1286410249"`
 }
 
@@ -187,12 +187,12 @@ func (self Instance) SetByteOffset(value int) {
 	class(self).SetByteOffset(int64(value))
 }
 
-func (self Instance) ComponentType() int {
-	return int(int(class(self).GetComponentType()))
+func (self Instance) ComponentType() GLTFComponentType {
+	return GLTFComponentType(class(self).GetComponentType())
 }
 
-func (self Instance) SetComponentType(value int) {
-	class(self).SetComponentType(int64(value))
+func (self Instance) SetComponentType(value GLTFComponentType) {
+	class(self).SetComponentType(value)
 }
 
 func (self Instance) Normalized() bool {
@@ -267,12 +267,12 @@ func (self Instance) SetSparseIndicesByteOffset(value int) {
 	class(self).SetSparseIndicesByteOffset(int64(value))
 }
 
-func (self Instance) SparseIndicesComponentType() int {
-	return int(int(class(self).GetSparseIndicesComponentType()))
+func (self Instance) SparseIndicesComponentType() GLTFComponentType {
+	return GLTFComponentType(class(self).GetSparseIndicesComponentType())
 }
 
-func (self Instance) SetSparseIndicesComponentType(value int) {
-	class(self).SetSparseIndicesComponentType(int64(value))
+func (self Instance) SetSparseIndicesComponentType(value GLTFComponentType) {
+	class(self).SetSparseIndicesComponentType(value)
 }
 
 func (self Instance) SparseValuesBufferView() int {
@@ -316,15 +316,15 @@ func (self class) SetByteOffset(byte_offset int64) { //gd:GLTFAccessor.set_byte_
 }
 
 //go:nosplit
-func (self class) GetComponentType() int64 { //gd:GLTFAccessor.get_component_type
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_component_type, gdextension.SizeInt, &struct{}{})
+func (self class) GetComponentType() GLTFComponentType { //gd:GLTFAccessor.get_component_type
+	var r_ret = gdextension.Call[GLTFComponentType](gd.ObjectChecked(self.AsObject()), methods.get_component_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
-func (self class) SetComponentType(component_type int64) { //gd:GLTFAccessor.set_component_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_component_type, 0|(gdextension.SizeInt<<4), &struct{ component_type int64 }{component_type})
+func (self class) SetComponentType(component_type GLTFComponentType) { //gd:GLTFAccessor.set_component_type
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_component_type, 0|(gdextension.SizeInt<<4), &struct{ component_type GLTFComponentType }{component_type})
 }
 
 //go:nosplit
@@ -440,15 +440,15 @@ func (self class) SetSparseIndicesByteOffset(sparse_indices_byte_offset int64) {
 }
 
 //go:nosplit
-func (self class) GetSparseIndicesComponentType() int64 { //gd:GLTFAccessor.get_sparse_indices_component_type
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sparse_indices_component_type, gdextension.SizeInt, &struct{}{})
+func (self class) GetSparseIndicesComponentType() GLTFComponentType { //gd:GLTFAccessor.get_sparse_indices_component_type
+	var r_ret = gdextension.Call[GLTFComponentType](gd.ObjectChecked(self.AsObject()), methods.get_sparse_indices_component_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
-func (self class) SetSparseIndicesComponentType(sparse_indices_component_type int64) { //gd:GLTFAccessor.set_sparse_indices_component_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sparse_indices_component_type, 0|(gdextension.SizeInt<<4), &struct{ sparse_indices_component_type int64 }{sparse_indices_component_type})
+func (self class) SetSparseIndicesComponentType(sparse_indices_component_type GLTFComponentType) { //gd:GLTFAccessor.set_sparse_indices_component_type
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sparse_indices_component_type, 0|(gdextension.SizeInt<<4), &struct{ sparse_indices_component_type GLTFComponentType }{sparse_indices_component_type})
 }
 
 //go:nosplit

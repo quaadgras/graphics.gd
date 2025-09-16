@@ -442,7 +442,7 @@ func (self Expanded) SetSection(start_time Float.X, end_time Float.X) { //gd:Ani
 }
 
 /*
-Resets the current section if section is set.
+Resets the current section. Does nothing if a section has not been set.
 */
 func (self Instance) ResetSection() { //gd:AnimationPlayer.reset_section
 	Advanced(self).ResetSection()
@@ -463,7 +463,7 @@ func (self Instance) GetSectionEndTime() Float.X { //gd:AnimationPlayer.get_sect
 }
 
 /*
-Returns true if an animation is currently playing with section.
+Returns true if an animation is currently playing with a section.
 */
 func (self Instance) HasSection() bool { //gd:AnimationPlayer.has_section
 	return bool(Advanced(self).HasSection())
@@ -1065,7 +1065,7 @@ func (self class) SetSection(start_time float64, end_time float64) { //gd:Animat
 }
 
 /*
-Resets the current section if section is set.
+Resets the current section. Does nothing if a section has not been set.
 */
 //go:nosplit
 func (self class) ResetSection() { //gd:AnimationPlayer.reset_section
@@ -1093,7 +1093,7 @@ func (self class) GetSectionEndTime() float64 { //gd:AnimationPlayer.get_section
 }
 
 /*
-Returns true if an animation is currently playing with section.
+Returns true if an animation is currently playing with a section.
 */
 //go:nosplit
 func (self class) HasSection() bool { //gd:AnimationPlayer.has_section

@@ -132,3 +132,22 @@ func (CallableProxy) Bind(state complex128, args ...VariantPkg.Any) (CallableTyp
 	}
 	return CallableProxy{}, pointers.Pack(c.Bind(vargs...))
 }
+
+func CallableAs[T any](callable Callable) T {
+	fn, _ := reflect.TypeAssert[T](reflect.MakeFunc(reflect.TypeFor[T](), func(args []reflect.Value) (results []reflect.Value) {
+		vargs := make([]Variant, len(args))
+		for i, arg := range args {
+			vargs[i] = NewVariant(arg.Interface())
+		}
+		result := callable.Call(vargs...)
+		if reflect.TypeFor[T]().NumOut() == 0 {
+			return nil
+		}
+		converted, err := ConvertToDesiredGoType(result, reflect.TypeFor[T]().Out(0))
+		if err != nil {
+			panic(err)
+		}
+		return []reflect.Value{converted}
+	}))
+	return fn
+}

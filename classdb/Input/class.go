@@ -80,60 +80,62 @@ type Instance [1]gdclass.Input
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	is_anything_pressed            gdextension.MethodForClass `hash:"36873697"`
-	is_key_pressed                 gdextension.MethodForClass `hash:"1938909964"`
-	is_physical_key_pressed        gdextension.MethodForClass `hash:"1938909964"`
-	is_key_label_pressed           gdextension.MethodForClass `hash:"1938909964"`
-	is_mouse_button_pressed        gdextension.MethodForClass `hash:"1821097125"`
-	is_joy_button_pressed          gdextension.MethodForClass `hash:"787208542"`
-	is_action_pressed              gdextension.MethodForClass `hash:"1558498928"`
-	is_action_just_pressed         gdextension.MethodForClass `hash:"1558498928"`
-	is_action_just_released        gdextension.MethodForClass `hash:"1558498928"`
-	get_action_strength            gdextension.MethodForClass `hash:"801543509"`
-	get_action_raw_strength        gdextension.MethodForClass `hash:"801543509"`
-	get_axis                       gdextension.MethodForClass `hash:"1958752504"`
-	get_vector                     gdextension.MethodForClass `hash:"2479607902"`
-	add_joy_mapping                gdextension.MethodForClass `hash:"1168363258"`
-	remove_joy_mapping             gdextension.MethodForClass `hash:"83702148"`
-	is_joy_known                   gdextension.MethodForClass `hash:"3067735520"`
-	get_joy_axis                   gdextension.MethodForClass `hash:"4063175957"`
-	get_joy_name                   gdextension.MethodForClass `hash:"990163283"`
-	get_joy_guid                   gdextension.MethodForClass `hash:"844755477"`
-	get_joy_info                   gdextension.MethodForClass `hash:"3485342025"`
-	should_ignore_device           gdextension.MethodForClass `hash:"2522259332"`
-	get_connected_joypads          gdextension.MethodForClass `hash:"2915620761"`
-	get_joy_vibration_strength     gdextension.MethodForClass `hash:"3114997196"`
-	get_joy_vibration_duration     gdextension.MethodForClass `hash:"4025615559"`
-	start_joy_vibration            gdextension.MethodForClass `hash:"2576575033"`
-	stop_joy_vibration             gdextension.MethodForClass `hash:"1286410249"`
-	vibrate_handheld               gdextension.MethodForClass `hash:"544894297"`
-	get_gravity                    gdextension.MethodForClass `hash:"3360562783"`
-	get_accelerometer              gdextension.MethodForClass `hash:"3360562783"`
-	get_magnetometer               gdextension.MethodForClass `hash:"3360562783"`
-	get_gyroscope                  gdextension.MethodForClass `hash:"3360562783"`
-	set_gravity                    gdextension.MethodForClass `hash:"3460891852"`
-	set_accelerometer              gdextension.MethodForClass `hash:"3460891852"`
-	set_magnetometer               gdextension.MethodForClass `hash:"3460891852"`
-	set_gyroscope                  gdextension.MethodForClass `hash:"3460891852"`
-	get_last_mouse_velocity        gdextension.MethodForClass `hash:"1497962370"`
-	get_last_mouse_screen_velocity gdextension.MethodForClass `hash:"1497962370"`
-	get_mouse_button_mask          gdextension.MethodForClass `hash:"2512161324"`
-	set_mouse_mode                 gdextension.MethodForClass `hash:"2228490894"`
-	get_mouse_mode                 gdextension.MethodForClass `hash:"965286182"`
-	warp_mouse                     gdextension.MethodForClass `hash:"743155724"`
-	action_press                   gdextension.MethodForClass `hash:"1713091165"`
-	action_release                 gdextension.MethodForClass `hash:"3304788590"`
-	set_default_cursor_shape       gdextension.MethodForClass `hash:"2124816902"`
-	get_current_cursor_shape       gdextension.MethodForClass `hash:"3455658929"`
-	set_custom_mouse_cursor        gdextension.MethodForClass `hash:"703945977"`
-	parse_input_event              gdextension.MethodForClass `hash:"3754044979"`
-	set_use_accumulated_input      gdextension.MethodForClass `hash:"2586408642"`
-	is_using_accumulated_input     gdextension.MethodForClass `hash:"2240911060"`
-	flush_buffered_events          gdextension.MethodForClass `hash:"3218959716"`
-	set_emulate_mouse_from_touch   gdextension.MethodForClass `hash:"2586408642"`
-	is_emulating_mouse_from_touch  gdextension.MethodForClass `hash:"36873697"`
-	set_emulate_touch_from_mouse   gdextension.MethodForClass `hash:"2586408642"`
-	is_emulating_touch_from_mouse  gdextension.MethodForClass `hash:"36873697"`
+	is_anything_pressed              gdextension.MethodForClass `hash:"36873697"`
+	is_key_pressed                   gdextension.MethodForClass `hash:"1938909964"`
+	is_physical_key_pressed          gdextension.MethodForClass `hash:"1938909964"`
+	is_key_label_pressed             gdextension.MethodForClass `hash:"1938909964"`
+	is_mouse_button_pressed          gdextension.MethodForClass `hash:"1821097125"`
+	is_joy_button_pressed            gdextension.MethodForClass `hash:"787208542"`
+	is_action_pressed                gdextension.MethodForClass `hash:"1558498928"`
+	is_action_just_pressed           gdextension.MethodForClass `hash:"1558498928"`
+	is_action_just_released          gdextension.MethodForClass `hash:"1558498928"`
+	is_action_just_pressed_by_event  gdextension.MethodForClass `hash:"551972873"`
+	is_action_just_released_by_event gdextension.MethodForClass `hash:"551972873"`
+	get_action_strength              gdextension.MethodForClass `hash:"801543509"`
+	get_action_raw_strength          gdextension.MethodForClass `hash:"801543509"`
+	get_axis                         gdextension.MethodForClass `hash:"1958752504"`
+	get_vector                       gdextension.MethodForClass `hash:"2479607902"`
+	add_joy_mapping                  gdextension.MethodForClass `hash:"1168363258"`
+	remove_joy_mapping               gdextension.MethodForClass `hash:"83702148"`
+	is_joy_known                     gdextension.MethodForClass `hash:"3067735520"`
+	get_joy_axis                     gdextension.MethodForClass `hash:"4063175957"`
+	get_joy_name                     gdextension.MethodForClass `hash:"990163283"`
+	get_joy_guid                     gdextension.MethodForClass `hash:"844755477"`
+	get_joy_info                     gdextension.MethodForClass `hash:"3485342025"`
+	should_ignore_device             gdextension.MethodForClass `hash:"2522259332"`
+	get_connected_joypads            gdextension.MethodForClass `hash:"2915620761"`
+	get_joy_vibration_strength       gdextension.MethodForClass `hash:"3114997196"`
+	get_joy_vibration_duration       gdextension.MethodForClass `hash:"4025615559"`
+	start_joy_vibration              gdextension.MethodForClass `hash:"2576575033"`
+	stop_joy_vibration               gdextension.MethodForClass `hash:"1286410249"`
+	vibrate_handheld                 gdextension.MethodForClass `hash:"544894297"`
+	get_gravity                      gdextension.MethodForClass `hash:"3360562783"`
+	get_accelerometer                gdextension.MethodForClass `hash:"3360562783"`
+	get_magnetometer                 gdextension.MethodForClass `hash:"3360562783"`
+	get_gyroscope                    gdextension.MethodForClass `hash:"3360562783"`
+	set_gravity                      gdextension.MethodForClass `hash:"3460891852"`
+	set_accelerometer                gdextension.MethodForClass `hash:"3460891852"`
+	set_magnetometer                 gdextension.MethodForClass `hash:"3460891852"`
+	set_gyroscope                    gdextension.MethodForClass `hash:"3460891852"`
+	get_last_mouse_velocity          gdextension.MethodForClass `hash:"1497962370"`
+	get_last_mouse_screen_velocity   gdextension.MethodForClass `hash:"1497962370"`
+	get_mouse_button_mask            gdextension.MethodForClass `hash:"2512161324"`
+	set_mouse_mode                   gdextension.MethodForClass `hash:"2228490894"`
+	get_mouse_mode                   gdextension.MethodForClass `hash:"965286182"`
+	warp_mouse                       gdextension.MethodForClass `hash:"743155724"`
+	action_press                     gdextension.MethodForClass `hash:"1713091165"`
+	action_release                   gdextension.MethodForClass `hash:"3304788590"`
+	set_default_cursor_shape         gdextension.MethodForClass `hash:"2124816902"`
+	get_current_cursor_shape         gdextension.MethodForClass `hash:"3455658929"`
+	set_custom_mouse_cursor          gdextension.MethodForClass `hash:"703945977"`
+	parse_input_event                gdextension.MethodForClass `hash:"3754044979"`
+	set_use_accumulated_input        gdextension.MethodForClass `hash:"2586408642"`
+	is_using_accumulated_input       gdextension.MethodForClass `hash:"2240911060"`
+	flush_buffered_events            gdextension.MethodForClass `hash:"3218959716"`
+	set_emulate_mouse_from_touch     gdextension.MethodForClass `hash:"2586408642"`
+	is_emulating_mouse_from_touch    gdextension.MethodForClass `hash:"36873697"`
+	set_emulate_touch_from_mouse     gdextension.MethodForClass `hash:"2586408642"`
+	is_emulating_touch_from_mouse    gdextension.MethodForClass `hash:"36873697"`
 }
 
 func init() {
@@ -208,7 +210,7 @@ func IsMouseButtonPressed(button MouseButton) bool { //gd:Input.is_mouse_button_
 }
 
 /*
-Returns true if you are pressing the joypad button (see [JoyButton]).
+Returns true if you are pressing the joypad button at index 'button'.
 */
 func IsJoyButtonPressed(device Device, button JoyButton) bool { //gd:Input.is_joy_button_pressed
 	once.Do(singleton)
@@ -254,7 +256,7 @@ Note: Returning true does not imply that the action is still pressed. An action 
 
 Note: Due to keyboard ghosting, [IsActionJustPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
 
-Note: During input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]), use [graphics.gd/classdb/InputEvent.Instance.IsActionPressed] instead to query the action state of the current event.
+Note: During input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]), use [graphics.gd/classdb/InputEvent.Instance.IsActionPressed] instead to query the action state of the current event. See also [IsActionJustPressedByEvent].
 
 [Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
 */
@@ -274,7 +276,7 @@ Note: Returning true does not imply that the action is still pressed. An action 
 
 Note: Due to keyboard ghosting, [IsActionJustPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
 
-Note: During input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]), use [graphics.gd/classdb/InputEvent.Instance.IsActionPressed] instead to query the action state of the current event.
+Note: During input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]), use [graphics.gd/classdb/InputEvent.Instance.IsActionPressed] instead to query the action state of the current event. See also [IsActionJustPressedByEvent].
 
 [Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
 */
@@ -290,7 +292,7 @@ Note: Returning true does not imply that the action is still not pressed. An act
 
 If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
 
-Note: During input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]), use [graphics.gd/classdb/InputEvent.Instance.IsActionReleased] instead to query the action state of the current event.
+Note: During input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]), use [graphics.gd/classdb/InputEvent.Instance.IsActionReleased] instead to query the action state of the current event. See also [IsActionJustReleasedByEvent].
 */
 func IsActionJustReleased(action string, exact_match bool) bool { //gd:Input.is_action_just_released
 	once.Do(singleton)
@@ -304,11 +306,75 @@ Note: Returning true does not imply that the action is still not pressed. An act
 
 If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
 
-Note: During input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]), use [graphics.gd/classdb/InputEvent.Instance.IsActionReleased] instead to query the action state of the current event.
+Note: During input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]), use [graphics.gd/classdb/InputEvent.Instance.IsActionReleased] instead to query the action state of the current event. See also [IsActionJustReleasedByEvent].
 */
 func IsActionJustReleasedOptions(action string, exact_match bool) bool { //gd:Input.is_action_just_released
 	once.Do(singleton)
 	return bool(Advanced().IsActionJustReleased(String.Name(String.New(action)), exact_match))
+}
+
+/*
+Returns true when the user has started pressing the action event in the current frame or physics tick, and the first event that triggered action press in the current frame/physics tick was 'event'. It will only return true on the frame or tick that the user pressed down the button.
+
+This is useful for code that needs to run only once when an action is pressed, and the action is processed during input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]).
+
+If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
+
+Note: Returning true does not imply that the action is still pressed. An action can be pressed and released again rapidly, and true will still be returned so as not to miss input.
+
+Note: Due to keyboard ghosting, [IsActionJustPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
+
+[Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
+*/
+func IsActionJustPressedByEvent(action string, event InputEvent.Instance, exact_match bool) bool { //gd:Input.is_action_just_pressed_by_event
+	once.Do(singleton)
+	return bool(Advanced().IsActionJustPressedByEvent(String.Name(String.New(action)), event, exact_match))
+}
+
+/*
+Returns true when the user has started pressing the action event in the current frame or physics tick, and the first event that triggered action press in the current frame/physics tick was 'event'. It will only return true on the frame or tick that the user pressed down the button.
+
+This is useful for code that needs to run only once when an action is pressed, and the action is processed during input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]).
+
+If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
+
+Note: Returning true does not imply that the action is still pressed. An action can be pressed and released again rapidly, and true will still be returned so as not to miss input.
+
+Note: Due to keyboard ghosting, [IsActionJustPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
+
+[Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
+*/
+func IsActionJustPressedByEventOptions(action string, event InputEvent.Instance, exact_match bool) bool { //gd:Input.is_action_just_pressed_by_event
+	once.Do(singleton)
+	return bool(Advanced().IsActionJustPressedByEvent(String.Name(String.New(action)), event, exact_match))
+}
+
+/*
+Returns true when the user stops pressing the action event in the current frame or physics tick, and the first event that triggered action release in the current frame/physics tick was 'event'. It will only return true on the frame or tick that the user releases the button.
+
+This is useful when an action is processed during input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]).
+
+Note: Returning true does not imply that the action is still not pressed. An action can be released and pressed again rapidly, and true will still be returned so as not to miss input.
+
+If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
+*/
+func IsActionJustReleasedByEvent(action string, event InputEvent.Instance, exact_match bool) bool { //gd:Input.is_action_just_released_by_event
+	once.Do(singleton)
+	return bool(Advanced().IsActionJustReleasedByEvent(String.Name(String.New(action)), event, exact_match))
+}
+
+/*
+Returns true when the user stops pressing the action event in the current frame or physics tick, and the first event that triggered action release in the current frame/physics tick was 'event'. It will only return true on the frame or tick that the user releases the button.
+
+This is useful when an action is processed during input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]).
+
+Note: Returning true does not imply that the action is still not pressed. An action can be released and pressed again rapidly, and true will still be returned so as not to miss input.
+
+If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
+*/
+func IsActionJustReleasedByEventOptions(action string, event InputEvent.Instance, exact_match bool) bool { //gd:Input.is_action_just_released_by_event
+	once.Do(singleton)
+	return bool(Advanced().IsActionJustReleasedByEvent(String.Name(String.New(action)), event, exact_match))
 }
 
 /*
@@ -420,7 +486,7 @@ func IsJoyKnown(device Device) bool { //gd:Input.is_joy_known
 }
 
 /*
-Returns the current value of the joypad axis at given index (see [JoyAxis]).
+Returns the current value of the joypad axis at index 'axis'.
 */
 func GetJoyAxis(device Device, axis JoyAxis) Float.X { //gd:Input.get_joy_axis
 	once.Do(singleton)
@@ -452,17 +518,9 @@ func GetJoyGuid(device Device) string { //gd:Input.get_joy_guid
 /*
 Returns a dictionary with extra platform-specific information about the device, e.g. the raw gamepad name from the OS or the Steam Input index.
 
-On Windows, the dictionary contains the following fields:
+On Windows, Linux, and macOS, the dictionary contains the following fields:
 
-xinput_index: The index of the controller in the XInput system. Undefined for DirectInput devices.
-
-vendor_id: The USB vendor ID of the device.
-
-product_id: The USB product ID of the device.
-
-On Linux:
-
-raw_name: The name of the controller as it came from the OS, before getting renamed by the godot controller database.
+raw_name: The name of the controller as it came from the OS, before getting renamed by the controller database.
 
 vendor_id: The USB vendor ID of the device.
 
@@ -470,7 +528,11 @@ product_id: The USB product ID of the device.
 
 steam_input_index: The Steam Input gamepad index, if the device is not a Steam Input device this key won't be present.
 
-Note: The returned dictionary is always empty on Web, iOS, Android, and macOS.
+On Windows, the dictionary can have an additional field:
+
+xinput_index: The index of the controller in the XInput system. This key won't be present for devices not handled by XInput.
+
+Note: The returned dictionary is always empty on Android, iOS, visionOS, and Web.
 */
 func GetJoyInfo(device Device) JoyInfo { //gd:Input.get_joy_info
 	once.Do(singleton)
@@ -768,7 +830,7 @@ func SetDefaultCursorShapeOptions(shape CursorShape) { //gd:Input.set_default_cu
 }
 
 /*
-Returns the currently assigned cursor shape (see [CursorShape]).
+Returns the currently assigned cursor shape.
 */
 func GetCurrentCursorShape() CursorShape { //gd:Input.get_current_cursor_shape
 	once.Do(singleton)
@@ -776,7 +838,7 @@ func GetCurrentCursorShape() CursorShape { //gd:Input.get_current_cursor_shape
 }
 
 /*
-Sets a custom mouse cursor image, which is only visible inside the game window. The hotspot can also be specified. Passing null to the image parameter resets to the system cursor. See [CursorShape] for the list of shapes.
+Sets a custom mouse cursor image, which is only visible inside the game window, for the given mouse 'shape'. The hotspot can also be specified. Passing null to the image parameter resets to the system cursor.
 
 'image' can be either [graphics.gd/classdb/Texture2D] or [graphics.gd/classdb/Image] and its size must be lower than or equal to 256×256. To avoid rendering issues, sizes lower than or equal to 128×128 are recommended.
 
@@ -796,7 +858,7 @@ func SetCustomMouseCursor(image Resource.Instance, shape CursorShape, hotspot Ve
 }
 
 /*
-Sets a custom mouse cursor image, which is only visible inside the game window. The hotspot can also be specified. Passing null to the image parameter resets to the system cursor. See [CursorShape] for the list of shapes.
+Sets a custom mouse cursor image, which is only visible inside the game window, for the given mouse 'shape'. The hotspot can also be specified. Passing null to the image parameter resets to the system cursor.
 
 'image' can be either [graphics.gd/classdb/Texture2D] or [graphics.gd/classdb/Image] and its size must be lower than or equal to 256×256. To avoid rendering issues, sizes lower than or equal to 128×128 are recommended.
 
@@ -966,7 +1028,7 @@ func (self class) IsMouseButtonPressed(button MouseButton) bool { //gd:Input.is_
 }
 
 /*
-Returns true if you are pressing the joypad button (see [JoyButton]).
+Returns true if you are pressing the joypad button at index 'button'.
 */
 //go:nosplit
 func (self class) IsJoyButtonPressed(device int64, button JoyButton) bool { //gd:Input.is_joy_button_pressed
@@ -1008,7 +1070,7 @@ Note: Returning true does not imply that the action is still pressed. An action 
 
 Note: Due to keyboard ghosting, [IsActionJustPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
 
-Note: During input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]), use [graphics.gd/classdb/InputEvent.Instance.IsActionPressed] instead to query the action state of the current event.
+Note: During input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]), use [graphics.gd/classdb/InputEvent.Instance.IsActionPressed] instead to query the action state of the current event. See also [IsActionJustPressedByEvent].
 
 [Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
 */
@@ -1029,7 +1091,7 @@ Note: Returning true does not imply that the action is still not pressed. An act
 
 If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
 
-Note: During input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]), use [graphics.gd/classdb/InputEvent.Instance.IsActionReleased] instead to query the action state of the current event.
+Note: During input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]), use [graphics.gd/classdb/InputEvent.Instance.IsActionReleased] instead to query the action state of the current event. See also [IsActionJustReleasedByEvent].
 */
 //go:nosplit
 func (self class) IsActionJustReleased(action String.Name, exact_match bool) bool { //gd:Input.is_action_just_released
@@ -1037,6 +1099,50 @@ func (self class) IsActionJustReleased(action String.Name, exact_match bool) boo
 		action      gdextension.StringName
 		exact_match bool
 	}{pointers.Get(gd.InternalStringName(action)), exact_match})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns true when the user has started pressing the action event in the current frame or physics tick, and the first event that triggered action press in the current frame/physics tick was 'event'. It will only return true on the frame or tick that the user pressed down the button.
+
+This is useful for code that needs to run only once when an action is pressed, and the action is processed during input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]).
+
+If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
+
+Note: Returning true does not imply that the action is still pressed. An action can be pressed and released again rapidly, and true will still be returned so as not to miss input.
+
+Note: Due to keyboard ghosting, [IsActionJustPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
+
+[Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
+*/
+//go:nosplit
+func (self class) IsActionJustPressedByEvent(action String.Name, event [1]gdclass.InputEvent, exact_match bool) bool { //gd:Input.is_action_just_pressed_by_event
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_just_pressed_by_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12), &struct {
+		action      gdextension.StringName
+		event       gdextension.Object
+		exact_match bool
+	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(event[0].AsObject())), exact_match})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns true when the user stops pressing the action event in the current frame or physics tick, and the first event that triggered action release in the current frame/physics tick was 'event'. It will only return true on the frame or tick that the user releases the button.
+
+This is useful when an action is processed during input handling (e.g. [graphics.gd/classdb/Node.Instance.Input]).
+
+Note: Returning true does not imply that the action is still not pressed. An action can be released and pressed again rapidly, and true will still be returned so as not to miss input.
+
+If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
+*/
+//go:nosplit
+func (self class) IsActionJustReleasedByEvent(action String.Name, event [1]gdclass.InputEvent, exact_match bool) bool { //gd:Input.is_action_just_released_by_event
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_just_released_by_event, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12), &struct {
+		action      gdextension.StringName
+		event       gdextension.Object
+		exact_match bool
+	}{pointers.Get(gd.InternalStringName(action)), gdextension.Object(gd.ObjectChecked(event[0].AsObject())), exact_match})
 	var ret = r_ret
 	return ret
 }
@@ -1138,7 +1244,7 @@ func (self class) IsJoyKnown(device int64) bool { //gd:Input.is_joy_known
 }
 
 /*
-Returns the current value of the joypad axis at given index (see [JoyAxis]).
+Returns the current value of the joypad axis at index 'axis'.
 */
 //go:nosplit
 func (self class) GetJoyAxis(device int64, axis JoyAxis) float64 { //gd:Input.get_joy_axis
@@ -1179,17 +1285,9 @@ func (self class) GetJoyGuid(device int64) String.Readable { //gd:Input.get_joy_
 /*
 Returns a dictionary with extra platform-specific information about the device, e.g. the raw gamepad name from the OS or the Steam Input index.
 
-On Windows, the dictionary contains the following fields:
+On Windows, Linux, and macOS, the dictionary contains the following fields:
 
-xinput_index: The index of the controller in the XInput system. Undefined for DirectInput devices.
-
-vendor_id: The USB vendor ID of the device.
-
-product_id: The USB product ID of the device.
-
-On Linux:
-
-raw_name: The name of the controller as it came from the OS, before getting renamed by the godot controller database.
+raw_name: The name of the controller as it came from the OS, before getting renamed by the controller database.
 
 vendor_id: The USB vendor ID of the device.
 
@@ -1197,7 +1295,11 @@ product_id: The USB product ID of the device.
 
 steam_input_index: The Steam Input gamepad index, if the device is not a Steam Input device this key won't be present.
 
-Note: The returned dictionary is always empty on Web, iOS, Android, and macOS.
+On Windows, the dictionary can have an additional field:
+
+xinput_index: The index of the controller in the XInput system. This key won't be present for devices not handled by XInput.
+
+Note: The returned dictionary is always empty on Android, iOS, visionOS, and Web.
 */
 //go:nosplit
 func (self class) GetJoyInfo(device int64) Dictionary.Any { //gd:Input.get_joy_info
@@ -1489,7 +1591,7 @@ func (self class) SetDefaultCursorShape(shape CursorShape) { //gd:Input.set_defa
 }
 
 /*
-Returns the currently assigned cursor shape (see [CursorShape]).
+Returns the currently assigned cursor shape.
 */
 //go:nosplit
 func (self class) GetCurrentCursorShape() CursorShape { //gd:Input.get_current_cursor_shape
@@ -1499,7 +1601,7 @@ func (self class) GetCurrentCursorShape() CursorShape { //gd:Input.get_current_c
 }
 
 /*
-Sets a custom mouse cursor image, which is only visible inside the game window. The hotspot can also be specified. Passing null to the image parameter resets to the system cursor. See [CursorShape] for the list of shapes.
+Sets a custom mouse cursor image, which is only visible inside the game window, for the given mouse 'shape'. The hotspot can also be specified. Passing null to the image parameter resets to the system cursor.
 
 'image' can be either [graphics.gd/classdb/Texture2D] or [graphics.gd/classdb/Image] and its size must be lower than or equal to 256×256. To avoid rendering issues, sizes lower than or equal to 128×128 are recommended.
 

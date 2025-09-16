@@ -154,7 +154,7 @@ func (self Instance) GetAuthenticatingPeers() []int32 { //gd:SceneMultiplayer.ge
 Sends the specified 'data' to the remote peer identified by 'id' as part of an authentication message. This can be used to authenticate peers, and control when [Instance.OnMultiplayerapi.PeerConnected] is emitted (and the remote peer accepted as one of the connected peers).
 */
 func (self Instance) SendAuth(id int, data []byte) error { //gd:SceneMultiplayer.send_auth
-	return error(gd.ToError(Advanced(self).SendAuth(int64(id), Packed.Bytes(Packed.New(data...)))))
+	return error(gd.ToError(Advanced(self).SendAuth(int64(id), Packed.BytesFrom(data...))))
 }
 
 /*
@@ -170,14 +170,14 @@ func (self Instance) CompleteAuth(id int) error { //gd:SceneMultiplayer.complete
 Sends the given raw 'bytes' to a specific peer identified by 'id' (see [graphics.gd/classdb/MultiplayerPeer.Instance.SetTargetPeer]). Default ID is 0, i.e. broadcast to all peers.
 */
 func (self Instance) SendBytes(bytes []byte) error { //gd:SceneMultiplayer.send_bytes
-	return error(gd.ToError(Advanced(self).SendBytes(Packed.Bytes(Packed.New(bytes...)), int64(0), 2, int64(0))))
+	return error(gd.ToError(Advanced(self).SendBytes(Packed.BytesFrom(bytes...), int64(0), 2, int64(0))))
 }
 
 /*
 Sends the given raw 'bytes' to a specific peer identified by 'id' (see [graphics.gd/classdb/MultiplayerPeer.Instance.SetTargetPeer]). Default ID is 0, i.e. broadcast to all peers.
 */
 func (self Expanded) SendBytes(bytes []byte, id int, mode MultiplayerPeer.TransferMode, channel int) error { //gd:SceneMultiplayer.send_bytes
-	return error(gd.ToError(Advanced(self).SendBytes(Packed.Bytes(Packed.New(bytes...)), int64(id), mode, int64(channel))))
+	return error(gd.ToError(Advanced(self).SendBytes(Packed.BytesFrom(bytes...), int64(id), mode, int64(channel))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -232,7 +232,7 @@ func (self Instance) SetRootPath(value string) {
 }
 
 func (self Instance) AuthCallback() Callable.Function {
-	return Callable.Function(class(self).GetAuthCallback())
+	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(class(self).GetAuthCallback())))
 }
 
 func (self Instance) SetAuthCallback(value Callable.Function) {
@@ -333,7 +333,7 @@ func (self class) SendAuth(id int64, data Packed.Bytes) Error.Code { //gd:SceneM
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.send_auth, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
 		id   int64
 		data gdextension.PackedArray[byte]
-	}{id, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	}{id, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -420,7 +420,7 @@ func (self class) SendBytes(bytes Packed.Bytes, id int64, mode MultiplayerPeer.T
 		id      int64
 		mode    MultiplayerPeer.TransferMode
 		channel int64
-	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes))), id, mode, channel})
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytes.Array))), id, mode, channel})
 	var ret = Error.Code(r_ret)
 	return ret
 }

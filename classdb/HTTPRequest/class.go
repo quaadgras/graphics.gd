@@ -100,7 +100,7 @@ Example: Load an image using [graphics.gd/classdb/HTTPRequest] and display it:
 		}
 	}
 
-Note: [graphics.gd/classdb/HTTPRequest] nodes will automatically handle decompression of response bodies. A Accept-Encoding header will be automatically added to each of your requests, unless one is already specified. Any response with a Content-Encoding: gzip header will automatically be decompressed and delivered to you as uncompressed bytes.
+Note: [graphics.gd/classdb/HTTPRequest] nodes will automatically handle decompression of response bodies. An Accept-Encoding header will be automatically added to each of your requests, unless one is already specified. Any response with a Content-Encoding: gzip header will automatically be decompressed and delivered to you as uncompressed bytes.
 */
 package HTTPRequest
 
@@ -258,7 +258,7 @@ Creates request on the underlying [graphics.gd/classdb/HTTPClient] using a raw a
 Returns [Ok] if request is successfully created. (Does not imply that the server has responded), [ErrUnconfigured] if not in the tree, [ErrBusy] if still processing previous request, [ErrInvalidParameter] if given string is not a valid URL format, or [ErrCantConnect] if not using thread and the [graphics.gd/classdb/HTTPClient] cannot connect to host.
 */
 func (self Instance) RequestRaw(url string) error { //gd:HTTPRequest.request_raw
-	return error(gd.ToError(Advanced(self).RequestRaw(String.New(url), Packed.MakeStrings([1][]string{}[0]...), 0, Packed.Bytes(Packed.New([1][]byte{}[0]...)))))
+	return error(gd.ToError(Advanced(self).RequestRaw(String.New(url), Packed.MakeStrings([1][]string{}[0]...), 0, Packed.BytesFrom([1][]byte{}[0]...))))
 }
 
 /*
@@ -267,7 +267,7 @@ Creates request on the underlying [graphics.gd/classdb/HTTPClient] using a raw a
 Returns [Ok] if request is successfully created. (Does not imply that the server has responded), [ErrUnconfigured] if not in the tree, [ErrBusy] if still processing previous request, [ErrInvalidParameter] if given string is not a valid URL format, or [ErrCantConnect] if not using thread and the [graphics.gd/classdb/HTTPClient] cannot connect to host.
 */
 func (self Expanded) RequestRaw(url string, custom_headers []string, method HTTPClient.Method, request_data_raw []byte) error { //gd:HTTPRequest.request_raw
-	return error(gd.ToError(Advanced(self).RequestRaw(String.New(url), Packed.MakeStrings(custom_headers...), method, Packed.Bytes(Packed.New(request_data_raw...)))))
+	return error(gd.ToError(Advanced(self).RequestRaw(String.New(url), Packed.MakeStrings(custom_headers...), method, Packed.BytesFrom(request_data_raw...))))
 }
 
 /*
@@ -285,7 +285,7 @@ func (self Instance) SetTlsOptions(client_options TLSOptions.Instance) { //gd:HT
 }
 
 /*
-Returns the current status of the underlying [graphics.gd/classdb/HTTPClient]. See [HTTPClient.Status].
+Returns the current status of the underlying [graphics.gd/classdb/HTTPClient].
 */
 func (self Instance) GetHttpClientStatus() HTTPClient.Status { //gd:HTTPRequest.get_http_client_status
 	return HTTPClient.Status(Advanced(self).GetHttpClientStatus())
@@ -458,7 +458,7 @@ func (self class) RequestRaw(url String.Readable, custom_headers Packed.Strings,
 		custom_headers   gdextension.PackedArray[gdextension.String]
 		method           HTTPClient.Method
 		request_data_raw gdextension.PackedArray[byte]
-	}{pointers.Get(gd.InternalString(url)), pointers.Get(gd.InternalPackedStrings(custom_headers)), method, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](request_data_raw)))})
+	}{pointers.Get(gd.InternalString(url)), pointers.Get(gd.InternalPackedStrings(custom_headers)), method, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](request_data_raw.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -480,7 +480,7 @@ func (self class) SetTlsOptions(client_options [1]gdclass.TLSOptions) { //gd:HTT
 }
 
 /*
-Returns the current status of the underlying [graphics.gd/classdb/HTTPClient]. See [HTTPClient.Status].
+Returns the current status of the underlying [graphics.gd/classdb/HTTPClient].
 */
 //go:nosplit
 func (self class) GetHttpClientStatus() HTTPClient.Status { //gd:HTTPRequest.get_http_client_status

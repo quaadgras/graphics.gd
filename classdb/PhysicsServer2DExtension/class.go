@@ -218,9 +218,9 @@ type Interface interface {
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal area_set_pickable method. Corresponds to [graphics.gd/classdb/CollisionObject2D.Instance.InputPickable].
 	AreaSetPickable(area RID.Area2D, pickable bool)
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetMonitorCallback].
-	AreaSetMonitorCallback(area RID.Area2D, callback Callable.Function)
+	AreaSetMonitorCallback(area RID.Area2D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int))
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetAreaMonitorCallback].
-	AreaSetAreaMonitorCallback(area RID.Area2D, callback Callable.Function)
+	AreaSetAreaMonitorCallback(area RID.Area2D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int))
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodyCreate].
 	BodyCreate() RID.Body2D
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetSpace].
@@ -340,9 +340,9 @@ type Interface interface {
 	// Assigns the 'body' to call the given 'callable' during the synchronization phase of the loop, before [Interface.Step] is called. See also [Interface.Sync].
 	//
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetStateSyncCallback].
-	BodySetStateSyncCallback(body RID.Body2D, callable Callable.Function)
+	BodySetStateSyncCallback(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance))
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetForceIntegrationCallback].
-	BodySetForceIntegrationCallback(body RID.Body2D, callable Callable.Function, userdata any)
+	BodySetForceIntegrationCallback(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance, userdata any), userdata any)
 	// Given a 'body', a 'shape', and their respective parameters, this method should return true if a collision between the two would occur, with additional details passed in 'results'.
 	//
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal shape_collide method. Corresponds to [graphics.gd/classdb/PhysicsDirectSpaceState2D.Instance.CollideShape].
@@ -395,7 +395,7 @@ type Interface interface {
 	//
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal init method.
 	Init()
-	// Called every physics step to process the physics simulation. 'step' is the time elapsed since the last physics step, in seconds. It is usually the same as [graphics.gd/classdb/Node.Instance.GetPhysicsProcessDeltaTime].
+	// Called every physics step to process the physics simulation. 'step' is the time elapsed since the last physics step, in seconds. It is usually the same as the value returned by [graphics.gd/classdb/Node.Instance.GetPhysicsProcessDeltaTime].
 	//
 	// Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal step method.
 	Step(step Float.X)
@@ -497,10 +497,10 @@ func (self implementation) AreaSetCollisionMask(area RID.Area2D, mask int)      
 func (self implementation) AreaGetCollisionMask(area RID.Area2D) (_ int)              { return }
 func (self implementation) AreaSetMonitorable(area RID.Area2D, monitorable bool)      { return }
 func (self implementation) AreaSetPickable(area RID.Area2D, pickable bool)            { return }
-func (self implementation) AreaSetMonitorCallback(area RID.Area2D, callback Callable.Function) {
+func (self implementation) AreaSetMonitorCallback(area RID.Area2D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) {
 	return
 }
-func (self implementation) AreaSetAreaMonitorCallback(area RID.Area2D, callback Callable.Function) {
+func (self implementation) AreaSetAreaMonitorCallback(area RID.Area2D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) {
 	return
 }
 func (self implementation) BodyCreate() (_ RID.Body2D)                                 { return }
@@ -592,10 +592,10 @@ func (self implementation) BodySetContactsReportedDepthThreshold(body RID.Body2D
 func (self implementation) BodyGetContactsReportedDepthThreshold(body RID.Body2D) (_ Float.X) { return }
 func (self implementation) BodySetOmitForceIntegration(body RID.Body2D, enable bool)          { return }
 func (self implementation) BodyIsOmittingForceIntegration(body RID.Body2D) (_ bool)           { return }
-func (self implementation) BodySetStateSyncCallback(body RID.Body2D, callable Callable.Function) {
+func (self implementation) BodySetStateSyncCallback(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance)) {
 	return
 }
-func (self implementation) BodySetForceIntegrationCallback(body RID.Body2D, callable Callable.Function, userdata any) {
+func (self implementation) BodySetForceIntegrationCallback(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance, userdata any), userdata any) {
 	return
 }
 func (self implementation) BodyCollideShape(body RID.Body2D, body_shape int, shape RID.Shape2D, shape_xform Transform2D.OriginXY, motion Vector2.XY, results gdextension.Pointer, result_max int, result_count *int32) (_ bool) {
@@ -1294,26 +1294,26 @@ func (Instance) _area_set_pickable(impl func(ptr gdclass.Receiver, area RID.Area
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetMonitorCallback].
 */
-func (Instance) _area_set_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Area2D, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Area2D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int))) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callback))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, RID.Area2D(area), callback)
+		impl(self, RID.Area2D(area), gd.CallableAs[func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)](gd.InternalCallable(callback)))
 	}
 }
 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.AreaSetAreaMonitorCallback].
 */
-func (Instance) _area_set_area_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Area2D, callback Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _area_set_area_monitor_callback(impl func(ptr gdclass.Receiver, area RID.Area2D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int))) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var area = gd.UnsafeGet[RID.Any](p_args, 0)
 		var callback = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callback))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, RID.Area2D(area), callback)
+		impl(self, RID.Area2D(area), gd.CallableAs[func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)](gd.InternalCallable(callback)))
 	}
 }
 
@@ -2018,20 +2018,20 @@ Assigns the 'body' to call the given 'callable' during the synchronization phase
 
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetStateSyncCallback].
 */
-func (Instance) _body_set_state_sync_callback(impl func(ptr gdclass.Receiver, body RID.Body2D, callable Callable.Function)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_state_sync_callback(impl func(ptr gdclass.Receiver, body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance))) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
 		defer pointers.End(gd.InternalCallable(callable))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, RID.Body2D(body), callable)
+		impl(self, RID.Body2D(body), gd.CallableAs[func(state PhysicsDirectBodyState2D.Instance)](gd.InternalCallable(callable)))
 	}
 }
 
 /*
 Overridable version of [graphics.gd/classdb/PhysicsServer2D.BodySetForceIntegrationCallback].
 */
-func (Instance) _body_set_force_integration_callback(impl func(ptr gdclass.Receiver, body RID.Body2D, callable Callable.Function, userdata any)) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _body_set_force_integration_callback(impl func(ptr gdclass.Receiver, body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance, userdata any), userdata any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var body = gd.UnsafeGet[RID.Any](p_args, 0)
 		var callable = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](gd.UnsafeGet[gdextension.Callable](p_args, 1))))
@@ -2039,7 +2039,7 @@ func (Instance) _body_set_force_integration_callback(impl func(ptr gdclass.Recei
 		var userdata = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](gd.UnsafeGet[gdextension.Variant](p_args, 2))))
 		defer pointers.End(gd.InternalVariant(userdata))
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
-		impl(self, RID.Body2D(body), callable, userdata.Interface())
+		impl(self, RID.Body2D(body), gd.CallableAs[func(state PhysicsDirectBodyState2D.Instance, userdata any)](gd.InternalCallable(callable)), userdata.Interface())
 	}
 }
 
@@ -2355,7 +2355,7 @@ func (Instance) _init(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCall
 }
 
 /*
-Called every physics step to process the physics simulation. 'step' is the time elapsed since the last physics step, in seconds. It is usually the same as [graphics.gd/classdb/Node.Instance.GetPhysicsProcessDeltaTime].
+Called every physics step to process the physics simulation. 'step' is the time elapsed since the last physics step, in seconds. It is usually the same as the value returned by [graphics.gd/classdb/Node.Instance.GetPhysicsProcessDeltaTime].
 
 Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal step method.
 */
@@ -4192,7 +4192,7 @@ func (class) _init(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVir
 }
 
 /*
-Called every physics step to process the physics simulation. 'step' is the time elapsed since the last physics step, in seconds. It is usually the same as [graphics.gd/classdb/Node.Instance.GetPhysicsProcessDeltaTime].
+Called every physics step to process the physics simulation. 'step' is the time elapsed since the last physics step, in seconds. It is usually the same as the value returned by [graphics.gd/classdb/Node.Instance.GetPhysicsProcessDeltaTime].
 
 Overridable version of [graphics.gd/classdb/PhysicsServer2D]'s internal step method.
 */

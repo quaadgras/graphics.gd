@@ -77,14 +77,18 @@ type Instance [1]gdclass.ResourceUID
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	id_to_text  gdextension.MethodForClass `hash:"844755477"`
-	text_to_id  gdextension.MethodForClass `hash:"1321353865"`
-	create_id   gdextension.MethodForClass `hash:"2455072627"`
-	has_id      gdextension.MethodForClass `hash:"1116898809"`
-	add_id      gdextension.MethodForClass `hash:"501894301"`
-	set_id      gdextension.MethodForClass `hash:"501894301"`
-	get_id_path gdextension.MethodForClass `hash:"844755477"`
-	remove_id   gdextension.MethodForClass `hash:"1286410249"`
+	id_to_text         gdextension.MethodForClass `hash:"844755477"`
+	text_to_id         gdextension.MethodForClass `hash:"1321353865"`
+	create_id          gdextension.MethodForClass `hash:"2455072627"`
+	create_id_for_path gdextension.MethodForClass `hash:"1597066294"`
+	has_id             gdextension.MethodForClass `hash:"1116898809"`
+	add_id             gdextension.MethodForClass `hash:"501894301"`
+	set_id             gdextension.MethodForClass `hash:"501894301"`
+	get_id_path        gdextension.MethodForClass `hash:"844755477"`
+	remove_id          gdextension.MethodForClass `hash:"1286410249"`
+	uid_to_path        gdextension.MethodForClass `hash:"1703090593"`
+	path_to_uid        gdextension.MethodForClass `hash:"1703090593"`
+	ensure_path        gdextension.MethodForClass `hash:"1703090593"`
 }
 
 func init() {
@@ -133,6 +137,14 @@ func CreateId() int { //gd:ResourceUID.create_id
 }
 
 /*
+Like [CreateId], but the UID is seeded with the provided 'path' and project name. UIDs generated for that path will be always the same within the current project.
+*/
+func CreateIdForPath(path string) int { //gd:ResourceUID.create_id_for_path
+	once.Do(singleton)
+	return int(int(Advanced().CreateIdForPath(String.New(path))))
+}
+
+/*
 Returns whether the given UID value is known to the cache.
 */
 func HasId(id Resource.UID) bool { //gd:ResourceUID.has_id
@@ -178,6 +190,30 @@ Fails with an error if the UID does not exist, so be sure to check [HasId] befor
 func RemoveId(id Resource.UID) { //gd:ResourceUID.remove_id
 	once.Do(singleton)
 	Advanced().RemoveId(int64(id))
+}
+
+/*
+Converts the provided 'uid' to a path. Prints an error if the UID is invalid.
+*/
+func UidToPath(uid string) string { //gd:ResourceUID.uid_to_path
+	once.Do(singleton)
+	return string(Advanced().UidToPath(String.New(uid)).String())
+}
+
+/*
+Converts the provided resource 'path' to a UID. Returns the unchanged path if it has no associated UID.
+*/
+func PathToUid(path string) string { //gd:ResourceUID.path_to_uid
+	once.Do(singleton)
+	return string(Advanced().PathToUid(String.New(path)).String())
+}
+
+/*
+Returns a path, converting 'path_or_uid' if necessary. Prints an error if provided an invalid UID.
+*/
+func EnsurePath(path_or_uid string) string { //gd:ResourceUID.ensure_path
+	once.Do(singleton)
+	return string(Advanced().EnsurePath(String.New(path_or_uid)).String())
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -231,6 +267,16 @@ In order for this UID to be registered, you must call [AddId] or [SetId].
 //go:nosplit
 func (self class) CreateId() int64 { //gd:ResourceUID.create_id
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_id, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Like [CreateId], but the UID is seeded with the provided 'path' and project name. UIDs generated for that path will be always the same within the current project.
+*/
+//go:nosplit
+func (self class) CreateIdForPath(path String.Readable) int64 { //gd:ResourceUID.create_id_for_path
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_id_for_path, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = r_ret
 	return ret
 }
@@ -291,6 +337,36 @@ Fails with an error if the UID does not exist, so be sure to check [HasId] befor
 //go:nosplit
 func (self class) RemoveId(id int64) { //gd:ResourceUID.remove_id
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_id, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+}
+
+/*
+Converts the provided 'uid' to a path. Prints an error if the UID is invalid.
+*/
+//go:nosplit
+func (self class) UidToPath(uid String.Readable) String.Readable { //gd:ResourceUID.uid_to_path
+	var r_ret = gdextension.CallStatic[gdextension.String](methods.uid_to_path, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ uid gdextension.String }{pointers.Get(gd.InternalString(uid))})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+/*
+Converts the provided resource 'path' to a UID. Returns the unchanged path if it has no associated UID.
+*/
+//go:nosplit
+func (self class) PathToUid(path String.Readable) String.Readable { //gd:ResourceUID.path_to_uid
+	var r_ret = gdextension.CallStatic[gdextension.String](methods.path_to_uid, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+/*
+Returns a path, converting 'path_or_uid' if necessary. Prints an error if provided an invalid UID.
+*/
+//go:nosplit
+func (self class) EnsurePath(path_or_uid String.Readable) String.Readable { //gd:ResourceUID.ensure_path
+	var r_ret = gdextension.CallStatic[gdextension.String](methods.ensure_path, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ path_or_uid gdextension.String }{pointers.Get(gd.InternalString(path_or_uid))})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

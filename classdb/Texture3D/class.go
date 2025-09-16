@@ -208,7 +208,7 @@ func (Instance) _get_data(impl func(ptr gdclass.Receiver) []Image.Instance) (cb 
 }
 
 /*
-Returns the current format being used by this texture. See [Image.Format] for details.
+Returns the current format being used by this texture.
 */
 func (self Instance) GetFormat() Image.Format { //gd:Texture3D.get_format
 	return Image.Format(Advanced(self).GetFormat())
@@ -371,7 +371,7 @@ func (class) _get_data(impl func(ptr gdclass.Receiver) Array.Contains[[1]gdclass
 }
 
 /*
-Returns the current format being used by this texture. See [Image.Format] for details.
+Returns the current format being used by this texture.
 */
 //go:nosplit
 func (self class) GetFormat() Image.Format { //gd:Texture3D.get_format

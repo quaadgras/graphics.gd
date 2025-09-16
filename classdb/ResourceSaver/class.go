@@ -79,6 +79,7 @@ var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
 	save                         gdextension.MethodForClass `hash:"2983274697"`
+	set_uid                      gdextension.MethodForClass `hash:"993915709"`
 	get_recognized_extensions    gdextension.MethodForClass `hash:"4223597960"`
 	add_resource_format_saver    gdextension.MethodForClass `hash:"362894272"`
 	remove_resource_format_saver gdextension.MethodForClass `hash:"3373026878"`
@@ -107,7 +108,7 @@ func singleton() {
 /*
 Saves a resource to disk to the given path, using a [graphics.gd/classdb/ResourceFormatSaver] that recognizes the resource object. If 'path' is empty, [graphics.gd/classdb/ResourceSaver] will try to use [graphics.gd/classdb/Resource.Instance.ResourcePath].
 
-The 'flags' bitmask can be specified to customize the save behavior using [SaverFlags] flags.
+The 'flags' bitmask can be specified to customize the save behavior.
 
 Returns [Ok] on success.
 
@@ -121,7 +122,7 @@ func Save(resource Resource.Instance, path string, flags SaverFlags) error { //g
 /*
 Saves a resource to disk to the given path, using a [graphics.gd/classdb/ResourceFormatSaver] that recognizes the resource object. If 'path' is empty, [graphics.gd/classdb/ResourceSaver] will try to use [graphics.gd/classdb/Resource.Instance.ResourcePath].
 
-The 'flags' bitmask can be specified to customize the save behavior using [SaverFlags] flags.
+The 'flags' bitmask can be specified to customize the save behavior.
 
 Returns [Ok] on success.
 
@@ -130,6 +131,16 @@ Note: When the project is running, any generated UID associated with the resourc
 func SaveOptions(resource Resource.Instance, path string, flags SaverFlags) error { //gd:ResourceSaver.save
 	once.Do(singleton)
 	return error(gd.ToError(Advanced().Save(resource, String.New(path), flags)))
+}
+
+/*
+Sets the UID of the given 'resource' path to 'uid'. You can generate a new UID using [graphics.gd/classdb/ResourceUID.CreateId].
+
+Since resources will normally get a UID automatically, this method is only useful in very specific cases.
+*/
+func SetUid(resource string, uid int) error { //gd:ResourceSaver.set_uid
+	once.Do(singleton)
+	return error(gd.ToError(Advanced().SetUid(String.New(resource), int64(uid))))
 }
 
 /*
@@ -210,7 +221,7 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 /*
 Saves a resource to disk to the given path, using a [graphics.gd/classdb/ResourceFormatSaver] that recognizes the resource object. If 'path' is empty, [graphics.gd/classdb/ResourceSaver] will try to use [graphics.gd/classdb/Resource.Instance.ResourcePath].
 
-The 'flags' bitmask can be specified to customize the save behavior using [SaverFlags] flags.
+The 'flags' bitmask can be specified to customize the save behavior.
 
 Returns [Ok] on success.
 
@@ -223,6 +234,21 @@ func (self class) Save(resource [1]gdclass.Resource, path String.Readable, flags
 		path     gdextension.String
 		flags    SaverFlags
 	}{gdextension.Object(gd.ObjectChecked(resource[0].AsObject())), pointers.Get(gd.InternalString(path)), flags})
+	var ret = Error.Code(r_ret)
+	return ret
+}
+
+/*
+Sets the UID of the given 'resource' path to 'uid'. You can generate a new UID using [graphics.gd/classdb/ResourceUID.CreateId].
+
+Since resources will normally get a UID automatically, this method is only useful in very specific cases.
+*/
+//go:nosplit
+func (self class) SetUid(resource String.Readable, uid int64) Error.Code { //gd:ResourceSaver.set_uid
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.set_uid, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+		resource gdextension.String
+		uid      int64
+	}{pointers.Get(gd.InternalString(resource)), uid})
 	var ret = Error.Code(r_ret)
 	return ret
 }

@@ -79,6 +79,7 @@ type Instance [1]gdclass.OpenXRInterface
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
+	get_session_state                   gdextension.MethodForClass `hash:"896364779"`
 	get_display_refresh_rate            gdextension.MethodForClass `hash:"1740695150"`
 	set_display_refresh_rate            gdextension.MethodForClass `hash:"373806689"`
 	get_render_target_size_multiplier   gdextension.MethodForClass `hash:"1740695150"`
@@ -108,6 +109,8 @@ var methods struct {
 	set_vrs_min_radius                  gdextension.MethodForClass `hash:"373806689"`
 	get_vrs_strength                    gdextension.MethodForClass `hash:"1740695150"`
 	set_vrs_strength                    gdextension.MethodForClass `hash:"373806689"`
+	set_cpu_level                       gdextension.MethodForClass `hash:"2940842095"`
+	set_gpu_level                       gdextension.MethodForClass `hash:"2940842095"`
 }
 
 func init() {
@@ -131,9 +134,16 @@ type Any interface {
 }
 
 /*
+Returns the current state of our OpenXR session.
+*/
+func (self Instance) GetSessionState() SessionState { //gd:OpenXRInterface.get_session_state
+	return SessionState(Advanced(self).GetSessionState())
+}
+
+/*
 Returns true if OpenXR's foveation extension is supported, the interface must be initialized before this returns a valid value.
 
-Note: This feature is only available on the compatibility renderer and currently only available on some stand alone headsets. For Vulkan set [graphics.gd/classdb/Viewport.Instance.VrsMode] to VRS_XR on desktop.
+Note: This feature is only available on the Compatibility renderer and currently only available on some stand alone headsets. For Vulkan set [graphics.gd/classdb/Viewport.Instance.VrsMode] to VRS_XR on desktop.
 */
 func (self Instance) IsFoveationSupported() bool { //gd:OpenXRInterface.is_foveation_supported
 	return bool(Advanced(self).IsFoveationSupported())
@@ -257,6 +267,20 @@ func (self Instance) IsEyeGazeInteractionSupported() bool { //gd:OpenXRInterface
 	return bool(Advanced(self).IsEyeGazeInteractionSupported())
 }
 
+/*
+Sets the CPU performance level of the OpenXR device.
+*/
+func (self Instance) SetCpuLevel(level PerfSettingsLevel) { //gd:OpenXRInterface.set_cpu_level
+	Advanced(self).SetCpuLevel(level)
+}
+
+/*
+Sets the GPU performance level of the OpenXR device.
+*/
+func (self Instance) SetGpuLevel(level PerfSettingsLevel) { //gd:OpenXRInterface.set_gpu_level
+	Advanced(self).SetGpuLevel(level)
+}
+
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.OpenXRInterface
@@ -348,6 +372,16 @@ func (self Instance) SetVrsStrength(value Float.X) {
 	class(self).SetVrsStrength(float64(value))
 }
 
+/*
+Returns the current state of our OpenXR session.
+*/
+//go:nosplit
+func (self class) GetSessionState() SessionState { //gd:OpenXRInterface.get_session_state
+	var r_ret = gdextension.Call[SessionState](gd.ObjectChecked(self.AsObject()), methods.get_session_state, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
 //go:nosplit
 func (self class) GetDisplayRefreshRate() float64 { //gd:OpenXRInterface.get_display_refresh_rate
 	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_display_refresh_rate, gdextension.SizeFloat, &struct{}{})
@@ -375,7 +409,7 @@ func (self class) SetRenderTargetSizeMultiplier(multiplier float64) { //gd:OpenX
 /*
 Returns true if OpenXR's foveation extension is supported, the interface must be initialized before this returns a valid value.
 
-Note: This feature is only available on the compatibility renderer and currently only available on some stand alone headsets. For Vulkan set [graphics.gd/classdb/Viewport.Instance.VrsMode] to VRS_XR on desktop.
+Note: This feature is only available on the Compatibility renderer and currently only available on some stand alone headsets. For Vulkan set [graphics.gd/classdb/Viewport.Instance.VrsMode] to VRS_XR on desktop.
 */
 //go:nosplit
 func (self class) IsFoveationSupported() bool { //gd:OpenXRInterface.is_foveation_supported
@@ -617,6 +651,22 @@ func (self class) GetVrsStrength() float64 { //gd:OpenXRInterface.get_vrs_streng
 func (self class) SetVrsStrength(strength float64) { //gd:OpenXRInterface.set_vrs_strength
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_strength, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
 }
+
+/*
+Sets the CPU performance level of the OpenXR device.
+*/
+//go:nosplit
+func (self class) SetCpuLevel(level PerfSettingsLevel) { //gd:OpenXRInterface.set_cpu_level
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cpu_level, 0|(gdextension.SizeInt<<4), &struct{ level PerfSettingsLevel }{level})
+}
+
+/*
+Sets the GPU performance level of the OpenXR device.
+*/
+//go:nosplit
+func (self class) SetGpuLevel(level PerfSettingsLevel) { //gd:OpenXRInterface.set_gpu_level
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gpu_level, 0|(gdextension.SizeInt<<4), &struct{ level PerfSettingsLevel }{level})
+}
 func (self Instance) OnSessionBegun(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -639,6 +689,18 @@ func (self Instance) OnSessionStopping(cb func(), flags ...Signal.Flags) {
 
 func (self class) SessionStopping() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionStopping`))))
+}
+
+func (self Instance) OnSessionSynchronized(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("session_synchronized"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) SessionSynchronized() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionSynchronized`))))
 }
 
 func (self Instance) OnSessionFocussed(cb func(), flags ...Signal.Flags) {
@@ -713,6 +775,30 @@ func (self class) RefreshRateChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RefreshRateChanged`))))
 }
 
+func (self Instance) OnCpuLevelChanged(cb func(sub_domain int, from_level int, to_level int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("cpu_level_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) CpuLevelChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CpuLevelChanged`))))
+}
+
+func (self Instance) OnGpuLevelChanged(cb func(sub_domain int, from_level int, to_level int), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("gpu_level_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) GpuLevelChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GpuLevelChanged`))))
+}
+
 func (self class) AsOpenXRInterface() Advanced {
 	return Advanced{pointers.AsA[gdclass.OpenXRInterface](self[0])}
 }
@@ -752,6 +838,33 @@ func init() {
 	gdclass.Register("OpenXRInterface", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.OpenXRInterface](ptr)} })
 }
 
+type SessionState int //gd:OpenXRInterface.SessionState
+
+const (
+	// The state of the session is unknown, we haven't tried setting up OpenXR yet.
+	SessionStateUnknown SessionState = 0
+	// The initial state after the OpenXR session is created or after the session is destroyed.
+	SessionStateIdle SessionState = 1
+	// OpenXR is ready to begin our session. [Instance.OnSessionBegun] is emitted when we change to this state.
+	SessionStateReady SessionState = 2
+	// The application has synched its frame loop with the runtime but we're not rendering anything. [Instance.OnSessionSynchronized] is emitted when we change to this state.
+	SessionStateSynchronized SessionState = 3
+	// The application has synched its frame loop with the runtime and we're rendering output to the user, however we receive no user input. [Instance.OnSessionVisible] is emitted when we change to this state.
+	//
+	// Note: This is the current state just before we get the focused state, whenever the user opens a system menu, switches to another application, or takes off their headset.
+	SessionStateVisible SessionState = 4
+	// The application has synched its frame loop with the runtime, we're rendering output to the user and we're receiving XR input. [Instance.OnSessionFocussed] is emitted when we change to this state.
+	//
+	// Note: This is the state OpenXR will be in when the user can fully interact with your game.
+	SessionStateFocused SessionState = 5
+	// Our session is being stopped. [Instance.OnSessionStopping] is emitted when we change to this state.
+	SessionStateStopping SessionState = 6
+	// The session is about to be lost. [Instance.OnSessionLossPending] is emitted when we change to this state.
+	SessionStateLossPending SessionState = 7
+	// The OpenXR instance is about to be destroyed and we're existing. [Instance.OnInstanceExiting] is emitted when we change to this state.
+	SessionStateExiting SessionState = 8
+)
+
 type Hand int //gd:OpenXRInterface.Hand
 
 const (
@@ -783,7 +896,7 @@ const (
 	HandTrackedSourceUnobstructed HandTrackedSource = 1
 	// The source of hand tracking is a controller, bone positions are inferred from controller inputs.
 	HandTrackedSourceController HandTrackedSource = 2
-	// Maximum value for the hand tracked source enum.
+	// Represents the size of the [HandTrackedSource] enum.
 	HandTrackedSourceMax HandTrackedSource = 3
 )
 
@@ -802,48 +915,83 @@ const (
 	HandJointThumbDistal HandJoints = 4
 	// Thumb tip joint.
 	HandJointThumbTip HandJoints = 5
-	// Index metacarpal joint.
+	// Index finger metacarpal joint.
 	HandJointIndexMetacarpal HandJoints = 6
-	// Index proximal joint.
+	// Index finger phalanx proximal joint.
 	HandJointIndexProximal HandJoints = 7
-	// Index intermediate joint.
+	// Index finger phalanx intermediate joint.
 	HandJointIndexIntermediate HandJoints = 8
-	// Index distal joint.
+	// Index finger phalanx distal joint.
 	HandJointIndexDistal HandJoints = 9
-	// Index tip joint.
+	// Index finger tip joint.
 	HandJointIndexTip HandJoints = 10
-	// Middle metacarpal joint.
+	// Middle finger metacarpal joint.
 	HandJointMiddleMetacarpal HandJoints = 11
-	// Middle proximal joint.
+	// Middle finger phalanx proximal joint.
 	HandJointMiddleProximal HandJoints = 12
-	// Middle intermediate joint.
+	// Middle finger phalanx intermediate joint.
 	HandJointMiddleIntermediate HandJoints = 13
-	// Middle distal joint.
+	// Middle finger phalanx distal joint.
 	HandJointMiddleDistal HandJoints = 14
-	// Middle tip joint.
+	// Middle finger tip joint.
 	HandJointMiddleTip HandJoints = 15
-	// Ring metacarpal joint.
+	// Ring finger metacarpal joint.
 	HandJointRingMetacarpal HandJoints = 16
-	// Ring proximal joint.
+	// Ring finger phalanx proximal joint.
 	HandJointRingProximal HandJoints = 17
-	// Ring intermediate joint.
+	// Ring finger phalanx intermediate joint.
 	HandJointRingIntermediate HandJoints = 18
-	// Ring distal joint.
+	// Ring finger phalanx distal joint.
 	HandJointRingDistal HandJoints = 19
-	// Ring tip joint.
+	// Ring finger tip joint.
 	HandJointRingTip HandJoints = 20
-	// Little metacarpal joint.
+	// Pinky finger metacarpal joint.
 	HandJointLittleMetacarpal HandJoints = 21
-	// Little proximal joint.
+	// Pinky finger phalanx proximal joint.
 	HandJointLittleProximal HandJoints = 22
-	// Little intermediate joint.
+	// Pinky finger phalanx intermediate joint.
 	HandJointLittleIntermediate HandJoints = 23
-	// Little distal joint.
+	// Pinky finger phalanx distal joint.
 	HandJointLittleDistal HandJoints = 24
-	// Little tip joint.
+	// Pinky finger tip joint.
 	HandJointLittleTip HandJoints = 25
-	// Maximum value for the hand joint enum.
+	// Represents the size of the [HandJoints] enum.
 	HandJointMax HandJoints = 26
+)
+
+type PerfSettingsLevel int //gd:OpenXRInterface.PerfSettingsLevel
+
+const (
+	// The application has entered a non-XR section (head-locked / static screen), during which power savings are to be prioritized.
+	PerfSettingsLevelPowerSavings PerfSettingsLevel = 0
+	// The application has entered a low and stable complexity section, during which reducing power is more important than occasional late rendering frames.
+	PerfSettingsLevelSustainedLow PerfSettingsLevel = 1
+	// The application has entered a high or dynamic complexity section, during which the XR Runtime strives for consistent XR compositing and frame rendering within a thermally sustainable range.
+	PerfSettingsLevelSustainedHigh PerfSettingsLevel = 2
+	// The application has entered a section with very high complexity, during which the XR Runtime is allowed to step up beyond the thermally sustainable range.
+	PerfSettingsLevelBoost PerfSettingsLevel = 3
+)
+
+type PerfSettingsSubDomain int //gd:OpenXRInterface.PerfSettingsSubDomain
+
+const (
+	// The compositing performance within the runtime has reached a new level.
+	PerfSettingsSubDomainCompositing PerfSettingsSubDomain = 0
+	// The application rendering performance has reached a new level.
+	PerfSettingsSubDomainRendering PerfSettingsSubDomain = 1
+	// The temperature of the device has reached a new level.
+	PerfSettingsSubDomainThermal PerfSettingsSubDomain = 2
+)
+
+type PerfSettingsNotificationLevel int //gd:OpenXRInterface.PerfSettingsNotificationLevel
+
+const (
+	// The sub-domain has reached a level where no further actions other than currently applied are necessary.
+	PerfSettingsNotifLevelNormal PerfSettingsNotificationLevel = 0
+	// The sub-domain has reached an early warning level where the application should start proactive mitigation actions.
+	PerfSettingsNotifLevelWarning PerfSettingsNotificationLevel = 1
+	// The sub-domain has reached a critical level where the application should start drastic mitigation actions.
+	PerfSettingsNotifLevelImpaired PerfSettingsNotificationLevel = 2
 )
 
 type HandJointFlags int //gd:OpenXRInterface.HandJointFlags

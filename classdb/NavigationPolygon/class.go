@@ -205,7 +205,7 @@ func (self Instance) ClearPolygons() { //gd:NavigationPolygon.clear_polygons
 }
 
 /*
-Returns the [graphics.gd/classdb/NavigationMesh] resulting from this navigation polygon. This navigation mesh can be used to update the navigation mesh of a region with the [graphics.gd/classdb/NavigationServer3D.RegionSetNavigationMesh] API directly (as 2D uses the 3D server behind the scene).
+Returns the [graphics.gd/classdb/NavigationMesh] resulting from this navigation polygon. This navigation mesh can be used to update the navigation mesh of a region with the [graphics.gd/classdb/NavigationServer3D.RegionSetNavigationMesh] API directly.
 */
 func (self Instance) GetNavigationMesh() NavigationMesh.Instance { //gd:NavigationPolygon.get_navigation_mesh
 	return NavigationMesh.Instance(Advanced(self).GetNavigationMesh())
@@ -478,7 +478,7 @@ func (self class) ClearPolygons() { //gd:NavigationPolygon.clear_polygons
 }
 
 /*
-Returns the [graphics.gd/classdb/NavigationMesh] resulting from this navigation polygon. This navigation mesh can be used to update the navigation mesh of a region with the [graphics.gd/classdb/NavigationServer3D.RegionSetNavigationMesh] API directly (as 2D uses the 3D server behind the scene).
+Returns the [graphics.gd/classdb/NavigationMesh] resulting from this navigation polygon. This navigation mesh can be used to update the navigation mesh of a region with the [graphics.gd/classdb/NavigationServer3D.RegionSetNavigationMesh] API directly.
 */
 //go:nosplit
 func (self class) GetNavigationMesh() [1]gdclass.NavigationMesh { //gd:NavigationPolygon.get_navigation_mesh

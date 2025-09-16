@@ -136,7 +136,7 @@ func (self Instance) InvalidatePose(name string) { //gd:XRPositionalTracker.inva
 }
 
 /*
-Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [graphics.gd/classdb/XRInterface] implementation and should not be used directly.
+Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by an [graphics.gd/classdb/XRInterface] implementation and should not be used directly.
 */
 func (self Instance) SetPose(name string, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence XRPose.TrackingConfidence) { //gd:XRPositionalTracker.set_pose
 	Advanced(self).SetPose(String.Name(String.New(name)), Transform3D.BasisOrigin(transform), Vector3.XYZ(linear_velocity), Vector3.XYZ(angular_velocity), tracking_confidence)
@@ -150,7 +150,7 @@ func (self Instance) GetInput(name string) any { //gd:XRPositionalTracker.get_in
 }
 
 /*
-Changes the value for the given input. This method is called by a [graphics.gd/classdb/XRInterface] implementation and should not be used directly.
+Changes the value for the given input. This method is called by an [graphics.gd/classdb/XRInterface] implementation and should not be used directly.
 */
 func (self Instance) SetInput(name string, value any) { //gd:XRPositionalTracker.set_input
 	Advanced(self).SetInput(String.Name(String.New(name)), variant.New(value))
@@ -268,7 +268,7 @@ func (self class) InvalidatePose(name String.Name) { //gd:XRPositionalTracker.in
 }
 
 /*
-Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by a [graphics.gd/classdb/XRInterface] implementation and should not be used directly.
+Sets the transform, linear velocity, angular velocity and tracking confidence for the given pose. This method is called by an [graphics.gd/classdb/XRInterface] implementation and should not be used directly.
 */
 //go:nosplit
 func (self class) SetPose(name String.Name, transform Transform3D.BasisOrigin, linear_velocity Vector3.XYZ, angular_velocity Vector3.XYZ, tracking_confidence XRPose.TrackingConfidence) { //gd:XRPositionalTracker.set_pose
@@ -292,7 +292,7 @@ func (self class) GetInput(name String.Name) variant.Any { //gd:XRPositionalTrac
 }
 
 /*
-Changes the value for the given input. This method is called by a [graphics.gd/classdb/XRInterface] implementation and should not be used directly.
+Changes the value for the given input. This method is called by an [graphics.gd/classdb/XRInterface] implementation and should not be used directly.
 */
 //go:nosplit
 func (self class) SetInput(name String.Name, value variant.Any) { //gd:XRPositionalTracker.set_input

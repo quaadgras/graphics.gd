@@ -698,9 +698,7 @@ func (self Instance) GetCustomDataLayerType(layer_index int) variant.Type { //gd
 /*
 Creates a source-level proxy for the given source ID. A proxy will map set of tile identifiers to another set of identifiers. Both the atlas coordinates ID and the alternative tile ID are kept the same when using source-level proxies.
 
-This can be used to replace a source in all TileMaps using this TileSet, as TileMap nodes will find and use the proxy's target source when one is available.
-
-Proxied tiles can be automatically replaced in TileMap nodes using the editor.
+Proxied tiles can be automatically replaced in TileMapLayer nodes using the editor.
 */
 func (self Instance) SetSourceLevelTileProxy(source_from int, source_to int) { //gd:TileSet.set_source_level_tile_proxy
 	Advanced(self).SetSourceLevelTileProxy(int64(source_from), int64(source_to))
@@ -732,9 +730,7 @@ func (self Instance) RemoveSourceLevelTileProxy(source_from int) { //gd:TileSet.
 /*
 Creates a coordinates-level proxy for the given identifiers. A proxy will map set of tile identifiers to another set of identifiers. The alternative tile ID is kept the same when using coordinates-level proxies.
 
-This can be used to replace a tile in all TileMaps using this TileSet, as TileMap nodes will find and use the proxy's target tile when one is available.
-
-Proxied tiles can be automatically replaced in TileMap nodes using the editor.
+Proxied tiles can be automatically replaced in TileMapLayer nodes using the editor.
 */
 func (self Instance) SetCoordsLevelTileProxy(p_source_from int, coords_from Vector2i.XY, source_to int, coords_to Vector2i.XY) { //gd:TileSet.set_coords_level_tile_proxy
 	Advanced(self).SetCoordsLevelTileProxy(int64(p_source_from), Vector2i.XY(coords_from), int64(source_to), Vector2i.XY(coords_to))
@@ -767,9 +763,7 @@ func (self Instance) RemoveCoordsLevelTileProxy(source_from int, coords_from Vec
 /*
 Create an alternative-level proxy for the given identifiers. A proxy will map set of tile identifiers to another set of identifiers.
 
-This can be used to replace a tile in all TileMaps using this TileSet, as TileMap nodes will find and use the proxy's target tile when one is available.
-
-Proxied tiles can be automatically replaced in TileMap nodes using the editor.
+Proxied tiles can be automatically replaced in TileMapLayer nodes using the editor.
 */
 func (self Instance) SetAlternativeLevelTileProxy(source_from int, coords_from Vector2i.XY, alternative_from int, source_to int, coords_to Vector2i.XY, alternative_to int) { //gd:TileSet.set_alternative_level_tile_proxy
 	Advanced(self).SetAlternativeLevelTileProxy(int64(source_from), Vector2i.XY(coords_from), int64(alternative_from), int64(source_to), Vector2i.XY(coords_to), int64(alternative_to))
@@ -1641,9 +1635,7 @@ func (self class) GetCustomDataLayerType(layer_index int64) variant.Type { //gd:
 /*
 Creates a source-level proxy for the given source ID. A proxy will map set of tile identifiers to another set of identifiers. Both the atlas coordinates ID and the alternative tile ID are kept the same when using source-level proxies.
 
-This can be used to replace a source in all TileMaps using this TileSet, as TileMap nodes will find and use the proxy's target source when one is available.
-
-Proxied tiles can be automatically replaced in TileMap nodes using the editor.
+Proxied tiles can be automatically replaced in TileMapLayer nodes using the editor.
 */
 //go:nosplit
 func (self class) SetSourceLevelTileProxy(source_from int64, source_to int64) { //gd:TileSet.set_source_level_tile_proxy
@@ -1686,9 +1678,7 @@ func (self class) RemoveSourceLevelTileProxy(source_from int64) { //gd:TileSet.r
 /*
 Creates a coordinates-level proxy for the given identifiers. A proxy will map set of tile identifiers to another set of identifiers. The alternative tile ID is kept the same when using coordinates-level proxies.
 
-This can be used to replace a tile in all TileMaps using this TileSet, as TileMap nodes will find and use the proxy's target tile when one is available.
-
-Proxied tiles can be automatically replaced in TileMap nodes using the editor.
+Proxied tiles can be automatically replaced in TileMapLayer nodes using the editor.
 */
 //go:nosplit
 func (self class) SetCoordsLevelTileProxy(p_source_from int64, coords_from Vector2i.XY, source_to int64, coords_to Vector2i.XY) { //gd:TileSet.set_coords_level_tile_proxy
@@ -1742,9 +1732,7 @@ func (self class) RemoveCoordsLevelTileProxy(source_from int64, coords_from Vect
 /*
 Create an alternative-level proxy for the given identifiers. A proxy will map set of tile identifiers to another set of identifiers.
 
-This can be used to replace a tile in all TileMaps using this TileSet, as TileMap nodes will find and use the proxy's target tile when one is available.
-
-Proxied tiles can be automatically replaced in TileMap nodes using the editor.
+Proxied tiles can be automatically replaced in TileMapLayer nodes using the editor.
 */
 //go:nosplit
 func (self class) SetAlternativeLevelTileProxy(source_from int64, coords_from Vector2i.XY, alternative_from int64, source_to int64, coords_to Vector2i.XY, alternative_to int64) { //gd:TileSet.set_alternative_level_tile_proxy
@@ -1916,7 +1904,7 @@ const (
 	TileShapeSquare TileShape = 0
 	// Diamond tile shape (for isometric look).
 	//
-	// Note: Isometric [graphics.gd/classdb/TileSet] works best if [graphics.gd/classdb/TileMap] and all its layers have Y-sort enabled.
+	// Note: Isometric [graphics.gd/classdb/TileSet] works best if all sibling [graphics.gd/classdb/TileMapLayer]s and their parent inheriting from [graphics.gd/classdb/Node2D] have Y-sort enabled.
 	TileShapeIsometric TileShape = 1
 	// Rectangular tile shape with one row/column out of two offset by half a tile.
 	TileShapeHalfOffsetSquare TileShape = 2

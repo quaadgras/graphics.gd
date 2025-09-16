@@ -21,6 +21,7 @@ import "graphics.gd/variant"
 import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
+import "graphics.gd/classdb/GUI"
 import "graphics.gd/classdb/Image"
 import "graphics.gd/classdb/Input"
 import "graphics.gd/classdb/InputEvent"
@@ -40,6 +41,7 @@ import "graphics.gd/variant/Rect2"
 import "graphics.gd/variant/Rect2i"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
+import "graphics.gd/variant/Transform2D"
 import "graphics.gd/variant/Vector2"
 import "graphics.gd/variant/Vector2i"
 import "graphics.gd/variant/Vector3i"
@@ -89,196 +91,274 @@ type Instance [1]gdclass.DisplayServer
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	has_feature                            gdextension.MethodForClass `hash:"334065950"`
-	get_name                               gdextension.MethodForClass `hash:"201670096"`
-	help_set_search_callbacks              gdextension.MethodForClass `hash:"1687350599"`
-	global_menu_set_popup_callbacks        gdextension.MethodForClass `hash:"3893727526"`
-	global_menu_add_submenu_item           gdextension.MethodForClass `hash:"2828985934"`
-	global_menu_add_item                   gdextension.MethodForClass `hash:"3616842746"`
-	global_menu_add_check_item             gdextension.MethodForClass `hash:"3616842746"`
-	global_menu_add_icon_item              gdextension.MethodForClass `hash:"3867083847"`
-	global_menu_add_icon_check_item        gdextension.MethodForClass `hash:"3867083847"`
-	global_menu_add_radio_check_item       gdextension.MethodForClass `hash:"3616842746"`
-	global_menu_add_icon_radio_check_item  gdextension.MethodForClass `hash:"3867083847"`
-	global_menu_add_multistate_item        gdextension.MethodForClass `hash:"3297554655"`
-	global_menu_add_separator              gdextension.MethodForClass `hash:"3214812433"`
-	global_menu_get_item_index_from_text   gdextension.MethodForClass `hash:"2878152881"`
-	global_menu_get_item_index_from_tag    gdextension.MethodForClass `hash:"2941063483"`
-	global_menu_is_item_checked            gdextension.MethodForClass `hash:"3511468594"`
-	global_menu_is_item_checkable          gdextension.MethodForClass `hash:"3511468594"`
-	global_menu_is_item_radio_checkable    gdextension.MethodForClass `hash:"3511468594"`
-	global_menu_get_item_callback          gdextension.MethodForClass `hash:"748666903"`
-	global_menu_get_item_key_callback      gdextension.MethodForClass `hash:"748666903"`
-	global_menu_get_item_tag               gdextension.MethodForClass `hash:"330672633"`
-	global_menu_get_item_text              gdextension.MethodForClass `hash:"591067909"`
-	global_menu_get_item_submenu           gdextension.MethodForClass `hash:"591067909"`
-	global_menu_get_item_accelerator       gdextension.MethodForClass `hash:"936065394"`
-	global_menu_is_item_disabled           gdextension.MethodForClass `hash:"3511468594"`
-	global_menu_is_item_hidden             gdextension.MethodForClass `hash:"3511468594"`
-	global_menu_get_item_tooltip           gdextension.MethodForClass `hash:"591067909"`
-	global_menu_get_item_state             gdextension.MethodForClass `hash:"3422818498"`
-	global_menu_get_item_max_states        gdextension.MethodForClass `hash:"3422818498"`
-	global_menu_get_item_icon              gdextension.MethodForClass `hash:"3591713183"`
-	global_menu_get_item_indentation_level gdextension.MethodForClass `hash:"3422818498"`
-	global_menu_set_item_checked           gdextension.MethodForClass `hash:"4108344793"`
-	global_menu_set_item_checkable         gdextension.MethodForClass `hash:"4108344793"`
-	global_menu_set_item_radio_checkable   gdextension.MethodForClass `hash:"4108344793"`
-	global_menu_set_item_callback          gdextension.MethodForClass `hash:"3809915389"`
-	global_menu_set_item_hover_callbacks   gdextension.MethodForClass `hash:"3809915389"`
-	global_menu_set_item_key_callback      gdextension.MethodForClass `hash:"3809915389"`
-	global_menu_set_item_tag               gdextension.MethodForClass `hash:"453659863"`
-	global_menu_set_item_text              gdextension.MethodForClass `hash:"965966136"`
-	global_menu_set_item_submenu           gdextension.MethodForClass `hash:"965966136"`
-	global_menu_set_item_accelerator       gdextension.MethodForClass `hash:"566943293"`
-	global_menu_set_item_disabled          gdextension.MethodForClass `hash:"4108344793"`
-	global_menu_set_item_hidden            gdextension.MethodForClass `hash:"4108344793"`
-	global_menu_set_item_tooltip           gdextension.MethodForClass `hash:"965966136"`
-	global_menu_set_item_state             gdextension.MethodForClass `hash:"3474840532"`
-	global_menu_set_item_max_states        gdextension.MethodForClass `hash:"3474840532"`
-	global_menu_set_item_icon              gdextension.MethodForClass `hash:"3201338066"`
-	global_menu_set_item_indentation_level gdextension.MethodForClass `hash:"3474840532"`
-	global_menu_get_item_count             gdextension.MethodForClass `hash:"1321353865"`
-	global_menu_remove_item                gdextension.MethodForClass `hash:"2956805083"`
-	global_menu_clear                      gdextension.MethodForClass `hash:"83702148"`
-	global_menu_get_system_menu_roots      gdextension.MethodForClass `hash:"3102165223"`
-	tts_is_speaking                        gdextension.MethodForClass `hash:"36873697"`
-	tts_is_paused                          gdextension.MethodForClass `hash:"36873697"`
-	tts_get_voices                         gdextension.MethodForClass `hash:"3995934104"`
-	tts_get_voices_for_language            gdextension.MethodForClass `hash:"4291131558"`
-	tts_speak                              gdextension.MethodForClass `hash:"903992738"`
-	tts_pause                              gdextension.MethodForClass `hash:"3218959716"`
-	tts_resume                             gdextension.MethodForClass `hash:"3218959716"`
-	tts_stop                               gdextension.MethodForClass `hash:"3218959716"`
-	tts_set_utterance_callback             gdextension.MethodForClass `hash:"109679083"`
-	is_dark_mode_supported                 gdextension.MethodForClass `hash:"36873697"`
-	is_dark_mode                           gdextension.MethodForClass `hash:"36873697"`
-	get_accent_color                       gdextension.MethodForClass `hash:"3444240500"`
-	get_base_color                         gdextension.MethodForClass `hash:"3444240500"`
-	set_system_theme_change_callback       gdextension.MethodForClass `hash:"1611583062"`
-	mouse_set_mode                         gdextension.MethodForClass `hash:"348288463"`
-	mouse_get_mode                         gdextension.MethodForClass `hash:"1353961651"`
-	warp_mouse                             gdextension.MethodForClass `hash:"1130785943"`
-	mouse_get_position                     gdextension.MethodForClass `hash:"3690982128"`
-	mouse_get_button_state                 gdextension.MethodForClass `hash:"2512161324"`
-	clipboard_set                          gdextension.MethodForClass `hash:"83702148"`
-	clipboard_get                          gdextension.MethodForClass `hash:"201670096"`
-	clipboard_get_image                    gdextension.MethodForClass `hash:"4190603485"`
-	clipboard_has                          gdextension.MethodForClass `hash:"36873697"`
-	clipboard_has_image                    gdextension.MethodForClass `hash:"36873697"`
-	clipboard_set_primary                  gdextension.MethodForClass `hash:"83702148"`
-	clipboard_get_primary                  gdextension.MethodForClass `hash:"201670096"`
-	get_display_cutouts                    gdextension.MethodForClass `hash:"3995934104"`
-	get_display_safe_area                  gdextension.MethodForClass `hash:"410525958"`
-	get_screen_count                       gdextension.MethodForClass `hash:"3905245786"`
-	get_primary_screen                     gdextension.MethodForClass `hash:"3905245786"`
-	get_keyboard_focus_screen              gdextension.MethodForClass `hash:"3905245786"`
-	get_screen_from_rect                   gdextension.MethodForClass `hash:"741354659"`
-	screen_get_position                    gdextension.MethodForClass `hash:"1725937825"`
-	screen_get_size                        gdextension.MethodForClass `hash:"1725937825"`
-	screen_get_usable_rect                 gdextension.MethodForClass `hash:"2439012528"`
-	screen_get_dpi                         gdextension.MethodForClass `hash:"181039630"`
-	screen_get_scale                       gdextension.MethodForClass `hash:"909105437"`
-	is_touchscreen_available               gdextension.MethodForClass `hash:"36873697"`
-	screen_get_max_scale                   gdextension.MethodForClass `hash:"1740695150"`
-	screen_get_refresh_rate                gdextension.MethodForClass `hash:"909105437"`
-	screen_get_pixel                       gdextension.MethodForClass `hash:"1532707496"`
-	screen_get_image                       gdextension.MethodForClass `hash:"3813388802"`
-	screen_get_image_rect                  gdextension.MethodForClass `hash:"2601441065"`
-	screen_set_orientation                 gdextension.MethodForClass `hash:"2211511631"`
-	screen_get_orientation                 gdextension.MethodForClass `hash:"133818562"`
-	screen_set_keep_on                     gdextension.MethodForClass `hash:"2586408642"`
-	screen_is_kept_on                      gdextension.MethodForClass `hash:"36873697"`
-	get_window_list                        gdextension.MethodForClass `hash:"1930428628"`
-	get_window_at_screen_position          gdextension.MethodForClass `hash:"2485466453"`
-	window_get_native_handle               gdextension.MethodForClass `hash:"1096425680"`
-	window_get_active_popup                gdextension.MethodForClass `hash:"3905245786"`
-	window_set_popup_safe_rect             gdextension.MethodForClass `hash:"3317281434"`
-	window_get_popup_safe_rect             gdextension.MethodForClass `hash:"2161169500"`
-	window_set_title                       gdextension.MethodForClass `hash:"441246282"`
-	window_get_title_size                  gdextension.MethodForClass `hash:"2925301799"`
-	window_set_mouse_passthrough           gdextension.MethodForClass `hash:"1993637420"`
-	window_get_current_screen              gdextension.MethodForClass `hash:"1591665591"`
-	window_set_current_screen              gdextension.MethodForClass `hash:"2230941749"`
-	window_get_position                    gdextension.MethodForClass `hash:"763922886"`
-	window_get_position_with_decorations   gdextension.MethodForClass `hash:"763922886"`
-	window_set_position                    gdextension.MethodForClass `hash:"2019273902"`
-	window_get_size                        gdextension.MethodForClass `hash:"763922886"`
-	window_set_size                        gdextension.MethodForClass `hash:"2019273902"`
-	window_set_rect_changed_callback       gdextension.MethodForClass `hash:"1091192925"`
-	window_set_window_event_callback       gdextension.MethodForClass `hash:"1091192925"`
-	window_set_input_event_callback        gdextension.MethodForClass `hash:"1091192925"`
-	window_set_input_text_callback         gdextension.MethodForClass `hash:"1091192925"`
-	window_set_drop_files_callback         gdextension.MethodForClass `hash:"1091192925"`
-	window_get_attached_instance_id        gdextension.MethodForClass `hash:"1591665591"`
-	window_get_max_size                    gdextension.MethodForClass `hash:"763922886"`
-	window_set_max_size                    gdextension.MethodForClass `hash:"2019273902"`
-	window_get_min_size                    gdextension.MethodForClass `hash:"763922886"`
-	window_set_min_size                    gdextension.MethodForClass `hash:"2019273902"`
-	window_get_size_with_decorations       gdextension.MethodForClass `hash:"763922886"`
-	window_get_mode                        gdextension.MethodForClass `hash:"2185728461"`
-	window_set_mode                        gdextension.MethodForClass `hash:"1319965401"`
-	window_set_flag                        gdextension.MethodForClass `hash:"254894155"`
-	window_get_flag                        gdextension.MethodForClass `hash:"802816991"`
-	window_set_window_buttons_offset       gdextension.MethodForClass `hash:"2019273902"`
-	window_get_safe_title_margins          gdextension.MethodForClass `hash:"2295066620"`
-	window_request_attention               gdextension.MethodForClass `hash:"1995695955"`
-	window_move_to_foreground              gdextension.MethodForClass `hash:"1995695955"`
-	window_is_focused                      gdextension.MethodForClass `hash:"1051549951"`
-	window_can_draw                        gdextension.MethodForClass `hash:"1051549951"`
-	window_set_transient                   gdextension.MethodForClass `hash:"3937882851"`
-	window_set_exclusive                   gdextension.MethodForClass `hash:"300928843"`
-	window_set_ime_active                  gdextension.MethodForClass `hash:"1661950165"`
-	window_set_ime_position                gdextension.MethodForClass `hash:"2019273902"`
-	window_set_vsync_mode                  gdextension.MethodForClass `hash:"2179333492"`
-	window_get_vsync_mode                  gdextension.MethodForClass `hash:"578873795"`
-	window_is_maximize_allowed             gdextension.MethodForClass `hash:"1051549951"`
-	window_maximize_on_title_dbl_click     gdextension.MethodForClass `hash:"36873697"`
-	window_minimize_on_title_dbl_click     gdextension.MethodForClass `hash:"36873697"`
-	window_start_drag                      gdextension.MethodForClass `hash:"1995695955"`
-	window_start_resize                    gdextension.MethodForClass `hash:"4009722312"`
-	ime_get_selection                      gdextension.MethodForClass `hash:"3690982128"`
-	ime_get_text                           gdextension.MethodForClass `hash:"201670096"`
-	virtual_keyboard_show                  gdextension.MethodForClass `hash:"3042891259"`
-	virtual_keyboard_hide                  gdextension.MethodForClass `hash:"3218959716"`
-	virtual_keyboard_get_height            gdextension.MethodForClass `hash:"3905245786"`
-	has_hardware_keyboard                  gdextension.MethodForClass `hash:"36873697"`
-	cursor_set_shape                       gdextension.MethodForClass `hash:"2026291549"`
-	cursor_get_shape                       gdextension.MethodForClass `hash:"1087724927"`
-	cursor_set_custom_image                gdextension.MethodForClass `hash:"1816663697"`
-	get_swap_cancel_ok                     gdextension.MethodForClass `hash:"2240911060"`
-	enable_for_stealing_focus              gdextension.MethodForClass `hash:"1286410249"`
-	dialog_show                            gdextension.MethodForClass `hash:"4115553226"`
-	dialog_input_text                      gdextension.MethodForClass `hash:"3088703427"`
-	file_dialog_show                       gdextension.MethodForClass `hash:"1531299078"`
-	file_dialog_with_options_show          gdextension.MethodForClass `hash:"1305318754"`
-	beep                                   gdextension.MethodForClass `hash:"4051624405"`
-	keyboard_get_layout_count              gdextension.MethodForClass `hash:"3905245786"`
-	keyboard_get_current_layout            gdextension.MethodForClass `hash:"3905245786"`
-	keyboard_set_current_layout            gdextension.MethodForClass `hash:"1286410249"`
-	keyboard_get_layout_language           gdextension.MethodForClass `hash:"844755477"`
-	keyboard_get_layout_name               gdextension.MethodForClass `hash:"844755477"`
-	keyboard_get_keycode_from_physical     gdextension.MethodForClass `hash:"3447613187"`
-	keyboard_get_label_from_physical       gdextension.MethodForClass `hash:"3447613187"`
-	show_emoji_and_symbol_picker           gdextension.MethodForClass `hash:"4051624405"`
-	process_events                         gdextension.MethodForClass `hash:"3218959716"`
-	force_process_and_drop_events          gdextension.MethodForClass `hash:"3218959716"`
-	set_native_icon                        gdextension.MethodForClass `hash:"83702148"`
-	set_icon                               gdextension.MethodForClass `hash:"532598488"`
-	create_status_indicator                gdextension.MethodForClass `hash:"1904285171"`
-	status_indicator_set_icon              gdextension.MethodForClass `hash:"666127730"`
-	status_indicator_set_tooltip           gdextension.MethodForClass `hash:"501894301"`
-	status_indicator_set_menu              gdextension.MethodForClass `hash:"4040184819"`
-	status_indicator_set_callback          gdextension.MethodForClass `hash:"957362965"`
-	status_indicator_get_rect              gdextension.MethodForClass `hash:"3327874267"`
-	delete_status_indicator                gdextension.MethodForClass `hash:"1286410249"`
-	tablet_get_driver_count                gdextension.MethodForClass `hash:"3905245786"`
-	tablet_get_driver_name                 gdextension.MethodForClass `hash:"844755477"`
-	tablet_get_current_driver              gdextension.MethodForClass `hash:"201670096"`
-	tablet_set_current_driver              gdextension.MethodForClass `hash:"83702148"`
-	is_window_transparency_available       gdextension.MethodForClass `hash:"36873697"`
-	register_additional_output             gdextension.MethodForClass `hash:"3975164845"`
-	unregister_additional_output           gdextension.MethodForClass `hash:"3975164845"`
-	has_additional_outputs                 gdextension.MethodForClass `hash:"36873697"`
+	has_feature                                      gdextension.MethodForClass `hash:"334065950"`
+	get_name                                         gdextension.MethodForClass `hash:"201670096"`
+	help_set_search_callbacks                        gdextension.MethodForClass `hash:"1687350599"`
+	global_menu_set_popup_callbacks                  gdextension.MethodForClass `hash:"3893727526"`
+	global_menu_add_submenu_item                     gdextension.MethodForClass `hash:"2828985934"`
+	global_menu_add_item                             gdextension.MethodForClass `hash:"3616842746"`
+	global_menu_add_check_item                       gdextension.MethodForClass `hash:"3616842746"`
+	global_menu_add_icon_item                        gdextension.MethodForClass `hash:"3867083847"`
+	global_menu_add_icon_check_item                  gdextension.MethodForClass `hash:"3867083847"`
+	global_menu_add_radio_check_item                 gdextension.MethodForClass `hash:"3616842746"`
+	global_menu_add_icon_radio_check_item            gdextension.MethodForClass `hash:"3867083847"`
+	global_menu_add_multistate_item                  gdextension.MethodForClass `hash:"3297554655"`
+	global_menu_add_separator                        gdextension.MethodForClass `hash:"3214812433"`
+	global_menu_get_item_index_from_text             gdextension.MethodForClass `hash:"2878152881"`
+	global_menu_get_item_index_from_tag              gdextension.MethodForClass `hash:"2941063483"`
+	global_menu_is_item_checked                      gdextension.MethodForClass `hash:"3511468594"`
+	global_menu_is_item_checkable                    gdextension.MethodForClass `hash:"3511468594"`
+	global_menu_is_item_radio_checkable              gdextension.MethodForClass `hash:"3511468594"`
+	global_menu_get_item_callback                    gdextension.MethodForClass `hash:"748666903"`
+	global_menu_get_item_key_callback                gdextension.MethodForClass `hash:"748666903"`
+	global_menu_get_item_tag                         gdextension.MethodForClass `hash:"330672633"`
+	global_menu_get_item_text                        gdextension.MethodForClass `hash:"591067909"`
+	global_menu_get_item_submenu                     gdextension.MethodForClass `hash:"591067909"`
+	global_menu_get_item_accelerator                 gdextension.MethodForClass `hash:"936065394"`
+	global_menu_is_item_disabled                     gdextension.MethodForClass `hash:"3511468594"`
+	global_menu_is_item_hidden                       gdextension.MethodForClass `hash:"3511468594"`
+	global_menu_get_item_tooltip                     gdextension.MethodForClass `hash:"591067909"`
+	global_menu_get_item_state                       gdextension.MethodForClass `hash:"3422818498"`
+	global_menu_get_item_max_states                  gdextension.MethodForClass `hash:"3422818498"`
+	global_menu_get_item_icon                        gdextension.MethodForClass `hash:"3591713183"`
+	global_menu_get_item_indentation_level           gdextension.MethodForClass `hash:"3422818498"`
+	global_menu_set_item_checked                     gdextension.MethodForClass `hash:"4108344793"`
+	global_menu_set_item_checkable                   gdextension.MethodForClass `hash:"4108344793"`
+	global_menu_set_item_radio_checkable             gdextension.MethodForClass `hash:"4108344793"`
+	global_menu_set_item_callback                    gdextension.MethodForClass `hash:"3809915389"`
+	global_menu_set_item_hover_callbacks             gdextension.MethodForClass `hash:"3809915389"`
+	global_menu_set_item_key_callback                gdextension.MethodForClass `hash:"3809915389"`
+	global_menu_set_item_tag                         gdextension.MethodForClass `hash:"453659863"`
+	global_menu_set_item_text                        gdextension.MethodForClass `hash:"965966136"`
+	global_menu_set_item_submenu                     gdextension.MethodForClass `hash:"965966136"`
+	global_menu_set_item_accelerator                 gdextension.MethodForClass `hash:"566943293"`
+	global_menu_set_item_disabled                    gdextension.MethodForClass `hash:"4108344793"`
+	global_menu_set_item_hidden                      gdextension.MethodForClass `hash:"4108344793"`
+	global_menu_set_item_tooltip                     gdextension.MethodForClass `hash:"965966136"`
+	global_menu_set_item_state                       gdextension.MethodForClass `hash:"3474840532"`
+	global_menu_set_item_max_states                  gdextension.MethodForClass `hash:"3474840532"`
+	global_menu_set_item_icon                        gdextension.MethodForClass `hash:"3201338066"`
+	global_menu_set_item_indentation_level           gdextension.MethodForClass `hash:"3474840532"`
+	global_menu_get_item_count                       gdextension.MethodForClass `hash:"1321353865"`
+	global_menu_remove_item                          gdextension.MethodForClass `hash:"2956805083"`
+	global_menu_clear                                gdextension.MethodForClass `hash:"83702148"`
+	global_menu_get_system_menu_roots                gdextension.MethodForClass `hash:"3102165223"`
+	tts_is_speaking                                  gdextension.MethodForClass `hash:"36873697"`
+	tts_is_paused                                    gdextension.MethodForClass `hash:"36873697"`
+	tts_get_voices                                   gdextension.MethodForClass `hash:"3995934104"`
+	tts_get_voices_for_language                      gdextension.MethodForClass `hash:"4291131558"`
+	tts_speak                                        gdextension.MethodForClass `hash:"903992738"`
+	tts_pause                                        gdextension.MethodForClass `hash:"3218959716"`
+	tts_resume                                       gdextension.MethodForClass `hash:"3218959716"`
+	tts_stop                                         gdextension.MethodForClass `hash:"3218959716"`
+	tts_set_utterance_callback                       gdextension.MethodForClass `hash:"109679083"`
+	is_dark_mode_supported                           gdextension.MethodForClass `hash:"36873697"`
+	is_dark_mode                                     gdextension.MethodForClass `hash:"36873697"`
+	get_accent_color                                 gdextension.MethodForClass `hash:"3444240500"`
+	get_base_color                                   gdextension.MethodForClass `hash:"3444240500"`
+	set_system_theme_change_callback                 gdextension.MethodForClass `hash:"1611583062"`
+	mouse_set_mode                                   gdextension.MethodForClass `hash:"348288463"`
+	mouse_get_mode                                   gdextension.MethodForClass `hash:"1353961651"`
+	warp_mouse                                       gdextension.MethodForClass `hash:"1130785943"`
+	mouse_get_position                               gdextension.MethodForClass `hash:"3690982128"`
+	mouse_get_button_state                           gdextension.MethodForClass `hash:"2512161324"`
+	clipboard_set                                    gdextension.MethodForClass `hash:"83702148"`
+	clipboard_get                                    gdextension.MethodForClass `hash:"201670096"`
+	clipboard_get_image                              gdextension.MethodForClass `hash:"4190603485"`
+	clipboard_has                                    gdextension.MethodForClass `hash:"36873697"`
+	clipboard_has_image                              gdextension.MethodForClass `hash:"36873697"`
+	clipboard_set_primary                            gdextension.MethodForClass `hash:"83702148"`
+	clipboard_get_primary                            gdextension.MethodForClass `hash:"201670096"`
+	get_display_cutouts                              gdextension.MethodForClass `hash:"3995934104"`
+	get_display_safe_area                            gdextension.MethodForClass `hash:"410525958"`
+	get_screen_count                                 gdextension.MethodForClass `hash:"3905245786"`
+	get_primary_screen                               gdextension.MethodForClass `hash:"3905245786"`
+	get_keyboard_focus_screen                        gdextension.MethodForClass `hash:"3905245786"`
+	get_screen_from_rect                             gdextension.MethodForClass `hash:"741354659"`
+	screen_get_position                              gdextension.MethodForClass `hash:"1725937825"`
+	screen_get_size                                  gdextension.MethodForClass `hash:"1725937825"`
+	screen_get_usable_rect                           gdextension.MethodForClass `hash:"2439012528"`
+	screen_get_dpi                                   gdextension.MethodForClass `hash:"181039630"`
+	screen_get_scale                                 gdextension.MethodForClass `hash:"909105437"`
+	is_touchscreen_available                         gdextension.MethodForClass `hash:"36873697"`
+	screen_get_max_scale                             gdextension.MethodForClass `hash:"1740695150"`
+	screen_get_refresh_rate                          gdextension.MethodForClass `hash:"909105437"`
+	screen_get_pixel                                 gdextension.MethodForClass `hash:"1532707496"`
+	screen_get_image                                 gdextension.MethodForClass `hash:"3813388802"`
+	screen_get_image_rect                            gdextension.MethodForClass `hash:"2601441065"`
+	screen_set_orientation                           gdextension.MethodForClass `hash:"2211511631"`
+	screen_get_orientation                           gdextension.MethodForClass `hash:"133818562"`
+	screen_set_keep_on                               gdextension.MethodForClass `hash:"2586408642"`
+	screen_is_kept_on                                gdextension.MethodForClass `hash:"36873697"`
+	get_window_list                                  gdextension.MethodForClass `hash:"1930428628"`
+	get_window_at_screen_position                    gdextension.MethodForClass `hash:"2485466453"`
+	window_get_native_handle                         gdextension.MethodForClass `hash:"1096425680"`
+	window_get_active_popup                          gdextension.MethodForClass `hash:"3905245786"`
+	window_set_popup_safe_rect                       gdextension.MethodForClass `hash:"3317281434"`
+	window_get_popup_safe_rect                       gdextension.MethodForClass `hash:"2161169500"`
+	window_set_title                                 gdextension.MethodForClass `hash:"441246282"`
+	window_get_title_size                            gdextension.MethodForClass `hash:"2925301799"`
+	window_set_mouse_passthrough                     gdextension.MethodForClass `hash:"1993637420"`
+	window_get_current_screen                        gdextension.MethodForClass `hash:"1591665591"`
+	window_set_current_screen                        gdextension.MethodForClass `hash:"2230941749"`
+	window_get_position                              gdextension.MethodForClass `hash:"763922886"`
+	window_get_position_with_decorations             gdextension.MethodForClass `hash:"763922886"`
+	window_set_position                              gdextension.MethodForClass `hash:"2019273902"`
+	window_get_size                                  gdextension.MethodForClass `hash:"763922886"`
+	window_set_size                                  gdextension.MethodForClass `hash:"2019273902"`
+	window_set_rect_changed_callback                 gdextension.MethodForClass `hash:"1091192925"`
+	window_set_window_event_callback                 gdextension.MethodForClass `hash:"1091192925"`
+	window_set_input_event_callback                  gdextension.MethodForClass `hash:"1091192925"`
+	window_set_input_text_callback                   gdextension.MethodForClass `hash:"1091192925"`
+	window_set_drop_files_callback                   gdextension.MethodForClass `hash:"1091192925"`
+	window_get_attached_instance_id                  gdextension.MethodForClass `hash:"1591665591"`
+	window_get_max_size                              gdextension.MethodForClass `hash:"763922886"`
+	window_set_max_size                              gdextension.MethodForClass `hash:"2019273902"`
+	window_get_min_size                              gdextension.MethodForClass `hash:"763922886"`
+	window_set_min_size                              gdextension.MethodForClass `hash:"2019273902"`
+	window_get_size_with_decorations                 gdextension.MethodForClass `hash:"763922886"`
+	window_get_mode                                  gdextension.MethodForClass `hash:"2185728461"`
+	window_set_mode                                  gdextension.MethodForClass `hash:"1319965401"`
+	window_set_flag                                  gdextension.MethodForClass `hash:"254894155"`
+	window_get_flag                                  gdextension.MethodForClass `hash:"802816991"`
+	window_set_window_buttons_offset                 gdextension.MethodForClass `hash:"2019273902"`
+	window_get_safe_title_margins                    gdextension.MethodForClass `hash:"2295066620"`
+	window_request_attention                         gdextension.MethodForClass `hash:"1995695955"`
+	window_move_to_foreground                        gdextension.MethodForClass `hash:"1995695955"`
+	window_is_focused                                gdextension.MethodForClass `hash:"1051549951"`
+	window_can_draw                                  gdextension.MethodForClass `hash:"1051549951"`
+	window_set_transient                             gdextension.MethodForClass `hash:"3937882851"`
+	window_set_exclusive                             gdextension.MethodForClass `hash:"300928843"`
+	window_set_ime_active                            gdextension.MethodForClass `hash:"1661950165"`
+	window_set_ime_position                          gdextension.MethodForClass `hash:"2019273902"`
+	window_set_vsync_mode                            gdextension.MethodForClass `hash:"2179333492"`
+	window_get_vsync_mode                            gdextension.MethodForClass `hash:"578873795"`
+	window_is_maximize_allowed                       gdextension.MethodForClass `hash:"1051549951"`
+	window_maximize_on_title_dbl_click               gdextension.MethodForClass `hash:"36873697"`
+	window_minimize_on_title_dbl_click               gdextension.MethodForClass `hash:"36873697"`
+	window_start_drag                                gdextension.MethodForClass `hash:"1995695955"`
+	window_start_resize                              gdextension.MethodForClass `hash:"4009722312"`
+	accessibility_should_increase_contrast           gdextension.MethodForClass `hash:"3905245786"`
+	accessibility_should_reduce_animation            gdextension.MethodForClass `hash:"3905245786"`
+	accessibility_should_reduce_transparency         gdextension.MethodForClass `hash:"3905245786"`
+	accessibility_screen_reader_active               gdextension.MethodForClass `hash:"3905245786"`
+	accessibility_create_element                     gdextension.MethodForClass `hash:"2968347744"`
+	accessibility_create_sub_element                 gdextension.MethodForClass `hash:"1949948826"`
+	accessibility_create_sub_text_edit_elements      gdextension.MethodForClass `hash:"3328635351"`
+	accessibility_has_element                        gdextension.MethodForClass `hash:"4155700596"`
+	accessibility_free_element                       gdextension.MethodForClass `hash:"2722037293"`
+	accessibility_element_set_meta                   gdextension.MethodForClass `hash:"3175752987"`
+	accessibility_element_get_meta                   gdextension.MethodForClass `hash:"4171304767"`
+	accessibility_set_window_rect                    gdextension.MethodForClass `hash:"2386961724"`
+	accessibility_set_window_focused                 gdextension.MethodForClass `hash:"300928843"`
+	accessibility_update_set_focus                   gdextension.MethodForClass `hash:"2722037293"`
+	accessibility_get_window_root                    gdextension.MethodForClass `hash:"495598643"`
+	accessibility_update_set_role                    gdextension.MethodForClass `hash:"3352768215"`
+	accessibility_update_set_name                    gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_extra_info              gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_description             gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_value                   gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_tooltip                 gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_bounds                  gdextension.MethodForClass `hash:"1378122625"`
+	accessibility_update_set_transform               gdextension.MethodForClass `hash:"1246044741"`
+	accessibility_update_add_child                   gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_add_related_controls        gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_add_related_details         gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_add_related_described_by    gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_add_related_flow_to         gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_add_related_labeled_by      gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_add_related_radio_group     gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_set_active_descendant       gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_set_next_on_line            gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_set_previous_on_line        gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_set_member_of               gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_set_in_page_link_target     gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_set_error_message           gdextension.MethodForClass `hash:"395945892"`
+	accessibility_update_set_live                    gdextension.MethodForClass `hash:"2683302212"`
+	accessibility_update_add_action                  gdextension.MethodForClass `hash:"2898696987"`
+	accessibility_update_add_custom_action           gdextension.MethodForClass `hash:"4153150897"`
+	accessibility_update_set_table_row_count         gdextension.MethodForClass `hash:"3411492887"`
+	accessibility_update_set_table_column_count      gdextension.MethodForClass `hash:"3411492887"`
+	accessibility_update_set_table_row_index         gdextension.MethodForClass `hash:"3411492887"`
+	accessibility_update_set_table_column_index      gdextension.MethodForClass `hash:"3411492887"`
+	accessibility_update_set_table_cell_position     gdextension.MethodForClass `hash:"4288446313"`
+	accessibility_update_set_table_cell_span         gdextension.MethodForClass `hash:"4288446313"`
+	accessibility_update_set_list_item_count         gdextension.MethodForClass `hash:"3411492887"`
+	accessibility_update_set_list_item_index         gdextension.MethodForClass `hash:"3411492887"`
+	accessibility_update_set_list_item_level         gdextension.MethodForClass `hash:"3411492887"`
+	accessibility_update_set_list_item_selected      gdextension.MethodForClass `hash:"1265174801"`
+	accessibility_update_set_list_item_expanded      gdextension.MethodForClass `hash:"1265174801"`
+	accessibility_update_set_popup_type              gdextension.MethodForClass `hash:"2040885448"`
+	accessibility_update_set_checked                 gdextension.MethodForClass `hash:"1265174801"`
+	accessibility_update_set_num_value               gdextension.MethodForClass `hash:"1794382983"`
+	accessibility_update_set_num_range               gdextension.MethodForClass `hash:"2513314492"`
+	accessibility_update_set_num_step                gdextension.MethodForClass `hash:"1794382983"`
+	accessibility_update_set_num_jump                gdextension.MethodForClass `hash:"1794382983"`
+	accessibility_update_set_scroll_x                gdextension.MethodForClass `hash:"1794382983"`
+	accessibility_update_set_scroll_x_range          gdextension.MethodForClass `hash:"2513314492"`
+	accessibility_update_set_scroll_y                gdextension.MethodForClass `hash:"1794382983"`
+	accessibility_update_set_scroll_y_range          gdextension.MethodForClass `hash:"2513314492"`
+	accessibility_update_set_text_decorations        gdextension.MethodForClass `hash:"1672422386"`
+	accessibility_update_set_text_align              gdextension.MethodForClass `hash:"3725995085"`
+	accessibility_update_set_text_selection          gdextension.MethodForClass `hash:"3119144029"`
+	accessibility_update_set_flag                    gdextension.MethodForClass `hash:"3758675396"`
+	accessibility_update_set_classname               gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_placeholder             gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_language                gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_text_orientation        gdextension.MethodForClass `hash:"1265174801"`
+	accessibility_update_set_list_orientation        gdextension.MethodForClass `hash:"1265174801"`
+	accessibility_update_set_shortcut                gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_url                     gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_role_description        gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_state_description       gdextension.MethodForClass `hash:"2726140452"`
+	accessibility_update_set_color_value             gdextension.MethodForClass `hash:"2948539648"`
+	accessibility_update_set_background_color        gdextension.MethodForClass `hash:"2948539648"`
+	accessibility_update_set_foreground_color        gdextension.MethodForClass `hash:"2948539648"`
+	ime_get_selection                                gdextension.MethodForClass `hash:"3690982128"`
+	ime_get_text                                     gdextension.MethodForClass `hash:"201670096"`
+	virtual_keyboard_show                            gdextension.MethodForClass `hash:"3042891259"`
+	virtual_keyboard_hide                            gdextension.MethodForClass `hash:"3218959716"`
+	virtual_keyboard_get_height                      gdextension.MethodForClass `hash:"3905245786"`
+	has_hardware_keyboard                            gdextension.MethodForClass `hash:"36873697"`
+	set_hardware_keyboard_connection_change_callback gdextension.MethodForClass `hash:"1611583062"`
+	cursor_set_shape                                 gdextension.MethodForClass `hash:"2026291549"`
+	cursor_get_shape                                 gdextension.MethodForClass `hash:"1087724927"`
+	cursor_set_custom_image                          gdextension.MethodForClass `hash:"1816663697"`
+	get_swap_cancel_ok                               gdextension.MethodForClass `hash:"2240911060"`
+	enable_for_stealing_focus                        gdextension.MethodForClass `hash:"1286410249"`
+	dialog_show                                      gdextension.MethodForClass `hash:"4115553226"`
+	dialog_input_text                                gdextension.MethodForClass `hash:"3088703427"`
+	file_dialog_show                                 gdextension.MethodForClass `hash:"1386825884"`
+	file_dialog_with_options_show                    gdextension.MethodForClass `hash:"1448789813"`
+	beep                                             gdextension.MethodForClass `hash:"4051624405"`
+	keyboard_get_layout_count                        gdextension.MethodForClass `hash:"3905245786"`
+	keyboard_get_current_layout                      gdextension.MethodForClass `hash:"3905245786"`
+	keyboard_set_current_layout                      gdextension.MethodForClass `hash:"1286410249"`
+	keyboard_get_layout_language                     gdextension.MethodForClass `hash:"844755477"`
+	keyboard_get_layout_name                         gdextension.MethodForClass `hash:"844755477"`
+	keyboard_get_keycode_from_physical               gdextension.MethodForClass `hash:"3447613187"`
+	keyboard_get_label_from_physical                 gdextension.MethodForClass `hash:"3447613187"`
+	show_emoji_and_symbol_picker                     gdextension.MethodForClass `hash:"4051624405"`
+	color_picker                                     gdextension.MethodForClass `hash:"151643214"`
+	process_events                                   gdextension.MethodForClass `hash:"3218959716"`
+	force_process_and_drop_events                    gdextension.MethodForClass `hash:"3218959716"`
+	set_native_icon                                  gdextension.MethodForClass `hash:"83702148"`
+	set_icon                                         gdextension.MethodForClass `hash:"532598488"`
+	create_status_indicator                          gdextension.MethodForClass `hash:"1904285171"`
+	status_indicator_set_icon                        gdextension.MethodForClass `hash:"666127730"`
+	status_indicator_set_tooltip                     gdextension.MethodForClass `hash:"501894301"`
+	status_indicator_set_menu                        gdextension.MethodForClass `hash:"4040184819"`
+	status_indicator_set_callback                    gdextension.MethodForClass `hash:"957362965"`
+	status_indicator_get_rect                        gdextension.MethodForClass `hash:"3327874267"`
+	delete_status_indicator                          gdextension.MethodForClass `hash:"1286410249"`
+	tablet_get_driver_count                          gdextension.MethodForClass `hash:"3905245786"`
+	tablet_get_driver_name                           gdextension.MethodForClass `hash:"844755477"`
+	tablet_get_current_driver                        gdextension.MethodForClass `hash:"201670096"`
+	tablet_set_current_driver                        gdextension.MethodForClass `hash:"83702148"`
+	is_window_transparency_available                 gdextension.MethodForClass `hash:"36873697"`
+	register_additional_output                       gdextension.MethodForClass `hash:"3975164845"`
+	unregister_additional_output                     gdextension.MethodForClass `hash:"3975164845"`
+	has_additional_outputs                           gdextension.MethodForClass `hash:"36873697"`
 }
 
 func init() {
@@ -725,7 +805,7 @@ Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemCallback(menu_root string, idx int) Callable.Function { //gd:DisplayServer.global_menu_get_item_callback
 	once.Do(singleton)
-	return Callable.Function(Advanced().GlobalMenuGetItemCallback(String.New(menu_root), int64(idx)))
+	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(Advanced().GlobalMenuGetItemCallback(String.New(menu_root), int64(idx)))))
 }
 
 /*
@@ -735,7 +815,7 @@ Note: This method is implemented only on macOS.
 */
 func GlobalMenuGetItemKeyCallback(menu_root string, idx int) Callable.Function { //gd:DisplayServer.global_menu_get_item_key_callback
 	once.Do(singleton)
-	return Callable.Function(Advanced().GlobalMenuGetItemKeyCallback(String.New(menu_root), int64(idx)))
+	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(Advanced().GlobalMenuGetItemKeyCallback(String.New(menu_root), int64(idx)))))
 }
 
 /*
@@ -1080,8 +1160,6 @@ func GlobalMenuGetSystemMenuRoots() map[string]string { //gd:DisplayServer.globa
 Returns true if the synthesizer is generating speech, or have utterance waiting in the queue.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 func TtsIsSpeaking() bool { //gd:DisplayServer.tts_is_speaking
 	once.Do(singleton)
@@ -1092,8 +1170,6 @@ func TtsIsSpeaking() bool { //gd:DisplayServer.tts_is_speaking
 Returns true if the synthesizer is in a paused state.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 func TtsIsPaused() bool { //gd:DisplayServer.tts_is_paused
 	once.Do(singleton)
@@ -1114,8 +1190,6 @@ Each data structure contains two string entries:
 Note that Godot depends on system libraries for text-to-speech functionality. These libraries are installed by default on Windows and macOS, but not on all Linux distributions. If they are not present, this method will return an empty list. This applies to both Godot users on Linux, as well as end-users on Linux running Godot games that use text-to-speech.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 func TtsGetVoices() []TextToSpeechVoice { //gd:DisplayServer.tts_get_voices
 	once.Do(singleton)
@@ -1123,11 +1197,9 @@ func TtsGetVoices() []TextToSpeechVoice { //gd:DisplayServer.tts_get_voices
 }
 
 /*
-Returns an []string of voice identifiers for the 'language'.
+Returns a []string of voice identifiers for the 'language'.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 func TtsGetVoicesForLanguage(language string) []string { //gd:DisplayServer.tts_get_voices_for_language
 	once.Do(singleton)
@@ -1152,8 +1224,6 @@ Note: On Windows and Linux (X11/Wayland), utterance 'text' can use SSML markup. 
 Note: The granularity of pitch, rate, and volume is engine and voice dependent. Values may be truncated.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 func TtsSpeak(text string, voice string, utterance_id int, interrupt bool) { //gd:DisplayServer.tts_speak
 	once.Do(singleton)
@@ -1178,8 +1248,6 @@ Note: On Windows and Linux (X11/Wayland), utterance 'text' can use SSML markup. 
 Note: The granularity of pitch, rate, and volume is engine and voice dependent. Values may be truncated.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 func TtsSpeakOptions(text string, voice string, volume int, pitch Float.X, rate Float.X, utterance_id int, interrupt bool) { //gd:DisplayServer.tts_speak
 	once.Do(singleton)
@@ -1190,8 +1258,6 @@ func TtsSpeakOptions(text string, voice string, volume int, pitch Float.X, rate 
 Puts the synthesizer into a paused state.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 func TtsPause() { //gd:DisplayServer.tts_pause
 	once.Do(singleton)
@@ -1202,8 +1268,6 @@ func TtsPause() { //gd:DisplayServer.tts_pause
 Resumes the synthesizer if it was paused.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 func TtsResume() { //gd:DisplayServer.tts_resume
 	once.Do(singleton)
@@ -1213,9 +1277,7 @@ func TtsResume() { //gd:DisplayServer.tts_resume
 /*
 Stops synthesis in progress and removes all utterances from the queue.
 
-Note: This method is implemented on Android, iOS, Web, Linux (X11/Linux), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
+Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 */
 func TtsStop() { //gd:DisplayServer.tts_stop
 	once.Do(singleton)
@@ -1232,8 +1294,6 @@ Adds a callback, which is called when the utterance has started, finished, cance
 Note: The granularity of the boundary callbacks is engine dependent.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 func TtsSetUtteranceCallback(event TTSUtteranceEvent, callable func(int, int)) { //gd:DisplayServer.tts_set_utterance_callback
 	once.Do(singleton)
@@ -1263,7 +1323,7 @@ func IsDarkMode() bool { //gd:DisplayServer.is_dark_mode
 /*
 Returns OS theme accent color. Returns Color(0, 0, 0, 0), if accent color is unknown.
 
-Note: This method is implemented on macOS, Windows, and Android.
+Note: This method is implemented on macOS, Windows, Android, and Linux (X11/Wayland).
 */
 func GetAccentColor() Color.RGBA { //gd:DisplayServer.get_accent_color
 	once.Do(singleton)
@@ -1351,7 +1411,7 @@ func ClipboardGet() string { //gd:DisplayServer.clipboard_get
 /*
 Returns the user's clipboard as an image if possible.
 
-Note: This method uses the copied pixel data, e.g. from a image editing software or a web browser, not an image file copied from file explorer.
+Note: This method uses the copied pixel data, e.g. from an image editing software or a web browser, not an image file copied from file explorer.
 */
 func ClipboardGetImage() Image.Instance { //gd:DisplayServer.clipboard_get_image
 	once.Do(singleton)
@@ -1420,6 +1480,8 @@ func GetDisplaySafeArea() Rect2i.PositionSize { //gd:DisplayServer.get_display_s
 
 /*
 Returns the number of displays available.
+
+Note: This method is implemented on Linux (X11 and Wayland), macOS, and Windows. On other platforms, this method always returns 1.
 */
 func GetScreenCount() int { //gd:DisplayServer.get_screen_count
 	once.Do(singleton)
@@ -1428,6 +1490,8 @@ func GetScreenCount() int { //gd:DisplayServer.get_screen_count
 
 /*
 Returns index of the primary screen.
+
+Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns 0.
 */
 func GetPrimaryScreen() int { //gd:DisplayServer.get_primary_screen
 	once.Do(singleton)
@@ -1436,6 +1500,8 @@ func GetPrimaryScreen() int { //gd:DisplayServer.get_primary_screen
 
 /*
 Returns the index of the screen containing the window with the keyboard focus, or the primary screen if there's no focused window.
+
+Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns the primary screen.
 */
 func GetKeyboardFocusScreen() int { //gd:DisplayServer.get_keyboard_focus_screen
 	once.Do(singleton)
@@ -1443,7 +1509,7 @@ func GetKeyboardFocusScreen() int { //gd:DisplayServer.get_keyboard_focus_screen
 }
 
 /*
-Returns the index of the screen that overlaps the most with the given rectangle. Returns -1 if the rectangle doesn't overlap with any screen or has no area.
+Returns the index of the screen that overlaps the most with the given rectangle. Returns [InvalidScreen] if the rectangle doesn't overlap with any screen or has no area.
 */
 func GetScreenFromRect(rect Rect2.PositionSize) int { //gd:DisplayServer.get_screen_from_rect
 	once.Do(singleton)
@@ -1451,11 +1517,11 @@ func GetScreenFromRect(rect Rect2.PositionSize) int { //gd:DisplayServer.get_scr
 }
 
 /*
-Returns the screen's top-left corner position in pixels. On multi-monitor setups, the screen position is relative to the virtual desktop area. On multi-monitor setups with different screen resolutions or orientations, the origin may be located outside any display like this:
+Returns the screen's top-left corner position in pixels. Returns [Vector2i.Zero] if 'screen' is invalid. On multi-monitor setups, the screen position is relative to the virtual desktop area. On multi-monitor setups with different screen resolutions or orientations, the origin might be located outside any display like this:
 
 See also [ScreenGetSize].
 
-Note: On Linux (Wayland) this method always returns (0, 0).
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 */
 func ScreenGetPosition() Vector2i.XY { //gd:DisplayServer.screen_get_position
 	once.Do(singleton)
@@ -1463,11 +1529,11 @@ func ScreenGetPosition() Vector2i.XY { //gd:DisplayServer.screen_get_position
 }
 
 /*
-Returns the screen's top-left corner position in pixels. On multi-monitor setups, the screen position is relative to the virtual desktop area. On multi-monitor setups with different screen resolutions or orientations, the origin may be located outside any display like this:
+Returns the screen's top-left corner position in pixels. Returns [Vector2i.Zero] if 'screen' is invalid. On multi-monitor setups, the screen position is relative to the virtual desktop area. On multi-monitor setups with different screen resolutions or orientations, the origin might be located outside any display like this:
 
 See also [ScreenGetSize].
 
-Note: On Linux (Wayland) this method always returns (0, 0).
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 */
 func ScreenGetPositionOptions(screen Screen) Vector2i.XY { //gd:DisplayServer.screen_get_position
 	once.Do(singleton)
@@ -1475,7 +1541,9 @@ func ScreenGetPositionOptions(screen Screen) Vector2i.XY { //gd:DisplayServer.sc
 }
 
 /*
-Returns the screen's size in pixels. See also [ScreenGetPosition] and [ScreenGetUsableRect].
+Returns the screen's size in pixels. See also [ScreenGetPosition] and [ScreenGetUsableRect]. Returns [Vector2i.Zero] if 'screen' is invalid.
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 */
 func ScreenGetSize() Vector2i.XY { //gd:DisplayServer.screen_get_size
 	once.Do(singleton)
@@ -1483,7 +1551,9 @@ func ScreenGetSize() Vector2i.XY { //gd:DisplayServer.screen_get_size
 }
 
 /*
-Returns the screen's size in pixels. See also [ScreenGetPosition] and [ScreenGetUsableRect].
+Returns the screen's size in pixels. See also [ScreenGetPosition] and [ScreenGetUsableRect]. Returns [Vector2i.Zero] if 'screen' is invalid.
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 */
 func ScreenGetSizeOptions(screen Screen) Vector2i.XY { //gd:DisplayServer.screen_get_size
 	once.Do(singleton)
@@ -1492,6 +1562,10 @@ func ScreenGetSizeOptions(screen Screen) Vector2i.XY { //gd:DisplayServer.screen
 
 /*
 Returns the portion of the screen that is not obstructed by a status bar in pixels. See also [ScreenGetSize].
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
+
+Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns Rect2i(screen_get_position(screen), screen_get_size(screen)).
 */
 func ScreenGetUsableRect() Rect2i.PositionSize { //gd:DisplayServer.screen_get_usable_rect
 	once.Do(singleton)
@@ -1500,6 +1574,10 @@ func ScreenGetUsableRect() Rect2i.PositionSize { //gd:DisplayServer.screen_get_u
 
 /*
 Returns the portion of the screen that is not obstructed by a status bar in pixels. See also [ScreenGetSize].
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
+
+Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns Rect2i(screen_get_position(screen), screen_get_size(screen)).
 */
 func ScreenGetUsableRectOptions(screen Screen) Rect2i.PositionSize { //gd:DisplayServer.screen_get_usable_rect
 	once.Do(singleton)
@@ -1507,13 +1585,15 @@ func ScreenGetUsableRectOptions(screen Screen) Rect2i.PositionSize { //gd:Displa
 }
 
 /*
-Returns the dots per inch density of the specified screen. If 'screen' is [ScreenOfMainWindow] (the default value), a screen with the main window will be used.
+Returns the dots per inch density of the specified screen. Returns platform specific default value if 'screen' is invalid.
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 
 Note: On macOS, returned value is inaccurate if fractional display scaling mode is used.
 
 Note: On Android devices, the actual screen densities are grouped into six generalized densities:
 
-Note: This method is implemented on Android, Linux (X11/Wayland), macOS and Windows. Returns 72 on unsupported platforms.
+Note: This method is implemented on Android, iOS, Linux (X11/Wayland), macOS, Web, and Windows. On other platforms, this method always returns 72.
 */
 func ScreenGetDpi() int { //gd:DisplayServer.screen_get_dpi
 	once.Do(singleton)
@@ -1521,13 +1601,15 @@ func ScreenGetDpi() int { //gd:DisplayServer.screen_get_dpi
 }
 
 /*
-Returns the dots per inch density of the specified screen. If 'screen' is [ScreenOfMainWindow] (the default value), a screen with the main window will be used.
+Returns the dots per inch density of the specified screen. Returns platform specific default value if 'screen' is invalid.
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 
 Note: On macOS, returned value is inaccurate if fractional display scaling mode is used.
 
 Note: On Android devices, the actual screen densities are grouped into six generalized densities:
 
-Note: This method is implemented on Android, Linux (X11/Wayland), macOS and Windows. Returns 72 on unsupported platforms.
+Note: This method is implemented on Android, iOS, Linux (X11/Wayland), macOS, Web, and Windows. On other platforms, this method always returns 72.
 */
 func ScreenGetDpiOptions(screen Screen) int { //gd:DisplayServer.screen_get_dpi
 	once.Do(singleton)
@@ -1535,13 +1617,15 @@ func ScreenGetDpiOptions(screen Screen) int { //gd:DisplayServer.screen_get_dpi
 }
 
 /*
-Returns the scale factor of the specified screen by index.
+Returns the scale factor of the specified screen by index. Returns 1.0 if 'screen' is invalid.
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 
 Note: On macOS, the returned value is 2.0 for hiDPI (Retina) screens, and 1.0 for all other cases.
 
 Note: On Linux (Wayland), the returned value is accurate only when 'screen' is [ScreenOfMainWindow]. Due to API limitations, passing a direct index will return a rounded-up integer, if the screen has a fractional scale (e.g. 1.25 would get rounded up to 2.0).
 
-Note: This method is implemented on Android, iOS, Web, macOS, and Linux (Wayland).
+Note: This method is implemented on Android, iOS, Web, macOS, and Linux (Wayland). On other platforms, this method always returns 1.0.
 */
 func ScreenGetScale() Float.X { //gd:DisplayServer.screen_get_scale
 	once.Do(singleton)
@@ -1549,13 +1633,15 @@ func ScreenGetScale() Float.X { //gd:DisplayServer.screen_get_scale
 }
 
 /*
-Returns the scale factor of the specified screen by index.
+Returns the scale factor of the specified screen by index. Returns 1.0 if 'screen' is invalid.
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 
 Note: On macOS, the returned value is 2.0 for hiDPI (Retina) screens, and 1.0 for all other cases.
 
 Note: On Linux (Wayland), the returned value is accurate only when 'screen' is [ScreenOfMainWindow]. Due to API limitations, passing a direct index will return a rounded-up integer, if the screen has a fractional scale (e.g. 1.25 would get rounded up to 2.0).
 
-Note: This method is implemented on Android, iOS, Web, macOS, and Linux (Wayland).
+Note: This method is implemented on Android, iOS, Web, macOS, and Linux (Wayland). On other platforms, this method always returns 1.0.
 */
 func ScreenGetScaleOptions(screen Screen) Float.X { //gd:DisplayServer.screen_get_scale
 	once.Do(singleton)
@@ -1583,9 +1669,7 @@ func ScreenGetMaxScale() Float.X { //gd:DisplayServer.screen_get_max_scale
 }
 
 /*
-Returns the current refresh rate of the specified screen. If 'screen' is [ScreenOfMainWindow] (the default value), a screen with the main window will be used.
-
-Note: Returns -1.0 if the DisplayServer fails to find the refresh rate for the specified screen. On Web, [ScreenGetRefreshRate] will always return -1.0 as there is no way to retrieve the refresh rate on that platform.
+Returns the current refresh rate of the specified screen. Returns -1.0 if 'screen' is invalid or the [graphics.gd/classdb/DisplayServer] fails to find the refresh rate for the specified screen.
 
 To fallback to a default refresh rate if the method fails, try:
 
@@ -1593,6 +1677,10 @@ To fallback to a default refresh rate if the method fails, try:
 	if refresh_rate < 0 {
 		refresh_rate = 60.0
 	}
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
+
+Note: This method is implemented on Android, iOS, macOS, Linux (X11 and Wayland), and Windows. On other platforms, this method always returns -1.0.
 */
 func ScreenGetRefreshRate() Float.X { //gd:DisplayServer.screen_get_refresh_rate
 	once.Do(singleton)
@@ -1600,9 +1688,7 @@ func ScreenGetRefreshRate() Float.X { //gd:DisplayServer.screen_get_refresh_rate
 }
 
 /*
-Returns the current refresh rate of the specified screen. If 'screen' is [ScreenOfMainWindow] (the default value), a screen with the main window will be used.
-
-Note: Returns -1.0 if the DisplayServer fails to find the refresh rate for the specified screen. On Web, [ScreenGetRefreshRate] will always return -1.0 as there is no way to retrieve the refresh rate on that platform.
+Returns the current refresh rate of the specified screen. Returns -1.0 if 'screen' is invalid or the [graphics.gd/classdb/DisplayServer] fails to find the refresh rate for the specified screen.
 
 To fallback to a default refresh rate if the method fails, try:
 
@@ -1610,6 +1696,10 @@ To fallback to a default refresh rate if the method fails, try:
 	if refresh_rate < 0 {
 		refresh_rate = 60.0
 	}
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
+
+Note: This method is implemented on Android, iOS, macOS, Linux (X11 and Wayland), and Windows. On other platforms, this method always returns -1.0.
 */
 func ScreenGetRefreshRateOptions(screen Screen) Float.X { //gd:DisplayServer.screen_get_refresh_rate
 	once.Do(singleton)
@@ -1619,9 +1709,9 @@ func ScreenGetRefreshRateOptions(screen Screen) Float.X { //gd:DisplayServer.scr
 /*
 Returns color of the display pixel at the 'position'.
 
-Note: This method is implemented on Linux (X11), macOS, and Windows.
+Note: This method is implemented on Linux (X11, excluding XWayland), macOS, and Windows. On other platforms, this method always returns [Color.RGBA].
 
-Note: On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
+Note: On macOS, this method requires the "Screen Recording" permission. If permission is not granted, this method returns a screenshot that will only contain the desktop wallpaper, the current application's window, and other related UI elements.
 */
 func ScreenGetPixel(position Vector2i.XY) Color.RGBA { //gd:DisplayServer.screen_get_pixel
 	once.Do(singleton)
@@ -1629,11 +1719,13 @@ func ScreenGetPixel(position Vector2i.XY) Color.RGBA { //gd:DisplayServer.screen
 }
 
 /*
-Returns screenshot of the 'screen'.
+Returns a screenshot of the 'screen'. Returns null if 'screen' is invalid or the [graphics.gd/classdb/DisplayServer] fails to capture screenshot.
 
-Note: This method is implemented on Linux (X11), macOS, and Windows.
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 
-Note: On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
+Note: This method is implemented on Linux (X11, excluding XWayland), macOS, and Windows. On other platforms, this method always returns null.
+
+Note: On macOS, this method requires the "Screen Recording" permission. If permission is not granted, this method returns a screenshot that will not include other application windows or OS elements not related to the application.
 */
 func ScreenGetImage() Image.Instance { //gd:DisplayServer.screen_get_image
 	once.Do(singleton)
@@ -1641,11 +1733,13 @@ func ScreenGetImage() Image.Instance { //gd:DisplayServer.screen_get_image
 }
 
 /*
-Returns screenshot of the 'screen'.
+Returns a screenshot of the 'screen'. Returns null if 'screen' is invalid or the [graphics.gd/classdb/DisplayServer] fails to capture screenshot.
 
-Note: This method is implemented on Linux (X11), macOS, and Windows.
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 
-Note: On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
+Note: This method is implemented on Linux (X11, excluding XWayland), macOS, and Windows. On other platforms, this method always returns null.
+
+Note: On macOS, this method requires the "Screen Recording" permission. If permission is not granted, this method returns a screenshot that will not include other application windows or OS elements not related to the application.
 */
 func ScreenGetImageOptions(screen Screen) Image.Instance { //gd:DisplayServer.screen_get_image
 	once.Do(singleton)
@@ -1653,11 +1747,11 @@ func ScreenGetImageOptions(screen Screen) Image.Instance { //gd:DisplayServer.sc
 }
 
 /*
-Returns screenshot of the screen 'rect'.
+Returns a screenshot of the screen region defined by 'rect'. Returns null if 'rect' is outside screen bounds or the [graphics.gd/classdb/DisplayServer] fails to capture screenshot.
 
-Note: This method is implemented on macOS and Windows.
+Note: This method is implemented on macOS and Windows. On other platforms, this method always returns null.
 
-Note: On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
+Note: On macOS, this method requires the "Screen Recording" permission. If permission is not granted, this method returns a screenshot that will not include other application windows or OS elements not related to the application.
 */
 func ScreenGetImageRect(rect Rect2i.PositionSize) Image.Instance { //gd:DisplayServer.screen_get_image_rect
 	once.Do(singleton)
@@ -1666,6 +1760,10 @@ func ScreenGetImageRect(rect Rect2i.PositionSize) Image.Instance { //gd:DisplayS
 
 /*
 Sets the 'screen”s 'orientation'. See also [ScreenGetOrientation].
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
+
+Note: This method is implemented on Android and iOS.
 
 Note: On iOS, this method has no effect if [graphics.gd/classdb/ProjectSettings] "display/window/handheld/orientation" is not set to [ScreenSensor].
 */
@@ -1677,6 +1775,10 @@ func ScreenSetOrientation(orientation ScreenOrientation) { //gd:DisplayServer.sc
 /*
 Sets the 'screen”s 'orientation'. See also [ScreenGetOrientation].
 
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
+
+Note: This method is implemented on Android and iOS.
+
 Note: On iOS, this method has no effect if [graphics.gd/classdb/ProjectSettings] "display/window/handheld/orientation" is not set to [ScreenSensor].
 */
 func ScreenSetOrientationOptions(orientation ScreenOrientation, screen Screen) { //gd:DisplayServer.screen_set_orientation
@@ -1685,9 +1787,11 @@ func ScreenSetOrientationOptions(orientation ScreenOrientation, screen Screen) {
 }
 
 /*
-Returns the 'screen”s current orientation. See also [ScreenSetOrientation].
+Returns the 'screen”s current orientation. See also [ScreenSetOrientation]. Returns [ScreenLandscape] if 'screen' is invalid.
 
-Note: This method is implemented on Android and iOS.
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
+
+Note: This method is implemented on Android and iOS. On other platforms, this method always returns [ScreenLandscape].
 */
 func ScreenGetOrientation() ScreenOrientation { //gd:DisplayServer.screen_get_orientation
 	once.Do(singleton)
@@ -1695,9 +1799,11 @@ func ScreenGetOrientation() ScreenOrientation { //gd:DisplayServer.screen_get_or
 }
 
 /*
-Returns the 'screen”s current orientation. See also [ScreenSetOrientation].
+Returns the 'screen”s current orientation. See also [ScreenSetOrientation]. Returns [ScreenLandscape] if 'screen' is invalid.
 
-Note: This method is implemented on Android and iOS.
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
+
+Note: This method is implemented on Android and iOS. On other platforms, this method always returns [ScreenLandscape].
 */
 func ScreenGetOrientationOptions(screen Screen) ScreenOrientation { //gd:DisplayServer.screen_get_orientation
 	once.Do(singleton)
@@ -1873,7 +1979,9 @@ func WindowSetMousePassthroughOptions(region []Vector2.XY, window_id Window) { /
 }
 
 /*
-Returns the screen the window specified by 'window_id' is currently positioned on. If the screen overlaps multiple displays, the screen where the window's center is located is returned. See also [WindowSetCurrentScreen].
+Returns the screen the window specified by 'window_id' is currently positioned on. If the screen overlaps multiple displays, the screen where the window's center is located is returned. See also [WindowSetCurrentScreen]. Returns [InvalidScreen] if 'window_id' is invalid.
+
+Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns 0.
 */
 func WindowGetCurrentScreen(window_id Window) int { //gd:DisplayServer.window_get_current_screen
 	once.Do(singleton)
@@ -1881,7 +1989,9 @@ func WindowGetCurrentScreen(window_id Window) int { //gd:DisplayServer.window_ge
 }
 
 /*
-Returns the screen the window specified by 'window_id' is currently positioned on. If the screen overlaps multiple displays, the screen where the window's center is located is returned. See also [WindowSetCurrentScreen].
+Returns the screen the window specified by 'window_id' is currently positioned on. If the screen overlaps multiple displays, the screen where the window's center is located is returned. See also [WindowSetCurrentScreen]. Returns [InvalidScreen] if 'window_id' is invalid.
+
+Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns 0.
 */
 func WindowGetCurrentScreenOptions(window_id Window) int { //gd:DisplayServer.window_get_current_screen
 	once.Do(singleton)
@@ -1890,6 +2000,10 @@ func WindowGetCurrentScreenOptions(window_id Window) int { //gd:DisplayServer.wi
 
 /*
 Moves the window specified by 'window_id' to the specified 'screen'. See also [WindowGetCurrentScreen].
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
+
+Note: This method is implemented on Linux/X11, macOS, and Windows.
 */
 func WindowSetCurrentScreen(screen Screen, window_id Window) { //gd:DisplayServer.window_set_current_screen
 	once.Do(singleton)
@@ -1898,6 +2012,10 @@ func WindowSetCurrentScreen(screen Screen, window_id Window) { //gd:DisplayServe
 
 /*
 Moves the window specified by 'window_id' to the specified 'screen'. See also [WindowGetCurrentScreen].
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
+
+Note: This method is implemented on Linux/X11, macOS, and Windows.
 */
 func WindowSetCurrentScreenOptions(screen Screen, window_id Window) { //gd:DisplayServer.window_set_current_screen
 	once.Do(singleton)
@@ -2237,7 +2355,7 @@ func WindowGetModeOptions(window_id Window) WindowMode { //gd:DisplayServer.wind
 }
 
 /*
-Sets window mode for the given window to 'mode'. See [WindowMode] for possible values and how each mode behaves.
+Sets window mode for the given window to 'mode'.
 
 Note: On Android, setting it to [WindowModeFullscreen] or [WindowModeExclusiveFullscreen] will enable immersive mode.
 
@@ -2249,7 +2367,7 @@ func WindowSetMode(mode WindowMode, window_id Window) { //gd:DisplayServer.windo
 }
 
 /*
-Sets window mode for the given window to 'mode'. See [WindowMode] for possible values and how each mode behaves.
+Sets window mode for the given window to 'mode'.
 
 Note: On Android, setting it to [WindowModeFullscreen] or [WindowModeExclusiveFullscreen] will enable immersive mode.
 
@@ -2261,7 +2379,7 @@ func WindowSetModeOptions(mode WindowMode, window_id Window) { //gd:DisplayServe
 }
 
 /*
-Enables or disables the given window's given 'flag'. See [WindowFlags] for possible values and their behavior.
+Enables or disables the given window's given 'flag'.
 */
 func WindowSetFlag(flag WindowFlags, enabled bool, window_id Window) { //gd:DisplayServer.window_set_flag
 	once.Do(singleton)
@@ -2269,7 +2387,7 @@ func WindowSetFlag(flag WindowFlags, enabled bool, window_id Window) { //gd:Disp
 }
 
 /*
-Enables or disables the given window's given 'flag'. See [WindowFlags] for possible values and their behavior.
+Enables or disables the given window's given 'flag'.
 */
 func WindowSetFlagOptions(flag WindowFlags, enabled bool, window_id Window) { //gd:DisplayServer.window_set_flag
 	once.Do(singleton)
@@ -2459,8 +2577,6 @@ func WindowSetImePositionOptions(position Vector2i.XY, window_id Window) { //gd:
 /*
 Sets the V-Sync mode of the given window. See also [graphics.gd/classdb/ProjectSettings] "display/window/vsync/vsync_mode".
 
-See [DisplayServer.VSyncMode] for possible values and how they affect the behavior of your application.
-
 Depending on the platform and used renderer, the engine will fall back to [VsyncEnabled] if the desired mode is not supported.
 
 Note: V-Sync modes other than [VsyncEnabled] are only supported in the Forward+ and Mobile rendering methods, not Compatibility.
@@ -2472,8 +2588,6 @@ func WindowSetVsyncMode(vsync_mode VSyncMode, window_id Window) { //gd:DisplaySe
 
 /*
 Sets the V-Sync mode of the given window. See also [graphics.gd/classdb/ProjectSettings] "display/window/vsync/vsync_mode".
-
-See [DisplayServer.VSyncMode] for possible values and how they affect the behavior of your application.
 
 Depending on the platform and used renderer, the engine will fall back to [VsyncEnabled] if the desired mode is not supported.
 
@@ -2577,6 +2691,654 @@ func WindowStartResizeOptions(edge WindowResizeEdge, window_id Window) { //gd:Di
 }
 
 /*
+Returns 1 if a high-contrast user interface theme should be used, 0 otherwise. Returns -1 if status is unknown.
+
+Note: This method is implemented on Linux (X11/Wayland, GNOME), macOS, and Windows.
+*/
+func AccessibilityShouldIncreaseContrast() int { //gd:DisplayServer.accessibility_should_increase_contrast
+	once.Do(singleton)
+	return int(int(Advanced().AccessibilityShouldIncreaseContrast()))
+}
+
+/*
+Returns 1 if flashing, blinking, and other moving content that can cause seizures in users with photosensitive epilepsy should be disabled, 0 otherwise. Returns -1 if status is unknown.
+
+Note: This method is implemented on macOS and Windows.
+*/
+func AccessibilityShouldReduceAnimation() int { //gd:DisplayServer.accessibility_should_reduce_animation
+	once.Do(singleton)
+	return int(int(Advanced().AccessibilityShouldReduceAnimation()))
+}
+
+/*
+Returns 1 if background images, transparency, and other features that can reduce the contrast between the foreground and background should be disabled, 0 otherwise. Returns -1 if status is unknown.
+
+Note: This method is implemented on macOS and Windows.
+*/
+func AccessibilityShouldReduceTransparency() int { //gd:DisplayServer.accessibility_should_reduce_transparency
+	once.Do(singleton)
+	return int(int(Advanced().AccessibilityShouldReduceTransparency()))
+}
+
+/*
+Returns 1 if a screen reader, Braille display or other assistive app is active, 0 otherwise. Returns -1 if status is unknown.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: Accessibility debugging tools, such as Accessibility Insights for Windows, macOS Accessibility Inspector, or AT-SPI Browser do not count as assistive apps and will not affect this value. To test your app with these tools, set [graphics.gd/classdb/ProjectSettings] "accessibility/general/accessibility_support" to 1.
+*/
+func AccessibilityScreenReaderActive() int { //gd:DisplayServer.accessibility_screen_reader_active
+	once.Do(singleton)
+	return int(int(Advanced().AccessibilityScreenReaderActive()))
+}
+
+/*
+Creates a new, empty accessibility element resource.
+
+Note: An accessibility element is created and freed automatically for each [graphics.gd/classdb/Node]. In general, this function should not be called manually.
+*/
+func AccessibilityCreateElement(window_id Window, role AccessibilityRole) RID.AccessibilityElement { //gd:DisplayServer.accessibility_create_element
+	once.Do(singleton)
+	return RID.AccessibilityElement(RID.AccessibilityElement(Advanced().AccessibilityCreateElement(int64(window_id), role)))
+}
+
+/*
+Creates a new, empty accessibility sub-element resource. Sub-elements can be used to provide accessibility information for objects which are not [graphics.gd/classdb/Node]s, such as list items, table cells, or menu items. Sub-elements are freed automatically when the parent element is freed, or can be freed early using the [AccessibilityFreeElement] method.
+*/
+func AccessibilityCreateSubElement(parent_rid RID.AccessibilityElement, role AccessibilityRole) RID.AccessibilityElement { //gd:DisplayServer.accessibility_create_sub_element
+	once.Do(singleton)
+	return RID.AccessibilityElement(RID.AccessibilityElement(Advanced().AccessibilityCreateSubElement(RID.Any(parent_rid), role, int64(-1))))
+}
+
+/*
+Creates a new, empty accessibility sub-element resource. Sub-elements can be used to provide accessibility information for objects which are not [graphics.gd/classdb/Node]s, such as list items, table cells, or menu items. Sub-elements are freed automatically when the parent element is freed, or can be freed early using the [AccessibilityFreeElement] method.
+*/
+func AccessibilityCreateSubElementOptions(parent_rid RID.AccessibilityElement, role AccessibilityRole, insert_pos int) RID.AccessibilityElement { //gd:DisplayServer.accessibility_create_sub_element
+	once.Do(singleton)
+	return RID.AccessibilityElement(RID.AccessibilityElement(Advanced().AccessibilityCreateSubElement(RID.Any(parent_rid), role, int64(insert_pos))))
+}
+
+/*
+Creates a new, empty accessibility sub-element from the shaped text buffer. Sub-elements are freed automatically when the parent element is freed, or can be freed early using the [AccessibilityFreeElement] method.
+*/
+func AccessibilityCreateSubTextEditElements(parent_rid RID.AccessibilityElement, shaped_text RID.AccessibilityElement, min_height Float.X) RID.AccessibilityElement { //gd:DisplayServer.accessibility_create_sub_text_edit_elements
+	once.Do(singleton)
+	return RID.AccessibilityElement(RID.AccessibilityElement(Advanced().AccessibilityCreateSubTextEditElements(RID.Any(parent_rid), RID.Any(shaped_text), float64(min_height), int64(-1))))
+}
+
+/*
+Creates a new, empty accessibility sub-element from the shaped text buffer. Sub-elements are freed automatically when the parent element is freed, or can be freed early using the [AccessibilityFreeElement] method.
+*/
+func AccessibilityCreateSubTextEditElementsOptions(parent_rid RID.AccessibilityElement, shaped_text RID.AccessibilityElement, min_height Float.X, insert_pos int) RID.AccessibilityElement { //gd:DisplayServer.accessibility_create_sub_text_edit_elements
+	once.Do(singleton)
+	return RID.AccessibilityElement(RID.AccessibilityElement(Advanced().AccessibilityCreateSubTextEditElements(RID.Any(parent_rid), RID.Any(shaped_text), float64(min_height), int64(insert_pos))))
+}
+
+/*
+Returns true if 'id' is a valid accessibility element.
+*/
+func AccessibilityHasElement(id RID.AccessibilityElement) bool { //gd:DisplayServer.accessibility_has_element
+	once.Do(singleton)
+	return bool(Advanced().AccessibilityHasElement(RID.Any(id)))
+}
+
+/*
+Frees an object created by [AccessibilityCreateElement], [AccessibilityCreateSubElement], or [AccessibilityCreateSubTextEditElements].
+*/
+func AccessibilityFreeElement(id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_free_element
+	once.Do(singleton)
+	Advanced().AccessibilityFreeElement(RID.Any(id))
+}
+
+/*
+Sets the metadata of the accessibility element.
+*/
+func AccessibilityElementSetMeta(id RID.AccessibilityElement, meta any) { //gd:DisplayServer.accessibility_element_set_meta
+	once.Do(singleton)
+	Advanced().AccessibilityElementSetMeta(RID.Any(id), variant.New(meta))
+}
+
+/*
+Returns the metadata of the accessibility element.
+*/
+func AccessibilityElementGetMeta(id RID.AccessibilityElement) any { //gd:DisplayServer.accessibility_element_get_meta
+	once.Do(singleton)
+	return any(Advanced().AccessibilityElementGetMeta(RID.Any(id)).Interface())
+}
+
+/*
+Sets window outer (with decorations) and inner (without decorations) bounds for assistive apps.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: Advanced users only! [graphics.gd/classdb/Window] objects call this method automatically.
+*/
+func AccessibilitySetWindowRect(window_id Window, rect_out Rect2.PositionSize, rect_in Rect2.PositionSize) { //gd:DisplayServer.accessibility_set_window_rect
+	once.Do(singleton)
+	Advanced().AccessibilitySetWindowRect(int64(window_id), Rect2.PositionSize(rect_out), Rect2.PositionSize(rect_in))
+}
+
+/*
+Sets the window focused state for assistive apps.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: Advanced users only! [graphics.gd/classdb/Window] objects call this method automatically.
+*/
+func AccessibilitySetWindowFocused(window_id Window, focused bool) { //gd:DisplayServer.accessibility_set_window_focused
+	once.Do(singleton)
+	Advanced().AccessibilitySetWindowFocused(int64(window_id), focused)
+}
+
+/*
+Sets currently focused element.
+*/
+func AccessibilityUpdateSetFocus(id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_update_set_focus
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetFocus(RID.Any(id))
+}
+
+/*
+Returns the main accessibility element of the OS native window.
+*/
+func AccessibilityGetWindowRoot(window_id Window) RID.AccessibilityElement { //gd:DisplayServer.accessibility_get_window_root
+	once.Do(singleton)
+	return RID.AccessibilityElement(RID.AccessibilityElement(Advanced().AccessibilityGetWindowRoot(int64(window_id))))
+}
+
+/*
+Sets element accessibility role.
+*/
+func AccessibilityUpdateSetRole(id RID.AccessibilityElement, role AccessibilityRole) { //gd:DisplayServer.accessibility_update_set_role
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetRole(RID.Any(id), role)
+}
+
+/*
+Sets element accessibility name.
+*/
+func AccessibilityUpdateSetName(id RID.AccessibilityElement, name string) { //gd:DisplayServer.accessibility_update_set_name
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetName(RID.Any(id), String.New(name))
+}
+
+/*
+Sets element accessibility extra information added to the element name.
+*/
+func AccessibilityUpdateSetExtraInfo(id RID.AccessibilityElement, name string) { //gd:DisplayServer.accessibility_update_set_extra_info
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetExtraInfo(RID.Any(id), String.New(name))
+}
+
+/*
+Sets element accessibility description.
+*/
+func AccessibilityUpdateSetDescription(id RID.AccessibilityElement, description string) { //gd:DisplayServer.accessibility_update_set_description
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetDescription(RID.Any(id), String.New(description))
+}
+
+/*
+Sets element text value.
+*/
+func AccessibilityUpdateSetValue(id RID.AccessibilityElement, value string) { //gd:DisplayServer.accessibility_update_set_value
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetValue(RID.Any(id), String.New(value))
+}
+
+/*
+Sets tooltip text.
+*/
+func AccessibilityUpdateSetTooltip(id RID.AccessibilityElement, tooltip string) { //gd:DisplayServer.accessibility_update_set_tooltip
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetTooltip(RID.Any(id), String.New(tooltip))
+}
+
+/*
+Sets element bounding box, relative to the node position.
+*/
+func AccessibilityUpdateSetBounds(id RID.AccessibilityElement, p_rect Rect2.PositionSize) { //gd:DisplayServer.accessibility_update_set_bounds
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetBounds(RID.Any(id), Rect2.PositionSize(p_rect))
+}
+
+/*
+Sets element 2D transform.
+*/
+func AccessibilityUpdateSetTransform(id RID.AccessibilityElement, transform Transform2D.OriginXY) { //gd:DisplayServer.accessibility_update_set_transform
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetTransform(RID.Any(id), Transform2D.OriginXY(transform))
+}
+
+/*
+Adds a child accessibility element.
+
+Note: [graphics.gd/classdb/Node] children and sub-elements are added to the child list automatically.
+*/
+func AccessibilityUpdateAddChild(id RID.AccessibilityElement, child_id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_update_add_child
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateAddChild(RID.Any(id), RID.Any(child_id))
+}
+
+/*
+Adds an element that is controlled by this element.
+*/
+func AccessibilityUpdateAddRelatedControls(id RID.AccessibilityElement, related_id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_update_add_related_controls
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateAddRelatedControls(RID.Any(id), RID.Any(related_id))
+}
+
+/*
+Adds an element that details this element.
+*/
+func AccessibilityUpdateAddRelatedDetails(id RID.AccessibilityElement, related_id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_update_add_related_details
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateAddRelatedDetails(RID.Any(id), RID.Any(related_id))
+}
+
+/*
+Adds an element that describes this element.
+*/
+func AccessibilityUpdateAddRelatedDescribedBy(id RID.AccessibilityElement, related_id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_update_add_related_described_by
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateAddRelatedDescribedBy(RID.Any(id), RID.Any(related_id))
+}
+
+/*
+Adds an element that this element flow into.
+*/
+func AccessibilityUpdateAddRelatedFlowTo(id RID.AccessibilityElement, related_id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_update_add_related_flow_to
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateAddRelatedFlowTo(RID.Any(id), RID.Any(related_id))
+}
+
+/*
+Adds an element that labels this element.
+*/
+func AccessibilityUpdateAddRelatedLabeledBy(id RID.AccessibilityElement, related_id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_update_add_related_labeled_by
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateAddRelatedLabeledBy(RID.Any(id), RID.Any(related_id))
+}
+
+/*
+Adds an element that is part of the same radio group.
+
+Note: This method should be called on each element of the group, using all other elements as 'related_id'.
+*/
+func AccessibilityUpdateAddRelatedRadioGroup(id RID.AccessibilityElement, related_id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_update_add_related_radio_group
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateAddRelatedRadioGroup(RID.Any(id), RID.Any(related_id))
+}
+
+/*
+Adds an element that is an active descendant of this element.
+*/
+func AccessibilityUpdateSetActiveDescendant(id RID.AccessibilityElement, other_id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_update_set_active_descendant
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetActiveDescendant(RID.Any(id), RID.Any(other_id))
+}
+
+/*
+Sets next element on the line.
+*/
+func AccessibilityUpdateSetNextOnLine(id RID.AccessibilityElement, other_id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_update_set_next_on_line
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetNextOnLine(RID.Any(id), RID.Any(other_id))
+}
+
+/*
+Sets previous element on the line.
+*/
+func AccessibilityUpdateSetPreviousOnLine(id RID.AccessibilityElement, other_id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_update_set_previous_on_line
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetPreviousOnLine(RID.Any(id), RID.Any(other_id))
+}
+
+/*
+Sets the element to be a member of the group.
+*/
+func AccessibilityUpdateSetMemberOf(id RID.AccessibilityElement, group_id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_update_set_member_of
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetMemberOf(RID.Any(id), RID.Any(group_id))
+}
+
+/*
+Sets target element for the link.
+*/
+func AccessibilityUpdateSetInPageLinkTarget(id RID.AccessibilityElement, other_id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_update_set_in_page_link_target
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetInPageLinkTarget(RID.Any(id), RID.Any(other_id))
+}
+
+/*
+Sets an element which contains an error message for this element.
+*/
+func AccessibilityUpdateSetErrorMessage(id RID.AccessibilityElement, other_id RID.AccessibilityElement) { //gd:DisplayServer.accessibility_update_set_error_message
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetErrorMessage(RID.Any(id), RID.Any(other_id))
+}
+
+/*
+Sets the priority of the live region updates.
+*/
+func AccessibilityUpdateSetLive(id RID.AccessibilityElement, live AccessibilityLiveMode) { //gd:DisplayServer.accessibility_update_set_live
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetLive(RID.Any(id), live)
+}
+
+/*
+Adds a callback for the accessibility action (action which can be performed by using a special screen reader command or buttons on the Braille display), and marks this action as supported. The action callback receives one any argument, which value depends on action type.
+*/
+func AccessibilityUpdateAddAction(id RID.AccessibilityElement, action AccessibilityAction, callable func(action_data any)) { //gd:DisplayServer.accessibility_update_add_action
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateAddAction(RID.Any(id), action, Callable.New(callable))
+}
+
+/*
+Adds support for a custom accessibility action. 'action_id' is passed as an argument to the callback of [ActionCustom] action.
+*/
+func AccessibilityUpdateAddCustomAction(id RID.AccessibilityElement, action_id int, action_description string) { //gd:DisplayServer.accessibility_update_add_custom_action
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateAddCustomAction(RID.Any(id), int64(action_id), String.New(action_description))
+}
+
+/*
+Sets number of rows in the table.
+*/
+func AccessibilityUpdateSetTableRowCount(id RID.AccessibilityElement, count int) { //gd:DisplayServer.accessibility_update_set_table_row_count
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetTableRowCount(RID.Any(id), int64(count))
+}
+
+/*
+Sets number of columns in the table.
+*/
+func AccessibilityUpdateSetTableColumnCount(id RID.AccessibilityElement, count int) { //gd:DisplayServer.accessibility_update_set_table_column_count
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetTableColumnCount(RID.Any(id), int64(count))
+}
+
+/*
+Sets position of the row in the table.
+*/
+func AccessibilityUpdateSetTableRowIndex(id RID.AccessibilityElement, index int) { //gd:DisplayServer.accessibility_update_set_table_row_index
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetTableRowIndex(RID.Any(id), int64(index))
+}
+
+/*
+Sets position of the column.
+*/
+func AccessibilityUpdateSetTableColumnIndex(id RID.AccessibilityElement, index int) { //gd:DisplayServer.accessibility_update_set_table_column_index
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetTableColumnIndex(RID.Any(id), int64(index))
+}
+
+/*
+Sets cell position in the table.
+*/
+func AccessibilityUpdateSetTableCellPosition(id RID.AccessibilityElement, row_index int, column_index int) { //gd:DisplayServer.accessibility_update_set_table_cell_position
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetTableCellPosition(RID.Any(id), int64(row_index), int64(column_index))
+}
+
+/*
+Sets cell row/column span.
+*/
+func AccessibilityUpdateSetTableCellSpan(id RID.AccessibilityElement, row_span int, column_span int) { //gd:DisplayServer.accessibility_update_set_table_cell_span
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetTableCellSpan(RID.Any(id), int64(row_span), int64(column_span))
+}
+
+/*
+Sets number of items in the list.
+*/
+func AccessibilityUpdateSetListItemCount(id RID.AccessibilityElement, size int) { //gd:DisplayServer.accessibility_update_set_list_item_count
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetListItemCount(RID.Any(id), int64(size))
+}
+
+/*
+Sets the position of the element in the list.
+*/
+func AccessibilityUpdateSetListItemIndex(id RID.AccessibilityElement, index int) { //gd:DisplayServer.accessibility_update_set_list_item_index
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetListItemIndex(RID.Any(id), int64(index))
+}
+
+/*
+Sets the hierarchical level of the element in the list.
+*/
+func AccessibilityUpdateSetListItemLevel(id RID.AccessibilityElement, level int) { //gd:DisplayServer.accessibility_update_set_list_item_level
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetListItemLevel(RID.Any(id), int64(level))
+}
+
+/*
+Sets list/tree item selected status.
+*/
+func AccessibilityUpdateSetListItemSelected(id RID.AccessibilityElement, selected bool) { //gd:DisplayServer.accessibility_update_set_list_item_selected
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetListItemSelected(RID.Any(id), selected)
+}
+
+/*
+Sets list/tree item expanded status.
+*/
+func AccessibilityUpdateSetListItemExpanded(id RID.AccessibilityElement, expanded bool) { //gd:DisplayServer.accessibility_update_set_list_item_expanded
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetListItemExpanded(RID.Any(id), expanded)
+}
+
+/*
+Sets popup type for popup buttons.
+*/
+func AccessibilityUpdateSetPopupType(id RID.AccessibilityElement, popup AccessibilityPopupType) { //gd:DisplayServer.accessibility_update_set_popup_type
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetPopupType(RID.Any(id), popup)
+}
+
+/*
+Sets element checked state.
+*/
+func AccessibilityUpdateSetChecked(id RID.AccessibilityElement, checekd bool) { //gd:DisplayServer.accessibility_update_set_checked
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetChecked(RID.Any(id), checekd)
+}
+
+/*
+Sets numeric value.
+*/
+func AccessibilityUpdateSetNumValue(id RID.AccessibilityElement, position Float.X) { //gd:DisplayServer.accessibility_update_set_num_value
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetNumValue(RID.Any(id), float64(position))
+}
+
+/*
+Sets numeric value range.
+*/
+func AccessibilityUpdateSetNumRange(id RID.AccessibilityElement, min Float.X, max Float.X) { //gd:DisplayServer.accessibility_update_set_num_range
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetNumRange(RID.Any(id), float64(min), float64(max))
+}
+
+/*
+Sets numeric value step.
+*/
+func AccessibilityUpdateSetNumStep(id RID.AccessibilityElement, step Float.X) { //gd:DisplayServer.accessibility_update_set_num_step
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetNumStep(RID.Any(id), float64(step))
+}
+
+/*
+Sets numeric value jump.
+*/
+func AccessibilityUpdateSetNumJump(id RID.AccessibilityElement, jump Float.X) { //gd:DisplayServer.accessibility_update_set_num_jump
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetNumJump(RID.Any(id), float64(jump))
+}
+
+/*
+Sets scroll bar x position.
+*/
+func AccessibilityUpdateSetScrollX(id RID.AccessibilityElement, position Float.X) { //gd:DisplayServer.accessibility_update_set_scroll_x
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetScrollX(RID.Any(id), float64(position))
+}
+
+/*
+Sets scroll bar x range.
+*/
+func AccessibilityUpdateSetScrollXRange(id RID.AccessibilityElement, min Float.X, max Float.X) { //gd:DisplayServer.accessibility_update_set_scroll_x_range
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetScrollXRange(RID.Any(id), float64(min), float64(max))
+}
+
+/*
+Sets scroll bar y position.
+*/
+func AccessibilityUpdateSetScrollY(id RID.AccessibilityElement, position Float.X) { //gd:DisplayServer.accessibility_update_set_scroll_y
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetScrollY(RID.Any(id), float64(position))
+}
+
+/*
+Sets scroll bar y range.
+*/
+func AccessibilityUpdateSetScrollYRange(id RID.AccessibilityElement, min Float.X, max Float.X) { //gd:DisplayServer.accessibility_update_set_scroll_y_range
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetScrollYRange(RID.Any(id), float64(min), float64(max))
+}
+
+/*
+Sets text underline/overline/strikethrough.
+*/
+func AccessibilityUpdateSetTextDecorations(id RID.AccessibilityElement, underline bool, strikethrough bool, overline bool) { //gd:DisplayServer.accessibility_update_set_text_decorations
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetTextDecorations(RID.Any(id), underline, strikethrough, overline)
+}
+
+/*
+Sets element text alignment.
+*/
+func AccessibilityUpdateSetTextAlign(id RID.AccessibilityElement, align GUI.HorizontalAlignment) { //gd:DisplayServer.accessibility_update_set_text_align
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetTextAlign(RID.Any(id), align)
+}
+
+/*
+Sets text selection to the text field. 'text_start_id' and 'text_end_id' should be elements created by [AccessibilityCreateSubTextEditElements]. Character offsets are relative to the corresponding element.
+*/
+func AccessibilityUpdateSetTextSelection(id RID.AccessibilityElement, text_start_id RID.AccessibilityElement, start_char int, text_end_id RID.AccessibilityElement, end_char int) { //gd:DisplayServer.accessibility_update_set_text_selection
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetTextSelection(RID.Any(id), RID.Any(text_start_id), int64(start_char), RID.Any(text_end_id), int64(end_char))
+}
+
+/*
+Sets element flag.
+*/
+func AccessibilityUpdateSetFlag(id RID.AccessibilityElement, flag AccessibilityFlags, value bool) { //gd:DisplayServer.accessibility_update_set_flag
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetFlag(RID.Any(id), flag, value)
+}
+
+/*
+Sets element class name.
+*/
+func AccessibilityUpdateSetClassname(id RID.AccessibilityElement, classname string) { //gd:DisplayServer.accessibility_update_set_classname
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetClassname(RID.Any(id), String.New(classname))
+}
+
+/*
+Sets placeholder text.
+*/
+func AccessibilityUpdateSetPlaceholder(id RID.AccessibilityElement, placeholder string) { //gd:DisplayServer.accessibility_update_set_placeholder
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetPlaceholder(RID.Any(id), String.New(placeholder))
+}
+
+/*
+Sets element text language.
+*/
+func AccessibilityUpdateSetLanguage(id RID.AccessibilityElement, language string) { //gd:DisplayServer.accessibility_update_set_language
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetLanguage(RID.Any(id), String.New(language))
+}
+
+/*
+Sets text orientation.
+*/
+func AccessibilityUpdateSetTextOrientation(id RID.AccessibilityElement, vertical bool) { //gd:DisplayServer.accessibility_update_set_text_orientation
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetTextOrientation(RID.Any(id), vertical)
+}
+
+/*
+Sets the orientation of the list elements.
+*/
+func AccessibilityUpdateSetListOrientation(id RID.AccessibilityElement, vertical bool) { //gd:DisplayServer.accessibility_update_set_list_orientation
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetListOrientation(RID.Any(id), vertical)
+}
+
+/*
+Sets the list of keyboard shortcuts used by element.
+*/
+func AccessibilityUpdateSetShortcut(id RID.AccessibilityElement, shortcut string) { //gd:DisplayServer.accessibility_update_set_shortcut
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetShortcut(RID.Any(id), String.New(shortcut))
+}
+
+/*
+Sets link URL.
+*/
+func AccessibilityUpdateSetUrl(id RID.AccessibilityElement, url string) { //gd:DisplayServer.accessibility_update_set_url
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetUrl(RID.Any(id), String.New(url))
+}
+
+/*
+Sets element accessibility role description text.
+*/
+func AccessibilityUpdateSetRoleDescription(id RID.AccessibilityElement, description string) { //gd:DisplayServer.accessibility_update_set_role_description
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetRoleDescription(RID.Any(id), String.New(description))
+}
+
+/*
+Sets human-readable description of the current checked state.
+*/
+func AccessibilityUpdateSetStateDescription(id RID.AccessibilityElement, description string) { //gd:DisplayServer.accessibility_update_set_state_description
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetStateDescription(RID.Any(id), String.New(description))
+}
+
+/*
+Sets element color value.
+*/
+func AccessibilityUpdateSetColorValue(id RID.AccessibilityElement, color Color.RGBA) { //gd:DisplayServer.accessibility_update_set_color_value
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetColorValue(RID.Any(id), Color.RGBA(color))
+}
+
+/*
+Sets element background color.
+*/
+func AccessibilityUpdateSetBackgroundColor(id RID.AccessibilityElement, color Color.RGBA) { //gd:DisplayServer.accessibility_update_set_background_color
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetBackgroundColor(RID.Any(id), Color.RGBA(color))
+}
+
+/*
+Sets element foreground color.
+*/
+func AccessibilityUpdateSetForegroundColor(id RID.AccessibilityElement, color Color.RGBA) { //gd:DisplayServer.accessibility_update_set_foreground_color
+	once.Do(singleton)
+	Advanced().AccessibilityUpdateSetForegroundColor(RID.Any(id), Color.RGBA(color))
+}
+
+/*
 Returns the text selection in the [Input Method Editor] composition string, with the [Vector2i.XY]'s x component being the caret position and y being the length of the selection.
 
 Note: This method is implemented only on macOS.
@@ -2654,6 +3416,8 @@ func VirtualKeyboardHide() { //gd:DisplayServer.virtual_keyboard_hide
 
 /*
 Returns the on-screen keyboard's height in pixels. Returns 0 if there is no keyboard or if it is currently hidden.
+
+Note: On Android 7 and 8, the keyboard height may return 0 the first time the keyboard is opened in non-immersive mode. This behavior does not occur in immersive mode.
 */
 func VirtualKeyboardGetHeight() int { //gd:DisplayServer.virtual_keyboard_get_height
 	once.Do(singleton)
@@ -2661,13 +3425,23 @@ func VirtualKeyboardGetHeight() int { //gd:DisplayServer.virtual_keyboard_get_he
 }
 
 /*
-Returns true if hardware keyboard is connected.
+Returns true if a hardware keyboard is connected.
 
-Note: This method is implemented on Android and iOS, on other platforms this method always returns true.
+Note: This method is implemented on Android and iOS. On other platforms, this method always returns true.
 */
 func HasHardwareKeyboard() bool { //gd:DisplayServer.has_hardware_keyboard
 	once.Do(singleton)
 	return bool(Advanced().HasHardwareKeyboard())
+}
+
+/*
+Sets the 'callable' that should be called when hardware keyboard is connected/disconnected. 'callable' should accept a single bool parameter indicating whether the keyboard is connected (true) or disconnected (false).
+
+Note: This method is only implemented on Android.
+*/
+func SetHardwareKeyboardConnectionChangeCallback(callable func(connected bool)) { //gd:DisplayServer.set_hardware_keyboard_connection_change_callback
+	once.Do(singleton)
+	Advanced().SetHardwareKeyboardConnectionChangeCallback(Callable.New(callable))
 }
 
 /*
@@ -2751,9 +3525,9 @@ Displays OS native dialog for selecting files or directories in the file system.
 
 Each filter string in the 'filters' array should be formatted like this: *.png,*.jpg,*.jpeg;Image Files;image/png,image/jpeg. The description text of the filter is optional and can be omitted. It is recommended to set both file extension and MIME type. See also [graphics.gd/classdb/FileDialog.Instance.Filters].
 
-Callbacks have the following arguments: status: bool, selected_paths: PackedStringArray, selected_filter_index: int. On Android, callback argument selected_filter_index is always zero.
+Callbacks have the following arguments: status: bool, selected_paths: PackedStringArray, selected_filter_index: int. On Android, the third callback argument (selected_filter_index) is always 0.
 
-Note: This method is implemented if the display server has the [FeatureNativeDialogFile] feature. Supported platforms include Linux (X11/Wayland), Windows, macOS, and Android.
+Note: This method is implemented if the display server has the [FeatureNativeDialogFile] feature. Supported platforms include Linux (X11/Wayland), Windows, macOS, and Android (API level 29+).
 
 Note: 'current_directory' might be ignored.
 
@@ -2765,9 +3539,33 @@ Note: On Android and macOS, native file dialogs have no title.
 
 Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [graphics.gd/classdb/OS.GetGrantedPermissions] to get a list of saved bookmarks.
 */
-func FileDialogShow(title string, current_directory string, filename string, show_hidden bool, mode FileDialogMode, filters []string, callback func(status bool, selected_paths []string, selected_filter_index int)) error { //gd:DisplayServer.file_dialog_show
+func FileDialogShow(title string, current_directory string, filename string, show_hidden bool, mode FileDialogMode, filters []string, callback func(status bool, selected_paths []string, selected_filter_index int), parent_window_id Window) error { //gd:DisplayServer.file_dialog_show
 	once.Do(singleton)
-	return error(gd.ToError(Advanced().FileDialogShow(String.New(title), String.New(current_directory), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), Callable.New(callback))))
+	return error(gd.ToError(Advanced().FileDialogShow(String.New(title), String.New(current_directory), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), Callable.New(callback), int64(parent_window_id))))
+}
+
+/*
+Displays OS native dialog for selecting files or directories in the file system.
+
+Each filter string in the 'filters' array should be formatted like this: *.png,*.jpg,*.jpeg;Image Files;image/png,image/jpeg. The description text of the filter is optional and can be omitted. It is recommended to set both file extension and MIME type. See also [graphics.gd/classdb/FileDialog.Instance.Filters].
+
+Callbacks have the following arguments: status: bool, selected_paths: PackedStringArray, selected_filter_index: int. On Android, the third callback argument (selected_filter_index) is always 0.
+
+Note: This method is implemented if the display server has the [FeatureNativeDialogFile] feature. Supported platforms include Linux (X11/Wayland), Windows, macOS, and Android (API level 29+).
+
+Note: 'current_directory' might be ignored.
+
+Note: Embedded file dialog and Windows file dialog support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
+
+Note: On Android and Linux, 'show_hidden' is ignored.
+
+Note: On Android and macOS, native file dialogs have no title.
+
+Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [graphics.gd/classdb/OS.GetGrantedPermissions] to get a list of saved bookmarks.
+*/
+func FileDialogShowOptions(title string, current_directory string, filename string, show_hidden bool, mode FileDialogMode, filters []string, callback func(status bool, selected_paths []string, selected_filter_index int), parent_window_id Window) error { //gd:DisplayServer.file_dialog_show
+	once.Do(singleton)
+	return error(gd.ToError(Advanced().FileDialogShow(String.New(title), String.New(current_directory), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), Callable.New(callback), int64(parent_window_id))))
 }
 
 /*
@@ -2797,9 +3595,41 @@ Note: On macOS, native file dialogs have no title.
 
 Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [graphics.gd/classdb/OS.GetGrantedPermissions] to get a list of saved bookmarks.
 */
-func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode FileDialogMode, filters []string, options []FileDialogOption, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any)) error { //gd:DisplayServer.file_dialog_with_options_show
+func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode FileDialogMode, filters []string, options []FileDialogOption, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any), parent_window_id Window) error { //gd:DisplayServer.file_dialog_with_options_show
 	once.Do(singleton)
-	return error(gd.ToError(Advanced().FileDialogWithOptionsShow(String.New(title), String.New(current_directory), String.New(root), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](options), Callable.New(callback))))
+	return error(gd.ToError(Advanced().FileDialogWithOptionsShow(String.New(title), String.New(current_directory), String.New(root), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](options), Callable.New(callback), int64(parent_window_id))))
+}
+
+/*
+Displays OS native dialog for selecting files or directories in the file system with additional user selectable options.
+
+Each filter string in the 'filters' array should be formatted like this: *.png,*.jpg,*.jpeg;Image Files;image/png,image/jpeg. The description text of the filter is optional and can be omitted. It is recommended to set both file extension and MIME type. See also [graphics.gd/classdb/FileDialog.Instance.Filters].
+
+'options' is array of data structures with the following keys:
+
+- "name" - option's name string.
+
+- "values" - []string of values. If empty, boolean option (check box) is used.
+
+- "default" - default selected option index (int) or default boolean value (bool).
+
+Callbacks have the following arguments: status: bool, selected_paths: PackedStringArray, selected_filter_index: int, selected_option: Dictionary.
+
+Note: This method is implemented if the display server has the [FeatureNativeDialogFileExtra] feature. Supported platforms include Linux (X11/Wayland), Windows, and macOS.
+
+Note: 'current_directory' might be ignored.
+
+Note: Embedded file dialog and Windows file dialog support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
+
+Note: On Linux (X11), 'show_hidden' is ignored.
+
+Note: On macOS, native file dialogs have no title.
+
+Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [graphics.gd/classdb/OS.GetGrantedPermissions] to get a list of saved bookmarks.
+*/
+func FileDialogWithOptionsShowOptions(title string, current_directory string, root string, filename string, show_hidden bool, mode FileDialogMode, filters []string, options []FileDialogOption, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any), parent_window_id Window) error { //gd:DisplayServer.file_dialog_with_options_show
+	once.Do(singleton)
+	return error(gd.ToError(Advanced().FileDialogWithOptionsShow(String.New(title), String.New(current_directory), String.New(root), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](options), Callable.New(callback), int64(parent_window_id))))
 }
 
 /*
@@ -2890,6 +3720,20 @@ Note: This method is implemented on macOS and Windows.
 func ShowEmojiAndSymbolPicker() { //gd:DisplayServer.show_emoji_and_symbol_picker
 	once.Do(singleton)
 	Advanced().ShowEmojiAndSymbolPicker()
+}
+
+/*
+Displays OS native color picker.
+
+Callbacks have the following arguments: status: bool, color: Color.
+
+Note: This method is implemented if the display server has the [FeatureNativeColorPicker] feature.
+
+Note: This method is only implemented on Linux (X11/Wayland).
+*/
+func ColorPicker(callback func(status bool, color Color.RGBA)) bool { //gd:DisplayServer.color_picker
+	once.Do(singleton)
+	return bool(Advanced().ColorPicker(Callable.New(callback)))
 }
 
 /*
@@ -3037,7 +3881,7 @@ Set active tablet driver name.
 
 Supported drivers:
 
-- winink: Windows Ink API, default (Windows 8.1+ required).
+- winink: Windows Ink API, default.
 
 - wintab: Wacom Wintab API (compatible device driver required).
 
@@ -4008,8 +4852,6 @@ func (self class) GlobalMenuGetSystemMenuRoots() Dictionary.Any { //gd:DisplaySe
 Returns true if the synthesizer is generating speech, or have utterance waiting in the queue.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 //go:nosplit
 func (self class) TtsIsSpeaking() bool { //gd:DisplayServer.tts_is_speaking
@@ -4022,8 +4864,6 @@ func (self class) TtsIsSpeaking() bool { //gd:DisplayServer.tts_is_speaking
 Returns true if the synthesizer is in a paused state.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 //go:nosplit
 func (self class) TtsIsPaused() bool { //gd:DisplayServer.tts_is_paused
@@ -4046,8 +4886,6 @@ Each data structure contains two string entries:
 Note that Godot depends on system libraries for text-to-speech functionality. These libraries are installed by default on Windows and macOS, but not on all Linux distributions. If they are not present, this method will return an empty list. This applies to both Godot users on Linux, as well as end-users on Linux running Godot games that use text-to-speech.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 //go:nosplit
 func (self class) TtsGetVoices() Array.Contains[Dictionary.Any] { //gd:DisplayServer.tts_get_voices
@@ -4057,11 +4895,9 @@ func (self class) TtsGetVoices() Array.Contains[Dictionary.Any] { //gd:DisplaySe
 }
 
 /*
-Returns an []string of voice identifiers for the 'language'.
+Returns a []string of voice identifiers for the 'language'.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 //go:nosplit
 func (self class) TtsGetVoicesForLanguage(language String.Readable) Packed.Strings { //gd:DisplayServer.tts_get_voices_for_language
@@ -4088,8 +4924,6 @@ Note: On Windows and Linux (X11/Wayland), utterance 'text' can use SSML markup. 
 Note: The granularity of pitch, rate, and volume is engine and voice dependent. Values may be truncated.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 //go:nosplit
 func (self class) TtsSpeak(text String.Readable, voice String.Readable, volume int64, pitch float64, rate float64, utterance_id int64, interrupt bool) { //gd:DisplayServer.tts_speak
@@ -4108,8 +4942,6 @@ func (self class) TtsSpeak(text String.Readable, voice String.Readable, volume i
 Puts the synthesizer into a paused state.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 //go:nosplit
 func (self class) TtsPause() { //gd:DisplayServer.tts_pause
@@ -4120,8 +4952,6 @@ func (self class) TtsPause() { //gd:DisplayServer.tts_pause
 Resumes the synthesizer if it was paused.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 //go:nosplit
 func (self class) TtsResume() { //gd:DisplayServer.tts_resume
@@ -4131,9 +4961,7 @@ func (self class) TtsResume() { //gd:DisplayServer.tts_resume
 /*
 Stops synthesis in progress and removes all utterances from the queue.
 
-Note: This method is implemented on Android, iOS, Web, Linux (X11/Linux), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
+Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
 */
 //go:nosplit
 func (self class) TtsStop() { //gd:DisplayServer.tts_stop
@@ -4150,8 +4978,6 @@ Adds a callback, which is called when the utterance has started, finished, cance
 Note: The granularity of the boundary callbacks is engine dependent.
 
 Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macOS, and Windows.
-
-Note: [graphics.gd/classdb/ProjectSettings] "audio/general/text_to_speech" should be true to use text-to-speech.
 */
 //go:nosplit
 func (self class) TtsSetUtteranceCallback(event TTSUtteranceEvent, callable Callable.Function) { //gd:DisplayServer.tts_set_utterance_callback
@@ -4188,7 +5014,7 @@ func (self class) IsDarkMode() bool { //gd:DisplayServer.is_dark_mode
 /*
 Returns OS theme accent color. Returns Color(0, 0, 0, 0), if accent color is unknown.
 
-Note: This method is implemented on macOS, Windows, and Android.
+Note: This method is implemented on macOS, Windows, Android, and Linux (X11/Wayland).
 */
 //go:nosplit
 func (self class) GetAccentColor() Color.RGBA { //gd:DisplayServer.get_accent_color
@@ -4288,7 +5114,7 @@ func (self class) ClipboardGet() String.Readable { //gd:DisplayServer.clipboard_
 /*
 Returns the user's clipboard as an image if possible.
 
-Note: This method uses the copied pixel data, e.g. from a image editing software or a web browser, not an image file copied from file explorer.
+Note: This method uses the copied pixel data, e.g. from an image editing software or a web browser, not an image file copied from file explorer.
 */
 //go:nosplit
 func (self class) ClipboardGetImage() [1]gdclass.Image { //gd:DisplayServer.clipboard_get_image
@@ -4369,6 +5195,8 @@ func (self class) GetDisplaySafeArea() Rect2i.PositionSize { //gd:DisplayServer.
 
 /*
 Returns the number of displays available.
+
+Note: This method is implemented on Linux (X11 and Wayland), macOS, and Windows. On other platforms, this method always returns 1.
 */
 //go:nosplit
 func (self class) GetScreenCount() int64 { //gd:DisplayServer.get_screen_count
@@ -4379,6 +5207,8 @@ func (self class) GetScreenCount() int64 { //gd:DisplayServer.get_screen_count
 
 /*
 Returns index of the primary screen.
+
+Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns 0.
 */
 //go:nosplit
 func (self class) GetPrimaryScreen() int64 { //gd:DisplayServer.get_primary_screen
@@ -4389,6 +5219,8 @@ func (self class) GetPrimaryScreen() int64 { //gd:DisplayServer.get_primary_scre
 
 /*
 Returns the index of the screen containing the window with the keyboard focus, or the primary screen if there's no focused window.
+
+Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns the primary screen.
 */
 //go:nosplit
 func (self class) GetKeyboardFocusScreen() int64 { //gd:DisplayServer.get_keyboard_focus_screen
@@ -4398,7 +5230,7 @@ func (self class) GetKeyboardFocusScreen() int64 { //gd:DisplayServer.get_keyboa
 }
 
 /*
-Returns the index of the screen that overlaps the most with the given rectangle. Returns -1 if the rectangle doesn't overlap with any screen or has no area.
+Returns the index of the screen that overlaps the most with the given rectangle. Returns [InvalidScreen] if the rectangle doesn't overlap with any screen or has no area.
 */
 //go:nosplit
 func (self class) GetScreenFromRect(rect Rect2.PositionSize) int64 { //gd:DisplayServer.get_screen_from_rect
@@ -4408,13 +5240,13 @@ func (self class) GetScreenFromRect(rect Rect2.PositionSize) int64 { //gd:Displa
 }
 
 /*
-Returns the screen's top-left corner position in pixels. On multi-monitor setups, the screen position is relative to the virtual desktop area. On multi-monitor setups with different screen resolutions or orientations, the origin may be located outside any display like this:
+Returns the screen's top-left corner position in pixels. Returns [Vector2i.Zero] if 'screen' is invalid. On multi-monitor setups, the screen position is relative to the virtual desktop area. On multi-monitor setups with different screen resolutions or orientations, the origin might be located outside any display like this:
 
 
 
 See also [ScreenGetSize].
 
-Note: On Linux (Wayland) this method always returns (0, 0).
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 */
 //go:nosplit
 func (self class) ScreenGetPosition(screen int64) Vector2i.XY { //gd:DisplayServer.screen_get_position
@@ -4424,7 +5256,9 @@ func (self class) ScreenGetPosition(screen int64) Vector2i.XY { //gd:DisplayServ
 }
 
 /*
-Returns the screen's size in pixels. See also [ScreenGetPosition] and [ScreenGetUsableRect].
+Returns the screen's size in pixels. See also [ScreenGetPosition] and [ScreenGetUsableRect]. Returns [Vector2i.Zero] if 'screen' is invalid.
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 */
 //go:nosplit
 func (self class) ScreenGetSize(screen int64) Vector2i.XY { //gd:DisplayServer.screen_get_size
@@ -4435,6 +5269,10 @@ func (self class) ScreenGetSize(screen int64) Vector2i.XY { //gd:DisplayServer.s
 
 /*
 Returns the portion of the screen that is not obstructed by a status bar in pixels. See also [ScreenGetSize].
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
+
+Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns Rect2i(screen_get_position(screen), screen_get_size(screen)).
 */
 //go:nosplit
 func (self class) ScreenGetUsableRect(screen int64) Rect2i.PositionSize { //gd:DisplayServer.screen_get_usable_rect
@@ -4444,7 +5282,9 @@ func (self class) ScreenGetUsableRect(screen int64) Rect2i.PositionSize { //gd:D
 }
 
 /*
-Returns the dots per inch density of the specified screen. If 'screen' is [ScreenOfMainWindow] (the default value), a screen with the main window will be used.
+Returns the dots per inch density of the specified screen. Returns platform specific default value if 'screen' is invalid.
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 
 Note: On macOS, returned value is inaccurate if fractional display scaling mode is used.
 
@@ -4452,7 +5292,7 @@ Note: On Android devices, the actual screen densities are grouped into six gener
 
 
 
-Note: This method is implemented on Android, Linux (X11/Wayland), macOS and Windows. Returns 72 on unsupported platforms.
+Note: This method is implemented on Android, iOS, Linux (X11/Wayland), macOS, Web, and Windows. On other platforms, this method always returns 72.
 */
 //go:nosplit
 func (self class) ScreenGetDpi(screen int64) int64 { //gd:DisplayServer.screen_get_dpi
@@ -4462,13 +5302,15 @@ func (self class) ScreenGetDpi(screen int64) int64 { //gd:DisplayServer.screen_g
 }
 
 /*
-Returns the scale factor of the specified screen by index.
+Returns the scale factor of the specified screen by index. Returns 1.0 if 'screen' is invalid.
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 
 Note: On macOS, the returned value is 2.0 for hiDPI (Retina) screens, and 1.0 for all other cases.
 
 Note: On Linux (Wayland), the returned value is accurate only when 'screen' is [ScreenOfMainWindow]. Due to API limitations, passing a direct index will return a rounded-up integer, if the screen has a fractional scale (e.g. 1.25 would get rounded up to 2.0).
 
-Note: This method is implemented on Android, iOS, Web, macOS, and Linux (Wayland).
+Note: This method is implemented on Android, iOS, Web, macOS, and Linux (Wayland). On other platforms, this method always returns 1.0.
 */
 //go:nosplit
 func (self class) ScreenGetScale(screen int64) float64 { //gd:DisplayServer.screen_get_scale
@@ -4502,9 +5344,7 @@ func (self class) ScreenGetMaxScale() float64 { //gd:DisplayServer.screen_get_ma
 }
 
 /*
-Returns the current refresh rate of the specified screen. If 'screen' is [ScreenOfMainWindow] (the default value), a screen with the main window will be used.
-
-Note: Returns -1.0 if the DisplayServer fails to find the refresh rate for the specified screen. On Web, [ScreenGetRefreshRate] will always return -1.0 as there is no way to retrieve the refresh rate on that platform.
+Returns the current refresh rate of the specified screen. Returns -1.0 if 'screen' is invalid or the [graphics.gd/classdb/DisplayServer] fails to find the refresh rate for the specified screen.
 
 To fallback to a default refresh rate if the method fails, try:
 
@@ -4514,6 +5354,10 @@ To fallback to a default refresh rate if the method fails, try:
 		refresh_rate = 60.0
 	}
 
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
+
+Note: This method is implemented on Android, iOS, macOS, Linux (X11 and Wayland), and Windows. On other platforms, this method always returns -1.0.
 */
 //go:nosplit
 func (self class) ScreenGetRefreshRate(screen int64) float64 { //gd:DisplayServer.screen_get_refresh_rate
@@ -4525,9 +5369,9 @@ func (self class) ScreenGetRefreshRate(screen int64) float64 { //gd:DisplayServe
 /*
 Returns color of the display pixel at the 'position'.
 
-Note: This method is implemented on Linux (X11), macOS, and Windows.
+Note: This method is implemented on Linux (X11, excluding XWayland), macOS, and Windows. On other platforms, this method always returns [Color.RGBA].
 
-Note: On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
+Note: On macOS, this method requires the "Screen Recording" permission. If permission is not granted, this method returns a screenshot that will only contain the desktop wallpaper, the current application's window, and other related UI elements.
 */
 //go:nosplit
 func (self class) ScreenGetPixel(position Vector2i.XY) Color.RGBA { //gd:DisplayServer.screen_get_pixel
@@ -4537,11 +5381,13 @@ func (self class) ScreenGetPixel(position Vector2i.XY) Color.RGBA { //gd:Display
 }
 
 /*
-Returns screenshot of the 'screen'.
+Returns a screenshot of the 'screen'. Returns null if 'screen' is invalid or the [graphics.gd/classdb/DisplayServer] fails to capture screenshot.
 
-Note: This method is implemented on Linux (X11), macOS, and Windows.
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
 
-Note: On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
+Note: This method is implemented on Linux (X11, excluding XWayland), macOS, and Windows. On other platforms, this method always returns null.
+
+Note: On macOS, this method requires the "Screen Recording" permission. If permission is not granted, this method returns a screenshot that will not include other application windows or OS elements not related to the application.
 */
 //go:nosplit
 func (self class) ScreenGetImage(screen int64) [1]gdclass.Image { //gd:DisplayServer.screen_get_image
@@ -4551,11 +5397,11 @@ func (self class) ScreenGetImage(screen int64) [1]gdclass.Image { //gd:DisplaySe
 }
 
 /*
-Returns screenshot of the screen 'rect'.
+Returns a screenshot of the screen region defined by 'rect'. Returns null if 'rect' is outside screen bounds or the [graphics.gd/classdb/DisplayServer] fails to capture screenshot.
 
-Note: This method is implemented on macOS and Windows.
+Note: This method is implemented on macOS and Windows. On other platforms, this method always returns null.
 
-Note: On macOS, this method requires "Screen Recording" permission, if permission is not granted it will return desktop wallpaper color.
+Note: On macOS, this method requires the "Screen Recording" permission. If permission is not granted, this method returns a screenshot that will not include other application windows or OS elements not related to the application.
 */
 //go:nosplit
 func (self class) ScreenGetImageRect(rect Rect2i.PositionSize) [1]gdclass.Image { //gd:DisplayServer.screen_get_image_rect
@@ -4566,6 +5412,10 @@ func (self class) ScreenGetImageRect(rect Rect2i.PositionSize) [1]gdclass.Image 
 
 /*
 Sets the 'screen''s 'orientation'. See also [ScreenGetOrientation].
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
+
+Note: This method is implemented on Android and iOS.
 
 Note: On iOS, this method has no effect if [graphics.gd/classdb/ProjectSettings] "display/window/handheld/orientation" is not set to [ScreenSensor].
 */
@@ -4578,9 +5428,11 @@ func (self class) ScreenSetOrientation(orientation ScreenOrientation, screen int
 }
 
 /*
-Returns the 'screen''s current orientation. See also [ScreenSetOrientation].
+Returns the 'screen''s current orientation. See also [ScreenSetOrientation]. Returns [ScreenLandscape] if 'screen' is invalid.
 
-Note: This method is implemented on Android and iOS.
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
+
+Note: This method is implemented on Android and iOS. On other platforms, this method always returns [ScreenLandscape].
 */
 //go:nosplit
 func (self class) ScreenGetOrientation(screen int64) ScreenOrientation { //gd:DisplayServer.screen_get_orientation
@@ -4736,7 +5588,9 @@ func (self class) WindowSetMousePassthrough(region Packed.Array[Vector2.XY], win
 }
 
 /*
-Returns the screen the window specified by 'window_id' is currently positioned on. If the screen overlaps multiple displays, the screen where the window's center is located is returned. See also [WindowSetCurrentScreen].
+Returns the screen the window specified by 'window_id' is currently positioned on. If the screen overlaps multiple displays, the screen where the window's center is located is returned. See also [WindowSetCurrentScreen]. Returns [InvalidScreen] if 'window_id' is invalid.
+
+Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns 0.
 */
 //go:nosplit
 func (self class) WindowGetCurrentScreen(window_id int64) int64 { //gd:DisplayServer.window_get_current_screen
@@ -4747,6 +5601,10 @@ func (self class) WindowGetCurrentScreen(window_id int64) int64 { //gd:DisplaySe
 
 /*
 Moves the window specified by 'window_id' to the specified 'screen'. See also [WindowGetCurrentScreen].
+
+Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
+
+Note: This method is implemented on Linux/X11, macOS, and Windows.
 */
 //go:nosplit
 func (self class) WindowSetCurrentScreen(screen int64, window_id int64) { //gd:DisplayServer.window_set_current_screen
@@ -4968,7 +5826,7 @@ func (self class) WindowGetMode(window_id int64) WindowMode { //gd:DisplayServer
 }
 
 /*
-Sets window mode for the given window to 'mode'. See [WindowMode] for possible values and how each mode behaves.
+Sets window mode for the given window to 'mode'.
 
 Note: On Android, setting it to [WindowModeFullscreen] or [WindowModeExclusiveFullscreen] will enable immersive mode.
 
@@ -4983,7 +5841,7 @@ func (self class) WindowSetMode(mode WindowMode, window_id int64) { //gd:Display
 }
 
 /*
-Enables or disables the given window's given 'flag'. See [WindowFlags] for possible values and their behavior.
+Enables or disables the given window's given 'flag'.
 */
 //go:nosplit
 func (self class) WindowSetFlag(flag WindowFlags, enabled bool, window_id int64) { //gd:DisplayServer.window_set_flag
@@ -5125,8 +5983,6 @@ func (self class) WindowSetImePosition(position Vector2i.XY, window_id int64) { 
 /*
 Sets the V-Sync mode of the given window. See also [graphics.gd/classdb/ProjectSettings] "display/window/vsync/vsync_mode".
 
-See [DisplayServer.VSyncMode] for possible values and how they affect the behavior of your application.
-
 Depending on the platform and used renderer, the engine will fall back to [VsyncEnabled] if the desired mode is not supported.
 
 Note: V-Sync modes other than [VsyncEnabled] are only supported in the Forward+ and Mobile rendering methods, not Compatibility.
@@ -5207,6 +6063,876 @@ func (self class) WindowStartResize(edge WindowResizeEdge, window_id int64) { //
 }
 
 /*
+Returns 1 if a high-contrast user interface theme should be used, 0 otherwise. Returns -1 if status is unknown.
+
+Note: This method is implemented on Linux (X11/Wayland, GNOME), macOS, and Windows.
+*/
+//go:nosplit
+func (self class) AccessibilityShouldIncreaseContrast() int64 { //gd:DisplayServer.accessibility_should_increase_contrast
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_should_increase_contrast, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns 1 if flashing, blinking, and other moving content that can cause seizures in users with photosensitive epilepsy should be disabled, 0 otherwise. Returns -1 if status is unknown.
+
+Note: This method is implemented on macOS and Windows.
+*/
+//go:nosplit
+func (self class) AccessibilityShouldReduceAnimation() int64 { //gd:DisplayServer.accessibility_should_reduce_animation
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_should_reduce_animation, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns 1 if background images, transparency, and other features that can reduce the contrast between the foreground and background should be disabled, 0 otherwise. Returns -1 if status is unknown.
+
+Note: This method is implemented on macOS and Windows.
+*/
+//go:nosplit
+func (self class) AccessibilityShouldReduceTransparency() int64 { //gd:DisplayServer.accessibility_should_reduce_transparency
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_should_reduce_transparency, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns 1 if a screen reader, Braille display or other assistive app is active, 0 otherwise. Returns -1 if status is unknown.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: Accessibility debugging tools, such as Accessibility Insights for Windows, macOS Accessibility Inspector, or AT-SPI Browser do not count as assistive apps and will not affect this value. To test your app with these tools, set [graphics.gd/classdb/ProjectSettings] "accessibility/general/accessibility_support" to 1.
+*/
+//go:nosplit
+func (self class) AccessibilityScreenReaderActive() int64 { //gd:DisplayServer.accessibility_screen_reader_active
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_screen_reader_active, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Creates a new, empty accessibility element resource.
+
+Note: An accessibility element is created and freed automatically for each [graphics.gd/classdb/Node]. In general, this function should not be called manually.
+*/
+//go:nosplit
+func (self class) AccessibilityCreateElement(window_id int64, role AccessibilityRole) RID.Any { //gd:DisplayServer.accessibility_create_element
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_create_element, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		window_id int64
+		role      AccessibilityRole
+	}{window_id, role})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Creates a new, empty accessibility sub-element resource. Sub-elements can be used to provide accessibility information for objects which are not [graphics.gd/classdb/Node]s, such as list items, table cells, or menu items. Sub-elements are freed automatically when the parent element is freed, or can be freed early using the [AccessibilityFreeElement] method.
+*/
+//go:nosplit
+func (self class) AccessibilityCreateSubElement(parent_rid RID.Any, role AccessibilityRole, insert_pos int64) RID.Any { //gd:DisplayServer.accessibility_create_sub_element
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_create_sub_element, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+		parent_rid RID.Any
+		role       AccessibilityRole
+		insert_pos int64
+	}{parent_rid, role, insert_pos})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Creates a new, empty accessibility sub-element from the shaped text buffer. Sub-elements are freed automatically when the parent element is freed, or can be freed early using the [AccessibilityFreeElement] method.
+*/
+//go:nosplit
+func (self class) AccessibilityCreateSubTextEditElements(parent_rid RID.Any, shaped_text RID.Any, min_height float64, insert_pos int64) RID.Any { //gd:DisplayServer.accessibility_create_sub_text_edit_elements
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_create_sub_text_edit_elements, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16), &struct {
+		parent_rid  RID.Any
+		shaped_text RID.Any
+		min_height  float64
+		insert_pos  int64
+	}{parent_rid, shaped_text, min_height, insert_pos})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns true if 'id' is a valid accessibility element.
+*/
+//go:nosplit
+func (self class) AccessibilityHasElement(id RID.Any) bool { //gd:DisplayServer.accessibility_has_element
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.accessibility_has_element, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Frees an object created by [AccessibilityCreateElement], [AccessibilityCreateSubElement], or [AccessibilityCreateSubTextEditElements].
+*/
+//go:nosplit
+func (self class) AccessibilityFreeElement(id RID.Any) { //gd:DisplayServer.accessibility_free_element
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_free_element, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
+}
+
+/*
+Sets the metadata of the accessibility element.
+*/
+//go:nosplit
+func (self class) AccessibilityElementSetMeta(id RID.Any, meta variant.Any) { //gd:DisplayServer.accessibility_element_set_meta
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_element_set_meta, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
+		id   RID.Any
+		meta gdextension.Variant
+	}{id, gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))})
+}
+
+/*
+Returns the metadata of the accessibility element.
+*/
+//go:nosplit
+func (self class) AccessibilityElementGetMeta(id RID.Any) variant.Any { //gd:DisplayServer.accessibility_element_get_meta
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.accessibility_element_get_meta, gdextension.SizeVariant|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
+	return ret
+}
+
+/*
+Sets window outer (with decorations) and inner (without decorations) bounds for assistive apps.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: Advanced users only! [graphics.gd/classdb/Window] objects call this method automatically.
+*/
+//go:nosplit
+func (self class) AccessibilitySetWindowRect(window_id int64, rect_out Rect2.PositionSize, rect_in Rect2.PositionSize) { //gd:DisplayServer.accessibility_set_window_rect
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_set_window_rect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12), &struct {
+		window_id int64
+		rect_out  Rect2.PositionSize
+		rect_in   Rect2.PositionSize
+	}{window_id, rect_out, rect_in})
+}
+
+/*
+Sets the window focused state for assistive apps.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: Advanced users only! [graphics.gd/classdb/Window] objects call this method automatically.
+*/
+//go:nosplit
+func (self class) AccessibilitySetWindowFocused(window_id int64, focused bool) { //gd:DisplayServer.accessibility_set_window_focused
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_set_window_focused, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+		window_id int64
+		focused   bool
+	}{window_id, focused})
+}
+
+/*
+Sets currently focused element.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetFocus(id RID.Any) { //gd:DisplayServer.accessibility_update_set_focus
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_focus, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
+}
+
+/*
+Returns the main accessibility element of the OS native window.
+*/
+//go:nosplit
+func (self class) AccessibilityGetWindowRoot(window_id int64) RID.Any { //gd:DisplayServer.accessibility_get_window_root
+	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_get_window_root, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Sets element accessibility role.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetRole(id RID.Any, role AccessibilityRole) { //gd:DisplayServer.accessibility_update_set_role
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_role, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		id   RID.Any
+		role AccessibilityRole
+	}{id, role})
+}
+
+/*
+Sets element accessibility name.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetName(id RID.Any, name String.Readable) { //gd:DisplayServer.accessibility_update_set_name
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_name, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+		id   RID.Any
+		name gdextension.String
+	}{id, pointers.Get(gd.InternalString(name))})
+}
+
+/*
+Sets element accessibility extra information added to the element name.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetExtraInfo(id RID.Any, name String.Readable) { //gd:DisplayServer.accessibility_update_set_extra_info
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_extra_info, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+		id   RID.Any
+		name gdextension.String
+	}{id, pointers.Get(gd.InternalString(name))})
+}
+
+/*
+Sets element accessibility description.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetDescription(id RID.Any, description String.Readable) { //gd:DisplayServer.accessibility_update_set_description
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+		id          RID.Any
+		description gdextension.String
+	}{id, pointers.Get(gd.InternalString(description))})
+}
+
+/*
+Sets element text value.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetValue(id RID.Any, value String.Readable) { //gd:DisplayServer.accessibility_update_set_value
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+		id    RID.Any
+		value gdextension.String
+	}{id, pointers.Get(gd.InternalString(value))})
+}
+
+/*
+Sets tooltip text.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetTooltip(id RID.Any, tooltip String.Readable) { //gd:DisplayServer.accessibility_update_set_tooltip
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_tooltip, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+		id      RID.Any
+		tooltip gdextension.String
+	}{id, pointers.Get(gd.InternalString(tooltip))})
+}
+
+/*
+Sets element bounding box, relative to the node position.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetBounds(id RID.Any, p_rect Rect2.PositionSize) { //gd:DisplayServer.accessibility_update_set_bounds
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_bounds, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8), &struct {
+		id     RID.Any
+		p_rect Rect2.PositionSize
+	}{id, p_rect})
+}
+
+/*
+Sets element 2D transform.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetTransform(id RID.Any, transform Transform2D.OriginXY) { //gd:DisplayServer.accessibility_update_set_transform
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
+		id        RID.Any
+		transform Transform2D.OriginXY
+	}{id, transform})
+}
+
+/*
+Adds a child accessibility element.
+
+Note: [graphics.gd/classdb/Node] children and sub-elements are added to the child list automatically.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateAddChild(id RID.Any, child_id RID.Any) { //gd:DisplayServer.accessibility_update_add_child
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_child, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+		id       RID.Any
+		child_id RID.Any
+	}{id, child_id})
+}
+
+/*
+Adds an element that is controlled by this element.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateAddRelatedControls(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_controls
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_controls, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+		id         RID.Any
+		related_id RID.Any
+	}{id, related_id})
+}
+
+/*
+Adds an element that details this element.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateAddRelatedDetails(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_details
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_details, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+		id         RID.Any
+		related_id RID.Any
+	}{id, related_id})
+}
+
+/*
+Adds an element that describes this element.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateAddRelatedDescribedBy(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_described_by
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_described_by, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+		id         RID.Any
+		related_id RID.Any
+	}{id, related_id})
+}
+
+/*
+Adds an element that this element flow into.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateAddRelatedFlowTo(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_flow_to
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_flow_to, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+		id         RID.Any
+		related_id RID.Any
+	}{id, related_id})
+}
+
+/*
+Adds an element that labels this element.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateAddRelatedLabeledBy(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_labeled_by
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_labeled_by, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+		id         RID.Any
+		related_id RID.Any
+	}{id, related_id})
+}
+
+/*
+Adds an element that is part of the same radio group.
+
+Note: This method should be called on each element of the group, using all other elements as 'related_id'.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateAddRelatedRadioGroup(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_radio_group
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_radio_group, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+		id         RID.Any
+		related_id RID.Any
+	}{id, related_id})
+}
+
+/*
+Adds an element that is an active descendant of this element.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetActiveDescendant(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_active_descendant
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_active_descendant, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+		id       RID.Any
+		other_id RID.Any
+	}{id, other_id})
+}
+
+/*
+Sets next element on the line.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetNextOnLine(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_next_on_line
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_next_on_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+		id       RID.Any
+		other_id RID.Any
+	}{id, other_id})
+}
+
+/*
+Sets previous element on the line.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetPreviousOnLine(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_previous_on_line
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_previous_on_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+		id       RID.Any
+		other_id RID.Any
+	}{id, other_id})
+}
+
+/*
+Sets the element to be a member of the group.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetMemberOf(id RID.Any, group_id RID.Any) { //gd:DisplayServer.accessibility_update_set_member_of
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_member_of, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+		id       RID.Any
+		group_id RID.Any
+	}{id, group_id})
+}
+
+/*
+Sets target element for the link.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetInPageLinkTarget(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_in_page_link_target
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_in_page_link_target, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+		id       RID.Any
+		other_id RID.Any
+	}{id, other_id})
+}
+
+/*
+Sets an element which contains an error message for this element.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetErrorMessage(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_error_message
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_error_message, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+		id       RID.Any
+		other_id RID.Any
+	}{id, other_id})
+}
+
+/*
+Sets the priority of the live region updates.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetLive(id RID.Any, live AccessibilityLiveMode) { //gd:DisplayServer.accessibility_update_set_live
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_live, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		id   RID.Any
+		live AccessibilityLiveMode
+	}{id, live})
+}
+
+/*
+Adds a callback for the accessibility action (action which can be performed by using a special screen reader command or buttons on the Braille display), and marks this action as supported. The action callback receives one any argument, which value depends on action type.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateAddAction(id RID.Any, action AccessibilityAction, callable Callable.Function) { //gd:DisplayServer.accessibility_update_add_action
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_action, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+		id       RID.Any
+		action   AccessibilityAction
+		callable gdextension.Callable
+	}{id, action, pointers.Get(gd.InternalCallable(callable))})
+}
+
+/*
+Adds support for a custom accessibility action. 'action_id' is passed as an argument to the callback of [ActionCustom] action.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateAddCustomAction(id RID.Any, action_id int64, action_description String.Readable) { //gd:DisplayServer.accessibility_update_add_custom_action
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_custom_action, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+		id                 RID.Any
+		action_id          int64
+		action_description gdextension.String
+	}{id, action_id, pointers.Get(gd.InternalString(action_description))})
+}
+
+/*
+Sets number of rows in the table.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetTableRowCount(id RID.Any, count int64) { //gd:DisplayServer.accessibility_update_set_table_row_count
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_row_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		id    RID.Any
+		count int64
+	}{id, count})
+}
+
+/*
+Sets number of columns in the table.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetTableColumnCount(id RID.Any, count int64) { //gd:DisplayServer.accessibility_update_set_table_column_count
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_column_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		id    RID.Any
+		count int64
+	}{id, count})
+}
+
+/*
+Sets position of the row in the table.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetTableRowIndex(id RID.Any, index int64) { //gd:DisplayServer.accessibility_update_set_table_row_index
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_row_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		id    RID.Any
+		index int64
+	}{id, index})
+}
+
+/*
+Sets position of the column.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetTableColumnIndex(id RID.Any, index int64) { //gd:DisplayServer.accessibility_update_set_table_column_index
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_column_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		id    RID.Any
+		index int64
+	}{id, index})
+}
+
+/*
+Sets cell position in the table.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetTableCellPosition(id RID.Any, row_index int64, column_index int64) { //gd:DisplayServer.accessibility_update_set_table_cell_position
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_cell_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+		id           RID.Any
+		row_index    int64
+		column_index int64
+	}{id, row_index, column_index})
+}
+
+/*
+Sets cell row/column span.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetTableCellSpan(id RID.Any, row_span int64, column_span int64) { //gd:DisplayServer.accessibility_update_set_table_cell_span
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_cell_span, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+		id          RID.Any
+		row_span    int64
+		column_span int64
+	}{id, row_span, column_span})
+}
+
+/*
+Sets number of items in the list.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetListItemCount(id RID.Any, size int64) { //gd:DisplayServer.accessibility_update_set_list_item_count
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		id   RID.Any
+		size int64
+	}{id, size})
+}
+
+/*
+Sets the position of the element in the list.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetListItemIndex(id RID.Any, index int64) { //gd:DisplayServer.accessibility_update_set_list_item_index
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		id    RID.Any
+		index int64
+	}{id, index})
+}
+
+/*
+Sets the hierarchical level of the element in the list.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetListItemLevel(id RID.Any, level int64) { //gd:DisplayServer.accessibility_update_set_list_item_level
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_level, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		id    RID.Any
+		level int64
+	}{id, level})
+}
+
+/*
+Sets list/tree item selected status.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetListItemSelected(id RID.Any, selected bool) { //gd:DisplayServer.accessibility_update_set_list_item_selected
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_selected, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+		id       RID.Any
+		selected bool
+	}{id, selected})
+}
+
+/*
+Sets list/tree item expanded status.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetListItemExpanded(id RID.Any, expanded bool) { //gd:DisplayServer.accessibility_update_set_list_item_expanded
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_expanded, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+		id       RID.Any
+		expanded bool
+	}{id, expanded})
+}
+
+/*
+Sets popup type for popup buttons.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetPopupType(id RID.Any, popup AccessibilityPopupType) { //gd:DisplayServer.accessibility_update_set_popup_type
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_popup_type, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		id    RID.Any
+		popup AccessibilityPopupType
+	}{id, popup})
+}
+
+/*
+Sets element checked state.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetChecked(id RID.Any, checekd bool) { //gd:DisplayServer.accessibility_update_set_checked
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_checked, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+		id      RID.Any
+		checekd bool
+	}{id, checekd})
+}
+
+/*
+Sets numeric value.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetNumValue(id RID.Any, position float64) { //gd:DisplayServer.accessibility_update_set_num_value
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+		id       RID.Any
+		position float64
+	}{id, position})
+}
+
+/*
+Sets numeric value range.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetNumRange(id RID.Any, min float64, max float64) { //gd:DisplayServer.accessibility_update_set_num_range
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
+		id  RID.Any
+		min float64
+		max float64
+	}{id, min, max})
+}
+
+/*
+Sets numeric value step.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetNumStep(id RID.Any, step float64) { //gd:DisplayServer.accessibility_update_set_num_step
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_step, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+		id   RID.Any
+		step float64
+	}{id, step})
+}
+
+/*
+Sets numeric value jump.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetNumJump(id RID.Any, jump float64) { //gd:DisplayServer.accessibility_update_set_num_jump
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_jump, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+		id   RID.Any
+		jump float64
+	}{id, jump})
+}
+
+/*
+Sets scroll bar x position.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetScrollX(id RID.Any, position float64) { //gd:DisplayServer.accessibility_update_set_scroll_x
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_x, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+		id       RID.Any
+		position float64
+	}{id, position})
+}
+
+/*
+Sets scroll bar x range.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetScrollXRange(id RID.Any, min float64, max float64) { //gd:DisplayServer.accessibility_update_set_scroll_x_range
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_x_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
+		id  RID.Any
+		min float64
+		max float64
+	}{id, min, max})
+}
+
+/*
+Sets scroll bar y position.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetScrollY(id RID.Any, position float64) { //gd:DisplayServer.accessibility_update_set_scroll_y
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_y, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+		id       RID.Any
+		position float64
+	}{id, position})
+}
+
+/*
+Sets scroll bar y range.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetScrollYRange(id RID.Any, min float64, max float64) { //gd:DisplayServer.accessibility_update_set_scroll_y_range
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_y_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
+		id  RID.Any
+		min float64
+		max float64
+	}{id, min, max})
+}
+
+/*
+Sets text underline/overline/strikethrough.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetTextDecorations(id RID.Any, underline bool, strikethrough bool, overline bool) { //gd:DisplayServer.accessibility_update_set_text_decorations
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_decorations, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
+		id            RID.Any
+		underline     bool
+		strikethrough bool
+		overline      bool
+	}{id, underline, strikethrough, overline})
+}
+
+/*
+Sets element text alignment.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetTextAlign(id RID.Any, align GUI.HorizontalAlignment) { //gd:DisplayServer.accessibility_update_set_text_align
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_align, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+		id    RID.Any
+		align GUI.HorizontalAlignment
+	}{id, align})
+}
+
+/*
+Sets text selection to the text field. 'text_start_id' and 'text_end_id' should be elements created by [AccessibilityCreateSubTextEditElements]. Character offsets are relative to the corresponding element.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetTextSelection(id RID.Any, text_start_id RID.Any, start_char int64, text_end_id RID.Any, end_char int64) { //gd:DisplayServer.accessibility_update_set_text_selection
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_selection, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeInt<<20), &struct {
+		id            RID.Any
+		text_start_id RID.Any
+		start_char    int64
+		text_end_id   RID.Any
+		end_char      int64
+	}{id, text_start_id, start_char, text_end_id, end_char})
+}
+
+/*
+Sets element flag.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetFlag(id RID.Any, flag AccessibilityFlags, value bool) { //gd:DisplayServer.accessibility_update_set_flag
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+		id    RID.Any
+		flag  AccessibilityFlags
+		value bool
+	}{id, flag, value})
+}
+
+/*
+Sets element class name.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetClassname(id RID.Any, classname String.Readable) { //gd:DisplayServer.accessibility_update_set_classname
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_classname, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+		id        RID.Any
+		classname gdextension.String
+	}{id, pointers.Get(gd.InternalString(classname))})
+}
+
+/*
+Sets placeholder text.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetPlaceholder(id RID.Any, placeholder String.Readable) { //gd:DisplayServer.accessibility_update_set_placeholder
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_placeholder, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+		id          RID.Any
+		placeholder gdextension.String
+	}{id, pointers.Get(gd.InternalString(placeholder))})
+}
+
+/*
+Sets element text language.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetLanguage(id RID.Any, language String.Readable) { //gd:DisplayServer.accessibility_update_set_language
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_language, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+		id       RID.Any
+		language gdextension.String
+	}{id, pointers.Get(gd.InternalString(language))})
+}
+
+/*
+Sets text orientation.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetTextOrientation(id RID.Any, vertical bool) { //gd:DisplayServer.accessibility_update_set_text_orientation
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_orientation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+		id       RID.Any
+		vertical bool
+	}{id, vertical})
+}
+
+/*
+Sets the orientation of the list elements.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetListOrientation(id RID.Any, vertical bool) { //gd:DisplayServer.accessibility_update_set_list_orientation
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_orientation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+		id       RID.Any
+		vertical bool
+	}{id, vertical})
+}
+
+/*
+Sets the list of keyboard shortcuts used by element.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetShortcut(id RID.Any, shortcut String.Readable) { //gd:DisplayServer.accessibility_update_set_shortcut
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_shortcut, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+		id       RID.Any
+		shortcut gdextension.String
+	}{id, pointers.Get(gd.InternalString(shortcut))})
+}
+
+/*
+Sets link URL.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetUrl(id RID.Any, url String.Readable) { //gd:DisplayServer.accessibility_update_set_url
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_url, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+		id  RID.Any
+		url gdextension.String
+	}{id, pointers.Get(gd.InternalString(url))})
+}
+
+/*
+Sets element accessibility role description text.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetRoleDescription(id RID.Any, description String.Readable) { //gd:DisplayServer.accessibility_update_set_role_description
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_role_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+		id          RID.Any
+		description gdextension.String
+	}{id, pointers.Get(gd.InternalString(description))})
+}
+
+/*
+Sets human-readable description of the current checked state.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetStateDescription(id RID.Any, description String.Readable) { //gd:DisplayServer.accessibility_update_set_state_description
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_state_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+		id          RID.Any
+		description gdextension.String
+	}{id, pointers.Get(gd.InternalString(description))})
+}
+
+/*
+Sets element color value.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetColorValue(id RID.Any, color Color.RGBA) { //gd:DisplayServer.accessibility_update_set_color_value
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_color_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
+		id    RID.Any
+		color Color.RGBA
+	}{id, color})
+}
+
+/*
+Sets element background color.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetBackgroundColor(id RID.Any, color Color.RGBA) { //gd:DisplayServer.accessibility_update_set_background_color
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_background_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
+		id    RID.Any
+		color Color.RGBA
+	}{id, color})
+}
+
+/*
+Sets element foreground color.
+*/
+//go:nosplit
+func (self class) AccessibilityUpdateSetForegroundColor(id RID.Any, color Color.RGBA) { //gd:DisplayServer.accessibility_update_set_foreground_color
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_foreground_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
+		id    RID.Any
+		color Color.RGBA
+	}{id, color})
+}
+
+/*
 Returns the text selection in the [Input Method Editor] composition string, with the [Vector2i.XY]'s x component being the caret position and y being the length of the selection.
 
 Note: This method is implemented only on macOS.
@@ -5273,6 +6999,8 @@ func (self class) VirtualKeyboardHide() { //gd:DisplayServer.virtual_keyboard_hi
 
 /*
 Returns the on-screen keyboard's height in pixels. Returns 0 if there is no keyboard or if it is currently hidden.
+
+Note: On Android 7 and 8, the keyboard height may return 0 the first time the keyboard is opened in non-immersive mode. This behavior does not occur in immersive mode.
 */
 //go:nosplit
 func (self class) VirtualKeyboardGetHeight() int64 { //gd:DisplayServer.virtual_keyboard_get_height
@@ -5282,15 +7010,25 @@ func (self class) VirtualKeyboardGetHeight() int64 { //gd:DisplayServer.virtual_
 }
 
 /*
-Returns true if hardware keyboard is connected.
+Returns true if a hardware keyboard is connected.
 
-Note: This method is implemented on Android and iOS, on other platforms this method always returns true.
+Note: This method is implemented on Android and iOS. On other platforms, this method always returns true.
 */
 //go:nosplit
 func (self class) HasHardwareKeyboard() bool { //gd:DisplayServer.has_hardware_keyboard
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_hardware_keyboard, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
+}
+
+/*
+Sets the 'callable' that should be called when hardware keyboard is connected/disconnected. 'callable' should accept a single bool parameter indicating whether the keyboard is connected (true) or disconnected (false).
+
+Note: This method is only implemented on Android.
+*/
+//go:nosplit
+func (self class) SetHardwareKeyboardConnectionChangeCallback(callable Callable.Function) { //gd:DisplayServer.set_hardware_keyboard_connection_change_callback
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hardware_keyboard_connection_change_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
 
 /*
@@ -5386,9 +7124,9 @@ Displays OS native dialog for selecting files or directories in the file system.
 
 Each filter string in the 'filters' array should be formatted like this: *.png,*.jpg,*.jpeg;Image Files;image/png,image/jpeg. The description text of the filter is optional and can be omitted. It is recommended to set both file extension and MIME type. See also [graphics.gd/classdb/FileDialog.Instance.Filters].
 
-Callbacks have the following arguments: status: bool, selected_paths: PackedStringArray, selected_filter_index: int. On Android, callback argument selected_filter_index is always zero.
+Callbacks have the following arguments: status: bool, selected_paths: PackedStringArray, selected_filter_index: int. On Android, the third callback argument (selected_filter_index) is always 0.
 
-Note: This method is implemented if the display server has the [FeatureNativeDialogFile] feature. Supported platforms include Linux (X11/Wayland), Windows, macOS, and Android.
+Note: This method is implemented if the display server has the [FeatureNativeDialogFile] feature. Supported platforms include Linux (X11/Wayland), Windows, macOS, and Android (API level 29+).
 
 Note: 'current_directory' might be ignored.
 
@@ -5401,8 +7139,8 @@ Note: On Android and macOS, native file dialogs have no title.
 Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [graphics.gd/classdb/OS.GetGrantedPermissions] to get a list of saved bookmarks.
 */
 //go:nosplit
-func (self class) FileDialogShow(title String.Readable, current_directory String.Readable, filename String.Readable, show_hidden bool, mode FileDialogMode, filters Packed.Strings, callback Callable.Function) Error.Code { //gd:DisplayServer.file_dialog_show
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.file_dialog_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizeCallable<<28), &struct {
+func (self class) FileDialogShow(title String.Readable, current_directory String.Readable, filename String.Readable, show_hidden bool, mode FileDialogMode, filters Packed.Strings, callback Callable.Function, parent_window_id int64) Error.Code { //gd:DisplayServer.file_dialog_show
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.file_dialog_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizeCallable<<28)|(gdextension.SizeInt<<32), &struct {
 		title             gdextension.String
 		current_directory gdextension.String
 		filename          gdextension.String
@@ -5410,7 +7148,8 @@ func (self class) FileDialogShow(title String.Readable, current_directory String
 		mode              FileDialogMode
 		filters           gdextension.PackedArray[gdextension.String]
 		callback          gdextension.Callable
-	}{pointers.Get(gd.InternalString(title)), pointers.Get(gd.InternalString(current_directory)), pointers.Get(gd.InternalString(filename)), show_hidden, mode, pointers.Get(gd.InternalPackedStrings(filters)), pointers.Get(gd.InternalCallable(callback))})
+		parent_window_id  int64
+	}{pointers.Get(gd.InternalString(title)), pointers.Get(gd.InternalString(current_directory)), pointers.Get(gd.InternalString(filename)), show_hidden, mode, pointers.Get(gd.InternalPackedStrings(filters)), pointers.Get(gd.InternalCallable(callback)), parent_window_id})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -5443,8 +7182,8 @@ Note: On macOS, native file dialogs have no title.
 Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [graphics.gd/classdb/OS.GetGrantedPermissions] to get a list of saved bookmarks.
 */
 //go:nosplit
-func (self class) FileDialogWithOptionsShow(title String.Readable, current_directory String.Readable, root String.Readable, filename String.Readable, show_hidden bool, mode FileDialogMode, filters Packed.Strings, options Array.Contains[Dictionary.Any], callback Callable.Function) Error.Code { //gd:DisplayServer.file_dialog_with_options_show
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.file_dialog_with_options_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizeArray<<32)|(gdextension.SizeCallable<<36), &struct {
+func (self class) FileDialogWithOptionsShow(title String.Readable, current_directory String.Readable, root String.Readable, filename String.Readable, show_hidden bool, mode FileDialogMode, filters Packed.Strings, options Array.Contains[Dictionary.Any], callback Callable.Function, parent_window_id int64) Error.Code { //gd:DisplayServer.file_dialog_with_options_show
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.file_dialog_with_options_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizeArray<<32)|(gdextension.SizeCallable<<36)|(gdextension.SizeInt<<40), &struct {
 		title             gdextension.String
 		current_directory gdextension.String
 		root              gdextension.String
@@ -5454,7 +7193,8 @@ func (self class) FileDialogWithOptionsShow(title String.Readable, current_direc
 		filters           gdextension.PackedArray[gdextension.String]
 		options           gdextension.Array
 		callback          gdextension.Callable
-	}{pointers.Get(gd.InternalString(title)), pointers.Get(gd.InternalString(current_directory)), pointers.Get(gd.InternalString(root)), pointers.Get(gd.InternalString(filename)), show_hidden, mode, pointers.Get(gd.InternalPackedStrings(filters)), pointers.Get(gd.InternalArray(options)), pointers.Get(gd.InternalCallable(callback))})
+		parent_window_id  int64
+	}{pointers.Get(gd.InternalString(title)), pointers.Get(gd.InternalString(current_directory)), pointers.Get(gd.InternalString(root)), pointers.Get(gd.InternalString(filename)), show_hidden, mode, pointers.Get(gd.InternalPackedStrings(filters)), pointers.Get(gd.InternalArray(options)), pointers.Get(gd.InternalCallable(callback)), parent_window_id})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -5559,6 +7299,22 @@ Note: This method is implemented on macOS and Windows.
 //go:nosplit
 func (self class) ShowEmojiAndSymbolPicker() { //gd:DisplayServer.show_emoji_and_symbol_picker
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.show_emoji_and_symbol_picker, 0, &struct{}{})
+}
+
+/*
+Displays OS native color picker.
+
+Callbacks have the following arguments: status: bool, color: Color.
+
+Note: This method is implemented if the display server has the [FeatureNativeColorPicker] feature.
+
+Note: This method is only implemented on Linux (X11/Wayland).
+*/
+//go:nosplit
+func (self class) ColorPicker(callback Callable.Function) bool { //gd:DisplayServer.color_picker
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.color_picker, gdextension.SizeBool|(gdextension.SizeCallable<<4), &struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))})
+	var ret = r_ret
+	return ret
 }
 
 /*
@@ -5732,7 +7488,7 @@ Set active tablet driver name.
 
 Supported drivers:
 
-- winink: Windows Ink API, default (Windows 8.1+ required).
+- winink: Windows Ink API, default.
 
 - wintab: Wacom Wintab API (compatible device driver required).
 
@@ -5826,9 +7582,9 @@ const (
 	//
 	// [Input Method Editor]: https://en.wikipedia.org/wiki/Input_method
 	FeatureIme Feature = 10
-	// Display server supports windows can use per-pixel transparency to make windows behind them partially or fully visible. Windows, macOS, Linux (X11/Wayland)
+	// Display server supports windows can use per-pixel transparency to make windows behind them partially or fully visible. Windows, macOS, Linux (X11/Wayland), Android
 	FeatureWindowTransparency Feature = 11
-	// Display server supports querying the operating system's display scale factor. This allows for reliable automatic hiDPI display detection, as opposed to guessing based on the screen resolution and reported display DPI (which can be unreliable due to broken monitor EDID). Windows, Linux (Wayland), macOS
+	// Display server supports querying the operating system's display scale factor. This allows automatically detecting the hiDPI display reliably, instead of guessing based on the screen resolution and the display's reported DPI (which might be unreliable due to broken monitor EDID). Windows, Linux (Wayland), macOS
 	FeatureHidpi Feature = 12
 	// Display server supports changing the window icon (usually displayed in the top-left corner). Windows, macOS, Linux (X11)
 	FeatureIcon Feature = 13
@@ -5858,14 +7614,251 @@ const (
 	FeatureNativeDialogFileExtra Feature = 26
 	// The display server supports initiating window drag and resize operations on demand. See [Instance.WindowStartDrag] and [Instance.WindowStartResize].
 	FeatureWindowDrag Feature = 27
-	// Display server supports [WindowFlagExcludeFromCapture] window flag.
+	// Display server supports [WindowFlagExcludeFromCapture] window flag. Windows, macOS
 	FeatureScreenExcludeFromCapture Feature = 28
-	// Display server supports embedding a window from another process. Windows, Linux (X11)
+	// Display server supports embedding a window from another process. Windows, Linux (X11), macOS
 	FeatureWindowEmbedding Feature = 29
 	// Native file selection dialog supports MIME types as filters.
 	FeatureNativeDialogFileMime Feature = 30
 	// Display server supports system emoji and symbol picker. Windows, macOS
 	FeatureEmojiAndSymbolPicker Feature = 31
+	// Display server supports native color picker. Linux (X11/Wayland)
+	FeatureNativeColorPicker Feature = 32
+	// Display server automatically fits popups according to the screen boundaries. Window nodes should not attempt to do that themselves.
+	FeatureSelfFittingWindows Feature = 33
+	// Display server supports interaction with screen reader or Braille display. Linux (X11/Wayland), macOS, Windows
+	FeatureAccessibilityScreenReader Feature = 34
+)
+
+type AccessibilityRole int //gd:DisplayServer.AccessibilityRole
+
+const (
+	// Unknown or custom role.
+	RoleUnknown AccessibilityRole = 0
+	// Default dialog button element.
+	RoleDefaultButton AccessibilityRole = 1
+	// Audio player element.
+	RoleAudio AccessibilityRole = 2
+	// Video player element.
+	RoleVideo AccessibilityRole = 3
+	// Non-editable text label.
+	RoleStaticText AccessibilityRole = 4
+	// Container element. Elements with this role are used for internal structure and ignored by screen readers.
+	RoleContainer AccessibilityRole = 5
+	// Panel container element.
+	RolePanel AccessibilityRole = 6
+	// Button element.
+	RoleButton AccessibilityRole = 7
+	// Link element.
+	RoleLink AccessibilityRole = 8
+	// Check box element.
+	RoleCheckBox AccessibilityRole = 9
+	// Radio button element.
+	RoleRadioButton AccessibilityRole = 10
+	// Check button element.
+	RoleCheckButton AccessibilityRole = 11
+	// Scroll bar element.
+	RoleScrollBar AccessibilityRole = 12
+	// Scroll container element.
+	RoleScrollView AccessibilityRole = 13
+	// Container splitter handle element.
+	RoleSplitter AccessibilityRole = 14
+	// Slider element.
+	RoleSlider AccessibilityRole = 15
+	// Spin box element.
+	RoleSpinButton AccessibilityRole = 16
+	// Progress indicator element.
+	RoleProgressIndicator AccessibilityRole = 17
+	// Editable text field element.
+	RoleTextField AccessibilityRole = 18
+	// Multiline editable text field element.
+	RoleMultilineTextField AccessibilityRole = 19
+	// Color picker element.
+	RoleColorPicker AccessibilityRole = 20
+	// Table element.
+	RoleTable AccessibilityRole = 21
+	// Table/tree cell element.
+	RoleCell AccessibilityRole = 22
+	// Table/tree row element.
+	RoleRow AccessibilityRole = 23
+	// Table/tree row group element.
+	RoleRowGroup AccessibilityRole = 24
+	// Table/tree row header element.
+	RoleRowHeader AccessibilityRole = 25
+	// Table/tree column header element.
+	RoleColumnHeader AccessibilityRole = 26
+	// Tree view element.
+	RoleTree AccessibilityRole = 27
+	// Tree view item element.
+	RoleTreeItem AccessibilityRole = 28
+	// List element.
+	RoleList AccessibilityRole = 29
+	// List item element.
+	RoleListItem AccessibilityRole = 30
+	// List view element.
+	RoleListBox AccessibilityRole = 31
+	// List view item element.
+	RoleListBoxOption AccessibilityRole = 32
+	// Tab bar element.
+	RoleTabBar AccessibilityRole = 33
+	// Tab bar item element.
+	RoleTab AccessibilityRole = 34
+	// Tab panel element.
+	RoleTabPanel AccessibilityRole = 35
+	// Menu bar element.
+	RoleMenuBar AccessibilityRole = 36
+	// Popup menu element.
+	RoleMenu AccessibilityRole = 37
+	// Popup menu item element.
+	RoleMenuItem AccessibilityRole = 38
+	// Popup menu check button item element.
+	RoleMenuItemCheckBox AccessibilityRole = 39
+	// Popup menu radio button item element.
+	RoleMenuItemRadio AccessibilityRole = 40
+	// Image element.
+	RoleImage AccessibilityRole = 41
+	// Window element.
+	RoleWindow AccessibilityRole = 42
+	// Embedded window title bar element.
+	RoleTitleBar AccessibilityRole = 43
+	// Dialog window element.
+	RoleDialog AccessibilityRole = 44
+	// Tooltip element.
+	RoleTooltip AccessibilityRole = 45
+)
+
+type AccessibilityPopupType int //gd:DisplayServer.AccessibilityPopupType
+
+const (
+	// Popup menu.
+	PopupMenu AccessibilityPopupType = 0
+	// Popup list.
+	PopupList AccessibilityPopupType = 1
+	// Popup tree view.
+	PopupTree AccessibilityPopupType = 2
+	// Popup dialog.
+	PopupDialog AccessibilityPopupType = 3
+)
+
+type AccessibilityFlags int //gd:DisplayServer.AccessibilityFlags
+
+const (
+	// Element is hidden for accessibility tools.
+	FlagHidden AccessibilityFlags = 0
+	// Element is support multiple item selection.
+	FlagMultiselectable AccessibilityFlags = 1
+	// Element require user input.
+	FlagRequired AccessibilityFlags = 2
+	// Element is a visited link.
+	FlagVisited AccessibilityFlags = 3
+	// Element content is not ready (e.g. loading).
+	FlagBusy AccessibilityFlags = 4
+	// Element is modal window.
+	FlagModal AccessibilityFlags = 5
+	// Element allows touches to be passed through when a screen reader is in touch exploration mode.
+	FlagTouchPassthrough AccessibilityFlags = 6
+	// Element is text field with selectable but read-only text.
+	FlagReadonly AccessibilityFlags = 7
+	// Element is disabled.
+	FlagDisabled AccessibilityFlags = 8
+	// Element clips children.
+	FlagClipsChildren AccessibilityFlags = 9
+)
+
+type AccessibilityAction int //gd:DisplayServer.AccessibilityAction
+
+const (
+	// Single click action, callback argument is not set.
+	ActionClick AccessibilityAction = 0
+	// Focus action, callback argument is not set.
+	ActionFocus AccessibilityAction = 1
+	// Blur action, callback argument is not set.
+	ActionBlur AccessibilityAction = 2
+	// Collapse action, callback argument is not set.
+	ActionCollapse AccessibilityAction = 3
+	// Expand action, callback argument is not set.
+	ActionExpand AccessibilityAction = 4
+	// Decrement action, callback argument is not set.
+	ActionDecrement AccessibilityAction = 5
+	// Increment action, callback argument is not set.
+	ActionIncrement AccessibilityAction = 6
+	// Hide tooltip action, callback argument is not set.
+	ActionHideTooltip AccessibilityAction = 7
+	// Show tooltip action, callback argument is not set.
+	ActionShowTooltip AccessibilityAction = 8
+	// Set text selection action, callback argument is set to data structure with the following keys:
+	//
+	// - "start_element" accessibility element of the selection start.
+	//
+	// - "start_char" character offset relative to the accessibility element of the selection start.
+	//
+	// - "end_element" accessibility element of the selection end.
+	//
+	// - "end_char" character offset relative to the accessibility element of the selection end.
+	ActionSetTextSelection AccessibilityAction = 9
+	// Replace text action, callback argument is set to string with the replacement text.
+	ActionReplaceSelectedText AccessibilityAction = 10
+	// Scroll backward action, callback argument is not set.
+	ActionScrollBackward AccessibilityAction = 11
+	// Scroll down action, callback argument is set to [AccessibilityScrollUnit].
+	ActionScrollDown AccessibilityAction = 12
+	// Scroll forward action, callback argument is not set.
+	ActionScrollForward AccessibilityAction = 13
+	// Scroll left action, callback argument is set to [AccessibilityScrollUnit].
+	ActionScrollLeft AccessibilityAction = 14
+	// Scroll right action, callback argument is set to [AccessibilityScrollUnit].
+	ActionScrollRight AccessibilityAction = 15
+	// Scroll up action, callback argument is set to [AccessibilityScrollUnit].
+	ActionScrollUp AccessibilityAction = 16
+	// Scroll into view action, callback argument is set to [AccessibilityScrollHint].
+	ActionScrollIntoView AccessibilityAction = 17
+	// Scroll to point action, callback argument is set to [Vector2.XY] with the relative point coordinates.
+	ActionScrollToPoint AccessibilityAction = 18
+	// Set scroll offset action, callback argument is set to [Vector2.XY] with the scroll offset.
+	ActionSetScrollOffset AccessibilityAction = 19
+	// Set value action, callback argument is set to string or number with the new value.
+	ActionSetValue AccessibilityAction = 20
+	// Show context menu action, callback argument is not set.
+	ActionShowContextMenu AccessibilityAction = 21
+	// Custom action, callback argument is set to the integer action ID.
+	ActionCustom AccessibilityAction = 22
+)
+
+type AccessibilityLiveMode int //gd:DisplayServer.AccessibilityLiveMode
+
+const (
+	// Indicates that updates to the live region should not be presented.
+	LiveOff AccessibilityLiveMode = 0
+	// Indicates that updates to the live region should be presented at the next opportunity (for example at the end of speaking the current sentence).
+	LivePolite AccessibilityLiveMode = 1
+	// Indicates that updates to the live region have the highest priority and should be presented immediately.
+	LiveAssertive AccessibilityLiveMode = 2
+)
+
+type AccessibilityScrollUnit int //gd:DisplayServer.AccessibilityScrollUnit
+
+const (
+	// The amount by which to scroll. A single item of a list, line of text.
+	ScrollUnitItem AccessibilityScrollUnit = 0
+	// The amount by which to scroll. A single page.
+	ScrollUnitPage AccessibilityScrollUnit = 1
+)
+
+type AccessibilityScrollHint int //gd:DisplayServer.AccessibilityScrollHint
+
+const (
+	// A preferred position for the node scrolled into view. Top-left edge of the scroll container.
+	ScrollHintTopLeft AccessibilityScrollHint = 0
+	// A preferred position for the node scrolled into view. Bottom-right edge of the scroll container.
+	ScrollHintBottomRight AccessibilityScrollHint = 1
+	// A preferred position for the node scrolled into view. Top edge of the scroll container.
+	ScrollHintTopEdge AccessibilityScrollHint = 2
+	// A preferred position for the node scrolled into view. Bottom edge of the scroll container.
+	ScrollHintBottomEdge AccessibilityScrollHint = 3
+	// A preferred position for the node scrolled into view. Left edge of the scroll container.
+	ScrollHintLeftEdge AccessibilityScrollHint = 4
+	// A preferred position for the node scrolled into view. Right edge of the scroll container.
+	ScrollHintRightEdge AccessibilityScrollHint = 5
 )
 
 type MouseModeValue int //gd:DisplayServer.MouseMode
@@ -6000,8 +7993,6 @@ const (
 	//
 	// On Android: This enables immersive mode.
 	//
-	// On Windows: Multi-window full-screen mode has a 1px border of the [graphics.gd/classdb/ProjectSettings] "rendering/environment/defaults/default_clear_color" color.
-	//
 	// On macOS: A new desktop is used to display the running project.
 	//
 	// Note: Regardless of the platform, enabling full screen will change the window size to match the monitor's size. Therefore, make sure your project supports [multiple resolutions] when enabling full screen mode.
@@ -6011,6 +8002,8 @@ const (
 	// A single window full screen mode. This mode has less overhead, but only one window can be open on a given screen at a time (opening a child window or application switching will trigger a full screen transition).
 	//
 	// Full screen window covers the entire display area of a screen and has no border or decorations. The display's video mode is not changed.
+	//
+	// Note: This mode might not work with screen recording software.
 	//
 	// On Android: This enables immersive mode.
 	//
@@ -6042,6 +8035,8 @@ const (
 	// Note: This flag has no effect if [Instance.IsWindowTransparencyAvailable] returns false.
 	//
 	// Note: Transparency support is implemented on Linux (X11/Wayland), macOS, and Windows, but availability might vary depending on GPU driver, display manager, and compositor capabilities.
+	//
+	// Note: Transparency support is implemented on Android, but can only be enabled via [graphics.gd/classdb/ProjectSettings] "display/window/per_pixel_transparency/allowed". This flag has no effect on Android.
 	WindowFlagTransparent WindowFlags = 3
 	// The window can't be focused. No-focus window will ignore all input, except mouse clicks.
 	WindowFlagNoFocus WindowFlags = 4
@@ -6061,14 +8056,24 @@ const (
 	//
 	// Note: This flag is implemented only on Windows (11).
 	WindowFlagSharpCorners WindowFlags = 8
-	// Windows is excluded from screenshots taken by [Instance.ScreenGetImage], [Instance.ScreenGetImageRect], and [Instance.ScreenGetPixel].
+	// Window is excluded from screenshots taken by [Instance.ScreenGetImage], [Instance.ScreenGetImageRect], and [Instance.ScreenGetPixel].
+	//
+	// Note: This flag is implemented on macOS and Windows (10, 20H1).
+	//
+	// Note: Setting this flag will prevent standard screenshot methods from capturing a window image, but does NOT guarantee that other apps won't be able to capture an image. It should not be used as a DRM or security measure.
+	WindowFlagExcludeFromCapture WindowFlags = 9
+	// Signals the window manager that this window is supposed to be an implementation-defined "popup" (usually a floating, borderless, untileable and immovable child window).
+	WindowFlagPopupWmHint WindowFlags = 10
+	// Window minimize button is disabled.
 	//
 	// Note: This flag is implemented on macOS and Windows.
+	WindowFlagMinimizeDisabled WindowFlags = 11
+	// Window maximize button is disabled.
 	//
-	// Note: Setting this flag will NOT prevent other apps from capturing an image, it should not be used as a security measure.
-	WindowFlagExcludeFromCapture WindowFlags = 9
+	// Note: This flag is implemented on macOS and Windows.
+	WindowFlagMaximizeDisabled WindowFlags = 12
 	// Max value of the [WindowFlags].
-	WindowFlagMax WindowFlags = 10
+	WindowFlagMax WindowFlags = 13
 )
 
 type WindowEvent int //gd:DisplayServer.WindowEvent
@@ -6090,12 +8095,16 @@ const (
 	WindowEventGoBackRequest WindowEvent = 5
 	// Sent when the window is moved to the display with different DPI, or display DPI is changed.
 	//
-	// Note: This flag is implemented only on macOS.
+	// Note: This flag is implemented only on macOS and Linux (Wayland).
 	WindowEventDpiChange WindowEvent = 6
 	// Sent when the window title bar decoration is changed (e.g. [WindowFlagExtendToTitle] is set or window entered/exited full screen mode).
 	//
 	// Note: This flag is implemented only on macOS.
 	WindowEventTitlebarChange WindowEvent = 7
+	// Sent when the window has been forcibly closed by the Display Server. The window shall immediately hide and clean any internal rendering references.
+	//
+	// Note: This flag is implemented only on Linux (Wayland).
+	WindowEventForceClose WindowEvent = 8
 )
 
 type WindowResizeEdge int //gd:DisplayServer.WindowResizeEdge
@@ -6219,9 +8228,10 @@ type TextToSpeechVoice struct {
 	Language string `gd:"language"`
 }
 type StatusIndicator int
-type Window int
 type Screen int
+type Window int
 
+const InvalidScreen Screen = -1               //gd:DisplayServer.INVALID_SCREEN
 const ScreenWithMouseFocus Screen = -4        //gd:DisplayServer.SCREEN_WITH_MOUSE_FOCUS
 const ScreenWithKeyboardFocus Screen = -3     //gd:DisplayServer.SCREEN_WITH_KEYBOARD_FOCUS
 const ScreenPrimary Screen = -2               //gd:DisplayServer.SCREEN_PRIMARY

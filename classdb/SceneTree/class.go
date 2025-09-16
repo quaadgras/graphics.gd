@@ -86,6 +86,8 @@ var sname gdextension.StringName
 var methods struct {
 	get_root                          gdextension.MethodForClass `hash:"1757182445"`
 	has_group                         gdextension.MethodForClass `hash:"2619796661"`
+	is_accessibility_enabled          gdextension.MethodForClass `hash:"36873697"`
+	is_accessibility_supported        gdextension.MethodForClass `hash:"36873697"`
 	is_auto_accept_quit               gdextension.MethodForClass `hash:"36873697"`
 	set_auto_accept_quit              gdextension.MethodForClass `hash:"2586408642"`
 	is_quit_on_go_back                gdextension.MethodForClass `hash:"36873697"`
@@ -160,6 +162,20 @@ func (self Instance) HasGroup(name string) bool { //gd:SceneTree.has_group
 }
 
 /*
+Returns true if accessibility features are enabled, and accessibility information updates are actively processed.
+*/
+func (self Instance) IsAccessibilityEnabled() bool { //gd:SceneTree.is_accessibility_enabled
+	return bool(Advanced(self).IsAccessibilityEnabled())
+}
+
+/*
+Returns true if accessibility features are supported by the OS and enabled in project settings.
+*/
+func (self Instance) IsAccessibilitySupported() bool { //gd:SceneTree.is_accessibility_supported
+	return bool(Advanced(self).IsAccessibilitySupported())
+}
+
+/*
 Returns a new [graphics.gd/classdb/SceneTreeTimer]. After 'time_sec' in seconds have passed, the timer will emit [Instance.OnScenetreetimer.Timeout] and will be automatically freed.
 
 If 'process_always' is false, the timer will be paused when setting [graphics.gd/classdb/SceneTree.Instance.Paused] to true.
@@ -217,7 +233,7 @@ func (self Instance) GetNodeCount() int { //gd:SceneTree.get_node_count
 }
 
 /*
-Returns how many frames have been processed, since the application started. This is not a measurement of elapsed time.
+Returns how many physics process steps have been processed, since the application started. This is not a measurement of elapsed time. See also [Instance.OnPhysicsFrame]. For the number of frames rendered, see [graphics.gd/classdb/Engine.GetProcessFrames].
 */
 func (self Instance) GetFrame() int { //gd:SceneTree.get_frame
 	return int(int(Advanced(self).GetFrame()))
@@ -366,6 +382,8 @@ Note: Operations happen in the following order when [Instance.ChangeSceneToPacke
 2. At the end of the frame, the formerly current scene, already removed from the tree, will be deleted (freed from memory) and then the new scene will be instantiated and added to the tree. [graphics.gd/classdb/Node.Instance.GetTree] and [Instance.CurrentScene] will be back to working as usual.
 
 This ensures that both scenes aren't running at the same time, while still freeing the previous scene in a safe way similar to [graphics.gd/classdb/Node.Instance.QueueFree].
+
+If you want to reliably access the new scene, await the [Instance.OnSceneChanged] signal.
 */
 func (self Instance) ChangeSceneToPacked(packed_scene PackedScene.Instance) error { //gd:SceneTree.change_scene_to_packed
 	return error(gd.ToError(Advanced(self).ChangeSceneToPacked(packed_scene)))
@@ -391,6 +409,8 @@ func (self Instance) UnloadCurrentScene() { //gd:SceneTree.unload_current_scene
 Sets a custom [graphics.gd/classdb/MultiplayerAPI] with the given 'root_path' (controlling also the relative subpaths), or override the default one if 'root_path' is empty.
 
 Note: No [graphics.gd/classdb/MultiplayerAPI] must be configured for the subpath containing 'root_path', nested custom multiplayers are not allowed. I.e. if one is configured for "/root/Foo" setting one for "/root/Foo/Bar" will cause an error.
+
+Note: [Instance.SetMultiplayer] should be called before the child nodes are ready at the given 'root_path'. If multiplayer nodes like [graphics.gd/classdb/MultiplayerSpawner] or [graphics.gd/classdb/MultiplayerSynchronizer] are added to the tree before the custom multiplayer API is set, they will not work.
 */
 func (self Instance) SetMultiplayer(multiplayer MultiplayerAPI.Instance) { //gd:SceneTree.set_multiplayer
 	Advanced(self).SetMultiplayer(multiplayer, Path.ToNode(String.New("")))
@@ -400,6 +420,8 @@ func (self Instance) SetMultiplayer(multiplayer MultiplayerAPI.Instance) { //gd:
 Sets a custom [graphics.gd/classdb/MultiplayerAPI] with the given 'root_path' (controlling also the relative subpaths), or override the default one if 'root_path' is empty.
 
 Note: No [graphics.gd/classdb/MultiplayerAPI] must be configured for the subpath containing 'root_path', nested custom multiplayers are not allowed. I.e. if one is configured for "/root/Foo" setting one for "/root/Foo/Bar" will cause an error.
+
+Note: [Instance.SetMultiplayer] should be called before the child nodes are ready at the given 'root_path'. If multiplayer nodes like [graphics.gd/classdb/MultiplayerSpawner] or [graphics.gd/classdb/MultiplayerSynchronizer] are added to the tree before the custom multiplayer API is set, they will not work.
 */
 func (self Expanded) SetMultiplayer(multiplayer MultiplayerAPI.Instance, root_path string) { //gd:SceneTree.set_multiplayer
 	Advanced(self).SetMultiplayer(multiplayer, Path.ToNode(String.New(root_path)))
@@ -569,6 +591,26 @@ func (self class) HasGroup(name String.Name) bool { //gd:SceneTree.has_group
 	return ret
 }
 
+/*
+Returns true if accessibility features are enabled, and accessibility information updates are actively processed.
+*/
+//go:nosplit
+func (self class) IsAccessibilityEnabled() bool { //gd:SceneTree.is_accessibility_enabled
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_accessibility_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns true if accessibility features are supported by the OS and enabled in project settings.
+*/
+//go:nosplit
+func (self class) IsAccessibilitySupported() bool { //gd:SceneTree.is_accessibility_supported
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_accessibility_supported, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
 //go:nosplit
 func (self class) IsAutoAcceptQuit() bool { //gd:SceneTree.is_auto_accept_quit
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_accept_quit, gdextension.SizeBool, &struct{}{})
@@ -713,7 +755,7 @@ func (self class) GetNodeCount() int64 { //gd:SceneTree.get_node_count
 }
 
 /*
-Returns how many frames have been processed, since the application started. This is not a measurement of elapsed time.
+Returns how many physics process steps have been processed, since the application started. This is not a measurement of elapsed time. See also [Instance.OnPhysicsFrame]. For the number of frames rendered, see [graphics.gd/classdb/Engine.GetProcessFrames].
 */
 //go:nosplit
 func (self class) GetFrame() int64 { //gd:SceneTree.get_frame
@@ -924,6 +966,8 @@ Note: Operations happen in the following order when [Instance.ChangeSceneToPacke
 2. At the end of the frame, the formerly current scene, already removed from the tree, will be deleted (freed from memory) and then the new scene will be instantiated and added to the tree. [graphics.gd/classdb/Node.Instance.GetTree] and [Instance.CurrentScene] will be back to working as usual.
 
 This ensures that both scenes aren't running at the same time, while still freeing the previous scene in a safe way similar to [graphics.gd/classdb/Node.Instance.QueueFree].
+
+If you want to reliably access the new scene, await the [Instance.OnSceneChanged] signal.
 */
 //go:nosplit
 func (self class) ChangeSceneToPacked(packed_scene [1]gdclass.PackedScene) Error.Code { //gd:SceneTree.change_scene_to_packed
@@ -956,6 +1000,8 @@ func (self class) UnloadCurrentScene() { //gd:SceneTree.unload_current_scene
 Sets a custom [graphics.gd/classdb/MultiplayerAPI] with the given 'root_path' (controlling also the relative subpaths), or override the default one if 'root_path' is empty.
 
 Note: No [graphics.gd/classdb/MultiplayerAPI] must be configured for the subpath containing 'root_path', nested custom multiplayers are not allowed. I.e. if one is configured for "/root/Foo" setting one for "/root/Foo/Bar" will cause an error.
+
+Note: [Instance.SetMultiplayer] should be called before the child nodes are ready at the given 'root_path'. If multiplayer nodes like [graphics.gd/classdb/MultiplayerSpawner] or [graphics.gd/classdb/MultiplayerSynchronizer] are added to the tree before the custom multiplayer API is set, they will not work.
 */
 //go:nosplit
 func (self class) SetMultiplayer(multiplayer [1]gdclass.MultiplayerAPI, root_path Path.ToNode) { //gd:SceneTree.set_multiplayer
@@ -996,6 +1042,18 @@ func (self Instance) OnTreeChanged(cb func(), flags ...Signal.Flags) {
 
 func (self class) TreeChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeChanged`))))
+}
+
+func (self Instance) OnSceneChanged(cb func(), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("scene_changed"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) SceneChanged() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SceneChanged`))))
 }
 
 func (self Instance) OnTreeProcessModeChanged(cb func(), flags ...Signal.Flags) {

@@ -1035,6 +1035,56 @@ func Replace[S Any, T Any](s S, old, new T) S { //gd:String.replacen
 	return As[S](b)
 }
 
+// ReplaceRune replaces all occurrences of the Unicode character with rune 'key' with the Unicode character with rune 'with'. Faster version of
+// [Replace] when the key is only one character long (note that some characters, like compound letters and emoji, can be composed of multiple runes
+// and will not work with this method).
+func ReplaceRune[S Any](s S, key, with Rune) S { //gd:String.replace_char
+	return As[S](strings.ReplaceAll(As[string](s), string(key), string(with)))
+}
+
+// ReplaceRunes replaces any occurrence of the runes in 'keys' with the Unicode character with rune 'with'. See also [ReplaceRune].
+func ReplaceRunes[S Any, K Any](s S, keys K, with Rune) S { //gd:String.replace_chars
+	var cutset = As[string](keys)
+	var replaced = builder()
+	for _, c := range Runes(s) {
+		if strings.ContainsRune(cutset, rune(c)) {
+			replaced = Append(replaced, New(string(with)))
+		} else {
+			replaced = Append(replaced, New(string(c)))
+		}
+	}
+	return As[S](replaced)
+}
+
+// RemoveRune removes all occurrences of the Unicode character with code what. Faster version of replace() when the key is only one
+// character long and the replacement is "".
+func RemoveRune[S Any](s S, what Rune) S { //gd:String.remove_char
+	var replaced = builder()
+	for _, c := range Runes(s) {
+		if c != what {
+			replaced = Append(replaced, New(string(c)))
+		}
+	}
+	return As[S](replaced)
+}
+
+// RemoveRunes removes any occurrence of the runes in 'what'. See also [RemoveRune].
+func RemoveRunes[S Any, K Any](s S, what K) S { //gd:String.remove_chars
+	var cutset = As[string](what)
+	var replaced = builder()
+	for _, c := range Runes(s) {
+		if !strings.ContainsRune(cutset, rune(c)) {
+			replaced = Append(replaced, New(string(c)))
+		}
+	}
+	return As[S](replaced)
+}
+
+// ToKebabCase converts a string to kebab-case (also known as lisp-case or dash-case).
+func ToKebabCase[S Any](s S) S { //gd:String.to_kebab_case
+	return Replace(ToSnakeCase(s), "_", "-")
+}
+
 // Reverse returns the copy of this string in reverse order. This operation works on
 // unicode codepoints, rather than sequences of codepoints, and may break things like
 // compound letters or emojis.
@@ -1318,7 +1368,7 @@ func UTF8[S Any](s []byte) string { //gd:PackedByteArray.get_string_from_utf8
 }
 
 // ToUTF16 converts the string to a UTF-16.
-func ToUTF16[S Any](s S) []byte { //gd:String.to_utf16_buffer String.to_wchar_buffer
+func ToUTF16[S Any](s S) []byte { //gd:String.to_utf16_buffer String.to_wchar_buffer String.to_multibyte_char_buffer
 	var result bytes.Buffer
 	for _, r := range Runes(s) {
 		a, b := utf16.EncodeRune(rune(r))
@@ -1331,7 +1381,7 @@ func ToUTF16[S Any](s S) []byte { //gd:String.to_utf16_buffer String.to_wchar_bu
 // UTF16 converts UTF-16 encoded array to String. If the BOM is missing, system endianness
 // is assumed. Returns empty string if source array is not valid UTF-16 string. This is
 // the inverse of [ToUTF16].
-func UTF16[S Any](s []byte) string { //gd:PackedByteArray.get_string_from_utf16 PackedByteArray.get_string_from_wchar
+func UTF16[S Any](s []byte) string { //gd:PackedByteArray.get_string_from_utf16 PackedByteArray.get_string_from_wchar PackedByteArray.get_string_from_multibyte_char
 	if len(s)%2 != 0 {
 		return ""
 	}
@@ -1422,6 +1472,12 @@ func EncodeURI[S Any](s S) S { //gd:String.uri_encode
 // decode the parameters in a URL when receiving an HTTP request. See also [EncodeURI].
 func DecodeURI[S Any](s S) S { //gd:String.uri_decode
 	decoded, _ := url.QueryUnescape(As[string](s))
+	return As[S](decoded)
+}
+
+// DecodeFileURI recodes the file path from its URL-encoded format. Unlike uri_decode() this method leaves + as is.
+func DecodeFileURI[S Any](s S) S { //gd:String.uri_file_decode
+	decoded, _ := url.PathUnescape(As[string](s))
 	return As[S](decoded)
 }
 

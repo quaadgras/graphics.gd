@@ -98,6 +98,8 @@ var methods struct {
 	propagate_check                           gdextension.MethodForClass `hash:"972357352"`
 	set_text                                  gdextension.MethodForClass `hash:"501894301"`
 	get_text                                  gdextension.MethodForClass `hash:"844755477"`
+	set_description                           gdextension.MethodForClass `hash:"501894301"`
+	get_description                           gdextension.MethodForClass `hash:"844755477"`
 	set_text_direction                        gdextension.MethodForClass `hash:"1707680378"`
 	get_text_direction                        gdextension.MethodForClass `hash:"4235602388"`
 	set_autowrap_mode                         gdextension.MethodForClass `hash:"3633006561"`
@@ -161,7 +163,7 @@ var methods struct {
 	set_custom_as_button                      gdextension.MethodForClass `hash:"300928843"`
 	is_custom_set_as_button                   gdextension.MethodForClass `hash:"1116898809"`
 	clear_buttons                             gdextension.MethodForClass `hash:"3218959716"`
-	add_button                                gdextension.MethodForClass `hash:"1688223362"`
+	add_button                                gdextension.MethodForClass `hash:"973481897"`
 	get_button_count                          gdextension.MethodForClass `hash:"923996154"`
 	get_button_tooltip_text                   gdextension.MethodForClass `hash:"1391810591"`
 	get_button_id                             gdextension.MethodForClass `hash:"3175239445"`
@@ -171,6 +173,7 @@ var methods struct {
 	set_button_tooltip_text                   gdextension.MethodForClass `hash:"2285447957"`
 	set_button                                gdextension.MethodForClass `hash:"176101966"`
 	erase_button                              gdextension.MethodForClass `hash:"3937882851"`
+	set_button_description                    gdextension.MethodForClass `hash:"2285447957"`
 	set_button_disabled                       gdextension.MethodForClass `hash:"1383440665"`
 	set_button_color                          gdextension.MethodForClass `hash:"3733378741"`
 	is_button_disabled                        gdextension.MethodForClass `hash:"2522259332"`
@@ -226,7 +229,7 @@ type Any interface {
 }
 
 /*
-Sets the given column's cell mode to 'mode'. This determines how the cell is displayed and edited. See [TreeCellMode] constants for details.
+Sets the given column's cell mode to 'mode'. This determines how the cell is displayed and edited.
 */
 func (self Instance) SetCellMode(column int, mode TreeCellMode) { //gd:TreeItem.set_cell_mode
 	Advanced(self).SetCellMode(int64(column), mode)
@@ -327,6 +330,20 @@ Returns the given column's text.
 */
 func (self Instance) GetText(column int) string { //gd:TreeItem.get_text
 	return string(Advanced(self).GetText(int64(column)).String())
+}
+
+/*
+Sets the given column's description for assistive apps.
+*/
+func (self Instance) SetDescription(column int, description string) { //gd:TreeItem.set_description
+	Advanced(self).SetDescription(int64(column), String.New(description))
+}
+
+/*
+Returns the given column's description for assistive apps.
+*/
+func (self Instance) GetDescription(column int) string { //gd:TreeItem.get_description
+	return string(Advanced(self).GetDescription(int64(column)).String())
 }
 
 /*
@@ -572,7 +589,7 @@ func (self Instance) SetCustomDrawCallback(column int, callback func(item Instan
 Returns the custom callback of column 'column'.
 */
 func (self Instance) GetCustomDrawCallback(column int) Callable.Function { //gd:TreeItem.get_custom_draw_callback
-	return Callable.Function(Advanced(self).GetCustomDrawCallback(int64(column)))
+	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(Advanced(self).GetCustomDrawCallback(int64(column)))))
 }
 
 /*
@@ -762,17 +779,17 @@ func (self Instance) ClearButtons() { //gd:TreeItem.clear_buttons
 }
 
 /*
-Adds a button with [graphics.gd/classdb/Texture2D] 'button' to the end of the cell at column 'column'. The 'id' is used to identify the button in the according [Instance.OnTree.ButtonClicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [Instance.GetButtonCount] immediately before this method. Optionally, the button can be 'disabled' and have a 'tooltip_text'.
+Adds a button with [graphics.gd/classdb/Texture2D] 'button' to the end of the cell at column 'column'. The 'id' is used to identify the button in the according [Instance.OnTree.ButtonClicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [Instance.GetButtonCount] immediately before this method. Optionally, the button can be 'disabled' and have a 'tooltip_text'. 'description' is used as the button description for assistive apps.
 */
 func (self Instance) AddButton(column int, button Texture2D.Instance) { //gd:TreeItem.add_button
-	Advanced(self).AddButton(int64(column), button, int64(-1), false, String.New(""))
+	Advanced(self).AddButton(int64(column), button, int64(-1), false, String.New(""), String.New(""))
 }
 
 /*
-Adds a button with [graphics.gd/classdb/Texture2D] 'button' to the end of the cell at column 'column'. The 'id' is used to identify the button in the according [Instance.OnTree.ButtonClicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [Instance.GetButtonCount] immediately before this method. Optionally, the button can be 'disabled' and have a 'tooltip_text'.
+Adds a button with [graphics.gd/classdb/Texture2D] 'button' to the end of the cell at column 'column'. The 'id' is used to identify the button in the according [Instance.OnTree.ButtonClicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [Instance.GetButtonCount] immediately before this method. Optionally, the button can be 'disabled' and have a 'tooltip_text'. 'description' is used as the button description for assistive apps.
 */
-func (self Expanded) AddButton(column int, button Texture2D.Instance, id int, disabled bool, tooltip_text string) { //gd:TreeItem.add_button
-	Advanced(self).AddButton(int64(column), button, int64(id), disabled, String.New(tooltip_text))
+func (self Expanded) AddButton(column int, button Texture2D.Instance, id int, disabled bool, tooltip_text string, description string) { //gd:TreeItem.add_button
+	Advanced(self).AddButton(int64(column), button, int64(id), disabled, String.New(tooltip_text), String.New(description))
 }
 
 /*
@@ -839,6 +856,13 @@ func (self Instance) EraseButton(column int, button_index int) { //gd:TreeItem.e
 }
 
 /*
+Sets the given column's button description at index 'button_index' for assistive apps.
+*/
+func (self Instance) SetButtonDescription(column int, button_index int, description string) { //gd:TreeItem.set_button_description
+	Advanced(self).SetButtonDescription(int64(column), int64(button_index), String.New(description))
+}
+
+/*
 If true, disables the button at index 'button_index' in the given 'column'.
 */
 func (self Instance) SetButtonDisabled(column int, button_index int, disabled bool) { //gd:TreeItem.set_button_disabled
@@ -874,7 +898,7 @@ func (self Instance) GetTooltipText(column int) string { //gd:TreeItem.get_toolt
 }
 
 /*
-Sets the given column's text alignment. See [HorizontalAlignment] for possible values.
+Sets the given column's text alignment to 'text_alignment'.
 */
 func (self Instance) SetTextAlignment(column int, text_alignment GUI.HorizontalAlignment) { //gd:TreeItem.set_text_alignment
 	Advanced(self).SetTextAlignment(int64(column), text_alignment)
@@ -1169,7 +1193,7 @@ func (self Instance) SetCustomMinimumHeight(value int) {
 }
 
 /*
-Sets the given column's cell mode to 'mode'. This determines how the cell is displayed and edited. See [TreeCellMode] constants for details.
+Sets the given column's cell mode to 'mode'. This determines how the cell is displayed and edited.
 */
 //go:nosplit
 func (self class) SetCellMode(column int64, mode TreeCellMode) { //gd:TreeItem.set_cell_mode
@@ -1307,6 +1331,27 @@ Returns the given column's text.
 //go:nosplit
 func (self class) GetText(column int64) String.Readable { //gd:TreeItem.get_text
 	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
+}
+
+/*
+Sets the given column's description for assistive apps.
+*/
+//go:nosplit
+func (self class) SetDescription(column int64, description String.Readable) { //gd:TreeItem.set_description
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_description, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+		column      int64
+		description gdextension.String
+	}{column, pointers.Get(gd.InternalString(description))})
+}
+
+/*
+Returns the given column's description for assistive apps.
+*/
+//go:nosplit
+func (self class) GetDescription(column int64) String.Readable { //gd:TreeItem.get_description
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_description, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1941,17 +1986,18 @@ func (self class) ClearButtons() { //gd:TreeItem.clear_buttons
 }
 
 /*
-Adds a button with [graphics.gd/classdb/Texture2D] 'button' to the end of the cell at column 'column'. The 'id' is used to identify the button in the according [Instance.OnTree.ButtonClicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [Instance.GetButtonCount] immediately before this method. Optionally, the button can be 'disabled' and have a 'tooltip_text'.
+Adds a button with [graphics.gd/classdb/Texture2D] 'button' to the end of the cell at column 'column'. The 'id' is used to identify the button in the according [Instance.OnTree.ButtonClicked] signal and can be different from the buttons index. If not specified, the next available index is used, which may be retrieved by calling [Instance.GetButtonCount] immediately before this method. Optionally, the button can be 'disabled' and have a 'tooltip_text'. 'description' is used as the button description for assistive apps.
 */
 //go:nosplit
-func (self class) AddButton(column int64, button [1]gdclass.Texture2D, id int64, disabled bool, tooltip_text String.Readable) { //gd:TreeItem.add_button
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_button, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeString<<20), &struct {
+func (self class) AddButton(column int64, button [1]gdclass.Texture2D, id int64, disabled bool, tooltip_text String.Readable, description String.Readable) { //gd:TreeItem.add_button
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_button, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeString<<20)|(gdextension.SizeString<<24), &struct {
 		column       int64
 		button       gdextension.Object
 		id           int64
 		disabled     bool
 		tooltip_text gdextension.String
-	}{column, gdextension.Object(gd.ObjectChecked(button[0].AsObject())), id, disabled, pointers.Get(gd.InternalString(tooltip_text))})
+		description  gdextension.String
+	}{column, gdextension.Object(gd.ObjectChecked(button[0].AsObject())), id, disabled, pointers.Get(gd.InternalString(tooltip_text)), pointers.Get(gd.InternalString(description))})
 }
 
 /*
@@ -2065,6 +2111,18 @@ func (self class) EraseButton(column int64, button_index int64) { //gd:TreeItem.
 }
 
 /*
+Sets the given column's button description at index 'button_index' for assistive apps.
+*/
+//go:nosplit
+func (self class) SetButtonDescription(column int64, button_index int64, description String.Readable) { //gd:TreeItem.set_button_description
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_description, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+		column       int64
+		button_index int64
+		description  gdextension.String
+	}{column, button_index, pointers.Get(gd.InternalString(description))})
+}
+
+/*
 If true, disables the button at index 'button_index' in the given 'column'.
 */
 //go:nosplit
@@ -2123,7 +2181,7 @@ func (self class) GetTooltipText(column int64) String.Readable { //gd:TreeItem.g
 }
 
 /*
-Sets the given column's text alignment. See [HorizontalAlignment] for possible values.
+Sets the given column's text alignment to 'text_alignment'.
 */
 //go:nosplit
 func (self class) SetTextAlignment(column int64, text_alignment GUI.HorizontalAlignment) { //gd:TreeItem.set_text_alignment

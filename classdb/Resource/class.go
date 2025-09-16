@@ -91,6 +91,7 @@ var methods struct {
 	get_scene_unique_id      gdextension.MethodForClass `hash:"201670096"`
 	emit_changed             gdextension.MethodForClass `hash:"3218959716"`
 	duplicate                gdextension.MethodForClass `hash:"482882304"`
+	duplicate_deep           gdextension.MethodForClass `hash:"905779109"`
 }
 
 func init() {
@@ -131,15 +132,15 @@ type Interface interface {
 	//
 	// func _setup_local_to_scene():
 	//
-	//     damage = randi_range(10, 40)
+	// damage = randi_range(10, 40)
 	//
 	//
 	SetupLocalToScene()
 	// Override this method to return a custom [Resource.ID] when [Instance.GetRid] is called.
 	GetRid() ID
-	// For resources that use a variable number of properties, either via [graphics.gd/classdb/Object.Instance.ValidateProperty] or [graphics.gd/classdb/Object.Instance.GetPropertyList], this method should be implemented to correctly clear the resource's state.
+	// For resources that store state in non-exported properties, such as via [graphics.gd/classdb/Object.Instance.ValidateProperty] or [graphics.gd/classdb/Object.Instance.GetPropertyList], this method must be implemented to clear them.
 	ResetState()
-	// Sets the resource's path to 'path' without involving the resource cache.
+	// Override this method to execute additional logic after [Instance.SetPathCache] is called on this object.
 	SetPathCache(path string)
 }
 
@@ -177,7 +178,7 @@ func (Instance) _get_rid(impl func(ptr gdclass.Receiver) ID) (cb gd.ExtensionCla
 }
 
 /*
-For resources that use a variable number of properties, either via [graphics.gd/classdb/Object.Instance.ValidateProperty] or [graphics.gd/classdb/Object.Instance.GetPropertyList], this method should be implemented to correctly clear the resource's state.
+For resources that store state in non-exported properties, such as via [graphics.gd/classdb/Object.Instance.ValidateProperty] or [graphics.gd/classdb/Object.Instance.GetPropertyList], this method must be implemented to clear them.
 */
 func (Instance) _reset_state(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -187,7 +188,7 @@ func (Instance) _reset_state(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionCl
 }
 
 /*
-Sets the resource's path to 'path' without involving the resource cache.
+Override this method to execute additional logic after [Instance.SetPathCache] is called on this object.
 */
 func (Instance) _set_path_cache(impl func(ptr gdclass.Receiver, path string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -206,7 +207,7 @@ func (self Instance) TakeOverPath(path string) { //gd:Resource.take_over_path
 }
 
 /*
-Sets the resource's path to 'path' without involving the resource cache.
+Sets the resource's path to 'path' without involving the resource cache. Useful for handling [ResourceFormatLoader.CacheMode] values when implementing a custom resource format by extending [graphics.gd/classdb/ResourceFormatLoader] and [graphics.gd/classdb/ResourceFormatSaver].
 */
 func (self Instance) SetPathCache(path string) { //gd:Resource.set_path_cache
 	Advanced(self).SetPathCache(String.New(path))
@@ -227,14 +228,14 @@ func (self Instance) SetupLocalToScene() { //gd:Resource.setup_local_to_scene
 }
 
 /*
-For resources that use a variable number of properties, either via [graphics.gd/classdb/Object.Instance.ValidateProperty] or [graphics.gd/classdb/Object.Instance.GetPropertyList], override [Interface.ResetState] to correctly clear the resource's state.
+Makes the resource clear its non-exported properties. See also [Interface.ResetState]. Useful when implementing a custom resource format by extending [graphics.gd/classdb/ResourceFormatLoader] and [graphics.gd/classdb/ResourceFormatSaver].
 */
 func (self Instance) ResetState() { //gd:Resource.reset_state
 	Advanced(self).ResetState()
 }
 
 /*
-Sets the unique identifier to 'id' for the resource with the given 'path' in the resource cache. If the unique identifier is empty, the cache entry using 'path' is removed if it exists.
+In the internal cache for scene-unique IDs, sets the ID of this resource to 'id' for the scene at 'path'. If 'id' is empty, the cache entry for 'path' is cleared. Useful to keep scene-unique IDs the same when implementing a VCS-friendly custom resource format by extending [graphics.gd/classdb/ResourceFormatLoader] and [graphics.gd/classdb/ResourceFormatSaver].
 
 Note: This method is only implemented when running in an editor context.
 */
@@ -243,7 +244,7 @@ func (self Instance) SetIdForPath(path string, id string) { //gd:Resource.set_id
 }
 
 /*
-Returns the unique identifier for the resource with the given 'path' from the resource cache. If the resource is not loaded and cached, an empty string is returned.
+From the internal cache for scene-unique IDs, returns the ID of this resource for the scene at 'path'. If there is no entry, an empty string is returned. Useful to keep scene-unique IDs the same when implementing a VCS-friendly custom resource format by extending [graphics.gd/classdb/ResourceFormatLoader] and [graphics.gd/classdb/ResourceFormatSaver].
 
 Note: This method is only implemented when running in an editor context. At runtime, it returns an empty string.
 */
@@ -252,7 +253,7 @@ func (self Instance) GetIdForPath(path string) string { //gd:Resource.get_id_for
 }
 
 /*
-Returns true if the resource is built-in (from the engine) or false if it is user-defined.
+Returns true if the resource is saved on disk as a part of another resource's file.
 */
 func (self Instance) IsBuiltIn() bool { //gd:Resource.is_built_in
 	return bool(Advanced(self).IsBuiltIn())
@@ -278,17 +279,19 @@ func (self Instance) EmitChanged() { //gd:Resource.emit_changed
 /*
 Duplicates this resource, returning a new resource with its exported or [PropertyUsageStorage] properties copied from the original.
 
-If 'subresources' is false, a shallow copy is returned; nested resources within subresources are not duplicated and are shared with the original resource (with one exception; see below). If 'subresources' is true, a deep copy is returned; nested subresources will be duplicated and are not shared (with two exceptions; see below).
+If 'deep' is false, a shallow copy is returned: nested slice, data structure, and [graphics.gd/classdb/Resource] properties are not duplicated and are shared with the original resource.
 
-'subresources' is usually respected, with the following exceptions:
+If 'deep' is true, a deep copy is returned: all nested arrays, dictionaries, and packed arrays are also duplicated (recursively). Any [graphics.gd/classdb/Resource] found inside will only be duplicated if it's local, like [DeepDuplicateInternal] used with [Instance.DuplicateDeep].
 
-- Subresource properties with the [PropertyUsageAlwaysDuplicate] flag are always duplicated.
+The following exceptions apply:
+
+- Subresource properties with the [PropertyUsageAlwaysDuplicate] flag are always duplicated (recursively or not, depending on 'deep').
 
 - Subresource properties with the [PropertyUsageNeverDuplicate] flag are never duplicated.
 
-- Subresources inside slice and data structure properties are never duplicated.
-
 Note: For custom resources, this method will fail if [graphics.gd/classdb/Object.Instance.Init] has been defined with required parameters.
+
+Note: When duplicating with 'deep' set to true, each resource found, including the one on which this method is called, will be only duplicated once and referenced as many times as needed in the duplicate. For instance, if you are duplicating resource A that happens to have resource B referenced twice, you'll get a new resource A' referencing a new resource B' twice.
 */
 func (self Instance) Duplicate() Instance { //gd:Resource.duplicate
 	return Instance(Advanced(self).Duplicate(false))
@@ -297,20 +300,40 @@ func (self Instance) Duplicate() Instance { //gd:Resource.duplicate
 /*
 Duplicates this resource, returning a new resource with its exported or [PropertyUsageStorage] properties copied from the original.
 
-If 'subresources' is false, a shallow copy is returned; nested resources within subresources are not duplicated and are shared with the original resource (with one exception; see below). If 'subresources' is true, a deep copy is returned; nested subresources will be duplicated and are not shared (with two exceptions; see below).
+If 'deep' is false, a shallow copy is returned: nested slice, data structure, and [graphics.gd/classdb/Resource] properties are not duplicated and are shared with the original resource.
 
-'subresources' is usually respected, with the following exceptions:
+If 'deep' is true, a deep copy is returned: all nested arrays, dictionaries, and packed arrays are also duplicated (recursively). Any [graphics.gd/classdb/Resource] found inside will only be duplicated if it's local, like [DeepDuplicateInternal] used with [Instance.DuplicateDeep].
 
-- Subresource properties with the [PropertyUsageAlwaysDuplicate] flag are always duplicated.
+The following exceptions apply:
+
+- Subresource properties with the [PropertyUsageAlwaysDuplicate] flag are always duplicated (recursively or not, depending on 'deep').
 
 - Subresource properties with the [PropertyUsageNeverDuplicate] flag are never duplicated.
 
-- Subresources inside slice and data structure properties are never duplicated.
-
 Note: For custom resources, this method will fail if [graphics.gd/classdb/Object.Instance.Init] has been defined with required parameters.
+
+Note: When duplicating with 'deep' set to true, each resource found, including the one on which this method is called, will be only duplicated once and referenced as many times as needed in the duplicate. For instance, if you are duplicating resource A that happens to have resource B referenced twice, you'll get a new resource A' referencing a new resource B' twice.
 */
-func (self Expanded) Duplicate(subresources bool) Instance { //gd:Resource.duplicate
-	return Instance(Advanced(self).Duplicate(subresources))
+func (self Expanded) Duplicate(deep bool) Instance { //gd:Resource.duplicate
+	return Instance(Advanced(self).Duplicate(deep))
+}
+
+/*
+Duplicates this resource, deeply, like [Instance.Duplicate](true), with extra control over how subresources are handled.
+
+'deep_subresources_mode' must be one of the values from [DeepDuplicateMode].
+*/
+func (self Instance) DuplicateDeep() Instance { //gd:Resource.duplicate_deep
+	return Instance(Advanced(self).DuplicateDeep(1))
+}
+
+/*
+Duplicates this resource, deeply, like [Instance.Duplicate](true), with extra control over how subresources are handled.
+
+'deep_subresources_mode' must be one of the values from [DeepDuplicateMode].
+*/
+func (self Expanded) DuplicateDeep(deep_subresources_mode DeepDuplicateMode) Instance { //gd:Resource.duplicate_deep
+	return Instance(Advanced(self).DuplicateDeep(deep_subresources_mode))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -412,7 +435,7 @@ func (class) _get_rid(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionC
 }
 
 /*
-For resources that use a variable number of properties, either via [graphics.gd/classdb/Object.Instance.ValidateProperty] or [graphics.gd/classdb/Object.Instance.GetPropertyList], this method should be implemented to correctly clear the resource's state.
+For resources that store state in non-exported properties, such as via [graphics.gd/classdb/Object.Instance.ValidateProperty] or [graphics.gd/classdb/Object.Instance.GetPropertyList], this method must be implemented to clear them.
 */
 func (class) _reset_state(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -422,7 +445,7 @@ func (class) _reset_state(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClass
 }
 
 /*
-Sets the resource's path to 'path' without involving the resource cache.
+Override this method to execute additional logic after [Instance.SetPathCache] is called on this object.
 */
 func (class) _set_path_cache(impl func(ptr gdclass.Receiver, path String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -454,7 +477,7 @@ func (self class) GetPath() String.Readable { //gd:Resource.get_path
 }
 
 /*
-Sets the resource's path to 'path' without involving the resource cache.
+Sets the resource's path to 'path' without involving the resource cache. Useful for handling [ResourceFormatLoader.CacheMode] values when implementing a custom resource format by extending [graphics.gd/classdb/ResourceFormatLoader] and [graphics.gd/classdb/ResourceFormatSaver].
 */
 //go:nosplit
 func (self class) SetPathCache(path String.Readable) { //gd:Resource.set_path_cache
@@ -514,7 +537,7 @@ func (self class) SetupLocalToScene() { //gd:Resource.setup_local_to_scene
 }
 
 /*
-For resources that use a variable number of properties, either via [graphics.gd/classdb/Object.Instance.ValidateProperty] or [graphics.gd/classdb/Object.Instance.GetPropertyList], override [Interface.ResetState] to correctly clear the resource's state.
+Makes the resource clear its non-exported properties. See also [Interface.ResetState]. Useful when implementing a custom resource format by extending [graphics.gd/classdb/ResourceFormatLoader] and [graphics.gd/classdb/ResourceFormatSaver].
 */
 //go:nosplit
 func (self class) ResetState() { //gd:Resource.reset_state
@@ -522,7 +545,7 @@ func (self class) ResetState() { //gd:Resource.reset_state
 }
 
 /*
-Sets the unique identifier to 'id' for the resource with the given 'path' in the resource cache. If the unique identifier is empty, the cache entry using 'path' is removed if it exists.
+In the internal cache for scene-unique IDs, sets the ID of this resource to 'id' for the scene at 'path'. If 'id' is empty, the cache entry for 'path' is cleared. Useful to keep scene-unique IDs the same when implementing a VCS-friendly custom resource format by extending [graphics.gd/classdb/ResourceFormatLoader] and [graphics.gd/classdb/ResourceFormatSaver].
 
 Note: This method is only implemented when running in an editor context.
 */
@@ -535,7 +558,7 @@ func (self class) SetIdForPath(path String.Readable, id String.Readable) { //gd:
 }
 
 /*
-Returns the unique identifier for the resource with the given 'path' from the resource cache. If the resource is not loaded and cached, an empty string is returned.
+From the internal cache for scene-unique IDs, returns the ID of this resource for the scene at 'path'. If there is no entry, an empty string is returned. Useful to keep scene-unique IDs the same when implementing a VCS-friendly custom resource format by extending [graphics.gd/classdb/ResourceFormatLoader] and [graphics.gd/classdb/ResourceFormatSaver].
 
 Note: This method is only implemented when running in an editor context. At runtime, it returns an empty string.
 */
@@ -547,7 +570,7 @@ func (self class) GetIdForPath(path String.Readable) String.Readable { //gd:Reso
 }
 
 /*
-Returns true if the resource is built-in (from the engine) or false if it is user-defined.
+Returns true if the resource is saved on disk as a part of another resource's file.
 */
 //go:nosplit
 func (self class) IsBuiltIn() bool { //gd:Resource.is_built_in
@@ -593,21 +616,35 @@ func (self class) EmitChanged() { //gd:Resource.emit_changed
 /*
 Duplicates this resource, returning a new resource with its exported or [PropertyUsageStorage] properties copied from the original.
 
-If 'subresources' is false, a shallow copy is returned; nested resources within subresources are not duplicated and are shared with the original resource (with one exception; see below). If 'subresources' is true, a deep copy is returned; nested subresources will be duplicated and are not shared (with two exceptions; see below).
+If 'deep' is false, a shallow copy is returned: nested slice, data structure, and [graphics.gd/classdb/Resource] properties are not duplicated and are shared with the original resource.
 
-'subresources' is usually respected, with the following exceptions:
+If 'deep' is true, a deep copy is returned: all nested arrays, dictionaries, and packed arrays are also duplicated (recursively). Any [graphics.gd/classdb/Resource] found inside will only be duplicated if it's local, like [DeepDuplicateInternal] used with [Instance.DuplicateDeep].
 
-- Subresource properties with the [PropertyUsageAlwaysDuplicate] flag are always duplicated.
+The following exceptions apply:
+
+- Subresource properties with the [PropertyUsageAlwaysDuplicate] flag are always duplicated (recursively or not, depending on 'deep').
 
 - Subresource properties with the [PropertyUsageNeverDuplicate] flag are never duplicated.
 
-- Subresources inside slice and data structure properties are never duplicated.
-
 Note: For custom resources, this method will fail if [graphics.gd/classdb/Object.Instance.Init] has been defined with required parameters.
+
+Note: When duplicating with 'deep' set to true, each resource found, including the one on which this method is called, will be only duplicated once and referenced as many times as needed in the duplicate. For instance, if you are duplicating resource A that happens to have resource B referenced twice, you'll get a new resource A' referencing a new resource B' twice.
 */
 //go:nosplit
-func (self class) Duplicate(subresources bool) [1]gdclass.Resource { //gd:Resource.duplicate
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.duplicate, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ subresources bool }{subresources})
+func (self class) Duplicate(deep bool) [1]gdclass.Resource { //gd:Resource.duplicate
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.duplicate, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ deep bool }{deep})
+	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
+	return ret
+}
+
+/*
+Duplicates this resource, deeply, like [Instance.Duplicate](true), with extra control over how subresources are handled.
+
+'deep_subresources_mode' must be one of the values from [DeepDuplicateMode].
+*/
+//go:nosplit
+func (self class) DuplicateDeep(deep_subresources_mode DeepDuplicateMode) [1]gdclass.Resource { //gd:Resource.duplicate_deep
+	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.duplicate_deep, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ deep_subresources_mode DeepDuplicateMode }{deep_subresources_mode})
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }
@@ -678,3 +715,14 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("Resource", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Resource](ptr)} })
 }
+
+type DeepDuplicateMode int //gd:Resource.DeepDuplicateMode
+
+const (
+	// No subresorces at all are duplicated. This is useful even in a deep duplication to have all the arrays and dictionaries duplicated but still pointing to the original resources.
+	DeepDuplicateNone DeepDuplicateMode = 0
+	// Only subresources without a path or with a scene-local path will be duplicated.
+	DeepDuplicateInternal DeepDuplicateMode = 1
+	// Every subresource found will be duplicated, even if it has a non-local path. In other words, even potentially big resources stored separately will be duplicated.
+	DeepDuplicateAll DeepDuplicateMode = 2
+)

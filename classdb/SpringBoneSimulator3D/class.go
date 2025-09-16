@@ -116,6 +116,8 @@ var methods struct {
 	get_radius                       gdextension.MethodForClass `hash:"2339986948"`
 	set_rotation_axis                gdextension.MethodForClass `hash:"3534169209"`
 	get_rotation_axis                gdextension.MethodForClass `hash:"748837671"`
+	set_rotation_axis_vector         gdextension.MethodForClass `hash:"1530502735"`
+	get_rotation_axis_vector         gdextension.MethodForClass `hash:"711720468"`
 	set_radius_damping_curve         gdextension.MethodForClass `hash:"1447180063"`
 	get_radius_damping_curve         gdextension.MethodForClass `hash:"747537754"`
 	set_stiffness                    gdextension.MethodForClass `hash:"1602489585"`
@@ -141,6 +143,8 @@ var methods struct {
 	get_joint_bone                   gdextension.MethodForClass `hash:"3175239445"`
 	set_joint_rotation_axis          gdextension.MethodForClass `hash:"4224018032"`
 	get_joint_rotation_axis          gdextension.MethodForClass `hash:"2488679199"`
+	set_joint_rotation_axis_vector   gdextension.MethodForClass `hash:"2866752138"`
+	get_joint_rotation_axis_vector   gdextension.MethodForClass `hash:"1592972041"`
 	set_joint_radius                 gdextension.MethodForClass `hash:"3506521499"`
 	get_joint_radius                 gdextension.MethodForClass `hash:"3085491603"`
 	set_joint_stiffness              gdextension.MethodForClass `hash:"3506521499"`
@@ -164,6 +168,8 @@ var methods struct {
 	set_collision_count              gdextension.MethodForClass `hash:"3937882851"`
 	get_collision_count              gdextension.MethodForClass `hash:"923996154"`
 	clear_collisions                 gdextension.MethodForClass `hash:"1286410249"`
+	set_external_force               gdextension.MethodForClass `hash:"3460891852"`
+	get_external_force               gdextension.MethodForClass `hash:"3360562783"`
 	reset                            gdextension.MethodForClass `hash:"3218959716"`
 }
 
@@ -370,11 +376,11 @@ func (self Instance) GetRadius(index int) Float.X { //gd:SpringBoneSimulator3D.g
 }
 
 /*
-Sets the rotation axis of the bone chain. If sets a specific axis, it acts like a hinge joint.
+Sets the rotation axis of the bone chain. If set to a specific axis, it acts like a hinge joint. The value is cached in each joint setting in the joint list.
 
-The value is cached in each joint setting in the joint list.
+The axes are based on the [graphics.gd/classdb/Skeleton3D.Instance.GetBoneRest]'s space, if 'axis' is [RotationAxisCustom], you can specify any axis.
 
-Note: The rotation axis and the forward vector shouldn't be colinear to avoid unintended rotation since [graphics.gd/classdb/SpringBoneSimulator3D] does not factor in twisting forces.
+Note: The rotation axis vector and the forward vector shouldn't be colinear to avoid unintended rotation since [graphics.gd/classdb/SpringBoneSimulator3D] does not factor in twisting forces.
 */
 func (self Instance) SetRotationAxis(index int, axis RotationAxis) { //gd:SpringBoneSimulator3D.set_rotation_axis
 	Advanced(self).SetRotationAxis(int64(index), axis)
@@ -385,6 +391,26 @@ Returns the rotation axis of the bone chain.
 */
 func (self Instance) GetRotationAxis(index int) RotationAxis { //gd:SpringBoneSimulator3D.get_rotation_axis
 	return RotationAxis(Advanced(self).GetRotationAxis(int64(index)))
+}
+
+/*
+Sets the rotation axis vector of the bone chain. The value is cached in each joint setting in the joint list.
+
+This vector is normalized by an internal process and represents the axis around which the bone chain can rotate.
+
+If the vector length is 0, it is considered synonymous with [RotationAxisAll].
+*/
+func (self Instance) SetRotationAxisVector(index int, vector Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_rotation_axis_vector
+	Advanced(self).SetRotationAxisVector(int64(index), Vector3.XYZ(vector))
+}
+
+/*
+Returns the rotation axis vector of the bone chain. This vector represents the axis around which the bone chain can rotate. It is determined based on the rotation axis set for the bone chain.
+
+If [Instance.GetRotationAxis] is [RotationAxisAll], this method returns Vector3(0, 0, 0).
+*/
+func (self Instance) GetRotationAxisVector(index int) Vector3.XYZ { //gd:SpringBoneSimulator3D.get_rotation_axis_vector
+	return Vector3.XYZ(Advanced(self).GetRotationAxisVector(int64(index)))
 }
 
 /*
@@ -548,6 +574,10 @@ func (self Instance) GetJointBone(index int, joint int) int { //gd:SpringBoneSim
 
 /*
 Sets the rotation axis at 'joint' in the bone chain's joint list when [Instance.IsConfigIndividual] is true.
+
+The axes are based on the [graphics.gd/classdb/Skeleton3D.Instance.GetBoneRest]'s space, if 'axis' is [RotationAxisCustom], you can specify any axis.
+
+Note: The rotation axis and the forward vector shouldn't be colinear to avoid unintended rotation since [graphics.gd/classdb/SpringBoneSimulator3D] does not factor in twisting forces.
 */
 func (self Instance) SetJointRotationAxis(index int, joint int, axis RotationAxis) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
 	Advanced(self).SetJointRotationAxis(int64(index), int64(joint), axis)
@@ -558,6 +588,26 @@ Returns the rotation axis at 'joint' in the bone chain's joint list.
 */
 func (self Instance) GetJointRotationAxis(index int, joint int) RotationAxis { //gd:SpringBoneSimulator3D.get_joint_rotation_axis
 	return RotationAxis(Advanced(self).GetJointRotationAxis(int64(index), int64(joint)))
+}
+
+/*
+Sets the rotation axis vector for the specified joint in the bone chain.
+
+This vector is normalized by an internal process and represents the axis around which the bone chain can rotate.
+
+If the vector length is 0, it is considered synonymous with [RotationAxisAll].
+*/
+func (self Instance) SetJointRotationAxisVector(index int, joint int, vector Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis_vector
+	Advanced(self).SetJointRotationAxisVector(int64(index), int64(joint), Vector3.XYZ(vector))
+}
+
+/*
+Returns the rotation axis vector for the specified joint in the bone chain. This vector represents the axis around which the joint can rotate. It is determined based on the rotation axis set for the joint.
+
+If [Instance.GetJointRotationAxis] is [RotationAxisAll], this method returns Vector3(0, 0, 0).
+*/
+func (self Instance) GetJointRotationAxisVector(index int, joint int) Vector3.XYZ { //gd:SpringBoneSimulator3D.get_joint_rotation_axis_vector
+	return Vector3.XYZ(Advanced(self).GetJointRotationAxisVector(int64(index), int64(joint)))
 }
 
 /*
@@ -638,16 +688,16 @@ func (self Instance) GetJointCount(index int) int { //gd:SpringBoneSimulator3D.g
 }
 
 /*
-If sets 'enabled' to true, the all child [graphics.gd/classdb/SpringBoneCollision3D]s are collided and [Instance.SetExcludeCollisionPath] is enabled as an exclusion list at 'index' in the settings.
+If 'enabled' is true, all child [graphics.gd/classdb/SpringBoneCollision3D]s are colliding and [Instance.SetExcludeCollisionPath] is enabled as an exclusion list at 'index' in the settings.
 
-If sets 'enabled' to false, you need to manually register all valid collisions with [Instance.SetCollisionPath].
+If 'enabled' is false, you need to manually register all valid collisions with [Instance.SetCollisionPath].
 */
 func (self Instance) SetEnableAllChildCollisions(index int, enabled bool) { //gd:SpringBoneSimulator3D.set_enable_all_child_collisions
 	Advanced(self).SetEnableAllChildCollisions(int64(index), enabled)
 }
 
 /*
-Returns true if the all child [graphics.gd/classdb/SpringBoneCollision3D]s are contained in the collision list at 'index' in the settings.
+Returns true if all child [graphics.gd/classdb/SpringBoneCollision3D]s are contained in the collision list at 'index' in the settings.
 */
 func (self Instance) AreAllChildCollisionsEnabled(index int) bool { //gd:SpringBoneSimulator3D.are_all_child_collisions_enabled
 	return bool(Advanced(self).AreAllChildCollisionsEnabled(int64(index)))
@@ -772,6 +822,14 @@ func New() Instance {
 	casted := Instance([1]gdclass.SpringBoneSimulator3D{pointers.New[gdclass.SpringBoneSimulator3D]([3]uint64{uint64(gdextension.Host.Objects.Make(sname))})})
 	casted.AsObject()[0].Notification(0, false)
 	return casted
+}
+
+func (self Instance) ExternalForce() Vector3.XYZ {
+	return Vector3.XYZ(class(self).GetExternalForce())
+}
+
+func (self Instance) SetExternalForce(value Vector3.XYZ) {
+	class(self).SetExternalForce(Vector3.XYZ(value))
 }
 
 func (self Instance) SettingCount() int {
@@ -1049,11 +1107,11 @@ func (self class) GetRadius(index int64) float64 { //gd:SpringBoneSimulator3D.ge
 }
 
 /*
-Sets the rotation axis of the bone chain. If sets a specific axis, it acts like a hinge joint.
+Sets the rotation axis of the bone chain. If set to a specific axis, it acts like a hinge joint. The value is cached in each joint setting in the joint list.
 
-The value is cached in each joint setting in the joint list.
+The axes are based on the [graphics.gd/classdb/Skeleton3D.Instance.GetBoneRest]'s space, if 'axis' is [RotationAxisCustom], you can specify any axis.
 
-Note: The rotation axis and the forward vector shouldn't be colinear to avoid unintended rotation since [graphics.gd/classdb/SpringBoneSimulator3D] does not factor in twisting forces.
+Note: The rotation axis vector and the forward vector shouldn't be colinear to avoid unintended rotation since [graphics.gd/classdb/SpringBoneSimulator3D] does not factor in twisting forces.
 */
 //go:nosplit
 func (self class) SetRotationAxis(index int64, axis RotationAxis) { //gd:SpringBoneSimulator3D.set_rotation_axis
@@ -1069,6 +1127,33 @@ Returns the rotation axis of the bone chain.
 //go:nosplit
 func (self class) GetRotationAxis(index int64) RotationAxis { //gd:SpringBoneSimulator3D.get_rotation_axis
 	var r_ret = gdextension.Call[RotationAxis](gd.ObjectChecked(self.AsObject()), methods.get_rotation_axis, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Sets the rotation axis vector of the bone chain. The value is cached in each joint setting in the joint list.
+
+This vector is normalized by an internal process and represents the axis around which the bone chain can rotate.
+
+If the vector length is 0, it is considered synonymous with [RotationAxisAll].
+*/
+//go:nosplit
+func (self class) SetRotationAxisVector(index int64, vector Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_rotation_axis_vector
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rotation_axis_vector, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
+		index  int64
+		vector Vector3.XYZ
+	}{index, vector})
+}
+
+/*
+Returns the rotation axis vector of the bone chain. This vector represents the axis around which the bone chain can rotate. It is determined based on the rotation axis set for the bone chain.
+
+If [Instance.GetRotationAxis] is [RotationAxisAll], this method returns Vector3(0, 0, 0).
+*/
+//go:nosplit
+func (self class) GetRotationAxisVector(index int64) Vector3.XYZ { //gd:SpringBoneSimulator3D.get_rotation_axis_vector
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_rotation_axis_vector, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -1322,6 +1407,10 @@ func (self class) GetJointBone(index int64, joint int64) int64 { //gd:SpringBone
 
 /*
 Sets the rotation axis at 'joint' in the bone chain's joint list when [Instance.IsConfigIndividual] is true.
+
+The axes are based on the [graphics.gd/classdb/Skeleton3D.Instance.GetBoneRest]'s space, if 'axis' is [RotationAxisCustom], you can specify any axis.
+
+Note: The rotation axis and the forward vector shouldn't be colinear to avoid unintended rotation since [graphics.gd/classdb/SpringBoneSimulator3D] does not factor in twisting forces.
 */
 //go:nosplit
 func (self class) SetJointRotationAxis(index int64, joint int64, axis RotationAxis) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis
@@ -1338,6 +1427,37 @@ Returns the rotation axis at 'joint' in the bone chain's joint list.
 //go:nosplit
 func (self class) GetJointRotationAxis(index int64, joint int64) RotationAxis { //gd:SpringBoneSimulator3D.get_joint_rotation_axis
 	var r_ret = gdextension.Call[RotationAxis](gd.ObjectChecked(self.AsObject()), methods.get_joint_rotation_axis, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+		index int64
+		joint int64
+	}{index, joint})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Sets the rotation axis vector for the specified joint in the bone chain.
+
+This vector is normalized by an internal process and represents the axis around which the bone chain can rotate.
+
+If the vector length is 0, it is considered synonymous with [RotationAxisAll].
+*/
+//go:nosplit
+func (self class) SetJointRotationAxisVector(index int64, joint int64, vector Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_joint_rotation_axis_vector
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_joint_rotation_axis_vector, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector3<<12), &struct {
+		index  int64
+		joint  int64
+		vector Vector3.XYZ
+	}{index, joint, vector})
+}
+
+/*
+Returns the rotation axis vector for the specified joint in the bone chain. This vector represents the axis around which the joint can rotate. It is determined based on the rotation axis set for the joint.
+
+If [Instance.GetJointRotationAxis] is [RotationAxisAll], this method returns Vector3(0, 0, 0).
+*/
+//go:nosplit
+func (self class) GetJointRotationAxisVector(index int64, joint int64) Vector3.XYZ { //gd:SpringBoneSimulator3D.get_joint_rotation_axis_vector
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_joint_rotation_axis_vector, gdextension.SizeVector3|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
 		joint int64
 	}{index, joint})
@@ -1481,9 +1601,9 @@ func (self class) GetJointCount(index int64) int64 { //gd:SpringBoneSimulator3D.
 }
 
 /*
-If sets 'enabled' to true, the all child [graphics.gd/classdb/SpringBoneCollision3D]s are collided and [Instance.SetExcludeCollisionPath] is enabled as an exclusion list at 'index' in the settings.
+If 'enabled' is true, all child [graphics.gd/classdb/SpringBoneCollision3D]s are colliding and [Instance.SetExcludeCollisionPath] is enabled as an exclusion list at 'index' in the settings.
 
-If sets 'enabled' to false, you need to manually register all valid collisions with [Instance.SetCollisionPath].
+If 'enabled' is false, you need to manually register all valid collisions with [Instance.SetCollisionPath].
 */
 //go:nosplit
 func (self class) SetEnableAllChildCollisions(index int64, enabled bool) { //gd:SpringBoneSimulator3D.set_enable_all_child_collisions
@@ -1494,7 +1614,7 @@ func (self class) SetEnableAllChildCollisions(index int64, enabled bool) { //gd:
 }
 
 /*
-Returns true if the all child [graphics.gd/classdb/SpringBoneCollision3D]s are contained in the collision list at 'index' in the settings.
+Returns true if all child [graphics.gd/classdb/SpringBoneCollision3D]s are contained in the collision list at 'index' in the settings.
 */
 //go:nosplit
 func (self class) AreAllChildCollisionsEnabled(index int64) bool { //gd:SpringBoneSimulator3D.are_all_child_collisions_enabled
@@ -1611,6 +1731,18 @@ func (self class) ClearCollisions(index int64) { //gd:SpringBoneSimulator3D.clea
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_collisions, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
 
+//go:nosplit
+func (self class) SetExternalForce(force Vector3.XYZ) { //gd:SpringBoneSimulator3D.set_external_force
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_external_force, 0|(gdextension.SizeVector3<<4), &struct{ force Vector3.XYZ }{force})
+}
+
+//go:nosplit
+func (self class) GetExternalForce() Vector3.XYZ { //gd:SpringBoneSimulator3D.get_external_force
+	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_external_force, gdextension.SizeVector3, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
 /*
 Resets a simulating state with respect to the current bone pose.
 
@@ -1713,4 +1845,6 @@ const (
 	RotationAxisZ RotationAxis = 2
 	// Enumerated value for the unconstrained rotation.
 	RotationAxisAll RotationAxis = 3
+	// Enumerated value for an optional rotation axis. See also [Instance.SetJointRotationAxisVector].
+	RotationAxisCustom RotationAxis = 4
 )

@@ -344,8 +344,8 @@ func (Instance) _parse_image_data(impl func(ptr gdclass.Receiver, state GLTFStat
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
-		var image_data = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
-		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](image_data)))
+		var image_data = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))}
+		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](image_data.Array)))
 		var mime_type = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(mime_type))
 		var ret_image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))})}
@@ -717,7 +717,7 @@ func (Instance) _serialize_image_to_bytes(impl func(ptr gdclass.Receiver, state 
 		var lossy_quality = gd.UnsafeGet[float64](p_args, 4)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, image, gd.DictionaryAs[map[string][]uint8](image_dict), image_format.String(), Float.X(lossy_quality))
-		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](Packed.Bytes(Packed.New(ret...)))))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](Packed.BytesFrom(ret...).Array)))
 
 		if !ok {
 			return
@@ -953,8 +953,8 @@ func (class) _parse_image_data(impl func(ptr gdclass.Receiver, state [1]gdclass.
 		var state = [1]gdclass.GLTFState{pointers.New[gdclass.GLTFState]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
 
 		defer pointers.End(state[0])
-		var image_data = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))
-		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](image_data)))
+		var image_data = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))}
+		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](image_data.Array)))
 		var mime_type = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](gd.UnsafeGet[gdextension.String](p_args, 2))))
 		defer pointers.End(gd.InternalString(mime_type))
 		var ret_image = [1]gdclass.Image{pointers.New[gdclass.Image]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 3))})}
@@ -1326,7 +1326,7 @@ func (class) _serialize_image_to_bytes(impl func(ptr gdclass.Receiver, state [1]
 		var lossy_quality = gd.UnsafeGet[float64](p_args, 4)
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self, state, image, image_dict, image_format, lossy_quality)
-		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ret)))
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ret.Array)))
 
 		if !ok {
 			return

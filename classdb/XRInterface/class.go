@@ -765,6 +765,8 @@ const (
 	XrPlayAreaRoomscale PlayAreaMode = 3
 	// Same as [XrPlayAreaRoomscale] but origin point is fixed to the center of the physical space. In this mode, system-level recentering may be disabled, requiring the use of [graphics.gd/classdb/XRServer.CenterOnHmd].
 	XrPlayAreaStage PlayAreaMode = 4
+	// Custom play area set by a GDExtension.
+	XrPlayAreaCustom PlayAreaMode = 2147483647
 )
 
 type EnvironmentBlendMode int //gd:XRInterface.EnvironmentBlendMode
@@ -776,4 +778,15 @@ const (
 	XrEnvBlendModeAdditive EnvironmentBlendMode = 1
 	// Alpha blend mode. This is typically used for AR or VR devices with passthrough capabilities. The alpha channel controls how much of the passthrough is visible. Alpha of 0.0 means the passthrough is visible and this pixel works in ADDITIVE mode. Alpha of 1.0 means that the passthrough is not visible and this pixel works in OPAQUE mode.
 	XrEnvBlendModeAlphaBlend EnvironmentBlendMode = 2
+)
+
+type VRSTextureFormat int //gd:XRInterface.VRSTextureFormat
+
+const (
+	// The texture format is the same as returned by [graphics.gd/classdb/XRVRS.Instance.MakeVrsTexture].
+	XrVrsTextureFormatUnified VRSTextureFormat = 0
+	// The texture format is the same as expected by the Vulkan VK_KHR_fragment_shading_rate extension.
+	XrVrsTextureFormatFragmentShadingRate VRSTextureFormat = 1
+	// The texture format is the same as expected by the Vulkan VK_EXT_fragment_density_map extension.
+	XrVrsTextureFormatFragmentDensityMap VRSTextureFormat = 2
 )

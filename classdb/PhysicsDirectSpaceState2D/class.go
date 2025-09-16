@@ -2,6 +2,8 @@
 
 /*
 Provides direct access to a physics space in the [graphics.gd/classdb/PhysicsServer2D]. It's used mainly to do queries against objects and areas residing in a given space.
+
+Note: This class is not meant to be instantiated directly. Use [graphics.gd/classdb/World2D.Instance.DirectSpaceState] to get the world's physics 2D space state.
 */
 package PhysicsDirectSpaceState2D
 
@@ -230,9 +232,7 @@ func (self Expanded) CollideShape(parameters PhysicsShapeQueryParameters2D.Insta
 }
 
 /*
-Checks the intersections of a shape, given through a [graphics.gd/classdb/PhysicsShapeQueryParameters2D] object, against the space. If it collides with more than one shape, the nearest one is selected. If the shape did not intersect anything, then an empty dictionary is returned instead.
-
-Note: This method does not take into account the motion property of the object. The returned object is a dictionary containing the following fields:
+Checks the intersections of a shape, given through a [graphics.gd/classdb/PhysicsShapeQueryParameters2D] object, against the space. If it collides with more than one shape, the nearest one is selected. The returned object is a dictionary containing the following fields:
 
 collider_id: The colliding object's ID.
 
@@ -245,6 +245,8 @@ point: The intersection point.
 rid: The intersecting object's [Resource.ID].
 
 shape: The shape index of the colliding shape.
+
+If the shape did not intersect anything, then an empty dictionary is returned instead.
 */
 func (self Instance) GetRestInfo(parameters PhysicsShapeQueryParameters2D.Instance) PhysicsDirectSpaceState2D_RestInfo { //gd:PhysicsDirectSpaceState2D.get_rest_info
 	return PhysicsDirectSpaceState2D_RestInfo(gd.DictionaryAs[PhysicsDirectSpaceState2D_RestInfo](Advanced(self).GetRestInfo(parameters)))
@@ -394,9 +396,7 @@ func (self class) CollideShape(parameters [1]gdclass.PhysicsShapeQueryParameters
 }
 
 /*
-Checks the intersections of a shape, given through a [graphics.gd/classdb/PhysicsShapeQueryParameters2D] object, against the space. If it collides with more than one shape, the nearest one is selected. If the shape did not intersect anything, then an empty dictionary is returned instead.
-
-Note: This method does not take into account the motion property of the object. The returned object is a dictionary containing the following fields:
+Checks the intersections of a shape, given through a [graphics.gd/classdb/PhysicsShapeQueryParameters2D] object, against the space. If it collides with more than one shape, the nearest one is selected. The returned object is a dictionary containing the following fields:
 
 collider_id: The colliding object's ID.
 
@@ -409,6 +409,8 @@ point: The intersection point.
 rid: The intersecting object's [Resource.ID].
 
 shape: The shape index of the colliding shape.
+
+If the shape did not intersect anything, then an empty dictionary is returned instead.
 */
 //go:nosplit
 func (self class) GetRestInfo(parameters [1]gdclass.PhysicsShapeQueryParameters2D) Dictionary.Any { //gd:PhysicsDirectSpaceState2D.get_rest_info

@@ -798,7 +798,7 @@ func (instance *instanceImplementation) assertChild(value any, field reflect.Str
 		if !field.IsExported() {
 			mode = NodeClass.InternalModeFront
 		}
-		NodeClass.Advanced(class.AsNode()).SetName(String.New(field.Name))
+		NodeClass.Advanced(class.AsNode()).SetName(String.Name(String.New(field.Name)))
 		NodeClass.Advanced(parent).AddChild(class.AsNode(), true, mode)
 		if EngineClass.IsEditorHint() {
 			NodeClass.Advanced(class.AsNode()).SetOwner(EditorInterfaceClass.GetEditedSceneRoot())

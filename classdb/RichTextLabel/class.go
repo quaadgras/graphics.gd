@@ -11,7 +11,7 @@ Note: RichTextLabel doesn't support entangled BBCode tags. For example, instead 
 
 Note: push_pop_* functions won't affect BBCode.
 
-Note: Unlike [graphics.gd/classdb/Label], [graphics.gd/classdb/RichTextLabel] doesn't have a property to horizontally align text to the center. Instead, enable [Instance.BbcodeEnabled] and surround the text in a [center] tag as follows: [center]Example[/center]. There is currently no built-in way to vertically align text either, but this can be emulated by relying on anchors/containers and the [Instance.FitContent] property.
+Note: While [Instance.BbcodeEnabled] is enabled, alignment tags such as [center] will take priority over the [Instance.HorizontalAlignment] setting which determines the default text alignment.
 */
 package RichTextLabel
 
@@ -47,6 +47,7 @@ import "graphics.gd/variant/Packed"
 import "graphics.gd/variant/Path"
 import "graphics.gd/variant/RID"
 import "graphics.gd/variant/Rect2"
+import "graphics.gd/variant/Rect2i"
 import "graphics.gd/variant/RefCounted"
 import "graphics.gd/variant/String"
 import "graphics.gd/variant/Vector2"
@@ -100,8 +101,9 @@ var methods struct {
 	get_parsed_text                           gdextension.MethodForClass `hash:"201670096"`
 	add_text                                  gdextension.MethodForClass `hash:"83702148"`
 	set_text                                  gdextension.MethodForClass `hash:"83702148"`
-	add_image                                 gdextension.MethodForClass `hash:"3017663154"`
-	update_image                              gdextension.MethodForClass `hash:"815048486"`
+	add_hr                                    gdextension.MethodForClass `hash:"16816895"`
+	add_image                                 gdextension.MethodForClass `hash:"1390915033"`
+	update_image                              gdextension.MethodForClass `hash:"6389170"`
 	newline                                   gdextension.MethodForClass `hash:"3218959716"`
 	remove_paragraph                          gdextension.MethodForClass `hash:"3262369265"`
 	invalidate_paragraph                      gdextension.MethodForClass `hash:"3067735520"`
@@ -121,11 +123,12 @@ var methods struct {
 	push_meta                                 gdextension.MethodForClass `hash:"3765356747"`
 	push_hint                                 gdextension.MethodForClass `hash:"83702148"`
 	push_language                             gdextension.MethodForClass `hash:"83702148"`
-	push_underline                            gdextension.MethodForClass `hash:"3218959716"`
-	push_strikethrough                        gdextension.MethodForClass `hash:"3218959716"`
-	push_table                                gdextension.MethodForClass `hash:"2623499273"`
+	push_underline                            gdextension.MethodForClass `hash:"1458098034"`
+	push_strikethrough                        gdextension.MethodForClass `hash:"1458098034"`
+	push_table                                gdextension.MethodForClass `hash:"3426862026"`
 	push_dropcap                              gdextension.MethodForClass `hash:"4061635501"`
 	set_table_column_expand                   gdextension.MethodForClass `hash:"117236061"`
+	set_table_column_name                     gdextension.MethodForClass `hash:"501894301"`
 	set_cell_row_background_color             gdextension.MethodForClass `hash:"3465483165"`
 	set_cell_border_color                     gdextension.MethodForClass `hash:"2920490490"`
 	set_cell_size_override                    gdextension.MethodForClass `hash:"3108078480"`
@@ -157,12 +160,16 @@ var methods struct {
 	get_tab_stops                             gdextension.MethodForClass `hash:"675695659"`
 	set_autowrap_mode                         gdextension.MethodForClass `hash:"3289138044"`
 	get_autowrap_mode                         gdextension.MethodForClass `hash:"1549071663"`
+	set_autowrap_trim_flags                   gdextension.MethodForClass `hash:"2809697122"`
+	get_autowrap_trim_flags                   gdextension.MethodForClass `hash:"2340632602"`
 	set_meta_underline                        gdextension.MethodForClass `hash:"2586408642"`
 	is_meta_underlined                        gdextension.MethodForClass `hash:"36873697"`
 	set_hint_underline                        gdextension.MethodForClass `hash:"2586408642"`
 	is_hint_underlined                        gdextension.MethodForClass `hash:"36873697"`
 	set_scroll_active                         gdextension.MethodForClass `hash:"2586408642"`
 	is_scroll_active                          gdextension.MethodForClass `hash:"36873697"`
+	set_scroll_follow_visible_characters      gdextension.MethodForClass `hash:"2586408642"`
+	is_scroll_following_visible_characters    gdextension.MethodForClass `hash:"36873697"`
 	set_scroll_follow                         gdextension.MethodForClass `hash:"2586408642"`
 	is_scroll_following                       gdextension.MethodForClass `hash:"36873697"`
 	get_v_scroll_bar                          gdextension.MethodForClass `hash:"2630340773"`
@@ -216,12 +223,16 @@ var methods struct {
 	get_visible_paragraph_count               gdextension.MethodForClass `hash:"3905245786"`
 	get_content_height                        gdextension.MethodForClass `hash:"3905245786"`
 	get_content_width                         gdextension.MethodForClass `hash:"3905245786"`
+	get_line_height                           gdextension.MethodForClass `hash:"923996154"`
+	get_line_width                            gdextension.MethodForClass `hash:"923996154"`
+	get_visible_content_rect                  gdextension.MethodForClass `hash:"410525958"`
 	get_line_offset                           gdextension.MethodForClass `hash:"4025615559"`
 	get_paragraph_offset                      gdextension.MethodForClass `hash:"4025615559"`
 	parse_expressions_for_values              gdextension.MethodForClass `hash:"1522900837"`
 	set_effects                               gdextension.MethodForClass `hash:"381264803"`
 	get_effects                               gdextension.MethodForClass `hash:"2915620761"`
 	install_effect                            gdextension.MethodForClass `hash:"1114965689"`
+	reload_effects                            gdextension.MethodForClass `hash:"3218959716"`
 	get_menu                                  gdextension.MethodForClass `hash:"229722558"`
 	is_menu_visible                           gdextension.MethodForClass `hash:"36873697"`
 	menu_option                               gdextension.MethodForClass `hash:"1286410249"`
@@ -264,20 +275,25 @@ func (self Instance) AddText(text string) { //gd:RichTextLabel.add_text
 }
 
 /*
-Adds an image's opening and closing tags to the tag stack, optionally providing a 'width' and 'height' to resize the image, a 'color' to tint the image and a 'region' to only use parts of the image.
+Adds a horizontal rule that can be used to separate content.
 
-If 'width' or 'height' is set to 0, the image size will be adjusted in order to keep the original aspect ratio.
+If 'width_in_percent' is set, 'width' values are percentages of the control width instead of pixels.
 
-If 'width' and 'height' are not set, but 'region' is, the region's rect will be used.
-
-'key' is an optional identifier, that can be used to modify the image via [Instance.UpdateImage].
-
-If 'pad' is set, and the image is smaller than the size specified by 'width' and 'height', the image padding is added to match the size instead of upscaling.
-
-If 'size_in_percent' is set, 'width' and 'height' values are percentages of the control width instead of pixels.
+If 'height_in_percent' is set, 'height' values are percentages of the control width instead of pixels.
 */
-func (self Instance) AddImage(image Texture2D.Instance) { //gd:RichTextLabel.add_image
-	Advanced(self).AddImage(image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), variant.New([1]any{}[0]), false, String.New(""), false)
+func (self Instance) AddHr() { //gd:RichTextLabel.add_hr
+	Advanced(self).AddHr(int64(90), int64(2), Color.RGBA(gd.Color{1, 1, 1, 1}), 1, true, false)
+}
+
+/*
+Adds a horizontal rule that can be used to separate content.
+
+If 'width_in_percent' is set, 'width' values are percentages of the control width instead of pixels.
+
+If 'height_in_percent' is set, 'height' values are percentages of the control width instead of pixels.
+*/
+func (self Expanded) AddHr(width int, height int, color Color.RGBA, alignment GUI.HorizontalAlignment, width_in_percent bool, height_in_percent bool) { //gd:RichTextLabel.add_hr
+	Advanced(self).AddHr(int64(width), int64(height), Color.RGBA(color), alignment, width_in_percent, height_in_percent)
 }
 
 /*
@@ -291,24 +307,49 @@ If 'width' and 'height' are not set, but 'region' is, the region's rect will be 
 
 If 'pad' is set, and the image is smaller than the size specified by 'width' and 'height', the image padding is added to match the size instead of upscaling.
 
-If 'size_in_percent' is set, 'width' and 'height' values are percentages of the control width instead of pixels.
+If 'width_in_percent' is set, 'width' values are percentages of the control width instead of pixels.
+
+If 'height_in_percent' is set, 'height' values are percentages of the control width instead of pixels.
+
+'alt_text' is used as the image description for assistive apps.
 */
-func (self Expanded) AddImage(image Texture2D.Instance, width int, height int, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, key any, pad bool, tooltip string, size_in_percent bool) { //gd:RichTextLabel.add_image
-	Advanced(self).AddImage(image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), variant.New(key), pad, String.New(tooltip), size_in_percent)
+func (self Instance) AddImage(image Texture2D.Instance) { //gd:RichTextLabel.add_image
+	Advanced(self).AddImage(image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), variant.New([1]any{}[0]), false, String.New(""), false, false, String.New(""))
+}
+
+/*
+Adds an image's opening and closing tags to the tag stack, optionally providing a 'width' and 'height' to resize the image, a 'color' to tint the image and a 'region' to only use parts of the image.
+
+If 'width' or 'height' is set to 0, the image size will be adjusted in order to keep the original aspect ratio.
+
+If 'width' and 'height' are not set, but 'region' is, the region's rect will be used.
+
+'key' is an optional identifier, that can be used to modify the image via [Instance.UpdateImage].
+
+If 'pad' is set, and the image is smaller than the size specified by 'width' and 'height', the image padding is added to match the size instead of upscaling.
+
+If 'width_in_percent' is set, 'width' values are percentages of the control width instead of pixels.
+
+If 'height_in_percent' is set, 'height' values are percentages of the control width instead of pixels.
+
+'alt_text' is used as the image description for assistive apps.
+*/
+func (self Expanded) AddImage(image Texture2D.Instance, width int, height int, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, key any, pad bool, tooltip string, width_in_percent bool, height_in_percent bool, alt_text string) { //gd:RichTextLabel.add_image
+	Advanced(self).AddImage(image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), variant.New(key), pad, String.New(tooltip), width_in_percent, height_in_percent, String.New(alt_text))
 }
 
 /*
 Updates the existing images with the key 'key'. Only properties specified by 'mask' bits are updated. See [Instance.AddImage].
 */
 func (self Instance) UpdateImage(key any, mask ImageUpdateMask, image Texture2D.Instance) { //gd:RichTextLabel.update_image
-	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), false, String.New(""), false)
+	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(0), int64(0), Color.RGBA(gd.Color{1, 1, 1, 1}), 5, Rect2.PositionSize(gd.NewRect2(0, 0, 0, 0)), false, String.New(""), false, false)
 }
 
 /*
 Updates the existing images with the key 'key'. Only properties specified by 'mask' bits are updated. See [Instance.AddImage].
 */
-func (self Expanded) UpdateImage(key any, mask ImageUpdateMask, image Texture2D.Instance, width int, height int, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, pad bool, tooltip string, size_in_percent bool) { //gd:RichTextLabel.update_image
-	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), pad, String.New(tooltip), size_in_percent)
+func (self Expanded) UpdateImage(key any, mask ImageUpdateMask, image Texture2D.Instance, width int, height int, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, pad bool, tooltip string, width_in_percent bool, height_in_percent bool) { //gd:RichTextLabel.update_image
+	Advanced(self).UpdateImage(variant.New(key), mask, image, int64(width), int64(height), Color.RGBA(color), inline_align, Rect2.PositionSize(region), pad, String.New(tooltip), width_in_percent, height_in_percent)
 }
 
 /*
@@ -500,31 +541,45 @@ func (self Instance) PushLanguage(language string) { //gd:RichTextLabel.push_lan
 }
 
 /*
-Adds a [u] tag to the tag stack.
+Adds a [u] tag to the tag stack. If 'color' alpha value is zero, current font color with alpha multiplied by theme's 'underline_alpha' is used.
 */
 func (self Instance) PushUnderline() { //gd:RichTextLabel.push_underline
-	Advanced(self).PushUnderline()
+	Advanced(self).PushUnderline(Color.RGBA(gd.Color{0, 0, 0, 0}))
 }
 
 /*
-Adds a [s] tag to the tag stack.
+Adds a [u] tag to the tag stack. If 'color' alpha value is zero, current font color with alpha multiplied by theme's 'underline_alpha' is used.
+*/
+func (self Expanded) PushUnderline(color Color.RGBA) { //gd:RichTextLabel.push_underline
+	Advanced(self).PushUnderline(Color.RGBA(color))
+}
+
+/*
+Adds a [s] tag to the tag stack. If 'color' alpha value is zero, current font color with alpha multiplied by theme's 'strikethrough_alpha' is used.
 */
 func (self Instance) PushStrikethrough() { //gd:RichTextLabel.push_strikethrough
-	Advanced(self).PushStrikethrough()
+	Advanced(self).PushStrikethrough(Color.RGBA(gd.Color{0, 0, 0, 0}))
 }
 
 /*
-Adds a [table=columns,inline_align] tag to the tag stack. Use [Instance.SetTableColumnExpand] to set column expansion ratio. Use [Instance.PushCell] to add cells.
+Adds a [s] tag to the tag stack. If 'color' alpha value is zero, current font color with alpha multiplied by theme's 'strikethrough_alpha' is used.
+*/
+func (self Expanded) PushStrikethrough(color Color.RGBA) { //gd:RichTextLabel.push_strikethrough
+	Advanced(self).PushStrikethrough(Color.RGBA(color))
+}
+
+/*
+Adds a [table=columns,inline_align] tag to the tag stack. Use [Instance.SetTableColumnExpand] to set column expansion ratio. Use [Instance.PushCell] to add cells. 'name' is used as the table name for assistive apps.
 */
 func (self Instance) PushTable(columns int) { //gd:RichTextLabel.push_table
-	Advanced(self).PushTable(int64(columns), 0, int64(-1))
+	Advanced(self).PushTable(int64(columns), 0, int64(-1), String.New(""))
 }
 
 /*
-Adds a [table=columns,inline_align] tag to the tag stack. Use [Instance.SetTableColumnExpand] to set column expansion ratio. Use [Instance.PushCell] to add cells.
+Adds a [table=columns,inline_align] tag to the tag stack. Use [Instance.SetTableColumnExpand] to set column expansion ratio. Use [Instance.PushCell] to add cells. 'name' is used as the table name for assistive apps.
 */
-func (self Expanded) PushTable(columns int, inline_align GUI.InlineAlignment, align_to_row int) { //gd:RichTextLabel.push_table
-	Advanced(self).PushTable(int64(columns), inline_align, int64(align_to_row))
+func (self Expanded) PushTable(columns int, inline_align GUI.InlineAlignment, align_to_row int, name string) { //gd:RichTextLabel.push_table
+	Advanced(self).PushTable(int64(columns), inline_align, int64(align_to_row), String.New(name))
 }
 
 /*
@@ -564,6 +619,13 @@ func (self Expanded) SetTableColumnExpand(column int, expand bool, ratio int, sh
 }
 
 /*
+Sets table column name for assistive apps.
+*/
+func (self Instance) SetTableColumnName(column int, name string) { //gd:RichTextLabel.set_table_column_name
+	Advanced(self).SetTableColumnName(int64(column), String.New(name))
+}
+
+/*
 Sets color of a table cell. Separate colors for alternating rows can be specified.
 */
 func (self Instance) SetCellRowBackgroundColor(odd_row_bg Color.RGBA, even_row_bg Color.RGBA) { //gd:RichTextLabel.set_cell_row_background_color
@@ -600,6 +662,8 @@ func (self Instance) PushCell() { //gd:RichTextLabel.push_cell
 
 /*
 Adds a [fgcolor] tag to the tag stack.
+
+Note: The foreground color has padding applied by default, which is controlled using theme's 'text_highlight_h_padding' and theme's 'text_highlight_v_padding'. This can lead to overlapping highlights if foreground colors are placed on neighboring lines/columns, so consider setting those theme items to 0 if you want to avoid this.
 */
 func (self Instance) PushFgcolor(fgcolor Color.RGBA) { //gd:RichTextLabel.push_fgcolor
 	Advanced(self).PushFgcolor(Color.RGBA(fgcolor))
@@ -607,6 +671,8 @@ func (self Instance) PushFgcolor(fgcolor Color.RGBA) { //gd:RichTextLabel.push_f
 
 /*
 Adds a [bgcolor] tag to the tag stack.
+
+Note: The background color has padding applied by default, which is controlled using theme's 'text_highlight_h_padding' and theme's 'text_highlight_v_padding'. This can lead to overlapping highlights if background colors are placed on neighboring lines/columns, so consider setting those theme items to 0 if you want to avoid this.
 */
 func (self Instance) PushBgcolor(bgcolor Color.RGBA) { //gd:RichTextLabel.push_bgcolor
 	Advanced(self).PushBgcolor(Color.RGBA(bgcolor))
@@ -788,8 +854,6 @@ func (self Instance) GetTotalCharacterCount() int { //gd:RichTextLabel.get_total
 /*
 Returns the total number of lines in the text. Wrapped text is counted as multiple lines.
 
-Note: If [Instance.VisibleCharactersBehavior] is set to [Textserver.VcCharsBeforeShaping] only visible wrapped lines are counted.
-
 Note: If [Instance.Threaded] is enabled, this method returns a value for the loaded part of the document. Use [Instance.IsFinished] or [Instance.OnFinished] to determine whether document is fully loaded.
 */
 func (self Instance) GetLineCount() int { //gd:RichTextLabel.get_line_count
@@ -810,6 +874,8 @@ func (self Instance) GetLineRange(line int) Vector2i.XY { //gd:RichTextLabel.get
 /*
 Returns the number of visible lines.
 
+Note: This method returns a correct value only after the label has been drawn.
+
 Note: If [Instance.Threaded] is enabled, this method returns a value for the loaded part of the document. Use [Instance.IsFinished] or [Instance.OnFinished] to determine whether document is fully loaded.
 */
 func (self Instance) GetVisibleLineCount() int { //gd:RichTextLabel.get_visible_line_count
@@ -826,6 +892,8 @@ func (self Instance) GetParagraphCount() int { //gd:RichTextLabel.get_paragraph_
 /*
 Returns the number of visible paragraphs. A paragraph is considered visible if at least one of its lines is visible.
 
+Note: This method returns a correct value only after the label has been drawn.
+
 Note: If [Instance.Threaded] is enabled, this method returns a value for the loaded part of the document. Use [Instance.IsFinished] or [Instance.OnFinished] to determine whether document is fully loaded.
 */
 func (self Instance) GetVisibleParagraphCount() int { //gd:RichTextLabel.get_visible_paragraph_count
@@ -834,6 +902,8 @@ func (self Instance) GetVisibleParagraphCount() int { //gd:RichTextLabel.get_vis
 
 /*
 Returns the height of the content.
+
+Note: This method always returns the full content size, and is not affected by [Instance.VisibleRatio] and [Instance.VisibleCharacters]. To get the visible content size, use [Instance.GetVisibleContentRect].
 
 Note: If [Instance.Threaded] is enabled, this method returns a value for the loaded part of the document. Use [Instance.IsFinished] or [Instance.OnFinished] to determine whether document is fully loaded.
 */
@@ -844,10 +914,39 @@ func (self Instance) GetContentHeight() int { //gd:RichTextLabel.get_content_hei
 /*
 Returns the width of the content.
 
+Note: This method always returns the full content size, and is not affected by [Instance.VisibleRatio] and [Instance.VisibleCharacters]. To get the visible content size, use [Instance.GetVisibleContentRect].
+
 Note: If [Instance.Threaded] is enabled, this method returns a value for the loaded part of the document. Use [Instance.IsFinished] or [Instance.OnFinished] to determine whether document is fully loaded.
 */
 func (self Instance) GetContentWidth() int { //gd:RichTextLabel.get_content_width
 	return int(int(Advanced(self).GetContentWidth()))
+}
+
+/*
+Returns the height of the line found at the provided index.
+
+Note: If [Instance.Threaded] is enabled, this method returns a value for the loaded part of the document. Use [Instance.IsFinished] or [Instance.OnFinished] to determine whether the document is fully loaded.
+*/
+func (self Instance) GetLineHeight(line int) int { //gd:RichTextLabel.get_line_height
+	return int(int(Advanced(self).GetLineHeight(int64(line))))
+}
+
+/*
+Returns the width of the line found at the provided index.
+
+Note: If [Instance.Threaded] is enabled, this method returns a value for the loaded part of the document. Use [Instance.IsFinished] or [Instance.OnFinished] to determine whether the document is fully loaded.
+*/
+func (self Instance) GetLineWidth(line int) int { //gd:RichTextLabel.get_line_width
+	return int(int(Advanced(self).GetLineWidth(int64(line))))
+}
+
+/*
+Returns the bounding rectangle of the visible content.
+
+Note: This method returns a correct value only after the label has been drawn.
+*/
+func (self Instance) GetVisibleContentRect() Rect2i.PositionSize { //gd:RichTextLabel.get_visible_content_rect
+	return Rect2i.PositionSize(Advanced(self).GetVisibleContentRect())
 }
 
 /*
@@ -884,6 +983,13 @@ The above effect can be installed in [graphics.gd/classdb/RichTextLabel] from a 
 */
 func (self Instance) InstallEffect(effect any) { //gd:RichTextLabel.install_effect
 	Advanced(self).InstallEffect(variant.New(effect))
+}
+
+/*
+Reloads custom effects. Useful when [Instance.CustomEffects] is modified manually.
+*/
+func (self Instance) ReloadEffects() { //gd:RichTextLabel.reload_effects
+	Advanced(self).ReloadEffects()
 }
 
 /*
@@ -993,12 +1099,28 @@ func (self Instance) SetScrollFollowing(value bool) {
 	class(self).SetScrollFollow(value)
 }
 
+func (self Instance) ScrollFollowingVisibleCharacters() bool {
+	return bool(class(self).IsScrollFollowingVisibleCharacters())
+}
+
+func (self Instance) SetScrollFollowingVisibleCharacters(value bool) {
+	class(self).SetScrollFollowVisibleCharacters(value)
+}
+
 func (self Instance) AutowrapMode() TextServer.AutowrapMode {
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
 func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
 	class(self).SetAutowrapMode(value)
+}
+
+func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag {
+	return TextServer.LineBreakFlag(class(self).GetAutowrapTrimFlags())
+}
+
+func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) {
+	class(self).SetAutowrapTrimFlags(value)
 }
 
 func (self Instance) TabSize() int {
@@ -1201,6 +1323,25 @@ func (self class) SetText(text String.Readable) { //gd:RichTextLabel.set_text
 }
 
 /*
+Adds a horizontal rule that can be used to separate content.
+
+If 'width_in_percent' is set, 'width' values are percentages of the control width instead of pixels.
+
+If 'height_in_percent' is set, 'height' values are percentages of the control width instead of pixels.
+*/
+//go:nosplit
+func (self class) AddHr(width int64, height int64, color Color.RGBA, alignment GUI.HorizontalAlignment, width_in_percent bool, height_in_percent bool) { //gd:RichTextLabel.add_hr
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_hr, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeBool<<24), &struct {
+		width             int64
+		height            int64
+		color             Color.RGBA
+		alignment         GUI.HorizontalAlignment
+		width_in_percent  bool
+		height_in_percent bool
+	}{width, height, color, alignment, width_in_percent, height_in_percent})
+}
+
+/*
 Adds an image's opening and closing tags to the tag stack, optionally providing a 'width' and 'height' to resize the image, a 'color' to tint the image and a 'region' to only use parts of the image.
 
 If 'width' or 'height' is set to 0, the image size will be adjusted in order to keep the original aspect ratio.
@@ -1211,42 +1352,49 @@ If 'width' and 'height' are not set, but 'region' is, the region's rect will be 
 
 If 'pad' is set, and the image is smaller than the size specified by 'width' and 'height', the image padding is added to match the size instead of upscaling.
 
-If 'size_in_percent' is set, 'width' and 'height' values are percentages of the control width instead of pixels.
+If 'width_in_percent' is set, 'width' values are percentages of the control width instead of pixels.
+
+If 'height_in_percent' is set, 'height' values are percentages of the control width instead of pixels.
+
+'alt_text' is used as the image description for assistive apps.
 */
 //go:nosplit
-func (self class) AddImage(image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, key variant.Any, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.add_image
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeRect2<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeString<<36)|(gdextension.SizeBool<<40), &struct {
-		image           gdextension.Object
-		width           int64
-		height          int64
-		color           Color.RGBA
-		inline_align    GUI.InlineAlignment
-		region          Rect2.PositionSize
-		key             gdextension.Variant
-		pad             bool
-		tooltip         gdextension.String
-		size_in_percent bool
-	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), width, height, color, inline_align, region, gdextension.Variant(pointers.Get(gd.InternalVariant(key))), pad, pointers.Get(gd.InternalString(tooltip)), size_in_percent})
+func (self class) AddImage(image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, key variant.Any, pad bool, tooltip String.Readable, width_in_percent bool, height_in_percent bool, alt_text String.Readable) { //gd:RichTextLabel.add_image
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeRect2<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeString<<36)|(gdextension.SizeBool<<40)|(gdextension.SizeBool<<44)|(gdextension.SizeString<<48), &struct {
+		image             gdextension.Object
+		width             int64
+		height            int64
+		color             Color.RGBA
+		inline_align      GUI.InlineAlignment
+		region            Rect2.PositionSize
+		key               gdextension.Variant
+		pad               bool
+		tooltip           gdextension.String
+		width_in_percent  bool
+		height_in_percent bool
+		alt_text          gdextension.String
+	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), width, height, color, inline_align, region, gdextension.Variant(pointers.Get(gd.InternalVariant(key))), pad, pointers.Get(gd.InternalString(tooltip)), width_in_percent, height_in_percent, pointers.Get(gd.InternalString(alt_text))})
 }
 
 /*
 Updates the existing images with the key 'key'. Only properties specified by 'mask' bits are updated. See [Instance.AddImage].
 */
 //go:nosplit
-func (self class) UpdateImage(key variant.Any, mask ImageUpdateMask, image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, pad bool, tooltip String.Readable, size_in_percent bool) { //gd:RichTextLabel.update_image
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_image, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeRect2<<32)|(gdextension.SizeBool<<36)|(gdextension.SizeString<<40)|(gdextension.SizeBool<<44), &struct {
-		key             gdextension.Variant
-		mask            ImageUpdateMask
-		image           gdextension.Object
-		width           int64
-		height          int64
-		color           Color.RGBA
-		inline_align    GUI.InlineAlignment
-		region          Rect2.PositionSize
-		pad             bool
-		tooltip         gdextension.String
-		size_in_percent bool
-	}{gdextension.Variant(pointers.Get(gd.InternalVariant(key))), mask, gdextension.Object(gd.ObjectChecked(image[0].AsObject())), width, height, color, inline_align, region, pad, pointers.Get(gd.InternalString(tooltip)), size_in_percent})
+func (self class) UpdateImage(key variant.Any, mask ImageUpdateMask, image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, pad bool, tooltip String.Readable, width_in_percent bool, height_in_percent bool) { //gd:RichTextLabel.update_image
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_image, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeRect2<<32)|(gdextension.SizeBool<<36)|(gdextension.SizeString<<40)|(gdextension.SizeBool<<44)|(gdextension.SizeBool<<48), &struct {
+		key               gdextension.Variant
+		mask              ImageUpdateMask
+		image             gdextension.Object
+		width             int64
+		height            int64
+		color             Color.RGBA
+		inline_align      GUI.InlineAlignment
+		region            Rect2.PositionSize
+		pad               bool
+		tooltip           gdextension.String
+		width_in_percent  bool
+		height_in_percent bool
+	}{gdextension.Variant(pointers.Get(gd.InternalVariant(key))), mask, gdextension.Object(gd.ObjectChecked(image[0].AsObject())), width, height, color, inline_align, region, pad, pointers.Get(gd.InternalString(tooltip)), width_in_percent, height_in_percent})
 }
 
 /*
@@ -1438,31 +1586,32 @@ func (self class) PushLanguage(language String.Readable) { //gd:RichTextLabel.pu
 }
 
 /*
-Adds a [u] tag to the tag stack.
+Adds a [u] tag to the tag stack. If 'color' alpha value is zero, current font color with alpha multiplied by theme's 'underline_alpha' is used.
 */
 //go:nosplit
-func (self class) PushUnderline() { //gd:RichTextLabel.push_underline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_underline, 0, &struct{}{})
+func (self class) PushUnderline(color Color.RGBA) { //gd:RichTextLabel.push_underline
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_underline, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 /*
-Adds a [s] tag to the tag stack.
+Adds a [s] tag to the tag stack. If 'color' alpha value is zero, current font color with alpha multiplied by theme's 'strikethrough_alpha' is used.
 */
 //go:nosplit
-func (self class) PushStrikethrough() { //gd:RichTextLabel.push_strikethrough
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_strikethrough, 0, &struct{}{})
+func (self class) PushStrikethrough(color Color.RGBA) { //gd:RichTextLabel.push_strikethrough
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_strikethrough, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 /*
-Adds a [table=columns,inline_align] tag to the tag stack. Use [Instance.SetTableColumnExpand] to set column expansion ratio. Use [Instance.PushCell] to add cells.
+Adds a [table=columns,inline_align] tag to the tag stack. Use [Instance.SetTableColumnExpand] to set column expansion ratio. Use [Instance.PushCell] to add cells. 'name' is used as the table name for assistive apps.
 */
 //go:nosplit
-func (self class) PushTable(columns int64, inline_align GUI.InlineAlignment, align_to_row int64) { //gd:RichTextLabel.push_table
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_table, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+func (self class) PushTable(columns int64, inline_align GUI.InlineAlignment, align_to_row int64, name String.Readable) { //gd:RichTextLabel.push_table
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_table, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeString<<16), &struct {
 		columns      int64
 		inline_align GUI.InlineAlignment
 		align_to_row int64
-	}{columns, inline_align, align_to_row})
+		name         gdextension.String
+	}{columns, inline_align, align_to_row, pointers.Get(gd.InternalString(name))})
 }
 
 /*
@@ -1496,6 +1645,17 @@ func (self class) SetTableColumnExpand(column int64, expand bool, ratio int64, s
 		ratio  int64
 		shrink bool
 	}{column, expand, ratio, shrink})
+}
+
+/*
+Sets table column name for assistive apps.
+*/
+//go:nosplit
+func (self class) SetTableColumnName(column int64, name String.Readable) { //gd:RichTextLabel.set_table_column_name
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_table_column_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+		column int64
+		name   gdextension.String
+	}{column, pointers.Get(gd.InternalString(name))})
 }
 
 /*
@@ -1546,6 +1706,8 @@ func (self class) PushCell() { //gd:RichTextLabel.push_cell
 
 /*
 Adds a [fgcolor] tag to the tag stack.
+
+Note: The foreground color has padding applied by default, which is controlled using theme's 'text_highlight_h_padding' and theme's 'text_highlight_v_padding'. This can lead to overlapping highlights if foreground colors are placed on neighboring lines/columns, so consider setting those theme items to 0 if you want to avoid this.
 */
 //go:nosplit
 func (self class) PushFgcolor(fgcolor Color.RGBA) { //gd:RichTextLabel.push_fgcolor
@@ -1554,6 +1716,8 @@ func (self class) PushFgcolor(fgcolor Color.RGBA) { //gd:RichTextLabel.push_fgco
 
 /*
 Adds a [bgcolor] tag to the tag stack.
+
+Note: The background color has padding applied by default, which is controlled using theme's 'text_highlight_h_padding' and theme's 'text_highlight_v_padding'. This can lead to overlapping highlights if background colors are placed on neighboring lines/columns, so consider setting those theme items to 0 if you want to avoid this.
 */
 //go:nosplit
 func (self class) PushBgcolor(bgcolor Color.RGBA) { //gd:RichTextLabel.push_bgcolor
@@ -1726,6 +1890,18 @@ func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:RichTextLabel
 }
 
 //go:nosplit
+func (self class) SetAutowrapTrimFlags(autowrap_trim_flags TextServer.LineBreakFlag) { //gd:RichTextLabel.set_autowrap_trim_flags
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_trim_flags, 0|(gdextension.SizeInt<<4), &struct{ autowrap_trim_flags TextServer.LineBreakFlag }{autowrap_trim_flags})
+}
+
+//go:nosplit
+func (self class) GetAutowrapTrimFlags() TextServer.LineBreakFlag { //gd:RichTextLabel.get_autowrap_trim_flags
+	var r_ret = gdextension.Call[TextServer.LineBreakFlag](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_trim_flags, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
 func (self class) SetMetaUnderline(enable bool) { //gd:RichTextLabel.set_meta_underline
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_meta_underline, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
@@ -1757,6 +1933,18 @@ func (self class) SetScrollActive(active bool) { //gd:RichTextLabel.set_scroll_a
 //go:nosplit
 func (self class) IsScrollActive() bool { //gd:RichTextLabel.is_scroll_active
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_active, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetScrollFollowVisibleCharacters(follow bool) { //gd:RichTextLabel.set_scroll_follow_visible_characters
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_follow_visible_characters, 0|(gdextension.SizeBool<<4), &struct{ follow bool }{follow})
+}
+
+//go:nosplit
+func (self class) IsScrollFollowingVisibleCharacters() bool { //gd:RichTextLabel.is_scroll_following_visible_characters
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_following_visible_characters, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2107,8 +2295,6 @@ func (self class) IsUsingBbcode() bool { //gd:RichTextLabel.is_using_bbcode
 /*
 Returns the total number of lines in the text. Wrapped text is counted as multiple lines.
 
-Note: If [Instance.VisibleCharactersBehavior] is set to [Textserver.VcCharsBeforeShaping] only visible wrapped lines are counted.
-
 Note: If [Instance.Threaded] is enabled, this method returns a value for the loaded part of the document. Use [Instance.IsFinished] or [Instance.OnFinished] to determine whether document is fully loaded.
 */
 //go:nosplit
@@ -2135,6 +2321,8 @@ func (self class) GetLineRange(line int64) Vector2i.XY { //gd:RichTextLabel.get_
 /*
 Returns the number of visible lines.
 
+Note: This method returns a correct value only after the label has been drawn.
+
 Note: If [Instance.Threaded] is enabled, this method returns a value for the loaded part of the document. Use [Instance.IsFinished] or [Instance.OnFinished] to determine whether document is fully loaded.
 */
 //go:nosplit
@@ -2157,6 +2345,8 @@ func (self class) GetParagraphCount() int64 { //gd:RichTextLabel.get_paragraph_c
 /*
 Returns the number of visible paragraphs. A paragraph is considered visible if at least one of its lines is visible.
 
+Note: This method returns a correct value only after the label has been drawn.
+
 Note: If [Instance.Threaded] is enabled, this method returns a value for the loaded part of the document. Use [Instance.IsFinished] or [Instance.OnFinished] to determine whether document is fully loaded.
 */
 //go:nosplit
@@ -2168,6 +2358,8 @@ func (self class) GetVisibleParagraphCount() int64 { //gd:RichTextLabel.get_visi
 
 /*
 Returns the height of the content.
+
+Note: This method always returns the full content size, and is not affected by [Instance.VisibleRatio] and [Instance.VisibleCharacters]. To get the visible content size, use [Instance.GetVisibleContentRect].
 
 Note: If [Instance.Threaded] is enabled, this method returns a value for the loaded part of the document. Use [Instance.IsFinished] or [Instance.OnFinished] to determine whether document is fully loaded.
 */
@@ -2181,11 +2373,51 @@ func (self class) GetContentHeight() int64 { //gd:RichTextLabel.get_content_heig
 /*
 Returns the width of the content.
 
+Note: This method always returns the full content size, and is not affected by [Instance.VisibleRatio] and [Instance.VisibleCharacters]. To get the visible content size, use [Instance.GetVisibleContentRect].
+
 Note: If [Instance.Threaded] is enabled, this method returns a value for the loaded part of the document. Use [Instance.IsFinished] or [Instance.OnFinished] to determine whether document is fully loaded.
 */
 //go:nosplit
 func (self class) GetContentWidth() int64 { //gd:RichTextLabel.get_content_width
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_content_width, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the height of the line found at the provided index.
+
+Note: If [Instance.Threaded] is enabled, this method returns a value for the loaded part of the document. Use [Instance.IsFinished] or [Instance.OnFinished] to determine whether the document is fully loaded.
+*/
+//go:nosplit
+func (self class) GetLineHeight(line int64) int64 { //gd:RichTextLabel.get_line_height
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_height, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the width of the line found at the provided index.
+
+Note: If [Instance.Threaded] is enabled, this method returns a value for the loaded part of the document. Use [Instance.IsFinished] or [Instance.OnFinished] to determine whether the document is fully loaded.
+*/
+//go:nosplit
+func (self class) GetLineWidth(line int64) int64 { //gd:RichTextLabel.get_line_width
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_width, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the bounding rectangle of the visible content.
+
+Note: This method returns a correct value only after the label has been drawn.
+
+
+*/
+//go:nosplit
+func (self class) GetVisibleContentRect() Rect2i.PositionSize { //gd:RichTextLabel.get_visible_content_rect
+	var r_ret = gdextension.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_visible_content_rect, gdextension.SizeRect2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2252,6 +2484,14 @@ The above effect can be installed in [graphics.gd/classdb/RichTextLabel] from a 
 //go:nosplit
 func (self class) InstallEffect(effect variant.Any) { //gd:RichTextLabel.install_effect
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.install_effect, 0|(gdextension.SizeVariant<<4), &struct{ effect gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(effect)))})
+}
+
+/*
+Reloads custom effects. Useful when [Instance.CustomEffects] is modified manually.
+*/
+//go:nosplit
+func (self class) ReloadEffects() { //gd:RichTextLabel.reload_effects
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reload_effects, 0, &struct{}{})
 }
 
 /*

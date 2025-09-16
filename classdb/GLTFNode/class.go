@@ -106,6 +106,8 @@ var methods struct {
 	append_child_index  gdextension.MethodForClass `hash:"1286410249"`
 	get_light           gdextension.MethodForClass `hash:"2455072627"`
 	set_light           gdextension.MethodForClass `hash:"1286410249"`
+	get_visible         gdextension.MethodForClass `hash:"2240911060"`
+	set_visible         gdextension.MethodForClass `hash:"2586408642"`
 	get_additional_data gdextension.MethodForClass `hash:"2138907829"`
 	set_additional_data gdextension.MethodForClass `hash:"3776071444"`
 	get_scene_node_path gdextension.MethodForClass `hash:"573359477"`
@@ -305,6 +307,14 @@ func (self Instance) SetLight(value int) {
 	class(self).SetLight(int64(value))
 }
 
+func (self Instance) Visible() bool {
+	return bool(class(self).GetVisible())
+}
+
+func (self Instance) SetVisible(value bool) {
+	class(self).SetVisible(value)
+}
+
 //go:nosplit
 func (self class) GetOriginalName() String.Readable { //gd:GLTFNode.get_original_name
 	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
@@ -469,6 +479,18 @@ func (self class) GetLight() int64 { //gd:GLTFNode.get_light
 //go:nosplit
 func (self class) SetLight(light int64) { //gd:GLTFNode.set_light
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light, 0|(gdextension.SizeInt<<4), &struct{ light int64 }{light})
+}
+
+//go:nosplit
+func (self class) GetVisible() bool { //gd:GLTFNode.get_visible
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_visible, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetVisible(visible bool) { //gd:GLTFNode.set_visible
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible, 0|(gdextension.SizeBool<<4), &struct{ visible bool }{visible})
 }
 
 /*

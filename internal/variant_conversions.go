@@ -177,7 +177,7 @@ func CutVariant(v any, cut bool) Variant {
 	case reflect.Struct:
 		switch val := v.(type) {
 		case PackedType.Bytes:
-			var arg = pointers.Cut(InternalPacked[PackedByteArray, byte](PackedType.Array[byte](val)), cut)
+			var arg = pointers.Cut(InternalPacked[PackedByteArray, byte](PackedType.Array[byte](val.Array)), cut)
 			ret.LoadNative(gdextension.TypePackedByteArray, gdextension.SizePackedArray, unsafe.Pointer(&arg))
 		case PackedType.Array[byte]:
 			var arg = pointers.Cut(InternalPacked[PackedByteArray, byte](val), cut)
@@ -514,7 +514,7 @@ func (variant Variant) Interface() any {
 		return ArrayType.Through(ArrayProxy[VariantPkg.Any]{}, pointers.Pack(array))
 	case gdextension.TypePackedByteArray:
 		array := variantAsPointerType[PackedByteArray](variant, vtype)
-		return PackedType.Bytes(ArrayType.Through(PackedProxy[PackedByteArray, byte]{}, pointers.Pack(array)))
+		return PackedType.Bytes{Array: PackedType.Array[byte](ArrayType.Through(PackedProxy[PackedByteArray, byte]{}, pointers.Pack(array)))}
 	case gdextension.TypePackedInt32Array:
 		array := variantAsPointerType[PackedInt32Array](variant, vtype)
 		return PackedType.Array[int32](ArrayType.Through(PackedProxy[PackedInt32Array, int32]{}, pointers.Pack(array)))

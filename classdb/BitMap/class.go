@@ -200,7 +200,7 @@ func (self Instance) GrowMask(pixels int, rect Rect2i.PositionSize) { //gd:BitMa
 }
 
 /*
-Returns an image of the same size as the bitmap and with a [Image.Format] of type [Image.FormatL8]. true bits of the bitmap are being converted into white pixels, and false bits into black.
+Returns an image of the same size as the bitmap and with an [Image.Format] of type [Image.FormatL8]. true bits of the bitmap are being converted into white pixels, and false bits into black.
 */
 func (self Instance) ConvertToImage() Image.Instance { //gd:BitMap.convert_to_image
 	return Image.Instance(Advanced(self).ConvertToImage())
@@ -391,7 +391,7 @@ func (self class) GrowMask(pixels int64, rect Rect2i.PositionSize) { //gd:BitMap
 }
 
 /*
-Returns an image of the same size as the bitmap and with a [Image.Format] of type [Image.FormatL8]. true bits of the bitmap are being converted into white pixels, and false bits into black.
+Returns an image of the same size as the bitmap and with an [Image.Format] of type [Image.FormatL8]. true bits of the bitmap are being converted into white pixels, and false bits into black.
 */
 //go:nosplit
 func (self class) ConvertToImage() [1]gdclass.Image { //gd:BitMap.convert_to_image

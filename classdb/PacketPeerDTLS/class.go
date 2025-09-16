@@ -130,7 +130,7 @@ func (self Expanded) ConnectToPeer(packet_peer PacketPeerUDP.Instance, hostname 
 }
 
 /*
-Returns the status of the connection. See [Status] for values.
+Returns the status of the connection.
 */
 func (self Instance) GetStatus() Status { //gd:PacketPeerDTLS.get_status
 	return Status(Advanced(self).GetStatus())
@@ -209,7 +209,7 @@ func (self class) ConnectToPeer(packet_peer [1]gdclass.PacketPeerUDP, hostname S
 }
 
 /*
-Returns the status of the connection. See [Status] for values.
+Returns the status of the connection.
 */
 //go:nosplit
 func (self class) GetStatus() Status { //gd:PacketPeerDTLS.get_status

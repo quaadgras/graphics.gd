@@ -153,14 +153,14 @@ type Any interface {
 Start the AES context in the given 'mode'. A 'key' of either 16 or 32 bytes must always be provided, while an 'iv' (initialization vector) of exactly 16 bytes, is only needed when 'mode' is either [ModeCbcEncrypt] or [ModeCbcDecrypt].
 */
 func (self Instance) Start(mode Mode, key []byte) error { //gd:AESContext.start
-	return error(gd.ToError(Advanced(self).Start(mode, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New([1][]byte{}[0]...)))))
+	return error(gd.ToError(Advanced(self).Start(mode, Packed.BytesFrom(key...), Packed.BytesFrom([1][]byte{}[0]...))))
 }
 
 /*
 Start the AES context in the given 'mode'. A 'key' of either 16 or 32 bytes must always be provided, while an 'iv' (initialization vector) of exactly 16 bytes, is only needed when 'mode' is either [ModeCbcEncrypt] or [ModeCbcDecrypt].
 */
 func (self Expanded) Start(mode Mode, key []byte, iv []byte) error { //gd:AESContext.start
-	return error(gd.ToError(Advanced(self).Start(mode, Packed.Bytes(Packed.New(key...)), Packed.Bytes(Packed.New(iv...)))))
+	return error(gd.ToError(Advanced(self).Start(mode, Packed.BytesFrom(key...), Packed.BytesFrom(iv...))))
 }
 
 /*
@@ -169,7 +169,7 @@ Run the desired operation for this AES context. Will return a []byte containing 
 Note: The size of 'src' must be a multiple of 16. Apply some padding if needed.
 */
 func (self Instance) Update(src []byte) []byte { //gd:AESContext.update
-	return []byte(Advanced(self).Update(Packed.Bytes(Packed.New(src...))).Bytes())
+	return []byte(Advanced(self).Update(Packed.BytesFrom(src...)).Bytes())
 }
 
 /*
@@ -240,7 +240,7 @@ func (self class) Start(mode Mode, key Packed.Bytes, iv Packed.Bytes) Error.Code
 		mode Mode
 		key  gdextension.PackedArray[byte]
 		iv   gdextension.PackedArray[byte]
-	}{mode, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](iv)))})
+	}{mode, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](key.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](iv.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -252,8 +252,8 @@ Note: The size of 'src' must be a multiple of 16. Apply some padding if needed.
 */
 //go:nosplit
 func (self class) Update(src Packed.Bytes) Packed.Bytes { //gd:AESContext.update
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), &struct{ src gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](src)))})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), &struct{ src gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](src.Array)))})
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -265,7 +265,7 @@ Note: This function only makes sense when the context is started with [ModeCbcEn
 //go:nosplit
 func (self class) GetIvState() Packed.Bytes { //gd:AESContext.get_iv_state
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_iv_state, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 

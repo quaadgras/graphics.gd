@@ -97,6 +97,8 @@ var methods struct {
 	get_volume          gdextension.MethodForClass `hash:"1740695150"`
 	set_volume_db       gdextension.MethodForClass `hash:"373806689"`
 	get_volume_db       gdextension.MethodForClass `hash:"1740695150"`
+	set_speed_scale     gdextension.MethodForClass `hash:"373806689"`
+	get_speed_scale     gdextension.MethodForClass `hash:"1740695150"`
 	set_audio_track     gdextension.MethodForClass `hash:"1286410249"`
 	get_audio_track     gdextension.MethodForClass `hash:"3905245786"`
 	get_stream_name     gdextension.MethodForClass `hash:"201670096"`
@@ -168,8 +170,6 @@ func (self Instance) GetStreamName() string { //gd:VideoStreamPlayer.get_stream_
 
 /*
 The length of the current stream, in seconds.
-
-Note: For [graphics.gd/classdb/VideoStreamTheora] streams (the built-in format supported by Godot), this value will always be zero, as getting the stream length is not implemented yet. The feature may be supported by video formats implemented by a GDExtension add-on.
 */
 func (self Instance) GetStreamLength() Float.X { //gd:VideoStreamPlayer.get_stream_length
 	return Float.X(Float.X(Advanced(self).GetStreamLength()))
@@ -254,6 +254,14 @@ func (self Instance) Volume() Float.X {
 
 func (self Instance) SetVolume(value Float.X) {
 	class(self).SetVolume(float64(value))
+}
+
+func (self Instance) SpeedScale() Float.X {
+	return Float.X(Float.X(class(self).GetSpeedScale()))
+}
+
+func (self Instance) SetSpeedScale(value Float.X) {
+	class(self).SetSpeedScale(float64(value))
 }
 
 func (self Instance) Autoplay() bool {
@@ -403,6 +411,18 @@ func (self class) GetVolumeDb() float64 { //gd:VideoStreamPlayer.get_volume_db
 }
 
 //go:nosplit
+func (self class) SetSpeedScale(speed_scale float64) { //gd:VideoStreamPlayer.set_speed_scale
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ speed_scale float64 }{speed_scale})
+}
+
+//go:nosplit
+func (self class) GetSpeedScale() float64 { //gd:VideoStreamPlayer.get_speed_scale
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
 func (self class) SetAudioTrack(track int64) { //gd:VideoStreamPlayer.set_audio_track
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_audio_track, 0|(gdextension.SizeInt<<4), &struct{ track int64 }{track})
 }
@@ -426,8 +446,6 @@ func (self class) GetStreamName() String.Readable { //gd:VideoStreamPlayer.get_s
 
 /*
 The length of the current stream, in seconds.
-
-Note: For [graphics.gd/classdb/VideoStreamTheora] streams (the built-in format supported by Godot), this value will always be zero, as getting the stream length is not implemented yet. The feature may be supported by video formats implemented by a GDExtension add-on.
 */
 //go:nosplit
 func (self class) GetStreamLength() float64 { //gd:VideoStreamPlayer.get_stream_length

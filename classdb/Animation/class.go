@@ -543,7 +543,7 @@ func (self Instance) TrackIsCompressed(track_idx int) bool { //gd:Animation.trac
 }
 
 /*
-Sets the update mode (see [UpdateMode]) of a value track.
+Sets the update mode of a value track.
 */
 func (self Instance) ValueTrackSetUpdateMode(track_idx int, mode UpdateMode) { //gd:Animation.value_track_set_update_mode
 	Advanced(self).ValueTrackSetUpdateMode(int64(track_idx), mode)
@@ -1421,7 +1421,7 @@ func (self class) TrackIsCompressed(track_idx int64) bool { //gd:Animation.track
 }
 
 /*
-Sets the update mode (see [UpdateMode]) of a value track.
+Sets the update mode of a value track.
 */
 //go:nosplit
 func (self class) ValueTrackSetUpdateMode(track_idx int64, mode UpdateMode) { //gd:Animation.value_track_set_update_mode

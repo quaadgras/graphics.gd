@@ -74,24 +74,36 @@ type Instance [1]gdclass.NavigationPathQueryParameters2D
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_pathfinding_algorithm gdextension.MethodForClass `hash:"2783519915"`
-	get_pathfinding_algorithm gdextension.MethodForClass `hash:"3000421146"`
-	set_path_postprocessing   gdextension.MethodForClass `hash:"2864409082"`
-	get_path_postprocessing   gdextension.MethodForClass `hash:"3798118993"`
-	set_map                   gdextension.MethodForClass `hash:"2722037293"`
-	get_map                   gdextension.MethodForClass `hash:"2944877500"`
-	set_start_position        gdextension.MethodForClass `hash:"743155724"`
-	get_start_position        gdextension.MethodForClass `hash:"3341600327"`
-	set_target_position       gdextension.MethodForClass `hash:"743155724"`
-	get_target_position       gdextension.MethodForClass `hash:"3341600327"`
-	set_navigation_layers     gdextension.MethodForClass `hash:"1286410249"`
-	get_navigation_layers     gdextension.MethodForClass `hash:"3905245786"`
-	set_metadata_flags        gdextension.MethodForClass `hash:"24274129"`
-	get_metadata_flags        gdextension.MethodForClass `hash:"488152976"`
-	set_simplify_path         gdextension.MethodForClass `hash:"2586408642"`
-	get_simplify_path         gdextension.MethodForClass `hash:"36873697"`
-	set_simplify_epsilon      gdextension.MethodForClass `hash:"373806689"`
-	get_simplify_epsilon      gdextension.MethodForClass `hash:"1740695150"`
+	set_pathfinding_algorithm    gdextension.MethodForClass `hash:"2783519915"`
+	get_pathfinding_algorithm    gdextension.MethodForClass `hash:"3000421146"`
+	set_path_postprocessing      gdextension.MethodForClass `hash:"2864409082"`
+	get_path_postprocessing      gdextension.MethodForClass `hash:"3798118993"`
+	set_map                      gdextension.MethodForClass `hash:"2722037293"`
+	get_map                      gdextension.MethodForClass `hash:"2944877500"`
+	set_start_position           gdextension.MethodForClass `hash:"743155724"`
+	get_start_position           gdextension.MethodForClass `hash:"3341600327"`
+	set_target_position          gdextension.MethodForClass `hash:"743155724"`
+	get_target_position          gdextension.MethodForClass `hash:"3341600327"`
+	set_navigation_layers        gdextension.MethodForClass `hash:"1286410249"`
+	get_navigation_layers        gdextension.MethodForClass `hash:"3905245786"`
+	set_metadata_flags           gdextension.MethodForClass `hash:"24274129"`
+	get_metadata_flags           gdextension.MethodForClass `hash:"488152976"`
+	set_simplify_path            gdextension.MethodForClass `hash:"2586408642"`
+	get_simplify_path            gdextension.MethodForClass `hash:"36873697"`
+	set_simplify_epsilon         gdextension.MethodForClass `hash:"373806689"`
+	get_simplify_epsilon         gdextension.MethodForClass `hash:"1740695150"`
+	set_included_regions         gdextension.MethodForClass `hash:"381264803"`
+	get_included_regions         gdextension.MethodForClass `hash:"3995934104"`
+	set_excluded_regions         gdextension.MethodForClass `hash:"381264803"`
+	get_excluded_regions         gdextension.MethodForClass `hash:"3995934104"`
+	set_path_return_max_length   gdextension.MethodForClass `hash:"373806689"`
+	get_path_return_max_length   gdextension.MethodForClass `hash:"1740695150"`
+	set_path_return_max_radius   gdextension.MethodForClass `hash:"373806689"`
+	get_path_return_max_radius   gdextension.MethodForClass `hash:"1740695150"`
+	set_path_search_max_polygons gdextension.MethodForClass `hash:"1286410249"`
+	get_path_search_max_polygons gdextension.MethodForClass `hash:"3905245786"`
+	set_path_search_max_distance gdextension.MethodForClass `hash:"373806689"`
+	get_path_search_max_distance gdextension.MethodForClass `hash:"1740695150"`
 }
 
 func init() {
@@ -229,6 +241,54 @@ func (self Instance) SetSimplifyEpsilon(value Float.X) {
 	class(self).SetSimplifyEpsilon(float64(value))
 }
 
+func (self Instance) ExcludedRegions() []RID.Any {
+	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetExcludedRegions())))
+}
+
+func (self Instance) SetExcludedRegions(value []RID.Any) {
+	class(self).SetExcludedRegions(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
+}
+
+func (self Instance) IncludedRegions() []RID.Any {
+	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetIncludedRegions())))
+}
+
+func (self Instance) SetIncludedRegions(value []RID.Any) {
+	class(self).SetIncludedRegions(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
+}
+
+func (self Instance) PathReturnMaxLength() Float.X {
+	return Float.X(Float.X(class(self).GetPathReturnMaxLength()))
+}
+
+func (self Instance) SetPathReturnMaxLength(value Float.X) {
+	class(self).SetPathReturnMaxLength(float64(value))
+}
+
+func (self Instance) PathReturnMaxRadius() Float.X {
+	return Float.X(Float.X(class(self).GetPathReturnMaxRadius()))
+}
+
+func (self Instance) SetPathReturnMaxRadius(value Float.X) {
+	class(self).SetPathReturnMaxRadius(float64(value))
+}
+
+func (self Instance) PathSearchMaxPolygons() int {
+	return int(int(class(self).GetPathSearchMaxPolygons()))
+}
+
+func (self Instance) SetPathSearchMaxPolygons(value int) {
+	class(self).SetPathSearchMaxPolygons(int64(value))
+}
+
+func (self Instance) PathSearchMaxDistance() Float.X {
+	return Float.X(Float.X(class(self).GetPathSearchMaxDistance()))
+}
+
+func (self Instance) SetPathSearchMaxDistance(value Float.X) {
+	class(self).SetPathSearchMaxDistance(float64(value))
+}
+
 //go:nosplit
 func (self class) SetPathfindingAlgorithm(pathfinding_algorithm PathfindingAlgorithm) { //gd:NavigationPathQueryParameters2D.set_pathfinding_algorithm
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pathfinding_algorithm, 0|(gdextension.SizeInt<<4), &struct{ pathfinding_algorithm PathfindingAlgorithm }{pathfinding_algorithm})
@@ -333,6 +393,78 @@ func (self class) SetSimplifyEpsilon(epsilon float64) { //gd:NavigationPathQuery
 //go:nosplit
 func (self class) GetSimplifyEpsilon() float64 { //gd:NavigationPathQueryParameters2D.get_simplify_epsilon
 	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_simplify_epsilon, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetIncludedRegions(regions Array.Contains[RID.Any]) { //gd:NavigationPathQueryParameters2D.set_included_regions
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_included_regions, 0|(gdextension.SizeArray<<4), &struct{ regions gdextension.Array }{pointers.Get(gd.InternalArray(regions))})
+}
+
+//go:nosplit
+func (self class) GetIncludedRegions() Array.Contains[RID.Any] { //gd:NavigationPathQueryParameters2D.get_included_regions
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_included_regions, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+
+//go:nosplit
+func (self class) SetExcludedRegions(regions Array.Contains[RID.Any]) { //gd:NavigationPathQueryParameters2D.set_excluded_regions
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_excluded_regions, 0|(gdextension.SizeArray<<4), &struct{ regions gdextension.Array }{pointers.Get(gd.InternalArray(regions))})
+}
+
+//go:nosplit
+func (self class) GetExcludedRegions() Array.Contains[RID.Any] { //gd:NavigationPathQueryParameters2D.get_excluded_regions
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_excluded_regions, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPathReturnMaxLength(length float64) { //gd:NavigationPathQueryParameters2D.set_path_return_max_length
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_return_max_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
+}
+
+//go:nosplit
+func (self class) GetPathReturnMaxLength() float64 { //gd:NavigationPathQueryParameters2D.get_path_return_max_length
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_return_max_length, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPathReturnMaxRadius(radius float64) { //gd:NavigationPathQueryParameters2D.set_path_return_max_radius
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_return_max_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
+}
+
+//go:nosplit
+func (self class) GetPathReturnMaxRadius() float64 { //gd:NavigationPathQueryParameters2D.get_path_return_max_radius
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_return_max_radius, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPathSearchMaxPolygons(max_polygons int64) { //gd:NavigationPathQueryParameters2D.set_path_search_max_polygons
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_search_max_polygons, 0|(gdextension.SizeInt<<4), &struct{ max_polygons int64 }{max_polygons})
+}
+
+//go:nosplit
+func (self class) GetPathSearchMaxPolygons() int64 { //gd:NavigationPathQueryParameters2D.get_path_search_max_polygons
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_path_search_max_polygons, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetPathSearchMaxDistance(distance float64) { //gd:NavigationPathQueryParameters2D.set_path_search_max_distance
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_search_max_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
+}
+
+//go:nosplit
+func (self class) GetPathSearchMaxDistance() float64 { //gd:NavigationPathQueryParameters2D.get_path_search_max_distance
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_search_max_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -81,6 +81,8 @@ var methods struct {
 	get_ticks            gdextension.MethodForClass `hash:"3905245786"`
 	get_ticks_on_borders gdextension.MethodForClass `hash:"36873697"`
 	set_ticks_on_borders gdextension.MethodForClass `hash:"2586408642"`
+	get_ticks_position   gdextension.MethodForClass `hash:"3567635531"`
+	set_ticks_position   gdextension.MethodForClass `hash:"2952822224"`
 	set_editable         gdextension.MethodForClass `hash:"2586408642"`
 	is_editable          gdextension.MethodForClass `hash:"36873697"`
 	set_scrollable       gdextension.MethodForClass `hash:"2586408642"`
@@ -181,6 +183,14 @@ func (self Instance) SetTicksOnBorders(value bool) {
 	class(self).SetTicksOnBorders(value)
 }
 
+func (self Instance) TicksPosition() TickPosition {
+	return TickPosition(class(self).GetTicksPosition())
+}
+
+func (self Instance) SetTicksPosition(value TickPosition) {
+	class(self).SetTicksPosition(value)
+}
+
 //go:nosplit
 func (self class) SetTicks(count int64) { //gd:Slider.set_ticks
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ticks, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
@@ -203,6 +213,18 @@ func (self class) GetTicksOnBorders() bool { //gd:Slider.get_ticks_on_borders
 //go:nosplit
 func (self class) SetTicksOnBorders(ticks_on_border bool) { //gd:Slider.set_ticks_on_borders
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ticks_on_borders, 0|(gdextension.SizeBool<<4), &struct{ ticks_on_border bool }{ticks_on_border})
+}
+
+//go:nosplit
+func (self class) GetTicksPosition() TickPosition { //gd:Slider.get_ticks_position
+	var r_ret = gdextension.Call[TickPosition](gd.ObjectChecked(self.AsObject()), methods.get_ticks_position, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetTicksPosition(ticks_on_border TickPosition) { //gd:Slider.set_ticks_position
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ticks_position, 0|(gdextension.SizeInt<<4), &struct{ ticks_on_border TickPosition }{ticks_on_border})
 }
 
 //go:nosplit
@@ -298,3 +320,16 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("Slider", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.Slider](ptr)} })
 }
+
+type TickPosition int //gd:Slider.TickPosition
+
+const (
+	// Places the ticks at the bottom of the [graphics.gd/classdb/HSlider], or right of the [graphics.gd/classdb/VSlider].
+	TickPositionBottomRight TickPosition = 0
+	// Places the ticks at the top of the [graphics.gd/classdb/HSlider], or left of the [graphics.gd/classdb/VSlider].
+	TickPositionTopLeft TickPosition = 1
+	// Places the ticks at the both sides of the slider.
+	TickPositionBoth TickPosition = 2
+	// Places the ticks at the center of the slider.
+	TickPositionCenter TickPosition = 3
+)

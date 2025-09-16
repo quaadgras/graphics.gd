@@ -115,7 +115,7 @@ func (name Name) ConvertToSimple(val, simple string) string {
 		"Vector4.XYZW", "Vector4i.XYZW", "RID.Any":
 		return fmt.Sprintf("%s(%v)", name, val)
 	case "Packed.Bytes":
-		return fmt.Sprintf("Packed.Bytes(Packed.New(%v...))", val)
+		return fmt.Sprintf("Packed.BytesFrom(%v...)", val)
 	case "Packed.Strings":
 		return fmt.Sprintf("Packed.MakeStrings(%v...)", val)
 	case "Packed.Array[int32]", "Packed.Array[int64]", "Packed.Array[float32]", "Packed.Array[float64]":
@@ -182,6 +182,8 @@ func (name Name) ConvertToGo(val string, simple string) string {
 		return fmt.Sprintf("gd.ArrayAs[%s](gd.InternalArray(%s))", simple, val)
 	case "Dictionary.Any":
 		return fmt.Sprintf("gd.DictionaryAs[%s](%s)", simple, val)
+	case "Callable.Function":
+		return fmt.Sprintf("gd.CallableAs[%s](gd.InternalCallable(%s))", simple, val)
 	default:
 		return val
 	}
@@ -211,7 +213,7 @@ func (name Name) LoadFromRawPointerValue(val string) string {
 	case "String.Name":
 		return fmt.Sprintf("String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](%s))))", val)
 	case "Packed.Bytes":
-		return fmt.Sprintf("Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](%s))))", val)
+		return fmt.Sprintf("Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](%s))))}", val)
 	case "Packed.Strings":
 		return fmt.Sprintf("Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](%s))))", val)
 	case "Packed.Array[int32]", "Packed.Array[int64]", "Packed.Array[float32]", "Packed.Array[float64]",
@@ -268,7 +270,7 @@ func (name Name) EndPointer(val string) string {
 	case "String.Name":
 		return fmt.Sprintf("pointers.End(gd.InternalStringName(%v))", val)
 	case "Packed.Bytes":
-		return fmt.Sprintf("pointers.End(gd.InternalPacked[gd.PackedByteArray,byte](Packed.Array[byte](%v)))", val)
+		return fmt.Sprintf("pointers.End(gd.InternalPacked[gd.PackedByteArray,byte](Packed.Array[byte](%v.Array)))", val)
 	case "Packed.Strings":
 		return fmt.Sprintf("pointers.End(gd.InternalPackedStrings(%v))", val)
 	case "variant.Any":
@@ -321,7 +323,7 @@ func (name Name) LoadOntoCallFrame(val string) string {
 	case "String.Name":
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalStringName(%v)))\n", val)
 	case "Packed.Bytes":
-		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray,byte](Packed.Array[byte](%v))))\n", val)
+		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalPacked[gd.PackedByteArray,byte](Packed.Array[byte](%v.Array))))\n", val)
 	case "Packed.Strings":
 		return fmt.Sprintf("\tcallframe.Arg(frame, pointers.Get(gd.InternalPackedStrings(%v)))\n", val)
 	case "Packed.Array[int32]", "Packed.Array[int64]", "Packed.Array[float32]", "Packed.Array[float64]",
@@ -480,7 +482,7 @@ func (name Name) CallframeValue(val string) string {
 	case "String.Name":
 		return fmt.Sprintf("pointers.Get(gd.InternalStringName(%v))", val)
 	case "Packed.Bytes":
-		return fmt.Sprintf("pointers.Get(gd.InternalPacked[gd.PackedByteArray,byte](Packed.Array[byte](%v)))", val)
+		return fmt.Sprintf("pointers.Get(gd.InternalPacked[gd.PackedByteArray,byte](Packed.Array[byte](%v.Array)))", val)
 	case "Packed.Strings":
 		return fmt.Sprintf("pointers.Get(gd.InternalPackedStrings(%v))", val)
 	case "Packed.Array[int32]", "Packed.Array[int64]", "Packed.Array[float32]", "Packed.Array[float64]",

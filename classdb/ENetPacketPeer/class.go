@@ -185,7 +185,7 @@ func (self Instance) Reset() { //gd:ENetPacketPeer.reset
 Queues a 'packet' to be sent over the specified 'channel'. See FLAG_* constants for available packet flags.
 */
 func (self Instance) Send(channel int, packet []byte, flags Flags) error { //gd:ENetPacketPeer.send
-	return error(gd.ToError(Advanced(self).Send(int64(channel), Packed.Bytes(Packed.New(packet...)), int64(flags))))
+	return error(gd.ToError(Advanced(self).Send(int64(channel), Packed.BytesFrom(packet...), int64(flags))))
 }
 
 /*
@@ -234,14 +234,14 @@ func (self Instance) GetRemotePort() int { //gd:ENetPacketPeer.get_remote_port
 }
 
 /*
-Returns the requested 'statistic' for this peer. See [PeerStatistic].
+Returns the requested 'statistic' for this peer.
 */
 func (self Instance) GetStatistic(statistic PeerStatistic) Float.X { //gd:ENetPacketPeer.get_statistic
 	return Float.X(Float.X(Advanced(self).GetStatistic(statistic)))
 }
 
 /*
-Returns the current peer state. See [PeerState].
+Returns the current peer state.
 */
 func (self Instance) GetState() PeerState { //gd:ENetPacketPeer.get_state
 	return PeerState(Advanced(self).GetState())
@@ -361,7 +361,7 @@ func (self class) Send(channel int64, packet Packed.Bytes, flags int64) Error.Co
 		channel int64
 		packet  gdextension.PackedArray[byte]
 		flags   int64
-	}{channel, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet))), flags})
+	}{channel, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](packet.Array))), flags})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -431,7 +431,7 @@ func (self class) GetRemotePort() int64 { //gd:ENetPacketPeer.get_remote_port
 }
 
 /*
-Returns the requested 'statistic' for this peer. See [PeerStatistic].
+Returns the requested 'statistic' for this peer.
 */
 //go:nosplit
 func (self class) GetStatistic(statistic PeerStatistic) float64 { //gd:ENetPacketPeer.get_statistic
@@ -441,7 +441,7 @@ func (self class) GetStatistic(statistic PeerStatistic) float64 { //gd:ENetPacke
 }
 
 /*
-Returns the current peer state. See [PeerState].
+Returns the current peer state.
 */
 //go:nosplit
 func (self class) GetState() PeerState { //gd:ENetPacketPeer.get_state
@@ -523,7 +523,7 @@ const (
 	StateConnectionSucceeded PeerState = 4
 	// The peer is currently connected and ready to communicate with.
 	StateConnected PeerState = 5
-	// The peer is slated to disconnect after it has no more outgoing packets to send.
+	// The peer is expected to disconnect after it has no more outgoing packets to send.
 	StateDisconnectLater PeerState = 6
 	// The peer is currently disconnecting.
 	StateDisconnecting PeerState = 7

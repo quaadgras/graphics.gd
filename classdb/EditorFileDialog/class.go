@@ -153,7 +153,7 @@ func (self Instance) ClearFilters() { //gd:EditorFileDialog.clear_filters
 }
 
 /*
-Adds a comma-delimited file name 'filter' option to the [graphics.gd/classdb/EditorFileDialog] with an optional 'description', which restricts what files can be picked.
+Adds a comma-separated file name 'filter' option to the [graphics.gd/classdb/EditorFileDialog] with an optional 'description', which restricts what files can be picked.
 
 A 'filter' should be of the form "filename.extension", where filename and extension can be * to match any string. Filters starting with . (i.e. empty filenames) are not allowed.
 
@@ -164,7 +164,7 @@ func (self Instance) AddFilter(filter string) { //gd:EditorFileDialog.add_filter
 }
 
 /*
-Adds a comma-delimited file name 'filter' option to the [graphics.gd/classdb/EditorFileDialog] with an optional 'description', which restricts what files can be picked.
+Adds a comma-separated file name 'filter' option to the [graphics.gd/classdb/EditorFileDialog] with an optional 'description', which restricts what files can be picked.
 
 A 'filter' should be of the form "filename.extension", where filename and extension can be * to match any string. Filters starting with . (i.e. empty filenames) are not allowed.
 
@@ -430,7 +430,7 @@ func (self class) ClearFilters() { //gd:EditorFileDialog.clear_filters
 }
 
 /*
-Adds a comma-delimited file name 'filter' option to the [graphics.gd/classdb/EditorFileDialog] with an optional 'description', which restricts what files can be picked.
+Adds a comma-separated file name 'filter' option to the [graphics.gd/classdb/EditorFileDialog] with an optional 'description', which restricts what files can be picked.
 
 A 'filter' should be of the form "filename.extension", where filename and extension can be * to match any string. Filters starting with . (i.e. empty filenames) are not allowed.
 

@@ -98,6 +98,7 @@ var methods struct {
 	rename_node                  gdextension.MethodForClass `hash:"3740211285"`
 	has_node                     gdextension.MethodForClass `hash:"2619796661"`
 	get_node_name                gdextension.MethodForClass `hash:"739213945"`
+	get_node_list                gdextension.MethodForClass `hash:"3995934104"`
 	set_node_position            gdextension.MethodForClass `hash:"1999414630"`
 	get_node_position            gdextension.MethodForClass `hash:"3100822709"`
 	has_transition               gdextension.MethodForClass `hash:"471820014"`
@@ -194,6 +195,13 @@ Returns the given animation node's name.
 */
 func (self Instance) GetNodeName(node AnimationNode.Instance) string { //gd:AnimationNodeStateMachine.get_node_name
 	return string(Advanced(self).GetNodeName(node).String())
+}
+
+/*
+Returns a list containing the names of all animation nodes in this state machine.
+*/
+func (self Instance) GetNodeList() []string { //gd:AnimationNodeStateMachine.get_node_list
+	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetNodeList())))
 }
 
 /*
@@ -416,6 +424,16 @@ Returns the given animation node's name.
 func (self class) GetNodeName(node [1]gdclass.AnimationNode) String.Name { //gd:AnimationNodeStateMachine.get_node_name
 	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_node_name, gdextension.SizeStringName|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
+	return ret
+}
+
+/*
+Returns a list containing the names of all animation nodes in this state machine.
+*/
+//go:nosplit
+func (self class) GetNodeList() Array.Contains[String.Name] { //gd:AnimationNodeStateMachine.get_node_list
+	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_node_list, gdextension.SizeArray, &struct{}{})
+	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 

@@ -79,20 +79,27 @@ type Instance [1]gdclass.EditorExportPlugin
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	add_shared_object          gdextension.MethodForClass `hash:"3098291045"`
-	add_ios_project_static_lib gdextension.MethodForClass `hash:"83702148"`
-	add_file                   gdextension.MethodForClass `hash:"527928637"`
-	add_ios_framework          gdextension.MethodForClass `hash:"83702148"`
-	add_ios_embedded_framework gdextension.MethodForClass `hash:"83702148"`
-	add_ios_plist_content      gdextension.MethodForClass `hash:"83702148"`
-	add_ios_linker_flags       gdextension.MethodForClass `hash:"83702148"`
-	add_ios_bundle_file        gdextension.MethodForClass `hash:"83702148"`
-	add_ios_cpp_code           gdextension.MethodForClass `hash:"83702148"`
-	add_macos_plugin_file      gdextension.MethodForClass `hash:"83702148"`
-	skip                       gdextension.MethodForClass `hash:"3218959716"`
-	get_option                 gdextension.MethodForClass `hash:"2760726917"`
-	get_export_preset          gdextension.MethodForClass `hash:"1610607222"`
-	get_export_platform        gdextension.MethodForClass `hash:"282254641"`
+	add_shared_object                              gdextension.MethodForClass `hash:"3098291045"`
+	add_file                                       gdextension.MethodForClass `hash:"527928637"`
+	add_apple_embedded_platform_project_static_lib gdextension.MethodForClass `hash:"83702148"`
+	add_apple_embedded_platform_framework          gdextension.MethodForClass `hash:"83702148"`
+	add_apple_embedded_platform_embedded_framework gdextension.MethodForClass `hash:"83702148"`
+	add_apple_embedded_platform_plist_content      gdextension.MethodForClass `hash:"83702148"`
+	add_apple_embedded_platform_linker_flags       gdextension.MethodForClass `hash:"83702148"`
+	add_apple_embedded_platform_bundle_file        gdextension.MethodForClass `hash:"83702148"`
+	add_apple_embedded_platform_cpp_code           gdextension.MethodForClass `hash:"83702148"`
+	add_ios_project_static_lib                     gdextension.MethodForClass `hash:"83702148"`
+	add_ios_framework                              gdextension.MethodForClass `hash:"83702148"`
+	add_ios_embedded_framework                     gdextension.MethodForClass `hash:"83702148"`
+	add_ios_plist_content                          gdextension.MethodForClass `hash:"83702148"`
+	add_ios_linker_flags                           gdextension.MethodForClass `hash:"83702148"`
+	add_ios_bundle_file                            gdextension.MethodForClass `hash:"83702148"`
+	add_ios_cpp_code                               gdextension.MethodForClass `hash:"83702148"`
+	add_macos_plugin_file                          gdextension.MethodForClass `hash:"83702148"`
+	skip                                           gdextension.MethodForClass `hash:"3218959716"`
+	get_option                                     gdextension.MethodForClass `hash:"2760726917"`
+	get_export_preset                              gdextension.MethodForClass `hash:"1610607222"`
+	get_export_platform                            gdextension.MethodForClass `hash:"282254641"`
 }
 
 func init() {
@@ -186,40 +193,38 @@ type Interface interface {
 	//
 	// class MyExportPlugin extends EditorExportPlugin:
 	//
-	//     func _get_name() -> String:
+	// func _get_name() -> String:
 	//
-	//         return "MyExportPlugin"
-	//
-	//
-	//
-	//     func _supports_platform(platform) -> bool:
-	//
-	//         if platform is EditorExportPlatformPC:
-	//
-	//             # Run on all desktop platforms including Windows, MacOS and Linux.
-	//
-	//             return true
-	//
-	//         return false
+	// return "MyExportPlugin"
 	//
 	//
 	//
-	//     func _get_export_options_overrides(platform) -> Dictionary:
+	// func _supports_platform(platform) -> bool:
 	//
-	//         # Override "Embed PCK" to always be enabled.
+	// if platform is EditorExportPlatformPC:
 	//
-	//         return {
+	// # Run on all desktop platforms including Windows, MacOS and Linux.
 	//
-	//             "binary_format/embed_pck": true,
+	// return true
 	//
-	//         }
+	// return false
+	//
+	//
+	//
+	// func _get_export_options_overrides(platform) -> Dictionary:
+	//
+	// # Override "Embed PCK" to always be enabled.
+	//
+	// return {
+	//
+	// "binary_format/embed_pck": true,
+	//
+	// }
 	//
 	//
 	GetExportOptionsOverrides(platform EditorExportPlatform.Instance) map[string]interface{}
-	// Return true, if the result of [Interface.GetExportOptions] has changed and the export options of preset corresponding to 'platform' should be updated.
+	// Return true if the result of [Interface.GetExportOptions] has changed and the export options of the preset corresponding to 'platform' should be updated.
 	ShouldUpdateExportOptions(platform EditorExportPlatform.Instance) bool
-	// Optional.
-	//
 	// Validates 'option' and returns the visibility for the specified 'platform'. The default implementation returns true for all options.
 	GetExportOptionVisibility(platform EditorExportPlatform.Instance, option string) bool
 	// Check the requirements for the given 'option' and return a non-empty warning string if they are not met.
@@ -270,6 +275,12 @@ type Interface interface {
 	//
 	// Note: Only supported on Android and requires [graphics.gd/classdb/EditorExportPlatformAndroid.Instance] "gradle_build/use_gradle_build" to be enabled.
 	GetAndroidManifestElementContents(platform EditorExportPlatform.Instance, debug bool) string
+	// Provide access to the Android prebuilt manifest and allows the plugin to modify it if needed.
+	//
+	// Implementers of this virtual method should take the binary manifest data from 'manifest_data', copy it, modify it, and then return it with the modifications.
+	//
+	// If no modifications are needed, then an empty []byte should be returned.
+	UpdateAndroidPrebuiltManifest(platform EditorExportPlatform.Instance, manifest_data []byte) []byte
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -333,6 +344,9 @@ func (self implementation) GetAndroidManifestApplicationElementContents(platform
 	return
 }
 func (self implementation) GetAndroidManifestElementContents(platform EditorExportPlatform.Instance, debug bool) (_ string) {
+	return
+}
+func (self implementation) UpdateAndroidPrebuiltManifest(platform EditorExportPlatform.Instance, manifest_data []byte) (_ []byte) {
 	return
 }
 
@@ -589,7 +603,7 @@ func (Instance) _get_export_options_overrides(impl func(ptr gdclass.Receiver, pl
 }
 
 /*
-Return true, if the result of [Interface.GetExportOptions] has changed and the export options of preset corresponding to 'platform' should be updated.
+Return true if the result of [Interface.GetExportOptions] has changed and the export options of the preset corresponding to 'platform' should be updated.
 */
 func (Instance) _should_update_export_options(impl func(ptr gdclass.Receiver, platform EditorExportPlatform.Instance) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -603,8 +617,6 @@ func (Instance) _should_update_export_options(impl func(ptr gdclass.Receiver, pl
 }
 
 /*
-Optional.
-
 Validates 'option' and returns the visibility for the specified 'platform'. The default implementation returns true for all options.
 */
 func (Instance) _get_export_option_visibility(impl func(ptr gdclass.Receiver, platform EditorExportPlatform.Instance, option string) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -840,6 +852,31 @@ func (Instance) _get_android_manifest_element_contents(impl func(ptr gdclass.Rec
 }
 
 /*
+Provide access to the Android prebuilt manifest and allows the plugin to modify it if needed.
+
+Implementers of this virtual method should take the binary manifest data from 'manifest_data', copy it, modify it, and then return it with the modifications.
+
+If no modifications are needed, then an empty []byte should be returned.
+*/
+func (Instance) _update_android_prebuilt_manifest(impl func(ptr gdclass.Receiver, platform EditorExportPlatform.Instance, manifest_data []byte) []byte) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+
+		defer pointers.End(platform[0])
+		var manifest_data = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))}
+		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](manifest_data.Array)))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, platform, manifest_data.Bytes())
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](Packed.BytesFrom(ret...).Array)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
 Adds a shared object or a directory containing only shared objects with the given 'tags' and destination 'path'.
 
 Note: In case of macOS exports, those shared objects will be added to Frameworks directory of app bundle.
@@ -851,13 +888,6 @@ func (self Instance) AddSharedObject(path string, tags []string, target string) 
 }
 
 /*
-Adds a static lib from the given 'path' to the iOS project.
-*/
-func (self Instance) AddIosProjectStaticLib(path string) { //gd:EditorExportPlugin.add_ios_project_static_lib
-	Advanced(self).AddIosProjectStaticLib(String.New(path))
-}
-
-/*
 Adds a custom file to be exported. 'path' is the virtual path that can be used to load the file, 'file' is the binary data of the file.
 
 When called inside [Interface.ExportFile] and 'remap' is true, the current file will not be exported, but instead remapped to this custom file. 'remap' is ignored when called in other places.
@@ -865,11 +895,71 @@ When called inside [Interface.ExportFile] and 'remap' is true, the current file 
 'file' will not be imported, so consider using [Interface.CustomizeResource] to remap imported resources.
 */
 func (self Instance) AddFile(path string, file []byte, remap bool) { //gd:EditorExportPlugin.add_file
-	Advanced(self).AddFile(String.New(path), Packed.Bytes(Packed.New(file...)), remap)
+	Advanced(self).AddFile(String.New(path), Packed.BytesFrom(file...), remap)
 }
 
 /*
-Adds a static library (*.a) or dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode project.
+Adds a static library from the given 'path' to the Apple embedded platform project.
+*/
+func (self Instance) AddAppleEmbeddedPlatformProjectStaticLib(path string) { //gd:EditorExportPlugin.add_apple_embedded_platform_project_static_lib
+	Advanced(self).AddAppleEmbeddedPlatformProjectStaticLib(String.New(path))
+}
+
+/*
+Adds a static library (*.a) or a dynamic library (*.dylib, *.framework) to the Linking Phase to the Apple embedded platform's Xcode project.
+*/
+func (self Instance) AddAppleEmbeddedPlatformFramework(path string) { //gd:EditorExportPlugin.add_apple_embedded_platform_framework
+	Advanced(self).AddAppleEmbeddedPlatformFramework(String.New(path))
+}
+
+/*
+Adds a dynamic library (*.dylib, *.framework) to the Linking Phase in the Apple embedded platform's Xcode project and embeds it into the resulting binary.
+
+Note: For static libraries (*.a), this works in the same way as [Instance.AddAppleEmbeddedPlatformFramework].
+
+Note: This method should not be used for System libraries as they are already present on the device.
+*/
+func (self Instance) AddAppleEmbeddedPlatformEmbeddedFramework(path string) { //gd:EditorExportPlugin.add_apple_embedded_platform_embedded_framework
+	Advanced(self).AddAppleEmbeddedPlatformEmbeddedFramework(String.New(path))
+}
+
+/*
+Adds additional fields to the Apple embedded platform's project Info.plist file.
+*/
+func (self Instance) AddAppleEmbeddedPlatformPlistContent(plist_content string) { //gd:EditorExportPlugin.add_apple_embedded_platform_plist_content
+	Advanced(self).AddAppleEmbeddedPlatformPlistContent(String.New(plist_content))
+}
+
+/*
+Adds linker flags for the Apple embedded platform export.
+*/
+func (self Instance) AddAppleEmbeddedPlatformLinkerFlags(flags string) { //gd:EditorExportPlugin.add_apple_embedded_platform_linker_flags
+	Advanced(self).AddAppleEmbeddedPlatformLinkerFlags(String.New(flags))
+}
+
+/*
+Adds an Apple embedded platform bundle file from the given 'path' to the exported project.
+*/
+func (self Instance) AddAppleEmbeddedPlatformBundleFile(path string) { //gd:EditorExportPlugin.add_apple_embedded_platform_bundle_file
+	Advanced(self).AddAppleEmbeddedPlatformBundleFile(String.New(path))
+}
+
+/*
+Adds C++ code to the Apple embedded platform export. The final code is created from the code appended by each active export plugin.
+*/
+func (self Instance) AddAppleEmbeddedPlatformCppCode(code string) { //gd:EditorExportPlugin.add_apple_embedded_platform_cpp_code
+	Advanced(self).AddAppleEmbeddedPlatformCppCode(String.New(code))
+}
+
+/*
+Adds a static library from the given 'path' to the iOS project.
+*/
+func (self Instance) AddIosProjectStaticLib(path string) { //gd:EditorExportPlugin.add_ios_project_static_lib
+	Advanced(self).AddIosProjectStaticLib(String.New(path))
+}
+
+/*
+Adds a static library (*.a) or a dynamic library (*.dylib, *.framework) to the Linking Phase to the iOS Xcode project.
 */
 func (self Instance) AddIosFramework(path string) { //gd:EditorExportPlugin.add_ios_framework
 	Advanced(self).AddIosFramework(String.New(path))
@@ -878,7 +968,7 @@ func (self Instance) AddIosFramework(path string) { //gd:EditorExportPlugin.add_
 /*
 Adds a dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode project and embeds it into resulting binary.
 
-Note: For static libraries (*.a) works in same way as [Instance.AddIosFramework].
+Note: For static libraries (*.a), this works the in same way as [Instance.AddAppleEmbeddedPlatformFramework].
 
 Note: This method should not be used for System libraries as they are already present on the device.
 */
@@ -887,7 +977,7 @@ func (self Instance) AddIosEmbeddedFramework(path string) { //gd:EditorExportPlu
 }
 
 /*
-Adds content for iOS Property List files.
+Adds additional fields to the iOS project Info.plist file.
 */
 func (self Instance) AddIosPlistContent(plist_content string) { //gd:EditorExportPlugin.add_ios_plist_content
 	Advanced(self).AddIosPlistContent(String.New(plist_content))
@@ -908,7 +998,7 @@ func (self Instance) AddIosBundleFile(path string) { //gd:EditorExportPlugin.add
 }
 
 /*
-Adds a C++ code to the iOS export. The final code is created from the code appended by each active export plugin.
+Adds C++ code to the iOS export. The final code is created from the code appended by each active export plugin.
 */
 func (self Instance) AddIosCppCode(code string) { //gd:EditorExportPlugin.add_ios_cpp_code
 	Advanced(self).AddIosCppCode(String.New(code))
@@ -1243,7 +1333,7 @@ func (class) _get_export_options_overrides(impl func(ptr gdclass.Receiver, platf
 }
 
 /*
-Return true, if the result of [Interface.GetExportOptions] has changed and the export options of preset corresponding to 'platform' should be updated.
+Return true if the result of [Interface.GetExportOptions] has changed and the export options of the preset corresponding to 'platform' should be updated.
 */
 func (class) _should_update_export_options(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1257,8 +1347,6 @@ func (class) _should_update_export_options(impl func(ptr gdclass.Receiver, platf
 }
 
 /*
-Optional.
-
 Validates 'option' and returns the visibility for the specified 'platform'. The default implementation returns true for all options.
 */
 func (class) _get_export_option_visibility(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform, option String.Readable) bool) (cb gd.ExtensionClassCallVirtualFunc) {
@@ -1494,6 +1582,31 @@ func (class) _get_android_manifest_element_contents(impl func(ptr gdclass.Receiv
 }
 
 /*
+Provide access to the Android prebuilt manifest and allows the plugin to modify it if needed.
+
+Implementers of this virtual method should take the binary manifest data from 'manifest_data', copy it, modify it, and then return it with the modifications.
+
+If no modifications are needed, then an empty []byte should be returned.
+*/
+func (class) _update_android_prebuilt_manifest(impl func(ptr gdclass.Receiver, platform [1]gdclass.EditorExportPlatform, manifest_data Packed.Bytes) Packed.Bytes) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
+
+		defer pointers.End(platform[0])
+		var manifest_data = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](gd.UnsafeGet[gd.PackedPointers](p_args, 1)))))}
+		defer pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](manifest_data.Array)))
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self, platform, manifest_data)
+		ptr, ok := pointers.End(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ret.Array)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
 Adds a shared object or a directory containing only shared objects with the given 'tags' and destination 'path'.
 
 Note: In case of macOS exports, those shared objects will be added to Frameworks directory of app bundle.
@@ -1510,14 +1623,6 @@ func (self class) AddSharedObject(path String.Readable, tags Packed.Strings, tar
 }
 
 /*
-Adds a static lib from the given 'path' to the iOS project.
-*/
-//go:nosplit
-func (self class) AddIosProjectStaticLib(path String.Readable) { //gd:EditorExportPlugin.add_ios_project_static_lib
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_project_static_lib, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
-}
-
-/*
 Adds a custom file to be exported. 'path' is the virtual path that can be used to load the file, 'file' is the binary data of the file.
 
 When called inside [Interface.ExportFile] and 'remap' is true, the current file will not be exported, but instead remapped to this custom file. 'remap' is ignored when called in other places.
@@ -1530,11 +1635,79 @@ func (self class) AddFile(path String.Readable, file Packed.Bytes, remap bool) {
 		path  gdextension.String
 		file  gdextension.PackedArray[byte]
 		remap bool
-	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](file))), remap})
+	}{pointers.Get(gd.InternalString(path)), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](file.Array))), remap})
 }
 
 /*
-Adds a static library (*.a) or dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode project.
+Adds a static library from the given 'path' to the Apple embedded platform project.
+*/
+//go:nosplit
+func (self class) AddAppleEmbeddedPlatformProjectStaticLib(path String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_project_static_lib
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_project_static_lib, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+}
+
+/*
+Adds a static library (*.a) or a dynamic library (*.dylib, *.framework) to the Linking Phase to the Apple embedded platform's Xcode project.
+*/
+//go:nosplit
+func (self class) AddAppleEmbeddedPlatformFramework(path String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_framework
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+}
+
+/*
+Adds a dynamic library (*.dylib, *.framework) to the Linking Phase in the Apple embedded platform's Xcode project and embeds it into the resulting binary.
+
+Note: For static libraries (*.a), this works in the same way as [Instance.AddAppleEmbeddedPlatformFramework].
+
+Note: This method should not be used for System libraries as they are already present on the device.
+*/
+//go:nosplit
+func (self class) AddAppleEmbeddedPlatformEmbeddedFramework(path String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_embedded_framework
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_embedded_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+}
+
+/*
+Adds additional fields to the Apple embedded platform's project Info.plist file.
+*/
+//go:nosplit
+func (self class) AddAppleEmbeddedPlatformPlistContent(plist_content String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_plist_content
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_plist_content, 0|(gdextension.SizeString<<4), &struct{ plist_content gdextension.String }{pointers.Get(gd.InternalString(plist_content))})
+}
+
+/*
+Adds linker flags for the Apple embedded platform export.
+*/
+//go:nosplit
+func (self class) AddAppleEmbeddedPlatformLinkerFlags(flags String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_linker_flags
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_linker_flags, 0|(gdextension.SizeString<<4), &struct{ flags gdextension.String }{pointers.Get(gd.InternalString(flags))})
+}
+
+/*
+Adds an Apple embedded platform bundle file from the given 'path' to the exported project.
+*/
+//go:nosplit
+func (self class) AddAppleEmbeddedPlatformBundleFile(path String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_bundle_file
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_bundle_file, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+}
+
+/*
+Adds C++ code to the Apple embedded platform export. The final code is created from the code appended by each active export plugin.
+*/
+//go:nosplit
+func (self class) AddAppleEmbeddedPlatformCppCode(code String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_cpp_code
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_cpp_code, 0|(gdextension.SizeString<<4), &struct{ code gdextension.String }{pointers.Get(gd.InternalString(code))})
+}
+
+/*
+Adds a static library from the given 'path' to the iOS project.
+*/
+//go:nosplit
+func (self class) AddIosProjectStaticLib(path String.Readable) { //gd:EditorExportPlugin.add_ios_project_static_lib
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_project_static_lib, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+}
+
+/*
+Adds a static library (*.a) or a dynamic library (*.dylib, *.framework) to the Linking Phase to the iOS Xcode project.
 */
 //go:nosplit
 func (self class) AddIosFramework(path String.Readable) { //gd:EditorExportPlugin.add_ios_framework
@@ -1544,7 +1717,7 @@ func (self class) AddIosFramework(path String.Readable) { //gd:EditorExportPlugi
 /*
 Adds a dynamic library (*.dylib, *.framework) to Linking Phase in iOS's Xcode project and embeds it into resulting binary.
 
-Note: For static libraries (*.a) works in same way as [Instance.AddIosFramework].
+Note: For static libraries (*.a), this works the in same way as [Instance.AddAppleEmbeddedPlatformFramework].
 
 Note: This method should not be used for System libraries as they are already present on the device.
 */
@@ -1554,7 +1727,7 @@ func (self class) AddIosEmbeddedFramework(path String.Readable) { //gd:EditorExp
 }
 
 /*
-Adds content for iOS Property List files.
+Adds additional fields to the iOS project Info.plist file.
 */
 //go:nosplit
 func (self class) AddIosPlistContent(plist_content String.Readable) { //gd:EditorExportPlugin.add_ios_plist_content
@@ -1578,7 +1751,7 @@ func (self class) AddIosBundleFile(path String.Readable) { //gd:EditorExportPlug
 }
 
 /*
-Adds a C++ code to the iOS export. The final code is created from the code appended by each active export plugin.
+Adds C++ code to the iOS export. The final code is created from the code appended by each active export plugin.
 */
 //go:nosplit
 func (self class) AddIosCppCode(code String.Readable) { //gd:EditorExportPlugin.add_ios_cpp_code
@@ -1697,6 +1870,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_android_manifest_application_element_contents)
 	case "_get_android_manifest_element_contents":
 		return reflect.ValueOf(self._get_android_manifest_element_contents)
+	case "_update_android_prebuilt_manifest":
+		return reflect.ValueOf(self._update_android_prebuilt_manifest)
 	default:
 		return gd.VirtualByName(RefCounted.Advanced(self.AsRefCounted()), name)
 	}
@@ -1752,6 +1927,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_android_manifest_application_element_contents)
 	case "_get_android_manifest_element_contents":
 		return reflect.ValueOf(self._get_android_manifest_element_contents)
+	case "_update_android_prebuilt_manifest":
+		return reflect.ValueOf(self._update_android_prebuilt_manifest)
 	default:
 		return gd.VirtualByName(RefCounted.Instance(self.AsRefCounted()), name)
 	}

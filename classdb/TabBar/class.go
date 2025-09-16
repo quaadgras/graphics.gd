@@ -118,6 +118,8 @@ var methods struct {
 	ensure_tab_visible            gdextension.MethodForClass `hash:"1286410249"`
 	get_tab_rect                  gdextension.MethodForClass `hash:"3327874267"`
 	move_tab                      gdextension.MethodForClass `hash:"3937882851"`
+	set_close_with_middle_mouse   gdextension.MethodForClass `hash:"2586408642"`
+	get_close_with_middle_mouse   gdextension.MethodForClass `hash:"36873697"`
 	set_tab_close_display_policy  gdextension.MethodForClass `hash:"2212906737"`
 	get_tab_close_display_policy  gdextension.MethodForClass `hash:"2956568028"`
 	set_max_tab_width             gdextension.MethodForClass `hash:"1286410249"`
@@ -456,6 +458,14 @@ func (self Instance) ClipTabs() bool {
 
 func (self Instance) SetClipTabs(value bool) {
 	class(self).SetClipTabs(value)
+}
+
+func (self Instance) CloseWithMiddleMouse() bool {
+	return bool(class(self).GetCloseWithMiddleMouse())
+}
+
+func (self Instance) SetCloseWithMiddleMouse(value bool) {
+	class(self).SetCloseWithMiddleMouse(value)
 }
 
 func (self Instance) TabCloseDisplayPolicy() CloseButtonDisplayPolicy {
@@ -896,6 +906,18 @@ func (self class) MoveTab(from int64, to int64) { //gd:TabBar.move_tab
 		from int64
 		to   int64
 	}{from, to})
+}
+
+//go:nosplit
+func (self class) SetCloseWithMiddleMouse(enabled bool) { //gd:TabBar.set_close_with_middle_mouse
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_close_with_middle_mouse, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+}
+
+//go:nosplit
+func (self class) GetCloseWithMiddleMouse() bool { //gd:TabBar.get_close_with_middle_mouse
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_close_with_middle_mouse, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
 }
 
 //go:nosplit

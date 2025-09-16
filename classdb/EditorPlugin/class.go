@@ -184,7 +184,7 @@ type Interface interface {
 	//
 	// func _forward_canvas_gui_input(event):
 	//
-	//     return true
+	// return true
 	//
 	// [/gdscript]
 	//
@@ -196,7 +196,7 @@ type Interface interface {
 	//
 	// {
 	//
-	//     return true;
+	// return true;
 	//
 	// }
 	//
@@ -214,11 +214,11 @@ type Interface interface {
 	//
 	// func _forward_canvas_gui_input(event):
 	//
-	//     if (event is InputEventMouseMotion):
+	// if (event is InputEventMouseMotion):
 	//
-	//         return true
+	// return true
 	//
-	//     return false
+	// return false
 	//
 	// [/gdscript]
 	//
@@ -230,15 +230,15 @@ type Interface interface {
 	//
 	// {
 	//
-	//     if (@event is InputEventMouseMotion)
+	// if (@event is InputEventMouseMotion)
 	//
-	//     {
+	// {
 	//
-	//         return true;
+	// return true;
 	//
-	//     }
+	// }
 	//
-	//     return false;
+	// return false;
 	//
 	// }
 	//
@@ -246,7 +246,7 @@ type Interface interface {
 	//
 	//
 	ForwardCanvasGuiInput(event InputEvent.Instance) bool
-	// Called by the engine when the 2D editor's viewport is updated. Use the overlay [graphics.gd/classdb/Control] for drawing. You can update the viewport manually by calling [Instance.UpdateOverlays].
+	// Called by the engine when the 2D editor's viewport is updated. 'viewport_control' is an overlay on top of the viewport and it can be used for drawing. You can update the viewport manually by calling [Instance.UpdateOverlays].
 	//
 	//
 	//
@@ -254,23 +254,23 @@ type Interface interface {
 	//
 	// func _forward_canvas_draw_over_viewport(overlay):
 	//
-	//     # Draw a circle at cursor position.
+	// # Draw a circle at the cursor's position.
 	//
-	//     overlay.draw_circle(overlay.get_local_mouse_position(), 64, Color.WHITE)
+	// overlay.draw_circle(overlay.get_local_mouse_position(), 64, Color.WHITE)
 	//
 	//
 	//
 	// func _forward_canvas_gui_input(event):
 	//
-	//     if event is InputEventMouseMotion:
+	// if event is InputEventMouseMotion:
 	//
-	//         # Redraw viewport when cursor is moved.
+	// # Redraw the viewport when the cursor is moved.
 	//
-	//         update_overlays()
+	// update_overlays()
 	//
-	//         return true
+	// return true
 	//
-	//     return false
+	// return false
 	//
 	// [/gdscript]
 	//
@@ -280,9 +280,9 @@ type Interface interface {
 	//
 	// {
 	//
-	//     // Draw a circle at cursor position.
+	// // Draw a circle at the cursor's position.
 	//
-	//     viewportControl.DrawCircle(viewportControl.GetLocalMousePosition(), 64, Colors.White);
+	// viewportControl.DrawCircle(viewportControl.GetLocalMousePosition(), 64, Colors.White);
 	//
 	// }
 	//
@@ -292,19 +292,19 @@ type Interface interface {
 	//
 	// {
 	//
-	//     if (@event is InputEventMouseMotion)
+	// if (@event is InputEventMouseMotion)
 	//
-	//     {
+	// {
 	//
-	//         // Redraw viewport when cursor is moved.
+	// // Redraw the viewport when the cursor is moved.
 	//
-	//         UpdateOverlays();
+	// UpdateOverlays();
 	//
-	//         return true;
+	// return true;
 	//
-	//     }
+	// }
 	//
-	//     return false;
+	// return false;
 	//
 	// }
 	//
@@ -326,7 +326,7 @@ type Interface interface {
 	//
 	// func _forward_3d_gui_input(camera, event):
 	//
-	//     return EditorPlugin.AFTER_GUI_INPUT_STOP
+	// return EditorPlugin.AFTER_GUI_INPUT_STOP
 	//
 	// [/gdscript]
 	//
@@ -338,7 +338,7 @@ type Interface interface {
 	//
 	// {
 	//
-	//     return EditorPlugin.AfterGuiInput.Stop;
+	// return EditorPlugin.AfterGuiInput.Stop;
 	//
 	// }
 	//
@@ -356,7 +356,7 @@ type Interface interface {
 	//
 	// func _forward_3d_gui_input(camera, event):
 	//
-	//     return EditorPlugin.AFTER_GUI_INPUT_STOP if event is InputEventMouseMotion else EditorPlugin.AFTER_GUI_INPUT_PASS
+	// return EditorPlugin.AFTER_GUI_INPUT_STOP if event is InputEventMouseMotion else EditorPlugin.AFTER_GUI_INPUT_PASS
 	//
 	// [/gdscript]
 	//
@@ -368,7 +368,7 @@ type Interface interface {
 	//
 	// {
 	//
-	//     return @event is InputEventMouseMotion ? EditorPlugin.AfterGuiInput.Stop : EditorPlugin.AfterGuiInput.Pass;
+	// return @event is InputEventMouseMotion ? EditorPlugin.AfterGuiInput.Stop : EditorPlugin.AfterGuiInput.Pass;
 	//
 	// }
 	//
@@ -376,7 +376,7 @@ type Interface interface {
 	//
 	//
 	Forward3dGuiInput(viewport_camera Camera3D.Instance, event InputEvent.Instance) AfterGUIInput
-	// Called by the engine when the 3D editor's viewport is updated. Use the overlay [graphics.gd/classdb/Control] for drawing. You can update the viewport manually by calling [Instance.UpdateOverlays].
+	// Called by the engine when the 3D editor's viewport is updated. 'viewport_control' is an overlay on top of the viewport and it can be used for drawing. You can update the viewport manually by calling [Instance.UpdateOverlays].
 	//
 	//
 	//
@@ -384,23 +384,23 @@ type Interface interface {
 	//
 	// func _forward_3d_draw_over_viewport(overlay):
 	//
-	//     # Draw a circle at cursor position.
+	// # Draw a circle at the cursor's position.
 	//
-	//     overlay.draw_circle(overlay.get_local_mouse_position(), 64, Color.WHITE)
+	// overlay.draw_circle(overlay.get_local_mouse_position(), 64, Color.WHITE)
 	//
 	//
 	//
 	// func _forward_3d_gui_input(camera, event):
 	//
-	//     if event is InputEventMouseMotion:
+	// if event is InputEventMouseMotion:
 	//
-	//         # Redraw viewport when cursor is moved.
+	// # Redraw the viewport when the cursor is moved.
 	//
-	//         update_overlays()
+	// update_overlays()
 	//
-	//         return EditorPlugin.AFTER_GUI_INPUT_STOP
+	// return EditorPlugin.AFTER_GUI_INPUT_STOP
 	//
-	//     return EditorPlugin.AFTER_GUI_INPUT_PASS
+	// return EditorPlugin.AFTER_GUI_INPUT_PASS
 	//
 	// [/gdscript]
 	//
@@ -410,9 +410,9 @@ type Interface interface {
 	//
 	// {
 	//
-	//     // Draw a circle at cursor position.
+	// // Draw a circle at the cursor's position.
 	//
-	//     viewportControl.DrawCircle(viewportControl.GetLocalMousePosition(), 64, Colors.White);
+	// viewportControl.DrawCircle(viewportControl.GetLocalMousePosition(), 64, Colors.White);
 	//
 	// }
 	//
@@ -422,19 +422,19 @@ type Interface interface {
 	//
 	// {
 	//
-	//     if (@event is InputEventMouseMotion)
+	// if (@event is InputEventMouseMotion)
 	//
-	//     {
+	// {
 	//
-	//         // Redraw viewport when cursor is moved.
+	// // Redraw the viewport when the cursor is moved.
 	//
-	//         UpdateOverlays();
+	// UpdateOverlays();
 	//
-	//         return EditorPlugin.AfterGuiInput.Stop;
+	// return EditorPlugin.AfterGuiInput.Stop;
 	//
-	//     }
+	// }
 	//
-	//     return EditorPlugin.AfterGuiInput.Pass;
+	// return EditorPlugin.AfterGuiInput.Pass;
 	//
 	// }
 	//
@@ -448,11 +448,11 @@ type Interface interface {
 	Forward3dForceDrawOverViewport(viewport_control Control.Instance)
 	// Override this method in your plugin to provide the name of the plugin when displayed in the Godot editor.
 	//
-	// For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
+	// For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "AssetLib" buttons.
 	GetPluginName() string
 	// Override this method in your plugin to return a [graphics.gd/classdb/Texture2D] in order to give it an icon.
 	//
-	// For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
+	// For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "AssetLib" buttons.
 	//
 	// Ideally, the plugin icon should be white with a transparent background and 16×16 pixels in size.
 	//
@@ -462,13 +462,13 @@ type Interface interface {
 	//
 	// func _get_plugin_icon():
 	//
-	//     # You can use a custom icon:
+	// # You can use a custom icon:
 	//
-	//     return preload("res://addons/my_plugin/my_plugin_icon.svg")
+	// return preload("res://addons/my_plugin/my_plugin_icon.svg")
 	//
-	//     # Or use a built-in icon:
+	// # Or use a built-in icon:
 	//
-	//     return EditorInterface.get_editor_theme().get_icon("Node", "EditorIcons")
+	// return EditorInterface.get_editor_theme().get_icon("Node", "EditorIcons")
 	//
 	// [/gdscript]
 	//
@@ -478,13 +478,13 @@ type Interface interface {
 	//
 	// {
 	//
-	//     // You can use a custom icon:
+	// // You can use a custom icon:
 	//
-	//     return ResourceLoader.Load<Texture2D>("res://addons/my_plugin/my_plugin_icon.svg");
+	// return ResourceLoader.Load<Texture2D>("res://addons/my_plugin/my_plugin_icon.svg");
 	//
-	//     // Or use a built-in icon:
+	// // Or use a built-in icon:
 	//
-	//     return EditorInterface.Singleton.GetEditorTheme().GetIcon("Node", "EditorIcons");
+	// return EditorInterface.Singleton.GetEditorTheme().GetIcon("Node", "EditorIcons");
 	//
 	// }
 	//
@@ -492,7 +492,7 @@ type Interface interface {
 	//
 	//
 	GetPluginIcon() Texture2D.Instance
-	// Returns true if this is a main screen editor plugin (it goes in the workspace selector together with 2D, 3D, Script and AssetLib).
+	// Returns true if this is a main screen editor plugin (it goes in the workspace selector together with 2D, 3D, Script, Game, and AssetLib).
 	//
 	// When the plugin's workspace is selected, other main screen plugins will be hidden, but your plugin will not appear automatically. It needs to be added as a child of [graphics.gd/classdb/EditorInterface.GetEditorMainScreen] and made visible inside [Interface.MakeVisible].
 	//
@@ -506,35 +506,35 @@ type Interface interface {
 	//
 	// func _enter_tree():
 	//
-	//     plugin_control = preload("my_plugin_control.tscn").instantiate()
+	// plugin_control = preload("my_plugin_control.tscn").instantiate()
 	//
-	//     EditorInterface.get_editor_main_screen().add_child(plugin_control)
+	// EditorInterface.get_editor_main_screen().add_child(plugin_control)
 	//
-	//     plugin_control.hide()
+	// plugin_control.hide()
 	//
 	//
 	//
 	// func _has_main_screen():
 	//
-	//     return true
+	// return true
 	//
 	//
 	//
 	// func _make_visible(visible):
 	//
-	//     plugin_control.visible = visible
+	// plugin_control.visible = visible
 	//
 	//
 	//
 	// func _get_plugin_name():
 	//
-	//     return "My Super Cool Plugin 3000"
+	// return "My Super Cool Plugin 3000"
 	//
 	//
 	//
 	// func _get_plugin_icon():
 	//
-	//     return EditorInterface.get_editor_theme().get_icon("Node", "EditorIcons")
+	// return EditorInterface.get_editor_theme().get_icon("Node", "EditorIcons")
 	//
 	//
 	HasMainScreen() bool
@@ -562,9 +562,9 @@ type Interface interface {
 	//
 	// func _get_state():
 	//
-	//     var state = {"zoom": zoom, "preferred_color": my_color}
+	// var state = { "zoom": zoom, "preferred_color": my_color }
 	//
-	//     return state
+	// return state
 	//
 	//
 	GetState() map[interface{}]interface{}
@@ -576,9 +576,9 @@ type Interface interface {
 	//
 	// func _set_state(data):
 	//
-	//     zoom = data.get("zoom", 1.0)
+	// zoom = data.get("zoom", 1.0)
 	//
-	//     preferred_color = data.get("my_color", Color.WHITE)
+	// preferred_color = data.get("my_color", Color.WHITE)
 	//
 	//
 	SetState(state map[interface{}]interface{})
@@ -594,25 +594,25 @@ type Interface interface {
 	//
 	// func _get_unsaved_status(for_scene):
 	//
-	//     if not unsaved:
+	// if not unsaved:
 	//
-	//         return ""
+	// return ""
 	//
 	//
 	//
-	//     if for_scene.is_empty():
+	// if for_scene.is_empty():
 	//
-	//         return "Save changes in MyCustomPlugin before closing?"
+	// return "Save changes in MyCustomPlugin before closing?"
 	//
-	//     else:
+	// else:
 	//
-	//         return "Scene %s has changes from MyCustomPlugin. Save before closing?" % for_scene.get_file()
+	// return "Scene %s has changes from MyCustomPlugin. Save before closing?" % for_scene.get_file()
 	//
 	//
 	//
 	// func _save_external_data():
 	//
-	//     unsaved = false
+	// unsaved = false
 	//
 	//
 	//
@@ -622,9 +622,9 @@ type Interface interface {
 	//
 	// func _get_unsaved_status(for_scene):
 	//
-	//     if not for_scene.is_empty():
+	// if not for_scene.is_empty():
 	//
-	//         return ""
+	// return ""
 	//
 	//
 	GetUnsavedStatus(for_scene string) string
@@ -642,9 +642,9 @@ type Interface interface {
 	//
 	// func _set_window_layout(configuration):
 	//
-	//     $Window.position = configuration.get_value("MyPlugin", "window_position", Vector2())
+	// $Window.position = configuration.get_value("MyPlugin", "window_position", Vector2())
 	//
-	//     $Icon.modulate = configuration.get_value("MyPlugin", "icon_color", Color.WHITE)
+	// $Icon.modulate = configuration.get_value("MyPlugin", "icon_color", Color.WHITE)
 	//
 	//
 	SetWindowLayout(configuration ConfigFile.Instance)
@@ -656,9 +656,9 @@ type Interface interface {
 	//
 	// func _get_window_layout(configuration):
 	//
-	//     configuration.set_value("MyPlugin", "window_position", $Window.position)
+	// configuration.set_value("MyPlugin", "window_position", $Window.position)
 	//
-	//     configuration.set_value("MyPlugin", "icon_color", $Icon.modulate)
+	// configuration.set_value("MyPlugin", "icon_color", $Icon.modulate)
 	//
 	//
 	GetWindowLayout(configuration ConfigFile.Instance)
@@ -727,7 +727,7 @@ func (Instance) _forward_canvas_gui_input(impl func(ptr gdclass.Receiver, event 
 }
 
 /*
-Called by the engine when the 2D editor's viewport is updated. Use the overlay [graphics.gd/classdb/Control] for drawing. You can update the viewport manually by calling [Instance.UpdateOverlays].
+Called by the engine when the 2D editor's viewport is updated. 'viewport_control' is an overlay on top of the viewport and it can be used for drawing. You can update the viewport manually by calling [Instance.UpdateOverlays].
 
 	ForwardCanvasDrawOverViewport := func(overlay Control.Instance) {
 		// Draw a circle at cursor position.
@@ -793,7 +793,7 @@ func (Instance) _forward_3d_gui_input(impl func(ptr gdclass.Receiver, viewport_c
 }
 
 /*
-Called by the engine when the 3D editor's viewport is updated. Use the overlay [graphics.gd/classdb/Control] for drawing. You can update the viewport manually by calling [Instance.UpdateOverlays].
+Called by the engine when the 3D editor's viewport is updated. 'viewport_control' is an overlay on top of the viewport and it can be used for drawing. You can update the viewport manually by calling [Instance.UpdateOverlays].
 
 	Forward3dDrawOverViewport := func(overlay Control.Instance) {
 		// Draw a circle at cursor position.
@@ -836,7 +836,7 @@ func (Instance) _forward_3d_force_draw_over_viewport(impl func(ptr gdclass.Recei
 /*
 Override this method in your plugin to provide the name of the plugin when displayed in the Godot editor.
 
-For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
+For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "AssetLib" buttons.
 */
 func (Instance) _get_plugin_name(impl func(ptr gdclass.Receiver) string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -854,7 +854,7 @@ func (Instance) _get_plugin_name(impl func(ptr gdclass.Receiver) string) (cb gd.
 /*
 Override this method in your plugin to return a [graphics.gd/classdb/Texture2D] in order to give it an icon.
 
-For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
+For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "AssetLib" buttons.
 
 Ideally, the plugin icon should be white with a transparent background and 16×16 pixels in size.
 
@@ -879,7 +879,7 @@ func (Instance) _get_plugin_icon(impl func(ptr gdclass.Receiver) Texture2D.Insta
 }
 
 /*
-Returns true if this is a main screen editor plugin (it goes in the workspace selector together with 2D, 3D, Script and AssetLib).
+Returns true if this is a main screen editor plugin (it goes in the workspace selector together with 2D, 3D, Script, Game, and AssetLib).
 
 When the plugin's workspace is selected, other main screen plugins will be hidden, but your plugin will not appear automatically. It needs to be added as a child of [graphics.gd/classdb/EditorInterface.GetEditorMainScreen] and made visible inside [Interface.MakeVisible].
 
@@ -1175,7 +1175,7 @@ func (Instance) _disable_plugin(impl func(ptr gdclass.Receiver)) (cb gd.Extensio
 }
 
 /*
-Adds a custom control to a container (see [CustomControlContainer]). There are many locations where custom controls can be added in the editor UI.
+Adds a custom control to a container in the editor UI.
 
 Please remember that you have to manage the visibility of your custom controls yourself (and likely hide it after adding it).
 
@@ -1204,26 +1204,26 @@ func (self Expanded) AddControlToBottomPanel(control Control.Instance, title str
 }
 
 /*
-Adds the control to a specific dock slot (see [DockSlot] for options).
+Adds the control to a specific dock slot.
 
 If the dock is repositioned and as long as the plugin is active, the editor will save the dock position on further sessions.
 
 When your plugin is deactivated, make sure to remove your custom control with [Instance.RemoveControlFromDocks] and free it with [graphics.gd/classdb/Node.Instance.QueueFree].
 
-Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the dock's visibility once it's moved to the bottom panel (this shortcut does not affect the dock otherwise). See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use Alt modifier.
+Optionally, you can specify a shortcut parameter. When pressed, this shortcut will open and focus the dock.
 */
 func (self Instance) AddControlToDock(slot DockSlot, control Control.Instance) { //gd:EditorPlugin.add_control_to_dock
 	Advanced(self).AddControlToDock(slot, control, [1]Shortcut.Instance{}[0])
 }
 
 /*
-Adds the control to a specific dock slot (see [DockSlot] for options).
+Adds the control to a specific dock slot.
 
 If the dock is repositioned and as long as the plugin is active, the editor will save the dock position on further sessions.
 
 When your plugin is deactivated, make sure to remove your custom control with [Instance.RemoveControlFromDocks] and free it with [graphics.gd/classdb/Node.Instance.QueueFree].
 
-Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the dock's visibility once it's moved to the bottom panel (this shortcut does not affect the dock otherwise). See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use Alt modifier.
+Optionally, you can specify a shortcut parameter. When pressed, this shortcut will open and focus the dock.
 */
 func (self Expanded) AddControlToDock(slot DockSlot, control Control.Instance, shortcut Shortcut.Instance) { //gd:EditorPlugin.add_control_to_dock
 	Advanced(self).AddControlToDock(slot, control, shortcut)
@@ -1447,7 +1447,7 @@ func (self Instance) RemoveSceneFormatImporterPlugin(scene_format_importer Edito
 }
 
 /*
-Add a [graphics.gd/classdb/EditorScenePostImportPlugin]. These plugins allow customizing the import process of 3D assets by adding new options to the import dialogs.
+Add an [graphics.gd/classdb/EditorScenePostImportPlugin]. These plugins allow customizing the import process of 3D assets by adding new options to the import dialogs.
 
 If 'first_priority' is true, the new import plugin is inserted first in the list and takes precedence over pre-existing plugins.
 */
@@ -1456,7 +1456,7 @@ func (self Instance) AddScenePostImportPlugin(scene_import_plugin EditorScenePos
 }
 
 /*
-Add a [graphics.gd/classdb/EditorScenePostImportPlugin]. These plugins allow customizing the import process of 3D assets by adding new options to the import dialogs.
+Add an [graphics.gd/classdb/EditorScenePostImportPlugin]. These plugins allow customizing the import process of 3D assets by adding new options to the import dialogs.
 
 If 'first_priority' is true, the new import plugin is inserted first in the list and takes precedence over pre-existing plugins.
 */
@@ -1592,7 +1592,7 @@ func (self Instance) SetForceDrawOverForwardingEnabled() { //gd:EditorPlugin.set
 /*
 Adds a plugin to the context menu. 'slot' is the context menu where the plugin will be added.
 
-See [EditorContextMenuPlugin.ContextMenuSlot] for available context menus. A plugin instance can belong only to a single context menu slot.
+Note: A plugin instance can belong only to a single context menu slot.
 */
 func (self Instance) AddContextMenuPlugin(slot EditorContextMenuPlugin.ContextMenuSlot, plugin EditorContextMenuPlugin.Instance) { //gd:EditorPlugin.add_context_menu_plugin
 	Advanced(self).AddContextMenuPlugin(slot, plugin)
@@ -1707,7 +1707,7 @@ func (class) _forward_canvas_gui_input(impl func(ptr gdclass.Receiver, event [1]
 }
 
 /*
-Called by the engine when the 2D editor's viewport is updated. Use the overlay [graphics.gd/classdb/Control] for drawing. You can update the viewport manually by calling [Instance.UpdateOverlays].
+Called by the engine when the 2D editor's viewport is updated. 'viewport_control' is an overlay on top of the viewport and it can be used for drawing. You can update the viewport manually by calling [Instance.UpdateOverlays].
 
 	ForwardCanvasDrawOverViewport := func(overlay Control.Instance) {
 		// Draw a circle at cursor position.
@@ -1773,7 +1773,7 @@ func (class) _forward_3d_gui_input(impl func(ptr gdclass.Receiver, viewport_came
 }
 
 /*
-Called by the engine when the 3D editor's viewport is updated. Use the overlay [graphics.gd/classdb/Control] for drawing. You can update the viewport manually by calling [Instance.UpdateOverlays].
+Called by the engine when the 3D editor's viewport is updated. 'viewport_control' is an overlay on top of the viewport and it can be used for drawing. You can update the viewport manually by calling [Instance.UpdateOverlays].
 
 	Forward3dDrawOverViewport := func(overlay Control.Instance) {
 		// Draw a circle at cursor position.
@@ -1816,7 +1816,7 @@ func (class) _forward_3d_force_draw_over_viewport(impl func(ptr gdclass.Receiver
 /*
 Override this method in your plugin to provide the name of the plugin when displayed in the Godot editor.
 
-For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
+For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "AssetLib" buttons.
 */
 func (class) _get_plugin_name(impl func(ptr gdclass.Receiver) String.Readable) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1834,7 +1834,7 @@ func (class) _get_plugin_name(impl func(ptr gdclass.Receiver) String.Readable) (
 /*
 Override this method in your plugin to return a [graphics.gd/classdb/Texture2D] in order to give it an icon.
 
-For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", and "AssetLib" buttons.
+For main screen plugins, this appears at the top of the screen, to the right of the "2D", "3D", "Script", "Game", and "AssetLib" buttons.
 
 Ideally, the plugin icon should be white with a transparent background and 16×16 pixels in size.
 
@@ -1859,7 +1859,7 @@ func (class) _get_plugin_icon(impl func(ptr gdclass.Receiver) [1]gdclass.Texture
 }
 
 /*
-Returns true if this is a main screen editor plugin (it goes in the workspace selector together with 2D, 3D, Script and AssetLib).
+Returns true if this is a main screen editor plugin (it goes in the workspace selector together with 2D, 3D, Script, Game, and AssetLib).
 
 When the plugin's workspace is selected, other main screen plugins will be hidden, but your plugin will not appear automatically. It needs to be added as a child of [graphics.gd/classdb/EditorInterface.GetEditorMainScreen] and made visible inside [Interface.MakeVisible].
 
@@ -2155,7 +2155,7 @@ func (class) _disable_plugin(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionCl
 }
 
 /*
-Adds a custom control to a container (see [CustomControlContainer]). There are many locations where custom controls can be added in the editor UI.
+Adds a custom control to a container in the editor UI.
 
 Please remember that you have to manage the visibility of your custom controls yourself (and likely hide it after adding it).
 
@@ -2186,13 +2186,13 @@ func (self class) AddControlToBottomPanel(control [1]gdclass.Control, title Stri
 }
 
 /*
-Adds the control to a specific dock slot (see [DockSlot] for options).
+Adds the control to a specific dock slot.
 
 If the dock is repositioned and as long as the plugin is active, the editor will save the dock position on further sessions.
 
 When your plugin is deactivated, make sure to remove your custom control with [Instance.RemoveControlFromDocks] and free it with [graphics.gd/classdb/Node.Instance.QueueFree].
 
-Optionally, you can specify a shortcut parameter. When pressed, this shortcut will toggle the dock's visibility once it's moved to the bottom panel (this shortcut does not affect the dock otherwise). See the default editor bottom panel shortcuts in the Editor Settings for inspiration. Per convention, they all use Alt modifier.
+Optionally, you can specify a shortcut parameter. When pressed, this shortcut will open and focus the dock.
 */
 //go:nosplit
 func (self class) AddControlToDock(slot DockSlot, control [1]gdclass.Control, shortcut [1]gdclass.Shortcut) { //gd:EditorPlugin.add_control_to_dock
@@ -2456,7 +2456,7 @@ func (self class) RemoveSceneFormatImporterPlugin(scene_format_importer [1]gdcla
 }
 
 /*
-Add a [graphics.gd/classdb/EditorScenePostImportPlugin]. These plugins allow customizing the import process of 3D assets by adding new options to the import dialogs.
+Add an [graphics.gd/classdb/EditorScenePostImportPlugin]. These plugins allow customizing the import process of 3D assets by adding new options to the import dialogs.
 
 If 'first_priority' is true, the new import plugin is inserted first in the list and takes precedence over pre-existing plugins.
 */
@@ -2610,7 +2610,7 @@ func (self class) SetForceDrawOverForwardingEnabled() { //gd:EditorPlugin.set_fo
 /*
 Adds a plugin to the context menu. 'slot' is the context menu where the plugin will be added.
 
-See [EditorContextMenuPlugin.ContextMenuSlot] for available context menus. A plugin instance can belong only to a single context menu slot.
+Note: A plugin instance can belong only to a single context menu slot.
 */
 //go:nosplit
 func (self class) AddContextMenuPlugin(slot EditorContextMenuPlugin.ContextMenuSlot, plugin [1]gdclass.EditorContextMenuPlugin) { //gd:EditorPlugin.add_context_menu_plugin

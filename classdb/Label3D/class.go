@@ -118,6 +118,8 @@ var methods struct {
 	get_line_spacing                          gdextension.MethodForClass `hash:"1740695150"`
 	set_autowrap_mode                         gdextension.MethodForClass `hash:"3289138044"`
 	get_autowrap_mode                         gdextension.MethodForClass `hash:"1549071663"`
+	set_autowrap_trim_flags                   gdextension.MethodForClass `hash:"2809697122"`
+	get_autowrap_trim_flags                   gdextension.MethodForClass `hash:"2340632602"`
 	set_justification_flags                   gdextension.MethodForClass `hash:"2877345813"`
 	get_justification_flags                   gdextension.MethodForClass `hash:"1583363614"`
 	set_width                                 gdextension.MethodForClass `hash:"373806689"`
@@ -422,6 +424,14 @@ func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
 	class(self).SetAutowrapMode(value)
 }
 
+func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag {
+	return TextServer.LineBreakFlag(class(self).GetAutowrapTrimFlags())
+}
+
+func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) {
+	class(self).SetAutowrapTrimFlags(value)
+}
+
 func (self Instance) JustificationFlags() TextServer.JustificationFlag {
 	return TextServer.JustificationFlag(class(self).GetJustificationFlags())
 }
@@ -677,6 +687,18 @@ func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:Label3D.get_a
 }
 
 //go:nosplit
+func (self class) SetAutowrapTrimFlags(autowrap_trim_flags TextServer.LineBreakFlag) { //gd:Label3D.set_autowrap_trim_flags
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_trim_flags, 0|(gdextension.SizeInt<<4), &struct{ autowrap_trim_flags TextServer.LineBreakFlag }{autowrap_trim_flags})
+}
+
+//go:nosplit
+func (self class) GetAutowrapTrimFlags() TextServer.LineBreakFlag { //gd:Label3D.get_autowrap_trim_flags
+	var r_ret = gdextension.Call[TextServer.LineBreakFlag](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_trim_flags, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
 func (self class) SetJustificationFlags(justification_flags TextServer.JustificationFlag) { //gd:Label3D.set_justification_flags
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_justification_flags, 0|(gdextension.SizeInt<<4), &struct{ justification_flags TextServer.JustificationFlag }{justification_flags})
 }
@@ -725,7 +747,7 @@ func (self class) GetOffset() Vector2.XY { //gd:Label3D.get_offset
 }
 
 /*
-If true, the specified flag will be enabled. See [Label3D.DrawFlags] for a list of flags.
+If true, the specified 'flag' will be enabled.
 */
 //go:nosplit
 func (self class) SetDrawFlag(flag DrawFlags, enabled bool) { //gd:Label3D.set_draw_flag

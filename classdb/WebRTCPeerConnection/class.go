@@ -225,7 +225,7 @@ func (self Instance) Close() { //gd:WebRTCPeerConnection.close
 }
 
 /*
-Returns the connection state. See [ConnectionState].
+Returns the connection state.
 */
 func (self Instance) GetConnectionState() ConnectionState { //gd:WebRTCPeerConnection.get_connection_state
 	return ConnectionState(Advanced(self).GetConnectionState())
@@ -410,7 +410,7 @@ func (self class) Close() { //gd:WebRTCPeerConnection.close
 }
 
 /*
-Returns the connection state. See [ConnectionState].
+Returns the connection state.
 */
 //go:nosplit
 func (self class) GetConnectionState() ConnectionState { //gd:WebRTCPeerConnection.get_connection_state

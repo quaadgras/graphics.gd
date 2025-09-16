@@ -134,7 +134,7 @@ func (self Expanded) IsAction(action string, exact_match bool) bool { //gd:Input
 }
 
 /*
-Returns true if the given action is being pressed (and is not an echo event for [graphics.gd/classdb/InputEventKey] events, unless 'allow_echo' is true). Not relevant for events of type [graphics.gd/classdb/InputEventMouseMotion] or [graphics.gd/classdb/InputEventScreenDrag].
+Returns true if the given action matches this event and is being pressed (and is not an echo event for [graphics.gd/classdb/InputEventKey] events, unless 'allow_echo' is true). Not relevant for events of type [graphics.gd/classdb/InputEventMouseMotion] or [graphics.gd/classdb/InputEventScreenDrag].
 
 If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
 
@@ -147,7 +147,7 @@ func (self Instance) IsActionPressed(action string) bool { //gd:InputEvent.is_ac
 }
 
 /*
-Returns true if the given action is being pressed (and is not an echo event for [graphics.gd/classdb/InputEventKey] events, unless 'allow_echo' is true). Not relevant for events of type [graphics.gd/classdb/InputEventMouseMotion] or [graphics.gd/classdb/InputEventScreenDrag].
+Returns true if the given action matches this event and is being pressed (and is not an echo event for [graphics.gd/classdb/InputEventKey] events, unless 'allow_echo' is true). Not relevant for events of type [graphics.gd/classdb/InputEventMouseMotion] or [graphics.gd/classdb/InputEventScreenDrag].
 
 If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
 
@@ -160,7 +160,7 @@ func (self Expanded) IsActionPressed(action string, allow_echo bool, exact_match
 }
 
 /*
-Returns true if the given action is released (i.e. not pressed). Not relevant for events of type [graphics.gd/classdb/InputEventMouseMotion] or [graphics.gd/classdb/InputEventScreenDrag].
+Returns true if the given action matches this event and is released (i.e. not pressed). Not relevant for events of type [graphics.gd/classdb/InputEventMouseMotion] or [graphics.gd/classdb/InputEventScreenDrag].
 
 If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
 */
@@ -169,7 +169,7 @@ func (self Instance) IsActionReleased(action string) bool { //gd:InputEvent.is_a
 }
 
 /*
-Returns true if the given action is released (i.e. not pressed). Not relevant for events of type [graphics.gd/classdb/InputEventMouseMotion] or [graphics.gd/classdb/InputEventScreenDrag].
+Returns true if the given action matches this event and is released (i.e. not pressed). Not relevant for events of type [graphics.gd/classdb/InputEventMouseMotion] or [graphics.gd/classdb/InputEventScreenDrag].
 
 If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
 */
@@ -237,29 +237,29 @@ func (self Instance) AsText() string { //gd:InputEvent.as_text
 }
 
 /*
-Returns true if the specified 'event' matches this event. Only valid for action events i.e key ([graphics.gd/classdb/InputEventKey]), button ([graphics.gd/classdb/InputEventMouseButton] or [graphics.gd/classdb/InputEventJoypadButton]), axis [graphics.gd/classdb/InputEventJoypadMotion] or action ([graphics.gd/classdb/InputEventAction]) events.
+Returns true if the specified 'event' matches this event. Only valid for action events, which include key ([graphics.gd/classdb/InputEventKey]), button ([graphics.gd/classdb/InputEventMouseButton] or [graphics.gd/classdb/InputEventJoypadButton]), axis [graphics.gd/classdb/InputEventJoypadMotion], and action ([graphics.gd/classdb/InputEventAction]) events.
 
-If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
+If 'exact_match' is false, the check ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
 
-Note: Only considers the event configuration (such as the keyboard key or joypad axis), not state information like [Instance.IsPressed], [Instance.IsReleased], [Instance.IsEcho], or [Instance.IsCanceled].
+Note: This method only considers the event configuration (such as the keyboard key or the joypad axis), not state information like [Instance.IsPressed], [Instance.IsReleased], [Instance.IsEcho], or [Instance.IsCanceled].
 */
 func (self Instance) IsMatch(event Instance) bool { //gd:InputEvent.is_match
 	return bool(Advanced(self).IsMatch(event, true))
 }
 
 /*
-Returns true if the specified 'event' matches this event. Only valid for action events i.e key ([graphics.gd/classdb/InputEventKey]), button ([graphics.gd/classdb/InputEventMouseButton] or [graphics.gd/classdb/InputEventJoypadButton]), axis [graphics.gd/classdb/InputEventJoypadMotion] or action ([graphics.gd/classdb/InputEventAction]) events.
+Returns true if the specified 'event' matches this event. Only valid for action events, which include key ([graphics.gd/classdb/InputEventKey]), button ([graphics.gd/classdb/InputEventMouseButton] or [graphics.gd/classdb/InputEventJoypadButton]), axis [graphics.gd/classdb/InputEventJoypadMotion], and action ([graphics.gd/classdb/InputEventAction]) events.
 
-If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
+If 'exact_match' is false, the check ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
 
-Note: Only considers the event configuration (such as the keyboard key or joypad axis), not state information like [Instance.IsPressed], [Instance.IsReleased], [Instance.IsEcho], or [Instance.IsCanceled].
+Note: This method only considers the event configuration (such as the keyboard key or the joypad axis), not state information like [Instance.IsPressed], [Instance.IsReleased], [Instance.IsEcho], or [Instance.IsCanceled].
 */
 func (self Expanded) IsMatch(event Instance, exact_match bool) bool { //gd:InputEvent.is_match
 	return bool(Advanced(self).IsMatch(event, exact_match))
 }
 
 /*
-Returns true if this input event's type is one that can be assigned to an input action.
+Returns true if this input event's type is one that can be assigned to an input action: [graphics.gd/classdb/InputEventKey], [graphics.gd/classdb/InputEventMouseButton], [graphics.gd/classdb/InputEventJoypadButton], [graphics.gd/classdb/InputEventJoypadMotion], [graphics.gd/classdb/InputEventAction]. Returns false for all other input event types.
 */
 func (self Instance) IsActionType() bool { //gd:InputEvent.is_action_type
 	return bool(Advanced(self).IsActionType())
@@ -367,7 +367,7 @@ func (self class) IsAction(action String.Name, exact_match bool) bool { //gd:Inp
 }
 
 /*
-Returns true if the given action is being pressed (and is not an echo event for [graphics.gd/classdb/InputEventKey] events, unless 'allow_echo' is true). Not relevant for events of type [graphics.gd/classdb/InputEventMouseMotion] or [graphics.gd/classdb/InputEventScreenDrag].
+Returns true if the given action matches this event and is being pressed (and is not an echo event for [graphics.gd/classdb/InputEventKey] events, unless 'allow_echo' is true). Not relevant for events of type [graphics.gd/classdb/InputEventMouseMotion] or [graphics.gd/classdb/InputEventScreenDrag].
 
 If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
 
@@ -387,7 +387,7 @@ func (self class) IsActionPressed(action String.Name, allow_echo bool, exact_mat
 }
 
 /*
-Returns true if the given action is released (i.e. not pressed). Not relevant for events of type [graphics.gd/classdb/InputEventMouseMotion] or [graphics.gd/classdb/InputEventScreenDrag].
+Returns true if the given action matches this event and is released (i.e. not pressed). Not relevant for events of type [graphics.gd/classdb/InputEventMouseMotion] or [graphics.gd/classdb/InputEventScreenDrag].
 
 If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
 */
@@ -473,11 +473,11 @@ func (self class) AsText() String.Readable { //gd:InputEvent.as_text
 }
 
 /*
-Returns true if the specified 'event' matches this event. Only valid for action events i.e key ([graphics.gd/classdb/InputEventKey]), button ([graphics.gd/classdb/InputEventMouseButton] or [graphics.gd/classdb/InputEventJoypadButton]), axis [graphics.gd/classdb/InputEventJoypadMotion] or action ([graphics.gd/classdb/InputEventAction]) events.
+Returns true if the specified 'event' matches this event. Only valid for action events, which include key ([graphics.gd/classdb/InputEventKey]), button ([graphics.gd/classdb/InputEventMouseButton] or [graphics.gd/classdb/InputEventJoypadButton]), axis [graphics.gd/classdb/InputEventJoypadMotion], and action ([graphics.gd/classdb/InputEventAction]) events.
 
-If 'exact_match' is false, it ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
+If 'exact_match' is false, the check ignores additional input modifiers for [graphics.gd/classdb/InputEventKey] and [graphics.gd/classdb/InputEventMouseButton] events, and the direction for [graphics.gd/classdb/InputEventJoypadMotion] events.
 
-Note: Only considers the event configuration (such as the keyboard key or joypad axis), not state information like [Instance.IsPressed], [Instance.IsReleased], [Instance.IsEcho], or [Instance.IsCanceled].
+Note: This method only considers the event configuration (such as the keyboard key or the joypad axis), not state information like [Instance.IsPressed], [Instance.IsReleased], [Instance.IsEcho], or [Instance.IsCanceled].
 */
 //go:nosplit
 func (self class) IsMatch(event [1]gdclass.InputEvent, exact_match bool) bool { //gd:InputEvent.is_match
@@ -490,7 +490,7 @@ func (self class) IsMatch(event [1]gdclass.InputEvent, exact_match bool) bool { 
 }
 
 /*
-Returns true if this input event's type is one that can be assigned to an input action.
+Returns true if this input event's type is one that can be assigned to an input action: [graphics.gd/classdb/InputEventKey], [graphics.gd/classdb/InputEventMouseButton], [graphics.gd/classdb/InputEventJoypadButton], [graphics.gd/classdb/InputEventJoypadMotion], [graphics.gd/classdb/InputEventAction]. Returns false for all other input event types.
 */
 //go:nosplit
 func (self class) IsActionType() bool { //gd:InputEvent.is_action_type

@@ -82,24 +82,25 @@ type Instance [1]gdclass.ProjectSettings
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	has_setting               gdextension.MethodForClass `hash:"3927539163"`
-	set_setting               gdextension.MethodForClass `hash:"402577236"`
-	get_setting               gdextension.MethodForClass `hash:"223050753"`
-	get_setting_with_override gdextension.MethodForClass `hash:"2760726917"`
-	get_global_class_list     gdextension.MethodForClass `hash:"2915620761"`
-	set_order                 gdextension.MethodForClass `hash:"2956805083"`
-	get_order                 gdextension.MethodForClass `hash:"1321353865"`
-	set_initial_value         gdextension.MethodForClass `hash:"402577236"`
-	set_as_basic              gdextension.MethodForClass `hash:"2678287736"`
-	set_as_internal           gdextension.MethodForClass `hash:"2678287736"`
-	add_property_info         gdextension.MethodForClass `hash:"4155329257"`
-	set_restart_if_changed    gdextension.MethodForClass `hash:"2678287736"`
-	clear                     gdextension.MethodForClass `hash:"83702148"`
-	localize_path             gdextension.MethodForClass `hash:"3135753539"`
-	globalize_path            gdextension.MethodForClass `hash:"3135753539"`
-	save                      gdextension.MethodForClass `hash:"166280745"`
-	load_resource_pack        gdextension.MethodForClass `hash:"708980503"`
-	save_custom               gdextension.MethodForClass `hash:"166001499"`
+	has_setting                                   gdextension.MethodForClass `hash:"3927539163"`
+	set_setting                                   gdextension.MethodForClass `hash:"402577236"`
+	get_setting                                   gdextension.MethodForClass `hash:"223050753"`
+	get_setting_with_override                     gdextension.MethodForClass `hash:"2760726917"`
+	get_global_class_list                         gdextension.MethodForClass `hash:"2915620761"`
+	get_setting_with_override_and_custom_features gdextension.MethodForClass `hash:"2434817427"`
+	set_order                                     gdextension.MethodForClass `hash:"2956805083"`
+	get_order                                     gdextension.MethodForClass `hash:"1321353865"`
+	set_initial_value                             gdextension.MethodForClass `hash:"402577236"`
+	set_as_basic                                  gdextension.MethodForClass `hash:"2678287736"`
+	set_as_internal                               gdextension.MethodForClass `hash:"2678287736"`
+	add_property_info                             gdextension.MethodForClass `hash:"4155329257"`
+	set_restart_if_changed                        gdextension.MethodForClass `hash:"2678287736"`
+	clear                                         gdextension.MethodForClass `hash:"83702148"`
+	localize_path                                 gdextension.MethodForClass `hash:"3135753539"`
+	globalize_path                                gdextension.MethodForClass `hash:"3135753539"`
+	save                                          gdextension.MethodForClass `hash:"166280745"`
+	load_resource_pack                            gdextension.MethodForClass `hash:"708980503"`
+	save_custom                                   gdextension.MethodForClass `hash:"166001499"`
 }
 
 func init() {
@@ -123,6 +124,8 @@ func singleton() {
 
 /*
 Returns true if a configuration value is present.
+
+Note: In order to be be detected, custom settings have to be either defined with [SetSetting], or exist in the project.godot file. This is especially relevant when using [SetInitialValue].
 */
 func HasSetting(name string) bool { //gd:ProjectSettings.has_setting
 	once.Do(singleton)
@@ -143,6 +146,8 @@ func SetSetting(name string, value any) { //gd:ProjectSettings.set_setting
 Returns the value of the setting identified by 'name'. If the setting doesn't exist and 'default_value' is specified, the value of 'default_value' is returned. Otherwise, null is returned.
 
 Note: This method doesn't take potential feature overrides into account automatically. Use [GetSettingWithOverride] to handle seamlessly.
+
+See also [HasSetting] to check whether a setting exists.
 */
 func GetSetting(name string, default_value any) any { //gd:ProjectSettings.get_setting
 	once.Do(singleton)
@@ -153,6 +158,8 @@ func GetSetting(name string, default_value any) any { //gd:ProjectSettings.get_s
 Returns the value of the setting identified by 'name'. If the setting doesn't exist and 'default_value' is specified, the value of 'default_value' is returned. Otherwise, null is returned.
 
 Note: This method doesn't take potential feature overrides into account automatically. Use [GetSettingWithOverride] to handle seamlessly.
+
+See also [HasSetting] to check whether a setting exists.
 */
 func GetSettingOptions(name string, default_value any) any { //gd:ProjectSettings.get_setting
 	once.Do(singleton)
@@ -190,6 +197,14 @@ func GetGlobalClassList() []GlobalClass { //gd:ProjectSettings.get_global_class_
 }
 
 /*
+Similar to [GetSettingWithOverride], but applies feature tag overrides instead of current OS features.
+*/
+func GetSettingWithOverrideAndCustomFeatures(name string, features []string) any { //gd:ProjectSettings.get_setting_with_override_and_custom_features
+	once.Do(singleton)
+	return any(Advanced().GetSettingWithOverrideAndCustomFeatures(String.Name(String.New(name)), Packed.MakeStrings(features...)).Interface())
+}
+
+/*
 Sets the order of a configuration value (influences when saved to the config file).
 */
 func SetOrder(name string, position int) { //gd:ProjectSettings.set_order
@@ -206,7 +221,9 @@ func GetOrder(name string) int { //gd:ProjectSettings.get_order
 }
 
 /*
-Sets the specified setting's initial value. This is the value the setting reverts to.
+Sets the specified setting's initial value. This is the value the setting reverts to. The setting should already exist before calling this method. Note that project settings equal to their default value are not saved, so your code needs to account for that.
+
+If you have a project setting defined by an [graphics.gd/classdb/EditorPlugin], but want to use it in a running project, you will need a similar code at runtime.
 */
 func SetInitialValue(name string, value any) { //gd:ProjectSettings.set_initial_value
 	once.Do(singleton)
@@ -237,6 +254,8 @@ Adds a custom property info to a property. The dictionary must contain:
 - "type": int (see [Variant.Type])
 
 - optionally "hint": int (see [PropertyHint]) and "hint_string": string
+
+Note: Setting "usage" for the property is not supported. Use [SetAsBasic], [SetRestartIfChanged], and [SetAsInternal] to modify usage flags.
 */
 func AddPropertyInfo(hint Object.PropertyInfo) { //gd:ProjectSettings.add_property_info
 	once.Do(singleton)
@@ -352,6 +371,8 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 
 /*
 Returns true if a configuration value is present.
+
+Note: In order to be be detected, custom settings have to be either defined with [SetSetting], or exist in the project.godot file. This is especially relevant when using [SetInitialValue].
 */
 //go:nosplit
 func (self class) HasSetting(name String.Readable) bool { //gd:ProjectSettings.has_setting
@@ -381,6 +402,8 @@ Returns the value of the setting identified by 'name'. If the setting doesn't ex
 
 
 Note: This method doesn't take potential feature overrides into account automatically. Use [GetSettingWithOverride] to handle seamlessly.
+
+See also [HasSetting] to check whether a setting exists.
 */
 //go:nosplit
 func (self class) GetSetting(name String.Readable, default_value variant.Any) variant.Any { //gd:ProjectSettings.get_setting
@@ -429,6 +452,19 @@ func (self class) GetGlobalClassList() Array.Contains[Dictionary.Any] { //gd:Pro
 }
 
 /*
+Similar to [GetSettingWithOverride], but applies feature tag overrides instead of current OS features.
+*/
+//go:nosplit
+func (self class) GetSettingWithOverrideAndCustomFeatures(name String.Name, features Packed.Strings) variant.Any { //gd:ProjectSettings.get_setting_with_override_and_custom_features
+	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_setting_with_override_and_custom_features, gdextension.SizeVariant|(gdextension.SizeStringName<<4)|(gdextension.SizePackedArray<<8), &struct {
+		name     gdextension.StringName
+		features gdextension.PackedArray[gdextension.String]
+	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalPackedStrings(features))})
+	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
+	return ret
+}
+
+/*
 Sets the order of a configuration value (influences when saved to the config file).
 */
 //go:nosplit
@@ -450,7 +486,11 @@ func (self class) GetOrder(name String.Readable) int64 { //gd:ProjectSettings.ge
 }
 
 /*
-Sets the specified setting's initial value. This is the value the setting reverts to.
+Sets the specified setting's initial value. This is the value the setting reverts to. The setting should already exist before calling this method. Note that project settings equal to their default value are not saved, so your code needs to account for that.
+
+
+
+If you have a project setting defined by an [graphics.gd/classdb/EditorPlugin], but want to use it in a running project, you will need a similar code at runtime.
 */
 //go:nosplit
 func (self class) SetInitialValue(name String.Readable, value variant.Any) { //gd:ProjectSettings.set_initial_value
@@ -492,6 +532,8 @@ Adds a custom property info to a property. The dictionary must contain:
 - optionally "hint": int (see [PropertyHint]) and "hint_string": string
 
 
+
+Note: Setting "usage" for the property is not supported. Use [SetAsBasic], [SetRestartIfChanged], and [SetAsInternal] to modify usage flags.
 */
 //go:nosplit
 func (self class) AddPropertyInfo(hint Dictionary.Any) { //gd:ProjectSettings.add_property_info

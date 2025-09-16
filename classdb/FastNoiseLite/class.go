@@ -655,7 +655,7 @@ type NoiseType int //gd:FastNoiseLite.NoiseType
 const (
 	// A lattice of points are assigned random values then interpolated based on neighboring values.
 	TypeValue NoiseType = 5
-	// Similar to Value noise, but slower. Has more variance in peaks and valleys.
+	// Similar to value noise ([TypeValue]), but slower. Has more variance in peaks and valleys.
 	//
 	// Cubic noise can be used to avoid certain artifacts when using value noise to create a bumpmap. In general, you should always use this mode if the value noise is being used for a heightmap or bumpmap.
 	TypeValueCubic NoiseType = 4

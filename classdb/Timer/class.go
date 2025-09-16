@@ -3,7 +3,7 @@
 /*
 The [graphics.gd/classdb/Timer] node is a countdown timer and is the simplest way to handle time-based logic in the engine. When a timer reaches the end of its [Instance.WaitTime], it will emit the [Instance.OnTimeout] signal.
 
-After a timer enters the tree, it can be manually started with [Instance.Start]. A timer node is also started automatically if [Instance.Autostart] is true.
+After a timer enters the scene tree, it can be manually started with [Instance.Start]. A timer node is also started automatically if [Instance.Autostart] is true.
 
 Without requiring much code, a timer node can be added and configured in the editor. The [Instance.OnTimeout] signal it emits can also be connected through the Node dock in the editor:
 
@@ -17,7 +17,7 @@ Without requiring much code, a timer node can be added and configured in the edi
 
 Note: To create a one-shot timer without instantiating a node, use [graphics.gd/classdb/SceneTree.Instance.CreateTimer].
 
-Note: Timers are affected by [graphics.gd/classdb/Engine.TimeScale]. The higher the time scale, the sooner timers will end. How often a timer processes may depend on the framerate or [graphics.gd/classdb/Engine.PhysicsTicksPerSecond].
+Note: Timers are affected by [graphics.gd/classdb/Engine.TimeScale] unless [Instance.IgnoreTimeScale] is true. The higher the time scale, the sooner timers will end. How often a timer processes may depend on the framerate or [graphics.gd/classdb/Engine.PhysicsTicksPerSecond].
 */
 package Timer
 
@@ -131,7 +131,7 @@ type Any interface {
 }
 
 /*
-Starts the timer, or resets the timer if it was started already. Fails if the timer is not inside the tree. If 'time_sec' is greater than 0, this value is used for the [Instance.WaitTime].
+Starts the timer, or resets the timer if it was started already. Fails if the timer is not inside the scene tree. If 'time_sec' is greater than 0, this value is used for the [Instance.WaitTime].
 
 Note: This method does not resume a paused timer. See [Instance.Paused].
 */
@@ -140,7 +140,7 @@ func (self Instance) Start() { //gd:Timer.start
 }
 
 /*
-Starts the timer, or resets the timer if it was started already. Fails if the timer is not inside the tree. If 'time_sec' is greater than 0, this value is used for the [Instance.WaitTime].
+Starts the timer, or resets the timer if it was started already. Fails if the timer is not inside the scene tree. If 'time_sec' is greater than 0, this value is used for the [Instance.WaitTime].
 
 Note: This method does not resume a paused timer. See [Instance.Paused].
 */
@@ -149,7 +149,9 @@ func (self Expanded) Start(time_sec Float.X) { //gd:Timer.start
 }
 
 /*
-Stops the timer.
+Stops the timer. See also [Instance.Paused]. Unlike [Instance.Start], this can safely be called if the timer is not inside the scene tree.
+
+Note: Calling [Instance.Stop] does not emit the [Instance.OnTimeout] signal, as the timer is not considered to have timed out. If this is desired, use $Timer.timeout.emit() after calling [Instance.Stop] to manually emit the signal.
 */
 func (self Instance) Stop() { //gd:Timer.stop
 	Advanced(self).Stop()
@@ -293,7 +295,7 @@ func (self class) HasAutostart() bool { //gd:Timer.has_autostart
 }
 
 /*
-Starts the timer, or resets the timer if it was started already. Fails if the timer is not inside the tree. If 'time_sec' is greater than 0, this value is used for the [Instance.WaitTime].
+Starts the timer, or resets the timer if it was started already. Fails if the timer is not inside the scene tree. If 'time_sec' is greater than 0, this value is used for the [Instance.WaitTime].
 
 Note: This method does not resume a paused timer. See [Instance.Paused].
 */
@@ -303,7 +305,9 @@ func (self class) Start(time_sec float64) { //gd:Timer.start
 }
 
 /*
-Stops the timer.
+Stops the timer. See also [Instance.Paused]. Unlike [Instance.Start], this can safely be called if the timer is not inside the scene tree.
+
+Note: Calling [Instance.Stop] does not emit the [Instance.OnTimeout] signal, as the timer is not considered to have timed out. If this is desired, use $Timer.timeout.emit() after calling [Instance.Stop] to manually emit the signal.
 */
 //go:nosplit
 func (self class) Stop() { //gd:Timer.stop

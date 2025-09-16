@@ -93,6 +93,7 @@ var methods struct {
 	get_size_override                 gdextension.MethodForClass `hash:"3341600327"`
 	set_keep_compressed_buffer        gdextension.MethodForClass `hash:"2586408642"`
 	is_keeping_compressed_buffer      gdextension.MethodForClass `hash:"36873697"`
+	set_basisu_compressor_params      gdextension.MethodForClass `hash:"1602489585"`
 	set_keep_all_compressed_buffers   gdextension.MethodForClass `hash:"2586408642"`
 	is_keeping_all_compressed_buffers gdextension.MethodForClass `hash:"2240911060"`
 }
@@ -153,6 +154,15 @@ Return the compression mode used (valid after initialized).
 */
 func (self Instance) GetCompressionMode() CompressionMode { //gd:PortableCompressedTexture2D.get_compression_mode
 	return CompressionMode(Advanced(self).GetCompressionMode())
+}
+
+/*
+Sets the compressor parameters for Basis Universal compression. See also the settings in [graphics.gd/classdb/ResourceImporterTexture].
+
+Note: This must be set before [Instance.CreateFromImage] to take effect.
+*/
+func (self Instance) SetBasisuCompressorParams(uastc_level int, rdo_quality_loss Float.X) { //gd:PortableCompressedTexture2D.set_basisu_compressor_params
+	Advanced(self).SetBasisuCompressorParams(int64(uastc_level), float64(rdo_quality_loss))
 }
 
 /*
@@ -292,6 +302,19 @@ func (self class) IsKeepingCompressedBuffer() bool { //gd:PortableCompressedText
 }
 
 /*
+Sets the compressor parameters for Basis Universal compression. See also the settings in [graphics.gd/classdb/ResourceImporterTexture].
+
+Note: This must be set before [Instance.CreateFromImage] to take effect.
+*/
+//go:nosplit
+func (self class) SetBasisuCompressorParams(uastc_level int64, rdo_quality_loss float64) { //gd:PortableCompressedTexture2D.set_basisu_compressor_params
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_basisu_compressor_params, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+		uastc_level      int64
+		rdo_quality_loss float64
+	}{uastc_level, rdo_quality_loss})
+}
+
+/*
 Overrides the flag globally for all textures of this type. This is used primarily by the editor.
 */
 //go:nosplit
@@ -372,4 +395,5 @@ const (
 	CompressionModeS3tc           CompressionMode = 3
 	CompressionModeEtc2           CompressionMode = 4
 	CompressionModeBptc           CompressionMode = 5
+	CompressionModeAstc           CompressionMode = 6
 )

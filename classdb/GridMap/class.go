@@ -304,14 +304,16 @@ func (self Instance) GetUsedCellsByItem(item CellItem) []Vector3i.XYZ { //gd:Gri
 }
 
 /*
-Returns an array of [Transform3D.BasisOrigin] and [graphics.gd/classdb/Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space.
+Returns an array of [Transform3D.BasisOrigin] and [graphics.gd/classdb/Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space. Even indices contain [Transform3D.BasisOrigin]s, while odd indices contain [graphics.gd/classdb/Mesh]es related to the [Transform3D.BasisOrigin] in the index preceding it.
 */
 func (self Instance) GetMeshes() []any { //gd:GridMap.get_meshes
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetMeshes())))
 }
 
 /*
-Returns an array of [graphics.gd/classdb/ArrayMesh]es and [Transform3D.BasisOrigin] references of all bake meshes that exist within the current GridMap.
+Returns an array of [graphics.gd/classdb/ArrayMesh]es and [Transform3D.BasisOrigin] references of all bake meshes that exist within the current GridMap. Even indices contain [graphics.gd/classdb/ArrayMesh]es, while odd indices contain [Transform3D.BasisOrigin]s that are always equal to [Transform3d.Identity].
+
+This method relies on the output of [Instance.MakeBakedMeshes], which will be called with gen_lightmap_uv set to true and lightmap_uv_texel_size set to 0.1 if it hasn't been called yet.
 */
 func (self Instance) GetBakeMeshes() []any { //gd:GridMap.get_bake_meshes
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(Advanced(self).GetBakeMeshes())))
@@ -332,14 +334,18 @@ func (self Instance) ClearBakedMeshes() { //gd:GridMap.clear_baked_meshes
 }
 
 /*
-Bakes lightmap data for all meshes in the assigned [graphics.gd/classdb/MeshLibrary].
+Generates a baked mesh that represents all meshes in the assigned [graphics.gd/classdb/MeshLibrary] for use with [graphics.gd/classdb/LightmapGI]. If 'gen_lightmap_uv' is true, UV2 data will be generated for each mesh currently used in the [graphics.gd/classdb/GridMap]. Otherwise, only meshes that already have UV2 data present will be able to use baked lightmaps. When generating UV2, 'lightmap_uv_texel_size' controls the texel density for lightmaps, with lower values resulting in more detailed lightmaps. 'lightmap_uv_texel_size' is ignored if 'gen_lightmap_uv' is false. See also [Instance.GetBakeMeshes], which relies on the output of this method.
+
+Note: Calling this method will not actually bake lightmaps, as lightmap baking is performed using the [graphics.gd/classdb/LightmapGI] node.
 */
 func (self Instance) MakeBakedMeshes() { //gd:GridMap.make_baked_meshes
 	Advanced(self).MakeBakedMeshes(false, float64(0.1))
 }
 
 /*
-Bakes lightmap data for all meshes in the assigned [graphics.gd/classdb/MeshLibrary].
+Generates a baked mesh that represents all meshes in the assigned [graphics.gd/classdb/MeshLibrary] for use with [graphics.gd/classdb/LightmapGI]. If 'gen_lightmap_uv' is true, UV2 data will be generated for each mesh currently used in the [graphics.gd/classdb/GridMap]. Otherwise, only meshes that already have UV2 data present will be able to use baked lightmaps. When generating UV2, 'lightmap_uv_texel_size' controls the texel density for lightmaps, with lower values resulting in more detailed lightmaps. 'lightmap_uv_texel_size' is ignored if 'gen_lightmap_uv' is false. See also [Instance.GetBakeMeshes], which relies on the output of this method.
+
+Note: Calling this method will not actually bake lightmaps, as lightmap baking is performed using the [graphics.gd/classdb/LightmapGI] node.
 */
 func (self Expanded) MakeBakedMeshes(gen_lightmap_uv bool, lightmap_uv_texel_size Float.X) { //gd:GridMap.make_baked_meshes
 	Advanced(self).MakeBakedMeshes(gen_lightmap_uv, float64(lightmap_uv_texel_size))
@@ -812,7 +818,7 @@ func (self class) GetUsedCellsByItem(item int64) Array.Contains[Vector3i.XYZ] { 
 }
 
 /*
-Returns an array of [Transform3D.BasisOrigin] and [graphics.gd/classdb/Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space.
+Returns an array of [Transform3D.BasisOrigin] and [graphics.gd/classdb/Mesh] references corresponding to the non-empty cells in the grid. The transforms are specified in local space. Even indices contain [Transform3D.BasisOrigin]s, while odd indices contain [graphics.gd/classdb/Mesh]es related to the [Transform3D.BasisOrigin] in the index preceding it.
 */
 //go:nosplit
 func (self class) GetMeshes() Array.Any { //gd:GridMap.get_meshes
@@ -822,7 +828,9 @@ func (self class) GetMeshes() Array.Any { //gd:GridMap.get_meshes
 }
 
 /*
-Returns an array of [graphics.gd/classdb/ArrayMesh]es and [Transform3D.BasisOrigin] references of all bake meshes that exist within the current GridMap.
+Returns an array of [graphics.gd/classdb/ArrayMesh]es and [Transform3D.BasisOrigin] references of all bake meshes that exist within the current GridMap. Even indices contain [graphics.gd/classdb/ArrayMesh]es, while odd indices contain [Transform3D.BasisOrigin]s that are always equal to [Transform3d.Identity].
+
+This method relies on the output of [Instance.MakeBakedMeshes], which will be called with gen_lightmap_uv set to true and lightmap_uv_texel_size set to 0.1 if it hasn't been called yet.
 */
 //go:nosplit
 func (self class) GetBakeMeshes() Array.Any { //gd:GridMap.get_bake_meshes
@@ -850,7 +858,9 @@ func (self class) ClearBakedMeshes() { //gd:GridMap.clear_baked_meshes
 }
 
 /*
-Bakes lightmap data for all meshes in the assigned [graphics.gd/classdb/MeshLibrary].
+Generates a baked mesh that represents all meshes in the assigned [graphics.gd/classdb/MeshLibrary] for use with [graphics.gd/classdb/LightmapGI]. If 'gen_lightmap_uv' is true, UV2 data will be generated for each mesh currently used in the [graphics.gd/classdb/GridMap]. Otherwise, only meshes that already have UV2 data present will be able to use baked lightmaps. When generating UV2, 'lightmap_uv_texel_size' controls the texel density for lightmaps, with lower values resulting in more detailed lightmaps. 'lightmap_uv_texel_size' is ignored if 'gen_lightmap_uv' is false. See also [Instance.GetBakeMeshes], which relies on the output of this method.
+
+Note: Calling this method will not actually bake lightmaps, as lightmap baking is performed using the [graphics.gd/classdb/LightmapGI] node.
 */
 //go:nosplit
 func (self class) MakeBakedMeshes(gen_lightmap_uv bool, lightmap_uv_texel_size float64) { //gd:GridMap.make_baked_meshes

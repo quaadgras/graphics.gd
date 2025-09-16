@@ -325,7 +325,7 @@ func ShapeSetData(shape RID.Shape2D, data any) { //gd:PhysicsServer2D.shape_set_
 }
 
 /*
-Returns the shape's type (see [ShapeType]).
+Returns the shape's type.
 */
 func ShapeGetType(shape RID.Shape2D) ShapeType { //gd:PhysicsServer2D.shape_get_type
 	once.Do(singleton)
@@ -365,7 +365,7 @@ func SpaceIsActive(space RID.Space2D) bool { //gd:PhysicsServer2D.space_is_activ
 }
 
 /*
-Sets the value of the given space parameter. See [SpaceParameter] for the list of available parameters.
+Sets the value of the given space parameter.
 */
 func SpaceSetParam(space RID.Space2D, param SpaceParameter, value Float.X) { //gd:PhysicsServer2D.space_set_param
 	once.Do(singleton)
@@ -373,7 +373,7 @@ func SpaceSetParam(space RID.Space2D, param SpaceParameter, value Float.X) { //g
 }
 
 /*
-Returns the value of the given space parameter. See [SpaceParameter] for the list of available parameters.
+Returns the value of the given space parameter.
 */
 func SpaceGetParam(space RID.Space2D, param SpaceParameter) Float.X { //gd:PhysicsServer2D.space_get_param
 	once.Do(singleton)
@@ -529,7 +529,7 @@ func AreaGetCollisionMask(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_c
 }
 
 /*
-Sets the value of the given area parameter. See [AreaParameter] for the list of available parameters.
+Sets the value of the given area parameter.
 */
 func AreaSetParam(area RID.Area2D, param AreaParameter, value any) { //gd:PhysicsServer2D.area_set_param
 	once.Do(singleton)
@@ -545,7 +545,7 @@ func AreaSetTransform(area RID.Area2D, transform Transform2D.OriginXY) { //gd:Ph
 }
 
 /*
-Returns the value of the given area parameter. See [AreaParameter] for the list of available parameters.
+Returns the value of the given area parameter.
 */
 func AreaGetParam(area RID.Area2D, param AreaParameter) any { //gd:PhysicsServer2D.area_get_param
 	once.Do(singleton)
@@ -673,7 +673,7 @@ func BodyGetSpace(body RID.Body2D) RID.Space2D { //gd:PhysicsServer2D.body_get_s
 }
 
 /*
-Sets the body's mode. See [BodyMode] for the list of available modes.
+Sets the body's mode.
 */
 func BodySetMode(body RID.Body2D, mode BodyMode) { //gd:PhysicsServer2D.body_set_mode
 	once.Do(singleton)
@@ -681,7 +681,7 @@ func BodySetMode(body RID.Body2D, mode BodyMode) { //gd:PhysicsServer2D.body_set
 }
 
 /*
-Returns the body's mode (see [BodyMode]).
+Returns the body's mode.
 */
 func BodyGetMode(body RID.Body2D) BodyMode { //gd:PhysicsServer2D.body_get_mode
 	once.Do(singleton)
@@ -809,7 +809,7 @@ func BodyGetCanvasInstanceId(body RID.Body2D) int { //gd:PhysicsServer2D.body_ge
 }
 
 /*
-Sets the continuous collision detection mode using one of the [CCDMode] constants.
+Sets the continuous collision detection mode.
 
 Continuous collision detection tries to predict where a moving body would collide in between physics updates, instead of moving it and correcting its movement if it collided.
 */
@@ -819,7 +819,7 @@ func BodySetContinuousCollisionDetectionMode(body RID.Body2D, mode CCDMode) { //
 }
 
 /*
-Returns the body's continuous collision detection mode (see [CCDMode]).
+Returns the body's continuous collision detection mode.
 */
 func BodyGetContinuousCollisionDetectionMode(body RID.Body2D) CCDMode { //gd:PhysicsServer2D.body_get_continuous_collision_detection_mode
 	once.Do(singleton)
@@ -875,7 +875,7 @@ func BodyGetCollisionPriority(body RID.Body2D) Float.X { //gd:PhysicsServer2D.bo
 }
 
 /*
-Sets the value of the given body parameter. See [BodyParameter] for the list of available parameters.
+Sets the value of the given body parameter.
 */
 func BodySetParam(body RID.Body2D, param BodyParameter, value any) { //gd:PhysicsServer2D.body_set_param
 	once.Do(singleton)
@@ -883,7 +883,7 @@ func BodySetParam(body RID.Body2D, param BodyParameter, value any) { //gd:Physic
 }
 
 /*
-Returns the value of the given body parameter. See [BodyParameter] for the list of available parameters.
+Returns the value of the given body parameter.
 */
 func BodyGetParam(body RID.Body2D, param BodyParameter) any { //gd:PhysicsServer2D.body_get_param
 	once.Do(singleton)
@@ -899,7 +899,7 @@ func BodyResetMassProperties(body RID.Body2D) { //gd:PhysicsServer2D.body_reset_
 }
 
 /*
-Sets the value of a body's state. See [BodyState] for the list of available states.
+Sets the value of a body's state.
 
 Note: The state change doesn't take effect immediately. The state will change on the next physics frame.
 */
@@ -909,7 +909,7 @@ func BodySetState(body RID.Body2D, state BodyState, value any) { //gd:PhysicsSer
 }
 
 /*
-Returns the value of the given state of the body. See [BodyState] for the list of available states.
+Returns the value of the given state of the body.
 */
 func BodyGetState(body RID.Body2D, state BodyState) any { //gd:PhysicsServer2D.body_get_state
 	once.Do(singleton)
@@ -1227,7 +1227,7 @@ func JointClear(joint RID.Joint2D) { //gd:PhysicsServer2D.joint_clear
 }
 
 /*
-Sets the value of the given joint parameter. See [JointParam] for the list of available parameters.
+Sets the value of the given joint parameter.
 */
 func JointSetParam(joint RID.Joint2D, param JointParam, value Float.X) { //gd:PhysicsServer2D.joint_set_param
 	once.Do(singleton)
@@ -1235,7 +1235,7 @@ func JointSetParam(joint RID.Joint2D, param JointParam, value Float.X) { //gd:Ph
 }
 
 /*
-Returns the value of the given joint parameter. See [JointParam] for the list of available parameters.
+Returns the value of the given joint parameter.
 */
 func JointGetParam(joint RID.Joint2D, param JointParam) Float.X { //gd:PhysicsServer2D.joint_get_param
 	once.Do(singleton)
@@ -1307,7 +1307,7 @@ func JointMakeDampedSpringOptions(joint RID.Joint2D, anchor_a Vector2.XY, anchor
 }
 
 /*
-Sets a pin joint flag (see [PinJointFlag] constants).
+Sets a pin joint flag.
 */
 func PinJointSetFlag(joint RID.Joint2D, flag PinJointFlag, enabled bool) { //gd:PhysicsServer2D.pin_joint_set_flag
 	once.Do(singleton)
@@ -1315,7 +1315,7 @@ func PinJointSetFlag(joint RID.Joint2D, flag PinJointFlag, enabled bool) { //gd:
 }
 
 /*
-Gets a pin joint flag (see [PinJointFlag] constants).
+Gets a pin joint flag.
 */
 func PinJointGetFlag(joint RID.Joint2D, flag PinJointFlag) bool { //gd:PhysicsServer2D.pin_joint_get_flag
 	once.Do(singleton)
@@ -1323,7 +1323,7 @@ func PinJointGetFlag(joint RID.Joint2D, flag PinJointFlag) bool { //gd:PhysicsSe
 }
 
 /*
-Sets a pin joint parameter. See [PinJointParam] for a list of available parameters.
+Sets a pin joint parameter.
 */
 func PinJointSetParam(joint RID.Joint2D, param PinJointParam, value Float.X) { //gd:PhysicsServer2D.pin_joint_set_param
 	once.Do(singleton)
@@ -1331,7 +1331,7 @@ func PinJointSetParam(joint RID.Joint2D, param PinJointParam, value Float.X) { /
 }
 
 /*
-Returns the value of a pin joint parameter. See [PinJointParam] for a list of available parameters.
+Returns the value of a pin joint parameter.
 */
 func PinJointGetParam(joint RID.Joint2D, param PinJointParam) Float.X { //gd:PhysicsServer2D.pin_joint_get_param
 	once.Do(singleton)
@@ -1339,7 +1339,7 @@ func PinJointGetParam(joint RID.Joint2D, param PinJointParam) Float.X { //gd:Phy
 }
 
 /*
-Sets the value of the given damped spring joint parameter. See [DampedSpringParam] for the list of available parameters.
+Sets the value of the given damped spring joint parameter.
 */
 func DampedSpringJointSetParam(joint RID.Joint2D, param DampedSpringParam, value Float.X) { //gd:PhysicsServer2D.damped_spring_joint_set_param
 	once.Do(singleton)
@@ -1347,7 +1347,7 @@ func DampedSpringJointSetParam(joint RID.Joint2D, param DampedSpringParam, value
 }
 
 /*
-Returns the value of the given damped spring joint parameter. See [DampedSpringParam] for the list of available parameters.
+Returns the value of the given damped spring joint parameter.
 */
 func DampedSpringJointGetParam(joint RID.Joint2D, param DampedSpringParam) Float.X { //gd:PhysicsServer2D.damped_spring_joint_get_param
 	once.Do(singleton)
@@ -1355,7 +1355,7 @@ func DampedSpringJointGetParam(joint RID.Joint2D, param DampedSpringParam) Float
 }
 
 /*
-Returns the joint's type (see [JointType]).
+Returns the joint's type.
 */
 func JointGetType(joint RID.Joint2D) JointType { //gd:PhysicsServer2D.joint_get_type
 	once.Do(singleton)
@@ -1379,7 +1379,7 @@ func SetActive(active bool) { //gd:PhysicsServer2D.set_active
 }
 
 /*
-Returns information about the current state of the 2D physics engine. See [ProcessInfo] for the list of available states.
+Returns the value of a physics engine state specified by 'process_info'.
 */
 func GetProcessInfo(process_info ProcessInfo) int { //gd:PhysicsServer2D.get_process_info
 	once.Do(singleton)
@@ -1519,7 +1519,7 @@ func (self class) ShapeSetData(shape RID.Any, data variant.Any) { //gd:PhysicsSe
 }
 
 /*
-Returns the shape's type (see [ShapeType]).
+Returns the shape's type.
 */
 //go:nosplit
 func (self class) ShapeGetType(shape RID.Any) ShapeType { //gd:PhysicsServer2D.shape_get_type
@@ -1570,7 +1570,7 @@ func (self class) SpaceIsActive(space RID.Any) bool { //gd:PhysicsServer2D.space
 }
 
 /*
-Sets the value of the given space parameter. See [SpaceParameter] for the list of available parameters.
+Sets the value of the given space parameter.
 */
 //go:nosplit
 func (self class) SpaceSetParam(space RID.Any, param SpaceParameter, value float64) { //gd:PhysicsServer2D.space_set_param
@@ -1582,7 +1582,7 @@ func (self class) SpaceSetParam(space RID.Any, param SpaceParameter, value float
 }
 
 /*
-Returns the value of the given space parameter. See [SpaceParameter] for the list of available parameters.
+Returns the value of the given space parameter.
 */
 //go:nosplit
 func (self class) SpaceGetParam(space RID.Any, param SpaceParameter) float64 { //gd:PhysicsServer2D.space_get_param
@@ -1786,7 +1786,7 @@ func (self class) AreaGetCollisionMask(area RID.Any) int64 { //gd:PhysicsServer2
 }
 
 /*
-Sets the value of the given area parameter. See [AreaParameter] for the list of available parameters.
+Sets the value of the given area parameter.
 */
 //go:nosplit
 func (self class) AreaSetParam(area RID.Any, param AreaParameter, value variant.Any) { //gd:PhysicsServer2D.area_set_param
@@ -1809,7 +1809,7 @@ func (self class) AreaSetTransform(area RID.Any, transform Transform2D.OriginXY)
 }
 
 /*
-Returns the value of the given area parameter. See [AreaParameter] for the list of available parameters.
+Returns the value of the given area parameter.
 */
 //go:nosplit
 func (self class) AreaGetParam(area RID.Any, param AreaParameter) variant.Any { //gd:PhysicsServer2D.area_get_param
@@ -1970,7 +1970,7 @@ func (self class) BodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer2D.body
 }
 
 /*
-Sets the body's mode. See [BodyMode] for the list of available modes.
+Sets the body's mode.
 */
 //go:nosplit
 func (self class) BodySetMode(body RID.Any, mode BodyMode) { //gd:PhysicsServer2D.body_set_mode
@@ -1981,7 +1981,7 @@ func (self class) BodySetMode(body RID.Any, mode BodyMode) { //gd:PhysicsServer2
 }
 
 /*
-Returns the body's mode (see [BodyMode]).
+Returns the body's mode.
 */
 //go:nosplit
 func (self class) BodyGetMode(body RID.Any) BodyMode { //gd:PhysicsServer2D.body_get_mode
@@ -2150,7 +2150,7 @@ func (self class) BodyGetCanvasInstanceId(body RID.Any) int64 { //gd:PhysicsServ
 }
 
 /*
-Sets the continuous collision detection mode using one of the [CCDMode] constants.
+Sets the continuous collision detection mode.
 
 Continuous collision detection tries to predict where a moving body would collide in between physics updates, instead of moving it and correcting its movement if it collided.
 */
@@ -2163,7 +2163,7 @@ func (self class) BodySetContinuousCollisionDetectionMode(body RID.Any, mode CCD
 }
 
 /*
-Returns the body's continuous collision detection mode (see [CCDMode]).
+Returns the body's continuous collision detection mode.
 */
 //go:nosplit
 func (self class) BodyGetContinuousCollisionDetectionMode(body RID.Any) CCDMode { //gd:PhysicsServer2D.body_get_continuous_collision_detection_mode
@@ -2236,7 +2236,7 @@ func (self class) BodyGetCollisionPriority(body RID.Any) float64 { //gd:PhysicsS
 }
 
 /*
-Sets the value of the given body parameter. See [BodyParameter] for the list of available parameters.
+Sets the value of the given body parameter.
 */
 //go:nosplit
 func (self class) BodySetParam(body RID.Any, param BodyParameter, value variant.Any) { //gd:PhysicsServer2D.body_set_param
@@ -2248,7 +2248,7 @@ func (self class) BodySetParam(body RID.Any, param BodyParameter, value variant.
 }
 
 /*
-Returns the value of the given body parameter. See [BodyParameter] for the list of available parameters.
+Returns the value of the given body parameter.
 */
 //go:nosplit
 func (self class) BodyGetParam(body RID.Any, param BodyParameter) variant.Any { //gd:PhysicsServer2D.body_get_param
@@ -2269,7 +2269,7 @@ func (self class) BodyResetMassProperties(body RID.Any) { //gd:PhysicsServer2D.b
 }
 
 /*
-Sets the value of a body's state. See [BodyState] for the list of available states.
+Sets the value of a body's state.
 
 Note: The state change doesn't take effect immediately. The state will change on the next physics frame.
 */
@@ -2283,7 +2283,7 @@ func (self class) BodySetState(body RID.Any, state BodyState, value variant.Any)
 }
 
 /*
-Returns the value of the given state of the body. See [BodyState] for the list of available states.
+Returns the value of the given state of the body.
 */
 //go:nosplit
 func (self class) BodyGetState(body RID.Any, state BodyState) variant.Any { //gd:PhysicsServer2D.body_get_state
@@ -2624,7 +2624,7 @@ func (self class) JointClear(joint RID.Any) { //gd:PhysicsServer2D.joint_clear
 }
 
 /*
-Sets the value of the given joint parameter. See [JointParam] for the list of available parameters.
+Sets the value of the given joint parameter.
 */
 //go:nosplit
 func (self class) JointSetParam(joint RID.Any, param JointParam, value float64) { //gd:PhysicsServer2D.joint_set_param
@@ -2636,7 +2636,7 @@ func (self class) JointSetParam(joint RID.Any, param JointParam, value float64) 
 }
 
 /*
-Returns the value of the given joint parameter. See [JointParam] for the list of available parameters.
+Returns the value of the given joint parameter.
 */
 //go:nosplit
 func (self class) JointGetParam(joint RID.Any, param JointParam) float64 { //gd:PhysicsServer2D.joint_get_param
@@ -2712,7 +2712,7 @@ func (self class) JointMakeDampedSpring(joint RID.Any, anchor_a Vector2.XY, anch
 }
 
 /*
-Sets a pin joint flag (see [PinJointFlag] constants).
+Sets a pin joint flag.
 */
 //go:nosplit
 func (self class) PinJointSetFlag(joint RID.Any, flag PinJointFlag, enabled bool) { //gd:PhysicsServer2D.pin_joint_set_flag
@@ -2724,7 +2724,7 @@ func (self class) PinJointSetFlag(joint RID.Any, flag PinJointFlag, enabled bool
 }
 
 /*
-Gets a pin joint flag (see [PinJointFlag] constants).
+Gets a pin joint flag.
 */
 //go:nosplit
 func (self class) PinJointGetFlag(joint RID.Any, flag PinJointFlag) bool { //gd:PhysicsServer2D.pin_joint_get_flag
@@ -2737,7 +2737,7 @@ func (self class) PinJointGetFlag(joint RID.Any, flag PinJointFlag) bool { //gd:
 }
 
 /*
-Sets a pin joint parameter. See [PinJointParam] for a list of available parameters.
+Sets a pin joint parameter.
 */
 //go:nosplit
 func (self class) PinJointSetParam(joint RID.Any, param PinJointParam, value float64) { //gd:PhysicsServer2D.pin_joint_set_param
@@ -2749,7 +2749,7 @@ func (self class) PinJointSetParam(joint RID.Any, param PinJointParam, value flo
 }
 
 /*
-Returns the value of a pin joint parameter. See [PinJointParam] for a list of available parameters.
+Returns the value of a pin joint parameter.
 */
 //go:nosplit
 func (self class) PinJointGetParam(joint RID.Any, param PinJointParam) float64 { //gd:PhysicsServer2D.pin_joint_get_param
@@ -2762,7 +2762,7 @@ func (self class) PinJointGetParam(joint RID.Any, param PinJointParam) float64 {
 }
 
 /*
-Sets the value of the given damped spring joint parameter. See [DampedSpringParam] for the list of available parameters.
+Sets the value of the given damped spring joint parameter.
 */
 //go:nosplit
 func (self class) DampedSpringJointSetParam(joint RID.Any, param DampedSpringParam, value float64) { //gd:PhysicsServer2D.damped_spring_joint_set_param
@@ -2774,7 +2774,7 @@ func (self class) DampedSpringJointSetParam(joint RID.Any, param DampedSpringPar
 }
 
 /*
-Returns the value of the given damped spring joint parameter. See [DampedSpringParam] for the list of available parameters.
+Returns the value of the given damped spring joint parameter.
 */
 //go:nosplit
 func (self class) DampedSpringJointGetParam(joint RID.Any, param DampedSpringParam) float64 { //gd:PhysicsServer2D.damped_spring_joint_get_param
@@ -2787,7 +2787,7 @@ func (self class) DampedSpringJointGetParam(joint RID.Any, param DampedSpringPar
 }
 
 /*
-Returns the joint's type (see [JointType]).
+Returns the joint's type.
 */
 //go:nosplit
 func (self class) JointGetType(joint RID.Any) JointType { //gd:PhysicsServer2D.joint_get_type
@@ -2813,7 +2813,7 @@ func (self class) SetActive(active bool) { //gd:PhysicsServer2D.set_active
 }
 
 /*
-Returns information about the current state of the 2D physics engine. See [ProcessInfo] for the list of available states.
+Returns the value of a physics engine state specified by 'process_info'.
 */
 //go:nosplit
 func (self class) GetProcessInfo(process_info ProcessInfo) int64 { //gd:PhysicsServer2D.get_process_info
@@ -2954,7 +2954,7 @@ const (
 	BodyParamMass BodyParameter = 2
 	// Constant to set/get a body's inertia. The default value of this parameter is 0.0. If the body's inertia is set to a value <= 0.0, then the inertia will be recalculated based on the body's shapes, mass, and center of mass.
 	BodyParamInertia BodyParameter = 3
-	// Constant to set/get a body's center of mass position in the body's local coordinate system. The default value of this parameter is Vector2(0,0). If this parameter is never set explicitly, then it is recalculated based on the body's shapes when setting the parameter [BodyParamMass] or when calling [Instance.BodySetSpace].
+	// Constant to set/get a body's center of mass position in the body's local coordinate system. The default value of this parameter is Vector2(0, 0). If this parameter is never set explicitly, then it is recalculated based on the body's shapes when setting the parameter [BodyParamMass] or when calling [Instance.BodySetSpace].
 	BodyParamCenterOfMass BodyParameter = 4
 	// Constant to set/get a body's gravity multiplier. The default value of this parameter is 1.0.
 	BodyParamGravityScale BodyParameter = 5

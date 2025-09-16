@@ -112,6 +112,8 @@ var methods struct {
 	save_jpg_to_buffer     gdextension.MethodForClass `hash:"592235273"`
 	save_exr               gdextension.MethodForClass `hash:"3108122999"`
 	save_exr_to_buffer     gdextension.MethodForClass `hash:"3178917920"`
+	save_dds               gdextension.MethodForClass `hash:"2113323047"`
+	save_dds_to_buffer     gdextension.MethodForClass `hash:"2362200018"`
 	save_webp              gdextension.MethodForClass `hash:"2781156876"`
 	save_webp_to_buffer    gdextension.MethodForClass `hash:"1214628238"`
 	detect_alpha           gdextension.MethodForClass `hash:"2030116505"`
@@ -151,6 +153,7 @@ var methods struct {
 	load_tga_from_buffer   gdextension.MethodForClass `hash:"680677267"`
 	load_bmp_from_buffer   gdextension.MethodForClass `hash:"680677267"`
 	load_ktx_from_buffer   gdextension.MethodForClass `hash:"680677267"`
+	load_dds_from_buffer   gdextension.MethodForClass `hash:"680677267"`
 	load_svg_from_buffer   gdextension.MethodForClass `hash:"311853421"`
 	load_svg_from_string   gdextension.MethodForClass `hash:"3254053600"`
 }
@@ -206,7 +209,7 @@ func (self Instance) HasMipmaps() bool { //gd:Image.has_mipmaps
 }
 
 /*
-Returns the image's format. See [Format] constants.
+Returns this image's format.
 */
 func (self Instance) GetFormat() Format { //gd:Image.get_format
 	return Format(Advanced(self).GetFormat())
@@ -227,7 +230,7 @@ func (self Instance) GetDataSize() int { //gd:Image.get_data_size
 }
 
 /*
-Converts the image's format. See [Format] constants.
+Converts this image's format to the given 'format'.
 */
 func (self Instance) Convert(format Format) { //gd:Image.convert
 	Advanced(self).Convert(format)
@@ -248,14 +251,14 @@ func (self Instance) GetMipmapOffset(mipmap int) int { //gd:Image.get_mipmap_off
 }
 
 /*
-Resizes the image to the nearest power of 2 for the width and height. If 'square' is true then set width and height to be the same. New pixels are calculated using the 'interpolation' mode defined via [Interpolation] constants.
+Resizes the image to the nearest power of 2 for the width and height. If 'square' is true, sets width and height to be the same. New pixels are calculated using the 'interpolation' mode defined via [Interpolation] constants.
 */
 func (self Instance) ResizeToPo2() { //gd:Image.resize_to_po2
 	Advanced(self).ResizeToPo2(false, 1)
 }
 
 /*
-Resizes the image to the nearest power of 2 for the width and height. If 'square' is true then set width and height to be the same. New pixels are calculated using the 'interpolation' mode defined via [Interpolation] constants.
+Resizes the image to the nearest power of 2 for the width and height. If 'square' is true, sets width and height to be the same. New pixels are calculated using the 'interpolation' mode defined via [Interpolation] constants.
 */
 func (self Expanded) ResizeToPo2(square bool, interpolation Interpolation) { //gd:Image.resize_to_po2
 	Advanced(self).ResizeToPo2(square, interpolation)
@@ -329,7 +332,7 @@ func (self Instance) ClearMipmaps() { //gd:Image.clear_mipmaps
 }
 
 /*
-Creates an empty image of given size and format. See [Format] constants. If 'use_mipmaps' is true, then generate mipmaps for this image. See the [Instance.GenerateMipmaps].
+Creates an empty image of the given size and format. If 'use_mipmaps' is true, generates mipmaps for this image. See the [Instance.GenerateMipmaps].
 */
 func Create(width int, height int, use_mipmaps bool, format Format) Instance { //gd:Image.create
 	self := Instance{}
@@ -337,7 +340,7 @@ func Create(width int, height int, use_mipmaps bool, format Format) Instance { /
 }
 
 /*
-Creates an empty image of given size and format. See [Format] constants. If 'use_mipmaps' is true, then generate mipmaps for this image. See the [Instance.GenerateMipmaps].
+Creates an empty image of the given size and format. If 'use_mipmaps' is true, generates mipmaps for this image. See the [Instance.GenerateMipmaps].
 */
 func CreateEmpty(width int, height int, use_mipmaps bool, format Format) Instance { //gd:Image.create_empty
 	self := Instance{}
@@ -345,18 +348,18 @@ func CreateEmpty(width int, height int, use_mipmaps bool, format Format) Instanc
 }
 
 /*
-Creates a new image of given size and format. See [Format] constants. Fills the image with the given raw data. If 'use_mipmaps' is true then loads mipmaps for this image from 'data'. See [Instance.GenerateMipmaps].
+Creates a new image of the given size and format. Fills the image with the given raw data. If 'use_mipmaps' is true, loads the mipmaps for this image from 'data'. See [Instance.GenerateMipmaps].
 */
 func CreateFromData(width int, height int, use_mipmaps bool, format Format, data []byte) Instance { //gd:Image.create_from_data
 	self := Instance{}
-	return Instance(Advanced(self).CreateFromData(int64(width), int64(height), use_mipmaps, format, Packed.Bytes(Packed.New(data...))))
+	return Instance(Advanced(self).CreateFromData(int64(width), int64(height), use_mipmaps, format, Packed.BytesFrom(data...)))
 }
 
 /*
 Overwrites data of an existing [graphics.gd/classdb/Image]. Non-static equivalent of [CreateFromData].
 */
 func (self Instance) SetData(width int, height int, use_mipmaps bool, format Format, data []byte) { //gd:Image.set_data
-	Advanced(self).SetData(int64(width), int64(height), use_mipmaps, format, Packed.Bytes(Packed.New(data...)))
+	Advanced(self).SetData(int64(width), int64(height), use_mipmaps, format, Packed.BytesFrom(data...))
 }
 
 /*
@@ -458,7 +461,7 @@ func (self Expanded) SaveExr(path string, grayscale bool) error { //gd:Image.sav
 /*
 Saves the image as an EXR file to a byte array. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return an empty byte array if Godot was compiled without the TinyEXR module.
 
-Note: The TinyEXR module is disabled in non-editor builds, which means [Instance.SaveExr] will return an empty byte array when it is called from an exported project.
+Note: The TinyEXR module is disabled in non-editor builds, which means [Instance.SaveExrToBuffer] will return an empty byte array when it is called from an exported project.
 */
 func (self Instance) SaveExrToBuffer() []byte { //gd:Image.save_exr_to_buffer
 	return []byte(Advanced(self).SaveExrToBuffer(false).Bytes())
@@ -467,10 +470,28 @@ func (self Instance) SaveExrToBuffer() []byte { //gd:Image.save_exr_to_buffer
 /*
 Saves the image as an EXR file to a byte array. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return an empty byte array if Godot was compiled without the TinyEXR module.
 
-Note: The TinyEXR module is disabled in non-editor builds, which means [Instance.SaveExr] will return an empty byte array when it is called from an exported project.
+Note: The TinyEXR module is disabled in non-editor builds, which means [Instance.SaveExrToBuffer] will return an empty byte array when it is called from an exported project.
 */
 func (self Expanded) SaveExrToBuffer(grayscale bool) []byte { //gd:Image.save_exr_to_buffer
 	return []byte(Advanced(self).SaveExrToBuffer(grayscale).Bytes())
+}
+
+/*
+Saves the image as a DDS (DirectDraw Surface) file to 'path'. DDS is a container format that can store textures in various compression formats, such as DXT1, DXT5, or BC7. This function will return [ErrUnavailable] if Godot was compiled without the DDS module.
+
+Note: The DDS module may be disabled in certain builds, which means [Instance.SaveDds] will return [ErrUnavailable] when it is called from an exported project.
+*/
+func (self Instance) SaveDds(path string) error { //gd:Image.save_dds
+	return error(gd.ToError(Advanced(self).SaveDds(String.New(path))))
+}
+
+/*
+Saves the image as a DDS (DirectDraw Surface) file to a byte array. DDS is a container format that can store textures in various compression formats, such as DXT1, DXT5, or BC7. This function will return an empty byte array if Godot was compiled without the DDS module.
+
+Note: The DDS module may be disabled in certain builds, which means [Instance.SaveDdsToBuffer] will return an empty byte array when it is called from an exported project.
+*/
+func (self Instance) SaveDdsToBuffer() []byte { //gd:Image.save_dds_to_buffer
+	return []byte(Advanced(self).SaveDdsToBuffer().Bytes())
 }
 
 /*
@@ -524,14 +545,14 @@ func (self Instance) IsInvisible() bool { //gd:Image.is_invisible
 }
 
 /*
-Returns the color channels used by this image, as one of the [UsedChannels] constants. If the image is compressed, the original 'source' must be specified.
+Returns the color channels used by this image. If the image is compressed, the original 'source' must be specified.
 */
 func (self Instance) DetectUsedChannels() UsedChannels { //gd:Image.detect_used_channels
 	return UsedChannels(Advanced(self).DetectUsedChannels(0))
 }
 
 /*
-Returns the color channels used by this image, as one of the [UsedChannels] constants. If the image is compressed, the original 'source' must be specified.
+Returns the color channels used by this image. If the image is compressed, the original 'source' must be specified.
 */
 func (self Expanded) DetectUsedChannels(source CompressSource) UsedChannels { //gd:Image.detect_used_channels
 	return UsedChannels(Advanced(self).DetectUsedChannels(source))
@@ -798,21 +819,21 @@ func (self Instance) AdjustBcs(brightness Float.X, contrast Float.X, saturation 
 Loads an image from the binary contents of a PNG file.
 */
 func (self Instance) LoadPngFromBuffer(buffer []byte) error { //gd:Image.load_png_from_buffer
-	return error(gd.ToError(Advanced(self).LoadPngFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).LoadPngFromBuffer(Packed.BytesFrom(buffer...))))
 }
 
 /*
 Loads an image from the binary contents of a JPEG file.
 */
 func (self Instance) LoadJpgFromBuffer(buffer []byte) error { //gd:Image.load_jpg_from_buffer
-	return error(gd.ToError(Advanced(self).LoadJpgFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).LoadJpgFromBuffer(Packed.BytesFrom(buffer...))))
 }
 
 /*
 Loads an image from the binary contents of a WebP file.
 */
 func (self Instance) LoadWebpFromBuffer(buffer []byte) error { //gd:Image.load_webp_from_buffer
-	return error(gd.ToError(Advanced(self).LoadWebpFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).LoadWebpFromBuffer(Packed.BytesFrom(buffer...))))
 }
 
 /*
@@ -821,7 +842,7 @@ Loads an image from the binary contents of a TGA file.
 Note: This method is only available in engine builds with the TGA module enabled. By default, the TGA module is enabled, but it can be disabled at build-time using the module_tga_enabled=no SCons option.
 */
 func (self Instance) LoadTgaFromBuffer(buffer []byte) error { //gd:Image.load_tga_from_buffer
-	return error(gd.ToError(Advanced(self).LoadTgaFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).LoadTgaFromBuffer(Packed.BytesFrom(buffer...))))
 }
 
 /*
@@ -832,7 +853,7 @@ Note: Godot's BMP module doesn't support 16-bit per pixel images. Only 1-bit, 4-
 Note: This method is only available in engine builds with the BMP module enabled. By default, the BMP module is enabled, but it can be disabled at build-time using the module_bmp_enabled=no SCons option.
 */
 func (self Instance) LoadBmpFromBuffer(buffer []byte) error { //gd:Image.load_bmp_from_buffer
-	return error(gd.ToError(Advanced(self).LoadBmpFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).LoadBmpFromBuffer(Packed.BytesFrom(buffer...))))
 }
 
 /*
@@ -845,7 +866,16 @@ Note: This method is only available in engine builds with the KTX module enabled
 [KTX]: https://github.com/KhronosGroup/KTX-Software
 */
 func (self Instance) LoadKtxFromBuffer(buffer []byte) error { //gd:Image.load_ktx_from_buffer
-	return error(gd.ToError(Advanced(self).LoadKtxFromBuffer(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).LoadKtxFromBuffer(Packed.BytesFrom(buffer...))))
+}
+
+/*
+Loads an image from the binary contents of a DDS file.
+
+Note: This method is only available in engine builds with the DDS module enabled. By default, the DDS module is enabled, but it can be disabled at build-time using the module_dds_enabled=no SCons option.
+*/
+func (self Instance) LoadDdsFromBuffer(buffer []byte) error { //gd:Image.load_dds_from_buffer
+	return error(gd.ToError(Advanced(self).LoadDdsFromBuffer(Packed.BytesFrom(buffer...))))
 }
 
 /*
@@ -856,7 +886,7 @@ Note: Beware when using compressed SVG files (like .svgz), they need to be decom
 Note: This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the module_svg_enabled=no SCons option.
 */
 func (self Instance) LoadSvgFromBuffer(buffer []byte) error { //gd:Image.load_svg_from_buffer
-	return error(gd.ToError(Advanced(self).LoadSvgFromBuffer(Packed.Bytes(Packed.New(buffer...)), float64(1.0))))
+	return error(gd.ToError(Advanced(self).LoadSvgFromBuffer(Packed.BytesFrom(buffer...), float64(1.0))))
 }
 
 /*
@@ -867,7 +897,7 @@ Note: Beware when using compressed SVG files (like .svgz), they need to be decom
 Note: This method is only available in engine builds with the SVG module enabled. By default, the SVG module is enabled, but it can be disabled at build-time using the module_svg_enabled=no SCons option.
 */
 func (self Expanded) LoadSvgFromBuffer(buffer []byte, scale Float.X) error { //gd:Image.load_svg_from_buffer
-	return error(gd.ToError(Advanced(self).LoadSvgFromBuffer(Packed.Bytes(Packed.New(buffer...)), float64(scale))))
+	return error(gd.ToError(Advanced(self).LoadSvgFromBuffer(Packed.BytesFrom(buffer...), float64(scale))))
 }
 
 /*
@@ -972,7 +1002,7 @@ func (self class) HasMipmaps() bool { //gd:Image.has_mipmaps
 }
 
 /*
-Returns the image's format. See [Format] constants.
+Returns this image's format.
 */
 //go:nosplit
 func (self class) GetFormat() Format { //gd:Image.get_format
@@ -987,7 +1017,7 @@ Returns a copy of the image's raw data.
 //go:nosplit
 func (self class) GetData() Packed.Bytes { //gd:Image.get_data
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -1002,7 +1032,7 @@ func (self class) GetDataSize() int64 { //gd:Image.get_data_size
 }
 
 /*
-Converts the image's format. See [Format] constants.
+Converts this image's format to the given 'format'.
 */
 //go:nosplit
 func (self class) Convert(format Format) { //gd:Image.convert
@@ -1030,7 +1060,7 @@ func (self class) GetMipmapOffset(mipmap int64) int64 { //gd:Image.get_mipmap_of
 }
 
 /*
-Resizes the image to the nearest power of 2 for the width and height. If 'square' is true then set width and height to be the same. New pixels are calculated using the 'interpolation' mode defined via [Interpolation] constants.
+Resizes the image to the nearest power of 2 for the width and height. If 'square' is true, sets width and height to be the same. New pixels are calculated using the 'interpolation' mode defined via [Interpolation] constants.
 */
 //go:nosplit
 func (self class) ResizeToPo2(square bool, interpolation Interpolation) { //gd:Image.resize_to_po2
@@ -1108,7 +1138,7 @@ func (self class) ClearMipmaps() { //gd:Image.clear_mipmaps
 }
 
 /*
-Creates an empty image of given size and format. See [Format] constants. If 'use_mipmaps' is true, then generate mipmaps for this image. See the [Instance.GenerateMipmaps].
+Creates an empty image of the given size and format. If 'use_mipmaps' is true, generates mipmaps for this image. See the [Instance.GenerateMipmaps].
 */
 //go:nosplit
 func (self class) Create(width int64, height int64, use_mipmaps bool, format Format) [1]gdclass.Image { //gd:Image.create
@@ -1123,7 +1153,7 @@ func (self class) Create(width int64, height int64, use_mipmaps bool, format For
 }
 
 /*
-Creates an empty image of given size and format. See [Format] constants. If 'use_mipmaps' is true, then generate mipmaps for this image. See the [Instance.GenerateMipmaps].
+Creates an empty image of the given size and format. If 'use_mipmaps' is true, generates mipmaps for this image. See the [Instance.GenerateMipmaps].
 */
 //go:nosplit
 func (self class) CreateEmpty(width int64, height int64, use_mipmaps bool, format Format) [1]gdclass.Image { //gd:Image.create_empty
@@ -1138,7 +1168,7 @@ func (self class) CreateEmpty(width int64, height int64, use_mipmaps bool, forma
 }
 
 /*
-Creates a new image of given size and format. See [Format] constants. Fills the image with the given raw data. If 'use_mipmaps' is true then loads mipmaps for this image from 'data'. See [Instance.GenerateMipmaps].
+Creates a new image of the given size and format. Fills the image with the given raw data. If 'use_mipmaps' is true, loads the mipmaps for this image from 'data'. See [Instance.GenerateMipmaps].
 */
 //go:nosplit
 func (self class) CreateFromData(width int64, height int64, use_mipmaps bool, format Format, data Packed.Bytes) [1]gdclass.Image { //gd:Image.create_from_data
@@ -1148,7 +1178,7 @@ func (self class) CreateFromData(width int64, height int64, use_mipmaps bool, fo
 		use_mipmaps bool
 		format      Format
 		data        gdextension.PackedArray[byte]
-	}{width, height, use_mipmaps, format, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	}{width, height, use_mipmaps, format, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
@@ -1164,7 +1194,7 @@ func (self class) SetData(width int64, height int64, use_mipmaps bool, format Fo
 		use_mipmaps bool
 		format      Format
 		data        gdextension.PackedArray[byte]
-	}{width, height, use_mipmaps, format, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	}{width, height, use_mipmaps, format, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
 
 /*
@@ -1219,7 +1249,7 @@ Saves the image as a PNG file to a byte array.
 //go:nosplit
 func (self class) SavePngToBuffer() Packed.Bytes { //gd:Image.save_png_to_buffer
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.save_png_to_buffer, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -1246,7 +1276,7 @@ Note: JPEG does not save an alpha channel. If the [graphics.gd/classdb/Image] co
 //go:nosplit
 func (self class) SaveJpgToBuffer(quality float64) Packed.Bytes { //gd:Image.save_jpg_to_buffer
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.save_jpg_to_buffer, gdextension.SizePackedArray|(gdextension.SizeFloat<<4), &struct{ quality float64 }{quality})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -1268,12 +1298,36 @@ func (self class) SaveExr(path String.Readable, grayscale bool) Error.Code { //g
 /*
 Saves the image as an EXR file to a byte array. If 'grayscale' is true and the image has only one channel, it will be saved explicitly as monochrome rather than one red channel. This function will return an empty byte array if Godot was compiled without the TinyEXR module.
 
-Note: The TinyEXR module is disabled in non-editor builds, which means [Instance.SaveExr] will return an empty byte array when it is called from an exported project.
+Note: The TinyEXR module is disabled in non-editor builds, which means [Instance.SaveExrToBuffer] will return an empty byte array when it is called from an exported project.
 */
 //go:nosplit
 func (self class) SaveExrToBuffer(grayscale bool) Packed.Bytes { //gd:Image.save_exr_to_buffer
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.save_exr_to_buffer, gdextension.SizePackedArray|(gdextension.SizeBool<<4), &struct{ grayscale bool }{grayscale})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
+	return ret
+}
+
+/*
+Saves the image as a DDS (DirectDraw Surface) file to 'path'. DDS is a container format that can store textures in various compression formats, such as DXT1, DXT5, or BC7. This function will return [ErrUnavailable] if Godot was compiled without the DDS module.
+
+Note: The DDS module may be disabled in certain builds, which means [Instance.SaveDds] will return [ErrUnavailable] when it is called from an exported project.
+*/
+//go:nosplit
+func (self class) SaveDds(path String.Readable) Error.Code { //gd:Image.save_dds
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_dds, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var ret = Error.Code(r_ret)
+	return ret
+}
+
+/*
+Saves the image as a DDS (DirectDraw Surface) file to a byte array. DDS is a container format that can store textures in various compression formats, such as DXT1, DXT5, or BC7. This function will return an empty byte array if Godot was compiled without the DDS module.
+
+Note: The DDS module may be disabled in certain builds, which means [Instance.SaveDdsToBuffer] will return an empty byte array when it is called from an exported project.
+*/
+//go:nosplit
+func (self class) SaveDdsToBuffer() Packed.Bytes { //gd:Image.save_dds_to_buffer
+	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.save_dds_to_buffer, gdextension.SizePackedArray, &struct{}{})
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -1304,7 +1358,7 @@ func (self class) SaveWebpToBuffer(lossy bool, quality float64) Packed.Bytes { /
 		lossy   bool
 		quality float64
 	}{lossy, quality})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -1329,7 +1383,7 @@ func (self class) IsInvisible() bool { //gd:Image.is_invisible
 }
 
 /*
-Returns the color channels used by this image, as one of the [UsedChannels] constants. If the image is compressed, the original 'source' must be specified.
+Returns the color channels used by this image. If the image is compressed, the original 'source' must be specified.
 */
 //go:nosplit
 func (self class) DetectUsedChannels(source CompressSource) UsedChannels { //gd:Image.detect_used_channels
@@ -1669,7 +1723,7 @@ Loads an image from the binary contents of a PNG file.
 */
 //go:nosplit
 func (self class) LoadPngFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_png_from_buffer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_png_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))})
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_png_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1679,7 +1733,7 @@ Loads an image from the binary contents of a JPEG file.
 */
 //go:nosplit
 func (self class) LoadJpgFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_jpg_from_buffer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_jpg_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))})
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_jpg_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1689,7 +1743,7 @@ Loads an image from the binary contents of a WebP file.
 */
 //go:nosplit
 func (self class) LoadWebpFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_webp_from_buffer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_webp_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))})
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_webp_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1701,7 +1755,7 @@ Note: This method is only available in engine builds with the TGA module enabled
 */
 //go:nosplit
 func (self class) LoadTgaFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_tga_from_buffer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_tga_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))})
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_tga_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1715,7 +1769,7 @@ Note: This method is only available in engine builds with the BMP module enabled
 */
 //go:nosplit
 func (self class) LoadBmpFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_bmp_from_buffer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_bmp_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))})
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_bmp_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1731,7 +1785,19 @@ Note: This method is only available in engine builds with the KTX module enabled
 */
 //go:nosplit
 func (self class) LoadKtxFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_ktx_from_buffer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_ktx_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))})
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_ktx_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
+	var ret = Error.Code(r_ret)
+	return ret
+}
+
+/*
+Loads an image from the binary contents of a DDS file.
+
+Note: This method is only available in engine builds with the DDS module enabled. By default, the DDS module is enabled, but it can be disabled at build-time using the module_dds_enabled=no SCons option.
+*/
+//go:nosplit
+func (self class) LoadDdsFromBuffer(buffer Packed.Bytes) Error.Code { //gd:Image.load_dds_from_buffer
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_dds_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -1748,7 +1814,7 @@ func (self class) LoadSvgFromBuffer(buffer Packed.Bytes, scale float64) Error.Co
 	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_svg_from_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4)|(gdextension.SizeFloat<<8), &struct {
 		buffer gdextension.PackedArray[byte]
 		scale  float64
-	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer))), scale})
+	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array))), scale})
 	var ret = Error.Code(r_ret)
 	return ret
 }

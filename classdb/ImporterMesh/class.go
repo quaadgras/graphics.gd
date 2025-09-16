@@ -149,7 +149,7 @@ func (self Instance) GetBlendShapeName(blend_shape_idx int) string { //gd:Import
 }
 
 /*
-Sets the blend shape mode to one of [Mesh.BlendShapeMode].
+Sets the blend shape mode.
 */
 func (self Instance) SetBlendShapeMode(mode Mesh.BlendShapeMode) { //gd:ImporterMesh.set_blend_shape_mode
 	Advanced(self).SetBlendShapeMode(mode)
@@ -437,7 +437,7 @@ func (self class) GetBlendShapeName(blend_shape_idx int64) String.Readable { //g
 }
 
 /*
-Sets the blend shape mode to one of [Mesh.BlendShapeMode].
+Sets the blend shape mode.
 */
 //go:nosplit
 func (self class) SetBlendShapeMode(mode Mesh.BlendShapeMode) { //gd:ImporterMesh.set_blend_shape_mode

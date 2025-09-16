@@ -99,13 +99,13 @@ var methods struct {
 	set_cache_capacity            gdextension.MethodForClass `hash:"3937882851"`
 	get_string_size               gdextension.MethodForClass `hash:"1868866121"`
 	get_multiline_string_size     gdextension.MethodForClass `hash:"519636710"`
-	draw_string                   gdextension.MethodForClass `hash:"1983721962"`
-	draw_multiline_string         gdextension.MethodForClass `hash:"1171506176"`
-	draw_string_outline           gdextension.MethodForClass `hash:"623754045"`
-	draw_multiline_string_outline gdextension.MethodForClass `hash:"3206388178"`
+	draw_string                   gdextension.MethodForClass `hash:"1976686372"`
+	draw_multiline_string         gdextension.MethodForClass `hash:"2686601589"`
+	draw_string_outline           gdextension.MethodForClass `hash:"701417663"`
+	draw_multiline_string_outline gdextension.MethodForClass `hash:"4147839237"`
 	get_char_size                 gdextension.MethodForClass `hash:"3016396712"`
-	draw_char                     gdextension.MethodForClass `hash:"3815617597"`
-	draw_char_outline             gdextension.MethodForClass `hash:"209525354"`
+	draw_char                     gdextension.MethodForClass `hash:"3500170256"`
+	draw_char_outline             gdextension.MethodForClass `hash:"1684114874"`
 	has_char                      gdextension.MethodForClass `hash:"1116898809"`
 	get_supported_chars           gdextension.MethodForClass `hash:"201670096"`
 	is_language_supported         gdextension.MethodForClass `hash:"3927539163"`
@@ -270,7 +270,7 @@ func (self Instance) GetOtNameStrings() map[string]map[string]string { //gd:Font
 }
 
 /*
-Returns font style flags, see [TextServer.FontStyle].
+Returns font style flags.
 */
 func (self Instance) GetFontStyle() TextServer.FontStyle { //gd:Font.get_font_style
 	return TextServer.FontStyle(Advanced(self).GetFontStyle())
@@ -291,7 +291,7 @@ func (self Instance) GetFontStretch() int { //gd:Font.get_font_stretch
 }
 
 /*
-Returns the spacing for the given type (see [TextServer.SpacingType]).
+Returns the amount of spacing for the given 'spacing' type.
 */
 func (self Instance) GetSpacing(spacing TextServer.SpacingType) int { //gd:Font.get_spacing
 	return int(int(Advanced(self).GetSpacing(spacing)))
@@ -364,75 +364,75 @@ func (self Expanded) GetMultilineStringSize(text string, alignment GUI.Horizonta
 }
 
 /*
-Draw 'text' into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis.
+Draw 'text' into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 See also [graphics.gd/classdb/CanvasItem.Instance.DrawString].
 */
 func (self Instance) DrawString(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_string
-	Advanced(self).DrawString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0)
+	Advanced(self).DrawString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0, float64(0.0))
 }
 
 /*
-Draw 'text' into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis.
+Draw 'text' into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 See also [graphics.gd/classdb/CanvasItem.Instance.DrawString].
 */
-func (self Expanded) DrawString(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_string
-	Advanced(self).DrawString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), Color.RGBA(modulate), justification_flags, direction, orientation)
+func (self Expanded) DrawString(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_string
+	Advanced(self).DrawString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), Color.RGBA(modulate), justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
-Breaks 'text' into lines using rules specified by 'brk_flags' and draws it into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis.
+Breaks 'text' into lines using rules specified by 'brk_flags' and draws it into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultilineString].
 */
 func (self Instance) DrawMultilineString(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_multiline_string
-	Advanced(self).DrawMultilineString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
+	Advanced(self).DrawMultilineString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0, float64(0.0))
 }
 
 /*
-Breaks 'text' into lines using rules specified by 'brk_flags' and draws it into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis.
+Breaks 'text' into lines using rules specified by 'brk_flags' and draws it into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultilineString].
 */
-func (self Expanded) DrawMultilineString(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_multiline_string
-	Advanced(self).DrawMultilineString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation)
+func (self Expanded) DrawMultilineString(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_multiline_string
+	Advanced(self).DrawMultilineString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
-Draw 'text' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis.
+Draw 'text' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 See also [graphics.gd/classdb/CanvasItem.Instance.DrawStringOutline].
 */
 func (self Instance) DrawStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_string_outline
-	Advanced(self).DrawStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0)
+	Advanced(self).DrawStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0, float64(0.0))
 }
 
 /*
-Draw 'text' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis.
+Draw 'text' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 See also [graphics.gd/classdb/CanvasItem.Instance.DrawStringOutline].
 */
-func (self Expanded) DrawStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_string_outline
-	Advanced(self).DrawStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(size), Color.RGBA(modulate), justification_flags, direction, orientation)
+func (self Expanded) DrawStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_string_outline
+	Advanced(self).DrawStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(size), Color.RGBA(modulate), justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
-Breaks 'text' to the lines using rules specified by 'brk_flags' and draws text outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis.
+Breaks 'text' to the lines using rules specified by 'brk_flags' and draws text outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultilineStringOutline].
 */
 func (self Instance) DrawMultilineStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_multiline_string_outline
-	Advanced(self).DrawMultilineStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0)
+	Advanced(self).DrawMultilineStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0, float64(0.0))
 }
 
 /*
-Breaks 'text' to the lines using rules specified by 'brk_flags' and draws text outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis.
+Breaks 'text' to the lines using rules specified by 'brk_flags' and draws text outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultilineStringOutline].
 */
-func (self Expanded) DrawMultilineStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, size int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_multiline_string_outline
-	Advanced(self).DrawMultilineStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), int64(size), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation)
+func (self Expanded) DrawMultilineStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, size int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_multiline_string_outline
+	Advanced(self).DrawMultilineStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), int64(size), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
@@ -445,39 +445,39 @@ func (self Instance) GetCharSize(char int, font_size int) Vector2.XY { //gd:Font
 }
 
 /*
-Draw a single Unicode character 'char' into a canvas item using the font, at a given position, with 'modulate' color. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis.
+Draw a single Unicode character 'char' into a canvas item using the font, at a given position, with 'modulate' color. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 Note: Do not use this function to draw strings character by character, use [Instance.DrawString] or [graphics.gd/classdb/TextLine] instead.
 */
 func (self Instance) DrawChar(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int) Float.X { //gd:Font.draw_char
-	return Float.X(Float.X(Advanced(self).DrawChar(RID.Any(canvas_item), Vector2.XY(pos), int64(char), int64(font_size), Color.RGBA(gd.Color{1, 1, 1, 1}))))
+	return Float.X(Float.X(Advanced(self).DrawChar(RID.Any(canvas_item), Vector2.XY(pos), int64(char), int64(font_size), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))))
 }
 
 /*
-Draw a single Unicode character 'char' into a canvas item using the font, at a given position, with 'modulate' color. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis.
+Draw a single Unicode character 'char' into a canvas item using the font, at a given position, with 'modulate' color. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 Note: Do not use this function to draw strings character by character, use [Instance.DrawString] or [graphics.gd/classdb/TextLine] instead.
 */
-func (self Expanded) DrawChar(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int, modulate Color.RGBA) Float.X { //gd:Font.draw_char
-	return Float.X(Float.X(Advanced(self).DrawChar(RID.Any(canvas_item), Vector2.XY(pos), int64(char), int64(font_size), Color.RGBA(modulate))))
+func (self Expanded) DrawChar(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int, modulate Color.RGBA, oversampling Float.X) Float.X { //gd:Font.draw_char
+	return Float.X(Float.X(Advanced(self).DrawChar(RID.Any(canvas_item), Vector2.XY(pos), int64(char), int64(font_size), Color.RGBA(modulate), float64(oversampling))))
 }
 
 /*
-Draw a single Unicode character 'char' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis.
+Draw a single Unicode character 'char' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 Note: Do not use this function to draw strings character by character, use [Instance.DrawString] or [graphics.gd/classdb/TextLine] instead.
 */
 func (self Instance) DrawCharOutline(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int) Float.X { //gd:Font.draw_char_outline
-	return Float.X(Float.X(Advanced(self).DrawCharOutline(RID.Any(canvas_item), Vector2.XY(pos), int64(char), int64(font_size), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}))))
+	return Float.X(Float.X(Advanced(self).DrawCharOutline(RID.Any(canvas_item), Vector2.XY(pos), int64(char), int64(font_size), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))))
 }
 
 /*
-Draw a single Unicode character 'char' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis.
+Draw a single Unicode character 'char' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 Note: Do not use this function to draw strings character by character, use [Instance.DrawString] or [graphics.gd/classdb/TextLine] instead.
 */
-func (self Expanded) DrawCharOutline(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int, size int, modulate Color.RGBA) Float.X { //gd:Font.draw_char_outline
-	return Float.X(Float.X(Advanced(self).DrawCharOutline(RID.Any(canvas_item), Vector2.XY(pos), int64(char), int64(font_size), int64(size), Color.RGBA(modulate))))
+func (self Expanded) DrawCharOutline(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int, size int, modulate Color.RGBA, oversampling Float.X) Float.X { //gd:Font.draw_char_outline
+	return Float.X(Float.X(Advanced(self).DrawCharOutline(RID.Any(canvas_item), Vector2.XY(pos), int64(char), int64(font_size), int64(size), Color.RGBA(modulate), float64(oversampling))))
 }
 
 /*
@@ -748,7 +748,7 @@ func (self class) GetOtNameStrings() Dictionary.Any { //gd:Font.get_ot_name_stri
 }
 
 /*
-Returns font style flags, see [TextServer.FontStyle].
+Returns font style flags.
 */
 //go:nosplit
 func (self class) GetFontStyle() TextServer.FontStyle { //gd:Font.get_font_style
@@ -778,7 +778,7 @@ func (self class) GetFontStretch() int64 { //gd:Font.get_font_stretch
 }
 
 /*
-Returns the spacing for the given type (see [TextServer.SpacingType]).
+Returns the amount of spacing for the given 'spacing' type.
 */
 //go:nosplit
 func (self class) GetSpacing(spacing TextServer.SpacingType) int64 { //gd:Font.get_spacing
@@ -862,13 +862,13 @@ func (self class) GetMultilineStringSize(text String.Readable, alignment GUI.Hor
 }
 
 /*
-Draw 'text' into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis.
+Draw 'text' into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 See also [graphics.gd/classdb/CanvasItem.Instance.DrawString].
 */
 //go:nosplit
-func (self class) DrawString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_string
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_string, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40), &struct {
+func (self class) DrawString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:Font.draw_string
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_string, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeFloat<<44), &struct {
 		canvas_item         RID.Any
 		pos                 Vector2.XY
 		text                gdextension.String
@@ -879,17 +879,18 @@ func (self class) DrawString(canvas_item RID.Any, pos Vector2.XY, text String.Re
 		justification_flags TextServer.JustificationFlag
 		direction           TextServer.Direction
 		orientation         TextServer.Orientation
-	}{canvas_item, pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, modulate, justification_flags, direction, orientation})
+		oversampling        float64
+	}{canvas_item, pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, modulate, justification_flags, direction, orientation, oversampling})
 }
 
 /*
-Breaks 'text' into lines using rules specified by 'brk_flags' and draws it into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis.
+Breaks 'text' into lines using rules specified by 'brk_flags' and draws it into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultilineString].
 */
 //go:nosplit
-func (self class) DrawMultilineString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_multiline_string
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_multiline_string, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeColor<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeInt<<48), &struct {
+func (self class) DrawMultilineString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:Font.draw_multiline_string
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_multiline_string, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeColor<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeInt<<48)|(gdextension.SizeFloat<<52), &struct {
 		canvas_item         RID.Any
 		pos                 Vector2.XY
 		text                gdextension.String
@@ -902,17 +903,18 @@ func (self class) DrawMultilineString(canvas_item RID.Any, pos Vector2.XY, text 
 		justification_flags TextServer.JustificationFlag
 		direction           TextServer.Direction
 		orientation         TextServer.Orientation
-	}{canvas_item, pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, max_lines, modulate, brk_flags, justification_flags, direction, orientation})
+		oversampling        float64
+	}{canvas_item, pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, max_lines, modulate, brk_flags, justification_flags, direction, orientation, oversampling})
 }
 
 /*
-Draw 'text' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis.
+Draw 'text' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 See also [graphics.gd/classdb/CanvasItem.Instance.DrawStringOutline].
 */
 //go:nosplit
-func (self class) DrawStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_string_outline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_string_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeColor<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44), &struct {
+func (self class) DrawStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:Font.draw_string_outline
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_string_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeColor<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeFloat<<48), &struct {
 		canvas_item         RID.Any
 		pos                 Vector2.XY
 		text                gdextension.String
@@ -924,17 +926,18 @@ func (self class) DrawStringOutline(canvas_item RID.Any, pos Vector2.XY, text St
 		justification_flags TextServer.JustificationFlag
 		direction           TextServer.Direction
 		orientation         TextServer.Orientation
-	}{canvas_item, pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, size, modulate, justification_flags, direction, orientation})
+		oversampling        float64
+	}{canvas_item, pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, size, modulate, justification_flags, direction, orientation, oversampling})
 }
 
 /*
-Breaks 'text' to the lines using rules specified by 'brk_flags' and draws text outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis.
+Breaks 'text' to the lines using rules specified by 'brk_flags' and draws text outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultilineStringOutline].
 */
 //go:nosplit
-func (self class) DrawMultilineStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, size int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) { //gd:Font.draw_multiline_string_outline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_multiline_string_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeColor<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeInt<<48)|(gdextension.SizeInt<<52), &struct {
+func (self class) DrawMultilineStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, size int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:Font.draw_multiline_string_outline
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_multiline_string_outline, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeColor<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeInt<<44)|(gdextension.SizeInt<<48)|(gdextension.SizeInt<<52)|(gdextension.SizeFloat<<56), &struct {
 		canvas_item         RID.Any
 		pos                 Vector2.XY
 		text                gdextension.String
@@ -948,7 +951,8 @@ func (self class) DrawMultilineStringOutline(canvas_item RID.Any, pos Vector2.XY
 		justification_flags TextServer.JustificationFlag
 		direction           TextServer.Direction
 		orientation         TextServer.Orientation
-	}{canvas_item, pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, max_lines, size, modulate, brk_flags, justification_flags, direction, orientation})
+		oversampling        float64
+	}{canvas_item, pos, pointers.Get(gd.InternalString(text)), alignment, width, font_size, max_lines, size, modulate, brk_flags, justification_flags, direction, orientation, oversampling})
 }
 
 /*
@@ -967,38 +971,40 @@ func (self class) GetCharSize(char int64, font_size int64) Vector2.XY { //gd:Fon
 }
 
 /*
-Draw a single Unicode character 'char' into a canvas item using the font, at a given position, with 'modulate' color. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis.
+Draw a single Unicode character 'char' into a canvas item using the font, at a given position, with 'modulate' color. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 Note: Do not use this function to draw strings character by character, use [Instance.DrawString] or [graphics.gd/classdb/TextLine] instead.
 */
 //go:nosplit
-func (self class) DrawChar(canvas_item RID.Any, pos Vector2.XY, char int64, font_size int64, modulate Color.RGBA) float64 { //gd:Font.draw_char
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.draw_char, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeColor<<20), &struct {
-		canvas_item RID.Any
-		pos         Vector2.XY
-		char        int64
-		font_size   int64
-		modulate    Color.RGBA
-	}{canvas_item, pos, char, font_size, modulate})
+func (self class) DrawChar(canvas_item RID.Any, pos Vector2.XY, char int64, font_size int64, modulate Color.RGBA, oversampling float64) float64 { //gd:Font.draw_char
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.draw_char, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeFloat<<24), &struct {
+		canvas_item  RID.Any
+		pos          Vector2.XY
+		char         int64
+		font_size    int64
+		modulate     Color.RGBA
+		oversampling float64
+	}{canvas_item, pos, char, font_size, modulate, oversampling})
 	var ret = r_ret
 	return ret
 }
 
 /*
-Draw a single Unicode character 'char' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis.
+Draw a single Unicode character 'char' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
 Note: Do not use this function to draw strings character by character, use [Instance.DrawString] or [graphics.gd/classdb/TextLine] instead.
 */
 //go:nosplit
-func (self class) DrawCharOutline(canvas_item RID.Any, pos Vector2.XY, char int64, font_size int64, size int64, modulate Color.RGBA) float64 { //gd:Font.draw_char_outline
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.draw_char_outline, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24), &struct {
-		canvas_item RID.Any
-		pos         Vector2.XY
-		char        int64
-		font_size   int64
-		size        int64
-		modulate    Color.RGBA
-	}{canvas_item, pos, char, font_size, size, modulate})
+func (self class) DrawCharOutline(canvas_item RID.Any, pos Vector2.XY, char int64, font_size int64, size int64, modulate Color.RGBA, oversampling float64) float64 { //gd:Font.draw_char_outline
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.draw_char_outline, gdextension.SizeFloat|(gdextension.SizeRID<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeFloat<<28), &struct {
+		canvas_item  RID.Any
+		pos          Vector2.XY
+		char         int64
+		font_size    int64
+		size         int64
+		modulate     Color.RGBA
+		oversampling float64
+	}{canvas_item, pos, char, font_size, size, modulate, oversampling})
 	var ret = r_ret
 	return ret
 }

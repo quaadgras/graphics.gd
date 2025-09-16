@@ -136,7 +136,7 @@ func (self Expanded) ConnectToStream(stream StreamPeer.Instance, common_name str
 }
 
 /*
-Returns the status of the connection. See [Status] for values.
+Returns the status of the connection.
 */
 func (self Instance) GetStatus() Status { //gd:StreamPeerTLS.get_status
 	return Status(Advanced(self).GetStatus())
@@ -235,7 +235,7 @@ func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name Stri
 }
 
 /*
-Returns the status of the connection. See [Status] for values.
+Returns the status of the connection.
 */
 //go:nosplit
 func (self class) GetStatus() Status { //gd:StreamPeerTLS.get_status

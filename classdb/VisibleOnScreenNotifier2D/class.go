@@ -81,9 +81,11 @@ type Instance [1]gdclass.VisibleOnScreenNotifier2D
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_rect     gdextension.MethodForClass `hash:"2046264180"`
-	get_rect     gdextension.MethodForClass `hash:"1639390495"`
-	is_on_screen gdextension.MethodForClass `hash:"36873697"`
+	set_rect        gdextension.MethodForClass `hash:"2046264180"`
+	get_rect        gdextension.MethodForClass `hash:"1639390495"`
+	set_show_rect   gdextension.MethodForClass `hash:"2586408642"`
+	is_showing_rect gdextension.MethodForClass `hash:"36873697"`
+	is_on_screen    gdextension.MethodForClass `hash:"36873697"`
 }
 
 func init() {
@@ -165,6 +167,14 @@ func (self Instance) SetRect(value Rect2.PositionSize) {
 	class(self).SetRect(Rect2.PositionSize(value))
 }
 
+func (self Instance) ShowRect() bool {
+	return bool(class(self).IsShowingRect())
+}
+
+func (self Instance) SetShowRect(value bool) {
+	class(self).SetShowRect(value)
+}
+
 //go:nosplit
 func (self class) SetRect(rect Rect2.PositionSize) { //gd:VisibleOnScreenNotifier2D.set_rect
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rect, 0|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
@@ -173,6 +183,18 @@ func (self class) SetRect(rect Rect2.PositionSize) { //gd:VisibleOnScreenNotifie
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:VisibleOnScreenNotifier2D.get_rect
 	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetShowRect(show_rect bool) { //gd:VisibleOnScreenNotifier2D.set_show_rect
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_rect, 0|(gdextension.SizeBool<<4), &struct{ show_rect bool }{show_rect})
+}
+
+//go:nosplit
+func (self class) IsShowingRect() bool { //gd:VisibleOnScreenNotifier2D.is_showing_rect
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_rect, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

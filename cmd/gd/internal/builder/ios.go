@@ -136,7 +136,7 @@ func (ios IOS) BuildMain(args ...string) error {
 		filepath.Join(".", project.Name, "dummy.cpp"),
 	}
 	if project.IncludesGo {
-		zig_args = append(args, filepath.Join(".", project.Name, "dylibs", "go.xcframework", "ios-arm64", "libgo.a"))
+		zig_args = append(zig_args, filepath.Join(".", project.Name, "dylibs", "go.xcframework", "ios-arm64", "libgo.a"))
 	}
 	zig_args = append(zig_args,
 		"-o", filepath.Join(apple_name+".app", apple_name), "-F", filepath.Join("..", "sdk", "Frameworks"), "-L"+filepath.Join("..", "sdk", "lib"),

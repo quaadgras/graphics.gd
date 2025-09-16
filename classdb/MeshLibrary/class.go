@@ -159,7 +159,7 @@ func (self Instance) SetItemMeshTransform(id int, mesh_transform Transform3D.Bas
 }
 
 /*
-Sets the item's shadow casting mode. See [RenderingServer.ShadowCastingSetting] for possible values.
+Sets the item's shadow casting mode to 'shadow_casting_setting'.
 */
 func (self Instance) SetItemMeshCastShadow(id int, shadow_casting_setting RenderingServer.ShadowCastingSetting) { //gd:MeshLibrary.set_item_mesh_cast_shadow
 	Advanced(self).SetItemMeshCastShadow(int64(id), shadow_casting_setting)
@@ -224,7 +224,7 @@ func (self Instance) GetItemMeshTransform(id int) Transform3D.BasisOrigin { //gd
 }
 
 /*
-Returns the item's shadow casting mode. See [RenderingServer.ShadowCastingSetting] for possible values.
+Returns the item's shadow casting mode.
 */
 func (self Instance) GetItemMeshCastShadow(id int) RenderingServer.ShadowCastingSetting { //gd:MeshLibrary.get_item_mesh_cast_shadow
 	return RenderingServer.ShadowCastingSetting(Advanced(self).GetItemMeshCastShadow(int64(id)))
@@ -391,7 +391,7 @@ func (self class) SetItemMeshTransform(id int64, mesh_transform Transform3D.Basi
 }
 
 /*
-Sets the item's shadow casting mode. See [RenderingServer.ShadowCastingSetting] for possible values.
+Sets the item's shadow casting mode to 'shadow_casting_setting'.
 */
 //go:nosplit
 func (self class) SetItemMeshCastShadow(id int64, shadow_casting_setting RenderingServer.ShadowCastingSetting) { //gd:MeshLibrary.set_item_mesh_cast_shadow
@@ -489,7 +489,7 @@ func (self class) GetItemMeshTransform(id int64) Transform3D.BasisOrigin { //gd:
 }
 
 /*
-Returns the item's shadow casting mode. See [RenderingServer.ShadowCastingSetting] for possible values.
+Returns the item's shadow casting mode.
 */
 //go:nosplit
 func (self class) GetItemMeshCastShadow(id int64) RenderingServer.ShadowCastingSetting { //gd:MeshLibrary.get_item_mesh_cast_shadow

@@ -371,6 +371,30 @@ func (self class) GetTravelPath() Array.Contains[String.Name] { //gd:AnimationNo
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
+func (self Instance) OnStateStarted(cb func(state string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("state_started"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) StateStarted() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`StateStarted`))))
+}
+
+func (self Instance) OnStateFinished(cb func(state string), flags ...Signal.Flags) {
+	var flags_together Signal.Flags
+	for _, flag := range flags {
+		flags_together |= flag
+	}
+	self[0].AsObject()[0].Connect(gd.NewStringName("state_finished"), gd.NewCallable(cb), int64(flags_together))
+}
+
+func (self class) StateFinished() Signal.Any {
+	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`StateFinished`))))
+}
+
 func (self class) AsAnimationNodeStateMachinePlayback() Advanced {
 	return Advanced{pointers.AsA[gdclass.AnimationNodeStateMachinePlayback](self[0])}
 }

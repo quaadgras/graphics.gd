@@ -85,12 +85,14 @@ type Instance [1]gdclass.ColorPickerButton
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	set_pick_color   gdextension.MethodForClass `hash:"2920490490"`
-	get_pick_color   gdextension.MethodForClass `hash:"3444240500"`
-	get_picker       gdextension.MethodForClass `hash:"331835996"`
-	get_popup        gdextension.MethodForClass `hash:"1322440207"`
-	set_edit_alpha   gdextension.MethodForClass `hash:"2586408642"`
-	is_editing_alpha gdextension.MethodForClass `hash:"36873697"`
+	set_pick_color       gdextension.MethodForClass `hash:"2920490490"`
+	get_pick_color       gdextension.MethodForClass `hash:"3444240500"`
+	get_picker           gdextension.MethodForClass `hash:"331835996"`
+	get_popup            gdextension.MethodForClass `hash:"1322440207"`
+	set_edit_alpha       gdextension.MethodForClass `hash:"2586408642"`
+	is_editing_alpha     gdextension.MethodForClass `hash:"36873697"`
+	set_edit_intensity   gdextension.MethodForClass `hash:"2586408642"`
+	is_editing_intensity gdextension.MethodForClass `hash:"36873697"`
 }
 
 func init() {
@@ -189,6 +191,14 @@ func (self Instance) SetEditAlpha(value bool) {
 	class(self).SetEditAlpha(value)
 }
 
+func (self Instance) EditIntensity() bool {
+	return bool(class(self).IsEditingIntensity())
+}
+
+func (self Instance) SetEditIntensity(value bool) {
+	class(self).SetEditIntensity(value)
+}
+
 //go:nosplit
 func (self class) SetPickColor(color Color.RGBA) { //gd:ColorPickerButton.set_pick_color
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pick_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
@@ -233,6 +243,18 @@ func (self class) SetEditAlpha(show bool) { //gd:ColorPickerButton.set_edit_alph
 //go:nosplit
 func (self class) IsEditingAlpha() bool { //gd:ColorPickerButton.is_editing_alpha
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_alpha, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetEditIntensity(show bool) { //gd:ColorPickerButton.set_edit_intensity
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edit_intensity, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
+}
+
+//go:nosplit
+func (self class) IsEditingIntensity() bool { //gd:ColorPickerButton.is_editing_intensity
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_intensity, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

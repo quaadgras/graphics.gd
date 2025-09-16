@@ -118,7 +118,7 @@ Creates a new [graphics.gd/classdb/AudioStreamMP3] instance from the given buffe
 */
 func LoadFromBuffer(stream_data []byte) Instance { //gd:AudioStreamMP3.load_from_buffer
 	self := Instance{}
-	return Instance(Advanced(self).LoadFromBuffer(Packed.Bytes(Packed.New(stream_data...))))
+	return Instance(Advanced(self).LoadFromBuffer(Packed.BytesFrom(stream_data...)))
 }
 
 /*
@@ -177,7 +177,7 @@ func (self Instance) Data() []byte {
 }
 
 func (self Instance) SetData(value []byte) {
-	class(self).SetData(Packed.Bytes(Packed.New(value...)))
+	class(self).SetData(Packed.BytesFrom(value...))
 }
 
 func (self Instance) Bpm() Float.X {
@@ -225,7 +225,7 @@ Creates a new [graphics.gd/classdb/AudioStreamMP3] instance from the given buffe
 */
 //go:nosplit
 func (self class) LoadFromBuffer(stream_data Packed.Bytes) [1]gdclass.AudioStreamMP3 { //gd:AudioStreamMP3.load_from_buffer
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4), &struct{ stream_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data)))})
+	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4), &struct{ stream_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data.Array)))})
 	var ret = [1]gdclass.AudioStreamMP3{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamMP3](r_ret)}
 	return ret
 }
@@ -242,13 +242,13 @@ func (self class) LoadFromFile(path String.Readable) [1]gdclass.AudioStreamMP3 {
 
 //go:nosplit
 func (self class) SetData(data Packed.Bytes) { //gd:AudioStreamMP3.set_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
 
 //go:nosplit
 func (self class) GetData() Packed.Bytes { //gd:AudioStreamMP3.get_data
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 

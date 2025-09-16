@@ -104,6 +104,8 @@ type Interface interface {
 	GetName() string
 	// Virtual method which can be overridden to return the supported language names.
 	GetSupportedLanguages() []string
+	// Virtual method which creates a new instance of the syntax highlighter.
+	Create() Instance
 }
 
 // Implementation implements [Interface] with empty methods.
@@ -113,6 +115,7 @@ type implementation struct{}
 
 func (self implementation) GetName() (_ string)                 { return }
 func (self implementation) GetSupportedLanguages() (_ []string) { return }
+func (self implementation) Create() (_ Instance)                { return }
 
 /*
 Virtual method which can be overridden to return the syntax highlighter name.
@@ -138,6 +141,22 @@ func (Instance) _get_supported_languages(impl func(ptr gdclass.Receiver) []strin
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
 		ptr, ok := pointers.End(gd.InternalPackedStrings(Packed.MakeStrings(ret...)))
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
+/*
+Virtual method which creates a new instance of the syntax highlighter.
+*/
+func (Instance) _create(impl func(ptr gdclass.Receiver) Instance) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		ptr, ok := pointers.End(ret[0])
 
 		if !ok {
 			return
@@ -221,6 +240,22 @@ func (class) _get_supported_languages(impl func(ptr gdclass.Receiver) Packed.Str
 	}
 }
 
+/*
+Virtual method which creates a new instance of the syntax highlighter.
+*/
+func (class) _create(impl func(ptr gdclass.Receiver) [1]gdclass.EditorSyntaxHighlighter) (cb gd.ExtensionClassCallVirtualFunc) {
+	return func(class any, p_args, p_back gdextension.Pointer) {
+		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
+		ret := impl(self)
+		ptr, ok := pointers.End(ret[0])
+
+		if !ok {
+			return
+		}
+		gd.UnsafeSet(p_back, ptr)
+	}
+}
+
 func (self class) AsEditorSyntaxHighlighter() Advanced {
 	return Advanced{pointers.AsA[gdclass.EditorSyntaxHighlighter](self[0])}
 }
@@ -260,6 +295,8 @@ func (self class) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_name)
 	case "_get_supported_languages":
 		return reflect.ValueOf(self._get_supported_languages)
+	case "_create":
+		return reflect.ValueOf(self._create)
 	default:
 		return gd.VirtualByName(SyntaxHighlighter.Advanced(self.AsSyntaxHighlighter()), name)
 	}
@@ -271,6 +308,8 @@ func (self Instance) Virtual(name string) reflect.Value {
 		return reflect.ValueOf(self._get_name)
 	case "_get_supported_languages":
 		return reflect.ValueOf(self._get_supported_languages)
+	case "_create":
+		return reflect.ValueOf(self._create)
 	default:
 		return gd.VirtualByName(SyntaxHighlighter.Instance(self.AsSyntaxHighlighter()), name)
 	}

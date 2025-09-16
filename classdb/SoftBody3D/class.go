@@ -5,7 +5,7 @@ A deformable 3D physics mesh. Used to create elastic or deformable objects such 
 
 Additionally, [graphics.gd/classdb/SoftBody3D] is subject to wind forces defined in [graphics.gd/classdb/Area3D] (see [graphics.gd/classdb/Area3D.Instance.WindSourcePath], [graphics.gd/classdb/Area3D.Instance.WindForceMagnitude], and [graphics.gd/classdb/Area3D.Instance.WindAttenuationFactor]).
 
-Note: There are many known bugs in [graphics.gd/classdb/SoftBody3D]. Therefore, it's not recommended to use them for things that can affect gameplay (such as trampolines).
+Note: It's recommended to use Jolt Physics when using [graphics.gd/classdb/SoftBody3D] instead of the default GodotPhysics3D, as Jolt Physics' soft body implementation is faster and more reliable. You can switch the physics engine using the [graphics.gd/classdb/ProjectSettings] "physics/3d/physics_engine" project setting.
 */
 package SoftBody3D
 
@@ -106,6 +106,8 @@ var methods struct {
 	get_total_mass                  gdextension.MethodForClass `hash:"191475506"`
 	set_linear_stiffness            gdextension.MethodForClass `hash:"373806689"`
 	get_linear_stiffness            gdextension.MethodForClass `hash:"191475506"`
+	set_shrinking_factor            gdextension.MethodForClass `hash:"373806689"`
+	get_shrinking_factor            gdextension.MethodForClass `hash:"191475506"`
 	set_pressure_coefficient        gdextension.MethodForClass `hash:"373806689"`
 	get_pressure_coefficient        gdextension.MethodForClass `hash:"191475506"`
 	set_damping_coefficient         gdextension.MethodForClass `hash:"373806689"`
@@ -113,6 +115,10 @@ var methods struct {
 	set_drag_coefficient            gdextension.MethodForClass `hash:"373806689"`
 	get_drag_coefficient            gdextension.MethodForClass `hash:"191475506"`
 	get_point_transform             gdextension.MethodForClass `hash:"871989493"`
+	apply_impulse                   gdextension.MethodForClass `hash:"1530502735"`
+	apply_force                     gdextension.MethodForClass `hash:"1530502735"`
+	apply_central_impulse           gdextension.MethodForClass `hash:"3460891852"`
+	apply_central_force             gdextension.MethodForClass `hash:"3460891852"`
 	set_point_pinned                gdextension.MethodForClass `hash:"528784402"`
 	is_point_pinned                 gdextension.MethodForClass `hash:"1116898809"`
 	set_ray_pickable                gdextension.MethodForClass `hash:"2586408642"`
@@ -202,6 +208,38 @@ Returns local translation of a vertex in the surface array.
 */
 func (self Instance) GetPointTransform(point_index int) Vector3.XYZ { //gd:SoftBody3D.get_point_transform
 	return Vector3.XYZ(Advanced(self).GetPointTransform(int64(point_index)))
+}
+
+/*
+Applies an impulse to a point.
+
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+*/
+func (self Instance) ApplyImpulse(point_index int, impulse Vector3.XYZ) { //gd:SoftBody3D.apply_impulse
+	Advanced(self).ApplyImpulse(int64(point_index), Vector3.XYZ(impulse))
+}
+
+/*
+Applies a force to a point. A force is time dependent and meant to be applied every physics update.
+*/
+func (self Instance) ApplyForce(point_index int, force Vector3.XYZ) { //gd:SoftBody3D.apply_force
+	Advanced(self).ApplyForce(int64(point_index), Vector3.XYZ(force))
+}
+
+/*
+Distributes and applies an impulse to all points.
+
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+*/
+func (self Instance) ApplyCentralImpulse(impulse Vector3.XYZ) { //gd:SoftBody3D.apply_central_impulse
+	Advanced(self).ApplyCentralImpulse(Vector3.XYZ(impulse))
+}
+
+/*
+Distributes and applies a force to all points. A force is time dependent and meant to be applied every physics update.
+*/
+func (self Instance) ApplyCentralForce(force Vector3.XYZ) { //gd:SoftBody3D.apply_central_force
+	Advanced(self).ApplyCentralForce(Vector3.XYZ(force))
 }
 
 /*
@@ -313,6 +351,14 @@ func (self Instance) LinearStiffness() Float.X {
 
 func (self Instance) SetLinearStiffness(value Float.X) {
 	class(self).SetLinearStiffness(float64(value))
+}
+
+func (self Instance) ShrinkingFactor() Float.X {
+	return Float.X(Float.X(class(self).GetShrinkingFactor()))
+}
+
+func (self Instance) SetShrinkingFactor(value Float.X) {
+	class(self).SetShrinkingFactor(float64(value))
 }
 
 func (self Instance) PressureCoefficient() Float.X {
@@ -518,6 +564,18 @@ func (self class) GetLinearStiffness() float64 { //gd:SoftBody3D.get_linear_stif
 }
 
 //go:nosplit
+func (self class) SetShrinkingFactor(shrinking_factor float64) { //gd:SoftBody3D.set_shrinking_factor
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shrinking_factor, 0|(gdextension.SizeFloat<<4), &struct{ shrinking_factor float64 }{shrinking_factor})
+}
+
+//go:nosplit
+func (self class) GetShrinkingFactor() float64 { //gd:SoftBody3D.get_shrinking_factor
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_shrinking_factor, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
 func (self class) SetPressureCoefficient(pressure_coefficient float64) { //gd:SoftBody3D.set_pressure_coefficient
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressure_coefficient, 0|(gdextension.SizeFloat<<4), &struct{ pressure_coefficient float64 }{pressure_coefficient})
 }
@@ -561,6 +619,48 @@ func (self class) GetPointTransform(point_index int64) Vector3.XYZ { //gd:SoftBo
 	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_point_transform, gdextension.SizeVector3|(gdextension.SizeInt<<4), &struct{ point_index int64 }{point_index})
 	var ret = r_ret
 	return ret
+}
+
+/*
+Applies an impulse to a point.
+
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+*/
+//go:nosplit
+func (self class) ApplyImpulse(point_index int64, impulse Vector3.XYZ) { //gd:SoftBody3D.apply_impulse
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_impulse, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
+		point_index int64
+		impulse     Vector3.XYZ
+	}{point_index, impulse})
+}
+
+/*
+Applies a force to a point. A force is time dependent and meant to be applied every physics update.
+*/
+//go:nosplit
+func (self class) ApplyForce(point_index int64, force Vector3.XYZ) { //gd:SoftBody3D.apply_force
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_force, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
+		point_index int64
+		force       Vector3.XYZ
+	}{point_index, force})
+}
+
+/*
+Distributes and applies an impulse to all points.
+
+An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
+*/
+//go:nosplit
+func (self class) ApplyCentralImpulse(impulse Vector3.XYZ) { //gd:SoftBody3D.apply_central_impulse
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_central_impulse, 0|(gdextension.SizeVector3<<4), &struct{ impulse Vector3.XYZ }{impulse})
+}
+
+/*
+Distributes and applies a force to all points. A force is time dependent and meant to be applied every physics update.
+*/
+//go:nosplit
+func (self class) ApplyCentralForce(force Vector3.XYZ) { //gd:SoftBody3D.apply_central_force
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_central_force, 0|(gdextension.SizeVector3<<4), &struct{ force Vector3.XYZ }{force})
 }
 
 /*

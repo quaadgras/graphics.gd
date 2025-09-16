@@ -252,19 +252,19 @@ const (
 	//
 	// for (int i = 0; i < 3; i++) {
 	//
-	//     float base = a[i];
+	// float base = a[i];
 	//
-	//     float blend = b[i];
+	// float blend = b[i];
 	//
-	//     if (base < 0.5) {
+	// if (base < 0.5) {
 	//
-	//         result[i] = 2.0 * base * blend;
+	// result[i] = 2.0 * base * blend;
 	//
-	//     } else {
+	// } else {
 	//
-	//         result[i] = 1.0 - 2.0 * (1.0 - blend) * (1.0 - base);
+	// result[i] = 1.0 - 2.0 * (1.0 - blend) * (1.0 - base);
 	//
-	//     }
+	// }
 	//
 	// }
 	//
@@ -292,19 +292,19 @@ const (
 	//
 	// for (int i = 0; i < 3; i++) {
 	//
-	//     float base = a[i];
+	// float base = a[i];
 	//
-	//     float blend = b[i];
+	// float blend = b[i];
 	//
-	//     if (base < 0.5) {
+	// if (base < 0.5) {
 	//
-	//         result[i] = base * (blend + 0.5);
+	// result[i] = base * (blend + 0.5);
 	//
-	//     } else {
+	// } else {
 	//
-	//         result[i] = 1.0 - (1.0 - base) * (1.0 - (blend - 0.5));
+	// result[i] = 1.0 - (1.0 - base) * (1.0 - (blend - 0.5));
 	//
-	//     }
+	// }
 	//
 	// }
 	//
@@ -316,19 +316,19 @@ const (
 	//
 	// for (int i = 0; i < 3; i++) {
 	//
-	//     float base = a[i];
+	// float base = a[i];
 	//
-	//     float blend = b[i];
+	// float blend = b[i];
 	//
-	//     if (base < 0.5) {
+	// if (base < 0.5) {
 	//
-	//         result[i] = base * (2.0 * blend);
+	// result[i] = base * (2.0 * blend);
 	//
-	//     } else {
+	// } else {
 	//
-	//         result[i] = 1.0 - (1.0 - base) * (1.0 - 2.0 * (blend - 0.5));
+	// result[i] = 1.0 - (1.0 - base) * (1.0 - 2.0 * (blend - 0.5));
 	//
-	//     }
+	// }
 	//
 	// }
 	//

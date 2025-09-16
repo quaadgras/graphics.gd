@@ -24,6 +24,7 @@ import "graphics.gd/classdb/Node3D"
 import "graphics.gd/classdb/SubViewport"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
+import "graphics.gd/variant/Color"
 import "graphics.gd/variant/Dictionary"
 import "graphics.gd/variant/Error"
 import "graphics.gd/variant/Float"
@@ -96,6 +97,28 @@ var methods struct {
 	get_alpha_blend          gdextension.MethodForClass `hash:"36873697"`
 	get_android_surface      gdextension.MethodForClass `hash:"3277089691"`
 	is_natively_supported    gdextension.MethodForClass `hash:"36873697"`
+	set_min_filter           gdextension.MethodForClass `hash:"3653437593"`
+	get_min_filter           gdextension.MethodForClass `hash:"845677307"`
+	set_mag_filter           gdextension.MethodForClass `hash:"3653437593"`
+	get_mag_filter           gdextension.MethodForClass `hash:"845677307"`
+	set_mipmap_mode          gdextension.MethodForClass `hash:"3271133183"`
+	get_mipmap_mode          gdextension.MethodForClass `hash:"3962697095"`
+	set_horizontal_wrap      gdextension.MethodForClass `hash:"15634990"`
+	get_horizontal_wrap      gdextension.MethodForClass `hash:"2798816834"`
+	set_vertical_wrap        gdextension.MethodForClass `hash:"15634990"`
+	get_vertical_wrap        gdextension.MethodForClass `hash:"2798816834"`
+	set_red_swizzle          gdextension.MethodForClass `hash:"741598951"`
+	get_red_swizzle          gdextension.MethodForClass `hash:"2334776767"`
+	set_green_swizzle        gdextension.MethodForClass `hash:"741598951"`
+	get_green_swizzle        gdextension.MethodForClass `hash:"2334776767"`
+	set_blue_swizzle         gdextension.MethodForClass `hash:"741598951"`
+	get_blue_swizzle         gdextension.MethodForClass `hash:"2334776767"`
+	set_alpha_swizzle        gdextension.MethodForClass `hash:"741598951"`
+	get_alpha_swizzle        gdextension.MethodForClass `hash:"2334776767"`
+	set_max_anisotropy       gdextension.MethodForClass `hash:"373806689"`
+	get_max_anisotropy       gdextension.MethodForClass `hash:"1740695150"`
+	set_border_color         gdextension.MethodForClass `hash:"2920490490"`
+	get_border_color         gdextension.MethodForClass `hash:"3444240500"`
 	intersects_ray           gdextension.MethodForClass `hash:"1091262597"`
 }
 
@@ -236,6 +259,94 @@ func (self Instance) SetEnableHolePunch(value bool) {
 	class(self).SetEnableHolePunch(value)
 }
 
+func (self Instance) SwapchainStateMinFilter() Filter {
+	return Filter(class(self).GetMinFilter())
+}
+
+func (self Instance) SetSwapchainStateMinFilter(value Filter) {
+	class(self).SetMinFilter(value)
+}
+
+func (self Instance) SwapchainStateMagFilter() Filter {
+	return Filter(class(self).GetMagFilter())
+}
+
+func (self Instance) SetSwapchainStateMagFilter(value Filter) {
+	class(self).SetMagFilter(value)
+}
+
+func (self Instance) SwapchainStateMipmapMode() MipmapMode {
+	return MipmapMode(class(self).GetMipmapMode())
+}
+
+func (self Instance) SetSwapchainStateMipmapMode(value MipmapMode) {
+	class(self).SetMipmapMode(value)
+}
+
+func (self Instance) SwapchainStateHorizontalWrap() Wrap {
+	return Wrap(class(self).GetHorizontalWrap())
+}
+
+func (self Instance) SetSwapchainStateHorizontalWrap(value Wrap) {
+	class(self).SetHorizontalWrap(value)
+}
+
+func (self Instance) SwapchainStateVerticalWrap() Wrap {
+	return Wrap(class(self).GetVerticalWrap())
+}
+
+func (self Instance) SetSwapchainStateVerticalWrap(value Wrap) {
+	class(self).SetVerticalWrap(value)
+}
+
+func (self Instance) SwapchainStateRedSwizzle() Swizzle {
+	return Swizzle(class(self).GetRedSwizzle())
+}
+
+func (self Instance) SetSwapchainStateRedSwizzle(value Swizzle) {
+	class(self).SetRedSwizzle(value)
+}
+
+func (self Instance) SwapchainStateGreenSwizzle() Swizzle {
+	return Swizzle(class(self).GetGreenSwizzle())
+}
+
+func (self Instance) SetSwapchainStateGreenSwizzle(value Swizzle) {
+	class(self).SetGreenSwizzle(value)
+}
+
+func (self Instance) SwapchainStateBlueSwizzle() Swizzle {
+	return Swizzle(class(self).GetBlueSwizzle())
+}
+
+func (self Instance) SetSwapchainStateBlueSwizzle(value Swizzle) {
+	class(self).SetBlueSwizzle(value)
+}
+
+func (self Instance) SwapchainStateAlphaSwizzle() Swizzle {
+	return Swizzle(class(self).GetAlphaSwizzle())
+}
+
+func (self Instance) SetSwapchainStateAlphaSwizzle(value Swizzle) {
+	class(self).SetAlphaSwizzle(value)
+}
+
+func (self Instance) SwapchainStateMaxAnisotropy() Float.X {
+	return Float.X(Float.X(class(self).GetMaxAnisotropy()))
+}
+
+func (self Instance) SetSwapchainStateMaxAnisotropy(value Float.X) {
+	class(self).SetMaxAnisotropy(float64(value))
+}
+
+func (self Instance) SwapchainStateBorderColor() Color.RGBA {
+	return Color.RGBA(class(self).GetBorderColor())
+}
+
+func (self Instance) SetSwapchainStateBorderColor(value Color.RGBA) {
+	class(self).SetBorderColor(Color.RGBA(value))
+}
+
 //go:nosplit
 func (self class) SetLayerViewport(viewport [1]gdclass.SubViewport) { //gd:OpenXRCompositionLayer.set_layer_viewport
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_viewport, 0|(gdextension.SizeObject<<4), &struct{ viewport gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(viewport[0].AsObject()[0]))})
@@ -332,6 +443,138 @@ func (self class) IsNativelySupported() bool { //gd:OpenXRCompositionLayer.is_na
 	return ret
 }
 
+//go:nosplit
+func (self class) SetMinFilter(mode Filter) { //gd:OpenXRCompositionLayer.set_min_filter
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_filter, 0|(gdextension.SizeInt<<4), &struct{ mode Filter }{mode})
+}
+
+//go:nosplit
+func (self class) GetMinFilter() Filter { //gd:OpenXRCompositionLayer.get_min_filter
+	var r_ret = gdextension.Call[Filter](gd.ObjectChecked(self.AsObject()), methods.get_min_filter, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetMagFilter(mode Filter) { //gd:OpenXRCompositionLayer.set_mag_filter
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mag_filter, 0|(gdextension.SizeInt<<4), &struct{ mode Filter }{mode})
+}
+
+//go:nosplit
+func (self class) GetMagFilter() Filter { //gd:OpenXRCompositionLayer.get_mag_filter
+	var r_ret = gdextension.Call[Filter](gd.ObjectChecked(self.AsObject()), methods.get_mag_filter, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetMipmapMode(mode MipmapMode) { //gd:OpenXRCompositionLayer.set_mipmap_mode
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mipmap_mode, 0|(gdextension.SizeInt<<4), &struct{ mode MipmapMode }{mode})
+}
+
+//go:nosplit
+func (self class) GetMipmapMode() MipmapMode { //gd:OpenXRCompositionLayer.get_mipmap_mode
+	var r_ret = gdextension.Call[MipmapMode](gd.ObjectChecked(self.AsObject()), methods.get_mipmap_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetHorizontalWrap(mode Wrap) { //gd:OpenXRCompositionLayer.set_horizontal_wrap
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_wrap, 0|(gdextension.SizeInt<<4), &struct{ mode Wrap }{mode})
+}
+
+//go:nosplit
+func (self class) GetHorizontalWrap() Wrap { //gd:OpenXRCompositionLayer.get_horizontal_wrap
+	var r_ret = gdextension.Call[Wrap](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_wrap, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetVerticalWrap(mode Wrap) { //gd:OpenXRCompositionLayer.set_vertical_wrap
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical_wrap, 0|(gdextension.SizeInt<<4), &struct{ mode Wrap }{mode})
+}
+
+//go:nosplit
+func (self class) GetVerticalWrap() Wrap { //gd:OpenXRCompositionLayer.get_vertical_wrap
+	var r_ret = gdextension.Call[Wrap](gd.ObjectChecked(self.AsObject()), methods.get_vertical_wrap, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetRedSwizzle(mode Swizzle) { //gd:OpenXRCompositionLayer.set_red_swizzle
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_red_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
+}
+
+//go:nosplit
+func (self class) GetRedSwizzle() Swizzle { //gd:OpenXRCompositionLayer.get_red_swizzle
+	var r_ret = gdextension.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_red_swizzle, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetGreenSwizzle(mode Swizzle) { //gd:OpenXRCompositionLayer.set_green_swizzle
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_green_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
+}
+
+//go:nosplit
+func (self class) GetGreenSwizzle() Swizzle { //gd:OpenXRCompositionLayer.get_green_swizzle
+	var r_ret = gdextension.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_green_swizzle, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetBlueSwizzle(mode Swizzle) { //gd:OpenXRCompositionLayer.set_blue_swizzle
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blue_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
+}
+
+//go:nosplit
+func (self class) GetBlueSwizzle() Swizzle { //gd:OpenXRCompositionLayer.get_blue_swizzle
+	var r_ret = gdextension.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_blue_swizzle, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetAlphaSwizzle(mode Swizzle) { //gd:OpenXRCompositionLayer.set_alpha_swizzle
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
+}
+
+//go:nosplit
+func (self class) GetAlphaSwizzle() Swizzle { //gd:OpenXRCompositionLayer.get_alpha_swizzle
+	var r_ret = gdextension.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_alpha_swizzle, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetMaxAnisotropy(value float64) { //gd:OpenXRCompositionLayer.set_max_anisotropy
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_anisotropy, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
+}
+
+//go:nosplit
+func (self class) GetMaxAnisotropy() float64 { //gd:OpenXRCompositionLayer.get_max_anisotropy
+	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_anisotropy, gdextension.SizeFloat, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetBorderColor(color Color.RGBA) { //gd:OpenXRCompositionLayer.set_border_color
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_border_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+}
+
+//go:nosplit
+func (self class) GetBorderColor() Color.RGBA { //gd:OpenXRCompositionLayer.get_border_color
+	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_border_color, gdextension.SizeColor, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
 /*
 Returns UV coordinates where the given ray intersects with the composition layer. 'origin' and 'direction' must be in global space.
 
@@ -384,3 +627,61 @@ func (self Instance) Virtual(name string) reflect.Value {
 func init() {
 	gdclass.Register("OpenXRCompositionLayer", func(ptr gd.Object) any { return Instance{pointers.AsA[gdclass.OpenXRCompositionLayer](ptr)} })
 }
+
+type Filter int //gd:OpenXRCompositionLayer.Filter
+
+const (
+	// Perform nearest-neighbor filtering when sampling the texture.
+	FilterNearest Filter = 0
+	// Perform linear filtering when sampling the texture.
+	FilterLinear Filter = 1
+	// Perform cubic filtering when sampling the texture.
+	FilterCubic Filter = 2
+)
+
+type MipmapMode int //gd:OpenXRCompositionLayer.MipmapMode
+
+const (
+	// Disable mipmapping.
+	//
+	// Note: Mipmapping can only be disabled in the Compatibility renderer.
+	MipmapModeDisabled MipmapMode = 0
+	// Use the mipmap of the nearest resolution.
+	MipmapModeNearest MipmapMode = 1
+	// Use linear interpolation of the two mipmaps of the nearest resolution.
+	MipmapModeLinear MipmapMode = 2
+)
+
+type Wrap int //gd:OpenXRCompositionLayer.Wrap
+
+const (
+	// Clamp the texture to its specified border color.
+	WrapClampToBorder Wrap = 0
+	// Clamp the texture to its edge color.
+	WrapClampToEdge Wrap = 1
+	// Repeat the texture infinitely.
+	WrapRepeat Wrap = 2
+	// Repeat the texture infinitely, mirroring it on each repeat.
+	WrapMirroredRepeat Wrap = 3
+	// Mirror the texture once and then clamp the texture to its edge color.
+	//
+	// Note: This wrap mode is not available in the Compatibility renderer.
+	WrapMirrorClampToEdge Wrap = 4
+)
+
+type Swizzle int //gd:OpenXRCompositionLayer.Swizzle
+
+const (
+	// Maps a color channel to the value of the red channel.
+	SwizzleRed Swizzle = 0
+	// Maps a color channel to the value of the green channel.
+	SwizzleGreen Swizzle = 1
+	// Maps a color channel to the value of the blue channel.
+	SwizzleBlue Swizzle = 2
+	// Maps a color channel to the value of the alpha channel.
+	SwizzleAlpha Swizzle = 3
+	// Maps a color channel to the value of zero.
+	SwizzleZero Swizzle = 4
+	// Maps a color channel to the value of one.
+	SwizzleOne Swizzle = 5
+)

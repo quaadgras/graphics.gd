@@ -112,6 +112,8 @@ var methods struct {
 	get_text_overrun_behavior   gdextension.MethodForClass `hash:"3779142101"`
 	set_autowrap_mode           gdextension.MethodForClass `hash:"3289138044"`
 	get_autowrap_mode           gdextension.MethodForClass `hash:"1549071663"`
+	set_autowrap_trim_flags     gdextension.MethodForClass `hash:"2809697122"`
+	get_autowrap_trim_flags     gdextension.MethodForClass `hash:"2340632602"`
 	set_text_direction          gdextension.MethodForClass `hash:"119160795"`
 	get_text_direction          gdextension.MethodForClass `hash:"797257663"`
 	set_language                gdextension.MethodForClass `hash:"83702148"`
@@ -242,6 +244,14 @@ func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
 	class(self).SetAutowrapMode(value)
 }
 
+func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag {
+	return TextServer.LineBreakFlag(class(self).GetAutowrapTrimFlags())
+}
+
+func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) {
+	class(self).SetAutowrapTrimFlags(value)
+}
+
 func (self Instance) ClipText() bool {
 	return bool(class(self).GetClipText())
 }
@@ -322,6 +332,18 @@ func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:
 //go:nosplit
 func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:Button.get_autowrap_mode
 	var r_ret = gdextension.Call[TextServer.AutowrapMode](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_mode, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetAutowrapTrimFlags(autowrap_trim_flags TextServer.LineBreakFlag) { //gd:Button.set_autowrap_trim_flags
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_trim_flags, 0|(gdextension.SizeInt<<4), &struct{ autowrap_trim_flags TextServer.LineBreakFlag }{autowrap_trim_flags})
+}
+
+//go:nosplit
+func (self class) GetAutowrapTrimFlags() TextServer.LineBreakFlag { //gd:Button.get_autowrap_trim_flags
+	var r_ret = gdextension.Call[TextServer.LineBreakFlag](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_trim_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

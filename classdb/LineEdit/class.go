@@ -11,6 +11,14 @@
 
 - Check [Instance.Edit], [Instance.Unedit], [Instance.IsEditing], and [Instance.OnEditingToggled] for more information.
 
+While entering text, it is possible to insert special characters using Unicode, OEM or Windows alt codes:
+
+- To enter Unicode codepoints, hold Alt and type the codepoint on the numpad. For example, to enter the character á (U+00E1), hold Alt and type +E1 on the numpad (the leading zeroes can be omitted).
+
+- To enter OEM codepoints, hold Alt and type the code on the numpad. For example, to enter the character á (OEM 160), hold Alt and type 160 on the numpad.
+
+- To enter Windows codepoints, hold Alt and type the code on the numpad. For example, to enter the character á (Windows 0225), hold Alt and type 0, 2, 2, 5 on the numpad. The leading zero here must not be omitted, as this is how Windows codepoints are distinguished from OEM codepoints.
+
 Important:
 
 - Focusing the [graphics.gd/classdb/LineEdit] with ui_focus_next (by default Tab) or ui_focus_prev (by default Shift + Tab) or [graphics.gd/classdb/Control.Instance.GrabFocus] still enters edit mode (for compatibility).
@@ -138,93 +146,99 @@ type Instance [1]gdclass.LineEdit
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	has_ime_text                              gdextension.MethodForClass `hash:"36873697"`
-	cancel_ime                                gdextension.MethodForClass `hash:"3218959716"`
-	apply_ime                                 gdextension.MethodForClass `hash:"3218959716"`
-	set_horizontal_alignment                  gdextension.MethodForClass `hash:"2312603777"`
-	get_horizontal_alignment                  gdextension.MethodForClass `hash:"341400642"`
-	edit                                      gdextension.MethodForClass `hash:"3218959716"`
-	unedit                                    gdextension.MethodForClass `hash:"3218959716"`
-	is_editing                                gdextension.MethodForClass `hash:"36873697"`
-	set_keep_editing_on_text_submit           gdextension.MethodForClass `hash:"2586408642"`
-	is_editing_kept_on_text_submit            gdextension.MethodForClass `hash:"36873697"`
-	clear                                     gdextension.MethodForClass `hash:"3218959716"`
-	select_                                   gdextension.MethodForClass `hash:"1328111411"`
-	select_all                                gdextension.MethodForClass `hash:"3218959716"`
-	deselect                                  gdextension.MethodForClass `hash:"3218959716"`
-	has_undo                                  gdextension.MethodForClass `hash:"36873697"`
-	has_redo                                  gdextension.MethodForClass `hash:"36873697"`
-	has_selection                             gdextension.MethodForClass `hash:"36873697"`
-	get_selected_text                         gdextension.MethodForClass `hash:"2841200299"`
-	get_selection_from_column                 gdextension.MethodForClass `hash:"3905245786"`
-	get_selection_to_column                   gdextension.MethodForClass `hash:"3905245786"`
-	set_text                                  gdextension.MethodForClass `hash:"83702148"`
-	get_text                                  gdextension.MethodForClass `hash:"201670096"`
-	get_draw_control_chars                    gdextension.MethodForClass `hash:"36873697"`
-	set_draw_control_chars                    gdextension.MethodForClass `hash:"2586408642"`
-	set_text_direction                        gdextension.MethodForClass `hash:"119160795"`
-	get_text_direction                        gdextension.MethodForClass `hash:"797257663"`
-	set_language                              gdextension.MethodForClass `hash:"83702148"`
-	get_language                              gdextension.MethodForClass `hash:"201670096"`
-	set_structured_text_bidi_override         gdextension.MethodForClass `hash:"55961453"`
-	get_structured_text_bidi_override         gdextension.MethodForClass `hash:"3385126229"`
-	set_structured_text_bidi_override_options gdextension.MethodForClass `hash:"381264803"`
-	get_structured_text_bidi_override_options gdextension.MethodForClass `hash:"3995934104"`
-	set_placeholder                           gdextension.MethodForClass `hash:"83702148"`
-	get_placeholder                           gdextension.MethodForClass `hash:"201670096"`
-	set_caret_column                          gdextension.MethodForClass `hash:"1286410249"`
-	get_caret_column                          gdextension.MethodForClass `hash:"3905245786"`
-	get_scroll_offset                         gdextension.MethodForClass `hash:"1740695150"`
-	set_expand_to_text_length_enabled         gdextension.MethodForClass `hash:"2586408642"`
-	is_expand_to_text_length_enabled          gdextension.MethodForClass `hash:"36873697"`
-	set_caret_blink_enabled                   gdextension.MethodForClass `hash:"2586408642"`
-	is_caret_blink_enabled                    gdextension.MethodForClass `hash:"36873697"`
-	set_caret_mid_grapheme_enabled            gdextension.MethodForClass `hash:"2586408642"`
-	is_caret_mid_grapheme_enabled             gdextension.MethodForClass `hash:"36873697"`
-	set_caret_force_displayed                 gdextension.MethodForClass `hash:"2586408642"`
-	is_caret_force_displayed                  gdextension.MethodForClass `hash:"36873697"`
-	set_caret_blink_interval                  gdextension.MethodForClass `hash:"373806689"`
-	get_caret_blink_interval                  gdextension.MethodForClass `hash:"1740695150"`
-	set_max_length                            gdextension.MethodForClass `hash:"1286410249"`
-	get_max_length                            gdextension.MethodForClass `hash:"3905245786"`
-	insert_text_at_caret                      gdextension.MethodForClass `hash:"83702148"`
-	delete_char_at_caret                      gdextension.MethodForClass `hash:"3218959716"`
-	delete_text                               gdextension.MethodForClass `hash:"3937882851"`
-	set_editable                              gdextension.MethodForClass `hash:"2586408642"`
-	is_editable                               gdextension.MethodForClass `hash:"36873697"`
-	set_secret                                gdextension.MethodForClass `hash:"2586408642"`
-	is_secret                                 gdextension.MethodForClass `hash:"36873697"`
-	set_secret_character                      gdextension.MethodForClass `hash:"83702148"`
-	get_secret_character                      gdextension.MethodForClass `hash:"201670096"`
-	menu_option                               gdextension.MethodForClass `hash:"1286410249"`
-	get_menu                                  gdextension.MethodForClass `hash:"229722558"`
-	is_menu_visible                           gdextension.MethodForClass `hash:"36873697"`
-	set_context_menu_enabled                  gdextension.MethodForClass `hash:"2586408642"`
-	is_context_menu_enabled                   gdextension.MethodForClass `hash:"2240911060"`
-	set_emoji_menu_enabled                    gdextension.MethodForClass `hash:"2586408642"`
-	is_emoji_menu_enabled                     gdextension.MethodForClass `hash:"36873697"`
-	set_virtual_keyboard_enabled              gdextension.MethodForClass `hash:"2586408642"`
-	is_virtual_keyboard_enabled               gdextension.MethodForClass `hash:"36873697"`
-	set_virtual_keyboard_type                 gdextension.MethodForClass `hash:"2696893573"`
-	get_virtual_keyboard_type                 gdextension.MethodForClass `hash:"1928699316"`
-	set_clear_button_enabled                  gdextension.MethodForClass `hash:"2586408642"`
-	is_clear_button_enabled                   gdextension.MethodForClass `hash:"36873697"`
-	set_shortcut_keys_enabled                 gdextension.MethodForClass `hash:"2586408642"`
-	is_shortcut_keys_enabled                  gdextension.MethodForClass `hash:"36873697"`
-	set_middle_mouse_paste_enabled            gdextension.MethodForClass `hash:"2586408642"`
-	is_middle_mouse_paste_enabled             gdextension.MethodForClass `hash:"36873697"`
-	set_selecting_enabled                     gdextension.MethodForClass `hash:"2586408642"`
-	is_selecting_enabled                      gdextension.MethodForClass `hash:"36873697"`
-	set_deselect_on_focus_loss_enabled        gdextension.MethodForClass `hash:"2586408642"`
-	is_deselect_on_focus_loss_enabled         gdextension.MethodForClass `hash:"36873697"`
-	set_drag_and_drop_selection_enabled       gdextension.MethodForClass `hash:"2586408642"`
-	is_drag_and_drop_selection_enabled        gdextension.MethodForClass `hash:"36873697"`
-	set_right_icon                            gdextension.MethodForClass `hash:"4051416890"`
-	get_right_icon                            gdextension.MethodForClass `hash:"255860311"`
-	set_flat                                  gdextension.MethodForClass `hash:"2586408642"`
-	is_flat                                   gdextension.MethodForClass `hash:"36873697"`
-	set_select_all_on_focus                   gdextension.MethodForClass `hash:"2586408642"`
-	is_select_all_on_focus                    gdextension.MethodForClass `hash:"36873697"`
+	has_ime_text                                      gdextension.MethodForClass `hash:"36873697"`
+	cancel_ime                                        gdextension.MethodForClass `hash:"3218959716"`
+	apply_ime                                         gdextension.MethodForClass `hash:"3218959716"`
+	set_horizontal_alignment                          gdextension.MethodForClass `hash:"2312603777"`
+	get_horizontal_alignment                          gdextension.MethodForClass `hash:"341400642"`
+	edit                                              gdextension.MethodForClass `hash:"3218959716"`
+	unedit                                            gdextension.MethodForClass `hash:"3218959716"`
+	is_editing                                        gdextension.MethodForClass `hash:"36873697"`
+	set_keep_editing_on_text_submit                   gdextension.MethodForClass `hash:"2586408642"`
+	is_editing_kept_on_text_submit                    gdextension.MethodForClass `hash:"36873697"`
+	clear                                             gdextension.MethodForClass `hash:"3218959716"`
+	select_                                           gdextension.MethodForClass `hash:"1328111411"`
+	select_all                                        gdextension.MethodForClass `hash:"3218959716"`
+	deselect                                          gdextension.MethodForClass `hash:"3218959716"`
+	has_undo                                          gdextension.MethodForClass `hash:"36873697"`
+	has_redo                                          gdextension.MethodForClass `hash:"36873697"`
+	has_selection                                     gdextension.MethodForClass `hash:"36873697"`
+	get_selected_text                                 gdextension.MethodForClass `hash:"2841200299"`
+	get_selection_from_column                         gdextension.MethodForClass `hash:"3905245786"`
+	get_selection_to_column                           gdextension.MethodForClass `hash:"3905245786"`
+	set_text                                          gdextension.MethodForClass `hash:"83702148"`
+	get_text                                          gdextension.MethodForClass `hash:"201670096"`
+	get_draw_control_chars                            gdextension.MethodForClass `hash:"36873697"`
+	set_draw_control_chars                            gdextension.MethodForClass `hash:"2586408642"`
+	set_text_direction                                gdextension.MethodForClass `hash:"119160795"`
+	get_text_direction                                gdextension.MethodForClass `hash:"797257663"`
+	set_language                                      gdextension.MethodForClass `hash:"83702148"`
+	get_language                                      gdextension.MethodForClass `hash:"201670096"`
+	set_structured_text_bidi_override                 gdextension.MethodForClass `hash:"55961453"`
+	get_structured_text_bidi_override                 gdextension.MethodForClass `hash:"3385126229"`
+	set_structured_text_bidi_override_options         gdextension.MethodForClass `hash:"381264803"`
+	get_structured_text_bidi_override_options         gdextension.MethodForClass `hash:"3995934104"`
+	set_placeholder                                   gdextension.MethodForClass `hash:"83702148"`
+	get_placeholder                                   gdextension.MethodForClass `hash:"201670096"`
+	set_caret_column                                  gdextension.MethodForClass `hash:"1286410249"`
+	get_caret_column                                  gdextension.MethodForClass `hash:"3905245786"`
+	get_next_composite_character_column               gdextension.MethodForClass `hash:"923996154"`
+	get_previous_composite_character_column           gdextension.MethodForClass `hash:"923996154"`
+	get_scroll_offset                                 gdextension.MethodForClass `hash:"1740695150"`
+	set_expand_to_text_length_enabled                 gdextension.MethodForClass `hash:"2586408642"`
+	is_expand_to_text_length_enabled                  gdextension.MethodForClass `hash:"36873697"`
+	set_caret_blink_enabled                           gdextension.MethodForClass `hash:"2586408642"`
+	is_caret_blink_enabled                            gdextension.MethodForClass `hash:"36873697"`
+	set_caret_mid_grapheme_enabled                    gdextension.MethodForClass `hash:"2586408642"`
+	is_caret_mid_grapheme_enabled                     gdextension.MethodForClass `hash:"36873697"`
+	set_caret_force_displayed                         gdextension.MethodForClass `hash:"2586408642"`
+	is_caret_force_displayed                          gdextension.MethodForClass `hash:"36873697"`
+	set_caret_blink_interval                          gdextension.MethodForClass `hash:"373806689"`
+	get_caret_blink_interval                          gdextension.MethodForClass `hash:"1740695150"`
+	set_max_length                                    gdextension.MethodForClass `hash:"1286410249"`
+	get_max_length                                    gdextension.MethodForClass `hash:"3905245786"`
+	insert_text_at_caret                              gdextension.MethodForClass `hash:"83702148"`
+	delete_char_at_caret                              gdextension.MethodForClass `hash:"3218959716"`
+	delete_text                                       gdextension.MethodForClass `hash:"3937882851"`
+	set_editable                                      gdextension.MethodForClass `hash:"2586408642"`
+	is_editable                                       gdextension.MethodForClass `hash:"36873697"`
+	set_secret                                        gdextension.MethodForClass `hash:"2586408642"`
+	is_secret                                         gdextension.MethodForClass `hash:"36873697"`
+	set_secret_character                              gdextension.MethodForClass `hash:"83702148"`
+	get_secret_character                              gdextension.MethodForClass `hash:"201670096"`
+	menu_option                                       gdextension.MethodForClass `hash:"1286410249"`
+	get_menu                                          gdextension.MethodForClass `hash:"229722558"`
+	is_menu_visible                                   gdextension.MethodForClass `hash:"36873697"`
+	set_context_menu_enabled                          gdextension.MethodForClass `hash:"2586408642"`
+	is_context_menu_enabled                           gdextension.MethodForClass `hash:"2240911060"`
+	set_emoji_menu_enabled                            gdextension.MethodForClass `hash:"2586408642"`
+	is_emoji_menu_enabled                             gdextension.MethodForClass `hash:"36873697"`
+	set_backspace_deletes_composite_character_enabled gdextension.MethodForClass `hash:"2586408642"`
+	is_backspace_deletes_composite_character_enabled  gdextension.MethodForClass `hash:"36873697"`
+	set_virtual_keyboard_enabled                      gdextension.MethodForClass `hash:"2586408642"`
+	is_virtual_keyboard_enabled                       gdextension.MethodForClass `hash:"36873697"`
+	set_virtual_keyboard_show_on_focus                gdextension.MethodForClass `hash:"2586408642"`
+	get_virtual_keyboard_show_on_focus                gdextension.MethodForClass `hash:"36873697"`
+	set_virtual_keyboard_type                         gdextension.MethodForClass `hash:"2696893573"`
+	get_virtual_keyboard_type                         gdextension.MethodForClass `hash:"1928699316"`
+	set_clear_button_enabled                          gdextension.MethodForClass `hash:"2586408642"`
+	is_clear_button_enabled                           gdextension.MethodForClass `hash:"36873697"`
+	set_shortcut_keys_enabled                         gdextension.MethodForClass `hash:"2586408642"`
+	is_shortcut_keys_enabled                          gdextension.MethodForClass `hash:"36873697"`
+	set_middle_mouse_paste_enabled                    gdextension.MethodForClass `hash:"2586408642"`
+	is_middle_mouse_paste_enabled                     gdextension.MethodForClass `hash:"36873697"`
+	set_selecting_enabled                             gdextension.MethodForClass `hash:"2586408642"`
+	is_selecting_enabled                              gdextension.MethodForClass `hash:"36873697"`
+	set_deselect_on_focus_loss_enabled                gdextension.MethodForClass `hash:"2586408642"`
+	is_deselect_on_focus_loss_enabled                 gdextension.MethodForClass `hash:"36873697"`
+	set_drag_and_drop_selection_enabled               gdextension.MethodForClass `hash:"2586408642"`
+	is_drag_and_drop_selection_enabled                gdextension.MethodForClass `hash:"36873697"`
+	set_right_icon                                    gdextension.MethodForClass `hash:"4051416890"`
+	get_right_icon                                    gdextension.MethodForClass `hash:"255860311"`
+	set_flat                                          gdextension.MethodForClass `hash:"2586408642"`
+	is_flat                                           gdextension.MethodForClass `hash:"36873697"`
+	set_select_all_on_focus                           gdextension.MethodForClass `hash:"2586408642"`
+	is_select_all_on_focus                            gdextension.MethodForClass `hash:"36873697"`
 }
 
 func init() {
@@ -384,6 +398,24 @@ Returns the selection end column.
 */
 func (self Instance) GetSelectionToColumn() int { //gd:LineEdit.get_selection_to_column
 	return int(int(Advanced(self).GetSelectionToColumn()))
+}
+
+/*
+Returns the correct column at the end of a composite character like ❤️‍🩹 (mending heart; Unicode: U+2764 U+FE0F U+200D U+1FA79) which is comprised of more than one Unicode code point, if the caret is at the start of the composite character. Also returns the correct column with the caret at mid grapheme and for non-composite characters.
+
+Note: To check at caret location use get_next_composite_character_column(get_caret_column())
+*/
+func (self Instance) GetNextCompositeCharacterColumn(column int) int { //gd:LineEdit.get_next_composite_character_column
+	return int(int(Advanced(self).GetNextCompositeCharacterColumn(int64(column))))
+}
+
+/*
+Returns the correct column at the start of a composite character like ❤️‍🩹 (mending heart; Unicode: U+2764 U+FE0F U+200D U+1FA79) which is comprised of more than one Unicode code point, if the caret is at the end of the composite character. Also returns the correct column with the caret at mid grapheme and for non-composite characters.
+
+Note: To check at caret location use get_previous_composite_character_column(get_caret_column())
+*/
+func (self Instance) GetPreviousCompositeCharacterColumn(column int) int { //gd:LineEdit.get_previous_composite_character_column
+	return int(int(Advanced(self).GetPreviousCompositeCharacterColumn(int64(column))))
 }
 
 /*
@@ -568,12 +600,28 @@ func (self Instance) SetEmojiMenuEnabled(value bool) {
 	class(self).SetEmojiMenuEnabled(value)
 }
 
+func (self Instance) BackspaceDeletesCompositeCharacterEnabled() bool {
+	return bool(class(self).IsBackspaceDeletesCompositeCharacterEnabled())
+}
+
+func (self Instance) SetBackspaceDeletesCompositeCharacterEnabled(value bool) {
+	class(self).SetBackspaceDeletesCompositeCharacterEnabled(value)
+}
+
 func (self Instance) VirtualKeyboardEnabled() bool {
 	return bool(class(self).IsVirtualKeyboardEnabled())
 }
 
 func (self Instance) SetVirtualKeyboardEnabled(value bool) {
 	class(self).SetVirtualKeyboardEnabled(value)
+}
+
+func (self Instance) VirtualKeyboardShowOnFocus() bool {
+	return bool(class(self).GetVirtualKeyboardShowOnFocus())
+}
+
+func (self Instance) SetVirtualKeyboardShowOnFocus(value bool) {
+	class(self).SetVirtualKeyboardShowOnFocus(value)
 }
 
 func (self Instance) VirtualKeyboardType() VirtualKeyboardType {
@@ -1037,6 +1085,30 @@ func (self class) GetCaretColumn() int64 { //gd:LineEdit.get_caret_column
 }
 
 /*
+Returns the correct column at the end of a composite character like ❤️‍🩹 (mending heart; Unicode: U+2764 U+FE0F U+200D U+1FA79) which is comprised of more than one Unicode code point, if the caret is at the start of the composite character. Also returns the correct column with the caret at mid grapheme and for non-composite characters.
+
+Note: To check at caret location use get_next_composite_character_column(get_caret_column())
+*/
+//go:nosplit
+func (self class) GetNextCompositeCharacterColumn(column int64) int64 { //gd:LineEdit.get_next_composite_character_column
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_next_composite_character_column, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
+	var ret = r_ret
+	return ret
+}
+
+/*
+Returns the correct column at the start of a composite character like ❤️‍🩹 (mending heart; Unicode: U+2764 U+FE0F U+200D U+1FA79) which is comprised of more than one Unicode code point, if the caret is at the end of the composite character. Also returns the correct column with the caret at mid grapheme and for non-composite characters.
+
+Note: To check at caret location use get_previous_composite_character_column(get_caret_column())
+*/
+//go:nosplit
+func (self class) GetPreviousCompositeCharacterColumn(column int64) int64 { //gd:LineEdit.get_previous_composite_character_column
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_previous_composite_character_column, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
+	var ret = r_ret
+	return ret
+}
+
+/*
 Returns the scroll offset due to [Instance.CaretColumn], as a number of characters.
 */
 //go:nosplit
@@ -1255,6 +1327,18 @@ func (self class) IsEmojiMenuEnabled() bool { //gd:LineEdit.is_emoji_menu_enable
 }
 
 //go:nosplit
+func (self class) SetBackspaceDeletesCompositeCharacterEnabled(enable bool) { //gd:LineEdit.set_backspace_deletes_composite_character_enabled
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_backspace_deletes_composite_character_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+}
+
+//go:nosplit
+func (self class) IsBackspaceDeletesCompositeCharacterEnabled() bool { //gd:LineEdit.is_backspace_deletes_composite_character_enabled
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_backspace_deletes_composite_character_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
 func (self class) SetVirtualKeyboardEnabled(enable bool) { //gd:LineEdit.set_virtual_keyboard_enabled
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_virtual_keyboard_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
@@ -1262,6 +1346,18 @@ func (self class) SetVirtualKeyboardEnabled(enable bool) { //gd:LineEdit.set_vir
 //go:nosplit
 func (self class) IsVirtualKeyboardEnabled() bool { //gd:LineEdit.is_virtual_keyboard_enabled
 	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_virtual_keyboard_enabled, gdextension.SizeBool, &struct{}{})
+	var ret = r_ret
+	return ret
+}
+
+//go:nosplit
+func (self class) SetVirtualKeyboardShowOnFocus(show_on_focus bool) { //gd:LineEdit.set_virtual_keyboard_show_on_focus
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_virtual_keyboard_show_on_focus, 0|(gdextension.SizeBool<<4), &struct{ show_on_focus bool }{show_on_focus})
+}
+
+//go:nosplit
+func (self class) GetVirtualKeyboardShowOnFocus() bool { //gd:LineEdit.get_virtual_keyboard_show_on_focus
+	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_virtual_keyboard_show_on_focus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

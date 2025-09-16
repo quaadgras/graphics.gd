@@ -123,7 +123,7 @@ func (self Instance) SetHandJointFlags(joint HandJoint, flags HandJointFlags) { 
 }
 
 /*
-Returns flags about the validity of the tracking data for the given hand joint (see [XRHandTracker.HandJointFlags]).
+Returns flags about the validity of the tracking data for the given hand joint.
 */
 func (self Instance) GetHandJointFlags(joint HandJoint) HandJointFlags { //gd:XRHandTracker.get_hand_joint_flags
 	return HandJointFlags(Advanced(self).GetHandJointFlags(joint))
@@ -280,7 +280,7 @@ func (self class) SetHandJointFlags(joint HandJoint, flags HandJointFlags) { //g
 }
 
 /*
-Returns flags about the validity of the tracking data for the given hand joint (see [XRHandTracker.HandJointFlags]).
+Returns flags about the validity of the tracking data for the given hand joint.
 */
 //go:nosplit
 func (self class) GetHandJointFlags(joint HandJoint) HandJointFlags { //gd:XRHandTracker.get_hand_joint_flags

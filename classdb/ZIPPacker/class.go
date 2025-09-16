@@ -90,11 +90,13 @@ type Instance [1]gdclass.ZIPPacker
 var otype gdextension.ObjectType
 var sname gdextension.StringName
 var methods struct {
-	open       gdextension.MethodForClass `hash:"1936816515"`
-	start_file gdextension.MethodForClass `hash:"166001499"`
-	write_file gdextension.MethodForClass `hash:"680677267"`
-	close_file gdextension.MethodForClass `hash:"166280745"`
-	close      gdextension.MethodForClass `hash:"166280745"`
+	open                  gdextension.MethodForClass `hash:"1936816515"`
+	set_compression_level gdextension.MethodForClass `hash:"1286410249"`
+	get_compression_level gdextension.MethodForClass `hash:"3905245786"`
+	start_file            gdextension.MethodForClass `hash:"166001499"`
+	write_file            gdextension.MethodForClass `hash:"680677267"`
+	close_file            gdextension.MethodForClass `hash:"166280745"`
+	close                 gdextension.MethodForClass `hash:"166280745"`
 }
 
 func init() {
@@ -152,7 +154,7 @@ Write the given 'data' to the file.
 Needs to be called after [Instance.StartFile].
 */
 func (self Instance) WriteFile(data []byte) error { //gd:ZIPPacker.write_file
-	return error(gd.ToError(Advanced(self).WriteFile(Packed.Bytes(Packed.New(data...)))))
+	return error(gd.ToError(Advanced(self).WriteFile(Packed.BytesFrom(data...))))
 }
 
 /*
@@ -214,6 +216,14 @@ func New() Instance {
 	return casted
 }
 
+func (self Instance) CompressionLevel() int {
+	return int(int(class(self).GetCompressionLevel()))
+}
+
+func (self Instance) SetCompressionLevel(value int) {
+	class(self).SetCompressionLevel(int64(value))
+}
+
 /*
 Opens a zip file for writing at the given path using the specified write mode.
 
@@ -226,6 +236,18 @@ func (self class) Open(path String.Readable, append ZipAppend) Error.Code { //gd
 		append ZipAppend
 	}{pointers.Get(gd.InternalString(path)), append})
 	var ret = Error.Code(r_ret)
+	return ret
+}
+
+//go:nosplit
+func (self class) SetCompressionLevel(compression_level int64) { //gd:ZIPPacker.set_compression_level
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compression_level, 0|(gdextension.SizeInt<<4), &struct{ compression_level int64 }{compression_level})
+}
+
+//go:nosplit
+func (self class) GetCompressionLevel() int64 { //gd:ZIPPacker.get_compression_level
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_compression_level, gdextension.SizeInt, &struct{}{})
+	var ret = r_ret
 	return ret
 }
 
@@ -248,7 +270,7 @@ Needs to be called after [Instance.StartFile].
 */
 //go:nosplit
 func (self class) WriteFile(data Packed.Bytes) Error.Code { //gd:ZIPPacker.write_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.write_file, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.write_file, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -313,4 +335,17 @@ const (
 	AppendCreateafter ZipAppend = 1
 	// Add new files to the existing zip archive at the given path.
 	AppendAddinzip ZipAppend = 2
+)
+
+type CompressionLevel int //gd:ZIPPacker.CompressionLevel
+
+const (
+	// Start a file with the default Deflate compression level (6). This is a good compromise between speed and file size.
+	CompressionDefault CompressionLevel = -1
+	// Start a file with no compression. This is also known as the "Store" compression mode and is the fastest method of packing files inside a ZIP archive. Consider using this mode for files that are already compressed (such as JPEG, PNG, MP3, or Ogg Vorbis files).
+	CompressionNone CompressionLevel = 0
+	// Start a file with the fastest Deflate compression level (1). This is fast to compress, but results in larger file sizes than [CompressionDefault]. Decompression speed is generally unaffected by the chosen compression level.
+	CompressionFast CompressionLevel = 1
+	// Start a file with the best Deflate compression level (9). This is slow to compress, but results in smaller file sizes than [CompressionDefault]. Decompression speed is generally unaffected by the chosen compression level.
+	CompressionBest CompressionLevel = 9
 )

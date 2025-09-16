@@ -224,7 +224,7 @@ type Interface interface {
 	RequestCodeCompletion(force bool)
 	// Override this method to define what items in 'candidates' should be displayed.
 	//
-	// Both 'candidates' and the return is a slice of data structure, see [Instance.GetCodeCompletionOption] for data structure content.
+	// Both 'candidates' and the return is an slice of data structure, see [Instance.GetCodeCompletionOption] for data structure content.
 	FilterCodeCompletionCandidates(candidates [][]CompletionInfo) [][]CompletionInfo
 }
 
@@ -264,7 +264,7 @@ func (Instance) _request_code_completion(impl func(ptr gdclass.Receiver, force b
 /*
 Override this method to define what items in 'candidates' should be displayed.
 
-Both 'candidates' and the return is a slice of data structure, see [Instance.GetCodeCompletionOption] for data structure content.
+Both 'candidates' and the return is an slice of data structure, see [Instance.GetCodeCompletionOption] for data structure content.
 */
 func (Instance) _filter_code_completion_candidates(impl func(ptr gdclass.Receiver, candidates [][]CompletionInfo) [][]CompletionInfo) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1104,7 +1104,7 @@ func (class) _request_code_completion(impl func(ptr gdclass.Receiver, force bool
 /*
 Override this method to define what items in 'candidates' should be displayed.
 
-Both 'candidates' and the return is a slice of data structure, see [Instance.GetCodeCompletionOption] for data structure content.
+Both 'candidates' and the return is an slice of data structure, see [Instance.GetCodeCompletionOption] for data structure content.
 */
 func (class) _filter_code_completion_candidates(impl func(ptr gdclass.Receiver, candidates Array.Contains[Dictionary.Any]) Array.Contains[Dictionary.Any]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

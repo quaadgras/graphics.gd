@@ -257,7 +257,7 @@ func (self Instance) Open(file string) error { //gd:XMLParser.open
 Opens an XML raw 'buffer' for parsing. This method returns an error code.
 */
 func (self Instance) OpenBuffer(buffer []byte) error { //gd:XMLParser.open_buffer
-	return error(gd.ToError(Advanced(self).OpenBuffer(Packed.Bytes(Packed.New(buffer...)))))
+	return error(gd.ToError(Advanced(self).OpenBuffer(Packed.BytesFrom(buffer...))))
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -470,7 +470,7 @@ Opens an XML raw 'buffer' for parsing. This method returns an error code.
 */
 //go:nosplit
 func (self class) OpenBuffer(buffer Packed.Bytes) Error.Code { //gd:XMLParser.open_buffer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer)))})
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open_buffer, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ buffer gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](buffer.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

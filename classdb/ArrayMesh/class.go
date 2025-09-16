@@ -251,13 +251,13 @@ func (self Instance) SurfaceRemove(surf_idx int) { //gd:ArrayMesh.surface_remove
 	Advanced(self).SurfaceRemove(int64(surf_idx))
 }
 func (self Instance) SurfaceUpdateVertexRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_vertex_region
-	Advanced(self).SurfaceUpdateVertexRegion(int64(surf_idx), int64(offset), Packed.Bytes(Packed.New(data...)))
+	Advanced(self).SurfaceUpdateVertexRegion(int64(surf_idx), int64(offset), Packed.BytesFrom(data...))
 }
 func (self Instance) SurfaceUpdateAttributeRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_attribute_region
-	Advanced(self).SurfaceUpdateAttributeRegion(int64(surf_idx), int64(offset), Packed.Bytes(Packed.New(data...)))
+	Advanced(self).SurfaceUpdateAttributeRegion(int64(surf_idx), int64(offset), Packed.BytesFrom(data...))
 }
 func (self Instance) SurfaceUpdateSkinRegion(surf_idx int, offset int, data []byte) { //gd:ArrayMesh.surface_update_skin_region
-	Advanced(self).SurfaceUpdateSkinRegion(int64(surf_idx), int64(offset), Packed.Bytes(Packed.New(data...)))
+	Advanced(self).SurfaceUpdateSkinRegion(int64(surf_idx), int64(offset), Packed.BytesFrom(data...))
 }
 
 /*
@@ -504,7 +504,7 @@ func (self class) SurfaceUpdateVertexRegion(surf_idx int64, offset int64, data P
 		surf_idx int64
 		offset   int64
 		data     gdextension.PackedArray[byte]
-	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
 
 //go:nosplit
@@ -513,7 +513,7 @@ func (self class) SurfaceUpdateAttributeRegion(surf_idx int64, offset int64, dat
 		surf_idx int64
 		offset   int64
 		data     gdextension.PackedArray[byte]
-	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
 
 //go:nosplit
@@ -522,7 +522,7 @@ func (self class) SurfaceUpdateSkinRegion(surf_idx int64, offset int64, data Pac
 		surf_idx int64
 		offset   int64
 		data     gdextension.PackedArray[byte]
-	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	}{surf_idx, offset, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
 
 /*

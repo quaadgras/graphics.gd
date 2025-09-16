@@ -196,7 +196,7 @@ func (self Instance) DataArray() []byte {
 }
 
 func (self Instance) SetDataArray(value []byte) {
-	class(self).SetDataArray(Packed.Bytes(Packed.New(value...)))
+	class(self).SetDataArray(Packed.BytesFrom(value...))
 }
 
 /*
@@ -237,13 +237,13 @@ func (self class) Resize(size int64) { //gd:StreamPeerBuffer.resize
 
 //go:nosplit
 func (self class) SetDataArray(data Packed.Bytes) { //gd:StreamPeerBuffer.set_data_array
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data_array, 0|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data)))})
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data_array, 0|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
 
 //go:nosplit
 func (self class) GetDataArray() Packed.Bytes { //gd:StreamPeerBuffer.get_data_array
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data_array, gdextension.SizePackedArray, &struct{}{})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 

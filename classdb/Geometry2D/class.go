@@ -307,7 +307,7 @@ func IntersectPolylineWithPolygon(polyline []Vector2.XY, polygon []Vector2.XY) [
 /*
 Inflates or deflates 'polygon' by 'delta' units (pixels). If 'delta' is positive, makes the polygon grow outward. If 'delta' is negative, shrinks the polygon inward. Returns an array of polygons because inflating/deflating may result in multiple discrete polygons. Returns an empty array if 'delta' is negative and the absolute value of it approximately exceeds the minimum bounding rectangle dimensions of the polygon.
 
-Each polygon's vertices will be rounded as determined by 'join_type', see [PolyJoinType].
+Each polygon's vertices will be rounded as determined by 'join_type'.
 
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [IsPolygonClockwise].
 
@@ -328,7 +328,7 @@ func OffsetPolygon(polygon []Vector2.XY, delta Float.X, join_type PolyJoinType) 
 /*
 Inflates or deflates 'polygon' by 'delta' units (pixels). If 'delta' is positive, makes the polygon grow outward. If 'delta' is negative, shrinks the polygon inward. Returns an array of polygons because inflating/deflating may result in multiple discrete polygons. Returns an empty array if 'delta' is negative and the absolute value of it approximately exceeds the minimum bounding rectangle dimensions of the polygon.
 
-Each polygon's vertices will be rounded as determined by 'join_type', see [PolyJoinType].
+Each polygon's vertices will be rounded as determined by 'join_type'.
 
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [IsPolygonClockwise].
 
@@ -349,9 +349,9 @@ func OffsetPolygonOptions(polygon []Vector2.XY, delta Float.X, join_type PolyJoi
 /*
 Inflates or deflates 'polyline' by 'delta' units (pixels), producing polygons. If 'delta' is positive, makes the polyline grow outward. Returns an array of polygons because inflating/deflating may result in multiple discrete polygons. If 'delta' is negative, returns an empty array.
 
-Each polygon's vertices will be rounded as determined by 'join_type', see [PolyJoinType].
+Each polygon's vertices will be rounded as determined by 'join_type'.
 
-Each polygon's endpoints will be rounded as determined by 'end_type', see [PolyEndType].
+Each polygon's endpoints will be rounded as determined by 'end_type'.
 
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [IsPolygonClockwise].
 */
@@ -363,9 +363,9 @@ func OffsetPolyline(polyline []Vector2.XY, delta Float.X, join_type PolyJoinType
 /*
 Inflates or deflates 'polyline' by 'delta' units (pixels), producing polygons. If 'delta' is positive, makes the polyline grow outward. Returns an array of polygons because inflating/deflating may result in multiple discrete polygons. If 'delta' is negative, returns an empty array.
 
-Each polygon's vertices will be rounded as determined by 'join_type', see [PolyJoinType].
+Each polygon's vertices will be rounded as determined by 'join_type'.
 
-Each polygon's endpoints will be rounded as determined by 'end_type', see [PolyEndType].
+Each polygon's endpoints will be rounded as determined by 'end_type'.
 
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [IsPolygonClockwise].
 */
@@ -719,7 +719,7 @@ func (self class) IntersectPolylineWithPolygon(polyline Packed.Array[Vector2.XY]
 /*
 Inflates or deflates 'polygon' by 'delta' units (pixels). If 'delta' is positive, makes the polygon grow outward. If 'delta' is negative, shrinks the polygon inward. Returns an array of polygons because inflating/deflating may result in multiple discrete polygons. Returns an empty array if 'delta' is negative and the absolute value of it approximately exceeds the minimum bounding rectangle dimensions of the polygon.
 
-Each polygon's vertices will be rounded as determined by 'join_type', see [PolyJoinType].
+Each polygon's vertices will be rounded as determined by 'join_type'.
 
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [IsPolygonClockwise].
 
@@ -748,9 +748,9 @@ func (self class) OffsetPolygon(polygon Packed.Array[Vector2.XY], delta float64,
 /*
 Inflates or deflates 'polyline' by 'delta' units (pixels), producing polygons. If 'delta' is positive, makes the polyline grow outward. Returns an array of polygons because inflating/deflating may result in multiple discrete polygons. If 'delta' is negative, returns an empty array.
 
-Each polygon's vertices will be rounded as determined by 'join_type', see [PolyJoinType].
+Each polygon's vertices will be rounded as determined by 'join_type'.
 
-Each polygon's endpoints will be rounded as determined by 'end_type', see [PolyEndType].
+Each polygon's endpoints will be rounded as determined by 'end_type'.
 
 The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [IsPolygonClockwise].
 */

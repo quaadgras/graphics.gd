@@ -94,6 +94,7 @@ var methods struct {
 	open_script_create_dialog     gdextension.MethodForClass `hash:"3186203200"`
 	goto_help                     gdextension.MethodForClass `hash:"83702148"`
 	update_docs_from_script       gdextension.MethodForClass `hash:"3657522847"`
+	clear_docs_from_script        gdextension.MethodForClass `hash:"3657522847"`
 }
 
 func init() {
@@ -193,12 +194,21 @@ func (self Instance) GotoHelp(topic string) { //gd:ScriptEditor.goto_help
 }
 
 /*
-Updates the documentation for the given 'script' if the script's documentation is currently open.
+Updates the documentation for the given 'script'.
 
 Note: This should be called whenever the script is changed to keep the open documentation state up to date.
 */
 func (self Instance) UpdateDocsFromScript(script Script.Instance) { //gd:ScriptEditor.update_docs_from_script
 	Advanced(self).UpdateDocsFromScript(script)
+}
+
+/*
+Removes the documentation for the given 'script'.
+
+Note: This should be called whenever the script is changed to keep the open documentation state up to date.
+*/
+func (self Instance) ClearDocsFromScript(script Script.Instance) { //gd:ScriptEditor.clear_docs_from_script
+	Advanced(self).ClearDocsFromScript(script)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -345,13 +355,23 @@ func (self class) GotoHelp(topic String.Readable) { //gd:ScriptEditor.goto_help
 }
 
 /*
-Updates the documentation for the given 'script' if the script's documentation is currently open.
+Updates the documentation for the given 'script'.
 
 Note: This should be called whenever the script is changed to keep the open documentation state up to date.
 */
 //go:nosplit
 func (self class) UpdateDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.update_docs_from_script
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_docs_from_script, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))})
+}
+
+/*
+Removes the documentation for the given 'script'.
+
+Note: This should be called whenever the script is changed to keep the open documentation state up to date.
+*/
+//go:nosplit
+func (self class) ClearDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.clear_docs_from_script
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_docs_from_script, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))})
 }
 func (self Instance) OnEditorScriptChanged(cb func(script Script.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags

@@ -147,6 +147,7 @@ var methods struct {
 	get_type_variation_list  gdextension.MethodForClass `hash:"1761182771"`
 	add_type                 gdextension.MethodForClass `hash:"3304788590"`
 	remove_type              gdextension.MethodForClass `hash:"3304788590"`
+	rename_type              gdextension.MethodForClass `hash:"3740211285"`
 	get_type_list            gdextension.MethodForClass `hash:"1139954409"`
 	merge_with               gdextension.MethodForClass `hash:"2326690814"`
 	clear                    gdextension.MethodForClass `hash:"3218959716"`
@@ -673,6 +674,15 @@ Removes the theme type, gracefully discarding defined theme items. If the type i
 */
 func (self Instance) RemoveType(theme_type string) { //gd:Theme.remove_type
 	Advanced(self).RemoveType(String.Name(String.New(theme_type)))
+}
+
+/*
+Renames the theme type 'old_theme_type' to 'theme_type', if the old type exists and the new one doesn't exist.
+
+Note: Renaming a theme type to an empty name or a variation to a type associated with a built-in class removes type variation connections in a way that cannot be undone by reversing the rename alone.
+*/
+func (self Instance) RenameType(old_theme_type string, theme_type string) { //gd:Theme.rename_type
+	Advanced(self).RenameType(String.Name(String.New(old_theme_type)), String.Name(String.New(theme_type)))
 }
 
 /*
@@ -1562,6 +1572,19 @@ Removes the theme type, gracefully discarding defined theme items. If the type i
 //go:nosplit
 func (self class) RemoveType(theme_type String.Name) { //gd:Theme.remove_type
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_type, 0|(gdextension.SizeStringName<<4), &struct{ theme_type gdextension.StringName }{pointers.Get(gd.InternalStringName(theme_type))})
+}
+
+/*
+Renames the theme type 'old_theme_type' to 'theme_type', if the old type exists and the new one doesn't exist.
+
+Note: Renaming a theme type to an empty name or a variation to a type associated with a built-in class removes type variation connections in a way that cannot be undone by reversing the rename alone.
+*/
+//go:nosplit
+func (self class) RenameType(old_theme_type String.Name, theme_type String.Name) { //gd:Theme.rename_type
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_type, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+		old_theme_type gdextension.StringName
+		theme_type     gdextension.StringName
+	}{pointers.Get(gd.InternalStringName(old_theme_type)), pointers.Get(gd.InternalStringName(theme_type))})
 }
 
 /*

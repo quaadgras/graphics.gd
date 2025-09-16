@@ -79,6 +79,7 @@ var methods struct {
 	get_actions                gdextension.MethodForClass `hash:"2915620761"`
 	add_action                 gdextension.MethodForClass `hash:"1195233573"`
 	erase_action               gdextension.MethodForClass `hash:"3304788590"`
+	get_action_description     gdextension.MethodForClass `hash:"957595536"`
 	action_set_deadzone        gdextension.MethodForClass `hash:"4135858297"`
 	action_get_deadzone        gdextension.MethodForClass `hash:"1391627649"`
 	action_add_event           gdextension.MethodForClass `hash:"518302593"`
@@ -151,6 +152,14 @@ Removes an action from the [graphics.gd/classdb/InputMap].
 func EraseAction(action string) { //gd:InputMap.erase_action
 	once.Do(singleton)
 	Advanced().EraseAction(String.Name(String.New(action)))
+}
+
+/*
+Returns the human-readable description of the given action.
+*/
+func GetActionDescription(action string) string { //gd:InputMap.get_action_description
+	once.Do(singleton)
+	return string(Advanced().GetActionDescription(String.Name(String.New(action))).String())
 }
 
 /*
@@ -301,6 +310,16 @@ Removes an action from the [graphics.gd/classdb/InputMap].
 //go:nosplit
 func (self class) EraseAction(action String.Name) { //gd:InputMap.erase_action
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_action, 0|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
+}
+
+/*
+Returns the human-readable description of the given action.
+*/
+//go:nosplit
+func (self class) GetActionDescription(action String.Name) String.Readable { //gd:InputMap.get_action_description
+	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_action_description, gdextension.SizeString|(gdextension.SizeStringName<<4), &struct{ action gdextension.StringName }{pointers.Get(gd.InternalStringName(action))})
+	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
+	return ret
 }
 
 /*

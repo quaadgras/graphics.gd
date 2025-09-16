@@ -20,6 +20,7 @@ import "graphics.gd/variant/Angle"
 import "graphics.gd/variant/Euler"
 import "graphics.gd/variant/Signal"
 import "graphics.gd/classdb/Input"
+import "graphics.gd/classdb/Logger"
 import "graphics.gd/variant/Array"
 import "graphics.gd/variant/Callable"
 import "graphics.gd/variant/Dictionary"
@@ -96,8 +97,8 @@ var methods struct {
 	get_system_font_path                    gdextension.MethodForClass `hash:"626580860"`
 	get_system_font_path_for_text           gdextension.MethodForClass `hash:"197317981"`
 	get_executable_path                     gdextension.MethodForClass `hash:"201670096"`
-	read_string_from_stdin                  gdextension.MethodForClass `hash:"990163283"`
-	read_buffer_from_stdin                  gdextension.MethodForClass `hash:"47165747"`
+	read_string_from_stdin                  gdextension.MethodForClass `hash:"723587915"`
+	read_buffer_from_stdin                  gdextension.MethodForClass `hash:"3249455752"`
 	get_stdin_type                          gdextension.MethodForClass `hash:"1704816237"`
 	get_stdout_type                         gdextension.MethodForClass `hash:"1704816237"`
 	get_stderr_type                         gdextension.MethodForClass `hash:"1704816237"`
@@ -105,6 +106,7 @@ var methods struct {
 	execute_with_pipe                       gdextension.MethodForClass `hash:"2851312030"`
 	create_process                          gdextension.MethodForClass `hash:"2903767230"`
 	create_instance                         gdextension.MethodForClass `hash:"1080601263"`
+	open_with_program                       gdextension.MethodForClass `hash:"2848259907"`
 	kill                                    gdextension.MethodForClass `hash:"844576869"`
 	shell_open                              gdextension.MethodForClass `hash:"166001499"`
 	shell_show_in_file_manager              gdextension.MethodForClass `hash:"3565188097"`
@@ -157,6 +159,8 @@ var methods struct {
 	request_permissions                     gdextension.MethodForClass `hash:"2240911060"`
 	get_granted_permissions                 gdextension.MethodForClass `hash:"1139954409"`
 	revoke_granted_permissions              gdextension.MethodForClass `hash:"3218959716"`
+	add_logger                              gdextension.MethodForClass `hash:"4261188958"`
+	remove_logger                           gdextension.MethodForClass `hash:"4261188958"`
 }
 
 func init() {
@@ -377,13 +381,33 @@ Note: This method is implemented on Linux, macOS, and Windows.
 
 Note: On exported Windows builds, run the console wrapper executable to access the terminal. If standard input is console, calling this method without console wrapped will freeze permanently. If standard input is pipe or file, it can be used without console wrapper. If you need a single executable with full console support, use a custom build compiled with the windows_subsystem=console flag.
 */
-func ReadStringFromStdin(buffer_size int) string { //gd:OS.read_string_from_stdin
+func ReadStringFromStdin() string { //gd:OS.read_string_from_stdin
+	once.Do(singleton)
+	return string(Advanced().ReadStringFromStdin(int64(1024)).String())
+}
+
+/*
+Reads a user input as a UTF-8 encoded string from the standard input. This operation can be blocking, which causes the window to freeze if [ReadStringFromStdin] is called on the main thread.
+
+- If standard input is console, this method will block until the program receives a line break in standard input (usually by the user pressing Enter).
+
+- If standard input is pipe, this method will block until a specific amount of data is read or pipe is closed.
+
+- If standard input is a file, this method will read a specific amount of data (or less if end-of-file is reached) and return immediately.
+
+Note: This method automatically replaces \r\n line breaks with \n and removes them from the end of the string. Use [ReadBufferFromStdin] to read the unprocessed data.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: On exported Windows builds, run the console wrapper executable to access the terminal. If standard input is console, calling this method without console wrapped will freeze permanently. If standard input is pipe or file, it can be used without console wrapper. If you need a single executable with full console support, use a custom build compiled with the windows_subsystem=console flag.
+*/
+func ReadStringFromStdinOptions(buffer_size int) string { //gd:OS.read_string_from_stdin
 	once.Do(singleton)
 	return string(Advanced().ReadStringFromStdin(int64(buffer_size)).String())
 }
 
 /*
-Reads a user input as raw data from the standard input. This operation can be blocking, which causes the window to freeze if [ReadStringFromStdin] is called on the main thread.
+Reads a user input as raw data from the standard input. This operation can be blocking, which causes the window to freeze if [ReadBufferFromStdin] is called on the main thread.
 
 - If standard input is console, this method will block until the program receives a line break in standard input (usually by the user pressing Enter).
 
@@ -395,13 +419,35 @@ Note: This method is implemented on Linux, macOS, and Windows.
 
 Note: On exported Windows builds, run the console wrapper executable to access the terminal. If standard input is console, calling this method without console wrapped will freeze permanently. If standard input is pipe or file, it can be used without console wrapper. If you need a single executable with full console support, use a custom build compiled with the windows_subsystem=console flag.
 */
-func ReadBufferFromStdin(buffer_size int) []byte { //gd:OS.read_buffer_from_stdin
+func ReadBufferFromStdin() []byte { //gd:OS.read_buffer_from_stdin
+	once.Do(singleton)
+	return []byte(Advanced().ReadBufferFromStdin(int64(1024)).Bytes())
+}
+
+/*
+Reads a user input as raw data from the standard input. This operation can be blocking, which causes the window to freeze if [ReadBufferFromStdin] is called on the main thread.
+
+- If standard input is console, this method will block until the program receives a line break in standard input (usually by the user pressing Enter).
+
+- If standard input is pipe, this method will block until a specific amount of data is read or pipe is closed.
+
+- If standard input is a file, this method will read a specific amount of data (or less if end-of-file is reached) and return immediately.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: On exported Windows builds, run the console wrapper executable to access the terminal. If standard input is console, calling this method without console wrapped will freeze permanently. If standard input is pipe or file, it can be used without console wrapper. If you need a single executable with full console support, use a custom build compiled with the windows_subsystem=console flag.
+*/
+func ReadBufferFromStdinOptions(buffer_size int) []byte { //gd:OS.read_buffer_from_stdin
 	once.Do(singleton)
 	return []byte(Advanced().ReadBufferFromStdin(int64(buffer_size)).Bytes())
 }
 
 /*
-Returns type of the standard input device.
+Returns the type of the standard input device.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: On exported Windows builds, run the console wrapper executable to access the standard input. If you need a single executable with full console support, use a custom build compiled with the windows_subsystem=console flag.
 */
 func GetStdinType() StdHandleType { //gd:OS.get_stdin_type
 	once.Do(singleton)
@@ -409,7 +455,9 @@ func GetStdinType() StdHandleType { //gd:OS.get_stdin_type
 }
 
 /*
-Returns type of the standard output device.
+Returns the type of the standard output device.
+
+Note: This method is implemented on Linux, macOS, and Windows.
 */
 func GetStdoutType() StdHandleType { //gd:OS.get_stdout_type
 	once.Do(singleton)
@@ -417,7 +465,9 @@ func GetStdoutType() StdHandleType { //gd:OS.get_stdout_type
 }
 
 /*
-Returns type of the standard error device.
+Returns the type of the standard error device.
+
+Note: This method is implemented on Linux, macOS, and Windows.
 */
 func GetStderrType() StdHandleType { //gd:OS.get_stderr_type
 	once.Do(singleton)
@@ -599,6 +649,18 @@ func CreateInstance(arguments []string) int { //gd:OS.create_instance
 }
 
 /*
+Opens one or more files/directories with the specified application. The 'program_path' specifies the path to the application to use for opening the files, and 'paths' contains an array of file/directory paths to open.
+
+Note: This method is mostly only relevant for macOS, where opening files using [CreateProcess] might fail. On other platforms, this falls back to using [CreateProcess].
+
+Note: On macOS, 'program_path' should ideally be the path to a .app bundle.
+*/
+func OpenWithProgram(program_path string, paths []string) error { //gd:OS.open_with_program
+	once.Do(singleton)
+	return error(gd.ToError(Advanced().OpenWithProgram(String.New(program_path), Packed.MakeStrings(paths...))))
+}
+
+/*
 Kill (terminate) the process identified by the given process ID ('pid'), such as the ID returned by [Execute] in non-blocking mode. See also [Crash].
 
 Note: This method can also be used to kill processes that were not spawned by the engine.
@@ -689,7 +751,7 @@ func GetProcessExitCode(pid int) int { //gd:OS.get_process_exit_code
 /*
 Returns the number used by the host machine to uniquely identify this application.
 
-Note: This method is implemented on Android, iOS, Linux, macOS, and Windows.
+Note: On Web, this method always returns 0.
 */
 func GetProcessId() int { //gd:OS.get_process_id
 	once.Do(singleton)
@@ -781,7 +843,7 @@ func GetDistributionName() string { //gd:OS.get_distribution_name
 /*
 Returns the exact production and build version of the operating system. This is different from the branded version used in marketing. This helps to distinguish between different releases of operating systems, including minor versions, and insider and custom builds.
 
-- For Windows, the major and minor version are returned, as well as the build number. For example, the returned string may look like 10.0.9926 for a build of Windows 10, and it may look like 6.1.7601 for a build of Windows 7 SP1.
+- For Windows, the major and minor version are returned, as well as the build number. For example, the returned string may look like 10.0.9926 for a build of Windows 10.
 
 - For rolling distributions, such as Arch Linux, an empty string is returned.
 
@@ -797,9 +859,11 @@ func GetVersion() string { //gd:OS.get_version
 }
 
 /*
-Returns the branded version used in marketing, followed by the build number (on Windows) or the version number (on macOS). Examples include 11 (build 22000) and Sequoia (15.0.0). This value can then be appended to [GetName] to get a full, human-readable operating system name and version combination for the operating system. Windows feature updates such as 24H2 are not contained in the resulting string, but Windows Server is recognized as such (e.g. 2025 (build 26100) for Windows Server 2025).
+Returns the branded version used in marketing, followed by the build number (on Windows), the version number (on macOS), or the SDK version and incremental build number (on Android). Examples include 11 (build 22000), Sequoia (15.0.0), and 15 (SDK 35 build abc528-11988f).
 
-Note: This method is only supported on Windows and macOS. On other operating systems, it returns the same value as [GetVersion].
+This value can then be appended to [GetName] to get a full, human-readable operating system name and version combination for the operating system. Windows feature updates such as 24H2 are not contained in the resulting string, but Windows Server is recognized as such (e.g. 2025 (build 26100) for Windows Server 2025).
+
+Note: This method is only supported on Windows, macOS, and Android. On other operating systems, it returns the same value as [GetVersion].
 */
 func GetVersionAlias() string { //gd:OS.get_version_alias
 	once.Do(singleton)
@@ -842,6 +906,8 @@ The first element holds the driver name, such as nvidia, amdgpu, etc.
 The second element holds the driver version. For example, on the nvidia driver on a Linux/BSD platform, the version is in the format 510.85.02. For Windows, the driver's format is 31.0.15.1659.
 
 Note: This method is only supported on Linux/BSD and Windows when not running in headless mode. On other platforms, it returns an empty array.
+
+Note: This method will run slowly the first time it is called in a session; it can take several seconds depending on the operating system and hardware. It is blocking if called on the main thread, so it's recommended to call it on a separate thread using [graphics.gd/classdb/Thread]. This allows the engine to keep running while the information is being retrieved. However, [GetVideoAdapterDriverInfo] is not thread-safe, so it should not be called from multiple threads at the same time.
 */
 func GetVideoAdapterDriverInfo() []string { //gd:OS.get_video_adapter_driver_info
 	once.Do(singleton)
@@ -1247,9 +1313,13 @@ The 'name' must be the full permission name. For example:
 
 - OS.request_permission("android.permission.POST_NOTIFICATIONS")
 
-Note: Permission must be checked during export.
+- OS.request_permission("macos.permission.RECORD_SCREEN")
 
-Note: This method is only implemented on Android.
+- OS.request_permission("appleembedded.permission.AUDIO_RECORD")
+
+Note: On Android, permission must be checked during export.
+
+Note: This method is implemented on Android, macOS, and visionOS platforms.
 */
 func RequestPermission(name string) bool { //gd:OS.request_permission
 	once.Do(singleton)
@@ -1271,7 +1341,9 @@ func RequestPermissions() bool { //gd:OS.request_permissions
 /*
 On Android devices: Returns the list of dangerous permissions that have been granted.
 
-On macOS: Returns the list of user selected folders accessible to the application (sandboxed applications only). Use the native file dialog to request folder access permission.
+On macOS: Returns the list of granted permissions and user selected folders accessible to the application (sandboxed applications only). Use the native file dialog to request folder access permission.
+
+On iOS, visionOS: Returns the list of granted permissions.
 */
 func GetGrantedPermissions() []string { //gd:OS.get_granted_permissions
 	once.Do(singleton)
@@ -1284,6 +1356,22 @@ On macOS (sandboxed applications only), this function clears list of user select
 func RevokeGrantedPermissions() { //gd:OS.revoke_granted_permissions
 	once.Do(singleton)
 	Advanced().RevokeGrantedPermissions()
+}
+
+/*
+Add a custom logger to intercept the internal message stream.
+*/
+func AddLogger(logger Logger.Instance) { //gd:OS.add_logger
+	once.Do(singleton)
+	Advanced().AddLogger(logger)
+}
+
+/*
+Remove a custom logger added by [AddLogger].
+*/
+func RemoveLogger(logger Logger.Instance) { //gd:OS.remove_logger
+	once.Do(singleton)
+	Advanced().RemoveLogger(logger)
 }
 
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
@@ -1347,7 +1435,7 @@ Note: Generating large quantities of bytes using this method can result in locki
 //go:nosplit
 func (self class) GetEntropy(size int64) Packed.Bytes { //gd:OS.get_entropy
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_entropy, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
@@ -1578,7 +1666,7 @@ func (self class) ReadStringFromStdin(buffer_size int64) String.Readable { //gd:
 }
 
 /*
-Reads a user input as raw data from the standard input. This operation can be blocking, which causes the window to freeze if [ReadStringFromStdin] is called on the main thread.
+Reads a user input as raw data from the standard input. This operation can be blocking, which causes the window to freeze if [ReadBufferFromStdin] is called on the main thread.
 
 - If standard input is console, this method will block until the program receives a line break in standard input (usually by the user pressing Enter).
 
@@ -1593,12 +1681,16 @@ Note: On exported Windows builds, run the console wrapper executable to access t
 //go:nosplit
 func (self class) ReadBufferFromStdin(buffer_size int64) Packed.Bytes { //gd:OS.read_buffer_from_stdin
 	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.read_buffer_from_stdin, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ buffer_size int64 }{buffer_size})
-	var ret = Packed.Bytes(Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))
+	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
 /*
-Returns type of the standard input device.
+Returns the type of the standard input device.
+
+Note: This method is implemented on Linux, macOS, and Windows.
+
+Note: On exported Windows builds, run the console wrapper executable to access the standard input. If you need a single executable with full console support, use a custom build compiled with the windows_subsystem=console flag.
 */
 //go:nosplit
 func (self class) GetStdinType() StdHandleType { //gd:OS.get_stdin_type
@@ -1608,7 +1700,9 @@ func (self class) GetStdinType() StdHandleType { //gd:OS.get_stdin_type
 }
 
 /*
-Returns type of the standard output device.
+Returns the type of the standard output device.
+
+Note: This method is implemented on Linux, macOS, and Windows.
 */
 //go:nosplit
 func (self class) GetStdoutType() StdHandleType { //gd:OS.get_stdout_type
@@ -1618,7 +1712,9 @@ func (self class) GetStdoutType() StdHandleType { //gd:OS.get_stdout_type
 }
 
 /*
-Returns type of the standard error device.
+Returns the type of the standard error device.
+
+Note: This method is implemented on Linux, macOS, and Windows.
 */
 //go:nosplit
 func (self class) GetStderrType() StdHandleType { //gd:OS.get_stderr_type
@@ -1752,6 +1848,23 @@ func (self class) CreateInstance(arguments Packed.Strings) int64 { //gd:OS.creat
 }
 
 /*
+Opens one or more files/directories with the specified application. The 'program_path' specifies the path to the application to use for opening the files, and 'paths' contains an array of file/directory paths to open.
+
+Note: This method is mostly only relevant for macOS, where opening files using [CreateProcess] might fail. On other platforms, this falls back to using [CreateProcess].
+
+Note: On macOS, 'program_path' should ideally be the path to a .app bundle.
+*/
+//go:nosplit
+func (self class) OpenWithProgram(program_path String.Readable, paths Packed.Strings) Error.Code { //gd:OS.open_with_program
+	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open_with_program, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8), &struct {
+		program_path gdextension.String
+		paths        gdextension.PackedArray[gdextension.String]
+	}{pointers.Get(gd.InternalString(program_path)), pointers.Get(gd.InternalPackedStrings(paths))})
+	var ret = Error.Code(r_ret)
+	return ret
+}
+
+/*
 Kill (terminate) the process identified by the given process ID ('pid'), such as the ID returned by [Execute] in non-blocking mode. See also [Crash].
 
 Note: This method can also be used to kill processes that were not spawned by the engine.
@@ -1841,7 +1954,7 @@ func (self class) GetProcessExitCode(pid int64) int64 { //gd:OS.get_process_exit
 /*
 Returns the number used by the host machine to uniquely identify this application.
 
-Note: This method is implemented on Android, iOS, Linux, macOS, and Windows.
+Note: On Web, this method always returns 0.
 */
 //go:nosplit
 func (self class) GetProcessId() int64 { //gd:OS.get_process_id
@@ -1948,7 +2061,7 @@ func (self class) GetDistributionName() String.Readable { //gd:OS.get_distributi
 /*
 Returns the exact production and build version of the operating system. This is different from the branded version used in marketing. This helps to distinguish between different releases of operating systems, including minor versions, and insider and custom builds.
 
-- For Windows, the major and minor version are returned, as well as the build number. For example, the returned string may look like 10.0.9926 for a build of Windows 10, and it may look like 6.1.7601 for a build of Windows 7 SP1.
+- For Windows, the major and minor version are returned, as well as the build number. For example, the returned string may look like 10.0.9926 for a build of Windows 10.
 
 - For rolling distributions, such as Arch Linux, an empty string is returned.
 
@@ -1966,9 +2079,11 @@ func (self class) GetVersion() String.Readable { //gd:OS.get_version
 }
 
 /*
-Returns the branded version used in marketing, followed by the build number (on Windows) or the version number (on macOS). Examples include 11 (build 22000) and Sequoia (15.0.0). This value can then be appended to [GetName] to get a full, human-readable operating system name and version combination for the operating system. Windows feature updates such as 24H2 are not contained in the resulting string, but Windows Server is recognized as such (e.g. 2025 (build 26100) for Windows Server 2025).
+Returns the branded version used in marketing, followed by the build number (on Windows), the version number (on macOS), or the SDK version and incremental build number (on Android). Examples include 11 (build 22000), Sequoia (15.0.0), and 15 (SDK 35 build abc528-11988f).
 
-Note: This method is only supported on Windows and macOS. On other operating systems, it returns the same value as [GetVersion].
+This value can then be appended to [GetName] to get a full, human-readable operating system name and version combination for the operating system. Windows feature updates such as 24H2 are not contained in the resulting string, but Windows Server is recognized as such (e.g. 2025 (build 26100) for Windows Server 2025).
+
+Note: This method is only supported on Windows, macOS, and Android. On other operating systems, it returns the same value as [GetVersion].
 */
 //go:nosplit
 func (self class) GetVersionAlias() String.Readable { //gd:OS.get_version_alias
@@ -2021,6 +2136,10 @@ The first element holds the driver name, such as nvidia, amdgpu, etc.
 The second element holds the driver version. For example, on the nvidia driver on a Linux/BSD platform, the version is in the format 510.85.02. For Windows, the driver's format is 31.0.15.1659.
 
 Note: This method is only supported on Linux/BSD and Windows when not running in headless mode. On other platforms, it returns an empty array.
+
+Note: This method will run slowly the first time it is called in a session; it can take several seconds depending on the operating system and hardware. It is blocking if called on the main thread, so it's recommended to call it on a separate thread using [graphics.gd/classdb/Thread]. This allows the engine to keep running while the information is being retrieved. However, [GetVideoAdapterDriverInfo] is not thread-safe, so it should not be called from multiple threads at the same time.
+
+
 */
 //go:nosplit
 func (self class) GetVideoAdapterDriverInfo() Packed.Strings { //gd:OS.get_video_adapter_driver_info
@@ -2470,9 +2589,13 @@ The 'name' must be the full permission name. For example:
 
 - OS.request_permission("android.permission.POST_NOTIFICATIONS")
 
-Note: Permission must be checked during export.
+- OS.request_permission("macos.permission.RECORD_SCREEN")
 
-Note: This method is only implemented on Android.
+- OS.request_permission("appleembedded.permission.AUDIO_RECORD")
+
+Note: On Android, permission must be checked during export.
+
+Note: This method is implemented on Android, macOS, and visionOS platforms.
 */
 //go:nosplit
 func (self class) RequestPermission(name String.Readable) bool { //gd:OS.request_permission
@@ -2498,7 +2621,9 @@ func (self class) RequestPermissions() bool { //gd:OS.request_permissions
 /*
 On Android devices: Returns the list of dangerous permissions that have been granted.
 
-On macOS: Returns the list of user selected folders accessible to the application (sandboxed applications only). Use the native file dialog to request folder access permission.
+On macOS: Returns the list of granted permissions and user selected folders accessible to the application (sandboxed applications only). Use the native file dialog to request folder access permission.
+
+On iOS, visionOS: Returns the list of granted permissions.
 */
 //go:nosplit
 func (self class) GetGrantedPermissions() Packed.Strings { //gd:OS.get_granted_permissions
@@ -2513,6 +2638,22 @@ On macOS (sandboxed applications only), this function clears list of user select
 //go:nosplit
 func (self class) RevokeGrantedPermissions() { //gd:OS.revoke_granted_permissions
 	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.revoke_granted_permissions, 0, &struct{}{})
+}
+
+/*
+Add a custom logger to intercept the internal message stream.
+*/
+//go:nosplit
+func (self class) AddLogger(logger [1]gdclass.Logger) { //gd:OS.add_logger
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_logger, 0|(gdextension.SizeObject<<4), &struct{ logger gdextension.Object }{gdextension.Object(gd.ObjectChecked(logger[0].AsObject()))})
+}
+
+/*
+Remove a custom logger added by [AddLogger].
+*/
+//go:nosplit
+func (self class) RemoveLogger(logger [1]gdclass.Logger) { //gd:OS.remove_logger
+	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_logger, 0|(gdextension.SizeObject<<4), &struct{ logger gdextension.Object }{gdextension.Object(gd.ObjectChecked(logger[0].AsObject()))})
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

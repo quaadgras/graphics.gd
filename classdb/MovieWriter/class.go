@@ -3,9 +3,11 @@
 /*
 Godot can record videos with non-real-time simulation. Like the --fixed-fps [command line argument], this forces the reported delta in [graphics.gd/classdb/Node.Instance.Process] functions to be identical across frames, regardless of how long it actually took to render the frame. This can be used to record high-quality videos with perfect frame pacing regardless of your hardware's capabilities.
 
-Godot has 2 built-in [graphics.gd/classdb/MovieWriter]s:
+Godot has 3 built-in [graphics.gd/classdb/MovieWriter]s:
 
-- AVI container with MJPEG for video and uncompressed audio (.avi file extension). Lossy compression, medium file sizes, fast encoding. The lossy compression quality can be adjusted by changing [graphics.gd/classdb/ProjectSettings] "editor/movie_writer/mjpeg_quality". The resulting file can be viewed in most video players, but it must be converted to another format for viewing on the web or by Godot with [graphics.gd/classdb/VideoStreamPlayer]. MJPEG does not support transparency. AVI output is currently limited to a file of 4 GB in size at most.
+- OGV container with Theora for video and Vorbis for audio (.ogv file extension). Lossy compression, medium file sizes, fast encoding. The lossy compression quality can be adjusted by changing [graphics.gd/classdb/ProjectSettings] "editor/movie_writer/video_quality" and [graphics.gd/classdb/ProjectSettings] "editor/movie_writer/ogv/audio_quality". The resulting file can be viewed in Godot with [graphics.gd/classdb/VideoStreamPlayer] and most video players, but not web browsers as they don't support Theora.
+
+- AVI container with MJPEG for video and uncompressed audio (.avi file extension). Lossy compression, medium file sizes, fast encoding. The lossy compression quality can be adjusted by changing [graphics.gd/classdb/ProjectSettings] "editor/movie_writer/video_quality". The resulting file can be viewed in most video players, but it must be converted to another format for viewing on the web or by Godot with [graphics.gd/classdb/VideoStreamPlayer]. MJPEG does not support transparency. AVI output is currently limited to a file of 4 GB in size at most.
 
 - PNG image sequence for video and WAV for audio (.png file extension). Lossless compression, large file sizes, slow encoding. Designed to be encoded to a video file with another tool such as [FFmpeg] after recording. Transparency is currently not supported, even if the root viewport is set to be transparent.
 
@@ -14,6 +16,10 @@ If you need to encode to a different format or pipe a stream through third-party
 Editor usage: A default movie file path can be specified in [graphics.gd/classdb/ProjectSettings] "editor/movie_writer/movie_file". Alternatively, for running single scenes, a movie_file metadata can be added to the root node, specifying the path to a movie file that will be used when recording that scene. Once a path is set, click the video reel icon in the top-right corner of the editor to enable Movie Maker mode, then run any scene as usual. The engine will start recording as soon as the splash screen is finished, and it will only stop recording when the engine quits. Click the video reel icon again to disable Movie Maker mode. Note that toggling Movie Maker mode does not affect project instances that are already running.
 
 Note: MovieWriter is available for use in both the editor and exported projects, but it is not designed for use by end users to record videos while playing. Players wishing to record gameplay videos should install tools such as [OBS Studio] or [SimpleScreenRecorder] instead.
+
+Note: MJPEG support (.avi file extension) depends on the jpg module being enabled at compile time (default behavior).
+
+Note: OGV support (.ogv file extension) depends on the theora module being enabled at compile time (default behavior). Theora compression is only available in editor binaries.
 
 [FFmpeg]: https://ffmpeg.org/
 [OBS Studio]: https://obsproject.com/
@@ -127,11 +133,11 @@ type Interface interface {
 	//
 	// func _handles_file(path):
 	//
-	//     # Allows specifying an output file with a `.mkv` file extension (case-insensitive),
+	// # Allows specifying an output file with a `.mkv` file extension (case-insensitive),
 	//
-	//     # either in the Project Settings or with the `--write-movie <path>` command line argument.
+	// # either in the Project Settings or with the `--write-movie <path>` command line argument.
 	//
-	//     return path.get_extension().to_lower() == "mkv"
+	// return path.get_extension().to_lower() == "mkv"
 	//
 	//
 	HandlesFile(path string) bool
