@@ -3,9 +3,9 @@
 /*
 This class represents WebSocket connection, and can be used as a WebSocket client (RFC 6455-compliant) or as a remote peer of a WebSocket server.
 
-You can send WebSocket binary frames using [graphics.gd/classdb/PacketPeer.Instance.PutPacket], and WebSocket text frames using [Instance.Send] (prefer text frames when interacting with text-based API). You can check the frame type of the last packet via [Instance.WasStringPacket].
+You can send WebSocket binary frames using [PacketPeer.PutPacket], and WebSocket text frames using [Send] (prefer text frames when interacting with text-based API). You can check the frame type of the last packet via [WasStringPacket].
 
-To start a WebSocket client, first call [Instance.ConnectToUrl], then regularly call [Instance.Poll] (e.g. during [graphics.gd/classdb/Node] process). You can query the socket state via [Instance.GetReadyState], get the number of pending packets using [graphics.gd/classdb/PacketPeer.Instance.GetAvailablePacketCount], and retrieve them via [graphics.gd/classdb/PacketPeer.Instance.GetPacket].
+To start a WebSocket client, first call [ConnectToUrl], then regularly call [Poll] (e.g. during [Node] process). You can query the socket state via [GetReadyState], get the number of pending packets using [PacketPeer.GetAvailablePacketCount], and retrieve them via [PacketPeer.GetPacket].
 
 	package main
 
@@ -43,7 +43,18 @@ To start a WebSocket client, first call [Instance.ConnectToUrl], then regularly 
 		}
 	}
 
-To use the peer as part of a WebSocket server refer to [Instance.AcceptStream] and the online tutorial.
+To use the peer as part of a WebSocket server refer to [AcceptStream] and the online tutorial.
+
+[AcceptStream]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.AcceptStream
+[ConnectToUrl]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.ConnectToUrl
+[GetReadyState]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.GetReadyState
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[PacketPeer.GetAvailablePacketCount]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.GetAvailablePacketCount
+[PacketPeer.GetPacket]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.GetPacket
+[PacketPeer.PutPacket]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.PutPacket
+[Poll]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.Poll
+[Send]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.Send
+[WasStringPacket]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.WasStringPacket
 */
 package WebSocketPeer
 
@@ -160,7 +171,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.WebSocketPeer
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.WebSocketPeer
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -171,52 +187,74 @@ type Any interface {
 }
 
 /*
-Connects to the given URL. TLS certificates will be verified against the hostname when connecting using the wss:// protocol. You can pass the optional 'tls_client_options' parameter to customize the trusted certification authorities, or disable the common name verification. See [graphics.gd/classdb/TLSOptions.Instance.Client] and [graphics.gd/classdb/TLSOptions.Instance.ClientUnsafe].
+Connects to the given URL. TLS certificates will be verified against the hostname when connecting using the wss:// protocol. You can pass the optional 'tls_client_options' parameter to customize the trusted certification authorities, or disable the common name verification. See [TLSOptions.Client] and [TLSOptions.ClientUnsafe].
 
-Note: This method is non-blocking, and will return [Ok] before the connection is established as long as the provided parameters are valid and the peer is not in an invalid state (e.g. already connected). Regularly call [Instance.Poll] (e.g. during [graphics.gd/classdb/Node] process) and check the result of [Instance.GetReadyState] to know whether the connection succeeds or fails.
+Note: This method is non-blocking, and will return [Ok] before the connection is established as long as the provided parameters are valid and the peer is not in an invalid state (e.g. already connected). Regularly call [Poll] (e.g. during [Node] process) and check the result of [GetReadyState] to know whether the connection succeeds or fails.
 
 Note: To avoid mixed content warnings or errors in Web, you may have to use a 'url' that starts with wss:// (secure) instead of ws://. When doing so, make sure to use the fully qualified domain name that matches the one defined in the server's TLS certificate. Do not connect directly via the IP address for wss:// connections, as it won't match with the TLS certificate.
+
+[GetReadyState]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.GetReadyState
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Poll]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.Poll
+[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
+[TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 func (self Instance) ConnectToUrl(url string) error { //gd:WebSocketPeer.connect_to_url
 	return error(gd.ToError(Advanced(self).ConnectToUrl(String.New(url), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
-Connects to the given URL. TLS certificates will be verified against the hostname when connecting using the wss:// protocol. You can pass the optional 'tls_client_options' parameter to customize the trusted certification authorities, or disable the common name verification. See [graphics.gd/classdb/TLSOptions.Instance.Client] and [graphics.gd/classdb/TLSOptions.Instance.ClientUnsafe].
+Connects to the given URL. TLS certificates will be verified against the hostname when connecting using the wss:// protocol. You can pass the optional 'tls_client_options' parameter to customize the trusted certification authorities, or disable the common name verification. See [TLSOptions.Client] and [TLSOptions.ClientUnsafe].
 
-Note: This method is non-blocking, and will return [Ok] before the connection is established as long as the provided parameters are valid and the peer is not in an invalid state (e.g. already connected). Regularly call [Instance.Poll] (e.g. during [graphics.gd/classdb/Node] process) and check the result of [Instance.GetReadyState] to know whether the connection succeeds or fails.
+Note: This method is non-blocking, and will return [Ok] before the connection is established as long as the provided parameters are valid and the peer is not in an invalid state (e.g. already connected). Regularly call [Poll] (e.g. during [Node] process) and check the result of [GetReadyState] to know whether the connection succeeds or fails.
 
 Note: To avoid mixed content warnings or errors in Web, you may have to use a 'url' that starts with wss:// (secure) instead of ws://. When doing so, make sure to use the fully qualified domain name that matches the one defined in the server's TLS certificate. Do not connect directly via the IP address for wss:// connections, as it won't match with the TLS certificate.
+
+[GetReadyState]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.GetReadyState
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Poll]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.Poll
+[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
+[TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
-func (self Expanded) ConnectToUrl(url string, tls_client_options TLSOptions.Instance) error { //gd:WebSocketPeer.connect_to_url
+func (self MoreArgs) ConnectToUrl(url string, tls_client_options TLSOptions.Instance) error { //gd:WebSocketPeer.connect_to_url
 	return error(gd.ToError(Advanced(self).ConnectToUrl(String.New(url), tls_client_options)))
 }
 
 /*
-Accepts a peer connection performing the HTTP handshake as a WebSocket server. The 'stream' must be a valid TCP stream retrieved via [graphics.gd/classdb/TCPServer.Instance.TakeConnection], or a TLS stream accepted via [graphics.gd/classdb/StreamPeerTLS.Instance.AcceptStream].
+Accepts a peer connection performing the HTTP handshake as a WebSocket server. The 'stream' must be a valid TCP stream retrieved via [TCPServer.TakeConnection], or a TLS stream accepted via [StreamPeerTLS.AcceptStream].
 
 Note: Not supported in Web exports due to browsers' restrictions.
+
+[StreamPeerTLS.AcceptStream]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTLS#Instance.AcceptStream
+[TCPServer.TakeConnection]: https://pkg.go.dev/graphics.gd/classdb/TCPServer#Instance.TakeConnection
 */
 func (self Instance) AcceptStream(stream StreamPeer.Instance) error { //gd:WebSocketPeer.accept_stream
 	return error(gd.ToError(Advanced(self).AcceptStream(stream)))
 }
 
 /*
-Sends the given 'message' using the desired 'write_mode'. When sending a string, prefer using [Instance.SendText].
+Sends the given 'message' using the desired 'write_mode'. When sending a string, prefer using [SendText].
+
+[SendText]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.SendText
 */
 func (self Instance) Send(message []byte) error { //gd:WebSocketPeer.send
 	return error(gd.ToError(Advanced(self).Send(Packed.BytesFrom(message...), 1)))
 }
 
 /*
-Sends the given 'message' using the desired 'write_mode'. When sending a string, prefer using [Instance.SendText].
+Sends the given 'message' using the desired 'write_mode'. When sending a string, prefer using [SendText].
+
+[SendText]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.SendText
 */
-func (self Expanded) Send(message []byte, write_mode WriteMode) error { //gd:WebSocketPeer.send
+func (self MoreArgs) Send(message []byte, write_mode WriteMode) error { //gd:WebSocketPeer.send
 	return error(gd.ToError(Advanced(self).Send(Packed.BytesFrom(message...), write_mode)))
 }
 
 /*
-Sends the given 'message' using WebSocket text mode. Prefer this method over [graphics.gd/classdb/PacketPeer.Instance.PutPacket] when interacting with third-party text-based API (e.g. when using [graphics.gd/classdb/JSON] formatted messages).
+Sends the given 'message' using WebSocket text mode. Prefer this method over [PacketPeer.PutPacket] when interacting with third-party text-based API (e.g. when using [JSON] formatted messages).
+
+[JSON]: https://pkg.go.dev/graphics.gd/classdb/JSON
+[PacketPeer.PutPacket]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.PutPacket
 */
 func (self Instance) SendText(message string) error { //gd:WebSocketPeer.send_text
 	return error(gd.ToError(Advanced(self).SendText(String.New(message))))
@@ -254,7 +292,7 @@ Note: To achieve a clean close, you will need to keep polling until [StateClosed
 
 Note: The Web export might not support all status codes. Please refer to browser-specific documentation for more details.
 */
-func (self Expanded) Close(code int, reason string) { //gd:WebSocketPeer.close
+func (self MoreArgs) Close(code int, reason string) { //gd:WebSocketPeer.close
 	Advanced(self).Close(int64(code), String.New(reason))
 }
 
@@ -284,16 +322,21 @@ func (self Instance) GetSelectedProtocol() string { //gd:WebSocketPeer.get_selec
 }
 
 /*
-Returns the URL requested by this peer. The URL is derived from the url passed to [Instance.ConnectToUrl] or from the HTTP headers when acting as server (i.e. when using [Instance.AcceptStream]).
+Returns the URL requested by this peer. The URL is derived from the url passed to [ConnectToUrl] or from the HTTP headers when acting as server (i.e. when using [AcceptStream]).
+
+[AcceptStream]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.AcceptStream
+[ConnectToUrl]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.ConnectToUrl
 */
 func (self Instance) GetRequestedUrl() string { //gd:WebSocketPeer.get_requested_url
 	return string(Advanced(self).GetRequestedUrl().String())
 }
 
 /*
-Disable Nagle's algorithm on the underlying TCP socket (default). See [graphics.gd/classdb/StreamPeerTCP.Instance.SetNoDelay] for more information.
+Disable Nagle's algorithm on the underlying TCP socket (default). See [StreamPeerTCP.SetNoDelay] for more information.
 
 Note: Not available in the Web export.
+
+[StreamPeerTCP.SetNoDelay]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP#Instance.SetNoDelay
 */
 func (self Instance) SetNoDelay(enabled bool) { //gd:WebSocketPeer.set_no_delay
 	Advanced(self).SetNoDelay(enabled)
@@ -314,14 +357,18 @@ func (self Instance) GetReadyState() State { //gd:WebSocketPeer.get_ready_state
 }
 
 /*
-Returns the received WebSocket close frame status code, or -1 when the connection was not cleanly closed. Only call this method when [Instance.GetReadyState] returns [StateClosed].
+Returns the received WebSocket close frame status code, or -1 when the connection was not cleanly closed. Only call this method when [GetReadyState] returns [StateClosed].
+
+[GetReadyState]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.GetReadyState
 */
 func (self Instance) GetCloseCode() int { //gd:WebSocketPeer.get_close_code
 	return int(int(Advanced(self).GetCloseCode()))
 }
 
 /*
-Returns the received WebSocket close frame status reason string. Only call this method when [Instance.GetReadyState] returns [StateClosed].
+Returns the received WebSocket close frame status reason string. Only call this method when [GetReadyState] returns [StateClosed].
+
+[GetReadyState]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.GetReadyState
 */
 func (self Instance) GetCloseReason() string { //gd:WebSocketPeer.get_close_reason
 	return string(Advanced(self).GetCloseReason().String())
@@ -419,11 +466,17 @@ func (self Instance) SetHeartbeatInterval(value Float.X) {
 }
 
 /*
-Connects to the given URL. TLS certificates will be verified against the hostname when connecting using the wss:// protocol. You can pass the optional 'tls_client_options' parameter to customize the trusted certification authorities, or disable the common name verification. See [graphics.gd/classdb/TLSOptions.Instance.Client] and [graphics.gd/classdb/TLSOptions.Instance.ClientUnsafe].
+Connects to the given URL. TLS certificates will be verified against the hostname when connecting using the wss:// protocol. You can pass the optional 'tls_client_options' parameter to customize the trusted certification authorities, or disable the common name verification. See [TLSOptions.Client] and [TLSOptions.ClientUnsafe].
 
-Note: This method is non-blocking, and will return [Ok] before the connection is established as long as the provided parameters are valid and the peer is not in an invalid state (e.g. already connected). Regularly call [Instance.Poll] (e.g. during [graphics.gd/classdb/Node] process) and check the result of [Instance.GetReadyState] to know whether the connection succeeds or fails.
+Note: This method is non-blocking, and will return [Ok] before the connection is established as long as the provided parameters are valid and the peer is not in an invalid state (e.g. already connected). Regularly call [Poll] (e.g. during [Node] process) and check the result of [GetReadyState] to know whether the connection succeeds or fails.
 
 Note: To avoid mixed content warnings or errors in Web, you may have to use a 'url' that starts with wss:// (secure) instead of ws://. When doing so, make sure to use the fully qualified domain name that matches the one defined in the server's TLS certificate. Do not connect directly via the IP address for wss:// connections, as it won't match with the TLS certificate.
+
+[GetReadyState]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.GetReadyState
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Poll]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.Poll
+[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
+[TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 //go:nosplit
 func (self class) ConnectToUrl(url String.Readable, tls_client_options [1]gdclass.TLSOptions) Error.Code { //gd:WebSocketPeer.connect_to_url
@@ -436,9 +489,12 @@ func (self class) ConnectToUrl(url String.Readable, tls_client_options [1]gdclas
 }
 
 /*
-Accepts a peer connection performing the HTTP handshake as a WebSocket server. The 'stream' must be a valid TCP stream retrieved via [graphics.gd/classdb/TCPServer.Instance.TakeConnection], or a TLS stream accepted via [graphics.gd/classdb/StreamPeerTLS.Instance.AcceptStream].
+Accepts a peer connection performing the HTTP handshake as a WebSocket server. The 'stream' must be a valid TCP stream retrieved via [TCPServer.TakeConnection], or a TLS stream accepted via [StreamPeerTLS.AcceptStream].
 
 Note: Not supported in Web exports due to browsers' restrictions.
+
+[StreamPeerTLS.AcceptStream]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTLS#Instance.AcceptStream
+[TCPServer.TakeConnection]: https://pkg.go.dev/graphics.gd/classdb/TCPServer#Instance.TakeConnection
 */
 //go:nosplit
 func (self class) AcceptStream(stream [1]gdclass.StreamPeer) Error.Code { //gd:WebSocketPeer.accept_stream
@@ -448,7 +504,9 @@ func (self class) AcceptStream(stream [1]gdclass.StreamPeer) Error.Code { //gd:W
 }
 
 /*
-Sends the given 'message' using the desired 'write_mode'. When sending a string, prefer using [Instance.SendText].
+Sends the given 'message' using the desired 'write_mode'. When sending a string, prefer using [SendText].
+
+[SendText]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.SendText
 */
 //go:nosplit
 func (self class) Send(message Packed.Bytes, write_mode WriteMode) Error.Code { //gd:WebSocketPeer.send
@@ -461,7 +519,10 @@ func (self class) Send(message Packed.Bytes, write_mode WriteMode) Error.Code { 
 }
 
 /*
-Sends the given 'message' using WebSocket text mode. Prefer this method over [graphics.gd/classdb/PacketPeer.Instance.PutPacket] when interacting with third-party text-based API (e.g. when using [graphics.gd/classdb/JSON] formatted messages).
+Sends the given 'message' using WebSocket text mode. Prefer this method over [PacketPeer.PutPacket] when interacting with third-party text-based API (e.g. when using [JSON] formatted messages).
+
+[JSON]: https://pkg.go.dev/graphics.gd/classdb/JSON
+[PacketPeer.PutPacket]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.PutPacket
 */
 //go:nosplit
 func (self class) SendText(message String.Readable) Error.Code { //gd:WebSocketPeer.send_text
@@ -538,7 +599,10 @@ func (self class) GetSelectedProtocol() String.Readable { //gd:WebSocketPeer.get
 }
 
 /*
-Returns the URL requested by this peer. The URL is derived from the url passed to [Instance.ConnectToUrl] or from the HTTP headers when acting as server (i.e. when using [Instance.AcceptStream]).
+Returns the URL requested by this peer. The URL is derived from the url passed to [ConnectToUrl] or from the HTTP headers when acting as server (i.e. when using [AcceptStream]).
+
+[AcceptStream]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.AcceptStream
+[ConnectToUrl]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.ConnectToUrl
 */
 //go:nosplit
 func (self class) GetRequestedUrl() String.Readable { //gd:WebSocketPeer.get_requested_url
@@ -548,9 +612,11 @@ func (self class) GetRequestedUrl() String.Readable { //gd:WebSocketPeer.get_req
 }
 
 /*
-Disable Nagle's algorithm on the underlying TCP socket (default). See [graphics.gd/classdb/StreamPeerTCP.Instance.SetNoDelay] for more information.
+Disable Nagle's algorithm on the underlying TCP socket (default). See [StreamPeerTCP.SetNoDelay] for more information.
 
 Note: Not available in the Web export.
+
+[StreamPeerTCP.SetNoDelay]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP#Instance.SetNoDelay
 */
 //go:nosplit
 func (self class) SetNoDelay(enabled bool) { //gd:WebSocketPeer.set_no_delay
@@ -578,7 +644,9 @@ func (self class) GetReadyState() State { //gd:WebSocketPeer.get_ready_state
 }
 
 /*
-Returns the received WebSocket close frame status code, or -1 when the connection was not cleanly closed. Only call this method when [Instance.GetReadyState] returns [StateClosed].
+Returns the received WebSocket close frame status code, or -1 when the connection was not cleanly closed. Only call this method when [GetReadyState] returns [StateClosed].
+
+[GetReadyState]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.GetReadyState
 */
 //go:nosplit
 func (self class) GetCloseCode() int64 { //gd:WebSocketPeer.get_close_code
@@ -588,7 +656,9 @@ func (self class) GetCloseCode() int64 { //gd:WebSocketPeer.get_close_code
 }
 
 /*
-Returns the received WebSocket close frame status reason string. Only call this method when [Instance.GetReadyState] returns [StateClosed].
+Returns the received WebSocket close frame status reason string. Only call this method when [GetReadyState] returns [StateClosed].
+
+[GetReadyState]: https://pkg.go.dev/graphics.gd/classdb/WebSocketPeer#Instance.GetReadyState
 */
 //go:nosplit
 func (self class) GetCloseReason() String.Readable { //gd:WebSocketPeer.get_close_reason

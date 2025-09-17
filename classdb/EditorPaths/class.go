@@ -3,10 +3,11 @@
 /*
 This editor-only singleton returns OS-specific paths to various data folders and files. It can be used in editor plugins to ensure files are saved in the correct location on each operating system.
 
-Note: This singleton is not accessible in exported projects. Attempting to access it in an exported project will result in a script error as the singleton won't be declared. To prevent script errors in exported projects, use [graphics.gd/classdb/Engine.HasSingleton] to check whether the singleton is available before using it.
+Note: This singleton is not accessible in exported projects. Attempting to access it in an exported project will result in a script error as the singleton won't be declared. To prevent script errors in exported projects, use [Engine.HasSingleton] to check whether the singleton is available before using it.
 
 Note: On the Linux/BSD platform, Godot complies with the [XDG Base Directory Specification]. You can override environment variables following the specification to change the editor and project data paths.
 
+[Engine.HasSingleton]: https://pkg.go.dev/graphics.gd/classdb/Engine#HasSingleton
 [XDG Base Directory Specification]: https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 */
 package EditorPaths
@@ -137,7 +138,7 @@ func (self Instance) GetCacheDir() string { //gd:EditorPaths.get_cache_dir
 /*
 Returns true if the editor is marked as self-contained, false otherwise. When self-contained mode is enabled, user configuration, data and cache files are saved in an editor_data/ folder next to the editor binary. This makes portable usage easier and ensures the Godot editor minimizes file writes outside its own folder. Self-contained mode is not available for exported projects.
 
-Self-contained mode can be enabled by creating a file named ._sc_ or _sc_ in the same folder as the editor binary or macOS .app bundle while the editor is not running. See also [Instance.GetSelfContainedFile].
+Self-contained mode can be enabled by creating a file named ._sc_ or _sc_ in the same folder as the editor binary or macOS .app bundle while the editor is not running. See also [GetSelfContainedFile].
 
 Note: On macOS, quarantine flag should be manually removed before using self-contained mode, see [Running on macOS].
 
@@ -145,6 +146,7 @@ Note: On macOS, placing _sc_ or any other file inside .app bundle will break dig
 
 Note: The Steam release of Godot uses self-contained mode by default.
 
+[GetSelfContainedFile]: https://pkg.go.dev/graphics.gd/classdb/EditorPaths#Instance.GetSelfContainedFile
 [Running on macOS]: https://docs.godotengine.org/en/stable/tutorials/export/running_on_macos.html
 */
 func (self Instance) IsSelfContained() bool { //gd:EditorPaths.is_self_contained
@@ -152,7 +154,9 @@ func (self Instance) IsSelfContained() bool { //gd:EditorPaths.is_self_contained
 }
 
 /*
-Returns the absolute path to the self-contained file that makes the current Godot editor instance be considered as self-contained. Returns an empty string if the current Godot editor instance isn't self-contained. See also [Instance.IsSelfContained].
+Returns the absolute path to the self-contained file that makes the current Godot editor instance be considered as self-contained. Returns an empty string if the current Godot editor instance isn't self-contained. See also [IsSelfContained].
+
+[IsSelfContained]: https://pkg.go.dev/graphics.gd/classdb/EditorPaths#Instance.IsSelfContained
 */
 func (self Instance) GetSelfContainedFile() string { //gd:EditorPaths.get_self_contained_file
 	return string(Advanced(self).GetSelfContainedFile().String())
@@ -252,7 +256,7 @@ func (self class) GetCacheDir() String.Readable { //gd:EditorPaths.get_cache_dir
 /*
 Returns true if the editor is marked as self-contained, false otherwise. When self-contained mode is enabled, user configuration, data and cache files are saved in an editor_data/ folder next to the editor binary. This makes portable usage easier and ensures the Godot editor minimizes file writes outside its own folder. Self-contained mode is not available for exported projects.
 
-Self-contained mode can be enabled by creating a file named ._sc_ or _sc_ in the same folder as the editor binary or macOS .app bundle while the editor is not running. See also [Instance.GetSelfContainedFile].
+Self-contained mode can be enabled by creating a file named ._sc_ or _sc_ in the same folder as the editor binary or macOS .app bundle while the editor is not running. See also [GetSelfContainedFile].
 
 Note: On macOS, quarantine flag should be manually removed before using self-contained mode, see [Running on macOS].
 
@@ -260,6 +264,7 @@ Note: On macOS, placing _sc_ or any other file inside .app bundle will break dig
 
 Note: The Steam release of Godot uses self-contained mode by default.
 
+[GetSelfContainedFile]: https://pkg.go.dev/graphics.gd/classdb/EditorPaths#Instance.GetSelfContainedFile
 [Running on macOS]: https://docs.godotengine.org/en/stable/tutorials/export/running_on_macos.html
 */
 //go:nosplit
@@ -270,7 +275,9 @@ func (self class) IsSelfContained() bool { //gd:EditorPaths.is_self_contained
 }
 
 /*
-Returns the absolute path to the self-contained file that makes the current Godot editor instance be considered as self-contained. Returns an empty string if the current Godot editor instance isn't self-contained. See also [Instance.IsSelfContained].
+Returns the absolute path to the self-contained file that makes the current Godot editor instance be considered as self-contained. Returns an empty string if the current Godot editor instance isn't self-contained. See also [IsSelfContained].
+
+[IsSelfContained]: https://pkg.go.dev/graphics.gd/classdb/EditorPaths#Instance.IsSelfContained
 */
 //go:nosplit
 func (self class) GetSelfContainedFile() String.Readable { //gd:EditorPaths.get_self_contained_file

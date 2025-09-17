@@ -149,6 +149,8 @@ func (self Instance) GetViewProjection(view int) Projection.XYZW { //gd:RenderSc
 
 /*
 Return the [Resource.ID] of the uniform buffer containing the scene data as a UBO.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func (self Instance) GetUniformBuffer() RID.UniformBuffer { //gd:RenderSceneData.get_uniform_buffer
 	return RID.UniformBuffer(RID.UniformBuffer(Advanced(self).GetUniformBuffer()))
@@ -254,6 +256,8 @@ func (self class) GetViewProjection(view int64) Projection.XYZW { //gd:RenderSce
 
 /*
 Return the [Resource.ID] of the uniform buffer containing the scene data as a UBO.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) GetUniformBuffer() RID.Any { //gd:RenderSceneData.get_uniform_buffer

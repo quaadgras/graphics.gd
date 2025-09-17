@@ -121,7 +121,9 @@ type Any interface {
 }
 
 /*
-Creates a new GLTFPhysicsBody instance from the given Godot [graphics.gd/classdb/CollisionObject3D] node.
+Creates a new GLTFPhysicsBody instance from the given Godot [CollisionObject3D] node.
+
+[CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
 */
 func FromNode(body_node CollisionObject3D.Instance) Instance { //gd:GLTFPhysicsBody.from_node
 	self := Instance{}
@@ -129,7 +131,9 @@ func FromNode(body_node CollisionObject3D.Instance) Instance { //gd:GLTFPhysicsB
 }
 
 /*
-Converts this GLTFPhysicsBody instance into a Godot [graphics.gd/classdb/CollisionObject3D] node.
+Converts this GLTFPhysicsBody instance into a Godot [CollisionObject3D] node.
+
+[CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
 */
 func (self Instance) ToNode() CollisionObject3D.Instance { //gd:GLTFPhysicsBody.to_node
 	return CollisionObject3D.Instance(Advanced(self).ToNode())
@@ -258,7 +262,9 @@ func (self Instance) SetInertiaTensor(value Basis.XYZ) {
 }
 
 /*
-Creates a new GLTFPhysicsBody instance from the given Godot [graphics.gd/classdb/CollisionObject3D] node.
+Creates a new GLTFPhysicsBody instance from the given Godot [CollisionObject3D] node.
+
+[CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
 */
 //go:nosplit
 func (self class) FromNode(body_node [1]gdclass.CollisionObject3D) [1]gdclass.GLTFPhysicsBody { //gd:GLTFPhysicsBody.from_node
@@ -268,7 +274,9 @@ func (self class) FromNode(body_node [1]gdclass.CollisionObject3D) [1]gdclass.GL
 }
 
 /*
-Converts this GLTFPhysicsBody instance into a Godot [graphics.gd/classdb/CollisionObject3D] node.
+Converts this GLTFPhysicsBody instance into a Godot [CollisionObject3D] node.
+
+[CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
 */
 //go:nosplit
 func (self class) ToNode() [1]gdclass.CollisionObject3D { //gd:GLTFPhysicsBody.to_node

@@ -3,12 +3,15 @@
 /*
 The BMFont format is a format created by the [BMFont] program. Many BMFont-compatible programs also exist, like [BMGlyph].
 
-Compared to [graphics.gd/classdb/ResourceImporterImageFont], [graphics.gd/classdb/ResourceImporterBMFont] supports bitmap fonts with varying glyph widths/heights.
+Compared to [ResourceImporterImageFont], [ResourceImporterBMFont] supports bitmap fonts with varying glyph widths/heights.
 
-See also [graphics.gd/classdb/ResourceImporterDynamicFont].
+See also [ResourceImporterDynamicFont].
 
 [BMFont]: https://www.angelcode.com/products/bmfont/
 [BMGlyph]: https://www.bmglyph.com/
+[ResourceImporterBMFont]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterBMFont
+[ResourceImporterDynamicFont]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterDynamicFont
+[ResourceImporterImageFont]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterImageFont
 */
 package ResourceImporterBMFont
 

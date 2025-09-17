@@ -120,28 +120,36 @@ type Any interface {
 }
 
 /*
-Defines all input ports using a string formatted as a colon-separated list: id,type,name; (see [Instance.AddInputPort]).
+Defines all input ports using a string formatted as a colon-separated list: id,type,name; (see [AddInputPort]).
+
+[AddInputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddInputPort
 */
 func (self Instance) SetInputs(inputs string) { //gd:VisualShaderNodeGroupBase.set_inputs
 	Advanced(self).SetInputs(String.New(inputs))
 }
 
 /*
-Returns a string description of the input ports as a colon-separated list using the format id,type,name; (see [Instance.AddInputPort]).
+Returns a string description of the input ports as a colon-separated list using the format id,type,name; (see [AddInputPort]).
+
+[AddInputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddInputPort
 */
 func (self Instance) GetInputs() string { //gd:VisualShaderNodeGroupBase.get_inputs
 	return string(Advanced(self).GetInputs().String())
 }
 
 /*
-Defines all output ports using a string formatted as a colon-separated list: id,type,name; (see [Instance.AddOutputPort]).
+Defines all output ports using a string formatted as a colon-separated list: id,type,name; (see [AddOutputPort]).
+
+[AddOutputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddOutputPort
 */
 func (self Instance) SetOutputs(outputs string) { //gd:VisualShaderNodeGroupBase.set_outputs
 	Advanced(self).SetOutputs(String.New(outputs))
 }
 
 /*
-Returns a string description of the output ports as a colon-separated list using the format id,type,name; (see [Instance.AddOutputPort]).
+Returns a string description of the output ports as a colon-separated list using the format id,type,name; (see [AddOutputPort]).
+
+[AddOutputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddOutputPort
 */
 func (self Instance) GetOutputs() string { //gd:VisualShaderNodeGroupBase.get_outputs
 	return string(Advanced(self).GetOutputs().String())
@@ -169,7 +177,9 @@ func (self Instance) RemoveInputPort(id int) { //gd:VisualShaderNodeGroupBase.re
 }
 
 /*
-Returns the number of input ports in use. Alternative for [Instance.GetFreeInputPortId].
+Returns the number of input ports in use. Alternative for [GetFreeInputPortId].
+
+[GetFreeInputPortId]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.GetFreeInputPortId
 */
 func (self Instance) GetInputPortCount() int { //gd:VisualShaderNodeGroupBase.get_input_port_count
 	return int(int(Advanced(self).GetInputPortCount()))
@@ -204,7 +214,9 @@ func (self Instance) RemoveOutputPort(id int) { //gd:VisualShaderNodeGroupBase.r
 }
 
 /*
-Returns the number of output ports in use. Alternative for [Instance.GetFreeOutputPortId].
+Returns the number of output ports in use. Alternative for [GetFreeOutputPortId].
+
+[GetFreeOutputPortId]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.GetFreeOutputPortId
 */
 func (self Instance) GetOutputPortCount() int { //gd:VisualShaderNodeGroupBase.get_output_port_count
 	return int(int(Advanced(self).GetOutputPortCount()))
@@ -253,14 +265,18 @@ func (self Instance) SetOutputPortType(id int, atype int) { //gd:VisualShaderNod
 }
 
 /*
-Returns a free input port ID which can be used in [Instance.AddInputPort].
+Returns a free input port ID which can be used in [AddInputPort].
+
+[AddInputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddInputPort
 */
 func (self Instance) GetFreeInputPortId() int { //gd:VisualShaderNodeGroupBase.get_free_input_port_id
 	return int(int(Advanced(self).GetFreeInputPortId()))
 }
 
 /*
-Returns a free output port ID which can be used in [Instance.AddOutputPort].
+Returns a free output port ID which can be used in [AddOutputPort].
+
+[AddOutputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddOutputPort
 */
 func (self Instance) GetFreeOutputPortId() int { //gd:VisualShaderNodeGroupBase.get_free_output_port_id
 	return int(int(Advanced(self).GetFreeOutputPortId()))
@@ -310,7 +326,9 @@ func New() Instance {
 }
 
 /*
-Defines all input ports using a string formatted as a colon-separated list: id,type,name; (see [Instance.AddInputPort]).
+Defines all input ports using a string formatted as a colon-separated list: id,type,name; (see [AddInputPort]).
+
+[AddInputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddInputPort
 */
 //go:nosplit
 func (self class) SetInputs(inputs String.Readable) { //gd:VisualShaderNodeGroupBase.set_inputs
@@ -318,7 +336,9 @@ func (self class) SetInputs(inputs String.Readable) { //gd:VisualShaderNodeGroup
 }
 
 /*
-Returns a string description of the input ports as a colon-separated list using the format id,type,name; (see [Instance.AddInputPort]).
+Returns a string description of the input ports as a colon-separated list using the format id,type,name; (see [AddInputPort]).
+
+[AddInputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddInputPort
 */
 //go:nosplit
 func (self class) GetInputs() String.Readable { //gd:VisualShaderNodeGroupBase.get_inputs
@@ -328,7 +348,9 @@ func (self class) GetInputs() String.Readable { //gd:VisualShaderNodeGroupBase.g
 }
 
 /*
-Defines all output ports using a string formatted as a colon-separated list: id,type,name; (see [Instance.AddOutputPort]).
+Defines all output ports using a string formatted as a colon-separated list: id,type,name; (see [AddOutputPort]).
+
+[AddOutputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddOutputPort
 */
 //go:nosplit
 func (self class) SetOutputs(outputs String.Readable) { //gd:VisualShaderNodeGroupBase.set_outputs
@@ -336,7 +358,9 @@ func (self class) SetOutputs(outputs String.Readable) { //gd:VisualShaderNodeGro
 }
 
 /*
-Returns a string description of the output ports as a colon-separated list using the format id,type,name; (see [Instance.AddOutputPort]).
+Returns a string description of the output ports as a colon-separated list using the format id,type,name; (see [AddOutputPort]).
+
+[AddOutputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddOutputPort
 */
 //go:nosplit
 func (self class) GetOutputs() String.Readable { //gd:VisualShaderNodeGroupBase.get_outputs
@@ -376,7 +400,9 @@ func (self class) RemoveInputPort(id int64) { //gd:VisualShaderNodeGroupBase.rem
 }
 
 /*
-Returns the number of input ports in use. Alternative for [Instance.GetFreeInputPortId].
+Returns the number of input ports in use. Alternative for [GetFreeInputPortId].
+
+[GetFreeInputPortId]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.GetFreeInputPortId
 */
 //go:nosplit
 func (self class) GetInputPortCount() int64 { //gd:VisualShaderNodeGroupBase.get_input_port_count
@@ -424,7 +450,9 @@ func (self class) RemoveOutputPort(id int64) { //gd:VisualShaderNodeGroupBase.re
 }
 
 /*
-Returns the number of output ports in use. Alternative for [Instance.GetFreeOutputPortId].
+Returns the number of output ports in use. Alternative for [GetFreeOutputPortId].
+
+[GetFreeOutputPortId]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.GetFreeOutputPortId
 */
 //go:nosplit
 func (self class) GetOutputPortCount() int64 { //gd:VisualShaderNodeGroupBase.get_output_port_count
@@ -496,7 +524,9 @@ func (self class) SetOutputPortType(id int64, atype int64) { //gd:VisualShaderNo
 }
 
 /*
-Returns a free input port ID which can be used in [Instance.AddInputPort].
+Returns a free input port ID which can be used in [AddInputPort].
+
+[AddInputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddInputPort
 */
 //go:nosplit
 func (self class) GetFreeInputPortId() int64 { //gd:VisualShaderNodeGroupBase.get_free_input_port_id
@@ -506,7 +536,9 @@ func (self class) GetFreeInputPortId() int64 { //gd:VisualShaderNodeGroupBase.ge
 }
 
 /*
-Returns a free output port ID which can be used in [Instance.AddOutputPort].
+Returns a free output port ID which can be used in [AddOutputPort].
+
+[AddOutputPort]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeGroupBase#Instance.AddOutputPort
 */
 //go:nosplit
 func (self class) GetFreeOutputPortId() int64 { //gd:VisualShaderNodeGroupBase.get_free_output_port_id

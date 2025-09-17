@@ -105,7 +105,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.BitMap
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.BitMap
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -132,7 +137,7 @@ func (self Instance) CreateFromImageAlpha(image Image.Instance) { //gd:BitMap.cr
 /*
 Creates a bitmap that matches the given image dimensions, every element of the bitmap is set to false if the alpha value of the image at that position is equal to 'threshold' or less, and true in other case.
 */
-func (self Expanded) CreateFromImageAlpha(image Image.Instance, threshold Float.X) { //gd:BitMap.create_from_image_alpha
+func (self MoreArgs) CreateFromImageAlpha(image Image.Instance, threshold Float.X) { //gd:BitMap.create_from_image_alpha
 	Advanced(self).CreateFromImageAlpha(image, float64(threshold))
 }
 
@@ -193,7 +198,9 @@ func (self Instance) Resize(new_size Vector2i.XY) { //gd:BitMap.resize
 }
 
 /*
-Applies morphological dilation or erosion to the bitmap. If 'pixels' is positive, dilation is applied to the bitmap. If 'pixels' is negative, erosion is applied to the bitmap. 'rect' defines the area where the morphological operation is applied. Pixels located outside the 'rect' are unaffected by [Instance.GrowMask].
+Applies morphological dilation or erosion to the bitmap. If 'pixels' is positive, dilation is applied to the bitmap. If 'pixels' is negative, erosion is applied to the bitmap. 'rect' defines the area where the morphological operation is applied. Pixels located outside the 'rect' are unaffected by [GrowMask].
+
+[GrowMask]: https://pkg.go.dev/graphics.gd/classdb/BitMap#Instance.GrowMask
 */
 func (self Instance) GrowMask(pixels int, rect Rect2i.PositionSize) { //gd:BitMap.grow_mask
 	Advanced(self).GrowMask(int64(pixels), Rect2i.PositionSize(rect))
@@ -214,6 +221,8 @@ To get polygons covering the whole bitmap, pass:
 	var size = Rect2.PositionSize{Vector2.Zero, Vector2.From(bitmap.GetSize())}
 
 'epsilon' is passed to RDP to control how accurately the polygons cover the bitmap: a lower 'epsilon' corresponds to more points in the polygons.
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 func (self Instance) OpaqueToPolygons(rect Rect2i.PositionSize) [][]Vector2.XY { //gd:BitMap.opaque_to_polygons
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(Advanced(self).OpaqueToPolygons(Rect2i.PositionSize(rect), float64(2.0)))))
@@ -227,8 +236,10 @@ To get polygons covering the whole bitmap, pass:
 	var size = Rect2.PositionSize{Vector2.Zero, Vector2.From(bitmap.GetSize())}
 
 'epsilon' is passed to RDP to control how accurately the polygons cover the bitmap: a lower 'epsilon' corresponds to more points in the polygons.
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
-func (self Expanded) OpaqueToPolygons(rect Rect2i.PositionSize, epsilon Float.X) [][]Vector2.XY { //gd:BitMap.opaque_to_polygons
+func (self MoreArgs) OpaqueToPolygons(rect Rect2i.PositionSize, epsilon Float.X) [][]Vector2.XY { //gd:BitMap.opaque_to_polygons
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(Advanced(self).OpaqueToPolygons(Rect2i.PositionSize(rect), float64(epsilon)))))
 }
 
@@ -380,7 +391,9 @@ func (self class) Resize(new_size Vector2i.XY) { //gd:BitMap.resize
 }
 
 /*
-Applies morphological dilation or erosion to the bitmap. If 'pixels' is positive, dilation is applied to the bitmap. If 'pixels' is negative, erosion is applied to the bitmap. 'rect' defines the area where the morphological operation is applied. Pixels located outside the 'rect' are unaffected by [Instance.GrowMask].
+Applies morphological dilation or erosion to the bitmap. If 'pixels' is positive, dilation is applied to the bitmap. If 'pixels' is negative, erosion is applied to the bitmap. 'rect' defines the area where the morphological operation is applied. Pixels located outside the 'rect' are unaffected by [GrowMask].
+
+[GrowMask]: https://pkg.go.dev/graphics.gd/classdb/BitMap#Instance.GrowMask
 */
 //go:nosplit
 func (self class) GrowMask(pixels int64, rect Rect2i.PositionSize) { //gd:BitMap.grow_mask
@@ -410,6 +423,8 @@ To get polygons covering the whole bitmap, pass:
 
 
 'epsilon' is passed to RDP to control how accurately the polygons cover the bitmap: a lower 'epsilon' corresponds to more points in the polygons.
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 //go:nosplit
 func (self class) OpaqueToPolygons(rect Rect2i.PositionSize, epsilon float64) Array.Contains[Packed.Array[Vector2.XY]] { //gd:BitMap.opaque_to_polygons

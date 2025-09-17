@@ -3,7 +3,9 @@
 /*
 The Web exporter customizes how a web build is handled. In the editor's "Export" window, it is created when adding a new "Web" preset.
 
-Note: Godot on Web is rendered inside a <canvas> tag. Normally, the canvas cannot be positioned or resized manually, but otherwise acts as the main [graphics.gd/classdb/Window] of the application.
+Note: Godot on Web is rendered inside a <canvas> tag. Normally, the canvas cannot be positioned or resized manually, but otherwise acts as the main [Window] of the application.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
 package EditorExportPlatformWeb
 

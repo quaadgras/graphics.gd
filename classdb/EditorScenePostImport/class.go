@@ -3,7 +3,7 @@
 /*
 Imported scenes can be automatically modified right after import by setting their Custom Script Import property to a tool script that inherits from this class.
 
-The [Interface.PostImport] callback receives the imported scene's root node and returns the modified version of the scene:
+The [PostImport] callback receives the imported scene's root node and returns the modified version of the scene:
 
 	package main
 
@@ -29,6 +29,8 @@ The [Interface.PostImport] callback receives the imported scene's root node and 
 			}
 		}
 	}
+
+[PostImport]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImport#Interface
 */
 package EditorScenePostImport
 

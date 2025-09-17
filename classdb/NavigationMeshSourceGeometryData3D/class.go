@@ -138,28 +138,37 @@ func (self Instance) HasData() bool { //gd:NavigationMeshSourceGeometryData3D.ha
 }
 
 /*
-Adds the geometry data of a [graphics.gd/classdb/Mesh] resource to the navigation mesh baking data. The mesh must have valid triangulated mesh data to be considered. Since [graphics.gd/classdb/NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using 'xform'.
+Adds the geometry data of a [Mesh] resource to the navigation mesh baking data. The mesh must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using 'xform'.
+
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+[NavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh
 */
 func (self Instance) AddMesh(mesh Mesh.Instance, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh
 	Advanced(self).AddMesh(mesh, Transform3D.BasisOrigin(xform))
 }
 
 /*
-Adds an slice the size of [Mesh.ArrayMax] and with vertices at index [Mesh.ArrayVertex] and indices at index [Mesh.ArrayIndex] to the navigation mesh baking data. The array must have valid triangulated mesh data to be considered. Since [graphics.gd/classdb/NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using 'xform'.
+Adds an slice the size of [Mesh.ArrayMax] and with vertices at index [Mesh.ArrayVertex] and indices at index [Mesh.ArrayIndex] to the navigation mesh baking data. The array must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using 'xform'.
+
+[NavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh
 */
 func (self Instance) AddMeshArray(mesh_array []any, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh_array
 	Advanced(self).AddMeshArray(gd.EngineArrayFromSlice(mesh_array), Transform3D.BasisOrigin(xform))
 }
 
 /*
-Adds an array of vertex positions to the geometry data for navigation mesh baking to form triangulated faces. For each face the array must have three vertex positions in clockwise winding order. Since [graphics.gd/classdb/NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using 'xform'.
+Adds an array of vertex positions to the geometry data for navigation mesh baking to form triangulated faces. For each face the array must have three vertex positions in clockwise winding order. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using 'xform'.
+
+[NavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh
 */
 func (self Instance) AddFaces(faces []Vector3.XYZ, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_faces
 	Advanced(self).AddFaces(Packed.New(faces...), Transform3D.BasisOrigin(xform))
 }
 
 /*
-Adds the geometry data of another [graphics.gd/classdb/NavigationMeshSourceGeometryData3D] to the navigation mesh baking data.
+Adds the geometry data of another [NavigationMeshSourceGeometryData3D] to the navigation mesh baking data.
+
+[NavigationMeshSourceGeometryData3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationMeshSourceGeometryData3D
 */
 func (self Instance) Merge(other_geometry Instance) { //gd:NavigationMeshSourceGeometryData3D.merge
 	Advanced(self).Merge(other_geometry)
@@ -327,7 +336,10 @@ func (self class) HasData() bool { //gd:NavigationMeshSourceGeometryData3D.has_d
 }
 
 /*
-Adds the geometry data of a [graphics.gd/classdb/Mesh] resource to the navigation mesh baking data. The mesh must have valid triangulated mesh data to be considered. Since [graphics.gd/classdb/NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using 'xform'.
+Adds the geometry data of a [Mesh] resource to the navigation mesh baking data. The mesh must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using 'xform'.
+
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+[NavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh
 */
 //go:nosplit
 func (self class) AddMesh(mesh [1]gdclass.Mesh, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh
@@ -338,7 +350,9 @@ func (self class) AddMesh(mesh [1]gdclass.Mesh, xform Transform3D.BasisOrigin) {
 }
 
 /*
-Adds an slice the size of [Mesh.ArrayMax] and with vertices at index [Mesh.ArrayVertex] and indices at index [Mesh.ArrayIndex] to the navigation mesh baking data. The array must have valid triangulated mesh data to be considered. Since [graphics.gd/classdb/NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using 'xform'.
+Adds an slice the size of [Mesh.ArrayMax] and with vertices at index [Mesh.ArrayVertex] and indices at index [Mesh.ArrayIndex] to the navigation mesh baking data. The array must have valid triangulated mesh data to be considered. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using 'xform'.
+
+[NavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh
 */
 //go:nosplit
 func (self class) AddMeshArray(mesh_array Array.Any, xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_mesh_array
@@ -349,7 +363,9 @@ func (self class) AddMeshArray(mesh_array Array.Any, xform Transform3D.BasisOrig
 }
 
 /*
-Adds an array of vertex positions to the geometry data for navigation mesh baking to form triangulated faces. For each face the array must have three vertex positions in clockwise winding order. Since [graphics.gd/classdb/NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using 'xform'.
+Adds an array of vertex positions to the geometry data for navigation mesh baking to form triangulated faces. For each face the array must have three vertex positions in clockwise winding order. Since [NavigationMesh] resources have no transform, all vertex positions need to be offset by the node's transform using 'xform'.
+
+[NavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh
 */
 //go:nosplit
 func (self class) AddFaces(faces Packed.Array[Vector3.XYZ], xform Transform3D.BasisOrigin) { //gd:NavigationMeshSourceGeometryData3D.add_faces
@@ -360,7 +376,9 @@ func (self class) AddFaces(faces Packed.Array[Vector3.XYZ], xform Transform3D.Ba
 }
 
 /*
-Adds the geometry data of another [graphics.gd/classdb/NavigationMeshSourceGeometryData3D] to the navigation mesh baking data.
+Adds the geometry data of another [NavigationMeshSourceGeometryData3D] to the navigation mesh baking data.
+
+[NavigationMeshSourceGeometryData3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationMeshSourceGeometryData3D
 */
 //go:nosplit
 func (self class) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometryData3D) { //gd:NavigationMeshSourceGeometryData3D.merge
@@ -392,6 +410,13 @@ func (self class) ClearProjectedObstructions() { //gd:NavigationMeshSourceGeomet
 Sets the projected obstructions with an Array of Dictionaries with the following key value pairs:
 
 
+	type ProjectedObstruction3D struct {
+		Vertices  []float32 `gd:"vertices"`
+		Elevation float32   `gd:"elevation"`
+		Height    float32   `gd:"height"`
+		Carve     bool      `gd:"carve"`
+	}
+
 */
 //go:nosplit
 func (self class) SetProjectedObstructions(projected_obstructions Array.Any) { //gd:NavigationMeshSourceGeometryData3D.set_projected_obstructions
@@ -408,6 +433,8 @@ Returns the projected obstructions as an slice of dictionaries. Each data struct
 - height - A [Float.X] that defines how much the projected shape is extruded along the y-axis.
 
 - carve - A bool that defines how the obstacle affects the navigation mesh baking. If true the projected shape will not be affected by addition offsets, e.g. agent radius.
+
+[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 */
 //go:nosplit
 func (self class) GetProjectedObstructions() Array.Any { //gd:NavigationMeshSourceGeometryData3D.get_projected_obstructions

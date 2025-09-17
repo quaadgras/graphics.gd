@@ -132,7 +132,12 @@ type Any interface {
 }
 
 /*
-Returns the [Color.RGBA] of an idealized blackbody at the given [Instance.LightTemperature]. This value is calculated internally based on the [Instance.LightTemperature]. This [Color.RGBA] is multiplied by [Instance.LightColor] before being sent to the [graphics.gd/classdb/RenderingServer].
+Returns the [Color.RGBA] of an idealized blackbody at the given [LightTemperature]. This value is calculated internally based on the [LightTemperature]. This [Color.RGBA] is multiplied by [LightColor] before being sent to the [RenderingServer].
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[LightColor]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightColor
+[LightTemperature]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightTemperature
+[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
 */
 func (self Instance) GetCorrelatedColor() Color.RGBA { //gd:Light3D.get_correlated_color
 	return Color.RGBA(Advanced(self).GetCorrelatedColor())
@@ -586,7 +591,12 @@ func (self class) GetTemperature() float64 { //gd:Light3D.get_temperature
 }
 
 /*
-Returns the [Color.RGBA] of an idealized blackbody at the given [Instance.LightTemperature]. This value is calculated internally based on the [Instance.LightTemperature]. This [Color.RGBA] is multiplied by [Instance.LightColor] before being sent to the [graphics.gd/classdb/RenderingServer].
+Returns the [Color.RGBA] of an idealized blackbody at the given [LightTemperature]. This value is calculated internally based on the [LightTemperature]. This [Color.RGBA] is multiplied by [LightColor] before being sent to the [RenderingServer].
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[LightColor]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightColor
+[LightTemperature]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightTemperature
+[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
 */
 //go:nosplit
 func (self class) GetCorrelatedColor() Color.RGBA { //gd:Light3D.get_correlated_color
@@ -639,47 +649,93 @@ func init() {
 type Param int //gd:Light3D.Param
 
 const (
-	// Constant for accessing [Instance.LightEnergy].
+	// Constant for accessing [LightEnergy].
+	//
+	// [LightEnergy]: https://pkg.go.dev/graphics.gd/classdb/#Instance.LightEnergy
 	ParamEnergy Param = 0
-	// Constant for accessing [Instance.LightIndirectEnergy].
+	// Constant for accessing [LightIndirectEnergy].
+	//
+	// [LightIndirectEnergy]: https://pkg.go.dev/graphics.gd/classdb/#Instance.LightIndirectEnergy
 	ParamIndirectEnergy Param = 1
-	// Constant for accessing [Instance.LightVolumetricFogEnergy].
+	// Constant for accessing [LightVolumetricFogEnergy].
+	//
+	// [LightVolumetricFogEnergy]: https://pkg.go.dev/graphics.gd/classdb/#Instance.LightVolumetricFogEnergy
 	ParamVolumetricFogEnergy Param = 2
-	// Constant for accessing [Instance.LightSpecular].
+	// Constant for accessing [LightSpecular].
+	//
+	// [LightSpecular]: https://pkg.go.dev/graphics.gd/classdb/#Instance.LightSpecular
 	ParamSpecular Param = 3
-	// Constant for accessing [graphics.gd/classdb/OmniLight3D.Instance.OmniRange] or [graphics.gd/classdb/SpotLight3D.Instance.SpotRange].
+	// Constant for accessing [OmniLight3D.OmniRange] or [SpotLight3D.SpotRange].
+	//
+	// [OmniLight3D.OmniRange]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D#Instance.OmniRange
+	// [SpotLight3D.SpotRange]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D#Instance.SpotRange
 	ParamRange Param = 4
-	// Constant for accessing [Instance.LightSize].
+	// Constant for accessing [LightSize].
+	//
+	// [LightSize]: https://pkg.go.dev/graphics.gd/classdb/#Instance.LightSize
 	ParamSize Param = 5
-	// Constant for accessing [graphics.gd/classdb/OmniLight3D.Instance.OmniAttenuation] or [graphics.gd/classdb/SpotLight3D.Instance.SpotAttenuation].
+	// Constant for accessing [OmniLight3D.OmniAttenuation] or [SpotLight3D.SpotAttenuation].
+	//
+	// [OmniLight3D.OmniAttenuation]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D#Instance.OmniAttenuation
+	// [SpotLight3D.SpotAttenuation]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D#Instance.SpotAttenuation
 	ParamAttenuation Param = 6
-	// Constant for accessing [graphics.gd/classdb/SpotLight3D.Instance.SpotAngle].
+	// Constant for accessing [SpotLight3D.SpotAngle].
+	//
+	// [SpotLight3D.SpotAngle]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D#Instance.SpotAngle
 	ParamSpotAngle Param = 7
-	// Constant for accessing [graphics.gd/classdb/SpotLight3D.Instance.SpotAngleAttenuation].
+	// Constant for accessing [SpotLight3D.SpotAngleAttenuation].
+	//
+	// [SpotLight3D.SpotAngleAttenuation]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D#Instance.SpotAngleAttenuation
 	ParamSpotAttenuation Param = 8
-	// Constant for accessing [graphics.gd/classdb/DirectionalLight3D.Instance.DirectionalShadowMaxDistance].
+	// Constant for accessing [DirectionalLight3D.DirectionalShadowMaxDistance].
+	//
+	// [DirectionalLight3D.DirectionalShadowMaxDistance]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D#Instance.DirectionalShadowMaxDistance
 	ParamShadowMaxDistance Param = 9
-	// Constant for accessing [graphics.gd/classdb/DirectionalLight3D.Instance.DirectionalShadowSplit1].
+	// Constant for accessing [DirectionalLight3D.DirectionalShadowSplit1].
+	//
+	// [DirectionalLight3D.DirectionalShadowSplit1]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D#Instance.DirectionalShadowSplit1
 	ParamShadowSplit1Offset Param = 10
-	// Constant for accessing [graphics.gd/classdb/DirectionalLight3D.Instance.DirectionalShadowSplit2].
+	// Constant for accessing [DirectionalLight3D.DirectionalShadowSplit2].
+	//
+	// [DirectionalLight3D.DirectionalShadowSplit2]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D#Instance.DirectionalShadowSplit2
 	ParamShadowSplit2Offset Param = 11
-	// Constant for accessing [graphics.gd/classdb/DirectionalLight3D.Instance.DirectionalShadowSplit3].
+	// Constant for accessing [DirectionalLight3D.DirectionalShadowSplit3].
+	//
+	// [DirectionalLight3D.DirectionalShadowSplit3]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D#Instance.DirectionalShadowSplit3
 	ParamShadowSplit3Offset Param = 12
-	// Constant for accessing [graphics.gd/classdb/DirectionalLight3D.Instance.DirectionalShadowFadeStart].
+	// Constant for accessing [DirectionalLight3D.DirectionalShadowFadeStart].
+	//
+	// [DirectionalLight3D.DirectionalShadowFadeStart]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D#Instance.DirectionalShadowFadeStart
 	ParamShadowFadeStart Param = 13
-	// Constant for accessing [Instance.ShadowNormalBias].
+	// Constant for accessing [ShadowNormalBias].
+	//
+	// [ShadowNormalBias]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ShadowNormalBias
 	ParamShadowNormalBias Param = 14
-	// Constant for accessing [Instance.ShadowBias].
+	// Constant for accessing [ShadowBias].
+	//
+	// [ShadowBias]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ShadowBias
 	ParamShadowBias Param = 15
-	// Constant for accessing [graphics.gd/classdb/DirectionalLight3D.Instance.DirectionalShadowPancakeSize].
+	// Constant for accessing [DirectionalLight3D.DirectionalShadowPancakeSize].
+	//
+	// [DirectionalLight3D.DirectionalShadowPancakeSize]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D#Instance.DirectionalShadowPancakeSize
 	ParamShadowPancakeSize Param = 16
-	// Constant for accessing [Instance.ShadowOpacity].
+	// Constant for accessing [ShadowOpacity].
+	//
+	// [ShadowOpacity]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ShadowOpacity
 	ParamShadowOpacity Param = 17
-	// Constant for accessing [Instance.ShadowBlur].
+	// Constant for accessing [ShadowBlur].
+	//
+	// [ShadowBlur]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ShadowBlur
 	ParamShadowBlur Param = 18
-	// Constant for accessing [Instance.ShadowTransmittanceBias].
+	// Constant for accessing [ShadowTransmittanceBias].
+	//
+	// [ShadowTransmittanceBias]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ShadowTransmittanceBias
 	ParamTransmittanceBias Param = 19
-	// Constant for accessing [Instance.LightIntensityLumens] and [Instance.LightIntensityLux]. Only used when [graphics.gd/classdb/ProjectSettings] "rendering/lights_and_shadows/use_physical_light_units" is true.
+	// Constant for accessing [LightIntensityLumens] and [LightIntensityLux]. Only used when [ProjectSettings] "rendering/lights_and_shadows/use_physical_light_units" is true.
+	//
+	// [LightIntensityLumens]: https://pkg.go.dev/graphics.gd/classdb/#Instance.LightIntensityLumens
+	// [LightIntensityLux]: https://pkg.go.dev/graphics.gd/classdb/#Instance.LightIntensityLux
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	ParamIntensity Param = 20
 	// Represents the size of the [Param] enum.
 	ParamMax Param = 21
@@ -690,12 +746,25 @@ type BakeMode int //gd:Light3D.BakeMode
 const (
 	// Light is ignored when baking. This is the fastest mode, but the light will not be taken into account when baking global illumination. This mode should generally be used for dynamic lights that change quickly, as the effect of global illumination is less noticeable on those lights.
 	//
-	// Note: Hiding a light does not affect baking [graphics.gd/classdb/LightmapGI]. Hiding a light will still affect baking [graphics.gd/classdb/VoxelGI] and SDFGI (see [graphics.gd/classdb/Environment.Instance.SdfgiEnabled]).
-	BakeDisabled BakeMode = 0
-	// Light is taken into account in static baking ([graphics.gd/classdb/VoxelGI], [graphics.gd/classdb/LightmapGI], SDFGI ([graphics.gd/classdb/Environment.Instance.SdfgiEnabled])). The light can be moved around or modified, but its global illumination will not update in real-time. This is suitable for subtle changes (such as flickering torches), but generally not large changes such as toggling a light on and off.
+	// Note: Hiding a light does not affect baking [LightmapGI]. Hiding a light will still affect baking [VoxelGI] and SDFGI (see [Environment.SdfgiEnabled]).
 	//
-	// Note: The light is not baked in [graphics.gd/classdb/LightmapGI] if [Instance.EditorOnly] is true.
+	// [Environment.SdfgiEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiEnabled
+	// [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
+	BakeDisabled BakeMode = 0
+	// Light is taken into account in static baking ([VoxelGI], [LightmapGI], SDFGI ([Environment.SdfgiEnabled])). The light can be moved around or modified, but its global illumination will not update in real-time. This is suitable for subtle changes (such as flickering torches), but generally not large changes such as toggling a light on and off.
+	//
+	// Note: The light is not baked in [LightmapGI] if [EditorOnly] is true.
+	//
+	// [EditorOnly]: https://pkg.go.dev/graphics.gd/classdb/#Instance.EditorOnly
+	// [Environment.SdfgiEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiEnabled
+	// [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	BakeStatic BakeMode = 1
-	// Light is taken into account in dynamic baking ([graphics.gd/classdb/VoxelGI] and SDFGI ([graphics.gd/classdb/Environment.Instance.SdfgiEnabled]) only). The light can be moved around or modified with global illumination updating in real-time. The light's global illumination appearance will be slightly different compared to [BakeStatic]. This has a greater performance cost compared to [BakeStatic]. When using SDFGI, the update speed of dynamic lights is affected by [graphics.gd/classdb/ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_update_lights".
+	// Light is taken into account in dynamic baking ([VoxelGI] and SDFGI ([Environment.SdfgiEnabled]) only). The light can be moved around or modified with global illumination updating in real-time. The light's global illumination appearance will be slightly different compared to [BakeStatic]. This has a greater performance cost compared to [BakeStatic]. When using SDFGI, the update speed of dynamic lights is affected by [ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_update_lights".
+	//
+	// [Environment.SdfgiEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiEnabled
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	BakeDynamic BakeMode = 2
 )

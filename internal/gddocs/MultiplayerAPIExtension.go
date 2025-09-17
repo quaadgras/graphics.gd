@@ -92,7 +92,7 @@ func (m *LogMultiplayer) Poll() error { return m.base.Poll() }
 
 func (m *LogMultiplayer) Rpc(peer int, object Object.Instance, method string, args []any) error {
 	fmt.Println("Got RPC for", peer, ":", object, "::", method, "(", args, ")")
-	return MultiplayerAPI.Expanded(m.base).Rpc(peer, object, method, args)
+	return m.base.MoreArgs().Rpc(peer, object, method, args)
 }
 
 func (m *LogMultiplayer) ObjectConfigurationAdd(object Object.Instance, config any) error {

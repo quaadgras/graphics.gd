@@ -107,6 +107,8 @@ type Any interface {
 
 /*
 Returns the status indicator rectangle in screen coordinates. If this status indicator is not visible, returns an empty [Rect2.PositionSize].
+
+[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 */
 func (self Instance) GetRect() Rect2.PositionSize { //gd:StatusIndicator.get_rect
 	return Rect2.PositionSize(Advanced(self).GetRect())
@@ -236,6 +238,8 @@ func (self class) GetMenu() Path.ToNode { //gd:StatusIndicator.get_menu
 
 /*
 Returns the status indicator rectangle in screen coordinates. If this status indicator is not visible, returns an empty [Rect2.PositionSize].
+
+[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 */
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:StatusIndicator.get_rect

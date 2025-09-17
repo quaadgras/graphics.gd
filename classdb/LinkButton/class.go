@@ -3,7 +3,9 @@
 /*
 A button that represents a link. This type of button is primarily used for interactions that cause a context change (like linking to a web page).
 
-See also [graphics.gd/classdb/BaseButton] which contains common properties and methods associated with this node.
+See also [BaseButton] which contains common properties and methods associated with this node.
+
+[BaseButton]: https://pkg.go.dev/graphics.gd/classdb/BaseButton
 */
 package LinkButton
 

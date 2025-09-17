@@ -3,7 +3,9 @@
 /*
 This class needs to be implemented to make an AR or VR platform available to Godot and these should be implemented as C++ modules or GDExtension modules. Part of the interface is exposed to GDScript so you can detect, enable and configure an AR or VR platform.
 
-Interfaces should be written in such a way that simply enabling them will give us a working setup. You can query the available interfaces through [graphics.gd/classdb/XRServer].
+Interfaces should be written in such a way that simply enabling them will give us a working setup. You can query the available interfaces through [XRServer].
+
+[XRServer]: https://pkg.go.dev/graphics.gd/classdb/XRServer
 */
 package XRInterface
 
@@ -175,7 +177,9 @@ func (self Instance) Uninitialize() { //gd:XRInterface.uninitialize
 /*
 Returns a data structure with extra system info. Interfaces are expected to return XRRuntimeName and XRRuntimeVersion providing info about the used XR runtime. Additional entries may be provided specific to an interface.
 
-Note:This information may only be available after [Instance.Initialize] was successfully called.
+Note:This information may only be available after [Initialize] was successfully called.
+
+[Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
 */
 func (self Instance) GetSystemInfo() map[string]interface{} { //gd:XRInterface.get_system_info
 	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](Advanced(self).GetSystemInfo()))
@@ -229,14 +233,18 @@ func (self Instance) SupportsPlayAreaMode(mode PlayAreaMode) bool { //gd:XRInter
 }
 
 /*
-Returns an array of vectors that represent the physical play area mapped to the virtual space around the [graphics.gd/classdb/XROrigin3D] point. The points form a convex polygon that can be used to react to or visualize the play area. This returns an empty array if this feature is not supported or if the information is not yet available.
+Returns an array of vectors that represent the physical play area mapped to the virtual space around the [XROrigin3D] point. The points form a convex polygon that can be used to react to or visualize the play area. This returns an empty array if this feature is not supported or if the information is not yet available.
+
+[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
 */
 func (self Instance) GetPlayArea() []Vector3.XYZ { //gd:XRInterface.get_play_area
 	return []Vector3.XYZ(slices.Collect(Advanced(self).GetPlayArea().Values()))
 }
 
 /*
-If this is an AR interface that requires displaying a camera feed as the background, this method returns the feed ID in the [graphics.gd/classdb/CameraServer] for this interface.
+If this is an AR interface that requires displaying a camera feed as the background, this method returns the feed ID in the [CameraServer] for this interface.
+
+[CameraServer]: https://pkg.go.dev/graphics.gd/classdb/CameraServer
 */
 func (self Instance) GetCameraFeedId() int { //gd:XRInterface.get_camera_feed_id
 	return int(int(Advanced(self).GetCameraFeedId()))
@@ -277,7 +285,9 @@ Returns the transform for a view/eye.
 
 'view' is the view/eye index.
 
-'cam_transform' is the transform that maps device coordinates to scene coordinates, typically the [graphics.gd/classdb/Node3D.Instance.GlobalTransform] of the current XROrigin3D.
+'cam_transform' is the transform that maps device coordinates to scene coordinates, typically the [Node3D.GlobalTransform] of the current XROrigin3D.
+
+[Node3D.GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
 */
 func (self Instance) GetTransformForView(view int, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin { //gd:XRInterface.get_transform_for_view
 	return Transform3D.BasisOrigin(Advanced(self).GetTransformForView(int64(view), Transform3D.BasisOrigin(cam_transform)))
@@ -443,7 +453,9 @@ func (self class) Uninitialize() { //gd:XRInterface.uninitialize
 /*
 Returns a data structure with extra system info. Interfaces are expected to return XRRuntimeName and XRRuntimeVersion providing info about the used XR runtime. Additional entries may be provided specific to an interface.
 
-Note:This information may only be available after [Instance.Initialize] was successfully called.
+Note:This information may only be available after [Initialize] was successfully called.
+
+[Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
 */
 //go:nosplit
 func (self class) GetSystemInfo() Dictionary.Any { //gd:XRInterface.get_system_info
@@ -529,7 +541,9 @@ func (self class) GetPlayAreaMode() PlayAreaMode { //gd:XRInterface.get_play_are
 /*
 Sets the active play area mode, will return false if the mode can't be used with this interface.
 
-Note: Changing this after the interface has already been initialized can be jarring for the player, so it's recommended to recenter on the HMD with [graphics.gd/classdb/XRServer.CenterOnHmd] (if switching to [Xrinterface.XrPlayAreaStage]) or make the switch during a scene change.
+Note: Changing this after the interface has already been initialized can be jarring for the player, so it's recommended to recenter on the HMD with [XRServer.CenterOnHmd] (if switching to [Xrinterface.XrPlayAreaStage]) or make the switch during a scene change.
+
+[XRServer.CenterOnHmd]: https://pkg.go.dev/graphics.gd/classdb/XRServer#CenterOnHmd
 */
 //go:nosplit
 func (self class) SetPlayAreaMode(mode PlayAreaMode) bool { //gd:XRInterface.set_play_area_mode
@@ -539,7 +553,9 @@ func (self class) SetPlayAreaMode(mode PlayAreaMode) bool { //gd:XRInterface.set
 }
 
 /*
-Returns an array of vectors that represent the physical play area mapped to the virtual space around the [graphics.gd/classdb/XROrigin3D] point. The points form a convex polygon that can be used to react to or visualize the play area. This returns an empty array if this feature is not supported or if the information is not yet available.
+Returns an array of vectors that represent the physical play area mapped to the virtual space around the [XROrigin3D] point. The points form a convex polygon that can be used to react to or visualize the play area. This returns an empty array if this feature is not supported or if the information is not yet available.
+
+[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
 */
 //go:nosplit
 func (self class) GetPlayArea() Packed.Array[Vector3.XYZ] { //gd:XRInterface.get_play_area
@@ -561,7 +577,9 @@ func (self class) SetAnchorDetectionIsEnabled(enable bool) { //gd:XRInterface.se
 }
 
 /*
-If this is an AR interface that requires displaying a camera feed as the background, this method returns the feed ID in the [graphics.gd/classdb/CameraServer] for this interface.
+If this is an AR interface that requires displaying a camera feed as the background, this method returns the feed ID in the [CameraServer] for this interface.
+
+[CameraServer]: https://pkg.go.dev/graphics.gd/classdb/CameraServer
 */
 //go:nosplit
 func (self class) GetCameraFeedId() int64 { //gd:XRInterface.get_camera_feed_id
@@ -615,7 +633,9 @@ Returns the transform for a view/eye.
 
 'view' is the view/eye index.
 
-'cam_transform' is the transform that maps device coordinates to scene coordinates, typically the [graphics.gd/classdb/Node3D.Instance.GlobalTransform] of the current XROrigin3D.
+'cam_transform' is the transform that maps device coordinates to scene coordinates, typically the [Node3D.GlobalTransform] of the current XROrigin3D.
+
+[Node3D.GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
 */
 //go:nosplit
 func (self class) GetTransformForView(view int64, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin { //gd:XRInterface.get_transform_for_view
@@ -733,7 +753,9 @@ const (
 	XrVr Capabilities = 8
 	// This interface supports AR (video background and real world tracking).
 	XrAr Capabilities = 16
-	// This interface outputs to an external device. If the main viewport is used, the on screen output is an unmodified buffer of either the left or right eye (stretched if the viewport size is not changed to the same aspect ratio of [Instance.GetRenderTargetSize]). Using a separate viewport node frees up the main viewport for other purposes.
+	// This interface outputs to an external device. If the main viewport is used, the on screen output is an unmodified buffer of either the left or right eye (stretched if the viewport size is not changed to the same aspect ratio of [GetRenderTargetSize]). Using a separate viewport node frees up the main viewport for other purposes.
+	//
+	// [GetRenderTargetSize]: https://pkg.go.dev/graphics.gd/classdb/#Instance.GetRenderTargetSize
 	XrExternal Capabilities = 32
 )
 
@@ -763,7 +785,9 @@ const (
 	XrPlayAreaSitting PlayAreaMode = 2
 	// Player is free to move around, full positional tracking.
 	XrPlayAreaRoomscale PlayAreaMode = 3
-	// Same as [XrPlayAreaRoomscale] but origin point is fixed to the center of the physical space. In this mode, system-level recentering may be disabled, requiring the use of [graphics.gd/classdb/XRServer.CenterOnHmd].
+	// Same as [XrPlayAreaRoomscale] but origin point is fixed to the center of the physical space. In this mode, system-level recentering may be disabled, requiring the use of [XRServer.CenterOnHmd].
+	//
+	// [XRServer.CenterOnHmd]: https://pkg.go.dev/graphics.gd/classdb/XRServer#CenterOnHmd
 	XrPlayAreaStage PlayAreaMode = 4
 	// Custom play area set by a GDExtension.
 	XrPlayAreaCustom PlayAreaMode = 2147483647
@@ -783,7 +807,9 @@ const (
 type VRSTextureFormat int //gd:XRInterface.VRSTextureFormat
 
 const (
-	// The texture format is the same as returned by [graphics.gd/classdb/XRVRS.Instance.MakeVrsTexture].
+	// The texture format is the same as returned by [XRVRS.MakeVrsTexture].
+	//
+	// [XRVRS.MakeVrsTexture]: https://pkg.go.dev/graphics.gd/classdb/XRVRS#Instance.MakeVrsTexture
 	XrVrsTextureFormatUnified VRSTextureFormat = 0
 	// The texture format is the same as expected by the Vulkan VK_KHR_fragment_shading_rate extension.
 	XrVrsTextureFormatFragmentShadingRate VRSTextureFormat = 1

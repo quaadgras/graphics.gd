@@ -135,7 +135,9 @@ face_index: The index of the intersected triangle.
 
 Returns an empty data structure if no intersection happens.
 
-See also [Instance.IntersectRay], which is similar but uses an infinite-length ray.
+See also [IntersectRay], which is similar but uses an infinite-length ray.
+
+[IntersectRay]: https://pkg.go.dev/graphics.gd/classdb/TriangleMesh#Instance.IntersectRay
 */
 func (self Instance) IntersectSegment(begin Vector3.XYZ, end Vector3.XYZ) Intersection { //gd:TriangleMesh.intersect_segment
 	return Intersection(gd.DictionaryAs[Intersection](Advanced(self).IntersectSegment(Vector3.XYZ(begin), Vector3.XYZ(end))))
@@ -154,7 +156,9 @@ face_index: The index of the intersected triangle.
 
 Returns an empty data structure if no intersection happens.
 
-See also [Instance.IntersectSegment], which is similar but uses a finite-length segment.
+See also [IntersectSegment], which is similar but uses a finite-length segment.
+
+[IntersectSegment]: https://pkg.go.dev/graphics.gd/classdb/TriangleMesh#Instance.IntersectSegment
 */
 func (self Instance) IntersectRay(begin Vector3.XYZ, dir Vector3.XYZ) Intersection { //gd:TriangleMesh.intersect_ray
 	return Intersection(gd.DictionaryAs[Intersection](Advanced(self).IntersectRay(Vector3.XYZ(begin), Vector3.XYZ(dir))))
@@ -240,7 +244,9 @@ face_index: The index of the intersected triangle.
 
 Returns an empty data structure if no intersection happens.
 
-See also [Instance.IntersectRay], which is similar but uses an infinite-length ray.
+See also [IntersectRay], which is similar but uses an infinite-length ray.
+
+[IntersectRay]: https://pkg.go.dev/graphics.gd/classdb/TriangleMesh#Instance.IntersectRay
 */
 //go:nosplit
 func (self class) IntersectSegment(begin Vector3.XYZ, end Vector3.XYZ) Dictionary.Any { //gd:TriangleMesh.intersect_segment
@@ -265,7 +271,9 @@ face_index: The index of the intersected triangle.
 
 Returns an empty data structure if no intersection happens.
 
-See also [Instance.IntersectSegment], which is similar but uses a finite-length segment.
+See also [IntersectSegment], which is similar but uses a finite-length segment.
+
+[IntersectSegment]: https://pkg.go.dev/graphics.gd/classdb/TriangleMesh#Instance.IntersectSegment
 */
 //go:nosplit
 func (self class) IntersectRay(begin Vector3.XYZ, dir Vector3.XYZ) Dictionary.Any { //gd:TriangleMesh.intersect_ray

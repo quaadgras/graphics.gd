@@ -4,6 +4,8 @@
 Has two output ports representing RGB and alpha channels of [Color.RGBA].
 
 Translated to vec3 rgb and float alpha in the shader language.
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 */
 package VisualShaderNodeColorConstant
 

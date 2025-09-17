@@ -3,9 +3,12 @@
 /*
 Imports Autodesk FBX 3D scenes by way of converting them to glTF 2.0 using the FBX2glTF command line tool.
 
-The location of the FBX2glTF binary is set via the [graphics.gd/classdb/EditorSettings.Instance] "filesystem/import/fbx/fbx2gltf_path" editor setting.
+The location of the FBX2glTF binary is set via the [EditorSettings] "filesystem/import/fbx/fbx2gltf_path" editor setting.
 
-This importer is only used if [graphics.gd/classdb/ProjectSettings] "filesystem/import/fbx2gltf/enabled" is set to true.
+This importer is only used if [ProjectSettings] "filesystem/import/fbx2gltf/enabled" is set to true.
+
+[EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 package EditorSceneFormatImporterFBX2GLTF
 

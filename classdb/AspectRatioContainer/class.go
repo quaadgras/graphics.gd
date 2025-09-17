@@ -292,7 +292,9 @@ const (
 	StretchFit StretchMode = 2
 	// The width and height of child controls is automatically adjusted to make their bounding rectangle cover the entire area of the container while keeping the aspect ratio.
 	//
-	// When the bounding rectangle of child controls exceed the container's size and [graphics.gd/classdb/Control.Instance.ClipContents] is enabled, this allows to show only the container's area restricted by its own bounding rectangle.
+	// When the bounding rectangle of child controls exceed the container's size and [Control.ClipContents] is enabled, this allows to show only the container's area restricted by its own bounding rectangle.
+	//
+	// [Control.ClipContents]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.ClipContents
 	StretchCover StretchMode = 3
 )
 

@@ -172,18 +172,24 @@ func (self Instance) GetFeatureName(feature Feature) string { //gd:EditorFeature
 }
 
 /*
-Saves the editor feature profile to a file in JSON format. It can then be imported using the feature profile manager's Import button or the [Instance.LoadFromFile] method.
+Saves the editor feature profile to a file in JSON format. It can then be imported using the feature profile manager's Import button or the [LoadFromFile] method.
 
-Note: Feature profiles created via the user interface are saved in the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [graphics.gd/classdb/EditorPaths.Instance.GetConfigDir].
+Note: Feature profiles created via the user interface are saved in the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [EditorPaths.GetConfigDir].
+
+[EditorPaths.GetConfigDir]: https://pkg.go.dev/graphics.gd/classdb/EditorPaths#Instance.GetConfigDir
+[LoadFromFile]: https://pkg.go.dev/graphics.gd/classdb/EditorFeatureProfile#Instance.LoadFromFile
 */
 func (self Instance) SaveToFile(path string) error { //gd:EditorFeatureProfile.save_to_file
 	return error(gd.ToError(Advanced(self).SaveToFile(String.New(path))))
 }
 
 /*
-Loads an editor feature profile from a file. The file must follow the JSON format obtained by using the feature profile manager's Export button or the [Instance.SaveToFile] method.
+Loads an editor feature profile from a file. The file must follow the JSON format obtained by using the feature profile manager's Export button or the [SaveToFile] method.
 
-Note: Feature profiles created via the user interface are loaded from the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [graphics.gd/classdb/EditorPaths.Instance.GetConfigDir].
+Note: Feature profiles created via the user interface are loaded from the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [EditorPaths.GetConfigDir].
+
+[EditorPaths.GetConfigDir]: https://pkg.go.dev/graphics.gd/classdb/EditorPaths#Instance.GetConfigDir
+[SaveToFile]: https://pkg.go.dev/graphics.gd/classdb/EditorFeatureProfile#Instance.SaveToFile
 */
 func (self Instance) LoadFromFile(path string) error { //gd:EditorFeatureProfile.load_from_file
 	return error(gd.ToError(Advanced(self).LoadFromFile(String.New(path))))
@@ -331,9 +337,12 @@ func (self class) GetFeatureName(feature Feature) String.Readable { //gd:EditorF
 }
 
 /*
-Saves the editor feature profile to a file in JSON format. It can then be imported using the feature profile manager's Import button or the [Instance.LoadFromFile] method.
+Saves the editor feature profile to a file in JSON format. It can then be imported using the feature profile manager's Import button or the [LoadFromFile] method.
 
-Note: Feature profiles created via the user interface are saved in the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [graphics.gd/classdb/EditorPaths.Instance.GetConfigDir].
+Note: Feature profiles created via the user interface are saved in the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [EditorPaths.GetConfigDir].
+
+[EditorPaths.GetConfigDir]: https://pkg.go.dev/graphics.gd/classdb/EditorPaths#Instance.GetConfigDir
+[LoadFromFile]: https://pkg.go.dev/graphics.gd/classdb/EditorFeatureProfile#Instance.LoadFromFile
 */
 //go:nosplit
 func (self class) SaveToFile(path String.Readable) Error.Code { //gd:EditorFeatureProfile.save_to_file
@@ -343,9 +352,12 @@ func (self class) SaveToFile(path String.Readable) Error.Code { //gd:EditorFeatu
 }
 
 /*
-Loads an editor feature profile from a file. The file must follow the JSON format obtained by using the feature profile manager's Export button or the [Instance.SaveToFile] method.
+Loads an editor feature profile from a file. The file must follow the JSON format obtained by using the feature profile manager's Export button or the [SaveToFile] method.
 
-Note: Feature profiles created via the user interface are loaded from the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [graphics.gd/classdb/EditorPaths.Instance.GetConfigDir].
+Note: Feature profiles created via the user interface are loaded from the feature_profiles directory, as a file with the .profile extension. The editor configuration folder can be found by using [EditorPaths.GetConfigDir].
+
+[EditorPaths.GetConfigDir]: https://pkg.go.dev/graphics.gd/classdb/EditorPaths#Instance.GetConfigDir
+[SaveToFile]: https://pkg.go.dev/graphics.gd/classdb/EditorFeatureProfile#Instance.SaveToFile
 */
 //go:nosplit
 func (self class) LoadFromFile(path String.Readable) Error.Code { //gd:EditorFeatureProfile.load_from_file

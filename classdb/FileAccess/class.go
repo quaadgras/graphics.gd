@@ -20,15 +20,27 @@ Example: How to write and read from a file. The file named "save_game.dat" will 
 		return content
 	}
 
-A [graphics.gd/classdb/FileAccess] instance has its own file cursor, which is the position in bytes in the file where the next read/write operation will occur. Functions such as [Instance.Get8], [Instance.Get16], [Instance.Store8], and [Instance.Store16] will move the file cursor forward by the number of bytes read/written. The file cursor can be moved to a specific position using [Instance.SeekTo] or [Instance.SeekEnd], and its position can be retrieved using [Instance.GetPosition].
+A [FileAccess] instance has its own file cursor, which is the position in bytes in the file where the next read/write operation will occur. Functions such as [Get8], [Get16], [Store8], and [Store16] will move the file cursor forward by the number of bytes read/written. The file cursor can be moved to a specific position using [SeekTo] or [SeekEnd], and its position can be retrieved using [GetPosition].
 
-A [graphics.gd/classdb/FileAccess] instance will close its file when the instance is freed. Since it inherits [graphics.gd/classdb/RefCounted], this happens automatically when it is no longer in use. [Instance.Close] can be called to close it earlier. In C#, the reference must be disposed manually, which can be done with the using statement or by calling the Dispose method directly.
+A [FileAccess] instance will close its file when the instance is freed. Since it inherits [RefCounted], this happens automatically when it is no longer in use. [Close] can be called to close it earlier. In C#, the reference must be disposed manually, which can be done with the using statement or by calling the Dispose method directly.
 
-Note: To access project resources once exported, it is recommended to use [graphics.gd/classdb/ResourceLoader] instead of [graphics.gd/classdb/FileAccess], as some files are converted to engine-specific formats and their original source files might not be present in the exported PCK package. If using [graphics.gd/classdb/FileAccess], make sure the file is included in the export by changing its import mode to Keep File (exported as is) in the Import dock, or, for files where this option is not available, change the non-resource export filter in the Export dialog to include the file's extension (e.g. *.txt).
+Note: To access project resources once exported, it is recommended to use [ResourceLoader] instead of [FileAccess], as some files are converted to engine-specific formats and their original source files might not be present in the exported PCK package. If using [FileAccess], make sure the file is included in the export by changing its import mode to Keep File (exported as is) in the Import dock, or, for files where this option is not available, change the non-resource export filter in the Export dialog to include the file's extension (e.g. *.txt).
 
-Note: Files are automatically closed only if the process exits "normally" (such as by clicking the window manager's close button or pressing Alt + F4). If you stop the project execution by pressing F8 while the project is running, the file won't be closed as the game process will be killed. You can work around this by calling [Instance.Flush] at regular intervals.
+Note: Files are automatically closed only if the process exits "normally" (such as by clicking the window manager's close button or pressing Alt + F4). If you stop the project execution by pressing F8 while the project is running, the file won't be closed as the game process will be killed. You can work around this by calling [Flush] at regular intervals.
 
+[Close]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Close
 [Data paths]: https://docs.godotengine.org/tutorials/io/data_paths.html
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
+[Flush]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Flush
+[Get16]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Get16
+[Get8]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Get8
+[GetPosition]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetPosition
+[RefCounted]: https://pkg.go.dev/graphics.gd/variant/RefCounted
+[ResourceLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader
+[SeekEnd]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.SeekEnd
+[SeekTo]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.SeekTo
+[Store16]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store16
+[Store8]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store8
 */
 package FileAccess
 
@@ -176,7 +188,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.FileAccess
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.FileAccess
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -187,9 +204,11 @@ type Any interface {
 }
 
 /*
-Creates a new [graphics.gd/classdb/FileAccess] object and opens the file for writing or reading, depending on the flags.
+Creates a new [FileAccess] object and opens the file for writing or reading, depending on the flags.
 
 Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
+
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 */
 func Open(path string, flags ModeFlags) Instance { //gd:FileAccess.open
 	self := Instance{}
@@ -197,11 +216,13 @@ func Open(path string, flags ModeFlags) Instance { //gd:FileAccess.open
 }
 
 /*
-Creates a new [graphics.gd/classdb/FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
+Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
 
 Note: The provided key must be 32 bytes long.
 
 Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
+
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 */
 func OpenEncrypted(path string, mode_flags ModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
 	self := Instance{}
@@ -209,11 +230,13 @@ func OpenEncrypted(path string, mode_flags ModeFlags, key []byte, iv []byte) Ins
 }
 
 /*
-Creates a new [graphics.gd/classdb/FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
+Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
 
 Note: The provided key must be 32 bytes long.
 
 Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
+
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 */
 func OpenEncryptedOptions(path string, mode_flags ModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
 	self := Instance{}
@@ -221,9 +244,11 @@ func OpenEncryptedOptions(path string, mode_flags ModeFlags, key []byte, iv []by
 }
 
 /*
-Creates a new [graphics.gd/classdb/FileAccess] object and opens an encrypted file in write or read mode. You need to pass a password to encrypt/decrypt it.
+Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a password to encrypt/decrypt it.
 
 Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
+
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 */
 func OpenEncryptedWithPass(path string, mode_flags ModeFlags, pass string) Instance { //gd:FileAccess.open_encrypted_with_pass
 	self := Instance{}
@@ -231,12 +256,13 @@ func OpenEncryptedWithPass(path string, mode_flags ModeFlags, pass string) Insta
 }
 
 /*
-Creates a new [graphics.gd/classdb/FileAccess] object and opens a compressed file for reading or writing.
+Creates a new [FileAccess] object and opens a compressed file for reading or writing.
 
 Note: [OpenCompressed] can only read files that were saved by Godot, not third-party compression formats. See [GitHub issue #28999] for a workaround.
 
 Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
 
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 [GitHub issue #28999]: https://github.com/godotengine/godot/issues/28999
 */
 func OpenCompressed(path string, mode_flags ModeFlags, compression_mode CompressionMode) Instance { //gd:FileAccess.open_compressed
@@ -245,12 +271,13 @@ func OpenCompressed(path string, mode_flags ModeFlags, compression_mode Compress
 }
 
 /*
-Creates a new [graphics.gd/classdb/FileAccess] object and opens a compressed file for reading or writing.
+Creates a new [FileAccess] object and opens a compressed file for reading or writing.
 
 Note: [OpenCompressed] can only read files that were saved by Godot, not third-party compression formats. See [GitHub issue #28999] for a workaround.
 
 Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
 
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 [GitHub issue #28999]: https://github.com/godotengine/godot/issues/28999
 */
 func OpenCompressedOptions(path string, mode_flags ModeFlags, compression_mode CompressionMode) Instance { //gd:FileAccess.open_compressed
@@ -267,15 +294,17 @@ func GetOpenError() error { //gd:FileAccess.get_open_error
 }
 
 /*
-Creates a temporary file. This file will be freed when the returned [graphics.gd/classdb/FileAccess] is freed.
+Creates a temporary file. This file will be freed when the returned [FileAccess] is freed.
 
 If 'prefix' is not empty, it will be prefixed to the file name, separated by a -.
 
 If 'extension' is not empty, it will be appended to the temporary file name.
 
-If 'keep' is true, the file is not deleted when the returned [graphics.gd/classdb/FileAccess] is freed.
+If 'keep' is true, the file is not deleted when the returned [FileAccess] is freed.
 
 Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
+
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 */
 func CreateTemp(mode_flags int, prefix string, extension string, keep bool) Instance { //gd:FileAccess.create_temp
 	self := Instance{}
@@ -283,15 +312,17 @@ func CreateTemp(mode_flags int, prefix string, extension string, keep bool) Inst
 }
 
 /*
-Creates a temporary file. This file will be freed when the returned [graphics.gd/classdb/FileAccess] is freed.
+Creates a temporary file. This file will be freed when the returned [FileAccess] is freed.
 
 If 'prefix' is not empty, it will be prefixed to the file name, separated by a -.
 
 If 'extension' is not empty, it will be appended to the temporary file name.
 
-If 'keep' is true, the file is not deleted when the returned [graphics.gd/classdb/FileAccess] is freed.
+If 'keep' is true, the file is not deleted when the returned [FileAccess] is freed.
 
 Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
+
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 */
 func CreateTempOptions(mode_flags int, prefix string, extension string, keep bool) Instance { //gd:FileAccess.create_temp
 	self := Instance{}
@@ -326,9 +357,11 @@ func (self Instance) Resize(length int) error { //gd:FileAccess.resize
 }
 
 /*
-Writes the file's buffer to disk. Flushing is automatically performed when the file is closed. This means you don't need to call [Instance.Flush] manually before closing a file. Still, calling [Instance.Flush] can be used to ensure the data is safe even if the project crashes instead of being closed gracefully.
+Writes the file's buffer to disk. Flushing is automatically performed when the file is closed. This means you don't need to call [Flush] manually before closing a file. Still, calling [Flush] can be used to ensure the data is safe even if the project crashes instead of being closed gracefully.
 
-Note: Only call [Instance.Flush] when you actually need it. Otherwise, it will decrease performance due to constant disk writes.
+Note: Only call [Flush] when you actually need it. Otherwise, it will decrease performance due to constant disk writes.
+
+[Flush]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Flush
 */
 func (self Instance) Flush() { //gd:FileAccess.flush
 	Advanced(self).Flush()
@@ -356,32 +389,41 @@ func (self Instance) IsOpen() bool { //gd:FileAccess.is_open
 }
 
 /*
-Changes the file reading/writing cursor to the specified position (in bytes from the beginning of the file). This changes the value returned by [Instance.GetPosition].
+Changes the file reading/writing cursor to the specified position (in bytes from the beginning of the file). This changes the value returned by [GetPosition].
+
+[GetPosition]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetPosition
 */
 func (self Instance) SeekTo(position int) { //gd:FileAccess.seek
 	Advanced(self).SeekTo(int64(position))
 }
 
 /*
-Changes the file reading/writing cursor to the specified position (in bytes from the end of the file). This changes the value returned by [Instance.GetPosition].
+Changes the file reading/writing cursor to the specified position (in bytes from the end of the file). This changes the value returned by [GetPosition].
 
 Note: This is an offset, so you should use negative numbers or the file cursor will be at the end of the file.
+
+[GetPosition]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetPosition
 */
 func (self Instance) SeekEnd() { //gd:FileAccess.seek_end
 	Advanced(self).SeekEnd(int64(0))
 }
 
 /*
-Changes the file reading/writing cursor to the specified position (in bytes from the end of the file). This changes the value returned by [Instance.GetPosition].
+Changes the file reading/writing cursor to the specified position (in bytes from the end of the file). This changes the value returned by [GetPosition].
 
 Note: This is an offset, so you should use negative numbers or the file cursor will be at the end of the file.
+
+[GetPosition]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetPosition
 */
-func (self Expanded) SeekEnd(position int) { //gd:FileAccess.seek_end
+func (self MoreArgs) SeekEnd(position int) { //gd:FileAccess.seek_end
 	Advanced(self).SeekEnd(int64(position))
 }
 
 /*
-Returns the file cursor's position in bytes from the beginning of the file. This is the file reading/writing cursor set by [Instance.SeekTo] or [Instance.SeekEnd] and advanced by read/write operations.
+Returns the file cursor's position in bytes from the beginning of the file. This is the file reading/writing cursor set by [SeekTo] or [SeekEnd] and advanced by read/write operations.
+
+[SeekEnd]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.SeekEnd
+[SeekTo]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.SeekTo
 */
 func (self Instance) GetPosition() int { //gd:FileAccess.get_position
 	return int(int(Advanced(self).GetPosition()))
@@ -404,28 +446,36 @@ func (self Instance) EofReached() bool { //gd:FileAccess.eof_reached
 }
 
 /*
-Returns the next 8 bits from the file as an integer. This advances the file cursor by 1 byte. See [Instance.Store8] for details on what values can be stored and retrieved this way.
+Returns the next 8 bits from the file as an integer. This advances the file cursor by 1 byte. See [Store8] for details on what values can be stored and retrieved this way.
+
+[Store8]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store8
 */
 func (self Instance) Get8() int { //gd:FileAccess.get_8
 	return int(int(Advanced(self).Get8()))
 }
 
 /*
-Returns the next 16 bits from the file as an integer. This advances the file cursor by 2 bytes. See [Instance.Store16] for details on what values can be stored and retrieved this way.
+Returns the next 16 bits from the file as an integer. This advances the file cursor by 2 bytes. See [Store16] for details on what values can be stored and retrieved this way.
+
+[Store16]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store16
 */
 func (self Instance) Get16() int { //gd:FileAccess.get_16
 	return int(int(Advanced(self).Get16()))
 }
 
 /*
-Returns the next 32 bits from the file as an integer. This advances the file cursor by 4 bytes. See [Instance.Store32] for details on what values can be stored and retrieved this way.
+Returns the next 32 bits from the file as an integer. This advances the file cursor by 4 bytes. See [Store32] for details on what values can be stored and retrieved this way.
+
+[Store32]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store32
 */
 func (self Instance) Get32() int { //gd:FileAccess.get_32
 	return int(int(Advanced(self).Get32()))
 }
 
 /*
-Returns the next 64 bits from the file as an integer. This advances the file cursor by 8 bytes. See [Instance.Store64] for details on what values can be stored and retrieved this way.
+Returns the next 64 bits from the file as an integer. This advances the file cursor by 8 bytes. See [Store64] for details on what values can be stored and retrieved this way.
+
+[Store64]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store64
 */
 func (self Instance) Get64() int { //gd:FileAccess.get_64
 	return int(int(Advanced(self).Get64()))
@@ -499,7 +549,7 @@ For example, the following CSV lines are valid and will be properly parsed as tw
 
 Note how the second line can omit the enclosing quotes as it does not include the delimiter. However it could very well use quotes, it was only written without for demonstration purposes. The third line must use "" for each quotation mark that needs to be interpreted as such instead of the end of a text value.
 */
-func (self Expanded) GetCsvLine(delim string) []string { //gd:FileAccess.get_csv_line
+func (self MoreArgs) GetCsvLine(delim string) []string { //gd:FileAccess.get_csv_line
 	return []string(Advanced(self).GetCsvLine(String.New(delim)).Strings())
 }
 
@@ -517,7 +567,7 @@ Returns the whole file as a string. Text is interpreted as being UTF-8 encoded. 
 
 If 'skip_cr' is true, carriage return characters (\r, CR) will be ignored when parsing the UTF-8, so that only line feed characters (\n, LF) represent a new line (Unix convention).
 */
-func (self Expanded) GetAsText(skip_cr bool) string { //gd:FileAccess.get_as_text
+func (self MoreArgs) GetAsText(skip_cr bool) string { //gd:FileAccess.get_as_text
 	return string(Advanced(self).GetAsText(skip_cr).String())
 }
 
@@ -547,10 +597,11 @@ func (self Instance) GetError() error { //gd:FileAccess.get_error
 /*
 Returns the next any value from the file. If 'allow_objects' is true, decoding objects is allowed. This advances the file cursor by the number of bytes read.
 
-Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method, as described in the [Binary serialization API] documentation.
+Internally, this uses the same decoding mechanism as the [@GlobalScope.BytesToVar] method, as described in the [Binary serialization API] documentation.
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 
+[@GlobalScope.BytesToVar]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.BytesToVar
 [Binary serialization API]: https://docs.godotengine.org/tutorials/io/binary_serialization_api.html
 */
 func (self Instance) GetVar() any { //gd:FileAccess.get_var
@@ -560,13 +611,14 @@ func (self Instance) GetVar() any { //gd:FileAccess.get_var
 /*
 Returns the next any value from the file. If 'allow_objects' is true, decoding objects is allowed. This advances the file cursor by the number of bytes read.
 
-Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method, as described in the [Binary serialization API] documentation.
+Internally, this uses the same decoding mechanism as the [@GlobalScope.BytesToVar] method, as described in the [Binary serialization API] documentation.
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 
+[@GlobalScope.BytesToVar]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.BytesToVar
 [Binary serialization API]: https://docs.godotengine.org/tutorials/io/binary_serialization_api.html
 */
-func (self Expanded) GetVar(allow_objects bool) any { //gd:FileAccess.get_var
+func (self MoreArgs) GetVar(allow_objects bool) any { //gd:FileAccess.get_var
 	return any(Advanced(self).GetVar(allow_objects).Interface())
 }
 
@@ -577,7 +629,10 @@ Note: The 'value' should lie in the interval [0, 255]. Any other value will over
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 
-To store a signed integer, use [Instance.Store64], or convert it manually (see [Instance.Store16] for an example).
+To store a signed integer, use [Store64], or convert it manually (see [Store16] for an example).
+
+[Store16]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store16
+[Store64]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store64
 */
 func (self Instance) Store8(value int) bool { //gd:FileAccess.store_8
 	return bool(Advanced(self).Store8(int64(value)))
@@ -590,7 +645,9 @@ Note: The 'value' should lie in the interval [0, 2^16 - 1]. Any other value will
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 
-To store a signed integer, use [Instance.Store64] or store a signed integer from the interval [-2^15, 2^15 - 1] (i.e. keeping one bit for the signedness) and compute its sign manually when reading. For example:
+To store a signed integer, use [Store64] or store a signed integer from the interval [-2^15, 2^15 - 1] (i.e. keeping one bit for the signedness) and compute its sign manually when reading. For example:
+
+[Store64]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store64
 */
 func (self Instance) Store16(value int) bool { //gd:FileAccess.store_16
 	return bool(Advanced(self).Store16(int64(value)))
@@ -603,7 +660,10 @@ Note: The 'value' should lie in the interval [0, 2^32 - 1]. Any other value will
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 
-To store a signed integer, use [Instance.Store64], or convert it manually (see [Instance.Store16] for an example).
+To store a signed integer, use [Store64], or convert it manually (see [Store16] for an example).
+
+[Store16]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store16
+[Store64]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store64
 */
 func (self Instance) Store32(value int) bool { //gd:FileAccess.store_32
 	return bool(Advanced(self).Store32(int64(value)))
@@ -668,9 +728,11 @@ func (self Instance) StoreBuffer(buffer []byte) bool { //gd:FileAccess.store_buf
 }
 
 /*
-Stores 'line' in the file followed by a newline character (\n), encoding the text as UTF-8. This advances the file cursor by the length of the line, after the newline character. The amount of bytes written depends on the UTF-8 encoded bytes, which may be different from [graphics.gd/classdb/String.Instance.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
+Stores 'line' in the file followed by a newline character (\n), encoding the text as UTF-8. This advances the file cursor by the length of the line, after the newline character. The amount of bytes written depends on the UTF-8 encoded bytes, which may be different from [String.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
+
+[String.Length]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Length
 */
 func (self Instance) StoreLine(line string) bool { //gd:FileAccess.store_line
 	return bool(Advanced(self).StoreLine(String.New(line)))
@@ -694,16 +756,20 @@ Text will be encoded as UTF-8. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 */
-func (self Expanded) StoreCsvLine(values []string, delim string) bool { //gd:FileAccess.store_csv_line
+func (self MoreArgs) StoreCsvLine(values []string, delim string) bool { //gd:FileAccess.store_csv_line
 	return bool(Advanced(self).StoreCsvLine(Packed.MakeStrings(values...), String.New(delim)))
 }
 
 /*
-Stores 'string' in the file without a newline character (\n), encoding the text as UTF-8. This advances the file cursor by the length of the string in UTF-8 encoded bytes, which may be different from [graphics.gd/classdb/String.Instance.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
+Stores 'string' in the file without a newline character (\n), encoding the text as UTF-8. This advances the file cursor by the length of the string in UTF-8 encoded bytes, which may be different from [String.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
 
-Note: This method is intended to be used to write text files. The string is stored as a UTF-8 encoded buffer without string length or terminating zero, which means that it can't be loaded back easily. If you want to store a retrievable string in a binary file, consider using [Instance.StorePascalString] instead. For retrieving strings from a text file, you can use get_buffer(length).get_string_from_utf8() (if you know the length) or [Instance.GetAsText].
+Note: This method is intended to be used to write text files. The string is stored as a UTF-8 encoded buffer without string length or terminating zero, which means that it can't be loaded back easily. If you want to store a retrievable string in a binary file, consider using [StorePascalString] instead. For retrieving strings from a text file, you can use get_buffer(length).get_string_from_utf8() (if you know the length) or [GetAsText].
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
+
+[GetAsText]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetAsText
+[StorePascalString]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.StorePascalString
+[String.Length]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Length
 */
 func (self Instance) StoreString(s string) bool { //gd:FileAccess.store_string
 	return bool(Advanced(self).StoreString(String.New(s)))
@@ -712,13 +778,15 @@ func (self Instance) StoreString(s string) bool { //gd:FileAccess.store_string
 /*
 Stores any Variant value in the file. If 'full_objects' is true, encoding objects is allowed (and can potentially include code). This advances the file cursor by the number of bytes written. Returns true if the operation is successful.
 
-Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method, as described in the [Binary serialization API] documentation.
+Internally, this uses the same encoding mechanism as the [@GlobalScope.VarToBytes] method, as described in the [Binary serialization API] documentation.
 
-Note: Not all properties are included. Only properties that are configured with the [PropertyUsageStorage] flag set will be serialized. You can add a new usage flag to a property by overriding the [graphics.gd/classdb/Object.Instance.GetPropertyList] method in your class. You can also check how property usage is configured by calling [graphics.gd/classdb/Object.Instance.GetPropertyList]. See [PropertyUsageFlags] for the possible usage flags.
+Note: Not all properties are included. Only properties that are configured with the [PropertyUsageStorage] flag set will be serialized. You can add a new usage flag to a property by overriding the [Object.GetPropertyList] method in your class. You can also check how property usage is configured by calling [Object.GetPropertyList]. See [PropertyUsageFlags] for the possible usage flags.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 
+[@GlobalScope.VarToBytes]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.VarToBytes
 [Binary serialization API]: https://docs.godotengine.org/tutorials/io/binary_serialization_api.html
+[Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 */
 func (self Instance) StoreVar(value any) bool { //gd:FileAccess.store_var
 	return bool(Advanced(self).StoreVar(variant.New(value), false))
@@ -727,40 +795,49 @@ func (self Instance) StoreVar(value any) bool { //gd:FileAccess.store_var
 /*
 Stores any Variant value in the file. If 'full_objects' is true, encoding objects is allowed (and can potentially include code). This advances the file cursor by the number of bytes written. Returns true if the operation is successful.
 
-Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method, as described in the [Binary serialization API] documentation.
+Internally, this uses the same encoding mechanism as the [@GlobalScope.VarToBytes] method, as described in the [Binary serialization API] documentation.
 
-Note: Not all properties are included. Only properties that are configured with the [PropertyUsageStorage] flag set will be serialized. You can add a new usage flag to a property by overriding the [graphics.gd/classdb/Object.Instance.GetPropertyList] method in your class. You can also check how property usage is configured by calling [graphics.gd/classdb/Object.Instance.GetPropertyList]. See [PropertyUsageFlags] for the possible usage flags.
+Note: Not all properties are included. Only properties that are configured with the [PropertyUsageStorage] flag set will be serialized. You can add a new usage flag to a property by overriding the [Object.GetPropertyList] method in your class. You can also check how property usage is configured by calling [Object.GetPropertyList]. See [PropertyUsageFlags] for the possible usage flags.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 
+[@GlobalScope.VarToBytes]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.VarToBytes
 [Binary serialization API]: https://docs.godotengine.org/tutorials/io/binary_serialization_api.html
+[Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 */
-func (self Expanded) StoreVar(value any, full_objects bool) bool { //gd:FileAccess.store_var
+func (self MoreArgs) StoreVar(value any, full_objects bool) bool { //gd:FileAccess.store_var
 	return bool(Advanced(self).StoreVar(variant.New(value), full_objects))
 }
 
 /*
-Stores the given string as a line in the file in Pascal format (i.e. also store the length of the string). Text will be encoded as UTF-8. This advances the file cursor by the number of bytes written depending on the UTF-8 encoded bytes, which may be different from [graphics.gd/classdb/String.Instance.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
+Stores the given string as a line in the file in Pascal format (i.e. also store the length of the string). Text will be encoded as UTF-8. This advances the file cursor by the number of bytes written depending on the UTF-8 encoded bytes, which may be different from [String.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
+
+[String.Length]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Length
 */
 func (self Instance) StorePascalString(s string) bool { //gd:FileAccess.store_pascal_string
 	return bool(Advanced(self).StorePascalString(String.New(s)))
 }
 
 /*
-Returns a string saved in Pascal format from the file, meaning that the length of the string is explicitly stored at the start. See [Instance.StorePascalString]. This may include newline characters. The file cursor is advanced after the bytes read.
+Returns a string saved in Pascal format from the file, meaning that the length of the string is explicitly stored at the start. See [StorePascalString]. This may include newline characters. The file cursor is advanced after the bytes read.
 
 Text is interpreted as being UTF-8 encoded.
+
+[StorePascalString]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.StorePascalString
 */
 func (self Instance) GetPascalString() string { //gd:FileAccess.get_pascal_string
 	return string(Advanced(self).GetPascalString().String())
 }
 
 /*
-Closes the currently opened file and prevents subsequent read/write operations. Use [Instance.Flush] to persist the data to disk without closing the file.
+Closes the currently opened file and prevents subsequent read/write operations. Use [Flush] to persist the data to disk without closing the file.
 
-Note: [graphics.gd/classdb/FileAccess] will automatically close when it's freed, which happens when it goes out of scope or when it gets assigned with null. In C# the reference must be disposed after we are done using it, this can be done with the using statement or calling the Dispose method directly.
+Note: [FileAccess] will automatically close when it's freed, which happens when it goes out of scope or when it gets assigned with null. In C# the reference must be disposed after we are done using it, this can be done with the using statement or calling the Dispose method directly.
+
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
+[Flush]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Flush
 */
 func (self Instance) Close() { //gd:FileAccess.close
 	Advanced(self).Close()
@@ -769,9 +846,12 @@ func (self Instance) Close() { //gd:FileAccess.close
 /*
 Returns true if the file exists in the given path.
 
-Note: Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [graphics.gd/classdb/ResourceLoader.Exists] for an alternative approach that takes resource remapping into account.
+Note: Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [ResourceLoader.Exists] for an alternative approach that takes resource remapping into account.
 
-For a non-static, relative equivalent, use [graphics.gd/classdb/DirAccess.Instance.FileExists].
+For a non-static, relative equivalent, use [DirAccess.FileExists].
+
+[DirAccess.FileExists]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.FileExists
+[ResourceLoader.Exists]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader#Exists
 */
 func FileExists(path string) bool { //gd:FileAccess.file_exists
 	self := Instance{}
@@ -779,7 +859,9 @@ func FileExists(path string) bool { //gd:FileAccess.file_exists
 }
 
 /*
-Returns the last time the 'file' was modified in Unix timestamp format, or 0 on error. This Unix timestamp can be converted to another format using the [graphics.gd/classdb/Time] singleton.
+Returns the last time the 'file' was modified in Unix timestamp format, or 0 on error. This Unix timestamp can be converted to another format using the [Time] singleton.
+
+[Time]: https://pkg.go.dev/graphics.gd/classdb/Time
 */
 func GetModifiedTime(file string) int { //gd:FileAccess.get_modified_time
 	self := Instance{}
@@ -787,7 +869,9 @@ func GetModifiedTime(file string) int { //gd:FileAccess.get_modified_time
 }
 
 /*
-Returns the last time the 'file' was accessed in Unix timestamp format, or 0 on error. This Unix timestamp can be converted to another format using the [graphics.gd/classdb/Time] singleton.
+Returns the last time the 'file' was accessed in Unix timestamp format, or 0 on error. This Unix timestamp can be converted to another format using the [Time] singleton.
+
+[Time]: https://pkg.go.dev/graphics.gd/classdb/Time
 */
 func GetAccessTime(file string) int { //gd:FileAccess.get_access_time
 	self := Instance{}
@@ -914,9 +998,11 @@ func (self Instance) SetBigEndian(value bool) {
 }
 
 /*
-Creates a new [graphics.gd/classdb/FileAccess] object and opens the file for writing or reading, depending on the flags.
+Creates a new [FileAccess] object and opens the file for writing or reading, depending on the flags.
 
 Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
+
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 */
 //go:nosplit
 func (self class) Open(path String.Readable, flags ModeFlags) [1]gdclass.FileAccess { //gd:FileAccess.open
@@ -929,11 +1015,13 @@ func (self class) Open(path String.Readable, flags ModeFlags) [1]gdclass.FileAcc
 }
 
 /*
-Creates a new [graphics.gd/classdb/FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
+Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
 
 Note: The provided key must be 32 bytes long.
 
 Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
+
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 */
 //go:nosplit
 func (self class) OpenEncrypted(path String.Readable, mode_flags ModeFlags, key Packed.Bytes, iv Packed.Bytes) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted
@@ -948,9 +1036,11 @@ func (self class) OpenEncrypted(path String.Readable, mode_flags ModeFlags, key 
 }
 
 /*
-Creates a new [graphics.gd/classdb/FileAccess] object and opens an encrypted file in write or read mode. You need to pass a password to encrypt/decrypt it.
+Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a password to encrypt/decrypt it.
 
 Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
+
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 */
 //go:nosplit
 func (self class) OpenEncryptedWithPass(path String.Readable, mode_flags ModeFlags, pass String.Readable) [1]gdclass.FileAccess { //gd:FileAccess.open_encrypted_with_pass
@@ -964,12 +1054,13 @@ func (self class) OpenEncryptedWithPass(path String.Readable, mode_flags ModeFla
 }
 
 /*
-Creates a new [graphics.gd/classdb/FileAccess] object and opens a compressed file for reading or writing.
+Creates a new [FileAccess] object and opens a compressed file for reading or writing.
 
 Note: [OpenCompressed] can only read files that were saved by Godot, not third-party compression formats. See [GitHub issue #28999] for a workaround.
 
 Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
 
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 [GitHub issue #28999]: https://github.com/godotengine/godot/issues/28999
 */
 //go:nosplit
@@ -994,15 +1085,17 @@ func (self class) GetOpenError() Error.Code { //gd:FileAccess.get_open_error
 }
 
 /*
-Creates a temporary file. This file will be freed when the returned [graphics.gd/classdb/FileAccess] is freed.
+Creates a temporary file. This file will be freed when the returned [FileAccess] is freed.
 
 If 'prefix' is not empty, it will be prefixed to the file name, separated by a -.
 
 If 'extension' is not empty, it will be appended to the temporary file name.
 
-If 'keep' is true, the file is not deleted when the returned [graphics.gd/classdb/FileAccess] is freed.
+If 'keep' is true, the file is not deleted when the returned [FileAccess] is freed.
 
 Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
+
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 */
 //go:nosplit
 func (self class) CreateTemp(mode_flags int64, prefix String.Readable, extension String.Readable, keep bool) [1]gdclass.FileAccess { //gd:FileAccess.create_temp
@@ -1051,9 +1144,11 @@ func (self class) Resize(length int64) Error.Code { //gd:FileAccess.resize
 }
 
 /*
-Writes the file's buffer to disk. Flushing is automatically performed when the file is closed. This means you don't need to call [Instance.Flush] manually before closing a file. Still, calling [Instance.Flush] can be used to ensure the data is safe even if the project crashes instead of being closed gracefully.
+Writes the file's buffer to disk. Flushing is automatically performed when the file is closed. This means you don't need to call [Flush] manually before closing a file. Still, calling [Flush] can be used to ensure the data is safe even if the project crashes instead of being closed gracefully.
 
-Note: Only call [Instance.Flush] when you actually need it. Otherwise, it will decrease performance due to constant disk writes.
+Note: Only call [Flush] when you actually need it. Otherwise, it will decrease performance due to constant disk writes.
+
+[Flush]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Flush
 */
 //go:nosplit
 func (self class) Flush() { //gd:FileAccess.flush
@@ -1091,7 +1186,9 @@ func (self class) IsOpen() bool { //gd:FileAccess.is_open
 }
 
 /*
-Changes the file reading/writing cursor to the specified position (in bytes from the beginning of the file). This changes the value returned by [Instance.GetPosition].
+Changes the file reading/writing cursor to the specified position (in bytes from the beginning of the file). This changes the value returned by [GetPosition].
+
+[GetPosition]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetPosition
 */
 //go:nosplit
 func (self class) SeekTo(position int64) { //gd:FileAccess.seek
@@ -1099,9 +1196,11 @@ func (self class) SeekTo(position int64) { //gd:FileAccess.seek
 }
 
 /*
-Changes the file reading/writing cursor to the specified position (in bytes from the end of the file). This changes the value returned by [Instance.GetPosition].
+Changes the file reading/writing cursor to the specified position (in bytes from the end of the file). This changes the value returned by [GetPosition].
 
 Note: This is an offset, so you should use negative numbers or the file cursor will be at the end of the file.
+
+[GetPosition]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetPosition
 */
 //go:nosplit
 func (self class) SeekEnd(position int64) { //gd:FileAccess.seek_end
@@ -1109,7 +1208,10 @@ func (self class) SeekEnd(position int64) { //gd:FileAccess.seek_end
 }
 
 /*
-Returns the file cursor's position in bytes from the beginning of the file. This is the file reading/writing cursor set by [Instance.SeekTo] or [Instance.SeekEnd] and advanced by read/write operations.
+Returns the file cursor's position in bytes from the beginning of the file. This is the file reading/writing cursor set by [SeekTo] or [SeekEnd] and advanced by read/write operations.
+
+[SeekEnd]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.SeekEnd
+[SeekTo]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.SeekTo
 */
 //go:nosplit
 func (self class) GetPosition() int64 { //gd:FileAccess.get_position
@@ -1143,7 +1245,9 @@ func (self class) EofReached() bool { //gd:FileAccess.eof_reached
 }
 
 /*
-Returns the next 8 bits from the file as an integer. This advances the file cursor by 1 byte. See [Instance.Store8] for details on what values can be stored and retrieved this way.
+Returns the next 8 bits from the file as an integer. This advances the file cursor by 1 byte. See [Store8] for details on what values can be stored and retrieved this way.
+
+[Store8]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store8
 */
 //go:nosplit
 func (self class) Get8() int64 { //gd:FileAccess.get_8
@@ -1153,7 +1257,9 @@ func (self class) Get8() int64 { //gd:FileAccess.get_8
 }
 
 /*
-Returns the next 16 bits from the file as an integer. This advances the file cursor by 2 bytes. See [Instance.Store16] for details on what values can be stored and retrieved this way.
+Returns the next 16 bits from the file as an integer. This advances the file cursor by 2 bytes. See [Store16] for details on what values can be stored and retrieved this way.
+
+[Store16]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store16
 */
 //go:nosplit
 func (self class) Get16() int64 { //gd:FileAccess.get_16
@@ -1163,7 +1269,9 @@ func (self class) Get16() int64 { //gd:FileAccess.get_16
 }
 
 /*
-Returns the next 32 bits from the file as an integer. This advances the file cursor by 4 bytes. See [Instance.Store32] for details on what values can be stored and retrieved this way.
+Returns the next 32 bits from the file as an integer. This advances the file cursor by 4 bytes. See [Store32] for details on what values can be stored and retrieved this way.
+
+[Store32]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store32
 */
 //go:nosplit
 func (self class) Get32() int64 { //gd:FileAccess.get_32
@@ -1173,7 +1281,9 @@ func (self class) Get32() int64 { //gd:FileAccess.get_32
 }
 
 /*
-Returns the next 64 bits from the file as an integer. This advances the file cursor by 8 bytes. See [Instance.Store64] for details on what values can be stored and retrieved this way.
+Returns the next 64 bits from the file as an integer. This advances the file cursor by 8 bytes. See [Store64] for details on what values can be stored and retrieved this way.
+
+[Store64]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store64
 */
 //go:nosplit
 func (self class) Get64() int64 { //gd:FileAccess.get_64
@@ -1321,10 +1431,11 @@ func (self class) GetError() Error.Code { //gd:FileAccess.get_error
 /*
 Returns the next any value from the file. If 'allow_objects' is true, decoding objects is allowed. This advances the file cursor by the number of bytes read.
 
-Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method, as described in the [Binary serialization API] documentation.
+Internally, this uses the same decoding mechanism as the [@GlobalScope.BytesToVar] method, as described in the [Binary serialization API] documentation.
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
 
+[@GlobalScope.BytesToVar]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.BytesToVar
 [Binary serialization API]: https://docs.godotengine.org/tutorials/io/binary_serialization_api.html
 */
 //go:nosplit
@@ -1341,7 +1452,10 @@ Note: The 'value' should lie in the interval [0, 255]. Any other value will over
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 
-To store a signed integer, use [Instance.Store64], or convert it manually (see [Instance.Store16] for an example).
+To store a signed integer, use [Store64], or convert it manually (see [Store16] for an example).
+
+[Store16]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store16
+[Store64]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store64
 */
 //go:nosplit
 func (self class) Store8(value int64) bool { //gd:FileAccess.store_8
@@ -1357,9 +1471,11 @@ Note: The 'value' should lie in the interval [0, 2^16 - 1]. Any other value will
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 
-To store a signed integer, use [Instance.Store64] or store a signed integer from the interval [-2^15, 2^15 - 1] (i.e. keeping one bit for the signedness) and compute its sign manually when reading. For example:
+To store a signed integer, use [Store64] or store a signed integer from the interval [-2^15, 2^15 - 1] (i.e. keeping one bit for the signedness) and compute its sign manually when reading. For example:
 
 
+
+[Store64]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store64
 */
 //go:nosplit
 func (self class) Store16(value int64) bool { //gd:FileAccess.store_16
@@ -1375,7 +1491,10 @@ Note: The 'value' should lie in the interval [0, 2^32 - 1]. Any other value will
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 
-To store a signed integer, use [Instance.Store64], or convert it manually (see [Instance.Store16] for an example).
+To store a signed integer, use [Store64], or convert it manually (see [Store16] for an example).
+
+[Store16]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store16
+[Store64]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Store64
 */
 //go:nosplit
 func (self class) Store32(value int64) bool { //gd:FileAccess.store_32
@@ -1461,9 +1580,11 @@ func (self class) StoreBuffer(buffer Packed.Bytes) bool { //gd:FileAccess.store_
 }
 
 /*
-Stores 'line' in the file followed by a newline character (\n), encoding the text as UTF-8. This advances the file cursor by the length of the line, after the newline character. The amount of bytes written depends on the UTF-8 encoded bytes, which may be different from [graphics.gd/classdb/String.Instance.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
+Stores 'line' in the file followed by a newline character (\n), encoding the text as UTF-8. This advances the file cursor by the length of the line, after the newline character. The amount of bytes written depends on the UTF-8 encoded bytes, which may be different from [String.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
+
+[String.Length]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Length
 */
 //go:nosplit
 func (self class) StoreLine(line String.Readable) bool { //gd:FileAccess.store_line
@@ -1490,11 +1611,15 @@ func (self class) StoreCsvLine(values Packed.Strings, delim String.Readable) boo
 }
 
 /*
-Stores 'string' in the file without a newline character (\n), encoding the text as UTF-8. This advances the file cursor by the length of the string in UTF-8 encoded bytes, which may be different from [graphics.gd/classdb/String.Instance.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
+Stores 'string' in the file without a newline character (\n), encoding the text as UTF-8. This advances the file cursor by the length of the string in UTF-8 encoded bytes, which may be different from [String.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
 
-Note: This method is intended to be used to write text files. The string is stored as a UTF-8 encoded buffer without string length or terminating zero, which means that it can't be loaded back easily. If you want to store a retrievable string in a binary file, consider using [Instance.StorePascalString] instead. For retrieving strings from a text file, you can use get_buffer(length).get_string_from_utf8() (if you know the length) or [Instance.GetAsText].
+Note: This method is intended to be used to write text files. The string is stored as a UTF-8 encoded buffer without string length or terminating zero, which means that it can't be loaded back easily. If you want to store a retrievable string in a binary file, consider using [StorePascalString] instead. For retrieving strings from a text file, you can use get_buffer(length).get_string_from_utf8() (if you know the length) or [GetAsText].
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
+
+[GetAsText]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.GetAsText
+[StorePascalString]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.StorePascalString
+[String.Length]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Length
 */
 //go:nosplit
 func (self class) StoreString(s String.Readable) bool { //gd:FileAccess.store_string
@@ -1506,13 +1631,15 @@ func (self class) StoreString(s String.Readable) bool { //gd:FileAccess.store_st
 /*
 Stores any Variant value in the file. If 'full_objects' is true, encoding objects is allowed (and can potentially include code). This advances the file cursor by the number of bytes written. Returns true if the operation is successful.
 
-Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method, as described in the [Binary serialization API] documentation.
+Internally, this uses the same encoding mechanism as the [@GlobalScope.VarToBytes] method, as described in the [Binary serialization API] documentation.
 
-Note: Not all properties are included. Only properties that are configured with the [PropertyUsageStorage] flag set will be serialized. You can add a new usage flag to a property by overriding the [graphics.gd/classdb/Object.Instance.GetPropertyList] method in your class. You can also check how property usage is configured by calling [graphics.gd/classdb/Object.Instance.GetPropertyList]. See [PropertyUsageFlags] for the possible usage flags.
+Note: Not all properties are included. Only properties that are configured with the [PropertyUsageStorage] flag set will be serialized. You can add a new usage flag to a property by overriding the [Object.GetPropertyList] method in your class. You can also check how property usage is configured by calling [Object.GetPropertyList]. See [PropertyUsageFlags] for the possible usage flags.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
 
+[@GlobalScope.VarToBytes]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.VarToBytes
 [Binary serialization API]: https://docs.godotengine.org/tutorials/io/binary_serialization_api.html
+[Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 */
 //go:nosplit
 func (self class) StoreVar(value variant.Any, full_objects bool) bool { //gd:FileAccess.store_var
@@ -1525,9 +1652,11 @@ func (self class) StoreVar(value variant.Any, full_objects bool) bool { //gd:Fil
 }
 
 /*
-Stores the given string as a line in the file in Pascal format (i.e. also store the length of the string). Text will be encoded as UTF-8. This advances the file cursor by the number of bytes written depending on the UTF-8 encoded bytes, which may be different from [graphics.gd/classdb/String.Instance.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
+Stores the given string as a line in the file in Pascal format (i.e. also store the length of the string). Text will be encoded as UTF-8. This advances the file cursor by the number of bytes written depending on the UTF-8 encoded bytes, which may be different from [String.Length] which counts the number of UTF-32 codepoints. Returns true if the operation is successful.
 
 Note: If an error occurs, the resulting value of the file position indicator is indeterminate.
+
+[String.Length]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Length
 */
 //go:nosplit
 func (self class) StorePascalString(s String.Readable) bool { //gd:FileAccess.store_pascal_string
@@ -1537,9 +1666,11 @@ func (self class) StorePascalString(s String.Readable) bool { //gd:FileAccess.st
 }
 
 /*
-Returns a string saved in Pascal format from the file, meaning that the length of the string is explicitly stored at the start. See [Instance.StorePascalString]. This may include newline characters. The file cursor is advanced after the bytes read.
+Returns a string saved in Pascal format from the file, meaning that the length of the string is explicitly stored at the start. See [StorePascalString]. This may include newline characters. The file cursor is advanced after the bytes read.
 
 Text is interpreted as being UTF-8 encoded.
+
+[StorePascalString]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.StorePascalString
 */
 //go:nosplit
 func (self class) GetPascalString() String.Readable { //gd:FileAccess.get_pascal_string
@@ -1549,9 +1680,12 @@ func (self class) GetPascalString() String.Readable { //gd:FileAccess.get_pascal
 }
 
 /*
-Closes the currently opened file and prevents subsequent read/write operations. Use [Instance.Flush] to persist the data to disk without closing the file.
+Closes the currently opened file and prevents subsequent read/write operations. Use [Flush] to persist the data to disk without closing the file.
 
-Note: [graphics.gd/classdb/FileAccess] will automatically close when it's freed, which happens when it goes out of scope or when it gets assigned with null. In C# the reference must be disposed after we are done using it, this can be done with the using statement or calling the Dispose method directly.
+Note: [FileAccess] will automatically close when it's freed, which happens when it goes out of scope or when it gets assigned with null. In C# the reference must be disposed after we are done using it, this can be done with the using statement or calling the Dispose method directly.
+
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
+[Flush]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.Flush
 */
 //go:nosplit
 func (self class) Close() { //gd:FileAccess.close
@@ -1561,9 +1695,12 @@ func (self class) Close() { //gd:FileAccess.close
 /*
 Returns true if the file exists in the given path.
 
-Note: Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [graphics.gd/classdb/ResourceLoader.Exists] for an alternative approach that takes resource remapping into account.
+Note: Many resources types are imported (e.g. textures or sound files), and their source asset will not be included in the exported game, as only the imported version is used. See [ResourceLoader.Exists] for an alternative approach that takes resource remapping into account.
 
-For a non-static, relative equivalent, use [graphics.gd/classdb/DirAccess.Instance.FileExists].
+For a non-static, relative equivalent, use [DirAccess.FileExists].
+
+[DirAccess.FileExists]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.FileExists
+[ResourceLoader.Exists]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader#Exists
 */
 //go:nosplit
 func (self class) FileExists(path String.Readable) bool { //gd:FileAccess.file_exists
@@ -1573,7 +1710,9 @@ func (self class) FileExists(path String.Readable) bool { //gd:FileAccess.file_e
 }
 
 /*
-Returns the last time the 'file' was modified in Unix timestamp format, or 0 on error. This Unix timestamp can be converted to another format using the [graphics.gd/classdb/Time] singleton.
+Returns the last time the 'file' was modified in Unix timestamp format, or 0 on error. This Unix timestamp can be converted to another format using the [Time] singleton.
+
+[Time]: https://pkg.go.dev/graphics.gd/classdb/Time
 */
 //go:nosplit
 func (self class) GetModifiedTime(file String.Readable) int64 { //gd:FileAccess.get_modified_time
@@ -1583,7 +1722,9 @@ func (self class) GetModifiedTime(file String.Readable) int64 { //gd:FileAccess.
 }
 
 /*
-Returns the last time the 'file' was accessed in Unix timestamp format, or 0 on error. This Unix timestamp can be converted to another format using the [graphics.gd/classdb/Time] singleton.
+Returns the last time the 'file' was accessed in Unix timestamp format, or 0 on error. This Unix timestamp can be converted to another format using the [Time] singleton.
+
+[Time]: https://pkg.go.dev/graphics.gd/classdb/Time
 */
 //go:nosplit
 func (self class) GetAccessTime(file String.Readable) int64 { //gd:FileAccess.get_access_time
@@ -1719,13 +1860,17 @@ const (
 	Read ModeFlags = 1
 	// Opens the file for write operations. The file is created if it does not exist, and truncated if it does.
 	//
-	// Note: When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [graphics.gd/classdb/DirAccess.Instance.MakeDirRecursive].
+	// Note: When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [DirAccess.MakeDirRecursive].
+	//
+	// [DirAccess.MakeDirRecursive]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.MakeDirRecursive
 	Write ModeFlags = 2
 	// Opens the file for read and write operations. Does not truncate the file. The file cursor is positioned at the beginning of the file.
 	ReadWrite ModeFlags = 3
 	// Opens the file for read and write operations. The file is created if it does not exist, and truncated if it does. The file cursor is positioned at the beginning of the file.
 	//
-	// Note: When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [graphics.gd/classdb/DirAccess.Instance.MakeDirRecursive].
+	// Note: When creating a file it must be in an already existing directory. To recursively create directories for a file path, see [DirAccess.MakeDirRecursive].
+	//
+	// [DirAccess.MakeDirRecursive]: https://pkg.go.dev/graphics.gd/classdb/DirAccess#Instance.MakeDirRecursive
 	WriteRead ModeFlags = 7
 )
 

@@ -23,7 +23,11 @@ Band 9: 8000 Hz
 
 Band 10: 16000 Hz
 
-See also [graphics.gd/classdb/AudioEffectEQ], [graphics.gd/classdb/AudioEffectEQ6], [graphics.gd/classdb/AudioEffectEQ21].
+See also [AudioEffectEQ], [AudioEffectEQ6], [AudioEffectEQ21].
+
+[AudioEffectEQ]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectEQ
+[AudioEffectEQ21]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectEQ21
+[AudioEffectEQ6]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectEQ6
 */
 package AudioEffectEQ10
 

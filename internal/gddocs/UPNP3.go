@@ -62,8 +62,8 @@ func (m *MyPortForwarding) setup(port int) {
 		return
 	}
 	if gateway := upnp.GetGateway(); gateway != UPNPDevice.Nil && gateway.IsValidGateway() {
-		UPNPDevice.Expanded(gateway).AddPortMapping(port, port, "MyGame", "UDP", 0)
-		UPNPDevice.Expanded(gateway).AddPortMapping(port, port, "MyGame", "TCP", 0)
+		gateway.MoreArgs().AddPortMapping(port, port, "MyGame", "UDP", 0)
+		gateway.MoreArgs().AddPortMapping(port, port, "MyGame", "TCP", 0)
 		m.Completed.Emit(0)
 	}
 }

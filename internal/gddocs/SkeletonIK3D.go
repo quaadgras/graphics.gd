@@ -27,7 +27,7 @@ func ExampleSkeletonIK3D(skeleton_ik_node SkeletonIK3D.Instance) {
 	skeleton_ik_node.Start()
 
 	// Apply IK effect only on the current frame
-	SkeletonIK3D.Expanded(skeleton_ik_node).Start(true)
+	skeleton_ik_node.MoreArgs().Start(true)
 
 	// Stop IK effect and reset bones_global_pose_override on Skeleton
 	skeleton_ik_node.Stop()

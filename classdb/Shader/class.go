@@ -3,7 +3,9 @@
 /*
 A custom shader program implemented in the Godot shading language, saved with the .gdshader extension.
 
-This class is used by a [graphics.gd/classdb/ShaderMaterial] and allows you to write your own custom behavior for rendering visual items or updating particle information. For a detailed explanation and usage, please see the tutorials linked below.
+This class is used by a [ShaderMaterial] and allows you to write your own custom behavior for rendering visual items or updating particle information. For a detailed explanation and usage, please see the tutorials linked below.
+
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 */
 package Shader
 
@@ -98,7 +100,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.Shader
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.Shader
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -116,24 +123,28 @@ func (self Instance) GetMode() Mode { //gd:Shader.get_mode
 }
 
 /*
-Sets the default texture to be used with a texture uniform. The default is used if a texture is not set in the [graphics.gd/classdb/ShaderMaterial].
+Sets the default texture to be used with a texture uniform. The default is used if a texture is not set in the [ShaderMaterial].
 
 Note: 'name' must match the name of the uniform in the code exactly.
 
 Note: If the sampler array is used use 'index' to access the specified texture.
+
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 */
 func (self Instance) SetDefaultTextureParameter(name string, texture Texture.Instance) { //gd:Shader.set_default_texture_parameter
 	Advanced(self).SetDefaultTextureParameter(String.Name(String.New(name)), texture, int64(0))
 }
 
 /*
-Sets the default texture to be used with a texture uniform. The default is used if a texture is not set in the [graphics.gd/classdb/ShaderMaterial].
+Sets the default texture to be used with a texture uniform. The default is used if a texture is not set in the [ShaderMaterial].
 
 Note: 'name' must match the name of the uniform in the code exactly.
 
 Note: If the sampler array is used use 'index' to access the specified texture.
+
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 */
-func (self Expanded) SetDefaultTextureParameter(name string, texture Texture.Instance, index int) { //gd:Shader.set_default_texture_parameter
+func (self MoreArgs) SetDefaultTextureParameter(name string, texture Texture.Instance, index int) { //gd:Shader.set_default_texture_parameter
 	Advanced(self).SetDefaultTextureParameter(String.Name(String.New(name)), texture, int64(index))
 }
 
@@ -155,30 +166,42 @@ Note: 'name' must match the name of the uniform in the code exactly.
 
 Note: If the sampler array is used use 'index' to access the specified texture.
 */
-func (self Expanded) GetDefaultTextureParameter(name string, index int) Texture.Instance { //gd:Shader.get_default_texture_parameter
+func (self MoreArgs) GetDefaultTextureParameter(name string, index int) Texture.Instance { //gd:Shader.get_default_texture_parameter
 	return Texture.Instance(Advanced(self).GetDefaultTextureParameter(String.Name(String.New(name)), int64(index)))
 }
 
 /*
-Returns the list of shader uniforms that can be assigned to a [graphics.gd/classdb/ShaderMaterial], for use with [graphics.gd/classdb/ShaderMaterial.Instance.SetShaderParameter] and [graphics.gd/classdb/ShaderMaterial.Instance.GetShaderParameter]. The parameters returned are contained in dictionaries in a similar format to the ones returned by [graphics.gd/classdb/Object.Instance.GetPropertyList].
+Returns the list of shader uniforms that can be assigned to a [ShaderMaterial], for use with [ShaderMaterial.SetShaderParameter] and [ShaderMaterial.GetShaderParameter]. The parameters returned are contained in dictionaries in a similar format to the ones returned by [Object.GetPropertyList].
 
 If argument 'get_groups' is true, parameter grouping hints are also included in the list.
+
+[Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+[ShaderMaterial.GetShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial#Instance.GetShaderParameter
+[ShaderMaterial.SetShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial#Instance.SetShaderParameter
 */
 func (self Instance) GetShaderUniformList() []Object.PropertyInfo { //gd:Shader.get_shader_uniform_list
 	return []Object.PropertyInfo(gd.ArrayAs[[]Object.PropertyInfo](gd.InternalArray(Advanced(self).GetShaderUniformList(false))))
 }
 
 /*
-Returns the list of shader uniforms that can be assigned to a [graphics.gd/classdb/ShaderMaterial], for use with [graphics.gd/classdb/ShaderMaterial.Instance.SetShaderParameter] and [graphics.gd/classdb/ShaderMaterial.Instance.GetShaderParameter]. The parameters returned are contained in dictionaries in a similar format to the ones returned by [graphics.gd/classdb/Object.Instance.GetPropertyList].
+Returns the list of shader uniforms that can be assigned to a [ShaderMaterial], for use with [ShaderMaterial.SetShaderParameter] and [ShaderMaterial.GetShaderParameter]. The parameters returned are contained in dictionaries in a similar format to the ones returned by [Object.GetPropertyList].
 
 If argument 'get_groups' is true, parameter grouping hints are also included in the list.
+
+[Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+[ShaderMaterial.GetShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial#Instance.GetShaderParameter
+[ShaderMaterial.SetShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial#Instance.SetShaderParameter
 */
-func (self Expanded) GetShaderUniformList(get_groups bool) []Object.PropertyInfo { //gd:Shader.get_shader_uniform_list
+func (self MoreArgs) GetShaderUniformList(get_groups bool) []Object.PropertyInfo { //gd:Shader.get_shader_uniform_list
 	return []Object.PropertyInfo(gd.ArrayAs[[]Object.PropertyInfo](gd.InternalArray(Advanced(self).GetShaderUniformList(get_groups))))
 }
 
 /*
-Only available when running in the editor. Opens a popup that visualizes the generated shader code, including all variants and internal shader code. See also [graphics.gd/classdb/Material.Instance.InspectNativeShaderCode].
+Only available when running in the editor. Opens a popup that visualizes the generated shader code, including all variants and internal shader code. See also [Material.InspectNativeShaderCode].
+
+[Material.InspectNativeShaderCode]: https://pkg.go.dev/graphics.gd/classdb/Material#Instance.InspectNativeShaderCode
 */
 func (self Instance) InspectNativeShaderCode() { //gd:Shader.inspect_native_shader_code
 	Advanced(self).InspectNativeShaderCode()
@@ -258,11 +281,13 @@ func (self class) GetCode() String.Readable { //gd:Shader.get_code
 }
 
 /*
-Sets the default texture to be used with a texture uniform. The default is used if a texture is not set in the [graphics.gd/classdb/ShaderMaterial].
+Sets the default texture to be used with a texture uniform. The default is used if a texture is not set in the [ShaderMaterial].
 
 Note: 'name' must match the name of the uniform in the code exactly.
 
 Note: If the sampler array is used use 'index' to access the specified texture.
+
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 */
 //go:nosplit
 func (self class) SetDefaultTextureParameter(name String.Name, texture [1]gdclass.Texture, index int64) { //gd:Shader.set_default_texture_parameter
@@ -291,9 +316,14 @@ func (self class) GetDefaultTextureParameter(name String.Name, index int64) [1]g
 }
 
 /*
-Returns the list of shader uniforms that can be assigned to a [graphics.gd/classdb/ShaderMaterial], for use with [graphics.gd/classdb/ShaderMaterial.Instance.SetShaderParameter] and [graphics.gd/classdb/ShaderMaterial.Instance.GetShaderParameter]. The parameters returned are contained in dictionaries in a similar format to the ones returned by [graphics.gd/classdb/Object.Instance.GetPropertyList].
+Returns the list of shader uniforms that can be assigned to a [ShaderMaterial], for use with [ShaderMaterial.SetShaderParameter] and [ShaderMaterial.GetShaderParameter]. The parameters returned are contained in dictionaries in a similar format to the ones returned by [Object.GetPropertyList].
 
 If argument 'get_groups' is true, parameter grouping hints are also included in the list.
+
+[Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+[ShaderMaterial.GetShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial#Instance.GetShaderParameter
+[ShaderMaterial.SetShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial#Instance.SetShaderParameter
 */
 //go:nosplit
 func (self class) GetShaderUniformList(get_groups bool) Array.Any { //gd:Shader.get_shader_uniform_list
@@ -303,7 +333,9 @@ func (self class) GetShaderUniformList(get_groups bool) Array.Any { //gd:Shader.
 }
 
 /*
-Only available when running in the editor. Opens a popup that visualizes the generated shader code, including all variants and internal shader code. See also [graphics.gd/classdb/Material.Instance.InspectNativeShaderCode].
+Only available when running in the editor. Opens a popup that visualizes the generated shader code, including all variants and internal shader code. See also [Material.InspectNativeShaderCode].
+
+[Material.InspectNativeShaderCode]: https://pkg.go.dev/graphics.gd/classdb/Material#Instance.InspectNativeShaderCode
 */
 //go:nosplit
 func (self class) InspectNativeShaderCode() { //gd:Shader.inspect_native_shader_code
@@ -353,7 +385,9 @@ const (
 	ModeCanvasItem Mode = 1
 	// Mode used to calculate particle information on a per-particle basis. Not used for drawing.
 	ModeParticles Mode = 2
-	// Mode used for drawing skies. Only works with shaders attached to [graphics.gd/classdb/Sky] objects.
+	// Mode used for drawing skies. Only works with shaders attached to [Sky] objects.
+	//
+	// [Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
 	ModeSky Mode = 3
 	// Mode used for setting the color and density of volumetric fog effect.
 	ModeFog Mode = 4

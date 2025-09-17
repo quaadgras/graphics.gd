@@ -163,7 +163,9 @@ func GetHmdTransform() Transform3D.BasisOrigin { //gd:XRServer.get_hmd_transform
 }
 
 /*
-Registers an [graphics.gd/classdb/XRInterface] object.
+Registers an [XRInterface] object.
+
+[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 */
 func AddInterface(intf XRInterface.Instance) { //gd:XRServer.add_interface
 	once.Do(singleton)
@@ -211,7 +213,9 @@ func FindInterface(name string) XRInterface.Instance { //gd:XRServer.find_interf
 }
 
 /*
-Registers a new [graphics.gd/classdb/XRTracker] that tracks a physical object.
+Registers a new [XRTracker] that tracks a physical object.
+
+[XRTracker]: https://pkg.go.dev/graphics.gd/classdb/XRTracker
 */
 func AddTracker(tracker XRTracker.Instance) { //gd:XRServer.add_tracker
 	once.Do(singleton)
@@ -391,7 +395,9 @@ func (self class) IsCameraLockedToOrigin() bool { //gd:XRServer.is_camera_locked
 }
 
 /*
-Registers an [graphics.gd/classdb/XRInterface] object.
+Registers an [XRInterface] object.
+
+[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 */
 //go:nosplit
 func (self class) AddInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.add_interface
@@ -447,7 +453,9 @@ func (self class) FindInterface(name String.Readable) [1]gdclass.XRInterface { /
 }
 
 /*
-Registers a new [graphics.gd/classdb/XRTracker] that tracks a physical object.
+Registers a new [XRTracker] that tracks a physical object.
+
+[XRTracker]: https://pkg.go.dev/graphics.gd/classdb/XRTracker
 */
 //go:nosplit
 func (self class) AddTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.add_tracker

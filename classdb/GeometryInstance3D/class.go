@@ -135,7 +135,7 @@ type Any interface {
 }
 
 /*
-Set the value of a shader uniform for this instance only ([per-instance uniform]). See also [graphics.gd/classdb/ShaderMaterial.Instance.SetShaderParameter] to assign a uniform on all instances using the same [graphics.gd/classdb/ShaderMaterial].
+Set the value of a shader uniform for this instance only ([per-instance uniform]). See also [ShaderMaterial.SetShaderParameter] to assign a uniform on all instances using the same [ShaderMaterial].
 
 Note: For a shader uniform to be assignable on a per-instance basis, it must be defined with instance uniform ... rather than uniform ... in the shader code.
 
@@ -143,6 +143,8 @@ Note: 'name' is case-sensitive and must match the name of the uniform in the cod
 
 Note: Per-instance shader uniforms are only available in Spatial and CanvasItem shaders, but not for Fog, Sky, or Particles shaders.
 
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+[ShaderMaterial.SetShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial#Instance.SetShaderParameter
 [per-instance uniform]: https://docs.godotengine.org/tutorials/shaders/shader_reference/shading_language.html#per-instance-uniforms
 */
 func (self Instance) SetInstanceShaderParameter(name string, value any) { //gd:GeometryInstance3D.set_instance_shader_parameter
@@ -447,7 +449,7 @@ func (self class) GetVisibilityRangeFadeMode() VisibilityRangeFadeMode { //gd:Ge
 }
 
 /*
-Set the value of a shader uniform for this instance only ([per-instance uniform]). See also [graphics.gd/classdb/ShaderMaterial.Instance.SetShaderParameter] to assign a uniform on all instances using the same [graphics.gd/classdb/ShaderMaterial].
+Set the value of a shader uniform for this instance only ([per-instance uniform]). See also [ShaderMaterial.SetShaderParameter] to assign a uniform on all instances using the same [ShaderMaterial].
 
 Note: For a shader uniform to be assignable on a per-instance basis, it must be defined with instance uniform ... rather than uniform ... in the shader code.
 
@@ -455,6 +457,8 @@ Note: 'name' is case-sensitive and must match the name of the uniform in the cod
 
 Note: Per-instance shader uniforms are only available in Spatial and CanvasItem shaders, but not for Fog, Sky, or Particles shaders.
 
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+[ShaderMaterial.SetShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial#Instance.SetShaderParameter
 [per-instance uniform]: https://docs.godotengine.org/tutorials/shaders/shader_reference/shading_language.html#per-instance-uniforms
 */
 //go:nosplit
@@ -614,24 +618,40 @@ const (
 type GIMode int //gd:GeometryInstance3D.GIMode
 
 const (
-	// Disabled global illumination mode. Use for dynamic objects that do not contribute to global illumination (such as characters). When using [graphics.gd/classdb/VoxelGI] and SDFGI, the geometry will receive indirect lighting and reflections but the geometry will not be considered in GI baking.
+	// Disabled global illumination mode. Use for dynamic objects that do not contribute to global illumination (such as characters). When using [VoxelGI] and SDFGI, the geometry will receive indirect lighting and reflections but the geometry will not be considered in GI baking.
+	//
+	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	GiModeDisabled GIMode = 0
-	// Baked global illumination mode. Use for static objects that contribute to global illumination (such as level geometry). This GI mode is effective when using [graphics.gd/classdb/VoxelGI], SDFGI and [graphics.gd/classdb/LightmapGI].
+	// Baked global illumination mode. Use for static objects that contribute to global illumination (such as level geometry). This GI mode is effective when using [VoxelGI], SDFGI and [LightmapGI].
+	//
+	// [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	GiModeStatic GIMode = 1
-	// Dynamic global illumination mode. Use for dynamic objects that contribute to global illumination. This GI mode is only effective when using [graphics.gd/classdb/VoxelGI], but it has a higher performance impact than [GiModeStatic]. When using other GI methods, this will act the same as [GiModeDisabled]. When using [graphics.gd/classdb/LightmapGI], the object will receive indirect lighting using lightmap probes instead of using the baked lightmap texture.
+	// Dynamic global illumination mode. Use for dynamic objects that contribute to global illumination. This GI mode is only effective when using [VoxelGI], but it has a higher performance impact than [GiModeStatic]. When using other GI methods, this will act the same as [GiModeDisabled]. When using [LightmapGI], the object will receive indirect lighting using lightmap probes instead of using the baked lightmap texture.
+	//
+	// [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	GiModeDynamic GIMode = 2
 )
 
 type LightmapScale int //gd:GeometryInstance3D.LightmapScale
 
 const (
-	// The standard texel density for lightmapping with [graphics.gd/classdb/LightmapGI].
+	// The standard texel density for lightmapping with [LightmapGI].
+	//
+	// [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 	LightmapScale1x LightmapScale = 0
-	// Multiplies texel density by 2× for lightmapping with [graphics.gd/classdb/LightmapGI]. To ensure consistency in texel density, use this when scaling a mesh by a factor between 1.5 and 3.0.
+	// Multiplies texel density by 2× for lightmapping with [LightmapGI]. To ensure consistency in texel density, use this when scaling a mesh by a factor between 1.5 and 3.0.
+	//
+	// [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 	LightmapScale2x LightmapScale = 1
-	// Multiplies texel density by 4× for lightmapping with [graphics.gd/classdb/LightmapGI]. To ensure consistency in texel density, use this when scaling a mesh by a factor between 3.0 and 6.0.
+	// Multiplies texel density by 4× for lightmapping with [LightmapGI]. To ensure consistency in texel density, use this when scaling a mesh by a factor between 3.0 and 6.0.
+	//
+	// [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 	LightmapScale4x LightmapScale = 2
-	// Multiplies texel density by 8× for lightmapping with [graphics.gd/classdb/LightmapGI]. To ensure consistency in texel density, use this when scaling a mesh by a factor greater than 6.0.
+	// Multiplies texel density by 8× for lightmapping with [LightmapGI]. To ensure consistency in texel density, use this when scaling a mesh by a factor greater than 6.0.
+	//
+	// [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 	LightmapScale8x LightmapScale = 3
 	// Represents the size of the [LightmapScale] enum.
 	LightmapScaleMax LightmapScale = 4
@@ -640,14 +660,24 @@ const (
 type VisibilityRangeFadeMode int //gd:GeometryInstance3D.VisibilityRangeFadeMode
 
 const (
-	// Will not fade itself nor its visibility dependencies, hysteresis will be used instead. This is the fastest approach to manual LOD, but it can result in noticeable LOD transitions depending on how the LOD meshes are authored. See [Instance.VisibilityRangeBegin] and [graphics.gd/classdb/Node3D.Instance.VisibilityParent] for more information.
+	// Will not fade itself nor its visibility dependencies, hysteresis will be used instead. This is the fastest approach to manual LOD, but it can result in noticeable LOD transitions depending on how the LOD meshes are authored. See [VisibilityRangeBegin] and [Node3D.VisibilityParent] for more information.
+	//
+	// [Node3D.VisibilityParent]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.VisibilityParent
+	// [VisibilityRangeBegin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.VisibilityRangeBegin
 	VisibilityRangeFadeDisabled VisibilityRangeFadeMode = 0
-	// Will fade-out itself when reaching the limits of its own visibility range. This is slower than [VisibilityRangeFadeDisabled], but it can provide smoother transitions. The fading range is determined by [Instance.VisibilityRangeBeginMargin] and [Instance.VisibilityRangeEndMargin].
+	// Will fade-out itself when reaching the limits of its own visibility range. This is slower than [VisibilityRangeFadeDisabled], but it can provide smoother transitions. The fading range is determined by [VisibilityRangeBeginMargin] and [VisibilityRangeEndMargin].
 	//
 	// Note: Only supported when using the Forward+ rendering method. When using the Mobile or Compatibility rendering method, this mode acts like [VisibilityRangeFadeDisabled] but with hysteresis disabled.
+	//
+	// [VisibilityRangeBeginMargin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.VisibilityRangeBeginMargin
+	// [VisibilityRangeEndMargin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.VisibilityRangeEndMargin
 	VisibilityRangeFadeSelf VisibilityRangeFadeMode = 1
-	// Will fade-in its visibility dependencies (see [graphics.gd/classdb/Node3D.Instance.VisibilityParent]) when reaching the limits of its own visibility range. This is slower than [VisibilityRangeFadeDisabled], but it can provide smoother transitions. The fading range is determined by [Instance.VisibilityRangeBeginMargin] and [Instance.VisibilityRangeEndMargin].
+	// Will fade-in its visibility dependencies (see [Node3D.VisibilityParent]) when reaching the limits of its own visibility range. This is slower than [VisibilityRangeFadeDisabled], but it can provide smoother transitions. The fading range is determined by [VisibilityRangeBeginMargin] and [VisibilityRangeEndMargin].
 	//
 	// Note: Only supported when using the Forward+ rendering method. When using the Mobile or Compatibility rendering method, this mode acts like [VisibilityRangeFadeDisabled] but with hysteresis disabled.
+	//
+	// [Node3D.VisibilityParent]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.VisibilityParent
+	// [VisibilityRangeBeginMargin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.VisibilityRangeBeginMargin
+	// [VisibilityRangeEndMargin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.VisibilityRangeEndMargin
 	VisibilityRangeFadeDependencies VisibilityRangeFadeMode = 2
 )

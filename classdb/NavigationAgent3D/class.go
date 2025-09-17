@@ -5,9 +5,14 @@ A 3D agent used to pathfind to a position while avoiding static and dynamic obst
 
 Dynamic obstacles are avoided using RVO collision avoidance. Avoidance is computed before physics, so the pathfinding information can be used safely in the physics step.
 
-Note: After setting the [Instance.TargetPosition] property, the [Instance.GetNextPathPosition] method must be used once every physics frame to update the internal path logic of the navigation agent. The vector position it returns should be used as the next movement position for the agent's parent node.
+Note: After setting the [TargetPosition] property, the [GetNextPathPosition] method must be used once every physics frame to update the internal path logic of the navigation agent. The vector position it returns should be used as the next movement position for the agent's parent node.
 
-Note: Several methods of this class, such as [Instance.GetNextPathPosition], can trigger a new path calculation. Calling these in your callback to an agent's signal, such as [Instance.OnWaypointReached], can cause infinite recursion. It is recommended to call these methods in the physics step or, alternatively, delay their call until the end of the frame (see [graphics.gd/classdb/Object.Instance.CallDeferred] or [Object.ConnectDeferred]).
+Note: Several methods of this class, such as [GetNextPathPosition], can trigger a new path calculation. Calling these in your callback to an agent's signal, such as [OnWaypointReached], can cause infinite recursion. It is recommended to call these methods in the physics step or, alternatively, delay their call until the end of the frame (see [Object.CallDeferred] or [Object.ConnectDeferred]).
+
+[GetNextPathPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.GetNextPathPosition
+[Object.CallDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#CallDeferred
+[OnWaypointReached]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.OnWaypointReached
+[TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetPosition
 */
 package NavigationAgent3D
 
@@ -193,21 +198,28 @@ type Any interface {
 }
 
 /*
-Returns the [Resource.ID] of this agent on the [graphics.gd/classdb/NavigationServer3D].
+Returns the [Resource.ID] of this agent on the [NavigationServer3D].
+
+[NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func (self Instance) GetRid() RID.NavigationAgent3D { //gd:NavigationAgent3D.get_rid
 	return RID.NavigationAgent3D(RID.NavigationAgent3D(Advanced(self).GetRid()))
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [Instance.NavigationLayers] bitmask, given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [NavigationLayers] bitmask, given a 'layer_number' between 1 and 32.
+
+[NavigationLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.NavigationLayers
 */
 func (self Instance) SetNavigationLayerValue(layer_number int, value bool) { //gd:NavigationAgent3D.set_navigation_layer_value
 	Advanced(self).SetNavigationLayerValue(int64(layer_number), value)
 }
 
 /*
-Returns whether or not the specified layer of the [Instance.NavigationLayers] bitmask is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [NavigationLayers] bitmask is enabled, given a 'layer_number' between 1 and 32.
+
+[NavigationLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.NavigationLayers
 */
 func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:NavigationAgent3D.get_navigation_layer_value
 	return bool(Advanced(self).GetNavigationLayerValue(int64(layer_number)))
@@ -215,13 +227,18 @@ func (self Instance) GetNavigationLayerValue(layer_number int) bool { //gd:Navig
 
 /*
 Sets the [Resource.ID] of the navigation map this NavigationAgent node should use and also updates the agent on the NavigationServer.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func (self Instance) SetNavigationMap(navigation_map RID.NavigationMap3D) { //gd:NavigationAgent3D.set_navigation_map
 	Advanced(self).SetNavigationMap(RID.Any(navigation_map))
 }
 
 /*
-Returns the [Resource.ID] of the navigation map for this NavigationAgent node. This function returns always the map set on the NavigationAgent node and not the map of the abstract agent on the NavigationServer. If the agent map is changed directly with the NavigationServer API the NavigationAgent node will not be aware of the map change. Use [Instance.SetNavigationMap] to change the navigation map for the NavigationAgent and also update the agent on the NavigationServer.
+Returns the [Resource.ID] of the navigation map for this NavigationAgent node. This function returns always the map set on the NavigationAgent node and not the map of the abstract agent on the NavigationServer. If the agent map is changed directly with the NavigationServer API the NavigationAgent node will not be aware of the map change. Use [SetNavigationMap] to change the navigation map for the NavigationAgent and also update the agent on the NavigationServer.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[SetNavigationMap]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.SetNavigationMap
 */
 func (self Instance) GetNavigationMap() RID.NavigationMap3D { //gd:NavigationAgent3D.get_navigation_map
 	return RID.NavigationMap3D(RID.NavigationMap3D(Advanced(self).GetNavigationMap()))
@@ -249,7 +266,9 @@ func (self Instance) SetVelocityForced(velocity Vector3.XYZ) { //gd:NavigationAg
 }
 
 /*
-Returns the distance to the target position, using the agent's global position. The user must set [Instance.TargetPosition] in order for this to be accurate.
+Returns the distance to the target position, using the agent's global position. The user must set [TargetPosition] in order for this to be accurate.
+
+[TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetPosition
 */
 func (self Instance) DistanceToTarget() Float.X { //gd:NavigationAgent3D.distance_to_target
 	return Float.X(Float.X(Advanced(self).DistanceToTarget()))
@@ -263,7 +282,9 @@ func (self Instance) GetCurrentNavigationResult() NavigationPathQueryResult3D.In
 }
 
 /*
-Returns this agent's current path from start to finish in global coordinates. The path only updates when the target position is changed or the agent requires a repath. The path array is not intended to be used in direct path movement as the agent has its own internal path logic that would get corrupted by changing the path array manually. Use the intended [Instance.GetNextPathPosition] once every physics frame to receive the next path point for the agents movement as this function also updates the internal path logic.
+Returns this agent's current path from start to finish in global coordinates. The path only updates when the target position is changed or the agent requires a repath. The path array is not intended to be used in direct path movement as the agent has its own internal path logic that would get corrupted by changing the path array manually. Use the intended [GetNextPathPosition] once every physics frame to receive the next path point for the agents movement as this function also updates the internal path logic.
+
+[GetNextPathPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.GetNextPathPosition
 */
 func (self Instance) GetCurrentNavigationPath() []Vector3.XYZ { //gd:NavigationAgent3D.get_current_navigation_path
 	return []Vector3.XYZ(slices.Collect(Advanced(self).GetCurrentNavigationPath().Values()))
@@ -271,20 +292,30 @@ func (self Instance) GetCurrentNavigationPath() []Vector3.XYZ { //gd:NavigationA
 
 /*
 Returns which index the agent is currently on in the navigation path's [][Vector3.XYZ].
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 func (self Instance) GetCurrentNavigationPathIndex() int { //gd:NavigationAgent3D.get_current_navigation_path_index
 	return int(int(Advanced(self).GetCurrentNavigationPathIndex()))
 }
 
 /*
-Returns true if the agent reached the target, i.e. the agent moved within [Instance.TargetDesiredDistance] of the [Instance.TargetPosition]. It may not always be possible to reach the target but it should always be possible to reach the final position. See [Instance.GetFinalPosition].
+Returns true if the agent reached the target, i.e. the agent moved within [TargetDesiredDistance] of the [TargetPosition]. It may not always be possible to reach the target but it should always be possible to reach the final position. See [GetFinalPosition].
+
+[GetFinalPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.GetFinalPosition
+[TargetDesiredDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetDesiredDistance
+[TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetPosition
 */
 func (self Instance) IsTargetReached() bool { //gd:NavigationAgent3D.is_target_reached
 	return bool(Advanced(self).IsTargetReached())
 }
 
 /*
-Returns true if [Instance.GetFinalPosition] is within [Instance.TargetDesiredDistance] of the [Instance.TargetPosition].
+Returns true if [GetFinalPosition] is within [TargetDesiredDistance] of the [TargetPosition].
+
+[GetFinalPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.GetFinalPosition
+[TargetDesiredDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetDesiredDistance
+[TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetPosition
 */
 func (self Instance) IsTargetReachable() bool { //gd:NavigationAgent3D.is_target_reachable
 	return bool(Advanced(self).IsTargetReachable())
@@ -293,42 +324,54 @@ func (self Instance) IsTargetReachable() bool { //gd:NavigationAgent3D.is_target
 /*
 Returns true if the agent's navigation has finished. If the target is reachable, navigation ends when the target is reached. If the target is unreachable, navigation ends when the last waypoint of the path is reached.
 
-Note: While true prefer to stop calling update functions like [Instance.GetNextPathPosition]. This avoids jittering the standing agent due to calling repeated path updates.
+Note: While true prefer to stop calling update functions like [GetNextPathPosition]. This avoids jittering the standing agent due to calling repeated path updates.
+
+[GetNextPathPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.GetNextPathPosition
 */
 func (self Instance) IsNavigationFinished() bool { //gd:NavigationAgent3D.is_navigation_finished
 	return bool(Advanced(self).IsNavigationFinished())
 }
 
 /*
-Returns the reachable final position of the current navigation path in global coordinates. This position can change if the agent needs to update the navigation path which makes the agent emit the [Instance.OnPathChanged] signal.
+Returns the reachable final position of the current navigation path in global coordinates. This position can change if the agent needs to update the navigation path which makes the agent emit the [OnPathChanged] signal.
+
+[OnPathChanged]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.OnPathChanged
 */
 func (self Instance) GetFinalPosition() Vector3.XYZ { //gd:NavigationAgent3D.get_final_position
 	return Vector3.XYZ(Advanced(self).GetFinalPosition())
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [Instance.AvoidanceLayers] bitmask, given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [AvoidanceLayers] bitmask, given a 'layer_number' between 1 and 32.
+
+[AvoidanceLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.AvoidanceLayers
 */
 func (self Instance) SetAvoidanceLayerValue(layer_number int, value bool) { //gd:NavigationAgent3D.set_avoidance_layer_value
 	Advanced(self).SetAvoidanceLayerValue(int64(layer_number), value)
 }
 
 /*
-Returns whether or not the specified layer of the [Instance.AvoidanceLayers] bitmask is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [AvoidanceLayers] bitmask is enabled, given a 'layer_number' between 1 and 32.
+
+[AvoidanceLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.AvoidanceLayers
 */
 func (self Instance) GetAvoidanceLayerValue(layer_number int) bool { //gd:NavigationAgent3D.get_avoidance_layer_value
 	return bool(Advanced(self).GetAvoidanceLayerValue(int64(layer_number)))
 }
 
 /*
-Based on 'value', enables or disables the specified mask in the [Instance.AvoidanceMask] bitmask, given a 'mask_number' between 1 and 32.
+Based on 'value', enables or disables the specified mask in the [AvoidanceMask] bitmask, given a 'mask_number' between 1 and 32.
+
+[AvoidanceMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.AvoidanceMask
 */
 func (self Instance) SetAvoidanceMaskValue(mask_number int, value bool) { //gd:NavigationAgent3D.set_avoidance_mask_value
 	Advanced(self).SetAvoidanceMaskValue(int64(mask_number), value)
 }
 
 /*
-Returns whether or not the specified mask of the [Instance.AvoidanceMask] bitmask is enabled, given a 'mask_number' between 1 and 32.
+Returns whether or not the specified mask of the [AvoidanceMask] bitmask is enabled, given a 'mask_number' between 1 and 32.
+
+[AvoidanceMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.AvoidanceMask
 */
 func (self Instance) GetAvoidanceMaskValue(mask_number int) bool { //gd:NavigationAgent3D.get_avoidance_mask_value
 	return bool(Advanced(self).GetAvoidanceMaskValue(int64(mask_number)))
@@ -641,7 +684,10 @@ func (self Instance) SetDebugPathCustomPointSize(value Float.X) {
 }
 
 /*
-Returns the [Resource.ID] of this agent on the [graphics.gd/classdb/NavigationServer3D].
+Returns the [Resource.ID] of this agent on the [NavigationServer3D].
+
+[NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:NavigationAgent3D.get_rid
@@ -831,7 +877,9 @@ func (self class) GetNavigationLayers() int64 { //gd:NavigationAgent3D.get_navig
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [Instance.NavigationLayers] bitmask, given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [NavigationLayers] bitmask, given a 'layer_number' between 1 and 32.
+
+[NavigationLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.NavigationLayers
 */
 //go:nosplit
 func (self class) SetNavigationLayerValue(layer_number int64, value bool) { //gd:NavigationAgent3D.set_navigation_layer_value
@@ -842,7 +890,9 @@ func (self class) SetNavigationLayerValue(layer_number int64, value bool) { //gd
 }
 
 /*
-Returns whether or not the specified layer of the [Instance.NavigationLayers] bitmask is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [NavigationLayers] bitmask is enabled, given a 'layer_number' between 1 and 32.
+
+[NavigationLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.NavigationLayers
 */
 //go:nosplit
 func (self class) GetNavigationLayerValue(layer_number int64) bool { //gd:NavigationAgent3D.get_navigation_layer_value
@@ -895,6 +945,8 @@ func (self class) GetPathMetadataFlags() NavigationPathQueryParameters3D.PathMet
 
 /*
 Sets the [Resource.ID] of the navigation map this NavigationAgent node should use and also updates the agent on the NavigationServer.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:NavigationAgent3D.set_navigation_map
@@ -902,7 +954,10 @@ func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:NavigationAgen
 }
 
 /*
-Returns the [Resource.ID] of the navigation map for this NavigationAgent node. This function returns always the map set on the NavigationAgent node and not the map of the abstract agent on the NavigationServer. If the agent map is changed directly with the NavigationServer API the NavigationAgent node will not be aware of the map change. Use [Instance.SetNavigationMap] to change the navigation map for the NavigationAgent and also update the agent on the NavigationServer.
+Returns the [Resource.ID] of the navigation map for this NavigationAgent node. This function returns always the map set on the NavigationAgent node and not the map of the abstract agent on the NavigationServer. If the agent map is changed directly with the NavigationServer API the NavigationAgent node will not be aware of the map change. Use [SetNavigationMap] to change the navigation map for the NavigationAgent and also update the agent on the NavigationServer.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[SetNavigationMap]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.SetNavigationMap
 */
 //go:nosplit
 func (self class) GetNavigationMap() RID.Any { //gd:NavigationAgent3D.get_navigation_map
@@ -1036,7 +1091,9 @@ func (self class) GetVelocity() Vector3.XYZ { //gd:NavigationAgent3D.get_velocit
 }
 
 /*
-Returns the distance to the target position, using the agent's global position. The user must set [Instance.TargetPosition] in order for this to be accurate.
+Returns the distance to the target position, using the agent's global position. The user must set [TargetPosition] in order for this to be accurate.
+
+[TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetPosition
 */
 //go:nosplit
 func (self class) DistanceToTarget() float64 { //gd:NavigationAgent3D.distance_to_target
@@ -1056,7 +1113,9 @@ func (self class) GetCurrentNavigationResult() [1]gdclass.NavigationPathQueryRes
 }
 
 /*
-Returns this agent's current path from start to finish in global coordinates. The path only updates when the target position is changed or the agent requires a repath. The path array is not intended to be used in direct path movement as the agent has its own internal path logic that would get corrupted by changing the path array manually. Use the intended [Instance.GetNextPathPosition] once every physics frame to receive the next path point for the agents movement as this function also updates the internal path logic.
+Returns this agent's current path from start to finish in global coordinates. The path only updates when the target position is changed or the agent requires a repath. The path array is not intended to be used in direct path movement as the agent has its own internal path logic that would get corrupted by changing the path array manually. Use the intended [GetNextPathPosition] once every physics frame to receive the next path point for the agents movement as this function also updates the internal path logic.
+
+[GetNextPathPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.GetNextPathPosition
 */
 //go:nosplit
 func (self class) GetCurrentNavigationPath() Packed.Array[Vector3.XYZ] { //gd:NavigationAgent3D.get_current_navigation_path
@@ -1067,6 +1126,8 @@ func (self class) GetCurrentNavigationPath() Packed.Array[Vector3.XYZ] { //gd:Na
 
 /*
 Returns which index the agent is currently on in the navigation path's [][Vector3.XYZ].
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 //go:nosplit
 func (self class) GetCurrentNavigationPathIndex() int64 { //gd:NavigationAgent3D.get_current_navigation_path_index
@@ -1076,7 +1137,11 @@ func (self class) GetCurrentNavigationPathIndex() int64 { //gd:NavigationAgent3D
 }
 
 /*
-Returns true if the agent reached the target, i.e. the agent moved within [Instance.TargetDesiredDistance] of the [Instance.TargetPosition]. It may not always be possible to reach the target but it should always be possible to reach the final position. See [Instance.GetFinalPosition].
+Returns true if the agent reached the target, i.e. the agent moved within [TargetDesiredDistance] of the [TargetPosition]. It may not always be possible to reach the target but it should always be possible to reach the final position. See [GetFinalPosition].
+
+[GetFinalPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.GetFinalPosition
+[TargetDesiredDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetDesiredDistance
+[TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetPosition
 */
 //go:nosplit
 func (self class) IsTargetReached() bool { //gd:NavigationAgent3D.is_target_reached
@@ -1086,7 +1151,11 @@ func (self class) IsTargetReached() bool { //gd:NavigationAgent3D.is_target_reac
 }
 
 /*
-Returns true if [Instance.GetFinalPosition] is within [Instance.TargetDesiredDistance] of the [Instance.TargetPosition].
+Returns true if [GetFinalPosition] is within [TargetDesiredDistance] of the [TargetPosition].
+
+[GetFinalPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.GetFinalPosition
+[TargetDesiredDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetDesiredDistance
+[TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.TargetPosition
 */
 //go:nosplit
 func (self class) IsTargetReachable() bool { //gd:NavigationAgent3D.is_target_reachable
@@ -1098,7 +1167,9 @@ func (self class) IsTargetReachable() bool { //gd:NavigationAgent3D.is_target_re
 /*
 Returns true if the agent's navigation has finished. If the target is reachable, navigation ends when the target is reached. If the target is unreachable, navigation ends when the last waypoint of the path is reached.
 
-Note: While true prefer to stop calling update functions like [Instance.GetNextPathPosition]. This avoids jittering the standing agent due to calling repeated path updates.
+Note: While true prefer to stop calling update functions like [GetNextPathPosition]. This avoids jittering the standing agent due to calling repeated path updates.
+
+[GetNextPathPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.GetNextPathPosition
 */
 //go:nosplit
 func (self class) IsNavigationFinished() bool { //gd:NavigationAgent3D.is_navigation_finished
@@ -1108,7 +1179,9 @@ func (self class) IsNavigationFinished() bool { //gd:NavigationAgent3D.is_naviga
 }
 
 /*
-Returns the reachable final position of the current navigation path in global coordinates. This position can change if the agent needs to update the navigation path which makes the agent emit the [Instance.OnPathChanged] signal.
+Returns the reachable final position of the current navigation path in global coordinates. This position can change if the agent needs to update the navigation path which makes the agent emit the [OnPathChanged] signal.
+
+[OnPathChanged]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.OnPathChanged
 */
 //go:nosplit
 func (self class) GetFinalPosition() Vector3.XYZ { //gd:NavigationAgent3D.get_final_position
@@ -1142,7 +1215,9 @@ func (self class) GetAvoidanceMask() int64 { //gd:NavigationAgent3D.get_avoidanc
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [Instance.AvoidanceLayers] bitmask, given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [AvoidanceLayers] bitmask, given a 'layer_number' between 1 and 32.
+
+[AvoidanceLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.AvoidanceLayers
 */
 //go:nosplit
 func (self class) SetAvoidanceLayerValue(layer_number int64, value bool) { //gd:NavigationAgent3D.set_avoidance_layer_value
@@ -1153,7 +1228,9 @@ func (self class) SetAvoidanceLayerValue(layer_number int64, value bool) { //gd:
 }
 
 /*
-Returns whether or not the specified layer of the [Instance.AvoidanceLayers] bitmask is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [AvoidanceLayers] bitmask is enabled, given a 'layer_number' between 1 and 32.
+
+[AvoidanceLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.AvoidanceLayers
 */
 //go:nosplit
 func (self class) GetAvoidanceLayerValue(layer_number int64) bool { //gd:NavigationAgent3D.get_avoidance_layer_value
@@ -1163,7 +1240,9 @@ func (self class) GetAvoidanceLayerValue(layer_number int64) bool { //gd:Navigat
 }
 
 /*
-Based on 'value', enables or disables the specified mask in the [Instance.AvoidanceMask] bitmask, given a 'mask_number' between 1 and 32.
+Based on 'value', enables or disables the specified mask in the [AvoidanceMask] bitmask, given a 'mask_number' between 1 and 32.
+
+[AvoidanceMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.AvoidanceMask
 */
 //go:nosplit
 func (self class) SetAvoidanceMaskValue(mask_number int64, value bool) { //gd:NavigationAgent3D.set_avoidance_mask_value
@@ -1174,7 +1253,9 @@ func (self class) SetAvoidanceMaskValue(mask_number int64, value bool) { //gd:Na
 }
 
 /*
-Returns whether or not the specified mask of the [Instance.AvoidanceMask] bitmask is enabled, given a 'mask_number' between 1 and 32.
+Returns whether or not the specified mask of the [AvoidanceMask] bitmask is enabled, given a 'mask_number' between 1 and 32.
+
+[AvoidanceMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent3D#Instance.AvoidanceMask
 */
 //go:nosplit
 func (self class) GetAvoidanceMaskValue(mask_number int64) bool { //gd:NavigationAgent3D.get_avoidance_mask_value

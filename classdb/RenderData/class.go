@@ -104,28 +104,38 @@ type Any interface {
 }
 
 /*
-Returns the [graphics.gd/classdb/RenderSceneBuffers] object managing the scene buffers for rendering this viewport.
+Returns the [RenderSceneBuffers] object managing the scene buffers for rendering this viewport.
+
+[RenderSceneBuffers]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneBuffers
 */
 func (self Instance) GetRenderSceneBuffers() RenderSceneBuffers.Instance { //gd:RenderData.get_render_scene_buffers
 	return RenderSceneBuffers.Instance(Advanced(self).GetRenderSceneBuffers())
 }
 
 /*
-Returns the [graphics.gd/classdb/RenderSceneData] object managing this frames scene data.
+Returns the [RenderSceneData] object managing this frames scene data.
+
+[RenderSceneData]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneData
 */
 func (self Instance) GetRenderSceneData() RenderSceneData.Instance { //gd:RenderData.get_render_scene_data
 	return RenderSceneData.Instance(Advanced(self).GetRenderSceneData())
 }
 
 /*
-Returns the [Resource.ID] of the environment object in the [graphics.gd/classdb/RenderingServer] being used to render this viewport.
+Returns the [Resource.ID] of the environment object in the [RenderingServer] being used to render this viewport.
+
+[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func (self Instance) GetEnvironment() RID.Environment { //gd:RenderData.get_environment
 	return RID.Environment(RID.Environment(Advanced(self).GetEnvironment()))
 }
 
 /*
-Returns the [Resource.ID] of the camera attributes object in the [graphics.gd/classdb/RenderingServer] being used to render this viewport.
+Returns the [Resource.ID] of the camera attributes object in the [RenderingServer] being used to render this viewport.
+
+[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func (self Instance) GetCameraAttributes() RID.CameraAttributes { //gd:RenderData.get_camera_attributes
 	return RID.CameraAttributes(RID.CameraAttributes(Advanced(self).GetCameraAttributes()))
@@ -174,7 +184,9 @@ func New() Instance {
 }
 
 /*
-Returns the [graphics.gd/classdb/RenderSceneBuffers] object managing the scene buffers for rendering this viewport.
+Returns the [RenderSceneBuffers] object managing the scene buffers for rendering this viewport.
+
+[RenderSceneBuffers]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneBuffers
 */
 //go:nosplit
 func (self class) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers { //gd:RenderData.get_render_scene_buffers
@@ -184,7 +196,9 @@ func (self class) GetRenderSceneBuffers() [1]gdclass.RenderSceneBuffers { //gd:R
 }
 
 /*
-Returns the [graphics.gd/classdb/RenderSceneData] object managing this frames scene data.
+Returns the [RenderSceneData] object managing this frames scene data.
+
+[RenderSceneData]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneData
 */
 //go:nosplit
 func (self class) GetRenderSceneData() [1]gdclass.RenderSceneData { //gd:RenderData.get_render_scene_data
@@ -194,7 +208,10 @@ func (self class) GetRenderSceneData() [1]gdclass.RenderSceneData { //gd:RenderD
 }
 
 /*
-Returns the [Resource.ID] of the environment object in the [graphics.gd/classdb/RenderingServer] being used to render this viewport.
+Returns the [Resource.ID] of the environment object in the [RenderingServer] being used to render this viewport.
+
+[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) GetEnvironment() RID.Any { //gd:RenderData.get_environment
@@ -204,7 +221,10 @@ func (self class) GetEnvironment() RID.Any { //gd:RenderData.get_environment
 }
 
 /*
-Returns the [Resource.ID] of the camera attributes object in the [graphics.gd/classdb/RenderingServer] being used to render this viewport.
+Returns the [Resource.ID] of the camera attributes object in the [RenderingServer] being used to render this viewport.
+
+[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) GetCameraAttributes() RID.Any { //gd:RenderData.get_camera_attributes

@@ -3,11 +3,11 @@
 /*
 Hyper-text transfer protocol client (sometimes called "User Agent"). Used to make HTTP requests to download web content, upload files and other data or to communicate with various services, among other use cases.
 
-See the [graphics.gd/classdb/HTTPRequest] node for a higher-level alternative.
+See the [HTTPRequest] node for a higher-level alternative.
 
-Note: This client only needs to connect to a host once (see [Instance.ConnectToHost]) to send multiple requests. Because of this, methods that take URLs usually take just the part after the host instead of the full URL, as the client is already connected to a host. See [Instance.Request] for a full example and to get started.
+Note: This client only needs to connect to a host once (see [ConnectToHost]) to send multiple requests. Because of this, methods that take URLs usually take just the part after the host instead of the full URL, as the client is already connected to a host. See [Request] for a full example and to get started.
 
-An [graphics.gd/classdb/HTTPClient] should be reused between multiple requests or to connect to different hosts instead of creating one client per request. Supports Transport Layer Security (TLS), including server certificate verification. HTTP status codes in the 2xx range indicate success, 3xx redirection (i.e. "try again, but over here"), 4xx something was wrong with the request, and 5xx something went wrong on the server's side.
+An [HTTPClient] should be reused between multiple requests or to connect to different hosts instead of creating one client per request. Supports Transport Layer Security (TLS), including server certificate verification. HTTP status codes in the 2xx range indicate success, 3xx redirection (i.e. "try again, but over here"), 4xx something was wrong with the request, and 5xx something went wrong on the server's side.
 
 For more information on HTTP, see [MDN's documentation on HTTP] (or read [RFC 2616] to get it straight from the source).
 
@@ -22,8 +22,12 @@ Note: TLS support is currently limited to TLSv1.2 and TLSv1.3. Attempting to con
 Warning: TLS certificate revocation and certificate pinning are currently not supported. Revoked certificates are accepted as long as they are otherwise valid. If this is a concern, you may want to use automatically managed certificates with a short validity period.
 
 [CORS]: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
+[ConnectToHost]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.ConnectToHost
+[HTTPClient]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient
+[HTTPRequest]: https://pkg.go.dev/graphics.gd/classdb/HTTPRequest
 [MDN's documentation on HTTP]: https://developer.mozilla.org/en-US/docs/Web/HTTP
 [RFC 2616]: https://tools.ietf.org/html/rfc2616
+[Request]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.Request
 */
 package HTTPClient
 
@@ -133,7 +137,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.HTTPClient
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.HTTPClient
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -146,7 +155,10 @@ type Any interface {
 /*
 Connects to a host. This needs to be done before any requests are sent.
 
-If no 'port' is specified (or -1 is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional 'tls_options' parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [graphics.gd/classdb/TLSOptions.Instance.Client] and [graphics.gd/classdb/TLSOptions.Instance.ClientUnsafe].
+If no 'port' is specified (or -1 is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional 'tls_options' parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [TLSOptions.Client] and [TLSOptions.ClientUnsafe].
+
+[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
+[TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 func (self Instance) ConnectToHost(host string) error { //gd:HTTPClient.connect_to_host
 	return error(gd.ToError(Advanced(self).ConnectToHost(String.New(host), int64(-1), [1]TLSOptions.Instance{}[0])))
@@ -155,9 +167,12 @@ func (self Instance) ConnectToHost(host string) error { //gd:HTTPClient.connect_
 /*
 Connects to a host. This needs to be done before any requests are sent.
 
-If no 'port' is specified (or -1 is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional 'tls_options' parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [graphics.gd/classdb/TLSOptions.Instance.Client] and [graphics.gd/classdb/TLSOptions.Instance.ClientUnsafe].
+If no 'port' is specified (or -1 is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional 'tls_options' parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [TLSOptions.Client] and [TLSOptions.ClientUnsafe].
+
+[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
+[TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
-func (self Expanded) ConnectToHost(host string, port int, tls_options TLSOptions.Instance) error { //gd:HTTPClient.connect_to_host
+func (self MoreArgs) ConnectToHost(host string, port int, tls_options TLSOptions.Instance) error { //gd:HTTPClient.connect_to_host
 	return error(gd.ToError(Advanced(self).ConnectToHost(String.New(host), int64(port), tls_options)))
 }
 
@@ -186,9 +201,11 @@ To create a POST request with query strings to push to the server, do:
 	var fields = map[string]string{"username": "user", "password": "pass"}
 	var queryString = http_client.QueryStringFromDict(fields)
 	var headers = []string{"Content-Type: application/x-www-form-urlencoded", "Content-Length: " + fmt.Sprint(len(queryString))}
-	var result = HTTPClient.Expanded(http_client).Request(HTTPClient.MethodPost, "/index.php", headers, queryString)
+	var result = http_client.MoreArgs().Request(HTTPClient.MethodPost, "/index.php", headers, queryString)
 
-Note: The 'body' parameter is ignored if 'method' is [Httpclient.MethodGet]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [graphics.gd/classdb/String.Instance.UriEncode] for an example.
+Note: The 'body' parameter is ignored if 'method' is [Httpclient.MethodGet]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [String.UriEncode] for an example.
+
+[String.UriEncode]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.UriEncode
 */
 func (self Instance) Request(method Method, url string, headers []string) error { //gd:HTTPClient.request
 	return error(gd.ToError(Advanced(self).Request(method, String.New(url), Packed.MakeStrings(headers...), String.New(""))))
@@ -206,30 +223,38 @@ To create a POST request with query strings to push to the server, do:
 	var fields = map[string]string{"username": "user", "password": "pass"}
 	var queryString = http_client.QueryStringFromDict(fields)
 	var headers = []string{"Content-Type: application/x-www-form-urlencoded", "Content-Length: " + fmt.Sprint(len(queryString))}
-	var result = HTTPClient.Expanded(http_client).Request(HTTPClient.MethodPost, "/index.php", headers, queryString)
+	var result = http_client.MoreArgs().Request(HTTPClient.MethodPost, "/index.php", headers, queryString)
 
-Note: The 'body' parameter is ignored if 'method' is [Httpclient.MethodGet]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [graphics.gd/classdb/String.Instance.UriEncode] for an example.
+Note: The 'body' parameter is ignored if 'method' is [Httpclient.MethodGet]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [String.UriEncode] for an example.
+
+[String.UriEncode]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.UriEncode
 */
-func (self Expanded) Request(method Method, url string, headers []string, body string) error { //gd:HTTPClient.request
+func (self MoreArgs) Request(method Method, url string, headers []string, body string) error { //gd:HTTPClient.request
 	return error(gd.ToError(Advanced(self).Request(method, String.New(url), Packed.MakeStrings(headers...), String.New(body))))
 }
 
 /*
-Closes the current connection, allowing reuse of this [graphics.gd/classdb/HTTPClient].
+Closes the current connection, allowing reuse of this [HTTPClient].
+
+[HTTPClient]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient
 */
 func (self Instance) Close() { //gd:HTTPClient.close
 	Advanced(self).Close()
 }
 
 /*
-If true, this [graphics.gd/classdb/HTTPClient] has a response available.
+If true, this [HTTPClient] has a response available.
+
+[HTTPClient]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient
 */
 func (self Instance) HasResponse() bool { //gd:HTTPClient.has_response
 	return bool(Advanced(self).HasResponse())
 }
 
 /*
-If true, this [graphics.gd/classdb/HTTPClient] has a response that is chunked.
+If true, this [HTTPClient] has a response that is chunked.
+
+[HTTPClient]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient
 */
 func (self Instance) IsResponseChunked() bool { //gd:HTTPClient.is_response_chunked
 	return bool(Advanced(self).IsResponseChunked())
@@ -280,14 +305,18 @@ func (self Instance) ReadResponseBodyChunk() []byte { //gd:HTTPClient.read_respo
 }
 
 /*
-Returns a [Status] constant. Need to call [Instance.Poll] in order to get status updates.
+Returns a [Status] constant. Need to call [Poll] in order to get status updates.
+
+[Poll]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.Poll
 */
 func (self Instance) GetStatus() Status { //gd:HTTPClient.get_status
 	return Status(Advanced(self).GetStatus())
 }
 
 /*
-This needs to be called in order to have any request processed. Check results with [Instance.GetStatus].
+This needs to be called in order to have any request processed. Check results with [GetStatus].
+
+[GetStatus]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.GetStatus
 */
 func (self Instance) Poll() error { //gd:HTTPClient.poll
 	return error(gd.ToError(Advanced(self).Poll()))
@@ -394,7 +423,10 @@ func (self Instance) SetReadChunkSize(value int) {
 /*
 Connects to a host. This needs to be done before any requests are sent.
 
-If no 'port' is specified (or -1 is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional 'tls_options' parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [graphics.gd/classdb/TLSOptions.Instance.Client] and [graphics.gd/classdb/TLSOptions.Instance.ClientUnsafe].
+If no 'port' is specified (or -1 is used), it is automatically set to 80 for HTTP and 443 for HTTPS. You can pass the optional 'tls_options' parameter to customize the trusted certification authorities, or the common name verification when using HTTPS. See [TLSOptions.Client] and [TLSOptions.ClientUnsafe].
+
+[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
+[TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 //go:nosplit
 func (self class) ConnectToHost(host String.Readable, port int64, tls_options [1]gdclass.TLSOptions) Error.Code { //gd:HTTPClient.connect_to_host
@@ -453,10 +485,12 @@ To create a POST request with query strings to push to the server, do:
 	var fields = map[string]string{"username": "user", "password": "pass"}
 	var queryString = http_client.QueryStringFromDict(fields)
 	var headers = []string{"Content-Type: application/x-www-form-urlencoded", "Content-Length: " + fmt.Sprint(len(queryString))}
-	var result = HTTPClient.Expanded(http_client).Request(HTTPClient.MethodPost, "/index.php", headers, queryString)
+	var result = http_client.MoreArgs().Request(HTTPClient.MethodPost, "/index.php", headers, queryString)
 
 
-Note: The 'body' parameter is ignored if 'method' is [Httpclient.MethodGet]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [graphics.gd/classdb/String.Instance.UriEncode] for an example.
+Note: The 'body' parameter is ignored if 'method' is [Httpclient.MethodGet]. This is because GET methods can't contain request data. As a workaround, you can pass request data as a query string in the URL. See [String.UriEncode] for an example.
+
+[String.UriEncode]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.UriEncode
 */
 //go:nosplit
 func (self class) Request(method Method, url String.Readable, headers Packed.Strings, body String.Readable) Error.Code { //gd:HTTPClient.request
@@ -471,7 +505,9 @@ func (self class) Request(method Method, url String.Readable, headers Packed.Str
 }
 
 /*
-Closes the current connection, allowing reuse of this [graphics.gd/classdb/HTTPClient].
+Closes the current connection, allowing reuse of this [HTTPClient].
+
+[HTTPClient]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient
 */
 //go:nosplit
 func (self class) Close() { //gd:HTTPClient.close
@@ -479,7 +515,9 @@ func (self class) Close() { //gd:HTTPClient.close
 }
 
 /*
-If true, this [graphics.gd/classdb/HTTPClient] has a response available.
+If true, this [HTTPClient] has a response available.
+
+[HTTPClient]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient
 */
 //go:nosplit
 func (self class) HasResponse() bool { //gd:HTTPClient.has_response
@@ -489,7 +527,9 @@ func (self class) HasResponse() bool { //gd:HTTPClient.has_response
 }
 
 /*
-If true, this [graphics.gd/classdb/HTTPClient] has a response that is chunked.
+If true, this [HTTPClient] has a response that is chunked.
+
+[HTTPClient]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient
 */
 //go:nosplit
 func (self class) IsResponseChunked() bool { //gd:HTTPClient.is_response_chunked
@@ -584,7 +624,9 @@ func (self class) IsBlockingModeEnabled() bool { //gd:HTTPClient.is_blocking_mod
 }
 
 /*
-Returns a [Status] constant. Need to call [Instance.Poll] in order to get status updates.
+Returns a [Status] constant. Need to call [Poll] in order to get status updates.
+
+[Poll]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.Poll
 */
 //go:nosplit
 func (self class) GetStatus() Status { //gd:HTTPClient.get_status
@@ -594,7 +636,9 @@ func (self class) GetStatus() Status { //gd:HTTPClient.get_status
 }
 
 /*
-This needs to be called in order to have any request processed. Check results with [Instance.GetStatus].
+This needs to be called in order to have any request processed. Check results with [GetStatus].
+
+[GetStatus]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.GetStatus
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:HTTPClient.poll

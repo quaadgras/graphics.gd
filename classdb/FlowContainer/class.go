@@ -311,7 +311,9 @@ const (
 type LastWrapAlignmentMode int //gd:FlowContainer.LastWrapAlignmentMode
 
 const (
-	// The last partially filled row or column will wrap aligned to the previous row or column in accordance with [Instance.Alignment].
+	// The last partially filled row or column will wrap aligned to the previous row or column in accordance with [Alignment].
+	//
+	// [Alignment]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Alignment
 	LastWrapAlignmentInherit LastWrapAlignmentMode = 0
 	// The last partially filled row or column will wrap aligned to the beginning of the previous row or column.
 	LastWrapAlignmentBegin LastWrapAlignmentMode = 1

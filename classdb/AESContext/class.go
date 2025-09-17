@@ -39,11 +39,11 @@ This class holds the context information required for encryption and decryption 
 
 		var iv = "My secret iv!!!!" // IV must be exactly 16 bytes.
 		// Encrypt CBC
-		AESContext.Expanded(node.AES).Start(AESContext.ModeCbcEncrypt, []byte(key), []byte(iv))
+		node.AES.MoreArgs().Start(AESContext.ModeCbcEncrypt, []byte(key), []byte(iv))
 		encrypted = node.AES.Update([]byte(data))
 		node.AES.Finish()
 		// Decrypt CBC
-		AESContext.Expanded(node.AES).Start(AESContext.ModeCbcDecrypt, []byte(key), []byte(iv))
+		node.AES.MoreArgs().Start(AESContext.ModeCbcDecrypt, []byte(key), []byte(iv))
 		decrypted = node.AES.Update(encrypted)
 		node.AES.Finish()
 		if string(decrypted) != data {
@@ -139,7 +139,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.AESContext
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.AESContext
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -159,30 +164,36 @@ func (self Instance) Start(mode Mode, key []byte) error { //gd:AESContext.start
 /*
 Start the AES context in the given 'mode'. A 'key' of either 16 or 32 bytes must always be provided, while an 'iv' (initialization vector) of exactly 16 bytes, is only needed when 'mode' is either [ModeCbcEncrypt] or [ModeCbcDecrypt].
 */
-func (self Expanded) Start(mode Mode, key []byte, iv []byte) error { //gd:AESContext.start
+func (self MoreArgs) Start(mode Mode, key []byte, iv []byte) error { //gd:AESContext.start
 	return error(gd.ToError(Advanced(self).Start(mode, Packed.BytesFrom(key...), Packed.BytesFrom(iv...))))
 }
 
 /*
-Run the desired operation for this AES context. Will return a []byte containing the result of encrypting (or decrypting) the given 'src'. See [Instance.Start] for mode of operation.
+Run the desired operation for this AES context. Will return a []byte containing the result of encrypting (or decrypting) the given 'src'. See [Start] for mode of operation.
 
 Note: The size of 'src' must be a multiple of 16. Apply some padding if needed.
+
+[Start]: https://pkg.go.dev/graphics.gd/classdb/AESContext#Instance.Start
 */
 func (self Instance) Update(src []byte) []byte { //gd:AESContext.update
 	return []byte(Advanced(self).Update(Packed.BytesFrom(src...)).Bytes())
 }
 
 /*
-Get the current IV state for this context (IV gets updated when calling [Instance.Update]). You normally don't need this function.
+Get the current IV state for this context (IV gets updated when calling [Update]). You normally don't need this function.
 
 Note: This function only makes sense when the context is started with [ModeCbcEncrypt] or [ModeCbcDecrypt].
+
+[Update]: https://pkg.go.dev/graphics.gd/classdb/AESContext#Instance.Update
 */
 func (self Instance) GetIvState() []byte { //gd:AESContext.get_iv_state
 	return []byte(Advanced(self).GetIvState().Bytes())
 }
 
 /*
-Close this AES context so it can be started again. See [Instance.Start].
+Close this AES context so it can be started again. See [Start].
+
+[Start]: https://pkg.go.dev/graphics.gd/classdb/AESContext#Instance.Start
 */
 func (self Instance) Finish() { //gd:AESContext.finish
 	Advanced(self).Finish()
@@ -246,9 +257,11 @@ func (self class) Start(mode Mode, key Packed.Bytes, iv Packed.Bytes) Error.Code
 }
 
 /*
-Run the desired operation for this AES context. Will return a []byte containing the result of encrypting (or decrypting) the given 'src'. See [Instance.Start] for mode of operation.
+Run the desired operation for this AES context. Will return a []byte containing the result of encrypting (or decrypting) the given 'src'. See [Start] for mode of operation.
 
 Note: The size of 'src' must be a multiple of 16. Apply some padding if needed.
+
+[Start]: https://pkg.go.dev/graphics.gd/classdb/AESContext#Instance.Start
 */
 //go:nosplit
 func (self class) Update(src Packed.Bytes) Packed.Bytes { //gd:AESContext.update
@@ -258,9 +271,11 @@ func (self class) Update(src Packed.Bytes) Packed.Bytes { //gd:AESContext.update
 }
 
 /*
-Get the current IV state for this context (IV gets updated when calling [Instance.Update]). You normally don't need this function.
+Get the current IV state for this context (IV gets updated when calling [Update]). You normally don't need this function.
 
 Note: This function only makes sense when the context is started with [ModeCbcEncrypt] or [ModeCbcDecrypt].
+
+[Update]: https://pkg.go.dev/graphics.gd/classdb/AESContext#Instance.Update
 */
 //go:nosplit
 func (self class) GetIvState() Packed.Bytes { //gd:AESContext.get_iv_state
@@ -270,7 +285,9 @@ func (self class) GetIvState() Packed.Bytes { //gd:AESContext.get_iv_state
 }
 
 /*
-Close this AES context so it can be started again. See [Instance.Start].
+Close this AES context so it can be started again. See [Start].
+
+[Start]: https://pkg.go.dev/graphics.gd/classdb/AESContext#Instance.Start
 */
 //go:nosplit
 func (self class) Finish() { //gd:AESContext.finish

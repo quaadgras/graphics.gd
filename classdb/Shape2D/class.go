@@ -3,7 +3,11 @@
 /*
 Abstract base class for all 2D shapes, intended for use in physics.
 
-Performance: Primitive shapes, especially [graphics.gd/classdb/CircleShape2D], are fast to check collisions against. [graphics.gd/classdb/ConvexPolygonShape2D] is slower, and [graphics.gd/classdb/ConcavePolygonShape2D] is the slowest.
+Performance: Primitive shapes, especially [CircleShape2D], are fast to check collisions against. [ConvexPolygonShape2D] is slower, and [ConcavePolygonShape2D] is the slowest.
+
+[CircleShape2D]: https://pkg.go.dev/graphics.gd/classdb/CircleShape2D
+[ConcavePolygonShape2D]: https://pkg.go.dev/graphics.gd/classdb/ConcavePolygonShape2D
+[ConvexPolygonShape2D]: https://pkg.go.dev/graphics.gd/classdb/ConvexPolygonShape2D
 */
 package Shape2D
 
@@ -155,7 +159,10 @@ func (self Instance) CollideWithMotionAndGetContacts(local_xform Transform2D.Ori
 }
 
 /*
-Draws a solid shape onto a [graphics.gd/classdb/CanvasItem] with the [graphics.gd/classdb/RenderingServer] API filled with the specified 'color'. The exact drawing method is specific for each shape and cannot be configured.
+Draws a solid shape onto a [CanvasItem] with the [RenderingServer] API filled with the specified 'color'. The exact drawing method is specific for each shape and cannot be configured.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
 */
 func (self Instance) Draw(canvas_item RID.CanvasItem, color Color.RGBA) { //gd:Shape2D.draw
 	Advanced(self).Draw(RID.Any(canvas_item), Color.RGBA(color))
@@ -163,6 +170,8 @@ func (self Instance) Draw(canvas_item RID.CanvasItem, color Color.RGBA) { //gd:S
 
 /*
 Returns a [Rect2.PositionSize] representing the shapes boundary.
+
+[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 */
 func (self Instance) GetRect() Rect2.PositionSize { //gd:Shape2D.get_rect
 	return Rect2.PositionSize(Advanced(self).GetRect())
@@ -308,7 +317,10 @@ func (self class) CollideWithMotionAndGetContacts(local_xform Transform2D.Origin
 }
 
 /*
-Draws a solid shape onto a [graphics.gd/classdb/CanvasItem] with the [graphics.gd/classdb/RenderingServer] API filled with the specified 'color'. The exact drawing method is specific for each shape and cannot be configured.
+Draws a solid shape onto a [CanvasItem] with the [RenderingServer] API filled with the specified 'color'. The exact drawing method is specific for each shape and cannot be configured.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
 */
 //go:nosplit
 func (self class) Draw(canvas_item RID.Any, color Color.RGBA) { //gd:Shape2D.draw
@@ -320,6 +332,8 @@ func (self class) Draw(canvas_item RID.Any, color Color.RGBA) { //gd:Shape2D.dra
 
 /*
 Returns a [Rect2.PositionSize] representing the shapes boundary.
+
+[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 */
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:Shape2D.get_rect

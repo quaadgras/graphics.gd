@@ -3,9 +3,13 @@
 /*
 A script implemented in the GDScript programming language, saved with the .gd extension. The script extends the functionality of all objects that instantiate it.
 
-Calling [Instance.New] creates a new instance of the script. [graphics.gd/classdb/Object.Instance.SetScript] extends an existing object, if that object's class matches one of the script's base classes.
+Calling [New] creates a new instance of the script. [Object.SetScript] extends an existing object, if that object's class matches one of the script's base classes.
 
-If you are looking for GDScript's built-in functions, see [graphics.gd/classdb/GDScript] instead.
+If you are looking for GDScript's built-in functions, see [GDScript] instead.
+
+[GDScript]: https://pkg.go.dev/graphics.gd/classdb/GDScript
+[New]: https://pkg.go.dev/graphics.gd/classdb/GDScript#Instance.New
+[Object.SetScript]: https://pkg.go.dev/graphics.gd/variant/Object#SetScript
 */
 package GDScript
 

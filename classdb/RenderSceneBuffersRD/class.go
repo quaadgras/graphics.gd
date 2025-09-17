@@ -126,7 +126,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.RenderSceneBuffersRD
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.RenderSceneBuffersRD
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -220,7 +225,7 @@ Returns the color texture we are rendering 3D content to. If multiview is used t
 
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
-func (self Expanded) GetColorTexture(msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_color_texture
+func (self MoreArgs) GetColorTexture(msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_color_texture
 	return RID.Texture(RID.Texture(Advanced(self).GetColorTexture(msaa)))
 }
 
@@ -238,7 +243,7 @@ Returns the specified layer from the color texture we are rendering 3D content t
 
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
-func (self Expanded) GetColorLayer(layer int, msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_color_layer
+func (self MoreArgs) GetColorLayer(layer int, msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_color_layer
 	return RID.Texture(RID.Texture(Advanced(self).GetColorLayer(int64(layer), msaa)))
 }
 
@@ -256,7 +261,7 @@ Returns the depth texture we are rendering 3D content to. If multiview is used t
 
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
-func (self Expanded) GetDepthTexture(msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_depth_texture
+func (self MoreArgs) GetDepthTexture(msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_depth_texture
 	return RID.Texture(RID.Texture(Advanced(self).GetDepthTexture(msaa)))
 }
 
@@ -274,7 +279,7 @@ Returns the specified layer from the depth texture we are rendering 3D content t
 
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
-func (self Expanded) GetDepthLayer(layer int, msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_depth_layer
+func (self MoreArgs) GetDepthLayer(layer int, msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_depth_layer
 	return RID.Texture(RID.Texture(Advanced(self).GetDepthLayer(int64(layer), msaa)))
 }
 
@@ -292,7 +297,7 @@ Returns the velocity texture we are rendering 3D content to. If multiview is use
 
 If 'msaa' is true and MSAA is enabled, this returns the MSAA variant of the buffer.
 */
-func (self Expanded) GetVelocityTexture(msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_velocity_texture
+func (self MoreArgs) GetVelocityTexture(msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_velocity_texture
 	return RID.Texture(RID.Texture(Advanced(self).GetVelocityTexture(msaa)))
 }
 
@@ -306,7 +311,7 @@ func (self Instance) GetVelocityLayer(layer int) RID.Texture { //gd:RenderSceneB
 /*
 Returns the specified layer from the velocity texture we are rendering 3D content to.
 */
-func (self Expanded) GetVelocityLayer(layer int, msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_velocity_layer
+func (self MoreArgs) GetVelocityLayer(layer int, msaa bool) RID.Texture { //gd:RenderSceneBuffersRD.get_velocity_layer
 	return RID.Texture(RID.Texture(Advanced(self).GetVelocityLayer(int64(layer), msaa)))
 }
 
@@ -346,7 +351,9 @@ func (self Instance) GetScaling3dMode() RenderingServer.ViewportScaling3DMode { 
 }
 
 /*
-Returns the FSR sharpness value used while rendering the 3D content (if [Instance.GetScaling3dMode] is an FSR mode).
+Returns the FSR sharpness value used while rendering the 3D content (if [GetScaling3dMode] is an FSR mode).
+
+[GetScaling3dMode]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneBuffersRD#Instance.GetScaling3dMode
 */
 func (self Instance) GetFsrSharpness() Float.X { //gd:RenderSceneBuffersRD.get_fsr_sharpness
 	return Float.X(Float.X(Advanced(self).GetFsrSharpness()))
@@ -708,7 +715,9 @@ func (self class) GetScaling3dMode() RenderingServer.ViewportScaling3DMode { //g
 }
 
 /*
-Returns the FSR sharpness value used while rendering the 3D content (if [Instance.GetScaling3dMode] is an FSR mode).
+Returns the FSR sharpness value used while rendering the 3D content (if [GetScaling3dMode] is an FSR mode).
+
+[GetScaling3dMode]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneBuffersRD#Instance.GetScaling3dMode
 */
 //go:nosplit
 func (self class) GetFsrSharpness() float64 { //gd:RenderSceneBuffersRD.get_fsr_sharpness

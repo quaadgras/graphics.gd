@@ -2,6 +2,8 @@
 
 /*
 A constant [Vector3.XYZ], which can be used as an input node.
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 package VisualShaderNodeVec3Constant
 

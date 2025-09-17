@@ -92,7 +92,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.OpenXRFutureExtension
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.OpenXRFutureExtension
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -114,7 +119,10 @@ Register an OpenXR Future object so we monitor for completion. 'future' must be 
 
 You can optionally specify 'on_success', it will be invoked on successful completion of the future.
 
-Or you can use the returned [graphics.gd/classdb/OpenXRFutureResult] object to await its [Instance.OnOpenxrfutureresult.Completed] signal.
+Or you can use the returned [OpenXRFutureResult] object to await its [OnOpenxrfutureresult.Completed] signal.
+
+[OnOpenxrfutureresult.Completed]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureExtension#Instance.OnOpenxrfutureresult.Completed
+[OpenXRFutureResult]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureResult
 */
 func (self Instance) RegisterFuture(future int) OpenXRFutureResult.Instance { //gd:OpenXRFutureExtension.register_future
 	return OpenXRFutureResult.Instance(Advanced(self).RegisterFuture(int64(future), Callable.New(Callable.Nil)))
@@ -125,9 +133,12 @@ Register an OpenXR Future object so we monitor for completion. 'future' must be 
 
 You can optionally specify 'on_success', it will be invoked on successful completion of the future.
 
-Or you can use the returned [graphics.gd/classdb/OpenXRFutureResult] object to await its [Instance.OnOpenxrfutureresult.Completed] signal.
+Or you can use the returned [OpenXRFutureResult] object to await its [OnOpenxrfutureresult.Completed] signal.
+
+[OnOpenxrfutureresult.Completed]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureExtension#Instance.OnOpenxrfutureresult.Completed
+[OpenXRFutureResult]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureResult
 */
-func (self Expanded) RegisterFuture(future int, on_success func()) OpenXRFutureResult.Instance { //gd:OpenXRFutureExtension.register_future
+func (self MoreArgs) RegisterFuture(future int, on_success func()) OpenXRFutureResult.Instance { //gd:OpenXRFutureExtension.register_future
 	return OpenXRFutureResult.Instance(Advanced(self).RegisterFuture(int64(future), Callable.New(on_success)))
 }
 
@@ -195,9 +206,12 @@ Register an OpenXR Future object so we monitor for completion. 'future' must be 
 
 You can optionally specify 'on_success', it will be invoked on successful completion of the future.
 
-Or you can use the returned [graphics.gd/classdb/OpenXRFutureResult] object to await its [Instance.OnOpenxrfutureresult.Completed] signal.
+Or you can use the returned [OpenXRFutureResult] object to await its [OnOpenxrfutureresult.Completed] signal.
 
 
+
+[OnOpenxrfutureresult.Completed]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureExtension#Instance.OnOpenxrfutureresult.Completed
+[OpenXRFutureResult]: https://pkg.go.dev/graphics.gd/classdb/OpenXRFutureResult
 */
 //go:nosplit
 func (self class) RegisterFuture(future int64, on_success Callable.Function) [1]gdclass.OpenXRFutureResult { //gd:OpenXRFutureExtension.register_future

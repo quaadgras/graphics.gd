@@ -114,7 +114,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.RandomNumberGenerator
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.RandomNumberGenerator
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -158,7 +163,7 @@ Note: This method uses the [Box-Muller transform] algorithm.
 [Box-Muller transform]: https://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
 [normally-distributed]: https://en.wikipedia.org/wiki/Normal_distribution
 */
-func (self Expanded) Randfn(mean Float.X, deviation Float.X) Float.X { //gd:RandomNumberGenerator.randfn
+func (self MoreArgs) Randfn(mean Float.X, deviation Float.X) Float.X { //gd:RandomNumberGenerator.randfn
 	return Float.X(Float.X(Advanced(self).Randfn(float64(mean), float64(deviation))))
 }
 
@@ -184,7 +189,9 @@ func (self Instance) RandWeighted(weights []float32) int { //gd:RandomNumberGene
 }
 
 /*
-Sets up a time-based seed for this [graphics.gd/classdb/RandomNumberGenerator] instance. Unlike the standard random number generation functions, different [graphics.gd/classdb/RandomNumberGenerator] instances can use different seeds.
+Sets up a time-based seed for this [RandomNumberGenerator] instance. Unlike the standard random number generation functions, different [RandomNumberGenerator] instances can use different seeds.
+
+[RandomNumberGenerator]: https://pkg.go.dev/graphics.gd/classdb/RandomNumberGenerator
 */
 func (self Instance) Randomize() { //gd:RandomNumberGenerator.randomize
 	Advanced(self).Randomize()
@@ -352,7 +359,9 @@ func (self class) RandWeighted(weights Packed.Array[float32]) int64 { //gd:Rando
 }
 
 /*
-Sets up a time-based seed for this [graphics.gd/classdb/RandomNumberGenerator] instance. Unlike the standard random number generation functions, different [graphics.gd/classdb/RandomNumberGenerator] instances can use different seeds.
+Sets up a time-based seed for this [RandomNumberGenerator] instance. Unlike the standard random number generation functions, different [RandomNumberGenerator] instances can use different seeds.
+
+[RandomNumberGenerator]: https://pkg.go.dev/graphics.gd/classdb/RandomNumberGenerator
 */
 //go:nosplit
 func (self class) Randomize() { //gd:RandomNumberGenerator.randomize

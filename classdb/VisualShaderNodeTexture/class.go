@@ -263,7 +263,9 @@ const (
 	SourceTexture Source = 0
 	// Use the current viewport's texture as the source.
 	SourceScreen Source = 1
-	// Use the texture from this shader's texture built-in (e.g. a texture of a [graphics.gd/classdb/Sprite2D]).
+	// Use the texture from this shader's texture built-in (e.g. a texture of a [Sprite2D]).
+	//
+	// [Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
 	Source2dTexture Source = 2
 	// Use the texture from this shader's normal map built-in.
 	Source2dNormal Source = 3

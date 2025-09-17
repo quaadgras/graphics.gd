@@ -336,9 +336,16 @@ type Hint int //gd:VisualShaderNodeFloatParameter.Hint
 const (
 	// No hint used.
 	HintNone Hint = 0
-	// A range hint for scalar value, which limits possible input values between [Instance.Min] and [Instance.Max]. Translated to hint_range(min, max) in shader code.
+	// A range hint for scalar value, which limits possible input values between [Min] and [Max]. Translated to hint_range(min, max) in shader code.
+	//
+	// [Max]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Max
+	// [Min]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Min
 	HintRange Hint = 1
-	// A range hint for scalar value with step, which limits possible input values between [Instance.Min] and [Instance.Max], with a step (increment) of [Instance.Step]). Translated to hint_range(min, max, step) in shader code.
+	// A range hint for scalar value with step, which limits possible input values between [Min] and [Max], with a step (increment) of [Step]). Translated to hint_range(min, max, step) in shader code.
+	//
+	// [Max]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Max
+	// [Min]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Min
+	// [Step]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Step
 	HintRangeStep Hint = 2
 	// Represents the size of the [Hint] enum.
 	HintMax Hint = 3

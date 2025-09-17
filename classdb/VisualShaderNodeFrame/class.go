@@ -116,14 +116,18 @@ type Any interface {
 }
 
 /*
-Adds a node to the list of nodes attached to the frame. Should not be called directly, use the [graphics.gd/classdb/VisualShader.Instance.AttachNodeToFrame] method instead.
+Adds a node to the list of nodes attached to the frame. Should not be called directly, use the [VisualShader.AttachNodeToFrame] method instead.
+
+[VisualShader.AttachNodeToFrame]: https://pkg.go.dev/graphics.gd/classdb/VisualShader#Instance.AttachNodeToFrame
 */
 func (self Instance) AddAttachedNode(node int) { //gd:VisualShaderNodeFrame.add_attached_node
 	Advanced(self).AddAttachedNode(int64(node))
 }
 
 /*
-Removes a node from the list of nodes attached to the frame. Should not be called directly, use the [graphics.gd/classdb/VisualShader.Instance.DetachNodeFromFrame] method instead.
+Removes a node from the list of nodes attached to the frame. Should not be called directly, use the [VisualShader.DetachNodeFromFrame] method instead.
+
+[VisualShader.DetachNodeFromFrame]: https://pkg.go.dev/graphics.gd/classdb/VisualShader#Instance.DetachNodeFromFrame
 */
 func (self Instance) RemoveAttachedNode(node int) { //gd:VisualShaderNodeFrame.remove_attached_node
 	Advanced(self).RemoveAttachedNode(int64(node))
@@ -261,7 +265,9 @@ func (self class) IsAutoshrinkEnabled() bool { //gd:VisualShaderNodeFrame.is_aut
 }
 
 /*
-Adds a node to the list of nodes attached to the frame. Should not be called directly, use the [graphics.gd/classdb/VisualShader.Instance.AttachNodeToFrame] method instead.
+Adds a node to the list of nodes attached to the frame. Should not be called directly, use the [VisualShader.AttachNodeToFrame] method instead.
+
+[VisualShader.AttachNodeToFrame]: https://pkg.go.dev/graphics.gd/classdb/VisualShader#Instance.AttachNodeToFrame
 */
 //go:nosplit
 func (self class) AddAttachedNode(node int64) { //gd:VisualShaderNodeFrame.add_attached_node
@@ -269,7 +275,9 @@ func (self class) AddAttachedNode(node int64) { //gd:VisualShaderNodeFrame.add_a
 }
 
 /*
-Removes a node from the list of nodes attached to the frame. Should not be called directly, use the [graphics.gd/classdb/VisualShader.Instance.DetachNodeFromFrame] method instead.
+Removes a node from the list of nodes attached to the frame. Should not be called directly, use the [VisualShader.DetachNodeFromFrame] method instead.
+
+[VisualShader.DetachNodeFromFrame]: https://pkg.go.dev/graphics.gd/classdb/VisualShader#Instance.DetachNodeFromFrame
 */
 //go:nosplit
 func (self class) RemoveAttachedNode(node int64) { //gd:VisualShaderNodeFrame.remove_attached_node

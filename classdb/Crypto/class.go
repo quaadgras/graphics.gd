@@ -3,7 +3,7 @@
 /*
 The Crypto class provides access to advanced cryptographic functionalities.
 
-Currently, this includes asymmetric key encryption/decryption, signing/verification, and generating cryptographically secure random bytes, RSA keys, HMAC digests, and self-signed [graphics.gd/classdb/X509Certificate]s.
+Currently, this includes asymmetric key encryption/decryption, signing/verification, and generating cryptographically secure random bytes, RSA keys, HMAC digests, and self-signed [X509Certificate]s.
 
 	package main
 
@@ -20,7 +20,7 @@ Currently, this includes asymmetric key encryption/decryption, signing/verificat
 		// Generate new RSA key.
 		key := crypto.GenerateRsa(4096)
 		// Generate new self-signed certificate with the given key.
-		cert := Crypto.Expanded(crypto).GenerateSelfSignedCertificate(key, "CN=mydomain.com,O=My Game Company,C=IT", "20140101000000", "20340101000000")
+		cert := crypto.MoreArgs().GenerateSelfSignedCertificate(key, "CN=mydomain.com,O=My Game Company,C=IT", "20140101000000", "20340101000000")
 		// Save key and certificate in the user folder.
 		key.Save("user://generated.key")
 		cert.Save("user://generated.crt")
@@ -42,6 +42,8 @@ Currently, this includes asymmetric key encryption/decryption, signing/verificat
 			panic("decryption failed")
 		}
 	}
+
+[X509Certificate]: https://pkg.go.dev/graphics.gd/classdb/X509Certificate
 */
 package Crypto
 
@@ -139,7 +141,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.Crypto
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.Crypto
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -157,27 +164,36 @@ func (self Instance) GenerateRandomBytes(size int) []byte { //gd:Crypto.generate
 }
 
 /*
-Generates an RSA [graphics.gd/classdb/CryptoKey] that can be used for creating self-signed certificates and passed to [graphics.gd/classdb/StreamPeerTLS.Instance.AcceptStream].
+Generates an RSA [CryptoKey] that can be used for creating self-signed certificates and passed to [StreamPeerTLS.AcceptStream].
+
+[CryptoKey]: https://pkg.go.dev/graphics.gd/classdb/CryptoKey
+[StreamPeerTLS.AcceptStream]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTLS#Instance.AcceptStream
 */
 func (self Instance) GenerateRsa(size int) CryptoKey.Instance { //gd:Crypto.generate_rsa
 	return CryptoKey.Instance(Advanced(self).GenerateRsa(int64(size)))
 }
 
 /*
-Generates a self-signed [graphics.gd/classdb/X509Certificate] from the given [graphics.gd/classdb/CryptoKey] and 'issuer_name'. The certificate validity will be defined by 'not_before' and 'not_after' (first valid date and last valid date). The 'issuer_name' must contain at least "CN=" (common name, i.e. the domain name), "O=" (organization, i.e. your company name), "C=" (country, i.e. 2 lettered ISO-3166 code of the country the organization is based in).
+Generates a self-signed [X509Certificate] from the given [CryptoKey] and 'issuer_name'. The certificate validity will be defined by 'not_before' and 'not_after' (first valid date and last valid date). The 'issuer_name' must contain at least "CN=" (common name, i.e. the domain name), "O=" (organization, i.e. your company name), "C=" (country, i.e. 2 lettered ISO-3166 code of the country the organization is based in).
 
 A small example to generate an RSA key and an X509 self-signed certificate.
+
+[CryptoKey]: https://pkg.go.dev/graphics.gd/classdb/CryptoKey
+[X509Certificate]: https://pkg.go.dev/graphics.gd/classdb/X509Certificate
 */
 func (self Instance) GenerateSelfSignedCertificate(key CryptoKey.Instance) X509Certificate.Instance { //gd:Crypto.generate_self_signed_certificate
 	return X509Certificate.Instance(Advanced(self).GenerateSelfSignedCertificate(key, String.New("CN=myserver,O=myorganisation,C=IT"), String.New("20140101000000"), String.New("20340101000000")))
 }
 
 /*
-Generates a self-signed [graphics.gd/classdb/X509Certificate] from the given [graphics.gd/classdb/CryptoKey] and 'issuer_name'. The certificate validity will be defined by 'not_before' and 'not_after' (first valid date and last valid date). The 'issuer_name' must contain at least "CN=" (common name, i.e. the domain name), "O=" (organization, i.e. your company name), "C=" (country, i.e. 2 lettered ISO-3166 code of the country the organization is based in).
+Generates a self-signed [X509Certificate] from the given [CryptoKey] and 'issuer_name'. The certificate validity will be defined by 'not_before' and 'not_after' (first valid date and last valid date). The 'issuer_name' must contain at least "CN=" (common name, i.e. the domain name), "O=" (organization, i.e. your company name), "C=" (country, i.e. 2 lettered ISO-3166 code of the country the organization is based in).
 
 A small example to generate an RSA key and an X509 self-signed certificate.
+
+[CryptoKey]: https://pkg.go.dev/graphics.gd/classdb/CryptoKey
+[X509Certificate]: https://pkg.go.dev/graphics.gd/classdb/X509Certificate
 */
-func (self Expanded) GenerateSelfSignedCertificate(key CryptoKey.Instance, issuer_name string, not_before string, not_after string) X509Certificate.Instance { //gd:Crypto.generate_self_signed_certificate
+func (self MoreArgs) GenerateSelfSignedCertificate(key CryptoKey.Instance, issuer_name string, not_before string, not_after string) X509Certificate.Instance { //gd:Crypto.generate_self_signed_certificate
 	return X509Certificate.Instance(Advanced(self).GenerateSelfSignedCertificate(key, String.New(issuer_name), String.New(not_before), String.New(not_after)))
 }
 
@@ -289,7 +305,10 @@ func (self class) GenerateRandomBytes(size int64) Packed.Bytes { //gd:Crypto.gen
 }
 
 /*
-Generates an RSA [graphics.gd/classdb/CryptoKey] that can be used for creating self-signed certificates and passed to [graphics.gd/classdb/StreamPeerTLS.Instance.AcceptStream].
+Generates an RSA [CryptoKey] that can be used for creating self-signed certificates and passed to [StreamPeerTLS.AcceptStream].
+
+[CryptoKey]: https://pkg.go.dev/graphics.gd/classdb/CryptoKey
+[StreamPeerTLS.AcceptStream]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTLS#Instance.AcceptStream
 */
 //go:nosplit
 func (self class) GenerateRsa(size int64) [1]gdclass.CryptoKey { //gd:Crypto.generate_rsa
@@ -299,11 +318,14 @@ func (self class) GenerateRsa(size int64) [1]gdclass.CryptoKey { //gd:Crypto.gen
 }
 
 /*
-Generates a self-signed [graphics.gd/classdb/X509Certificate] from the given [graphics.gd/classdb/CryptoKey] and 'issuer_name'. The certificate validity will be defined by 'not_before' and 'not_after' (first valid date and last valid date). The 'issuer_name' must contain at least "CN=" (common name, i.e. the domain name), "O=" (organization, i.e. your company name), "C=" (country, i.e. 2 lettered ISO-3166 code of the country the organization is based in).
+Generates a self-signed [X509Certificate] from the given [CryptoKey] and 'issuer_name'. The certificate validity will be defined by 'not_before' and 'not_after' (first valid date and last valid date). The 'issuer_name' must contain at least "CN=" (common name, i.e. the domain name), "O=" (organization, i.e. your company name), "C=" (country, i.e. 2 lettered ISO-3166 code of the country the organization is based in).
 
 A small example to generate an RSA key and an X509 self-signed certificate.
 
 
+
+[CryptoKey]: https://pkg.go.dev/graphics.gd/classdb/CryptoKey
+[X509Certificate]: https://pkg.go.dev/graphics.gd/classdb/X509Certificate
 */
 //go:nosplit
 func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer_name String.Readable, not_before String.Readable, not_after String.Readable) [1]gdclass.X509Certificate { //gd:Crypto.generate_self_signed_certificate

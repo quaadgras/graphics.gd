@@ -3,7 +3,12 @@
 /*
 Shader source code in text form.
 
-See also [graphics.gd/classdb/RDShaderFile]. [graphics.gd/classdb/RDShaderSource] is only meant to be used with the [graphics.gd/classdb/RenderingDevice] API. It should not be confused with Godot's own [graphics.gd/classdb/Shader] resource, which is what Godot's various nodes use for high-level shader programming.
+See also [RDShaderFile]. [RDShaderSource] is only meant to be used with the [RenderingDevice] API. It should not be confused with Godot's own [Shader] resource, which is what Godot's various nodes use for high-level shader programming.
+
+[RDShaderFile]: https://pkg.go.dev/graphics.gd/classdb/RDShaderFile
+[RDShaderSource]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
+[Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
 */
 package RDShaderSource
 
@@ -194,9 +199,15 @@ func (self Instance) SetLanguage(value Rendering.ShaderLanguage) {
 }
 
 /*
-Sets 'source' code for the specified shader 'stage'. Equivalent to setting one of [Instance.SourceCompute], [Instance.SourceFragment], [Instance.SourceTesselationControl], [Instance.SourceTesselationEvaluation] or [Instance.SourceVertex].
+Sets 'source' code for the specified shader 'stage'. Equivalent to setting one of [SourceCompute], [SourceFragment], [SourceTesselationControl], [SourceTesselationEvaluation] or [SourceVertex].
 
 Note: If you set the compute shader source code using this method directly, remember to remove the Godot-specific hint #[compute].
+
+[SourceCompute]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceCompute
+[SourceFragment]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceFragment
+[SourceTesselationControl]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceTesselationControl
+[SourceTesselationEvaluation]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceTesselationEvaluation
+[SourceVertex]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceVertex
 */
 //go:nosplit
 func (self class) SetStageSource(stage Rendering.ShaderStage, source String.Readable) { //gd:RDShaderSource.set_stage_source
@@ -207,7 +218,13 @@ func (self class) SetStageSource(stage Rendering.ShaderStage, source String.Read
 }
 
 /*
-Returns source code for the specified shader 'stage'. Equivalent to getting one of [Instance.SourceCompute], [Instance.SourceFragment], [Instance.SourceTesselationControl], [Instance.SourceTesselationEvaluation] or [Instance.SourceVertex].
+Returns source code for the specified shader 'stage'. Equivalent to getting one of [SourceCompute], [SourceFragment], [SourceTesselationControl], [SourceTesselationEvaluation] or [SourceVertex].
+
+[SourceCompute]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceCompute
+[SourceFragment]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceFragment
+[SourceTesselationControl]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceTesselationControl
+[SourceTesselationEvaluation]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceTesselationEvaluation
+[SourceVertex]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource#Instance.SourceVertex
 */
 //go:nosplit
 func (self class) GetStageSource(stage Rendering.ShaderStage) String.Readable { //gd:RDShaderSource.get_stage_source

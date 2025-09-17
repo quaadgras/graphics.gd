@@ -2,6 +2,8 @@
 
 /*
 A constant [Vector2.XY], which can be used as an input node.
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 package VisualShaderNodeVec2Constant
 

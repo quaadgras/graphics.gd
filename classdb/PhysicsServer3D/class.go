@@ -13,9 +13,11 @@ PhysicsServer3D is the server responsible for all 3D physics. It can directly cr
 
 - A joint is a constraint, either between two bodies or on one body relative to a point. Parameters such as the joint bias and the rest length of a spring joint can be adjusted.
 
-Physics objects in [graphics.gd/classdb/PhysicsServer3D] may be created and manipulated independently; they do not have to be tied to nodes in the scene tree.
+Physics objects in [PhysicsServer3D] may be created and manipulated independently; they do not have to be tied to nodes in the scene tree.
 
 Note: All the 3D physics nodes use the physics server internally. Adding a physics node to the scene tree will cause a corresponding physics object to be created in the physics server. A rigid body node registers a callback that updates the node's transform with the transform of the respective body object in the physics server (every physics update). An area node registers a callback to inform the area node about overlaps with the respective area object in the physics server. The raycast node queries the direct state of the relevant space in the physics server.
+
+[PhysicsServer3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer3D
 */
 package PhysicsServer3D
 
@@ -417,7 +419,9 @@ func SpaceGetParam(space RID.Space3D, param SpaceParameter) Float.X { //gd:Physi
 }
 
 /*
-Returns the state of a space, a [graphics.gd/classdb/PhysicsDirectSpaceState3D]. This object can be used to make collision/intersection queries.
+Returns the state of a space, a [PhysicsDirectSpaceState3D]. This object can be used to make collision/intersection queries.
+
+[PhysicsDirectSpaceState3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState3D
 */
 func SpaceGetDirectState(space RID.Space3D) PhysicsDirectSpaceState3D.Instance { //gd:PhysicsServer3D.space_get_direct_state
 	once.Do(singleton)
@@ -428,6 +432,8 @@ func SpaceGetDirectState(space RID.Space3D) PhysicsDirectSpaceState3D.Instance {
 Creates a 3D area object in the physics server, and returns the [Resource.ID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and monitorable set to false.
 
 Use [AreaAddShape] to add shapes to it, use [AreaSetTransform] to set its transform, and use [AreaSetSpace] to add the area to a space. If you want the area to be detectable use [AreaSetMonitorable].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func AreaCreate() RID.Area3D { //gd:PhysicsServer3D.area_create
 	once.Do(singleton)
@@ -468,6 +474,8 @@ func AreaAddShapeOptions(area RID.Area3D, shape RID.Shape3D, transform Transform
 
 /*
 Substitutes a given area shape by another. The old shape is selected by its index, the new one by its [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func AreaSetShape(area RID.Area3D, shape_idx int, shape RID.Shape3D) { //gd:PhysicsServer3D.area_set_shape
 	once.Do(singleton)
@@ -496,6 +504,8 @@ func AreaGetShapeCount(area RID.Area3D) int { //gd:PhysicsServer3D.area_get_shap
 
 /*
 Returns the [Resource.ID] of the nth shape of an area.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func AreaGetShape(area RID.Area3D, shape_idx int) RID.Shape3D { //gd:PhysicsServer3D.area_get_shape
 	once.Do(singleton)
@@ -591,7 +601,9 @@ func AreaGetTransform(area RID.Area3D) Transform3D.BasisOrigin { //gd:PhysicsSer
 }
 
 /*
-Assigns the area to a descendant of [graphics.gd/classdb/Object], so it can exist in the node tree.
+Assigns the area to a descendant of [Object], so it can exist in the node tree.
+
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
 func AreaAttachObjectInstanceId(area RID.Area3D, id int) { //gd:PhysicsServer3D.area_attach_object_instance_id
 	once.Do(singleton)
@@ -620,6 +632,8 @@ Sets the area's body monitor callback. This callback will be called when any oth
 5. an integer self_shape_idx: the index of the shape of the area where the body entered or exited.
 
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if a body (with all its shapes) is entering for the first time or exiting for the last time.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func AreaSetMonitorCallback(area RID.Area3D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) { //gd:PhysicsServer3D.area_set_monitor_callback
 	once.Do(singleton)
@@ -640,6 +654,8 @@ Sets the area's area monitor callback. This callback will be called when any oth
 5. an integer self_shape_idx: the index of the shape of the area where the other area entered or exited.
 
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if an area (with all its shapes) is entering for the first time or exiting for the last time.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func AreaSetAreaMonitorCallback(area RID.Area3D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) { //gd:PhysicsServer3D.area_set_area_monitor_callback
 	once.Do(singleton)
@@ -662,6 +678,8 @@ func AreaSetRayPickable(area RID.Area3D, enable bool) { //gd:PhysicsServer3D.are
 Creates a 3D body object in the physics server, and returns the [Resource.ID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and body mode set to [BodyModeRigid].
 
 Use [BodyAddShape] to add shapes to it, use [BodySetState] to set its transform, and use [BodySetSpace] to add the body to a space.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func BodyCreate() RID.Body3D { //gd:PhysicsServer3D.body_create
 	once.Do(singleton)
@@ -678,6 +696,8 @@ func BodySetSpace(body RID.Body3D, space RID.Space3D) { //gd:PhysicsServer3D.bod
 
 /*
 Returns the [Resource.ID] of the space assigned to a body.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func BodyGetSpace(body RID.Body3D) RID.Space3D { //gd:PhysicsServer3D.body_get_space
 	once.Do(singleton)
@@ -766,6 +786,8 @@ func BodyAddShapeOptions(body RID.Body3D, shape RID.Shape3D, transform Transform
 
 /*
 Substitutes a given body shape by another. The old shape is selected by its index, the new one by its [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func BodySetShape(body RID.Body3D, shape_idx int, shape RID.Shape3D) { //gd:PhysicsServer3D.body_set_shape
 	once.Do(singleton)
@@ -794,6 +816,8 @@ func BodyGetShapeCount(body RID.Body3D) int { //gd:PhysicsServer3D.body_get_shap
 
 /*
 Returns the [Resource.ID] of the nth shape of a body.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func BodyGetShape(body RID.Body3D, shape_idx int) RID.Shape3D { //gd:PhysicsServer3D.body_get_shape
 	once.Do(singleton)
@@ -825,7 +849,9 @@ func BodyClearShapes(body RID.Body3D) { //gd:PhysicsServer3D.body_clear_shapes
 }
 
 /*
-Assigns the area to a descendant of [graphics.gd/classdb/Object], so it can exist in the node tree.
+Assigns the area to a descendant of [Object], so it can exist in the node tree.
+
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
 func BodyAttachObjectInstanceId(body RID.Body3D, id int) { //gd:PhysicsServer3D.body_attach_object_instance_id
 	once.Do(singleton)
@@ -1113,7 +1139,9 @@ func BodyGetMaxContactsReported(body RID.Body3D) int { //gd:PhysicsServer3D.body
 /*
 Sets whether the body omits the standard force integration. If 'enable' is true, the body will not automatically use applied forces, torques, and damping to update the body's linear and angular velocity. In this case, [BodySetForceIntegrationCallback] can be used to manually update the linear and angular velocity instead.
 
-This method is called when the property [graphics.gd/classdb/RigidBody3D.Instance.CustomIntegrator] is set.
+This method is called when the property [RigidBody3D.CustomIntegrator] is set.
+
+[RigidBody3D.CustomIntegrator]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D#Instance.CustomIntegrator
 */
 func BodySetOmitForceIntegration(body RID.Body3D, enable bool) { //gd:PhysicsServer3D.body_set_omit_force_integration
 	once.Do(singleton)
@@ -1135,7 +1163,9 @@ The function 'callable' will be called every physics frame, assuming that the bo
 
 The function 'callable' must take the following parameters:
 
-1. state: a [graphics.gd/classdb/PhysicsDirectBodyState3D], used to retrieve the body's state.
+1. state: a [PhysicsDirectBodyState3D], used to retrieve the body's state.
+
+[PhysicsDirectBodyState3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D
 */
 func BodySetStateSyncCallback(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance)) { //gd:PhysicsServer3D.body_set_state_sync_callback
 	once.Do(singleton)
@@ -1149,11 +1179,13 @@ The function 'callable' will be called every physics tick, before the standard f
 
 If 'userdata' is not null, the function 'callable' must take the following two parameters:
 
-1. state: a [graphics.gd/classdb/PhysicsDirectBodyState3D], used to retrieve and modify the body's state,
+1. state: a [PhysicsDirectBodyState3D], used to retrieve and modify the body's state,
 
 2. userdata: a any; its value will be the 'userdata' passed into this method.
 
 If 'userdata' is null, then 'callable' must take only the state parameter.
+
+[PhysicsDirectBodyState3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D
 */
 func BodySetForceIntegrationCallback(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance, userdata any), userdata any) { //gd:PhysicsServer3D.body_set_force_integration_callback
 	once.Do(singleton)
@@ -1167,11 +1199,13 @@ The function 'callable' will be called every physics tick, before the standard f
 
 If 'userdata' is not null, the function 'callable' must take the following two parameters:
 
-1. state: a [graphics.gd/classdb/PhysicsDirectBodyState3D], used to retrieve and modify the body's state,
+1. state: a [PhysicsDirectBodyState3D], used to retrieve and modify the body's state,
 
 2. userdata: a any; its value will be the 'userdata' passed into this method.
 
 If 'userdata' is null, then 'callable' must take only the state parameter.
+
+[PhysicsDirectBodyState3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D
 */
 func BodySetForceIntegrationCallbackOptions(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance, userdata any), userdata any) { //gd:PhysicsServer3D.body_set_force_integration_callback
 	once.Do(singleton)
@@ -1187,7 +1221,10 @@ func BodySetRayPickable(body RID.Body3D, enable bool) { //gd:PhysicsServer3D.bod
 }
 
 /*
-Returns true if a collision would result from moving along a motion vector from a given point in space. [graphics.gd/classdb/PhysicsTestMotionParameters3D] is passed to set motion parameters. [graphics.gd/classdb/PhysicsTestMotionResult3D] can be passed to return additional information.
+Returns true if a collision would result from moving along a motion vector from a given point in space. [PhysicsTestMotionParameters3D] is passed to set motion parameters. [PhysicsTestMotionResult3D] can be passed to return additional information.
+
+[PhysicsTestMotionParameters3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionParameters3D
+[PhysicsTestMotionResult3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionResult3D
 */
 func BodyTestMotion(body RID.Body3D, parameters PhysicsTestMotionParameters3D.Instance, result PhysicsTestMotionResult3D.Instance) bool { //gd:PhysicsServer3D.body_test_motion
 	once.Do(singleton)
@@ -1195,7 +1232,10 @@ func BodyTestMotion(body RID.Body3D, parameters PhysicsTestMotionParameters3D.In
 }
 
 /*
-Returns true if a collision would result from moving along a motion vector from a given point in space. [graphics.gd/classdb/PhysicsTestMotionParameters3D] is passed to set motion parameters. [graphics.gd/classdb/PhysicsTestMotionResult3D] can be passed to return additional information.
+Returns true if a collision would result from moving along a motion vector from a given point in space. [PhysicsTestMotionParameters3D] is passed to set motion parameters. [PhysicsTestMotionResult3D] can be passed to return additional information.
+
+[PhysicsTestMotionParameters3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionParameters3D
+[PhysicsTestMotionResult3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionResult3D
 */
 func BodyTestMotionOptions(body RID.Body3D, parameters PhysicsTestMotionParameters3D.Instance, result PhysicsTestMotionResult3D.Instance) bool { //gd:PhysicsServer3D.body_test_motion
 	once.Do(singleton)
@@ -1203,7 +1243,9 @@ func BodyTestMotionOptions(body RID.Body3D, parameters PhysicsTestMotionParamete
 }
 
 /*
-Returns the [graphics.gd/classdb/PhysicsDirectBodyState3D] of the body. Returns null if the body is destroyed or removed from the physics space.
+Returns the [PhysicsDirectBodyState3D] of the body. Returns null if the body is destroyed or removed from the physics space.
+
+[PhysicsDirectBodyState3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D
 */
 func BodyGetDirectState(body RID.Body3D) PhysicsDirectBodyState3D.Instance { //gd:PhysicsServer3D.body_get_direct_state
 	once.Do(singleton)
@@ -1212,6 +1254,8 @@ func BodyGetDirectState(body RID.Body3D) PhysicsDirectBodyState3D.Instance { //g
 
 /*
 Creates a new soft body and returns its internal [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func SoftBodyCreate() RID.SoftBody3D { //gd:PhysicsServer3D.soft_body_create
 	once.Do(singleton)
@@ -1236,6 +1280,8 @@ func SoftBodySetSpace(body RID.SoftBody3D, space RID.Space3D) { //gd:PhysicsServ
 
 /*
 Returns the [Resource.ID] of the space assigned to the given soft body.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func SoftBodyGetSpace(body RID.SoftBody3D) RID.Space3D { //gd:PhysicsServer3D.soft_body_get_space
 	once.Do(singleton)
@@ -1695,7 +1741,9 @@ func JointGetSolverPriority(joint RID.Joint3D) int { //gd:PhysicsServer3D.joint_
 }
 
 /*
-Sets whether the bodies attached to the [graphics.gd/classdb/Joint3D] will collide with each other.
+Sets whether the bodies attached to the [Joint3D] will collide with each other.
+
+[Joint3D]: https://pkg.go.dev/graphics.gd/classdb/Joint3D
 */
 func JointDisableCollisionsBetweenBodies(joint RID.Joint3D, disable bool) { //gd:PhysicsServer3D.joint_disable_collisions_between_bodies
 	once.Do(singleton)
@@ -1703,7 +1751,9 @@ func JointDisableCollisionsBetweenBodies(joint RID.Joint3D, disable bool) { //gd
 }
 
 /*
-Returns whether the bodies attached to the [graphics.gd/classdb/Joint3D] will collide with each other.
+Returns whether the bodies attached to the [Joint3D] will collide with each other.
+
+[Joint3D]: https://pkg.go.dev/graphics.gd/classdb/Joint3D
 */
 func JointIsDisabledCollisionsBetweenBodies(joint RID.Joint3D) bool { //gd:PhysicsServer3D.joint_is_disabled_collisions_between_bodies
 	once.Do(singleton)
@@ -1752,6 +1802,8 @@ func Generic6dofJointGetFlag(joint RID.Joint3D, axis Vector3.Axis, flag G6DOFJoi
 
 /*
 Destroys any of the objects created by PhysicsServer3D. If the [Resource.ID] passed is not one of the objects that can be created by PhysicsServer3D, an error will be sent to the console.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func FreeRid(rid RID.Any) { //gd:PhysicsServer3D.free_rid
 	once.Do(singleton)
@@ -1980,7 +2032,9 @@ func (self class) SpaceGetParam(space RID.Any, param SpaceParameter) float64 { /
 }
 
 /*
-Returns the state of a space, a [graphics.gd/classdb/PhysicsDirectSpaceState3D]. This object can be used to make collision/intersection queries.
+Returns the state of a space, a [PhysicsDirectSpaceState3D]. This object can be used to make collision/intersection queries.
+
+[PhysicsDirectSpaceState3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState3D
 */
 //go:nosplit
 func (self class) SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpaceState3D { //gd:PhysicsServer3D.space_get_direct_state
@@ -1993,6 +2047,8 @@ func (self class) SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpa
 Creates a 3D area object in the physics server, and returns the [Resource.ID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and monitorable set to false.
 
 Use [AreaAddShape] to add shapes to it, use [AreaSetTransform] to set its transform, and use [AreaSetSpace] to add the area to a space. If you want the area to be detectable use [AreaSetMonitorable].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) AreaCreate() RID.Any { //gd:PhysicsServer3D.area_create
@@ -2037,6 +2093,8 @@ func (self class) AreaAddShape(area RID.Any, shape RID.Any, transform Transform3
 
 /*
 Substitutes a given area shape by another. The old shape is selected by its index, the new one by its [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) AreaSetShape(area RID.Any, shape_idx int64, shape RID.Any) { //gd:PhysicsServer3D.area_set_shape
@@ -2080,6 +2138,8 @@ func (self class) AreaGetShapeCount(area RID.Any) int64 { //gd:PhysicsServer3D.a
 
 /*
 Returns the [Resource.ID] of the nth shape of an area.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) AreaGetShape(area RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer3D.area_get_shape
@@ -2212,7 +2272,9 @@ func (self class) AreaGetTransform(area RID.Any) Transform3D.BasisOrigin { //gd:
 }
 
 /*
-Assigns the area to a descendant of [graphics.gd/classdb/Object], so it can exist in the node tree.
+Assigns the area to a descendant of [Object], so it can exist in the node tree.
+
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
 //go:nosplit
 func (self class) AreaAttachObjectInstanceId(area RID.Any, id int64) { //gd:PhysicsServer3D.area_attach_object_instance_id
@@ -2246,6 +2308,8 @@ Sets the area's body monitor callback. This callback will be called when any oth
 5. an integer self_shape_idx: the index of the shape of the area where the body entered or exited.
 
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if a body (with all its shapes) is entering for the first time or exiting for the last time.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) AreaSetMonitorCallback(area RID.Any, callback Callable.Function) { //gd:PhysicsServer3D.area_set_monitor_callback
@@ -2269,6 +2333,8 @@ Sets the area's area monitor callback. This callback will be called when any oth
 5. an integer self_shape_idx: the index of the shape of the area where the other area entered or exited.
 
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if an area (with all its shapes) is entering for the first time or exiting for the last time.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) AreaSetAreaMonitorCallback(area RID.Any, callback Callable.Function) { //gd:PhysicsServer3D.area_set_area_monitor_callback
@@ -2301,6 +2367,8 @@ func (self class) AreaSetRayPickable(area RID.Any, enable bool) { //gd:PhysicsSe
 Creates a 3D body object in the physics server, and returns the [Resource.ID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and body mode set to [BodyModeRigid].
 
 Use [BodyAddShape] to add shapes to it, use [BodySetState] to set its transform, and use [BodySetSpace] to add the body to a space.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) BodyCreate() RID.Any { //gd:PhysicsServer3D.body_create
@@ -2322,6 +2390,8 @@ func (self class) BodySetSpace(body RID.Any, space RID.Any) { //gd:PhysicsServer
 
 /*
 Returns the [Resource.ID] of the space assigned to a body.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) BodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer3D.body_get_space
@@ -2429,6 +2499,8 @@ func (self class) BodyAddShape(body RID.Any, shape RID.Any, transform Transform3
 
 /*
 Substitutes a given body shape by another. The old shape is selected by its index, the new one by its [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) BodySetShape(body RID.Any, shape_idx int64, shape RID.Any) { //gd:PhysicsServer3D.body_set_shape
@@ -2472,6 +2544,8 @@ func (self class) BodyGetShapeCount(body RID.Any) int64 { //gd:PhysicsServer3D.b
 
 /*
 Returns the [Resource.ID] of the nth shape of a body.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) BodyGetShape(body RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer3D.body_get_shape
@@ -2516,7 +2590,9 @@ func (self class) BodyClearShapes(body RID.Any) { //gd:PhysicsServer3D.body_clea
 }
 
 /*
-Assigns the area to a descendant of [graphics.gd/classdb/Object], so it can exist in the node tree.
+Assigns the area to a descendant of [Object], so it can exist in the node tree.
+
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
 //go:nosplit
 func (self class) BodyAttachObjectInstanceId(body RID.Any, id int64) { //gd:PhysicsServer3D.body_attach_object_instance_id
@@ -2865,7 +2941,9 @@ func (self class) BodyGetMaxContactsReported(body RID.Any) int64 { //gd:PhysicsS
 /*
 Sets whether the body omits the standard force integration. If 'enable' is true, the body will not automatically use applied forces, torques, and damping to update the body's linear and angular velocity. In this case, [BodySetForceIntegrationCallback] can be used to manually update the linear and angular velocity instead.
 
-This method is called when the property [graphics.gd/classdb/RigidBody3D.Instance.CustomIntegrator] is set.
+This method is called when the property [RigidBody3D.CustomIntegrator] is set.
+
+[RigidBody3D.CustomIntegrator]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D#Instance.CustomIntegrator
 */
 //go:nosplit
 func (self class) BodySetOmitForceIntegration(body RID.Any, enable bool) { //gd:PhysicsServer3D.body_set_omit_force_integration
@@ -2892,7 +2970,9 @@ The function 'callable' will be called every physics frame, assuming that the bo
 
 The function 'callable' must take the following parameters:
 
-1. state: a [graphics.gd/classdb/PhysicsDirectBodyState3D], used to retrieve the body's state.
+1. state: a [PhysicsDirectBodyState3D], used to retrieve the body's state.
+
+[PhysicsDirectBodyState3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D
 */
 //go:nosplit
 func (self class) BodySetStateSyncCallback(body RID.Any, callable Callable.Function) { //gd:PhysicsServer3D.body_set_state_sync_callback
@@ -2909,11 +2989,13 @@ The function 'callable' will be called every physics tick, before the standard f
 
 If 'userdata' is not null, the function 'callable' must take the following two parameters:
 
-1. state: a [graphics.gd/classdb/PhysicsDirectBodyState3D], used to retrieve and modify the body's state,
+1. state: a [PhysicsDirectBodyState3D], used to retrieve and modify the body's state,
 
 2. userdata: a any; its value will be the 'userdata' passed into this method.
 
 If 'userdata' is null, then 'callable' must take only the state parameter.
+
+[PhysicsDirectBodyState3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D
 */
 //go:nosplit
 func (self class) BodySetForceIntegrationCallback(body RID.Any, callable Callable.Function, userdata variant.Any) { //gd:PhysicsServer3D.body_set_force_integration_callback
@@ -2936,7 +3018,10 @@ func (self class) BodySetRayPickable(body RID.Any, enable bool) { //gd:PhysicsSe
 }
 
 /*
-Returns true if a collision would result from moving along a motion vector from a given point in space. [graphics.gd/classdb/PhysicsTestMotionParameters3D] is passed to set motion parameters. [graphics.gd/classdb/PhysicsTestMotionResult3D] can be passed to return additional information.
+Returns true if a collision would result from moving along a motion vector from a given point in space. [PhysicsTestMotionParameters3D] is passed to set motion parameters. [PhysicsTestMotionResult3D] can be passed to return additional information.
+
+[PhysicsTestMotionParameters3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionParameters3D
+[PhysicsTestMotionResult3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionResult3D
 */
 //go:nosplit
 func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTestMotionParameters3D, result [1]gdclass.PhysicsTestMotionResult3D) bool { //gd:PhysicsServer3D.body_test_motion
@@ -2950,7 +3035,9 @@ func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTest
 }
 
 /*
-Returns the [graphics.gd/classdb/PhysicsDirectBodyState3D] of the body. Returns null if the body is destroyed or removed from the physics space.
+Returns the [PhysicsDirectBodyState3D] of the body. Returns null if the body is destroyed or removed from the physics space.
+
+[PhysicsDirectBodyState3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D
 */
 //go:nosplit
 func (self class) BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyState3D { //gd:PhysicsServer3D.body_get_direct_state
@@ -2961,6 +3048,8 @@ func (self class) BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyS
 
 /*
 Creates a new soft body and returns its internal [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) SoftBodyCreate() RID.Any { //gd:PhysicsServer3D.soft_body_create
@@ -2993,6 +3082,8 @@ func (self class) SoftBodySetSpace(body RID.Any, space RID.Any) { //gd:PhysicsSe
 
 /*
 Returns the [Resource.ID] of the space assigned to the given soft body.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) SoftBodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer3D.soft_body_get_space
@@ -3651,7 +3742,9 @@ func (self class) JointGetSolverPriority(joint RID.Any) int64 { //gd:PhysicsServ
 }
 
 /*
-Sets whether the bodies attached to the [graphics.gd/classdb/Joint3D] will collide with each other.
+Sets whether the bodies attached to the [Joint3D] will collide with each other.
+
+[Joint3D]: https://pkg.go.dev/graphics.gd/classdb/Joint3D
 */
 //go:nosplit
 func (self class) JointDisableCollisionsBetweenBodies(joint RID.Any, disable bool) { //gd:PhysicsServer3D.joint_disable_collisions_between_bodies
@@ -3662,7 +3755,9 @@ func (self class) JointDisableCollisionsBetweenBodies(joint RID.Any, disable boo
 }
 
 /*
-Returns whether the bodies attached to the [graphics.gd/classdb/Joint3D] will collide with each other.
+Returns whether the bodies attached to the [Joint3D] will collide with each other.
+
+[Joint3D]: https://pkg.go.dev/graphics.gd/classdb/Joint3D
 */
 //go:nosplit
 func (self class) JointIsDisabledCollisionsBetweenBodies(joint RID.Any) bool { //gd:PhysicsServer3D.joint_is_disabled_collisions_between_bodies
@@ -3741,6 +3836,8 @@ func (self class) Generic6dofJointGetFlag(joint RID.Any, axis Vector3.Axis, flag
 
 /*
 Destroys any of the objects created by PhysicsServer3D. If the [Resource.ID] passed is not one of the objects that can be created by PhysicsServer3D, an error will be sent to the console.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) FreeRid(rid RID.Any) { //gd:PhysicsServer3D.free_rid
@@ -3784,15 +3881,30 @@ func init() {
 type JointType int //gd:PhysicsServer3D.JointType
 
 const (
-	// The [graphics.gd/classdb/Joint3D] is a [graphics.gd/classdb/PinJoint3D].
+	// The [Joint3D] is a [PinJoint3D].
+	//
+	// [Joint3D]: https://pkg.go.dev/graphics.gd/classdb/Joint3D
+	// [PinJoint3D]: https://pkg.go.dev/graphics.gd/classdb/PinJoint3D
 	JointTypePin JointType = 0
-	// The [graphics.gd/classdb/Joint3D] is a [graphics.gd/classdb/HingeJoint3D].
+	// The [Joint3D] is a [HingeJoint3D].
+	//
+	// [HingeJoint3D]: https://pkg.go.dev/graphics.gd/classdb/HingeJoint3D
+	// [Joint3D]: https://pkg.go.dev/graphics.gd/classdb/Joint3D
 	JointTypeHinge JointType = 1
-	// The [graphics.gd/classdb/Joint3D] is a [graphics.gd/classdb/SliderJoint3D].
+	// The [Joint3D] is a [SliderJoint3D].
+	//
+	// [Joint3D]: https://pkg.go.dev/graphics.gd/classdb/Joint3D
+	// [SliderJoint3D]: https://pkg.go.dev/graphics.gd/classdb/SliderJoint3D
 	JointTypeSlider JointType = 2
-	// The [graphics.gd/classdb/Joint3D] is a [graphics.gd/classdb/ConeTwistJoint3D].
+	// The [Joint3D] is a [ConeTwistJoint3D].
+	//
+	// [ConeTwistJoint3D]: https://pkg.go.dev/graphics.gd/classdb/ConeTwistJoint3D
+	// [Joint3D]: https://pkg.go.dev/graphics.gd/classdb/Joint3D
 	JointTypeConeTwist JointType = 3
-	// The [graphics.gd/classdb/Joint3D] is a [graphics.gd/classdb/Generic6DOFJoint3D].
+	// The [Joint3D] is a [Generic6DOFJoint3D].
+	//
+	// [Generic6DOFJoint3D]: https://pkg.go.dev/graphics.gd/classdb/Generic6DOFJoint3D
+	// [Joint3D]: https://pkg.go.dev/graphics.gd/classdb/Joint3D
 	JointType6dof JointType = 4
 	// Represents the size of the [JointType] enum.
 	JointTypeMax JointType = 5
@@ -3900,9 +4012,11 @@ const (
 	//
 	// The swing span defines, how much rotation will not get corrected along the swing axis.
 	//
-	// Could be defined as looseness in the [graphics.gd/classdb/ConeTwistJoint3D].
+	// Could be defined as looseness in the [ConeTwistJoint3D].
 	//
 	// If below 0.05, this behavior is locked.
+	//
+	// [ConeTwistJoint3D]: https://pkg.go.dev/graphics.gd/classdb/ConeTwistJoint3D
 	ConeTwistJointSwingSpan ConeTwistJointParam = 0
 	// Twist is the rotation around the twist axis, this value defined how far the joint can twist.
 	//
@@ -3983,25 +4097,54 @@ const (
 type ShapeType int //gd:PhysicsServer3D.ShapeType
 
 const (
-	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/WorldBoundaryShape3D].
+	// The [Shape3D] is a [WorldBoundaryShape3D].
+	//
+	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
+	// [WorldBoundaryShape3D]: https://pkg.go.dev/graphics.gd/classdb/WorldBoundaryShape3D
 	ShapeWorldBoundary ShapeType = 0
-	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/SeparationRayShape3D].
+	// The [Shape3D] is a [SeparationRayShape3D].
+	//
+	// [SeparationRayShape3D]: https://pkg.go.dev/graphics.gd/classdb/SeparationRayShape3D
+	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	ShapeSeparationRay ShapeType = 1
-	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/SphereShape3D].
+	// The [Shape3D] is a [SphereShape3D].
+	//
+	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
+	// [SphereShape3D]: https://pkg.go.dev/graphics.gd/classdb/SphereShape3D
 	ShapeSphere ShapeType = 2
-	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/BoxShape3D].
+	// The [Shape3D] is a [BoxShape3D].
+	//
+	// [BoxShape3D]: https://pkg.go.dev/graphics.gd/classdb/BoxShape3D
+	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	ShapeBox ShapeType = 3
-	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/CapsuleShape3D].
+	// The [Shape3D] is a [CapsuleShape3D].
+	//
+	// [CapsuleShape3D]: https://pkg.go.dev/graphics.gd/classdb/CapsuleShape3D
+	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	ShapeCapsule ShapeType = 4
-	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/CylinderShape3D].
+	// The [Shape3D] is a [CylinderShape3D].
+	//
+	// [CylinderShape3D]: https://pkg.go.dev/graphics.gd/classdb/CylinderShape3D
+	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	ShapeCylinder ShapeType = 5
-	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/ConvexPolygonShape3D].
+	// The [Shape3D] is a [ConvexPolygonShape3D].
+	//
+	// [ConvexPolygonShape3D]: https://pkg.go.dev/graphics.gd/classdb/ConvexPolygonShape3D
+	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	ShapeConvexPolygon ShapeType = 6
-	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/ConcavePolygonShape3D].
+	// The [Shape3D] is a [ConcavePolygonShape3D].
+	//
+	// [ConcavePolygonShape3D]: https://pkg.go.dev/graphics.gd/classdb/ConcavePolygonShape3D
+	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	ShapeConcavePolygon ShapeType = 7
-	// The [graphics.gd/classdb/Shape3D] is a [graphics.gd/classdb/HeightMapShape3D].
+	// The [Shape3D] is a [HeightMapShape3D].
+	//
+	// [HeightMapShape3D]: https://pkg.go.dev/graphics.gd/classdb/HeightMapShape3D
+	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	ShapeHeightmap ShapeType = 8
-	// The [graphics.gd/classdb/Shape3D] is used internally for a soft body. Any attempt to create this kind of shape results in an error.
+	// The [Shape3D] is used internally for a soft body. Any attempt to create this kind of shape results in an error.
+	//
+	// [Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 	ShapeSoftBody ShapeType = 9
 	// This constant is used internally by the engine. Any attempt to create this kind of shape results in an error.
 	ShapeCustom ShapeType = 10
@@ -4032,7 +4175,9 @@ const (
 	AreaParamAngularDamp AreaParameter = 8
 	// Constant to set/get the priority (order of processing) of an area.
 	AreaParamPriority AreaParameter = 9
-	// Constant to set/get the magnitude of area-specific wind force. This wind force only applies to [graphics.gd/classdb/SoftBody3D] nodes. Other physics bodies are currently not affected by wind.
+	// Constant to set/get the magnitude of area-specific wind force. This wind force only applies to [SoftBody3D] nodes. Other physics bodies are currently not affected by wind.
+	//
+	// [SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
 	AreaParamWindForceMagnitude AreaParameter = 10
 	// Constant to set/get the 3D vector that specifies the origin from which an area-specific wind blows.
 	AreaParamWindSource AreaParameter = 11

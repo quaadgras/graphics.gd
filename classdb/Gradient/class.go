@@ -3,7 +3,9 @@
 /*
 This resource describes a color transition by defining a set of colored points and how to interpolate between them.
 
-See also [graphics.gd/classdb/Curve] which supports more complex easing methods, but does not support colors.
+See also [Curve] which supports more complex easing methods, but does not support colors.
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
 package Gradient
 
@@ -147,7 +149,9 @@ func (self Instance) GetOffset(point int) Float.X { //gd:Gradient.get_offset
 /*
 Reverses/mirrors the gradient.
 
-Note: This method mirrors all points around the middle of the gradient, which may produce unexpected results when [Instance.InterpolationMode] is set to [GradientInterpolateConstant].
+Note: This method mirrors all points around the middle of the gradient, which may produce unexpected results when [InterpolationMode] is set to [GradientInterpolateConstant].
+
+[InterpolationMode]: https://pkg.go.dev/graphics.gd/classdb/Gradient#Instance.InterpolationMode
 */
 func (self Instance) Reverse() { //gd:Gradient.reverse
 	Advanced(self).Reverse()
@@ -168,7 +172,9 @@ func (self Instance) GetColor(point int) Color.RGBA { //gd:Gradient.get_color
 }
 
 /*
-Returns the interpolated color specified by 'offset'. 'offset' should be between 0.0 and 1.0 (inclusive). Using a value lower than 0.0 will return the same color as 0.0, and using a value higher than 1.0 will return the same color as 1.0. If your input value is not within this range, consider using [graphics.gd/classdb/@GlobalScope.Instance.Remap] on the input value with output values set to 0.0 and 1.0.
+Returns the interpolated color specified by 'offset'. 'offset' should be between 0.0 and 1.0 (inclusive). Using a value lower than 0.0 will return the same color as 0.0, and using a value higher than 1.0 will return the same color as 1.0. If your input value is not within this range, consider using [@GlobalScope.Remap] on the input value with output values set to 0.0 and 1.0.
+
+[@GlobalScope.Remap]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.Remap
 */
 func (self Instance) Sample(offset Float.X) Color.RGBA { //gd:Gradient.sample
 	return Color.RGBA(Advanced(self).Sample(float64(offset)))
@@ -299,7 +305,9 @@ func (self class) GetOffset(point int64) float64 { //gd:Gradient.get_offset
 /*
 Reverses/mirrors the gradient.
 
-Note: This method mirrors all points around the middle of the gradient, which may produce unexpected results when [Instance.InterpolationMode] is set to [GradientInterpolateConstant].
+Note: This method mirrors all points around the middle of the gradient, which may produce unexpected results when [InterpolationMode] is set to [GradientInterpolateConstant].
+
+[InterpolationMode]: https://pkg.go.dev/graphics.gd/classdb/Gradient#Instance.InterpolationMode
 */
 //go:nosplit
 func (self class) Reverse() { //gd:Gradient.reverse
@@ -328,7 +336,9 @@ func (self class) GetColor(point int64) Color.RGBA { //gd:Gradient.get_color
 }
 
 /*
-Returns the interpolated color specified by 'offset'. 'offset' should be between 0.0 and 1.0 (inclusive). Using a value lower than 0.0 will return the same color as 0.0, and using a value higher than 1.0 will return the same color as 1.0. If your input value is not within this range, consider using [graphics.gd/classdb/@GlobalScope.Instance.Remap] on the input value with output values set to 0.0 and 1.0.
+Returns the interpolated color specified by 'offset'. 'offset' should be between 0.0 and 1.0 (inclusive). Using a value lower than 0.0 will return the same color as 0.0, and using a value higher than 1.0 will return the same color as 1.0. If your input value is not within this range, consider using [@GlobalScope.Remap] on the input value with output values set to 0.0 and 1.0.
+
+[@GlobalScope.Remap]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.Remap
 */
 //go:nosplit
 func (self class) Sample(offset float64) Color.RGBA { //gd:Gradient.sample

@@ -3,7 +3,7 @@
 /*
 A simplified interface to a scene file. Provides access to operations and checks that can be performed on the scene resource itself.
 
-Can be used to save a node to a file. When saving, the node as well as all the nodes it owns get saved (see [graphics.gd/classdb/Node.Instance.Owner] property).
+Can be used to save a node to a file. When saving, the node as well as all the nodes it owns get saved (see [Node.Owner] property).
 
 Note: The node doesn't need to own itself.
 
@@ -22,7 +22,7 @@ Example: Load a saved scene:
 		parent.AddChild(scene)
 	}
 
-Example: Save a node with different owners. The following example creates 3 objects: [graphics.gd/classdb/Node2D] (node), [graphics.gd/classdb/RigidBody2D] (body) and [graphics.gd/classdb/CollisionObject2D] (collision). collision is a child of body which is a child of node. Only body is owned by node and [Instance.Pack] will therefore only save those two nodes, but not collision.
+Example: Save a node with different owners. The following example creates 3 objects: [Node2D] (node), [RigidBody2D] (body) and [CollisionObject2D] (collision). collision is a child of body which is a child of node. Only body is owned by node and [Pack] will therefore only save those two nodes, but not collision.
 
 	package main
 
@@ -51,6 +51,12 @@ Example: Save a node with different owners. The following example creates 3 obje
 			}
 		}
 	}
+
+[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
+[Node.Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[Node2D]: https://pkg.go.dev/graphics.gd/classdb/Node2D
+[Pack]: https://pkg.go.dev/graphics.gd/classdb/PackedScene#Instance.Pack
+[RigidBody2D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D
 */
 package PackedScene
 
@@ -142,7 +148,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.PackedScene
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.PackedScene
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -153,7 +164,10 @@ type Any interface {
 }
 
 /*
-Packs the 'path' node, and all owned sub-nodes, into this [graphics.gd/classdb/PackedScene]. Any existing data will be cleared. See [graphics.gd/classdb/Node.Instance.Owner].
+Packs the 'path' node, and all owned sub-nodes, into this [PackedScene]. Any existing data will be cleared. See [Node.Owner].
+
+[Node.Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
 */
 func (self Instance) Pack(path Node.Instance) error { //gd:PackedScene.pack
 	return error(gd.ToError(Advanced(self).Pack(path)))
@@ -169,7 +183,7 @@ func (self Instance) Instantiate() Node.Instance { //gd:PackedScene.instantiate
 /*
 Instantiates the scene's node hierarchy. Triggers child scene instantiation(s). Triggers a [Node.NotificationSceneInstantiated] notification on the root node.
 */
-func (self Expanded) Instantiate(edit_state GenEditState) Node.Instance { //gd:PackedScene.instantiate
+func (self MoreArgs) Instantiate(edit_state GenEditState) Node.Instance { //gd:PackedScene.instantiate
 	return Node.Instance(Advanced(self).Instantiate(edit_state))
 }
 
@@ -224,7 +238,10 @@ func New() Instance {
 }
 
 /*
-Packs the 'path' node, and all owned sub-nodes, into this [graphics.gd/classdb/PackedScene]. Any existing data will be cleared. See [graphics.gd/classdb/Node.Instance.Owner].
+Packs the 'path' node, and all owned sub-nodes, into this [PackedScene]. Any existing data will be cleared. See [Node.Owner].
+
+[Node.Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
 */
 //go:nosplit
 func (self class) Pack(path [1]gdclass.Node) Error.Code { //gd:PackedScene.pack
@@ -254,7 +271,9 @@ func (self class) CanInstantiate() bool { //gd:PackedScene.can_instantiate
 }
 
 /*
-Returns the [graphics.gd/classdb/SceneState] representing the scene file contents.
+Returns the [SceneState] representing the scene file contents.
+
+[SceneState]: https://pkg.go.dev/graphics.gd/classdb/SceneState
 */
 //go:nosplit
 func (self class) GetState() [1]gdclass.SceneState { //gd:PackedScene.get_state
@@ -304,15 +323,21 @@ func init() {
 type GenEditState int //gd:PackedScene.GenEditState
 
 const (
-	// If passed to [Instance.Instantiate], blocks edits to the scene state.
+	// If passed to [Instantiate], blocks edits to the scene state.
+	//
+	// [Instantiate]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Instantiate
 	GenEditStateDisabled GenEditState = 0
-	// If passed to [Instance.Instantiate], provides local scene resources to the local scene.
+	// If passed to [Instantiate], provides local scene resources to the local scene.
 	//
 	// Note: Only available in editor builds.
+	//
+	// [Instantiate]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Instantiate
 	GenEditStateInstance GenEditState = 1
-	// If passed to [Instance.Instantiate], provides local scene resources to the local scene. Only the main scene should receive the main edit state.
+	// If passed to [Instantiate], provides local scene resources to the local scene. Only the main scene should receive the main edit state.
 	//
 	// Note: Only available in editor builds.
+	//
+	// [Instantiate]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Instantiate
 	GenEditStateMain GenEditState = 2
 	// It's similar to [GenEditStateMain], but for the case where the scene is being instantiated to be the base of another one.
 	//

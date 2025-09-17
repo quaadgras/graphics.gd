@@ -2,6 +2,8 @@
 
 /*
 UV functions are similar to [Vector2.XY] functions, but the input port of this node uses the shader's UV value by default.
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 package VisualShaderNodeUVFunc
 

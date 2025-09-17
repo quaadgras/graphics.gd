@@ -637,13 +637,17 @@ const (
 	TextureType2d TextureType = 1
 	// 3-dimensional texture.
 	TextureType3d TextureType = 2
-	// [graphics.gd/classdb/Cubemap] texture.
+	// [Cubemap] texture.
+	//
+	// [Cubemap]: https://pkg.go.dev/graphics.gd/classdb/Cubemap
 	TextureTypeCube TextureType = 3
 	// Array of 1-dimensional textures.
 	TextureType1dArray TextureType = 4
 	// Array of 2-dimensional textures.
 	TextureType2dArray TextureType = 5
-	// Array of [graphics.gd/classdb/Cubemap] textures.
+	// Array of [Cubemap] textures.
+	//
+	// [Cubemap]: https://pkg.go.dev/graphics.gd/classdb/Cubemap
 	TextureTypeCubeArray TextureType = 6
 	// Represents the size of the [TextureType] enum.
 	TextureTypeMax TextureType = 7
@@ -687,13 +691,21 @@ const (
 	//
 	// [storage image]: https://registry.khronos.org/vulkan/specs/1.3-extensions/html/vkspec.html#descriptorsets-storageimage
 	TextureUsageStorageAtomicBit TextureUsageBits = 16
-	// Texture can be read back on the CPU using [Instance.TextureGetData] faster than without this bit, since it is always kept in the system memory.
+	// Texture can be read back on the CPU using [TextureGetData] faster than without this bit, since it is always kept in the system memory.
+	//
+	// [TextureGetData]: https://pkg.go.dev/graphics.gd/classdb/#Instance.TextureGetData
 	TextureUsageCpuReadBit TextureUsageBits = 32
-	// Texture can be updated using [Instance.TextureUpdate].
+	// Texture can be updated using [TextureUpdate].
+	//
+	// [TextureUpdate]: https://pkg.go.dev/graphics.gd/classdb/#Instance.TextureUpdate
 	TextureUsageCanUpdateBit TextureUsageBits = 64
-	// Texture can be a source for [Instance.TextureCopy].
+	// Texture can be a source for [TextureCopy].
+	//
+	// [TextureCopy]: https://pkg.go.dev/graphics.gd/classdb/#Instance.TextureCopy
 	TextureUsageCanCopyFromBit TextureUsageBits = 128
-	// Texture can be a destination for [Instance.TextureCopy].
+	// Texture can be a destination for [TextureCopy].
+	//
+	// [TextureCopy]: https://pkg.go.dev/graphics.gd/classdb/#Instance.TextureCopy
 	TextureUsageCanCopyToBit TextureUsageBits = 256
 	// Texture can be used as a [input attachment] in a framebuffer.
 	//
@@ -751,7 +763,9 @@ const (
 	SamplerRepeatModeMirroredRepeat SamplerRepeatMode = 1
 	// Sample with repeating disabled. When sampling outside the [0.0, 1.0] range, return the color of the last pixel on the edge.
 	SamplerRepeatModeClampToEdge SamplerRepeatMode = 2
-	// Sample with repeating disabled. When sampling outside the [0.0, 1.0] range, return the specified [graphics.gd/classdb/RDSamplerState.Instance.BorderColor].
+	// Sample with repeating disabled. When sampling outside the [0.0, 1.0] range, return the specified [RDSamplerState.BorderColor].
+	//
+	// [RDSamplerState.BorderColor]: https://pkg.go.dev/graphics.gd/classdb/RDSamplerState#Instance.BorderColor
 	SamplerRepeatModeClampToBorder SamplerRepeatMode = 3
 	// Sample with mirrored repeating enabled, but only once. When sampling in the [-1.0, 0.0] range, return a mirrored version of the sampler. When sampling outside the [-1.0, 1.0] range, return the color of the last pixel on the edge.
 	SamplerRepeatModeMirrorClampToEdge SamplerRepeatMode = 4
@@ -805,7 +819,7 @@ const (
 type BufferCreationBits int //gd:RenderingDevice.BufferCreationBits
 
 const (
-	// Optionally, set this flag if you wish to use [Instance.BufferGetDeviceAddress] functionality. You must first check the GPU supports it:
+	// Optionally, set this flag if you wish to use [BufferGetDeviceAddress] functionality. You must first check the GPU supports it:
 	//
 	//
 	//
@@ -824,6 +838,8 @@ const (
 	// [/gdscript]
 	//
 	//
+	//
+	// [BufferGetDeviceAddress]: https://pkg.go.dev/graphics.gd/classdb/#Instance.BufferGetDeviceAddress
 	BufferCreationDeviceAddressBit BufferCreationBits = 1
 	// Set this flag so that it is created as storage. This is useful if Compute Shaders need access (for reading or writing) to the buffer, e.g. skeletal animations are processed in Compute Shaders which need access to vertex buffers, to be later consumed by vertex shaders as part of the regular rasterization pipeline.
 	BufferCreationAsStorageBit BufferCreationBits = 2
@@ -1033,13 +1049,21 @@ const (
 	BlendFactorDstAlpha BlendFactor = 8
 	// Color and alpha blend factor is 1.0 - destination alpha.
 	BlendFactorOneMinusDstAlpha BlendFactor = 9
-	// Color blend factor is blend constant color. Alpha blend factor is blend constant alpha (see [Instance.DrawListSetBlendConstants]).
+	// Color blend factor is blend constant color. Alpha blend factor is blend constant alpha (see [DrawListSetBlendConstants]).
+	//
+	// [DrawListSetBlendConstants]: https://pkg.go.dev/graphics.gd/classdb/#Instance.DrawListSetBlendConstants
 	BlendFactorConstantColor BlendFactor = 10
-	// Color blend factor is 1.0 - blend constant color. Alpha blend factor is 1.0 - blend constant alpha (see [Instance.DrawListSetBlendConstants]).
+	// Color blend factor is 1.0 - blend constant color. Alpha blend factor is 1.0 - blend constant alpha (see [DrawListSetBlendConstants]).
+	//
+	// [DrawListSetBlendConstants]: https://pkg.go.dev/graphics.gd/classdb/#Instance.DrawListSetBlendConstants
 	BlendFactorOneMinusConstantColor BlendFactor = 11
-	// Color and alpha blend factor is blend constant alpha (see [Instance.DrawListSetBlendConstants]).
+	// Color and alpha blend factor is blend constant alpha (see [DrawListSetBlendConstants]).
+	//
+	// [DrawListSetBlendConstants]: https://pkg.go.dev/graphics.gd/classdb/#Instance.DrawListSetBlendConstants
 	BlendFactorConstantAlpha BlendFactor = 12
-	// Color and alpha blend factor is 1.0 - blend constant alpha (see [Instance.DrawListSetBlendConstants]).
+	// Color and alpha blend factor is 1.0 - blend constant alpha (see [DrawListSetBlendConstants]).
+	//
+	// [DrawListSetBlendConstants]: https://pkg.go.dev/graphics.gd/classdb/#Instance.DrawListSetBlendConstants
 	BlendFactorOneMinusConstantAlpha BlendFactor = 13
 	// Color blend factor is min(source alpha, 1.0 - destination alpha). Alpha blend factor is 1.0.
 	BlendFactorSrcAlphaSaturate BlendFactor = 14
@@ -1258,13 +1282,17 @@ const (
 	LimitMaxViewportDimensionsX Limit = 35
 	// Maximum viewport height (in pixels).
 	LimitMaxViewportDimensionsY Limit = 36
-	// Returns the smallest value for [graphics.gd/classdb/ProjectSettings] "rendering/scaling_3d/scale" when using the MetalFX temporal upscaler.
+	// Returns the smallest value for [ProjectSettings] "rendering/scaling_3d/scale" when using the MetalFX temporal upscaler.
 	//
 	// Note: The returned value is multiplied by a factor of 1000000 to preserve 6 digits of precision. It must be divided by 1000000.0 to convert the value to a floating point number.
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	LimitMetalfxTemporalScalerMinScale Limit = 46
-	// Returns the largest value for [graphics.gd/classdb/ProjectSettings] "rendering/scaling_3d/scale" when using the MetalFX temporal upscaler.
+	// Returns the largest value for [ProjectSettings] "rendering/scaling_3d/scale" when using the MetalFX temporal upscaler.
 	//
 	// Note: The returned value is multiplied by a factor of 1000000 to preserve 6 digits of precision. It must be divided by 1000000.0 to convert the value to a floating point number.
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	LimitMetalfxTemporalScalerMaxScale Limit = 47
 )
 

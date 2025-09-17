@@ -17,7 +17,9 @@ Command key names use slash delimiters to distinguish sections, for example: "ex
 		})
 	}
 
-Note: This class shouldn't be instantiated directly. Instead, access the singleton using [graphics.gd/classdb/EditorInterface.GetCommandPalette].
+Note: This class shouldn't be instantiated directly. Instead, access the singleton using [EditorInterface.GetCommandPalette].
+
+[EditorInterface.GetCommandPalette]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface#GetCommandPalette
 */
 package EditorCommandPalette
 
@@ -110,7 +112,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.EditorCommandPalette
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.EditorCommandPalette
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -146,7 +153,7 @@ Adds a custom command to EditorCommandPalette.
 
 - 'shortcut_text': string (Shortcut text of the Command if available.)
 */
-func (self Expanded) AddCommand(command_name string, key_name string, binded_callable func(), shortcut_text string) { //gd:EditorCommandPalette.add_command
+func (self MoreArgs) AddCommand(command_name string, key_name string, binded_callable func(), shortcut_text string) { //gd:EditorCommandPalette.add_command
 	Advanced(self).AddCommand(String.New(command_name), String.New(key_name), Callable.New(binded_callable), String.New(shortcut_text))
 }
 

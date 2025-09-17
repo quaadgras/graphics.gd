@@ -3,9 +3,16 @@
 /*
 A deformable 3D physics mesh. Used to create elastic or deformable objects such as cloth, rubber, or other flexible materials.
 
-Additionally, [graphics.gd/classdb/SoftBody3D] is subject to wind forces defined in [graphics.gd/classdb/Area3D] (see [graphics.gd/classdb/Area3D.Instance.WindSourcePath], [graphics.gd/classdb/Area3D.Instance.WindForceMagnitude], and [graphics.gd/classdb/Area3D.Instance.WindAttenuationFactor]).
+Additionally, [SoftBody3D] is subject to wind forces defined in [Area3D] (see [Area3D.WindSourcePath], [Area3D.WindForceMagnitude], and [Area3D.WindAttenuationFactor]).
 
-Note: It's recommended to use Jolt Physics when using [graphics.gd/classdb/SoftBody3D] instead of the default GodotPhysics3D, as Jolt Physics' soft body implementation is faster and more reliable. You can switch the physics engine using the [graphics.gd/classdb/ProjectSettings] "physics/3d/physics_engine" project setting.
+Note: It's recommended to use Jolt Physics when using [SoftBody3D] instead of the default GodotPhysics3D, as Jolt Physics' soft body implementation is faster and more reliable. You can switch the physics engine using the [ProjectSettings] "physics/3d/physics_engine" project setting.
+
+[Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
+[Area3D.WindAttenuationFactor]: https://pkg.go.dev/graphics.gd/classdb/Area3D#Instance.WindAttenuationFactor
+[Area3D.WindForceMagnitude]: https://pkg.go.dev/graphics.gd/classdb/Area3D#Instance.WindForceMagnitude
+[Area3D.WindSourcePath]: https://pkg.go.dev/graphics.gd/classdb/Area3D#Instance.WindSourcePath
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
 */
 package SoftBody3D
 
@@ -137,7 +144,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.SoftBody3D
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.SoftBody3D
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -148,35 +160,46 @@ type Any interface {
 }
 
 /*
-Returns the internal [Resource.ID] used by the [graphics.gd/classdb/PhysicsServer3D] for this body.
+Returns the internal [Resource.ID] used by the [PhysicsServer3D] for this body.
+
+[PhysicsServer3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer3D
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func (self Instance) GetPhysicsRid() RID.SoftBody3D { //gd:SoftBody3D.get_physics_rid
 	return RID.SoftBody3D(RID.SoftBody3D(Advanced(self).GetPhysicsRid()))
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [Instance.CollisionMask], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [CollisionMask], given a 'layer_number' between 1 and 32.
+
+[CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.CollisionMask
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:SoftBody3D.set_collision_mask_value
 	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
-Returns whether or not the specified layer of the [Instance.CollisionMask] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [CollisionMask] is enabled, given a 'layer_number' between 1 and 32.
+
+[CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.CollisionMask
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:SoftBody3D.get_collision_mask_value
 	return bool(Advanced(self).GetCollisionMaskValue(int64(layer_number)))
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [Instance.CollisionLayer], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [CollisionLayer], given a 'layer_number' between 1 and 32.
+
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.CollisionLayer
 */
 func (self Instance) SetCollisionLayerValue(layer_number int, value bool) { //gd:SoftBody3D.set_collision_layer_value
 	Advanced(self).SetCollisionLayerValue(int64(layer_number), value)
 }
 
 /*
-Returns whether or not the specified layer of the [Instance.CollisionLayer] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [CollisionLayer] is enabled, given a 'layer_number' between 1 and 32.
+
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.CollisionLayer
 */
 func (self Instance) GetCollisionLayerValue(layer_number int) bool { //gd:SoftBody3D.get_collision_layer_value
 	return bool(Advanced(self).GetCollisionLayerValue(int64(layer_number)))
@@ -243,16 +266,20 @@ func (self Instance) ApplyCentralForce(force Vector3.XYZ) { //gd:SoftBody3D.appl
 }
 
 /*
-Sets the pinned state of a surface vertex. When set to true, the optional 'attachment_path' can define a [graphics.gd/classdb/Node3D] the pinned vertex will be attached to.
+Sets the pinned state of a surface vertex. When set to true, the optional 'attachment_path' can define a [Node3D] the pinned vertex will be attached to.
+
+[Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
 */
 func (self Instance) SetPointPinned(point_index int, pinned bool) { //gd:SoftBody3D.set_point_pinned
 	Advanced(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.New("")), int64(-1))
 }
 
 /*
-Sets the pinned state of a surface vertex. When set to true, the optional 'attachment_path' can define a [graphics.gd/classdb/Node3D] the pinned vertex will be attached to.
+Sets the pinned state of a surface vertex. When set to true, the optional 'attachment_path' can define a [Node3D] the pinned vertex will be attached to.
+
+[Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
 */
-func (self Expanded) SetPointPinned(point_index int, pinned bool, attachment_path string, insert_at int) { //gd:SoftBody3D.set_point_pinned
+func (self MoreArgs) SetPointPinned(point_index int, pinned bool, attachment_path string, insert_at int) { //gd:SoftBody3D.set_point_pinned
 	Advanced(self).SetPointPinned(int64(point_index), pinned, Path.ToNode(String.New(attachment_path)), int64(insert_at))
 }
 
@@ -402,7 +429,10 @@ func (self Instance) SetDisableMode(value DisableMode) {
 }
 
 /*
-Returns the internal [Resource.ID] used by the [graphics.gd/classdb/PhysicsServer3D] for this body.
+Returns the internal [Resource.ID] used by the [PhysicsServer3D] for this body.
+
+[PhysicsServer3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer3D
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) GetPhysicsRid() RID.Any { //gd:SoftBody3D.get_physics_rid
@@ -436,7 +466,9 @@ func (self class) GetCollisionLayer() int64 { //gd:SoftBody3D.get_collision_laye
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [Instance.CollisionMask], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [CollisionMask], given a 'layer_number' between 1 and 32.
+
+[CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.CollisionMask
 */
 //go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:SoftBody3D.set_collision_mask_value
@@ -447,7 +479,9 @@ func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:S
 }
 
 /*
-Returns whether or not the specified layer of the [Instance.CollisionMask] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [CollisionMask] is enabled, given a 'layer_number' between 1 and 32.
+
+[CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.CollisionMask
 */
 //go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:SoftBody3D.get_collision_mask_value
@@ -457,7 +491,9 @@ func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:SoftBody
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [Instance.CollisionLayer], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [CollisionLayer], given a 'layer_number' between 1 and 32.
+
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.CollisionLayer
 */
 //go:nosplit
 func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:SoftBody3D.set_collision_layer_value
@@ -468,7 +504,9 @@ func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:
 }
 
 /*
-Returns whether or not the specified layer of the [Instance.CollisionLayer] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [CollisionLayer] is enabled, given a 'layer_number' between 1 and 32.
+
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D#Instance.CollisionLayer
 */
 //go:nosplit
 func (self class) GetCollisionLayerValue(layer_number int64) bool { //gd:SoftBody3D.get_collision_layer_value
@@ -664,7 +702,9 @@ func (self class) ApplyCentralForce(force Vector3.XYZ) { //gd:SoftBody3D.apply_c
 }
 
 /*
-Sets the pinned state of a surface vertex. When set to true, the optional 'attachment_path' can define a [graphics.gd/classdb/Node3D] the pinned vertex will be attached to.
+Sets the pinned state of a surface vertex. When set to true, the optional 'attachment_path' can define a [Node3D] the pinned vertex will be attached to.
+
+[Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
 */
 //go:nosplit
 func (self class) SetPointPinned(point_index int64, pinned bool, attachment_path Path.ToNode, insert_at int64) { //gd:SoftBody3D.set_point_pinned
@@ -762,10 +802,16 @@ func init() {
 type DisableMode int //gd:SoftBody3D.DisableMode
 
 const (
-	// When [graphics.gd/classdb/Node.Instance.ProcessMode] is set to [Node.ProcessModeDisabled], remove from the physics simulation to stop all physics interactions with this [graphics.gd/classdb/SoftBody3D].
+	// When [Node.ProcessMode] is set to [Node.ProcessModeDisabled], remove from the physics simulation to stop all physics interactions with this [SoftBody3D].
 	//
-	// Automatically re-added to the physics simulation when the [graphics.gd/classdb/Node] is processed again.
+	// Automatically re-added to the physics simulation when the [Node] is processed again.
+	//
+	// [Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+	// [Node.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
+	// [SoftBody3D]: https://pkg.go.dev/graphics.gd/classdb/SoftBody3D
 	DisableModeRemove DisableMode = 0
-	// When [graphics.gd/classdb/Node.Instance.ProcessMode] is set to [Node.ProcessModeDisabled], do not affect the physics simulation.
+	// When [Node.ProcessMode] is set to [Node.ProcessModeDisabled], do not affect the physics simulation.
+	//
+	// [Node.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
 	DisableModeKeepActive DisableMode = 1
 )

@@ -97,7 +97,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.StreamPeerTLS
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.StreamPeerTLS
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -108,30 +113,42 @@ type Any interface {
 }
 
 /*
-Poll the connection to check for incoming bytes. Call this right before [graphics.gd/classdb/StreamPeer.Instance.GetAvailableBytes] for it to work properly.
+Poll the connection to check for incoming bytes. Call this right before [StreamPeer.GetAvailableBytes] for it to work properly.
+
+[StreamPeer.GetAvailableBytes]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.GetAvailableBytes
 */
 func (self Instance) Poll() { //gd:StreamPeerTLS.poll
 	Advanced(self).Poll()
 }
 
 /*
-Accepts a peer connection as a server using the given 'server_options'. See [graphics.gd/classdb/TLSOptions.Instance.Server].
+Accepts a peer connection as a server using the given 'server_options'. See [TLSOptions.Server].
+
+[TLSOptions.Server]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Server
 */
 func (self Instance) AcceptStream(stream StreamPeer.Instance, server_options TLSOptions.Instance) error { //gd:StreamPeerTLS.accept_stream
 	return error(gd.ToError(Advanced(self).AcceptStream(stream, server_options)))
 }
 
 /*
-Connects to a peer using an underlying [graphics.gd/classdb/StreamPeer] 'stream' and verifying the remote certificate is correctly signed for the given 'common_name'. You can pass the optional 'client_options' parameter to customize the trusted certification authorities, or disable the common name verification. See [graphics.gd/classdb/TLSOptions.Instance.Client] and [graphics.gd/classdb/TLSOptions.Instance.ClientUnsafe].
+Connects to a peer using an underlying [StreamPeer] 'stream' and verifying the remote certificate is correctly signed for the given 'common_name'. You can pass the optional 'client_options' parameter to customize the trusted certification authorities, or disable the common name verification. See [TLSOptions.Client] and [TLSOptions.ClientUnsafe].
+
+[StreamPeer]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer
+[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
+[TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 func (self Instance) ConnectToStream(stream StreamPeer.Instance, common_name string) error { //gd:StreamPeerTLS.connect_to_stream
 	return error(gd.ToError(Advanced(self).ConnectToStream(stream, String.New(common_name), [1]TLSOptions.Instance{}[0])))
 }
 
 /*
-Connects to a peer using an underlying [graphics.gd/classdb/StreamPeer] 'stream' and verifying the remote certificate is correctly signed for the given 'common_name'. You can pass the optional 'client_options' parameter to customize the trusted certification authorities, or disable the common name verification. See [graphics.gd/classdb/TLSOptions.Instance.Client] and [graphics.gd/classdb/TLSOptions.Instance.ClientUnsafe].
+Connects to a peer using an underlying [StreamPeer] 'stream' and verifying the remote certificate is correctly signed for the given 'common_name'. You can pass the optional 'client_options' parameter to customize the trusted certification authorities, or disable the common name verification. See [TLSOptions.Client] and [TLSOptions.ClientUnsafe].
+
+[StreamPeer]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer
+[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
+[TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
-func (self Expanded) ConnectToStream(stream StreamPeer.Instance, common_name string, client_options TLSOptions.Instance) error { //gd:StreamPeerTLS.connect_to_stream
+func (self MoreArgs) ConnectToStream(stream StreamPeer.Instance, common_name string, client_options TLSOptions.Instance) error { //gd:StreamPeerTLS.connect_to_stream
 	return error(gd.ToError(Advanced(self).ConnectToStream(stream, String.New(common_name), client_options)))
 }
 
@@ -143,7 +160,11 @@ func (self Instance) GetStatus() Status { //gd:StreamPeerTLS.get_status
 }
 
 /*
-Returns the underlying [graphics.gd/classdb/StreamPeer] connection, used in [Instance.AcceptStream] or [Instance.ConnectToStream].
+Returns the underlying [StreamPeer] connection, used in [AcceptStream] or [ConnectToStream].
+
+[AcceptStream]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTLS#Instance.AcceptStream
+[ConnectToStream]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTLS#Instance.ConnectToStream
+[StreamPeer]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer
 */
 func (self Instance) GetStream() StreamPeer.Instance { //gd:StreamPeerTLS.get_stream
 	return StreamPeer.Instance(Advanced(self).GetStream())
@@ -200,7 +221,9 @@ func New() Instance {
 }
 
 /*
-Poll the connection to check for incoming bytes. Call this right before [graphics.gd/classdb/StreamPeer.Instance.GetAvailableBytes] for it to work properly.
+Poll the connection to check for incoming bytes. Call this right before [StreamPeer.GetAvailableBytes] for it to work properly.
+
+[StreamPeer.GetAvailableBytes]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.GetAvailableBytes
 */
 //go:nosplit
 func (self class) Poll() { //gd:StreamPeerTLS.poll
@@ -208,7 +231,9 @@ func (self class) Poll() { //gd:StreamPeerTLS.poll
 }
 
 /*
-Accepts a peer connection as a server using the given 'server_options'. See [graphics.gd/classdb/TLSOptions.Instance.Server].
+Accepts a peer connection as a server using the given 'server_options'. See [TLSOptions.Server].
+
+[TLSOptions.Server]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Server
 */
 //go:nosplit
 func (self class) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]gdclass.TLSOptions) Error.Code { //gd:StreamPeerTLS.accept_stream
@@ -221,7 +246,11 @@ func (self class) AcceptStream(stream [1]gdclass.StreamPeer, server_options [1]g
 }
 
 /*
-Connects to a peer using an underlying [graphics.gd/classdb/StreamPeer] 'stream' and verifying the remote certificate is correctly signed for the given 'common_name'. You can pass the optional 'client_options' parameter to customize the trusted certification authorities, or disable the common name verification. See [graphics.gd/classdb/TLSOptions.Instance.Client] and [graphics.gd/classdb/TLSOptions.Instance.ClientUnsafe].
+Connects to a peer using an underlying [StreamPeer] 'stream' and verifying the remote certificate is correctly signed for the given 'common_name'. You can pass the optional 'client_options' parameter to customize the trusted certification authorities, or disable the common name verification. See [TLSOptions.Client] and [TLSOptions.ClientUnsafe].
+
+[StreamPeer]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer
+[TLSOptions.Client]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.Client
+[TLSOptions.ClientUnsafe]: https://pkg.go.dev/graphics.gd/classdb/TLSOptions#Instance.ClientUnsafe
 */
 //go:nosplit
 func (self class) ConnectToStream(stream [1]gdclass.StreamPeer, common_name String.Readable, client_options [1]gdclass.TLSOptions) Error.Code { //gd:StreamPeerTLS.connect_to_stream
@@ -245,7 +274,11 @@ func (self class) GetStatus() Status { //gd:StreamPeerTLS.get_status
 }
 
 /*
-Returns the underlying [graphics.gd/classdb/StreamPeer] connection, used in [Instance.AcceptStream] or [Instance.ConnectToStream].
+Returns the underlying [StreamPeer] connection, used in [AcceptStream] or [ConnectToStream].
+
+[AcceptStream]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTLS#Instance.AcceptStream
+[ConnectToStream]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTLS#Instance.ConnectToStream
+[StreamPeer]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer
 */
 //go:nosplit
 func (self class) GetStream() [1]gdclass.StreamPeer { //gd:StreamPeerTLS.get_stream
@@ -303,13 +336,21 @@ func init() {
 type Status int //gd:StreamPeerTLS.Status
 
 const (
-	// A status representing a [graphics.gd/classdb/StreamPeerTLS] that is disconnected.
+	// A status representing a [StreamPeerTLS] that is disconnected.
+	//
+	// [StreamPeerTLS]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTLS
 	StatusDisconnected Status = 0
-	// A status representing a [graphics.gd/classdb/StreamPeerTLS] during handshaking.
+	// A status representing a [StreamPeerTLS] during handshaking.
+	//
+	// [StreamPeerTLS]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTLS
 	StatusHandshaking Status = 1
-	// A status representing a [graphics.gd/classdb/StreamPeerTLS] that is connected to a host.
+	// A status representing a [StreamPeerTLS] that is connected to a host.
+	//
+	// [StreamPeerTLS]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTLS
 	StatusConnected Status = 2
-	// A status representing a [graphics.gd/classdb/StreamPeerTLS] in error state.
+	// A status representing a [StreamPeerTLS] in error state.
+	//
+	// [StreamPeerTLS]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTLS
 	StatusError Status = 3
 	// An error status that shows a mismatch in the TLS certificate domain presented by the host and the domain requested for validation.
 	StatusErrorHostnameMismatch Status = 4

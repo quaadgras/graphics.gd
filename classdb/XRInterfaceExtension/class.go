@@ -126,27 +126,48 @@ type Interface interface {
 	// Set the play area mode for this interface.
 	SetPlayAreaMode(mode XRInterface.PlayAreaMode) bool
 	// Returns a [][Vector3.XYZ] that represents the play areas boundaries (if applicable).
+	//
+	// [Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 	GetPlayArea() []Vector3.XYZ
-	// Returns the size of our render target for this interface, this overrides the size of the [graphics.gd/classdb/Viewport] marked as the xr viewport.
+	// Returns the size of our render target for this interface, this overrides the size of the [Viewport] marked as the xr viewport.
+	//
+	// [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 	GetRenderTargetSize() Vector2.XY
 	// Returns the number of views this interface requires, 1 for mono, 2 for stereoscopic.
 	GetViewCount() int
-	// Returns the [Transform3D.BasisOrigin] that positions the [graphics.gd/classdb/XRCamera3D] in the world.
+	// Returns the [Transform3D.BasisOrigin] that positions the [XRCamera3D] in the world.
+	//
+	// [Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
+	// [XRCamera3D]: https://pkg.go.dev/graphics.gd/classdb/XRCamera3D
 	GetCameraTransform() Transform3D.BasisOrigin
 	// Returns a [Transform3D.BasisOrigin] for a given view.
+	//
+	// [Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 	GetTransformForView(view int, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin
 	// Returns the projection matrix for the given view as a []float64.
 	GetProjectionForView(view int, aspect Float.X, z_near Float.X, z_far Float.X) []float64
 	GetVrsTexture() RID.Texture
-	// Returns the format of the texture returned by [Interface.GetVrsTexture].
+	// Returns the format of the texture returned by [GetVrsTexture].
+	//
+	// [GetVrsTexture]: https://pkg.go.dev/graphics.gd/classdb/XRInterfaceExtension#Interface
 	GetVrsTextureFormat() XRInterface.VRSTextureFormat
-	// Called if this [graphics.gd/classdb/XRInterfaceExtension] is active before our physics and game process is called. Most XR interfaces will update its [graphics.gd/classdb/XRPositionalTracker]s at this point in time.
+	// Called if this [XRInterfaceExtension] is active before our physics and game process is called. Most XR interfaces will update its [XRPositionalTracker]s at this point in time.
+	//
+	// [XRInterfaceExtension]: https://pkg.go.dev/graphics.gd/classdb/XRInterfaceExtension
+	// [XRPositionalTracker]: https://pkg.go.dev/graphics.gd/classdb/XRPositionalTracker
 	Process()
-	// Called if this [graphics.gd/classdb/XRInterfaceExtension] is active before rendering starts. Most XR interfaces will sync tracking at this point in time.
+	// Called if this [XRInterfaceExtension] is active before rendering starts. Most XR interfaces will sync tracking at this point in time.
+	//
+	// [XRInterfaceExtension]: https://pkg.go.dev/graphics.gd/classdb/XRInterfaceExtension
 	PreRender()
-	// Called if this is our primary [graphics.gd/classdb/XRInterfaceExtension] before we start processing a [graphics.gd/classdb/Viewport] for every active XR [graphics.gd/classdb/Viewport], returns true if that viewport should be rendered. An XR interface may return false if the user has taken off their headset and we can pause rendering.
+	// Called if this is our primary [XRInterfaceExtension] before we start processing a [Viewport] for every active XR [Viewport], returns true if that viewport should be rendered. An XR interface may return false if the user has taken off their headset and we can pause rendering.
+	//
+	// [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+	// [XRInterfaceExtension]: https://pkg.go.dev/graphics.gd/classdb/XRInterfaceExtension
 	PreDrawViewport(render_target RID.Framebuffer) bool
-	// Called after the XR [graphics.gd/classdb/Viewport] draw logic has completed.
+	// Called after the XR [Viewport] draw logic has completed.
+	//
+	// [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 	PostDrawViewport(render_target RID.Framebuffer, screen_rect Rect2.PositionSize)
 	// Called if interface is active and queues have been submitted.
 	EndFrame()
@@ -162,7 +183,10 @@ type Interface interface {
 	GetAnchorDetectionIsEnabled() bool
 	// Enables anchor detection on this interface if supported.
 	SetAnchorDetectionIsEnabled(enabled bool)
-	// Returns the camera feed ID for the [graphics.gd/classdb/CameraFeed] registered with the [graphics.gd/classdb/CameraServer] that should be presented as the background on an AR capable device (if applicable).
+	// Returns the camera feed ID for the [CameraFeed] registered with the [CameraServer] that should be presented as the background on an AR capable device (if applicable).
+	//
+	// [CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
+	// [CameraServer]: https://pkg.go.dev/graphics.gd/classdb/CameraServer
 	GetCameraFeedId() int
 	// Return color texture into which to render (if applicable).
 	GetColorTexture() RID.Texture
@@ -330,6 +354,8 @@ func (Instance) _set_play_area_mode(impl func(ptr gdclass.Receiver, mode XRInter
 
 /*
 Returns a [][Vector3.XYZ] that represents the play areas boundaries (if applicable).
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 func (Instance) _get_play_area(impl func(ptr gdclass.Receiver) []Vector3.XYZ) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -345,7 +371,9 @@ func (Instance) _get_play_area(impl func(ptr gdclass.Receiver) []Vector3.XYZ) (c
 }
 
 /*
-Returns the size of our render target for this interface, this overrides the size of the [graphics.gd/classdb/Viewport] marked as the xr viewport.
+Returns the size of our render target for this interface, this overrides the size of the [Viewport] marked as the xr viewport.
+
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
 func (Instance) _get_render_target_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -367,7 +395,10 @@ func (Instance) _get_view_count(impl func(ptr gdclass.Receiver) int) (cb gd.Exte
 }
 
 /*
-Returns the [Transform3D.BasisOrigin] that positions the [graphics.gd/classdb/XRCamera3D] in the world.
+Returns the [Transform3D.BasisOrigin] that positions the [XRCamera3D] in the world.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
+[XRCamera3D]: https://pkg.go.dev/graphics.gd/classdb/XRCamera3D
 */
 func (Instance) _get_camera_transform(impl func(ptr gdclass.Receiver) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -379,6 +410,8 @@ func (Instance) _get_camera_transform(impl func(ptr gdclass.Receiver) Transform3
 
 /*
 Returns a [Transform3D.BasisOrigin] for a given view.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 func (Instance) _get_transform_for_view(impl func(ptr gdclass.Receiver, view int, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -418,7 +451,9 @@ func (Instance) _get_vrs_texture(impl func(ptr gdclass.Receiver) RID.Texture) (c
 }
 
 /*
-Returns the format of the texture returned by [Interface.GetVrsTexture].
+Returns the format of the texture returned by [GetVrsTexture].
+
+[GetVrsTexture]: https://pkg.go.dev/graphics.gd/classdb/XRInterfaceExtension#Interface
 */
 func (Instance) _get_vrs_texture_format(impl func(ptr gdclass.Receiver) XRInterface.VRSTextureFormat) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -429,7 +464,10 @@ func (Instance) _get_vrs_texture_format(impl func(ptr gdclass.Receiver) XRInterf
 }
 
 /*
-Called if this [graphics.gd/classdb/XRInterfaceExtension] is active before our physics and game process is called. Most XR interfaces will update its [graphics.gd/classdb/XRPositionalTracker]s at this point in time.
+Called if this [XRInterfaceExtension] is active before our physics and game process is called. Most XR interfaces will update its [XRPositionalTracker]s at this point in time.
+
+[XRInterfaceExtension]: https://pkg.go.dev/graphics.gd/classdb/XRInterfaceExtension
+[XRPositionalTracker]: https://pkg.go.dev/graphics.gd/classdb/XRPositionalTracker
 */
 func (Instance) _process(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -439,7 +477,9 @@ func (Instance) _process(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassC
 }
 
 /*
-Called if this [graphics.gd/classdb/XRInterfaceExtension] is active before rendering starts. Most XR interfaces will sync tracking at this point in time.
+Called if this [XRInterfaceExtension] is active before rendering starts. Most XR interfaces will sync tracking at this point in time.
+
+[XRInterfaceExtension]: https://pkg.go.dev/graphics.gd/classdb/XRInterfaceExtension
 */
 func (Instance) _pre_render(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -449,7 +489,10 @@ func (Instance) _pre_render(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionCla
 }
 
 /*
-Called if this is our primary [graphics.gd/classdb/XRInterfaceExtension] before we start processing a [graphics.gd/classdb/Viewport] for every active XR [graphics.gd/classdb/Viewport], returns true if that viewport should be rendered. An XR interface may return false if the user has taken off their headset and we can pause rendering.
+Called if this is our primary [XRInterfaceExtension] before we start processing a [Viewport] for every active XR [Viewport], returns true if that viewport should be rendered. An XR interface may return false if the user has taken off their headset and we can pause rendering.
+
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+[XRInterfaceExtension]: https://pkg.go.dev/graphics.gd/classdb/XRInterfaceExtension
 */
 func (Instance) _pre_draw_viewport(impl func(ptr gdclass.Receiver, render_target RID.Framebuffer) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -461,7 +504,9 @@ func (Instance) _pre_draw_viewport(impl func(ptr gdclass.Receiver, render_target
 }
 
 /*
-Called after the XR [graphics.gd/classdb/Viewport] draw logic has completed.
+Called after the XR [Viewport] draw logic has completed.
+
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
 func (Instance) _post_draw_viewport(impl func(ptr gdclass.Receiver, render_target RID.Framebuffer, screen_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -568,7 +613,10 @@ func (Instance) _set_anchor_detection_is_enabled(impl func(ptr gdclass.Receiver,
 }
 
 /*
-Returns the camera feed ID for the [graphics.gd/classdb/CameraFeed] registered with the [graphics.gd/classdb/CameraServer] that should be presented as the background on an AR capable device (if applicable).
+Returns the camera feed ID for the [CameraFeed] registered with the [CameraServer] that should be presented as the background on an AR capable device (if applicable).
+
+[CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
+[CameraServer]: https://pkg.go.dev/graphics.gd/classdb/CameraServer
 */
 func (Instance) _get_camera_feed_id(impl func(ptr gdclass.Receiver) int) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -629,6 +677,8 @@ func (self Instance) AddBlit(render_target RID.Framebuffer, src_rect Rect2.Posit
 
 /*
 Returns a valid [Resource.ID] for a texture to which we should render the current frame if supported by the interface.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func (self Instance) GetRenderTargetTexture(render_target RID.Framebuffer) RID.Texture { //gd:XRInterfaceExtension.get_render_target_texture
 	return RID.Texture(RID.Texture(Advanced(self).GetRenderTargetTexture(RID.Any(render_target))))
@@ -789,6 +839,8 @@ func (class) _set_play_area_mode(impl func(ptr gdclass.Receiver, mode XRInterfac
 
 /*
 Returns a [][Vector3.XYZ] that represents the play areas boundaries (if applicable).
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 func (class) _get_play_area(impl func(ptr gdclass.Receiver) Packed.Array[Vector3.XYZ]) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -804,7 +856,9 @@ func (class) _get_play_area(impl func(ptr gdclass.Receiver) Packed.Array[Vector3
 }
 
 /*
-Returns the size of our render target for this interface, this overrides the size of the [graphics.gd/classdb/Viewport] marked as the xr viewport.
+Returns the size of our render target for this interface, this overrides the size of the [Viewport] marked as the xr viewport.
+
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
 func (class) _get_render_target_size(impl func(ptr gdclass.Receiver) Vector2.XY) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -826,7 +880,10 @@ func (class) _get_view_count(impl func(ptr gdclass.Receiver) int64) (cb gd.Exten
 }
 
 /*
-Returns the [Transform3D.BasisOrigin] that positions the [graphics.gd/classdb/XRCamera3D] in the world.
+Returns the [Transform3D.BasisOrigin] that positions the [XRCamera3D] in the world.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
+[XRCamera3D]: https://pkg.go.dev/graphics.gd/classdb/XRCamera3D
 */
 func (class) _get_camera_transform(impl func(ptr gdclass.Receiver) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -838,6 +895,8 @@ func (class) _get_camera_transform(impl func(ptr gdclass.Receiver) Transform3D.B
 
 /*
 Returns a [Transform3D.BasisOrigin] for a given view.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 func (class) _get_transform_for_view(impl func(ptr gdclass.Receiver, view int64, cam_transform Transform3D.BasisOrigin) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -878,7 +937,9 @@ func (class) _get_vrs_texture(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.Ex
 }
 
 /*
-Returns the format of the texture returned by [Interface.GetVrsTexture].
+Returns the format of the texture returned by [GetVrsTexture].
+
+[GetVrsTexture]: https://pkg.go.dev/graphics.gd/classdb/XRInterfaceExtension#Interface
 */
 func (class) _get_vrs_texture_format(impl func(ptr gdclass.Receiver) XRInterface.VRSTextureFormat) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -889,7 +950,10 @@ func (class) _get_vrs_texture_format(impl func(ptr gdclass.Receiver) XRInterface
 }
 
 /*
-Called if this [graphics.gd/classdb/XRInterfaceExtension] is active before our physics and game process is called. Most XR interfaces will update its [graphics.gd/classdb/XRPositionalTracker]s at this point in time.
+Called if this [XRInterfaceExtension] is active before our physics and game process is called. Most XR interfaces will update its [XRPositionalTracker]s at this point in time.
+
+[XRInterfaceExtension]: https://pkg.go.dev/graphics.gd/classdb/XRInterfaceExtension
+[XRPositionalTracker]: https://pkg.go.dev/graphics.gd/classdb/XRPositionalTracker
 */
 func (class) _process(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -899,7 +963,9 @@ func (class) _process(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCall
 }
 
 /*
-Called if this [graphics.gd/classdb/XRInterfaceExtension] is active before rendering starts. Most XR interfaces will sync tracking at this point in time.
+Called if this [XRInterfaceExtension] is active before rendering starts. Most XR interfaces will sync tracking at this point in time.
+
+[XRInterfaceExtension]: https://pkg.go.dev/graphics.gd/classdb/XRInterfaceExtension
 */
 func (class) _pre_render(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -909,7 +975,10 @@ func (class) _pre_render(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassC
 }
 
 /*
-Called if this is our primary [graphics.gd/classdb/XRInterfaceExtension] before we start processing a [graphics.gd/classdb/Viewport] for every active XR [graphics.gd/classdb/Viewport], returns true if that viewport should be rendered. An XR interface may return false if the user has taken off their headset and we can pause rendering.
+Called if this is our primary [XRInterfaceExtension] before we start processing a [Viewport] for every active XR [Viewport], returns true if that viewport should be rendered. An XR interface may return false if the user has taken off their headset and we can pause rendering.
+
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+[XRInterfaceExtension]: https://pkg.go.dev/graphics.gd/classdb/XRInterfaceExtension
 */
 func (class) _pre_draw_viewport(impl func(ptr gdclass.Receiver, render_target RID.Any) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -921,7 +990,9 @@ func (class) _pre_draw_viewport(impl func(ptr gdclass.Receiver, render_target RI
 }
 
 /*
-Called after the XR [graphics.gd/classdb/Viewport] draw logic has completed.
+Called after the XR [Viewport] draw logic has completed.
+
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
 func (class) _post_draw_viewport(impl func(ptr gdclass.Receiver, render_target RID.Any, screen_rect Rect2.PositionSize)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1028,7 +1099,10 @@ func (class) _set_anchor_detection_is_enabled(impl func(ptr gdclass.Receiver, en
 }
 
 /*
-Returns the camera feed ID for the [graphics.gd/classdb/CameraFeed] registered with the [graphics.gd/classdb/CameraServer] that should be presented as the background on an AR capable device (if applicable).
+Returns the camera feed ID for the [CameraFeed] registered with the [CameraServer] that should be presented as the background on an AR capable device (if applicable).
+
+[CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
+[CameraServer]: https://pkg.go.dev/graphics.gd/classdb/CameraServer
 */
 func (class) _get_camera_feed_id(impl func(ptr gdclass.Receiver) int64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1114,6 +1188,8 @@ func (self class) AddBlit(render_target RID.Any, src_rect Rect2.PositionSize, ds
 
 /*
 Returns a valid [Resource.ID] for a texture to which we should render the current frame if supported by the interface.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) GetRenderTargetTexture(render_target RID.Any) RID.Any { //gd:XRInterfaceExtension.get_render_target_texture

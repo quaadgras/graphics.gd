@@ -131,9 +131,11 @@ func (self Instance) RenderModelCreate(render_model_id int) RID.RenderModel { //
 }
 
 /*
-Destroys a render model object within OpenXR that was previously created with [Instance.RenderModelCreate].
+Destroys a render model object within OpenXR that was previously created with [RenderModelCreate].
 
 Note: This function is exposed for dependent OpenXR extensions that provide render model ids to be used with the render model extension.
+
+[RenderModelCreate]: https://pkg.go.dev/graphics.gd/classdb/OpenXRRenderModelExtension#Instance.RenderModelCreate
 */
 func (self Instance) RenderModelDestroy(render_model RID.RenderModel) { //gd:OpenXRRenderModelExtension.render_model_destroy
 	Advanced(self).RenderModelDestroy(RID.Any(render_model))
@@ -147,7 +149,9 @@ func (self Instance) RenderModelGetAll() []RID.RenderModel { //gd:OpenXRRenderMo
 }
 
 /*
-Returns an instance of a subscene that contains all [graphics.gd/classdb/MeshInstance3D] nodes that allow you to visualize the render model.
+Returns an instance of a subscene that contains all [MeshInstance3D] nodes that allow you to visualize the render model.
+
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
 */
 func (self Instance) RenderModelNewSceneInstance(render_model RID.RenderModel) Node3D.Instance { //gd:OpenXRRenderModelExtension.render_model_new_scene_instance
 	return Node3D.Instance(Advanced(self).RenderModelNewSceneInstance(RID.Any(render_model)))
@@ -177,7 +181,9 @@ func (self Instance) RenderModelGetConfidence(render_model RID.RenderModel) XRPo
 }
 
 /*
-Returns the root transform of a render model. This is the tracked position relative to our [graphics.gd/classdb/XROrigin3D] node.
+Returns the root transform of a render model. This is the tracked position relative to our [XROrigin3D] node.
+
+[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
 */
 func (self Instance) RenderModelGetRootTransform(render_model RID.RenderModel) Transform3D.BasisOrigin { //gd:OpenXRRenderModelExtension.render_model_get_root_transform
 	return Transform3D.BasisOrigin(Advanced(self).RenderModelGetRootTransform(RID.Any(render_model)))
@@ -278,9 +284,11 @@ func (self class) RenderModelCreate(render_model_id int64) RID.Any { //gd:OpenXR
 }
 
 /*
-Destroys a render model object within OpenXR that was previously created with [Instance.RenderModelCreate].
+Destroys a render model object within OpenXR that was previously created with [RenderModelCreate].
 
 Note: This function is exposed for dependent OpenXR extensions that provide render model ids to be used with the render model extension.
+
+[RenderModelCreate]: https://pkg.go.dev/graphics.gd/classdb/OpenXRRenderModelExtension#Instance.RenderModelCreate
 */
 //go:nosplit
 func (self class) RenderModelDestroy(render_model RID.Any) { //gd:OpenXRRenderModelExtension.render_model_destroy
@@ -298,7 +306,9 @@ func (self class) RenderModelGetAll() Array.Contains[RID.Any] { //gd:OpenXRRende
 }
 
 /*
-Returns an instance of a subscene that contains all [graphics.gd/classdb/MeshInstance3D] nodes that allow you to visualize the render model.
+Returns an instance of a subscene that contains all [MeshInstance3D] nodes that allow you to visualize the render model.
+
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
 */
 //go:nosplit
 func (self class) RenderModelNewSceneInstance(render_model RID.Any) [1]gdclass.Node3D { //gd:OpenXRRenderModelExtension.render_model_new_scene_instance
@@ -340,7 +350,9 @@ func (self class) RenderModelGetConfidence(render_model RID.Any) XRPose.Tracking
 }
 
 /*
-Returns the root transform of a render model. This is the tracked position relative to our [graphics.gd/classdb/XROrigin3D] node.
+Returns the root transform of a render model. This is the tracked position relative to our [XROrigin3D] node.
+
+[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
 */
 //go:nosplit
 func (self class) RenderModelGetRootTransform(render_model RID.Any) Transform3D.BasisOrigin { //gd:OpenXRRenderModelExtension.render_model_get_root_transform

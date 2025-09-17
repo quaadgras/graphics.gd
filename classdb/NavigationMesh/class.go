@@ -158,21 +158,27 @@ type Any interface {
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [Instance.GeometryCollisionMask], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [GeometryCollisionMask], given a 'layer_number' between 1 and 32.
+
+[GeometryCollisionMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.GeometryCollisionMask
 */
 func (self Instance) SetCollisionMaskValue(layer_number int, value bool) { //gd:NavigationMesh.set_collision_mask_value
 	Advanced(self).SetCollisionMaskValue(int64(layer_number), value)
 }
 
 /*
-Returns whether or not the specified layer of the [Instance.GeometryCollisionMask] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [GeometryCollisionMask] is enabled, given a 'layer_number' between 1 and 32.
+
+[GeometryCollisionMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.GeometryCollisionMask
 */
 func (self Instance) GetCollisionMaskValue(layer_number int) bool { //gd:NavigationMesh.get_collision_mask_value
 	return bool(Advanced(self).GetCollisionMaskValue(int64(layer_number)))
 }
 
 /*
-Adds a polygon using the indices of the vertices you get when calling [Instance.GetVertices].
+Adds a polygon using the indices of the vertices you get when calling [GetVertices].
+
+[GetVertices]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.GetVertices
 */
 func (self Instance) AddPolygon(polygon []int32) { //gd:NavigationMesh.add_polygon
 	Advanced(self).AddPolygon(Packed.New(polygon...))
@@ -200,9 +206,11 @@ func (self Instance) ClearPolygons() { //gd:NavigationMesh.clear_polygons
 }
 
 /*
-Initializes the navigation mesh by setting the vertices and indices according to a [graphics.gd/classdb/Mesh].
+Initializes the navigation mesh by setting the vertices and indices according to a [Mesh].
 
 Note: The given 'mesh' must be of type [Mesh.PrimitiveTriangles] and have an index array.
+
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 */
 func (self Instance) CreateFromMesh(mesh Mesh.Instance) { //gd:NavigationMesh.create_from_mesh
 	Advanced(self).CreateFromMesh(mesh)
@@ -495,7 +503,9 @@ func (self class) GetCollisionMask() int64 { //gd:NavigationMesh.get_collision_m
 }
 
 /*
-Based on 'value', enables or disables the specified layer in the [Instance.GeometryCollisionMask], given a 'layer_number' between 1 and 32.
+Based on 'value', enables or disables the specified layer in the [GeometryCollisionMask], given a 'layer_number' between 1 and 32.
+
+[GeometryCollisionMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.GeometryCollisionMask
 */
 //go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:NavigationMesh.set_collision_mask_value
@@ -506,7 +516,9 @@ func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:N
 }
 
 /*
-Returns whether or not the specified layer of the [Instance.GeometryCollisionMask] is enabled, given a 'layer_number' between 1 and 32.
+Returns whether or not the specified layer of the [GeometryCollisionMask] is enabled, given a 'layer_number' between 1 and 32.
+
+[GeometryCollisionMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.GeometryCollisionMask
 */
 //go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:NavigationMesh.get_collision_mask_value
@@ -768,7 +780,9 @@ func (self class) GetFilterBakingAabbOffset() Vector3.XYZ { //gd:NavigationMesh.
 }
 
 /*
-Sets the vertices that can be then indexed to create polygons with the [Instance.AddPolygon] method.
+Sets the vertices that can be then indexed to create polygons with the [AddPolygon] method.
+
+[AddPolygon]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.AddPolygon
 */
 //go:nosplit
 func (self class) SetVertices(vertices Packed.Array[Vector3.XYZ]) { //gd:NavigationMesh.set_vertices
@@ -779,6 +793,8 @@ func (self class) SetVertices(vertices Packed.Array[Vector3.XYZ]) { //gd:Navigat
 
 /*
 Returns a [][Vector3.XYZ] containing all the vertices being used to create the polygons.
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 //go:nosplit
 func (self class) GetVertices() Packed.Array[Vector3.XYZ] { //gd:NavigationMesh.get_vertices
@@ -788,7 +804,9 @@ func (self class) GetVertices() Packed.Array[Vector3.XYZ] { //gd:NavigationMesh.
 }
 
 /*
-Adds a polygon using the indices of the vertices you get when calling [Instance.GetVertices].
+Adds a polygon using the indices of the vertices you get when calling [GetVertices].
+
+[GetVertices]: https://pkg.go.dev/graphics.gd/classdb/NavigationMesh#Instance.GetVertices
 */
 //go:nosplit
 func (self class) AddPolygon(polygon Packed.Array[int32]) { //gd:NavigationMesh.add_polygon
@@ -826,9 +844,11 @@ func (self class) ClearPolygons() { //gd:NavigationMesh.clear_polygons
 }
 
 /*
-Initializes the navigation mesh by setting the vertices and indices according to a [graphics.gd/classdb/Mesh].
+Initializes the navigation mesh by setting the vertices and indices according to a [Mesh].
 
 Note: The given 'mesh' must be of type [Mesh.PrimitiveTriangles] and have an index array.
+
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 */
 //go:nosplit
 func (self class) CreateFromMesh(mesh [1]gdclass.Mesh) { //gd:NavigationMesh.create_from_mesh
@@ -897,9 +917,16 @@ const (
 type ParsedGeometryType int //gd:NavigationMesh.ParsedGeometryType
 
 const (
-	// Parses mesh instances as geometry. This includes [graphics.gd/classdb/MeshInstance3D], [graphics.gd/classdb/CSGShape3D], and [graphics.gd/classdb/GridMap] nodes.
+	// Parses mesh instances as geometry. This includes [MeshInstance3D], [CSGShape3D], and [GridMap] nodes.
+	//
+	// [CSGShape3D]: https://pkg.go.dev/graphics.gd/classdb/CSGShape3D
+	// [GridMap]: https://pkg.go.dev/graphics.gd/classdb/GridMap
+	// [MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
 	ParsedGeometryMeshInstances ParsedGeometryType = 0
-	// Parses [graphics.gd/classdb/StaticBody3D] colliders as geometry. The collider should be in any of the layers specified by [Instance.GeometryCollisionMask].
+	// Parses [StaticBody3D] colliders as geometry. The collider should be in any of the layers specified by [GeometryCollisionMask].
+	//
+	// [GeometryCollisionMask]: https://pkg.go.dev/graphics.gd/classdb/#Instance.GeometryCollisionMask
+	// [StaticBody3D]: https://pkg.go.dev/graphics.gd/classdb/StaticBody3D
 	ParsedGeometryStaticColliders ParsedGeometryType = 1
 	// Both [ParsedGeometryMeshInstances] and [ParsedGeometryStaticColliders].
 	ParsedGeometryBoth ParsedGeometryType = 2
@@ -912,9 +939,13 @@ type SourceGeometryMode int //gd:NavigationMesh.SourceGeometryMode
 const (
 	// Scans the child nodes of the root node recursively for geometry.
 	SourceGeometryRootNodeChildren SourceGeometryMode = 0
-	// Scans nodes in a group and their child nodes recursively for geometry. The group is specified by [Instance.GeometrySourceGroupName].
+	// Scans nodes in a group and their child nodes recursively for geometry. The group is specified by [GeometrySourceGroupName].
+	//
+	// [GeometrySourceGroupName]: https://pkg.go.dev/graphics.gd/classdb/#Instance.GeometrySourceGroupName
 	SourceGeometryGroupsWithChildren SourceGeometryMode = 1
-	// Uses nodes in a group for geometry. The group is specified by [Instance.GeometrySourceGroupName].
+	// Uses nodes in a group for geometry. The group is specified by [GeometrySourceGroupName].
+	//
+	// [GeometrySourceGroupName]: https://pkg.go.dev/graphics.gd/classdb/#Instance.GeometrySourceGroupName
 	SourceGeometryGroupsExplicit SourceGeometryMode = 2
 	// Represents the size of the [SourceGeometryMode] enum.
 	SourceGeometryMax SourceGeometryMode = 3

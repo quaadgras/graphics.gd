@@ -169,7 +169,9 @@ func GetCustomMonitor(id string) any { //gd:Performance.get_custom_monitor
 }
 
 /*
-Returns the last tick in which custom monitor was added/removed (in microseconds since the engine started). This is set to [graphics.gd/classdb/Time.GetTicksUsec] when the monitor is updated.
+Returns the last tick in which custom monitor was added/removed (in microseconds since the engine started). This is set to [Time.GetTicksUsec] when the monitor is updated.
+
+[Time.GetTicksUsec]: https://pkg.go.dev/graphics.gd/classdb/Time#GetTicksUsec
 */
 func GetMonitorModificationTime() int { //gd:Performance.get_monitor_modification_time
 	once.Do(singleton)
@@ -268,7 +270,9 @@ func (self class) GetCustomMonitor(id String.Name) variant.Any { //gd:Performanc
 }
 
 /*
-Returns the last tick in which custom monitor was added/removed (in microseconds since the engine started). This is set to [graphics.gd/classdb/Time.GetTicksUsec] when the monitor is updated.
+Returns the last tick in which custom monitor was added/removed (in microseconds since the engine started). This is set to [Time.GetTicksUsec] when the monitor is updated.
+
+[Time.GetTicksUsec]: https://pkg.go.dev/graphics.gd/classdb/Time#GetTicksUsec
 */
 //go:nosplit
 func (self class) GetMonitorModificationTime() int64 { //gd:Performance.get_monitor_modification_time
@@ -340,39 +344,77 @@ const (
 	RenderTextureMemUsed Monitor = 15
 	// The amount of render buffer memory used (in bytes). Lower is better.
 	RenderBufferMemUsed Monitor = 16
-	// Number of active [graphics.gd/classdb/RigidBody2D] nodes in the game. Lower is better.
+	// Number of active [RigidBody2D] nodes in the game. Lower is better.
+	//
+	// [RigidBody2D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D
 	Physics2dActiveObjects Monitor = 17
 	// Number of collision pairs in the 2D physics engine. Lower is better.
 	Physics2dCollisionPairs Monitor = 18
 	// Number of islands in the 2D physics engine. Lower is better.
 	Physics2dIslandCount Monitor = 19
-	// Number of active [graphics.gd/classdb/RigidBody3D] and [graphics.gd/classdb/VehicleBody3D] nodes in the game. Lower is better.
+	// Number of active [RigidBody3D] and [VehicleBody3D] nodes in the game. Lower is better.
+	//
+	// [RigidBody3D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D
+	// [VehicleBody3D]: https://pkg.go.dev/graphics.gd/classdb/VehicleBody3D
 	Physics3dActiveObjects Monitor = 20
 	// Number of collision pairs in the 3D physics engine. Lower is better.
 	Physics3dCollisionPairs Monitor = 21
 	// Number of islands in the 3D physics engine. Lower is better.
 	Physics3dIslandCount Monitor = 22
-	// Output latency of the [graphics.gd/classdb/AudioServer]. Equivalent to calling [graphics.gd/classdb/AudioServer.GetOutputLatency], it is not recommended to call this every frame.
+	// Output latency of the [AudioServer]. Equivalent to calling [AudioServer.GetOutputLatency], it is not recommended to call this every frame.
+	//
+	// [AudioServer]: https://pkg.go.dev/graphics.gd/classdb/AudioServer
+	// [AudioServer.GetOutputLatency]: https://pkg.go.dev/graphics.gd/classdb/AudioServer#GetOutputLatency
 	AudioOutputLatency Monitor = 23
-	// Number of active navigation maps in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D]. This also includes the two empty default navigation maps created by World2D and World3D.
+	// Number of active navigation maps in [NavigationServer2D] and [NavigationServer3D]. This also includes the two empty default navigation maps created by World2D and World3D.
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	NavigationActiveMaps Monitor = 24
-	// Number of active navigation regions in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
+	// Number of active navigation regions in [NavigationServer2D] and [NavigationServer3D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	NavigationRegionCount Monitor = 25
-	// Number of active navigation agents processing avoidance in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
+	// Number of active navigation agents processing avoidance in [NavigationServer2D] and [NavigationServer3D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	NavigationAgentCount Monitor = 26
-	// Number of active navigation links in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
+	// Number of active navigation links in [NavigationServer2D] and [NavigationServer3D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	NavigationLinkCount Monitor = 27
-	// Number of navigation mesh polygons in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
+	// Number of navigation mesh polygons in [NavigationServer2D] and [NavigationServer3D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	NavigationPolygonCount Monitor = 28
-	// Number of navigation mesh polygon edges in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
+	// Number of navigation mesh polygon edges in [NavigationServer2D] and [NavigationServer3D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	NavigationEdgeCount Monitor = 29
-	// Number of navigation mesh polygon edges that were merged due to edge key overlap in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
+	// Number of navigation mesh polygon edges that were merged due to edge key overlap in [NavigationServer2D] and [NavigationServer3D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	NavigationEdgeMergeCount Monitor = 30
-	// Number of polygon edges that are considered connected by edge proximity [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
+	// Number of polygon edges that are considered connected by edge proximity [NavigationServer2D] and [NavigationServer3D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	NavigationEdgeConnectionCount Monitor = 31
-	// Number of navigation mesh polygon edges that could not be merged in [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D]. The edges still may be connected by edge proximity or with links.
+	// Number of navigation mesh polygon edges that could not be merged in [NavigationServer2D] and [NavigationServer3D]. The edges still may be connected by edge proximity or with links.
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	NavigationEdgeFreeCount Monitor = 32
-	// Number of active navigation obstacles in the [graphics.gd/classdb/NavigationServer2D] and [graphics.gd/classdb/NavigationServer3D].
+	// Number of active navigation obstacles in the [NavigationServer2D] and [NavigationServer3D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	NavigationObstacleCount Monitor = 33
 	// Number of pipeline compilations that were triggered by the 2D canvas renderer.
 	PipelineCompilationsCanvas Monitor = 34
@@ -384,45 +426,85 @@ const (
 	PipelineCompilationsDraw Monitor = 37
 	// Number of pipeline compilations that were triggered to optimize the current scene. These compilations are done in the background and should not cause any stutters whatsoever.
 	PipelineCompilationsSpecialization Monitor = 38
-	// Number of active navigation maps in the [graphics.gd/classdb/NavigationServer2D]. This also includes the two empty default navigation maps created by World2D.
+	// Number of active navigation maps in the [NavigationServer2D]. This also includes the two empty default navigation maps created by World2D.
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 	Navigation2dActiveMaps Monitor = 39
-	// Number of active navigation regions in the [graphics.gd/classdb/NavigationServer2D].
+	// Number of active navigation regions in the [NavigationServer2D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 	Navigation2dRegionCount Monitor = 40
-	// Number of active navigation agents processing avoidance in the [graphics.gd/classdb/NavigationServer2D].
+	// Number of active navigation agents processing avoidance in the [NavigationServer2D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 	Navigation2dAgentCount Monitor = 41
-	// Number of active navigation links in the [graphics.gd/classdb/NavigationServer2D].
+	// Number of active navigation links in the [NavigationServer2D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 	Navigation2dLinkCount Monitor = 42
-	// Number of navigation mesh polygons in the [graphics.gd/classdb/NavigationServer2D].
+	// Number of navigation mesh polygons in the [NavigationServer2D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 	Navigation2dPolygonCount Monitor = 43
-	// Number of navigation mesh polygon edges in the [graphics.gd/classdb/NavigationServer2D].
+	// Number of navigation mesh polygon edges in the [NavigationServer2D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 	Navigation2dEdgeCount Monitor = 44
-	// Number of navigation mesh polygon edges that were merged due to edge key overlap in the [graphics.gd/classdb/NavigationServer2D].
+	// Number of navigation mesh polygon edges that were merged due to edge key overlap in the [NavigationServer2D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 	Navigation2dEdgeMergeCount Monitor = 45
-	// Number of polygon edges that are considered connected by edge proximity [graphics.gd/classdb/NavigationServer2D].
+	// Number of polygon edges that are considered connected by edge proximity [NavigationServer2D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 	Navigation2dEdgeConnectionCount Monitor = 46
-	// Number of navigation mesh polygon edges that could not be merged in the [graphics.gd/classdb/NavigationServer2D]. The edges still may be connected by edge proximity or with links.
+	// Number of navigation mesh polygon edges that could not be merged in the [NavigationServer2D]. The edges still may be connected by edge proximity or with links.
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 	Navigation2dEdgeFreeCount Monitor = 47
-	// Number of active navigation obstacles in the [graphics.gd/classdb/NavigationServer2D].
+	// Number of active navigation obstacles in the [NavigationServer2D].
+	//
+	// [NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
 	Navigation2dObstacleCount Monitor = 48
-	// Number of active navigation maps in the [graphics.gd/classdb/NavigationServer3D]. This also includes the two empty default navigation maps created by World3D.
+	// Number of active navigation maps in the [NavigationServer3D]. This also includes the two empty default navigation maps created by World3D.
+	//
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	Navigation3dActiveMaps Monitor = 49
-	// Number of active navigation regions in the [graphics.gd/classdb/NavigationServer3D].
+	// Number of active navigation regions in the [NavigationServer3D].
+	//
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	Navigation3dRegionCount Monitor = 50
-	// Number of active navigation agents processing avoidance in the [graphics.gd/classdb/NavigationServer3D].
+	// Number of active navigation agents processing avoidance in the [NavigationServer3D].
+	//
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	Navigation3dAgentCount Monitor = 51
-	// Number of active navigation links in the [graphics.gd/classdb/NavigationServer3D].
+	// Number of active navigation links in the [NavigationServer3D].
+	//
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	Navigation3dLinkCount Monitor = 52
-	// Number of navigation mesh polygons in the [graphics.gd/classdb/NavigationServer3D].
+	// Number of navigation mesh polygons in the [NavigationServer3D].
+	//
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	Navigation3dPolygonCount Monitor = 53
-	// Number of navigation mesh polygon edges in the [graphics.gd/classdb/NavigationServer3D].
+	// Number of navigation mesh polygon edges in the [NavigationServer3D].
+	//
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	Navigation3dEdgeCount Monitor = 54
-	// Number of navigation mesh polygon edges that were merged due to edge key overlap in the [graphics.gd/classdb/NavigationServer3D].
+	// Number of navigation mesh polygon edges that were merged due to edge key overlap in the [NavigationServer3D].
+	//
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	Navigation3dEdgeMergeCount Monitor = 55
-	// Number of polygon edges that are considered connected by edge proximity [graphics.gd/classdb/NavigationServer3D].
+	// Number of polygon edges that are considered connected by edge proximity [NavigationServer3D].
+	//
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	Navigation3dEdgeConnectionCount Monitor = 56
-	// Number of navigation mesh polygon edges that could not be merged in the [graphics.gd/classdb/NavigationServer3D]. The edges still may be connected by edge proximity or with links.
+	// Number of navigation mesh polygon edges that could not be merged in the [NavigationServer3D]. The edges still may be connected by edge proximity or with links.
+	//
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	Navigation3dEdgeFreeCount Monitor = 57
-	// Number of active navigation obstacles in the [graphics.gd/classdb/NavigationServer3D].
+	// Number of active navigation obstacles in the [NavigationServer3D].
+	//
+	// [NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
 	Navigation3dObstacleCount Monitor = 58
 	// Represents the size of the [Monitor] enum.
 	MonitorMax Monitor = 59

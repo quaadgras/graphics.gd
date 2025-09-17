@@ -41,7 +41,6 @@ package main
 
 import (
 	"graphics.gd/classdb/LineEdit"
-	"graphics.gd/classdb/PopupMenu"
 	"graphics.gd/classdb/Time"
 )
 
@@ -52,7 +51,7 @@ func LineEdit_GetMenu() {
 		menu.SetItemCount(menu.GetItemIndex(int(LineEdit.MenuRedo)) + 1)
 		// Add custom items.
 		menu.AddSeparator()
-		PopupMenu.Expanded(menu).AddItem("Insert Date", int(LineEdit.MenuMax)+1, 0)
+		menu.MoreArgs().AddItem("Insert Date", int(LineEdit.MenuMax)+1, 0)
 		// Connect callback.
 		menu.OnIdPressed(func(id int) {
 			if id == int(LineEdit.MenuMax)+1 {

@@ -261,6 +261,8 @@ const (
 	// This action provides a float value between 0.0 and 1.0 for any analog input such as triggers.
 	OpenxrActionFloat ActionType = 1
 	// This action provides a [Vector2.XY] value and can be bound to embedded trackpads and joysticks.
+	//
+	// [Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 	OpenxrActionVector2 ActionType = 2
 	OpenxrActionPose    ActionType = 3
 )

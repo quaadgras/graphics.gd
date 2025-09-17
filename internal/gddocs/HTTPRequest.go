@@ -100,13 +100,13 @@ func (n *ExampleHTTP) Ready() {
 
 		// Perform a POST request. The URL below returns JSON as of writing.
 		body, _ = json.Marshal(map[string]string{"name": "Godette"})
-		var err = HTTPRequest.Expanded(httpRequest).Request("https://httpbin.org/post", nil, HTTPClient.MethodPost, string(body))
+		var err = httpRequest.MoreArgs().Request("https://httpbin.org/post", nil, HTTPClient.MethodPost, string(body))
 		if err != nil {
 			Engine.Raise(err)
 		}
 	}, Signal.OneShot)
 	// Perform a GET request. The URL below returns JSON as of writing.
-	var err = HTTPRequest.Expanded(httpRequest).Request("https://httpbin.org/get", nil, HTTPClient.MethodGet, "")
+	var err = httpRequest.MoreArgs().Request("https://httpbin.org/get", nil, HTTPClient.MethodGet, "")
 	if err != nil {
 		Engine.Raise(err)
 	}

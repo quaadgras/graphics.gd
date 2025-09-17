@@ -134,7 +134,9 @@ func (self Instance) GetBindingModifierCount() int { //gd:OpenXRInteractionProfi
 }
 
 /*
-Get the [graphics.gd/classdb/OpenXRBindingModifier] at this index.
+Get the [OpenXRBindingModifier] at this index.
+
+[OpenXRBindingModifier]: https://pkg.go.dev/graphics.gd/classdb/OpenXRBindingModifier
 */
 func (self Instance) GetBindingModifier(index int) OpenXRIPBindingModifier.Instance { //gd:OpenXRInteractionProfile.get_binding_modifier
 	return OpenXRIPBindingModifier.Instance(Advanced(self).GetBindingModifier(int64(index)))
@@ -262,7 +264,9 @@ func (self class) GetBindingModifierCount() int64 { //gd:OpenXRInteractionProfil
 }
 
 /*
-Get the [graphics.gd/classdb/OpenXRBindingModifier] at this index.
+Get the [OpenXRBindingModifier] at this index.
+
+[OpenXRBindingModifier]: https://pkg.go.dev/graphics.gd/classdb/OpenXRBindingModifier
 */
 //go:nosplit
 func (self class) GetBindingModifier(index int64) [1]gdclass.OpenXRIPBindingModifier { //gd:OpenXRInteractionProfile.get_binding_modifier

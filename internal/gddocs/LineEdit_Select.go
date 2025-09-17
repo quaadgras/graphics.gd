@@ -21,7 +21,7 @@ var line_edit LineEdit.Instance
 
 func LineEdit_Select() {
 	line_edit.SetText("Welcome")
-	line_edit.Select()                         // Will select "Welcome".
-	LineEdit.Expanded(line_edit).Select(4, -1) // Will select "ome".
-	LineEdit.Expanded(line_edit).Select(2, 5)  // Will select "lco".
+	line_edit.Select()                 // Will select "Welcome".
+	line_edit.MoreArgs().Select(4, -1) // Will select "ome".
+	line_edit.MoreArgs().Select(2, 5)  // Will select "lco".
 }

@@ -3,7 +3,12 @@
 /*
 Compiled shader file in SPIR-V form.
 
-See also [graphics.gd/classdb/RDShaderSource]. [graphics.gd/classdb/RDShaderFile] is only meant to be used with the [graphics.gd/classdb/RenderingDevice] API. It should not be confused with Godot's own [graphics.gd/classdb/Shader] resource, which is what Godot's various nodes use for high-level shader programming.
+See also [RDShaderSource]. [RDShaderFile] is only meant to be used with the [RenderingDevice] API. It should not be confused with Godot's own [Shader] resource, which is what Godot's various nodes use for high-level shader programming.
+
+[RDShaderFile]: https://pkg.go.dev/graphics.gd/classdb/RDShaderFile
+[RDShaderSource]: https://pkg.go.dev/graphics.gd/classdb/RDShaderSource
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
+[Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
 */
 package RDShaderFile
 
@@ -96,7 +101,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.RDShaderFile
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.RDShaderFile
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -116,7 +126,7 @@ func (self Instance) SetBytecode(bytecode RDShaderSPIRV.Instance) { //gd:RDShade
 /*
 Sets the SPIR-V 'bytecode' that will be compiled for the specified 'version'.
 */
-func (self Expanded) SetBytecode(bytecode RDShaderSPIRV.Instance, version string) { //gd:RDShaderFile.set_bytecode
+func (self MoreArgs) SetBytecode(bytecode RDShaderSPIRV.Instance, version string) { //gd:RDShaderFile.set_bytecode
 	Advanced(self).SetBytecode(bytecode, String.Name(String.New(version)))
 }
 
@@ -130,7 +140,7 @@ func (self Instance) GetSpirv() RDShaderSPIRV.Instance { //gd:RDShaderFile.get_s
 /*
 Returns the SPIR-V intermediate representation for the specified shader 'version'.
 */
-func (self Expanded) GetSpirv(version string) RDShaderSPIRV.Instance { //gd:RDShaderFile.get_spirv
+func (self MoreArgs) GetSpirv(version string) RDShaderSPIRV.Instance { //gd:RDShaderFile.get_spirv
 	return RDShaderSPIRV.Instance(Advanced(self).GetSpirv(String.Name(String.New(version))))
 }
 

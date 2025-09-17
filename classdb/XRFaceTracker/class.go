@@ -3,10 +3,11 @@
 /*
 An instance of this object represents a tracked face and its corresponding blend shapes. The blend shapes come from the [Unified Expressions] standard, and contain extended details and visuals for each blend shape. Additionally the [Tracking Standard Comparison] page documents the relationship between Unified Expressions and other standards.
 
-As face trackers are turned on they are registered with the [graphics.gd/classdb/XRServer].
+As face trackers are turned on they are registered with the [XRServer].
 
 [Tracking Standard Comparison]: https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/compatibility/overview
 [Unified Expressions]: https://docs.vrcft.io/docs/tutorial-avatars/tutorial-avatars-extras/unified-blendshapes
+[XRServer]: https://pkg.go.dev/graphics.gd/classdb/XRServer
 */
 package XRFaceTracker
 

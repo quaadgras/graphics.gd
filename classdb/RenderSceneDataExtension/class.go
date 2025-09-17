@@ -101,16 +101,24 @@ type Any interface {
 
 type Interface interface {
 	// Implement this in GDExtension to return the camera [Transform3D.BasisOrigin].
+	//
+	// [Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 	GetCamTransform() Transform3D.BasisOrigin
 	// Implement this in GDExtension to return the camera [Projection.XYZW].
+	//
+	// [Projection.XYZW]: https://pkg.go.dev/graphics.gd/variant/Projection#XYZW
 	GetCamProjection() Projection.XYZW
 	// Implement this in GDExtension to return the view count.
 	GetViewCount() int
 	// Implement this in GDExtension to return the eye offset for the given 'view'.
 	GetViewEyeOffset(view int) Vector3.XYZ
 	// Implement this in GDExtension to return the view [Projection.XYZW] for the given 'view'.
+	//
+	// [Projection.XYZW]: https://pkg.go.dev/graphics.gd/variant/Projection#XYZW
 	GetViewProjection(view int) Projection.XYZW
 	// Implement this in GDExtension to return the [Resource.ID] of the uniform buffer containing the scene data as a UBO.
+	//
+	// [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 	GetUniformBuffer() RID.UniformSet
 }
 
@@ -128,6 +136,8 @@ func (self implementation) GetUniformBuffer() (_ RID.UniformSet)           { ret
 
 /*
 Implement this in GDExtension to return the camera [Transform3D.BasisOrigin].
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 func (Instance) _get_cam_transform(impl func(ptr gdclass.Receiver) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -139,6 +149,8 @@ func (Instance) _get_cam_transform(impl func(ptr gdclass.Receiver) Transform3D.B
 
 /*
 Implement this in GDExtension to return the camera [Projection.XYZW].
+
+[Projection.XYZW]: https://pkg.go.dev/graphics.gd/variant/Projection#XYZW
 */
 func (Instance) _get_cam_projection(impl func(ptr gdclass.Receiver) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -173,6 +185,8 @@ func (Instance) _get_view_eye_offset(impl func(ptr gdclass.Receiver, view int) V
 
 /*
 Implement this in GDExtension to return the view [Projection.XYZW] for the given 'view'.
+
+[Projection.XYZW]: https://pkg.go.dev/graphics.gd/variant/Projection#XYZW
 */
 func (Instance) _get_view_projection(impl func(ptr gdclass.Receiver, view int) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -185,6 +199,8 @@ func (Instance) _get_view_projection(impl func(ptr gdclass.Receiver, view int) P
 
 /*
 Implement this in GDExtension to return the [Resource.ID] of the uniform buffer containing the scene data as a UBO.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func (Instance) _get_uniform_buffer(impl func(ptr gdclass.Receiver) RID.UniformSet) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -238,6 +254,8 @@ func New() Instance {
 
 /*
 Implement this in GDExtension to return the camera [Transform3D.BasisOrigin].
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 func (class) _get_cam_transform(impl func(ptr gdclass.Receiver) Transform3D.BasisOrigin) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -249,6 +267,8 @@ func (class) _get_cam_transform(impl func(ptr gdclass.Receiver) Transform3D.Basi
 
 /*
 Implement this in GDExtension to return the camera [Projection.XYZW].
+
+[Projection.XYZW]: https://pkg.go.dev/graphics.gd/variant/Projection#XYZW
 */
 func (class) _get_cam_projection(impl func(ptr gdclass.Receiver) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -283,6 +303,8 @@ func (class) _get_view_eye_offset(impl func(ptr gdclass.Receiver, view int64) Ve
 
 /*
 Implement this in GDExtension to return the view [Projection.XYZW] for the given 'view'.
+
+[Projection.XYZW]: https://pkg.go.dev/graphics.gd/variant/Projection#XYZW
 */
 func (class) _get_view_projection(impl func(ptr gdclass.Receiver, view int64) Projection.XYZW) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -295,6 +317,8 @@ func (class) _get_view_projection(impl func(ptr gdclass.Receiver, view int64) Pr
 
 /*
 Implement this in GDExtension to return the [Resource.ID] of the uniform buffer containing the scene data as a UBO.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func (class) _get_uniform_buffer(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

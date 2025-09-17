@@ -3,7 +3,14 @@
 /*
 This class allows to compress or decompress data using GZIP/deflate in a streaming fashion. This is particularly useful when compressing or decompressing files that have to be sent through the network without needing to allocate them all in memory.
 
-After starting the stream via [Instance.StartCompression] (or [Instance.StartDecompression]), calling [graphics.gd/classdb/StreamPeer.Instance.PutPartialData] on this stream will compress (or decompress) the data, writing it to the internal buffer. Calling [graphics.gd/classdb/StreamPeer.Instance.GetAvailableBytes] will return the pending bytes in the internal buffer, and [graphics.gd/classdb/StreamPeer.Instance.GetPartialData] will retrieve the compressed (or decompressed) bytes from it. When the stream is over, you must call [Instance.Finish] to ensure the internal buffer is properly flushed (make sure to call [graphics.gd/classdb/StreamPeer.Instance.GetAvailableBytes] on last time to check if more data needs to be read after that).
+After starting the stream via [StartCompression] (or [StartDecompression]), calling [StreamPeer.PutPartialData] on this stream will compress (or decompress) the data, writing it to the internal buffer. Calling [StreamPeer.GetAvailableBytes] will return the pending bytes in the internal buffer, and [StreamPeer.GetPartialData] will retrieve the compressed (or decompressed) bytes from it. When the stream is over, you must call [Finish] to ensure the internal buffer is properly flushed (make sure to call [StreamPeer.GetAvailableBytes] on last time to check if more data needs to be read after that).
+
+[Finish]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerGZIP#Instance.Finish
+[StartCompression]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerGZIP#Instance.StartCompression
+[StartDecompression]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerGZIP#Instance.StartDecompression
+[StreamPeer.GetAvailableBytes]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.GetAvailableBytes
+[StreamPeer.GetPartialData]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.GetPartialData
+[StreamPeer.PutPartialData]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutPartialData
 */
 package StreamPeerGZIP
 
@@ -94,7 +101,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.StreamPeerGZIP
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.StreamPeerGZIP
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -114,7 +126,7 @@ func (self Instance) StartCompression() error { //gd:StreamPeerGZIP.start_compre
 /*
 Start the stream in compression mode with the given 'buffer_size', if 'use_deflate' is true uses deflate instead of GZIP.
 */
-func (self Expanded) StartCompression(use_deflate bool, buffer_size int) error { //gd:StreamPeerGZIP.start_compression
+func (self MoreArgs) StartCompression(use_deflate bool, buffer_size int) error { //gd:StreamPeerGZIP.start_compression
 	return error(gd.ToError(Advanced(self).StartCompression(use_deflate, int64(buffer_size))))
 }
 
@@ -128,7 +140,7 @@ func (self Instance) StartDecompression() error { //gd:StreamPeerGZIP.start_deco
 /*
 Start the stream in decompression mode with the given 'buffer_size', if 'use_deflate' is true uses deflate instead of GZIP.
 */
-func (self Expanded) StartDecompression(use_deflate bool, buffer_size int) error { //gd:StreamPeerGZIP.start_decompression
+func (self MoreArgs) StartDecompression(use_deflate bool, buffer_size int) error { //gd:StreamPeerGZIP.start_decompression
 	return error(gd.ToError(Advanced(self).StartDecompression(use_deflate, int64(buffer_size))))
 }
 

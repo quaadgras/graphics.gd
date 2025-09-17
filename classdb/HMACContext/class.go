@@ -139,14 +139,19 @@ type Any interface {
 }
 
 /*
-Initializes the HMACContext. This method cannot be called again on the same HMACContext until [Instance.Finish] has been called.
+Initializes the HMACContext. This method cannot be called again on the same HMACContext until [Finish] has been called.
+
+[Finish]: https://pkg.go.dev/graphics.gd/classdb/HMACContext#Instance.Finish
 */
 func (self Instance) Start(hash_type HashingContext.HashType, key []byte) error { //gd:HMACContext.start
 	return error(gd.ToError(Advanced(self).Start(hash_type, Packed.BytesFrom(key...))))
 }
 
 /*
-Updates the message to be HMACed. This can be called multiple times before [Instance.Finish] is called to append 'data' to the message, but cannot be called until [Instance.Start] has been called.
+Updates the message to be HMACed. This can be called multiple times before [Finish] is called to append 'data' to the message, but cannot be called until [Start] has been called.
+
+[Finish]: https://pkg.go.dev/graphics.gd/classdb/HMACContext#Instance.Finish
+[Start]: https://pkg.go.dev/graphics.gd/classdb/HMACContext#Instance.Start
 */
 func (self Instance) Update(data []byte) error { //gd:HMACContext.update
 	return error(gd.ToError(Advanced(self).Update(Packed.BytesFrom(data...))))
@@ -203,7 +208,9 @@ func New() Instance {
 }
 
 /*
-Initializes the HMACContext. This method cannot be called again on the same HMACContext until [Instance.Finish] has been called.
+Initializes the HMACContext. This method cannot be called again on the same HMACContext until [Finish] has been called.
+
+[Finish]: https://pkg.go.dev/graphics.gd/classdb/HMACContext#Instance.Finish
 */
 //go:nosplit
 func (self class) Start(hash_type HashingContext.HashType, key Packed.Bytes) Error.Code { //gd:HMACContext.start
@@ -216,7 +223,10 @@ func (self class) Start(hash_type HashingContext.HashType, key Packed.Bytes) Err
 }
 
 /*
-Updates the message to be HMACed. This can be called multiple times before [Instance.Finish] is called to append 'data' to the message, but cannot be called until [Instance.Start] has been called.
+Updates the message to be HMACed. This can be called multiple times before [Finish] is called to append 'data' to the message, but cannot be called until [Start] has been called.
+
+[Finish]: https://pkg.go.dev/graphics.gd/classdb/HMACContext#Instance.Finish
+[Start]: https://pkg.go.dev/graphics.gd/classdb/HMACContext#Instance.Start
 */
 //go:nosplit
 func (self class) Update(data Packed.Bytes) Error.Code { //gd:HMACContext.update

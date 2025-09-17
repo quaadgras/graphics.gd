@@ -18,7 +18,7 @@ var Relocations = map[string]string{
 	"Node.get_window":                              "Window.get",
 	"Node.get_last_exclusive_window":               "Window.get_last_exclusive",
 	"Node.get_tree":                                "SceneTree.get",
-	"Tween.bind_node":                              "Node.bind_node",
+	"Tween.bind_node":                              "Node.bind_to_tween",
 	"CanvasItem.draw_style_box":                    "StyleBox.draw",
 	"Viewport.get_embedded_subwindows":             "Window.get_embedded_in_view",
 	"GLTFNode.get_scene_node_path":                 "GLTFState.get_scene_node_path",

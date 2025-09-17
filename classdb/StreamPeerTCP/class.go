@@ -99,7 +99,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.StreamPeerTCP
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.StreamPeerTCP
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -112,7 +117,9 @@ type Any interface {
 /*
 Opens the TCP socket, and binds it to the specified local address.
 
-This method is generally not needed, and only used to force the subsequent call to [Instance.ConnectToHost] to use the specified 'host' and 'port' as source address. This can be desired in some NAT punchthrough techniques, or when forcing the source network interface.
+This method is generally not needed, and only used to force the subsequent call to [ConnectToHost] to use the specified 'host' and 'port' as source address. This can be desired in some NAT punchthrough techniques, or when forcing the source network interface.
+
+[ConnectToHost]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP#Instance.ConnectToHost
 */
 func (self Instance) Bind(port int) error { //gd:StreamPeerTCP.bind
 	return error(gd.ToError(Advanced(self).Bind(int64(port), String.New("*"))))
@@ -121,9 +128,11 @@ func (self Instance) Bind(port int) error { //gd:StreamPeerTCP.bind
 /*
 Opens the TCP socket, and binds it to the specified local address.
 
-This method is generally not needed, and only used to force the subsequent call to [Instance.ConnectToHost] to use the specified 'host' and 'port' as source address. This can be desired in some NAT punchthrough techniques, or when forcing the source network interface.
+This method is generally not needed, and only used to force the subsequent call to [ConnectToHost] to use the specified 'host' and 'port' as source address. This can be desired in some NAT punchthrough techniques, or when forcing the source network interface.
+
+[ConnectToHost]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP#Instance.ConnectToHost
 */
-func (self Expanded) Bind(port int, host string) error { //gd:StreamPeerTCP.bind
+func (self MoreArgs) Bind(port int, host string) error { //gd:StreamPeerTCP.bind
 	return error(gd.ToError(Advanced(self).Bind(int64(port), String.New(host))))
 }
 
@@ -135,7 +144,9 @@ func (self Instance) ConnectToHost(host string, port int) error { //gd:StreamPee
 }
 
 /*
-Poll the socket, updating its state. See [Instance.GetStatus].
+Poll the socket, updating its state. See [GetStatus].
+
+[GetStatus]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP#Instance.GetStatus
 */
 func (self Instance) Poll() error { //gd:StreamPeerTCP.poll
 	return error(gd.ToError(Advanced(self).Poll()))
@@ -233,7 +244,9 @@ func New() Instance {
 /*
 Opens the TCP socket, and binds it to the specified local address.
 
-This method is generally not needed, and only used to force the subsequent call to [Instance.ConnectToHost] to use the specified 'host' and 'port' as source address. This can be desired in some NAT punchthrough techniques, or when forcing the source network interface.
+This method is generally not needed, and only used to force the subsequent call to [ConnectToHost] to use the specified 'host' and 'port' as source address. This can be desired in some NAT punchthrough techniques, or when forcing the source network interface.
+
+[ConnectToHost]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP#Instance.ConnectToHost
 */
 //go:nosplit
 func (self class) Bind(port int64, host String.Readable) Error.Code { //gd:StreamPeerTCP.bind
@@ -259,7 +272,9 @@ func (self class) ConnectToHost(host String.Readable, port int64) Error.Code { /
 }
 
 /*
-Poll the socket, updating its state. See [Instance.GetStatus].
+Poll the socket, updating its state. See [GetStatus].
+
+[GetStatus]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP#Instance.GetStatus
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:StreamPeerTCP.poll
@@ -369,12 +384,20 @@ func init() {
 type Status int //gd:StreamPeerTCP.Status
 
 const (
-	// The initial status of the [graphics.gd/classdb/StreamPeerTCP]. This is also the status after disconnecting.
+	// The initial status of the [StreamPeerTCP]. This is also the status after disconnecting.
+	//
+	// [StreamPeerTCP]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP
 	StatusNone Status = 0
-	// A status representing a [graphics.gd/classdb/StreamPeerTCP] that is connecting to a host.
+	// A status representing a [StreamPeerTCP] that is connecting to a host.
+	//
+	// [StreamPeerTCP]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP
 	StatusConnecting Status = 1
-	// A status representing a [graphics.gd/classdb/StreamPeerTCP] that is connected to a host.
+	// A status representing a [StreamPeerTCP] that is connected to a host.
+	//
+	// [StreamPeerTCP]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP
 	StatusConnected Status = 2
-	// A status representing a [graphics.gd/classdb/StreamPeerTCP] in error state.
+	// A status representing a [StreamPeerTCP] in error state.
+	//
+	// [StreamPeerTCP]: https://pkg.go.dev/graphics.gd/classdb/StreamPeerTCP
 	StatusError Status = 3
 )

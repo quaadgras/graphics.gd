@@ -143,7 +143,9 @@ func (self Instance) GetSessionState() SessionState { //gd:OpenXRInterface.get_s
 /*
 Returns true if OpenXR's foveation extension is supported, the interface must be initialized before this returns a valid value.
 
-Note: This feature is only available on the Compatibility renderer and currently only available on some stand alone headsets. For Vulkan set [graphics.gd/classdb/Viewport.Instance.VrsMode] to VRS_XR on desktop.
+Note: This feature is only available on the Compatibility renderer and currently only available on some stand alone headsets. For Vulkan set [Viewport.VrsMode] to VRS_XR on desktop.
+
+[Viewport.VrsMode]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.VrsMode
 */
 func (self Instance) IsFoveationSupported() bool { //gd:OpenXRInterface.is_foveation_supported
 	return bool(Advanced(self).IsFoveationSupported())
@@ -213,7 +215,9 @@ func (self Instance) GetHandJointRotation(hand Hand, joint HandJoints) Quaternio
 }
 
 /*
-If handtracking is enabled, returns the position of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [graphics.gd/classdb/XROrigin3D] without worldscale applied!
+If handtracking is enabled, returns the position of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
+
+[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
 */
 func (self Instance) GetHandJointPosition(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_position
 	return Vector3.XYZ(Advanced(self).GetHandJointPosition(hand, joint))
@@ -227,14 +231,18 @@ func (self Instance) GetHandJointRadius(hand Hand, joint HandJoints) Float.X { /
 }
 
 /*
-If handtracking is enabled, returns the linear velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [graphics.gd/classdb/XROrigin3D] without worldscale applied!
+If handtracking is enabled, returns the linear velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
+
+[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
 */
 func (self Instance) GetHandJointLinearVelocity(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_linear_velocity
 	return Vector3.XYZ(Advanced(self).GetHandJointLinearVelocity(hand, joint))
 }
 
 /*
-If handtracking is enabled, returns the angular velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [graphics.gd/classdb/XROrigin3D]!
+If handtracking is enabled, returns the angular velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [XROrigin3D]!
+
+[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
 */
 func (self Instance) GetHandJointAngularVelocity(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_angular_velocity
 	return Vector3.XYZ(Advanced(self).GetHandJointAngularVelocity(hand, joint))
@@ -409,7 +417,9 @@ func (self class) SetRenderTargetSizeMultiplier(multiplier float64) { //gd:OpenX
 /*
 Returns true if OpenXR's foveation extension is supported, the interface must be initialized before this returns a valid value.
 
-Note: This feature is only available on the Compatibility renderer and currently only available on some stand alone headsets. For Vulkan set [graphics.gd/classdb/Viewport.Instance.VrsMode] to VRS_XR on desktop.
+Note: This feature is only available on the Compatibility renderer and currently only available on some stand alone headsets. For Vulkan set [Viewport.VrsMode] to VRS_XR on desktop.
+
+[Viewport.VrsMode]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.VrsMode
 */
 //go:nosplit
 func (self class) IsFoveationSupported() bool { //gd:OpenXRInterface.is_foveation_supported
@@ -541,7 +551,9 @@ func (self class) GetHandJointRotation(hand Hand, joint HandJoints) Quaternion.I
 }
 
 /*
-If handtracking is enabled, returns the position of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [graphics.gd/classdb/XROrigin3D] without worldscale applied!
+If handtracking is enabled, returns the position of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
+
+[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
 */
 //go:nosplit
 func (self class) GetHandJointPosition(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_position
@@ -567,7 +579,9 @@ func (self class) GetHandJointRadius(hand Hand, joint HandJoints) float64 { //gd
 }
 
 /*
-If handtracking is enabled, returns the linear velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [graphics.gd/classdb/XROrigin3D] without worldscale applied!
+If handtracking is enabled, returns the linear velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [XROrigin3D] without worldscale applied!
+
+[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
 */
 //go:nosplit
 func (self class) GetHandJointLinearVelocity(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_linear_velocity
@@ -580,7 +594,9 @@ func (self class) GetHandJointLinearVelocity(hand Hand, joint HandJoints) Vector
 }
 
 /*
-If handtracking is enabled, returns the angular velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [graphics.gd/classdb/XROrigin3D]!
+If handtracking is enabled, returns the angular velocity of a joint ('joint') of a hand ('hand') as provided by OpenXR. This is relative to [XROrigin3D]!
+
+[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
 */
 //go:nosplit
 func (self class) GetHandJointAngularVelocity(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_angular_velocity
@@ -845,23 +861,37 @@ const (
 	SessionStateUnknown SessionState = 0
 	// The initial state after the OpenXR session is created or after the session is destroyed.
 	SessionStateIdle SessionState = 1
-	// OpenXR is ready to begin our session. [Instance.OnSessionBegun] is emitted when we change to this state.
+	// OpenXR is ready to begin our session. [OnSessionBegun] is emitted when we change to this state.
+	//
+	// [OnSessionBegun]: https://pkg.go.dev/graphics.gd/classdb/#Instance.OnSessionBegun
 	SessionStateReady SessionState = 2
-	// The application has synched its frame loop with the runtime but we're not rendering anything. [Instance.OnSessionSynchronized] is emitted when we change to this state.
+	// The application has synched its frame loop with the runtime but we're not rendering anything. [OnSessionSynchronized] is emitted when we change to this state.
+	//
+	// [OnSessionSynchronized]: https://pkg.go.dev/graphics.gd/classdb/#Instance.OnSessionSynchronized
 	SessionStateSynchronized SessionState = 3
-	// The application has synched its frame loop with the runtime and we're rendering output to the user, however we receive no user input. [Instance.OnSessionVisible] is emitted when we change to this state.
+	// The application has synched its frame loop with the runtime and we're rendering output to the user, however we receive no user input. [OnSessionVisible] is emitted when we change to this state.
 	//
 	// Note: This is the current state just before we get the focused state, whenever the user opens a system menu, switches to another application, or takes off their headset.
+	//
+	// [OnSessionVisible]: https://pkg.go.dev/graphics.gd/classdb/#Instance.OnSessionVisible
 	SessionStateVisible SessionState = 4
-	// The application has synched its frame loop with the runtime, we're rendering output to the user and we're receiving XR input. [Instance.OnSessionFocussed] is emitted when we change to this state.
+	// The application has synched its frame loop with the runtime, we're rendering output to the user and we're receiving XR input. [OnSessionFocussed] is emitted when we change to this state.
 	//
 	// Note: This is the state OpenXR will be in when the user can fully interact with your game.
+	//
+	// [OnSessionFocussed]: https://pkg.go.dev/graphics.gd/classdb/#Instance.OnSessionFocussed
 	SessionStateFocused SessionState = 5
-	// Our session is being stopped. [Instance.OnSessionStopping] is emitted when we change to this state.
+	// Our session is being stopped. [OnSessionStopping] is emitted when we change to this state.
+	//
+	// [OnSessionStopping]: https://pkg.go.dev/graphics.gd/classdb/#Instance.OnSessionStopping
 	SessionStateStopping SessionState = 6
-	// The session is about to be lost. [Instance.OnSessionLossPending] is emitted when we change to this state.
+	// The session is about to be lost. [OnSessionLossPending] is emitted when we change to this state.
+	//
+	// [OnSessionLossPending]: https://pkg.go.dev/graphics.gd/classdb/#Instance.OnSessionLossPending
 	SessionStateLossPending SessionState = 7
-	// The OpenXR instance is about to be destroyed and we're existing. [Instance.OnInstanceExiting] is emitted when we change to this state.
+	// The OpenXR instance is about to be destroyed and we're existing. [OnInstanceExiting] is emitted when we change to this state.
+	//
+	// [OnInstanceExiting]: https://pkg.go.dev/graphics.gd/classdb/#Instance.OnInstanceExiting
 	SessionStateExiting SessionState = 8
 )
 

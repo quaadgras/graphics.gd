@@ -7,11 +7,16 @@ Particle collision shapes work in real-time and can be moved, rotated and scaled
 
 Particle collision shapes can be temporarily disabled by hiding them.
 
-Note: [graphics.gd/classdb/ParticleProcessMaterial.Instance.CollisionMode] must be [Particleprocessmaterial.CollisionRigid] or [Particleprocessmaterial.CollisionHideOnContact] on the [graphics.gd/classdb/GPUParticles3D]'s process material for collision to work.
+Note: [ParticleProcessMaterial.CollisionMode] must be [Particleprocessmaterial.CollisionRigid] or [Particleprocessmaterial.CollisionHideOnContact] on the [GPUParticles3D]'s process material for collision to work.
 
-Note: Particle collision only affects [graphics.gd/classdb/GPUParticles3D], not [graphics.gd/classdb/CPUParticles3D].
+Note: Particle collision only affects [GPUParticles3D], not [CPUParticles3D].
 
-Note: Particles pushed by a collider that is being moved will not be interpolated, which can result in visible stuttering. This can be alleviated by setting [graphics.gd/classdb/GPUParticles3D.Instance.FixedFps] to 0 or a value that matches or exceeds the target framerate.
+Note: Particles pushed by a collider that is being moved will not be interpolated, which can result in visible stuttering. This can be alleviated by setting [GPUParticles3D.FixedFps] to 0 or a value that matches or exceeds the target framerate.
+
+[CPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles3D
+[GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+[GPUParticles3D.FixedFps]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.FixedFps
+[ParticleProcessMaterial.CollisionMode]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.CollisionMode
 */
 package GPUParticlesCollision3D
 

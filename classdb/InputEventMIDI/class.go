@@ -5,7 +5,7 @@ InputEventMIDI stores information about messages from [MIDI] (Musical Instrument
 
 MIDI messages can be received over a 5-pin MIDI connector or over USB. If your device supports both be sure to check the settings in the device to see which output it is using.
 
-By default, Godot does not detect MIDI devices. You need to call [graphics.gd/classdb/OS.OpenMidiInputs], first. You can check which devices are detected with [graphics.gd/classdb/OS.GetConnectedMidiInputs], and close the connection with [graphics.gd/classdb/OS.CloseMidiInputs].
+By default, Godot does not detect MIDI devices. You need to call [OS.OpenMidiInputs], first. You can check which devices are detected with [OS.GetConnectedMidiInputs], and close the connection with [OS.CloseMidiInputs].
 
 	package main
 
@@ -44,9 +44,12 @@ By default, Godot does not detect MIDI devices. You need to call [graphics.gd/cl
 
 Note: Godot does not support MIDI output, so there is no way to emit MIDI messages from Godot. Only MIDI input is supported.
 
-Note: On the Web platform, using MIDI input requires a browser permission to be granted first. This permission request is performed when calling [graphics.gd/classdb/OS.OpenMidiInputs]. MIDI input will not work until the user accepts the permission request.
+Note: On the Web platform, using MIDI input requires a browser permission to be granted first. This permission request is performed when calling [OS.OpenMidiInputs]. MIDI input will not work until the user accepts the permission request.
 
 [MIDI]: https://en.wikipedia.org/wiki/MIDI
+[OS.CloseMidiInputs]: https://pkg.go.dev/graphics.gd/classdb/OS#CloseMidiInputs
+[OS.GetConnectedMidiInputs]: https://pkg.go.dev/graphics.gd/classdb/OS#GetConnectedMidiInputs
+[OS.OpenMidiInputs]: https://pkg.go.dev/graphics.gd/classdb/OS#OpenMidiInputs
 */
 package InputEventMIDI
 
@@ -409,11 +412,15 @@ func init() {
 type Message int //gd:MIDIMessage
 
 const (
-	// Does not correspond to any MIDI message. This is the default value of [graphics.gd/classdb/InputEventMIDI.Instance.Message].
+	// Does not correspond to any MIDI message. This is the default value of [InputEventMIDI.Message].
+	//
+	// [InputEventMIDI.Message]: https://pkg.go.dev/graphics.gd/classdb/InputEventMIDI#Instance.Message
 	MidiMessageNone Message = 0
 	// MIDI message sent when a note is released.
 	//
-	// Note: Not all MIDI devices send this message; some may send [MidiMessageNoteOn] with [graphics.gd/classdb/InputEventMIDI.Instance.Velocity] set to 0.
+	// Note: Not all MIDI devices send this message; some may send [MidiMessageNoteOn] with [InputEventMIDI.Velocity] set to 0.
+	//
+	// [InputEventMIDI.Velocity]: https://pkg.go.dev/graphics.gd/classdb/InputEventMIDI#Instance.Velocity
 	MidiMessageNoteOff Message = 8
 	// MIDI message sent when a note is pressed.
 	MidiMessageNoteOn Message = 9
@@ -431,19 +438,27 @@ const (
 	MidiMessagePitchBend Message = 14
 	// MIDI system exclusive (SysEx) message. This type of message is not standardized and it's highly dependent on the MIDI device sending it.
 	//
-	// Note: Getting this message's data from [graphics.gd/classdb/InputEventMIDI] is not implemented.
+	// Note: Getting this message's data from [InputEventMIDI] is not implemented.
+	//
+	// [InputEventMIDI]: https://pkg.go.dev/graphics.gd/classdb/InputEventMIDI
 	MidiMessageSystemExclusive Message = 240
 	// MIDI message sent every quarter frame to keep connected MIDI devices synchronized. Related to [MidiMessageTimingClock].
 	//
-	// Note: Getting this message's data from [graphics.gd/classdb/InputEventMIDI] is not implemented.
+	// Note: Getting this message's data from [InputEventMIDI] is not implemented.
+	//
+	// [InputEventMIDI]: https://pkg.go.dev/graphics.gd/classdb/InputEventMIDI
 	MidiMessageQuarterFrame Message = 241
 	// MIDI message sent to jump onto a new position in the current sequence or song.
 	//
-	// Note: Getting this message's data from [graphics.gd/classdb/InputEventMIDI] is not implemented.
+	// Note: Getting this message's data from [InputEventMIDI] is not implemented.
+	//
+	// [InputEventMIDI]: https://pkg.go.dev/graphics.gd/classdb/InputEventMIDI
 	MidiMessageSongPositionPointer Message = 242
 	// MIDI message sent to select a sequence or song to play.
 	//
-	// Note: Getting this message's data from [graphics.gd/classdb/InputEventMIDI] is not implemented.
+	// Note: Getting this message's data from [InputEventMIDI] is not implemented.
+	//
+	// [InputEventMIDI]: https://pkg.go.dev/graphics.gd/classdb/InputEventMIDI
 	MidiMessageSongSelect Message = 243
 	// MIDI message sent to request a tuning calibration. Used on analog synthesizers. Most modern MIDI devices do not need this message.
 	MidiMessageTuneRequest Message = 246

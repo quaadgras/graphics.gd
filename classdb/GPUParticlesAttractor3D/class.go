@@ -5,9 +5,13 @@ Particle attractors can be used to attract particles towards the attractor's ori
 
 Particle attractors work in real-time and can be moved, rotated and scaled during gameplay. Unlike collision shapes, non-uniform scaling of attractors is also supported.
 
-Attractors can be temporarily disabled by hiding them, or by setting their [Instance.Strength] to 0.0.
+Attractors can be temporarily disabled by hiding them, or by setting their [Strength] to 0.0.
 
-Note: Particle attractors only affect [graphics.gd/classdb/GPUParticles3D], not [graphics.gd/classdb/CPUParticles3D].
+Note: Particle attractors only affect [GPUParticles3D], not [CPUParticles3D].
+
+[CPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles3D
+[GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+[Strength]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Strength
 */
 package GPUParticlesAttractor3D
 

@@ -3,11 +3,20 @@
 /*
 Controls camera-specific attributes such as depth of field and exposure override.
 
-When used in a [graphics.gd/classdb/WorldEnvironment] it provides default settings for exposure, auto-exposure, and depth of field that will be used by all cameras without their own [graphics.gd/classdb/CameraAttributes], including the editor camera. When used in a [graphics.gd/classdb/Camera3D] it will override any [graphics.gd/classdb/CameraAttributes] set in the [graphics.gd/classdb/WorldEnvironment]. When used in [graphics.gd/classdb/VoxelGI] or [graphics.gd/classdb/LightmapGI], only the exposure settings will be used.
+When used in a [WorldEnvironment] it provides default settings for exposure, auto-exposure, and depth of field that will be used by all cameras without their own [CameraAttributes], including the editor camera. When used in a [Camera3D] it will override any [CameraAttributes] set in the [WorldEnvironment]. When used in [VoxelGI] or [LightmapGI], only the exposure settings will be used.
 
-See also [graphics.gd/classdb/Environment] for general 3D environment settings.
+See also [Environment] for general 3D environment settings.
 
-This is a pure virtual class that is inherited by [graphics.gd/classdb/CameraAttributesPhysical] and [graphics.gd/classdb/CameraAttributesPractical].
+This is a pure virtual class that is inherited by [CameraAttributesPhysical] and [CameraAttributesPractical].
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
+[CameraAttributesPhysical]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPhysical
+[CameraAttributesPractical]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
+[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
+[WorldEnvironment]: https://pkg.go.dev/graphics.gd/classdb/WorldEnvironment
 */
 package CameraAttributes
 

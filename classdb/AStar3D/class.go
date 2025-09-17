@@ -3,9 +3,9 @@
 /*
 A* (A star) is a computer algorithm used in pathfinding and graph traversal, the process of plotting short paths among vertices (points), passing through a given set of edges (segments). It enjoys widespread use due to its performance and accuracy. Godot's A* implementation uses points in 3D space and Euclidean distances by default.
 
-You must add points manually with [Instance.AddPoint] and create segments manually with [Instance.ConnectPoints]. Once done, you can test if there is a path between two points with the [Instance.ArePointsConnected] function, get a path containing indices by [Instance.GetIdPath], or one containing actual coordinates with [Instance.GetPointPath].
+You must add points manually with [AddPoint] and create segments manually with [ConnectPoints]. Once done, you can test if there is a path between two points with the [ArePointsConnected] function, get a path containing indices by [GetIdPath], or one containing actual coordinates with [GetPointPath].
 
-It is also possible to use non-Euclidean distances. To do so, create a script that extends [graphics.gd/classdb/AStar3D] and override the methods [Interface.ComputeCost] and [Interface.EstimateCost]. Both should take two point IDs and return the distance between the corresponding points.
+It is also possible to use non-Euclidean distances. To do so, create a script that extends [AStar3D] and override the methods [ComputeCost] and [EstimateCost]. Both should take two point IDs and return the distance between the corresponding points.
 
 Example: Use Manhattan distance instead of Euclidean distance:
 
@@ -32,9 +32,18 @@ Example: Use Manhattan distance instead of Euclidean distance:
 		return Float.Abs(u_pos.X-v_pos.X) + Float.Abs(u_pos.Y-v_pos.Y) + Float.Abs(u_pos.Z-v_pos.Z)
 	}
 
-[Interface.EstimateCost] should return a lower bound of the distance, i.e. _estimate_cost(u, v) <= _compute_cost(u, v). This serves as a hint to the algorithm because the custom [Interface.ComputeCost] might be computation-heavy. If this is not the case, make [Interface.EstimateCost] return the same value as [Interface.ComputeCost] to provide the algorithm with the most accurate information.
+[EstimateCost] should return a lower bound of the distance, i.e. _estimate_cost(u, v) <= _compute_cost(u, v). This serves as a hint to the algorithm because the custom [ComputeCost] might be computation-heavy. If this is not the case, make [EstimateCost] return the same value as [ComputeCost] to provide the algorithm with the most accurate information.
 
-If the default [Interface.EstimateCost] and [Interface.ComputeCost] methods are used, or if the supplied [Interface.EstimateCost] method returns a lower bound of the cost, then the paths returned by A* will be the lowest-cost paths. Here, the cost of a path equals the sum of the [Interface.ComputeCost] results of all segments in the path multiplied by the weight_scales of the endpoints of the respective segments. If the default methods are used and the weight_scales of all points are set to 1.0, then this equals the sum of Euclidean distances of all segments in the path.
+If the default [EstimateCost] and [ComputeCost] methods are used, or if the supplied [EstimateCost] method returns a lower bound of the cost, then the paths returned by A* will be the lowest-cost paths. Here, the cost of a path equals the sum of the [ComputeCost] results of all segments in the path multiplied by the weight_scales of the endpoints of the respective segments. If the default methods are used and the weight_scales of all points are set to 1.0, then this equals the sum of Euclidean distances of all segments in the path.
+
+[AStar3D]: https://pkg.go.dev/graphics.gd/classdb/AStar3D
+[AddPoint]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Instance.AddPoint
+[ArePointsConnected]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Instance.ArePointsConnected
+[ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Interface
+[ConnectPoints]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Instance.ConnectPoints
+[EstimateCost]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Interface
+[GetIdPath]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Instance.GetIdPath
+[GetPointPath]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Instance.GetPointPath
 */
 package AStar3D
 
@@ -146,7 +155,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.AStar3D
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.AStar3D
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -157,17 +171,24 @@ type Any interface {
 }
 
 type Interface interface {
-	// Called when neighboring point enters processing and if [Instance.NeighborFilterEnabled] is true. If true is returned the point will not be processed.
+	// Called when neighboring point enters processing and if [NeighborFilterEnabled] is true. If true is returned the point will not be processed.
 	//
-	// Note that this function is hidden in the default [graphics.gd/classdb/AStar3D] class.
+	// Note that this function is hidden in the default [AStar3D] class.
+	//
+	// [AStar3D]: https://pkg.go.dev/graphics.gd/classdb/AStar3D
+	// [NeighborFilterEnabled]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Instance.NeighborFilterEnabled
 	FilterNeighbor(from_id Point, neighbor_id Point) bool
 	// Called when estimating the cost between a point and the path's ending point.
 	//
-	// Note that this function is hidden in the default [graphics.gd/classdb/AStar3D] class.
+	// Note that this function is hidden in the default [AStar3D] class.
+	//
+	// [AStar3D]: https://pkg.go.dev/graphics.gd/classdb/AStar3D
 	EstimateCost(from_id Point, end_id Point) Float.X
 	// Called when computing the cost between two connected points.
 	//
-	// Note that this function is hidden in the default [graphics.gd/classdb/AStar3D] class.
+	// Note that this function is hidden in the default [AStar3D] class.
+	//
+	// [AStar3D]: https://pkg.go.dev/graphics.gd/classdb/AStar3D
 	ComputeCost(from_id Point, to_id Point) Float.X
 }
 
@@ -181,9 +202,12 @@ func (self implementation) EstimateCost(from_id Point, end_id Point) (_ Float.X)
 func (self implementation) ComputeCost(from_id Point, to_id Point) (_ Float.X)       { return }
 
 /*
-Called when neighboring point enters processing and if [Instance.NeighborFilterEnabled] is true. If true is returned the point will not be processed.
+Called when neighboring point enters processing and if [NeighborFilterEnabled] is true. If true is returned the point will not be processed.
 
-Note that this function is hidden in the default [graphics.gd/classdb/AStar3D] class.
+Note that this function is hidden in the default [AStar3D] class.
+
+[AStar3D]: https://pkg.go.dev/graphics.gd/classdb/AStar3D
+[NeighborFilterEnabled]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Instance.NeighborFilterEnabled
 */
 func (Instance) _filter_neighbor(impl func(ptr gdclass.Receiver, from_id Point, neighbor_id Point) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -198,7 +222,9 @@ func (Instance) _filter_neighbor(impl func(ptr gdclass.Receiver, from_id Point, 
 /*
 Called when estimating the cost between a point and the path's ending point.
 
-Note that this function is hidden in the default [graphics.gd/classdb/AStar3D] class.
+Note that this function is hidden in the default [AStar3D] class.
+
+[AStar3D]: https://pkg.go.dev/graphics.gd/classdb/AStar3D
 */
 func (Instance) _estimate_cost(impl func(ptr gdclass.Receiver, from_id Point, end_id Point) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -213,7 +239,9 @@ func (Instance) _estimate_cost(impl func(ptr gdclass.Receiver, from_id Point, en
 /*
 Called when computing the cost between two connected points.
 
-Note that this function is hidden in the default [graphics.gd/classdb/AStar3D] class.
+Note that this function is hidden in the default [AStar3D] class.
+
+[AStar3D]: https://pkg.go.dev/graphics.gd/classdb/AStar3D
 */
 func (Instance) _compute_cost(impl func(ptr gdclass.Receiver, from_id Point, to_id Point) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -235,9 +263,11 @@ func (self Instance) GetAvailablePointId() int { //gd:AStar3D.get_available_poin
 /*
 Adds a new point at the given position with the given identifier. The 'id' must be 0 or larger, and the 'weight_scale' must be 0.0 or greater.
 
-The 'weight_scale' is multiplied by the result of [Interface.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
+The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
 
 If there already exists a point for the given 'id', its position and weight scale are updated to the given values.
+
+[ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Interface
 */
 func (self Instance) AddPoint(id Point, position Vector3.XYZ) { //gd:AStar3D.add_point
 	Advanced(self).AddPoint(int64(id), Vector3.XYZ(position), float64(1.0))
@@ -246,11 +276,13 @@ func (self Instance) AddPoint(id Point, position Vector3.XYZ) { //gd:AStar3D.add
 /*
 Adds a new point at the given position with the given identifier. The 'id' must be 0 or larger, and the 'weight_scale' must be 0.0 or greater.
 
-The 'weight_scale' is multiplied by the result of [Interface.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
+The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
 
 If there already exists a point for the given 'id', its position and weight scale are updated to the given values.
+
+[ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Interface
 */
-func (self Expanded) AddPoint(id Point, position Vector3.XYZ, weight_scale Float.X) { //gd:AStar3D.add_point
+func (self MoreArgs) AddPoint(id Point, position Vector3.XYZ, weight_scale Float.X) { //gd:AStar3D.add_point
 	Advanced(self).AddPoint(int64(id), Vector3.XYZ(position), float64(weight_scale))
 }
 
@@ -276,7 +308,9 @@ func (self Instance) GetPointWeightScale(id Point) Float.X { //gd:AStar3D.get_po
 }
 
 /*
-Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is multiplied by the result of [Interface.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
+Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
+
+[ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Interface
 */
 func (self Instance) SetPointWeightScale(id Point, weight_scale Float.X) { //gd:AStar3D.set_point_weight_scale
 	Advanced(self).SetPointWeightScale(int64(id), float64(weight_scale))
@@ -320,7 +354,7 @@ func (self Instance) SetPointDisabled(id Point) { //gd:AStar3D.set_point_disable
 /*
 Disables or enables the specified point for pathfinding. Useful for making a temporary obstacle.
 */
-func (self Expanded) SetPointDisabled(id Point, disabled bool) { //gd:AStar3D.set_point_disabled
+func (self MoreArgs) SetPointDisabled(id Point, disabled bool) { //gd:AStar3D.set_point_disabled
 	Advanced(self).SetPointDisabled(int64(id), disabled)
 }
 
@@ -341,7 +375,7 @@ func (self Instance) ConnectPoints(id Point, to_id Point) { //gd:AStar3D.connect
 /*
 Creates a segment between the given points. If 'bidirectional' is false, only movement from 'id' to 'to_id' is allowed, not the reverse direction.
 */
-func (self Expanded) ConnectPoints(id Point, to_id Point, bidirectional bool) { //gd:AStar3D.connect_points
+func (self MoreArgs) ConnectPoints(id Point, to_id Point, bidirectional bool) { //gd:AStar3D.connect_points
 	Advanced(self).ConnectPoints(int64(id), int64(to_id), bidirectional)
 }
 
@@ -355,7 +389,7 @@ func (self Instance) DisconnectPoints(id Point, to_id Point) { //gd:AStar3D.disc
 /*
 Deletes the segment between the given points. If 'bidirectional' is false, only movement from 'id' to 'to_id' is prevented, and a unidirectional segment possibly remains.
 */
-func (self Expanded) DisconnectPoints(id Point, to_id Point, bidirectional bool) { //gd:AStar3D.disconnect_points
+func (self MoreArgs) DisconnectPoints(id Point, to_id Point, bidirectional bool) { //gd:AStar3D.disconnect_points
 	Advanced(self).DisconnectPoints(int64(id), int64(to_id), bidirectional)
 }
 
@@ -369,7 +403,7 @@ func (self Instance) ArePointsConnected(id Point, to_id Point) bool { //gd:AStar
 /*
 Returns whether the two given points are directly connected by a segment. If 'bidirectional' is false, returns whether movement from 'id' to 'to_id' is possible through this segment.
 */
-func (self Expanded) ArePointsConnected(id Point, to_id Point, bidirectional bool) bool { //gd:AStar3D.are_points_connected
+func (self MoreArgs) ArePointsConnected(id Point, to_id Point, bidirectional bool) bool { //gd:AStar3D.are_points_connected
 	return bool(Advanced(self).ArePointsConnected(int64(id), int64(to_id), bidirectional))
 }
 
@@ -381,7 +415,9 @@ func (self Instance) GetPointCount() int { //gd:AStar3D.get_point_count
 }
 
 /*
-Returns the capacity of the structure backing the points, useful in conjunction with [Instance.ReserveSpace].
+Returns the capacity of the structure backing the points, useful in conjunction with [ReserveSpace].
+
+[ReserveSpace]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Instance.ReserveSpace
 */
 func (self Instance) GetPointCapacity() int { //gd:AStar3D.get_point_capacity
 	return int(int(Advanced(self).GetPointCapacity()))
@@ -415,7 +451,7 @@ Returns the ID of the closest point to 'to_position', optionally taking disabled
 
 Note: If several points are the closest to 'to_position', the one with the smallest ID will be returned, ensuring a deterministic result.
 */
-func (self Expanded) GetClosestPoint(to_position Vector3.XYZ, include_disabled bool) int { //gd:AStar3D.get_closest_point
+func (self MoreArgs) GetClosestPoint(to_position Vector3.XYZ, include_disabled bool) int { //gd:AStar3D.get_closest_point
 	return int(int(Advanced(self).GetClosestPoint(Vector3.XYZ(to_position), include_disabled)))
 }
 
@@ -433,9 +469,12 @@ Returns an array with the points that are in the path found by AStar3D between t
 
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
 
-Note: This method is not thread-safe; it can only be used from a single [graphics.gd/classdb/Thread] at a given time. Consider using [graphics.gd/classdb/Mutex] to ensure exclusive access to one thread to avoid race conditions.
+Note: This method is not thread-safe; it can only be used from a single [Thread] at a given time. Consider using [Mutex] to ensure exclusive access to one thread to avoid race conditions.
 
 Additionally, when 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
+
+[Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
+[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
 */
 func (self Instance) GetPointPath(from_id Point, to_id Point) []Vector3.XYZ { //gd:AStar3D.get_point_path
 	return []Vector3.XYZ(slices.Collect(Advanced(self).GetPointPath(int64(from_id), int64(to_id), false).Values()))
@@ -446,11 +485,14 @@ Returns an array with the points that are in the path found by AStar3D between t
 
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
 
-Note: This method is not thread-safe; it can only be used from a single [graphics.gd/classdb/Thread] at a given time. Consider using [graphics.gd/classdb/Mutex] to ensure exclusive access to one thread to avoid race conditions.
+Note: This method is not thread-safe; it can only be used from a single [Thread] at a given time. Consider using [Mutex] to ensure exclusive access to one thread to avoid race conditions.
 
 Additionally, when 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
+
+[Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
+[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
 */
-func (self Expanded) GetPointPath(from_id Point, to_id Point, allow_partial_path bool) []Vector3.XYZ { //gd:AStar3D.get_point_path
+func (self MoreArgs) GetPointPath(from_id Point, to_id Point, allow_partial_path bool) []Vector3.XYZ { //gd:AStar3D.get_point_path
 	return []Vector3.XYZ(slices.Collect(Advanced(self).GetPointPath(int64(from_id), int64(to_id), allow_partial_path).Values()))
 }
 
@@ -476,7 +518,7 @@ Note: When 'allow_partial_path' is true and 'to_id' is disabled the search may t
 
 If you change the 2nd point's weight to 3, then the result will be [1, 4, 3] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
 */
-func (self Expanded) GetIdPath(from_id Point, to_id Point, allow_partial_path bool) []Point { //gd:AStar3D.get_id_path
+func (self MoreArgs) GetIdPath(from_id Point, to_id Point, allow_partial_path bool) []Point { //gd:AStar3D.get_id_path
 	return []Point(gd.IntsCollectAs[Point](Advanced(self).GetIdPath(int64(from_id), int64(to_id), allow_partial_path).Values()))
 }
 
@@ -532,9 +574,12 @@ func (self Instance) SetNeighborFilterEnabled(value bool) {
 }
 
 /*
-Called when neighboring point enters processing and if [Instance.NeighborFilterEnabled] is true. If true is returned the point will not be processed.
+Called when neighboring point enters processing and if [NeighborFilterEnabled] is true. If true is returned the point will not be processed.
 
-Note that this function is hidden in the default [graphics.gd/classdb/AStar3D] class.
+Note that this function is hidden in the default [AStar3D] class.
+
+[AStar3D]: https://pkg.go.dev/graphics.gd/classdb/AStar3D
+[NeighborFilterEnabled]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Instance.NeighborFilterEnabled
 */
 func (class) _filter_neighbor(impl func(ptr gdclass.Receiver, from_id int64, neighbor_id int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -549,7 +594,9 @@ func (class) _filter_neighbor(impl func(ptr gdclass.Receiver, from_id int64, nei
 /*
 Called when estimating the cost between a point and the path's ending point.
 
-Note that this function is hidden in the default [graphics.gd/classdb/AStar3D] class.
+Note that this function is hidden in the default [AStar3D] class.
+
+[AStar3D]: https://pkg.go.dev/graphics.gd/classdb/AStar3D
 */
 func (class) _estimate_cost(impl func(ptr gdclass.Receiver, from_id int64, end_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -564,7 +611,9 @@ func (class) _estimate_cost(impl func(ptr gdclass.Receiver, from_id int64, end_i
 /*
 Called when computing the cost between two connected points.
 
-Note that this function is hidden in the default [graphics.gd/classdb/AStar3D] class.
+Note that this function is hidden in the default [AStar3D] class.
+
+[AStar3D]: https://pkg.go.dev/graphics.gd/classdb/AStar3D
 */
 func (class) _compute_cost(impl func(ptr gdclass.Receiver, from_id int64, to_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -589,11 +638,13 @@ func (self class) GetAvailablePointId() int64 { //gd:AStar3D.get_available_point
 /*
 Adds a new point at the given position with the given identifier. The 'id' must be 0 or larger, and the 'weight_scale' must be 0.0 or greater.
 
-The 'weight_scale' is multiplied by the result of [Interface.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
+The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
 
 
 
 If there already exists a point for the given 'id', its position and weight scale are updated to the given values.
+
+[ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Interface
 */
 //go:nosplit
 func (self class) AddPoint(id int64, position Vector3.XYZ, weight_scale float64) { //gd:AStar3D.add_point
@@ -636,7 +687,9 @@ func (self class) GetPointWeightScale(id int64) float64 { //gd:AStar3D.get_point
 }
 
 /*
-Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is multiplied by the result of [Interface.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
+Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
+
+[ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Interface
 */
 //go:nosplit
 func (self class) SetPointWeightScale(id int64, weight_scale float64) { //gd:AStar3D.set_point_weight_scale
@@ -770,7 +823,9 @@ func (self class) GetPointCount() int64 { //gd:AStar3D.get_point_count
 }
 
 /*
-Returns the capacity of the structure backing the points, useful in conjunction with [Instance.ReserveSpace].
+Returns the capacity of the structure backing the points, useful in conjunction with [ReserveSpace].
+
+[ReserveSpace]: https://pkg.go.dev/graphics.gd/classdb/AStar3D#Instance.ReserveSpace
 */
 //go:nosplit
 func (self class) GetPointCapacity() int64 { //gd:AStar3D.get_point_capacity
@@ -829,9 +884,12 @@ Returns an array with the points that are in the path found by AStar3D between t
 
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
 
-Note: This method is not thread-safe; it can only be used from a single [graphics.gd/classdb/Thread] at a given time. Consider using [graphics.gd/classdb/Mutex] to ensure exclusive access to one thread to avoid race conditions.
+Note: This method is not thread-safe; it can only be used from a single [Thread] at a given time. Consider using [Mutex] to ensure exclusive access to one thread to avoid race conditions.
 
 Additionally, when 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
+
+[Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
+[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
 */
 //go:nosplit
 func (self class) GetPointPath(from_id int64, to_id int64, allow_partial_path bool) Packed.Array[Vector3.XYZ] { //gd:AStar3D.get_point_path

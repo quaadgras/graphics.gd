@@ -131,7 +131,9 @@ func EvalOptions(code string, use_global_execution_context bool) any { //gd:Java
 }
 
 /*
-Returns an interface to a JavaScript object that can be used by scripts. The 'interface' must be a valid property of the JavaScript window. The callback must accept a single slice argument, which will contain the JavaScript arguments. See [graphics.gd/classdb/JavaScriptObject] for usage.
+Returns an interface to a JavaScript object that can be used by scripts. The 'interface' must be a valid property of the JavaScript window. The callback must accept a single slice argument, which will contain the JavaScript arguments. See [JavaScriptObject] for usage.
+
+[JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
 */
 func GetInterface(intf string) JavaScriptObject.Instance { //gd:JavaScriptBridge.get_interface
 	once.Do(singleton)
@@ -139,10 +141,11 @@ func GetInterface(intf string) JavaScriptObject.Instance { //gd:JavaScriptBridge
 }
 
 /*
-Creates a reference to a func that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [graphics.gd/classdb/JavaScriptObject] for usage.
+Creates a reference to a func that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
 
 Note: The callback function must take exactly one slice argument, which is going to be the JavaScript [arguments object] converted to an array.
 
+[JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
 [arguments object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments
 */
 func CreateCallback(callable func(args []any) any) JavaScriptObject.Instance { //gd:JavaScriptBridge.create_callback
@@ -172,7 +175,9 @@ func JsBufferToPackedByteArray(javascript_buffer JavaScriptObject.Instance) []by
 }
 
 /*
-Creates a new JavaScript object using the new constructor. The 'object' must a valid property of the JavaScript window. See [graphics.gd/classdb/JavaScriptObject] for usage.
+Creates a new JavaScript object using the new constructor. The 'object' must a valid property of the JavaScript window. See [JavaScriptObject] for usage.
+
+[JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
 */
 func CreateObject(obj string, args ...any) any { //gd:JavaScriptBridge.create_object
 	once.Do(singleton)
@@ -240,7 +245,9 @@ func PwaUpdate() error { //gd:JavaScriptBridge.pwa_update
 /*
 Force synchronization of the persistent file system (when enabled).
 
-Note: This is only useful for modules or extensions that can't use [graphics.gd/classdb/FileAccess] to write files.
+Note: This is only useful for modules or extensions that can't use [FileAccess] to write files.
+
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 */
 func ForceFsSync() { //gd:JavaScriptBridge.force_fs_sync
 	once.Do(singleton)
@@ -286,7 +293,9 @@ func (self class) Eval(code String.Readable, use_global_execution_context bool) 
 }
 
 /*
-Returns an interface to a JavaScript object that can be used by scripts. The 'interface' must be a valid property of the JavaScript window. The callback must accept a single slice argument, which will contain the JavaScript arguments. See [graphics.gd/classdb/JavaScriptObject] for usage.
+Returns an interface to a JavaScript object that can be used by scripts. The 'interface' must be a valid property of the JavaScript window. The callback must accept a single slice argument, which will contain the JavaScript arguments. See [JavaScriptObject] for usage.
+
+[JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
 */
 //go:nosplit
 func (self class) GetInterface(intf String.Readable) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.get_interface
@@ -296,10 +305,11 @@ func (self class) GetInterface(intf String.Readable) [1]gdclass.JavaScriptObject
 }
 
 /*
-Creates a reference to a func that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [graphics.gd/classdb/JavaScriptObject] for usage.
+Creates a reference to a func that can be used as a callback by JavaScript. The reference must be kept until the callback happens, or it won't be called at all. See [JavaScriptObject] for usage.
 
 Note: The callback function must take exactly one slice argument, which is going to be the JavaScript [arguments object] converted to an array.
 
+[JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
 [arguments object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments
 */
 //go:nosplit
@@ -334,7 +344,9 @@ func (self class) JsBufferToPackedByteArray(javascript_buffer [1]gdclass.JavaScr
 }
 
 /*
-Creates a new JavaScript object using the new constructor. The 'object' must a valid property of the JavaScript window. See [graphics.gd/classdb/JavaScriptObject] for usage.
+Creates a new JavaScript object using the new constructor. The 'object' must a valid property of the JavaScript window. See [JavaScriptObject] for usage.
+
+[JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject
 */
 //go:nosplit
 func (self class) CreateObject(obj String.Readable, args ...gd.Variant) variant.Any { //gd:JavaScriptBridge.create_object
@@ -399,7 +411,9 @@ func (self class) PwaUpdate() Error.Code { //gd:JavaScriptBridge.pwa_update
 /*
 Force synchronization of the persistent file system (when enabled).
 
-Note: This is only useful for modules or extensions that can't use [graphics.gd/classdb/FileAccess] to write files.
+Note: This is only useful for modules or extensions that can't use [FileAccess] to write files.
+
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 */
 //go:nosplit
 func (self class) ForceFsSync() { //gd:JavaScriptBridge.force_fs_sync

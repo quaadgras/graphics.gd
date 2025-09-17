@@ -101,7 +101,9 @@ type Any interface {
 }
 
 /*
-Returns a translated name of the current constant in the Godot Shader Language. E.g. "ALBEDO" if the [Instance.InputName] equal to "albedo".
+Returns a translated name of the current constant in the Godot Shader Language. E.g. "ALBEDO" if the [InputName] equal to "albedo".
+
+[InputName]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeInput#Instance.InputName
 */
 func (self Instance) GetInputRealName() string { //gd:VisualShaderNodeInput.get_input_real_name
 	return string(Advanced(self).GetInputRealName().String())
@@ -171,7 +173,9 @@ func (self class) GetInputName() String.Readable { //gd:VisualShaderNodeInput.ge
 }
 
 /*
-Returns a translated name of the current constant in the Godot Shader Language. E.g. "ALBEDO" if the [Instance.InputName] equal to "albedo".
+Returns a translated name of the current constant in the Godot Shader Language. E.g. "ALBEDO" if the [InputName] equal to "albedo".
+
+[InputName]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeInput#Instance.InputName
 */
 //go:nosplit
 func (self class) GetInputRealName() String.Readable { //gd:VisualShaderNodeInput.get_input_real_name

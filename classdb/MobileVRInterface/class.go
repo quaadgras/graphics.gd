@@ -3,7 +3,7 @@
 /*
 This is a generic mobile VR implementation where you need to provide details about the phone and HMD used. It does not rely on any existing framework. This is the most basic interface we have. For the best effect, you need a mobile phone with a gyroscope and accelerometer.
 
-Note that even though there is no positional tracking, the camera will assume the headset is at a height of 1.85 meters. You can change this by setting [Instance.EyeHeight].
+Note that even though there is no positional tracking, the camera will assume the headset is at a height of 1.85 meters. You can change this by setting [EyeHeight].
 
 You can initialize this interface as follows:
 
@@ -23,7 +23,10 @@ You can initialize this interface as follows:
 		}
 	}
 
-Note: For Android, [graphics.gd/classdb/ProjectSettings] "input_devices/sensors/enable_accelerometer", [graphics.gd/classdb/ProjectSettings] "input_devices/sensors/enable_gravity", [graphics.gd/classdb/ProjectSettings] "input_devices/sensors/enable_gyroscope" and [graphics.gd/classdb/ProjectSettings] "input_devices/sensors/enable_magnetometer" must be enabled.
+Note: For Android, [ProjectSettings] "input_devices/sensors/enable_accelerometer", [ProjectSettings] "input_devices/sensors/enable_gravity", [ProjectSettings] "input_devices/sensors/enable_gyroscope" and [ProjectSettings] "input_devices/sensors/enable_magnetometer" must be enabled.
+
+[EyeHeight]: https://pkg.go.dev/graphics.gd/classdb/MobileVRInterface#Instance.EyeHeight
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 package MobileVRInterface
 

@@ -113,7 +113,10 @@ type Any interface {
 }
 
 /*
-Returns the [Instance.Transform] with world scale and our reference frame applied. This is the transform used to position [graphics.gd/classdb/XRNode3D] objects.
+Returns the [Transform] with world scale and our reference frame applied. This is the transform used to position [XRNode3D] objects.
+
+[Transform]: https://pkg.go.dev/graphics.gd/classdb/XRPose#Instance.Transform
+[XRNode3D]: https://pkg.go.dev/graphics.gd/classdb/XRNode3D
 */
 func (self Instance) GetAdjustedTransform() Transform3D.BasisOrigin { //gd:XRPose.get_adjusted_transform
 	return Transform3D.BasisOrigin(Advanced(self).GetAdjustedTransform())
@@ -247,7 +250,10 @@ func (self class) GetTransform() Transform3D.BasisOrigin { //gd:XRPose.get_trans
 }
 
 /*
-Returns the [Instance.Transform] with world scale and our reference frame applied. This is the transform used to position [graphics.gd/classdb/XRNode3D] objects.
+Returns the [Transform] with world scale and our reference frame applied. This is the transform used to position [XRNode3D] objects.
+
+[Transform]: https://pkg.go.dev/graphics.gd/classdb/XRPose#Instance.Transform
+[XRNode3D]: https://pkg.go.dev/graphics.gd/classdb/XRNode3D
 */
 //go:nosplit
 func (self class) GetAdjustedTransform() Transform3D.BasisOrigin { //gd:XRPose.get_adjusted_transform

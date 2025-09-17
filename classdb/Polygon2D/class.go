@@ -147,7 +147,9 @@ func (self Instance) AddBone(path string, weights []float32) { //gd:Polygon2D.ad
 }
 
 /*
-Returns the number of bones in this [graphics.gd/classdb/Polygon2D].
+Returns the number of bones in this [Polygon2D].
+
+[Polygon2D]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D
 */
 func (self Instance) GetBoneCount() int { //gd:Polygon2D.get_bone_count
 	return int(int(Advanced(self).GetBoneCount()))
@@ -168,14 +170,18 @@ func (self Instance) GetBoneWeights(index int) []float32 { //gd:Polygon2D.get_bo
 }
 
 /*
-Removes the specified bone from this [graphics.gd/classdb/Polygon2D].
+Removes the specified bone from this [Polygon2D].
+
+[Polygon2D]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D
 */
 func (self Instance) EraseBone(index int) { //gd:Polygon2D.erase_bone
 	Advanced(self).EraseBone(int64(index))
 }
 
 /*
-Removes all bones from this [graphics.gd/classdb/Polygon2D].
+Removes all bones from this [Polygon2D].
+
+[Polygon2D]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D
 */
 func (self Instance) ClearBones() { //gd:Polygon2D.clear_bones
 	Advanced(self).ClearBones()
@@ -531,7 +537,9 @@ func (self class) AddBone(path Path.ToNode, weights Packed.Array[float32]) { //g
 }
 
 /*
-Returns the number of bones in this [graphics.gd/classdb/Polygon2D].
+Returns the number of bones in this [Polygon2D].
+
+[Polygon2D]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D
 */
 //go:nosplit
 func (self class) GetBoneCount() int64 { //gd:Polygon2D.get_bone_count
@@ -561,7 +569,9 @@ func (self class) GetBoneWeights(index int64) Packed.Array[float32] { //gd:Polyg
 }
 
 /*
-Removes the specified bone from this [graphics.gd/classdb/Polygon2D].
+Removes the specified bone from this [Polygon2D].
+
+[Polygon2D]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D
 */
 //go:nosplit
 func (self class) EraseBone(index int64) { //gd:Polygon2D.erase_bone
@@ -569,7 +579,9 @@ func (self class) EraseBone(index int64) { //gd:Polygon2D.erase_bone
 }
 
 /*
-Removes all bones from this [graphics.gd/classdb/Polygon2D].
+Removes all bones from this [Polygon2D].
+
+[Polygon2D]: https://pkg.go.dev/graphics.gd/classdb/Polygon2D
 */
 //go:nosplit
 func (self class) ClearBones() { //gd:Polygon2D.clear_bones

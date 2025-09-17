@@ -3,7 +3,9 @@
 /*
 Resource UIDs (Unique IDentifiers) allow the engine to keep references between resources intact, even if files are renamed or moved. They can be accessed with uid://.
 
-[graphics.gd/classdb/ResourceUID] keeps track of all registered resource UIDs in a project, generates new UIDs, and converts between their string and integer representations.
+[ResourceUID] keeps track of all registered resource UIDs in a project, generates new UIDs, and converts between their string and integer representations.
+
+[ResourceUID]: https://pkg.go.dev/graphics.gd/classdb/ResourceUID
 */
 package ResourceUID
 

@@ -3,7 +3,9 @@
 /*
 This object manages the SceneTree selection in the editor.
 
-Note: This class shouldn't be instantiated directly. Instead, access the singleton using [graphics.gd/classdb/EditorInterface.GetSelection].
+Note: This class shouldn't be instantiated directly. Instead, access the singleton using [EditorInterface.GetSelection].
+
+[EditorInterface.GetSelection]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface#GetSelection
 */
 package EditorSelection
 
@@ -114,7 +116,9 @@ func (self Instance) Clear() { //gd:EditorSelection.clear
 /*
 Adds a node to the selection.
 
-Note: The newly selected node will not be automatically edited in the inspector. If you want to edit a node, use [graphics.gd/classdb/EditorInterface.EditNode].
+Note: The newly selected node will not be automatically edited in the inspector. If you want to edit a node, use [EditorInterface.EditNode].
+
+[EditorInterface.EditNode]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface#EditNode
 */
 func (self Instance) AddNode(node Node.Instance) { //gd:EditorSelection.add_node
 	Advanced(self).AddNode(node)
@@ -144,7 +148,9 @@ func (self Instance) GetTopSelectedNodes() []Node.Instance { //gd:EditorSelectio
 }
 
 /*
-Returns the list of top selected nodes only, excluding any children. This is useful for performing transform operations (moving them, rotating, etc.). See [Instance.GetTopSelectedNodes].
+Returns the list of top selected nodes only, excluding any children. This is useful for performing transform operations (moving them, rotating, etc.). See [GetTopSelectedNodes].
+
+[GetTopSelectedNodes]: https://pkg.go.dev/graphics.gd/classdb/EditorSelection#Instance.GetTopSelectedNodes
 */
 func (self Instance) GetTransformableSelectedNodes() []Node.Instance { //gd:EditorSelection.get_transformable_selected_nodes
 	return []Node.Instance(gd.ArrayAs[[]Node.Instance](gd.InternalArray(Advanced(self).GetTransformableSelectedNodes())))
@@ -203,7 +209,9 @@ func (self class) Clear() { //gd:EditorSelection.clear
 /*
 Adds a node to the selection.
 
-Note: The newly selected node will not be automatically edited in the inspector. If you want to edit a node, use [graphics.gd/classdb/EditorInterface.EditNode].
+Note: The newly selected node will not be automatically edited in the inspector. If you want to edit a node, use [EditorInterface.EditNode].
+
+[EditorInterface.EditNode]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface#EditNode
 */
 //go:nosplit
 func (self class) AddNode(node [1]gdclass.Node) { //gd:EditorSelection.add_node
@@ -241,7 +249,9 @@ func (self class) GetTopSelectedNodes() Array.Contains[[1]gdclass.Node] { //gd:E
 }
 
 /*
-Returns the list of top selected nodes only, excluding any children. This is useful for performing transform operations (moving them, rotating, etc.). See [Instance.GetTopSelectedNodes].
+Returns the list of top selected nodes only, excluding any children. This is useful for performing transform operations (moving them, rotating, etc.). See [GetTopSelectedNodes].
+
+[GetTopSelectedNodes]: https://pkg.go.dev/graphics.gd/classdb/EditorSelection#Instance.GetTopSelectedNodes
 */
 //go:nosplit
 func (self class) GetTransformableSelectedNodes() Array.Contains[[1]gdclass.Node] { //gd:EditorSelection.get_transformable_selected_nodes

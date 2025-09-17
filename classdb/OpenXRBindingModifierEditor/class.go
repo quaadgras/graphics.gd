@@ -105,7 +105,9 @@ type Any interface {
 }
 
 /*
-Returns the [graphics.gd/classdb/OpenXRBindingModifier] currently being edited.
+Returns the [OpenXRBindingModifier] currently being edited.
+
+[OpenXRBindingModifier]: https://pkg.go.dev/graphics.gd/classdb/OpenXRBindingModifier
 */
 func (self Instance) GetBindingModifier() OpenXRBindingModifier.Instance { //gd:OpenXRBindingModifierEditor.get_binding_modifier
 	return OpenXRBindingModifier.Instance(Advanced(self).GetBindingModifier())
@@ -161,7 +163,9 @@ func New() Instance {
 }
 
 /*
-Returns the [graphics.gd/classdb/OpenXRBindingModifier] currently being edited.
+Returns the [OpenXRBindingModifier] currently being edited.
+
+[OpenXRBindingModifier]: https://pkg.go.dev/graphics.gd/classdb/OpenXRBindingModifier
 */
 //go:nosplit
 func (self class) GetBindingModifier() [1]gdclass.OpenXRBindingModifier { //gd:OpenXRBindingModifierEditor.get_binding_modifier

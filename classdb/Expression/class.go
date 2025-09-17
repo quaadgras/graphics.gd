@@ -5,7 +5,7 @@ An expression can be made of any arithmetic operation, built-in math function ca
 
 An example expression text using the built-in math functions could be sqrt(pow(3, 2) + pow(4, 2)).
 
-In the following example we use a [graphics.gd/classdb/LineEdit] node to write our expression and show the result.
+In the following example we use a [LineEdit] node to write our expression and show the result.
 
 	package main
 
@@ -36,6 +36,8 @@ In the following example we use a [graphics.gd/classdb/LineEdit] node to write o
 			}
 		})
 	}
+
+[LineEdit]: https://pkg.go.dev/graphics.gd/classdb/LineEdit
 */
 package Expression
 
@@ -125,7 +127,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.Expression
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.Expression
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -149,37 +156,48 @@ Parses the expression and returns an [Error] code.
 
 You can optionally specify names of variables that may appear in the expression with 'input_names', so that you can bind them when it gets executed.
 */
-func (self Expanded) Parse(expression string, input_names []string) error { //gd:Expression.parse
+func (self MoreArgs) Parse(expression string, input_names []string) error { //gd:Expression.parse
 	return error(gd.ToError(Advanced(self).Parse(String.New(expression), Packed.MakeStrings(input_names...))))
 }
 
 /*
-Executes the expression that was previously parsed by [Instance.Parse] and returns the result. Before you use the returned object, you should check if the method failed by calling [Instance.HasExecuteFailed].
+Executes the expression that was previously parsed by [Parse] and returns the result. Before you use the returned object, you should check if the method failed by calling [HasExecuteFailed].
 
-If you defined input variables in [Instance.Parse], you can specify their values in the inputs array, in the same order.
+If you defined input variables in [Parse], you can specify their values in the inputs array, in the same order.
+
+[HasExecuteFailed]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.HasExecuteFailed
+[Parse]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.Parse
 */
 func (self Instance) Execute() any { //gd:Expression.execute
 	return any(Advanced(self).Execute(Array.Nil, [1]Object.Instance{}[0], true, false).Interface())
 }
 
 /*
-Executes the expression that was previously parsed by [Instance.Parse] and returns the result. Before you use the returned object, you should check if the method failed by calling [Instance.HasExecuteFailed].
+Executes the expression that was previously parsed by [Parse] and returns the result. Before you use the returned object, you should check if the method failed by calling [HasExecuteFailed].
 
-If you defined input variables in [Instance.Parse], you can specify their values in the inputs array, in the same order.
+If you defined input variables in [Parse], you can specify their values in the inputs array, in the same order.
+
+[HasExecuteFailed]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.HasExecuteFailed
+[Parse]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.Parse
 */
-func (self Expanded) Execute(inputs []any, base_instance Object.Instance, show_error bool, const_calls_only bool) any { //gd:Expression.execute
+func (self MoreArgs) Execute(inputs []any, base_instance Object.Instance, show_error bool, const_calls_only bool) any { //gd:Expression.execute
 	return any(Advanced(self).Execute(gd.EngineArrayFromSlice(inputs), base_instance, show_error, const_calls_only).Interface())
 }
 
 /*
-Returns true if [Instance.Execute] has failed.
+Returns true if [Execute] has failed.
+
+[Execute]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.Execute
 */
 func (self Instance) HasExecuteFailed() bool { //gd:Expression.has_execute_failed
 	return bool(Advanced(self).HasExecuteFailed())
 }
 
 /*
-Returns the error text if [Instance.Parse] or [Instance.Execute] has failed.
+Returns the error text if [Parse] or [Execute] has failed.
+
+[Execute]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.Execute
+[Parse]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.Parse
 */
 func (self Instance) GetErrorText() string { //gd:Expression.get_error_text
 	return string(Advanced(self).GetErrorText().String())
@@ -244,9 +262,12 @@ func (self class) Parse(expression String.Readable, input_names Packed.Strings) 
 }
 
 /*
-Executes the expression that was previously parsed by [Instance.Parse] and returns the result. Before you use the returned object, you should check if the method failed by calling [Instance.HasExecuteFailed].
+Executes the expression that was previously parsed by [Parse] and returns the result. Before you use the returned object, you should check if the method failed by calling [HasExecuteFailed].
 
-If you defined input variables in [Instance.Parse], you can specify their values in the inputs array, in the same order.
+If you defined input variables in [Parse], you can specify their values in the inputs array, in the same order.
+
+[HasExecuteFailed]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.HasExecuteFailed
+[Parse]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.Parse
 */
 //go:nosplit
 func (self class) Execute(inputs Array.Any, base_instance [1]gd.Object, show_error bool, const_calls_only bool) variant.Any { //gd:Expression.execute
@@ -261,7 +282,9 @@ func (self class) Execute(inputs Array.Any, base_instance [1]gd.Object, show_err
 }
 
 /*
-Returns true if [Instance.Execute] has failed.
+Returns true if [Execute] has failed.
+
+[Execute]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.Execute
 */
 //go:nosplit
 func (self class) HasExecuteFailed() bool { //gd:Expression.has_execute_failed
@@ -271,7 +294,10 @@ func (self class) HasExecuteFailed() bool { //gd:Expression.has_execute_failed
 }
 
 /*
-Returns the error text if [Instance.Parse] or [Instance.Execute] has failed.
+Returns the error text if [Parse] or [Execute] has failed.
+
+[Execute]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.Execute
+[Parse]: https://pkg.go.dev/graphics.gd/classdb/Expression#Instance.Parse
 */
 //go:nosplit
 func (self class) GetErrorText() String.Readable { //gd:Expression.get_error_text

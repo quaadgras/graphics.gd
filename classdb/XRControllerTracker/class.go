@@ -3,9 +3,13 @@
 /*
 An instance of this object represents a controller that is tracked.
 
-As controllers are turned on and the [graphics.gd/classdb/XRInterface] detects them, instances of this object are automatically added to this list of active tracking objects accessible through the [graphics.gd/classdb/XRServer].
+As controllers are turned on and the [XRInterface] detects them, instances of this object are automatically added to this list of active tracking objects accessible through the [XRServer].
 
-The [graphics.gd/classdb/XRController3D] consumes objects of this type and should be used in your project.
+The [XRController3D] consumes objects of this type and should be used in your project.
+
+[XRController3D]: https://pkg.go.dev/graphics.gd/classdb/XRController3D
+[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
+[XRServer]: https://pkg.go.dev/graphics.gd/classdb/XRServer
 */
 package XRControllerTracker
 

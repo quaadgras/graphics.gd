@@ -105,11 +105,11 @@ func (node *MyEncryption) Ready() {
 
 	var iv = "My secret iv!!!!" // IV must be exactly 16 bytes.
 	// Encrypt CBC
-	AESContext.Expanded(node.AES).Start(AESContext.ModeCbcEncrypt, []byte(key), []byte(iv))
+	node.AES.MoreArgs().Start(AESContext.ModeCbcEncrypt, []byte(key), []byte(iv))
 	encrypted = node.AES.Update([]byte(data))
 	node.AES.Finish()
 	// Decrypt CBC
-	AESContext.Expanded(node.AES).Start(AESContext.ModeCbcDecrypt, []byte(key), []byte(iv))
+	node.AES.MoreArgs().Start(AESContext.ModeCbcDecrypt, []byte(key), []byte(iv))
 	decrypted = node.AES.Update(encrypted)
 	node.AES.Finish()
 	if string(decrypted) != data {

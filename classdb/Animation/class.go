@@ -18,9 +18,11 @@ This resource holds data that can be used to animate anything in the engine. Ani
 		animation.SetLength(2.0)
 	}
 
-Animations are just data containers, and must be added to nodes such as an [graphics.gd/classdb/AnimationPlayer] to be played back. Animation tracks have different types, each with its own set of dedicated methods. Check [TrackType] to see available types.
+Animations are just data containers, and must be added to nodes such as an [AnimationPlayer] to be played back. Animation tracks have different types, each with its own set of dedicated methods. Check [TrackType] to see available types.
 
 Note: For 3D position/rotation/scale, using the dedicated [TypePosition3d], [TypeRotation3d] and [TypeScale3d] track types instead of [TypeValue] is recommended for performance reasons.
+
+[AnimationPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer
 */
 package Animation
 
@@ -196,7 +198,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.Animation
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.Animation
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -216,7 +223,7 @@ func (self Instance) AddTrack(atype TrackType) int { //gd:Animation.add_track
 /*
 Adds a track to the Animation.
 */
-func (self Expanded) AddTrack(atype TrackType, at_position int) int { //gd:Animation.add_track
+func (self MoreArgs) AddTrack(atype TrackType, at_position int) int { //gd:Animation.add_track
 	return int(int(Advanced(self).AddTrack(atype, int64(at_position))))
 }
 
@@ -242,16 +249,20 @@ func (self Instance) TrackGetType(track_idx int) TrackType { //gd:Animation.trac
 }
 
 /*
-Gets the path of a track. For more information on the path format, see [Instance.TrackSetPath].
+Gets the path of a track. For more information on the path format, see [TrackSetPath].
+
+[TrackSetPath]: https://pkg.go.dev/graphics.gd/classdb/Animation#Instance.TrackSetPath
 */
 func (self Instance) TrackGetPath(track_idx int) string { //gd:Animation.track_get_path
 	return string(Advanced(self).TrackGetPath(int64(track_idx)).String())
 }
 
 /*
-Sets the path of a track. Paths must be valid scene-tree paths to a node and must be specified starting from the [graphics.gd/classdb/AnimationMixer.Instance.RootNode] that will reproduce the animation. Tracks that control properties or bones must append their name after the path, separated by ":".
+Sets the path of a track. Paths must be valid scene-tree paths to a node and must be specified starting from the [AnimationMixer.RootNode] that will reproduce the animation. Tracks that control properties or bones must append their name after the path, separated by ":".
 
 For example, "character/skeleton:ankle" or "character/mesh:transform/local".
+
+[AnimationMixer.RootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.RootNode
 */
 func (self Instance) TrackSetPath(track_idx int, path string) { //gd:Animation.track_set_path
 	Advanced(self).TrackSetPath(int64(track_idx), Path.ToNode(String.New(path)))
@@ -358,7 +369,7 @@ func (self Instance) PositionTrackInterpolate(track_idx int, time_sec Float.X) V
 /*
 Returns the interpolated position value at the given time (in seconds). The 'track_idx' must be the index of a 3D position track.
 */
-func (self Expanded) PositionTrackInterpolate(track_idx int, time_sec Float.X, backward bool) Vector3.XYZ { //gd:Animation.position_track_interpolate
+func (self MoreArgs) PositionTrackInterpolate(track_idx int, time_sec Float.X, backward bool) Vector3.XYZ { //gd:Animation.position_track_interpolate
 	return Vector3.XYZ(Advanced(self).PositionTrackInterpolate(int64(track_idx), float64(time_sec), backward))
 }
 
@@ -372,7 +383,7 @@ func (self Instance) RotationTrackInterpolate(track_idx int, time_sec Float.X) Q
 /*
 Returns the interpolated rotation value at the given time (in seconds). The 'track_idx' must be the index of a 3D rotation track.
 */
-func (self Expanded) RotationTrackInterpolate(track_idx int, time_sec Float.X, backward bool) Quaternion.IJKX { //gd:Animation.rotation_track_interpolate
+func (self MoreArgs) RotationTrackInterpolate(track_idx int, time_sec Float.X, backward bool) Quaternion.IJKX { //gd:Animation.rotation_track_interpolate
 	return Quaternion.IJKX(Advanced(self).RotationTrackInterpolate(int64(track_idx), float64(time_sec), backward))
 }
 
@@ -386,7 +397,7 @@ func (self Instance) ScaleTrackInterpolate(track_idx int, time_sec Float.X) Vect
 /*
 Returns the interpolated scale value at the given time (in seconds). The 'track_idx' must be the index of a 3D scale track.
 */
-func (self Expanded) ScaleTrackInterpolate(track_idx int, time_sec Float.X, backward bool) Vector3.XYZ { //gd:Animation.scale_track_interpolate
+func (self MoreArgs) ScaleTrackInterpolate(track_idx int, time_sec Float.X, backward bool) Vector3.XYZ { //gd:Animation.scale_track_interpolate
 	return Vector3.XYZ(Advanced(self).ScaleTrackInterpolate(int64(track_idx), float64(time_sec), backward))
 }
 
@@ -400,7 +411,7 @@ func (self Instance) BlendShapeTrackInterpolate(track_idx int, time_sec Float.X)
 /*
 Returns the interpolated blend shape value at the given time (in seconds). The 'track_idx' must be the index of a blend shape track.
 */
-func (self Expanded) BlendShapeTrackInterpolate(track_idx int, time_sec Float.X, backward bool) Float.X { //gd:Animation.blend_shape_track_interpolate
+func (self MoreArgs) BlendShapeTrackInterpolate(track_idx int, time_sec Float.X, backward bool) Float.X { //gd:Animation.blend_shape_track_interpolate
 	return Float.X(Float.X(Advanced(self).BlendShapeTrackInterpolate(int64(track_idx), float64(time_sec), backward)))
 }
 
@@ -414,7 +425,7 @@ func (self Instance) TrackInsertKey(track_idx int, time Float.X, key any) int { 
 /*
 Inserts a generic key in a given track. Returns the key index.
 */
-func (self Expanded) TrackInsertKey(track_idx int, time Float.X, key any, transition Float.X) int { //gd:Animation.track_insert_key
+func (self MoreArgs) TrackInsertKey(track_idx int, time Float.X, key any, transition Float.X) int { //gd:Animation.track_insert_key
 	return int(int(Advanced(self).TrackInsertKey(int64(track_idx), float64(time), variant.New(key), float64(transition))))
 }
 
@@ -440,7 +451,9 @@ func (self Instance) TrackSetKeyValue(track_idx int, key int, value any) { //gd:
 }
 
 /*
-Sets the transition curve (easing) for a specific key (see the built-in math function [graphics.gd/classdb/@GlobalScope.Instance.Ease]).
+Sets the transition curve (easing) for a specific key (see the built-in math function [@GlobalScope.Ease]).
+
+[@GlobalScope.Ease]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.Ease
 */
 func (self Instance) TrackSetKeyTransition(track_idx int, key_idx int, transition Float.X) { //gd:Animation.track_set_key_transition
 	Advanced(self).TrackSetKeyTransition(int64(track_idx), int64(key_idx), float64(transition))
@@ -454,7 +467,9 @@ func (self Instance) TrackSetKeyTime(track_idx int, key_idx int, time Float.X) {
 }
 
 /*
-Returns the transition curve (easing) for a specific key (see the built-in math function [graphics.gd/classdb/@GlobalScope.Instance.Ease]).
+Returns the transition curve (easing) for a specific key (see the built-in math function [@GlobalScope.Ease]).
+
+[@GlobalScope.Ease]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.Ease
 */
 func (self Instance) TrackGetKeyTransition(track_idx int, key_idx int) Float.X { //gd:Animation.track_get_key_transition
 	return Float.X(Float.X(Advanced(self).TrackGetKeyTransition(int64(track_idx), int64(key_idx))))
@@ -503,7 +518,7 @@ If 'backward' is true, the direction is reversed in methods that rely on one dir
 
 For example, in case 'find_mode' is [FindModeNearest], if there is no key in the current position just after seeked, the first key found is retrieved by searching before the position, but if 'backward' is true, the first key found is retrieved after the position.
 */
-func (self Expanded) TrackFindKey(track_idx int, time Float.X, find_mode FindMode, limit bool, backward bool) int { //gd:Animation.track_find_key
+func (self MoreArgs) TrackFindKey(track_idx int, time Float.X, find_mode FindMode, limit bool, backward bool) int { //gd:Animation.track_find_key
 	return int(int(Advanced(self).TrackFindKey(int64(track_idx), float64(time), find_mode, limit, backward)))
 }
 
@@ -536,7 +551,9 @@ func (self Instance) TrackGetInterpolationLoopWrap(track_idx int) bool { //gd:An
 }
 
 /*
-Returns true if the track is compressed, false otherwise. See also [Instance.Compress].
+Returns true if the track is compressed, false otherwise. See also [Compress].
+
+[Compress]: https://pkg.go.dev/graphics.gd/classdb/Animation#Instance.Compress
 */
 func (self Instance) TrackIsCompressed(track_idx int) bool { //gd:Animation.track_is_compressed
 	return bool(Advanced(self).TrackIsCompressed(int64(track_idx)))
@@ -559,7 +576,9 @@ func (self Instance) ValueTrackGetUpdateMode(track_idx int) UpdateMode { //gd:An
 /*
 Returns the interpolated value at the given time (in seconds). The 'track_idx' must be the index of a value track.
 
-A 'backward' mainly affects the direction of key retrieval of the track with [UpdateDiscrete] converted by [Animationmixer.AnimationCallbackModeDiscreteForceContinuous] to match the result with [Instance.TrackFindKey].
+A 'backward' mainly affects the direction of key retrieval of the track with [UpdateDiscrete] converted by [Animationmixer.AnimationCallbackModeDiscreteForceContinuous] to match the result with [TrackFindKey].
+
+[TrackFindKey]: https://pkg.go.dev/graphics.gd/classdb/Animation#Instance.TrackFindKey
 */
 func (self Instance) ValueTrackInterpolate(track_idx int, time_sec Float.X) any { //gd:Animation.value_track_interpolate
 	return any(Advanced(self).ValueTrackInterpolate(int64(track_idx), float64(time_sec), false).Interface())
@@ -568,9 +587,11 @@ func (self Instance) ValueTrackInterpolate(track_idx int, time_sec Float.X) any 
 /*
 Returns the interpolated value at the given time (in seconds). The 'track_idx' must be the index of a value track.
 
-A 'backward' mainly affects the direction of key retrieval of the track with [UpdateDiscrete] converted by [Animationmixer.AnimationCallbackModeDiscreteForceContinuous] to match the result with [Instance.TrackFindKey].
+A 'backward' mainly affects the direction of key retrieval of the track with [UpdateDiscrete] converted by [Animationmixer.AnimationCallbackModeDiscreteForceContinuous] to match the result with [TrackFindKey].
+
+[TrackFindKey]: https://pkg.go.dev/graphics.gd/classdb/Animation#Instance.TrackFindKey
 */
-func (self Expanded) ValueTrackInterpolate(track_idx int, time_sec Float.X, backward bool) any { //gd:Animation.value_track_interpolate
+func (self MoreArgs) ValueTrackInterpolate(track_idx int, time_sec Float.X, backward bool) any { //gd:Animation.value_track_interpolate
 	return any(Advanced(self).ValueTrackInterpolate(int64(track_idx), float64(time_sec), backward).Interface())
 }
 
@@ -602,7 +623,7 @@ Inserts a Bezier Track key at the given 'time' in seconds. The 'track_idx' must 
 
 'in_handle' is the left-side weight of the added Bezier curve point, 'out_handle' is the right-side one, while 'value' is the actual value at this point.
 */
-func (self Expanded) BezierTrackInsertKey(track_idx int, time Float.X, value Float.X, in_handle Vector2.XY, out_handle Vector2.XY) int { //gd:Animation.bezier_track_insert_key
+func (self MoreArgs) BezierTrackInsertKey(track_idx int, time Float.X, value Float.X, in_handle Vector2.XY, out_handle Vector2.XY) int { //gd:Animation.bezier_track_insert_key
 	return int(int(Advanced(self).BezierTrackInsertKey(int64(track_idx), float64(time), float64(value), Vector2.XY(in_handle), Vector2.XY(out_handle))))
 }
 
@@ -623,7 +644,7 @@ func (self Instance) BezierTrackSetKeyInHandle(track_idx int, key_idx int, in_ha
 /*
 Sets the in handle of the key identified by 'key_idx' to value 'in_handle'. The 'track_idx' must be the index of a Bezier Track.
 */
-func (self Expanded) BezierTrackSetKeyInHandle(track_idx int, key_idx int, in_handle Vector2.XY, balanced_value_time_ratio Float.X) { //gd:Animation.bezier_track_set_key_in_handle
+func (self MoreArgs) BezierTrackSetKeyInHandle(track_idx int, key_idx int, in_handle Vector2.XY, balanced_value_time_ratio Float.X) { //gd:Animation.bezier_track_set_key_in_handle
 	Advanced(self).BezierTrackSetKeyInHandle(int64(track_idx), int64(key_idx), Vector2.XY(in_handle), float64(balanced_value_time_ratio))
 }
 
@@ -637,7 +658,7 @@ func (self Instance) BezierTrackSetKeyOutHandle(track_idx int, key_idx int, out_
 /*
 Sets the out handle of the key identified by 'key_idx' to value 'out_handle'. The 'track_idx' must be the index of a Bezier Track.
 */
-func (self Expanded) BezierTrackSetKeyOutHandle(track_idx int, key_idx int, out_handle Vector2.XY, balanced_value_time_ratio Float.X) { //gd:Animation.bezier_track_set_key_out_handle
+func (self MoreArgs) BezierTrackSetKeyOutHandle(track_idx int, key_idx int, out_handle Vector2.XY, balanced_value_time_ratio Float.X) { //gd:Animation.bezier_track_set_key_out_handle
 	Advanced(self).BezierTrackSetKeyOutHandle(int64(track_idx), int64(key_idx), Vector2.XY(out_handle), float64(balanced_value_time_ratio))
 }
 
@@ -672,7 +693,9 @@ func (self Instance) BezierTrackInterpolate(track_idx int, time Float.X) Float.X
 /*
 Inserts an Audio Track key at the given 'time' in seconds. The 'track_idx' must be the index of an Audio Track.
 
-'stream' is the [graphics.gd/classdb/AudioStream] resource to play. 'start_offset' is the number of seconds cut off at the beginning of the audio stream, while 'end_offset' is at the ending.
+'stream' is the [AudioStream] resource to play. 'start_offset' is the number of seconds cut off at the beginning of the audio stream, while 'end_offset' is at the ending.
+
+[AudioStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStream
 */
 func (self Instance) AudioTrackInsertKey(track_idx int, time Float.X, stream Resource.Instance) int { //gd:Animation.audio_track_insert_key
 	return int(int(Advanced(self).AudioTrackInsertKey(int64(track_idx), float64(time), stream, float64(0), float64(0))))
@@ -681,9 +704,11 @@ func (self Instance) AudioTrackInsertKey(track_idx int, time Float.X, stream Res
 /*
 Inserts an Audio Track key at the given 'time' in seconds. The 'track_idx' must be the index of an Audio Track.
 
-'stream' is the [graphics.gd/classdb/AudioStream] resource to play. 'start_offset' is the number of seconds cut off at the beginning of the audio stream, while 'end_offset' is at the ending.
+'stream' is the [AudioStream] resource to play. 'start_offset' is the number of seconds cut off at the beginning of the audio stream, while 'end_offset' is at the ending.
+
+[AudioStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStream
 */
-func (self Expanded) AudioTrackInsertKey(track_idx int, time Float.X, stream Resource.Instance, start_offset Float.X, end_offset Float.X) int { //gd:Animation.audio_track_insert_key
+func (self MoreArgs) AudioTrackInsertKey(track_idx int, time Float.X, stream Resource.Instance, start_offset Float.X, end_offset Float.X) int { //gd:Animation.audio_track_insert_key
 	return int(int(Advanced(self).AudioTrackInsertKey(int64(track_idx), float64(time), stream, float64(start_offset), float64(end_offset))))
 }
 
@@ -862,25 +887,31 @@ func (self Instance) Optimize() { //gd:Animation.optimize
 /*
 Optimize the animation and all its tracks in-place. This will preserve only as many keys as are necessary to keep the animation within the specified bounds.
 */
-func (self Expanded) Optimize(allowed_velocity_err Float.X, allowed_angular_err Float.X, precision int) { //gd:Animation.optimize
+func (self MoreArgs) Optimize(allowed_velocity_err Float.X, allowed_angular_err Float.X, precision int) { //gd:Animation.optimize
 	Advanced(self).Optimize(float64(allowed_velocity_err), float64(allowed_angular_err), int64(precision))
 }
 
 /*
-Compress the animation and all its tracks in-place. This will make [Instance.TrackIsCompressed] return true once called on this [graphics.gd/classdb/Animation]. Compressed tracks require less memory to be played, and are designed to be used for complex 3D animations (such as cutscenes) imported from external 3D software. Compression is lossy, but the difference is usually not noticeable in real world conditions.
+Compress the animation and all its tracks in-place. This will make [TrackIsCompressed] return true once called on this [Animation]. Compressed tracks require less memory to be played, and are designed to be used for complex 3D animations (such as cutscenes) imported from external 3D software. Compression is lossy, but the difference is usually not noticeable in real world conditions.
 
 Note: Compressed tracks have various limitations (such as not being editable from the editor), so only use compressed animations if you actually need them.
+
+[Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
+[TrackIsCompressed]: https://pkg.go.dev/graphics.gd/classdb/Animation#Instance.TrackIsCompressed
 */
 func (self Instance) Compress() { //gd:Animation.compress
 	Advanced(self).Compress(int64(8192), int64(120), float64(4.0))
 }
 
 /*
-Compress the animation and all its tracks in-place. This will make [Instance.TrackIsCompressed] return true once called on this [graphics.gd/classdb/Animation]. Compressed tracks require less memory to be played, and are designed to be used for complex 3D animations (such as cutscenes) imported from external 3D software. Compression is lossy, but the difference is usually not noticeable in real world conditions.
+Compress the animation and all its tracks in-place. This will make [TrackIsCompressed] return true once called on this [Animation]. Compressed tracks require less memory to be played, and are designed to be used for complex 3D animations (such as cutscenes) imported from external 3D software. Compression is lossy, but the difference is usually not noticeable in real world conditions.
 
 Note: Compressed tracks have various limitations (such as not being editable from the editor), so only use compressed animations if you actually need them.
+
+[Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
+[TrackIsCompressed]: https://pkg.go.dev/graphics.gd/classdb/Animation#Instance.TrackIsCompressed
 */
-func (self Expanded) Compress(page_size int, fps int, split_tolerance Float.X) { //gd:Animation.compress
+func (self MoreArgs) Compress(page_size int, fps int, split_tolerance Float.X) { //gd:Animation.compress
 	Advanced(self).Compress(int64(page_size), int64(fps), float64(split_tolerance))
 }
 
@@ -997,7 +1028,9 @@ func (self class) TrackGetType(track_idx int64) TrackType { //gd:Animation.track
 }
 
 /*
-Gets the path of a track. For more information on the path format, see [Instance.TrackSetPath].
+Gets the path of a track. For more information on the path format, see [TrackSetPath].
+
+[TrackSetPath]: https://pkg.go.dev/graphics.gd/classdb/Animation#Instance.TrackSetPath
 */
 //go:nosplit
 func (self class) TrackGetPath(track_idx int64) Path.ToNode { //gd:Animation.track_get_path
@@ -1007,9 +1040,11 @@ func (self class) TrackGetPath(track_idx int64) Path.ToNode { //gd:Animation.tra
 }
 
 /*
-Sets the path of a track. Paths must be valid scene-tree paths to a node and must be specified starting from the [graphics.gd/classdb/AnimationMixer.Instance.RootNode] that will reproduce the animation. Tracks that control properties or bones must append their name after the path, separated by ":".
+Sets the path of a track. Paths must be valid scene-tree paths to a node and must be specified starting from the [AnimationMixer.RootNode] that will reproduce the animation. Tracks that control properties or bones must append their name after the path, separated by ":".
 
 For example, "character/skeleton:ankle" or "character/mesh:transform/local".
+
+[AnimationMixer.RootNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.RootNode
 */
 //go:nosplit
 func (self class) TrackSetPath(track_idx int64, path Path.ToNode) { //gd:Animation.track_set_path
@@ -1274,7 +1309,9 @@ func (self class) TrackSetKeyValue(track_idx int64, key int64, value variant.Any
 }
 
 /*
-Sets the transition curve (easing) for a specific key (see the built-in math function [graphics.gd/classdb/@GlobalScope.Instance.Ease]).
+Sets the transition curve (easing) for a specific key (see the built-in math function [@GlobalScope.Ease]).
+
+[@GlobalScope.Ease]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.Ease
 */
 //go:nosplit
 func (self class) TrackSetKeyTransition(track_idx int64, key_idx int64, transition float64) { //gd:Animation.track_set_key_transition
@@ -1298,7 +1335,9 @@ func (self class) TrackSetKeyTime(track_idx int64, key_idx int64, time float64) 
 }
 
 /*
-Returns the transition curve (easing) for a specific key (see the built-in math function [graphics.gd/classdb/@GlobalScope.Instance.Ease]).
+Returns the transition curve (easing) for a specific key (see the built-in math function [@GlobalScope.Ease]).
+
+[@GlobalScope.Ease]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.Ease
 */
 //go:nosplit
 func (self class) TrackGetKeyTransition(track_idx int64, key_idx int64) float64 { //gd:Animation.track_get_key_transition
@@ -1411,7 +1450,9 @@ func (self class) TrackGetInterpolationLoopWrap(track_idx int64) bool { //gd:Ani
 }
 
 /*
-Returns true if the track is compressed, false otherwise. See also [Instance.Compress].
+Returns true if the track is compressed, false otherwise. See also [Compress].
+
+[Compress]: https://pkg.go.dev/graphics.gd/classdb/Animation#Instance.Compress
 */
 //go:nosplit
 func (self class) TrackIsCompressed(track_idx int64) bool { //gd:Animation.track_is_compressed
@@ -1444,7 +1485,9 @@ func (self class) ValueTrackGetUpdateMode(track_idx int64) UpdateMode { //gd:Ani
 /*
 Returns the interpolated value at the given time (in seconds). The 'track_idx' must be the index of a value track.
 
-A 'backward' mainly affects the direction of key retrieval of the track with [UpdateDiscrete] converted by [Animationmixer.AnimationCallbackModeDiscreteForceContinuous] to match the result with [Instance.TrackFindKey].
+A 'backward' mainly affects the direction of key retrieval of the track with [UpdateDiscrete] converted by [Animationmixer.AnimationCallbackModeDiscreteForceContinuous] to match the result with [TrackFindKey].
+
+[TrackFindKey]: https://pkg.go.dev/graphics.gd/classdb/Animation#Instance.TrackFindKey
 */
 //go:nosplit
 func (self class) ValueTrackInterpolate(track_idx int64, time_sec float64, backward bool) variant.Any { //gd:Animation.value_track_interpolate
@@ -1594,7 +1637,9 @@ func (self class) BezierTrackInterpolate(track_idx int64, time float64) float64 
 /*
 Inserts an Audio Track key at the given 'time' in seconds. The 'track_idx' must be the index of an Audio Track.
 
-'stream' is the [graphics.gd/classdb/AudioStream] resource to play. 'start_offset' is the number of seconds cut off at the beginning of the audio stream, while 'end_offset' is at the ending.
+'stream' is the [AudioStream] resource to play. 'start_offset' is the number of seconds cut off at the beginning of the audio stream, while 'end_offset' is at the ending.
+
+[AudioStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStream
 */
 //go:nosplit
 func (self class) AudioTrackInsertKey(track_idx int64, time float64, stream [1]gdclass.Resource, start_offset float64, end_offset float64) int64 { //gd:Animation.audio_track_insert_key
@@ -1916,9 +1961,12 @@ func (self class) Optimize(allowed_velocity_err float64, allowed_angular_err flo
 }
 
 /*
-Compress the animation and all its tracks in-place. This will make [Instance.TrackIsCompressed] return true once called on this [graphics.gd/classdb/Animation]. Compressed tracks require less memory to be played, and are designed to be used for complex 3D animations (such as cutscenes) imported from external 3D software. Compression is lossy, but the difference is usually not noticeable in real world conditions.
+Compress the animation and all its tracks in-place. This will make [TrackIsCompressed] return true once called on this [Animation]. Compressed tracks require less memory to be played, and are designed to be used for complex 3D animations (such as cutscenes) imported from external 3D software. Compression is lossy, but the difference is usually not noticeable in real world conditions.
 
 Note: Compressed tracks have various limitations (such as not being editable from the editor), so only use compressed animations if you actually need them.
+
+[Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
+[TrackIsCompressed]: https://pkg.go.dev/graphics.gd/classdb/Animation#Instance.TrackIsCompressed
 */
 //go:nosplit
 func (self class) Compress(page_size int64, fps int64, split_tolerance float64) { //gd:Animation.compress
@@ -1978,20 +2026,32 @@ const (
 	// Value tracks set values in node properties, but only those which can be interpolated. For 3D position/rotation/scale, using the dedicated [TypePosition3d], [TypeRotation3d] and [TypeScale3d] track types instead of [TypeValue] is recommended for performance reasons.
 	TypeValue TrackType = 0
 	// 3D position track (values are stored in [Vector3.XYZ]s).
+	//
+	// [Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 	TypePosition3d TrackType = 1
 	// 3D rotation track (values are stored in [Quaternion.IJKX]s).
+	//
+	// [Quaternion.IJKX]: https://pkg.go.dev/graphics.gd/variant/Quaternion#IJKX
 	TypeRotation3d TrackType = 2
 	// 3D scale track (values are stored in [Vector3.XYZ]s).
+	//
+	// [Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 	TypeScale3d TrackType = 3
 	// Blend shape track.
 	TypeBlendShape TrackType = 4
 	// Method tracks call functions with given arguments per key.
 	TypeMethod TrackType = 5
 	// Bezier tracks are used to interpolate a value using custom curves. They can also be used to animate sub-properties of vectors and colors (e.g. alpha value of a [Color.RGBA]).
+	//
+	// [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 	TypeBezier TrackType = 6
-	// Audio tracks are used to play an audio stream with either type of [graphics.gd/classdb/AudioStreamPlayer]. The stream can be trimmed and previewed in the animation.
+	// Audio tracks are used to play an audio stream with either type of [AudioStreamPlayer]. The stream can be trimmed and previewed in the animation.
+	//
+	// [AudioStreamPlayer]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer
 	TypeAudio TrackType = 7
-	// Animation tracks play animations in other [graphics.gd/classdb/AnimationPlayer] nodes.
+	// Animation tracks play animations in other [AnimationPlayer] nodes.
+	//
+	// [AnimationPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer
 	TypeAnimation TrackType = 8
 )
 
@@ -2021,7 +2081,11 @@ const (
 	UpdateContinuous UpdateMode = 0
 	// Update at the keyframes.
 	UpdateDiscrete UpdateMode = 1
-	// Same as [UpdateContinuous] but works as a flag to capture the value of the current object and perform interpolation in some methods. See also [graphics.gd/classdb/AnimationMixer.Instance.Capture], [graphics.gd/classdb/AnimationPlayer.Instance.PlaybackAutoCapture], and [graphics.gd/classdb/AnimationPlayer.Instance.PlayWithCapture].
+	// Same as [UpdateContinuous] but works as a flag to capture the value of the current object and perform interpolation in some methods. See also [AnimationMixer.Capture], [AnimationPlayer.PlaybackAutoCapture], and [AnimationPlayer.PlayWithCapture].
+	//
+	// [AnimationMixer.Capture]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.Capture
+	// [AnimationPlayer.PlayWithCapture]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlayWithCapture
+	// [AnimationPlayer.PlaybackAutoCapture]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaybackAutoCapture
 	UpdateCapture UpdateMode = 2
 )
 

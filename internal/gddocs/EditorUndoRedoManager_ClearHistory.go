@@ -8,11 +8,10 @@ package main
 
 import (
 	"graphics.gd/classdb/EditorInterface"
-	"graphics.gd/classdb/EditorUndoRedoManager"
 )
 
 func EditorUndoRedoManager_ClearHistory() {
 	var scene_root = EditorInterface.GetEditedSceneRoot()
 	var undo_redo = EditorInterface.GetEditorUndoRedo()
-	EditorUndoRedoManager.Expanded(undo_redo).ClearHistory(undo_redo.GetObjectHistoryId(scene_root.AsObject()), false)
+	undo_redo.MoreArgs().ClearHistory(undo_redo.GetObjectHistoryId(scene_root.AsObject()), false)
 }
