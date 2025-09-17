@@ -5,13 +5,15 @@ Dynamic range compressor reduces the level of the sound when the amplitude goes 
 
 Compressor has many uses in the mix:
 
-- In the Master bus to compress the whole output (although an [graphics.gd/classdb/AudioEffectHardLimiter] is probably better).
+- In the Master bus to compress the whole output (although an [AudioEffectHardLimiter] is probably better).
 
 - In voice channels to ensure they sound as balanced as possible.
 
 - Sidechained. This can reduce the sound level sidechained with another audio bus for threshold detection. This technique is common in video game mixing to the level of music and SFX while voices are being heard.
 
 - Accentuates transients by using a wider attack, making effects sound more punchy.
+
+[AudioEffectHardLimiter]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectHardLimiter
 */
 package AudioEffectCompressor
 

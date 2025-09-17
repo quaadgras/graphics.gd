@@ -22,6 +22,9 @@ func check(class gdjson.Class, method gdjson.Method, name string, gdtype string)
 		check(class, method, name, gdtype)
 		return
 	}
+	if gdjson.Returnables[class.Name+"."+method.Name][name] != nil {
+		return
+	}
 	if gdtype == "Dictionary" {
 		key := (class.Name + "." + method.Name + "." + name)
 		if _, ok := gdjson.Structables[key]; !ok {

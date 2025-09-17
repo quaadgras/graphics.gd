@@ -3,7 +3,9 @@
 /*
 Arranges child controls into a tabbed view, creating a tab for each one. The active tab's corresponding control is made visible, while all other child controls are hidden. Ignores non-control children.
 
-Note: The drawing of the clickable tabs is handled by this node; [graphics.gd/classdb/TabBar] is not needed.
+Note: The drawing of the clickable tabs is handled by this node; [TabBar] is not needed.
+
+[TabBar]: https://pkg.go.dev/graphics.gd/classdb/TabBar
 */
 package TabContainer
 
@@ -183,23 +185,30 @@ func (self Instance) SelectNextAvailable() bool { //gd:TabContainer.select_next_
 }
 
 /*
-Returns the child [graphics.gd/classdb/Control] node located at the active tab index.
+Returns the child [Control] node located at the active tab index.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 func (self Instance) GetCurrentTabControl() Control.Instance { //gd:TabContainer.get_current_tab_control
 	return Control.Instance(Advanced(self).GetCurrentTabControl())
 }
 
 /*
-Returns the [graphics.gd/classdb/TabBar] contained in this container.
+Returns the [TabBar] contained in this container.
 
-Warning: This is a required internal node, removing and freeing it or editing its tabs may cause a crash. If you wish to edit the tabs, use the methods provided in [graphics.gd/classdb/TabContainer].
+Warning: This is a required internal node, removing and freeing it or editing its tabs may cause a crash. If you wish to edit the tabs, use the methods provided in [TabContainer].
+
+[TabBar]: https://pkg.go.dev/graphics.gd/classdb/TabBar
+[TabContainer]: https://pkg.go.dev/graphics.gd/classdb/TabContainer
 */
 func (self Instance) GetTabBar() TabBar.Instance { //gd:TabContainer.get_tab_bar
 	return TabBar.Instance(Advanced(self).GetTabBar())
 }
 
 /*
-Returns the [graphics.gd/classdb/Control] node from the tab at index 'tab_idx'.
+Returns the [Control] node from the tab at index 'tab_idx'.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 func (self Instance) GetTabControl(tab_idx int) Control.Instance { //gd:TabContainer.get_tab_control
 	return Control.Instance(Advanced(self).GetTabControl(int64(tab_idx)))
@@ -213,7 +222,9 @@ func (self Instance) SetTabTitle(tab_idx int, title string) { //gd:TabContainer.
 }
 
 /*
-Returns the title of the tab at index 'tab_idx'. Tab titles default to the name of the indexed child node, but this can be overridden with [Instance.SetTabTitle].
+Returns the title of the tab at index 'tab_idx'. Tab titles default to the name of the indexed child node, but this can be overridden with [SetTabTitle].
+
+[SetTabTitle]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.SetTabTitle
 */
 func (self Instance) GetTabTitle(tab_idx int) string { //gd:TabContainer.get_tab_title
 	return string(Advanced(self).GetTabTitle(int64(tab_idx)).String())
@@ -243,7 +254,9 @@ func (self Instance) SetTabIcon(tab_idx int, icon Texture2D.Instance) { //gd:Tab
 }
 
 /*
-Returns the [graphics.gd/classdb/Texture2D] for the tab at index 'tab_idx' or null if the tab has no [graphics.gd/classdb/Texture2D].
+Returns the [Texture2D] for the tab at index 'tab_idx' or null if the tab has no [Texture2D].
+
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
 func (self Instance) GetTabIcon(tab_idx int) Texture2D.Instance { //gd:TabContainer.get_tab_icon
 	return Texture2D.Instance(Advanced(self).GetTabIcon(int64(tab_idx)))
@@ -292,14 +305,18 @@ func (self Instance) IsTabHidden(tab_idx int) bool { //gd:TabContainer.is_tab_hi
 }
 
 /*
-Sets the metadata value for the tab at index 'tab_idx', which can be retrieved later using [Instance.GetTabMetadata].
+Sets the metadata value for the tab at index 'tab_idx', which can be retrieved later using [GetTabMetadata].
+
+[GetTabMetadata]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.GetTabMetadata
 */
 func (self Instance) SetTabMetadata(tab_idx int, metadata any) { //gd:TabContainer.set_tab_metadata
 	Advanced(self).SetTabMetadata(int64(tab_idx), variant.New(metadata))
 }
 
 /*
-Returns the metadata value set to the tab at index 'tab_idx' using [Instance.SetTabMetadata]. If no metadata was previously set, returns null by default.
+Returns the metadata value set to the tab at index 'tab_idx' using [SetTabMetadata]. If no metadata was previously set, returns null by default.
+
+[SetTabMetadata]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.SetTabMetadata
 */
 func (self Instance) GetTabMetadata(tab_idx int) any { //gd:TabContainer.get_tab_metadata
 	return any(Advanced(self).GetTabMetadata(int64(tab_idx)).Interface())
@@ -327,23 +344,32 @@ func (self Instance) GetTabIdxAtPoint(point Vector2.XY) int { //gd:TabContainer.
 }
 
 /*
-Returns the index of the tab tied to the given 'control'. The control must be a child of the [graphics.gd/classdb/TabContainer].
+Returns the index of the tab tied to the given 'control'. The control must be a child of the [TabContainer].
+
+[TabContainer]: https://pkg.go.dev/graphics.gd/classdb/TabContainer
 */
 func (self Instance) GetTabIdxFromControl(control Control.Instance) int { //gd:TabContainer.get_tab_idx_from_control
 	return int(int(Advanced(self).GetTabIdxFromControl(control)))
 }
 
 /*
-If set on a [graphics.gd/classdb/Popup] node instance, a popup menu icon appears in the top-right corner of the [graphics.gd/classdb/TabContainer] (setting it to null will make it go away). Clicking it will expand the [graphics.gd/classdb/Popup] node.
+If set on a [Popup] node instance, a popup menu icon appears in the top-right corner of the [TabContainer] (setting it to null will make it go away). Clicking it will expand the [Popup] node.
+
+[Popup]: https://pkg.go.dev/graphics.gd/classdb/Popup
+[TabContainer]: https://pkg.go.dev/graphics.gd/classdb/TabContainer
 */
 func (self Instance) SetPopup(popup Node.Instance) { //gd:TabContainer.set_popup
 	Advanced(self).SetPopup(popup)
 }
 
 /*
-Returns the [graphics.gd/classdb/Popup] node instance if one has been set already with [Instance.SetPopup].
+Returns the [Popup] node instance if one has been set already with [SetPopup].
 
-Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [graphics.gd/classdb/Window.Instance.Visible] property.
+Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [Window.Visible] property.
+
+[Popup]: https://pkg.go.dev/graphics.gd/classdb/Popup
+[SetPopup]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.SetPopup
+[Window.Visible]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Visible
 */
 func (self Instance) GetPopup() Popup.Instance { //gd:TabContainer.get_popup
 	return Popup.Instance(Advanced(self).GetPopup())
@@ -532,7 +558,9 @@ func (self class) SelectNextAvailable() bool { //gd:TabContainer.select_next_ava
 }
 
 /*
-Returns the child [graphics.gd/classdb/Control] node located at the active tab index.
+Returns the child [Control] node located at the active tab index.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 //go:nosplit
 func (self class) GetCurrentTabControl() [1]gdclass.Control { //gd:TabContainer.get_current_tab_control
@@ -542,9 +570,12 @@ func (self class) GetCurrentTabControl() [1]gdclass.Control { //gd:TabContainer.
 }
 
 /*
-Returns the [graphics.gd/classdb/TabBar] contained in this container.
+Returns the [TabBar] contained in this container.
 
-Warning: This is a required internal node, removing and freeing it or editing its tabs may cause a crash. If you wish to edit the tabs, use the methods provided in [graphics.gd/classdb/TabContainer].
+Warning: This is a required internal node, removing and freeing it or editing its tabs may cause a crash. If you wish to edit the tabs, use the methods provided in [TabContainer].
+
+[TabBar]: https://pkg.go.dev/graphics.gd/classdb/TabBar
+[TabContainer]: https://pkg.go.dev/graphics.gd/classdb/TabContainer
 */
 //go:nosplit
 func (self class) GetTabBar() [1]gdclass.TabBar { //gd:TabContainer.get_tab_bar
@@ -554,7 +585,9 @@ func (self class) GetTabBar() [1]gdclass.TabBar { //gd:TabContainer.get_tab_bar
 }
 
 /*
-Returns the [graphics.gd/classdb/Control] node from the tab at index 'tab_idx'.
+Returns the [Control] node from the tab at index 'tab_idx'.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 //go:nosplit
 func (self class) GetTabControl(tab_idx int64) [1]gdclass.Control { //gd:TabContainer.get_tab_control
@@ -635,7 +668,9 @@ func (self class) SetTabTitle(tab_idx int64, title String.Readable) { //gd:TabCo
 }
 
 /*
-Returns the title of the tab at index 'tab_idx'. Tab titles default to the name of the indexed child node, but this can be overridden with [Instance.SetTabTitle].
+Returns the title of the tab at index 'tab_idx'. Tab titles default to the name of the indexed child node, but this can be overridden with [SetTabTitle].
+
+[SetTabTitle]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.SetTabTitle
 */
 //go:nosplit
 func (self class) GetTabTitle(tab_idx int64) String.Readable { //gd:TabContainer.get_tab_title
@@ -679,7 +714,9 @@ func (self class) SetTabIcon(tab_idx int64, icon [1]gdclass.Texture2D) { //gd:Ta
 }
 
 /*
-Returns the [graphics.gd/classdb/Texture2D] for the tab at index 'tab_idx' or null if the tab has no [graphics.gd/classdb/Texture2D].
+Returns the [Texture2D] for the tab at index 'tab_idx' or null if the tab has no [Texture2D].
+
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
 //go:nosplit
 func (self class) GetTabIcon(tab_idx int64) [1]gdclass.Texture2D { //gd:TabContainer.get_tab_icon
@@ -752,7 +789,9 @@ func (self class) IsTabHidden(tab_idx int64) bool { //gd:TabContainer.is_tab_hid
 }
 
 /*
-Sets the metadata value for the tab at index 'tab_idx', which can be retrieved later using [Instance.GetTabMetadata].
+Sets the metadata value for the tab at index 'tab_idx', which can be retrieved later using [GetTabMetadata].
+
+[GetTabMetadata]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.GetTabMetadata
 */
 //go:nosplit
 func (self class) SetTabMetadata(tab_idx int64, metadata variant.Any) { //gd:TabContainer.set_tab_metadata
@@ -763,7 +802,9 @@ func (self class) SetTabMetadata(tab_idx int64, metadata variant.Any) { //gd:Tab
 }
 
 /*
-Returns the metadata value set to the tab at index 'tab_idx' using [Instance.SetTabMetadata]. If no metadata was previously set, returns null by default.
+Returns the metadata value set to the tab at index 'tab_idx' using [SetTabMetadata]. If no metadata was previously set, returns null by default.
+
+[SetTabMetadata]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.SetTabMetadata
 */
 //go:nosplit
 func (self class) GetTabMetadata(tab_idx int64) variant.Any { //gd:TabContainer.get_tab_metadata
@@ -804,7 +845,9 @@ func (self class) GetTabIdxAtPoint(point Vector2.XY) int64 { //gd:TabContainer.g
 }
 
 /*
-Returns the index of the tab tied to the given 'control'. The control must be a child of the [graphics.gd/classdb/TabContainer].
+Returns the index of the tab tied to the given 'control'. The control must be a child of the [TabContainer].
+
+[TabContainer]: https://pkg.go.dev/graphics.gd/classdb/TabContainer
 */
 //go:nosplit
 func (self class) GetTabIdxFromControl(control [1]gdclass.Control) int64 { //gd:TabContainer.get_tab_idx_from_control
@@ -814,7 +857,10 @@ func (self class) GetTabIdxFromControl(control [1]gdclass.Control) int64 { //gd:
 }
 
 /*
-If set on a [graphics.gd/classdb/Popup] node instance, a popup menu icon appears in the top-right corner of the [graphics.gd/classdb/TabContainer] (setting it to null will make it go away). Clicking it will expand the [graphics.gd/classdb/Popup] node.
+If set on a [Popup] node instance, a popup menu icon appears in the top-right corner of the [TabContainer] (setting it to null will make it go away). Clicking it will expand the [Popup] node.
+
+[Popup]: https://pkg.go.dev/graphics.gd/classdb/Popup
+[TabContainer]: https://pkg.go.dev/graphics.gd/classdb/TabContainer
 */
 //go:nosplit
 func (self class) SetPopup(popup [1]gdclass.Node) { //gd:TabContainer.set_popup
@@ -822,9 +868,13 @@ func (self class) SetPopup(popup [1]gdclass.Node) { //gd:TabContainer.set_popup
 }
 
 /*
-Returns the [graphics.gd/classdb/Popup] node instance if one has been set already with [Instance.SetPopup].
+Returns the [Popup] node instance if one has been set already with [SetPopup].
 
-Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [graphics.gd/classdb/Window.Instance.Visible] property.
+Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [Window.Visible] property.
+
+[Popup]: https://pkg.go.dev/graphics.gd/classdb/Popup
+[SetPopup]: https://pkg.go.dev/graphics.gd/classdb/TabContainer#Instance.SetPopup
+[Window.Visible]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Visible
 */
 //go:nosplit
 func (self class) GetPopup() [1]gdclass.Popup { //gd:TabContainer.get_popup
@@ -1032,7 +1082,9 @@ type TabPosition int //gd:TabContainer.TabPosition
 const (
 	// Places the tab bar at the top.
 	PositionTop TabPosition = 0
-	// Places the tab bar at the bottom. The tab bar's [graphics.gd/classdb/StyleBox] will be flipped vertically.
+	// Places the tab bar at the bottom. The tab bar's [StyleBox] will be flipped vertically.
+	//
+	// [StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
 	PositionBottom TabPosition = 1
 	// Represents the size of the [TabPosition] enum.
 	PositionMax TabPosition = 2

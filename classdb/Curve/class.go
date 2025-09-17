@@ -3,7 +3,10 @@
 /*
 This resource describes a mathematical curve by defining a set of points and tangents at each point. By default, it ranges between 0 and 1 on the X and Y axes, but these ranges can be changed.
 
-Please note that many resources and nodes assume they are given unit curves. A unit curve is a curve whose domain (the X axis) is between 0 and 1. Some examples of unit curve usage are [graphics.gd/classdb/CPUParticles2D.Instance.AngleCurve] and [graphics.gd/classdb/Line2D.Instance.WidthCurve].
+Please note that many resources and nodes assume they are given unit curves. A unit curve is a curve whose domain (the X axis) is between 0 and 1. Some examples of unit curve usage are [CPUParticles2D.AngleCurve] and [Line2D.WidthCurve].
+
+[CPUParticles2D.AngleCurve]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.AngleCurve
+[Line2D.WidthCurve]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.WidthCurve
 */
 package Curve
 
@@ -123,7 +126,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.Curve
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.Curve
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -143,7 +151,7 @@ func (self Instance) AddPoint(position Vector2.XY) int { //gd:Curve.add_point
 /*
 Adds a point to the curve. For each side, if the *_mode is [TangentLinear], the *_tangent angle (in degrees) uses the slope of the curve halfway to the adjacent point. Allows custom assignments to the *_tangent angle if *_mode is set to [TangentFree].
 */
-func (self Expanded) AddPoint(position Vector2.XY, left_tangent Float.X, right_tangent Float.X, left_mode TangentMode, right_mode TangentMode) int { //gd:Curve.add_point
+func (self MoreArgs) AddPoint(position Vector2.XY, left_tangent Float.X, right_tangent Float.X, left_mode TangentMode, right_mode TangentMode) int { //gd:Curve.add_point
 	return int(int(Advanced(self).AddPoint(Vector2.XY(position), float64(left_tangent), float64(right_tangent), left_mode, right_mode)))
 }
 
@@ -253,14 +261,20 @@ func (self Instance) SetPointRightMode(index int, mode TangentMode) { //gd:Curve
 }
 
 /*
-Returns the difference between [Instance.MinValue] and [Instance.MaxValue].
+Returns the difference between [MinValue] and [MaxValue].
+
+[MaxValue]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MaxValue
+[MinValue]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MinValue
 */
 func (self Instance) GetValueRange() Float.X { //gd:Curve.get_value_range
 	return Float.X(Float.X(Advanced(self).GetValueRange()))
 }
 
 /*
-Returns the difference between [Instance.MinDomain] and [Instance.MaxDomain].
+Returns the difference between [MinDomain] and [MaxDomain].
+
+[MaxDomain]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MaxDomain
+[MinDomain]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MinDomain
 */
 func (self Instance) GetDomainRange() Float.X { //gd:Curve.get_domain_range
 	return Float.X(Float.X(Advanced(self).GetDomainRange()))
@@ -578,7 +592,10 @@ func (self class) SetMaxValue(max float64) { //gd:Curve.set_max_value
 }
 
 /*
-Returns the difference between [Instance.MinValue] and [Instance.MaxValue].
+Returns the difference between [MinValue] and [MaxValue].
+
+[MaxValue]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MaxValue
+[MinValue]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MinValue
 */
 //go:nosplit
 func (self class) GetValueRange() float64 { //gd:Curve.get_value_range
@@ -612,7 +629,10 @@ func (self class) SetMaxDomain(max float64) { //gd:Curve.set_max_domain
 }
 
 /*
-Returns the difference between [Instance.MinDomain] and [Instance.MaxDomain].
+Returns the difference between [MinDomain] and [MaxDomain].
+
+[MaxDomain]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MaxDomain
+[MinDomain]: https://pkg.go.dev/graphics.gd/classdb/Curve#Instance.MinDomain
 */
 //go:nosplit
 func (self class) GetDomainRange() float64 { //gd:Curve.get_domain_range

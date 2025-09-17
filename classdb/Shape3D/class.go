@@ -3,7 +3,12 @@
 /*
 Abstract base class for all 3D shapes, intended for use in physics.
 
-Performance: Primitive shapes, especially [graphics.gd/classdb/SphereShape3D], are fast to check collisions against. [graphics.gd/classdb/ConvexPolygonShape3D] and [graphics.gd/classdb/HeightMapShape3D] are slower, and [graphics.gd/classdb/ConcavePolygonShape3D] is the slowest.
+Performance: Primitive shapes, especially [SphereShape3D], are fast to check collisions against. [ConvexPolygonShape3D] and [HeightMapShape3D] are slower, and [ConcavePolygonShape3D] is the slowest.
+
+[ConcavePolygonShape3D]: https://pkg.go.dev/graphics.gd/classdb/ConcavePolygonShape3D
+[ConvexPolygonShape3D]: https://pkg.go.dev/graphics.gd/classdb/ConvexPolygonShape3D
+[HeightMapShape3D]: https://pkg.go.dev/graphics.gd/classdb/HeightMapShape3D
+[SphereShape3D]: https://pkg.go.dev/graphics.gd/classdb/SphereShape3D
 */
 package Shape3D
 
@@ -187,7 +192,10 @@ func (self class) GetMargin() float64 { //gd:Shape3D.get_margin
 }
 
 /*
-Returns the [graphics.gd/classdb/ArrayMesh] used to draw the debug collision for this [graphics.gd/classdb/Shape3D].
+Returns the [ArrayMesh] used to draw the debug collision for this [Shape3D].
+
+[ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
+[Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 */
 //go:nosplit
 func (self class) GetDebugMesh() [1]gdclass.ArrayMesh { //gd:Shape3D.get_debug_mesh

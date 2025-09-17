@@ -104,7 +104,9 @@ func singleton() {
 /*
 Returns a Base64-encoded string of the any 'variant'. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
 
-Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
+Internally, this uses the same encoding mechanism as the [@GlobalScope.VarToBytes] method.
+
+[@GlobalScope.VarToBytes]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.VarToBytes
 */
 func VariantToBase64(v any, full_objects bool) string { //gd:Marshalls.variant_to_base64
 	once.Do(singleton)
@@ -114,7 +116,9 @@ func VariantToBase64(v any, full_objects bool) string { //gd:Marshalls.variant_t
 /*
 Returns a Base64-encoded string of the any 'variant'. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
 
-Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
+Internally, this uses the same encoding mechanism as the [@GlobalScope.VarToBytes] method.
+
+[@GlobalScope.VarToBytes]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.VarToBytes
 */
 func VariantToBase64Options(v any, full_objects bool) string { //gd:Marshalls.variant_to_base64
 	once.Do(singleton)
@@ -124,9 +128,11 @@ func VariantToBase64Options(v any, full_objects bool) string { //gd:Marshalls.va
 /*
 Returns a decoded any corresponding to the Base64-encoded string 'base64_str'. If 'allow_objects' is true, decoding objects is allowed.
 
-Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+Internally, this uses the same decoding mechanism as the [@GlobalScope.BytesToVar] method.
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+
+[@GlobalScope.BytesToVar]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.BytesToVar
 */
 func Base64ToVariant(base64_str string, allow_objects bool) any { //gd:Marshalls.base64_to_variant
 	once.Do(singleton)
@@ -136,9 +142,11 @@ func Base64ToVariant(base64_str string, allow_objects bool) any { //gd:Marshalls
 /*
 Returns a decoded any corresponding to the Base64-encoded string 'base64_str'. If 'allow_objects' is true, decoding objects is allowed.
 
-Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+Internally, this uses the same decoding mechanism as the [@GlobalScope.BytesToVar] method.
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+
+[@GlobalScope.BytesToVar]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.BytesToVar
 */
 func Base64ToVariantOptions(base64_str string, allow_objects bool) any { //gd:Marshalls.base64_to_variant
 	once.Do(singleton)
@@ -203,7 +211,9 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 /*
 Returns a Base64-encoded string of the any 'variant'. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
 
-Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
+Internally, this uses the same encoding mechanism as the [@GlobalScope.VarToBytes] method.
+
+[@GlobalScope.VarToBytes]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.VarToBytes
 */
 //go:nosplit
 func (self class) VariantToBase64(v variant.Any, full_objects bool) String.Readable { //gd:Marshalls.variant_to_base64
@@ -218,9 +228,11 @@ func (self class) VariantToBase64(v variant.Any, full_objects bool) String.Reada
 /*
 Returns a decoded any corresponding to the Base64-encoded string 'base64_str'. If 'allow_objects' is true, decoding objects is allowed.
 
-Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+Internally, this uses the same decoding mechanism as the [@GlobalScope.BytesToVar] method.
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+
+[@GlobalScope.BytesToVar]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.BytesToVar
 */
 //go:nosplit
 func (self class) Base64ToVariant(base64_str String.Readable, allow_objects bool) variant.Any { //gd:Marshalls.base64_to_variant

@@ -259,9 +259,17 @@ func init() {
 type Source int //gd:VisualShaderNodeCubemap.Source
 
 const (
-	// Use the [graphics.gd/classdb/Cubemap] set via [Instance.CubeMap]. If this is set to [Instance.Source], the samplerCube port is ignored.
+	// Use the [Cubemap] set via [CubeMap]. If this is set to [Source], the samplerCube port is ignored.
+	//
+	// [CubeMap]: https://pkg.go.dev/graphics.gd/classdb/#Instance.CubeMap
+	// [Cubemap]: https://pkg.go.dev/graphics.gd/classdb/Cubemap
+	// [Source]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Source
 	SourceTexture Source = 0
-	// Use the [graphics.gd/classdb/Cubemap] sampler reference passed via the samplerCube port. If this is set to [Instance.Source], the [Instance.CubeMap] texture is ignored.
+	// Use the [Cubemap] sampler reference passed via the samplerCube port. If this is set to [Source], the [CubeMap] texture is ignored.
+	//
+	// [CubeMap]: https://pkg.go.dev/graphics.gd/classdb/#Instance.CubeMap
+	// [Cubemap]: https://pkg.go.dev/graphics.gd/classdb/Cubemap
+	// [Source]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Source
 	SourcePort Source = 1
 	// Represents the size of the [Source] enum.
 	SourceMax Source = 2

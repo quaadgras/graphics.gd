@@ -3,9 +3,13 @@
 /*
 This audio effect does not affect sound output, but can be used for real-time audio visualizations.
 
-This resource configures an [graphics.gd/classdb/AudioEffectSpectrumAnalyzerInstance], which performs the actual analysis at runtime. An instance can be obtained with [graphics.gd/classdb/AudioServer.GetBusEffectInstance].
+This resource configures an [AudioEffectSpectrumAnalyzerInstance], which performs the actual analysis at runtime. An instance can be obtained with [AudioServer.GetBusEffectInstance].
 
-See also [graphics.gd/classdb/AudioStreamGenerator] for procedurally generating sounds.
+See also [AudioStreamGenerator] for procedurally generating sounds.
+
+[AudioEffectSpectrumAnalyzerInstance]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectSpectrumAnalyzerInstance
+[AudioServer.GetBusEffectInstance]: https://pkg.go.dev/graphics.gd/classdb/AudioServer#GetBusEffectInstance
+[AudioStreamGenerator]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamGenerator
 */
 package AudioEffectSpectrumAnalyzer
 

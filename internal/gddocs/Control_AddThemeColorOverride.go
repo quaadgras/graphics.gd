@@ -20,7 +20,6 @@ GetNode<Label>("MyLabel").AddThemeColorOverride("font_color", GetThemeColor("fon
 package main
 
 import (
-	"graphics.gd/classdb/Control"
 	"graphics.gd/classdb/Label"
 	"graphics.gd/variant/Color"
 )
@@ -33,5 +32,5 @@ func Control_AddThemeColorOverride() {
 	// Reset the font color of the child label.
 	MyLabel.AsControl().RemoveThemeColorOverride("font_color")
 	// Alternatively it can be overridden with the default value from the Label type.
-	MyLabel.AsControl().AddThemeColorOverride("font_color", Control.Expanded(MyLabel.AsControl()).GetThemeColor("font_color", "Label"))
+	MyLabel.AsControl().AddThemeColorOverride("font_color", MyLabel.AsControl().MoreArgs().GetThemeColor("font_color", "Label"))
 }

@@ -168,7 +168,10 @@ type Any interface {
 }
 
 /*
-Returns a [graphics.gd/classdb/TriangleMesh] with the label's vertices following its current configuration (such as its [Instance.PixelSize]).
+Returns a [TriangleMesh] with the label's vertices following its current configuration (such as its [PixelSize]).
+
+[PixelSize]: https://pkg.go.dev/graphics.gd/classdb/Label3D#Instance.PixelSize
+[TriangleMesh]: https://pkg.go.dev/graphics.gd/classdb/TriangleMesh
 */
 func (self Instance) GenerateTriangleMesh() TriangleMesh.Instance { //gd:Label3D.generate_triangle_mesh
 	return TriangleMesh.Instance(Advanced(self).GenerateTriangleMesh())
@@ -854,7 +857,10 @@ func (self class) GetTextureFilter() BaseMaterial3D.TextureFilter { //gd:Label3D
 }
 
 /*
-Returns a [graphics.gd/classdb/TriangleMesh] with the label's vertices following its current configuration (such as its [Instance.PixelSize]).
+Returns a [TriangleMesh] with the label's vertices following its current configuration (such as its [PixelSize]).
+
+[PixelSize]: https://pkg.go.dev/graphics.gd/classdb/Label3D#Instance.PixelSize
+[TriangleMesh]: https://pkg.go.dev/graphics.gd/classdb/TriangleMesh
 */
 //go:nosplit
 func (self class) GenerateTriangleMesh() [1]gdclass.TriangleMesh { //gd:Label3D.generate_triangle_mesh
@@ -931,13 +937,19 @@ const (
 type AlphaCutMode int //gd:Label3D.AlphaCutMode
 
 const (
-	// This mode performs standard alpha blending. It can display translucent areas, but transparency sorting issues may be visible when multiple transparent materials are overlapping. [graphics.gd/classdb/GeometryInstance3D.Instance.CastShadow] has no effect when this transparency mode is used; the [graphics.gd/classdb/Label3D] will never cast shadows.
-	AlphaCutDisabled AlphaCutMode = 0
-	// This mode only allows fully transparent or fully opaque pixels. Harsh edges will be visible unless some form of screen-space antialiasing is enabled (see [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/screen_space_aa"). This mode is also known as alpha testing or 1-bit transparency.
+	// This mode performs standard alpha blending. It can display translucent areas, but transparency sorting issues may be visible when multiple transparent materials are overlapping. [GeometryInstance3D.CastShadow] has no effect when this transparency mode is used; the [Label3D] will never cast shadows.
 	//
-	// Note: This mode might have issues with anti-aliased fonts and outlines, try adjusting [Instance.AlphaScissorThreshold] or using MSDF font.
+	// [GeometryInstance3D.CastShadow]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.CastShadow
+	// [Label3D]: https://pkg.go.dev/graphics.gd/classdb/Label3D
+	AlphaCutDisabled AlphaCutMode = 0
+	// This mode only allows fully transparent or fully opaque pixels. Harsh edges will be visible unless some form of screen-space antialiasing is enabled (see [ProjectSettings] "rendering/anti_aliasing/quality/screen_space_aa"). This mode is also known as alpha testing or 1-bit transparency.
+	//
+	// Note: This mode might have issues with anti-aliased fonts and outlines, try adjusting [AlphaScissorThreshold] or using MSDF font.
 	//
 	// Note: When using text with overlapping glyphs (e.g., cursive scripts), this mode might have transparency sorting issues between the main text and the outline.
+	//
+	// [AlphaScissorThreshold]: https://pkg.go.dev/graphics.gd/classdb/#Instance.AlphaScissorThreshold
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	AlphaCutDiscard AlphaCutMode = 1
 	// This mode draws fully opaque pixels in the depth prepass. This is slower than [AlphaCutDisabled] or [AlphaCutDiscard], but it allows displaying translucent areas and smooth edges while using proper sorting.
 	//

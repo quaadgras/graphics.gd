@@ -3,7 +3,7 @@
 /*
 A regular expression (or regex) is a compact language that can be used to recognize strings that follow a specific pattern, such as URLs, email addresses, complete sentences, etc. For example, a regex of ab[0-9] would find any string that is ab followed by any number from 0 to 9. For a more in-depth look, you can easily find various tutorials and detailed explanations on the Internet.
 
-To begin, the RegEx object needs to be compiled with the search pattern using [Instance.Compile] before it can be used.
+To begin, the RegEx object needs to be compiled with the search pattern using [Compile] before it can be used.
 
 	package main
 
@@ -16,7 +16,7 @@ To begin, the RegEx object needs to be compiled with the search pattern using [I
 
 The search pattern must be escaped first for GDScript before it is escaped for the expression. For example, compile("\\d+") would be read by RegEx as \d+. Similarly, compile("\"(?:\\\\.|[^\"])*\"") would be read as "(?:\\.|[^"])*". In GDScript, you can also use raw string literals (r-strings). For example, compile(r'"(?:\\.|[^"])*"') would be read the same.
 
-Using [Instance.Search], you can find the pattern within the given text. If a pattern is found, [graphics.gd/classdb/RegExMatch] is returned and you can retrieve details of the results using methods such as [graphics.gd/classdb/RegExMatch.Instance.GetString] and [graphics.gd/classdb/RegExMatch.Instance.GetStart].
+Using [Search], you can find the pattern within the given text. If a pattern is found, [RegExMatch] is returned and you can retrieve details of the results using methods such as [RegExMatch.GetString] and [RegExMatch.GetStart].
 
 	package main
 
@@ -34,15 +34,13 @@ Using [Instance.Search], you can find the pattern within the given text. If a pa
 		}
 	}
 
-The results of capturing groups () can be retrieved by passing the group number to the various methods in [graphics.gd/classdb/RegExMatch]. Group 0 is the default and will always refer to the entire pattern. In the above example, calling result.get_string(1) would give you 0123.
+The results of capturing groups () can be retrieved by passing the group number to the various methods in [RegExMatch]. Group 0 is the default and will always refer to the entire pattern. In the above example, calling result.get_string(1) would give you 0123.
 
 This version of RegEx also supports named capturing groups, and the names can be used to retrieve the results. If two or more groups have the same name, the name would only refer to the first one with a match.
 
 	package main
 
 	import (
-		"fmt"
-
 		"graphics.gd/classdb/RegEx"
 		"graphics.gd/classdb/RegExMatch"
 	)
@@ -52,26 +50,23 @@ This version of RegEx also supports named capturing groups, and the names can be
 		regex.Compile(`d(?<digit>[0-9]+)|x(?<digit>[0-9a-f]+)`)
 		result := regex.Search("the number is x2f")
 		if result != RegExMatch.Nil {
-			fmt.Print(RegExMatch.Expanded(result).GetString("digit")) // Would print 2f
+			result.MoreArgs().GetString("digit") // Would print 2f
 		}
 	}
 
-If you need to process multiple results, [Instance.SearchAll] generates a list of all non-overlapping results. This can be combined with a for loop for convenience.
+If you need to process multiple results, [SearchAll] generates a list of all non-overlapping results. This can be combined with a for loop for convenience.
 
 	package main
 
 	import (
-		"fmt"
-
 		"graphics.gd/classdb/RegEx"
-		"graphics.gd/classdb/RegExMatch"
 	)
 
 	func ExampleRegExSearchAll() {
 		var regex = RegEx.New()
 		regex.Compile(`d(?<digit>[0-9]+)|x(?<digit>[0-9a-f]+)`)
 		for _, result := range regex.SearchAll("the numbers are d42 and x2f") {
-			fmt.Println(RegExMatch.Expanded(result).GetString("digit"))
+			result.MoreArgs().GetString("digit")
 		}
 	}
 
@@ -99,8 +94,14 @@ Note: Godot's regex implementation is based on the [PCRE2] library. You can view
 
 Tip: You can use [Regexr] to test regular expressions online.
 
+[Compile]: https://pkg.go.dev/graphics.gd/classdb/RegEx#Instance.Compile
 [PCRE2]: https://www.pcre.org/
+[RegExMatch]: https://pkg.go.dev/graphics.gd/classdb/RegExMatch
+[RegExMatch.GetStart]: https://pkg.go.dev/graphics.gd/classdb/RegExMatch#Instance.GetStart
+[RegExMatch.GetString]: https://pkg.go.dev/graphics.gd/classdb/RegExMatch#Instance.GetString
 [Regexr]: https://regexr.com/
+[Search]: https://pkg.go.dev/graphics.gd/classdb/RegEx#Instance.Search
+[SearchAll]: https://pkg.go.dev/graphics.gd/classdb/RegEx#Instance.SearchAll
 [here]: https://www.pcre.org/current/doc/html/pcre2pattern.html
 */
 package RegEx
@@ -198,7 +199,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.RegEx
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.RegEx
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -209,7 +215,10 @@ type Any interface {
 }
 
 /*
-Creates and compiles a new [graphics.gd/classdb/RegEx] object. See also [Instance.Compile].
+Creates and compiles a new [RegEx] object. See also [Compile].
+
+[Compile]: https://pkg.go.dev/graphics.gd/classdb/RegEx#Instance.Compile
+[RegEx]: https://pkg.go.dev/graphics.gd/classdb/RegEx
 */
 func CreateFromString(pattern string) Instance { //gd:RegEx.create_from_string
 	self := Instance{}
@@ -217,7 +226,10 @@ func CreateFromString(pattern string) Instance { //gd:RegEx.create_from_string
 }
 
 /*
-Creates and compiles a new [graphics.gd/classdb/RegEx] object. See also [Instance.Compile].
+Creates and compiles a new [RegEx] object. See also [Compile].
+
+[Compile]: https://pkg.go.dev/graphics.gd/classdb/RegEx#Instance.Compile
+[RegEx]: https://pkg.go.dev/graphics.gd/classdb/RegEx
 */
 func CreateFromStringOptions(pattern string, show_error bool) Instance { //gd:RegEx.create_from_string
 	self := Instance{}
@@ -241,43 +253,51 @@ func (self Instance) Compile(pattern string) error { //gd:RegEx.compile
 /*
 Compiles and assign the search pattern to use. Returns [Ok] if the compilation is successful. If compilation fails, returns [Failed] and when 'show_error' is true, details are printed to standard output.
 */
-func (self Expanded) Compile(pattern string, show_error bool) error { //gd:RegEx.compile
+func (self MoreArgs) Compile(pattern string, show_error bool) error { //gd:RegEx.compile
 	return error(gd.ToError(Advanced(self).Compile(String.New(pattern), show_error)))
 }
 
 /*
-Searches the text for the compiled pattern. Returns a [graphics.gd/classdb/RegExMatch] container of the first matching result if found, otherwise null.
+Searches the text for the compiled pattern. Returns a [RegExMatch] container of the first matching result if found, otherwise null.
 
 The region to search within can be specified with 'offset' and 'end'. This is useful when searching for another match in the same 'subject' by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor ^ is not affected by 'offset', and the character before 'offset' will be checked for the word boundary \b.
+
+[RegExMatch]: https://pkg.go.dev/graphics.gd/classdb/RegExMatch
 */
 func (self Instance) Search(subject string) RegExMatch.Instance { //gd:RegEx.search
 	return RegExMatch.Instance(Advanced(self).Search(String.New(subject), int64(0), int64(-1)))
 }
 
 /*
-Searches the text for the compiled pattern. Returns a [graphics.gd/classdb/RegExMatch] container of the first matching result if found, otherwise null.
+Searches the text for the compiled pattern. Returns a [RegExMatch] container of the first matching result if found, otherwise null.
 
 The region to search within can be specified with 'offset' and 'end'. This is useful when searching for another match in the same 'subject' by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor ^ is not affected by 'offset', and the character before 'offset' will be checked for the word boundary \b.
+
+[RegExMatch]: https://pkg.go.dev/graphics.gd/classdb/RegExMatch
 */
-func (self Expanded) Search(subject string, offset int, end int) RegExMatch.Instance { //gd:RegEx.search
+func (self MoreArgs) Search(subject string, offset int, end int) RegExMatch.Instance { //gd:RegEx.search
 	return RegExMatch.Instance(Advanced(self).Search(String.New(subject), int64(offset), int64(end)))
 }
 
 /*
-Searches the text for the compiled pattern. Returns an array of [graphics.gd/classdb/RegExMatch] containers for each non-overlapping result. If no results were found, an empty array is returned instead.
+Searches the text for the compiled pattern. Returns an array of [RegExMatch] containers for each non-overlapping result. If no results were found, an empty array is returned instead.
 
 The region to search within can be specified with 'offset' and 'end'. This is useful when searching for another match in the same 'subject' by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor ^ is not affected by 'offset', and the character before 'offset' will be checked for the word boundary \b.
+
+[RegExMatch]: https://pkg.go.dev/graphics.gd/classdb/RegExMatch
 */
 func (self Instance) SearchAll(subject string) []RegExMatch.Instance { //gd:RegEx.search_all
 	return []RegExMatch.Instance(gd.ArrayAs[[]RegExMatch.Instance](gd.InternalArray(Advanced(self).SearchAll(String.New(subject), int64(0), int64(-1)))))
 }
 
 /*
-Searches the text for the compiled pattern. Returns an array of [graphics.gd/classdb/RegExMatch] containers for each non-overlapping result. If no results were found, an empty array is returned instead.
+Searches the text for the compiled pattern. Returns an array of [RegExMatch] containers for each non-overlapping result. If no results were found, an empty array is returned instead.
 
 The region to search within can be specified with 'offset' and 'end'. This is useful when searching for another match in the same 'subject' by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor ^ is not affected by 'offset', and the character before 'offset' will be checked for the word boundary \b.
+
+[RegExMatch]: https://pkg.go.dev/graphics.gd/classdb/RegExMatch
 */
-func (self Expanded) SearchAll(subject string, offset int, end int) []RegExMatch.Instance { //gd:RegEx.search_all
+func (self MoreArgs) SearchAll(subject string, offset int, end int) []RegExMatch.Instance { //gd:RegEx.search_all
 	return []RegExMatch.Instance(gd.ArrayAs[[]RegExMatch.Instance](gd.InternalArray(Advanced(self).SearchAll(String.New(subject), int64(offset), int64(end)))))
 }
 
@@ -295,7 +315,7 @@ Searches the text for the compiled pattern and replaces it with the specified st
 
 The region to search within can be specified with 'offset' and 'end'. This is useful when searching for another match in the same 'subject' by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor ^ is not affected by 'offset', and the character before 'offset' will be checked for the word boundary \b.
 */
-func (self Expanded) Sub(subject string, replacement string, all bool, offset int, end int) string { //gd:RegEx.sub
+func (self MoreArgs) Sub(subject string, replacement string, all bool, offset int, end int) string { //gd:RegEx.sub
 	return string(Advanced(self).Sub(String.New(subject), String.New(replacement), all, int64(offset), int64(end)).String())
 }
 
@@ -371,7 +391,10 @@ func New() Instance {
 }
 
 /*
-Creates and compiles a new [graphics.gd/classdb/RegEx] object. See also [Instance.Compile].
+Creates and compiles a new [RegEx] object. See also [Compile].
+
+[Compile]: https://pkg.go.dev/graphics.gd/classdb/RegEx#Instance.Compile
+[RegEx]: https://pkg.go.dev/graphics.gd/classdb/RegEx
 */
 //go:nosplit
 func (self class) CreateFromString(pattern String.Readable, show_error bool) [1]gdclass.RegEx { //gd:RegEx.create_from_string
@@ -405,9 +428,11 @@ func (self class) Compile(pattern String.Readable, show_error bool) Error.Code {
 }
 
 /*
-Searches the text for the compiled pattern. Returns a [graphics.gd/classdb/RegExMatch] container of the first matching result if found, otherwise null.
+Searches the text for the compiled pattern. Returns a [RegExMatch] container of the first matching result if found, otherwise null.
 
 The region to search within can be specified with 'offset' and 'end'. This is useful when searching for another match in the same 'subject' by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor ^ is not affected by 'offset', and the character before 'offset' will be checked for the word boundary \b.
+
+[RegExMatch]: https://pkg.go.dev/graphics.gd/classdb/RegExMatch
 */
 //go:nosplit
 func (self class) Search(subject String.Readable, offset int64, end int64) [1]gdclass.RegExMatch { //gd:RegEx.search
@@ -421,9 +446,11 @@ func (self class) Search(subject String.Readable, offset int64, end int64) [1]gd
 }
 
 /*
-Searches the text for the compiled pattern. Returns an array of [graphics.gd/classdb/RegExMatch] containers for each non-overlapping result. If no results were found, an empty array is returned instead.
+Searches the text for the compiled pattern. Returns an array of [RegExMatch] containers for each non-overlapping result. If no results were found, an empty array is returned instead.
 
 The region to search within can be specified with 'offset' and 'end'. This is useful when searching for another match in the same 'subject' by calling this method again after a previous success. Note that setting these parameters differs from passing over a shortened string. For example, the start anchor ^ is not affected by 'offset', and the character before 'offset' will be checked for the word boundary \b.
+
+[RegExMatch]: https://pkg.go.dev/graphics.gd/classdb/RegExMatch
 */
 //go:nosplit
 func (self class) SearchAll(subject String.Readable, offset int64, end int64) Array.Contains[[1]gdclass.RegExMatch] { //gd:RegEx.search_all

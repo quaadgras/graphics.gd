@@ -346,21 +346,31 @@ const (
 	FilterNearest TextureFilter = 1
 	// The texture filter blends between the nearest 4 pixels. This makes the texture look smooth from up close, and grainy from a distance (due to mipmaps not being sampled).
 	FilterLinear TextureFilter = 2
-	// The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look pixelated from up close, and smooth from a distance.
+	// The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look pixelated from up close, and smooth from a distance.
 	//
-	// Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [graphics.gd/classdb/Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.
+	// Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.
+	//
+	// [Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	FilterNearestMipmap TextureFilter = 3
-	// The texture filter blends between the nearest 4 pixels and between the nearest 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look smooth from up close, and smooth from a distance.
+	// The texture filter blends between the nearest 4 pixels and between the nearest 2 mipmaps (or uses the nearest mipmap if [ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look smooth from up close, and smooth from a distance.
 	//
-	// Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [graphics.gd/classdb/Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.
+	// Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.
+	//
+	// [Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	FilterLinearMipmap TextureFilter = 4
-	// The texture filter reads from the nearest pixel and blends between 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look pixelated from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	// The texture filter reads from the nearest pixel and blends between 2 mipmaps (or uses the nearest mipmap if [ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look pixelated from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
 	//
 	// Note: This texture filter is rarely useful in 2D projects. [FilterNearestMipmap] is usually more appropriate in this case.
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	FilterNearestMipmapAnisotropic TextureFilter = 5
-	// The texture filter blends between the nearest 4 pixels and blends between 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look smooth from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	// The texture filter blends between the nearest 4 pixels and blends between 2 mipmaps (or uses the nearest mipmap if [ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look smooth from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
 	//
 	// Note: This texture filter is rarely useful in 2D projects. [FilterLinearMipmap] is usually more appropriate in this case.
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	FilterLinearMipmapAnisotropic TextureFilter = 6
 	// Represents the size of the [TextureFilter] enum.
 	FilterMax TextureFilter = 7

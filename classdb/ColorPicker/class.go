@@ -3,7 +3,10 @@
 /*
 A widget that provides an interface for selecting or modifying a color. It can optionally provide functionalities like a color sampler (eyedropper), color modes, and presets.
 
-Note: This control is the color picker widget itself. You can use a [graphics.gd/classdb/ColorPickerButton] instead if you need a button that brings up a [graphics.gd/classdb/ColorPicker] in a popup.
+Note: This control is the color picker widget itself. You can use a [ColorPickerButton] instead if you need a button that brings up a [ColorPicker] in a popup.
+
+[ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
+[ColorPickerButton]: https://pkg.go.dev/graphics.gd/classdb/ColorPickerButton
 */
 package ColorPicker
 

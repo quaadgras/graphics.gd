@@ -97,7 +97,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.PacketPeer
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.PacketPeer
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -110,9 +115,11 @@ type Any interface {
 /*
 Gets a Variant. If 'allow_objects' is true, decoding objects is allowed.
 
-Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+Internally, this uses the same decoding mechanism as the [@GlobalScope.BytesToVar] method.
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+
+[@GlobalScope.BytesToVar]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.BytesToVar
 */
 func (self Instance) GetVar() any { //gd:PacketPeer.get_var
 	return any(Advanced(self).GetVar(false).Interface())
@@ -121,18 +128,22 @@ func (self Instance) GetVar() any { //gd:PacketPeer.get_var
 /*
 Gets a Variant. If 'allow_objects' is true, decoding objects is allowed.
 
-Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+Internally, this uses the same decoding mechanism as the [@GlobalScope.BytesToVar] method.
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+
+[@GlobalScope.BytesToVar]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.BytesToVar
 */
-func (self Expanded) GetVar(allow_objects bool) any { //gd:PacketPeer.get_var
+func (self MoreArgs) GetVar(allow_objects bool) any { //gd:PacketPeer.get_var
 	return any(Advanced(self).GetVar(allow_objects).Interface())
 }
 
 /*
 Sends a any as a packet. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
 
-Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
+Internally, this uses the same encoding mechanism as the [@GlobalScope.VarToBytes] method.
+
+[@GlobalScope.VarToBytes]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.VarToBytes
 */
 func (self Instance) PutVar(v any) error { //gd:PacketPeer.put_var
 	return error(gd.ToError(Advanced(self).PutVar(variant.New(v), false)))
@@ -141,9 +152,11 @@ func (self Instance) PutVar(v any) error { //gd:PacketPeer.put_var
 /*
 Sends a any as a packet. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
 
-Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
+Internally, this uses the same encoding mechanism as the [@GlobalScope.VarToBytes] method.
+
+[@GlobalScope.VarToBytes]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.VarToBytes
 */
-func (self Expanded) PutVar(v any, full_objects bool) error { //gd:PacketPeer.put_var
+func (self MoreArgs) PutVar(v any, full_objects bool) error { //gd:PacketPeer.put_var
 	return error(gd.ToError(Advanced(self).PutVar(variant.New(v), full_objects)))
 }
 
@@ -162,7 +175,10 @@ func (self Instance) PutPacket(buffer []byte) error { //gd:PacketPeer.put_packet
 }
 
 /*
-Returns the error state of the last packet received (via [Instance.GetPacket] and [Instance.GetVar]).
+Returns the error state of the last packet received (via [GetPacket] and [GetVar]).
+
+[GetPacket]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.GetPacket
+[GetVar]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.GetVar
 */
 func (self Instance) GetPacketError() error { //gd:PacketPeer.get_packet_error
 	return error(gd.ToError(Advanced(self).GetPacketError()))
@@ -229,9 +245,11 @@ func (self Instance) SetEncodeBufferMaxSize(value int) {
 /*
 Gets a Variant. If 'allow_objects' is true, decoding objects is allowed.
 
-Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+Internally, this uses the same decoding mechanism as the [@GlobalScope.BytesToVar] method.
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+
+[@GlobalScope.BytesToVar]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.BytesToVar
 */
 //go:nosplit
 func (self class) GetVar(allow_objects bool) variant.Any { //gd:PacketPeer.get_var
@@ -243,7 +261,9 @@ func (self class) GetVar(allow_objects bool) variant.Any { //gd:PacketPeer.get_v
 /*
 Sends a any as a packet. If 'full_objects' is true, encoding objects is allowed (and can potentially include code).
 
-Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
+Internally, this uses the same encoding mechanism as the [@GlobalScope.VarToBytes] method.
+
+[@GlobalScope.VarToBytes]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.VarToBytes
 */
 //go:nosplit
 func (self class) PutVar(v variant.Any, full_objects bool) Error.Code { //gd:PacketPeer.put_var
@@ -276,7 +296,10 @@ func (self class) PutPacket(buffer Packed.Bytes) Error.Code { //gd:PacketPeer.pu
 }
 
 /*
-Returns the error state of the last packet received (via [Instance.GetPacket] and [Instance.GetVar]).
+Returns the error state of the last packet received (via [GetPacket] and [GetVar]).
+
+[GetPacket]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.GetPacket
+[GetVar]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.GetVar
 */
 //go:nosplit
 func (self class) GetPacketError() Error.Code { //gd:PacketPeer.get_packet_error

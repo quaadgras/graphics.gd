@@ -8,17 +8,19 @@ package main
 
 import (
 	"graphics.gd/classdb/ConfigFile"
+	"graphics.gd/classdb/TextureRect"
 	"graphics.gd/classdb/Window"
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/Vector2i"
 )
 
 var window Window.Instance
+var textureRect TextureRect.Instance
 
 func EditorPlugin_SetWindowLayout() {
 	SetWindowLayout := func(configuration ConfigFile.Instance) {
-		window.SetPosition(ConfigFile.Expanded(configuration).GetValue("MyPlugin", "window_position", Vector2i.Zero).(Vector2i.XY))
-		control.AsCanvasItem().SetModulate(ConfigFile.Expanded(configuration).GetValue("MyPlugin", "icon_color", Color.W3C.White).(Color.RGBA))
+		window.SetPosition(configuration.MoreArgs().GetValue("MyPlugin", "window_position", Vector2i.Zero).(Vector2i.XY))
+		textureRect.AsCanvasItem().SetModulate(configuration.MoreArgs().GetValue("MyPlugin", "icon_color", Color.W3C.White).(Color.RGBA))
 	}
 	_ = SetWindowLayout
 }

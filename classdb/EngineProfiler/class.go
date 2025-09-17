@@ -3,7 +3,10 @@
 /*
 This class can be used to implement custom profilers that are able to interact with the engine and editor debugger.
 
-See [graphics.gd/classdb/EngineDebugger] and [graphics.gd/classdb/EditorDebuggerPlugin] for more information.
+See [EngineDebugger] and [EditorDebuggerPlugin] for more information.
+
+[EditorDebuggerPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorDebuggerPlugin
+[EngineDebugger]: https://pkg.go.dev/graphics.gd/classdb/EngineDebugger
 */
 package EngineProfiler
 
@@ -100,7 +103,9 @@ type Any interface {
 type Interface interface {
 	// Called when the profiler is enabled/disabled, along with a set of 'options'.
 	Toggle(enable bool, options []any)
-	// Called when data is added to profiler using [graphics.gd/classdb/EngineDebugger.ProfilerAddFrameData].
+	// Called when data is added to profiler using [EngineDebugger.ProfilerAddFrameData].
+	//
+	// [EngineDebugger.ProfilerAddFrameData]: https://pkg.go.dev/graphics.gd/classdb/EngineDebugger#ProfilerAddFrameData
 	AddFrame(data []any)
 	// Called once every engine iteration when the profiler is active with information about the current frame. All time values are in seconds. Lower values represent faster processing times and are therefore considered better.
 	Tick(frame_time Float.X, process_time Float.X, physics_time Float.X, physics_frame_time Float.X)
@@ -131,7 +136,9 @@ func (Instance) _toggle(impl func(ptr gdclass.Receiver, enable bool, options []a
 }
 
 /*
-Called when data is added to profiler using [graphics.gd/classdb/EngineDebugger.ProfilerAddFrameData].
+Called when data is added to profiler using [EngineDebugger.ProfilerAddFrameData].
+
+[EngineDebugger.ProfilerAddFrameData]: https://pkg.go.dev/graphics.gd/classdb/EngineDebugger#ProfilerAddFrameData
 */
 func (Instance) _add_frame(impl func(ptr gdclass.Receiver, data []any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -213,7 +220,9 @@ func (class) _toggle(impl func(ptr gdclass.Receiver, enable bool, options Array.
 }
 
 /*
-Called when data is added to profiler using [graphics.gd/classdb/EngineDebugger.ProfilerAddFrameData].
+Called when data is added to profiler using [EngineDebugger.ProfilerAddFrameData].
+
+[EngineDebugger.ProfilerAddFrameData]: https://pkg.go.dev/graphics.gd/classdb/EngineDebugger#ProfilerAddFrameData
 */
 func (class) _add_frame(impl func(ptr gdclass.Receiver, data Array.Any)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

@@ -110,7 +110,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.WebRTCPeerConnection
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.WebRTCPeerConnection
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -121,7 +126,10 @@ type Any interface {
 }
 
 /*
-Sets the 'extension_class' as the default [graphics.gd/classdb/WebRTCPeerConnectionExtension] returned when creating a new [graphics.gd/classdb/WebRTCPeerConnection].
+Sets the 'extension_class' as the default [WebRTCPeerConnectionExtension] returned when creating a new [WebRTCPeerConnection].
+
+[WebRTCPeerConnection]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection
+[WebRTCPeerConnectionExtension]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnectionExtension
 */
 func SetDefaultExtension(extension_class string) { //gd:WebRTCPeerConnection.set_default_extension
 	self := Instance{}
@@ -142,49 +150,63 @@ Re-initialize this peer connection, closing any previously active connection, an
 
 Valid 'configuration' options are:
 */
-func (self Expanded) Initialize(configuration Configuration) error { //gd:WebRTCPeerConnection.initialize
+func (self MoreArgs) Initialize(configuration Configuration) error { //gd:WebRTCPeerConnection.initialize
 	return error(gd.ToError(Advanced(self).Initialize(gd.DictionaryFromMap(configuration))))
 }
 
 /*
-Returns a new [graphics.gd/classdb/WebRTCDataChannel] (or null on failure) with given 'label' and optionally configured via the 'options' dictionary. This method can only be called when the connection is in state [StateNew].
+Returns a new [WebRTCDataChannel] (or null on failure) with given 'label' and optionally configured via the 'options' dictionary. This method can only be called when the connection is in state [StateNew].
 
-There are two ways to create a working data channel: either call [Instance.CreateDataChannel] on only one of the peer and listen to [Instance.OnDataChannelReceived] on the other, or call [Instance.CreateDataChannel] on both peers, with the same values, and the "negotiated" option set to true.
+There are two ways to create a working data channel: either call [CreateDataChannel] on only one of the peer and listen to [OnDataChannelReceived] on the other, or call [CreateDataChannel] on both peers, with the same values, and the "negotiated" option set to true.
 
 Valid 'options' are:
 
 Note: You must keep a reference to channels created this way, or it will be closed.
+
+[CreateDataChannel]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.CreateDataChannel
+[OnDataChannelReceived]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnDataChannelReceived
+[WebRTCDataChannel]: https://pkg.go.dev/graphics.gd/classdb/WebRTCDataChannel
 */
 func (self Instance) CreateDataChannel(label string) WebRTCDataChannel.Instance { //gd:WebRTCPeerConnection.create_data_channel
 	return WebRTCDataChannel.Instance(Advanced(self).CreateDataChannel(String.New(label), Dictionary.Nil))
 }
 
 /*
-Returns a new [graphics.gd/classdb/WebRTCDataChannel] (or null on failure) with given 'label' and optionally configured via the 'options' dictionary. This method can only be called when the connection is in state [StateNew].
+Returns a new [WebRTCDataChannel] (or null on failure) with given 'label' and optionally configured via the 'options' dictionary. This method can only be called when the connection is in state [StateNew].
 
-There are two ways to create a working data channel: either call [Instance.CreateDataChannel] on only one of the peer and listen to [Instance.OnDataChannelReceived] on the other, or call [Instance.CreateDataChannel] on both peers, with the same values, and the "negotiated" option set to true.
+There are two ways to create a working data channel: either call [CreateDataChannel] on only one of the peer and listen to [OnDataChannelReceived] on the other, or call [CreateDataChannel] on both peers, with the same values, and the "negotiated" option set to true.
 
 Valid 'options' are:
 
 Note: You must keep a reference to channels created this way, or it will be closed.
+
+[CreateDataChannel]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.CreateDataChannel
+[OnDataChannelReceived]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnDataChannelReceived
+[WebRTCDataChannel]: https://pkg.go.dev/graphics.gd/classdb/WebRTCDataChannel
 */
-func (self Expanded) CreateDataChannel(label string, options Options) WebRTCDataChannel.Instance { //gd:WebRTCPeerConnection.create_data_channel
+func (self MoreArgs) CreateDataChannel(label string, options Options) WebRTCDataChannel.Instance { //gd:WebRTCPeerConnection.create_data_channel
 	return WebRTCDataChannel.Instance(Advanced(self).CreateDataChannel(String.New(label), gd.DictionaryFromMap(options)))
 }
 
 /*
-Creates a new SDP offer to start a WebRTC connection with a remote peer. At least one [graphics.gd/classdb/WebRTCDataChannel] must have been created before calling this method.
+Creates a new SDP offer to start a WebRTC connection with a remote peer. At least one [WebRTCDataChannel] must have been created before calling this method.
 
-If this functions returns [Ok], [Instance.OnSessionDescriptionCreated] will be called when the session is ready to be sent.
+If this functions returns [Ok], [OnSessionDescriptionCreated] will be called when the session is ready to be sent.
+
+[OnSessionDescriptionCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnSessionDescriptionCreated
+[WebRTCDataChannel]: https://pkg.go.dev/graphics.gd/classdb/WebRTCDataChannel
 */
 func (self Instance) CreateOffer() error { //gd:WebRTCPeerConnection.create_offer
 	return error(gd.ToError(Advanced(self).CreateOffer()))
 }
 
 /*
-Sets the SDP description of the local peer. This should be called in response to [Instance.OnSessionDescriptionCreated].
+Sets the SDP description of the local peer. This should be called in response to [OnSessionDescriptionCreated].
 
-After calling this function the peer will start emitting [Instance.OnIceCandidateCreated] (unless an [Error] different from [Ok] is returned).
+After calling this function the peer will start emitting [OnIceCandidateCreated] (unless an [Error] different from [Ok] is returned).
+
+[OnIceCandidateCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnIceCandidateCreated
+[OnSessionDescriptionCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnSessionDescriptionCreated
 */
 func (self Instance) SetLocalDescription(atype string, sdp string) error { //gd:WebRTCPeerConnection.set_local_description
 	return error(gd.ToError(Advanced(self).SetLocalDescription(String.New(atype), String.New(sdp))))
@@ -193,23 +215,31 @@ func (self Instance) SetLocalDescription(atype string, sdp string) error { //gd:
 /*
 Sets the SDP description of the remote peer. This should be called with the values generated by a remote peer and received over the signaling server.
 
-If 'type' is "offer" the peer will emit [Instance.OnSessionDescriptionCreated] with the appropriate answer.
+If 'type' is "offer" the peer will emit [OnSessionDescriptionCreated] with the appropriate answer.
 
-If 'type' is "answer" the peer will start emitting [Instance.OnIceCandidateCreated].
+If 'type' is "answer" the peer will start emitting [OnIceCandidateCreated].
+
+[OnIceCandidateCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnIceCandidateCreated
+[OnSessionDescriptionCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnSessionDescriptionCreated
 */
 func (self Instance) SetRemoteDescription(atype string, sdp string) error { //gd:WebRTCPeerConnection.set_remote_description
 	return error(gd.ToError(Advanced(self).SetRemoteDescription(String.New(atype), String.New(sdp))))
 }
 
 /*
-Add an ice candidate generated by a remote peer (and received over the signaling server). See [Instance.OnIceCandidateCreated].
+Add an ice candidate generated by a remote peer (and received over the signaling server). See [OnIceCandidateCreated].
+
+[OnIceCandidateCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnIceCandidateCreated
 */
 func (self Instance) AddIceCandidate(media string, index int, name string) error { //gd:WebRTCPeerConnection.add_ice_candidate
 	return error(gd.ToError(Advanced(self).AddIceCandidate(String.New(media), int64(index), String.New(name))))
 }
 
 /*
-Call this method frequently (e.g. in [graphics.gd/classdb/Node.Instance.Process] or [graphics.gd/classdb/Node.Instance.PhysicsProcess]) to properly receive signals.
+Call this method frequently (e.g. in [Node.Process] or [Node.PhysicsProcess]) to properly receive signals.
+
+[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
+[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
 */
 func (self Instance) Poll() error { //gd:WebRTCPeerConnection.poll
 	return error(gd.ToError(Advanced(self).Poll()))
@@ -218,7 +248,9 @@ func (self Instance) Poll() error { //gd:WebRTCPeerConnection.poll
 /*
 Close the peer connection and all data channels associated with it.
 
-Note: You cannot reuse this object for a new connection unless you call [Instance.Initialize].
+Note: You cannot reuse this object for a new connection unless you call [Initialize].
+
+[Initialize]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.Initialize
 */
 func (self Instance) Close() { //gd:WebRTCPeerConnection.close
 	Advanced(self).Close()
@@ -289,7 +321,10 @@ func New() Instance {
 }
 
 /*
-Sets the 'extension_class' as the default [graphics.gd/classdb/WebRTCPeerConnectionExtension] returned when creating a new [graphics.gd/classdb/WebRTCPeerConnection].
+Sets the 'extension_class' as the default [WebRTCPeerConnectionExtension] returned when creating a new [WebRTCPeerConnection].
+
+[WebRTCPeerConnection]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection
+[WebRTCPeerConnectionExtension]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnectionExtension
 */
 //go:nosplit
 func (self class) SetDefaultExtension(extension_class String.Name) { //gd:WebRTCPeerConnection.set_default_extension
@@ -311,15 +346,19 @@ func (self class) Initialize(configuration Dictionary.Any) Error.Code { //gd:Web
 }
 
 /*
-Returns a new [graphics.gd/classdb/WebRTCDataChannel] (or null on failure) with given 'label' and optionally configured via the 'options' dictionary. This method can only be called when the connection is in state [StateNew].
+Returns a new [WebRTCDataChannel] (or null on failure) with given 'label' and optionally configured via the 'options' dictionary. This method can only be called when the connection is in state [StateNew].
 
-There are two ways to create a working data channel: either call [Instance.CreateDataChannel] on only one of the peer and listen to [Instance.OnDataChannelReceived] on the other, or call [Instance.CreateDataChannel] on both peers, with the same values, and the "negotiated" option set to true.
+There are two ways to create a working data channel: either call [CreateDataChannel] on only one of the peer and listen to [OnDataChannelReceived] on the other, or call [CreateDataChannel] on both peers, with the same values, and the "negotiated" option set to true.
 
 Valid 'options' are:
 
 
 
 Note: You must keep a reference to channels created this way, or it will be closed.
+
+[CreateDataChannel]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.CreateDataChannel
+[OnDataChannelReceived]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnDataChannelReceived
+[WebRTCDataChannel]: https://pkg.go.dev/graphics.gd/classdb/WebRTCDataChannel
 */
 //go:nosplit
 func (self class) CreateDataChannel(label String.Readable, options Dictionary.Any) [1]gdclass.WebRTCDataChannel { //gd:WebRTCPeerConnection.create_data_channel
@@ -332,9 +371,12 @@ func (self class) CreateDataChannel(label String.Readable, options Dictionary.An
 }
 
 /*
-Creates a new SDP offer to start a WebRTC connection with a remote peer. At least one [graphics.gd/classdb/WebRTCDataChannel] must have been created before calling this method.
+Creates a new SDP offer to start a WebRTC connection with a remote peer. At least one [WebRTCDataChannel] must have been created before calling this method.
 
-If this functions returns [Ok], [Instance.OnSessionDescriptionCreated] will be called when the session is ready to be sent.
+If this functions returns [Ok], [OnSessionDescriptionCreated] will be called when the session is ready to be sent.
+
+[OnSessionDescriptionCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnSessionDescriptionCreated
+[WebRTCDataChannel]: https://pkg.go.dev/graphics.gd/classdb/WebRTCDataChannel
 */
 //go:nosplit
 func (self class) CreateOffer() Error.Code { //gd:WebRTCPeerConnection.create_offer
@@ -344,9 +386,12 @@ func (self class) CreateOffer() Error.Code { //gd:WebRTCPeerConnection.create_of
 }
 
 /*
-Sets the SDP description of the local peer. This should be called in response to [Instance.OnSessionDescriptionCreated].
+Sets the SDP description of the local peer. This should be called in response to [OnSessionDescriptionCreated].
 
-After calling this function the peer will start emitting [Instance.OnIceCandidateCreated] (unless an [Error] different from [Ok] is returned).
+After calling this function the peer will start emitting [OnIceCandidateCreated] (unless an [Error] different from [Ok] is returned).
+
+[OnIceCandidateCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnIceCandidateCreated
+[OnSessionDescriptionCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnSessionDescriptionCreated
 */
 //go:nosplit
 func (self class) SetLocalDescription(atype String.Readable, sdp String.Readable) Error.Code { //gd:WebRTCPeerConnection.set_local_description
@@ -361,9 +406,12 @@ func (self class) SetLocalDescription(atype String.Readable, sdp String.Readable
 /*
 Sets the SDP description of the remote peer. This should be called with the values generated by a remote peer and received over the signaling server.
 
-If 'type' is "offer" the peer will emit [Instance.OnSessionDescriptionCreated] with the appropriate answer.
+If 'type' is "offer" the peer will emit [OnSessionDescriptionCreated] with the appropriate answer.
 
-If 'type' is "answer" the peer will start emitting [Instance.OnIceCandidateCreated].
+If 'type' is "answer" the peer will start emitting [OnIceCandidateCreated].
+
+[OnIceCandidateCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnIceCandidateCreated
+[OnSessionDescriptionCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnSessionDescriptionCreated
 */
 //go:nosplit
 func (self class) SetRemoteDescription(atype String.Readable, sdp String.Readable) Error.Code { //gd:WebRTCPeerConnection.set_remote_description
@@ -376,7 +424,9 @@ func (self class) SetRemoteDescription(atype String.Readable, sdp String.Readabl
 }
 
 /*
-Add an ice candidate generated by a remote peer (and received over the signaling server). See [Instance.OnIceCandidateCreated].
+Add an ice candidate generated by a remote peer (and received over the signaling server). See [OnIceCandidateCreated].
+
+[OnIceCandidateCreated]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.OnIceCandidateCreated
 */
 //go:nosplit
 func (self class) AddIceCandidate(media String.Readable, index int64, name String.Readable) Error.Code { //gd:WebRTCPeerConnection.add_ice_candidate
@@ -390,7 +440,10 @@ func (self class) AddIceCandidate(media String.Readable, index int64, name Strin
 }
 
 /*
-Call this method frequently (e.g. in [graphics.gd/classdb/Node.Instance.Process] or [graphics.gd/classdb/Node.Instance.PhysicsProcess]) to properly receive signals.
+Call this method frequently (e.g. in [Node.Process] or [Node.PhysicsProcess]) to properly receive signals.
+
+[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
+[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:WebRTCPeerConnection.poll
@@ -402,7 +455,9 @@ func (self class) Poll() Error.Code { //gd:WebRTCPeerConnection.poll
 /*
 Close the peer connection and all data channels associated with it.
 
-Note: You cannot reuse this object for a new connection unless you call [Instance.Initialize].
+Note: You cannot reuse this object for a new connection unless you call [Initialize].
+
+[Initialize]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection#Instance.Initialize
 */
 //go:nosplit
 func (self class) Close() { //gd:WebRTCPeerConnection.close
@@ -521,7 +576,9 @@ const (
 	StateDisconnected ConnectionState = 3
 	// One or more of the ICE transports failed.
 	StateFailed ConnectionState = 4
-	// The peer connection is closed (after calling [Instance.Close] for example).
+	// The peer connection is closed (after calling [Close] for example).
+	//
+	// [Close]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Close
 	StateClosed ConnectionState = 5
 )
 
@@ -539,17 +596,30 @@ const (
 type SignalingState int //gd:WebRTCPeerConnection.SignalingState
 
 const (
-	// There is no ongoing exchange of offer and answer underway. This may mean that the [graphics.gd/classdb/WebRTCPeerConnection] is new ([StateNew]) or that negotiation is complete and a connection has been established ([StateConnected]).
+	// There is no ongoing exchange of offer and answer underway. This may mean that the [WebRTCPeerConnection] is new ([StateNew]) or that negotiation is complete and a connection has been established ([StateConnected]).
+	//
+	// [WebRTCPeerConnection]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection
 	SignalingStateStable SignalingState = 0
-	// The local peer has called [Instance.SetLocalDescription], passing in SDP representing an offer (usually created by calling [Instance.CreateOffer]), and the offer has been applied successfully.
+	// The local peer has called [SetLocalDescription], passing in SDP representing an offer (usually created by calling [CreateOffer]), and the offer has been applied successfully.
+	//
+	// [CreateOffer]: https://pkg.go.dev/graphics.gd/classdb/#Instance.CreateOffer
+	// [SetLocalDescription]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetLocalDescription
 	SignalingStateHaveLocalOffer SignalingState = 1
-	// The remote peer has created an offer and used the signaling server to deliver it to the local peer, which has set the offer as the remote description by calling [Instance.SetRemoteDescription].
+	// The remote peer has created an offer and used the signaling server to deliver it to the local peer, which has set the offer as the remote description by calling [SetRemoteDescription].
+	//
+	// [SetRemoteDescription]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetRemoteDescription
 	SignalingStateHaveRemoteOffer SignalingState = 2
-	// The offer sent by the remote peer has been applied and an answer has been created and applied by calling [Instance.SetLocalDescription]. This provisional answer describes the supported media formats and so forth, but may not have a complete set of ICE candidates included. Further candidates will be delivered separately later.
+	// The offer sent by the remote peer has been applied and an answer has been created and applied by calling [SetLocalDescription]. This provisional answer describes the supported media formats and so forth, but may not have a complete set of ICE candidates included. Further candidates will be delivered separately later.
+	//
+	// [SetLocalDescription]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetLocalDescription
 	SignalingStateHaveLocalPranswer SignalingState = 3
-	// A provisional answer has been received and successfully applied in response to an offer previously sent and established by calling [Instance.SetLocalDescription].
+	// A provisional answer has been received and successfully applied in response to an offer previously sent and established by calling [SetLocalDescription].
+	//
+	// [SetLocalDescription]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetLocalDescription
 	SignalingStateHaveRemotePranswer SignalingState = 4
-	// The [graphics.gd/classdb/WebRTCPeerConnection] has been closed.
+	// The [WebRTCPeerConnection] has been closed.
+	//
+	// [WebRTCPeerConnection]: https://pkg.go.dev/graphics.gd/classdb/WebRTCPeerConnection
 	SignalingStateClosed SignalingState = 5
 )
 

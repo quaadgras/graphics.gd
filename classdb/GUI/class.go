@@ -97,9 +97,17 @@ const (
 type Orientation int //gd:Orientation
 
 const (
-	// General vertical alignment, usually used for [graphics.gd/classdb/Separator], [graphics.gd/classdb/ScrollBar], [graphics.gd/classdb/Slider], etc.
+	// General vertical alignment, usually used for [Separator], [ScrollBar], [Slider], etc.
+	//
+	// [ScrollBar]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar
+	// [Separator]: https://pkg.go.dev/graphics.gd/classdb/Separator
+	// [Slider]: https://pkg.go.dev/graphics.gd/classdb/Slider
 	Vertical Orientation = 1
-	// General horizontal alignment, usually used for [graphics.gd/classdb/Separator], [graphics.gd/classdb/ScrollBar], [graphics.gd/classdb/Slider], etc.
+	// General horizontal alignment, usually used for [Separator], [ScrollBar], [Slider], etc.
+	//
+	// [ScrollBar]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar
+	// [Separator]: https://pkg.go.dev/graphics.gd/classdb/Separator
+	// [Slider]: https://pkg.go.dev/graphics.gd/classdb/Slider
 	Horizontal Orientation = 0
 )
 

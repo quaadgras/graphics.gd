@@ -3,7 +3,11 @@
 /*
 Represents a glTF node. glTF nodes may have names, transforms, children (other glTF nodes), and more specialized properties (represented by their own classes).
 
-glTF nodes generally exist inside of [graphics.gd/classdb/GLTFState] which represents all data of a glTF file. Most of GLTFNode's properties are indices of other data in the glTF file. You can extend a glTF node with additional properties by using [Instance.GetAdditionalData] and [Instance.SetAdditionalData].
+glTF nodes generally exist inside of [GLTFState] which represents all data of a glTF file. Most of GLTFNode's properties are indices of other data in the glTF file. You can extend a glTF node with additional properties by using [GetAdditionalData] and [SetAdditionalData].
+
+[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
+[GetAdditionalData]: https://pkg.go.dev/graphics.gd/classdb/GLTFNode#Instance.GetAdditionalData
+[SetAdditionalData]: https://pkg.go.dev/graphics.gd/classdb/GLTFNode#Instance.SetAdditionalData
 */
 package GLTFNode
 
@@ -125,7 +129,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.GLTFNode
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.GLTFNode
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -136,25 +145,33 @@ type Any interface {
 }
 
 /*
-Appends the given child node index to the [Instance.Children] array.
+Appends the given child node index to the [Children] array.
+
+[Children]: https://pkg.go.dev/graphics.gd/classdb/GLTFNode#Instance.Children
 */
 func (self Instance) AppendChildIndex(child_index int) { //gd:GLTFNode.append_child_index
 	Advanced(self).AppendChildIndex(int64(child_index))
 }
 
 /*
-Gets additional arbitrary data in this [graphics.gd/classdb/GLTFNode] instance. This can be used to keep per-node state data in [graphics.gd/classdb/GLTFDocumentExtension] classes, which is important because they are stateless.
+Gets additional arbitrary data in this [GLTFNode] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
 
-The argument should be the [graphics.gd/classdb/GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the return value can be anything you set. If nothing was set, the return value is null.
+The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the return value can be anything you set. If nothing was set, the return value is null.
+
+[GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
+[GLTFNode]: https://pkg.go.dev/graphics.gd/classdb/GLTFNode
 */
 func (self Instance) GetAdditionalData(extension_name string) any { //gd:GLTFNode.get_additional_data
 	return any(Advanced(self).GetAdditionalData(String.Name(String.New(extension_name))).Interface())
 }
 
 /*
-Sets additional arbitrary data in this [graphics.gd/classdb/GLTFNode] instance. This can be used to keep per-node state data in [graphics.gd/classdb/GLTFDocumentExtension] classes, which is important because they are stateless.
+Sets additional arbitrary data in this [GLTFNode] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
 
-The first argument should be the [graphics.gd/classdb/GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the second argument can be anything you want.
+The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the second argument can be anything you want.
+
+[GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
+[GLTFNode]: https://pkg.go.dev/graphics.gd/classdb/GLTFNode
 */
 func (self Instance) SetAdditionalData(extension_name string, additional_data any) { //gd:GLTFNode.set_additional_data
 	Advanced(self).SetAdditionalData(String.Name(String.New(extension_name)), variant.New(additional_data))
@@ -462,7 +479,9 @@ func (self class) SetChildren(children Packed.Array[int32]) { //gd:GLTFNode.set_
 }
 
 /*
-Appends the given child node index to the [Instance.Children] array.
+Appends the given child node index to the [Children] array.
+
+[Children]: https://pkg.go.dev/graphics.gd/classdb/GLTFNode#Instance.Children
 */
 //go:nosplit
 func (self class) AppendChildIndex(child_index int64) { //gd:GLTFNode.append_child_index
@@ -494,9 +513,12 @@ func (self class) SetVisible(visible bool) { //gd:GLTFNode.set_visible
 }
 
 /*
-Gets additional arbitrary data in this [graphics.gd/classdb/GLTFNode] instance. This can be used to keep per-node state data in [graphics.gd/classdb/GLTFDocumentExtension] classes, which is important because they are stateless.
+Gets additional arbitrary data in this [GLTFNode] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
 
-The argument should be the [graphics.gd/classdb/GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the return value can be anything you set. If nothing was set, the return value is null.
+The argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the return value can be anything you set. If nothing was set, the return value is null.
+
+[GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
+[GLTFNode]: https://pkg.go.dev/graphics.gd/classdb/GLTFNode
 */
 //go:nosplit
 func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //gd:GLTFNode.get_additional_data
@@ -506,9 +528,12 @@ func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //
 }
 
 /*
-Sets additional arbitrary data in this [graphics.gd/classdb/GLTFNode] instance. This can be used to keep per-node state data in [graphics.gd/classdb/GLTFDocumentExtension] classes, which is important because they are stateless.
+Sets additional arbitrary data in this [GLTFNode] instance. This can be used to keep per-node state data in [GLTFDocumentExtension] classes, which is important because they are stateless.
 
-The first argument should be the [graphics.gd/classdb/GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the second argument can be anything you want.
+The first argument should be the [GLTFDocumentExtension] name (does not have to match the extension name in the glTF file), and the second argument can be anything you want.
+
+[GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
+[GLTFNode]: https://pkg.go.dev/graphics.gd/classdb/GLTFNode
 */
 //go:nosplit
 func (self class) SetAdditionalData(extension_name String.Name, additional_data variant.Any) { //gd:GLTFNode.set_additional_data
@@ -519,9 +544,11 @@ func (self class) SetAdditionalData(extension_name String.Name, additional_data 
 }
 
 /*
-Returns the node path that this GLTF node will have in the Godot scene tree after being imported. This is useful when importing glTF object model pointers with [graphics.gd/classdb/GLTFObjectModelProperty], for handling extensions such as KHR_animation_pointer or KHR_interactivity.
+Returns the node path that this GLTF node will have in the Godot scene tree after being imported. This is useful when importing glTF object model pointers with [GLTFObjectModelProperty], for handling extensions such as KHR_animation_pointer or KHR_interactivity.
 
 If 'handle_skeletons' is true, paths to skeleton bone glTF nodes will be resolved properly. For example, a path that would be ^"A/B/C/Bone1/Bone2/Bone3" if false will become ^"A/B/C/Skeleton3D:Bone3".
+
+[GLTFObjectModelProperty]: https://pkg.go.dev/graphics.gd/classdb/GLTFObjectModelProperty
 */
 //go:nosplit
 func (self class) GetSceneNodePath(gltf_state [1]gdclass.GLTFState, handle_skeletons bool) Path.ToNode { //gd:GLTFNode.get_scene_node_path

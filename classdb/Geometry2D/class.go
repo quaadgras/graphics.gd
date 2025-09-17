@@ -139,6 +139,8 @@ func SegmentIntersectsCircle(segment_from Vector2.XY, segment_to Vector2.XY, cir
 
 /*
 Checks if the two segments ('from_a', 'to_a') and ('from_b', 'to_b') intersect. If yes, return the point of intersection as [Vector2.XY]. If no intersection takes place, returns null.
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 func SegmentIntersectsSegment(from_a Vector2.XY, to_a Vector2.XY, from_b Vector2.XY, to_b Vector2.XY) any { //gd:Geometry2D.segment_intersects_segment
 	once.Do(singleton)
@@ -160,6 +162,8 @@ from and dir are not endpoints of a line segment or ray but the slope (dir) and 
 	Geometry2D.LineIntersectsLine(fromA, dirA, fromB, Vector2.New(-1, -1))
 	// Returns null
 	Geometry2D.LineIntersectsLine(fromA, dirA, fromB, Vector2.Right)
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 func LineIntersectsLine(from_a Vector2.XY, dir_a Vector2.XY, from_b Vector2.XY, dir_b Vector2.XY) any { //gd:Geometry2D.line_intersects_line
 	once.Do(singleton)
@@ -168,6 +172,8 @@ func LineIntersectsLine(from_a Vector2.XY, dir_a Vector2.XY, from_b Vector2.XY, 
 
 /*
 Given the two 2D segments ('p1', 'q1') and ('p2', 'q2'), finds those two points on the two segments that are closest to each other. Returns a [][Vector2.XY] that contains this point on ('p1', 'q1') as well the accompanying point on ('p2', 'q2').
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 func GetClosestPointsBetweenSegments(p1 Vector2.XY, q1 Vector2.XY, p2 Vector2.XY, q2 Vector2.XY) []Vector2.XY { //gd:Geometry2D.get_closest_points_between_segments
 	once.Do(singleton)
@@ -234,6 +240,8 @@ func TriangulateDelaunay(points []Vector2.XY) []int32 { //gd:Geometry2D.triangul
 
 /*
 Given an array of [Vector2.XY]s, returns the convex hull as a list of points in counterclockwise order. The last point is the same as the first one.
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 func ConvexHull(points []Vector2.XY) []Vector2.XY { //gd:Geometry2D.convex_hull
 	once.Do(singleton)
@@ -242,6 +250,8 @@ func ConvexHull(points []Vector2.XY) []Vector2.XY { //gd:Geometry2D.convex_hull
 
 /*
 Decomposes the 'polygon' into multiple convex hulls and returns an array of [][Vector2.XY].
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 func DecomposePolygonInConvex(polygon []Vector2.XY) [][]Vector2.XY { //gd:Geometry2D.decompose_polygon_in_convex
 	once.Do(singleton)
@@ -319,6 +329,8 @@ Note: To translate the polygon's vertices specifically, multiply them to a [Tran
 		polygon[i] = Transform2D.Vector(polygon[i], Transform2D.OriginXY{Origin: offset})
 	}
 	fmt.Println(polygon) // Prints [(50, 50), (150, 50), (150, 150), (50, 150)]
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 func OffsetPolygon(polygon []Vector2.XY, delta Float.X, join_type PolyJoinType) [][]Vector2.XY { //gd:Geometry2D.offset_polygon
 	once.Do(singleton)
@@ -340,6 +352,8 @@ Note: To translate the polygon's vertices specifically, multiply them to a [Tran
 		polygon[i] = Transform2D.Vector(polygon[i], Transform2D.OriginXY{Origin: offset})
 	}
 	fmt.Println(polygon) // Prints [(50, 50), (150, 50), (150, 150), (50, 150)]
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 func OffsetPolygonOptions(polygon []Vector2.XY, delta Float.X, join_type PolyJoinType) [][]Vector2.XY { //gd:Geometry2D.offset_polygon
 	once.Do(singleton)
@@ -376,6 +390,9 @@ func OffsetPolylineOptions(polyline []Vector2.XY, delta Float.X, join_type PolyJ
 
 /*
 Given an array of [Vector2.XY]s representing tiles, builds an atlas. The returned dictionary has two keys: points is a [][Vector2.XY] that specifies the positions of each tile, size contains the overall size of the whole atlas as [Vector2i.XY].
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
+[Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
 */
 func MakeAtlas(sizes []Vector2.XY) Atlas { //gd:Geometry2D.make_atlas
 	once.Do(singleton)
@@ -385,7 +402,7 @@ func MakeAtlas(sizes []Vector2.XY) Atlas { //gd:Geometry2D.make_atlas
 /*
 Returns the [Bresenham line] between the 'from' and 'to' points. A Bresenham line is a series of pixels that draws a line and is always 1-pixel thick on every row and column of the drawing (never more, never less).
 
-Example code to draw a line between two [graphics.gd/classdb/Marker2D] nodes using a series of [graphics.gd/classdb/CanvasItem.Instance.DrawRect] calls:
+Example code to draw a line between two [Marker2D] nodes using a series of [CanvasItem.DrawRect] calls:
 
 	Draw := func() {
 		for _, pixel := range Geometry2D.BresenhamLine(Vector2i.From(markerA.AsNode2D().Position()), Vector2i.From(markerB.AsNode2D().Position())) {
@@ -394,6 +411,8 @@ Example code to draw a line between two [graphics.gd/classdb/Marker2D] nodes usi
 	}
 
 [Bresenham line]: https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
+[CanvasItem.DrawRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawRect
+[Marker2D]: https://pkg.go.dev/graphics.gd/classdb/Marker2D
 */
 func BresenhamLine(from Vector2i.XY, to Vector2i.XY) []Vector2i.XY { //gd:Geometry2D.bresenham_line
 	once.Do(singleton)
@@ -454,6 +473,8 @@ func (self class) SegmentIntersectsCircle(segment_from Vector2.XY, segment_to Ve
 
 /*
 Checks if the two segments ('from_a', 'to_a') and ('from_b', 'to_b') intersect. If yes, return the point of intersection as [Vector2.XY]. If no intersection takes place, returns null.
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 //go:nosplit
 func (self class) SegmentIntersectsSegment(from_a Vector2.XY, to_a Vector2.XY, from_b Vector2.XY, to_b Vector2.XY) variant.Any { //gd:Geometry2D.segment_intersects_segment
@@ -484,6 +505,8 @@ from and dir are not endpoints of a line segment or ray but the slope (dir) and 
 	// Returns null
 	Geometry2D.LineIntersectsLine(fromA, dirA, fromB, Vector2.Right)
 
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 //go:nosplit
 func (self class) LineIntersectsLine(from_a Vector2.XY, dir_a Vector2.XY, from_b Vector2.XY, dir_b Vector2.XY) variant.Any { //gd:Geometry2D.line_intersects_line
@@ -499,6 +522,8 @@ func (self class) LineIntersectsLine(from_a Vector2.XY, dir_a Vector2.XY, from_b
 
 /*
 Given the two 2D segments ('p1', 'q1') and ('p2', 'q2'), finds those two points on the two segments that are closest to each other. Returns a [][Vector2.XY] that contains this point on ('p1', 'q1') as well the accompanying point on ('p2', 'q2').
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 //go:nosplit
 func (self class) GetClosestPointsBetweenSegments(p1 Vector2.XY, q1 Vector2.XY, p2 Vector2.XY, q2 Vector2.XY) Packed.Array[Vector2.XY] { //gd:Geometry2D.get_closest_points_between_segments
@@ -608,6 +633,8 @@ func (self class) TriangulateDelaunay(points Packed.Array[Vector2.XY]) Packed.Ar
 
 /*
 Given an array of [Vector2.XY]s, returns the convex hull as a list of points in counterclockwise order. The last point is the same as the first one.
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 //go:nosplit
 func (self class) ConvexHull(points Packed.Array[Vector2.XY]) Packed.Array[Vector2.XY] { //gd:Geometry2D.convex_hull
@@ -620,6 +647,8 @@ func (self class) ConvexHull(points Packed.Array[Vector2.XY]) Packed.Array[Vecto
 
 /*
 Decomposes the 'polygon' into multiple convex hulls and returns an array of [][Vector2.XY].
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 //go:nosplit
 func (self class) DecomposePolygonInConvex(polygon Packed.Array[Vector2.XY]) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.decompose_polygon_in_convex
@@ -733,6 +762,8 @@ Note: To translate the polygon's vertices specifically, multiply them to a [Tran
 	}
 	fmt.Println(polygon) // Prints [(50, 50), (150, 50), (150, 150), (50, 150)]
 
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 //go:nosplit
 func (self class) OffsetPolygon(polygon Packed.Array[Vector2.XY], delta float64, join_type PolyJoinType) Array.Contains[Packed.Array[Vector2.XY]] { //gd:Geometry2D.offset_polygon
@@ -768,6 +799,9 @@ func (self class) OffsetPolyline(polyline Packed.Array[Vector2.XY], delta float6
 
 /*
 Given an array of [Vector2.XY]s representing tiles, builds an atlas. The returned dictionary has two keys: points is a [][Vector2.XY] that specifies the positions of each tile, size contains the overall size of the whole atlas as [Vector2i.XY].
+
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
+[Vector2i.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2i#XY
 */
 //go:nosplit
 func (self class) MakeAtlas(sizes Packed.Array[Vector2.XY]) Dictionary.Any { //gd:Geometry2D.make_atlas
@@ -781,7 +815,7 @@ func (self class) MakeAtlas(sizes Packed.Array[Vector2.XY]) Dictionary.Any { //g
 /*
 Returns the [Bresenham line] between the 'from' and 'to' points. A Bresenham line is a series of pixels that draws a line and is always 1-pixel thick on every row and column of the drawing (never more, never less).
 
-Example code to draw a line between two [graphics.gd/classdb/Marker2D] nodes using a series of [graphics.gd/classdb/CanvasItem.Instance.DrawRect] calls:
+Example code to draw a line between two [Marker2D] nodes using a series of [CanvasItem.DrawRect] calls:
 
 
 	Draw := func() {
@@ -792,6 +826,8 @@ Example code to draw a line between two [graphics.gd/classdb/Marker2D] nodes usi
 
 
 [Bresenham line]: https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
+[CanvasItem.DrawRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawRect
+[Marker2D]: https://pkg.go.dev/graphics.gd/classdb/Marker2D
 */
 //go:nosplit
 func (self class) BresenhamLine(from Vector2i.XY, to Vector2i.XY) Array.Contains[Vector2i.XY] { //gd:Geometry2D.bresenham_line

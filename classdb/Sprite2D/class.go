@@ -141,6 +141,8 @@ func (self Instance) IsPixelOpaque(pos Vector2.XY) bool { //gd:Sprite2D.is_pixel
 Returns a [Rect2.PositionSize] representing the Sprite2D's boundary in local coordinates.
 
 Example: Detect if the Sprite2D was clicked:
+
+[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 */
 func (self Instance) GetRect() Rect2.PositionSize { //gd:Sprite2D.get_rect
 	return Rect2.PositionSize(Advanced(self).GetRect())
@@ -446,6 +448,8 @@ Returns a [Rect2.PositionSize] representing the Sprite2D's boundary in local coo
 Example: Detect if the Sprite2D was clicked:
 
 
+
+[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 */
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:Sprite2D.get_rect

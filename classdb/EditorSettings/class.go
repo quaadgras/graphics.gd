@@ -22,7 +22,9 @@ Accessing the settings can be done using the following methods, such as:
 		_ = list_of_settings
 	}
 
-Note: This class shouldn't be instantiated directly. Instead, access the singleton using [graphics.gd/classdb/EditorInterface.GetEditorSettings].
+Note: This class shouldn't be instantiated directly. Instead, access the singleton using [EditorInterface.GetEditorSettings].
+
+[EditorInterface.GetEditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface#GetEditorSettings
 */
 package EditorSettings
 
@@ -126,7 +128,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.EditorSettings
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.EditorSettings
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -144,14 +151,18 @@ func (self Instance) HasSetting(name string) bool { //gd:EditorSettings.has_sett
 }
 
 /*
-Sets the 'value' of the setting specified by 'name'. This is equivalent to using [graphics.gd/classdb/Object.Instance.Set] on the EditorSettings instance.
+Sets the 'value' of the setting specified by 'name'. This is equivalent to using [Object.Set] on the EditorSettings instance.
+
+[Object.Set]: https://pkg.go.dev/graphics.gd/variant/Object#Set
 */
 func (self Instance) SetSetting(name string, value any) { //gd:EditorSettings.set_setting
 	Advanced(self).SetSetting(String.New(name), variant.New(value))
 }
 
 /*
-Returns the value of the setting specified by 'name'. This is equivalent to using [graphics.gd/classdb/Object.Instance.Get] on the EditorSettings instance.
+Returns the value of the setting specified by 'name'. This is equivalent to using [Object.Get] on the EditorSettings instance.
+
+[Object.Get]: https://pkg.go.dev/graphics.gd/variant/Object#Get
 */
 func (self Instance) GetSetting(name string) any { //gd:EditorSettings.get_setting
 	return any(Advanced(self).GetSetting(String.New(name)).Interface())
@@ -185,23 +196,29 @@ func (self Instance) AddPropertyInfo(info Object.PropertyInfo) { //gd:EditorSett
 }
 
 /*
-Sets project-specific metadata with the 'section', 'key' and 'data' specified. This metadata is stored outside the project folder and therefore won't be checked into version control. See also [Instance.GetProjectMetadata].
+Sets project-specific metadata with the 'section', 'key' and 'data' specified. This metadata is stored outside the project folder and therefore won't be checked into version control. See also [GetProjectMetadata].
+
+[GetProjectMetadata]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.GetProjectMetadata
 */
 func (self Instance) SetProjectMetadata(section string, key string, data any) { //gd:EditorSettings.set_project_metadata
 	Advanced(self).SetProjectMetadata(String.New(section), String.New(key), variant.New(data))
 }
 
 /*
-Returns project-specific metadata for the 'section' and 'key' specified. If the metadata doesn't exist, 'default' will be returned instead. See also [Instance.SetProjectMetadata].
+Returns project-specific metadata for the 'section' and 'key' specified. If the metadata doesn't exist, 'default' will be returned instead. See also [SetProjectMetadata].
+
+[SetProjectMetadata]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.SetProjectMetadata
 */
 func (self Instance) GetProjectMetadata(section string, key string) any { //gd:EditorSettings.get_project_metadata
 	return any(Advanced(self).GetProjectMetadata(String.New(section), String.New(key), variant.New([1]any{}[0])).Interface())
 }
 
 /*
-Returns project-specific metadata for the 'section' and 'key' specified. If the metadata doesn't exist, 'default' will be returned instead. See also [Instance.SetProjectMetadata].
+Returns project-specific metadata for the 'section' and 'key' specified. If the metadata doesn't exist, 'default' will be returned instead. See also [SetProjectMetadata].
+
+[SetProjectMetadata]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.SetProjectMetadata
 */
-func (self Expanded) GetProjectMetadata(section string, key string, def any) any { //gd:EditorSettings.get_project_metadata
+func (self MoreArgs) GetProjectMetadata(section string, key string, def any) any { //gd:EditorSettings.get_project_metadata
 	return any(Advanced(self).GetProjectMetadata(String.New(section), String.New(key), variant.New(def)).Interface())
 }
 
@@ -241,7 +258,9 @@ func (self Instance) SetBuiltinActionOverride(name string, actions_list []InputE
 }
 
 /*
-Checks if any settings with the prefix 'setting_prefix' exist in the set of changed settings. See also [Instance.GetChangedSettings].
+Checks if any settings with the prefix 'setting_prefix' exist in the set of changed settings. See also [GetChangedSettings].
+
+[GetChangedSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.GetChangedSettings
 */
 func (self Instance) CheckChangedSettingsInGroup(setting_prefix string) bool { //gd:EditorSettings.check_changed_settings_in_group
 	return bool(Advanced(self).CheckChangedSettingsInGroup(String.New(setting_prefix)))
@@ -255,7 +274,10 @@ func (self Instance) GetChangedSettings() []string { //gd:EditorSettings.get_cha
 }
 
 /*
-Marks the passed editor setting as being changed, see [Instance.GetChangedSettings]. Only settings which exist (see [Instance.HasSetting]) will be accepted.
+Marks the passed editor setting as being changed, see [GetChangedSettings]. Only settings which exist (see [HasSetting]) will be accepted.
+
+[GetChangedSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.GetChangedSettings
+[HasSetting]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.HasSetting
 */
 func (self Instance) MarkSettingChanged(setting string) { //gd:EditorSettings.mark_setting_changed
 	Advanced(self).MarkSettingChanged(String.New(setting))
@@ -315,7 +337,9 @@ func (self class) HasSetting(name String.Readable) bool { //gd:EditorSettings.ha
 }
 
 /*
-Sets the 'value' of the setting specified by 'name'. This is equivalent to using [graphics.gd/classdb/Object.Instance.Set] on the EditorSettings instance.
+Sets the 'value' of the setting specified by 'name'. This is equivalent to using [Object.Set] on the EditorSettings instance.
+
+[Object.Set]: https://pkg.go.dev/graphics.gd/variant/Object#Set
 */
 //go:nosplit
 func (self class) SetSetting(name String.Readable, value variant.Any) { //gd:EditorSettings.set_setting
@@ -326,7 +350,9 @@ func (self class) SetSetting(name String.Readable, value variant.Any) { //gd:Edi
 }
 
 /*
-Returns the value of the setting specified by 'name'. This is equivalent to using [graphics.gd/classdb/Object.Instance.Get] on the EditorSettings instance.
+Returns the value of the setting specified by 'name'. This is equivalent to using [Object.Get] on the EditorSettings instance.
+
+[Object.Get]: https://pkg.go.dev/graphics.gd/variant/Object#Get
 */
 //go:nosplit
 func (self class) GetSetting(name String.Readable) variant.Any { //gd:EditorSettings.get_setting
@@ -372,7 +398,9 @@ func (self class) AddPropertyInfo(info Dictionary.Any) { //gd:EditorSettings.add
 }
 
 /*
-Sets project-specific metadata with the 'section', 'key' and 'data' specified. This metadata is stored outside the project folder and therefore won't be checked into version control. See also [Instance.GetProjectMetadata].
+Sets project-specific metadata with the 'section', 'key' and 'data' specified. This metadata is stored outside the project folder and therefore won't be checked into version control. See also [GetProjectMetadata].
+
+[GetProjectMetadata]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.GetProjectMetadata
 */
 //go:nosplit
 func (self class) SetProjectMetadata(section String.Readable, key String.Readable, data variant.Any) { //gd:EditorSettings.set_project_metadata
@@ -384,7 +412,9 @@ func (self class) SetProjectMetadata(section String.Readable, key String.Readabl
 }
 
 /*
-Returns project-specific metadata for the 'section' and 'key' specified. If the metadata doesn't exist, 'default' will be returned instead. See also [Instance.SetProjectMetadata].
+Returns project-specific metadata for the 'section' and 'key' specified. If the metadata doesn't exist, 'default' will be returned instead. See also [SetProjectMetadata].
+
+[SetProjectMetadata]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.SetProjectMetadata
 */
 //go:nosplit
 func (self class) GetProjectMetadata(section String.Readable, key String.Readable, def variant.Any) variant.Any { //gd:EditorSettings.get_project_metadata
@@ -449,7 +479,9 @@ func (self class) SetBuiltinActionOverride(name String.Readable, actions_list Ar
 }
 
 /*
-Checks if any settings with the prefix 'setting_prefix' exist in the set of changed settings. See also [Instance.GetChangedSettings].
+Checks if any settings with the prefix 'setting_prefix' exist in the set of changed settings. See also [GetChangedSettings].
+
+[GetChangedSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.GetChangedSettings
 */
 //go:nosplit
 func (self class) CheckChangedSettingsInGroup(setting_prefix String.Readable) bool { //gd:EditorSettings.check_changed_settings_in_group
@@ -469,7 +501,10 @@ func (self class) GetChangedSettings() Packed.Strings { //gd:EditorSettings.get_
 }
 
 /*
-Marks the passed editor setting as being changed, see [Instance.GetChangedSettings]. Only settings which exist (see [Instance.HasSetting]) will be accepted.
+Marks the passed editor setting as being changed, see [GetChangedSettings]. Only settings which exist (see [HasSetting]) will be accepted.
+
+[GetChangedSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.GetChangedSettings
+[HasSetting]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings#Instance.HasSetting
 */
 //go:nosplit
 func (self class) MarkSettingChanged(setting String.Readable) { //gd:EditorSettings.mark_setting_changed

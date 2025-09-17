@@ -19,11 +19,9 @@ public override void _Ready()
 
 package main
 
-import "graphics.gd/classdb/Control"
-
 func Control_GetThemeColor() {
 	// Get the font color defined for the current Control's class, if it exists.
 	control.AsCanvasItem().SetModulate(control.GetThemeColor("font_color"))
 	// Get the font color defined for the Button class.
-	control.AsCanvasItem().SetModulate(Control.Expanded(control).GetThemeColor("font_color", "Button"))
+	control.MoreArgs().GetThemeColor("font_color", "Button")
 }

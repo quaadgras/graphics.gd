@@ -24,5 +24,5 @@ func AStar2D_ConnectPoints() {
 	var astar = AStar2D.New()
 	astar.AddPoint(1, Vector2.New(1, 1))
 	astar.AddPoint(2, Vector2.New(0, 5))
-	AStar2D.Expanded(astar).ConnectPoints(1, 2, false)
+	astar.MoreArgs().ConnectPoints(1, 2, false)
 }

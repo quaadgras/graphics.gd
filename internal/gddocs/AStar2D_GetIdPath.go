@@ -38,14 +38,14 @@ import (
 func AStar2D_GetIdPath() {
 	var astar = AStar2D.New()
 	astar.AddPoint(1, Vector2.New(0, 0))
-	AStar2D.Expanded(astar).AddPoint(2, Vector2.New(0, 1), 1) // Default weight is 1
+	astar.MoreArgs().AddPoint(2, Vector2.New(0, 1), 1) // Default weight is 1
 	astar.AddPoint(3, Vector2.New(1, 1))
 	astar.AddPoint(4, Vector2.New(2, 0))
 
-	AStar2D.Expanded(astar).ConnectPoints(1, 2, false)
-	AStar2D.Expanded(astar).ConnectPoints(2, 3, false)
-	AStar2D.Expanded(astar).ConnectPoints(4, 3, false)
-	AStar2D.Expanded(astar).ConnectPoints(1, 4, false)
+	astar.MoreArgs().ConnectPoints(1, 2, false)
+	astar.MoreArgs().ConnectPoints(2, 3, false)
+	astar.MoreArgs().ConnectPoints(4, 3, false)
+	astar.MoreArgs().ConnectPoints(1, 4, false)
 
 	var res = astar.GetIdPath(1, 3) // Returns [1, 2, 3]
 	_ = res

@@ -2,6 +2,8 @@
 
 /*
 A constant [Transform3D.BasisOrigin], which can be used as an input node.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 package VisualShaderNodeTransformConstant
 

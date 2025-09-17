@@ -122,7 +122,9 @@ func (self Instance) Close() { //gd:WebRTCDataChannel.close
 }
 
 /*
-Returns true if the last received packet was transferred as text. See [Instance.WriteMode].
+Returns true if the last received packet was transferred as text. See [WriteMode].
+
+[WriteMode]: https://pkg.go.dev/graphics.gd/classdb/WebRTCDataChannel#Instance.WriteMode
 */
 func (self Instance) WasStringPacket() bool { //gd:WebRTCDataChannel.was_string_packet
 	return bool(Advanced(self).WasStringPacket())
@@ -267,7 +269,9 @@ func (self class) Close() { //gd:WebRTCDataChannel.close
 }
 
 /*
-Returns true if the last received packet was transferred as text. See [Instance.WriteMode].
+Returns true if the last received packet was transferred as text. See [WriteMode].
+
+[WriteMode]: https://pkg.go.dev/graphics.gd/classdb/WebRTCDataChannel#Instance.WriteMode
 */
 //go:nosplit
 func (self class) WasStringPacket() bool { //gd:WebRTCDataChannel.was_string_packet

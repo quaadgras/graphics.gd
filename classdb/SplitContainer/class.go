@@ -122,18 +122,26 @@ type Any interface {
 }
 
 /*
-Clamps the [Instance.SplitOffset] value to not go outside the currently possible minimal and maximum values.
+Clamps the [SplitOffset] value to not go outside the currently possible minimal and maximum values.
+
+[SplitOffset]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer#Instance.SplitOffset
 */
 func (self Instance) ClampSplitOffset() { //gd:SplitContainer.clamp_split_offset
 	Advanced(self).ClampSplitOffset()
 }
 
 /*
-Returns the drag area [graphics.gd/classdb/Control]. For example, you can move a pre-configured button into the drag area [graphics.gd/classdb/Control] so that it rides along with the split bar. Try setting the [graphics.gd/classdb/Button] anchors to center prior to the reparent() call.
+Returns the drag area [Control]. For example, you can move a pre-configured button into the drag area [Control] so that it rides along with the split bar. Try setting the [Button] anchors to center prior to the reparent() call.
 
-Note: The drag area [graphics.gd/classdb/Control] is drawn over the [graphics.gd/classdb/SplitContainer]'s children, so [graphics.gd/classdb/CanvasItem] draw objects called from the [graphics.gd/classdb/Control] and children added to the [graphics.gd/classdb/Control] will also appear over the [graphics.gd/classdb/SplitContainer]'s children. Try setting [graphics.gd/classdb/Control.Instance.MouseFilter] of custom children to [Control.MouseFilterIgnore] to prevent blocking the mouse from dragging if desired.
+Note: The drag area [Control] is drawn over the [SplitContainer]'s children, so [CanvasItem] draw objects called from the [Control] and children added to the [Control] will also appear over the [SplitContainer]'s children. Try setting [Control.MouseFilter] of custom children to [Control.MouseFilterIgnore] to prevent blocking the mouse from dragging if desired.
 
 Warning: This is a required internal node, removing and freeing it may cause a crash.
+
+[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Control.MouseFilter]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseFilter
+[SplitContainer]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer
 */
 func (self Instance) GetDragAreaControl() Control.Instance { //gd:SplitContainer.get_drag_area_control
 	return Control.Instance(Advanced(self).GetDragAreaControl())
@@ -274,7 +282,9 @@ func (self class) GetSplitOffset() int64 { //gd:SplitContainer.get_split_offset
 }
 
 /*
-Clamps the [Instance.SplitOffset] value to not go outside the currently possible minimal and maximum values.
+Clamps the [SplitOffset] value to not go outside the currently possible minimal and maximum values.
+
+[SplitOffset]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer#Instance.SplitOffset
 */
 //go:nosplit
 func (self class) ClampSplitOffset() { //gd:SplitContainer.clamp_split_offset
@@ -378,13 +388,19 @@ func (self class) IsDragAreaHighlightInEditorEnabled() bool { //gd:SplitContaine
 }
 
 /*
-Returns the drag area [graphics.gd/classdb/Control]. For example, you can move a pre-configured button into the drag area [graphics.gd/classdb/Control] so that it rides along with the split bar. Try setting the [graphics.gd/classdb/Button] anchors to center prior to the reparent() call.
+Returns the drag area [Control]. For example, you can move a pre-configured button into the drag area [Control] so that it rides along with the split bar. Try setting the [Button] anchors to center prior to the reparent() call.
 
 
 
-Note: The drag area [graphics.gd/classdb/Control] is drawn over the [graphics.gd/classdb/SplitContainer]'s children, so [graphics.gd/classdb/CanvasItem] draw objects called from the [graphics.gd/classdb/Control] and children added to the [graphics.gd/classdb/Control] will also appear over the [graphics.gd/classdb/SplitContainer]'s children. Try setting [graphics.gd/classdb/Control.Instance.MouseFilter] of custom children to [Control.MouseFilterIgnore] to prevent blocking the mouse from dragging if desired.
+Note: The drag area [Control] is drawn over the [SplitContainer]'s children, so [CanvasItem] draw objects called from the [Control] and children added to the [Control] will also appear over the [SplitContainer]'s children. Try setting [Control.MouseFilter] of custom children to [Control.MouseFilterIgnore] to prevent blocking the mouse from dragging if desired.
 
 Warning: This is a required internal node, removing and freeing it may cause a crash.
+
+[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Control.MouseFilter]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseFilter
+[SplitContainer]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer
 */
 //go:nosplit
 func (self class) GetDragAreaControl() [1]gdclass.Control { //gd:SplitContainer.get_drag_area_control

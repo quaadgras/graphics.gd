@@ -3,7 +3,9 @@
 /*
 This object manages the functionality and display of toast notifications within the editor, ensuring timely and informative alerts are presented to users.
 
-Note: This class shouldn't be instantiated directly. Instead, access the singleton using [graphics.gd/classdb/EditorInterface.GetEditorToaster].
+Note: This class shouldn't be instantiated directly. Instead, access the singleton using [EditorInterface.GetEditorToaster].
+
+[EditorInterface.GetEditorToaster]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface#GetEditorToaster
 */
 package EditorToaster
 
@@ -96,7 +98,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.EditorToaster
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.EditorToaster
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -116,7 +123,7 @@ func (self Instance) PushToast(message string) { //gd:EditorToaster.push_toast
 /*
 Pushes a toast notification to the editor for display.
 */
-func (self Expanded) PushToast(message string, severity Severity, tooltip string) { //gd:EditorToaster.push_toast
+func (self MoreArgs) PushToast(message string, severity Severity, tooltip string) { //gd:EditorToaster.push_toast
 	Advanced(self).PushToast(String.New(message), severity, String.New(tooltip))
 }
 

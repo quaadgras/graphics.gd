@@ -93,7 +93,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.EditorScenePostImportPlugin
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.EditorScenePostImportPlugin
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -104,7 +109,10 @@ type Any interface {
 }
 
 type Interface interface {
-	// Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [Instance.AddImportOption] and [Instance.AddImportOptionAdvanced].
+	// Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [AddImportOption] and [AddImportOptionAdvanced].
+	//
+	// [AddImportOption]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOption
+	// [AddImportOptionAdvanced]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOptionAdvanced
 	GetInternalImportOptions(category int)
 	// Should return true to show the given option, false to hide the given option, or null to ignore.
 	GetInternalOptionVisibility(category int, for_animation bool, option string) any
@@ -112,7 +120,10 @@ type Interface interface {
 	GetInternalOptionUpdateViewRequired(category int, option string) any
 	// Process a specific node or resource for a given category.
 	InternalProcess(category int, base_node Node.Instance, node Node.Instance, resource Resource.Instance)
-	// Override to add general import options. These will appear in the main import dock on the editor. Add options via [Instance.AddImportOption] and [Instance.AddImportOptionAdvanced].
+	// Override to add general import options. These will appear in the main import dock on the editor. Add options via [AddImportOption] and [AddImportOptionAdvanced].
+	//
+	// [AddImportOption]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOption
+	// [AddImportOptionAdvanced]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOptionAdvanced
 	GetImportOptions(path string)
 	// Should return true to show the given option, false to hide the given option, or null to ignore.
 	GetOptionVisibility(path string, for_animation bool, option string) any
@@ -147,7 +158,10 @@ func (self implementation) PreProcess(scene Node.Instance)  { return }
 func (self implementation) PostProcess(scene Node.Instance) { return }
 
 /*
-Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [Instance.AddImportOption] and [Instance.AddImportOptionAdvanced].
+Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [AddImportOption] and [AddImportOptionAdvanced].
+
+[AddImportOption]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOption
+[AddImportOptionAdvanced]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOptionAdvanced
 */
 func (Instance) _get_internal_import_options(impl func(ptr gdclass.Receiver, category int)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -217,7 +231,10 @@ func (Instance) _internal_process(impl func(ptr gdclass.Receiver, category int, 
 }
 
 /*
-Override to add general import options. These will appear in the main import dock on the editor. Add options via [Instance.AddImportOption] and [Instance.AddImportOptionAdvanced].
+Override to add general import options. These will appear in the main import dock on the editor. Add options via [AddImportOption] and [AddImportOptionAdvanced].
+
+[AddImportOption]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOption
+[AddImportOptionAdvanced]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOptionAdvanced
 */
 func (Instance) _get_import_options(impl func(ptr gdclass.Receiver, path string)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -285,23 +302,32 @@ func (self Instance) GetOptionValue(name string) any { //gd:EditorScenePostImpor
 }
 
 /*
-Add a specific import option (name and default value only). This function can only be called from [Interface.GetImportOptions] and [Interface.GetInternalImportOptions].
+Add a specific import option (name and default value only). This function can only be called from [GetImportOptions] and [GetInternalImportOptions].
+
+[GetImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
+[GetInternalImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
 */
 func (self Instance) AddImportOption(name string, value any) { //gd:EditorScenePostImportPlugin.add_import_option
 	Advanced(self).AddImportOption(String.New(name), variant.New(value))
 }
 
 /*
-Add a specific import option. This function can only be called from [Interface.GetImportOptions] and [Interface.GetInternalImportOptions].
+Add a specific import option. This function can only be called from [GetImportOptions] and [GetInternalImportOptions].
+
+[GetImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
+[GetInternalImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
 */
 func (self Instance) AddImportOptionAdvanced(atype variant.Type, name string, default_value any) { //gd:EditorScenePostImportPlugin.add_import_option_advanced
 	Advanced(self).AddImportOptionAdvanced(atype, String.New(name), variant.New(default_value), 0, String.New(""), int64(6))
 }
 
 /*
-Add a specific import option. This function can only be called from [Interface.GetImportOptions] and [Interface.GetInternalImportOptions].
+Add a specific import option. This function can only be called from [GetImportOptions] and [GetInternalImportOptions].
+
+[GetImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
+[GetInternalImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
 */
-func (self Expanded) AddImportOptionAdvanced(atype variant.Type, name string, default_value any, hint ClassDB.PropertyHint, hint_string string, usage_flags int) { //gd:EditorScenePostImportPlugin.add_import_option_advanced
+func (self MoreArgs) AddImportOptionAdvanced(atype variant.Type, name string, default_value any, hint ClassDB.PropertyHint, hint_string string, usage_flags int) { //gd:EditorScenePostImportPlugin.add_import_option_advanced
 	Advanced(self).AddImportOptionAdvanced(atype, String.New(name), variant.New(default_value), hint, String.New(hint_string), int64(usage_flags))
 }
 
@@ -349,7 +375,10 @@ func New() Instance {
 }
 
 /*
-Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [Instance.AddImportOption] and [Instance.AddImportOptionAdvanced].
+Override to add internal import options. These will appear in the 3D scene import dialog. Add options via [AddImportOption] and [AddImportOptionAdvanced].
+
+[AddImportOption]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOption
+[AddImportOptionAdvanced]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOptionAdvanced
 */
 func (class) _get_internal_import_options(impl func(ptr gdclass.Receiver, category int64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -419,7 +448,10 @@ func (class) _internal_process(impl func(ptr gdclass.Receiver, category int64, b
 }
 
 /*
-Override to add general import options. These will appear in the main import dock on the editor. Add options via [Instance.AddImportOption] and [Instance.AddImportOptionAdvanced].
+Override to add general import options. These will appear in the main import dock on the editor. Add options via [AddImportOption] and [AddImportOptionAdvanced].
+
+[AddImportOption]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOption
+[AddImportOptionAdvanced]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Instance.AddImportOptionAdvanced
 */
 func (class) _get_import_options(impl func(ptr gdclass.Receiver, path String.Readable)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -490,7 +522,10 @@ func (self class) GetOptionValue(name String.Name) variant.Any { //gd:EditorScen
 }
 
 /*
-Add a specific import option (name and default value only). This function can only be called from [Interface.GetImportOptions] and [Interface.GetInternalImportOptions].
+Add a specific import option (name and default value only). This function can only be called from [GetImportOptions] and [GetInternalImportOptions].
+
+[GetImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
+[GetInternalImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
 */
 //go:nosplit
 func (self class) AddImportOption(name String.Readable, value variant.Any) { //gd:EditorScenePostImportPlugin.add_import_option
@@ -501,7 +536,10 @@ func (self class) AddImportOption(name String.Readable, value variant.Any) { //g
 }
 
 /*
-Add a specific import option. This function can only be called from [Interface.GetImportOptions] and [Interface.GetInternalImportOptions].
+Add a specific import option. This function can only be called from [GetImportOptions] and [GetInternalImportOptions].
+
+[GetImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
+[GetInternalImportOptions]: https://pkg.go.dev/graphics.gd/classdb/EditorScenePostImportPlugin#Interface
 */
 //go:nosplit
 func (self class) AddImportOptionAdvanced(atype variant.Type, name String.Readable, default_value variant.Any, hint ClassDB.PropertyHint, hint_string String.Readable, usage_flags int64) { //gd:EditorScenePostImportPlugin.add_import_option_advanced

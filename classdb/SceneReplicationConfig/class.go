@@ -98,7 +98,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.SceneReplicationConfig
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.SceneReplicationConfig
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -118,7 +123,9 @@ func (self Instance) GetProperties() []string { //gd:SceneReplicationConfig.get_
 /*
 Adds the property identified by the given 'path' to the list of the properties being synchronized, optionally passing an 'index'.
 
-Note: For details on restrictions and limitations on property synchronization, see [graphics.gd/classdb/MultiplayerSynchronizer].
+Note: For details on restrictions and limitations on property synchronization, see [MultiplayerSynchronizer].
+
+[MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
 */
 func (self Instance) AddProperty(path string) { //gd:SceneReplicationConfig.add_property
 	Advanced(self).AddProperty(Path.ToNode(String.New(path)), int64(-1))
@@ -127,9 +134,11 @@ func (self Instance) AddProperty(path string) { //gd:SceneReplicationConfig.add_
 /*
 Adds the property identified by the given 'path' to the list of the properties being synchronized, optionally passing an 'index'.
 
-Note: For details on restrictions and limitations on property synchronization, see [graphics.gd/classdb/MultiplayerSynchronizer].
+Note: For details on restrictions and limitations on property synchronization, see [MultiplayerSynchronizer].
+
+[MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
 */
-func (self Expanded) AddProperty(path string, index int) { //gd:SceneReplicationConfig.add_property
+func (self MoreArgs) AddProperty(path string, index int) { //gd:SceneReplicationConfig.add_property
 	Advanced(self).AddProperty(Path.ToNode(String.New(path)), int64(index))
 }
 
@@ -266,7 +275,9 @@ func (self class) GetProperties() Array.Contains[Path.ToNode] { //gd:SceneReplic
 /*
 Adds the property identified by the given 'path' to the list of the properties being synchronized, optionally passing an 'index'.
 
-Note: For details on restrictions and limitations on property synchronization, see [graphics.gd/classdb/MultiplayerSynchronizer].
+Note: For details on restrictions and limitations on property synchronization, see [MultiplayerSynchronizer].
+
+[MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
 */
 //go:nosplit
 func (self class) AddProperty(path Path.ToNode, index int64) { //gd:SceneReplicationConfig.add_property

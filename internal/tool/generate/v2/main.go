@@ -265,7 +265,12 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 				}
 			}
 			if hasDefaults {
-				fmt.Fprintf(file, "type Expanded [1]gdclass.%s\n", class.Name)
+				fmt.Fprintf(file, "// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.\n")
+				fmt.Fprintf(file, "type MoreArgs [1]gdclass.%s\n", class.Name)
+				fmt.Fprintf(file, "type Expanded = MoreArgs\n")
+
+				fmt.Fprintf(file, "// MoreArgs enables certain functions to be called with additional 'optional' arguments.\n")
+				fmt.Fprintf(file, "func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }\n")
 			}
 			fmt.Fprintf(file, "// Nil is a nil/null instance of the class. Equivalent to the zero value.\n")
 			fmt.Fprintf(file, "var Nil Instance\n")

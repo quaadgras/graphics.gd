@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"reflect"
 	"strings"
 
 	"graphics.gd/internal/gdjson"
@@ -48,6 +49,20 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		classDB.simpleVirtualCall(w, class, method)
 		return
 	}
+
+	resultSimple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultExpert := gdtype.EngineTypeAsGoType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
+	resultsSimple := []string{resultSimple}
+
+	var skips map[string]reflect.Type
+	if returns, ok := gdjson.Returnables[class.Name+"."+method.Name]; ok {
+		skips = make(map[string]reflect.Type, len(returns))
+		for name := range returns {
+			skips[name] = returns[name]
+			resultsSimple = append([]string{returns[name].String()}, resultsSimple...)
+		}
+	}
+
 	if singleton || method.IsStatic {
 		if defaults {
 			fmt.Fprintf(w, "func %v(", convertName(method.Name))
@@ -58,11 +73,14 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		if defaults {
 			fmt.Fprintf(w, "func (self Instance) %v(", convertName(method.Name))
 		} else {
-			fmt.Fprintf(w, "func (self Expanded) %v(", convertName(method.Name))
+			fmt.Fprintf(w, "func (self MoreArgs) %v(", convertName(method.Name))
 		}
 	}
 	var first = true
 	for _, arg := range method.Arguments {
+		if skips[arg.Name] != nil {
+			continue
+		}
 		if !defaults || arg.DefaultValue == nil || ((singleton || method.IsStatic) && arg.DefaultValue != nil && gdjson.IsTheDefaultValueZero(*arg.DefaultValue)) {
 			if !first {
 				fmt.Fprint(w, ", ")
@@ -78,9 +96,7 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		fmt.Fprint(w, "args ...any")
 	}
 	fmt.Fprint(w, ") ")
-	resultSimple := classDB.convertTypeSimple(class, class.Name+"."+method.Name+".", method.ReturnValue.Meta, method.ReturnValue.Type)
-	resultExpert := gdtype.EngineTypeAsGoType(class.Name, method.ReturnValue.Meta, method.ReturnValue.Type)
-	resultsSimple := []string{resultSimple}
+
 	if multiple, ok := gdjson.Unpackables[class.Name+"."+method.Name]; ok {
 		fmt.Fprintf(w, "(")
 		for i, ret := range multiple {
@@ -92,13 +108,27 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		}
 		fmt.Fprintf(w, ") ")
 	} else {
-		if method.ReturnValue.Type != "" {
-			fmt.Fprintf(w, "%v ", resultSimple)
+		if len(resultsSimple) > 1 {
+			fmt.Fprintf(w, "(")
+			for i, ret := range resultsSimple {
+				if i > 0 {
+					fmt.Fprint(w, ", ")
+				}
+				fmt.Fprint(w, ret)
+			}
+			fmt.Fprintf(w, ") ")
+		} else {
+			if method.ReturnValue.Type != "" {
+				fmt.Fprintf(w, "%v ", resultSimple)
+			}
 		}
 	}
 	fmt.Fprintf(w, "{ //gd:%s.%s\n\t", class.Name, method.Name)
 	if singleton {
 		fmt.Fprintf(w, "once.Do(singleton)\n\t")
+	}
+	for name := range skips {
+		fmt.Fprintf(w, "var returns_%s = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(gd.NewArray()))\n\t", name)
 	}
 	if method.IsStatic && !singleton {
 		fmt.Fprintf(w, "self := Instance{}\n")
@@ -126,6 +156,10 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 	for i, arg := range method.Arguments {
 		if i > 0 {
 			fmt.Fprint(&call, ", ")
+		}
+		if skips[arg.Name] != nil {
+			fmt.Fprint(&call, "returns_"+arg.Name)
+			continue
 		}
 		val := fixReserved(arg.Name)
 		if arg.DefaultValue != nil && defaults && !((singleton || method.IsStatic) && gdjson.IsTheDefaultValueZero(*arg.DefaultValue)) {
@@ -180,8 +214,10 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 	fmt.Fprint(&call, ")")
 	if len(resultsSimple) < 2 {
 		fmt.Fprint(w, gdtype.Name(resultExpert).ConvertToGo(call.String(), resultSimple))
-	} else {
+	} else if len(skips) == 0 {
 		fmt.Fprint(w, "gd.InternalArray(", call.String(), ")")
+	} else {
+		fmt.Fprint(w, call.String())
 	}
 	if len(resultsSimple) == 1 {
 		if method.ReturnValue.Type != "" {
@@ -189,12 +225,29 @@ func (classDB ClassDB) simpleCall(w io.Writer, class gdjson.Class, method gdjson
 		}
 	}
 	if len(resultsSimple) > 1 {
-		fmt.Fprint(w, "\n\treturn ")
-		for i, ret := range resultsSimple[1:] {
-			if i > 0 {
-				fmt.Fprint(w, ",")
+		if len(skips) > 0 {
+			fmt.Fprint(w, "\n\treturn ")
+			var first = true
+			for skip, rtype := range skips {
+				if !first {
+					fmt.Fprint(w, ",")
+				}
+				first = false
+				if rtype.Kind() == reflect.Slice {
+					fmt.Fprintf(w, "gd.ArrayAs[%s](gd.InternalArray(returns_%s)), ", rtype.String(), skip)
+				} else {
+					fmt.Fprintf(w, "gd.VariantAs[%s](gd.InternalArray(returns_%s).Index(0)), ", rtype.String(), skip)
+				}
 			}
-			fmt.Fprintf(w, "gd.VariantAs[%s](results.Index(%d))", ret, i)
+			fmt.Fprint(w, gdtype.Name(resultExpert).ConvertToGo("results", resultSimple))
+		} else {
+			fmt.Fprint(w, "\n\treturn ")
+			for i, ret := range resultsSimple[1:] {
+				if i > 0 {
+					fmt.Fprint(w, ",")
+				}
+				fmt.Fprintf(w, "gd.VariantAs[%s](results.Index(%d))", ret, i)
+			}
 		}
 	}
 	fmt.Fprintf(w, "\n}\n")
@@ -228,7 +281,7 @@ func (classDB ClassDB) simpleRelocatedCall(w io.Writer, class gdjson.Class, meth
 		if defaults {
 			fmt.Fprintf(w, "func (self Instance) %v(", convertName(method.Name))
 		} else {
-			fmt.Fprintf(w, "func (self Expanded) %v(", convertName(method.Name))
+			fmt.Fprintf(w, "func (self MoreArgs) %v(", convertName(method.Name))
 		}
 	}
 	var first = true

@@ -2,6 +2,8 @@
 
 /*
 Computes an inverse or transpose function on the provided [Transform3D.BasisOrigin].
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 package VisualShaderNodeTransformFunc
 
@@ -215,8 +217,12 @@ type Function int //gd:VisualShaderNodeTransformFunc.Function
 
 const (
 	// Perform the inverse operation on the [Transform3D.BasisOrigin] matrix.
+	//
+	// [Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 	FuncInverse Function = 0
 	// Perform the transpose operation on the [Transform3D.BasisOrigin] matrix.
+	//
+	// [Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 	FuncTranspose Function = 1
 	// Represents the size of the [Function] enum.
 	FuncMax Function = 2

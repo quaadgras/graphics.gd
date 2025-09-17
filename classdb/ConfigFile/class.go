@@ -23,7 +23,7 @@ This helper class can be used to store any values on the filesystem using INI-st
 
 The stored data can be saved to or parsed from a file, though ConfigFile objects can also be used directly without accessing the filesystem.
 
-The following example shows how to create a simple [graphics.gd/classdb/ConfigFile] and save it on disc:
+The following example shows how to create a simple [ConfigFile] and save it on disc:
 
 	package main
 
@@ -51,13 +51,21 @@ The following example shows how to create a simple [graphics.gd/classdb/ConfigFi
 
 This example shows how the above file could be loaded:
 
-Any operation that mutates the ConfigFile such as [Instance.SetValue], [Instance.Clear], or [Instance.EraseSection], only changes what is loaded in memory. If you want to write the change to a file, you have to save the changes with [Instance.Save], [Instance.SaveEncrypted], or [Instance.SaveEncryptedPass].
+Any operation that mutates the ConfigFile such as [SetValue], [Clear], or [EraseSection], only changes what is loaded in memory. If you want to write the change to a file, you have to save the changes with [Save], [SaveEncrypted], or [SaveEncryptedPass].
 
 Keep in mind that section and property names can't contain spaces. Anything after a space will be ignored on save and on load.
 
 ConfigFiles can also contain manually written comment lines starting with a semicolon (;). Those lines will be ignored when parsing the file. Note that comments will be lost when saving the ConfigFile. This can still be useful for dedicated server configuration files, which are typically never overwritten without explicit user action.
 
 Note: The file extension given to a ConfigFile does not have any impact on its formatting or behavior. By convention, the .cfg extension is used here, but any other extension such as .ini is also valid. Since neither .cfg nor .ini are standardized, Godot's ConfigFile formatting may differ from files written by other programs.
+
+[Clear]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile#Instance.Clear
+[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
+[EraseSection]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile#Instance.EraseSection
+[Save]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile#Instance.Save
+[SaveEncrypted]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile#Instance.SaveEncrypted
+[SaveEncryptedPass]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile#Instance.SaveEncryptedPass
+[SetValue]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile#Instance.SetValue
 */
 package ConfigFile
 
@@ -160,7 +168,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.ConfigFile
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.ConfigFile
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -187,7 +200,7 @@ func (self Instance) GetValue(section string, key string) any { //gd:ConfigFile.
 /*
 Returns the current value for the specified section and key. If either the section or the key do not exist, the method returns the fallback 'default' value. If 'default' is not specified or set to null, an error is also raised.
 */
-func (self Expanded) GetValue(section string, key string, def any) any { //gd:ConfigFile.get_value
+func (self MoreArgs) GetValue(section string, key string, def any) any { //gd:ConfigFile.get_value
 	return any(Advanced(self).GetValue(String.New(section), String.New(key), variant.New(def)).Interface())
 }
 
@@ -234,9 +247,11 @@ func (self Instance) EraseSectionKey(section string, key string) { //gd:ConfigFi
 }
 
 /*
-Loads the config file specified as a parameter. The file's contents are parsed and loaded in the [graphics.gd/classdb/ConfigFile] object which the method was called on.
+Loads the config file specified as a parameter. The file's contents are parsed and loaded in the [ConfigFile] object which the method was called on.
 
 Returns [Ok] on success, or one of the other [Error] values if the operation failed.
+
+[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 func (self Instance) Load(path string) error { //gd:ConfigFile.load
 	return error(gd.ToError(Advanced(self).Load(String.New(path))))
@@ -252,9 +267,11 @@ func (self Instance) Parse(data string) error { //gd:ConfigFile.parse
 }
 
 /*
-Saves the contents of the [graphics.gd/classdb/ConfigFile] object to the file specified as a parameter. The output file uses an INI-style structure.
+Saves the contents of the [ConfigFile] object to the file specified as a parameter. The output file uses an INI-style structure.
 
 Returns [Ok] on success, or one of the other [Error] values if the operation failed.
+
+[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 func (self Instance) Save(path string) error { //gd:ConfigFile.save
 	return error(gd.ToError(Advanced(self).Save(String.New(path))))
@@ -268,36 +285,44 @@ func (self Instance) EncodeToText() string { //gd:ConfigFile.encode_to_text
 }
 
 /*
-Loads the encrypted config file specified as a parameter, using the provided 'key' to decrypt it. The file's contents are parsed and loaded in the [graphics.gd/classdb/ConfigFile] object which the method was called on.
+Loads the encrypted config file specified as a parameter, using the provided 'key' to decrypt it. The file's contents are parsed and loaded in the [ConfigFile] object which the method was called on.
 
 Returns [Ok] on success, or one of the other [Error] values if the operation failed.
+
+[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 func (self Instance) LoadEncrypted(path string, key []byte) error { //gd:ConfigFile.load_encrypted
 	return error(gd.ToError(Advanced(self).LoadEncrypted(String.New(path), Packed.BytesFrom(key...))))
 }
 
 /*
-Loads the encrypted config file specified as a parameter, using the provided 'password' to decrypt it. The file's contents are parsed and loaded in the [graphics.gd/classdb/ConfigFile] object which the method was called on.
+Loads the encrypted config file specified as a parameter, using the provided 'password' to decrypt it. The file's contents are parsed and loaded in the [ConfigFile] object which the method was called on.
 
 Returns [Ok] on success, or one of the other [Error] values if the operation failed.
+
+[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 func (self Instance) LoadEncryptedPass(path string, password string) error { //gd:ConfigFile.load_encrypted_pass
 	return error(gd.ToError(Advanced(self).LoadEncryptedPass(String.New(path), String.New(password))))
 }
 
 /*
-Saves the contents of the [graphics.gd/classdb/ConfigFile] object to the AES-256 encrypted file specified as a parameter, using the provided 'key' to encrypt it. The output file uses an INI-style structure.
+Saves the contents of the [ConfigFile] object to the AES-256 encrypted file specified as a parameter, using the provided 'key' to encrypt it. The output file uses an INI-style structure.
 
 Returns [Ok] on success, or one of the other [Error] values if the operation failed.
+
+[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 func (self Instance) SaveEncrypted(path string, key []byte) error { //gd:ConfigFile.save_encrypted
 	return error(gd.ToError(Advanced(self).SaveEncrypted(String.New(path), Packed.BytesFrom(key...))))
 }
 
 /*
-Saves the contents of the [graphics.gd/classdb/ConfigFile] object to the AES-256 encrypted file specified as a parameter, using the provided 'password' to encrypt it. The output file uses an INI-style structure.
+Saves the contents of the [ConfigFile] object to the AES-256 encrypted file specified as a parameter, using the provided 'password' to encrypt it. The output file uses an INI-style structure.
 
 Returns [Ok] on success, or one of the other [Error] values if the operation failed.
+
+[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 func (self Instance) SaveEncryptedPass(path string, password string) error { //gd:ConfigFile.save_encrypted_pass
 	return error(gd.ToError(Advanced(self).SaveEncryptedPass(String.New(path), String.New(password))))
@@ -442,9 +467,11 @@ func (self class) EraseSectionKey(section String.Readable, key String.Readable) 
 }
 
 /*
-Loads the config file specified as a parameter. The file's contents are parsed and loaded in the [graphics.gd/classdb/ConfigFile] object which the method was called on.
+Loads the config file specified as a parameter. The file's contents are parsed and loaded in the [ConfigFile] object which the method was called on.
 
 Returns [Ok] on success, or one of the other [Error] values if the operation failed.
+
+[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 //go:nosplit
 func (self class) Load(path String.Readable) Error.Code { //gd:ConfigFile.load
@@ -466,9 +493,11 @@ func (self class) Parse(data String.Readable) Error.Code { //gd:ConfigFile.parse
 }
 
 /*
-Saves the contents of the [graphics.gd/classdb/ConfigFile] object to the file specified as a parameter. The output file uses an INI-style structure.
+Saves the contents of the [ConfigFile] object to the file specified as a parameter. The output file uses an INI-style structure.
 
 Returns [Ok] on success, or one of the other [Error] values if the operation failed.
+
+[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 //go:nosplit
 func (self class) Save(path String.Readable) Error.Code { //gd:ConfigFile.save
@@ -488,9 +517,11 @@ func (self class) EncodeToText() String.Readable { //gd:ConfigFile.encode_to_tex
 }
 
 /*
-Loads the encrypted config file specified as a parameter, using the provided 'key' to decrypt it. The file's contents are parsed and loaded in the [graphics.gd/classdb/ConfigFile] object which the method was called on.
+Loads the encrypted config file specified as a parameter, using the provided 'key' to decrypt it. The file's contents are parsed and loaded in the [ConfigFile] object which the method was called on.
 
 Returns [Ok] on success, or one of the other [Error] values if the operation failed.
+
+[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 //go:nosplit
 func (self class) LoadEncrypted(path String.Readable, key Packed.Bytes) Error.Code { //gd:ConfigFile.load_encrypted
@@ -503,9 +534,11 @@ func (self class) LoadEncrypted(path String.Readable, key Packed.Bytes) Error.Co
 }
 
 /*
-Loads the encrypted config file specified as a parameter, using the provided 'password' to decrypt it. The file's contents are parsed and loaded in the [graphics.gd/classdb/ConfigFile] object which the method was called on.
+Loads the encrypted config file specified as a parameter, using the provided 'password' to decrypt it. The file's contents are parsed and loaded in the [ConfigFile] object which the method was called on.
 
 Returns [Ok] on success, or one of the other [Error] values if the operation failed.
+
+[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 //go:nosplit
 func (self class) LoadEncryptedPass(path String.Readable, password String.Readable) Error.Code { //gd:ConfigFile.load_encrypted_pass
@@ -518,9 +551,11 @@ func (self class) LoadEncryptedPass(path String.Readable, password String.Readab
 }
 
 /*
-Saves the contents of the [graphics.gd/classdb/ConfigFile] object to the AES-256 encrypted file specified as a parameter, using the provided 'key' to encrypt it. The output file uses an INI-style structure.
+Saves the contents of the [ConfigFile] object to the AES-256 encrypted file specified as a parameter, using the provided 'key' to encrypt it. The output file uses an INI-style structure.
 
 Returns [Ok] on success, or one of the other [Error] values if the operation failed.
+
+[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 //go:nosplit
 func (self class) SaveEncrypted(path String.Readable, key Packed.Bytes) Error.Code { //gd:ConfigFile.save_encrypted
@@ -533,9 +568,11 @@ func (self class) SaveEncrypted(path String.Readable, key Packed.Bytes) Error.Co
 }
 
 /*
-Saves the contents of the [graphics.gd/classdb/ConfigFile] object to the AES-256 encrypted file specified as a parameter, using the provided 'password' to encrypt it. The output file uses an INI-style structure.
+Saves the contents of the [ConfigFile] object to the AES-256 encrypted file specified as a parameter, using the provided 'password' to encrypt it. The output file uses an INI-style structure.
 
 Returns [Ok] on success, or one of the other [Error] values if the operation failed.
+
+[ConfigFile]: https://pkg.go.dev/graphics.gd/classdb/ConfigFile
 */
 //go:nosplit
 func (self class) SaveEncryptedPass(path String.Readable, password String.Readable) Error.Code { //gd:ConfigFile.save_encrypted_pass

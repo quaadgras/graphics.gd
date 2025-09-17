@@ -112,7 +112,9 @@ type Any interface {
 }
 
 /*
-Create a new GLTFCamera instance from the given Godot [graphics.gd/classdb/Camera3D] node.
+Create a new GLTFCamera instance from the given Godot [Camera3D] node.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 */
 func FromNode(camera_node Camera3D.Instance) Instance { //gd:GLTFCamera.from_node
 	self := Instance{}
@@ -120,7 +122,9 @@ func FromNode(camera_node Camera3D.Instance) Instance { //gd:GLTFCamera.from_nod
 }
 
 /*
-Converts this GLTFCamera instance into a Godot [graphics.gd/classdb/Camera3D] node.
+Converts this GLTFCamera instance into a Godot [Camera3D] node.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 */
 func (self Instance) ToNode() Camera3D.Instance { //gd:GLTFCamera.to_node
 	return Camera3D.Instance(Advanced(self).ToNode())
@@ -225,7 +229,9 @@ func (self Instance) SetDepthNear(value Float.X) {
 }
 
 /*
-Create a new GLTFCamera instance from the given Godot [graphics.gd/classdb/Camera3D] node.
+Create a new GLTFCamera instance from the given Godot [Camera3D] node.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 */
 //go:nosplit
 func (self class) FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamera { //gd:GLTFCamera.from_node
@@ -235,7 +241,9 @@ func (self class) FromNode(camera_node [1]gdclass.Camera3D) [1]gdclass.GLTFCamer
 }
 
 /*
-Converts this GLTFCamera instance into a Godot [graphics.gd/classdb/Camera3D] node.
+Converts this GLTFCamera instance into a Godot [Camera3D] node.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 */
 //go:nosplit
 func (self class) ToNode() [1]gdclass.Camera3D { //gd:GLTFCamera.to_node

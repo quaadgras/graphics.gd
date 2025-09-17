@@ -110,7 +110,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.PortableCompressedTexture2D
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.PortableCompressedTexture2D
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -138,7 +143,7 @@ Initializes the compressed texture from a base image. The compression mode must 
 
 If lossy compression is requested, the quality setting can optionally be provided. This maps to Lossy WebP compression quality.
 */
-func (self Expanded) CreateFromImage(image Image.Instance, compression_mode CompressionMode, normal_map bool, lossy_quality Float.X) { //gd:PortableCompressedTexture2D.create_from_image
+func (self MoreArgs) CreateFromImage(image Image.Instance, compression_mode CompressionMode, normal_map bool, lossy_quality Float.X) { //gd:PortableCompressedTexture2D.create_from_image
 	Advanced(self).CreateFromImage(image, compression_mode, normal_map, float64(lossy_quality))
 }
 
@@ -157,9 +162,12 @@ func (self Instance) GetCompressionMode() CompressionMode { //gd:PortableCompres
 }
 
 /*
-Sets the compressor parameters for Basis Universal compression. See also the settings in [graphics.gd/classdb/ResourceImporterTexture].
+Sets the compressor parameters for Basis Universal compression. See also the settings in [ResourceImporterTexture].
 
-Note: This must be set before [Instance.CreateFromImage] to take effect.
+Note: This must be set before [CreateFromImage] to take effect.
+
+[CreateFromImage]: https://pkg.go.dev/graphics.gd/classdb/PortableCompressedTexture2D#Instance.CreateFromImage
+[ResourceImporterTexture]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterTexture
 */
 func (self Instance) SetBasisuCompressorParams(uastc_level int, rdo_quality_loss Float.X) { //gd:PortableCompressedTexture2D.set_basisu_compressor_params
 	Advanced(self).SetBasisuCompressorParams(int64(uastc_level), float64(rdo_quality_loss))
@@ -302,9 +310,12 @@ func (self class) IsKeepingCompressedBuffer() bool { //gd:PortableCompressedText
 }
 
 /*
-Sets the compressor parameters for Basis Universal compression. See also the settings in [graphics.gd/classdb/ResourceImporterTexture].
+Sets the compressor parameters for Basis Universal compression. See also the settings in [ResourceImporterTexture].
 
-Note: This must be set before [Instance.CreateFromImage] to take effect.
+Note: This must be set before [CreateFromImage] to take effect.
+
+[CreateFromImage]: https://pkg.go.dev/graphics.gd/classdb/PortableCompressedTexture2D#Instance.CreateFromImage
+[ResourceImporterTexture]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterTexture
 */
 //go:nosplit
 func (self class) SetBasisuCompressorParams(uastc_level int64, rdo_quality_loss float64) { //gd:PortableCompressedTexture2D.set_basisu_compressor_params

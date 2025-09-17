@@ -42,7 +42,6 @@ import (
 	"fmt"
 
 	"graphics.gd/classdb/EditorDebuggerPlugin"
-	"graphics.gd/classdb/EditorDebuggerSession"
 	"graphics.gd/classdb/EditorPlugin"
 	"graphics.gd/classdb/Label"
 )
@@ -78,7 +77,7 @@ func (d *ExampleEditorDebugger) HasCapture(capture string) bool {
 
 func (d *ExampleEditorDebugger) Capture(message string, data []any, sessionID int) bool {
 	if message == "my_plugin:ping" {
-		EditorDebuggerSession.Expanded(d.AsEditorDebuggerPlugin().GetSession(sessionID)).SendMessage("my_plugin:echo", data)
+		d.AsEditorDebuggerPlugin().GetSession(sessionID).MoreArgs().SendMessage("my_plugin:echo", data)
 		return true
 	}
 	return false

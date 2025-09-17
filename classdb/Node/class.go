@@ -5,25 +5,48 @@ Nodes are Godot's building blocks. They can be assigned as the child of another 
 
 A tree of nodes is called a scene. Scenes can be saved to the disk and then instantiated into other scenes. This allows for very high flexibility in the architecture and data model of Godot projects.
 
-Scene tree: The [graphics.gd/classdb/SceneTree] contains the active tree of nodes. When a node is added to the scene tree, it receives the [NotificationEnterTree] notification and its [Interface.EnterTree] callback is triggered. Child nodes are always added after their parent node, i.e. the [Interface.EnterTree] callback of a parent node will be triggered before its child's.
+Scene tree: The [SceneTree] contains the active tree of nodes. When a node is added to the scene tree, it receives the [NotificationEnterTree] notification and its [EnterTree] callback is triggered. Child nodes are always added after their parent node, i.e. the [EnterTree] callback of a parent node will be triggered before its child's.
 
-Once all nodes have been added in the scene tree, they receive the [NotificationReady] notification and their respective [Interface.Ready] callbacks are triggered. For groups of nodes, the [Interface.Ready] callback is called in reverse order, starting with the children and moving up to the parent nodes.
+Once all nodes have been added in the scene tree, they receive the [NotificationReady] notification and their respective [Ready] callbacks are triggered. For groups of nodes, the [Ready] callback is called in reverse order, starting with the children and moving up to the parent nodes.
 
-This means that when adding a node to the scene tree, the following order will be used for the callbacks: [Interface.EnterTree] of the parent, [Interface.EnterTree] of the children, [Interface.Ready] of the children and finally [Interface.Ready] of the parent (recursively for the entire scene tree).
+This means that when adding a node to the scene tree, the following order will be used for the callbacks: [EnterTree] of the parent, [EnterTree] of the children, [Ready] of the children and finally [Ready] of the parent (recursively for the entire scene tree).
 
-Processing: Nodes can override the "process" state, so that they receive a callback on each frame requesting them to process (do something). Normal processing (callback [Interface.Process], toggled with [Instance.SetProcess]) happens as fast as possible and is dependent on the frame rate, so the processing time delta (in seconds) is passed as an argument. Physics processing (callback [Interface.PhysicsProcess], toggled with [Instance.SetPhysicsProcess]) happens a fixed number of times per second (60 by default) and is useful for code related to the physics engine.
+Processing: Nodes can override the "process" state, so that they receive a callback on each frame requesting them to process (do something). Normal processing (callback [Process], toggled with [SetProcess]) happens as fast as possible and is dependent on the frame rate, so the processing time delta (in seconds) is passed as an argument. Physics processing (callback [PhysicsProcess], toggled with [SetPhysicsProcess]) happens a fixed number of times per second (60 by default) and is useful for code related to the physics engine.
 
-Nodes can also process input events. When present, the [Interface.Input] function will be called for each input that the program receives. In many cases, this can be overkill (unless used for simple projects), and the [Interface.UnhandledInput] function might be preferred; it is called when the input event was not handled by anyone else (typically, GUI [graphics.gd/classdb/Control] nodes), ensuring that the node only receives the events that were meant for it.
+Nodes can also process input events. When present, the [Input] function will be called for each input that the program receives. In many cases, this can be overkill (unless used for simple projects), and the [UnhandledInput] function might be preferred; it is called when the input event was not handled by anyone else (typically, GUI [Control] nodes), ensuring that the node only receives the events that were meant for it.
 
-To keep track of the scene hierarchy (especially when instantiating scenes into other scenes), an "owner" can be set for the node with the [Instance.Owner] property. This keeps track of who instantiated what. This is mostly useful when writing editors and tools, though.
+To keep track of the scene hierarchy (especially when instantiating scenes into other scenes), an "owner" can be set for the node with the [Owner] property. This keeps track of who instantiated what. This is mostly useful when writing editors and tools, though.
 
-Finally, when a node is freed with [graphics.gd/classdb/Object.Instance.Free] or [Instance.QueueFree], it will also free all its children.
+Finally, when a node is freed with [Object.Free] or [QueueFree], it will also free all its children.
 
-Groups: Nodes can be added to as many groups as you want to be easy to manage, you could create groups like "enemies" or "collectables" for example, depending on your game. See [Instance.AddToGroup], [Instance.IsInGroup] and [Instance.RemoveFromGroup]. You can then retrieve all nodes in these groups, iterate them and even call methods on groups via the methods on [graphics.gd/classdb/SceneTree].
+Groups: Nodes can be added to as many groups as you want to be easy to manage, you could create groups like "enemies" or "collectables" for example, depending on your game. See [AddToGroup], [IsInGroup] and [RemoveFromGroup]. You can then retrieve all nodes in these groups, iterate them and even call methods on groups via the methods on [SceneTree].
 
-Networking with nodes: After connecting to a server (or making one, see [graphics.gd/classdb/ENetMultiplayerPeer]), it is possible to use the built-in RPC (remote procedure call) system to communicate over the network. By calling [Instance.Rpc] with a method name, it will be called locally and in all connected peers (peers = clients and the server that accepts connections). To identify which node receives the RPC call, Godot will use its node path (make sure node names are the same on all peers). Also, take a look at the high-level networking tutorial and corresponding demos.
+Networking with nodes: After connecting to a server (or making one, see [ENetMultiplayerPeer]), it is possible to use the built-in RPC (remote procedure call) system to communicate over the network. By calling [Rpc] with a method name, it will be called locally and in all connected peers (peers = clients and the server that accepts connections). To identify which node receives the RPC call, Godot will use its node path (make sure node names are the same on all peers). Also, take a look at the high-level networking tutorial and corresponding demos.
 
-Note: The script property is part of the [graphics.gd/classdb/Object] class, not [graphics.gd/classdb/Node]. It isn't exposed like most properties but does have a setter and getter (see [graphics.gd/classdb/Object.Instance.SetScript] and [graphics.gd/classdb/Object.Instance.GetScript]).
+Note: The script property is part of the [Object] class, not [Node]. It isn't exposed like most properties but does have a setter and getter (see [Object.SetScript] and [Object.GetScript]).
+
+[AddToGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddToGroup
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[ENetMultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/ENetMultiplayerPeer
+[EnterTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[IsInGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsInGroup
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
+[Object.Free]: https://pkg.go.dev/graphics.gd/variant/Object#Free
+[Object.GetScript]: https://pkg.go.dev/graphics.gd/variant/Object#GetScript
+[Object.SetScript]: https://pkg.go.dev/graphics.gd/variant/Object#SetScript
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[RemoveFromGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RemoveFromGroup
+[Rpc]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Rpc
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
+[SetPhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetPhysicsProcess
+[SetProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcess
+[UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 package Node
 
@@ -234,7 +257,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.Node
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.Node
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -247,53 +275,86 @@ type Any interface {
 type Interface interface {
 	// Called on each idle frame, prior to rendering, and after physics ticks have been processed. 'delta' is the time between frames in seconds.
 	//
-	// It is only called if processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcess].
+	// It is only called if processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [SetProcess].
 	//
-	// Processing happens in order of [Instance.ProcessPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
+	// Processing happens in order of [ProcessPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 	//
-	// Corresponds to the [NotificationProcess] notification in [graphics.gd/classdb/Object.Instance.Notification].
+	// Corresponds to the [NotificationProcess] notification in [Object.Notification].
 	//
 	// Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 	//
-	// Note: When the engine is struggling and the frame rate is lowered, 'delta' will increase. When 'delta' is increased, it's capped at a maximum of [graphics.gd/classdb/Engine.TimeScale] * [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond]. As a result, accumulated 'delta' may not represent real world time.
+	// Note: When the engine is struggling and the frame rate is lowered, 'delta' will increase. When 'delta' is increased, it's capped at a maximum of [Engine.TimeScale] * [Engine.MaxPhysicsStepsPerFrame] / [Engine.PhysicsTicksPerSecond]. As a result, accumulated 'delta' may not represent real world time.
 	//
-	// Note: When --fixed-fps is enabled or the engine is running in Movie Maker mode (see [graphics.gd/classdb/MovieWriter]), process 'delta' will always be the same for every frame, regardless of how much time the frame took to render.
+	// Note: When --fixed-fps is enabled or the engine is running in Movie Maker mode (see [MovieWriter]), process 'delta' will always be the same for every frame, regardless of how much time the frame took to render.
 	//
-	// Note: Frame delta may be post-processed by [graphics.gd/classdb/OS.DeltaSmoothing] if this is enabled for the project.
+	// Note: Frame delta may be post-processed by [OS.DeltaSmoothing] if this is enabled for the project.
+	//
+	// [Engine.MaxPhysicsStepsPerFrame]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxPhysicsStepsPerFrame
+	// [Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
+	// [Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
+	// [MovieWriter]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter
+	// [OS.DeltaSmoothing]: https://pkg.go.dev/graphics.gd/classdb/OS#DeltaSmoothing
+	// [Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
+	// [ProcessPriority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessPriority
+	// [SetProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcess
 	Process(delta Float.X)
-	// Called once on each physics tick, and allows Nodes to synchronize their logic with physics ticks. 'delta' is the logical time between physics ticks in seconds and is equal to [graphics.gd/classdb/Engine.TimeScale] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond].
+	// Called once on each physics tick, and allows Nodes to synchronize their logic with physics ticks. 'delta' is the logical time between physics ticks in seconds and is equal to [Engine.TimeScale] / [Engine.PhysicsTicksPerSecond].
 	//
-	// It is only called if physics processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [Instance.SetPhysicsProcess].
+	// It is only called if physics processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [SetPhysicsProcess].
 	//
-	// Processing happens in order of [Instance.ProcessPhysicsPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
+	// Processing happens in order of [ProcessPhysicsPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 	//
-	// Corresponds to the [NotificationPhysicsProcess] notification in [graphics.gd/classdb/Object.Instance.Notification].
+	// Corresponds to the [NotificationPhysicsProcess] notification in [Object.Notification].
 	//
 	// Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 	//
 	// Note: Accumulated 'delta' may diverge from real world seconds.
+	//
+	// [Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
+	// [Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
+	// [Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
+	// [ProcessPhysicsPriority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessPhysicsPriority
+	// [SetPhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetPhysicsProcess
 	PhysicsProcess(delta Float.X)
-	// Called when the node enters the [graphics.gd/classdb/SceneTree] (e.g. upon instantiating, scene changing, or after calling [Instance.AddChild] in a script). If the node has children, its [Interface.EnterTree] callback will be called first, and then that of the children.
+	// Called when the node enters the [SceneTree] (e.g. upon instantiating, scene changing, or after calling [AddChild] in a script). If the node has children, its [EnterTree] callback will be called first, and then that of the children.
 	//
-	// Corresponds to the [NotificationEnterTree] notification in [graphics.gd/classdb/Object.Instance.Notification].
+	// Corresponds to the [NotificationEnterTree] notification in [Object.Notification].
+	//
+	// [AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+	// [EnterTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+	// [Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
+	// [SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 	EnterTree()
-	// Called when the node is about to leave the [graphics.gd/classdb/SceneTree] (e.g. upon freeing, scene changing, or after calling [Instance.RemoveChild] in a script). If the node has children, its [Interface.ExitTree] callback will be called last, after all its children have left the tree.
+	// Called when the node is about to leave the [SceneTree] (e.g. upon freeing, scene changing, or after calling [RemoveChild] in a script). If the node has children, its [ExitTree] callback will be called last, after all its children have left the tree.
 	//
-	// Corresponds to the [NotificationExitTree] notification in [graphics.gd/classdb/Object.Instance.Notification] and signal [Instance.OnTreeExiting]. To get notified when the node has already left the active tree, connect to the [Instance.OnTreeExited].
+	// Corresponds to the [NotificationExitTree] notification in [Object.Notification] and signal [OnTreeExiting]. To get notified when the node has already left the active tree, connect to the [OnTreeExited].
+	//
+	// [ExitTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+	// [Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
+	// [OnTreeExited]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnTreeExited
+	// [OnTreeExiting]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnTreeExiting
+	// [RemoveChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RemoveChild
+	// [SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 	ExitTree()
-	// Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [Interface.Ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
+	// Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [Ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
 	//
-	// Corresponds to the [NotificationReady] notification in [graphics.gd/classdb/Object.Instance.Notification]. See also the @onready annotation for variables.
+	// Corresponds to the [NotificationReady] notification in [Object.Notification]. See also the @onready annotation for variables.
 	//
-	// Usually used for initialization. For even earlier initialization, [graphics.gd/classdb/Object.Instance.Init] may be used. See also [Interface.EnterTree].
+	// Usually used for initialization. For even earlier initialization, [Object.Init] may be used. See also [EnterTree].
 	//
-	// Note: This method may be called only once for each node. After removing a node from the scene tree and adding it again, [Interface.Ready] will not be called a second time. This can be bypassed by requesting another call with [Instance.RequestReady], which may be called anywhere before adding the node again.
+	// Note: This method may be called only once for each node. After removing a node from the scene tree and adding it again, [Ready] will not be called a second time. This can be bypassed by requesting another call with [RequestReady], which may be called anywhere before adding the node again.
+	//
+	// [EnterTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+	// [Object.Init]: https://pkg.go.dev/graphics.gd/variant/Object#Init
+	// [Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
+	// [Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+	// [RequestReady]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RequestReady
 	Ready()
 	// The elements in the array returned from this method are displayed as warnings in the Scene dock if the script that overrides it is a tool script.
 	//
 	// Returning an empty array produces no warnings.
 	//
-	// Call [Instance.UpdateConfigurationWarnings] when the warnings need to be updated for this node.
+	// Call [UpdateConfigurationWarnings] when the warnings need to be updated for this node.
 	//
 	//
 	//
@@ -318,6 +379,8 @@ type Interface interface {
 	// 		return []
 	//
 	//
+	//
+	// [UpdateConfigurationWarnings]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UpdateConfigurationWarnings
 	GetConfigurationWarnings() []string
 	// The elements in the array returned from this method are displayed as warnings in the Scene dock if the script that overrides it is a tool script, and accessibility warnings are enabled in the editor settings.
 	//
@@ -325,47 +388,81 @@ type Interface interface {
 	GetAccessibilityConfigurationWarnings() []string
 	// Called when there is an input event. The input event propagates up through the node tree until a node consumes it.
 	//
-	// It is only called if input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessInput].
+	// It is only called if input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessInput].
 	//
-	// To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+	// To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
 	//
-	// For gameplay input, [Interface.UnhandledInput] and [Interface.UnhandledKeyInput] are usually a better fit as they allow the GUI to intercept the events first.
+	// For gameplay input, [UnhandledInput] and [UnhandledKeyInput] are usually a better fit as they allow the GUI to intercept the events first.
 	//
 	// Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+	//
+	// [SetProcessInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessInput
+	// [UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+	// [UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+	// [Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
 	Input(event InputEvent.Instance)
-	// Called when an [graphics.gd/classdb/InputEventKey], [graphics.gd/classdb/InputEventShortcut], or [graphics.gd/classdb/InputEventJoypadButton] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called before [Interface.UnhandledKeyInput] and [Interface.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+	// Called when an [InputEventKey], [InputEventShortcut], or [InputEventJoypadButton] hasn't been consumed by [Input] or any GUI [Control] item. It is called before [UnhandledKeyInput] and [UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
 	//
-	// It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessShortcutInput].
+	// It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessShortcutInput].
 	//
-	// To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+	// To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
 	//
-	// This method can be used to handle shortcuts. For generic GUI events, use [Interface.Input] instead. Gameplay events should usually be handled with either [Interface.UnhandledInput] or [Interface.UnhandledKeyInput].
+	// This method can be used to handle shortcuts. For generic GUI events, use [Input] instead. Gameplay events should usually be handled with either [UnhandledInput] or [UnhandledKeyInput].
 	//
 	// Note: This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
+	//
+	// [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+	// [Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+	// [InputEventJoypadButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadButton
+	// [InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
+	// [InputEventShortcut]: https://pkg.go.dev/graphics.gd/classdb/InputEventShortcut
+	// [SetProcessShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessShortcutInput
+	// [UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+	// [UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+	// [Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
 	ShortcutInput(event InputEvent.Instance)
-	// Called when an [graphics.gd/classdb/InputEvent] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called after [Interface.ShortcutInput] and after [Interface.UnhandledKeyInput]. The input event propagates up through the node tree until a node consumes it.
+	// Called when an [InputEvent] hasn't been consumed by [Input] or any GUI [Control] item. It is called after [ShortcutInput] and after [UnhandledKeyInput]. The input event propagates up through the node tree until a node consumes it.
 	//
-	// It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessUnhandledInput].
+	// It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessUnhandledInput].
 	//
-	// To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+	// To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
 	//
-	// For gameplay input, this method is usually a better fit than [Interface.Input], as GUI events need a higher priority. For keyboard shortcuts, consider using [Interface.ShortcutInput] instead, as it is called before this method. Finally, to handle keyboard events, consider using [Interface.UnhandledKeyInput] for performance reasons.
+	// For gameplay input, this method is usually a better fit than [Input], as GUI events need a higher priority. For keyboard shortcuts, consider using [ShortcutInput] instead, as it is called before this method. Finally, to handle keyboard events, consider using [UnhandledKeyInput] for performance reasons.
 	//
 	// Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+	//
+	// [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+	// [Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+	// [InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
+	// [SetProcessUnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessUnhandledInput
+	// [ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+	// [UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+	// [Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
 	UnhandledInput(event InputEvent.Instance)
-	// Called when an [graphics.gd/classdb/InputEventKey] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called after [Interface.ShortcutInput] but before [Interface.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+	// Called when an [InputEventKey] hasn't been consumed by [Input] or any GUI [Control] item. It is called after [ShortcutInput] but before [UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
 	//
-	// It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessUnhandledKeyInput].
+	// It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessUnhandledKeyInput].
 	//
-	// To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+	// To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
 	//
 	// This method can be used to handle Unicode character input with Alt, Alt + Ctrl, and Alt + Shift modifiers, after shortcuts were handled.
 	//
-	// For gameplay input, this and [Interface.UnhandledInput] are usually a better fit than [Interface.Input], as GUI events should be handled first. This method also performs better than [Interface.UnhandledInput], since unrelated events such as [graphics.gd/classdb/InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [Interface.ShortcutInput] instead.
+	// For gameplay input, this and [UnhandledInput] are usually a better fit than [Input], as GUI events should be handled first. This method also performs better than [UnhandledInput], since unrelated events such as [InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [ShortcutInput] instead.
 	//
 	// Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+	//
+	// [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+	// [Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+	// [InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
+	// [InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
+	// [SetProcessUnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessUnhandledKeyInput
+	// [ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+	// [UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+	// [Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
 	UnhandledKeyInput(event InputEvent.Instance)
-	// Called during accessibility information updates to determine the currently focused sub-element, should return a sub-element RID or the value returned by [Instance.GetAccessibilityElement].
+	// Called during accessibility information updates to determine the currently focused sub-element, should return a sub-element RID or the value returned by [GetAccessibilityElement].
+	//
+	// [GetAccessibilityElement]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetAccessibilityElement
 	GetFocusedAccessibilityElement() RID.AccessibilityElement
 }
 
@@ -390,19 +487,28 @@ func (self implementation) GetFocusedAccessibilityElement() (_ RID.Accessibility
 /*
 Called on each idle frame, prior to rendering, and after physics ticks have been processed. 'delta' is the time between frames in seconds.
 
-It is only called if processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcess].
+It is only called if processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [SetProcess].
 
-Processing happens in order of [Instance.ProcessPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
+Processing happens in order of [ProcessPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 
-Corresponds to the [NotificationProcess] notification in [graphics.gd/classdb/Object.Instance.Notification].
+Corresponds to the [NotificationProcess] notification in [Object.Notification].
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 
-Note: When the engine is struggling and the frame rate is lowered, 'delta' will increase. When 'delta' is increased, it's capped at a maximum of [graphics.gd/classdb/Engine.TimeScale] * [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond]. As a result, accumulated 'delta' may not represent real world time.
+Note: When the engine is struggling and the frame rate is lowered, 'delta' will increase. When 'delta' is increased, it's capped at a maximum of [Engine.TimeScale] * [Engine.MaxPhysicsStepsPerFrame] / [Engine.PhysicsTicksPerSecond]. As a result, accumulated 'delta' may not represent real world time.
 
-Note: When --fixed-fps is enabled or the engine is running in Movie Maker mode (see [graphics.gd/classdb/MovieWriter]), process 'delta' will always be the same for every frame, regardless of how much time the frame took to render.
+Note: When --fixed-fps is enabled or the engine is running in Movie Maker mode (see [MovieWriter]), process 'delta' will always be the same for every frame, regardless of how much time the frame took to render.
 
-Note: Frame delta may be post-processed by [graphics.gd/classdb/OS.DeltaSmoothing] if this is enabled for the project.
+Note: Frame delta may be post-processed by [OS.DeltaSmoothing] if this is enabled for the project.
+
+[Engine.MaxPhysicsStepsPerFrame]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxPhysicsStepsPerFrame
+[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
+[Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
+[MovieWriter]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter
+[OS.DeltaSmoothing]: https://pkg.go.dev/graphics.gd/classdb/OS#DeltaSmoothing
+[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
+[ProcessPriority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessPriority
+[SetProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcess
 */
 func (Instance) _process(impl func(ptr gdclass.Receiver, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -413,17 +519,23 @@ func (Instance) _process(impl func(ptr gdclass.Receiver, delta Float.X)) (cb gd.
 }
 
 /*
-Called once on each physics tick, and allows Nodes to synchronize their logic with physics ticks. 'delta' is the logical time between physics ticks in seconds and is equal to [graphics.gd/classdb/Engine.TimeScale] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond].
+Called once on each physics tick, and allows Nodes to synchronize their logic with physics ticks. 'delta' is the logical time between physics ticks in seconds and is equal to [Engine.TimeScale] / [Engine.PhysicsTicksPerSecond].
 
-It is only called if physics processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [Instance.SetPhysicsProcess].
+It is only called if physics processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [SetPhysicsProcess].
 
-Processing happens in order of [Instance.ProcessPhysicsPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
+Processing happens in order of [ProcessPhysicsPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 
-Corresponds to the [NotificationPhysicsProcess] notification in [graphics.gd/classdb/Object.Instance.Notification].
+Corresponds to the [NotificationPhysicsProcess] notification in [Object.Notification].
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 
 Note: Accumulated 'delta' may diverge from real world seconds.
+
+[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
+[Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
+[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
+[ProcessPhysicsPriority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessPhysicsPriority
+[SetPhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetPhysicsProcess
 */
 func (Instance) _physics_process(impl func(ptr gdclass.Receiver, delta Float.X)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -434,9 +546,14 @@ func (Instance) _physics_process(impl func(ptr gdclass.Receiver, delta Float.X))
 }
 
 /*
-Called when the node enters the [graphics.gd/classdb/SceneTree] (e.g. upon instantiating, scene changing, or after calling [Instance.AddChild] in a script). If the node has children, its [Interface.EnterTree] callback will be called first, and then that of the children.
+Called when the node enters the [SceneTree] (e.g. upon instantiating, scene changing, or after calling [AddChild] in a script). If the node has children, its [EnterTree] callback will be called first, and then that of the children.
 
-Corresponds to the [NotificationEnterTree] notification in [graphics.gd/classdb/Object.Instance.Notification].
+Corresponds to the [NotificationEnterTree] notification in [Object.Notification].
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[EnterTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func (Instance) _enter_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -446,9 +563,16 @@ func (Instance) _enter_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionCla
 }
 
 /*
-Called when the node is about to leave the [graphics.gd/classdb/SceneTree] (e.g. upon freeing, scene changing, or after calling [Instance.RemoveChild] in a script). If the node has children, its [Interface.ExitTree] callback will be called last, after all its children have left the tree.
+Called when the node is about to leave the [SceneTree] (e.g. upon freeing, scene changing, or after calling [RemoveChild] in a script). If the node has children, its [ExitTree] callback will be called last, after all its children have left the tree.
 
-Corresponds to the [NotificationExitTree] notification in [graphics.gd/classdb/Object.Instance.Notification] and signal [Instance.OnTreeExiting]. To get notified when the node has already left the active tree, connect to the [Instance.OnTreeExited].
+Corresponds to the [NotificationExitTree] notification in [Object.Notification] and signal [OnTreeExiting]. To get notified when the node has already left the active tree, connect to the [OnTreeExited].
+
+[ExitTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
+[OnTreeExited]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnTreeExited
+[OnTreeExiting]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnTreeExiting
+[RemoveChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RemoveChild
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func (Instance) _exit_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -458,13 +582,19 @@ func (Instance) _exit_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClas
 }
 
 /*
-Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [Interface.Ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
+Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [Ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
 
-Corresponds to the [NotificationReady] notification in [graphics.gd/classdb/Object.Instance.Notification]. See also the @onready annotation for variables.
+Corresponds to the [NotificationReady] notification in [Object.Notification]. See also the @onready annotation for variables.
 
-Usually used for initialization. For even earlier initialization, [graphics.gd/classdb/Object.Instance.Init] may be used. See also [Interface.EnterTree].
+Usually used for initialization. For even earlier initialization, [Object.Init] may be used. See also [EnterTree].
 
-Note: This method may be called only once for each node. After removing a node from the scene tree and adding it again, [Interface.Ready] will not be called a second time. This can be bypassed by requesting another call with [Instance.RequestReady], which may be called anywhere before adding the node again.
+Note: This method may be called only once for each node. After removing a node from the scene tree and adding it again, [Ready] will not be called a second time. This can be bypassed by requesting another call with [RequestReady], which may be called anywhere before adding the node again.
+
+[EnterTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Object.Init]: https://pkg.go.dev/graphics.gd/variant/Object#Init
+[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[RequestReady]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RequestReady
 */
 func (Instance) _ready(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -478,7 +608,34 @@ The elements in the array returned from this method are displayed as warnings in
 
 Returning an empty array produces no warnings.
 
-Call [Instance.UpdateConfigurationWarnings] when the warnings need to be updated for this node.
+Call [UpdateConfigurationWarnings] when the warnings need to be updated for this node.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/variant/Float"
+	)
+
+	type ConfigurableNode struct {
+		Node.Extension[ConfigurableNode]
+
+		energy Float.X
+	}
+
+	func (cn ConfigurableNode) SetEnergy(energy Float.X) {
+		cn.energy = energy
+		cn.AsNode().UpdateConfigurationWarnings()
+	}
+
+	func (cn ConfigurableNode) GetConfigurationWarnings() []string {
+		if cn.energy < 0 {
+			return []string{"Energy must be 0 or greater."}
+		}
+		return nil
+	}
+
+[UpdateConfigurationWarnings]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UpdateConfigurationWarnings
 */
 func (Instance) _get_configuration_warnings(impl func(ptr gdclass.Receiver) []string) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -514,13 +671,18 @@ func (Instance) _get_accessibility_configuration_warnings(impl func(ptr gdclass.
 /*
 Called when there is an input event. The input event propagates up through the node tree until a node consumes it.
 
-It is only called if input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessInput].
+It is only called if input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessInput].
 
-To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
 
-For gameplay input, [Interface.UnhandledInput] and [Interface.UnhandledKeyInput] are usually a better fit as they allow the GUI to intercept the events first.
+For gameplay input, [UnhandledInput] and [UnhandledKeyInput] are usually a better fit as they allow the GUI to intercept the events first.
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+
+[SetProcessInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessInput
+[UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
 */
 func (Instance) _input(impl func(ptr gdclass.Receiver, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -533,15 +695,25 @@ func (Instance) _input(impl func(ptr gdclass.Receiver, event InputEvent.Instance
 }
 
 /*
-Called when an [graphics.gd/classdb/InputEventKey], [graphics.gd/classdb/InputEventShortcut], or [graphics.gd/classdb/InputEventJoypadButton] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called before [Interface.UnhandledKeyInput] and [Interface.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+Called when an [InputEventKey], [InputEventShortcut], or [InputEventJoypadButton] hasn't been consumed by [Input] or any GUI [Control] item. It is called before [UnhandledKeyInput] and [UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
 
-It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessShortcutInput].
+It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessShortcutInput].
 
-To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
 
-This method can be used to handle shortcuts. For generic GUI events, use [Interface.Input] instead. Gameplay events should usually be handled with either [Interface.UnhandledInput] or [Interface.UnhandledKeyInput].
+This method can be used to handle shortcuts. For generic GUI events, use [Input] instead. Gameplay events should usually be handled with either [UnhandledInput] or [UnhandledKeyInput].
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[InputEventJoypadButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadButton
+[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
+[InputEventShortcut]: https://pkg.go.dev/graphics.gd/classdb/InputEventShortcut
+[SetProcessShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessShortcutInput
+[UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
 */
 func (Instance) _shortcut_input(impl func(ptr gdclass.Receiver, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -554,15 +726,23 @@ func (Instance) _shortcut_input(impl func(ptr gdclass.Receiver, event InputEvent
 }
 
 /*
-Called when an [graphics.gd/classdb/InputEvent] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called after [Interface.ShortcutInput] and after [Interface.UnhandledKeyInput]. The input event propagates up through the node tree until a node consumes it.
+Called when an [InputEvent] hasn't been consumed by [Input] or any GUI [Control] item. It is called after [ShortcutInput] and after [UnhandledKeyInput]. The input event propagates up through the node tree until a node consumes it.
 
-It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessUnhandledInput].
+It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessUnhandledInput].
 
-To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
 
-For gameplay input, this method is usually a better fit than [Interface.Input], as GUI events need a higher priority. For keyboard shortcuts, consider using [Interface.ShortcutInput] instead, as it is called before this method. Finally, to handle keyboard events, consider using [Interface.UnhandledKeyInput] for performance reasons.
+For gameplay input, this method is usually a better fit than [Input], as GUI events need a higher priority. For keyboard shortcuts, consider using [ShortcutInput] instead, as it is called before this method. Finally, to handle keyboard events, consider using [UnhandledKeyInput] for performance reasons.
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
+[SetProcessUnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessUnhandledInput
+[ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
 */
 func (Instance) _unhandled_input(impl func(ptr gdclass.Receiver, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -575,17 +755,26 @@ func (Instance) _unhandled_input(impl func(ptr gdclass.Receiver, event InputEven
 }
 
 /*
-Called when an [graphics.gd/classdb/InputEventKey] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called after [Interface.ShortcutInput] but before [Interface.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+Called when an [InputEventKey] hasn't been consumed by [Input] or any GUI [Control] item. It is called after [ShortcutInput] but before [UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
 
-It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessUnhandledKeyInput].
+It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessUnhandledKeyInput].
 
-To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
 
 This method can be used to handle Unicode character input with Alt, Alt + Ctrl, and Alt + Shift modifiers, after shortcuts were handled.
 
-For gameplay input, this and [Interface.UnhandledInput] are usually a better fit than [Interface.Input], as GUI events should be handled first. This method also performs better than [Interface.UnhandledInput], since unrelated events such as [graphics.gd/classdb/InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [Interface.ShortcutInput] instead.
+For gameplay input, this and [UnhandledInput] are usually a better fit than [Input], as GUI events should be handled first. This method also performs better than [UnhandledInput], since unrelated events such as [InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [ShortcutInput] instead.
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
+[InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
+[SetProcessUnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessUnhandledKeyInput
+[ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
 */
 func (Instance) _unhandled_key_input(impl func(ptr gdclass.Receiver, event InputEvent.Instance)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -598,7 +787,9 @@ func (Instance) _unhandled_key_input(impl func(ptr gdclass.Receiver, event Input
 }
 
 /*
-Called during accessibility information updates to determine the currently focused sub-element, should return a sub-element RID or the value returned by [Instance.GetAccessibilityElement].
+Called during accessibility information updates to determine the currently focused sub-element, should return a sub-element RID or the value returned by [GetAccessibilityElement].
+
+[GetAccessibilityElement]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetAccessibilityElement
 */
 func (Instance) _get_focused_accessibility_element(impl func(ptr gdclass.Receiver) RID.AccessibilityElement) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -609,9 +800,11 @@ func (Instance) _get_focused_accessibility_element(impl func(ptr gdclass.Receive
 }
 
 /*
-Prints all orphan nodes (nodes outside the [graphics.gd/classdb/SceneTree]). Useful for debugging.
+Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
 
 Note: This method only works in debug builds. Does nothing in a project exported in release mode.
+
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func PrintOrphanNodes() { //gd:Node.print_orphan_nodes
 	self := Instance{}
@@ -619,9 +812,11 @@ func PrintOrphanNodes() { //gd:Node.print_orphan_nodes
 }
 
 /*
-Returns object IDs of all orphan nodes (nodes outside the [graphics.gd/classdb/SceneTree]). Used for debugging.
+Returns object IDs of all orphan nodes (nodes outside the [SceneTree]). Used for debugging.
 
 Note: [GetOrphanNodeIds] only works in debug builds. When called in a project exported in release mode, [GetOrphanNodeIds] will return an empty array.
+
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func GetOrphanNodeIds() []int { //gd:Node.get_orphan_node_ids
 	self := Instance{}
@@ -631,11 +826,14 @@ func GetOrphanNodeIds() []int { //gd:Node.get_orphan_node_ids
 /*
 Adds a 'sibling' node to this node's parent, and moves the added sibling right below this node.
 
-If 'force_readable_name' is true, improves the readability of the added 'sibling'. If not named, the 'sibling' is renamed to its type, and if it shares [Instance.Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
+If 'force_readable_name' is true, improves the readability of the added 'sibling'. If not named, the 'sibling' is renamed to its type, and if it shares [Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
 
-Use [Instance.AddChild] instead of this method if you don't need the child node to be added below a specific node in the list of children.
+Use [AddChild] instead of this method if you don't need the child node to be added below a specific node in the list of children.
 
-Note: If this node is internal, the added sibling will be internal too (see [Instance.AddChild]'s internal parameter).
+Note: If this node is internal, the added sibling will be internal too (see [AddChild]'s internal parameter).
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
 */
 func (self Instance) AddSibling(sibling Instance) { //gd:Node.add_sibling
 	Advanced(self).AddSibling(sibling, false)
@@ -644,29 +842,47 @@ func (self Instance) AddSibling(sibling Instance) { //gd:Node.add_sibling
 /*
 Adds a 'sibling' node to this node's parent, and moves the added sibling right below this node.
 
-If 'force_readable_name' is true, improves the readability of the added 'sibling'. If not named, the 'sibling' is renamed to its type, and if it shares [Instance.Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
+If 'force_readable_name' is true, improves the readability of the added 'sibling'. If not named, the 'sibling' is renamed to its type, and if it shares [Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
 
-Use [Instance.AddChild] instead of this method if you don't need the child node to be added below a specific node in the list of children.
+Use [AddChild] instead of this method if you don't need the child node to be added below a specific node in the list of children.
 
-Note: If this node is internal, the added sibling will be internal too (see [Instance.AddChild]'s internal parameter).
+Note: If this node is internal, the added sibling will be internal too (see [AddChild]'s internal parameter).
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
 */
-func (self Expanded) AddSibling(sibling Instance, force_readable_name bool) { //gd:Node.add_sibling
+func (self MoreArgs) AddSibling(sibling Instance, force_readable_name bool) { //gd:Node.add_sibling
 	Advanced(self).AddSibling(sibling, force_readable_name)
 }
 
 /*
 Adds a child 'node'. Nodes can have any number of children, but every child must have a unique name. Child nodes are automatically deleted when the parent node is deleted, so an entire scene can be removed by deleting its topmost node.
 
-If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [Instance.Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
+If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
 
-If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [Instance.GetChildren], unless their parameter include_internal is true. It also prevents these nodes being duplicated with their parent. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [graphics.gd/classdb/ColorPicker].
+If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [GetChildren], unless their parameter include_internal is true. It also prevents these nodes being duplicated with their parent. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [ColorPicker].
 
-Note: If 'node' already has a parent, this method will fail. Use [Instance.RemoveChild] first to remove 'node' from its current parent. For example:
+Note: If 'node' already has a parent, this method will fail. Use [RemoveChild] first to remove 'node' from its current parent. For example:
 
-If you need the child node to be added below a specific node in the list of children, use [Instance.AddSibling] instead of this method.
+	var childNode = node.GetChild(0)
+	if childNode.GetParent() != Node.Nil {
+		childNode.GetParent().RemoveChild(childNode)
+	}
+	node.AddChild(childNode)
 
-Note: If you want a child to be persisted to a [graphics.gd/classdb/PackedScene], you must set [Instance.Owner] in addition to calling [Instance.AddChild]. This is typically relevant for [tool scripts] and [editor plugins]. If [Instance.AddChild] is called without setting [Instance.Owner], the newly added [graphics.gd/classdb/Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
+If you need the child node to be added below a specific node in the list of children, use [AddSibling] instead of this method.
 
+Note: If you want a child to be persisted to a [PackedScene], you must set [Owner] in addition to calling [AddChild]. This is typically relevant for [tool scripts] and [editor plugins]. If [AddChild] is called without setting [Owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[AddSibling]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddSibling
+[ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
+[GetChildren]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetChildren
+[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
+[RemoveChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RemoveChild
 [editor plugins]: https://docs.godotengine.org/tutorials/plugins/editor/index.html
 [tool scripts]: https://docs.godotengine.org/tutorials/plugins/running_code_in_the_editor.html
 */
@@ -677,54 +893,87 @@ func (self Instance) AddChild(node Instance) { //gd:Node.add_child
 /*
 Adds a child 'node'. Nodes can have any number of children, but every child must have a unique name. Child nodes are automatically deleted when the parent node is deleted, so an entire scene can be removed by deleting its topmost node.
 
-If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [Instance.Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
+If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
 
-If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [Instance.GetChildren], unless their parameter include_internal is true. It also prevents these nodes being duplicated with their parent. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [graphics.gd/classdb/ColorPicker].
+If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [GetChildren], unless their parameter include_internal is true. It also prevents these nodes being duplicated with their parent. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [ColorPicker].
 
-Note: If 'node' already has a parent, this method will fail. Use [Instance.RemoveChild] first to remove 'node' from its current parent. For example:
+Note: If 'node' already has a parent, this method will fail. Use [RemoveChild] first to remove 'node' from its current parent. For example:
 
-If you need the child node to be added below a specific node in the list of children, use [Instance.AddSibling] instead of this method.
+	var childNode = node.GetChild(0)
+	if childNode.GetParent() != Node.Nil {
+		childNode.GetParent().RemoveChild(childNode)
+	}
+	node.AddChild(childNode)
 
-Note: If you want a child to be persisted to a [graphics.gd/classdb/PackedScene], you must set [Instance.Owner] in addition to calling [Instance.AddChild]. This is typically relevant for [tool scripts] and [editor plugins]. If [Instance.AddChild] is called without setting [Instance.Owner], the newly added [graphics.gd/classdb/Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
+If you need the child node to be added below a specific node in the list of children, use [AddSibling] instead of this method.
 
+Note: If you want a child to be persisted to a [PackedScene], you must set [Owner] in addition to calling [AddChild]. This is typically relevant for [tool scripts] and [editor plugins]. If [AddChild] is called without setting [Owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[AddSibling]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddSibling
+[ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
+[GetChildren]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetChildren
+[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
+[RemoveChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RemoveChild
 [editor plugins]: https://docs.godotengine.org/tutorials/plugins/editor/index.html
 [tool scripts]: https://docs.godotengine.org/tutorials/plugins/running_code_in_the_editor.html
 */
-func (self Expanded) AddChild(node Instance, force_readable_name bool, internal_ InternalMode) { //gd:Node.add_child
+func (self MoreArgs) AddChild(node Instance, force_readable_name bool, internal_ InternalMode) { //gd:Node.add_child
 	Advanced(self).AddChild(node, force_readable_name, internal_)
 }
 
 /*
-Removes a child 'node'. The 'node', along with its children, are not deleted. To delete a node, see [Instance.QueueFree].
+Removes a child 'node'. The 'node', along with its children, are not deleted. To delete a node, see [QueueFree].
 
-Note: When this node is inside the tree, this method sets the [Instance.Owner] of the removed 'node' (or its descendants) to null, if their [Instance.Owner] is no longer an ancestor (see [Instance.IsAncestorOf]).
+Note: When this node is inside the tree, this method sets the [Owner] of the removed 'node' (or its descendants) to null, if their [Owner] is no longer an ancestor (see [IsAncestorOf]).
+
+[IsAncestorOf]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsAncestorOf
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
 */
 func (self Instance) RemoveChild(node Instance) { //gd:Node.remove_child
 	Advanced(self).RemoveChild(node)
 }
 
 /*
-Changes the parent of this [graphics.gd/classdb/Node] to the 'new_parent'. The node needs to already have a parent. The node's [Instance.Owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
+Changes the parent of this [Node] to the 'new_parent'. The node needs to already have a parent. The node's [Owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
 
-If 'keep_global_transform' is true, the node's global transform will be preserved if supported. [graphics.gd/classdb/Node2D], [graphics.gd/classdb/Node3D] and [graphics.gd/classdb/Control] support this argument (but [graphics.gd/classdb/Control] keeps only position).
+If 'keep_global_transform' is true, the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Node2D]: https://pkg.go.dev/graphics.gd/classdb/Node2D
+[Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
 */
 func (self Instance) Reparent(new_parent Instance) { //gd:Node.reparent
 	Advanced(self).Reparent(new_parent, true)
 }
 
 /*
-Changes the parent of this [graphics.gd/classdb/Node] to the 'new_parent'. The node needs to already have a parent. The node's [Instance.Owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
+Changes the parent of this [Node] to the 'new_parent'. The node needs to already have a parent. The node's [Owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
 
-If 'keep_global_transform' is true, the node's global transform will be preserved if supported. [graphics.gd/classdb/Node2D], [graphics.gd/classdb/Node3D] and [graphics.gd/classdb/Control] support this argument (but [graphics.gd/classdb/Control] keeps only position).
+If 'keep_global_transform' is true, the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Node2D]: https://pkg.go.dev/graphics.gd/classdb/Node2D
+[Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
 */
-func (self Expanded) Reparent(new_parent Instance, keep_global_transform bool) { //gd:Node.reparent
+func (self MoreArgs) Reparent(new_parent Instance, keep_global_transform bool) { //gd:Node.reparent
 	Advanced(self).Reparent(new_parent, keep_global_transform)
 }
 
 /*
 Returns the number of children of this node.
 
-If 'include_internal' is false, internal children are not counted (see [Instance.AddChild]'s internal parameter).
+If 'include_internal' is false, internal children are not counted (see [AddChild]'s internal parameter).
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
 */
 func (self Instance) GetChildCount() int { //gd:Node.get_child_count
 	return int(int(Advanced(self).GetChildCount(false)))
@@ -733,16 +982,20 @@ func (self Instance) GetChildCount() int { //gd:Node.get_child_count
 /*
 Returns the number of children of this node.
 
-If 'include_internal' is false, internal children are not counted (see [Instance.AddChild]'s internal parameter).
+If 'include_internal' is false, internal children are not counted (see [AddChild]'s internal parameter).
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
 */
-func (self Expanded) GetChildCount(include_internal bool) int { //gd:Node.get_child_count
+func (self MoreArgs) GetChildCount(include_internal bool) int { //gd:Node.get_child_count
 	return int(int(Advanced(self).GetChildCount(include_internal)))
 }
 
 /*
 Returns all children of this node inside an slice.
 
-If 'include_internal' is false, excludes internal children from the returned array (see [Instance.AddChild]'s internal parameter).
+If 'include_internal' is false, excludes internal children from the returned array (see [AddChild]'s internal parameter).
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
 */
 func (self Instance) GetChildren() []Instance { //gd:Node.get_children
 	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Advanced(self).GetChildren(false))))
@@ -751,56 +1004,94 @@ func (self Instance) GetChildren() []Instance { //gd:Node.get_children
 /*
 Returns all children of this node inside an slice.
 
-If 'include_internal' is false, excludes internal children from the returned array (see [Instance.AddChild]'s internal parameter).
+If 'include_internal' is false, excludes internal children from the returned array (see [AddChild]'s internal parameter).
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
 */
-func (self Expanded) GetChildren(include_internal bool) []Instance { //gd:Node.get_children
+func (self MoreArgs) GetChildren(include_internal bool) []Instance { //gd:Node.get_children
 	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Advanced(self).GetChildren(include_internal))))
 }
 
 /*
-Fetches a child node by its index. Each child node has an index relative to its siblings (see [Instance.GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [Instance.GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
+Fetches a child node by its index. Each child node has an index relative to its siblings (see [GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
 
-If 'include_internal' is false, internal children are ignored (see [Instance.AddChild]'s internal parameter).
+If 'include_internal' is false, internal children are ignored (see [AddChild]'s internal parameter).
 
-Note: To fetch a node by node path, use [Instance.GetNode].
+	// Assuming the following are children of this node, in order:
+	// First, Middle, Last.
+	var a = node.GetChild(0).Name()  // a is "First"
+	var b = node.GetChild(1).Name()  // b is "Middle"
+	b = node.GetChild(2).Name()      // b is "Last"
+	var c = node.GetChild(-1).Name() // c is "Last"
+
+Note: To fetch a node by node path, use [GetNode].
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[GetChildCount]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetChildCount
+[GetIndex]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetIndex
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
 */
 func (self Instance) GetChild(idx int) Instance { //gd:Node.get_child
 	return Instance(Advanced(self).GetChild(int64(idx), false))
 }
 
 /*
-Fetches a child node by its index. Each child node has an index relative to its siblings (see [Instance.GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [Instance.GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
+Fetches a child node by its index. Each child node has an index relative to its siblings (see [GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
 
-If 'include_internal' is false, internal children are ignored (see [Instance.AddChild]'s internal parameter).
+If 'include_internal' is false, internal children are ignored (see [AddChild]'s internal parameter).
 
-Note: To fetch a node by node path, use [Instance.GetNode].
+	// Assuming the following are children of this node, in order:
+	// First, Middle, Last.
+	var a = node.GetChild(0).Name()  // a is "First"
+	var b = node.GetChild(1).Name()  // b is "Middle"
+	b = node.GetChild(2).Name()      // b is "Last"
+	var c = node.GetChild(-1).Name() // c is "Last"
+
+Note: To fetch a node by node path, use [GetNode].
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[GetChildCount]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetChildCount
+[GetIndex]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetIndex
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
 */
-func (self Expanded) GetChild(idx int, include_internal bool) Instance { //gd:Node.get_child
+func (self MoreArgs) GetChild(idx int, include_internal bool) Instance { //gd:Node.get_child
 	return Instance(Advanced(self).GetChild(int64(idx), include_internal))
 }
 
 /*
-Returns true if the 'path' points to a valid node. See also [Instance.GetNode].
+Returns true if the 'path' points to a valid node. See also [GetNode].
+
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
 */
 func (self Instance) HasNode(path string) bool { //gd:Node.has_node
 	return bool(Advanced(self).HasNode(Path.ToNode(String.New(path))))
 }
 
 /*
-Fetches a node. The node path can either be a relative path (from this node), or an absolute path (from the [graphics.gd/classdb/SceneTree.Instance.Root]) to a node. If 'path' does not point to a valid node, generates an error and returns null. Attempts to access methods on the return value will result in an "Attempt to call <method> on a null instance." error.
+Fetches a node. The node path can either be a relative path (from this node), or an absolute path (from the [SceneTree.Root]) to a node. If 'path' does not point to a valid node, generates an error and returns null. Attempts to access methods on the return value will result in an "Attempt to call <method> on a null instance." error.
 
-Note: Fetching by absolute path only works when the node is inside the scene tree (see [Instance.IsInsideTree]).
+Note: Fetching by absolute path only works when the node is inside the scene tree (see [IsInsideTree]).
 
 Example: Assume this method is called from the Character node, inside the following tree:
 
+	node.GetNode("Sword")
+	node.GetNode("Backpack/Dagger")
+	node.GetNode("../Swamp/Alligator")
+	node.GetNode("/root/MyGame")
+
 The following calls will return a valid node:
+
+[IsInsideTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsInsideTree
+[SceneTree.Root]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Root
 */
 func (self Instance) GetNode(path string) Instance { //gd:Node.get_node
 	return Instance(Advanced(self).GetNode(Path.ToNode(String.New(path))))
 }
 
 /*
-Fetches a node by node path. Similar to [Instance.GetNode], but does not generate an error if 'path' does not point to a valid node.
+Fetches a node by node path. Similar to [GetNode], but does not generate an error if 'path' does not point to a valid node.
+
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
 */
 func (self Instance) GetNodeOrNull(path string) Instance { //gd:Node.get_node_or_null
 	return Instance(Advanced(self).GetNodeOrNull(Path.ToNode(String.New(path))))
@@ -814,80 +1105,118 @@ func (self Instance) GetParent() Instance { //gd:Node.get_parent
 }
 
 /*
-Finds the first descendant of this node whose [Instance.Name] matches 'pattern', returning null if no match is found. The matching is done against node names, not their paths, through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
+Finds the first descendant of this node whose [Name] matches 'pattern', returning null if no match is found. The matching is done against node names, not their paths, through [String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
 
-If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [Instance.AddChild]).
+If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [AddChild]).
 
-If 'owned' is true, only descendants with a valid [Instance.Owner] node are checked.
+If 'owned' is true, only descendants with a valid [Owner] node are checked.
 
-Note: This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [Instance.GetNode] with unique names (see [Instance.UniqueNameInOwner]).
+Note: This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [GetNode] with unique names (see [UniqueNameInOwner]).
 
-Note: To find all descendant nodes matching a pattern or a class type, see [Instance.FindChildren].
+Note: To find all descendant nodes matching a pattern or a class type, see [FindChildren].
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[FindChildren]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.FindChildren
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
+[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[String.Match]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Match
+[UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
 */
 func (self Instance) FindChild(pattern string) Instance { //gd:Node.find_child
 	return Instance(Advanced(self).FindChild(String.New(pattern), true, true))
 }
 
 /*
-Finds the first descendant of this node whose [Instance.Name] matches 'pattern', returning null if no match is found. The matching is done against node names, not their paths, through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
+Finds the first descendant of this node whose [Name] matches 'pattern', returning null if no match is found. The matching is done against node names, not their paths, through [String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
 
-If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [Instance.AddChild]).
+If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [AddChild]).
 
-If 'owned' is true, only descendants with a valid [Instance.Owner] node are checked.
+If 'owned' is true, only descendants with a valid [Owner] node are checked.
 
-Note: This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [Instance.GetNode] with unique names (see [Instance.UniqueNameInOwner]).
+Note: This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [GetNode] with unique names (see [UniqueNameInOwner]).
 
-Note: To find all descendant nodes matching a pattern or a class type, see [Instance.FindChildren].
+Note: To find all descendant nodes matching a pattern or a class type, see [FindChildren].
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[FindChildren]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.FindChildren
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
+[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[String.Match]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Match
+[UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
 */
-func (self Expanded) FindChild(pattern string, recursive bool, owned bool) Instance { //gd:Node.find_child
+func (self MoreArgs) FindChild(pattern string, recursive bool, owned bool) Instance { //gd:Node.find_child
 	return Instance(Advanced(self).FindChild(String.New(pattern), recursive, owned))
 }
 
 /*
-Finds all descendants of this node whose names match 'pattern', returning an empty slice if no match is found. The matching is done against node names, not their paths, through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
+Finds all descendants of this node whose names match 'pattern', returning an empty slice if no match is found. The matching is done against node names, not their paths, through [String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
 
-If 'type' is not empty, only ancestors inheriting from 'type' are included (see [graphics.gd/classdb/Object.Instance.IsClass]).
+If 'type' is not empty, only ancestors inheriting from 'type' are included (see [Object.IsClass]).
 
-If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [Instance.AddChild]).
+If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [AddChild]).
 
-If 'owned' is true, only descendants with a valid [Instance.Owner] node are checked.
+If 'owned' is true, only descendants with a valid [Owner] node are checked.
 
 Note: This method can be very slow. Consider storing references to the found nodes in a variable.
 
-Note: To find a single descendant node matching a pattern, see [Instance.FindChild].
+Note: To find a single descendant node matching a pattern, see [FindChild].
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[FindChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.FindChild
+[Object.IsClass]: https://pkg.go.dev/graphics.gd/variant/Object#IsClass
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[String.Match]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Match
 */
 func (self Instance) FindChildren(pattern string) []Instance { //gd:Node.find_children
 	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Advanced(self).FindChildren(String.New(pattern), String.New(""), true, true))))
 }
 
 /*
-Finds all descendants of this node whose names match 'pattern', returning an empty slice if no match is found. The matching is done against node names, not their paths, through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
+Finds all descendants of this node whose names match 'pattern', returning an empty slice if no match is found. The matching is done against node names, not their paths, through [String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
 
-If 'type' is not empty, only ancestors inheriting from 'type' are included (see [graphics.gd/classdb/Object.Instance.IsClass]).
+If 'type' is not empty, only ancestors inheriting from 'type' are included (see [Object.IsClass]).
 
-If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [Instance.AddChild]).
+If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [AddChild]).
 
-If 'owned' is true, only descendants with a valid [Instance.Owner] node are checked.
+If 'owned' is true, only descendants with a valid [Owner] node are checked.
 
 Note: This method can be very slow. Consider storing references to the found nodes in a variable.
 
-Note: To find a single descendant node matching a pattern, see [Instance.FindChild].
+Note: To find a single descendant node matching a pattern, see [FindChild].
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[FindChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.FindChild
+[Object.IsClass]: https://pkg.go.dev/graphics.gd/variant/Object#IsClass
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[String.Match]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Match
 */
-func (self Expanded) FindChildren(pattern string, atype string, recursive bool, owned bool) []Instance { //gd:Node.find_children
+func (self MoreArgs) FindChildren(pattern string, atype string, recursive bool, owned bool) []Instance { //gd:Node.find_children
 	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(Advanced(self).FindChildren(String.New(pattern), String.New(atype), recursive, owned))))
 }
 
 /*
-Finds the first ancestor of this node whose [Instance.Name] matches 'pattern', returning null if no match is found. The matching is done through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character. See also [Instance.FindChild] and [Instance.FindChildren].
+Finds the first ancestor of this node whose [Name] matches 'pattern', returning null if no match is found. The matching is done through [String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character. See also [FindChild] and [FindChildren].
 
-Note: As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [Instance.GetNode] with unique names (see [Instance.UniqueNameInOwner]).
+Note: As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [GetNode] with unique names (see [UniqueNameInOwner]).
+
+[FindChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.FindChild
+[FindChildren]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.FindChildren
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
+[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
+[String.Match]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Match
+[UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
 */
 func (self Instance) FindParent(pattern string) Instance { //gd:Node.find_parent
 	return Instance(Advanced(self).FindParent(String.New(pattern)))
 }
 
 /*
-Returns true if 'path' points to a valid node and its subnames point to a valid [graphics.gd/classdb/Resource], e.g. Area2D/CollisionShape2D:shape. Properties that are not [graphics.gd/classdb/Resource] types (such as nodes or other any types) are not considered. See also [Instance.GetNodeAndResource].
+Returns true if 'path' points to a valid node and its subnames point to a valid [Resource], e.g. Area2D/CollisionShape2D:shape. Properties that are not [Resource] types (such as nodes or other any types) are not considered. See also [GetNodeAndResource].
+
+[GetNodeAndResource]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNodeAndResource
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
 */
 func (self Instance) HasNodeAndResource(path string) bool { //gd:Node.has_node_and_resource
 	return bool(Advanced(self).HasNodeAndResource(Path.ToNode(String.New(path))))
@@ -896,13 +1225,34 @@ func (self Instance) HasNodeAndResource(path string) bool { //gd:Node.has_node_a
 /*
 Fetches a node and its most nested resource as specified by the node path's subname. Returns an slice of size 3 where:
 
-- Element 0 is the [graphics.gd/classdb/Node], or null if not found;
+- Element 0 is the [Node], or null if not found;
 
-- Element 1 is the subname's last nested [graphics.gd/classdb/Resource], or null if not found;
+- Element 1 is the subname's last nested [Resource], or null if not found;
 
-- Element 2 is the remaining node path, referring to an existing, non-[graphics.gd/classdb/Resource] property (see [graphics.gd/classdb/Object.Instance.GetIndexed]).
+- Element 2 is the remaining node path, referring to an existing, non-[Resource] property (see [Object.GetIndexed]).
 
-Example: Assume that the child's [graphics.gd/classdb/Sprite2D.Instance.Texture] has been assigned an [graphics.gd/classdb/AtlasTexture]:
+Example: Assume that the child's [Sprite2D.Texture] has been assigned an [AtlasTexture]:
+
+	node, res, path := node.GetNodeAndResource("Area2D/Sprite2D")
+	println(node.Name()) // Prints Sprite2D
+	println(res)         // Prints <null>
+	println(path)        // Prints ^""
+
+	node, res, path = node.GetNodeAndResource("Area2D/Sprite2D:texture:atlas")
+	println(node.Name())                                 // Prints Sprite2D
+	println(Object.Instance(res.AsObject()).ClassName()) // Prints AtlasTexture
+	println(path)                                        // Prints ^""
+
+	node, res, path = node.GetNodeAndResource("Area2D/Sprite2D:texture:atlas:region")
+	println(node.Name())                                 // Prints Sprite2D
+	println(Object.Instance(res.AsObject()).ClassName()) // Prints AtlasTexture
+	println(path)                                        // Prints ^":region"
+
+[AtlasTexture]: https://pkg.go.dev/graphics.gd/classdb/AtlasTexture
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Object.GetIndexed]: https://pkg.go.dev/graphics.gd/variant/Object#GetIndexed
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
+[Sprite2D.Texture]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Texture
 */
 func (self Instance) GetNodeAndResource(path string) (Instance, Resource.Instance, string) { //gd:Node.get_node_and_resource
 	results := gd.InternalArray(Advanced(self).GetNodeAndResource(Path.ToNode(String.New(path))))
@@ -910,7 +1260,10 @@ func (self Instance) GetNodeAndResource(path string) (Instance, Resource.Instanc
 }
 
 /*
-Returns true if this node is currently inside a [graphics.gd/classdb/SceneTree]. See also [Instance.GetTree].
+Returns true if this node is currently inside a [SceneTree]. See also [GetTree].
+
+[GetTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetTree
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func (self Instance) IsInsideTree() bool { //gd:Node.is_inside_tree
 	return bool(Advanced(self).IsInsideTree())
@@ -938,78 +1291,108 @@ func (self Instance) IsGreaterThan(node Instance) bool { //gd:Node.is_greater_th
 }
 
 /*
-Returns the node's absolute path, relative to the [graphics.gd/classdb/SceneTree.Instance.Root]. If the node is not inside the scene tree, this method fails and returns an empty node path.
+Returns the node's absolute path, relative to the [SceneTree.Root]. If the node is not inside the scene tree, this method fails and returns an empty node path.
+
+[SceneTree.Root]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Root
 */
 func (self Instance) GetPath() string { //gd:Node.get_path
 	return string(Advanced(self).GetPath().String())
 }
 
 /*
-Returns the relative node path from this node to the specified 'node'. Both nodes must be in the same [graphics.gd/classdb/SceneTree] or scene hierarchy, otherwise this method fails and returns an empty node path.
+Returns the relative node path from this node to the specified 'node'. Both nodes must be in the same [SceneTree] or scene hierarchy, otherwise this method fails and returns an empty node path.
 
-If 'use_unique_path' is true, returns the shortest path accounting for this node's unique name (see [Instance.UniqueNameInOwner]).
+If 'use_unique_path' is true, returns the shortest path accounting for this node's unique name (see [UniqueNameInOwner]).
 
 Note: If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
+
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
+[UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
 */
 func (self Instance) GetPathTo(node Instance) string { //gd:Node.get_path_to
 	return string(Advanced(self).GetPathTo(node, false).String())
 }
 
 /*
-Returns the relative node path from this node to the specified 'node'. Both nodes must be in the same [graphics.gd/classdb/SceneTree] or scene hierarchy, otherwise this method fails and returns an empty node path.
+Returns the relative node path from this node to the specified 'node'. Both nodes must be in the same [SceneTree] or scene hierarchy, otherwise this method fails and returns an empty node path.
 
-If 'use_unique_path' is true, returns the shortest path accounting for this node's unique name (see [Instance.UniqueNameInOwner]).
+If 'use_unique_path' is true, returns the shortest path accounting for this node's unique name (see [UniqueNameInOwner]).
 
 Note: If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
+
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
+[UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
 */
-func (self Expanded) GetPathTo(node Instance, use_unique_path bool) string { //gd:Node.get_path_to
+func (self MoreArgs) GetPathTo(node Instance, use_unique_path bool) string { //gd:Node.get_path_to
 	return string(Advanced(self).GetPathTo(node, use_unique_path).String())
 }
 
 /*
-Adds the node to the 'group'. Groups can be helpful to organize a subset of nodes, for example "enemies" or "collectables". See notes in the description, and the group methods in [graphics.gd/classdb/SceneTree].
+Adds the node to the 'group'. Groups can be helpful to organize a subset of nodes, for example "enemies" or "collectables". See notes in the description, and the group methods in [SceneTree].
 
-If 'persistent' is true, the group will be stored when saved inside a [graphics.gd/classdb/PackedScene]. All groups created and displayed in the Node dock are persistent.
+If 'persistent' is true, the group will be stored when saved inside a [PackedScene]. All groups created and displayed in the Node dock are persistent.
 
 Note: To improve performance, the order of group names is not guaranteed and may vary between project runs. Therefore, do not rely on the group order.
 
-Note: [graphics.gd/classdb/SceneTree]'s group methods will not work on this node if not inside the tree (see [Instance.IsInsideTree]).
+Note: [SceneTree]'s group methods will not work on this node if not inside the tree (see [IsInsideTree]).
+
+[IsInsideTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsInsideTree
+[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func (self Instance) AddToGroup(group string) { //gd:Node.add_to_group
 	Advanced(self).AddToGroup(String.Name(String.New(group)), false)
 }
 
 /*
-Adds the node to the 'group'. Groups can be helpful to organize a subset of nodes, for example "enemies" or "collectables". See notes in the description, and the group methods in [graphics.gd/classdb/SceneTree].
+Adds the node to the 'group'. Groups can be helpful to organize a subset of nodes, for example "enemies" or "collectables". See notes in the description, and the group methods in [SceneTree].
 
-If 'persistent' is true, the group will be stored when saved inside a [graphics.gd/classdb/PackedScene]. All groups created and displayed in the Node dock are persistent.
+If 'persistent' is true, the group will be stored when saved inside a [PackedScene]. All groups created and displayed in the Node dock are persistent.
 
 Note: To improve performance, the order of group names is not guaranteed and may vary between project runs. Therefore, do not rely on the group order.
 
-Note: [graphics.gd/classdb/SceneTree]'s group methods will not work on this node if not inside the tree (see [Instance.IsInsideTree]).
+Note: [SceneTree]'s group methods will not work on this node if not inside the tree (see [IsInsideTree]).
+
+[IsInsideTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsInsideTree
+[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
-func (self Expanded) AddToGroup(group string, persistent bool) { //gd:Node.add_to_group
+func (self MoreArgs) AddToGroup(group string, persistent bool) { //gd:Node.add_to_group
 	Advanced(self).AddToGroup(String.Name(String.New(group)), persistent)
 }
 
 /*
-Removes the node from the given 'group'. Does nothing if the node is not in the 'group'. See also notes in the description, and the [graphics.gd/classdb/SceneTree]'s group methods.
+Removes the node from the given 'group'. Does nothing if the node is not in the 'group'. See also notes in the description, and the [SceneTree]'s group methods.
+
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func (self Instance) RemoveFromGroup(group string) { //gd:Node.remove_from_group
 	Advanced(self).RemoveFromGroup(String.Name(String.New(group)))
 }
 
 /*
-Returns true if this node has been added to the given 'group'. See [Instance.AddToGroup] and [Instance.RemoveFromGroup]. See also notes in the description, and the [graphics.gd/classdb/SceneTree]'s group methods.
+Returns true if this node has been added to the given 'group'. See [AddToGroup] and [RemoveFromGroup]. See also notes in the description, and the [SceneTree]'s group methods.
+
+[AddToGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddToGroup
+[RemoveFromGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RemoveFromGroup
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func (self Instance) IsInGroup(group string) bool { //gd:Node.is_in_group
 	return bool(Advanced(self).IsInGroup(String.Name(String.New(group))))
 }
 
 /*
-Moves 'child_node' to the given index. A node's index is the order among its siblings. If 'to_index' is negative, the index is counted from the end of the list. See also [Instance.GetChild] and [Instance.GetIndex].
+Moves 'child_node' to the given index. A node's index is the order among its siblings. If 'to_index' is negative, the index is counted from the end of the list. See also [GetChild] and [GetIndex].
 
-Note: The processing order of several engine callbacks ([Interface.Ready], [Interface.Process], etc.) and notifications sent through [Instance.PropagateNotification] is affected by tree order. [graphics.gd/classdb/CanvasItem] nodes are also rendered in tree order. See also [Instance.ProcessPriority].
+Note: The processing order of several engine callbacks ([Ready], [Process], etc.) and notifications sent through [PropagateNotification] is affected by tree order. [CanvasItem] nodes are also rendered in tree order. See also [ProcessPriority].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[GetChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetChild
+[GetIndex]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetIndex
+[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[ProcessPriority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessPriority
+[PropagateNotification]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PropagateNotification
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 func (self Instance) MoveChild(child_node Instance, to_index int) { //gd:Node.move_child
 	Advanced(self).MoveChild(child_node, int64(to_index))
@@ -1021,67 +1404,92 @@ Returns an slice of group names that the node has been added to.
 Note: To improve performance, the order of group names is not guaranteed and may vary between project runs. Therefore, do not rely on the group order.
 
 Note: This method may also return some group names starting with an underscore (_). These are internally used by the engine. To avoid conflicts, do not use custom groups starting with underscores. To exclude internal groups, see the following code snippet:
+
+	// Stores the node's non-internal groups only (as a slice of strings).
+	var nonInternalGroups []string
+	for _, group := range node.GetGroups() {
+		if !strings.HasPrefix(group, "_") {
+			nonInternalGroups = append(nonInternalGroups, group)
+		}
+	}
 */
 func (self Instance) GetGroups() []string { //gd:Node.get_groups
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(Advanced(self).GetGroups())))
 }
 
 /*
-Returns this node's order among its siblings. The first node's index is 0. See also [Instance.GetChild].
+Returns this node's order among its siblings. The first node's index is 0. See also [GetChild].
 
-If 'include_internal' is false, returns the index ignoring internal children. The first, non-internal child will have an index of 0 (see [Instance.AddChild]'s internal parameter).
+If 'include_internal' is false, returns the index ignoring internal children. The first, non-internal child will have an index of 0 (see [AddChild]'s internal parameter).
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[GetChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetChild
 */
 func (self Instance) GetIndex() int { //gd:Node.get_index
 	return int(int(Advanced(self).GetIndex(false)))
 }
 
 /*
-Returns this node's order among its siblings. The first node's index is 0. See also [Instance.GetChild].
+Returns this node's order among its siblings. The first node's index is 0. See also [GetChild].
 
-If 'include_internal' is false, returns the index ignoring internal children. The first, non-internal child will have an index of 0 (see [Instance.AddChild]'s internal parameter).
+If 'include_internal' is false, returns the index ignoring internal children. The first, non-internal child will have an index of 0 (see [AddChild]'s internal parameter).
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[GetChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetChild
 */
-func (self Expanded) GetIndex(include_internal bool) int { //gd:Node.get_index
+func (self MoreArgs) GetIndex(include_internal bool) int { //gd:Node.get_index
 	return int(int(Advanced(self).GetIndex(include_internal)))
 }
 
 /*
-Prints the node and its children to the console, recursively. The node does not have to be inside the tree. This method outputs node paths relative to this node, and is good for copy/pasting into [Instance.GetNode]. See also [Instance.PrintTreePretty].
+Prints the node and its children to the console, recursively. The node does not have to be inside the tree. This method outputs node paths relative to this node, and is good for copy/pasting into [GetNode]. See also [PrintTreePretty].
 
 May print, for example:
+
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
+[PrintTreePretty]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PrintTreePretty
 */
 func (self Instance) PrintTree() { //gd:Node.print_tree
 	Advanced(self).PrintTree()
 }
 
 /*
-Prints the node and its children to the console, recursively. The node does not have to be inside the tree. Similar to [Instance.PrintTree], but the graphical representation looks like what is displayed in the editor's Scene dock. It is useful for inspecting larger trees.
+Prints the node and its children to the console, recursively. The node does not have to be inside the tree. Similar to [PrintTree], but the graphical representation looks like what is displayed in the editor's Scene dock. It is useful for inspecting larger trees.
 
 May print, for example:
+
+[PrintTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PrintTree
 */
 func (self Instance) PrintTreePretty() { //gd:Node.print_tree_pretty
 	Advanced(self).PrintTreePretty()
 }
 
 /*
-Returns the tree as a string. Used mainly for debugging purposes. This version displays the path relative to the current node, and is good for copy/pasting into the [Instance.GetNode] function. It also can be used in game UI/UX.
+Returns the tree as a string. Used mainly for debugging purposes. This version displays the path relative to the current node, and is good for copy/pasting into the [GetNode] function. It also can be used in game UI/UX.
 
 May print, for example:
+
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
 */
 func (self Instance) GetTreeString() string { //gd:Node.get_tree_string
 	return string(Advanced(self).GetTreeString().String())
 }
 
 /*
-Similar to [Instance.GetTreeString], this returns the tree as a string. This version displays a more graphical representation similar to what is displayed in the Scene Dock. It is useful for inspecting larger trees.
+Similar to [GetTreeString], this returns the tree as a string. This version displays a more graphical representation similar to what is displayed in the Scene Dock. It is useful for inspecting larger trees.
 
 May print, for example:
+
+[GetTreeString]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetTreeString
 */
 func (self Instance) GetTreeStringPretty() string { //gd:Node.get_tree_string_pretty
 	return string(Advanced(self).GetTreeStringPretty().String())
 }
 
 /*
-Calls [graphics.gd/classdb/Object.Instance.Notification] with 'what' on this node and all of its children, recursively.
+Calls [Object.Notification] with 'what' on this node and all of its children, recursively.
+
+[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
 */
 func (self Instance) PropagateNotification(what int) { //gd:Node.propagate_notification
 	Advanced(self).PropagateNotification(int64(what))
@@ -1101,57 +1509,84 @@ Calls the given 'method' name, passing 'args' as arguments, on this node and all
 
 If 'parent_first' is true, the method is called on this node first, then on all of its children. If false, the children's methods are called first.
 */
-func (self Expanded) PropagateCall(method string, args []any, parent_first bool) { //gd:Node.propagate_call
+func (self MoreArgs) PropagateCall(method string, args []any, parent_first bool) { //gd:Node.propagate_call
 	Advanced(self).PropagateCall(String.Name(String.New(method)), gd.EngineArrayFromSlice(args), parent_first)
 }
 
 /*
-If set to true, enables physics (fixed framerate) processing. When a node is being processed, it will receive a [NotificationPhysicsProcess] at a fixed (usually 60 FPS, see [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] to change) interval (and the [Interface.PhysicsProcess] callback will be called if it exists).
+If set to true, enables physics (fixed framerate) processing. When a node is being processed, it will receive a [NotificationPhysicsProcess] at a fixed (usually 60 FPS, see [Engine.PhysicsTicksPerSecond] to change) interval (and the [PhysicsProcess] callback will be called if it exists).
 
-Note: If [Interface.PhysicsProcess] is overridden, this will be automatically enabled before [Interface.Ready] is called.
+Note: If [PhysicsProcess] is overridden, this will be automatically enabled before [Ready] is called.
+
+[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
+[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 func (self Instance) SetPhysicsProcess(enable bool) { //gd:Node.set_physics_process
 	Advanced(self).SetPhysicsProcess(enable)
 }
 
 /*
-Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [Interface.PhysicsProcess]'s delta parameter, and is often consistent at run-time, unless [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] is changed. See also [NotificationPhysicsProcess].
+Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [PhysicsProcess]'s delta parameter, and is often consistent at run-time, unless [Engine.PhysicsTicksPerSecond] is changed. See also [NotificationPhysicsProcess].
 
-Note: The returned value will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+Note: The returned value will be larger than expected if running at a framerate lower than [Engine.PhysicsTicksPerSecond] / [Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Process] and [PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [Time.GetTicksUsec].
+
+[Engine.MaxPhysicsStepsPerFrame]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxPhysicsStepsPerFrame
+[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
+[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Time]: https://pkg.go.dev/graphics.gd/classdb/Time
+[Time.GetTicksUsec]: https://pkg.go.dev/graphics.gd/classdb/Time#GetTicksUsec
 */
 func (self Instance) GetPhysicsProcessDeltaTime() Float.X { //gd:Node.get_physics_process_delta_time
 	return Float.X(Float.X(Advanced(self).GetPhysicsProcessDeltaTime()))
 }
 
 /*
-Returns true if physics processing is enabled (see [Instance.SetPhysicsProcess]).
+Returns true if physics processing is enabled (see [SetPhysicsProcess]).
+
+[SetPhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetPhysicsProcess
 */
 func (self Instance) IsPhysicsProcessing() bool { //gd:Node.is_physics_processing
 	return bool(Advanced(self).IsPhysicsProcessing())
 }
 
 /*
-Returns the time elapsed (in seconds) since the last process callback. This value is identical to [Interface.Process]'s delta parameter, and may vary from frame to frame. See also [NotificationProcess].
+Returns the time elapsed (in seconds) since the last process callback. This value is identical to [Process]'s delta parameter, and may vary from frame to frame. See also [NotificationProcess].
 
-Note: The returned value will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+Note: The returned value will be larger than expected if running at a framerate lower than [Engine.PhysicsTicksPerSecond] / [Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Process] and [PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [Time.GetTicksUsec].
+
+[Engine.MaxPhysicsStepsPerFrame]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxPhysicsStepsPerFrame
+[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
+[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Time]: https://pkg.go.dev/graphics.gd/classdb/Time
+[Time.GetTicksUsec]: https://pkg.go.dev/graphics.gd/classdb/Time#GetTicksUsec
 */
 func (self Instance) GetProcessDeltaTime() Float.X { //gd:Node.get_process_delta_time
 	return Float.X(Float.X(Advanced(self).GetProcessDeltaTime()))
 }
 
 /*
-If set to true, enables processing. When a node is being processed, it will receive a [NotificationProcess] on every drawn frame (and the [Interface.Process] callback will be called if it exists).
+If set to true, enables processing. When a node is being processed, it will receive a [NotificationProcess] on every drawn frame (and the [Process] callback will be called if it exists).
 
-Note: If [Interface.Process] is overridden, this will be automatically enabled before [Interface.Ready] is called.
+Note: If [Process] is overridden, this will be automatically enabled before [Ready] is called.
 
-Note: This method only affects the [Interface.Process] callback, i.e. it has no effect on other callbacks like [Interface.PhysicsProcess]. If you want to disable all processing for the node, set [Instance.ProcessMode] to [ProcessModeDisabled].
+Note: This method only affects the [Process] callback, i.e. it has no effect on other callbacks like [PhysicsProcess]. If you want to disable all processing for the node, set [ProcessMode] to [ProcessModeDisabled].
+
+[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 func (self Instance) SetProcess(enable bool) { //gd:Node.set_process
 	Advanced(self).SetProcess(enable)
 }
 
 /*
-Returns true if processing is enabled (see [Instance.SetProcess]).
+Returns true if processing is enabled (see [SetProcess]).
+
+[SetProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcess
 */
 func (self Instance) IsProcessing() bool { //gd:Node.is_processing
 	return bool(Advanced(self).IsProcessing())
@@ -1160,14 +1595,21 @@ func (self Instance) IsProcessing() bool { //gd:Node.is_processing
 /*
 If set to true, enables input processing.
 
-Note: If [Interface.Input] is overridden, this will be automatically enabled before [Interface.Ready] is called. Input processing is also already enabled for GUI controls, such as [graphics.gd/classdb/Button] and [graphics.gd/classdb/TextEdit].
+Note: If [Input] is overridden, this will be automatically enabled before [Ready] is called. Input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
+
+[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
+[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
 */
 func (self Instance) SetProcessInput(enable bool) { //gd:Node.set_process_input
 	Advanced(self).SetProcessInput(enable)
 }
 
 /*
-Returns true if the node is processing input (see [Instance.SetProcessInput]).
+Returns true if the node is processing input (see [SetProcessInput]).
+
+[SetProcessInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessInput
 */
 func (self Instance) IsProcessingInput() bool { //gd:Node.is_processing_input
 	return bool(Advanced(self).IsProcessingInput())
@@ -1176,30 +1618,43 @@ func (self Instance) IsProcessingInput() bool { //gd:Node.is_processing_input
 /*
 If set to true, enables shortcut processing for this node.
 
-Note: If [Interface.ShortcutInput] is overridden, this will be automatically enabled before [Interface.Ready] is called.
+Note: If [ShortcutInput] is overridden, this will be automatically enabled before [Ready] is called.
+
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 func (self Instance) SetProcessShortcutInput(enable bool) { //gd:Node.set_process_shortcut_input
 	Advanced(self).SetProcessShortcutInput(enable)
 }
 
 /*
-Returns true if the node is processing shortcuts (see [Instance.SetProcessShortcutInput]).
+Returns true if the node is processing shortcuts (see [SetProcessShortcutInput]).
+
+[SetProcessShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessShortcutInput
 */
 func (self Instance) IsProcessingShortcutInput() bool { //gd:Node.is_processing_shortcut_input
 	return bool(Advanced(self).IsProcessingShortcutInput())
 }
 
 /*
-If set to true, enables unhandled input processing. It enables the node to receive all input that was not previously handled (usually by a [graphics.gd/classdb/Control]).
+If set to true, enables unhandled input processing. It enables the node to receive all input that was not previously handled (usually by a [Control]).
 
-Note: If [Interface.UnhandledInput] is overridden, this will be automatically enabled before [Interface.Ready] is called. Unhandled input processing is also already enabled for GUI controls, such as [graphics.gd/classdb/Button] and [graphics.gd/classdb/TextEdit].
+Note: If [UnhandledInput] is overridden, this will be automatically enabled before [Ready] is called. Unhandled input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
+
+[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
+[UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 func (self Instance) SetProcessUnhandledInput(enable bool) { //gd:Node.set_process_unhandled_input
 	Advanced(self).SetProcessUnhandledInput(enable)
 }
 
 /*
-Returns true if the node is processing unhandled input (see [Instance.SetProcessUnhandledInput]).
+Returns true if the node is processing unhandled input (see [SetProcessUnhandledInput]).
+
+[SetProcessUnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessUnhandledInput
 */
 func (self Instance) IsProcessingUnhandledInput() bool { //gd:Node.is_processing_unhandled_input
 	return bool(Advanced(self).IsProcessingUnhandledInput())
@@ -1208,33 +1663,44 @@ func (self Instance) IsProcessingUnhandledInput() bool { //gd:Node.is_processing
 /*
 If set to true, enables unhandled key input processing.
 
-Note: If [Interface.UnhandledKeyInput] is overridden, this will be automatically enabled before [Interface.Ready] is called.
+Note: If [UnhandledKeyInput] is overridden, this will be automatically enabled before [Ready] is called.
+
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 func (self Instance) SetProcessUnhandledKeyInput(enable bool) { //gd:Node.set_process_unhandled_key_input
 	Advanced(self).SetProcessUnhandledKeyInput(enable)
 }
 
 /*
-Returns true if the node is processing unhandled key input (see [Instance.SetProcessUnhandledKeyInput]).
+Returns true if the node is processing unhandled key input (see [SetProcessUnhandledKeyInput]).
+
+[SetProcessUnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessUnhandledKeyInput
 */
 func (self Instance) IsProcessingUnhandledKeyInput() bool { //gd:Node.is_processing_unhandled_key_input
 	return bool(Advanced(self).IsProcessingUnhandledKeyInput())
 }
 
 /*
-Returns true if the node can receive processing notifications and input callbacks ([NotificationProcess], [Interface.Input], etc.) from the [graphics.gd/classdb/SceneTree] and [graphics.gd/classdb/Viewport]. The returned value depends on [Instance.ProcessMode]:
+Returns true if the node can receive processing notifications and input callbacks ([NotificationProcess], [Input], etc.) from the [SceneTree] and [Viewport]. The returned value depends on [ProcessMode]:
 
-- If set to [ProcessModePausable], returns true when the game is processing, i.e. [graphics.gd/classdb/SceneTree.Instance.Paused] is false;
+- If set to [ProcessModePausable], returns true when the game is processing, i.e. [SceneTree.Paused] is false;
 
-- If set to [ProcessModeWhenPaused], returns true when the game is paused, i.e. [graphics.gd/classdb/SceneTree.Instance.Paused] is true;
+- If set to [ProcessModeWhenPaused], returns true when the game is paused, i.e. [SceneTree.Paused] is true;
 
 - If set to [ProcessModeAlways], always returns true;
 
 - If set to [ProcessModeDisabled], always returns false;
 
-- If set to [ProcessModeInherit], use the parent node's [Instance.ProcessMode] to determine the result.
+- If set to [ProcessModeInherit], use the parent node's [ProcessMode] to determine the result.
 
-If the node is not inside the tree, returns false no matter the value of [Instance.ProcessMode].
+If the node is not inside the tree, returns false no matter the value of [ProcessMode].
+
+[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
+[SceneTree.Paused]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Paused
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
 func (self Instance) CanProcess() bool { //gd:Node.can_process
 	return bool(Advanced(self).CanProcess())
@@ -1257,66 +1723,90 @@ func (self Instance) GetAccessibilityElement() RID.AccessibilityElement { //gd:N
 }
 
 /*
-If set to true, the node appears folded in the Scene dock. As a result, all of its children are hidden. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [Instance.IsDisplayedFolded].
+If set to true, the node appears folded in the Scene dock. As a result, all of its children are hidden. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [IsDisplayedFolded].
+
+[IsDisplayedFolded]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsDisplayedFolded
 */
 func (self Instance) SetDisplayFolded(fold bool) { //gd:Node.set_display_folded
 	Advanced(self).SetDisplayFolded(fold)
 }
 
 /*
-Returns true if the node is folded (collapsed) in the Scene dock. This method is intended to be used in editor plugins and tools. See also [Instance.SetDisplayFolded].
+Returns true if the node is folded (collapsed) in the Scene dock. This method is intended to be used in editor plugins and tools. See also [SetDisplayFolded].
+
+[SetDisplayFolded]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetDisplayFolded
 */
 func (self Instance) IsDisplayedFolded() bool { //gd:Node.is_displayed_folded
 	return bool(Advanced(self).IsDisplayedFolded())
 }
 
 /*
-If set to true, enables internal processing for this node. Internal processing happens in isolation from the normal [Interface.Process] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or processing is disabled for scripting ([Instance.SetProcess]).
+If set to true, enables internal processing for this node. Internal processing happens in isolation from the normal [Process] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or processing is disabled for scripting ([SetProcess]).
 
 Warning: Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
+
+[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[SetProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcess
 */
 func (self Instance) SetProcessInternal(enable bool) { //gd:Node.set_process_internal
 	Advanced(self).SetProcessInternal(enable)
 }
 
 /*
-Returns true if internal processing is enabled (see [Instance.SetProcessInternal]).
+Returns true if internal processing is enabled (see [SetProcessInternal]).
+
+[SetProcessInternal]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessInternal
 */
 func (self Instance) IsProcessingInternal() bool { //gd:Node.is_processing_internal
 	return bool(Advanced(self).IsProcessingInternal())
 }
 
 /*
-If set to true, enables internal physics for this node. Internal physics processing happens in isolation from the normal [Interface.PhysicsProcess] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or physics processing is disabled for scripting ([Instance.SetPhysicsProcess]).
+If set to true, enables internal physics for this node. Internal physics processing happens in isolation from the normal [PhysicsProcess] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or physics processing is disabled for scripting ([SetPhysicsProcess]).
 
 Warning: Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
+
+[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[SetPhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetPhysicsProcess
 */
 func (self Instance) SetPhysicsProcessInternal(enable bool) { //gd:Node.set_physics_process_internal
 	Advanced(self).SetPhysicsProcessInternal(enable)
 }
 
 /*
-Returns true if internal physics processing is enabled (see [Instance.SetPhysicsProcessInternal]).
+Returns true if internal physics processing is enabled (see [SetPhysicsProcessInternal]).
+
+[SetPhysicsProcessInternal]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetPhysicsProcessInternal
 */
 func (self Instance) IsPhysicsProcessingInternal() bool { //gd:Node.is_physics_processing_internal
 	return bool(Advanced(self).IsPhysicsProcessingInternal())
 }
 
 /*
-Returns true if physics interpolation is enabled for this node (see [Instance.PhysicsInterpolationMode]).
+Returns true if physics interpolation is enabled for this node (see [PhysicsInterpolationMode]).
 
-Note: Interpolation will only be active if both the flag is set and physics interpolation is enabled within the [graphics.gd/classdb/SceneTree]. This can be tested using [Instance.IsPhysicsInterpolatedAndEnabled].
+Note: Interpolation will only be active if both the flag is set and physics interpolation is enabled within the [SceneTree]. This can be tested using [IsPhysicsInterpolatedAndEnabled].
+
+[IsPhysicsInterpolatedAndEnabled]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsPhysicsInterpolatedAndEnabled
+[PhysicsInterpolationMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsInterpolationMode
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func (self Instance) IsPhysicsInterpolated() bool { //gd:Node.is_physics_interpolated
 	return bool(Advanced(self).IsPhysicsInterpolated())
 }
 
 /*
-Returns true if physics interpolation is enabled (see [Instance.PhysicsInterpolationMode]) and enabled in the [graphics.gd/classdb/SceneTree].
+Returns true if physics interpolation is enabled (see [PhysicsInterpolationMode]) and enabled in the [SceneTree].
 
-This is a convenience version of [Instance.IsPhysicsInterpolated] that also checks whether physics interpolation is enabled globally.
+This is a convenience version of [IsPhysicsInterpolated] that also checks whether physics interpolation is enabled globally.
 
-See [graphics.gd/classdb/SceneTree.Instance.PhysicsInterpolation] and [graphics.gd/classdb/ProjectSettings] "physics/common/physics_interpolation".
+See [SceneTree.PhysicsInterpolation] and [ProjectSettings] "physics/common/physics_interpolation".
+
+[IsPhysicsInterpolated]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsPhysicsInterpolated
+[PhysicsInterpolationMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsInterpolationMode
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
+[SceneTree.PhysicsInterpolation]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.PhysicsInterpolation
 */
 func (self Instance) IsPhysicsInterpolatedAndEnabled() bool { //gd:Node.is_physics_interpolated_and_enabled
 	return bool(Advanced(self).IsPhysicsInterpolatedAndEnabled())
@@ -1336,7 +1826,11 @@ func (self Instance) ResetPhysicsInterpolation() { //gd:Node.reset_physics_inter
 }
 
 /*
-Returns true if this node can automatically translate messages depending on the current locale. See [Instance.AutoTranslateMode], [Instance.Atr], and [Instance.AtrN].
+Returns true if this node can automatically translate messages depending on the current locale. See [AutoTranslateMode], [Atr], and [AtrN].
+
+[Atr]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Atr
+[AtrN]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AtrN
+[AutoTranslateMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AutoTranslateMode
 */
 func (self Instance) CanAutoTranslate() bool { //gd:Node.can_auto_translate
 	return bool(Advanced(self).CanAutoTranslate())
@@ -1345,20 +1839,29 @@ func (self Instance) CanAutoTranslate() bool { //gd:Node.can_auto_translate
 /*
 Makes this node inherit the translation domain from its parent node. If this node has no parent, the main translation domain will be used.
 
-This is the default behavior for all nodes. Calling [graphics.gd/classdb/Object.Instance.SetTranslationDomain] disables this behavior.
+This is the default behavior for all nodes. Calling [Object.SetTranslationDomain] disables this behavior.
+
+[Object.SetTranslationDomain]: https://pkg.go.dev/graphics.gd/variant/Object#SetTranslationDomain
 */
 func (self Instance) SetTranslationDomainInherited() { //gd:Node.set_translation_domain_inherited
 	Advanced(self).SetTranslationDomainInherited()
 }
 
 /*
-Creates a new [graphics.gd/classdb/Tween] and binds it to this node.
+Creates a new [Tween] and binds it to this node.
 
 This is the equivalent of doing:
 
-The Tween will start automatically on the next process frame or physics frame (depending on [Tween.TweenProcessMode]). See [graphics.gd/classdb/Tween.Instance.BindNode] for more info on Tweens bound to nodes.
+	node.BindToTween(SceneTree.Get(node).CreateTween())
 
-Note: The method can still be used when the node is not inside [graphics.gd/classdb/SceneTree]. It can fail in an unlikely case of using a custom [graphics.gd/classdb/MainLoop].
+The Tween will start automatically on the next process frame or physics frame (depending on [Tween.TweenProcessMode]). See [Tween.BindNode] for more info on Tweens bound to nodes.
+
+Note: The method can still be used when the node is not inside [SceneTree]. It can fail in an unlikely case of using a custom [MainLoop].
+
+[MainLoop]: https://pkg.go.dev/graphics.gd/classdb/MainLoop
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
+[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
+[Tween.BindNode]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.BindNode
 */
 func (self Instance) CreateTween() Tween.Instance { //gd:Node.create_tween
 	return Tween.Instance(Advanced(self).CreateTween())
@@ -1367,7 +1870,10 @@ func (self Instance) CreateTween() Tween.Instance { //gd:Node.create_tween
 /*
 Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]). Internal nodes are not duplicated.
 
-Note: For nodes with a [graphics.gd/classdb/Script] attached, if [graphics.gd/classdb/Object.Instance.Init] has been defined with required parameters, the duplicated node will not have a [graphics.gd/classdb/Script].
+Note: For nodes with a [Script] attached, if [Object.Init] has been defined with required parameters, the duplicated node will not have a [Script].
+
+[Object.Init]: https://pkg.go.dev/graphics.gd/variant/Object#Init
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
 */
 func (self Instance) Duplicate() Instance { //gd:Node.duplicate
 	return Instance(Advanced(self).Duplicate(int64(15)))
@@ -1376,18 +1882,24 @@ func (self Instance) Duplicate() Instance { //gd:Node.duplicate
 /*
 Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]). Internal nodes are not duplicated.
 
-Note: For nodes with a [graphics.gd/classdb/Script] attached, if [graphics.gd/classdb/Object.Instance.Init] has been defined with required parameters, the duplicated node will not have a [graphics.gd/classdb/Script].
+Note: For nodes with a [Script] attached, if [Object.Init] has been defined with required parameters, the duplicated node will not have a [Script].
+
+[Object.Init]: https://pkg.go.dev/graphics.gd/variant/Object#Init
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
 */
-func (self Expanded) Duplicate(flags int) Instance { //gd:Node.duplicate
+func (self MoreArgs) Duplicate(flags int) Instance { //gd:Node.duplicate
 	return Instance(Advanced(self).Duplicate(int64(flags)))
 }
 
 /*
 Replaces this node by the given 'node'. All children of this node are moved to 'node'.
 
-If 'keep_groups' is true, the 'node' is added to the same groups that the replaced node is in (see [Instance.AddToGroup]).
+If 'keep_groups' is true, the 'node' is added to the same groups that the replaced node is in (see [AddToGroup]).
 
-Warning: The replaced node is removed from the tree, but it is not deleted. To prevent memory leaks, store a reference to the node in a variable, or use [graphics.gd/classdb/Object.Instance.Free].
+Warning: The replaced node is removed from the tree, but it is not deleted. To prevent memory leaks, store a reference to the node in a variable, or use [Object.Free].
+
+[AddToGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddToGroup
+[Object.Free]: https://pkg.go.dev/graphics.gd/variant/Object#Free
 */
 func (self Instance) ReplaceBy(node Instance) { //gd:Node.replace_by
 	Advanced(self).ReplaceBy(node, false)
@@ -1396,37 +1908,52 @@ func (self Instance) ReplaceBy(node Instance) { //gd:Node.replace_by
 /*
 Replaces this node by the given 'node'. All children of this node are moved to 'node'.
 
-If 'keep_groups' is true, the 'node' is added to the same groups that the replaced node is in (see [Instance.AddToGroup]).
+If 'keep_groups' is true, the 'node' is added to the same groups that the replaced node is in (see [AddToGroup]).
 
-Warning: The replaced node is removed from the tree, but it is not deleted. To prevent memory leaks, store a reference to the node in a variable, or use [graphics.gd/classdb/Object.Instance.Free].
+Warning: The replaced node is removed from the tree, but it is not deleted. To prevent memory leaks, store a reference to the node in a variable, or use [Object.Free].
+
+[AddToGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddToGroup
+[Object.Free]: https://pkg.go.dev/graphics.gd/variant/Object#Free
 */
-func (self Expanded) ReplaceBy(node Instance, keep_groups bool) { //gd:Node.replace_by
+func (self MoreArgs) ReplaceBy(node Instance, keep_groups bool) { //gd:Node.replace_by
 	Advanced(self).ReplaceBy(node, keep_groups)
 }
 
 /*
-If set to true, the node becomes an [graphics.gd/classdb/InstancePlaceholder] when packed and instantiated from a [graphics.gd/classdb/PackedScene]. See also [Instance.GetSceneInstanceLoadPlaceholder].
+If set to true, the node becomes an [InstancePlaceholder] when packed and instantiated from a [PackedScene]. See also [GetSceneInstanceLoadPlaceholder].
+
+[GetSceneInstanceLoadPlaceholder]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetSceneInstanceLoadPlaceholder
+[InstancePlaceholder]: https://pkg.go.dev/graphics.gd/classdb/InstancePlaceholder
+[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
 */
 func (self Instance) SetSceneInstanceLoadPlaceholder(load_placeholder bool) { //gd:Node.set_scene_instance_load_placeholder
 	Advanced(self).SetSceneInstanceLoadPlaceholder(load_placeholder)
 }
 
 /*
-Returns true if this node is an instance load placeholder. See [graphics.gd/classdb/InstancePlaceholder] and [Instance.SetSceneInstanceLoadPlaceholder].
+Returns true if this node is an instance load placeholder. See [InstancePlaceholder] and [SetSceneInstanceLoadPlaceholder].
+
+[InstancePlaceholder]: https://pkg.go.dev/graphics.gd/classdb/InstancePlaceholder
+[SetSceneInstanceLoadPlaceholder]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetSceneInstanceLoadPlaceholder
 */
 func (self Instance) GetSceneInstanceLoadPlaceholder() bool { //gd:Node.get_scene_instance_load_placeholder
 	return bool(Advanced(self).GetSceneInstanceLoadPlaceholder())
 }
 
 /*
-Set to true to allow all nodes owned by 'node' to be available, and editable, in the Scene dock, even if their [Instance.Owner] is not the scene root. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [Instance.IsEditableInstance].
+Set to true to allow all nodes owned by 'node' to be available, and editable, in the Scene dock, even if their [Owner] is not the scene root. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [IsEditableInstance].
+
+[IsEditableInstance]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsEditableInstance
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
 */
 func (self Instance) SetEditableInstance(node Instance, is_editable bool) { //gd:Node.set_editable_instance
 	Advanced(self).SetEditableInstance(node, is_editable)
 }
 
 /*
-Returns true if 'node' has editable children enabled relative to this node. This method is intended to be used in editor plugins and tools. See also [Instance.SetEditableInstance].
+Returns true if 'node' has editable children enabled relative to this node. This method is intended to be used in editor plugins and tools. See also [SetEditableInstance].
+
+[SetEditableInstance]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetEditableInstance
 */
 func (self Instance) IsEditableInstance(node Instance) bool { //gd:Node.is_editable_instance
 	return bool(Advanced(self).IsEditableInstance(node))
@@ -1435,18 +1962,25 @@ func (self Instance) IsEditableInstance(node Instance) bool { //gd:Node.is_edita
 /*
 Queues this node to be deleted at the end of the current frame. When deleted, all of its children are deleted as well, and all references to the node and its children become invalid.
 
-Unlike with [graphics.gd/classdb/Object.Instance.Free], the node is not deleted instantly, and it can still be accessed before deletion. It is also safe to call [Instance.QueueFree] multiple times. Use [graphics.gd/classdb/Object.Instance.IsQueuedForDeletion] to check if the node will be deleted at the end of the frame.
+Unlike with [Object.Free], the node is not deleted instantly, and it can still be accessed before deletion. It is also safe to call [QueueFree] multiple times. Use [Object.IsQueuedForDeletion] to check if the node will be deleted at the end of the frame.
 
-Note: The node will only be freed after all other deferred calls are finished. Using this method is not always the same as calling [graphics.gd/classdb/Object.Instance.Free] through [graphics.gd/classdb/Object.Instance.CallDeferred].
+Note: The node will only be freed after all other deferred calls are finished. Using this method is not always the same as calling [Object.Free] through [Object.CallDeferred].
+
+[Object.CallDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#CallDeferred
+[Object.Free]: https://pkg.go.dev/graphics.gd/variant/Object#Free
+[Object.IsQueuedForDeletion]: https://pkg.go.dev/graphics.gd/variant/Object#IsQueuedForDeletion
+[QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
 */
 func (self Instance) QueueFree() { //gd:Node.queue_free
 	Advanced(self).QueueFree()
 }
 
 /*
-Requests [Interface.Ready] to be called again the next time the node enters the tree. Does not immediately call [Interface.Ready].
+Requests [Ready] to be called again the next time the node enters the tree. Does not immediately call [Ready].
 
-Note: This method only affects the current node. If the node's children also need to request ready, this method needs to be called for each one of them. When the node and its children enter the tree again, the order of [Interface.Ready] callbacks will be the same as normal.
+Note: This method only affects the current node. If the node's children also need to request ready, this method needs to be called for each one of them. When the node and its children enter the tree again, the order of [Ready] callbacks will be the same as normal.
+
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 func (self Instance) RequestReady() { //gd:Node.request_ready
 	Advanced(self).RequestReady()
@@ -1455,36 +1989,50 @@ func (self Instance) RequestReady() { //gd:Node.request_ready
 /*
 Returns true if the node is ready, i.e. it's inside scene tree and all its children are initialized.
 
-[Instance.RequestReady] resets it back to false.
+[RequestReady] resets it back to false.
+
+[RequestReady]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RequestReady
 */
 func (self Instance) IsNodeReady() bool { //gd:Node.is_node_ready
 	return bool(Advanced(self).IsNodeReady())
 }
 
 /*
-Sets the node's multiplayer authority to the peer with the given peer 'id'. The multiplayer authority is the peer that has authority over the node on the network. Defaults to peer ID 1 (the server). Useful in conjunction with [Instance.RpcConfig] and the [graphics.gd/classdb/MultiplayerAPI].
+Sets the node's multiplayer authority to the peer with the given peer 'id'. The multiplayer authority is the peer that has authority over the node on the network. Defaults to peer ID 1 (the server). Useful in conjunction with [RpcConfig] and the [MultiplayerAPI].
 
 If 'recursive' is true, the given peer is recursively set as the authority for all children of this node.
 
-Warning: This does not automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [graphics.gd/classdb/MultiplayerSpawner.Instance.SpawnFunction], an RPC, or a [graphics.gd/classdb/MultiplayerSynchronizer]. Furthermore, the parent's authority does not propagate to newly added children.
+Warning: This does not automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [MultiplayerSpawner.SpawnFunction], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does not propagate to newly added children.
+
+[MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
+[MultiplayerSpawner.SpawnFunction]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSpawner#Instance.SpawnFunction
+[MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
+[RpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcConfig
 */
 func (self Instance) SetMultiplayerAuthority(id int) { //gd:Node.set_multiplayer_authority
 	Advanced(self).SetMultiplayerAuthority(int64(id), true)
 }
 
 /*
-Sets the node's multiplayer authority to the peer with the given peer 'id'. The multiplayer authority is the peer that has authority over the node on the network. Defaults to peer ID 1 (the server). Useful in conjunction with [Instance.RpcConfig] and the [graphics.gd/classdb/MultiplayerAPI].
+Sets the node's multiplayer authority to the peer with the given peer 'id'. The multiplayer authority is the peer that has authority over the node on the network. Defaults to peer ID 1 (the server). Useful in conjunction with [RpcConfig] and the [MultiplayerAPI].
 
 If 'recursive' is true, the given peer is recursively set as the authority for all children of this node.
 
-Warning: This does not automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [graphics.gd/classdb/MultiplayerSpawner.Instance.SpawnFunction], an RPC, or a [graphics.gd/classdb/MultiplayerSynchronizer]. Furthermore, the parent's authority does not propagate to newly added children.
+Warning: This does not automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [MultiplayerSpawner.SpawnFunction], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does not propagate to newly added children.
+
+[MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
+[MultiplayerSpawner.SpawnFunction]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSpawner#Instance.SpawnFunction
+[MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
+[RpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcConfig
 */
-func (self Expanded) SetMultiplayerAuthority(id int, recursive bool) { //gd:Node.set_multiplayer_authority
+func (self MoreArgs) SetMultiplayerAuthority(id int, recursive bool) { //gd:Node.set_multiplayer_authority
 	Advanced(self).SetMultiplayerAuthority(int64(id), recursive)
 }
 
 /*
-Returns the peer ID of the multiplayer authority for this node. See [Instance.SetMultiplayerAuthority].
+Returns the peer ID of the multiplayer authority for this node. See [SetMultiplayerAuthority].
+
+[SetMultiplayerAuthority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetMultiplayerAuthority
 */
 func (self Instance) GetMultiplayerAuthority() int { //gd:Node.get_multiplayer_authority
 	return int(int(Advanced(self).GetMultiplayerAuthority()))
@@ -1517,58 +2065,78 @@ func (self Instance) RpcConfig(method string, config any) { //gd:Node.rpc_config
 }
 
 /*
-Returns a data structure mapping method names to their RPC configuration defined for this node using [Instance.RpcConfig].
+Returns a data structure mapping method names to their RPC configuration defined for this node using [RpcConfig].
 
-Note: This method only returns the RPC configuration assigned via [Instance.RpcConfig]. See [graphics.gd/classdb/Script.Instance.GetRpcConfig] to retrieve the RPCs defined by the [graphics.gd/classdb/Script].
+Note: This method only returns the RPC configuration assigned via [RpcConfig]. See [Script.GetRpcConfig] to retrieve the RPCs defined by the [Script].
+
+[RpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcConfig
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
+[Script.GetRpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Script#Instance.GetRpcConfig
 */
 func (self Instance) GetNodeRpcConfig() any { //gd:Node.get_node_rpc_config
 	return any(Advanced(self).GetNodeRpcConfig().Interface())
 }
 
 /*
-Translates a 'message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation. Note that most [graphics.gd/classdb/Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
+Translates a 'message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation. Note that most [Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
 
-This method works the same as [graphics.gd/classdb/Object.Instance.Tr], with the addition of respecting the [Instance.AutoTranslateMode] state.
+This method works the same as [Object.Tr], with the addition of respecting the [AutoTranslateMode] state.
 
-If [graphics.gd/classdb/Object.Instance.CanTranslateMessages] is false, or no translation is available, this method returns the 'message' without changes. See [graphics.gd/classdb/Object.Instance.SetMessageTranslation].
+If [Object.CanTranslateMessages] is false, or no translation is available, this method returns the 'message' without changes. See [Object.SetMessageTranslation].
 
 For detailed examples, see [Internationalizing games].
 
+[AutoTranslateMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AutoTranslateMode
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [Internationalizing games]: https://docs.godotengine.org/tutorials/i18n/internationalizing_games.html
+[Object.CanTranslateMessages]: https://pkg.go.dev/graphics.gd/variant/Object#CanTranslateMessages
+[Object.SetMessageTranslation]: https://pkg.go.dev/graphics.gd/variant/Object#SetMessageTranslation
+[Object.Tr]: https://pkg.go.dev/graphics.gd/variant/Object#Tr
 */
 func (self Instance) Atr(message string) string { //gd:Node.atr
 	return string(Advanced(self).Atr(String.New(message), String.Name(String.New(""))).String())
 }
 
 /*
-Translates a 'message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation. Note that most [graphics.gd/classdb/Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
+Translates a 'message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation. Note that most [Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
 
-This method works the same as [graphics.gd/classdb/Object.Instance.Tr], with the addition of respecting the [Instance.AutoTranslateMode] state.
+This method works the same as [Object.Tr], with the addition of respecting the [AutoTranslateMode] state.
 
-If [graphics.gd/classdb/Object.Instance.CanTranslateMessages] is false, or no translation is available, this method returns the 'message' without changes. See [graphics.gd/classdb/Object.Instance.SetMessageTranslation].
+If [Object.CanTranslateMessages] is false, or no translation is available, this method returns the 'message' without changes. See [Object.SetMessageTranslation].
 
 For detailed examples, see [Internationalizing games].
 
+[AutoTranslateMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AutoTranslateMode
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [Internationalizing games]: https://docs.godotengine.org/tutorials/i18n/internationalizing_games.html
+[Object.CanTranslateMessages]: https://pkg.go.dev/graphics.gd/variant/Object#CanTranslateMessages
+[Object.SetMessageTranslation]: https://pkg.go.dev/graphics.gd/variant/Object#SetMessageTranslation
+[Object.Tr]: https://pkg.go.dev/graphics.gd/variant/Object#Tr
 */
-func (self Expanded) Atr(message string, context string) string { //gd:Node.atr
+func (self MoreArgs) Atr(message string, context string) string { //gd:Node.atr
 	return string(Advanced(self).Atr(String.New(message), String.Name(String.New(context))).String())
 }
 
 /*
 Translates a 'message' or 'plural_message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation.
 
-This method works the same as [graphics.gd/classdb/Object.Instance.TrN], with the addition of respecting the [Instance.AutoTranslateMode] state.
+This method works the same as [Object.TrN], with the addition of respecting the [AutoTranslateMode] state.
 
-If [graphics.gd/classdb/Object.Instance.CanTranslateMessages] is false, or no translation is available, this method returns 'message' or 'plural_message', without changes. See [graphics.gd/classdb/Object.Instance.SetMessageTranslation].
+If [Object.CanTranslateMessages] is false, or no translation is available, this method returns 'message' or 'plural_message', without changes. See [Object.SetMessageTranslation].
 
 The 'n' is the number, or amount, of the message's subject. It is used by the translation system to fetch the correct plural form for the current language.
 
 For detailed examples, see [Localization using gettext].
 
-Note: Negative and [Float.X] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [Instance.Atr].
+Note: Negative and [Float.X] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [Atr].
 
+[Atr]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Atr
+[AutoTranslateMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AutoTranslateMode
+[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 [Localization using gettext]: https://docs.godotengine.org/tutorials/i18n/localization_using_gettext.html
+[Object.CanTranslateMessages]: https://pkg.go.dev/graphics.gd/variant/Object#CanTranslateMessages
+[Object.SetMessageTranslation]: https://pkg.go.dev/graphics.gd/variant/Object#SetMessageTranslation
+[Object.TrN]: https://pkg.go.dev/graphics.gd/variant/Object#TrN
 */
 func (self Instance) AtrN(message string, plural_message string, n int) string { //gd:Node.atr_n
 	return string(Advanced(self).AtrN(String.New(message), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(""))).String())
@@ -1577,32 +2145,45 @@ func (self Instance) AtrN(message string, plural_message string, n int) string {
 /*
 Translates a 'message' or 'plural_message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation.
 
-This method works the same as [graphics.gd/classdb/Object.Instance.TrN], with the addition of respecting the [Instance.AutoTranslateMode] state.
+This method works the same as [Object.TrN], with the addition of respecting the [AutoTranslateMode] state.
 
-If [graphics.gd/classdb/Object.Instance.CanTranslateMessages] is false, or no translation is available, this method returns 'message' or 'plural_message', without changes. See [graphics.gd/classdb/Object.Instance.SetMessageTranslation].
+If [Object.CanTranslateMessages] is false, or no translation is available, this method returns 'message' or 'plural_message', without changes. See [Object.SetMessageTranslation].
 
 The 'n' is the number, or amount, of the message's subject. It is used by the translation system to fetch the correct plural form for the current language.
 
 For detailed examples, see [Localization using gettext].
 
-Note: Negative and [Float.X] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [Instance.Atr].
+Note: Negative and [Float.X] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [Atr].
 
+[Atr]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Atr
+[AutoTranslateMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AutoTranslateMode
+[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 [Localization using gettext]: https://docs.godotengine.org/tutorials/i18n/localization_using_gettext.html
+[Object.CanTranslateMessages]: https://pkg.go.dev/graphics.gd/variant/Object#CanTranslateMessages
+[Object.SetMessageTranslation]: https://pkg.go.dev/graphics.gd/variant/Object#SetMessageTranslation
+[Object.TrN]: https://pkg.go.dev/graphics.gd/variant/Object#TrN
 */
-func (self Expanded) AtrN(message string, plural_message string, n int, context string) string { //gd:Node.atr_n
+func (self MoreArgs) AtrN(message string, plural_message string, n int, context string) string { //gd:Node.atr_n
 	return string(Advanced(self).AtrN(String.New(message), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(context))).String())
 }
 
 /*
-Sends a remote procedure call request for the given 'method' to peers on the network (and locally), sending additional arguments to the method called by the RPC. The call request will only be received by nodes with the same node path, including the exact same [Instance.Name]. Behavior depends on the RPC configuration for the given 'method' (see [Instance.RpcConfig] and ). By default, methods are not exposed to RPCs.
+Sends a remote procedure call request for the given 'method' to peers on the network (and locally), sending additional arguments to the method called by the RPC. The call request will only be received by nodes with the same node path, including the exact same [Name]. Behavior depends on the RPC configuration for the given 'method' (see [RpcConfig] and ). By default, methods are not exposed to RPCs.
 
 May return [constant OK] if the call is successful, [constant ERR_INVALID_PARAMETER] if the arguments passed in the [param method] do not match, [constant ERR_UNCONFIGURED] if the node's [member multiplayer] cannot be fetched (such as when the node is not inside the tree), [constant ERR_CONNECTION_ERROR] if [member multiplayer]'s connection is not available.
 
 [b]Note:[/b] You can only safely use RPCs on clients after you received the [signal MultiplayerAPI.connected_to_server] signal from the [MultiplayerAPI]. You also need to keep track of the connection state, either by the [MultiplayerAPI] signals like [signal MultiplayerAPI.server_disconnected] or by checking ([code]get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED[/code]).). By default, methods are not exposed to RPCs.
 
-May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [Instance.Multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [Instance.Multiplayer]'s connection is not available.
+May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [Multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [Multiplayer]'s connection is not available.
 
-Note: You can only safely use RPCs on clients after you received the [Instance.OnMultiplayerapi.ConnectedToServer] signal from the [graphics.gd/classdb/MultiplayerAPI]. You also need to keep track of the connection state, either by the [graphics.gd/classdb/MultiplayerAPI] signals like [Instance.OnMultiplayerapi.ServerDisconnected] or by checking (get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED).
+Note: You can only safely use RPCs on clients after you received the [OnMultiplayerapi.ConnectedToServer] signal from the [MultiplayerAPI]. You also need to keep track of the connection state, either by the [MultiplayerAPI] signals like [OnMultiplayerapi.ServerDisconnected] or by checking (get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED).
+
+[Multiplayer]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Multiplayer
+[MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
+[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
+[OnMultiplayerapi.ConnectedToServer]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnMultiplayerapi.ConnectedToServer
+[OnMultiplayerapi.ServerDisconnected]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnMultiplayerapi.ServerDisconnected
+[RpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcConfig
 */
 func (self Instance) Rpc(method string, args ...any) error { //gd:Node.rpc
 	var converted_variants = make([]gd.Variant, len(args))
@@ -1613,9 +2194,13 @@ func (self Instance) Rpc(method string, args ...any) error { //gd:Node.rpc
 }
 
 /*
-Sends a [Instance.Rpc] to a specific peer identified by 'peer_id' (see [graphics.gd/classdb/MultiplayerPeer.Instance.SetTargetPeer]).
+Sends a [Rpc] to a specific peer identified by 'peer_id' (see [MultiplayerPeer.SetTargetPeer]).
 
-May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [Instance.Multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [Instance.Multiplayer]'s connection is not available.
+May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [Multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [Multiplayer]'s connection is not available.
+
+[Multiplayer]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Multiplayer
+[MultiplayerPeer.SetTargetPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer#Instance.SetTargetPeer
+[Rpc]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Rpc
 */
 func (self Instance) RpcId(peer_id int, method string, args ...any) error { //gd:Node.rpc_id
 	var converted_variants = make([]gd.Variant, len(args))
@@ -1626,14 +2211,20 @@ func (self Instance) RpcId(peer_id int, method string, args ...any) error { //gd
 }
 
 /*
-Refreshes the warnings displayed for this node in the Scene dock. Use [Interface.GetConfigurationWarnings] to customize the warning messages to display.
+Refreshes the warnings displayed for this node in the Scene dock. Use [GetConfigurationWarnings] to customize the warning messages to display.
+
+[GetConfigurationWarnings]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 func (self Instance) UpdateConfigurationWarnings() { //gd:Node.update_configuration_warnings
 	Advanced(self).UpdateConfigurationWarnings()
 }
 
 /*
-This function is similar to [graphics.gd/classdb/Object.Instance.CallDeferred] except that the call will take place when the node thread group is processed. If the node thread group processes in sub-threads, then the call will be done on that thread, right before [NotificationProcess] or [NotificationPhysicsProcess], the [Interface.Process] or [Interface.PhysicsProcess] or their internal versions are called.
+This function is similar to [Object.CallDeferred] except that the call will take place when the node thread group is processed. If the node thread group processes in sub-threads, then the call will be done on that thread, right before [NotificationProcess] or [NotificationPhysicsProcess], the [Process] or [PhysicsProcess] or their internal versions are called.
+
+[Object.CallDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#CallDeferred
+[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 func (self Instance) CallDeferredThreadGroup(method string, args ...any) any { //gd:Node.call_deferred_thread_group
 	var converted_variants = make([]gd.Variant, len(args))
@@ -1644,14 +2235,18 @@ func (self Instance) CallDeferredThreadGroup(method string, args ...any) any { /
 }
 
 /*
-Similar to [Instance.CallDeferredThreadGroup], but for setting properties.
+Similar to [CallDeferredThreadGroup], but for setting properties.
+
+[CallDeferredThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallDeferredThreadGroup
 */
 func (self Instance) SetDeferredThreadGroup(property string, value any) { //gd:Node.set_deferred_thread_group
 	Advanced(self).SetDeferredThreadGroup(String.Name(String.New(property)), variant.New(value))
 }
 
 /*
-Similar to [Instance.CallDeferredThreadGroup], but for notifications.
+Similar to [CallDeferredThreadGroup], but for notifications.
+
+[CallDeferredThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallDeferredThreadGroup
 */
 func (self Instance) NotifyDeferredThreadGroup(what int) { //gd:Node.notify_deferred_thread_group
 	Advanced(self).NotifyDeferredThreadGroup(int64(what))
@@ -1669,14 +2264,18 @@ func (self Instance) CallThreadSafe(method string, args ...any) any { //gd:Node.
 }
 
 /*
-Similar to [Instance.CallThreadSafe], but for setting properties.
+Similar to [CallThreadSafe], but for setting properties.
+
+[CallThreadSafe]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallThreadSafe
 */
 func (self Instance) SetThreadSafe(property string, value any) { //gd:Node.set_thread_safe
 	Advanced(self).SetThreadSafe(String.Name(String.New(property)), variant.New(value))
 }
 
 /*
-Similar to [Instance.CallThreadSafe], but for notifications.
+Similar to [CallThreadSafe], but for notifications.
+
+[CallThreadSafe]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallThreadSafe
 */
 func (self Instance) NotifyThreadSafe(what int) { //gd:Node.notify_thread_safe
 	Advanced(self).NotifyThreadSafe(int64(what))
@@ -1686,7 +2285,7 @@ func (self Instance) NotifyThreadSafe(what int) { //gd:Node.notify_thread_safe
 Binds this [Tween] with the given [param node]. [Tween]s are processed directly by the [SceneTree], so they run independently of the animated nodes. When you bind a [Node] with the [Tween], the [Tween] will halt the animation when the object is not inside tree and the [Tween] will be automatically killed when the bound object is freed. Also [constant TWEEN_PAUSE_BOUND] will make the pausing behavior dependent on the bound node.
 For a shorter way to create and bind a [Tween], you can use [method Node.create_tween].
 */
-func (self Instance) BindNode(peer Tween.Instance) Tween.Instance { //gd:Tween.bind_node
+func (self Instance) BindToTween(peer Tween.Instance) Tween.Instance { //gd:Tween.bind_node
 	return Tween.Instance(Tween.Advanced(peer).BindNode(self))
 }
 
@@ -1850,19 +2449,28 @@ func (self Instance) SetEditorDescription(value string) {
 /*
 Called on each idle frame, prior to rendering, and after physics ticks have been processed. 'delta' is the time between frames in seconds.
 
-It is only called if processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcess].
+It is only called if processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [SetProcess].
 
-Processing happens in order of [Instance.ProcessPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
+Processing happens in order of [ProcessPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 
-Corresponds to the [NotificationProcess] notification in [graphics.gd/classdb/Object.Instance.Notification].
+Corresponds to the [NotificationProcess] notification in [Object.Notification].
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 
-Note: When the engine is struggling and the frame rate is lowered, 'delta' will increase. When 'delta' is increased, it's capped at a maximum of [graphics.gd/classdb/Engine.TimeScale] * [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond]. As a result, accumulated 'delta' may not represent real world time.
+Note: When the engine is struggling and the frame rate is lowered, 'delta' will increase. When 'delta' is increased, it's capped at a maximum of [Engine.TimeScale] * [Engine.MaxPhysicsStepsPerFrame] / [Engine.PhysicsTicksPerSecond]. As a result, accumulated 'delta' may not represent real world time.
 
-Note: When --fixed-fps is enabled or the engine is running in Movie Maker mode (see [graphics.gd/classdb/MovieWriter]), process 'delta' will always be the same for every frame, regardless of how much time the frame took to render.
+Note: When --fixed-fps is enabled or the engine is running in Movie Maker mode (see [MovieWriter]), process 'delta' will always be the same for every frame, regardless of how much time the frame took to render.
 
-Note: Frame delta may be post-processed by [graphics.gd/classdb/OS.DeltaSmoothing] if this is enabled for the project.
+Note: Frame delta may be post-processed by [OS.DeltaSmoothing] if this is enabled for the project.
+
+[Engine.MaxPhysicsStepsPerFrame]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxPhysicsStepsPerFrame
+[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
+[Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
+[MovieWriter]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter
+[OS.DeltaSmoothing]: https://pkg.go.dev/graphics.gd/classdb/OS#DeltaSmoothing
+[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
+[ProcessPriority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessPriority
+[SetProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcess
 */
 func (class) _process(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1873,17 +2481,23 @@ func (class) _process(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.Ext
 }
 
 /*
-Called once on each physics tick, and allows Nodes to synchronize their logic with physics ticks. 'delta' is the logical time between physics ticks in seconds and is equal to [graphics.gd/classdb/Engine.TimeScale] / [graphics.gd/classdb/Engine.PhysicsTicksPerSecond].
+Called once on each physics tick, and allows Nodes to synchronize their logic with physics ticks. 'delta' is the logical time between physics ticks in seconds and is equal to [Engine.TimeScale] / [Engine.PhysicsTicksPerSecond].
 
-It is only called if physics processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [Instance.SetPhysicsProcess].
+It is only called if physics processing is enabled for this Node, which is done automatically if this method is overridden, and can be toggled with [SetPhysicsProcess].
 
-Processing happens in order of [Instance.ProcessPhysicsPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
+Processing happens in order of [ProcessPhysicsPriority], lower priority values are called first. Nodes with the same priority are processed in tree order, or top to bottom as seen in the editor (also known as pre-order traversal).
 
-Corresponds to the [NotificationPhysicsProcess] notification in [graphics.gd/classdb/Object.Instance.Notification].
+Corresponds to the [NotificationPhysicsProcess] notification in [Object.Notification].
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
 
 Note: Accumulated 'delta' may diverge from real world seconds.
+
+[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
+[Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
+[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
+[ProcessPhysicsPriority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessPhysicsPriority
+[SetPhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetPhysicsProcess
 */
 func (class) _physics_process(impl func(ptr gdclass.Receiver, delta float64)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1894,9 +2508,14 @@ func (class) _physics_process(impl func(ptr gdclass.Receiver, delta float64)) (c
 }
 
 /*
-Called when the node enters the [graphics.gd/classdb/SceneTree] (e.g. upon instantiating, scene changing, or after calling [Instance.AddChild] in a script). If the node has children, its [Interface.EnterTree] callback will be called first, and then that of the children.
+Called when the node enters the [SceneTree] (e.g. upon instantiating, scene changing, or after calling [AddChild] in a script). If the node has children, its [EnterTree] callback will be called first, and then that of the children.
 
-Corresponds to the [NotificationEnterTree] notification in [graphics.gd/classdb/Object.Instance.Notification].
+Corresponds to the [NotificationEnterTree] notification in [Object.Notification].
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[EnterTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func (class) _enter_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1906,9 +2525,16 @@ func (class) _enter_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassC
 }
 
 /*
-Called when the node is about to leave the [graphics.gd/classdb/SceneTree] (e.g. upon freeing, scene changing, or after calling [Instance.RemoveChild] in a script). If the node has children, its [Interface.ExitTree] callback will be called last, after all its children have left the tree.
+Called when the node is about to leave the [SceneTree] (e.g. upon freeing, scene changing, or after calling [RemoveChild] in a script). If the node has children, its [ExitTree] callback will be called last, after all its children have left the tree.
 
-Corresponds to the [NotificationExitTree] notification in [graphics.gd/classdb/Object.Instance.Notification] and signal [Instance.OnTreeExiting]. To get notified when the node has already left the active tree, connect to the [Instance.OnTreeExited].
+Corresponds to the [NotificationExitTree] notification in [Object.Notification] and signal [OnTreeExiting]. To get notified when the node has already left the active tree, connect to the [OnTreeExited].
+
+[ExitTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
+[OnTreeExited]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnTreeExited
+[OnTreeExiting]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnTreeExiting
+[RemoveChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RemoveChild
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 func (class) _exit_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1918,13 +2544,19 @@ func (class) _exit_tree(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCa
 }
 
 /*
-Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [Interface.Ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
+Called when the node is "ready", i.e. when both the node and its children have entered the scene tree. If the node has children, their [Ready] callbacks get triggered first, and the parent node will receive the ready notification afterwards.
 
-Corresponds to the [NotificationReady] notification in [graphics.gd/classdb/Object.Instance.Notification]. See also the @onready annotation for variables.
+Corresponds to the [NotificationReady] notification in [Object.Notification]. See also the @onready annotation for variables.
 
-Usually used for initialization. For even earlier initialization, [graphics.gd/classdb/Object.Instance.Init] may be used. See also [Interface.EnterTree].
+Usually used for initialization. For even earlier initialization, [Object.Init] may be used. See also [EnterTree].
 
-Note: This method may be called only once for each node. After removing a node from the scene tree and adding it again, [Interface.Ready] will not be called a second time. This can be bypassed by requesting another call with [Instance.RequestReady], which may be called anywhere before adding the node again.
+Note: This method may be called only once for each node. After removing a node from the scene tree and adding it again, [Ready] will not be called a second time. This can be bypassed by requesting another call with [RequestReady], which may be called anywhere before adding the node again.
+
+[EnterTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Object.Init]: https://pkg.go.dev/graphics.gd/variant/Object#Init
+[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[RequestReady]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RequestReady
 */
 func (class) _ready(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1938,7 +2570,34 @@ The elements in the array returned from this method are displayed as warnings in
 
 Returning an empty array produces no warnings.
 
-Call [Instance.UpdateConfigurationWarnings] when the warnings need to be updated for this node.
+Call [UpdateConfigurationWarnings] when the warnings need to be updated for this node.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Node"
+		"graphics.gd/variant/Float"
+	)
+
+	type ConfigurableNode struct {
+		Node.Extension[ConfigurableNode]
+
+		energy Float.X
+	}
+
+	func (cn ConfigurableNode) SetEnergy(energy Float.X) {
+		cn.energy = energy
+		cn.AsNode().UpdateConfigurationWarnings()
+	}
+
+	func (cn ConfigurableNode) GetConfigurationWarnings() []string {
+		if cn.energy < 0 {
+			return []string{"Energy must be 0 or greater."}
+		}
+		return nil
+	}
+
+[UpdateConfigurationWarnings]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UpdateConfigurationWarnings
 */
 func (class) _get_configuration_warnings(impl func(ptr gdclass.Receiver) Packed.Strings) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1974,13 +2633,18 @@ func (class) _get_accessibility_configuration_warnings(impl func(ptr gdclass.Rec
 /*
 Called when there is an input event. The input event propagates up through the node tree until a node consumes it.
 
-It is only called if input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessInput].
+It is only called if input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessInput].
 
-To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
 
-For gameplay input, [Interface.UnhandledInput] and [Interface.UnhandledKeyInput] are usually a better fit as they allow the GUI to intercept the events first.
+For gameplay input, [UnhandledInput] and [UnhandledKeyInput] are usually a better fit as they allow the GUI to intercept the events first.
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+
+[SetProcessInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessInput
+[UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
 */
 func (class) _input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -1993,15 +2657,25 @@ func (class) _input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)
 }
 
 /*
-Called when an [graphics.gd/classdb/InputEventKey], [graphics.gd/classdb/InputEventShortcut], or [graphics.gd/classdb/InputEventJoypadButton] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called before [Interface.UnhandledKeyInput] and [Interface.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+Called when an [InputEventKey], [InputEventShortcut], or [InputEventJoypadButton] hasn't been consumed by [Input] or any GUI [Control] item. It is called before [UnhandledKeyInput] and [UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
 
-It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessShortcutInput].
+It is only called if shortcut processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessShortcutInput].
 
-To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
 
-This method can be used to handle shortcuts. For generic GUI events, use [Interface.Input] instead. Gameplay events should usually be handled with either [Interface.UnhandledInput] or [Interface.UnhandledKeyInput].
+This method can be used to handle shortcuts. For generic GUI events, use [Input] instead. Gameplay events should usually be handled with either [UnhandledInput] or [UnhandledKeyInput].
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not orphan).
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[InputEventJoypadButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadButton
+[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
+[InputEventShortcut]: https://pkg.go.dev/graphics.gd/classdb/InputEventShortcut
+[SetProcessShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessShortcutInput
+[UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
 */
 func (class) _shortcut_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -2014,15 +2688,23 @@ func (class) _shortcut_input(impl func(ptr gdclass.Receiver, event [1]gdclass.In
 }
 
 /*
-Called when an [graphics.gd/classdb/InputEvent] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called after [Interface.ShortcutInput] and after [Interface.UnhandledKeyInput]. The input event propagates up through the node tree until a node consumes it.
+Called when an [InputEvent] hasn't been consumed by [Input] or any GUI [Control] item. It is called after [ShortcutInput] and after [UnhandledKeyInput]. The input event propagates up through the node tree until a node consumes it.
 
-It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessUnhandledInput].
+It is only called if unhandled input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessUnhandledInput].
 
-To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
 
-For gameplay input, this method is usually a better fit than [Interface.Input], as GUI events need a higher priority. For keyboard shortcuts, consider using [Interface.ShortcutInput] instead, as it is called before this method. Finally, to handle keyboard events, consider using [Interface.UnhandledKeyInput] for performance reasons.
+For gameplay input, this method is usually a better fit than [Input], as GUI events need a higher priority. For keyboard shortcuts, consider using [ShortcutInput] instead, as it is called before this method. Finally, to handle keyboard events, consider using [UnhandledKeyInput] for performance reasons.
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
+[SetProcessUnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessUnhandledInput
+[ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
 */
 func (class) _unhandled_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -2035,17 +2717,26 @@ func (class) _unhandled_input(impl func(ptr gdclass.Receiver, event [1]gdclass.I
 }
 
 /*
-Called when an [graphics.gd/classdb/InputEventKey] hasn't been consumed by [Interface.Input] or any GUI [graphics.gd/classdb/Control] item. It is called after [Interface.ShortcutInput] but before [Interface.UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
+Called when an [InputEventKey] hasn't been consumed by [Input] or any GUI [Control] item. It is called after [ShortcutInput] but before [UnhandledInput]. The input event propagates up through the node tree until a node consumes it.
 
-It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [Instance.SetProcessUnhandledKeyInput].
+It is only called if unhandled key input processing is enabled, which is done automatically if this method is overridden, and can be toggled with [SetProcessUnhandledKeyInput].
 
-To consume the input event and stop it propagating further to other nodes, [graphics.gd/classdb/Viewport.Instance.SetInputAsHandled] can be called.
+To consume the input event and stop it propagating further to other nodes, [Viewport.SetInputAsHandled] can be called.
 
 This method can be used to handle Unicode character input with Alt, Alt + Ctrl, and Alt + Shift modifiers, after shortcuts were handled.
 
-For gameplay input, this and [Interface.UnhandledInput] are usually a better fit than [Interface.Input], as GUI events should be handled first. This method also performs better than [Interface.UnhandledInput], since unrelated events such as [graphics.gd/classdb/InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [Interface.ShortcutInput] instead.
+For gameplay input, this and [UnhandledInput] are usually a better fit than [Input], as GUI events should be handled first. This method also performs better than [UnhandledInput], since unrelated events such as [InputEventMouseMotion] are automatically filtered. For shortcuts, consider using [ShortcutInput] instead.
 
 Note: This method is only called if the node is present in the scene tree (i.e. if it's not an orphan).
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
+[InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
+[SetProcessUnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessUnhandledKeyInput
+[ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Viewport.SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
 */
 func (class) _unhandled_key_input(impl func(ptr gdclass.Receiver, event [1]gdclass.InputEvent)) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -2058,7 +2749,9 @@ func (class) _unhandled_key_input(impl func(ptr gdclass.Receiver, event [1]gdcla
 }
 
 /*
-Called during accessibility information updates to determine the currently focused sub-element, should return a sub-element RID or the value returned by [Instance.GetAccessibilityElement].
+Called during accessibility information updates to determine the currently focused sub-element, should return a sub-element RID or the value returned by [GetAccessibilityElement].
+
+[GetAccessibilityElement]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetAccessibilityElement
 */
 func (class) _get_focused_accessibility_element(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -2069,9 +2762,11 @@ func (class) _get_focused_accessibility_element(impl func(ptr gdclass.Receiver) 
 }
 
 /*
-Prints all orphan nodes (nodes outside the [graphics.gd/classdb/SceneTree]). Useful for debugging.
+Prints all orphan nodes (nodes outside the [SceneTree]). Useful for debugging.
 
 Note: This method only works in debug builds. Does nothing in a project exported in release mode.
+
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 //go:nosplit
 func (self class) PrintOrphanNodes() { //gd:Node.print_orphan_nodes
@@ -2079,9 +2774,11 @@ func (self class) PrintOrphanNodes() { //gd:Node.print_orphan_nodes
 }
 
 /*
-Returns object IDs of all orphan nodes (nodes outside the [graphics.gd/classdb/SceneTree]). Used for debugging.
+Returns object IDs of all orphan nodes (nodes outside the [SceneTree]). Used for debugging.
 
 Note: [GetOrphanNodeIds] only works in debug builds. When called in a project exported in release mode, [GetOrphanNodeIds] will return an empty array.
+
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 //go:nosplit
 func (self class) GetOrphanNodeIds() Array.Contains[int64] { //gd:Node.get_orphan_node_ids
@@ -2093,11 +2790,14 @@ func (self class) GetOrphanNodeIds() Array.Contains[int64] { //gd:Node.get_orpha
 /*
 Adds a 'sibling' node to this node's parent, and moves the added sibling right below this node.
 
-If 'force_readable_name' is true, improves the readability of the added 'sibling'. If not named, the 'sibling' is renamed to its type, and if it shares [Instance.Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
+If 'force_readable_name' is true, improves the readability of the added 'sibling'. If not named, the 'sibling' is renamed to its type, and if it shares [Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
 
-Use [Instance.AddChild] instead of this method if you don't need the child node to be added below a specific node in the list of children.
+Use [AddChild] instead of this method if you don't need the child node to be added below a specific node in the list of children.
 
-Note: If this node is internal, the added sibling will be internal too (see [Instance.AddChild]'s internal parameter).
+Note: If this node is internal, the added sibling will be internal too (see [AddChild]'s internal parameter).
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
 */
 //go:nosplit
 func (self class) AddSibling(sibling [1]gdclass.Node, force_readable_name bool) { //gd:Node.add_sibling
@@ -2122,18 +2822,33 @@ func (self class) GetName() String.Name { //gd:Node.get_name
 /*
 Adds a child 'node'. Nodes can have any number of children, but every child must have a unique name. Child nodes are automatically deleted when the parent node is deleted, so an entire scene can be removed by deleting its topmost node.
 
-If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [Instance.Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
+If 'force_readable_name' is true, improves the readability of the added 'node'. If not named, the 'node' is renamed to its type, and if it shares [Name] with a sibling, a number is suffixed more appropriately. This operation is very slow. As such, it is recommended leaving this to false, which assigns a dummy name featuring @ in both situations.
 
-If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [Instance.GetChildren], unless their parameter include_internal is true. It also prevents these nodes being duplicated with their parent. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [graphics.gd/classdb/ColorPicker].
+If 'internal' is different than [InternalModeDisabled], the child will be added as internal node. These nodes are ignored by methods like [GetChildren], unless their parameter include_internal is true. It also prevents these nodes being duplicated with their parent. The intended usage is to hide the internal nodes from the user, so the user won't accidentally delete or modify them. Used by some GUI nodes, e.g. [ColorPicker].
 
-Note: If 'node' already has a parent, this method will fail. Use [Instance.RemoveChild] first to remove 'node' from its current parent. For example:
+Note: If 'node' already has a parent, this method will fail. Use [RemoveChild] first to remove 'node' from its current parent. For example:
 
 
+	var childNode = node.GetChild(0)
+	if childNode.GetParent() != Node.Nil {
+		childNode.GetParent().RemoveChild(childNode)
+	}
+	node.AddChild(childNode)
 
-If you need the child node to be added below a specific node in the list of children, use [Instance.AddSibling] instead of this method.
 
-Note: If you want a child to be persisted to a [graphics.gd/classdb/PackedScene], you must set [Instance.Owner] in addition to calling [Instance.AddChild]. This is typically relevant for [tool scripts] and [editor plugins]. If [Instance.AddChild] is called without setting [Instance.Owner], the newly added [graphics.gd/classdb/Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
+If you need the child node to be added below a specific node in the list of children, use [AddSibling] instead of this method.
 
+Note: If you want a child to be persisted to a [PackedScene], you must set [Owner] in addition to calling [AddChild]. This is typically relevant for [tool scripts] and [editor plugins]. If [AddChild] is called without setting [Owner], the newly added [Node] will not be visible in the scene tree, though it will be visible in the 2D/3D view.
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[AddSibling]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddSibling
+[ColorPicker]: https://pkg.go.dev/graphics.gd/classdb/ColorPicker
+[GetChildren]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetChildren
+[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
+[RemoveChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RemoveChild
 [editor plugins]: https://docs.godotengine.org/tutorials/plugins/editor/index.html
 [tool scripts]: https://docs.godotengine.org/tutorials/plugins/running_code_in_the_editor.html
 */
@@ -2147,9 +2862,13 @@ func (self class) AddChild(node [1]gdclass.Node, force_readable_name bool, inter
 }
 
 /*
-Removes a child 'node'. The 'node', along with its children, are not deleted. To delete a node, see [Instance.QueueFree].
+Removes a child 'node'. The 'node', along with its children, are not deleted. To delete a node, see [QueueFree].
 
-Note: When this node is inside the tree, this method sets the [Instance.Owner] of the removed 'node' (or its descendants) to null, if their [Instance.Owner] is no longer an ancestor (see [Instance.IsAncestorOf]).
+Note: When this node is inside the tree, this method sets the [Owner] of the removed 'node' (or its descendants) to null, if their [Owner] is no longer an ancestor (see [IsAncestorOf]).
+
+[IsAncestorOf]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsAncestorOf
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
 */
 //go:nosplit
 func (self class) RemoveChild(node [1]gdclass.Node) { //gd:Node.remove_child
@@ -2157,9 +2876,15 @@ func (self class) RemoveChild(node [1]gdclass.Node) { //gd:Node.remove_child
 }
 
 /*
-Changes the parent of this [graphics.gd/classdb/Node] to the 'new_parent'. The node needs to already have a parent. The node's [Instance.Owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
+Changes the parent of this [Node] to the 'new_parent'. The node needs to already have a parent. The node's [Owner] is preserved if its owner is still reachable from the new location (i.e., the node is still a descendant of the new parent after the operation).
 
-If 'keep_global_transform' is true, the node's global transform will be preserved if supported. [graphics.gd/classdb/Node2D], [graphics.gd/classdb/Node3D] and [graphics.gd/classdb/Control] support this argument (but [graphics.gd/classdb/Control] keeps only position).
+If 'keep_global_transform' is true, the node's global transform will be preserved if supported. [Node2D], [Node3D] and [Control] support this argument (but [Control] keeps only position).
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Node2D]: https://pkg.go.dev/graphics.gd/classdb/Node2D
+[Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
 */
 //go:nosplit
 func (self class) Reparent(new_parent [1]gdclass.Node, keep_global_transform bool) { //gd:Node.reparent
@@ -2172,7 +2897,9 @@ func (self class) Reparent(new_parent [1]gdclass.Node, keep_global_transform boo
 /*
 Returns the number of children of this node.
 
-If 'include_internal' is false, internal children are not counted (see [Instance.AddChild]'s internal parameter).
+If 'include_internal' is false, internal children are not counted (see [AddChild]'s internal parameter).
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
 */
 //go:nosplit
 func (self class) GetChildCount(include_internal bool) int64 { //gd:Node.get_child_count
@@ -2184,7 +2911,9 @@ func (self class) GetChildCount(include_internal bool) int64 { //gd:Node.get_chi
 /*
 Returns all children of this node inside an slice.
 
-If 'include_internal' is false, excludes internal children from the returned array (see [Instance.AddChild]'s internal parameter).
+If 'include_internal' is false, excludes internal children from the returned array (see [AddChild]'s internal parameter).
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
 */
 //go:nosplit
 func (self class) GetChildren(include_internal bool) Array.Contains[[1]gdclass.Node] { //gd:Node.get_children
@@ -2194,13 +2923,25 @@ func (self class) GetChildren(include_internal bool) Array.Contains[[1]gdclass.N
 }
 
 /*
-Fetches a child node by its index. Each child node has an index relative to its siblings (see [Instance.GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [Instance.GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
+Fetches a child node by its index. Each child node has an index relative to its siblings (see [GetIndex]). The first child is at index 0. Negative values can also be used to start from the end of the list. This method can be used in combination with [GetChildCount] to iterate over this node's children. If no child exists at the given index, this method returns null and an error is generated.
 
-If 'include_internal' is false, internal children are ignored (see [Instance.AddChild]'s internal parameter).
+If 'include_internal' is false, internal children are ignored (see [AddChild]'s internal parameter).
 
 
+	// Assuming the following are children of this node, in order:
+	// First, Middle, Last.
+	var a = node.GetChild(0).Name()  // a is "First"
+	var b = node.GetChild(1).Name()  // b is "Middle"
+	b = node.GetChild(2).Name()      // b is "Last"
+	var c = node.GetChild(-1).Name() // c is "Last"
 
-Note: To fetch a node by node path, use [Instance.GetNode].
+
+Note: To fetch a node by node path, use [GetNode].
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[GetChildCount]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetChildCount
+[GetIndex]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetIndex
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
 */
 //go:nosplit
 func (self class) GetChild(idx int64, include_internal bool) [1]gdclass.Node { //gd:Node.get_child
@@ -2213,7 +2954,9 @@ func (self class) GetChild(idx int64, include_internal bool) [1]gdclass.Node { /
 }
 
 /*
-Returns true if the 'path' points to a valid node. See also [Instance.GetNode].
+Returns true if the 'path' points to a valid node. See also [GetNode].
+
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
 */
 //go:nosplit
 func (self class) HasNode(path Path.ToNode) bool { //gd:Node.has_node
@@ -2223,17 +2966,25 @@ func (self class) HasNode(path Path.ToNode) bool { //gd:Node.has_node
 }
 
 /*
-Fetches a node. The node path can either be a relative path (from this node), or an absolute path (from the [graphics.gd/classdb/SceneTree.Instance.Root]) to a node. If 'path' does not point to a valid node, generates an error and returns null. Attempts to access methods on the return value will result in an "Attempt to call <method> on a null instance." error.
+Fetches a node. The node path can either be a relative path (from this node), or an absolute path (from the [SceneTree.Root]) to a node. If 'path' does not point to a valid node, generates an error and returns null. Attempts to access methods on the return value will result in an "Attempt to call <method> on a null instance." error.
 
-Note: Fetching by absolute path only works when the node is inside the scene tree (see [Instance.IsInsideTree]).
+Note: Fetching by absolute path only works when the node is inside the scene tree (see [IsInsideTree]).
 
 Example: Assume this method is called from the Character node, inside the following tree:
 
+
+	node.GetNode("Sword")
+	node.GetNode("Backpack/Dagger")
+	node.GetNode("../Swamp/Alligator")
+	node.GetNode("/root/MyGame")
 
 
 The following calls will return a valid node:
 
 
+
+[IsInsideTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsInsideTree
+[SceneTree.Root]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Root
 */
 //go:nosplit
 func (self class) GetNode(path Path.ToNode) [1]gdclass.Node { //gd:Node.get_node
@@ -2243,7 +2994,9 @@ func (self class) GetNode(path Path.ToNode) [1]gdclass.Node { //gd:Node.get_node
 }
 
 /*
-Fetches a node by node path. Similar to [Instance.GetNode], but does not generate an error if 'path' does not point to a valid node.
+Fetches a node by node path. Similar to [GetNode], but does not generate an error if 'path' does not point to a valid node.
+
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
 */
 //go:nosplit
 func (self class) GetNodeOrNull(path Path.ToNode) [1]gdclass.Node { //gd:Node.get_node_or_null
@@ -2263,15 +3016,23 @@ func (self class) GetParent() [1]gdclass.Node { //gd:Node.get_parent
 }
 
 /*
-Finds the first descendant of this node whose [Instance.Name] matches 'pattern', returning null if no match is found. The matching is done against node names, not their paths, through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
+Finds the first descendant of this node whose [Name] matches 'pattern', returning null if no match is found. The matching is done against node names, not their paths, through [String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
 
-If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [Instance.AddChild]).
+If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [AddChild]).
 
-If 'owned' is true, only descendants with a valid [Instance.Owner] node are checked.
+If 'owned' is true, only descendants with a valid [Owner] node are checked.
 
-Note: This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [Instance.GetNode] with unique names (see [Instance.UniqueNameInOwner]).
+Note: This method can be very slow. Consider storing a reference to the found node in a variable. Alternatively, use [GetNode] with unique names (see [UniqueNameInOwner]).
 
-Note: To find all descendant nodes matching a pattern or a class type, see [Instance.FindChildren].
+Note: To find all descendant nodes matching a pattern or a class type, see [FindChildren].
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[FindChildren]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.FindChildren
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
+[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[String.Match]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Match
+[UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
 */
 //go:nosplit
 func (self class) FindChild(pattern String.Readable, recursive bool, owned bool) [1]gdclass.Node { //gd:Node.find_child
@@ -2285,17 +3046,23 @@ func (self class) FindChild(pattern String.Readable, recursive bool, owned bool)
 }
 
 /*
-Finds all descendants of this node whose names match 'pattern', returning an empty slice if no match is found. The matching is done against node names, not their paths, through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
+Finds all descendants of this node whose names match 'pattern', returning an empty slice if no match is found. The matching is done against node names, not their paths, through [String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character.
 
-If 'type' is not empty, only ancestors inheriting from 'type' are included (see [graphics.gd/classdb/Object.Instance.IsClass]).
+If 'type' is not empty, only ancestors inheriting from 'type' are included (see [Object.IsClass]).
 
-If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [Instance.AddChild]).
+If 'recursive' is false, only this node's direct children are checked. Nodes are checked in tree order, so this node's first direct child is checked first, then its own direct children, etc., before moving to the second direct child, and so on. Internal children are also included in the search (see internal parameter in [AddChild]).
 
-If 'owned' is true, only descendants with a valid [Instance.Owner] node are checked.
+If 'owned' is true, only descendants with a valid [Owner] node are checked.
 
 Note: This method can be very slow. Consider storing references to the found nodes in a variable.
 
-Note: To find a single descendant node matching a pattern, see [Instance.FindChild].
+Note: To find a single descendant node matching a pattern, see [FindChild].
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[FindChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.FindChild
+[Object.IsClass]: https://pkg.go.dev/graphics.gd/variant/Object#IsClass
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+[String.Match]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Match
 */
 //go:nosplit
 func (self class) FindChildren(pattern String.Readable, atype String.Readable, recursive bool, owned bool) Array.Contains[[1]gdclass.Node] { //gd:Node.find_children
@@ -2310,9 +3077,16 @@ func (self class) FindChildren(pattern String.Readable, atype String.Readable, r
 }
 
 /*
-Finds the first ancestor of this node whose [Instance.Name] matches 'pattern', returning null if no match is found. The matching is done through [graphics.gd/classdb/String.Instance.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character. See also [Instance.FindChild] and [Instance.FindChildren].
+Finds the first ancestor of this node whose [Name] matches 'pattern', returning null if no match is found. The matching is done through [String.Match]. As such, it is case-sensitive, "*" matches zero or more characters, and "?" matches any single character. See also [FindChild] and [FindChildren].
 
-Note: As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [Instance.GetNode] with unique names (see [Instance.UniqueNameInOwner]).
+Note: As this method walks upwards in the scene tree, it can be slow in large, deeply nested nodes. Consider storing a reference to the found node in a variable. Alternatively, use [GetNode] with unique names (see [UniqueNameInOwner]).
+
+[FindChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.FindChild
+[FindChildren]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.FindChildren
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
+[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
+[String.Match]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.Match
+[UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
 */
 //go:nosplit
 func (self class) FindParent(pattern String.Readable) [1]gdclass.Node { //gd:Node.find_parent
@@ -2322,7 +3096,10 @@ func (self class) FindParent(pattern String.Readable) [1]gdclass.Node { //gd:Nod
 }
 
 /*
-Returns true if 'path' points to a valid node and its subnames point to a valid [graphics.gd/classdb/Resource], e.g. Area2D/CollisionShape2D:shape. Properties that are not [graphics.gd/classdb/Resource] types (such as nodes or other any types) are not considered. See also [Instance.GetNodeAndResource].
+Returns true if 'path' points to a valid node and its subnames point to a valid [Resource], e.g. Area2D/CollisionShape2D:shape. Properties that are not [Resource] types (such as nodes or other any types) are not considered. See also [GetNodeAndResource].
+
+[GetNodeAndResource]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNodeAndResource
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
 */
 //go:nosplit
 func (self class) HasNodeAndResource(path Path.ToNode) bool { //gd:Node.has_node_and_resource
@@ -2334,15 +3111,36 @@ func (self class) HasNodeAndResource(path Path.ToNode) bool { //gd:Node.has_node
 /*
 Fetches a node and its most nested resource as specified by the node path's subname. Returns an slice of size 3 where:
 
-- Element 0 is the [graphics.gd/classdb/Node], or null if not found;
+- Element 0 is the [Node], or null if not found;
 
-- Element 1 is the subname's last nested [graphics.gd/classdb/Resource], or null if not found;
+- Element 1 is the subname's last nested [Resource], or null if not found;
 
-- Element 2 is the remaining node path, referring to an existing, non-[graphics.gd/classdb/Resource] property (see [graphics.gd/classdb/Object.Instance.GetIndexed]).
+- Element 2 is the remaining node path, referring to an existing, non-[Resource] property (see [Object.GetIndexed]).
 
-Example: Assume that the child's [graphics.gd/classdb/Sprite2D.Instance.Texture] has been assigned an [graphics.gd/classdb/AtlasTexture]:
+Example: Assume that the child's [Sprite2D.Texture] has been assigned an [AtlasTexture]:
 
 
+	node, res, path := node.GetNodeAndResource("Area2D/Sprite2D")
+	println(node.Name()) // Prints Sprite2D
+	println(res)         // Prints <null>
+	println(path)        // Prints ^""
+
+	node, res, path = node.GetNodeAndResource("Area2D/Sprite2D:texture:atlas")
+	println(node.Name())                                 // Prints Sprite2D
+	println(Object.Instance(res.AsObject()).ClassName()) // Prints AtlasTexture
+	println(path)                                        // Prints ^""
+
+	node, res, path = node.GetNodeAndResource("Area2D/Sprite2D:texture:atlas:region")
+	println(node.Name())                                 // Prints Sprite2D
+	println(Object.Instance(res.AsObject()).ClassName()) // Prints AtlasTexture
+	println(path)                                        // Prints ^":region"
+
+
+[AtlasTexture]: https://pkg.go.dev/graphics.gd/classdb/AtlasTexture
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Object.GetIndexed]: https://pkg.go.dev/graphics.gd/variant/Object#GetIndexed
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
+[Sprite2D.Texture]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D#Instance.Texture
 */
 //go:nosplit
 func (self class) GetNodeAndResource(path Path.ToNode) Array.Any { //gd:Node.get_node_and_resource
@@ -2352,7 +3150,10 @@ func (self class) GetNodeAndResource(path Path.ToNode) Array.Any { //gd:Node.get
 }
 
 /*
-Returns true if this node is currently inside a [graphics.gd/classdb/SceneTree]. See also [Instance.GetTree].
+Returns true if this node is currently inside a [SceneTree]. See also [GetTree].
+
+[GetTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetTree
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 //go:nosplit
 func (self class) IsInsideTree() bool { //gd:Node.is_inside_tree
@@ -2392,7 +3193,9 @@ func (self class) IsGreaterThan(node [1]gdclass.Node) bool { //gd:Node.is_greate
 }
 
 /*
-Returns the node's absolute path, relative to the [graphics.gd/classdb/SceneTree.Instance.Root]. If the node is not inside the scene tree, this method fails and returns an empty node path.
+Returns the node's absolute path, relative to the [SceneTree.Root]. If the node is not inside the scene tree, this method fails and returns an empty node path.
+
+[SceneTree.Root]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Root
 */
 //go:nosplit
 func (self class) GetPath() Path.ToNode { //gd:Node.get_path
@@ -2402,11 +3205,14 @@ func (self class) GetPath() Path.ToNode { //gd:Node.get_path
 }
 
 /*
-Returns the relative node path from this node to the specified 'node'. Both nodes must be in the same [graphics.gd/classdb/SceneTree] or scene hierarchy, otherwise this method fails and returns an empty node path.
+Returns the relative node path from this node to the specified 'node'. Both nodes must be in the same [SceneTree] or scene hierarchy, otherwise this method fails and returns an empty node path.
 
-If 'use_unique_path' is true, returns the shortest path accounting for this node's unique name (see [Instance.UniqueNameInOwner]).
+If 'use_unique_path' is true, returns the shortest path accounting for this node's unique name (see [UniqueNameInOwner]).
 
 Note: If you get a relative path which starts from a unique node, the path may be longer than a normal relative path, due to the addition of the unique node's name.
+
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
+[UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
 */
 //go:nosplit
 func (self class) GetPathTo(node [1]gdclass.Node, use_unique_path bool) Path.ToNode { //gd:Node.get_path_to
@@ -2419,13 +3225,17 @@ func (self class) GetPathTo(node [1]gdclass.Node, use_unique_path bool) Path.ToN
 }
 
 /*
-Adds the node to the 'group'. Groups can be helpful to organize a subset of nodes, for example "enemies" or "collectables". See notes in the description, and the group methods in [graphics.gd/classdb/SceneTree].
+Adds the node to the 'group'. Groups can be helpful to organize a subset of nodes, for example "enemies" or "collectables". See notes in the description, and the group methods in [SceneTree].
 
-If 'persistent' is true, the group will be stored when saved inside a [graphics.gd/classdb/PackedScene]. All groups created and displayed in the Node dock are persistent.
+If 'persistent' is true, the group will be stored when saved inside a [PackedScene]. All groups created and displayed in the Node dock are persistent.
 
 Note: To improve performance, the order of group names is not guaranteed and may vary between project runs. Therefore, do not rely on the group order.
 
-Note: [graphics.gd/classdb/SceneTree]'s group methods will not work on this node if not inside the tree (see [Instance.IsInsideTree]).
+Note: [SceneTree]'s group methods will not work on this node if not inside the tree (see [IsInsideTree]).
+
+[IsInsideTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsInsideTree
+[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 //go:nosplit
 func (self class) AddToGroup(group String.Name, persistent bool) { //gd:Node.add_to_group
@@ -2436,7 +3246,9 @@ func (self class) AddToGroup(group String.Name, persistent bool) { //gd:Node.add
 }
 
 /*
-Removes the node from the given 'group'. Does nothing if the node is not in the 'group'. See also notes in the description, and the [graphics.gd/classdb/SceneTree]'s group methods.
+Removes the node from the given 'group'. Does nothing if the node is not in the 'group'. See also notes in the description, and the [SceneTree]'s group methods.
+
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 //go:nosplit
 func (self class) RemoveFromGroup(group String.Name) { //gd:Node.remove_from_group
@@ -2444,7 +3256,11 @@ func (self class) RemoveFromGroup(group String.Name) { //gd:Node.remove_from_gro
 }
 
 /*
-Returns true if this node has been added to the given 'group'. See [Instance.AddToGroup] and [Instance.RemoveFromGroup]. See also notes in the description, and the [graphics.gd/classdb/SceneTree]'s group methods.
+Returns true if this node has been added to the given 'group'. See [AddToGroup] and [RemoveFromGroup]. See also notes in the description, and the [SceneTree]'s group methods.
+
+[AddToGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddToGroup
+[RemoveFromGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RemoveFromGroup
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 //go:nosplit
 func (self class) IsInGroup(group String.Name) bool { //gd:Node.is_in_group
@@ -2454,9 +3270,17 @@ func (self class) IsInGroup(group String.Name) bool { //gd:Node.is_in_group
 }
 
 /*
-Moves 'child_node' to the given index. A node's index is the order among its siblings. If 'to_index' is negative, the index is counted from the end of the list. See also [Instance.GetChild] and [Instance.GetIndex].
+Moves 'child_node' to the given index. A node's index is the order among its siblings. If 'to_index' is negative, the index is counted from the end of the list. See also [GetChild] and [GetIndex].
 
-Note: The processing order of several engine callbacks ([Interface.Ready], [Interface.Process], etc.) and notifications sent through [Instance.PropagateNotification] is affected by tree order. [graphics.gd/classdb/CanvasItem] nodes are also rendered in tree order. See also [Instance.ProcessPriority].
+Note: The processing order of several engine callbacks ([Ready], [Process], etc.) and notifications sent through [PropagateNotification] is affected by tree order. [CanvasItem] nodes are also rendered in tree order. See also [ProcessPriority].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[GetChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetChild
+[GetIndex]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetIndex
+[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[ProcessPriority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessPriority
+[PropagateNotification]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PropagateNotification
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 //go:nosplit
 func (self class) MoveChild(child_node [1]gdclass.Node, to_index int64) { //gd:Node.move_child
@@ -2473,6 +3297,14 @@ Note: To improve performance, the order of group names is not guaranteed and may
 
 Note: This method may also return some group names starting with an underscore (_). These are internally used by the engine. To avoid conflicts, do not use custom groups starting with underscores. To exclude internal groups, see the following code snippet:
 
+
+	// Stores the node's non-internal groups only (as a slice of strings).
+	var nonInternalGroups []string
+	for _, group := range node.GetGroups() {
+		if !strings.HasPrefix(group, "_") {
+			nonInternalGroups = append(nonInternalGroups, group)
+		}
+	}
 
 */
 //go:nosplit
@@ -2495,9 +3327,12 @@ func (self class) GetOwner() [1]gdclass.Node { //gd:Node.get_owner
 }
 
 /*
-Returns this node's order among its siblings. The first node's index is 0. See also [Instance.GetChild].
+Returns this node's order among its siblings. The first node's index is 0. See also [GetChild].
 
-If 'include_internal' is false, returns the index ignoring internal children. The first, non-internal child will have an index of 0 (see [Instance.AddChild]'s internal parameter).
+If 'include_internal' is false, returns the index ignoring internal children. The first, non-internal child will have an index of 0 (see [AddChild]'s internal parameter).
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[GetChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetChild
 */
 //go:nosplit
 func (self class) GetIndex(include_internal bool) int64 { //gd:Node.get_index
@@ -2507,11 +3342,14 @@ func (self class) GetIndex(include_internal bool) int64 { //gd:Node.get_index
 }
 
 /*
-Prints the node and its children to the console, recursively. The node does not have to be inside the tree. This method outputs node paths relative to this node, and is good for copy/pasting into [Instance.GetNode]. See also [Instance.PrintTreePretty].
+Prints the node and its children to the console, recursively. The node does not have to be inside the tree. This method outputs node paths relative to this node, and is good for copy/pasting into [GetNode]. See also [PrintTreePretty].
 
 May print, for example:
 
 
+
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
+[PrintTreePretty]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PrintTreePretty
 */
 //go:nosplit
 func (self class) PrintTree() { //gd:Node.print_tree
@@ -2519,11 +3357,13 @@ func (self class) PrintTree() { //gd:Node.print_tree
 }
 
 /*
-Prints the node and its children to the console, recursively. The node does not have to be inside the tree. Similar to [Instance.PrintTree], but the graphical representation looks like what is displayed in the editor's Scene dock. It is useful for inspecting larger trees.
+Prints the node and its children to the console, recursively. The node does not have to be inside the tree. Similar to [PrintTree], but the graphical representation looks like what is displayed in the editor's Scene dock. It is useful for inspecting larger trees.
 
 May print, for example:
 
 
+
+[PrintTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PrintTree
 */
 //go:nosplit
 func (self class) PrintTreePretty() { //gd:Node.print_tree_pretty
@@ -2531,11 +3371,13 @@ func (self class) PrintTreePretty() { //gd:Node.print_tree_pretty
 }
 
 /*
-Returns the tree as a string. Used mainly for debugging purposes. This version displays the path relative to the current node, and is good for copy/pasting into the [Instance.GetNode] function. It also can be used in game UI/UX.
+Returns the tree as a string. Used mainly for debugging purposes. This version displays the path relative to the current node, and is good for copy/pasting into the [GetNode] function. It also can be used in game UI/UX.
 
 May print, for example:
 
 
+
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
 */
 //go:nosplit
 func (self class) GetTreeString() String.Readable { //gd:Node.get_tree_string
@@ -2545,11 +3387,13 @@ func (self class) GetTreeString() String.Readable { //gd:Node.get_tree_string
 }
 
 /*
-Similar to [Instance.GetTreeString], this returns the tree as a string. This version displays a more graphical representation similar to what is displayed in the Scene Dock. It is useful for inspecting larger trees.
+Similar to [GetTreeString], this returns the tree as a string. This version displays a more graphical representation similar to what is displayed in the Scene Dock. It is useful for inspecting larger trees.
 
 May print, for example:
 
 
+
+[GetTreeString]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetTreeString
 */
 //go:nosplit
 func (self class) GetTreeStringPretty() String.Readable { //gd:Node.get_tree_string_pretty
@@ -2571,7 +3415,9 @@ func (self class) GetSceneFilePath() String.Readable { //gd:Node.get_scene_file_
 }
 
 /*
-Calls [graphics.gd/classdb/Object.Instance.Notification] with 'what' on this node and all of its children, recursively.
+Calls [Object.Notification] with 'what' on this node and all of its children, recursively.
+
+[Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
 */
 //go:nosplit
 func (self class) PropagateNotification(what int64) { //gd:Node.propagate_notification
@@ -2593,9 +3439,13 @@ func (self class) PropagateCall(method String.Name, args Array.Any, parent_first
 }
 
 /*
-If set to true, enables physics (fixed framerate) processing. When a node is being processed, it will receive a [NotificationPhysicsProcess] at a fixed (usually 60 FPS, see [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] to change) interval (and the [Interface.PhysicsProcess] callback will be called if it exists).
+If set to true, enables physics (fixed framerate) processing. When a node is being processed, it will receive a [NotificationPhysicsProcess] at a fixed (usually 60 FPS, see [Engine.PhysicsTicksPerSecond] to change) interval (and the [PhysicsProcess] callback will be called if it exists).
 
-Note: If [Interface.PhysicsProcess] is overridden, this will be automatically enabled before [Interface.Ready] is called.
+Note: If [PhysicsProcess] is overridden, this will be automatically enabled before [Ready] is called.
+
+[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
+[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 //go:nosplit
 func (self class) SetPhysicsProcess(enable bool) { //gd:Node.set_physics_process
@@ -2603,9 +3453,16 @@ func (self class) SetPhysicsProcess(enable bool) { //gd:Node.set_physics_process
 }
 
 /*
-Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [Interface.PhysicsProcess]'s delta parameter, and is often consistent at run-time, unless [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] is changed. See also [NotificationPhysicsProcess].
+Returns the time elapsed (in seconds) since the last physics callback. This value is identical to [PhysicsProcess]'s delta parameter, and is often consistent at run-time, unless [Engine.PhysicsTicksPerSecond] is changed. See also [NotificationPhysicsProcess].
 
-Note: The returned value will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+Note: The returned value will be larger than expected if running at a framerate lower than [Engine.PhysicsTicksPerSecond] / [Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Process] and [PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [Time.GetTicksUsec].
+
+[Engine.MaxPhysicsStepsPerFrame]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxPhysicsStepsPerFrame
+[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
+[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Time]: https://pkg.go.dev/graphics.gd/classdb/Time
+[Time.GetTicksUsec]: https://pkg.go.dev/graphics.gd/classdb/Time#GetTicksUsec
 */
 //go:nosplit
 func (self class) GetPhysicsProcessDeltaTime() float64 { //gd:Node.get_physics_process_delta_time
@@ -2615,7 +3472,9 @@ func (self class) GetPhysicsProcessDeltaTime() float64 { //gd:Node.get_physics_p
 }
 
 /*
-Returns true if physics processing is enabled (see [Instance.SetPhysicsProcess]).
+Returns true if physics processing is enabled (see [SetPhysicsProcess]).
+
+[SetPhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetPhysicsProcess
 */
 //go:nosplit
 func (self class) IsPhysicsProcessing() bool { //gd:Node.is_physics_processing
@@ -2625,9 +3484,16 @@ func (self class) IsPhysicsProcessing() bool { //gd:Node.is_physics_processing
 }
 
 /*
-Returns the time elapsed (in seconds) since the last process callback. This value is identical to [Interface.Process]'s delta parameter, and may vary from frame to frame. See also [NotificationProcess].
+Returns the time elapsed (in seconds) since the last process callback. This value is identical to [Process]'s delta parameter, and may vary from frame to frame. See also [NotificationProcess].
 
-Note: The returned value will be larger than expected if running at a framerate lower than [graphics.gd/classdb/Engine.PhysicsTicksPerSecond] / [graphics.gd/classdb/Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Interface.Process] and [Interface.PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [graphics.gd/classdb/Time] singleton's methods for this purpose instead, such as [graphics.gd/classdb/Time.GetTicksUsec].
+Note: The returned value will be larger than expected if running at a framerate lower than [Engine.PhysicsTicksPerSecond] / [Engine.MaxPhysicsStepsPerFrame] FPS. This is done to avoid "spiral of death" scenarios where performance would plummet due to an ever-increasing number of physics steps per frame. This behavior affects both [Process] and [PhysicsProcess]. As a result, avoid using delta for time measurements in real-world seconds. Use the [Time] singleton's methods for this purpose instead, such as [Time.GetTicksUsec].
+
+[Engine.MaxPhysicsStepsPerFrame]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxPhysicsStepsPerFrame
+[Engine.PhysicsTicksPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#PhysicsTicksPerSecond
+[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Time]: https://pkg.go.dev/graphics.gd/classdb/Time
+[Time.GetTicksUsec]: https://pkg.go.dev/graphics.gd/classdb/Time#GetTicksUsec
 */
 //go:nosplit
 func (self class) GetProcessDeltaTime() float64 { //gd:Node.get_process_delta_time
@@ -2637,11 +3503,16 @@ func (self class) GetProcessDeltaTime() float64 { //gd:Node.get_process_delta_ti
 }
 
 /*
-If set to true, enables processing. When a node is being processed, it will receive a [NotificationProcess] on every drawn frame (and the [Interface.Process] callback will be called if it exists).
+If set to true, enables processing. When a node is being processed, it will receive a [NotificationProcess] on every drawn frame (and the [Process] callback will be called if it exists).
 
-Note: If [Interface.Process] is overridden, this will be automatically enabled before [Interface.Ready] is called.
+Note: If [Process] is overridden, this will be automatically enabled before [Ready] is called.
 
-Note: This method only affects the [Interface.Process] callback, i.e. it has no effect on other callbacks like [Interface.PhysicsProcess]. If you want to disable all processing for the node, set [Instance.ProcessMode] to [ProcessModeDisabled].
+Note: This method only affects the [Process] callback, i.e. it has no effect on other callbacks like [PhysicsProcess]. If you want to disable all processing for the node, set [ProcessMode] to [ProcessModeDisabled].
+
+[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 //go:nosplit
 func (self class) SetProcess(enable bool) { //gd:Node.set_process
@@ -2673,7 +3544,9 @@ func (self class) GetPhysicsProcessPriority() int64 { //gd:Node.get_physics_proc
 }
 
 /*
-Returns true if processing is enabled (see [Instance.SetProcess]).
+Returns true if processing is enabled (see [SetProcess]).
+
+[SetProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcess
 */
 //go:nosplit
 func (self class) IsProcessing() bool { //gd:Node.is_processing
@@ -2685,7 +3558,12 @@ func (self class) IsProcessing() bool { //gd:Node.is_processing
 /*
 If set to true, enables input processing.
 
-Note: If [Interface.Input] is overridden, this will be automatically enabled before [Interface.Ready] is called. Input processing is also already enabled for GUI controls, such as [graphics.gd/classdb/Button] and [graphics.gd/classdb/TextEdit].
+Note: If [Input] is overridden, this will be automatically enabled before [Ready] is called. Input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
+
+[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
+[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
 */
 //go:nosplit
 func (self class) SetProcessInput(enable bool) { //gd:Node.set_process_input
@@ -2693,7 +3571,9 @@ func (self class) SetProcessInput(enable bool) { //gd:Node.set_process_input
 }
 
 /*
-Returns true if the node is processing input (see [Instance.SetProcessInput]).
+Returns true if the node is processing input (see [SetProcessInput]).
+
+[SetProcessInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessInput
 */
 //go:nosplit
 func (self class) IsProcessingInput() bool { //gd:Node.is_processing_input
@@ -2705,7 +3585,10 @@ func (self class) IsProcessingInput() bool { //gd:Node.is_processing_input
 /*
 If set to true, enables shortcut processing for this node.
 
-Note: If [Interface.ShortcutInput] is overridden, this will be automatically enabled before [Interface.Ready] is called.
+Note: If [ShortcutInput] is overridden, this will be automatically enabled before [Ready] is called.
+
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[ShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 //go:nosplit
 func (self class) SetProcessShortcutInput(enable bool) { //gd:Node.set_process_shortcut_input
@@ -2713,7 +3596,9 @@ func (self class) SetProcessShortcutInput(enable bool) { //gd:Node.set_process_s
 }
 
 /*
-Returns true if the node is processing shortcuts (see [Instance.SetProcessShortcutInput]).
+Returns true if the node is processing shortcuts (see [SetProcessShortcutInput]).
+
+[SetProcessShortcutInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessShortcutInput
 */
 //go:nosplit
 func (self class) IsProcessingShortcutInput() bool { //gd:Node.is_processing_shortcut_input
@@ -2723,9 +3608,15 @@ func (self class) IsProcessingShortcutInput() bool { //gd:Node.is_processing_sho
 }
 
 /*
-If set to true, enables unhandled input processing. It enables the node to receive all input that was not previously handled (usually by a [graphics.gd/classdb/Control]).
+If set to true, enables unhandled input processing. It enables the node to receive all input that was not previously handled (usually by a [Control]).
 
-Note: If [Interface.UnhandledInput] is overridden, this will be automatically enabled before [Interface.Ready] is called. Unhandled input processing is also already enabled for GUI controls, such as [graphics.gd/classdb/Button] and [graphics.gd/classdb/TextEdit].
+Note: If [UnhandledInput] is overridden, this will be automatically enabled before [Ready] is called. Unhandled input processing is also already enabled for GUI controls, such as [Button] and [TextEdit].
+
+[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
+[UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 //go:nosplit
 func (self class) SetProcessUnhandledInput(enable bool) { //gd:Node.set_process_unhandled_input
@@ -2733,7 +3624,9 @@ func (self class) SetProcessUnhandledInput(enable bool) { //gd:Node.set_process_
 }
 
 /*
-Returns true if the node is processing unhandled input (see [Instance.SetProcessUnhandledInput]).
+Returns true if the node is processing unhandled input (see [SetProcessUnhandledInput]).
+
+[SetProcessUnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessUnhandledInput
 */
 //go:nosplit
 func (self class) IsProcessingUnhandledInput() bool { //gd:Node.is_processing_unhandled_input
@@ -2745,7 +3638,10 @@ func (self class) IsProcessingUnhandledInput() bool { //gd:Node.is_processing_un
 /*
 If set to true, enables unhandled key input processing.
 
-Note: If [Interface.UnhandledKeyInput] is overridden, this will be automatically enabled before [Interface.Ready] is called.
+Note: If [UnhandledKeyInput] is overridden, this will be automatically enabled before [Ready] is called.
+
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[UnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 //go:nosplit
 func (self class) SetProcessUnhandledKeyInput(enable bool) { //gd:Node.set_process_unhandled_key_input
@@ -2753,7 +3649,9 @@ func (self class) SetProcessUnhandledKeyInput(enable bool) { //gd:Node.set_proce
 }
 
 /*
-Returns true if the node is processing unhandled key input (see [Instance.SetProcessUnhandledKeyInput]).
+Returns true if the node is processing unhandled key input (see [SetProcessUnhandledKeyInput]).
+
+[SetProcessUnhandledKeyInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessUnhandledKeyInput
 */
 //go:nosplit
 func (self class) IsProcessingUnhandledKeyInput() bool { //gd:Node.is_processing_unhandled_key_input
@@ -2775,19 +3673,25 @@ func (self class) GetProcessMode() ProcessMode { //gd:Node.get_process_mode
 }
 
 /*
-Returns true if the node can receive processing notifications and input callbacks ([NotificationProcess], [Interface.Input], etc.) from the [graphics.gd/classdb/SceneTree] and [graphics.gd/classdb/Viewport]. The returned value depends on [Instance.ProcessMode]:
+Returns true if the node can receive processing notifications and input callbacks ([NotificationProcess], [Input], etc.) from the [SceneTree] and [Viewport]. The returned value depends on [ProcessMode]:
 
-- If set to [ProcessModePausable], returns true when the game is processing, i.e. [graphics.gd/classdb/SceneTree.Instance.Paused] is false;
+- If set to [ProcessModePausable], returns true when the game is processing, i.e. [SceneTree.Paused] is false;
 
-- If set to [ProcessModeWhenPaused], returns true when the game is paused, i.e. [graphics.gd/classdb/SceneTree.Instance.Paused] is true;
+- If set to [ProcessModeWhenPaused], returns true when the game is paused, i.e. [SceneTree.Paused] is true;
 
 - If set to [ProcessModeAlways], always returns true;
 
 - If set to [ProcessModeDisabled], always returns false;
 
-- If set to [ProcessModeInherit], use the parent node's [Instance.ProcessMode] to determine the result.
+- If set to [ProcessModeInherit], use the parent node's [ProcessMode] to determine the result.
 
-If the node is not inside the tree, returns false no matter the value of [Instance.ProcessMode].
+If the node is not inside the tree, returns false no matter the value of [ProcessMode].
+
+[Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
+[SceneTree.Paused]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Paused
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
 //go:nosplit
 func (self class) CanProcess() bool { //gd:Node.can_process
@@ -2853,7 +3757,9 @@ func (self class) GetAccessibilityElement() RID.Any { //gd:Node.get_accessibilit
 }
 
 /*
-If set to true, the node appears folded in the Scene dock. As a result, all of its children are hidden. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [Instance.IsDisplayedFolded].
+If set to true, the node appears folded in the Scene dock. As a result, all of its children are hidden. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [IsDisplayedFolded].
+
+[IsDisplayedFolded]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsDisplayedFolded
 */
 //go:nosplit
 func (self class) SetDisplayFolded(fold bool) { //gd:Node.set_display_folded
@@ -2861,7 +3767,9 @@ func (self class) SetDisplayFolded(fold bool) { //gd:Node.set_display_folded
 }
 
 /*
-Returns true if the node is folded (collapsed) in the Scene dock. This method is intended to be used in editor plugins and tools. See also [Instance.SetDisplayFolded].
+Returns true if the node is folded (collapsed) in the Scene dock. This method is intended to be used in editor plugins and tools. See also [SetDisplayFolded].
+
+[SetDisplayFolded]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetDisplayFolded
 */
 //go:nosplit
 func (self class) IsDisplayedFolded() bool { //gd:Node.is_displayed_folded
@@ -2871,9 +3779,12 @@ func (self class) IsDisplayedFolded() bool { //gd:Node.is_displayed_folded
 }
 
 /*
-If set to true, enables internal processing for this node. Internal processing happens in isolation from the normal [Interface.Process] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or processing is disabled for scripting ([Instance.SetProcess]).
+If set to true, enables internal processing for this node. Internal processing happens in isolation from the normal [Process] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or processing is disabled for scripting ([SetProcess]).
 
 Warning: Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
+
+[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[SetProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcess
 */
 //go:nosplit
 func (self class) SetProcessInternal(enable bool) { //gd:Node.set_process_internal
@@ -2881,7 +3792,9 @@ func (self class) SetProcessInternal(enable bool) { //gd:Node.set_process_intern
 }
 
 /*
-Returns true if internal processing is enabled (see [Instance.SetProcessInternal]).
+Returns true if internal processing is enabled (see [SetProcessInternal]).
+
+[SetProcessInternal]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetProcessInternal
 */
 //go:nosplit
 func (self class) IsProcessingInternal() bool { //gd:Node.is_processing_internal
@@ -2891,9 +3804,12 @@ func (self class) IsProcessingInternal() bool { //gd:Node.is_processing_internal
 }
 
 /*
-If set to true, enables internal physics for this node. Internal physics processing happens in isolation from the normal [Interface.PhysicsProcess] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or physics processing is disabled for scripting ([Instance.SetPhysicsProcess]).
+If set to true, enables internal physics for this node. Internal physics processing happens in isolation from the normal [PhysicsProcess] calls and is used by some nodes internally to guarantee proper functioning even if the node is paused or physics processing is disabled for scripting ([SetPhysicsProcess]).
 
 Warning: Built-in nodes rely on internal processing for their internal logic. Disabling it is unsafe and may lead to unexpected behavior. Use this method if you know what you are doing.
+
+[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[SetPhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetPhysicsProcess
 */
 //go:nosplit
 func (self class) SetPhysicsProcessInternal(enable bool) { //gd:Node.set_physics_process_internal
@@ -2901,7 +3817,9 @@ func (self class) SetPhysicsProcessInternal(enable bool) { //gd:Node.set_physics
 }
 
 /*
-Returns true if internal physics processing is enabled (see [Instance.SetPhysicsProcessInternal]).
+Returns true if internal physics processing is enabled (see [SetPhysicsProcessInternal]).
+
+[SetPhysicsProcessInternal]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetPhysicsProcessInternal
 */
 //go:nosplit
 func (self class) IsPhysicsProcessingInternal() bool { //gd:Node.is_physics_processing_internal
@@ -2923,9 +3841,13 @@ func (self class) GetPhysicsInterpolationMode() PhysicsInterpolationMode { //gd:
 }
 
 /*
-Returns true if physics interpolation is enabled for this node (see [Instance.PhysicsInterpolationMode]).
+Returns true if physics interpolation is enabled for this node (see [PhysicsInterpolationMode]).
 
-Note: Interpolation will only be active if both the flag is set and physics interpolation is enabled within the [graphics.gd/classdb/SceneTree]. This can be tested using [Instance.IsPhysicsInterpolatedAndEnabled].
+Note: Interpolation will only be active if both the flag is set and physics interpolation is enabled within the [SceneTree]. This can be tested using [IsPhysicsInterpolatedAndEnabled].
+
+[IsPhysicsInterpolatedAndEnabled]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsPhysicsInterpolatedAndEnabled
+[PhysicsInterpolationMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsInterpolationMode
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 //go:nosplit
 func (self class) IsPhysicsInterpolated() bool { //gd:Node.is_physics_interpolated
@@ -2935,11 +3857,17 @@ func (self class) IsPhysicsInterpolated() bool { //gd:Node.is_physics_interpolat
 }
 
 /*
-Returns true if physics interpolation is enabled (see [Instance.PhysicsInterpolationMode]) and enabled in the [graphics.gd/classdb/SceneTree].
+Returns true if physics interpolation is enabled (see [PhysicsInterpolationMode]) and enabled in the [SceneTree].
 
-This is a convenience version of [Instance.IsPhysicsInterpolated] that also checks whether physics interpolation is enabled globally.
+This is a convenience version of [IsPhysicsInterpolated] that also checks whether physics interpolation is enabled globally.
 
-See [graphics.gd/classdb/SceneTree.Instance.PhysicsInterpolation] and [graphics.gd/classdb/ProjectSettings] "physics/common/physics_interpolation".
+See [SceneTree.PhysicsInterpolation] and [ProjectSettings] "physics/common/physics_interpolation".
+
+[IsPhysicsInterpolated]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsPhysicsInterpolated
+[PhysicsInterpolationMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsInterpolationMode
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
+[SceneTree.PhysicsInterpolation]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.PhysicsInterpolation
 */
 //go:nosplit
 func (self class) IsPhysicsInterpolatedAndEnabled() bool { //gd:Node.is_physics_interpolated_and_enabled
@@ -2975,7 +3903,11 @@ func (self class) GetAutoTranslateMode() AutoTranslateMode { //gd:Node.get_auto_
 }
 
 /*
-Returns true if this node can automatically translate messages depending on the current locale. See [Instance.AutoTranslateMode], [Instance.Atr], and [Instance.AtrN].
+Returns true if this node can automatically translate messages depending on the current locale. See [AutoTranslateMode], [Atr], and [AtrN].
+
+[Atr]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Atr
+[AtrN]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AtrN
+[AutoTranslateMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AutoTranslateMode
 */
 //go:nosplit
 func (self class) CanAutoTranslate() bool { //gd:Node.can_auto_translate
@@ -2987,7 +3919,9 @@ func (self class) CanAutoTranslate() bool { //gd:Node.can_auto_translate
 /*
 Makes this node inherit the translation domain from its parent node. If this node has no parent, the main translation domain will be used.
 
-This is the default behavior for all nodes. Calling [graphics.gd/classdb/Object.Instance.SetTranslationDomain] disables this behavior.
+This is the default behavior for all nodes. Calling [Object.SetTranslationDomain] disables this behavior.
+
+[Object.SetTranslationDomain]: https://pkg.go.dev/graphics.gd/variant/Object#SetTranslationDomain
 */
 //go:nosplit
 func (self class) SetTranslationDomainInherited() { //gd:Node.set_translation_domain_inherited
@@ -2995,7 +3929,9 @@ func (self class) SetTranslationDomainInherited() { //gd:Node.set_translation_do
 }
 
 /*
-Returns the [graphics.gd/classdb/Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node (get_tree().get_root()).
+Returns the [Window] that contains this node. If the node is in the main window, this is equivalent to getting the root node (get_tree().get_root()).
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
 //go:nosplit
 func (self class) GetWindow() [1]gdclass.Window { //gd:Node.get_window
@@ -3005,7 +3941,9 @@ func (self class) GetWindow() [1]gdclass.Window { //gd:Node.get_window
 }
 
 /*
-Returns the [graphics.gd/classdb/Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
+Returns the [Window] that contains this node, or the last exclusive child in a chain of windows starting with the one that contains this node.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
 //go:nosplit
 func (self class) GetLastExclusiveWindow() [1]gdclass.Window { //gd:Node.get_last_exclusive_window
@@ -3015,7 +3953,10 @@ func (self class) GetLastExclusiveWindow() [1]gdclass.Window { //gd:Node.get_las
 }
 
 /*
-Returns the [graphics.gd/classdb/SceneTree] that contains this node. If this node is not inside the tree, generates an error and returns null. See also [Instance.IsInsideTree].
+Returns the [SceneTree] that contains this node. If this node is not inside the tree, generates an error and returns null. See also [IsInsideTree].
+
+[IsInsideTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsInsideTree
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
 */
 //go:nosplit
 func (self class) GetTree() [1]gdclass.SceneTree { //gd:Node.get_tree
@@ -3025,15 +3966,22 @@ func (self class) GetTree() [1]gdclass.SceneTree { //gd:Node.get_tree
 }
 
 /*
-Creates a new [graphics.gd/classdb/Tween] and binds it to this node.
+Creates a new [Tween] and binds it to this node.
 
 This is the equivalent of doing:
 
 
+	node.BindToTween(SceneTree.Get(node).CreateTween())
 
-The Tween will start automatically on the next process frame or physics frame (depending on [Tween.TweenProcessMode]). See [graphics.gd/classdb/Tween.Instance.BindNode] for more info on Tweens bound to nodes.
 
-Note: The method can still be used when the node is not inside [graphics.gd/classdb/SceneTree]. It can fail in an unlikely case of using a custom [graphics.gd/classdb/MainLoop].
+The Tween will start automatically on the next process frame or physics frame (depending on [Tween.TweenProcessMode]). See [Tween.BindNode] for more info on Tweens bound to nodes.
+
+Note: The method can still be used when the node is not inside [SceneTree]. It can fail in an unlikely case of using a custom [MainLoop].
+
+[MainLoop]: https://pkg.go.dev/graphics.gd/classdb/MainLoop
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
+[Tween]: https://pkg.go.dev/graphics.gd/classdb/Tween
+[Tween.BindNode]: https://pkg.go.dev/graphics.gd/classdb/Tween#Instance.BindNode
 */
 //go:nosplit
 func (self class) CreateTween() [1]gdclass.Tween { //gd:Node.create_tween
@@ -3045,7 +3993,10 @@ func (self class) CreateTween() [1]gdclass.Tween { //gd:Node.create_tween
 /*
 Duplicates the node, returning a new node with all of its properties, signals, groups, and children copied from the original. The behavior can be tweaked through the 'flags' (see [DuplicateFlags]). Internal nodes are not duplicated.
 
-Note: For nodes with a [graphics.gd/classdb/Script] attached, if [graphics.gd/classdb/Object.Instance.Init] has been defined with required parameters, the duplicated node will not have a [graphics.gd/classdb/Script].
+Note: For nodes with a [Script] attached, if [Object.Init] has been defined with required parameters, the duplicated node will not have a [Script].
+
+[Object.Init]: https://pkg.go.dev/graphics.gd/variant/Object#Init
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
 */
 //go:nosplit
 func (self class) Duplicate(flags int64) [1]gdclass.Node { //gd:Node.duplicate
@@ -3057,9 +4008,12 @@ func (self class) Duplicate(flags int64) [1]gdclass.Node { //gd:Node.duplicate
 /*
 Replaces this node by the given 'node'. All children of this node are moved to 'node'.
 
-If 'keep_groups' is true, the 'node' is added to the same groups that the replaced node is in (see [Instance.AddToGroup]).
+If 'keep_groups' is true, the 'node' is added to the same groups that the replaced node is in (see [AddToGroup]).
 
-Warning: The replaced node is removed from the tree, but it is not deleted. To prevent memory leaks, store a reference to the node in a variable, or use [graphics.gd/classdb/Object.Instance.Free].
+Warning: The replaced node is removed from the tree, but it is not deleted. To prevent memory leaks, store a reference to the node in a variable, or use [Object.Free].
+
+[AddToGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddToGroup
+[Object.Free]: https://pkg.go.dev/graphics.gd/variant/Object#Free
 */
 //go:nosplit
 func (self class) ReplaceBy(node [1]gdclass.Node, keep_groups bool) { //gd:Node.replace_by
@@ -3070,7 +4024,11 @@ func (self class) ReplaceBy(node [1]gdclass.Node, keep_groups bool) { //gd:Node.
 }
 
 /*
-If set to true, the node becomes an [graphics.gd/classdb/InstancePlaceholder] when packed and instantiated from a [graphics.gd/classdb/PackedScene]. See also [Instance.GetSceneInstanceLoadPlaceholder].
+If set to true, the node becomes an [InstancePlaceholder] when packed and instantiated from a [PackedScene]. See also [GetSceneInstanceLoadPlaceholder].
+
+[GetSceneInstanceLoadPlaceholder]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetSceneInstanceLoadPlaceholder
+[InstancePlaceholder]: https://pkg.go.dev/graphics.gd/classdb/InstancePlaceholder
+[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
 */
 //go:nosplit
 func (self class) SetSceneInstanceLoadPlaceholder(load_placeholder bool) { //gd:Node.set_scene_instance_load_placeholder
@@ -3078,7 +4036,10 @@ func (self class) SetSceneInstanceLoadPlaceholder(load_placeholder bool) { //gd:
 }
 
 /*
-Returns true if this node is an instance load placeholder. See [graphics.gd/classdb/InstancePlaceholder] and [Instance.SetSceneInstanceLoadPlaceholder].
+Returns true if this node is an instance load placeholder. See [InstancePlaceholder] and [SetSceneInstanceLoadPlaceholder].
+
+[InstancePlaceholder]: https://pkg.go.dev/graphics.gd/classdb/InstancePlaceholder
+[SetSceneInstanceLoadPlaceholder]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetSceneInstanceLoadPlaceholder
 */
 //go:nosplit
 func (self class) GetSceneInstanceLoadPlaceholder() bool { //gd:Node.get_scene_instance_load_placeholder
@@ -3088,7 +4049,10 @@ func (self class) GetSceneInstanceLoadPlaceholder() bool { //gd:Node.get_scene_i
 }
 
 /*
-Set to true to allow all nodes owned by 'node' to be available, and editable, in the Scene dock, even if their [Instance.Owner] is not the scene root. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [Instance.IsEditableInstance].
+Set to true to allow all nodes owned by 'node' to be available, and editable, in the Scene dock, even if their [Owner] is not the scene root. This method is intended to be used in editor plugins and tools, but it also works in release builds. See also [IsEditableInstance].
+
+[IsEditableInstance]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.IsEditableInstance
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
 */
 //go:nosplit
 func (self class) SetEditableInstance(node [1]gdclass.Node, is_editable bool) { //gd:Node.set_editable_instance
@@ -3099,7 +4063,9 @@ func (self class) SetEditableInstance(node [1]gdclass.Node, is_editable bool) { 
 }
 
 /*
-Returns true if 'node' has editable children enabled relative to this node. This method is intended to be used in editor plugins and tools. See also [Instance.SetEditableInstance].
+Returns true if 'node' has editable children enabled relative to this node. This method is intended to be used in editor plugins and tools. See also [SetEditableInstance].
+
+[SetEditableInstance]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetEditableInstance
 */
 //go:nosplit
 func (self class) IsEditableInstance(node [1]gdclass.Node) bool { //gd:Node.is_editable_instance
@@ -3109,7 +4075,9 @@ func (self class) IsEditableInstance(node [1]gdclass.Node) bool { //gd:Node.is_e
 }
 
 /*
-Returns the node's closest [graphics.gd/classdb/Viewport] ancestor, if the node is inside the tree. Otherwise, returns null.
+Returns the node's closest [Viewport] ancestor, if the node is inside the tree. Otherwise, returns null.
+
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
 //go:nosplit
 func (self class) GetViewport() [1]gdclass.Viewport { //gd:Node.get_viewport
@@ -3121,9 +4089,14 @@ func (self class) GetViewport() [1]gdclass.Viewport { //gd:Node.get_viewport
 /*
 Queues this node to be deleted at the end of the current frame. When deleted, all of its children are deleted as well, and all references to the node and its children become invalid.
 
-Unlike with [graphics.gd/classdb/Object.Instance.Free], the node is not deleted instantly, and it can still be accessed before deletion. It is also safe to call [Instance.QueueFree] multiple times. Use [graphics.gd/classdb/Object.Instance.IsQueuedForDeletion] to check if the node will be deleted at the end of the frame.
+Unlike with [Object.Free], the node is not deleted instantly, and it can still be accessed before deletion. It is also safe to call [QueueFree] multiple times. Use [Object.IsQueuedForDeletion] to check if the node will be deleted at the end of the frame.
 
-Note: The node will only be freed after all other deferred calls are finished. Using this method is not always the same as calling [graphics.gd/classdb/Object.Instance.Free] through [graphics.gd/classdb/Object.Instance.CallDeferred].
+Note: The node will only be freed after all other deferred calls are finished. Using this method is not always the same as calling [Object.Free] through [Object.CallDeferred].
+
+[Object.CallDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#CallDeferred
+[Object.Free]: https://pkg.go.dev/graphics.gd/variant/Object#Free
+[Object.IsQueuedForDeletion]: https://pkg.go.dev/graphics.gd/variant/Object#IsQueuedForDeletion
+[QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
 */
 //go:nosplit
 func (self class) QueueFree() { //gd:Node.queue_free
@@ -3132,9 +4105,11 @@ func (self class) QueueFree() { //gd:Node.queue_free
 }
 
 /*
-Requests [Interface.Ready] to be called again the next time the node enters the tree. Does not immediately call [Interface.Ready].
+Requests [Ready] to be called again the next time the node enters the tree. Does not immediately call [Ready].
 
-Note: This method only affects the current node. If the node's children also need to request ready, this method needs to be called for each one of them. When the node and its children enter the tree again, the order of [Interface.Ready] callbacks will be the same as normal.
+Note: This method only affects the current node. If the node's children also need to request ready, this method needs to be called for each one of them. When the node and its children enter the tree again, the order of [Ready] callbacks will be the same as normal.
+
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 //go:nosplit
 func (self class) RequestReady() { //gd:Node.request_ready
@@ -3144,7 +4119,9 @@ func (self class) RequestReady() { //gd:Node.request_ready
 /*
 Returns true if the node is ready, i.e. it's inside scene tree and all its children are initialized.
 
-[Instance.RequestReady] resets it back to false.
+[RequestReady] resets it back to false.
+
+[RequestReady]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RequestReady
 */
 //go:nosplit
 func (self class) IsNodeReady() bool { //gd:Node.is_node_ready
@@ -3154,11 +4131,16 @@ func (self class) IsNodeReady() bool { //gd:Node.is_node_ready
 }
 
 /*
-Sets the node's multiplayer authority to the peer with the given peer 'id'. The multiplayer authority is the peer that has authority over the node on the network. Defaults to peer ID 1 (the server). Useful in conjunction with [Instance.RpcConfig] and the [graphics.gd/classdb/MultiplayerAPI].
+Sets the node's multiplayer authority to the peer with the given peer 'id'. The multiplayer authority is the peer that has authority over the node on the network. Defaults to peer ID 1 (the server). Useful in conjunction with [RpcConfig] and the [MultiplayerAPI].
 
 If 'recursive' is true, the given peer is recursively set as the authority for all children of this node.
 
-Warning: This does not automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [graphics.gd/classdb/MultiplayerSpawner.Instance.SpawnFunction], an RPC, or a [graphics.gd/classdb/MultiplayerSynchronizer]. Furthermore, the parent's authority does not propagate to newly added children.
+Warning: This does not automatically replicate the new authority to other peers. It is the developer's responsibility to do so. You may replicate the new authority's information using [MultiplayerSpawner.SpawnFunction], an RPC, or a [MultiplayerSynchronizer]. Furthermore, the parent's authority does not propagate to newly added children.
+
+[MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
+[MultiplayerSpawner.SpawnFunction]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSpawner#Instance.SpawnFunction
+[MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
+[RpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcConfig
 */
 //go:nosplit
 func (self class) SetMultiplayerAuthority(id int64, recursive bool) { //gd:Node.set_multiplayer_authority
@@ -3169,7 +4151,9 @@ func (self class) SetMultiplayerAuthority(id int64, recursive bool) { //gd:Node.
 }
 
 /*
-Returns the peer ID of the multiplayer authority for this node. See [Instance.SetMultiplayerAuthority].
+Returns the peer ID of the multiplayer authority for this node. See [SetMultiplayerAuthority].
+
+[SetMultiplayerAuthority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.SetMultiplayerAuthority
 */
 //go:nosplit
 func (self class) GetMultiplayerAuthority() int64 { //gd:Node.get_multiplayer_authority
@@ -3219,9 +4203,13 @@ func (self class) RpcConfig(method String.Name, config variant.Any) { //gd:Node.
 }
 
 /*
-Returns a data structure mapping method names to their RPC configuration defined for this node using [Instance.RpcConfig].
+Returns a data structure mapping method names to their RPC configuration defined for this node using [RpcConfig].
 
-Note: This method only returns the RPC configuration assigned via [Instance.RpcConfig]. See [graphics.gd/classdb/Script.Instance.GetRpcConfig] to retrieve the RPCs defined by the [graphics.gd/classdb/Script].
+Note: This method only returns the RPC configuration assigned via [RpcConfig]. See [Script.GetRpcConfig] to retrieve the RPCs defined by the [Script].
+
+[RpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcConfig
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
+[Script.GetRpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Script#Instance.GetRpcConfig
 */
 //go:nosplit
 func (self class) GetNodeRpcConfig() variant.Any { //gd:Node.get_node_rpc_config
@@ -3255,15 +4243,20 @@ func (self class) IsUniqueNameInOwner() bool { //gd:Node.is_unique_name_in_owner
 }
 
 /*
-Translates a 'message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation. Note that most [graphics.gd/classdb/Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
+Translates a 'message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation. Note that most [Control] nodes automatically translate their strings, so this method is mostly useful for formatted strings or custom drawn text.
 
-This method works the same as [graphics.gd/classdb/Object.Instance.Tr], with the addition of respecting the [Instance.AutoTranslateMode] state.
+This method works the same as [Object.Tr], with the addition of respecting the [AutoTranslateMode] state.
 
-If [graphics.gd/classdb/Object.Instance.CanTranslateMessages] is false, or no translation is available, this method returns the 'message' without changes. See [graphics.gd/classdb/Object.Instance.SetMessageTranslation].
+If [Object.CanTranslateMessages] is false, or no translation is available, this method returns the 'message' without changes. See [Object.SetMessageTranslation].
 
 For detailed examples, see [Internationalizing games].
 
+[AutoTranslateMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AutoTranslateMode
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [Internationalizing games]: https://docs.godotengine.org/tutorials/i18n/internationalizing_games.html
+[Object.CanTranslateMessages]: https://pkg.go.dev/graphics.gd/variant/Object#CanTranslateMessages
+[Object.SetMessageTranslation]: https://pkg.go.dev/graphics.gd/variant/Object#SetMessageTranslation
+[Object.Tr]: https://pkg.go.dev/graphics.gd/variant/Object#Tr
 */
 //go:nosplit
 func (self class) Atr(message String.Readable, context String.Name) String.Readable { //gd:Node.atr
@@ -3278,17 +4271,23 @@ func (self class) Atr(message String.Readable, context String.Name) String.Reada
 /*
 Translates a 'message' or 'plural_message', using the translation catalogs configured in the Project Settings. Further 'context' can be specified to help with the translation.
 
-This method works the same as [graphics.gd/classdb/Object.Instance.TrN], with the addition of respecting the [Instance.AutoTranslateMode] state.
+This method works the same as [Object.TrN], with the addition of respecting the [AutoTranslateMode] state.
 
-If [graphics.gd/classdb/Object.Instance.CanTranslateMessages] is false, or no translation is available, this method returns 'message' or 'plural_message', without changes. See [graphics.gd/classdb/Object.Instance.SetMessageTranslation].
+If [Object.CanTranslateMessages] is false, or no translation is available, this method returns 'message' or 'plural_message', without changes. See [Object.SetMessageTranslation].
 
 The 'n' is the number, or amount, of the message's subject. It is used by the translation system to fetch the correct plural form for the current language.
 
 For detailed examples, see [Localization using gettext].
 
-Note: Negative and [Float.X] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [Instance.Atr].
+Note: Negative and [Float.X] numbers may not properly apply to some countable subjects. It's recommended to handle these cases with [Atr].
 
+[Atr]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Atr
+[AutoTranslateMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AutoTranslateMode
+[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 [Localization using gettext]: https://docs.godotengine.org/tutorials/i18n/localization_using_gettext.html
+[Object.CanTranslateMessages]: https://pkg.go.dev/graphics.gd/variant/Object#CanTranslateMessages
+[Object.SetMessageTranslation]: https://pkg.go.dev/graphics.gd/variant/Object#SetMessageTranslation
+[Object.TrN]: https://pkg.go.dev/graphics.gd/variant/Object#TrN
 */
 //go:nosplit
 func (self class) AtrN(message String.Readable, plural_message String.Name, n int64, context String.Name) String.Readable { //gd:Node.atr_n
@@ -3303,15 +4302,22 @@ func (self class) AtrN(message String.Readable, plural_message String.Name, n in
 }
 
 /*
-Sends a remote procedure call request for the given 'method' to peers on the network (and locally), sending additional arguments to the method called by the RPC. The call request will only be received by nodes with the same node path, including the exact same [Instance.Name]. Behavior depends on the RPC configuration for the given 'method' (see [Instance.RpcConfig] and ). By default, methods are not exposed to RPCs.
+Sends a remote procedure call request for the given 'method' to peers on the network (and locally), sending additional arguments to the method called by the RPC. The call request will only be received by nodes with the same node path, including the exact same [Name]. Behavior depends on the RPC configuration for the given 'method' (see [RpcConfig] and ). By default, methods are not exposed to RPCs.
 
 May return [constant OK] if the call is successful, [constant ERR_INVALID_PARAMETER] if the arguments passed in the [param method] do not match, [constant ERR_UNCONFIGURED] if the node's [member multiplayer] cannot be fetched (such as when the node is not inside the tree), [constant ERR_CONNECTION_ERROR] if [member multiplayer]'s connection is not available.
 
 [b]Note:[/b] You can only safely use RPCs on clients after you received the [signal MultiplayerAPI.connected_to_server] signal from the [MultiplayerAPI]. You also need to keep track of the connection state, either by the [MultiplayerAPI] signals like [signal MultiplayerAPI.server_disconnected] or by checking ([code]get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED[/code]).). By default, methods are not exposed to RPCs.
 
-May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [Instance.Multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [Instance.Multiplayer]'s connection is not available.
+May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [Multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [Multiplayer]'s connection is not available.
 
-Note: You can only safely use RPCs on clients after you received the [Instance.OnMultiplayerapi.ConnectedToServer] signal from the [graphics.gd/classdb/MultiplayerAPI]. You also need to keep track of the connection state, either by the [graphics.gd/classdb/MultiplayerAPI] signals like [Instance.OnMultiplayerapi.ServerDisconnected] or by checking (get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED).
+Note: You can only safely use RPCs on clients after you received the [OnMultiplayerapi.ConnectedToServer] signal from the [MultiplayerAPI]. You also need to keep track of the connection state, either by the [MultiplayerAPI] signals like [OnMultiplayerapi.ServerDisconnected] or by checking (get_multiplayer().peer.get_connection_status() == CONNECTION_CONNECTED).
+
+[Multiplayer]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Multiplayer
+[MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
+[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
+[OnMultiplayerapi.ConnectedToServer]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnMultiplayerapi.ConnectedToServer
+[OnMultiplayerapi.ServerDisconnected]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnMultiplayerapi.ServerDisconnected
+[RpcConfig]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.RpcConfig
 */
 //go:nosplit
 func (self class) Rpc(method String.Name, args ...gd.Variant) Error.Code { //gd:Node.rpc
@@ -3328,9 +4334,13 @@ func (self class) Rpc(method String.Name, args ...gd.Variant) Error.Code { //gd:
 }
 
 /*
-Sends a [Instance.Rpc] to a specific peer identified by 'peer_id' (see [graphics.gd/classdb/MultiplayerPeer.Instance.SetTargetPeer]).
+Sends a [Rpc] to a specific peer identified by 'peer_id' (see [MultiplayerPeer.SetTargetPeer]).
 
-May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [Instance.Multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [Instance.Multiplayer]'s connection is not available.
+May return [Ok] if the call is successful, [ErrInvalidParameter] if the arguments passed in the 'method' do not match, [ErrUnconfigured] if the node's [Multiplayer] cannot be fetched (such as when the node is not inside the tree), [ErrConnectionError] if [Multiplayer]'s connection is not available.
+
+[Multiplayer]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Multiplayer
+[MultiplayerPeer.SetTargetPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer#Instance.SetTargetPeer
+[Rpc]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Rpc
 */
 //go:nosplit
 func (self class) RpcId(peer_id int64, method String.Name, args ...gd.Variant) Error.Code { //gd:Node.rpc_id
@@ -3347,7 +4357,9 @@ func (self class) RpcId(peer_id int64, method String.Name, args ...gd.Variant) E
 }
 
 /*
-Refreshes the warnings displayed for this node in the Scene dock. Use [Interface.GetConfigurationWarnings] to customize the warning messages to display.
+Refreshes the warnings displayed for this node in the Scene dock. Use [GetConfigurationWarnings] to customize the warning messages to display.
+
+[GetConfigurationWarnings]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 //go:nosplit
 func (self class) UpdateConfigurationWarnings() { //gd:Node.update_configuration_warnings
@@ -3355,7 +4367,11 @@ func (self class) UpdateConfigurationWarnings() { //gd:Node.update_configuration
 }
 
 /*
-This function is similar to [graphics.gd/classdb/Object.Instance.CallDeferred] except that the call will take place when the node thread group is processed. If the node thread group processes in sub-threads, then the call will be done on that thread, right before [NotificationProcess] or [NotificationPhysicsProcess], the [Interface.Process] or [Interface.PhysicsProcess] or their internal versions are called.
+This function is similar to [Object.CallDeferred] except that the call will take place when the node thread group is processed. If the node thread group processes in sub-threads, then the call will be done on that thread, right before [NotificationProcess] or [NotificationPhysicsProcess], the [Process] or [PhysicsProcess] or their internal versions are called.
+
+[Object.CallDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#CallDeferred
+[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
 */
 //go:nosplit
 func (self class) CallDeferredThreadGroup(method String.Name, args ...gd.Variant) variant.Any { //gd:Node.call_deferred_thread_group
@@ -3372,7 +4388,9 @@ func (self class) CallDeferredThreadGroup(method String.Name, args ...gd.Variant
 }
 
 /*
-Similar to [Instance.CallDeferredThreadGroup], but for setting properties.
+Similar to [CallDeferredThreadGroup], but for setting properties.
+
+[CallDeferredThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallDeferredThreadGroup
 */
 //go:nosplit
 func (self class) SetDeferredThreadGroup(property String.Name, value variant.Any) { //gd:Node.set_deferred_thread_group
@@ -3383,7 +4401,9 @@ func (self class) SetDeferredThreadGroup(property String.Name, value variant.Any
 }
 
 /*
-Similar to [Instance.CallDeferredThreadGroup], but for notifications.
+Similar to [CallDeferredThreadGroup], but for notifications.
+
+[CallDeferredThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallDeferredThreadGroup
 */
 //go:nosplit
 func (self class) NotifyDeferredThreadGroup(what int64) { //gd:Node.notify_deferred_thread_group
@@ -3408,7 +4428,9 @@ func (self class) CallThreadSafe(method String.Name, args ...gd.Variant) variant
 }
 
 /*
-Similar to [Instance.CallThreadSafe], but for setting properties.
+Similar to [CallThreadSafe], but for setting properties.
+
+[CallThreadSafe]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallThreadSafe
 */
 //go:nosplit
 func (self class) SetThreadSafe(property String.Name, value variant.Any) { //gd:Node.set_thread_safe
@@ -3419,7 +4441,9 @@ func (self class) SetThreadSafe(property String.Name, value variant.Any) { //gd:
 }
 
 /*
-Similar to [Instance.CallThreadSafe], but for notifications.
+Similar to [CallThreadSafe], but for notifications.
+
+[CallThreadSafe]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallThreadSafe
 */
 //go:nosplit
 func (self class) NotifyThreadSafe(what int64) { //gd:Node.notify_thread_safe
@@ -3629,44 +4653,72 @@ func init() {
 type ProcessMode int //gd:Node.ProcessMode
 
 const (
-	// Inherits [Instance.ProcessMode] from the node's parent. This is the default for any newly created node.
+	// Inherits [ProcessMode] from the node's parent. This is the default for any newly created node.
+	//
+	// [ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ProcessMode
 	ProcessModeInherit ProcessMode = 0
-	// Stops processing when [graphics.gd/classdb/SceneTree.Instance.Paused] is true. This is the inverse of [ProcessModeWhenPaused], and the default for the root node.
+	// Stops processing when [SceneTree.Paused] is true. This is the inverse of [ProcessModeWhenPaused], and the default for the root node.
+	//
+	// [SceneTree.Paused]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Paused
 	ProcessModePausable ProcessMode = 1
-	// Process only when [graphics.gd/classdb/SceneTree.Instance.Paused] is true. This is the inverse of [ProcessModePausable].
+	// Process only when [SceneTree.Paused] is true. This is the inverse of [ProcessModePausable].
+	//
+	// [SceneTree.Paused]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Paused
 	ProcessModeWhenPaused ProcessMode = 2
-	// Always process. Keeps processing, ignoring [graphics.gd/classdb/SceneTree.Instance.Paused]. This is the inverse of [ProcessModeDisabled].
+	// Always process. Keeps processing, ignoring [SceneTree.Paused]. This is the inverse of [ProcessModeDisabled].
+	//
+	// [SceneTree.Paused]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Paused
 	ProcessModeAlways ProcessMode = 3
-	// Never process. Completely disables processing, ignoring [graphics.gd/classdb/SceneTree.Instance.Paused]. This is the inverse of [ProcessModeAlways].
+	// Never process. Completely disables processing, ignoring [SceneTree.Paused]. This is the inverse of [ProcessModeAlways].
+	//
+	// [SceneTree.Paused]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Paused
 	ProcessModeDisabled ProcessMode = 4
 )
 
 type ProcessThreadGroup int //gd:Node.ProcessThreadGroup
 
 const (
-	// Process this node based on the thread group mode of the first parent (or grandparent) node that has a thread group mode that is not inherit. See [Instance.ProcessThreadGroup] for more information.
+	// Process this node based on the thread group mode of the first parent (or grandparent) node that has a thread group mode that is not inherit. See [ProcessThreadGroup] for more information.
+	//
+	// [ProcessThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ProcessThreadGroup
 	ProcessThreadGroupInherit ProcessThreadGroup = 0
-	// Process this node (and child nodes set to inherit) on the main thread. See [Instance.ProcessThreadGroup] for more information.
+	// Process this node (and child nodes set to inherit) on the main thread. See [ProcessThreadGroup] for more information.
+	//
+	// [ProcessThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ProcessThreadGroup
 	ProcessThreadGroupMainThread ProcessThreadGroup = 1
-	// Process this node (and child nodes set to inherit) on a sub-thread. See [Instance.ProcessThreadGroup] for more information.
+	// Process this node (and child nodes set to inherit) on a sub-thread. See [ProcessThreadGroup] for more information.
+	//
+	// [ProcessThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ProcessThreadGroup
 	ProcessThreadGroupSubThread ProcessThreadGroup = 2
 )
 
 type ProcessThreadMessages int //gd:Node.ProcessThreadMessages
 
 const (
-	// Allows this node to process threaded messages created with [Instance.CallDeferredThreadGroup] right before [Instance.Process] is called.
+	// Allows this node to process threaded messages created with [CallDeferredThreadGroup] right before [Process] is called.
+	//
+	// [CallDeferredThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/#Instance.CallDeferredThreadGroup
+	// [Process]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Process
 	FlagProcessThreadMessages ProcessThreadMessages = 1
-	// Allows this node to process threaded messages created with [Instance.CallDeferredThreadGroup] right before [Instance.PhysicsProcess] is called.
+	// Allows this node to process threaded messages created with [CallDeferredThreadGroup] right before [PhysicsProcess] is called.
+	//
+	// [CallDeferredThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/#Instance.CallDeferredThreadGroup
+	// [PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/#Instance.PhysicsProcess
 	FlagProcessThreadMessagesPhysics ProcessThreadMessages = 2
-	// Allows this node to process threaded messages created with [Instance.CallDeferredThreadGroup] right before either [Instance.Process] or [Instance.PhysicsProcess] are called.
+	// Allows this node to process threaded messages created with [CallDeferredThreadGroup] right before either [Process] or [PhysicsProcess] are called.
+	//
+	// [CallDeferredThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/#Instance.CallDeferredThreadGroup
+	// [PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/#Instance.PhysicsProcess
+	// [Process]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Process
 	FlagProcessThreadMessagesAll ProcessThreadMessages = 3
 )
 
 type PhysicsInterpolationMode int //gd:Node.PhysicsInterpolationMode
 
 const (
-	// Inherits [Instance.PhysicsInterpolationMode] from the node's parent. This is the default for any newly created node.
+	// Inherits [PhysicsInterpolationMode] from the node's parent. This is the default for any newly created node.
+	//
+	// [PhysicsInterpolationMode]: https://pkg.go.dev/graphics.gd/classdb/#Instance.PhysicsInterpolationMode
 	PhysicsInterpolationModeInherit PhysicsInterpolationMode = 0
 	// Enables physics interpolation for this node and for children set to [PhysicsInterpolationModeInherit]. This is the default for the root node.
 	PhysicsInterpolationModeOn PhysicsInterpolationMode = 1
@@ -3683,7 +4735,9 @@ const (
 	DuplicateGroups DuplicateFlags = 2
 	// Duplicate the node's script (also overriding the duplicated children's scripts, if combined with [DuplicateUseInstantiation]).
 	DuplicateScripts DuplicateFlags = 4
-	// Duplicate using [graphics.gd/classdb/PackedScene.Instance.Instantiate]. If the node comes from a scene saved on disk, reuses [graphics.gd/classdb/PackedScene.Instance.Instantiate] as the base for the duplicated node and its children.
+	// Duplicate using [PackedScene.Instantiate]. If the node comes from a scene saved on disk, reuses [PackedScene.Instantiate] as the base for the duplicated node and its children.
+	//
+	// [PackedScene.Instantiate]: https://pkg.go.dev/graphics.gd/classdb/PackedScene#Instance.Instantiate
 	DuplicateUseInstantiation DuplicateFlags = 8
 )
 
@@ -3701,7 +4755,9 @@ const (
 type AutoTranslateMode int //gd:Node.AutoTranslateMode
 
 const (
-	// Inherits [Instance.AutoTranslateMode] from the node's parent. This is the default for any newly created node.
+	// Inherits [AutoTranslateMode] from the node's parent. This is the default for any newly created node.
+	//
+	// [AutoTranslateMode]: https://pkg.go.dev/graphics.gd/classdb/#Instance.AutoTranslateMode
 	AutoTranslateModeInherit AutoTranslateMode = 0
 	// Always automatically translate. This is the inverse of [AutoTranslateModeDisabled], and the default for the root node.
 	AutoTranslateModeAlways AutoTranslateMode = 1

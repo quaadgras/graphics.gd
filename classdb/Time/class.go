@@ -387,6 +387,7 @@ Returns the current Unix timestamp in seconds based on the system time in UTC. T
 
 Note: Unlike other methods that use integer timestamps, this method returns the timestamp as a [Float.X] for sub-second precision.
 
+[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 [Unix epoch]: https://en.wikipedia.org/wiki/Unix_time
 */
 func GetUnixTimeFromSystem() Float.X { //gd:Time.get_unix_time_from_system
@@ -676,6 +677,7 @@ Returns the current Unix timestamp in seconds based on the system time in UTC. T
 
 Note: Unlike other methods that use integer timestamps, this method returns the timestamp as a [Float.X] for sub-second precision.
 
+[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 [Unix epoch]: https://en.wikipedia.org/wiki/Unix_time
 */
 //go:nosplit

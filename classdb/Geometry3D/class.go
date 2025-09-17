@@ -122,6 +122,8 @@ func ComputeConvexMeshPoints(planes []Plane.NormalD) []Vector3.XYZ { //gd:Geomet
 
 /*
 Returns an array with 6 [Plane.NormalD]s that describe the sides of a box centered at the origin. The box size is defined by 'extents', which represents one (positive) corner of the box (i.e. half its actual size).
+
+[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
 */
 func BuildBoxPlanes(extents Vector3.XYZ) []Plane.NormalD { //gd:Geometry3D.build_box_planes
 	once.Do(singleton)
@@ -130,6 +132,8 @@ func BuildBoxPlanes(extents Vector3.XYZ) []Plane.NormalD { //gd:Geometry3D.build
 
 /*
 Returns an array of [Plane.NormalD]s closely bounding a faceted cylinder centered at the origin with radius 'radius' and height 'height'. The parameter 'sides' defines how many planes will be generated for the round part of the cylinder. The parameter 'axis' describes the axis along which the cylinder is oriented (0 for X, 1 for Y, 2 for Z).
+
+[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
 */
 func BuildCylinderPlanes(radius Float.X, height Float.X, sides int) []Plane.NormalD { //gd:Geometry3D.build_cylinder_planes
 	once.Do(singleton)
@@ -138,6 +142,8 @@ func BuildCylinderPlanes(radius Float.X, height Float.X, sides int) []Plane.Norm
 
 /*
 Returns an array of [Plane.NormalD]s closely bounding a faceted cylinder centered at the origin with radius 'radius' and height 'height'. The parameter 'sides' defines how many planes will be generated for the round part of the cylinder. The parameter 'axis' describes the axis along which the cylinder is oriented (0 for X, 1 for Y, 2 for Z).
+
+[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
 */
 func BuildCylinderPlanesOptions(radius Float.X, height Float.X, sides int, axis Vector3.Axis) []Plane.NormalD { //gd:Geometry3D.build_cylinder_planes
 	once.Do(singleton)
@@ -146,6 +152,8 @@ func BuildCylinderPlanesOptions(radius Float.X, height Float.X, sides int, axis 
 
 /*
 Returns an array of [Plane.NormalD]s closely bounding a faceted capsule centered at the origin with radius 'radius' and height 'height'. The parameter 'sides' defines how many planes will be generated for the side part of the capsule, whereas 'lats' gives the number of latitudinal steps at the bottom and top of the capsule. The parameter 'axis' describes the axis along which the capsule is oriented (0 for X, 1 for Y, 2 for Z).
+
+[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
 */
 func BuildCapsulePlanes(radius Float.X, height Float.X, sides int, lats int) []Plane.NormalD { //gd:Geometry3D.build_capsule_planes
 	once.Do(singleton)
@@ -154,6 +162,8 @@ func BuildCapsulePlanes(radius Float.X, height Float.X, sides int, lats int) []P
 
 /*
 Returns an array of [Plane.NormalD]s closely bounding a faceted capsule centered at the origin with radius 'radius' and height 'height'. The parameter 'sides' defines how many planes will be generated for the side part of the capsule, whereas 'lats' gives the number of latitudinal steps at the bottom and top of the capsule. The parameter 'axis' describes the axis along which the capsule is oriented (0 for X, 1 for Y, 2 for Z).
+
+[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
 */
 func BuildCapsulePlanesOptions(radius Float.X, height Float.X, sides int, lats int, axis Vector3.Axis) []Plane.NormalD { //gd:Geometry3D.build_capsule_planes
 	once.Do(singleton)
@@ -162,6 +172,8 @@ func BuildCapsulePlanesOptions(radius Float.X, height Float.X, sides int, lats i
 
 /*
 Given the two 3D segments ('p1', 'p2') and ('q1', 'q2'), finds those two points on the two segments that are closest to each other. Returns a [][Vector3.XYZ] that contains this point on ('p1', 'p2') as well the accompanying point on ('q1', 'q2').
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 func GetClosestPointsBetweenSegments(p1 Vector3.XYZ, p2 Vector3.XYZ, q1 Vector3.XYZ, q2 Vector3.XYZ) []Vector3.XYZ { //gd:Geometry3D.get_closest_points_between_segments
 	once.Do(singleton)
@@ -190,6 +202,7 @@ Returns a [Vector3.XYZ] containing weights based on how close a 3D position ('po
 [Here is a more detailed explanation of barycentric coordinates.]
 
 [Here is a more detailed explanation of barycentric coordinates.]: https://en.wikipedia.org/wiki/Barycentric_coordinate_system
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 func GetTriangleBarycentricCoords(point Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) Vector3.XYZ { //gd:Geometry3D.get_triangle_barycentric_coords
 	once.Do(singleton)
@@ -198,6 +211,8 @@ func GetTriangleBarycentricCoords(point Vector3.XYZ, a Vector3.XYZ, b Vector3.XY
 
 /*
 Tests if the 3D ray starting at 'from' with the direction of 'dir' intersects the triangle specified by 'a', 'b' and 'c'. If yes, returns the point of intersection as [Vector3.XYZ]. If no intersection takes place, returns null.
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 func RayIntersectsTriangle(from Vector3.XYZ, dir Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) any { //gd:Geometry3D.ray_intersects_triangle
 	once.Do(singleton)
@@ -206,6 +221,8 @@ func RayIntersectsTriangle(from Vector3.XYZ, dir Vector3.XYZ, a Vector3.XYZ, b V
 
 /*
 Tests if the segment ('from', 'to') intersects the triangle 'a', 'b', 'c'. If yes, returns the point of intersection as [Vector3.XYZ]. If no intersection takes place, returns null.
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 func SegmentIntersectsTriangle(from Vector3.XYZ, to Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) any { //gd:Geometry3D.segment_intersects_triangle
 	once.Do(singleton)
@@ -214,6 +231,8 @@ func SegmentIntersectsTriangle(from Vector3.XYZ, to Vector3.XYZ, a Vector3.XYZ, 
 
 /*
 Checks if the segment ('from', 'to') intersects the sphere that is located at 'sphere_position' and has radius 'sphere_radius'. If no, returns an empty [][Vector3.XYZ]. If yes, returns a [][Vector3.XYZ] containing the point of intersection and the sphere's normal at the point of intersection.
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 func SegmentIntersectsSphere(from Vector3.XYZ, to Vector3.XYZ, sphere_position Vector3.XYZ, sphere_radius Float.X) []Vector3.XYZ { //gd:Geometry3D.segment_intersects_sphere
 	once.Do(singleton)
@@ -222,6 +241,8 @@ func SegmentIntersectsSphere(from Vector3.XYZ, to Vector3.XYZ, sphere_position V
 
 /*
 Checks if the segment ('from', 'to') intersects the cylinder with height 'height' that is centered at the origin and has radius 'radius'. If no, returns an empty [][Vector3.XYZ]. If an intersection takes place, the returned array contains the point of intersection and the cylinder's normal at the point of intersection.
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 func SegmentIntersectsCylinder(from Vector3.XYZ, to Vector3.XYZ, height Float.X, radius Float.X) []Vector3.XYZ { //gd:Geometry3D.segment_intersects_cylinder
 	once.Do(singleton)
@@ -230,6 +251,9 @@ func SegmentIntersectsCylinder(from Vector3.XYZ, to Vector3.XYZ, height Float.X,
 
 /*
 Given a convex hull defined though the [Plane.NormalD]s in the array 'planes', tests if the segment ('from', 'to') intersects with that hull. If an intersection is found, returns a [][Vector3.XYZ] containing the point the intersection and the hull's normal. Otherwise, returns an empty array.
+
+[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 func SegmentIntersectsConvex(from Vector3.XYZ, to Vector3.XYZ, planes []Plane.NormalD) []Vector3.XYZ { //gd:Geometry3D.segment_intersects_convex
 	once.Do(singleton)
@@ -287,6 +311,8 @@ func (self class) ComputeConvexMeshPoints(planes Array.Contains[Plane.NormalD]) 
 
 /*
 Returns an array with 6 [Plane.NormalD]s that describe the sides of a box centered at the origin. The box size is defined by 'extents', which represents one (positive) corner of the box (i.e. half its actual size).
+
+[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
 */
 //go:nosplit
 func (self class) BuildBoxPlanes(extents Vector3.XYZ) Array.Contains[Plane.NormalD] { //gd:Geometry3D.build_box_planes
@@ -297,6 +323,8 @@ func (self class) BuildBoxPlanes(extents Vector3.XYZ) Array.Contains[Plane.Norma
 
 /*
 Returns an array of [Plane.NormalD]s closely bounding a faceted cylinder centered at the origin with radius 'radius' and height 'height'. The parameter 'sides' defines how many planes will be generated for the round part of the cylinder. The parameter 'axis' describes the axis along which the cylinder is oriented (0 for X, 1 for Y, 2 for Z).
+
+[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
 */
 //go:nosplit
 func (self class) BuildCylinderPlanes(radius float64, height float64, sides int64, axis Vector3.Axis) Array.Contains[Plane.NormalD] { //gd:Geometry3D.build_cylinder_planes
@@ -312,6 +340,8 @@ func (self class) BuildCylinderPlanes(radius float64, height float64, sides int6
 
 /*
 Returns an array of [Plane.NormalD]s closely bounding a faceted capsule centered at the origin with radius 'radius' and height 'height'. The parameter 'sides' defines how many planes will be generated for the side part of the capsule, whereas 'lats' gives the number of latitudinal steps at the bottom and top of the capsule. The parameter 'axis' describes the axis along which the capsule is oriented (0 for X, 1 for Y, 2 for Z).
+
+[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
 */
 //go:nosplit
 func (self class) BuildCapsulePlanes(radius float64, height float64, sides int64, lats int64, axis Vector3.Axis) Array.Contains[Plane.NormalD] { //gd:Geometry3D.build_capsule_planes
@@ -328,6 +358,8 @@ func (self class) BuildCapsulePlanes(radius float64, height float64, sides int64
 
 /*
 Given the two 3D segments ('p1', 'p2') and ('q1', 'q2'), finds those two points on the two segments that are closest to each other. Returns a [][Vector3.XYZ] that contains this point on ('p1', 'p2') as well the accompanying point on ('q1', 'q2').
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 //go:nosplit
 func (self class) GetClosestPointsBetweenSegments(p1 Vector3.XYZ, p2 Vector3.XYZ, q1 Vector3.XYZ, q2 Vector3.XYZ) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.get_closest_points_between_segments
@@ -375,6 +407,7 @@ Returns a [Vector3.XYZ] containing weights based on how close a 3D position ('po
 [Here is a more detailed explanation of barycentric coordinates.]
 
 [Here is a more detailed explanation of barycentric coordinates.]: https://en.wikipedia.org/wiki/Barycentric_coordinate_system
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 //go:nosplit
 func (self class) GetTriangleBarycentricCoords(point Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) Vector3.XYZ { //gd:Geometry3D.get_triangle_barycentric_coords
@@ -390,6 +423,8 @@ func (self class) GetTriangleBarycentricCoords(point Vector3.XYZ, a Vector3.XYZ,
 
 /*
 Tests if the 3D ray starting at 'from' with the direction of 'dir' intersects the triangle specified by 'a', 'b' and 'c'. If yes, returns the point of intersection as [Vector3.XYZ]. If no intersection takes place, returns null.
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 //go:nosplit
 func (self class) RayIntersectsTriangle(from Vector3.XYZ, dir Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) variant.Any { //gd:Geometry3D.ray_intersects_triangle
@@ -406,6 +441,8 @@ func (self class) RayIntersectsTriangle(from Vector3.XYZ, dir Vector3.XYZ, a Vec
 
 /*
 Tests if the segment ('from', 'to') intersects the triangle 'a', 'b', 'c'. If yes, returns the point of intersection as [Vector3.XYZ]. If no intersection takes place, returns null.
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 //go:nosplit
 func (self class) SegmentIntersectsTriangle(from Vector3.XYZ, to Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) variant.Any { //gd:Geometry3D.segment_intersects_triangle
@@ -422,6 +459,8 @@ func (self class) SegmentIntersectsTriangle(from Vector3.XYZ, to Vector3.XYZ, a 
 
 /*
 Checks if the segment ('from', 'to') intersects the sphere that is located at 'sphere_position' and has radius 'sphere_radius'. If no, returns an empty [][Vector3.XYZ]. If yes, returns a [][Vector3.XYZ] containing the point of intersection and the sphere's normal at the point of intersection.
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 //go:nosplit
 func (self class) SegmentIntersectsSphere(from Vector3.XYZ, to Vector3.XYZ, sphere_position Vector3.XYZ, sphere_radius float64) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.segment_intersects_sphere
@@ -437,6 +476,8 @@ func (self class) SegmentIntersectsSphere(from Vector3.XYZ, to Vector3.XYZ, sphe
 
 /*
 Checks if the segment ('from', 'to') intersects the cylinder with height 'height' that is centered at the origin and has radius 'radius'. If no, returns an empty [][Vector3.XYZ]. If an intersection takes place, the returned array contains the point of intersection and the cylinder's normal at the point of intersection.
+
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 //go:nosplit
 func (self class) SegmentIntersectsCylinder(from Vector3.XYZ, to Vector3.XYZ, height float64, radius float64) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.segment_intersects_cylinder
@@ -452,6 +493,9 @@ func (self class) SegmentIntersectsCylinder(from Vector3.XYZ, to Vector3.XYZ, he
 
 /*
 Given a convex hull defined though the [Plane.NormalD]s in the array 'planes', tests if the segment ('from', 'to') intersects with that hull. If an intersection is found, returns a [][Vector3.XYZ] containing the point the intersection and the hull's normal. Otherwise, returns an empty array.
+
+[Plane.NormalD]: https://pkg.go.dev/graphics.gd/variant/Plane#NormalD
+[Vector3.XYZ]: https://pkg.go.dev/graphics.gd/variant/Vector3#XYZ
 */
 //go:nosplit
 func (self class) SegmentIntersectsConvex(from Vector3.XYZ, to Vector3.XYZ, planes Array.Contains[Plane.NormalD]) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.segment_intersects_convex

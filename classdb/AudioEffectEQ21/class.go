@@ -45,7 +45,11 @@ Band 20: 16000 Hz
 
 Band 21: 22000 Hz
 
-See also [graphics.gd/classdb/AudioEffectEQ], [graphics.gd/classdb/AudioEffectEQ6], [graphics.gd/classdb/AudioEffectEQ10].
+See also [AudioEffectEQ], [AudioEffectEQ6], [AudioEffectEQ10].
+
+[AudioEffectEQ]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectEQ
+[AudioEffectEQ10]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectEQ10
+[AudioEffectEQ6]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectEQ6
 */
 package AudioEffectEQ21
 

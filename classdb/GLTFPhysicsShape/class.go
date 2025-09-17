@@ -112,7 +112,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.GLTFPhysicsShape
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.GLTFPhysicsShape
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -123,7 +128,9 @@ type Any interface {
 }
 
 /*
-Creates a new GLTFPhysicsShape instance from the given Godot [graphics.gd/classdb/CollisionShape3D] node.
+Creates a new GLTFPhysicsShape instance from the given Godot [CollisionShape3D] node.
+
+[CollisionShape3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape3D
 */
 func FromNode(shape_node CollisionShape3D.Instance) Instance { //gd:GLTFPhysicsShape.from_node
 	self := Instance{}
@@ -131,21 +138,27 @@ func FromNode(shape_node CollisionShape3D.Instance) Instance { //gd:GLTFPhysicsS
 }
 
 /*
-Converts this GLTFPhysicsShape instance into a Godot [graphics.gd/classdb/CollisionShape3D] node.
+Converts this GLTFPhysicsShape instance into a Godot [CollisionShape3D] node.
+
+[CollisionShape3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape3D
 */
 func (self Instance) ToNode() CollisionShape3D.Instance { //gd:GLTFPhysicsShape.to_node
 	return CollisionShape3D.Instance(Advanced(self).ToNode(false))
 }
 
 /*
-Converts this GLTFPhysicsShape instance into a Godot [graphics.gd/classdb/CollisionShape3D] node.
+Converts this GLTFPhysicsShape instance into a Godot [CollisionShape3D] node.
+
+[CollisionShape3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape3D
 */
-func (self Expanded) ToNode(cache_shapes bool) CollisionShape3D.Instance { //gd:GLTFPhysicsShape.to_node
+func (self MoreArgs) ToNode(cache_shapes bool) CollisionShape3D.Instance { //gd:GLTFPhysicsShape.to_node
 	return CollisionShape3D.Instance(Advanced(self).ToNode(cache_shapes))
 }
 
 /*
-Creates a new GLTFPhysicsShape instance from the given Godot [graphics.gd/classdb/Shape3D] resource.
+Creates a new GLTFPhysicsShape instance from the given Godot [Shape3D] resource.
+
+[Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 */
 func FromResource(shape_resource Shape3D.Instance) Instance { //gd:GLTFPhysicsShape.from_resource
 	self := Instance{}
@@ -153,16 +166,20 @@ func FromResource(shape_resource Shape3D.Instance) Instance { //gd:GLTFPhysicsSh
 }
 
 /*
-Converts this GLTFPhysicsShape instance into a Godot [graphics.gd/classdb/Shape3D] resource.
+Converts this GLTFPhysicsShape instance into a Godot [Shape3D] resource.
+
+[Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 */
 func (self Instance) ToResource() Shape3D.Instance { //gd:GLTFPhysicsShape.to_resource
 	return Shape3D.Instance(Advanced(self).ToResource(false))
 }
 
 /*
-Converts this GLTFPhysicsShape instance into a Godot [graphics.gd/classdb/Shape3D] resource.
+Converts this GLTFPhysicsShape instance into a Godot [Shape3D] resource.
+
+[Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 */
-func (self Expanded) ToResource(cache_shapes bool) Shape3D.Instance { //gd:GLTFPhysicsShape.to_resource
+func (self MoreArgs) ToResource(cache_shapes bool) Shape3D.Instance { //gd:GLTFPhysicsShape.to_resource
 	return Shape3D.Instance(Advanced(self).ToResource(cache_shapes))
 }
 
@@ -281,7 +298,9 @@ func (self Instance) SetImporterMesh(value ImporterMesh.Instance) {
 }
 
 /*
-Creates a new GLTFPhysicsShape instance from the given Godot [graphics.gd/classdb/CollisionShape3D] node.
+Creates a new GLTFPhysicsShape instance from the given Godot [CollisionShape3D] node.
+
+[CollisionShape3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape3D
 */
 //go:nosplit
 func (self class) FromNode(shape_node [1]gdclass.CollisionShape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_node
@@ -291,7 +310,9 @@ func (self class) FromNode(shape_node [1]gdclass.CollisionShape3D) [1]gdclass.GL
 }
 
 /*
-Converts this GLTFPhysicsShape instance into a Godot [graphics.gd/classdb/CollisionShape3D] node.
+Converts this GLTFPhysicsShape instance into a Godot [CollisionShape3D] node.
+
+[CollisionShape3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape3D
 */
 //go:nosplit
 func (self class) ToNode(cache_shapes bool) [1]gdclass.CollisionShape3D { //gd:GLTFPhysicsShape.to_node
@@ -301,7 +322,9 @@ func (self class) ToNode(cache_shapes bool) [1]gdclass.CollisionShape3D { //gd:G
 }
 
 /*
-Creates a new GLTFPhysicsShape instance from the given Godot [graphics.gd/classdb/Shape3D] resource.
+Creates a new GLTFPhysicsShape instance from the given Godot [Shape3D] resource.
+
+[Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 */
 //go:nosplit
 func (self class) FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_resource
@@ -311,7 +334,9 @@ func (self class) FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLT
 }
 
 /*
-Converts this GLTFPhysicsShape instance into a Godot [graphics.gd/classdb/Shape3D] resource.
+Converts this GLTFPhysicsShape instance into a Godot [Shape3D] resource.
+
+[Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
 */
 //go:nosplit
 func (self class) ToResource(cache_shapes bool) [1]gdclass.Shape3D { //gd:GLTFPhysicsShape.to_resource

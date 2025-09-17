@@ -15,7 +15,11 @@ Band 5: 3200 Hz
 
 Band 6: 10000 Hz
 
-See also [graphics.gd/classdb/AudioEffectEQ], [graphics.gd/classdb/AudioEffectEQ10], [graphics.gd/classdb/AudioEffectEQ21].
+See also [AudioEffectEQ], [AudioEffectEQ10], [AudioEffectEQ21].
+
+[AudioEffectEQ]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectEQ
+[AudioEffectEQ10]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectEQ10
+[AudioEffectEQ21]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectEQ21
 */
 package AudioEffectEQ6
 

@@ -124,7 +124,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.StreamPeer
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.StreamPeer
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -166,7 +171,9 @@ func (self Instance) GetPartialData(bytes int) (error, []uint8) { //gd:StreamPee
 }
 
 /*
-Returns the number of bytes this [graphics.gd/classdb/StreamPeer] has available.
+Returns the number of bytes this [StreamPeer] has available.
+
+[StreamPeer]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer
 */
 func (self Instance) GetAvailableBytes() int { //gd:StreamPeer.get_available_bytes
 	return int(int(Advanced(self).GetAvailableBytes()))
@@ -252,7 +259,9 @@ func (self Instance) PutDouble(value Float.X) { //gd:StreamPeer.put_double
 /*
 Puts a zero-terminated ASCII string into the stream prepended by a 32-bit unsigned integer representing its size.
 
-Note: To put an ASCII string without prepending its size, you can use [Instance.PutData]:
+Note: To put an ASCII string without prepending its size, you can use [PutData]:
+
+[PutData]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutData
 */
 func (self Instance) PutString(value string) { //gd:StreamPeer.put_string
 	Advanced(self).PutString(String.New(value))
@@ -261,7 +270,9 @@ func (self Instance) PutString(value string) { //gd:StreamPeer.put_string
 /*
 Puts a zero-terminated UTF-8 string into the stream prepended by a 32 bits unsigned integer representing its size.
 
-Note: To put a UTF-8 string without prepending its size, you can use [Instance.PutData]:
+Note: To put a UTF-8 string without prepending its size, you can use [PutData]:
+
+[PutData]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutData
 */
 func (self Instance) PutUtf8String(value string) { //gd:StreamPeer.put_utf8_string
 	Advanced(self).PutUtf8String(String.New(value))
@@ -270,7 +281,9 @@ func (self Instance) PutUtf8String(value string) { //gd:StreamPeer.put_utf8_stri
 /*
 Puts a Variant into the stream. If 'full_objects' is true encoding objects is allowed (and can potentially include code).
 
-Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
+Internally, this uses the same encoding mechanism as the [@GlobalScope.VarToBytes] method.
+
+[@GlobalScope.VarToBytes]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.VarToBytes
 */
 func (self Instance) PutVar(value any) { //gd:StreamPeer.put_var
 	Advanced(self).PutVar(variant.New(value), false)
@@ -279,9 +292,11 @@ func (self Instance) PutVar(value any) { //gd:StreamPeer.put_var
 /*
 Puts a Variant into the stream. If 'full_objects' is true encoding objects is allowed (and can potentially include code).
 
-Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
+Internally, this uses the same encoding mechanism as the [@GlobalScope.VarToBytes] method.
+
+[@GlobalScope.VarToBytes]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.VarToBytes
 */
-func (self Expanded) PutVar(value any, full_objects bool) { //gd:StreamPeer.put_var
+func (self MoreArgs) PutVar(value any, full_objects bool) { //gd:StreamPeer.put_var
 	Advanced(self).PutVar(variant.New(value), full_objects)
 }
 
@@ -363,39 +378,49 @@ func (self Instance) GetDouble() Float.X { //gd:StreamPeer.get_double
 }
 
 /*
-Gets an ASCII string with byte-length 'bytes' from the stream. If 'bytes' is negative (default) the length will be read from the stream using the reverse process of [Instance.PutString].
+Gets an ASCII string with byte-length 'bytes' from the stream. If 'bytes' is negative (default) the length will be read from the stream using the reverse process of [PutString].
+
+[PutString]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutString
 */
 func (self Instance) GetString() string { //gd:StreamPeer.get_string
 	return string(Advanced(self).GetString(int64(-1)).String())
 }
 
 /*
-Gets an ASCII string with byte-length 'bytes' from the stream. If 'bytes' is negative (default) the length will be read from the stream using the reverse process of [Instance.PutString].
+Gets an ASCII string with byte-length 'bytes' from the stream. If 'bytes' is negative (default) the length will be read from the stream using the reverse process of [PutString].
+
+[PutString]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutString
 */
-func (self Expanded) GetString(bytes int) string { //gd:StreamPeer.get_string
+func (self MoreArgs) GetString(bytes int) string { //gd:StreamPeer.get_string
 	return string(Advanced(self).GetString(int64(bytes)).String())
 }
 
 /*
-Gets a UTF-8 string with byte-length 'bytes' from the stream (this decodes the string sent as UTF-8). If 'bytes' is negative (default) the length will be read from the stream using the reverse process of [Instance.PutUtf8String].
+Gets a UTF-8 string with byte-length 'bytes' from the stream (this decodes the string sent as UTF-8). If 'bytes' is negative (default) the length will be read from the stream using the reverse process of [PutUtf8String].
+
+[PutUtf8String]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutUtf8String
 */
 func (self Instance) GetUtf8String() string { //gd:StreamPeer.get_utf8_string
 	return string(Advanced(self).GetUtf8String(int64(-1)).String())
 }
 
 /*
-Gets a UTF-8 string with byte-length 'bytes' from the stream (this decodes the string sent as UTF-8). If 'bytes' is negative (default) the length will be read from the stream using the reverse process of [Instance.PutUtf8String].
+Gets a UTF-8 string with byte-length 'bytes' from the stream (this decodes the string sent as UTF-8). If 'bytes' is negative (default) the length will be read from the stream using the reverse process of [PutUtf8String].
+
+[PutUtf8String]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutUtf8String
 */
-func (self Expanded) GetUtf8String(bytes int) string { //gd:StreamPeer.get_utf8_string
+func (self MoreArgs) GetUtf8String(bytes int) string { //gd:StreamPeer.get_utf8_string
 	return string(Advanced(self).GetUtf8String(int64(bytes)).String())
 }
 
 /*
 Gets a Variant from the stream. If 'allow_objects' is true, decoding objects is allowed.
 
-Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+Internally, this uses the same decoding mechanism as the [@GlobalScope.BytesToVar] method.
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+
+[@GlobalScope.BytesToVar]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.BytesToVar
 */
 func (self Instance) GetVar() any { //gd:StreamPeer.get_var
 	return any(Advanced(self).GetVar(false).Interface())
@@ -404,11 +429,13 @@ func (self Instance) GetVar() any { //gd:StreamPeer.get_var
 /*
 Gets a Variant from the stream. If 'allow_objects' is true, decoding objects is allowed.
 
-Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+Internally, this uses the same decoding mechanism as the [@GlobalScope.BytesToVar] method.
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+
+[@GlobalScope.BytesToVar]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.BytesToVar
 */
-func (self Expanded) GetVar(allow_objects bool) any { //gd:StreamPeer.get_var
+func (self MoreArgs) GetVar(allow_objects bool) any { //gd:StreamPeer.get_var
 	return any(Advanced(self).GetVar(allow_objects).Interface())
 }
 
@@ -504,7 +531,9 @@ func (self class) GetPartialData(bytes int64) Array.Any { //gd:StreamPeer.get_pa
 }
 
 /*
-Returns the number of bytes this [graphics.gd/classdb/StreamPeer] has available.
+Returns the number of bytes this [StreamPeer] has available.
+
+[StreamPeer]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer
 */
 //go:nosplit
 func (self class) GetAvailableBytes() int64 { //gd:StreamPeer.get_available_bytes
@@ -616,9 +645,11 @@ func (self class) PutDouble(value float64) { //gd:StreamPeer.put_double
 /*
 Puts a zero-terminated ASCII string into the stream prepended by a 32-bit unsigned integer representing its size.
 
-Note: To put an ASCII string without prepending its size, you can use [Instance.PutData]:
+Note: To put an ASCII string without prepending its size, you can use [PutData]:
 
 
+
+[PutData]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutData
 */
 //go:nosplit
 func (self class) PutString(value String.Readable) { //gd:StreamPeer.put_string
@@ -628,9 +659,11 @@ func (self class) PutString(value String.Readable) { //gd:StreamPeer.put_string
 /*
 Puts a zero-terminated UTF-8 string into the stream prepended by a 32 bits unsigned integer representing its size.
 
-Note: To put a UTF-8 string without prepending its size, you can use [Instance.PutData]:
+Note: To put a UTF-8 string without prepending its size, you can use [PutData]:
 
 
+
+[PutData]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutData
 */
 //go:nosplit
 func (self class) PutUtf8String(value String.Readable) { //gd:StreamPeer.put_utf8_string
@@ -640,7 +673,9 @@ func (self class) PutUtf8String(value String.Readable) { //gd:StreamPeer.put_utf
 /*
 Puts a Variant into the stream. If 'full_objects' is true encoding objects is allowed (and can potentially include code).
 
-Internally, this uses the same encoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.VarToBytes] method.
+Internally, this uses the same encoding mechanism as the [@GlobalScope.VarToBytes] method.
+
+[@GlobalScope.VarToBytes]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.VarToBytes
 */
 //go:nosplit
 func (self class) PutVar(value variant.Any, full_objects bool) { //gd:StreamPeer.put_var
@@ -761,7 +796,9 @@ func (self class) GetDouble() float64 { //gd:StreamPeer.get_double
 }
 
 /*
-Gets an ASCII string with byte-length 'bytes' from the stream. If 'bytes' is negative (default) the length will be read from the stream using the reverse process of [Instance.PutString].
+Gets an ASCII string with byte-length 'bytes' from the stream. If 'bytes' is negative (default) the length will be read from the stream using the reverse process of [PutString].
+
+[PutString]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutString
 */
 //go:nosplit
 func (self class) GetString(bytes int64) String.Readable { //gd:StreamPeer.get_string
@@ -771,7 +808,9 @@ func (self class) GetString(bytes int64) String.Readable { //gd:StreamPeer.get_s
 }
 
 /*
-Gets a UTF-8 string with byte-length 'bytes' from the stream (this decodes the string sent as UTF-8). If 'bytes' is negative (default) the length will be read from the stream using the reverse process of [Instance.PutUtf8String].
+Gets a UTF-8 string with byte-length 'bytes' from the stream (this decodes the string sent as UTF-8). If 'bytes' is negative (default) the length will be read from the stream using the reverse process of [PutUtf8String].
+
+[PutUtf8String]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutUtf8String
 */
 //go:nosplit
 func (self class) GetUtf8String(bytes int64) String.Readable { //gd:StreamPeer.get_utf8_string
@@ -783,9 +822,11 @@ func (self class) GetUtf8String(bytes int64) String.Readable { //gd:StreamPeer.g
 /*
 Gets a Variant from the stream. If 'allow_objects' is true, decoding objects is allowed.
 
-Internally, this uses the same decoding mechanism as the [graphics.gd/classdb/@GlobalScope.Instance.BytesToVar] method.
+Internally, this uses the same decoding mechanism as the [@GlobalScope.BytesToVar] method.
 
 Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threats such as remote code execution.
+
+[@GlobalScope.BytesToVar]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.BytesToVar
 */
 //go:nosplit
 func (self class) GetVar(allow_objects bool) variant.Any { //gd:StreamPeer.get_var

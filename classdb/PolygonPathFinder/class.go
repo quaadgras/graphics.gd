@@ -104,9 +104,11 @@ type Any interface {
 }
 
 /*
-Sets up [graphics.gd/classdb/PolygonPathFinder] with an array of points that define the vertices of the polygon, and an array of indices that determine the edges of the polygon.
+Sets up [PolygonPathFinder] with an array of points that define the vertices of the polygon, and an array of indices that determine the edges of the polygon.
 
 The length of 'connections' must be even, returns an error if odd.
+
+[PolygonPathFinder]: https://pkg.go.dev/graphics.gd/classdb/PolygonPathFinder
 */
 func (self Instance) Setup(points []Vector2.XY, connections []int32) { //gd:PolygonPathFinder.setup
 	Advanced(self).Setup(Packed.New(points...), Packed.New(connections...))
@@ -181,11 +183,13 @@ func New() Instance {
 }
 
 /*
-Sets up [graphics.gd/classdb/PolygonPathFinder] with an array of points that define the vertices of the polygon, and an array of indices that determine the edges of the polygon.
+Sets up [PolygonPathFinder] with an array of points that define the vertices of the polygon, and an array of indices that determine the edges of the polygon.
 
 The length of 'connections' must be even, returns an error if odd.
 
 
+
+[PolygonPathFinder]: https://pkg.go.dev/graphics.gd/classdb/PolygonPathFinder
 */
 //go:nosplit
 func (self class) Setup(points Packed.Array[Vector2.XY], connections Packed.Array[int32]) { //gd:PolygonPathFinder.setup

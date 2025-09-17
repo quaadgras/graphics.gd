@@ -79,7 +79,7 @@ func ExampleCrypto() {
 	// Generate new RSA key.
 	key := crypto.GenerateRsa(4096)
 	// Generate new self-signed certificate with the given key.
-	cert := Crypto.Expanded(crypto).GenerateSelfSignedCertificate(key, "CN=mydomain.com,O=My Game Company,C=IT", "20140101000000", "20340101000000")
+	cert := crypto.MoreArgs().GenerateSelfSignedCertificate(key, "CN=mydomain.com,O=My Game Company,C=IT", "20140101000000", "20340101000000")
 	// Save key and certificate in the user folder.
 	key.Save("user://generated.key")
 	cert.Save("user://generated.crt")

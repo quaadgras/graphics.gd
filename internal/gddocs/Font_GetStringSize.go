@@ -11,7 +11,6 @@ Vector2 stringSize = label.GetThemeFont("font").GetStringSize(label.Text, Horizo
 package main
 
 import (
-	"graphics.gd/classdb/Font"
 	"graphics.gd/classdb/GUI"
 	"graphics.gd/classdb/Label"
 	"graphics.gd/classdb/TextServer"
@@ -20,7 +19,7 @@ import (
 var label Label.Instance
 
 func Font_GetStringSize() {
-	var string_size = Font.Expanded(label.AsControl().GetThemeFont("font")).GetStringSize(label.Text(), GUI.HorizontalAlignmentLeft, -1, label.AsControl().GetThemeFontSize("font_size"),
+	var string_size = label.AsControl().GetThemeFont("font").MoreArgs().GetStringSize(label.Text(), GUI.HorizontalAlignmentLeft, -1, label.AsControl().GetThemeFontSize("font_size"),
 		TextServer.JustificationKashida|TextServer.JustificationWordBound, 0, 0)
 	_ = string_size
 }

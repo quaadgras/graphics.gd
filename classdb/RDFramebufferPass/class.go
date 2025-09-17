@@ -5,7 +5,9 @@ This class contains the list of attachment descriptions for a framebuffer pass. 
 
 Multipass framebuffers can optimize some configurations in mobile. On desktop, they provide little to no advantage.
 
-This object is used by [graphics.gd/classdb/RenderingDevice].
+This object is used by [RenderingDevice].
+
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
 */
 package RDFramebufferPass
 

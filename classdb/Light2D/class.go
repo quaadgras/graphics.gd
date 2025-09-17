@@ -132,14 +132,20 @@ type Any interface {
 }
 
 /*
-Sets the light's height, which is used in 2D normal mapping. See [graphics.gd/classdb/PointLight2D.Instance.Height] and [graphics.gd/classdb/DirectionalLight2D.Instance.Height].
+Sets the light's height, which is used in 2D normal mapping. See [PointLight2D.Height] and [DirectionalLight2D.Height].
+
+[DirectionalLight2D.Height]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight2D#Instance.Height
+[PointLight2D.Height]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.Height
 */
 func (self Instance) SetHeight(height Float.X) { //gd:Light2D.set_height
 	Advanced(self).SetHeight(float64(height))
 }
 
 /*
-Returns the light's height, which is used in 2D normal mapping. See [graphics.gd/classdb/PointLight2D.Instance.Height] and [graphics.gd/classdb/DirectionalLight2D.Instance.Height].
+Returns the light's height, which is used in 2D normal mapping. See [PointLight2D.Height] and [DirectionalLight2D.Height].
+
+[DirectionalLight2D.Height]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight2D#Instance.Height
+[PointLight2D.Height]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.Height
 */
 func (self Instance) GetHeight() Float.X { //gd:Light2D.get_height
 	return Float.X(Float.X(Advanced(self).GetHeight()))
@@ -488,7 +494,10 @@ func (self class) GetBlendMode() BlendMode { //gd:Light2D.get_blend_mode
 }
 
 /*
-Sets the light's height, which is used in 2D normal mapping. See [graphics.gd/classdb/PointLight2D.Instance.Height] and [graphics.gd/classdb/DirectionalLight2D.Instance.Height].
+Sets the light's height, which is used in 2D normal mapping. See [PointLight2D.Height] and [DirectionalLight2D.Height].
+
+[DirectionalLight2D.Height]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight2D#Instance.Height
+[PointLight2D.Height]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.Height
 */
 //go:nosplit
 func (self class) SetHeight(height float64) { //gd:Light2D.set_height
@@ -496,7 +505,10 @@ func (self class) SetHeight(height float64) { //gd:Light2D.set_height
 }
 
 /*
-Returns the light's height, which is used in 2D normal mapping. See [graphics.gd/classdb/PointLight2D.Instance.Height] and [graphics.gd/classdb/DirectionalLight2D.Instance.Height].
+Returns the light's height, which is used in 2D normal mapping. See [PointLight2D.Height] and [DirectionalLight2D.Height].
+
+[DirectionalLight2D.Height]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight2D#Instance.Height
+[PointLight2D.Height]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.Height
 */
 //go:nosplit
 func (self class) GetHeight() float64 { //gd:Light2D.get_height
@@ -547,11 +559,17 @@ func init() {
 type ShadowFilter int //gd:Light2D.ShadowFilter
 
 const (
-	// No filter applies to the shadow map. This provides hard shadow edges and is the fastest to render. See [Instance.ShadowFilter].
+	// No filter applies to the shadow map. This provides hard shadow edges and is the fastest to render. See [ShadowFilter].
+	//
+	// [ShadowFilter]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ShadowFilter
 	ShadowFilterNone ShadowFilter = 0
-	// Percentage closer filtering (5 samples) applies to the shadow map. This is slower compared to hard shadow rendering. See [Instance.ShadowFilter].
+	// Percentage closer filtering (5 samples) applies to the shadow map. This is slower compared to hard shadow rendering. See [ShadowFilter].
+	//
+	// [ShadowFilter]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ShadowFilter
 	ShadowFilterPcf5 ShadowFilter = 1
-	// Percentage closer filtering (13 samples) applies to the shadow map. This is the slowest shadow filtering mode, and should be used sparingly. See [Instance.ShadowFilter].
+	// Percentage closer filtering (13 samples) applies to the shadow map. This is the slowest shadow filtering mode, and should be used sparingly. See [ShadowFilter].
+	//
+	// [ShadowFilter]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ShadowFilter
 	ShadowFilterPcf13 ShadowFilter = 2
 )
 

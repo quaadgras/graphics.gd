@@ -5,7 +5,10 @@ Unlike bitmap fonts, dynamic fonts can be resized to any size and still look cri
 
 While WOFF and especially WOFF2 tend to result in smaller file sizes, there is no universally "better" font format. In most situations, it's recommended to use the font format that was shipped on the font developer's website.
 
-See also [graphics.gd/classdb/ResourceImporterBMFont] and [graphics.gd/classdb/ResourceImporterImageFont].
+See also [ResourceImporterBMFont] and [ResourceImporterImageFont].
+
+[ResourceImporterBMFont]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterBMFont
+[ResourceImporterImageFont]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterImageFont
 */
 package ResourceImporterDynamicFont
 

@@ -1763,7 +1763,9 @@ func (self class) GetTextureFilter() TextureFilter { //gd:BaseMaterial3D.get_tex
 }
 
 /*
-If true, enables the specified [Feature]. Many features that are available in [graphics.gd/classdb/BaseMaterial3D]s need to be enabled before use. This way the cost for using the feature is only incurred when specified. Features can also be enabled by setting the corresponding member to true.
+If true, enables the specified [Feature]. Many features that are available in [BaseMaterial3D]s need to be enabled before use. This way the cost for using the feature is only incurred when specified. Features can also be enabled by setting the corresponding member to true.
+
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
 */
 //go:nosplit
 func (self class) SetFeature(feature Feature, enable bool) { //gd:BaseMaterial3D.set_feature
@@ -1795,7 +1797,9 @@ func (self class) SetTexture(param TextureParam, texture [1]gdclass.Texture2D) {
 }
 
 /*
-Returns the [graphics.gd/classdb/Texture2D] associated with the specified [TextureParam].
+Returns the [Texture2D] associated with the specified [TextureParam].
+
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
 //go:nosplit
 func (self class) GetTexture(param TextureParam) [1]gdclass.Texture2D { //gd:BaseMaterial3D.get_texture
@@ -2360,7 +2364,9 @@ const (
 	TextureRim TextureParam = 5
 	// Texture specifying per-pixel clearcoat value.
 	TextureClearcoat TextureParam = 6
-	// Texture specifying per-pixel flowmap direction for use with [Instance.Anisotropy].
+	// Texture specifying per-pixel flowmap direction for use with [Anisotropy].
+	//
+	// [Anisotropy]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Anisotropy
 	TextureFlowmap TextureParam = 7
 	// Texture specifying per-pixel ambient occlusion value.
 	TextureAmbientOcclusion TextureParam = 8
@@ -2393,13 +2399,21 @@ const (
 	TextureFilterNearest TextureFilter = 0
 	// The texture filter blends between the nearest 4 pixels. This makes the texture look smooth from up close, and grainy from a distance (due to mipmaps not being sampled).
 	TextureFilterLinear TextureFilter = 1
-	// The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look pixelated from up close, and smooth from a distance.
+	// The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look pixelated from up close, and smooth from a distance.
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	TextureFilterNearestWithMipmaps TextureFilter = 2
-	// The texture filter blends between the nearest 4 pixels and between the nearest 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look smooth from up close, and smooth from a distance.
+	// The texture filter blends between the nearest 4 pixels and between the nearest 2 mipmaps (or uses the nearest mipmap if [ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look smooth from up close, and smooth from a distance.
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	TextureFilterLinearWithMipmaps TextureFilter = 3
-	// The texture filter reads from the nearest pixel and blends between 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look pixelated from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	// The texture filter reads from the nearest pixel and blends between 2 mipmaps (or uses the nearest mipmap if [ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look pixelated from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	TextureFilterNearestWithMipmapsAnisotropic TextureFilter = 4
-	// The texture filter blends between the nearest 4 pixels and blends between 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look smooth from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	// The texture filter blends between the nearest 4 pixels and blends between 2 mipmaps (or uses the nearest mipmap if [ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look smooth from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	TextureFilterLinearWithMipmapsAnisotropic TextureFilter = 5
 	// Represents the size of the [TextureFilter] enum.
 	TextureFilterMax TextureFilter = 6
@@ -2447,31 +2461,57 @@ const (
 type Feature int //gd:BaseMaterial3D.Feature
 
 const (
-	// Constant for setting [Instance.EmissionEnabled].
+	// Constant for setting [EmissionEnabled].
+	//
+	// [EmissionEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.EmissionEnabled
 	FeatureEmission Feature = 0
-	// Constant for setting [Instance.NormalEnabled].
+	// Constant for setting [NormalEnabled].
+	//
+	// [NormalEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.NormalEnabled
 	FeatureNormalMapping Feature = 1
-	// Constant for setting [Instance.RimEnabled].
+	// Constant for setting [RimEnabled].
+	//
+	// [RimEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.RimEnabled
 	FeatureRim Feature = 2
-	// Constant for setting [Instance.ClearcoatEnabled].
+	// Constant for setting [ClearcoatEnabled].
+	//
+	// [ClearcoatEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ClearcoatEnabled
 	FeatureClearcoat Feature = 3
-	// Constant for setting [Instance.AnisotropyEnabled].
+	// Constant for setting [AnisotropyEnabled].
+	//
+	// [AnisotropyEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.AnisotropyEnabled
 	FeatureAnisotropy Feature = 4
-	// Constant for setting [Instance.AoEnabled].
+	// Constant for setting [AoEnabled].
+	//
+	// [AoEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.AoEnabled
 	FeatureAmbientOcclusion Feature = 5
-	// Constant for setting [Instance.HeightmapEnabled].
+	// Constant for setting [HeightmapEnabled].
+	//
+	// [HeightmapEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.HeightmapEnabled
 	FeatureHeightMapping Feature = 6
-	// Constant for setting [Instance.SubsurfScatterEnabled].
+	// Constant for setting [SubsurfScatterEnabled].
+	//
+	// [SubsurfScatterEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SubsurfScatterEnabled
 	FeatureSubsurfaceScattering Feature = 7
-	// Constant for setting [Instance.SubsurfScatterTransmittanceEnabled].
+	// Constant for setting [SubsurfScatterTransmittanceEnabled].
+	//
+	// [SubsurfScatterTransmittanceEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SubsurfScatterTransmittanceEnabled
 	FeatureSubsurfaceTransmittance Feature = 8
-	// Constant for setting [Instance.BacklightEnabled].
+	// Constant for setting [BacklightEnabled].
+	//
+	// [BacklightEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.BacklightEnabled
 	FeatureBacklight Feature = 9
-	// Constant for setting [Instance.RefractionEnabled].
+	// Constant for setting [RefractionEnabled].
+	//
+	// [RefractionEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.RefractionEnabled
 	FeatureRefraction Feature = 10
-	// Constant for setting [Instance.DetailEnabled].
+	// Constant for setting [DetailEnabled].
+	//
+	// [DetailEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.DetailEnabled
 	FeatureDetail Feature = 11
-	// Constant for setting [Instance.BentNormalEnabled].
+	// Constant for setting [BentNormalEnabled].
+	//
+	// [BentNormalEnabled]: https://pkg.go.dev/graphics.gd/classdb/#Instance.BentNormalEnabled
 	FeatureBentNormalMapping Feature = 12
 	// Represents the size of the [Feature] enum.
 	FeatureMax Feature = 13
@@ -2543,15 +2583,19 @@ const (
 	FlagDisableDepthTest Flags = 0
 	// Set ALBEDO to the per-vertex color specified in the mesh.
 	FlagAlbedoFromVertexColor Flags = 1
-	// Vertex colors are considered to be stored in sRGB color space and are converted to linear color space during rendering. See also [Instance.VertexColorIsSrgb].
+	// Vertex colors are considered to be stored in sRGB color space and are converted to linear color space during rendering. See also [VertexColorIsSrgb].
 	//
 	// Note: Only effective when using the Forward+ and Mobile rendering methods.
+	//
+	// [VertexColorIsSrgb]: https://pkg.go.dev/graphics.gd/classdb/#Instance.VertexColorIsSrgb
 	FlagSrgbVertexColor Flags = 2
 	// Uses point size to alter the size of primitive points. Also changes the albedo texture lookup to use POINT_COORD instead of UV.
 	FlagUsePointSize Flags = 3
 	// Object is scaled by depth so that it always appears the same size on screen.
 	FlagFixedSize Flags = 4
-	// Shader will keep the scale set for the mesh. Otherwise the scale is lost when billboarding. Only applies when [Instance.BillboardMode] is [BillboardEnabled].
+	// Shader will keep the scale set for the mesh. Otherwise the scale is lost when billboarding. Only applies when [BillboardMode] is [BillboardEnabled].
+	//
+	// [BillboardMode]: https://pkg.go.dev/graphics.gd/classdb/#Instance.BillboardMode
 	FlagBillboardKeepScale Flags = 5
 	// Use triplanar texture lookup for all texture lookups that would normally use UV.
 	FlagUv1UseTriplanar Flags = 6
@@ -2561,11 +2605,17 @@ const (
 	FlagUv1UseWorldTriplanar Flags = 8
 	// Use triplanar texture lookup for all texture lookups that would normally use UV2.
 	FlagUv2UseWorldTriplanar Flags = 9
-	// Use UV2 coordinates to look up from the [Instance.AoTexture].
+	// Use UV2 coordinates to look up from the [AoTexture].
+	//
+	// [AoTexture]: https://pkg.go.dev/graphics.gd/classdb/#Instance.AoTexture
 	FlagAoOnUv2 Flags = 10
-	// Use UV2 coordinates to look up from the [Instance.EmissionTexture].
+	// Use UV2 coordinates to look up from the [EmissionTexture].
+	//
+	// [EmissionTexture]: https://pkg.go.dev/graphics.gd/classdb/#Instance.EmissionTexture
 	FlagEmissionOnUv2 Flags = 11
-	// Forces the shader to convert albedo from sRGB space to linear space. See also [Instance.AlbedoTextureForceSrgb].
+	// Forces the shader to convert albedo from sRGB space to linear space. See also [AlbedoTextureForceSrgb].
+	//
+	// [AlbedoTextureForceSrgb]: https://pkg.go.dev/graphics.gd/classdb/#Instance.AlbedoTextureForceSrgb
 	FlagAlbedoTextureForceSrgb Flags = 12
 	// Disables receiving shadows from other objects.
 	FlagDontReceiveShadows Flags = 13
@@ -2579,7 +2629,11 @@ const (
 	FlagInvertHeightmap Flags = 17
 	// Enables the skin mode for subsurface scattering which is used to improve the look of subsurface scattering when used for human skin.
 	FlagSubsurfaceModeSkin Flags = 18
-	// Enables parts of the shader required for [graphics.gd/classdb/GPUParticles3D] trails to function. This also requires using a mesh with appropriate skinning, such as [graphics.gd/classdb/RibbonTrailMesh] or [graphics.gd/classdb/TubeTrailMesh]. Enabling this feature outside of materials used in [graphics.gd/classdb/GPUParticles3D] meshes will break material rendering.
+	// Enables parts of the shader required for [GPUParticles3D] trails to function. This also requires using a mesh with appropriate skinning, such as [RibbonTrailMesh] or [TubeTrailMesh]. Enabling this feature outside of materials used in [GPUParticles3D] meshes will break material rendering.
+	//
+	// [GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+	// [RibbonTrailMesh]: https://pkg.go.dev/graphics.gd/classdb/RibbonTrailMesh
+	// [TubeTrailMesh]: https://pkg.go.dev/graphics.gd/classdb/TubeTrailMesh
 	FlagParticleTrailsMode Flags = 19
 	// Enables multichannel signed distance field rendering shader.
 	FlagAlbedoTextureMsdf Flags = 20
@@ -2587,9 +2641,13 @@ const (
 	FlagDisableFog Flags = 21
 	// Disables specular occlusion.
 	FlagDisableSpecularOcclusion Flags = 22
-	// Enables using [Instance.ZClipScale].
+	// Enables using [ZClipScale].
+	//
+	// [ZClipScale]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ZClipScale
 	FlagUseZClipScale Flags = 23
-	// Enables using [Instance.FovOverride].
+	// Enables using [FovOverride].
+	//
+	// [FovOverride]: https://pkg.go.dev/graphics.gd/classdb/#Instance.FovOverride
 	FlagUseFovOverride Flags = 24
 	// Represents the size of the [Flags] enum.
 	FlagMax Flags = 25
@@ -2632,9 +2690,14 @@ const (
 	BillboardEnabled BillboardMode = 1
 	// The object's X axis will always face the camera.
 	BillboardFixedY BillboardMode = 2
-	// Used for particle systems when assigned to [graphics.gd/classdb/GPUParticles3D] and [graphics.gd/classdb/CPUParticles3D] nodes (flipbook animation). Enables particles_anim_* properties.
+	// Used for particle systems when assigned to [GPUParticles3D] and [CPUParticles3D] nodes (flipbook animation). Enables particles_anim_* properties.
 	//
-	// The [graphics.gd/classdb/ParticleProcessMaterial.Instance.AnimSpeedMin] or [graphics.gd/classdb/CPUParticles3D.Instance.AnimSpeedMin] should also be set to a value bigger than zero for the animation to play.
+	// The [ParticleProcessMaterial.AnimSpeedMin] or [CPUParticles3D.AnimSpeedMin] should also be set to a value bigger than zero for the animation to play.
+	//
+	// [CPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles3D
+	// [CPUParticles3D.AnimSpeedMin]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles3D#Instance.AnimSpeedMin
+	// [GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+	// [ParticleProcessMaterial.AnimSpeedMin]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.AnimSpeedMin
 	BillboardParticles BillboardMode = 3
 )
 
@@ -2682,11 +2745,17 @@ const (
 	StencilModeDisabled StencilMode = 0
 	// Stencil preset which applies an outline to the object.
 	//
-	// Note: Requires a [graphics.gd/classdb/Material.Instance.NextPass] material which will be automatically applied. Any manual changes made to [graphics.gd/classdb/Material.Instance.NextPass] will be lost when the stencil properties are modified or the scene is reloaded. To safely apply a [graphics.gd/classdb/Material.Instance.NextPass] material on a material that uses stencil presets, use [graphics.gd/classdb/GeometryInstance3D.Instance.MaterialOverlay] instead.
+	// Note: Requires a [Material.NextPass] material which will be automatically applied. Any manual changes made to [Material.NextPass] will be lost when the stencil properties are modified or the scene is reloaded. To safely apply a [Material.NextPass] material on a material that uses stencil presets, use [GeometryInstance3D.MaterialOverlay] instead.
+	//
+	// [GeometryInstance3D.MaterialOverlay]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.MaterialOverlay
+	// [Material.NextPass]: https://pkg.go.dev/graphics.gd/classdb/Material#Instance.NextPass
 	StencilModeOutline StencilMode = 1
 	// Stencil preset which shows a silhouette of the object behind walls.
 	//
-	// Note: Requires a [graphics.gd/classdb/Material.Instance.NextPass] material which will be automatically applied. Any manual changes made to [graphics.gd/classdb/Material.Instance.NextPass] will be lost when the stencil properties are modified or the scene is reloaded. To safely apply a [graphics.gd/classdb/Material.Instance.NextPass] material on a material that uses stencil presets, use [graphics.gd/classdb/GeometryInstance3D.Instance.MaterialOverlay] instead.
+	// Note: Requires a [Material.NextPass] material which will be automatically applied. Any manual changes made to [Material.NextPass] will be lost when the stencil properties are modified or the scene is reloaded. To safely apply a [Material.NextPass] material on a material that uses stencil presets, use [GeometryInstance3D.MaterialOverlay] instead.
+	//
+	// [GeometryInstance3D.MaterialOverlay]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.MaterialOverlay
+	// [Material.NextPass]: https://pkg.go.dev/graphics.gd/classdb/Material#Instance.NextPass
 	StencilModeXray StencilMode = 2
 	// Enables stencil operations without a preset.
 	StencilModeCustom StencilMode = 3

@@ -99,7 +99,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.VisualShaderNode
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.VisualShaderNode
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -126,7 +131,7 @@ func (self Instance) SetInputPortDefaultValue(port int, value any) { //gd:Visual
 /*
 Sets the default 'value' for the selected input 'port'.
 */
-func (self Expanded) SetInputPortDefaultValue(port int, value any, prev_value any) { //gd:VisualShaderNode.set_input_port_default_value
+func (self MoreArgs) SetInputPortDefaultValue(port int, value any, prev_value any) { //gd:VisualShaderNode.set_input_port_default_value
 	Advanced(self).SetInputPortDefaultValue(int64(port), variant.New(value), variant.New(prev_value))
 }
 

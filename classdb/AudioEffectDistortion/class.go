@@ -307,7 +307,9 @@ const (
 	ModeAtan Mode = 1
 	// Low-resolution digital distortion effect (bit depth reduction). You can use it to emulate the sound of early digital audio devices.
 	ModeLofi Mode = 2
-	// Emulates the warm distortion produced by a field effect transistor, which is commonly used in solid-state musical instrument amplifiers. The [Instance.Drive] property has no effect in this mode.
+	// Emulates the warm distortion produced by a field effect transistor, which is commonly used in solid-state musical instrument amplifiers. The [Drive] property has no effect in this mode.
+	//
+	// [Drive]: https://pkg.go.dev/graphics.gd/classdb/#Instance.Drive
 	ModeOverdrive Mode = 3
 	// Waveshaper distortions are used mainly by electronic musicians to achieve an extra-abrasive sound.
 	ModeWaveshape Mode = 4

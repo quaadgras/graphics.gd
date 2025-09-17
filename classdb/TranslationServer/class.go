@@ -3,7 +3,9 @@
 /*
 The translation server is the API backend that manages all language translations.
 
-Translations are stored in [graphics.gd/classdb/TranslationDomain]s, which can be accessed by name. The most commonly used translation domain is the main translation domain. It always exists and can be accessed using an empty string. The translation server provides wrapper methods for accessing the main translation domain directly, without having to fetch the translation domain first. Custom translation domains are mainly for advanced usages like editor plugins. Names starting with godot. are reserved for engine internals.
+Translations are stored in [TranslationDomain]s, which can be accessed by name. The most commonly used translation domain is the main translation domain. It always exists and can be accessed using an empty string. The translation server provides wrapper methods for accessing the main translation domain directly, without having to fetch the translation domain first. Custom translation domains are mainly for advanced usages like editor plugins. Names starting with godot. are reserved for engine internals.
+
+[TranslationDomain]: https://pkg.go.dev/graphics.gd/classdb/TranslationDomain
 */
 package TranslationServer
 
@@ -138,7 +140,10 @@ func SetLocale(locale string) { //gd:TranslationServer.set_locale
 /*
 Returns the current locale of the project.
 
-See also [graphics.gd/classdb/OS.GetLocale] and [graphics.gd/classdb/OS.GetLocaleLanguage] to query the locale of the user system.
+See also [OS.GetLocale] and [OS.GetLocaleLanguage] to query the locale of the user system.
+
+[OS.GetLocale]: https://pkg.go.dev/graphics.gd/classdb/OS#GetLocale
+[OS.GetLocaleLanguage]: https://pkg.go.dev/graphics.gd/classdb/OS#GetLocaleLanguage
 */
 func GetLocale() string { //gd:TranslationServer.get_locale
 	once.Do(singleton)
@@ -296,7 +301,9 @@ func RemoveTranslation(translation Translation.Instance) { //gd:TranslationServe
 }
 
 /*
-Returns the [graphics.gd/classdb/Translation] instance that best matches 'locale' in the main translation domain. Returns null if there are no matches.
+Returns the [Translation] instance that best matches 'locale' in the main translation domain. Returns null if there are no matches.
+
+[Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
 */
 func GetTranslationObject(locale string) Translation.Instance { //gd:TranslationServer.get_translation_object
 	once.Do(singleton)
@@ -409,7 +416,10 @@ func (self class) SetLocale(locale String.Readable) { //gd:TranslationServer.set
 /*
 Returns the current locale of the project.
 
-See also [graphics.gd/classdb/OS.GetLocale] and [graphics.gd/classdb/OS.GetLocaleLanguage] to query the locale of the user system.
+See also [OS.GetLocale] and [OS.GetLocaleLanguage] to query the locale of the user system.
+
+[OS.GetLocale]: https://pkg.go.dev/graphics.gd/classdb/OS#GetLocale
+[OS.GetLocaleLanguage]: https://pkg.go.dev/graphics.gd/classdb/OS#GetLocaleLanguage
 */
 //go:nosplit
 func (self class) GetLocale() String.Readable { //gd:TranslationServer.get_locale
@@ -577,7 +587,9 @@ func (self class) RemoveTranslation(translation [1]gdclass.Translation) { //gd:T
 }
 
 /*
-Returns the [graphics.gd/classdb/Translation] instance that best matches 'locale' in the main translation domain. Returns null if there are no matches.
+Returns the [Translation] instance that best matches 'locale' in the main translation domain. Returns null if there are no matches.
+
+[Translation]: https://pkg.go.dev/graphics.gd/classdb/Translation
 */
 //go:nosplit
 func (self class) GetTranslationObject(locale String.Readable) [1]gdclass.Translation { //gd:TranslationServer.get_translation_object

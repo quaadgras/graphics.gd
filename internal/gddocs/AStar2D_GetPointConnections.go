@@ -39,8 +39,8 @@ func AStar2D_GetPointConnections() {
 	astar.AddPoint(3, Vector2.New(1, 1))
 	astar.AddPoint(4, Vector2.New(2, 0))
 
-	AStar2D.Expanded(astar).ConnectPoints(1, 2, true)
-	AStar2D.Expanded(astar).ConnectPoints(1, 3, true)
+	astar.MoreArgs().ConnectPoints(1, 2, true)
+	astar.MoreArgs().ConnectPoints(1, 3, true)
 
 	var neighbors = astar.GetPointConnections(1) // Returns [2, 3]
 	_ = neighbors

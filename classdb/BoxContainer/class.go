@@ -105,7 +105,9 @@ type Any interface {
 }
 
 /*
-Adds a [graphics.gd/classdb/Control] node to the box as a spacer. If 'begin' is true, it will insert the [graphics.gd/classdb/Control] node in front of all other children.
+Adds a [Control] node to the box as a spacer. If 'begin' is true, it will insert the [Control] node in front of all other children.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 func (self Instance) AddSpacer(begin bool) Control.Instance { //gd:BoxContainer.add_spacer
 	return Control.Instance(Advanced(self).AddSpacer(begin))
@@ -170,7 +172,9 @@ func (self Instance) SetVertical(value bool) {
 }
 
 /*
-Adds a [graphics.gd/classdb/Control] node to the box as a spacer. If 'begin' is true, it will insert the [graphics.gd/classdb/Control] node in front of all other children.
+Adds a [Control] node to the box as a spacer. If 'begin' is true, it will insert the [Control] node in front of all other children.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 //go:nosplit
 func (self class) AddSpacer(begin bool) [1]gdclass.Control { //gd:BoxContainer.add_spacer

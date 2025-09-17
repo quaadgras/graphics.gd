@@ -99,13 +99,21 @@ type Any interface {
 }
 
 type Interface interface {
-	// Implement this in GDExtension to return the implementation's [graphics.gd/classdb/RenderSceneBuffers] object.
+	// Implement this in GDExtension to return the implementation's [RenderSceneBuffers] object.
+	//
+	// [RenderSceneBuffers]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneBuffers
 	GetRenderSceneBuffers() RenderSceneBuffers.Instance
-	// Implement this in GDExtension to return the implementation's [graphics.gd/classdb/RenderSceneDataExtension] object.
+	// Implement this in GDExtension to return the implementation's [RenderSceneDataExtension] object.
+	//
+	// [RenderSceneDataExtension]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneDataExtension
 	GetRenderSceneData() RenderSceneData.Instance
 	// Implement this in GDExtension to return the [Resource.ID] of the implementation's environment object.
+	//
+	// [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 	GetEnvironment() RID.Environment
 	// Implement this in GDExtension to return the [Resource.ID] for the implementation's camera attributes object.
+	//
+	// [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 	GetCameraAttributes() RID.CameraAttributes
 }
 
@@ -120,7 +128,9 @@ func (self implementation) GetEnvironment() (_ RID.Environment)                 
 func (self implementation) GetCameraAttributes() (_ RID.CameraAttributes)          { return }
 
 /*
-Implement this in GDExtension to return the implementation's [graphics.gd/classdb/RenderSceneBuffers] object.
+Implement this in GDExtension to return the implementation's [RenderSceneBuffers] object.
+
+[RenderSceneBuffers]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneBuffers
 */
 func (Instance) _get_render_scene_buffers(impl func(ptr gdclass.Receiver) RenderSceneBuffers.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -136,7 +146,9 @@ func (Instance) _get_render_scene_buffers(impl func(ptr gdclass.Receiver) Render
 }
 
 /*
-Implement this in GDExtension to return the implementation's [graphics.gd/classdb/RenderSceneDataExtension] object.
+Implement this in GDExtension to return the implementation's [RenderSceneDataExtension] object.
+
+[RenderSceneDataExtension]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneDataExtension
 */
 func (Instance) _get_render_scene_data(impl func(ptr gdclass.Receiver) RenderSceneData.Instance) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -153,6 +165,8 @@ func (Instance) _get_render_scene_data(impl func(ptr gdclass.Receiver) RenderSce
 
 /*
 Implement this in GDExtension to return the [Resource.ID] of the implementation's environment object.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func (Instance) _get_environment(impl func(ptr gdclass.Receiver) RID.Environment) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -164,6 +178,8 @@ func (Instance) _get_environment(impl func(ptr gdclass.Receiver) RID.Environment
 
 /*
 Implement this in GDExtension to return the [Resource.ID] for the implementation's camera attributes object.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func (Instance) _get_camera_attributes(impl func(ptr gdclass.Receiver) RID.CameraAttributes) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -216,7 +232,9 @@ func New() Instance {
 }
 
 /*
-Implement this in GDExtension to return the implementation's [graphics.gd/classdb/RenderSceneBuffers] object.
+Implement this in GDExtension to return the implementation's [RenderSceneBuffers] object.
+
+[RenderSceneBuffers]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneBuffers
 */
 func (class) _get_render_scene_buffers(impl func(ptr gdclass.Receiver) [1]gdclass.RenderSceneBuffers) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -232,7 +250,9 @@ func (class) _get_render_scene_buffers(impl func(ptr gdclass.Receiver) [1]gdclas
 }
 
 /*
-Implement this in GDExtension to return the implementation's [graphics.gd/classdb/RenderSceneDataExtension] object.
+Implement this in GDExtension to return the implementation's [RenderSceneDataExtension] object.
+
+[RenderSceneDataExtension]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneDataExtension
 */
 func (class) _get_render_scene_data(impl func(ptr gdclass.Receiver) [1]gdclass.RenderSceneData) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -249,6 +269,8 @@ func (class) _get_render_scene_data(impl func(ptr gdclass.Receiver) [1]gdclass.R
 
 /*
 Implement this in GDExtension to return the [Resource.ID] of the implementation's environment object.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func (class) _get_environment(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -260,6 +282,8 @@ func (class) _get_environment(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.Ex
 
 /*
 Implement this in GDExtension to return the [Resource.ID] for the implementation's camera attributes object.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func (class) _get_camera_attributes(impl func(ptr gdclass.Receiver) RID.Any) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {

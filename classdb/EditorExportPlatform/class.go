@@ -3,7 +3,11 @@
 /*
 Base resource that provides the functionality of exporting a release build of a project to a platform, from the editor. Stores platform-specific metadata such as the name and supported features of the platform, and performs the exporting of projects, PCK files, and ZIP files. Uses an export template for the platform provided at the time of project exporting.
 
-Used in scripting by [graphics.gd/classdb/EditorExportPlugin] to configure platform-specific customization of scenes and resources. See [graphics.gd/classdb/EditorExportPlugin.Instance.BeginCustomizeScenes] and [graphics.gd/classdb/EditorExportPlugin.Instance.BeginCustomizeResources] for more details.
+Used in scripting by [EditorExportPlugin] to configure platform-specific customization of scenes and resources. See [EditorExportPlugin.BeginCustomizeScenes] and [EditorExportPlugin.BeginCustomizeResources] for more details.
+
+[EditorExportPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin
+[EditorExportPlugin.BeginCustomizeResources]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.BeginCustomizeResources
+[EditorExportPlugin.BeginCustomizeScenes]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.BeginCustomizeScenes
 */
 package EditorExportPlatform
 
@@ -117,7 +121,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.EditorExportPlatform
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.EditorExportPlatform
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -128,7 +137,9 @@ type Any interface {
 }
 
 /*
-Returns the name of the export operating system handled by this [graphics.gd/classdb/EditorExportPlatform] class, as a friendly string. Possible return values are Windows, Linux, macOS, Android, iOS, and Web.
+Returns the name of the export operating system handled by this [EditorExportPlatform] class, as a friendly string. Possible return values are Windows, Linux, macOS, Android, iOS, and Web.
+
+[EditorExportPlatform]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatform
 */
 func (self Instance) GetOsName() string { //gd:EditorExportPlatform.get_os_name
 	return string(Advanced(self).GetOsName().String())
@@ -149,7 +160,9 @@ func (self Instance) FindExportTemplate(template_file_name string) Template { //
 }
 
 /*
-Returns array of [graphics.gd/classdb/EditorExportPreset]s for this platform.
+Returns array of [EditorExportPreset]s for this platform.
+
+[EditorExportPreset]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPreset
 */
 func (self Instance) GetCurrentPresets() []EditorExportPreset.Instance { //gd:EditorExportPlatform.get_current_presets
 	return []EditorExportPreset.Instance(gd.ArrayAs[[]EditorExportPreset.Instance](gd.InternalArray(Advanced(self).GetCurrentPresets())))
@@ -169,7 +182,7 @@ Saves PCK archive and returns data structure with the following keys: result: Er
 
 If 'embed' is true, PCK content is appended to the end of 'path' file and return data structure additionally include following keys: embedded_start: int (embedded PCK offset) and embedded_size: int (embedded PCK size).
 */
-func (self Expanded) SavePack(preset EditorExportPreset.Instance, debug bool, path string, embed bool) Report { //gd:EditorExportPlatform.save_pack
+func (self MoreArgs) SavePack(preset EditorExportPreset.Instance, debug bool, path string, embed bool) Report { //gd:EditorExportPlatform.save_pack
 	return Report(gd.DictionaryAs[Report](Advanced(self).SavePack(preset, debug, String.New(path), embed)))
 }
 
@@ -223,7 +236,7 @@ Exports project files for the specified preset. This method can be used to imple
 
 Note: file_index and file_count are intended for progress tracking only and aren't necessarily unique and precise.
 */
-func (self Expanded) ExportProjectFiles(preset EditorExportPreset.Instance, debug bool, save_cb func(file_path string, file_data []byte, file_index int, file_count int, encryption_include_filters []string, encryption_exclude_filters []string, encryption_key []byte), shared_cb func(file_path string, tags []string, target_folder string)) error { //gd:EditorExportPlatform.export_project_files
+func (self MoreArgs) ExportProjectFiles(preset EditorExportPreset.Instance, debug bool, save_cb func(file_path string, file_data []byte, file_index int, file_count int, encryption_include_filters []string, encryption_exclude_filters []string, encryption_key []byte), shared_cb func(file_path string, tags []string, target_folder string)) error { //gd:EditorExportPlatform.export_project_files
 	return error(gd.ToError(Advanced(self).ExportProjectFiles(preset, debug, Callable.New(save_cb), Callable.New(shared_cb))))
 }
 
@@ -237,7 +250,7 @@ func (self Instance) ExportProject(preset EditorExportPreset.Instance, debug boo
 /*
 Creates a full project at 'path' for the specified 'preset'.
 */
-func (self Expanded) ExportProject(preset EditorExportPreset.Instance, debug bool, path string, flags DebugFlags) error { //gd:EditorExportPlatform.export_project
+func (self MoreArgs) ExportProject(preset EditorExportPreset.Instance, debug bool, path string, flags DebugFlags) error { //gd:EditorExportPlatform.export_project
 	return error(gd.ToError(Advanced(self).ExportProject(preset, debug, String.New(path), flags)))
 }
 
@@ -251,7 +264,7 @@ func (self Instance) ExportPack(preset EditorExportPreset.Instance, debug bool, 
 /*
 Creates a PCK archive at 'path' for the specified 'preset'.
 */
-func (self Expanded) ExportPack(preset EditorExportPreset.Instance, debug bool, path string, flags DebugFlags) error { //gd:EditorExportPlatform.export_pack
+func (self MoreArgs) ExportPack(preset EditorExportPreset.Instance, debug bool, path string, flags DebugFlags) error { //gd:EditorExportPlatform.export_pack
 	return error(gd.ToError(Advanced(self).ExportPack(preset, debug, String.New(path), flags)))
 }
 
@@ -265,7 +278,7 @@ func (self Instance) ExportZip(preset EditorExportPreset.Instance, debug bool, p
 /*
 Create a ZIP archive at 'path' for the specified 'preset'.
 */
-func (self Expanded) ExportZip(preset EditorExportPreset.Instance, debug bool, path string, flags DebugFlags) error { //gd:EditorExportPlatform.export_zip
+func (self MoreArgs) ExportZip(preset EditorExportPreset.Instance, debug bool, path string, flags DebugFlags) error { //gd:EditorExportPlatform.export_zip
 	return error(gd.ToError(Advanced(self).ExportZip(preset, debug, String.New(path), flags)))
 }
 
@@ -283,7 +296,7 @@ Creates a patch PCK archive at 'path' for the specified 'preset', containing onl
 
 Note: 'patches' is an optional override of the set of patches defined in the export preset. When empty the patches defined in the export preset will be used instead.
 */
-func (self Expanded) ExportPackPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags DebugFlags) error { //gd:EditorExportPlatform.export_pack_patch
+func (self MoreArgs) ExportPackPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags DebugFlags) error { //gd:EditorExportPlatform.export_pack_patch
 	return error(gd.ToError(Advanced(self).ExportPackPatch(preset, debug, String.New(path), Packed.MakeStrings(patches...), flags)))
 }
 
@@ -301,7 +314,7 @@ Create a patch ZIP archive at 'path' for the specified 'preset', containing only
 
 Note: 'patches' is an optional override of the set of patches defined in the export preset. When empty the patches defined in the export preset will be used instead.
 */
-func (self Expanded) ExportZipPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags DebugFlags) error { //gd:EditorExportPlatform.export_zip_patch
+func (self MoreArgs) ExportZipPatch(preset EditorExportPreset.Instance, debug bool, path string, patches []string, flags DebugFlags) error { //gd:EditorExportPlatform.export_zip_patch
 	return error(gd.ToError(Advanced(self).ExportZipPatch(preset, debug, String.New(path), Packed.MakeStrings(patches...), flags)))
 }
 
@@ -357,15 +370,19 @@ func (self Instance) GetWorstMessageType() ExportMessageType { //gd:EditorExport
 /*
 Executes specified command on the remote host via SSH protocol and returns command output in the 'output'.
 */
-func (self Instance) SshRunOnRemote(host string, port string, ssh_arg []string, cmd_args string) error { //gd:EditorExportPlatform.ssh_run_on_remote
-	return error(gd.ToError(Advanced(self).SshRunOnRemote(String.New(host), String.New(port), Packed.MakeStrings(ssh_arg...), String.New(cmd_args), Array.Nil, int64(-1))))
+func (self Instance) SshRunOnRemote(host string, port string, ssh_arg []string, cmd_args string) ([]string, error) { //gd:EditorExportPlatform.ssh_run_on_remote
+	var returns_output = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(gd.NewArray()))
+	results := Advanced(self).SshRunOnRemote(String.New(host), String.New(port), Packed.MakeStrings(ssh_arg...), String.New(cmd_args), returns_output, int64(-1))
+	return gd.ArrayAs[[]string](gd.InternalArray(returns_output)), gd.ToError(results)
 }
 
 /*
 Executes specified command on the remote host via SSH protocol and returns command output in the 'output'.
 */
-func (self Expanded) SshRunOnRemote(host string, port string, ssh_arg []string, cmd_args string, output []string, port_fwd int) error { //gd:EditorExportPlatform.ssh_run_on_remote
-	return error(gd.ToError(Advanced(self).SshRunOnRemote(String.New(host), String.New(port), Packed.MakeStrings(ssh_arg...), String.New(cmd_args), gd.EngineArrayFromSlice(output), int64(port_fwd))))
+func (self MoreArgs) SshRunOnRemote(host string, port string, ssh_arg []string, cmd_args string, port_fwd int) ([]string, error) { //gd:EditorExportPlatform.ssh_run_on_remote
+	var returns_output = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(gd.NewArray()))
+	results := Advanced(self).SshRunOnRemote(String.New(host), String.New(port), Packed.MakeStrings(ssh_arg...), String.New(cmd_args), returns_output, int64(port_fwd))
+	return gd.ArrayAs[[]string](gd.InternalArray(returns_output)), gd.ToError(results)
 }
 
 /*
@@ -378,7 +395,7 @@ func (self Instance) SshRunOnRemoteNoWait(host string, port string, ssh_args []s
 /*
 Executes specified command on the remote host via SSH protocol and returns process ID (on the remote host) without waiting for command to finish.
 */
-func (self Expanded) SshRunOnRemoteNoWait(host string, port string, ssh_args []string, cmd_args string, port_fwd int) int { //gd:EditorExportPlatform.ssh_run_on_remote_no_wait
+func (self MoreArgs) SshRunOnRemoteNoWait(host string, port string, ssh_args []string, cmd_args string, port_fwd int) int { //gd:EditorExportPlatform.ssh_run_on_remote_no_wait
 	return int(int(Advanced(self).SshRunOnRemoteNoWait(String.New(host), String.New(port), Packed.MakeStrings(ssh_args...), String.New(cmd_args), int64(port_fwd))))
 }
 
@@ -456,7 +473,9 @@ func New() Instance {
 }
 
 /*
-Returns the name of the export operating system handled by this [graphics.gd/classdb/EditorExportPlatform] class, as a friendly string. Possible return values are Windows, Linux, macOS, Android, iOS, and Web.
+Returns the name of the export operating system handled by this [EditorExportPlatform] class, as a friendly string. Possible return values are Windows, Linux, macOS, Android, iOS, and Web.
+
+[EditorExportPlatform]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlatform
 */
 //go:nosplit
 func (self class) GetOsName() String.Readable { //gd:EditorExportPlatform.get_os_name
@@ -486,7 +505,9 @@ func (self class) FindExportTemplate(template_file_name String.Readable) Diction
 }
 
 /*
-Returns array of [graphics.gd/classdb/EditorExportPreset]s for this platform.
+Returns array of [EditorExportPreset]s for this platform.
+
+[EditorExportPreset]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPreset
 */
 //go:nosplit
 func (self class) GetCurrentPresets() Array.Any { //gd:EditorExportPlatform.get_current_presets
@@ -857,15 +878,27 @@ const (
 type DebugFlags int //gd:EditorExportPlatform.DebugFlags
 
 const (
-	// Flag is set if the remotely debugged project is expected to use the remote file system. If set, [Instance.GenExportFlags] will append --remote-fs and --remote-fs-password (if [graphics.gd/classdb/EditorSettings.Instance] "filesystem/file_server/password" is defined) command line arguments to the returned list.
+	// Flag is set if the remotely debugged project is expected to use the remote file system. If set, [GenExportFlags] will append --remote-fs and --remote-fs-password (if [EditorSettings] "filesystem/file_server/password" is defined) command line arguments to the returned list.
+	//
+	// [EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings
+	// [GenExportFlags]: https://pkg.go.dev/graphics.gd/classdb/#Instance.GenExportFlags
 	DebugFlagDumbClient DebugFlags = 1
-	// Flag is set if remote debug is enabled. If set, [Instance.GenExportFlags] will append --remote-debug and --breakpoints (if breakpoints are selected in the script editor or added by the plugin) command line arguments to the returned list.
+	// Flag is set if remote debug is enabled. If set, [GenExportFlags] will append --remote-debug and --breakpoints (if breakpoints are selected in the script editor or added by the plugin) command line arguments to the returned list.
+	//
+	// [GenExportFlags]: https://pkg.go.dev/graphics.gd/classdb/#Instance.GenExportFlags
 	DebugFlagRemoteDebug DebugFlags = 2
-	// Flag is set if remotely debugged project is running on the localhost. If set, [Instance.GenExportFlags] will use localhost instead of [graphics.gd/classdb/EditorSettings.Instance] "network/debug/remote_host" as remote debugger host.
+	// Flag is set if remotely debugged project is running on the localhost. If set, [GenExportFlags] will use localhost instead of [EditorSettings] "network/debug/remote_host" as remote debugger host.
+	//
+	// [EditorSettings]: https://pkg.go.dev/graphics.gd/classdb/EditorSettings
+	// [GenExportFlags]: https://pkg.go.dev/graphics.gd/classdb/#Instance.GenExportFlags
 	DebugFlagRemoteDebugLocalhost DebugFlags = 4
-	// Flag is set if the "Visible Collision Shapes" remote debug option is enabled. If set, [Instance.GenExportFlags] will append the --debug-collisions command line argument to the returned list.
+	// Flag is set if the "Visible Collision Shapes" remote debug option is enabled. If set, [GenExportFlags] will append the --debug-collisions command line argument to the returned list.
+	//
+	// [GenExportFlags]: https://pkg.go.dev/graphics.gd/classdb/#Instance.GenExportFlags
 	DebugFlagViewCollisions DebugFlags = 8
-	// Flag is set if the "Visible Navigation" remote debug option is enabled. If set, [Instance.GenExportFlags] will append the --debug-navigation command line argument to the returned list.
+	// Flag is set if the "Visible Navigation" remote debug option is enabled. If set, [GenExportFlags] will append the --debug-navigation command line argument to the returned list.
+	//
+	// [GenExportFlags]: https://pkg.go.dev/graphics.gd/classdb/#Instance.GenExportFlags
 	DebugFlagViewNavigation DebugFlags = 16
 )
 

@@ -3,7 +3,10 @@
 /*
 An implementation of the A* algorithm, used to find the shortest path between two vertices on a connected graph in 2D space.
 
-See [graphics.gd/classdb/AStar3D] for a more thorough explanation on how to use this class. [graphics.gd/classdb/AStar2D] is a wrapper for [graphics.gd/classdb/AStar3D] that enforces 2D coordinates.
+See [AStar3D] for a more thorough explanation on how to use this class. [AStar2D] is a wrapper for [AStar3D] that enforces 2D coordinates.
+
+[AStar2D]: https://pkg.go.dev/graphics.gd/classdb/AStar2D
+[AStar3D]: https://pkg.go.dev/graphics.gd/classdb/AStar3D
 */
 package AStar2D
 
@@ -115,7 +118,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.AStar2D
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.AStar2D
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -126,17 +134,24 @@ type Any interface {
 }
 
 type Interface interface {
-	// Called when neighboring enters processing and if [Instance.NeighborFilterEnabled] is true. If true is returned the point will not be processed.
+	// Called when neighboring enters processing and if [NeighborFilterEnabled] is true. If true is returned the point will not be processed.
 	//
-	// Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
+	// Note that this function is hidden in the default [AStar2D] class.
+	//
+	// [AStar2D]: https://pkg.go.dev/graphics.gd/classdb/AStar2D
+	// [NeighborFilterEnabled]: https://pkg.go.dev/graphics.gd/classdb/AStar2D#Instance.NeighborFilterEnabled
 	FilterNeighbor(from_id Point, neighbor_id Point) bool
 	// Called when estimating the cost between a point and the path's ending point.
 	//
-	// Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
+	// Note that this function is hidden in the default [AStar2D] class.
+	//
+	// [AStar2D]: https://pkg.go.dev/graphics.gd/classdb/AStar2D
 	EstimateCost(from_id Point, end_id Point) Float.X
 	// Called when computing the cost between two connected points.
 	//
-	// Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
+	// Note that this function is hidden in the default [AStar2D] class.
+	//
+	// [AStar2D]: https://pkg.go.dev/graphics.gd/classdb/AStar2D
 	ComputeCost(from_id Point, to_id Point) Float.X
 }
 
@@ -150,9 +165,12 @@ func (self implementation) EstimateCost(from_id Point, end_id Point) (_ Float.X)
 func (self implementation) ComputeCost(from_id Point, to_id Point) (_ Float.X)       { return }
 
 /*
-Called when neighboring enters processing and if [Instance.NeighborFilterEnabled] is true. If true is returned the point will not be processed.
+Called when neighboring enters processing and if [NeighborFilterEnabled] is true. If true is returned the point will not be processed.
 
-Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
+Note that this function is hidden in the default [AStar2D] class.
+
+[AStar2D]: https://pkg.go.dev/graphics.gd/classdb/AStar2D
+[NeighborFilterEnabled]: https://pkg.go.dev/graphics.gd/classdb/AStar2D#Instance.NeighborFilterEnabled
 */
 func (Instance) _filter_neighbor(impl func(ptr gdclass.Receiver, from_id Point, neighbor_id Point) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -167,7 +185,9 @@ func (Instance) _filter_neighbor(impl func(ptr gdclass.Receiver, from_id Point, 
 /*
 Called when estimating the cost between a point and the path's ending point.
 
-Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
+Note that this function is hidden in the default [AStar2D] class.
+
+[AStar2D]: https://pkg.go.dev/graphics.gd/classdb/AStar2D
 */
 func (Instance) _estimate_cost(impl func(ptr gdclass.Receiver, from_id Point, end_id Point) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -182,7 +202,9 @@ func (Instance) _estimate_cost(impl func(ptr gdclass.Receiver, from_id Point, en
 /*
 Called when computing the cost between two connected points.
 
-Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
+Note that this function is hidden in the default [AStar2D] class.
+
+[AStar2D]: https://pkg.go.dev/graphics.gd/classdb/AStar2D
 */
 func (Instance) _compute_cost(impl func(ptr gdclass.Receiver, from_id Point, to_id Point) Float.X) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -204,12 +226,14 @@ func (self Instance) GetAvailablePointId() int { //gd:AStar2D.get_available_poin
 /*
 Adds a new point at the given position with the given identifier. The 'id' must be 0 or larger, and the 'weight_scale' must be 0.0 or greater.
 
-The 'weight_scale' is multiplied by the result of [Interface.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
+The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
 
 	var astar = AStar2D.New()
-	AStar2D.Expanded(astar).AddPoint(1, Vector2.New(1, 0), 4) // Adds the point (1, 0) with weight_scale 4 and id 1
+	astar.MoreArgs().AddPoint(1, Vector2.New(1, 0), 4) // Adds the point (1, 0) with weight_scale 4 and id 1
 
 If there already exists a point for the given 'id', its position and weight scale are updated to the given values.
+
+[ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStar2D#Interface
 */
 func (self Instance) AddPoint(id Point, position Vector2.XY) { //gd:AStar2D.add_point
 	Advanced(self).AddPoint(int64(id), Vector2.XY(position), float64(1.0))
@@ -218,14 +242,16 @@ func (self Instance) AddPoint(id Point, position Vector2.XY) { //gd:AStar2D.add_
 /*
 Adds a new point at the given position with the given identifier. The 'id' must be 0 or larger, and the 'weight_scale' must be 0.0 or greater.
 
-The 'weight_scale' is multiplied by the result of [Interface.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
+The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
 
 	var astar = AStar2D.New()
-	AStar2D.Expanded(astar).AddPoint(1, Vector2.New(1, 0), 4) // Adds the point (1, 0) with weight_scale 4 and id 1
+	astar.MoreArgs().AddPoint(1, Vector2.New(1, 0), 4) // Adds the point (1, 0) with weight_scale 4 and id 1
 
 If there already exists a point for the given 'id', its position and weight scale are updated to the given values.
+
+[ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStar2D#Interface
 */
-func (self Expanded) AddPoint(id Point, position Vector2.XY, weight_scale Float.X) { //gd:AStar2D.add_point
+func (self MoreArgs) AddPoint(id Point, position Vector2.XY, weight_scale Float.X) { //gd:AStar2D.add_point
 	Advanced(self).AddPoint(int64(id), Vector2.XY(position), float64(weight_scale))
 }
 
@@ -251,7 +277,9 @@ func (self Instance) GetPointWeightScale(id Point) Float.X { //gd:AStar2D.get_po
 }
 
 /*
-Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is multiplied by the result of [Interface.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
+Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
+
+[ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStar2D#Interface
 */
 func (self Instance) SetPointWeightScale(id Point, weight_scale Float.X) { //gd:AStar2D.set_point_weight_scale
 	Advanced(self).SetPointWeightScale(int64(id), float64(weight_scale))
@@ -280,8 +308,8 @@ Returns an array with the IDs of the points that form the connection with the gi
 	astar.AddPoint(3, Vector2.New(1, 1))
 	astar.AddPoint(4, Vector2.New(2, 0))
 
-	AStar2D.Expanded(astar).ConnectPoints(1, 2, true)
-	AStar2D.Expanded(astar).ConnectPoints(1, 3, true)
+	astar.MoreArgs().ConnectPoints(1, 2, true)
+	astar.MoreArgs().ConnectPoints(1, 3, true)
 
 	var neighbors = astar.GetPointConnections(1) // Returns [2, 3]
 */
@@ -306,7 +334,7 @@ func (self Instance) SetPointDisabled(id Point) { //gd:AStar2D.set_point_disable
 /*
 Disables or enables the specified point for pathfinding. Useful for making a temporary obstacle.
 */
-func (self Expanded) SetPointDisabled(id Point, disabled bool) { //gd:AStar2D.set_point_disabled
+func (self MoreArgs) SetPointDisabled(id Point, disabled bool) { //gd:AStar2D.set_point_disabled
 	Advanced(self).SetPointDisabled(int64(id), disabled)
 }
 
@@ -323,7 +351,7 @@ Creates a segment between the given points. If 'bidirectional' is false, only mo
 	var astar = AStar2D.New()
 	astar.AddPoint(1, Vector2.New(1, 1))
 	astar.AddPoint(2, Vector2.New(0, 5))
-	AStar2D.Expanded(astar).ConnectPoints(1, 2, false)
+	astar.MoreArgs().ConnectPoints(1, 2, false)
 */
 func (self Instance) ConnectPoints(id Point, to_id Point) { //gd:AStar2D.connect_points
 	Advanced(self).ConnectPoints(int64(id), int64(to_id), true)
@@ -335,9 +363,9 @@ Creates a segment between the given points. If 'bidirectional' is false, only mo
 	var astar = AStar2D.New()
 	astar.AddPoint(1, Vector2.New(1, 1))
 	astar.AddPoint(2, Vector2.New(0, 5))
-	AStar2D.Expanded(astar).ConnectPoints(1, 2, false)
+	astar.MoreArgs().ConnectPoints(1, 2, false)
 */
-func (self Expanded) ConnectPoints(id Point, to_id Point, bidirectional bool) { //gd:AStar2D.connect_points
+func (self MoreArgs) ConnectPoints(id Point, to_id Point, bidirectional bool) { //gd:AStar2D.connect_points
 	Advanced(self).ConnectPoints(int64(id), int64(to_id), bidirectional)
 }
 
@@ -351,7 +379,7 @@ func (self Instance) DisconnectPoints(id Point, to_id Point) { //gd:AStar2D.disc
 /*
 Deletes the segment between the given points. If 'bidirectional' is false, only movement from 'id' to 'to_id' is prevented, and a unidirectional segment possibly remains.
 */
-func (self Expanded) DisconnectPoints(id Point, to_id Point, bidirectional bool) { //gd:AStar2D.disconnect_points
+func (self MoreArgs) DisconnectPoints(id Point, to_id Point, bidirectional bool) { //gd:AStar2D.disconnect_points
 	Advanced(self).DisconnectPoints(int64(id), int64(to_id), bidirectional)
 }
 
@@ -365,7 +393,7 @@ func (self Instance) ArePointsConnected(id Point, to_id Point) bool { //gd:AStar
 /*
 Returns whether there is a connection/segment between the given points. If 'bidirectional' is false, returns whether movement from 'id' to 'to_id' is possible through this segment.
 */
-func (self Expanded) ArePointsConnected(id Point, to_id Point, bidirectional bool) bool { //gd:AStar2D.are_points_connected
+func (self MoreArgs) ArePointsConnected(id Point, to_id Point, bidirectional bool) bool { //gd:AStar2D.are_points_connected
 	return bool(Advanced(self).ArePointsConnected(int64(id), int64(to_id), bidirectional))
 }
 
@@ -377,7 +405,9 @@ func (self Instance) GetPointCount() int { //gd:AStar2D.get_point_count
 }
 
 /*
-Returns the capacity of the structure backing the points, useful in conjunction with [Instance.ReserveSpace].
+Returns the capacity of the structure backing the points, useful in conjunction with [ReserveSpace].
+
+[ReserveSpace]: https://pkg.go.dev/graphics.gd/classdb/AStar2D#Instance.ReserveSpace
 */
 func (self Instance) GetPointCapacity() int { //gd:AStar2D.get_point_capacity
 	return int(int(Advanced(self).GetPointCapacity()))
@@ -411,7 +441,7 @@ Returns the ID of the closest point to 'to_position', optionally taking disabled
 
 Note: If several points are the closest to 'to_position', the one with the smallest ID will be returned, ensuring a deterministic result.
 */
-func (self Expanded) GetClosestPoint(to_position Vector2.XY, include_disabled bool) int { //gd:AStar2D.get_closest_point
+func (self MoreArgs) GetClosestPoint(to_position Vector2.XY, include_disabled bool) int { //gd:AStar2D.get_closest_point
 	return int(int(Advanced(self).GetClosestPoint(Vector2.XY(to_position), include_disabled)))
 }
 
@@ -435,9 +465,12 @@ Returns an array with the points that are in the path found by AStar2D between t
 
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
 
-Note: This method is not thread-safe; it can only be used from a single [graphics.gd/classdb/Thread] at a given time. Consider using [graphics.gd/classdb/Mutex] to ensure exclusive access to one thread to avoid race conditions.
+Note: This method is not thread-safe; it can only be used from a single [Thread] at a given time. Consider using [Mutex] to ensure exclusive access to one thread to avoid race conditions.
 
 Additionally, when 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
+
+[Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
+[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
 */
 func (self Instance) GetPointPath(from_id Point, to_id Point) []Vector2.XY { //gd:AStar2D.get_point_path
 	return []Vector2.XY(slices.Collect(Advanced(self).GetPointPath(int64(from_id), int64(to_id), false).Values()))
@@ -448,11 +481,14 @@ Returns an array with the points that are in the path found by AStar2D between t
 
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
 
-Note: This method is not thread-safe; it can only be used from a single [graphics.gd/classdb/Thread] at a given time. Consider using [graphics.gd/classdb/Mutex] to ensure exclusive access to one thread to avoid race conditions.
+Note: This method is not thread-safe; it can only be used from a single [Thread] at a given time. Consider using [Mutex] to ensure exclusive access to one thread to avoid race conditions.
 
 Additionally, when 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
+
+[Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
+[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
 */
-func (self Expanded) GetPointPath(from_id Point, to_id Point, allow_partial_path bool) []Vector2.XY { //gd:AStar2D.get_point_path
+func (self MoreArgs) GetPointPath(from_id Point, to_id Point, allow_partial_path bool) []Vector2.XY { //gd:AStar2D.get_point_path
 	return []Vector2.XY(slices.Collect(Advanced(self).GetPointPath(int64(from_id), int64(to_id), allow_partial_path).Values()))
 }
 
@@ -465,14 +501,14 @@ Note: When 'allow_partial_path' is true and 'to_id' is disabled the search may t
 
 	var astar = AStar2D.New()
 	astar.AddPoint(1, Vector2.New(0, 0))
-	AStar2D.Expanded(astar).AddPoint(2, Vector2.New(0, 1), 1) // Default weight is 1
+	astar.MoreArgs().AddPoint(2, Vector2.New(0, 1), 1) // Default weight is 1
 	astar.AddPoint(3, Vector2.New(1, 1))
 	astar.AddPoint(4, Vector2.New(2, 0))
 
-	AStar2D.Expanded(astar).ConnectPoints(1, 2, false)
-	AStar2D.Expanded(astar).ConnectPoints(2, 3, false)
-	AStar2D.Expanded(astar).ConnectPoints(4, 3, false)
-	AStar2D.Expanded(astar).ConnectPoints(1, 4, false)
+	astar.MoreArgs().ConnectPoints(1, 2, false)
+	astar.MoreArgs().ConnectPoints(2, 3, false)
+	astar.MoreArgs().ConnectPoints(4, 3, false)
+	astar.MoreArgs().ConnectPoints(1, 4, false)
 
 	var res = astar.GetIdPath(1, 3) // Returns [1, 2, 3]
 
@@ -491,20 +527,20 @@ Note: When 'allow_partial_path' is true and 'to_id' is disabled the search may t
 
 	var astar = AStar2D.New()
 	astar.AddPoint(1, Vector2.New(0, 0))
-	AStar2D.Expanded(astar).AddPoint(2, Vector2.New(0, 1), 1) // Default weight is 1
+	astar.MoreArgs().AddPoint(2, Vector2.New(0, 1), 1) // Default weight is 1
 	astar.AddPoint(3, Vector2.New(1, 1))
 	astar.AddPoint(4, Vector2.New(2, 0))
 
-	AStar2D.Expanded(astar).ConnectPoints(1, 2, false)
-	AStar2D.Expanded(astar).ConnectPoints(2, 3, false)
-	AStar2D.Expanded(astar).ConnectPoints(4, 3, false)
-	AStar2D.Expanded(astar).ConnectPoints(1, 4, false)
+	astar.MoreArgs().ConnectPoints(1, 2, false)
+	astar.MoreArgs().ConnectPoints(2, 3, false)
+	astar.MoreArgs().ConnectPoints(4, 3, false)
+	astar.MoreArgs().ConnectPoints(1, 4, false)
 
 	var res = astar.GetIdPath(1, 3) // Returns [1, 2, 3]
 
 If you change the 2nd point's weight to 3, then the result will be [1, 4, 3] instead, because now even though the distance is longer, it's "easier" to get through point 4 than through point 2.
 */
-func (self Expanded) GetIdPath(from_id Point, to_id Point, allow_partial_path bool) []Point { //gd:AStar2D.get_id_path
+func (self MoreArgs) GetIdPath(from_id Point, to_id Point, allow_partial_path bool) []Point { //gd:AStar2D.get_id_path
 	return []Point(gd.IntsCollectAs[Point](Advanced(self).GetIdPath(int64(from_id), int64(to_id), allow_partial_path).Values()))
 }
 
@@ -560,9 +596,12 @@ func (self Instance) SetNeighborFilterEnabled(value bool) {
 }
 
 /*
-Called when neighboring enters processing and if [Instance.NeighborFilterEnabled] is true. If true is returned the point will not be processed.
+Called when neighboring enters processing and if [NeighborFilterEnabled] is true. If true is returned the point will not be processed.
 
-Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
+Note that this function is hidden in the default [AStar2D] class.
+
+[AStar2D]: https://pkg.go.dev/graphics.gd/classdb/AStar2D
+[NeighborFilterEnabled]: https://pkg.go.dev/graphics.gd/classdb/AStar2D#Instance.NeighborFilterEnabled
 */
 func (class) _filter_neighbor(impl func(ptr gdclass.Receiver, from_id int64, neighbor_id int64) bool) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -577,7 +616,9 @@ func (class) _filter_neighbor(impl func(ptr gdclass.Receiver, from_id int64, nei
 /*
 Called when estimating the cost between a point and the path's ending point.
 
-Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
+Note that this function is hidden in the default [AStar2D] class.
+
+[AStar2D]: https://pkg.go.dev/graphics.gd/classdb/AStar2D
 */
 func (class) _estimate_cost(impl func(ptr gdclass.Receiver, from_id int64, end_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -592,7 +633,9 @@ func (class) _estimate_cost(impl func(ptr gdclass.Receiver, from_id int64, end_i
 /*
 Called when computing the cost between two connected points.
 
-Note that this function is hidden in the default [graphics.gd/classdb/AStar2D] class.
+Note that this function is hidden in the default [AStar2D] class.
+
+[AStar2D]: https://pkg.go.dev/graphics.gd/classdb/AStar2D
 */
 func (class) _compute_cost(impl func(ptr gdclass.Receiver, from_id int64, to_id int64) float64) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
@@ -617,14 +660,16 @@ func (self class) GetAvailablePointId() int64 { //gd:AStar2D.get_available_point
 /*
 Adds a new point at the given position with the given identifier. The 'id' must be 0 or larger, and the 'weight_scale' must be 0.0 or greater.
 
-The 'weight_scale' is multiplied by the result of [Interface.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
+The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point. Thus, all else being equal, the algorithm prefers points with lower 'weight_scale's to form a path.
 
 
 	var astar = AStar2D.New()
-	AStar2D.Expanded(astar).AddPoint(1, Vector2.New(1, 0), 4) // Adds the point (1, 0) with weight_scale 4 and id 1
+	astar.MoreArgs().AddPoint(1, Vector2.New(1, 0), 4) // Adds the point (1, 0) with weight_scale 4 and id 1
 
 
 If there already exists a point for the given 'id', its position and weight scale are updated to the given values.
+
+[ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStar2D#Interface
 */
 //go:nosplit
 func (self class) AddPoint(id int64, position Vector2.XY, weight_scale float64) { //gd:AStar2D.add_point
@@ -667,7 +712,9 @@ func (self class) GetPointWeightScale(id int64) float64 { //gd:AStar2D.get_point
 }
 
 /*
-Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is multiplied by the result of [Interface.ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
+Sets the 'weight_scale' for the point with the given 'id'. The 'weight_scale' is multiplied by the result of [ComputeCost] when determining the overall cost of traveling across a segment from a neighboring point to this point.
+
+[ComputeCost]: https://pkg.go.dev/graphics.gd/classdb/AStar2D#Interface
 */
 //go:nosplit
 func (self class) SetPointWeightScale(id int64, weight_scale float64) { //gd:AStar2D.set_point_weight_scale
@@ -705,8 +752,8 @@ Returns an array with the IDs of the points that form the connection with the gi
 	astar.AddPoint(3, Vector2.New(1, 1))
 	astar.AddPoint(4, Vector2.New(2, 0))
 
-	AStar2D.Expanded(astar).ConnectPoints(1, 2, true)
-	AStar2D.Expanded(astar).ConnectPoints(1, 3, true)
+	astar.MoreArgs().ConnectPoints(1, 2, true)
+	astar.MoreArgs().ConnectPoints(1, 3, true)
 
 	var neighbors = astar.GetPointConnections(1) // Returns [2, 3]
 
@@ -768,7 +815,7 @@ Creates a segment between the given points. If 'bidirectional' is false, only mo
 	var astar = AStar2D.New()
 	astar.AddPoint(1, Vector2.New(1, 1))
 	astar.AddPoint(2, Vector2.New(0, 5))
-	AStar2D.Expanded(astar).ConnectPoints(1, 2, false)
+	astar.MoreArgs().ConnectPoints(1, 2, false)
 
 */
 //go:nosplit
@@ -817,7 +864,9 @@ func (self class) GetPointCount() int64 { //gd:AStar2D.get_point_count
 }
 
 /*
-Returns the capacity of the structure backing the points, useful in conjunction with [Instance.ReserveSpace].
+Returns the capacity of the structure backing the points, useful in conjunction with [ReserveSpace].
+
+[ReserveSpace]: https://pkg.go.dev/graphics.gd/classdb/AStar2D#Instance.ReserveSpace
 */
 //go:nosplit
 func (self class) GetPointCapacity() int64 { //gd:AStar2D.get_point_capacity
@@ -882,9 +931,12 @@ Returns an array with the points that are in the path found by AStar2D between t
 
 If there is no valid path to the target, and 'allow_partial_path' is true, returns a path to the point closest to the target that can be reached.
 
-Note: This method is not thread-safe; it can only be used from a single [graphics.gd/classdb/Thread] at a given time. Consider using [graphics.gd/classdb/Mutex] to ensure exclusive access to one thread to avoid race conditions.
+Note: This method is not thread-safe; it can only be used from a single [Thread] at a given time. Consider using [Mutex] to ensure exclusive access to one thread to avoid race conditions.
 
 Additionally, when 'allow_partial_path' is true and 'to_id' is disabled the search may take an unusually long time to finish.
+
+[Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
+[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
 */
 //go:nosplit
 func (self class) GetPointPath(from_id int64, to_id int64, allow_partial_path bool) Packed.Array[Vector2.XY] { //gd:AStar2D.get_point_path
@@ -907,14 +959,14 @@ Note: When 'allow_partial_path' is true and 'to_id' is disabled the search may t
 
 	var astar = AStar2D.New()
 	astar.AddPoint(1, Vector2.New(0, 0))
-	AStar2D.Expanded(astar).AddPoint(2, Vector2.New(0, 1), 1) // Default weight is 1
+	astar.MoreArgs().AddPoint(2, Vector2.New(0, 1), 1) // Default weight is 1
 	astar.AddPoint(3, Vector2.New(1, 1))
 	astar.AddPoint(4, Vector2.New(2, 0))
 
-	AStar2D.Expanded(astar).ConnectPoints(1, 2, false)
-	AStar2D.Expanded(astar).ConnectPoints(2, 3, false)
-	AStar2D.Expanded(astar).ConnectPoints(4, 3, false)
-	AStar2D.Expanded(astar).ConnectPoints(1, 4, false)
+	astar.MoreArgs().ConnectPoints(1, 2, false)
+	astar.MoreArgs().ConnectPoints(2, 3, false)
+	astar.MoreArgs().ConnectPoints(4, 3, false)
+	astar.MoreArgs().ConnectPoints(1, 4, false)
 
 	var res = astar.GetIdPath(1, 3) // Returns [1, 2, 3]
 

@@ -27,6 +27,6 @@ func HTTPClient_Request() {
 	var fields = map[string]string{"username": "user", "password": "pass"}
 	var queryString = http_client.QueryStringFromDict(fields)
 	var headers = []string{"Content-Type: application/x-www-form-urlencoded", "Content-Length: " + fmt.Sprint(len(queryString))}
-	var result = HTTPClient.Expanded(http_client).Request(HTTPClient.MethodPost, "/index.php", headers, queryString)
+	var result = http_client.MoreArgs().Request(HTTPClient.MethodPost, "/index.php", headers, queryString)
 	_ = result
 }

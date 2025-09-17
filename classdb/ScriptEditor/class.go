@@ -3,7 +3,9 @@
 /*
 Godot editor's script editor.
 
-Note: This class shouldn't be instantiated directly. Instead, access the singleton using [graphics.gd/classdb/EditorInterface.GetScriptEditor].
+Note: This class shouldn't be instantiated directly. Instead, access the singleton using [EditorInterface.GetScriptEditor].
+
+[EditorInterface.GetScriptEditor]: https://pkg.go.dev/graphics.gd/classdb/EditorInterface#GetScriptEditor
 */
 package ScriptEditor
 
@@ -118,14 +120,18 @@ type Any interface {
 }
 
 /*
-Returns the [graphics.gd/classdb/ScriptEditorBase] object that the user is currently editing.
+Returns the [ScriptEditorBase] object that the user is currently editing.
+
+[ScriptEditorBase]: https://pkg.go.dev/graphics.gd/classdb/ScriptEditorBase
 */
 func (self Instance) GetCurrentEditor() ScriptEditorBase.Instance { //gd:ScriptEditor.get_current_editor
 	return ScriptEditorBase.Instance(Advanced(self).GetCurrentEditor())
 }
 
 /*
-Returns an array with all [graphics.gd/classdb/ScriptEditorBase] objects which are currently open in editor.
+Returns an array with all [ScriptEditorBase] objects which are currently open in editor.
+
+[ScriptEditorBase]: https://pkg.go.dev/graphics.gd/classdb/ScriptEditorBase
 */
 func (self Instance) GetOpenScriptEditors() []ScriptEditorBase.Instance { //gd:ScriptEditor.get_open_script_editors
 	return []ScriptEditorBase.Instance(gd.ArrayAs[[]ScriptEditorBase.Instance](gd.InternalArray(Advanced(self).GetOpenScriptEditors())))
@@ -139,18 +145,22 @@ func (self Instance) GetBreakpoints() []string { //gd:ScriptEditor.get_breakpoin
 }
 
 /*
-Registers the [graphics.gd/classdb/EditorSyntaxHighlighter] to the editor, the [graphics.gd/classdb/EditorSyntaxHighlighter] will be available on all open scripts.
+Registers the [EditorSyntaxHighlighter] to the editor, the [EditorSyntaxHighlighter] will be available on all open scripts.
 
 Note: Does not apply to scripts that are already opened.
+
+[EditorSyntaxHighlighter]: https://pkg.go.dev/graphics.gd/classdb/EditorSyntaxHighlighter
 */
 func (self Instance) RegisterSyntaxHighlighter(syntax_highlighter EditorSyntaxHighlighter.Instance) { //gd:ScriptEditor.register_syntax_highlighter
 	Advanced(self).RegisterSyntaxHighlighter(syntax_highlighter)
 }
 
 /*
-Unregisters the [graphics.gd/classdb/EditorSyntaxHighlighter] from the editor.
+Unregisters the [EditorSyntaxHighlighter] from the editor.
 
-Note: The [graphics.gd/classdb/EditorSyntaxHighlighter] will still be applied to scripts that are already opened.
+Note: The [EditorSyntaxHighlighter] will still be applied to scripts that are already opened.
+
+[EditorSyntaxHighlighter]: https://pkg.go.dev/graphics.gd/classdb/EditorSyntaxHighlighter
 */
 func (self Instance) UnregisterSyntaxHighlighter(syntax_highlighter EditorSyntaxHighlighter.Instance) { //gd:ScriptEditor.unregister_syntax_highlighter
 	Advanced(self).UnregisterSyntaxHighlighter(syntax_highlighter)
@@ -164,14 +174,18 @@ func (self Instance) GotoLine(line_number int) { //gd:ScriptEditor.goto_line
 }
 
 /*
-Returns a [graphics.gd/classdb/Script] that is currently active in editor.
+Returns a [Script] that is currently active in editor.
+
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
 */
 func (self Instance) GetCurrentScript() Script.Instance { //gd:ScriptEditor.get_current_script
 	return Script.Instance(Advanced(self).GetCurrentScript())
 }
 
 /*
-Returns an array with all [graphics.gd/classdb/Script] objects which are currently open in editor.
+Returns an array with all [Script] objects which are currently open in editor.
+
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
 */
 func (self Instance) GetOpenScripts() []Script.Instance { //gd:ScriptEditor.get_open_scripts
 	return []Script.Instance(gd.ArrayAs[[]Script.Instance](gd.InternalArray(Advanced(self).GetOpenScripts())))
@@ -254,7 +268,9 @@ func New() Instance {
 }
 
 /*
-Returns the [graphics.gd/classdb/ScriptEditorBase] object that the user is currently editing.
+Returns the [ScriptEditorBase] object that the user is currently editing.
+
+[ScriptEditorBase]: https://pkg.go.dev/graphics.gd/classdb/ScriptEditorBase
 */
 //go:nosplit
 func (self class) GetCurrentEditor() [1]gdclass.ScriptEditorBase { //gd:ScriptEditor.get_current_editor
@@ -264,7 +280,9 @@ func (self class) GetCurrentEditor() [1]gdclass.ScriptEditorBase { //gd:ScriptEd
 }
 
 /*
-Returns an array with all [graphics.gd/classdb/ScriptEditorBase] objects which are currently open in editor.
+Returns an array with all [ScriptEditorBase] objects which are currently open in editor.
+
+[ScriptEditorBase]: https://pkg.go.dev/graphics.gd/classdb/ScriptEditorBase
 */
 //go:nosplit
 func (self class) GetOpenScriptEditors() Array.Contains[[1]gdclass.ScriptEditorBase] { //gd:ScriptEditor.get_open_script_editors
@@ -284,9 +302,11 @@ func (self class) GetBreakpoints() Packed.Strings { //gd:ScriptEditor.get_breakp
 }
 
 /*
-Registers the [graphics.gd/classdb/EditorSyntaxHighlighter] to the editor, the [graphics.gd/classdb/EditorSyntaxHighlighter] will be available on all open scripts.
+Registers the [EditorSyntaxHighlighter] to the editor, the [EditorSyntaxHighlighter] will be available on all open scripts.
 
 Note: Does not apply to scripts that are already opened.
+
+[EditorSyntaxHighlighter]: https://pkg.go.dev/graphics.gd/classdb/EditorSyntaxHighlighter
 */
 //go:nosplit
 func (self class) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.register_syntax_highlighter
@@ -294,9 +314,11 @@ func (self class) RegisterSyntaxHighlighter(syntax_highlighter [1]gdclass.Editor
 }
 
 /*
-Unregisters the [graphics.gd/classdb/EditorSyntaxHighlighter] from the editor.
+Unregisters the [EditorSyntaxHighlighter] from the editor.
 
-Note: The [graphics.gd/classdb/EditorSyntaxHighlighter] will still be applied to scripts that are already opened.
+Note: The [EditorSyntaxHighlighter] will still be applied to scripts that are already opened.
+
+[EditorSyntaxHighlighter]: https://pkg.go.dev/graphics.gd/classdb/EditorSyntaxHighlighter
 */
 //go:nosplit
 func (self class) UnregisterSyntaxHighlighter(syntax_highlighter [1]gdclass.EditorSyntaxHighlighter) { //gd:ScriptEditor.unregister_syntax_highlighter
@@ -312,7 +334,9 @@ func (self class) GotoLine(line_number int64) { //gd:ScriptEditor.goto_line
 }
 
 /*
-Returns a [graphics.gd/classdb/Script] that is currently active in editor.
+Returns a [Script] that is currently active in editor.
+
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
 */
 //go:nosplit
 func (self class) GetCurrentScript() [1]gdclass.Script { //gd:ScriptEditor.get_current_script
@@ -322,7 +346,9 @@ func (self class) GetCurrentScript() [1]gdclass.Script { //gd:ScriptEditor.get_c
 }
 
 /*
-Returns an array with all [graphics.gd/classdb/Script] objects which are currently open in editor.
+Returns an array with all [Script] objects which are currently open in editor.
+
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
 */
 //go:nosplit
 func (self class) GetOpenScripts() Array.Contains[[1]gdclass.Script] { //gd:ScriptEditor.get_open_scripts

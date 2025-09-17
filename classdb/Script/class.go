@@ -5,7 +5,9 @@ A class stored as a resource. A script extends the functionality of all objects 
 
 This is the base class for all scripts and should not be used directly. Trying to create a new script with this class will result in an error.
 
-The new method of a script subclass creates a new instance. [graphics.gd/classdb/Object.Instance.SetScript] extends an existing object, if that object's class matches one of the script's base classes.
+The new method of a script subclass creates a new instance. [Object.SetScript] extends an existing object, if that object's class matches one of the script's base classes.
+
+[Object.SetScript]: https://pkg.go.dev/graphics.gd/variant/Object#SetScript
 */
 package Script
 
@@ -110,7 +112,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.Script
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.Script
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -137,7 +144,10 @@ func (self Instance) InstanceHas(base_object Object.Instance) bool { //gd:Script
 /*
 Returns true if the script contains non-empty source code.
 
-Note: If a script does not have source code, this does not mean that it is invalid or unusable. For example, a [graphics.gd/classdb/GDScript] that was exported with binary tokenization has no source code, but still behaves as expected and could be instantiated. This can be checked with [Instance.CanInstantiate].
+Note: If a script does not have source code, this does not mean that it is invalid or unusable. For example, a [GDScript] that was exported with binary tokenization has no source code, but still behaves as expected and could be instantiated. This can be checked with [CanInstantiate].
+
+[CanInstantiate]: https://pkg.go.dev/graphics.gd/classdb/Script#Instance.CanInstantiate
+[GDScript]: https://pkg.go.dev/graphics.gd/classdb/GDScript
 */
 func (self Instance) HasSourceCode() bool { //gd:Script.has_source_code
 	return bool(Advanced(self).HasSourceCode())
@@ -153,7 +163,7 @@ func (self Instance) Reload() error { //gd:Script.reload
 /*
 Reloads the script's class implementation. Returns an error code.
 */
-func (self Expanded) Reload(keep_state bool) error { //gd:Script.reload
+func (self MoreArgs) Reload(keep_state bool) error { //gd:Script.reload
 	return error(gd.ToError(Advanced(self).Reload(keep_state)))
 }
 
@@ -188,27 +198,36 @@ func (self Instance) HasScriptSignal(signal_name string) bool { //gd:Script.has_
 }
 
 /*
-Returns the list of properties in this [graphics.gd/classdb/Script].
+Returns the list of properties in this [Script].
 
-Note: The dictionaries returned by this method are formatted identically to those returned by [graphics.gd/classdb/Object.Instance.GetPropertyList].
+Note: The dictionaries returned by this method are formatted identically to those returned by [Object.GetPropertyList].
+
+[Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
 */
 func (self Instance) GetScriptPropertyList() []Object.PropertyInfo { //gd:Script.get_script_property_list
 	return []Object.PropertyInfo(gd.ArrayAs[[]Object.PropertyInfo](gd.InternalArray(Advanced(self).GetScriptPropertyList())))
 }
 
 /*
-Returns the list of methods in this [graphics.gd/classdb/Script].
+Returns the list of methods in this [Script].
 
-Note: The dictionaries returned by this method are formatted identically to those returned by [graphics.gd/classdb/Object.Instance.GetMethodList].
+Note: The dictionaries returned by this method are formatted identically to those returned by [Object.GetMethodList].
+
+[Object.GetMethodList]: https://pkg.go.dev/graphics.gd/variant/Object#GetMethodList
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
 */
 func (self Instance) GetScriptMethodList() []Object.PropertyInfo { //gd:Script.get_script_method_list
 	return []Object.PropertyInfo(gd.ArrayAs[[]Object.PropertyInfo](gd.InternalArray(Advanced(self).GetScriptMethodList())))
 }
 
 /*
-Returns the list of user signals defined in this [graphics.gd/classdb/Script].
+Returns the list of user signals defined in this [Script].
 
-Note: The dictionaries returned by this method are formatted identically to those returned by [graphics.gd/classdb/Object.Instance.GetSignalList].
+Note: The dictionaries returned by this method are formatted identically to those returned by [Object.GetSignalList].
+
+[Object.GetSignalList]: https://pkg.go.dev/graphics.gd/variant/Object#GetSignalList
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
 */
 func (self Instance) GetScriptSignalList() []SignalInfo { //gd:Script.get_script_signal_list
 	return []SignalInfo(gd.ArrayAs[[]SignalInfo](gd.InternalArray(Advanced(self).GetScriptSignalList())))
@@ -323,7 +342,10 @@ func (self class) InstanceHas(base_object [1]gd.Object) bool { //gd:Script.insta
 /*
 Returns true if the script contains non-empty source code.
 
-Note: If a script does not have source code, this does not mean that it is invalid or unusable. For example, a [graphics.gd/classdb/GDScript] that was exported with binary tokenization has no source code, but still behaves as expected and could be instantiated. This can be checked with [Instance.CanInstantiate].
+Note: If a script does not have source code, this does not mean that it is invalid or unusable. For example, a [GDScript] that was exported with binary tokenization has no source code, but still behaves as expected and could be instantiated. This can be checked with [CanInstantiate].
+
+[CanInstantiate]: https://pkg.go.dev/graphics.gd/classdb/Script#Instance.CanInstantiate
+[GDScript]: https://pkg.go.dev/graphics.gd/classdb/GDScript
 */
 //go:nosplit
 func (self class) HasSourceCode() bool { //gd:Script.has_source_code
@@ -399,9 +421,12 @@ func (self class) HasScriptSignal(signal_name String.Name) bool { //gd:Script.ha
 }
 
 /*
-Returns the list of properties in this [graphics.gd/classdb/Script].
+Returns the list of properties in this [Script].
 
-Note: The dictionaries returned by this method are formatted identically to those returned by [graphics.gd/classdb/Object.Instance.GetPropertyList].
+Note: The dictionaries returned by this method are formatted identically to those returned by [Object.GetPropertyList].
+
+[Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
 */
 //go:nosplit
 func (self class) GetScriptPropertyList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_property_list
@@ -411,9 +436,12 @@ func (self class) GetScriptPropertyList() Array.Contains[Dictionary.Any] { //gd:
 }
 
 /*
-Returns the list of methods in this [graphics.gd/classdb/Script].
+Returns the list of methods in this [Script].
 
-Note: The dictionaries returned by this method are formatted identically to those returned by [graphics.gd/classdb/Object.Instance.GetMethodList].
+Note: The dictionaries returned by this method are formatted identically to those returned by [Object.GetMethodList].
+
+[Object.GetMethodList]: https://pkg.go.dev/graphics.gd/variant/Object#GetMethodList
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
 */
 //go:nosplit
 func (self class) GetScriptMethodList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_method_list
@@ -423,9 +451,12 @@ func (self class) GetScriptMethodList() Array.Contains[Dictionary.Any] { //gd:Sc
 }
 
 /*
-Returns the list of user signals defined in this [graphics.gd/classdb/Script].
+Returns the list of user signals defined in this [Script].
 
-Note: The dictionaries returned by this method are formatted identically to those returned by [graphics.gd/classdb/Object.Instance.GetSignalList].
+Note: The dictionaries returned by this method are formatted identically to those returned by [Object.GetSignalList].
+
+[Object.GetSignalList]: https://pkg.go.dev/graphics.gd/variant/Object#GetSignalList
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
 */
 //go:nosplit
 func (self class) GetScriptSignalList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_signal_list

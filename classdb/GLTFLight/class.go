@@ -117,7 +117,9 @@ type Any interface {
 }
 
 /*
-Create a new GLTFLight instance from the given Godot [graphics.gd/classdb/Light3D] node.
+Create a new GLTFLight instance from the given Godot [Light3D] node.
+
+[Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
 */
 func FromNode(light_node Light3D.Instance) Instance { //gd:GLTFLight.from_node
 	self := Instance{}
@@ -125,7 +127,9 @@ func FromNode(light_node Light3D.Instance) Instance { //gd:GLTFLight.from_node
 }
 
 /*
-Converts this GLTFLight instance into a Godot [graphics.gd/classdb/Light3D] node.
+Converts this GLTFLight instance into a Godot [Light3D] node.
+
+[Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
 */
 func (self Instance) ToNode() Light3D.Instance { //gd:GLTFLight.to_node
 	return Light3D.Instance(Advanced(self).ToNode())
@@ -244,7 +248,9 @@ func (self Instance) SetOuterConeAngle(value Angle.Radians) {
 }
 
 /*
-Create a new GLTFLight instance from the given Godot [graphics.gd/classdb/Light3D] node.
+Create a new GLTFLight instance from the given Godot [Light3D] node.
+
+[Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
 */
 //go:nosplit
 func (self class) FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight { //gd:GLTFLight.from_node
@@ -254,7 +260,9 @@ func (self class) FromNode(light_node [1]gdclass.Light3D) [1]gdclass.GLTFLight {
 }
 
 /*
-Converts this GLTFLight instance into a Godot [graphics.gd/classdb/Light3D] node.
+Converts this GLTFLight instance into a Godot [Light3D] node.
+
+[Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
 */
 //go:nosplit
 func (self class) ToNode() [1]gdclass.Light3D { //gd:GLTFLight.to_node

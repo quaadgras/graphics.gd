@@ -3,7 +3,9 @@
 /*
 Composition layers allow 2D viewports to be displayed inside of the headset by the XR compositor through special projections that retain their quality. This allows for rendering clear text while keeping the layer at a native resolution.
 
-Note: If the OpenXR runtime doesn't support the given composition layer type, a fallback mesh can be generated with a [graphics.gd/classdb/ViewportTexture], in order to emulate the composition layer.
+Note: If the OpenXR runtime doesn't support the given composition layer type, a fallback mesh can be generated with a [ViewportTexture], in order to emulate the composition layer.
+
+[ViewportTexture]: https://pkg.go.dev/graphics.gd/classdb/ViewportTexture
 */
 package OpenXRCompositionLayer
 
@@ -143,9 +145,12 @@ type Any interface {
 }
 
 /*
-Returns a [graphics.gd/classdb/JavaObject] representing an android.view.Surface if [Instance.UseAndroidSurface] is enabled and OpenXR has created the surface. Otherwise, this will return null.
+Returns a [JavaObject] representing an android.view.Surface if [UseAndroidSurface] is enabled and OpenXR has created the surface. Otherwise, this will return null.
 
-Note: The surface can only be created during an active OpenXR session. So, if [Instance.UseAndroidSurface] is enabled outside of an OpenXR session, it won't be created until a new session fully starts.
+Note: The surface can only be created during an active OpenXR session. So, if [UseAndroidSurface] is enabled outside of an OpenXR session, it won't be created until a new session fully starts.
+
+[JavaObject]: https://pkg.go.dev/graphics.gd/classdb/JavaObject
+[UseAndroidSurface]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer#Instance.UseAndroidSurface
 */
 func (self Instance) GetAndroidSurface() JavaObject.Instance { //gd:OpenXRCompositionLayer.get_android_surface
 	return JavaObject.Instance(Advanced(self).GetAndroidSurface())
@@ -420,9 +425,12 @@ func (self class) GetAlphaBlend() bool { //gd:OpenXRCompositionLayer.get_alpha_b
 }
 
 /*
-Returns a [graphics.gd/classdb/JavaObject] representing an android.view.Surface if [Instance.UseAndroidSurface] is enabled and OpenXR has created the surface. Otherwise, this will return null.
+Returns a [JavaObject] representing an android.view.Surface if [UseAndroidSurface] is enabled and OpenXR has created the surface. Otherwise, this will return null.
 
-Note: The surface can only be created during an active OpenXR session. So, if [Instance.UseAndroidSurface] is enabled outside of an OpenXR session, it won't be created until a new session fully starts.
+Note: The surface can only be created during an active OpenXR session. So, if [UseAndroidSurface] is enabled outside of an OpenXR session, it won't be created until a new session fully starts.
+
+[JavaObject]: https://pkg.go.dev/graphics.gd/classdb/JavaObject
+[UseAndroidSurface]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer#Instance.UseAndroidSurface
 */
 //go:nosplit
 func (self class) GetAndroidSurface() [1]gdclass.JavaObject { //gd:OpenXRCompositionLayer.get_android_surface

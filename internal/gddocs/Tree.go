@@ -31,9 +31,9 @@ func ExampleTree() {
 	var tree = Tree.New()
 	var root = tree.CreateItem()
 	tree.SetHideRoot(true)
-	var child1 = Tree.Expanded(tree).CreateItem(root, -1)
-	var child2 = Tree.Expanded(tree).CreateItem(root, -1)
-	var subchild1 = Tree.Expanded(tree).CreateItem(child1, -1)
+	var child1 = tree.MoreArgs().CreateItem(root, -1)
+	var child2 = tree.MoreArgs().CreateItem(root, -1)
+	var subchild1 = tree.MoreArgs().CreateItem(child1, -1)
 	subchild1.SetText(0, "Subchild1")
 	_ = child2
 }

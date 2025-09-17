@@ -22,9 +22,10 @@ Note: This singleton is only available in Android builds.
 		fmt.Println(Object.Call(datetime.(Object.Instance), "format", formatter))
 	}
 
-Warning: When calling Java methods, be sure to check [graphics.gd/classdb/JavaClassWrapper.GetException] to check if the method threw an exception.
+Warning: When calling Java methods, be sure to check [JavaClassWrapper.GetException] to check if the method threw an exception.
 
 [Java Native Interface]: https://developer.android.com/training/articles/perf-jni
+[JavaClassWrapper.GetException]: https://pkg.go.dev/graphics.gd/classdb/JavaClassWrapper#GetException
 */
 package JavaClassWrapper
 
@@ -123,13 +124,16 @@ func singleton() {
 }
 
 /*
-Wraps a class defined in Java, and returns it as a [graphics.gd/classdb/JavaClass] [graphics.gd/classdb/Object] type that Godot can interact with.
+Wraps a class defined in Java, and returns it as a [JavaClass] [Object] type that Godot can interact with.
 
 When wrapping inner (nested) classes, use $ instead of . to separate them. For example, JavaClassWrapper.wrap("android.view.WindowManager$LayoutParams") wraps the WindowManager.LayoutParams class.
 
 Note: To invoke a constructor, call a method with the same name as the class. For example:
 
-Note: This method only works on Android. On every other platform, this method does nothing and returns an empty [graphics.gd/classdb/JavaClass].
+Note: This method only works on Android. On every other platform, this method does nothing and returns an empty [JavaClass].
+
+[JavaClass]: https://pkg.go.dev/graphics.gd/classdb/JavaClass
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
 func Wrap(name string) JavaClass.Instance { //gd:JavaClassWrapper.wrap
 	once.Do(singleton)
@@ -170,7 +174,7 @@ func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
 /*
-Wraps a class defined in Java, and returns it as a [graphics.gd/classdb/JavaClass] [graphics.gd/classdb/Object] type that Godot can interact with.
+Wraps a class defined in Java, and returns it as a [JavaClass] [Object] type that Godot can interact with.
 
 When wrapping inner (nested) classes, use $ instead of . to separate them. For example, JavaClassWrapper.wrap("android.view.WindowManager$LayoutParams") wraps the WindowManager.LayoutParams class.
 
@@ -178,7 +182,10 @@ Note: To invoke a constructor, call a method with the same name as the class. Fo
 
 
 
-Note: This method only works on Android. On every other platform, this method does nothing and returns an empty [graphics.gd/classdb/JavaClass].
+Note: This method only works on Android. On every other platform, this method does nothing and returns an empty [JavaClass].
+
+[JavaClass]: https://pkg.go.dev/graphics.gd/classdb/JavaClass
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
 //go:nosplit
 func (self class) Wrap(name String.Readable) [1]gdclass.JavaClass { //gd:JavaClassWrapper.wrap

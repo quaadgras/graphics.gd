@@ -157,7 +157,9 @@ func (self Instance) AddObstructionOutline(shape_outline []Vector2.XY) { //gd:Na
 }
 
 /*
-Adds the geometry data of another [graphics.gd/classdb/NavigationMeshSourceGeometryData2D] to the navigation mesh baking data.
+Adds the geometry data of another [NavigationMeshSourceGeometryData2D] to the navigation mesh baking data.
+
+[NavigationMeshSourceGeometryData2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationMeshSourceGeometryData2D
 */
 func (self Instance) Merge(other_geometry Instance) { //gd:NavigationMeshSourceGeometryData2D.merge
 	Advanced(self).Merge(other_geometry)
@@ -342,7 +344,9 @@ func (self class) AddObstructionOutline(shape_outline Packed.Array[Vector2.XY]) 
 }
 
 /*
-Adds the geometry data of another [graphics.gd/classdb/NavigationMeshSourceGeometryData2D] to the navigation mesh baking data.
+Adds the geometry data of another [NavigationMeshSourceGeometryData2D] to the navigation mesh baking data.
+
+[NavigationMeshSourceGeometryData2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationMeshSourceGeometryData2D
 */
 //go:nosplit
 func (self class) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometryData2D) { //gd:NavigationMeshSourceGeometryData2D.merge

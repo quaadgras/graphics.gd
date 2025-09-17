@@ -9,8 +9,6 @@ if result:
 package main
 
 import (
-	"fmt"
-
 	"graphics.gd/classdb/RegEx"
 	"graphics.gd/classdb/RegExMatch"
 )
@@ -20,6 +18,6 @@ func ExampleRegExCapture() {
 	regex.Compile(`d(?<digit>[0-9]+)|x(?<digit>[0-9a-f]+)`)
 	result := regex.Search("the number is x2f")
 	if result != RegExMatch.Nil {
-		fmt.Print(RegExMatch.Expanded(result).GetString("digit")) // Would print 2f
+		result.MoreArgs().GetString("digit") // Would print 2f
 	}
 }

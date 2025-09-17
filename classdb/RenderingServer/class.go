@@ -3,13 +3,13 @@
 /*
 The rendering server is the API backend for everything visible. The whole scene system mounts on it to display. The rendering server is completely opaque: the internals are entirely implementation-specific and cannot be accessed.
 
-The rendering server can be used to bypass the scene/[graphics.gd/classdb/Node] system entirely. This can improve performance in cases where the scene system is the bottleneck, but won't improve performance otherwise (for instance, if the GPU is already fully utilized).
+The rendering server can be used to bypass the scene/[Node] system entirely. This can improve performance in cases where the scene system is the bottleneck, but won't improve performance otherwise (for instance, if the GPU is already fully utilized).
 
 Resources are created using the *_create functions. These functions return [Resource.ID]s which are not references to the objects themselves, but opaque pointers towards these objects.
 
-All objects are drawn to a viewport. You can use the [graphics.gd/classdb/Viewport] attached to the [graphics.gd/classdb/SceneTree] or you can create one yourself with [ViewportCreate]. When using a custom scenario or canvas, the scenario or canvas needs to be attached to the viewport using [ViewportSetScenario] or [ViewportAttachCanvas].
+All objects are drawn to a viewport. You can use the [Viewport] attached to the [SceneTree] or you can create one yourself with [ViewportCreate]. When using a custom scenario or canvas, the scenario or canvas needs to be attached to the viewport using [ViewportSetScenario] or [ViewportAttachCanvas].
 
-Scenarios: In 3D, all visual objects must be associated with a scenario. The scenario is a visual representation of the world. If accessing the rendering server from a running game, the scenario can be accessed from the scene tree from any [graphics.gd/classdb/Node3D] node with [graphics.gd/classdb/Node3D.Instance.GetWorld3d]. Otherwise, a scenario can be created with [ScenarioCreate].
+Scenarios: In 3D, all visual objects must be associated with a scenario. The scenario is a visual representation of the world. If accessing the rendering server from a running game, the scenario can be accessed from the scene tree from any [Node3D] node with [Node3D.GetWorld3d]. Otherwise, a scenario can be created with [ScenarioCreate].
 
 Similarly, in 2D, a canvas is needed to draw all canvas items.
 
@@ -17,8 +17,15 @@ Similarly, in 2D, a canvas is needed to draw all canvas items.
 
 2D: In 2D, all visible objects are some form of canvas item. In order to be visible, a canvas item needs to be the child of a canvas attached to a viewport, or it needs to be the child of another canvas item that is eventually attached to the canvas. 2D-specific RenderingServer methods generally start with canvas_*.
 
-Headless mode: Starting the engine with the --headless [command line argument] disables all rendering and window management functions. Most functions from [graphics.gd/classdb/RenderingServer] will return dummy values in this case.
+Headless mode: Starting the engine with the --headless [command line argument] disables all rendering and window management functions. Most functions from [RenderingServer] will return dummy values in this case.
 
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Node3D]: https://pkg.go.dev/graphics.gd/classdb/Node3D
+[Node3D.GetWorld3d]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GetWorld3d
+[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 [command line argument]: https://docs.godotengine.org/tutorials/editor/command_line_tutorial.html
 */
 package RenderingServer
@@ -652,9 +659,12 @@ Creates a 2-dimensional texture and adds it to the RenderingServer. It can be ac
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/Texture2D].
+Note: The equivalent resource is [Texture2D].
 
-Note: Not to be confused with [graphics.gd/classdb/RenderingDevice.Instance.TextureCreate], which creates the graphics API's own texture type as opposed to the Godot-specific [graphics.gd/classdb/Texture2D] resource.
+Note: Not to be confused with [RenderingDevice.TextureCreate], which creates the graphics API's own texture type as opposed to the Godot-specific [Texture2D] resource.
+
+[RenderingDevice.TextureCreate]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.TextureCreate
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
 func Texture2dCreate(image Image.Instance) RID.Texture2D { //gd:RenderingServer.texture_2d_create
 	once.Do(singleton)
@@ -666,7 +676,9 @@ Creates a 2-dimensional layered texture and adds it to the RenderingServer. It c
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/TextureLayered].
+Note: The equivalent resource is [TextureLayered].
+
+[TextureLayered]: https://pkg.go.dev/graphics.gd/classdb/TextureLayered
 */
 func Texture2dLayeredCreate(layers []Image.Instance, layered_type TextureLayeredType) RID.Texture2D { //gd:RenderingServer.texture_2d_layered_create
 	once.Do(singleton)
@@ -674,7 +686,9 @@ func Texture2dLayeredCreate(layers []Image.Instance, layered_type TextureLayered
 }
 
 /*
-Note: The equivalent resource is [graphics.gd/classdb/Texture3D].
+Note: The equivalent resource is [Texture3D].
+
+[Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
 */
 func Texture3dCreate(format Image.Format, width int, height int, depth int, mipmaps bool, data []Image.Instance) RID.Texture3D { //gd:RenderingServer.texture_3d_create
 	once.Do(singleton)
@@ -683,6 +697,8 @@ func Texture3dCreate(format Image.Format, width int, height int, depth int, mipm
 
 /*
 This method does nothing and always returns an invalid [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func TextureProxyCreate(base RID.TextureProxy) RID.TextureProxy { //gd:RenderingServer.texture_proxy_create
 	once.Do(singleton)
@@ -692,7 +708,10 @@ func TextureProxyCreate(base RID.TextureProxy) RID.TextureProxy { //gd:Rendering
 /*
 Creates a texture based on a native handle that was created outside of Godot's renderer.
 
-Note: If using only the rendering device renderer, it's recommend to use [graphics.gd/classdb/RenderingDevice.Instance.TextureCreateFromExtension] together with [graphics.gd/classdb/RenderingServer.TextureRdCreate], rather than this method. It will give you much more control over the texture's format and usage.
+Note: If using only the rendering device renderer, it's recommend to use [RenderingDevice.TextureCreateFromExtension] together with [RenderingServer.TextureRdCreate], rather than this method. It will give you much more control over the texture's format and usage.
+
+[RenderingDevice.TextureCreateFromExtension]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.TextureCreateFromExtension
+[RenderingServer.TextureRdCreate]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#TextureRdCreate
 */
 func TextureCreateFromNativeHandle(atype TextureType, format Image.Format, native_handle int, width int, height int, depth int, layered_type TextureLayeredType) RID.Texture { //gd:RenderingServer.texture_create_from_native_handle
 	once.Do(singleton)
@@ -702,7 +721,10 @@ func TextureCreateFromNativeHandle(atype TextureType, format Image.Format, nativ
 /*
 Creates a texture based on a native handle that was created outside of Godot's renderer.
 
-Note: If using only the rendering device renderer, it's recommend to use [graphics.gd/classdb/RenderingDevice.Instance.TextureCreateFromExtension] together with [graphics.gd/classdb/RenderingServer.TextureRdCreate], rather than this method. It will give you much more control over the texture's format and usage.
+Note: If using only the rendering device renderer, it's recommend to use [RenderingDevice.TextureCreateFromExtension] together with [RenderingServer.TextureRdCreate], rather than this method. It will give you much more control over the texture's format and usage.
+
+[RenderingDevice.TextureCreateFromExtension]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.TextureCreateFromExtension
+[RenderingServer.TextureRdCreate]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#TextureRdCreate
 */
 func TextureCreateFromNativeHandleOptions(atype TextureType, format Image.Format, native_handle int, width int, height int, depth int, layers int, layered_type TextureLayeredType) RID.Texture { //gd:RenderingServer.texture_create_from_native_handle
 	once.Do(singleton)
@@ -710,9 +732,12 @@ func TextureCreateFromNativeHandleOptions(atype TextureType, format Image.Format
 }
 
 /*
-Updates the texture specified by the 'texture' [Resource.ID] with the data in 'image'. A 'layer' must also be specified, which should be 0 when updating a single-layer texture ([graphics.gd/classdb/Texture2D]).
+Updates the texture specified by the 'texture' [Resource.ID] with the data in 'image'. A 'layer' must also be specified, which should be 0 when updating a single-layer texture ([Texture2D]).
 
 Note: The 'image' must have the same width, height and format as the current 'texture' data. Otherwise, an error will be printed and the original texture won't be modified. If you need to use different width, height or format, use [TextureReplace] instead.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
 func Texture2dUpdate(texture RID.Texture2D, image Image.Instance, layer int) { //gd:RenderingServer.texture_2d_update
 	once.Do(singleton)
@@ -723,6 +748,8 @@ func Texture2dUpdate(texture RID.Texture2D, image Image.Instance, layer int) { /
 Updates the texture specified by the 'texture' [Resource.ID]'s data with the data in 'data'. All the texture's layers must be replaced at once.
 
 Note: The 'texture' must have the same width, height, depth and format as the current texture data. Otherwise, an error will be printed and the original texture won't be modified. If you need to use different width, height, depth or format, use [TextureReplace] instead.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func Texture3dUpdate(texture RID.Texture3D, data []Image.Instance) { //gd:RenderingServer.texture_3d_update
 	once.Do(singleton)
@@ -742,7 +769,9 @@ Creates a placeholder for a 2-dimensional layered texture and adds it to the Ren
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/PlaceholderTexture2D].
+Note: The equivalent resource is [PlaceholderTexture2D].
+
+[PlaceholderTexture2D]: https://pkg.go.dev/graphics.gd/classdb/PlaceholderTexture2D
 */
 func Texture2dPlaceholderCreate() RID.Texture2D { //gd:RenderingServer.texture_2d_placeholder_create
 	once.Do(singleton)
@@ -752,7 +781,9 @@ func Texture2dPlaceholderCreate() RID.Texture2D { //gd:RenderingServer.texture_2
 /*
 Creates a placeholder for a 2-dimensional layered texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all texture_2d_layered_* RenderingServer functions, although it does nothing when used. See also [Texture2dPlaceholderCreate].
 
-Note: The equivalent resource is [graphics.gd/classdb/PlaceholderTextureLayered].
+Note: The equivalent resource is [PlaceholderTextureLayered].
+
+[PlaceholderTextureLayered]: https://pkg.go.dev/graphics.gd/classdb/PlaceholderTextureLayered
 */
 func Texture2dLayeredPlaceholderCreate(layered_type TextureLayeredType) RID.Texture2D { //gd:RenderingServer.texture_2d_layered_placeholder_create
 	once.Do(singleton)
@@ -764,7 +795,9 @@ Creates a placeholder for a 3-dimensional texture and adds it to the RenderingSe
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/PlaceholderTexture3D].
+Note: The equivalent resource is [PlaceholderTexture3D].
+
+[PlaceholderTexture3D]: https://pkg.go.dev/graphics.gd/classdb/PlaceholderTexture3D
 */
 func Texture3dPlaceholderCreate() RID.Texture3D { //gd:RenderingServer.texture_3d_placeholder_create
 	once.Do(singleton)
@@ -772,9 +805,13 @@ func Texture3dPlaceholderCreate() RID.Texture3D { //gd:RenderingServer.texture_3
 }
 
 /*
-Returns an [graphics.gd/classdb/Image] instance from the given 'texture' [Resource.ID].
+Returns an [Image] instance from the given 'texture' [Resource.ID].
 
-Example: Get the test texture from [GetTestTexture] and apply it to a [graphics.gd/classdb/Sprite2D] node:
+Example: Get the test texture from [GetTestTexture] and apply it to a [Sprite2D] node:
+
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
 */
 func Texture2dGet(texture RID.Texture2D) Image.Instance { //gd:RenderingServer.texture_2d_get
 	once.Do(singleton)
@@ -782,7 +819,10 @@ func Texture2dGet(texture RID.Texture2D) Image.Instance { //gd:RenderingServer.t
 }
 
 /*
-Returns an [graphics.gd/classdb/Image] instance from the given 'texture' [Resource.ID] and 'layer'.
+Returns an [Image] instance from the given 'texture' [Resource.ID] and 'layer'.
+
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func Texture2dLayerGet(texture RID.Texture2D, layer int) Image.Instance { //gd:RenderingServer.texture_2d_layer_get
 	once.Do(singleton)
@@ -790,7 +830,10 @@ func Texture2dLayerGet(texture RID.Texture2D, layer int) Image.Instance { //gd:R
 }
 
 /*
-Returns 3D texture data as an array of [graphics.gd/classdb/Image]s for the specified texture [Resource.ID].
+Returns 3D texture data as an array of [Image]s for the specified texture [Resource.ID].
+
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func Texture3dGet(texture RID.Texture3D) []Image.Instance { //gd:RenderingServer.texture_3d_get
 	once.Do(singleton)
@@ -830,7 +873,9 @@ func TextureSetForceRedrawIfVisible(texture RID.Texture, enable bool) { //gd:Ren
 }
 
 /*
-Creates a new texture object based on a texture created directly on the [graphics.gd/classdb/RenderingDevice]. If the texture contains layers, 'layer_type' is used to define the layer type.
+Creates a new texture object based on a texture created directly on the [RenderingDevice]. If the texture contains layers, 'layer_type' is used to define the layer type.
+
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
 */
 func TextureRdCreate(rd_texture RID.Texture, layer_type TextureLayeredType) RID.Texture { //gd:RenderingServer.texture_rd_create
 	once.Do(singleton)
@@ -838,7 +883,9 @@ func TextureRdCreate(rd_texture RID.Texture, layer_type TextureLayeredType) RID.
 }
 
 /*
-Creates a new texture object based on a texture created directly on the [graphics.gd/classdb/RenderingDevice]. If the texture contains layers, 'layer_type' is used to define the layer type.
+Creates a new texture object based on a texture created directly on the [RenderingDevice]. If the texture contains layers, 'layer_type' is used to define the layer type.
+
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
 */
 func TextureRdCreateOptions(rd_texture RID.Texture, layer_type TextureLayeredType) RID.Texture { //gd:RenderingServer.texture_rd_create
 	once.Do(singleton)
@@ -846,7 +893,10 @@ func TextureRdCreateOptions(rd_texture RID.Texture, layer_type TextureLayeredTyp
 }
 
 /*
-Returns a texture [Resource.ID] that can be used with [graphics.gd/classdb/RenderingDevice].
+Returns a texture [Resource.ID] that can be used with [RenderingDevice].
+
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func TextureGetRdTexture(texture RID.Texture, srgb bool) RID.Texture { //gd:RenderingServer.texture_get_rd_texture
 	once.Do(singleton)
@@ -854,7 +904,10 @@ func TextureGetRdTexture(texture RID.Texture, srgb bool) RID.Texture { //gd:Rend
 }
 
 /*
-Returns a texture [Resource.ID] that can be used with [graphics.gd/classdb/RenderingDevice].
+Returns a texture [Resource.ID] that can be used with [RenderingDevice].
+
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func TextureGetRdTextureOptions(texture RID.Texture, srgb bool) RID.Texture { //gd:RenderingServer.texture_get_rd_texture
 	once.Do(singleton)
@@ -886,7 +939,9 @@ Creates an empty shader and adds it to the RenderingServer. It can be accessed w
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/Shader].
+Note: The equivalent resource is [Shader].
+
+[Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
 */
 func ShaderCreate() RID.Shader { //gd:RenderingServer.shader_create
 	once.Do(singleton)
@@ -902,7 +957,10 @@ func ShaderSetCode(shader RID.Shader, code string) { //gd:RenderingServer.shader
 }
 
 /*
-Sets the path hint for the specified shader. This should generally match the [graphics.gd/classdb/Shader] resource's [graphics.gd/classdb/Resource.Instance.ResourcePath].
+Sets the path hint for the specified shader. This should generally match the [Shader] resource's [Resource.ResourcePath].
+
+[Resource.ResourcePath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourcePath
+[Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
 */
 func ShaderSetPathHint(shader RID.Shader, path string) { //gd:RenderingServer.shader_set_path_hint
 	once.Do(singleton)
@@ -978,7 +1036,9 @@ Creates an empty material and adds it to the RenderingServer. It can be accessed
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/Material].
+Note: The equivalent resource is [Material].
+
+[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
 */
 func MaterialCreate() RID.Material { //gd:RenderingServer.material_create
 	once.Do(singleton)
@@ -1040,7 +1100,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach this mesh to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent resource is [graphics.gd/classdb/Mesh].
+Note: The equivalent resource is [Mesh].
+
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 */
 func MeshCreate() RID.Mesh { //gd:RenderingServer.mesh_create
 	once.Do(singleton)
@@ -1238,7 +1300,10 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach this multimesh to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent resource is [graphics.gd/classdb/MultiMesh].
+Note: The equivalent resource is [MultiMesh].
+
+[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func MultimeshCreate() RID.MultiMesh { //gd:RenderingServer.multimesh_create
 	once.Do(singleton)
@@ -1262,7 +1327,9 @@ func MultimeshGetInstanceCount(multimesh RID.MultiMesh) int { //gd:RenderingServ
 }
 
 /*
-Sets the mesh to be drawn by the multimesh. Equivalent to [graphics.gd/classdb/MultiMesh.Instance.Mesh].
+Sets the mesh to be drawn by the multimesh. Equivalent to [MultiMesh.Mesh].
+
+[MultiMesh.Mesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.Mesh
 */
 func MultimeshSetMesh(multimesh RID.MultiMesh, mesh RID.Mesh) { //gd:RenderingServer.multimesh_set_mesh
 	once.Do(singleton)
@@ -1270,7 +1337,10 @@ func MultimeshSetMesh(multimesh RID.MultiMesh, mesh RID.Mesh) { //gd:RenderingSe
 }
 
 /*
-Sets the [Transform3D.BasisOrigin] for this instance. Equivalent to [graphics.gd/classdb/MultiMesh.Instance.SetInstanceTransform].
+Sets the [Transform3D.BasisOrigin] for this instance. Equivalent to [MultiMesh.SetInstanceTransform].
+
+[MultiMesh.SetInstanceTransform]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceTransform
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 func MultimeshInstanceSetTransform(multimesh RID.MultiMesh, index int, transform Transform3D.BasisOrigin) { //gd:RenderingServer.multimesh_instance_set_transform
 	once.Do(singleton)
@@ -1278,7 +1348,10 @@ func MultimeshInstanceSetTransform(multimesh RID.MultiMesh, index int, transform
 }
 
 /*
-Sets the [Transform2D.OriginXY] for this instance. For use when multimesh is used in 2D. Equivalent to [graphics.gd/classdb/MultiMesh.Instance.SetInstanceTransform2d].
+Sets the [Transform2D.OriginXY] for this instance. For use when multimesh is used in 2D. Equivalent to [MultiMesh.SetInstanceTransform2d].
+
+[MultiMesh.SetInstanceTransform2d]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceTransform2d
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 func MultimeshInstanceSetTransform2d(multimesh RID.MultiMesh, index int, transform Transform2D.OriginXY) { //gd:RenderingServer.multimesh_instance_set_transform_2d
 	once.Do(singleton)
@@ -1286,7 +1359,9 @@ func MultimeshInstanceSetTransform2d(multimesh RID.MultiMesh, index int, transfo
 }
 
 /*
-Sets the color by which this instance will be modulated. Equivalent to [graphics.gd/classdb/MultiMesh.Instance.SetInstanceColor].
+Sets the color by which this instance will be modulated. Equivalent to [MultiMesh.SetInstanceColor].
+
+[MultiMesh.SetInstanceColor]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceColor
 */
 func MultimeshInstanceSetColor(multimesh RID.MultiMesh, index int, color Color.RGBA) { //gd:RenderingServer.multimesh_instance_set_color
 	once.Do(singleton)
@@ -1294,7 +1369,10 @@ func MultimeshInstanceSetColor(multimesh RID.MultiMesh, index int, color Color.R
 }
 
 /*
-Sets the custom data for this instance. Custom data is passed as a [Color.RGBA], but is interpreted as a vec4 in the shader. Equivalent to [graphics.gd/classdb/MultiMesh.Instance.SetInstanceCustomData].
+Sets the custom data for this instance. Custom data is passed as a [Color.RGBA], but is interpreted as a vec4 in the shader. Equivalent to [MultiMesh.SetInstanceCustomData].
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[MultiMesh.SetInstanceCustomData]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceCustomData
 */
 func MultimeshInstanceSetCustomData(multimesh RID.MultiMesh, index int, custom_data Color.RGBA) { //gd:RenderingServer.multimesh_instance_set_custom_data
 	once.Do(singleton)
@@ -1335,6 +1413,8 @@ func MultimeshGetCustomAabb(multimesh RID.MultiMesh) AABB.PositionSize { //gd:Re
 
 /*
 Returns the [Transform3D.BasisOrigin] of the specified instance.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 func MultimeshInstanceGetTransform(multimesh RID.MultiMesh, index int) Transform3D.BasisOrigin { //gd:RenderingServer.multimesh_instance_get_transform
 	once.Do(singleton)
@@ -1343,6 +1423,8 @@ func MultimeshInstanceGetTransform(multimesh RID.MultiMesh, index int) Transform
 
 /*
 Returns the [Transform2D.OriginXY] of the specified instance. For use when the multimesh is set to use 2D transforms.
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 func MultimeshInstanceGetTransform2d(multimesh RID.MultiMesh, index int) Transform2D.OriginXY { //gd:RenderingServer.multimesh_instance_get_transform_2d
 	once.Do(singleton)
@@ -1366,7 +1448,9 @@ func MultimeshInstanceGetCustomData(multimesh RID.MultiMesh, index int) Color.RG
 }
 
 /*
-Sets the number of instances visible at a given time. If -1, all instances that have been allocated are drawn. Equivalent to [graphics.gd/classdb/MultiMesh.Instance.VisibleInstanceCount].
+Sets the number of instances visible at a given time. If -1, all instances that have been allocated are drawn. Equivalent to [MultiMesh.VisibleInstanceCount].
+
+[MultiMesh.VisibleInstanceCount]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.VisibleInstanceCount
 */
 func MultimeshSetVisibleInstances(multimesh RID.MultiMesh, visible int) { //gd:RenderingServer.multimesh_set_visible_instances
 	once.Do(singleton)
@@ -1391,6 +1475,9 @@ Instance transforms are in row-major order. Specifically:
 - For [Transform2D.OriginXY] the float-order is: (x.x, y.x, padding_float, origin.x, x.y, y.y, padding_float, origin.y).
 
 - For [Transform3D.BasisOrigin] the float-order is: (basis.x.x, basis.y.x, basis.z.x, origin.x, basis.x.y, basis.y.y, basis.z.y, origin.y, basis.x.z, basis.y.z, basis.z.z, origin.z).
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 func MultimeshSetBuffer(multimesh RID.MultiMesh, buffer []float32) { //gd:RenderingServer.multimesh_set_buffer
 	once.Do(singleton)
@@ -1398,11 +1485,15 @@ func MultimeshSetBuffer(multimesh RID.MultiMesh, buffer []float32) { //gd:Render
 }
 
 /*
-Returns the [graphics.gd/classdb/RenderingDevice] [Resource.ID] handle of the [graphics.gd/classdb/MultiMesh] command buffer. This [Resource.ID] is only valid if use_indirect is set to true when allocating data through [MultimeshAllocateData]. It can be used to directly modify the instance count via buffer.
+Returns the [RenderingDevice] [Resource.ID] handle of the [MultiMesh] command buffer. This [Resource.ID] is only valid if use_indirect is set to true when allocating data through [MultimeshAllocateData]. It can be used to directly modify the instance count via buffer.
 
 The data structure is dependent on both how many surfaces the mesh contains and whether it is indexed or not, the buffer has 5 integers in it, with the last unused if the mesh is not indexed.
 
 Each of the values in the buffer correspond to these options:
+
+[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func MultimeshGetCommandBufferRdRid(multimesh RID.MultiMesh) RID.Buffer { //gd:RenderingServer.multimesh_get_command_buffer_rd_rid
 	once.Do(singleton)
@@ -1410,7 +1501,11 @@ func MultimeshGetCommandBufferRdRid(multimesh RID.MultiMesh) RID.Buffer { //gd:R
 }
 
 /*
-Returns the [graphics.gd/classdb/RenderingDevice] [Resource.ID] handle of the [graphics.gd/classdb/MultiMesh], which can be used as any other buffer on the Rendering Device.
+Returns the [RenderingDevice] [Resource.ID] handle of the [MultiMesh], which can be used as any other buffer on the Rendering Device.
+
+[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func MultimeshGetBufferRdRid(multimesh RID.MultiMesh) RID.Buffer { //gd:RenderingServer.multimesh_get_buffer_rd_rid
 	once.Do(singleton)
@@ -1446,9 +1541,11 @@ func MultimeshSetPhysicsInterpolated(multimesh RID.MultiMesh, interpolated bool)
 }
 
 /*
-Sets the physics interpolation quality for the [graphics.gd/classdb/MultiMesh].
+Sets the physics interpolation quality for the [MultiMesh].
 
 A value of [MultimeshInterpQualityFast] gives fast but low quality interpolation, a value of [MultimeshInterpQualityHigh] gives slower but higher quality interpolation.
+
+[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
 */
 func MultimeshSetPhysicsInterpolationQuality(multimesh RID.MultiMesh, quality MultimeshPhysicsInterpolationQuality) { //gd:RenderingServer.multimesh_set_physics_interpolation_quality
 	once.Do(singleton)
@@ -1493,6 +1590,8 @@ func SkeletonGetBoneCount(skeleton RID.Skeleton) int { //gd:RenderingServer.skel
 
 /*
 Sets the [Transform3D.BasisOrigin] for a specific bone of this skeleton.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 func SkeletonBoneSetTransform(skeleton RID.Skeleton, bone int, transform Transform3D.BasisOrigin) { //gd:RenderingServer.skeleton_bone_set_transform
 	once.Do(singleton)
@@ -1501,6 +1600,8 @@ func SkeletonBoneSetTransform(skeleton RID.Skeleton, bone int, transform Transfo
 
 /*
 Returns the [Transform3D.BasisOrigin] set for a specific bone of this skeleton.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 func SkeletonBoneGetTransform(skeleton RID.Skeleton, bone int) Transform3D.BasisOrigin { //gd:RenderingServer.skeleton_bone_get_transform
 	once.Do(singleton)
@@ -1509,6 +1610,8 @@ func SkeletonBoneGetTransform(skeleton RID.Skeleton, bone int) Transform3D.Basis
 
 /*
 Sets the [Transform2D.OriginXY] for a specific bone of this skeleton.
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 func SkeletonBoneSetTransform2d(skeleton RID.Skeleton, bone int, transform Transform2D.OriginXY) { //gd:RenderingServer.skeleton_bone_set_transform_2d
 	once.Do(singleton)
@@ -1517,6 +1620,8 @@ func SkeletonBoneSetTransform2d(skeleton RID.Skeleton, bone int, transform Trans
 
 /*
 Returns the [Transform2D.OriginXY] set for a specific bone of this skeleton.
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 func SkeletonBoneGetTransform2d(skeleton RID.Skeleton, bone int) Transform2D.OriginXY { //gd:RenderingServer.skeleton_bone_get_transform_2d
 	once.Do(singleton)
@@ -1534,7 +1639,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach this directional light to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent node is [graphics.gd/classdb/DirectionalLight3D].
+Note: The equivalent node is [DirectionalLight3D].
+
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
 */
 func DirectionalLightCreate() RID.Light { //gd:RenderingServer.directional_light_create
 	once.Do(singleton)
@@ -1548,7 +1655,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach this omni light to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent node is [graphics.gd/classdb/OmniLight3D].
+Note: The equivalent node is [OmniLight3D].
+
+[OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
 */
 func OmniLightCreate() RID.Light { //gd:RenderingServer.omni_light_create
 	once.Do(singleton)
@@ -1568,7 +1677,9 @@ func SpotLightCreate() RID.Light { //gd:RenderingServer.spot_light_create
 }
 
 /*
-Sets the color of the light. Equivalent to [graphics.gd/classdb/Light3D.Instance.LightColor].
+Sets the color of the light. Equivalent to [Light3D.LightColor].
+
+[Light3D.LightColor]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightColor
 */
 func LightSetColor(light RID.Light, color Color.RGBA) { //gd:RenderingServer.light_set_color
 	once.Do(singleton)
@@ -1576,7 +1687,9 @@ func LightSetColor(light RID.Light, color Color.RGBA) { //gd:RenderingServer.lig
 }
 
 /*
-Sets the specified 3D light parameter. Equivalent to [graphics.gd/classdb/Light3D.Instance.SetParam].
+Sets the specified 3D light parameter. Equivalent to [Light3D.SetParam].
+
+[Light3D.SetParam]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.SetParam
 */
 func LightSetParam(light RID.Light, param LightParam, value Float.X) { //gd:RenderingServer.light_set_param
 	once.Do(singleton)
@@ -1584,7 +1697,9 @@ func LightSetParam(light RID.Light, param LightParam, value Float.X) { //gd:Rend
 }
 
 /*
-If true, light will cast shadows. Equivalent to [graphics.gd/classdb/Light3D.Instance.ShadowEnabled].
+If true, light will cast shadows. Equivalent to [Light3D.ShadowEnabled].
+
+[Light3D.ShadowEnabled]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowEnabled
 */
 func LightSetShadow(light RID.Light, enabled bool) { //gd:RenderingServer.light_set_shadow
 	once.Do(singleton)
@@ -1592,7 +1707,9 @@ func LightSetShadow(light RID.Light, enabled bool) { //gd:RenderingServer.light_
 }
 
 /*
-Sets the projector texture to use for the specified 3D light. Equivalent to [graphics.gd/classdb/Light3D.Instance.LightProjector].
+Sets the projector texture to use for the specified 3D light. Equivalent to [Light3D.LightProjector].
+
+[Light3D.LightProjector]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightProjector
 */
 func LightSetProjector(light RID.Light, texture RID.Texture) { //gd:RenderingServer.light_set_projector
 	once.Do(singleton)
@@ -1600,7 +1717,9 @@ func LightSetProjector(light RID.Light, texture RID.Texture) { //gd:RenderingSer
 }
 
 /*
-If true, the 3D light will subtract light instead of adding light. Equivalent to [graphics.gd/classdb/Light3D.Instance.LightNegative].
+If true, the 3D light will subtract light instead of adding light. Equivalent to [Light3D.LightNegative].
+
+[Light3D.LightNegative]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightNegative
 */
 func LightSetNegative(light RID.Light, enable bool) { //gd:RenderingServer.light_set_negative
 	once.Do(singleton)
@@ -1608,7 +1727,9 @@ func LightSetNegative(light RID.Light, enable bool) { //gd:RenderingServer.light
 }
 
 /*
-Sets the cull mask for this 3D light. Lights only affect objects in the selected layers. Equivalent to [graphics.gd/classdb/Light3D.Instance.LightCullMask].
+Sets the cull mask for this 3D light. Lights only affect objects in the selected layers. Equivalent to [Light3D.LightCullMask].
+
+[Light3D.LightCullMask]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightCullMask
 */
 func LightSetCullMask(light RID.Light, mask int) { //gd:RenderingServer.light_set_cull_mask
 	once.Do(singleton)
@@ -1616,7 +1737,12 @@ func LightSetCullMask(light RID.Light, mask int) { //gd:RenderingServer.light_se
 }
 
 /*
-Sets the distance fade for this 3D light. This acts as a form of level of detail (LOD) and can be used to improve performance. Equivalent to [graphics.gd/classdb/Light3D.Instance.DistanceFadeEnabled], [graphics.gd/classdb/Light3D.Instance.DistanceFadeBegin], [graphics.gd/classdb/Light3D.Instance.DistanceFadeShadow], and [graphics.gd/classdb/Light3D.Instance.DistanceFadeLength].
+Sets the distance fade for this 3D light. This acts as a form of level of detail (LOD) and can be used to improve performance. Equivalent to [Light3D.DistanceFadeEnabled], [Light3D.DistanceFadeBegin], [Light3D.DistanceFadeShadow], and [Light3D.DistanceFadeLength].
+
+[Light3D.DistanceFadeBegin]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeBegin
+[Light3D.DistanceFadeEnabled]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeEnabled
+[Light3D.DistanceFadeLength]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeLength
+[Light3D.DistanceFadeShadow]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeShadow
 */
 func LightSetDistanceFade(decal RID.Light, enabled bool, begin Float.X, shadow Float.X, length Float.X) { //gd:RenderingServer.light_set_distance_fade
 	once.Do(singleton)
@@ -1624,7 +1750,9 @@ func LightSetDistanceFade(decal RID.Light, enabled bool, begin Float.X, shadow F
 }
 
 /*
-If true, reverses the backface culling of the mesh. This can be useful when you have a flat mesh that has a light behind it. If you need to cast a shadow on both sides of the mesh, set the mesh to use double-sided shadows with [InstanceGeometrySetCastShadowsSetting]. Equivalent to [graphics.gd/classdb/Light3D.Instance.ShadowReverseCullFace].
+If true, reverses the backface culling of the mesh. This can be useful when you have a flat mesh that has a light behind it. If you need to cast a shadow on both sides of the mesh, set the mesh to use double-sided shadows with [InstanceGeometrySetCastShadowsSetting]. Equivalent to [Light3D.ShadowReverseCullFace].
+
+[Light3D.ShadowReverseCullFace]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowReverseCullFace
 */
 func LightSetReverseCullFaceMode(light RID.Light, enabled bool) { //gd:RenderingServer.light_set_reverse_cull_face_mode
 	once.Do(singleton)
@@ -1632,7 +1760,9 @@ func LightSetReverseCullFaceMode(light RID.Light, enabled bool) { //gd:Rendering
 }
 
 /*
-Sets the shadow caster mask for this 3D light. Shadows will only be cast using objects in the selected layers. Equivalent to [graphics.gd/classdb/Light3D.Instance.ShadowCasterMask].
+Sets the shadow caster mask for this 3D light. Shadows will only be cast using objects in the selected layers. Equivalent to [Light3D.ShadowCasterMask].
+
+[Light3D.ShadowCasterMask]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowCasterMask
 */
 func LightSetShadowCasterMask(light RID.Light, mask int) { //gd:RenderingServer.light_set_shadow_caster_mask
 	once.Do(singleton)
@@ -1640,7 +1770,9 @@ func LightSetShadowCasterMask(light RID.Light, mask int) { //gd:RenderingServer.
 }
 
 /*
-Sets the bake mode to use for the specified 3D light. Equivalent to [graphics.gd/classdb/Light3D.Instance.LightBakeMode].
+Sets the bake mode to use for the specified 3D light. Equivalent to [Light3D.LightBakeMode].
+
+[Light3D.LightBakeMode]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightBakeMode
 */
 func LightSetBakeMode(light RID.Light, bake_mode LightBakeMode) { //gd:RenderingServer.light_set_bake_mode
 	once.Do(singleton)
@@ -1656,7 +1788,9 @@ func LightSetMaxSdfgiCascade(light RID.Light, cascade int) { //gd:RenderingServe
 }
 
 /*
-Sets whether to use a dual paraboloid or a cubemap for the shadow map. Dual paraboloid is faster but may suffer from artifacts. Equivalent to [graphics.gd/classdb/OmniLight3D.Instance.OmniShadowMode].
+Sets whether to use a dual paraboloid or a cubemap for the shadow map. Dual paraboloid is faster but may suffer from artifacts. Equivalent to [OmniLight3D.OmniShadowMode].
+
+[OmniLight3D.OmniShadowMode]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D#Instance.OmniShadowMode
 */
 func LightOmniSetShadowMode(light RID.Light, mode LightOmniShadowMode) { //gd:RenderingServer.light_omni_set_shadow_mode
 	once.Do(singleton)
@@ -1664,7 +1798,9 @@ func LightOmniSetShadowMode(light RID.Light, mode LightOmniShadowMode) { //gd:Re
 }
 
 /*
-Sets the shadow mode for this directional light. Equivalent to [graphics.gd/classdb/DirectionalLight3D.Instance.DirectionalShadowMode].
+Sets the shadow mode for this directional light. Equivalent to [DirectionalLight3D.DirectionalShadowMode].
+
+[DirectionalLight3D.DirectionalShadowMode]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D#Instance.DirectionalShadowMode
 */
 func LightDirectionalSetShadowMode(light RID.Light, mode LightDirectionalShadowMode) { //gd:RenderingServer.light_directional_set_shadow_mode
 	once.Do(singleton)
@@ -1672,7 +1808,9 @@ func LightDirectionalSetShadowMode(light RID.Light, mode LightDirectionalShadowM
 }
 
 /*
-If true, this directional light will blend between shadow map splits resulting in a smoother transition between them. Equivalent to [graphics.gd/classdb/DirectionalLight3D.Instance.DirectionalShadowBlendSplits].
+If true, this directional light will blend between shadow map splits resulting in a smoother transition between them. Equivalent to [DirectionalLight3D.DirectionalShadowBlendSplits].
+
+[DirectionalLight3D.DirectionalShadowBlendSplits]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D#Instance.DirectionalShadowBlendSplits
 */
 func LightDirectionalSetBlendSplits(light RID.Light, enable bool) { //gd:RenderingServer.light_directional_set_blend_splits
 	once.Do(singleton)
@@ -1704,7 +1842,9 @@ func LightmapsSetBicubicFilter(enable bool) { //gd:RenderingServer.lightmaps_set
 }
 
 /*
-Sets the filter quality for omni and spot light shadows in 3D. See also [graphics.gd/classdb/ProjectSettings] "rendering/lights_and_shadows/positional_shadow/soft_shadow_filter_quality". This parameter is global and cannot be set on a per-viewport basis.
+Sets the filter quality for omni and spot light shadows in 3D. See also [ProjectSettings] "rendering/lights_and_shadows/positional_shadow/soft_shadow_filter_quality". This parameter is global and cannot be set on a per-viewport basis.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func PositionalSoftShadowFilterSetQuality(quality ShadowQuality) { //gd:RenderingServer.positional_soft_shadow_filter_set_quality
 	once.Do(singleton)
@@ -1712,7 +1852,9 @@ func PositionalSoftShadowFilterSetQuality(quality ShadowQuality) { //gd:Renderin
 }
 
 /*
-Sets the filter 'quality' for directional light shadows in 3D. See also [graphics.gd/classdb/ProjectSettings] "rendering/lights_and_shadows/directional_shadow/soft_shadow_filter_quality". This parameter is global and cannot be set on a per-viewport basis.
+Sets the filter 'quality' for directional light shadows in 3D. See also [ProjectSettings] "rendering/lights_and_shadows/directional_shadow/soft_shadow_filter_quality". This parameter is global and cannot be set on a per-viewport basis.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func DirectionalSoftShadowFilterSetQuality(quality ShadowQuality) { //gd:RenderingServer.directional_soft_shadow_filter_set_quality
 	once.Do(singleton)
@@ -1720,7 +1862,9 @@ func DirectionalSoftShadowFilterSetQuality(quality ShadowQuality) { //gd:Renderi
 }
 
 /*
-Sets the 'size' of the directional light shadows in 3D. See also [graphics.gd/classdb/ProjectSettings] "rendering/lights_and_shadows/directional_shadow/size". This parameter is global and cannot be set on a per-viewport basis.
+Sets the 'size' of the directional light shadows in 3D. See also [ProjectSettings] "rendering/lights_and_shadows/directional_shadow/size". This parameter is global and cannot be set on a per-viewport basis.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func DirectionalShadowAtlasSetSize(size int, is_16bits bool) { //gd:RenderingServer.directional_shadow_atlas_set_size
 	once.Do(singleton)
@@ -1734,7 +1878,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach this reflection probe to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent node is [graphics.gd/classdb/ReflectionProbe].
+Note: The equivalent node is [ReflectionProbe].
+
+[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
 */
 func ReflectionProbeCreate() RID.ReflectionProbe { //gd:RenderingServer.reflection_probe_create
 	once.Do(singleton)
@@ -1750,7 +1896,9 @@ func ReflectionProbeSetUpdateMode(probe RID.ReflectionProbe, mode ReflectionProb
 }
 
 /*
-Sets the intensity of the reflection probe. Intensity modulates the strength of the reflection. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.Intensity].
+Sets the intensity of the reflection probe. Intensity modulates the strength of the reflection. Equivalent to [ReflectionProbe.Intensity].
+
+[ReflectionProbe.Intensity]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Intensity
 */
 func ReflectionProbeSetIntensity(probe RID.ReflectionProbe, intensity Float.X) { //gd:RenderingServer.reflection_probe_set_intensity
 	once.Do(singleton)
@@ -1766,7 +1914,9 @@ func ReflectionProbeSetBlendDistance(probe RID.ReflectionProbe, blend_distance F
 }
 
 /*
-Sets the reflection probe's ambient light mode. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.AmbientMode].
+Sets the reflection probe's ambient light mode. Equivalent to [ReflectionProbe.AmbientMode].
+
+[ReflectionProbe.AmbientMode]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.AmbientMode
 */
 func ReflectionProbeSetAmbientMode(probe RID.ReflectionProbe, mode ReflectionProbeAmbientMode) { //gd:RenderingServer.reflection_probe_set_ambient_mode
 	once.Do(singleton)
@@ -1774,7 +1924,9 @@ func ReflectionProbeSetAmbientMode(probe RID.ReflectionProbe, mode ReflectionPro
 }
 
 /*
-Sets the reflection probe's custom ambient light color. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.AmbientColor].
+Sets the reflection probe's custom ambient light color. Equivalent to [ReflectionProbe.AmbientColor].
+
+[ReflectionProbe.AmbientColor]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.AmbientColor
 */
 func ReflectionProbeSetAmbientColor(probe RID.ReflectionProbe, color Color.RGBA) { //gd:RenderingServer.reflection_probe_set_ambient_color
 	once.Do(singleton)
@@ -1782,7 +1934,9 @@ func ReflectionProbeSetAmbientColor(probe RID.ReflectionProbe, color Color.RGBA)
 }
 
 /*
-Sets the reflection probe's custom ambient light energy. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.AmbientColorEnergy].
+Sets the reflection probe's custom ambient light energy. Equivalent to [ReflectionProbe.AmbientColorEnergy].
+
+[ReflectionProbe.AmbientColorEnergy]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.AmbientColorEnergy
 */
 func ReflectionProbeSetAmbientEnergy(probe RID.ReflectionProbe, energy Float.X) { //gd:RenderingServer.reflection_probe_set_ambient_energy
 	once.Do(singleton)
@@ -1790,7 +1944,9 @@ func ReflectionProbeSetAmbientEnergy(probe RID.ReflectionProbe, energy Float.X) 
 }
 
 /*
-Sets the max distance away from the probe an object can be before it is culled. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.MaxDistance].
+Sets the max distance away from the probe an object can be before it is culled. Equivalent to [ReflectionProbe.MaxDistance].
+
+[ReflectionProbe.MaxDistance]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.MaxDistance
 */
 func ReflectionProbeSetMaxDistance(probe RID.ReflectionProbe, distance Float.X) { //gd:RenderingServer.reflection_probe_set_max_distance
 	once.Do(singleton)
@@ -1798,7 +1954,9 @@ func ReflectionProbeSetMaxDistance(probe RID.ReflectionProbe, distance Float.X) 
 }
 
 /*
-Sets the size of the area that the reflection probe will capture. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.Size].
+Sets the size of the area that the reflection probe will capture. Equivalent to [ReflectionProbe.Size].
+
+[ReflectionProbe.Size]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Size
 */
 func ReflectionProbeSetSize(probe RID.ReflectionProbe, size Vector3.XYZ) { //gd:RenderingServer.reflection_probe_set_size
 	once.Do(singleton)
@@ -1806,7 +1964,9 @@ func ReflectionProbeSetSize(probe RID.ReflectionProbe, size Vector3.XYZ) { //gd:
 }
 
 /*
-Sets the origin offset to be used when this reflection probe is in box project mode. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.OriginOffset].
+Sets the origin offset to be used when this reflection probe is in box project mode. Equivalent to [ReflectionProbe.OriginOffset].
+
+[ReflectionProbe.OriginOffset]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.OriginOffset
 */
 func ReflectionProbeSetOriginOffset(probe RID.ReflectionProbe, offset Vector3.XYZ) { //gd:RenderingServer.reflection_probe_set_origin_offset
 	once.Do(singleton)
@@ -1814,7 +1974,9 @@ func ReflectionProbeSetOriginOffset(probe RID.ReflectionProbe, offset Vector3.XY
 }
 
 /*
-If true, reflections will ignore sky contribution. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.Interior].
+If true, reflections will ignore sky contribution. Equivalent to [ReflectionProbe.Interior].
+
+[ReflectionProbe.Interior]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Interior
 */
 func ReflectionProbeSetAsInterior(probe RID.ReflectionProbe, enable bool) { //gd:RenderingServer.reflection_probe_set_as_interior
 	once.Do(singleton)
@@ -1822,7 +1984,9 @@ func ReflectionProbeSetAsInterior(probe RID.ReflectionProbe, enable bool) { //gd
 }
 
 /*
-If true, uses box projection. This can make reflections look more correct in certain situations. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.BoxProjection].
+If true, uses box projection. This can make reflections look more correct in certain situations. Equivalent to [ReflectionProbe.BoxProjection].
+
+[ReflectionProbe.BoxProjection]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.BoxProjection
 */
 func ReflectionProbeSetEnableBoxProjection(probe RID.ReflectionProbe, enable bool) { //gd:RenderingServer.reflection_probe_set_enable_box_projection
 	once.Do(singleton)
@@ -1830,7 +1994,9 @@ func ReflectionProbeSetEnableBoxProjection(probe RID.ReflectionProbe, enable boo
 }
 
 /*
-If true, computes shadows in the reflection probe. This makes the reflection much slower to compute. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.EnableShadows].
+If true, computes shadows in the reflection probe. This makes the reflection much slower to compute. Equivalent to [ReflectionProbe.EnableShadows].
+
+[ReflectionProbe.EnableShadows]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.EnableShadows
 */
 func ReflectionProbeSetEnableShadows(probe RID.ReflectionProbe, enable bool) { //gd:RenderingServer.reflection_probe_set_enable_shadows
 	once.Do(singleton)
@@ -1838,7 +2004,9 @@ func ReflectionProbeSetEnableShadows(probe RID.ReflectionProbe, enable bool) { /
 }
 
 /*
-Sets the render cull mask for this reflection probe. Only instances with a matching layer will be reflected by this probe. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.CullMask].
+Sets the render cull mask for this reflection probe. Only instances with a matching layer will be reflected by this probe. Equivalent to [ReflectionProbe.CullMask].
+
+[ReflectionProbe.CullMask]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.CullMask
 */
 func ReflectionProbeSetCullMask(probe RID.ReflectionProbe, layers int) { //gd:RenderingServer.reflection_probe_set_cull_mask
 	once.Do(singleton)
@@ -1846,7 +2014,9 @@ func ReflectionProbeSetCullMask(probe RID.ReflectionProbe, layers int) { //gd:Re
 }
 
 /*
-Sets the render reflection mask for this reflection probe. Only instances with a matching layer will have reflections applied from this probe. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.ReflectionMask].
+Sets the render reflection mask for this reflection probe. Only instances with a matching layer will have reflections applied from this probe. Equivalent to [ReflectionProbe.ReflectionMask].
+
+[ReflectionProbe.ReflectionMask]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.ReflectionMask
 */
 func ReflectionProbeSetReflectionMask(probe RID.ReflectionProbe, layers int) { //gd:RenderingServer.reflection_probe_set_reflection_mask
 	once.Do(singleton)
@@ -1862,7 +2032,9 @@ func ReflectionProbeSetResolution(probe RID.ReflectionProbe, resolution int) { /
 }
 
 /*
-Sets the mesh level of detail to use in the reflection probe rendering. Higher values will use less detailed versions of meshes that have LOD variations generated, which can improve performance. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.MeshLodThreshold].
+Sets the mesh level of detail to use in the reflection probe rendering. Higher values will use less detailed versions of meshes that have LOD variations generated, which can improve performance. Equivalent to [ReflectionProbe.MeshLodThreshold].
+
+[ReflectionProbe.MeshLodThreshold]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.MeshLodThreshold
 */
 func ReflectionProbeSetMeshLodThreshold(probe RID.ReflectionProbe, pixels Float.X) { //gd:RenderingServer.reflection_probe_set_mesh_lod_threshold
 	once.Do(singleton)
@@ -1876,7 +2048,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach this decal to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent node is [graphics.gd/classdb/Decal].
+Note: The equivalent node is [Decal].
+
+[Decal]: https://pkg.go.dev/graphics.gd/classdb/Decal
 */
 func DecalCreate() RID.Decal { //gd:RenderingServer.decal_create
 	once.Do(singleton)
@@ -1884,7 +2058,9 @@ func DecalCreate() RID.Decal { //gd:RenderingServer.decal_create
 }
 
 /*
-Sets the 'size' of the decal specified by the 'decal' RID. Equivalent to [graphics.gd/classdb/Decal.Instance.Size].
+Sets the 'size' of the decal specified by the 'decal' RID. Equivalent to [Decal.Size].
+
+[Decal.Size]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.Size
 */
 func DecalSetSize(decal RID.Decal, size Vector3.XYZ) { //gd:RenderingServer.decal_set_size
 	once.Do(singleton)
@@ -1892,7 +2068,9 @@ func DecalSetSize(decal RID.Decal, size Vector3.XYZ) { //gd:RenderingServer.deca
 }
 
 /*
-Sets the 'texture' in the given texture 'type' slot for the specified decal. Equivalent to [graphics.gd/classdb/Decal.Instance.SetTexture].
+Sets the 'texture' in the given texture 'type' slot for the specified decal. Equivalent to [Decal.SetTexture].
+
+[Decal.SetTexture]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.SetTexture
 */
 func DecalSetTexture(decal RID.Decal, atype DecalTexture, texture RID.Texture) { //gd:RenderingServer.decal_set_texture
 	once.Do(singleton)
@@ -1900,7 +2078,9 @@ func DecalSetTexture(decal RID.Decal, atype DecalTexture, texture RID.Texture) {
 }
 
 /*
-Sets the emission 'energy' in the decal specified by the 'decal' RID. Equivalent to [graphics.gd/classdb/Decal.Instance.EmissionEnergy].
+Sets the emission 'energy' in the decal specified by the 'decal' RID. Equivalent to [Decal.EmissionEnergy].
+
+[Decal.EmissionEnergy]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.EmissionEnergy
 */
 func DecalSetEmissionEnergy(decal RID.Decal, energy Float.X) { //gd:RenderingServer.decal_set_emission_energy
 	once.Do(singleton)
@@ -1908,7 +2088,9 @@ func DecalSetEmissionEnergy(decal RID.Decal, energy Float.X) { //gd:RenderingSer
 }
 
 /*
-Sets the 'albedo_mix' in the decal specified by the 'decal' RID. Equivalent to [graphics.gd/classdb/Decal.Instance.AlbedoMix].
+Sets the 'albedo_mix' in the decal specified by the 'decal' RID. Equivalent to [Decal.AlbedoMix].
+
+[Decal.AlbedoMix]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.AlbedoMix
 */
 func DecalSetAlbedoMix(decal RID.Decal, albedo_mix Float.X) { //gd:RenderingServer.decal_set_albedo_mix
 	once.Do(singleton)
@@ -1916,7 +2098,9 @@ func DecalSetAlbedoMix(decal RID.Decal, albedo_mix Float.X) { //gd:RenderingServ
 }
 
 /*
-Sets the color multiplier in the decal specified by the 'decal' RID to 'color'. Equivalent to [graphics.gd/classdb/Decal.Instance.Modulate].
+Sets the color multiplier in the decal specified by the 'decal' RID to 'color'. Equivalent to [Decal.Modulate].
+
+[Decal.Modulate]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.Modulate
 */
 func DecalSetModulate(decal RID.Decal, color Color.RGBA) { //gd:RenderingServer.decal_set_modulate
 	once.Do(singleton)
@@ -1924,7 +2108,9 @@ func DecalSetModulate(decal RID.Decal, color Color.RGBA) { //gd:RenderingServer.
 }
 
 /*
-Sets the cull 'mask' in the decal specified by the 'decal' RID. Equivalent to [graphics.gd/classdb/Decal.Instance.CullMask].
+Sets the cull 'mask' in the decal specified by the 'decal' RID. Equivalent to [Decal.CullMask].
+
+[Decal.CullMask]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.CullMask
 */
 func DecalSetCullMask(decal RID.Decal, mask int) { //gd:RenderingServer.decal_set_cull_mask
 	once.Do(singleton)
@@ -1932,7 +2118,11 @@ func DecalSetCullMask(decal RID.Decal, mask int) { //gd:RenderingServer.decal_se
 }
 
 /*
-Sets the distance fade parameters in the decal specified by the 'decal' RID. Equivalent to [graphics.gd/classdb/Decal.Instance.DistanceFadeEnabled], [graphics.gd/classdb/Decal.Instance.DistanceFadeBegin] and [graphics.gd/classdb/Decal.Instance.DistanceFadeLength].
+Sets the distance fade parameters in the decal specified by the 'decal' RID. Equivalent to [Decal.DistanceFadeEnabled], [Decal.DistanceFadeBegin] and [Decal.DistanceFadeLength].
+
+[Decal.DistanceFadeBegin]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.DistanceFadeBegin
+[Decal.DistanceFadeEnabled]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.DistanceFadeEnabled
+[Decal.DistanceFadeLength]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.DistanceFadeLength
 */
 func DecalSetDistanceFade(decal RID.Decal, enabled bool, begin Float.X, length Float.X) { //gd:RenderingServer.decal_set_distance_fade
 	once.Do(singleton)
@@ -1940,7 +2130,10 @@ func DecalSetDistanceFade(decal RID.Decal, enabled bool, begin Float.X, length F
 }
 
 /*
-Sets the upper fade ('above') and lower fade ('below') in the decal specified by the 'decal' RID. Equivalent to [graphics.gd/classdb/Decal.Instance.UpperFade] and [graphics.gd/classdb/Decal.Instance.LowerFade].
+Sets the upper fade ('above') and lower fade ('below') in the decal specified by the 'decal' RID. Equivalent to [Decal.UpperFade] and [Decal.LowerFade].
+
+[Decal.LowerFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.LowerFade
+[Decal.UpperFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.UpperFade
 */
 func DecalSetFade(decal RID.Decal, above Float.X, below Float.X) { //gd:RenderingServer.decal_set_fade
 	once.Do(singleton)
@@ -1948,7 +2141,9 @@ func DecalSetFade(decal RID.Decal, above Float.X, below Float.X) { //gd:Renderin
 }
 
 /*
-Sets the normal 'fade' in the decal specified by the 'decal' RID. Equivalent to [graphics.gd/classdb/Decal.Instance.NormalFade].
+Sets the normal 'fade' in the decal specified by the 'decal' RID. Equivalent to [Decal.NormalFade].
+
+[Decal.NormalFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.NormalFade
 */
 func DecalSetNormalFade(decal RID.Decal, fade Float.X) { //gd:RenderingServer.decal_set_normal_fade
 	once.Do(singleton)
@@ -1964,7 +2159,12 @@ func DecalsSetFilter(filter DecalFilter) { //gd:RenderingServer.decals_set_filte
 }
 
 /*
-If 'half_resolution' is true, renders [graphics.gd/classdb/VoxelGI] and SDFGI ([graphics.gd/classdb/Environment.Instance.SdfgiEnabled]) buffers at halved resolution on each axis (e.g. 960×540 when the viewport size is 1920×1080). This improves performance significantly when VoxelGI or SDFGI is enabled, at the cost of artifacts that may be visible on polygon edges. The loss in quality becomes less noticeable as the viewport resolution increases. [graphics.gd/classdb/LightmapGI] rendering is not affected by this setting. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/global_illumination/gi/use_half_resolution".
+If 'half_resolution' is true, renders [VoxelGI] and SDFGI ([Environment.SdfgiEnabled]) buffers at halved resolution on each axis (e.g. 960×540 when the viewport size is 1920×1080). This improves performance significantly when VoxelGI or SDFGI is enabled, at the cost of artifacts that may be visible on polygon edges. The loss in quality becomes less noticeable as the viewport resolution increases. [LightmapGI] rendering is not affected by this setting. Equivalent to [ProjectSettings] "rendering/global_illumination/gi/use_half_resolution".
+
+[Environment.SdfgiEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiEnabled
+[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
 func GiSetUseHalfResolution(half_resolution bool) { //gd:RenderingServer.gi_set_use_half_resolution
 	once.Do(singleton)
@@ -1976,7 +2176,9 @@ Creates a new voxel-based global illumination object and adds it to the Renderin
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/VoxelGI].
+Note: The equivalent node is [VoxelGI].
+
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
 func VoxelGiCreate() RID.VoxelGI { //gd:RenderingServer.voxel_gi_create
 	once.Do(singleton)
@@ -2012,7 +2214,10 @@ func VoxelGiGetToCellXform(voxel_gi RID.VoxelGI) Transform3D.BasisOrigin { //gd:
 }
 
 /*
-Sets the [graphics.gd/classdb/VoxelGIData.Instance.DynamicRange] value to use on the specified 'voxel_gi”s [Resource.ID].
+Sets the [VoxelGIData.DynamicRange] value to use on the specified 'voxel_gi”s [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[VoxelGIData.DynamicRange]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.DynamicRange
 */
 func VoxelGiSetDynamicRange(voxel_gi RID.VoxelGI, arange Float.X) { //gd:RenderingServer.voxel_gi_set_dynamic_range
 	once.Do(singleton)
@@ -2020,7 +2225,10 @@ func VoxelGiSetDynamicRange(voxel_gi RID.VoxelGI, arange Float.X) { //gd:Renderi
 }
 
 /*
-Sets the [graphics.gd/classdb/VoxelGIData.Instance.Propagation] value to use on the specified 'voxel_gi”s [Resource.ID].
+Sets the [VoxelGIData.Propagation] value to use on the specified 'voxel_gi”s [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[VoxelGIData.Propagation]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Propagation
 */
 func VoxelGiSetPropagation(voxel_gi RID.VoxelGI, amount Float.X) { //gd:RenderingServer.voxel_gi_set_propagation
 	once.Do(singleton)
@@ -2028,7 +2236,10 @@ func VoxelGiSetPropagation(voxel_gi RID.VoxelGI, amount Float.X) { //gd:Renderin
 }
 
 /*
-Sets the [graphics.gd/classdb/VoxelGIData.Instance.Energy] value to use on the specified 'voxel_gi”s [Resource.ID].
+Sets the [VoxelGIData.Energy] value to use on the specified 'voxel_gi”s [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[VoxelGIData.Energy]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Energy
 */
 func VoxelGiSetEnergy(voxel_gi RID.VoxelGI, energy Float.X) { //gd:RenderingServer.voxel_gi_set_energy
 	once.Do(singleton)
@@ -2044,7 +2255,10 @@ func VoxelGiSetBakedExposureNormalization(voxel_gi RID.VoxelGI, baked_exposure F
 }
 
 /*
-Sets the [graphics.gd/classdb/VoxelGIData.Instance.Bias] value to use on the specified 'voxel_gi”s [Resource.ID].
+Sets the [VoxelGIData.Bias] value to use on the specified 'voxel_gi”s [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[VoxelGIData.Bias]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Bias
 */
 func VoxelGiSetBias(voxel_gi RID.VoxelGI, bias Float.X) { //gd:RenderingServer.voxel_gi_set_bias
 	once.Do(singleton)
@@ -2052,7 +2266,10 @@ func VoxelGiSetBias(voxel_gi RID.VoxelGI, bias Float.X) { //gd:RenderingServer.v
 }
 
 /*
-Sets the [graphics.gd/classdb/VoxelGIData.Instance.NormalBias] value to use on the specified 'voxel_gi”s [Resource.ID].
+Sets the [VoxelGIData.NormalBias] value to use on the specified 'voxel_gi”s [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[VoxelGIData.NormalBias]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.NormalBias
 */
 func VoxelGiSetNormalBias(voxel_gi RID.VoxelGI, bias Float.X) { //gd:RenderingServer.voxel_gi_set_normal_bias
 	once.Do(singleton)
@@ -2060,7 +2277,10 @@ func VoxelGiSetNormalBias(voxel_gi RID.VoxelGI, bias Float.X) { //gd:RenderingSe
 }
 
 /*
-Sets the [graphics.gd/classdb/VoxelGIData.Instance.Interior] value to use on the specified 'voxel_gi”s [Resource.ID].
+Sets the [VoxelGIData.Interior] value to use on the specified 'voxel_gi”s [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[VoxelGIData.Interior]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Interior
 */
 func VoxelGiSetInterior(voxel_gi RID.VoxelGI, enable bool) { //gd:RenderingServer.voxel_gi_set_interior
 	once.Do(singleton)
@@ -2068,7 +2288,10 @@ func VoxelGiSetInterior(voxel_gi RID.VoxelGI, enable bool) { //gd:RenderingServe
 }
 
 /*
-Sets the [graphics.gd/classdb/VoxelGIData.Instance.UseTwoBounces] value to use on the specified 'voxel_gi”s [Resource.ID].
+Sets the [VoxelGIData.UseTwoBounces] value to use on the specified 'voxel_gi”s [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[VoxelGIData.UseTwoBounces]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.UseTwoBounces
 */
 func VoxelGiSetUseTwoBounces(voxel_gi RID.VoxelGI, enable bool) { //gd:RenderingServer.voxel_gi_set_use_two_bounces
 	once.Do(singleton)
@@ -2076,7 +2299,9 @@ func VoxelGiSetUseTwoBounces(voxel_gi RID.VoxelGI, enable bool) { //gd:Rendering
 }
 
 /*
-Sets the [graphics.gd/classdb/ProjectSettings] "rendering/global_illumination/voxel_gi/quality" value to use when rendering. This parameter is global and cannot be set on a per-VoxelGI basis.
+Sets the [ProjectSettings] "rendering/global_illumination/voxel_gi/quality" value to use when rendering. This parameter is global and cannot be set on a per-VoxelGI basis.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func VoxelGiSetQuality(quality VoxelGIQuality) { //gd:RenderingServer.voxel_gi_set_quality
 	once.Do(singleton)
@@ -2088,7 +2313,9 @@ Creates a new lightmap global illumination instance and adds it to the Rendering
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/LightmapGI].
+Note: The equivalent node is [LightmapGI].
+
+[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 */
 func LightmapCreate() RID.Lightmap { //gd:RenderingServer.lightmap_create
 	once.Do(singleton)
@@ -2096,7 +2323,9 @@ func LightmapCreate() RID.Lightmap { //gd:RenderingServer.lightmap_create
 }
 
 /*
-Set the textures on the given 'lightmap' GI instance to the texture array pointed to by the 'light' RID. If the lightmap texture was baked with [graphics.gd/classdb/LightmapGI.Instance.Directional] set to true, then 'uses_sh' must also be true.
+Set the textures on the given 'lightmap' GI instance to the texture array pointed to by the 'light' RID. If the lightmap texture was baked with [LightmapGI.Directional] set to true, then 'uses_sh' must also be true.
+
+[LightmapGI.Directional]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.Directional
 */
 func LightmapSetTextures(lightmap RID.Lightmap, light RID.Light, uses_sh bool) { //gd:RenderingServer.lightmap_set_textures
 	once.Do(singleton)
@@ -2150,9 +2379,16 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach these particles to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent nodes are [graphics.gd/classdb/GPUParticles2D] and [graphics.gd/classdb/GPUParticles3D].
+Note: The equivalent nodes are [GPUParticles2D] and [GPUParticles3D].
 
-Note: All particles_* methods only apply to GPU-based particles, not CPU-based particles. [graphics.gd/classdb/CPUParticles2D] and [graphics.gd/classdb/CPUParticles3D] do not have equivalent RenderingServer functions available, as these use [graphics.gd/classdb/MultiMeshInstance2D] and [graphics.gd/classdb/MultiMeshInstance3D] under the hood (see multimesh_* methods).
+Note: All particles_* methods only apply to GPU-based particles, not CPU-based particles. [CPUParticles2D] and [CPUParticles3D] do not have equivalent RenderingServer functions available, as these use [MultiMeshInstance2D] and [MultiMeshInstance3D] under the hood (see multimesh_* methods).
+
+[CPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D
+[CPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles3D
+[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
+[GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+[MultiMeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MultiMeshInstance2D
+[MultiMeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MultiMeshInstance3D
 */
 func ParticlesCreate() RID.Particles { //gd:RenderingServer.particles_create
 	once.Do(singleton)
@@ -2168,7 +2404,9 @@ func ParticlesSetMode(particles RID.Particles, mode ParticlesMode) { //gd:Render
 }
 
 /*
-If true, particles will emit over time. Setting to false does not reset the particles, but only stops their emission. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.Emitting].
+If true, particles will emit over time. Setting to false does not reset the particles, but only stops their emission. Equivalent to [GPUParticles3D.Emitting].
+
+[GPUParticles3D.Emitting]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Emitting
 */
 func ParticlesSetEmitting(particles RID.Particles, emitting bool) { //gd:RenderingServer.particles_set_emitting
 	once.Do(singleton)
@@ -2184,7 +2422,9 @@ func ParticlesGetEmitting(particles RID.Particles) bool { //gd:RenderingServer.p
 }
 
 /*
-Sets the number of particles to be drawn and allocates the memory for them. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.Amount].
+Sets the number of particles to be drawn and allocates the memory for them. Equivalent to [GPUParticles3D.Amount].
+
+[GPUParticles3D.Amount]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Amount
 */
 func ParticlesSetAmount(particles RID.Particles, amount int) { //gd:RenderingServer.particles_set_amount
 	once.Do(singleton)
@@ -2192,7 +2432,9 @@ func ParticlesSetAmount(particles RID.Particles, amount int) { //gd:RenderingSer
 }
 
 /*
-Sets the amount ratio for particles to be emitted. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.AmountRatio].
+Sets the amount ratio for particles to be emitted. Equivalent to [GPUParticles3D.AmountRatio].
+
+[GPUParticles3D.AmountRatio]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.AmountRatio
 */
 func ParticlesSetAmountRatio(particles RID.Particles, ratio Float.X) { //gd:RenderingServer.particles_set_amount_ratio
 	once.Do(singleton)
@@ -2200,7 +2442,9 @@ func ParticlesSetAmountRatio(particles RID.Particles, ratio Float.X) { //gd:Rend
 }
 
 /*
-Sets the lifetime of each particle in the system. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.Lifetime].
+Sets the lifetime of each particle in the system. Equivalent to [GPUParticles3D.Lifetime].
+
+[GPUParticles3D.Lifetime]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Lifetime
 */
 func ParticlesSetLifetime(particles RID.Particles, lifetime Float.X) { //gd:RenderingServer.particles_set_lifetime
 	once.Do(singleton)
@@ -2208,7 +2452,9 @@ func ParticlesSetLifetime(particles RID.Particles, lifetime Float.X) { //gd:Rend
 }
 
 /*
-If true, particles will emit once and then stop. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.OneShot].
+If true, particles will emit once and then stop. Equivalent to [GPUParticles3D.OneShot].
+
+[GPUParticles3D.OneShot]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.OneShot
 */
 func ParticlesSetOneShot(particles RID.Particles, one_shot bool) { //gd:RenderingServer.particles_set_one_shot
 	once.Do(singleton)
@@ -2216,7 +2462,9 @@ func ParticlesSetOneShot(particles RID.Particles, one_shot bool) { //gd:Renderin
 }
 
 /*
-Sets the preprocess time for the particles' animation. This lets you delay starting an animation until after the particles have begun emitting. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.Preprocess].
+Sets the preprocess time for the particles' animation. This lets you delay starting an animation until after the particles have begun emitting. Equivalent to [GPUParticles3D.Preprocess].
+
+[GPUParticles3D.Preprocess]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Preprocess
 */
 func ParticlesSetPreProcessTime(particles RID.Particles, time Float.X) { //gd:RenderingServer.particles_set_pre_process_time
 	once.Do(singleton)
@@ -2232,7 +2480,9 @@ func ParticlesRequestProcessTime(particles RID.Particles, time Float.X) { //gd:R
 }
 
 /*
-Sets the explosiveness ratio. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.Explosiveness].
+Sets the explosiveness ratio. Equivalent to [GPUParticles3D.Explosiveness].
+
+[GPUParticles3D.Explosiveness]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Explosiveness
 */
 func ParticlesSetExplosivenessRatio(particles RID.Particles, ratio Float.X) { //gd:RenderingServer.particles_set_explosiveness_ratio
 	once.Do(singleton)
@@ -2240,7 +2490,9 @@ func ParticlesSetExplosivenessRatio(particles RID.Particles, ratio Float.X) { //
 }
 
 /*
-Sets the emission randomness ratio. This randomizes the emission of particles within their phase. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.Randomness].
+Sets the emission randomness ratio. This randomizes the emission of particles within their phase. Equivalent to [GPUParticles3D.Randomness].
+
+[GPUParticles3D.Randomness]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Randomness
 */
 func ParticlesSetRandomnessRatio(particles RID.Particles, ratio Float.X) { //gd:RenderingServer.particles_set_randomness_ratio
 	once.Do(singleton)
@@ -2248,7 +2500,9 @@ func ParticlesSetRandomnessRatio(particles RID.Particles, ratio Float.X) { //gd:
 }
 
 /*
-Sets the value that informs a [graphics.gd/classdb/ParticleProcessMaterial] to rush all particles towards the end of their lifetime.
+Sets the value that informs a [ParticleProcessMaterial] to rush all particles towards the end of their lifetime.
+
+[ParticleProcessMaterial]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial
 */
 func ParticlesSetInterpToEnd(particles RID.Particles, factor Float.X) { //gd:RenderingServer.particles_set_interp_to_end
 	once.Do(singleton)
@@ -2256,7 +2510,9 @@ func ParticlesSetInterpToEnd(particles RID.Particles, factor Float.X) { //gd:Ren
 }
 
 /*
-Sets the velocity of a particle node, that will be used by [graphics.gd/classdb/ParticleProcessMaterial.Instance.InheritVelocityRatio].
+Sets the velocity of a particle node, that will be used by [ParticleProcessMaterial.InheritVelocityRatio].
+
+[ParticleProcessMaterial.InheritVelocityRatio]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.InheritVelocityRatio
 */
 func ParticlesSetEmitterVelocity(particles RID.Particles, velocity Vector3.XYZ) { //gd:RenderingServer.particles_set_emitter_velocity
 	once.Do(singleton)
@@ -2264,7 +2520,9 @@ func ParticlesSetEmitterVelocity(particles RID.Particles, velocity Vector3.XYZ) 
 }
 
 /*
-Sets a custom axis-aligned bounding box for the particle system. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.VisibilityAabb].
+Sets a custom axis-aligned bounding box for the particle system. Equivalent to [GPUParticles3D.VisibilityAabb].
+
+[GPUParticles3D.VisibilityAabb]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.VisibilityAabb
 */
 func ParticlesSetCustomAabb(particles RID.Particles, aabb AABB.PositionSize) { //gd:RenderingServer.particles_set_custom_aabb
 	once.Do(singleton)
@@ -2272,7 +2530,9 @@ func ParticlesSetCustomAabb(particles RID.Particles, aabb AABB.PositionSize) { /
 }
 
 /*
-Sets the speed scale of the particle system. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.SpeedScale].
+Sets the speed scale of the particle system. Equivalent to [GPUParticles3D.SpeedScale].
+
+[GPUParticles3D.SpeedScale]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.SpeedScale
 */
 func ParticlesSetSpeedScale(particles RID.Particles, scale Float.X) { //gd:RenderingServer.particles_set_speed_scale
 	once.Do(singleton)
@@ -2280,7 +2540,9 @@ func ParticlesSetSpeedScale(particles RID.Particles, scale Float.X) { //gd:Rende
 }
 
 /*
-If true, particles use local coordinates. If false they use global coordinates. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.LocalCoords].
+If true, particles use local coordinates. If false they use global coordinates. Equivalent to [GPUParticles3D.LocalCoords].
+
+[GPUParticles3D.LocalCoords]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.LocalCoords
 */
 func ParticlesSetUseLocalCoordinates(particles RID.Particles, enable bool) { //gd:RenderingServer.particles_set_use_local_coordinates
 	once.Do(singleton)
@@ -2290,7 +2552,9 @@ func ParticlesSetUseLocalCoordinates(particles RID.Particles, enable bool) { //g
 /*
 Sets the material for processing the particles.
 
-Note: This is not the material used to draw the materials. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.ProcessMaterial].
+Note: This is not the material used to draw the materials. Equivalent to [GPUParticles3D.ProcessMaterial].
+
+[GPUParticles3D.ProcessMaterial]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.ProcessMaterial
 */
 func ParticlesSetProcessMaterial(particles RID.Particles, material RID.Material) { //gd:RenderingServer.particles_set_process_material
 	once.Do(singleton)
@@ -2298,7 +2562,9 @@ func ParticlesSetProcessMaterial(particles RID.Particles, material RID.Material)
 }
 
 /*
-Sets the frame rate that the particle system rendering will be fixed to. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.FixedFps].
+Sets the frame rate that the particle system rendering will be fixed to. Equivalent to [GPUParticles3D.FixedFps].
+
+[GPUParticles3D.FixedFps]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.FixedFps
 */
 func ParticlesSetFixedFps(particles RID.Particles, fps int) { //gd:RenderingServer.particles_set_fixed_fps
 	once.Do(singleton)
@@ -2310,7 +2576,9 @@ func ParticlesSetInterpolate(particles RID.Particles, enable bool) { //gd:Render
 }
 
 /*
-If true, uses fractional delta which smooths the movement of the particles. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.FractDelta].
+If true, uses fractional delta which smooths the movement of the particles. Equivalent to [GPUParticles3D.FractDelta].
+
+[GPUParticles3D.FractDelta]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.FractDelta
 */
 func ParticlesSetFractionalDelta(particles RID.Particles, enable bool) { //gd:RenderingServer.particles_set_fractional_delta
 	once.Do(singleton)
@@ -2326,7 +2594,10 @@ func ParticlesSetTransformAlign(particles RID.Particles, align ParticlesTransfor
 }
 
 /*
-If 'enable' is true, enables trails for the 'particles' with the specified 'length_sec' in seconds. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.TrailEnabled] and [graphics.gd/classdb/GPUParticles3D.Instance.TrailLifetime].
+If 'enable' is true, enables trails for the 'particles' with the specified 'length_sec' in seconds. Equivalent to [GPUParticles3D.TrailEnabled] and [GPUParticles3D.TrailLifetime].
+
+[GPUParticles3D.TrailEnabled]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.TrailEnabled
+[GPUParticles3D.TrailLifetime]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.TrailLifetime
 */
 func ParticlesSetTrails(particles RID.Particles, enable bool, length_sec Float.X) { //gd:RenderingServer.particles_set_trails
 	once.Do(singleton)
@@ -2354,7 +2625,9 @@ func ParticlesRequestProcess(particles RID.Particles) { //gd:RenderingServer.par
 }
 
 /*
-Reset the particles on the next update. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.Restart].
+Reset the particles on the next update. Equivalent to [GPUParticles3D.Restart].
+
+[GPUParticles3D.Restart]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Restart
 */
 func ParticlesRestart(particles RID.Particles) { //gd:RenderingServer.particles_restart
 	once.Do(singleton)
@@ -2374,7 +2647,9 @@ func ParticlesEmit(particles RID.Particles, transform Transform3D.BasisOrigin, v
 }
 
 /*
-Sets the draw order of the particles. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.DrawOrder].
+Sets the draw order of the particles. Equivalent to [GPUParticles3D.DrawOrder].
+
+[GPUParticles3D.DrawOrder]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawOrder
 */
 func ParticlesSetDrawOrder(particles RID.Particles, order ParticlesDrawOrder) { //gd:RenderingServer.particles_set_draw_order
 	once.Do(singleton)
@@ -2382,7 +2657,9 @@ func ParticlesSetDrawOrder(particles RID.Particles, order ParticlesDrawOrder) { 
 }
 
 /*
-Sets the number of draw passes to use. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.DrawPasses].
+Sets the number of draw passes to use. Equivalent to [GPUParticles3D.DrawPasses].
+
+[GPUParticles3D.DrawPasses]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawPasses
 */
 func ParticlesSetDrawPasses(particles RID.Particles, count int) { //gd:RenderingServer.particles_set_draw_passes
 	once.Do(singleton)
@@ -2390,7 +2667,12 @@ func ParticlesSetDrawPasses(particles RID.Particles, count int) { //gd:Rendering
 }
 
 /*
-Sets the mesh to be used for the specified draw pass. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.DrawPass1], [graphics.gd/classdb/GPUParticles3D.Instance.DrawPass2], [graphics.gd/classdb/GPUParticles3D.Instance.DrawPass3], and [graphics.gd/classdb/GPUParticles3D.Instance.DrawPass4].
+Sets the mesh to be used for the specified draw pass. Equivalent to [GPUParticles3D.DrawPass1], [GPUParticles3D.DrawPass2], [GPUParticles3D.DrawPass3], and [GPUParticles3D.DrawPass4].
+
+[GPUParticles3D.DrawPass1]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawPass1
+[GPUParticles3D.DrawPass2]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawPass2
+[GPUParticles3D.DrawPass3]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawPass3
+[GPUParticles3D.DrawPass4]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawPass4
 */
 func ParticlesSetDrawPassMesh(particles RID.Particles, pass int, mesh RID.Mesh) { //gd:RenderingServer.particles_set_draw_pass_mesh
 	once.Do(singleton)
@@ -2398,7 +2680,9 @@ func ParticlesSetDrawPassMesh(particles RID.Particles, pass int, mesh RID.Mesh) 
 }
 
 /*
-Calculates and returns the axis-aligned bounding box that contains all the particles. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.CaptureAabb].
+Calculates and returns the axis-aligned bounding box that contains all the particles. Equivalent to [GPUParticles3D.CaptureAabb].
+
+[GPUParticles3D.CaptureAabb]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.CaptureAabb
 */
 func ParticlesGetCurrentAabb(particles RID.Particles) AABB.PositionSize { //gd:RenderingServer.particles_get_current_aabb
 	once.Do(singleton)
@@ -2407,6 +2691,8 @@ func ParticlesGetCurrentAabb(particles RID.Particles) AABB.PositionSize { //gd:R
 
 /*
 Sets the [Transform3D.BasisOrigin] that will be used by the particles when they first emit.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 func ParticlesSetEmissionTransform(particles RID.Particles, transform Transform3D.BasisOrigin) { //gd:RenderingServer.particles_set_emission_transform
 	once.Do(singleton)
@@ -2416,7 +2702,10 @@ func ParticlesSetEmissionTransform(particles RID.Particles, transform Transform3
 /*
 Creates a new 3D GPU particle collision or attractor and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID can be used in most particles_collision_* RenderingServer functions.
 
-Note: The equivalent nodes are [graphics.gd/classdb/GPUParticlesCollision3D] and [graphics.gd/classdb/GPUParticlesAttractor3D].
+Note: The equivalent nodes are [GPUParticlesCollision3D] and [GPUParticlesAttractor3D].
+
+[GPUParticlesAttractor3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D
+[GPUParticlesCollision3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollision3D
 */
 func ParticlesCollisionCreate() RID.ParticlesCollision { //gd:RenderingServer.particles_collision_create
 	once.Do(singleton)
@@ -2432,7 +2721,10 @@ func ParticlesCollisionSetCollisionType(particles_collision RID.ParticlesCollisi
 }
 
 /*
-Sets the cull 'mask' for the 3D GPU particles collision or attractor specified by the 'particles_collision' RID. Equivalent to [graphics.gd/classdb/GPUParticlesCollision3D.Instance.CullMask] or [graphics.gd/classdb/GPUParticlesAttractor3D.Instance.CullMask] depending on the 'particles_collision' type.
+Sets the cull 'mask' for the 3D GPU particles collision or attractor specified by the 'particles_collision' RID. Equivalent to [GPUParticlesCollision3D.CullMask] or [GPUParticlesAttractor3D.CullMask] depending on the 'particles_collision' type.
+
+[GPUParticlesAttractor3D.CullMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.CullMask
+[GPUParticlesCollision3D.CullMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollision3D#Instance.CullMask
 */
 func ParticlesCollisionSetCullMask(particles_collision RID.ParticlesCollision, mask int) { //gd:RenderingServer.particles_collision_set_cull_mask
 	once.Do(singleton)
@@ -2440,7 +2732,10 @@ func ParticlesCollisionSetCullMask(particles_collision RID.ParticlesCollision, m
 }
 
 /*
-Sets the 'radius' for the 3D GPU particles sphere collision or attractor specified by the 'particles_collision' RID. Equivalent to [graphics.gd/classdb/GPUParticlesCollisionSphere3D.Instance.Radius] or [graphics.gd/classdb/GPUParticlesAttractorSphere3D.Instance.Radius] depending on the 'particles_collision' type.
+Sets the 'radius' for the 3D GPU particles sphere collision or attractor specified by the 'particles_collision' RID. Equivalent to [GPUParticlesCollisionSphere3D.Radius] or [GPUParticlesAttractorSphere3D.Radius] depending on the 'particles_collision' type.
+
+[GPUParticlesAttractorSphere3D.Radius]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorSphere3D#Instance.Radius
+[GPUParticlesCollisionSphere3D.Radius]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSphere3D#Instance.Radius
 */
 func ParticlesCollisionSetSphereRadius(particles_collision RID.ParticlesCollision, radius Float.X) { //gd:RenderingServer.particles_collision_set_sphere_radius
 	once.Do(singleton)
@@ -2448,7 +2743,13 @@ func ParticlesCollisionSetSphereRadius(particles_collision RID.ParticlesCollisio
 }
 
 /*
-Sets the 'extents' for the 3D GPU particles collision by the 'particles_collision' RID. Equivalent to [graphics.gd/classdb/GPUParticlesCollisionBox3D.Instance.Size], [graphics.gd/classdb/GPUParticlesCollisionSDF3D.Instance.Size], [graphics.gd/classdb/GPUParticlesCollisionHeightField3D.Instance.Size], [graphics.gd/classdb/GPUParticlesAttractorBox3D.Instance.Size] or [graphics.gd/classdb/GPUParticlesAttractorVectorField3D.Instance.Size] depending on the 'particles_collision' type.
+Sets the 'extents' for the 3D GPU particles collision by the 'particles_collision' RID. Equivalent to [GPUParticlesCollisionBox3D.Size], [GPUParticlesCollisionSDF3D.Size], [GPUParticlesCollisionHeightField3D.Size], [GPUParticlesAttractorBox3D.Size] or [GPUParticlesAttractorVectorField3D.Size] depending on the 'particles_collision' type.
+
+[GPUParticlesAttractorBox3D.Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorBox3D#Instance.Size
+[GPUParticlesAttractorVectorField3D.Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorVectorField3D#Instance.Size
+[GPUParticlesCollisionBox3D.Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionBox3D#Instance.Size
+[GPUParticlesCollisionHeightField3D.Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.Size
+[GPUParticlesCollisionSDF3D.Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.Size
 */
 func ParticlesCollisionSetBoxExtents(particles_collision RID.ParticlesCollision, extents Vector3.XYZ) { //gd:RenderingServer.particles_collision_set_box_extents
 	once.Do(singleton)
@@ -2456,7 +2757,9 @@ func ParticlesCollisionSetBoxExtents(particles_collision RID.ParticlesCollision,
 }
 
 /*
-Sets the 'strength' for the 3D GPU particles attractor specified by the 'particles_collision' RID. Only used for attractors, not colliders. Equivalent to [graphics.gd/classdb/GPUParticlesAttractor3D.Instance.Strength].
+Sets the 'strength' for the 3D GPU particles attractor specified by the 'particles_collision' RID. Only used for attractors, not colliders. Equivalent to [GPUParticlesAttractor3D.Strength].
+
+[GPUParticlesAttractor3D.Strength]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Strength
 */
 func ParticlesCollisionSetAttractorStrength(particles_collision RID.ParticlesCollision, strength Float.X) { //gd:RenderingServer.particles_collision_set_attractor_strength
 	once.Do(singleton)
@@ -2464,7 +2767,9 @@ func ParticlesCollisionSetAttractorStrength(particles_collision RID.ParticlesCol
 }
 
 /*
-Sets the directionality 'amount' for the 3D GPU particles attractor specified by the 'particles_collision' RID. Only used for attractors, not colliders. Equivalent to [graphics.gd/classdb/GPUParticlesAttractor3D.Instance.Directionality].
+Sets the directionality 'amount' for the 3D GPU particles attractor specified by the 'particles_collision' RID. Only used for attractors, not colliders. Equivalent to [GPUParticlesAttractor3D.Directionality].
+
+[GPUParticlesAttractor3D.Directionality]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Directionality
 */
 func ParticlesCollisionSetAttractorDirectionality(particles_collision RID.ParticlesCollision, amount Float.X) { //gd:RenderingServer.particles_collision_set_attractor_directionality
 	once.Do(singleton)
@@ -2472,7 +2777,9 @@ func ParticlesCollisionSetAttractorDirectionality(particles_collision RID.Partic
 }
 
 /*
-Sets the attenuation 'curve' for the 3D GPU particles attractor specified by the 'particles_collision' RID. Only used for attractors, not colliders. Equivalent to [graphics.gd/classdb/GPUParticlesAttractor3D.Instance.Attenuation].
+Sets the attenuation 'curve' for the 3D GPU particles attractor specified by the 'particles_collision' RID. Only used for attractors, not colliders. Equivalent to [GPUParticlesAttractor3D.Attenuation].
+
+[GPUParticlesAttractor3D.Attenuation]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Attenuation
 */
 func ParticlesCollisionSetAttractorAttenuation(particles_collision RID.ParticlesCollision, curve Float.X) { //gd:RenderingServer.particles_collision_set_attractor_attenuation
 	once.Do(singleton)
@@ -2480,7 +2787,10 @@ func ParticlesCollisionSetAttractorAttenuation(particles_collision RID.Particles
 }
 
 /*
-Sets the signed distance field 'texture' for the 3D GPU particles collision specified by the 'particles_collision' RID. Equivalent to [graphics.gd/classdb/GPUParticlesCollisionSDF3D.Instance.Texture] or [graphics.gd/classdb/GPUParticlesAttractorVectorField3D.Instance.Texture] depending on the 'particles_collision' type.
+Sets the signed distance field 'texture' for the 3D GPU particles collision specified by the 'particles_collision' RID. Equivalent to [GPUParticlesCollisionSDF3D.Texture] or [GPUParticlesAttractorVectorField3D.Texture] depending on the 'particles_collision' type.
+
+[GPUParticlesAttractorVectorField3D.Texture]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorVectorField3D#Instance.Texture
+[GPUParticlesCollisionSDF3D.Texture]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.Texture
 */
 func ParticlesCollisionSetFieldTexture(particles_collision RID.ParticlesCollision, texture RID.Texture) { //gd:RenderingServer.particles_collision_set_field_texture
 	once.Do(singleton)
@@ -2488,7 +2798,9 @@ func ParticlesCollisionSetFieldTexture(particles_collision RID.ParticlesCollisio
 }
 
 /*
-Requests an update for the 3D GPU particle collision heightfield. This may be automatically called by the 3D GPU particle collision heightfield depending on its [graphics.gd/classdb/GPUParticlesCollisionHeightField3D.Instance.UpdateMode].
+Requests an update for the 3D GPU particle collision heightfield. This may be automatically called by the 3D GPU particle collision heightfield depending on its [GPUParticlesCollisionHeightField3D.UpdateMode].
+
+[GPUParticlesCollisionHeightField3D.UpdateMode]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.UpdateMode
 */
 func ParticlesCollisionHeightFieldUpdate(particles_collision RID.ParticlesCollision) { //gd:RenderingServer.particles_collision_height_field_update
 	once.Do(singleton)
@@ -2496,7 +2808,9 @@ func ParticlesCollisionHeightFieldUpdate(particles_collision RID.ParticlesCollis
 }
 
 /*
-Sets the heightmap 'resolution' for the 3D GPU particles heightfield collision specified by the 'particles_collision' RID. Equivalent to [graphics.gd/classdb/GPUParticlesCollisionHeightField3D.Instance.Resolution].
+Sets the heightmap 'resolution' for the 3D GPU particles heightfield collision specified by the 'particles_collision' RID. Equivalent to [GPUParticlesCollisionHeightField3D.Resolution].
+
+[GPUParticlesCollisionHeightField3D.Resolution]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.Resolution
 */
 func ParticlesCollisionSetHeightFieldResolution(particles_collision RID.ParticlesCollision, resolution ParticlesCollisionHeightfieldResolution) { //gd:RenderingServer.particles_collision_set_height_field_resolution
 	once.Do(singleton)
@@ -2504,7 +2818,9 @@ func ParticlesCollisionSetHeightFieldResolution(particles_collision RID.Particle
 }
 
 /*
-Sets the heightfield 'mask' for the 3D GPU particles heightfield collision specified by the 'particles_collision' RID. Equivalent to [graphics.gd/classdb/GPUParticlesCollisionHeightField3D.Instance.HeightfieldMask].
+Sets the heightfield 'mask' for the 3D GPU particles heightfield collision specified by the 'particles_collision' RID. Equivalent to [GPUParticlesCollisionHeightField3D.HeightfieldMask].
+
+[GPUParticlesCollisionHeightField3D.HeightfieldMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.HeightfieldMask
 */
 func ParticlesCollisionSetHeightFieldMask(particles_collision RID.ParticlesCollision, mask int) { //gd:RenderingServer.particles_collision_set_height_field_mask
 	once.Do(singleton)
@@ -2516,7 +2832,9 @@ Creates a new fog volume and adds it to the RenderingServer. It can be accessed 
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/FogVolume].
+Note: The equivalent node is [FogVolume].
+
+[FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
 */
 func FogVolumeCreate() RID.FogVolume { //gd:RenderingServer.fog_volume_create
 	once.Do(singleton)
@@ -2540,7 +2858,11 @@ func FogVolumeSetSize(fog_volume RID.FogVolume, size Vector3.XYZ) { //gd:Renderi
 }
 
 /*
-Sets the [graphics.gd/classdb/Material] of the fog volume. Can be either a [graphics.gd/classdb/FogMaterial] or a custom [graphics.gd/classdb/ShaderMaterial].
+Sets the [Material] of the fog volume. Can be either a [FogMaterial] or a custom [ShaderMaterial].
+
+[FogMaterial]: https://pkg.go.dev/graphics.gd/classdb/FogMaterial
+[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 */
 func FogVolumeSetMaterial(fog_volume RID.FogVolume, material RID.Material) { //gd:RenderingServer.fog_volume_set_material
 	once.Do(singleton)
@@ -2554,7 +2876,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach this notifier to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent node is [graphics.gd/classdb/VisibleOnScreenNotifier3D].
+Note: The equivalent node is [VisibleOnScreenNotifier3D].
+
+[VisibleOnScreenNotifier3D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier3D
 */
 func VisibilityNotifierCreate() RID.VisibilityNotifier { //gd:RenderingServer.visibility_notifier_create
 	once.Do(singleton)
@@ -2574,7 +2898,10 @@ Creates an occluder instance and adds it to the RenderingServer. It can be acces
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/Occluder3D] (not to be confused with the [graphics.gd/classdb/OccluderInstance3D] node).
+Note: The equivalent resource is [Occluder3D] (not to be confused with the [OccluderInstance3D] node).
+
+[Occluder3D]: https://pkg.go.dev/graphics.gd/classdb/Occluder3D
+[OccluderInstance3D]: https://pkg.go.dev/graphics.gd/classdb/OccluderInstance3D
 */
 func OccluderCreate() RID.Occluder { //gd:RenderingServer.occluder_create
 	once.Do(singleton)
@@ -2594,7 +2921,9 @@ Creates a 3D camera and adds it to the RenderingServer. It can be accessed with 
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/Camera3D].
+Note: The equivalent node is [Camera3D].
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 */
 func CameraCreate() RID.Camera { //gd:RenderingServer.camera_create
 	once.Do(singleton)
@@ -2627,6 +2956,8 @@ func CameraSetFrustum(camera RID.Camera, size Float.X, offset Vector2.XY, z_near
 
 /*
 Sets [Transform3D.BasisOrigin] of camera.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 func CameraSetTransform(camera RID.Camera, transform Transform3D.BasisOrigin) { //gd:RenderingServer.camera_set_transform
 	once.Do(singleton)
@@ -2634,7 +2965,9 @@ func CameraSetTransform(camera RID.Camera, transform Transform3D.BasisOrigin) { 
 }
 
 /*
-Sets the cull mask associated with this camera. The cull mask describes which 3D layers are rendered by this camera. Equivalent to [graphics.gd/classdb/Camera3D.Instance.CullMask].
+Sets the cull mask associated with this camera. The cull mask describes which 3D layers are rendered by this camera. Equivalent to [Camera3D.CullMask].
+
+[Camera3D.CullMask]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.CullMask
 */
 func CameraSetCullMask(camera RID.Camera, layers int) { //gd:RenderingServer.camera_set_cull_mask
 	once.Do(singleton)
@@ -2642,7 +2975,9 @@ func CameraSetCullMask(camera RID.Camera, layers int) { //gd:RenderingServer.cam
 }
 
 /*
-Sets the environment used by this camera. Equivalent to [graphics.gd/classdb/Camera3D.Instance.Environment].
+Sets the environment used by this camera. Equivalent to [Camera3D.Environment].
+
+[Camera3D.Environment]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Environment
 */
 func CameraSetEnvironment(camera RID.Camera, env RID.Environment) { //gd:RenderingServer.camera_set_environment
 	once.Do(singleton)
@@ -2658,7 +2993,9 @@ func CameraSetCameraAttributes(camera RID.Camera, effects RID.CameraAttributes) 
 }
 
 /*
-Sets the compositor used by this camera. Equivalent to [graphics.gd/classdb/Camera3D.Instance.Compositor].
+Sets the compositor used by this camera. Equivalent to [Camera3D.Compositor].
+
+[Camera3D.Compositor]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Compositor
 */
 func CameraSetCompositor(camera RID.Camera, compositor RID.Compositor) { //gd:RenderingServer.camera_set_compositor
 	once.Do(singleton)
@@ -2678,7 +3015,9 @@ Creates an empty viewport and adds it to the RenderingServer. It can be accessed
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/Viewport].
+Note: The equivalent node is [Viewport].
+
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
 func ViewportCreate() RID.Viewport { //gd:RenderingServer.viewport_create
 	once.Do(singleton)
@@ -2686,7 +3025,9 @@ func ViewportCreate() RID.Viewport { //gd:RenderingServer.viewport_create
 }
 
 /*
-If true, the viewport uses augmented or virtual reality technologies. See [graphics.gd/classdb/XRInterface].
+If true, the viewport uses augmented or virtual reality technologies. See [XRInterface].
+
+[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 */
 func ViewportSetUseXr(viewport RID.Viewport, use_xr bool) { //gd:RenderingServer.viewport_set_use_xr
 	once.Do(singleton)
@@ -2750,7 +3091,10 @@ func ViewportSetRenderDirectToScreen(viewport RID.Viewport, enabled bool) { //gd
 }
 
 /*
-Sets the rendering mask associated with this [graphics.gd/classdb/Viewport]. Only [graphics.gd/classdb/CanvasItem] nodes with a matching rendering visibility layer will be rendered by this [graphics.gd/classdb/Viewport].
+Sets the rendering mask associated with this [Viewport]. Only [CanvasItem] nodes with a matching rendering visibility layer will be rendered by this [Viewport].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
 func ViewportSetCanvasCullMask(viewport RID.Viewport, canvas_cull_mask int) { //gd:RenderingServer.viewport_set_canvas_cull_mask
 	once.Do(singleton)
@@ -2784,9 +3128,11 @@ func ViewportSetFsrSharpness(viewport RID.Viewport, sharpness Float.X) { //gd:Re
 }
 
 /*
-Affects the final texture sharpness by reading from a lower or higher mipmap (also called "texture LOD bias"). Negative values make mipmapped textures sharper but grainier when viewed at a distance, while positive values make mipmapped textures blurrier (even when up close). To get sharper textures at a distance without introducing too much graininess, set this between -0.75 and 0.0. Enabling temporal antialiasing ([graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/use_taa") can help reduce the graininess visible when using negative mipmap bias.
+Affects the final texture sharpness by reading from a lower or higher mipmap (also called "texture LOD bias"). Negative values make mipmapped textures sharper but grainier when viewed at a distance, while positive values make mipmapped textures blurrier (even when up close). To get sharper textures at a distance without introducing too much graininess, set this between -0.75 and 0.0. Enabling temporal antialiasing ([ProjectSettings] "rendering/anti_aliasing/quality/use_taa") can help reduce the graininess visible when using negative mipmap bias.
 
 Note: When the 3D scaling mode is set to FSR 1.0, this value is used to adjust the automatic mipmap bias which is calculated internally based on the scale factor. The formula for this is -log2(1.0 / scale) + mipmap_bias.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func ViewportSetTextureMipmapBias(viewport RID.Viewport, mipmap_bias Float.X) { //gd:RenderingServer.viewport_set_texture_mipmap_bias
 	once.Do(singleton)
@@ -2796,11 +3142,17 @@ func ViewportSetTextureMipmapBias(viewport RID.Viewport, mipmap_bias Float.X) { 
 /*
 Sets the maximum number of samples to take when using anisotropic filtering on textures (as a power of two). A higher sample count will result in sharper textures at oblique angles, but is more expensive to compute. A value of 0 forcibly disables anisotropic filtering, even on materials where it is enabled.
 
-The anisotropic filtering level also affects decals and light projectors if they are configured to use anisotropic filtering. See [graphics.gd/classdb/ProjectSettings] "rendering/textures/decals/filter" and [graphics.gd/classdb/ProjectSettings] "rendering/textures/light_projectors/filter".
+The anisotropic filtering level also affects decals and light projectors if they are configured to use anisotropic filtering. See [ProjectSettings] "rendering/textures/decals/filter" and [ProjectSettings] "rendering/textures/light_projectors/filter".
 
-Note: In 3D, for this setting to have an effect, set [graphics.gd/classdb/BaseMaterial3D.Instance.TextureFilter] to [Basematerial3d.TextureFilterLinearWithMipmapsAnisotropic] or [Basematerial3d.TextureFilterNearestWithMipmapsAnisotropic] on materials.
+Note: In 3D, for this setting to have an effect, set [BaseMaterial3D.TextureFilter] to [Basematerial3d.TextureFilterLinearWithMipmapsAnisotropic] or [Basematerial3d.TextureFilterNearestWithMipmapsAnisotropic] on materials.
 
-Note: In 2D, for this setting to have an effect, set [graphics.gd/classdb/CanvasItem.Instance.TextureFilter] to [Canvasitem.TextureFilterLinearWithMipmapsAnisotropic] or [Canvasitem.TextureFilterNearestWithMipmapsAnisotropic] on the [graphics.gd/classdb/CanvasItem] node displaying the texture (or in [graphics.gd/classdb/CanvasTexture]). However, anisotropic filtering is rarely useful in 2D, so only enable it for textures in 2D if it makes a meaningful visual difference.
+Note: In 2D, for this setting to have an effect, set [CanvasItem.TextureFilter] to [Canvasitem.TextureFilterLinearWithMipmapsAnisotropic] or [Canvasitem.TextureFilterNearestWithMipmapsAnisotropic] on the [CanvasItem] node displaying the texture (or in [CanvasTexture]). However, anisotropic filtering is rarely useful in 2D, so only enable it for textures in 2D if it makes a meaningful visual difference.
+
+[BaseMaterial3D.TextureFilter]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.TextureFilter
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.TextureFilter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TextureFilter
+[CanvasTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func ViewportSetAnisotropicFilteringLevel(viewport RID.Viewport, anisotropic_filtering_level ViewportAnisotropicFiltering) { //gd:RenderingServer.viewport_set_anisotropic_filtering_level
 	once.Do(singleton)
@@ -2906,7 +3258,10 @@ func ViewportRemoveCanvas(viewport RID.Viewport, canvas RID.Canvas) { //gd:Rende
 }
 
 /*
-If true, canvas item transforms (i.e. origin position) are snapped to the nearest pixel when rendering. This can lead to a crisper appearance at the cost of less smooth movement, especially when [graphics.gd/classdb/Camera2D] smoothing is enabled. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/2d/snap/snap_2d_transforms_to_pixel".
+If true, canvas item transforms (i.e. origin position) are snapped to the nearest pixel when rendering. This can lead to a crisper appearance at the cost of less smooth movement, especially when [Camera2D] smoothing is enabled. Equivalent to [ProjectSettings] "rendering/2d/snap/snap_2d_transforms_to_pixel".
+
+[Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func ViewportSetSnap2dTransformsToPixel(viewport RID.Viewport, enabled bool) { //gd:RenderingServer.viewport_set_snap_2d_transforms_to_pixel
 	once.Do(singleton)
@@ -2914,7 +3269,10 @@ func ViewportSetSnap2dTransformsToPixel(viewport RID.Viewport, enabled bool) { /
 }
 
 /*
-If true, canvas item vertices (i.e. polygon points) are snapped to the nearest pixel when rendering. This can lead to a crisper appearance at the cost of less smooth movement, especially when [graphics.gd/classdb/Camera2D] smoothing is enabled. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/2d/snap/snap_2d_vertices_to_pixel".
+If true, canvas item vertices (i.e. polygon points) are snapped to the nearest pixel when rendering. This can lead to a crisper appearance at the cost of less smooth movement, especially when [Camera2D] smoothing is enabled. Equivalent to [ProjectSettings] "rendering/2d/snap/snap_2d_vertices_to_pixel".
+
+[Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func ViewportSetSnap2dVerticesToPixel(viewport RID.Viewport, enabled bool) { //gd:RenderingServer.viewport_set_snap_2d_vertices_to_pixel
 	once.Do(singleton)
@@ -2974,7 +3332,11 @@ func ViewportSetGlobalCanvasTransform(viewport RID.Viewport, transform Transform
 }
 
 /*
-Sets the viewport's 2D signed distance field [graphics.gd/classdb/ProjectSettings] "rendering/2d/sdf/oversize" and [graphics.gd/classdb/ProjectSettings] "rendering/2d/sdf/scale". This is used when sampling the signed distance field in [graphics.gd/classdb/CanvasItem] shaders as well as [graphics.gd/classdb/GPUParticles2D] collision. This is not used by SDFGI in 3D rendering.
+Sets the viewport's 2D signed distance field [ProjectSettings] "rendering/2d/sdf/oversize" and [ProjectSettings] "rendering/2d/sdf/scale". This is used when sampling the signed distance field in [CanvasItem] shaders as well as [GPUParticles2D] collision. This is not used by SDFGI in 3D rendering.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func ViewportSetSdfOversizeAndScale(viewport RID.Viewport, oversize ViewportSDFOversize, scale ViewportSDFScale) { //gd:RenderingServer.viewport_set_sdf_oversize_and_scale
 	once.Do(singleton)
@@ -3002,7 +3364,9 @@ func ViewportSetPositionalShadowAtlasSizeOptions(viewport RID.Viewport, size int
 }
 
 /*
-Sets the number of subdivisions to use in the specified shadow atlas 'quadrant' for omni and spot shadows. See also [graphics.gd/classdb/Viewport.Instance.SetPositionalShadowAtlasQuadrantSubdiv].
+Sets the number of subdivisions to use in the specified shadow atlas 'quadrant' for omni and spot shadows. See also [Viewport.SetPositionalShadowAtlasQuadrantSubdiv].
+
+[Viewport.SetPositionalShadowAtlasQuadrantSubdiv]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetPositionalShadowAtlasQuadrantSubdiv
 */
 func ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport RID.Viewport, quadrant int, subdivision int) { //gd:RenderingServer.viewport_set_positional_shadow_atlas_quadrant_subdivision
 	once.Do(singleton)
@@ -3010,7 +3374,10 @@ func ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport RID.Viewport, 
 }
 
 /*
-Sets the multisample antialiasing mode for 3D on the specified 'viewport' RID. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/msaa_3d" or [graphics.gd/classdb/Viewport.Instance.Msaa3d].
+Sets the multisample antialiasing mode for 3D on the specified 'viewport' RID. Equivalent to [ProjectSettings] "rendering/anti_aliasing/quality/msaa_3d" or [Viewport.Msaa3d].
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Viewport.Msaa3d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Msaa3d
 */
 func ViewportSetMsaa3d(viewport RID.Viewport, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_3d
 	once.Do(singleton)
@@ -3018,7 +3385,10 @@ func ViewportSetMsaa3d(viewport RID.Viewport, msaa ViewportMSAA) { //gd:Renderin
 }
 
 /*
-Sets the multisample antialiasing mode for 2D/Canvas on the specified 'viewport' RID. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/msaa_2d" or [graphics.gd/classdb/Viewport.Instance.Msaa2d].
+Sets the multisample antialiasing mode for 2D/Canvas on the specified 'viewport' RID. Equivalent to [ProjectSettings] "rendering/anti_aliasing/quality/msaa_2d" or [Viewport.Msaa2d].
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Viewport.Msaa2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Msaa2d
 */
 func ViewportSetMsaa2d(viewport RID.Viewport, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_2d
 	once.Do(singleton)
@@ -3030,7 +3400,9 @@ If true, 2D rendering will use a high dynamic range (HDR) format framebuffer mat
 
 Additionally, 2D rendering will take place in linear color space and will be converted to sRGB space immediately before blitting to the screen (if the Viewport is attached to the screen).
 
-Practically speaking, this means that the end result of the Viewport will not be clamped to the 0-1 range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients. This setting has the same effect as [graphics.gd/classdb/Viewport.Instance.UseHdr2d].
+Practically speaking, this means that the end result of the Viewport will not be clamped to the 0-1 range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients. This setting has the same effect as [Viewport.UseHdr2d].
+
+[Viewport.UseHdr2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseHdr2d
 */
 func ViewportSetUseHdr2d(viewport RID.Viewport, enabled bool) { //gd:RenderingServer.viewport_set_use_hdr_2d
 	once.Do(singleton)
@@ -3038,7 +3410,10 @@ func ViewportSetUseHdr2d(viewport RID.Viewport, enabled bool) { //gd:RenderingSe
 }
 
 /*
-Sets the viewport's screen-space antialiasing mode. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/screen_space_aa" or [graphics.gd/classdb/Viewport.Instance.ScreenSpaceAa].
+Sets the viewport's screen-space antialiasing mode. Equivalent to [ProjectSettings] "rendering/anti_aliasing/quality/screen_space_aa" or [Viewport.ScreenSpaceAa].
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Viewport.ScreenSpaceAa]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.ScreenSpaceAa
 */
 func ViewportSetScreenSpaceAa(viewport RID.Viewport, mode ViewportScreenSpaceAA) { //gd:RenderingServer.viewport_set_screen_space_aa
 	once.Do(singleton)
@@ -3046,7 +3421,10 @@ func ViewportSetScreenSpaceAa(viewport RID.Viewport, mode ViewportScreenSpaceAA)
 }
 
 /*
-If true, use temporal antialiasing. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/use_taa" or [graphics.gd/classdb/Viewport.Instance.UseTaa].
+If true, use temporal antialiasing. Equivalent to [ProjectSettings] "rendering/anti_aliasing/quality/use_taa" or [Viewport.UseTaa].
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Viewport.UseTaa]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseTaa
 */
 func ViewportSetUseTaa(viewport RID.Viewport, enable bool) { //gd:RenderingServer.viewport_set_use_taa
 	once.Do(singleton)
@@ -3054,7 +3432,10 @@ func ViewportSetUseTaa(viewport RID.Viewport, enable bool) { //gd:RenderingServe
 }
 
 /*
-Equivalent to [graphics.gd/classdb/Viewport.Instance.UseDebanding]. See also [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/use_debanding".
+Equivalent to [Viewport.UseDebanding]. See also [ProjectSettings] "rendering/anti_aliasing/quality/use_debanding".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Viewport.UseDebanding]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseDebanding
 */
 func ViewportSetUseDebanding(viewport RID.Viewport, enable bool) { //gd:RenderingServer.viewport_set_use_debanding
 	once.Do(singleton)
@@ -3062,7 +3443,9 @@ func ViewportSetUseDebanding(viewport RID.Viewport, enable bool) { //gd:Renderin
 }
 
 /*
-If true, enables occlusion culling on the specified viewport. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/occlusion_culling/use_occlusion_culling".
+If true, enables occlusion culling on the specified viewport. Equivalent to [ProjectSettings] "rendering/occlusion_culling/use_occlusion_culling".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func ViewportSetUseOcclusionCulling(viewport RID.Viewport, enable bool) { //gd:RenderingServer.viewport_set_use_occlusion_culling
 	once.Do(singleton)
@@ -3070,7 +3453,9 @@ func ViewportSetUseOcclusionCulling(viewport RID.Viewport, enable bool) { //gd:R
 }
 
 /*
-Sets the [graphics.gd/classdb/ProjectSettings] "rendering/occlusion_culling/occlusion_rays_per_thread" to use for occlusion culling. This parameter is global and cannot be set on a per-viewport basis.
+Sets the [ProjectSettings] "rendering/occlusion_culling/occlusion_rays_per_thread" to use for occlusion culling. This parameter is global and cannot be set on a per-viewport basis.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func ViewportSetOcclusionRaysPerThread(rays_per_thread int) { //gd:RenderingServer.viewport_set_occlusion_rays_per_thread
 	once.Do(singleton)
@@ -3078,7 +3463,9 @@ func ViewportSetOcclusionRaysPerThread(rays_per_thread int) { //gd:RenderingServ
 }
 
 /*
-Sets the [graphics.gd/classdb/ProjectSettings] "rendering/occlusion_culling/bvh_build_quality" to use for occlusion culling. This parameter is global and cannot be set on a per-viewport basis.
+Sets the [ProjectSettings] "rendering/occlusion_culling/bvh_build_quality" to use for occlusion culling. This parameter is global and cannot be set on a per-viewport basis.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func ViewportSetOcclusionCullingBuildQuality(quality ViewportOcclusionCullingBuildQuality) { //gd:RenderingServer.viewport_set_occlusion_culling_build_quality
 	once.Do(singleton)
@@ -3106,7 +3493,9 @@ func ViewportSetDebugDraw(viewport RID.Viewport, draw ViewportDebugDraw) { //gd:
 }
 
 /*
-Sets the measurement for the given 'viewport' RID (obtained using [graphics.gd/classdb/Viewport.Instance.GetViewportRid]). Once enabled, [ViewportGetMeasuredRenderTimeCpu] and [ViewportGetMeasuredRenderTimeGpu] will return values greater than 0.0 when queried with the given 'viewport'.
+Sets the measurement for the given 'viewport' RID (obtained using [Viewport.GetViewportRid]). Once enabled, [ViewportGetMeasuredRenderTimeCpu] and [ViewportGetMeasuredRenderTimeGpu] will return values greater than 0.0 when queried with the given 'viewport'.
+
+[Viewport.GetViewportRid]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GetViewportRid
 */
 func ViewportSetMeasureRenderTime(viewport RID.Viewport, enable bool) { //gd:RenderingServer.viewport_set_measure_render_time
 	once.Do(singleton)
@@ -3114,9 +3503,12 @@ func ViewportSetMeasureRenderTime(viewport RID.Viewport, enable bool) { //gd:Ren
 }
 
 /*
-Returns the CPU time taken to render the last frame in milliseconds. This only includes time spent in rendering-related operations; scripts' _process functions and other engine subsystems are not included in this readout. To get a complete readout of CPU time spent to render the scene, sum the render times of all viewports that are drawn every frame plus [GetFrameSetupTimeCpu]. Unlike [graphics.gd/classdb/Engine.GetFramesPerSecond], this method will accurately reflect CPU utilization even if framerate is capped via V-Sync or [graphics.gd/classdb/Engine.MaxFps]. See also [ViewportGetMeasuredRenderTimeGpu].
+Returns the CPU time taken to render the last frame in milliseconds. This only includes time spent in rendering-related operations; scripts' _process functions and other engine subsystems are not included in this readout. To get a complete readout of CPU time spent to render the scene, sum the render times of all viewports that are drawn every frame plus [GetFrameSetupTimeCpu]. Unlike [Engine.GetFramesPerSecond], this method will accurately reflect CPU utilization even if framerate is capped via V-Sync or [Engine.MaxFps]. See also [ViewportGetMeasuredRenderTimeGpu].
 
 Note: Requires measurements to be enabled on the specified 'viewport' using [ViewportSetMeasureRenderTime]. Otherwise, this method returns 0.0.
+
+[Engine.GetFramesPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#GetFramesPerSecond
+[Engine.MaxFps]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxFps
 */
 func ViewportGetMeasuredRenderTimeCpu(viewport RID.Viewport) Float.X { //gd:RenderingServer.viewport_get_measured_render_time_cpu
 	once.Do(singleton)
@@ -3124,11 +3516,14 @@ func ViewportGetMeasuredRenderTimeCpu(viewport RID.Viewport) Float.X { //gd:Rend
 }
 
 /*
-Returns the GPU time taken to render the last frame in milliseconds. To get a complete readout of GPU time spent to render the scene, sum the render times of all viewports that are drawn every frame. Unlike [graphics.gd/classdb/Engine.GetFramesPerSecond], this method accurately reflects GPU utilization even if framerate is capped via V-Sync or [graphics.gd/classdb/Engine.MaxFps]. See also [ViewportGetMeasuredRenderTimeCpu].
+Returns the GPU time taken to render the last frame in milliseconds. To get a complete readout of GPU time spent to render the scene, sum the render times of all viewports that are drawn every frame. Unlike [Engine.GetFramesPerSecond], this method accurately reflects GPU utilization even if framerate is capped via V-Sync or [Engine.MaxFps]. See also [ViewportGetMeasuredRenderTimeCpu].
 
 Note: Requires measurements to be enabled on the specified 'viewport' using [ViewportSetMeasureRenderTime]. Otherwise, this method returns 0.0.
 
 Note: When GPU utilization is low enough during a certain period of time, GPUs will decrease their power state (which in turn decreases core and memory clock speeds). This can cause the reported GPU time to increase if GPU utilization is kept low enough by a framerate cap (compared to what it would be at the GPU's highest power state). Keep this in mind when benchmarking using [ViewportGetMeasuredRenderTimeGpu]. This behavior can be overridden in the graphics driver settings at the cost of higher power usage.
+
+[Engine.GetFramesPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#GetFramesPerSecond
+[Engine.MaxFps]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxFps
 */
 func ViewportGetMeasuredRenderTimeGpu(viewport RID.Viewport) Float.X { //gd:RenderingServer.viewport_get_measured_render_time_gpu
 	once.Do(singleton)
@@ -3136,7 +3531,9 @@ func ViewportGetMeasuredRenderTimeGpu(viewport RID.Viewport) Float.X { //gd:Rend
 }
 
 /*
-Sets the Variable Rate Shading (VRS) mode for the viewport. If the GPU does not support VRS, this property is ignored. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/vrs/mode".
+Sets the Variable Rate Shading (VRS) mode for the viewport. If the GPU does not support VRS, this property is ignored. Equivalent to [ProjectSettings] "rendering/vrs/mode".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func ViewportSetVrsMode(viewport RID.Viewport, mode ViewportVRSMode) { //gd:RenderingServer.viewport_set_vrs_mode
 	once.Do(singleton)
@@ -3154,7 +3551,9 @@ func ViewportSetVrsUpdateMode(viewport RID.Viewport, mode ViewportVRSUpdateMode)
 }
 
 /*
-The texture to use when the VRS mode is set to [Renderingserver.ViewportVrsTexture]. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/vrs/texture".
+The texture to use when the VRS mode is set to [Renderingserver.ViewportVrsTexture]. Equivalent to [ProjectSettings] "rendering/vrs/texture".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func ViewportSetVrsTexture(viewport RID.Viewport, texture RID.Texture) { //gd:RenderingServer.viewport_set_vrs_texture
 	once.Do(singleton)
@@ -3172,7 +3571,9 @@ func SkyCreate() RID.Sky { //gd:RenderingServer.sky_create
 }
 
 /*
-Sets the 'radiance_size' of the sky specified by the 'sky' RID (in pixels). Equivalent to [graphics.gd/classdb/Sky.Instance.RadianceSize].
+Sets the 'radiance_size' of the sky specified by the 'sky' RID (in pixels). Equivalent to [Sky.RadianceSize].
+
+[Sky.RadianceSize]: https://pkg.go.dev/graphics.gd/classdb/Sky#Instance.RadianceSize
 */
 func SkySetRadianceSize(sky RID.Sky, radiance_size int) { //gd:RenderingServer.sky_set_radiance_size
 	once.Do(singleton)
@@ -3180,7 +3581,9 @@ func SkySetRadianceSize(sky RID.Sky, radiance_size int) { //gd:RenderingServer.s
 }
 
 /*
-Sets the process 'mode' of the sky specified by the 'sky' RID. Equivalent to [graphics.gd/classdb/Sky.Instance.ProcessMode].
+Sets the process 'mode' of the sky specified by the 'sky' RID. Equivalent to [Sky.ProcessMode].
+
+[Sky.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Sky#Instance.ProcessMode
 */
 func SkySetMode(sky RID.Sky, mode SkyMode) { //gd:RenderingServer.sky_set_mode
 	once.Do(singleton)
@@ -3196,11 +3599,14 @@ func SkySetMaterial(sky RID.Sky, material RID.Material) { //gd:RenderingServer.s
 }
 
 /*
-Generates and returns an [graphics.gd/classdb/Image] containing the radiance map for the specified 'sky' RID. This supports built-in sky material and custom sky shaders. If 'bake_irradiance' is true, the irradiance map is saved instead of the radiance map. The radiance map is used to render reflected light, while the irradiance map is used to render ambient light. See also [EnvironmentBakePanorama].
+Generates and returns an [Image] containing the radiance map for the specified 'sky' RID. This supports built-in sky material and custom sky shaders. If 'bake_irradiance' is true, the irradiance map is saved instead of the radiance map. The radiance map is used to render reflected light, while the irradiance map is used to render ambient light. See also [EnvironmentBakePanorama].
 
 Note: The image is saved in linear color space without any tonemapping performed, which means it will look too dark if viewed directly in an image editor. 'energy' values above 1.0 can be used to brighten the resulting image.
 
-Note: 'size' should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [graphics.gd/classdb/Sky.Instance.RadianceSize], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
+Note: 'size' should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [Sky.RadianceSize], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
+
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[Sky.RadianceSize]: https://pkg.go.dev/graphics.gd/classdb/Sky#Instance.RadianceSize
 */
 func SkyBakePanorama(sky RID.Sky, energy Float.X, bake_irradiance bool, size Vector2i.XY) Image.Instance { //gd:RenderingServer.sky_bake_panorama
 	once.Do(singleton)
@@ -3264,7 +3670,9 @@ Creates an environment and adds it to the RenderingServer. It can be accessed wi
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/Environment].
+Note: The equivalent resource is [Environment].
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentCreate() RID.Environment { //gd:RenderingServer.environment_create
 	once.Do(singleton)
@@ -3272,7 +3680,9 @@ func EnvironmentCreate() RID.Environment { //gd:RenderingServer.environment_crea
 }
 
 /*
-Sets the environment's background mode. Equivalent to [graphics.gd/classdb/Environment.Instance.BackgroundMode].
+Sets the environment's background mode. Equivalent to [Environment.BackgroundMode].
+
+[Environment.BackgroundMode]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.BackgroundMode
 */
 func EnvironmentSetBackground(env RID.Environment, bg EnvironmentBG) { //gd:RenderingServer.environment_set_background
 	once.Do(singleton)
@@ -3288,7 +3698,10 @@ func EnvironmentSetCameraId(env RID.Environment, id int) { //gd:RenderingServer.
 }
 
 /*
-Sets the [graphics.gd/classdb/Sky] to be used as the environment's background when using BGMode sky. Equivalent to [graphics.gd/classdb/Environment.Instance.Sky].
+Sets the [Sky] to be used as the environment's background when using BGMode sky. Equivalent to [Environment.Sky].
+
+[Environment.Sky]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.Sky
+[Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
 */
 func EnvironmentSetSky(env RID.Environment, sky RID.Sky) { //gd:RenderingServer.environment_set_sky
 	once.Do(singleton)
@@ -3296,7 +3709,10 @@ func EnvironmentSetSky(env RID.Environment, sky RID.Sky) { //gd:RenderingServer.
 }
 
 /*
-Sets a custom field of view for the background [graphics.gd/classdb/Sky]. Equivalent to [graphics.gd/classdb/Environment.Instance.SkyCustomFov].
+Sets a custom field of view for the background [Sky]. Equivalent to [Environment.SkyCustomFov].
+
+[Environment.SkyCustomFov]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SkyCustomFov
+[Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
 */
 func EnvironmentSetSkyCustomFov(env RID.Environment, scale Float.X) { //gd:RenderingServer.environment_set_sky_custom_fov
 	once.Do(singleton)
@@ -3304,7 +3720,11 @@ func EnvironmentSetSkyCustomFov(env RID.Environment, scale Float.X) { //gd:Rende
 }
 
 /*
-Sets the rotation of the background [graphics.gd/classdb/Sky] expressed as a [Basis.XYZ]. Equivalent to [graphics.gd/classdb/Environment.Instance.SkyRotation], where the rotation vector is used to construct the [Basis.XYZ].
+Sets the rotation of the background [Sky] expressed as a [Basis.XYZ]. Equivalent to [Environment.SkyRotation], where the rotation vector is used to construct the [Basis.XYZ].
+
+[Basis.XYZ]: https://pkg.go.dev/graphics.gd/variant/Basis#XYZ
+[Environment.SkyRotation]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SkyRotation
+[Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
 */
 func EnvironmentSetSkyOrientation(env RID.Environment, orientation Basis.XYZ) { //gd:RenderingServer.environment_set_sky_orientation
 	once.Do(singleton)
@@ -3336,7 +3756,9 @@ func EnvironmentSetCanvasMaxLayer(env RID.Environment, max_layer int) { //gd:Ren
 }
 
 /*
-Sets the values to be used for ambient light rendering. See [graphics.gd/classdb/Environment] for more details.
+Sets the values to be used for ambient light rendering. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentSetAmbientLight(env RID.Environment, color Color.RGBA, ambient EnvironmentAmbientSource, sky_contribution Float.X, reflection_source EnvironmentReflectionSource) { //gd:RenderingServer.environment_set_ambient_light
 	once.Do(singleton)
@@ -3344,7 +3766,9 @@ func EnvironmentSetAmbientLight(env RID.Environment, color Color.RGBA, ambient E
 }
 
 /*
-Sets the values to be used for ambient light rendering. See [graphics.gd/classdb/Environment] for more details.
+Sets the values to be used for ambient light rendering. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentSetAmbientLightOptions(env RID.Environment, color Color.RGBA, ambient EnvironmentAmbientSource, energy Float.X, sky_contribution Float.X, reflection_source EnvironmentReflectionSource) { //gd:RenderingServer.environment_set_ambient_light
 	once.Do(singleton)
@@ -3352,7 +3776,9 @@ func EnvironmentSetAmbientLightOptions(env RID.Environment, color Color.RGBA, am
 }
 
 /*
-Configures glow for the specified environment RID. See glow_* properties in [graphics.gd/classdb/Environment] for more information.
+Configures glow for the specified environment RID. See glow_* properties in [Environment] for more information.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentSetGlow(env RID.Environment, enable bool, levels []float32, intensity Float.X, strength Float.X, mix Float.X, bloom_threshold Float.X, blend_mode EnvironmentGlowBlendMode, hdr_bleed_threshold Float.X, hdr_bleed_scale Float.X, hdr_luminance_cap Float.X, glow_map_strength Float.X, glow_map RID.Texture) { //gd:RenderingServer.environment_set_glow
 	once.Do(singleton)
@@ -3360,7 +3786,9 @@ func EnvironmentSetGlow(env RID.Environment, enable bool, levels []float32, inte
 }
 
 /*
-Sets the variables to be used with the "tonemap" post-process effect. See [graphics.gd/classdb/Environment] for more details.
+Sets the variables to be used with the "tonemap" post-process effect. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentSetTonemap(env RID.Environment, tone_mapper EnvironmentToneMapper, exposure Float.X, white Float.X) { //gd:RenderingServer.environment_set_tonemap
 	once.Do(singleton)
@@ -3368,7 +3796,9 @@ func EnvironmentSetTonemap(env RID.Environment, tone_mapper EnvironmentToneMappe
 }
 
 /*
-Sets the values to be used with the "adjustments" post-process effect. See [graphics.gd/classdb/Environment] for more details.
+Sets the values to be used with the "adjustments" post-process effect. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentSetAdjustment(env RID.Environment, enable bool, brightness Float.X, contrast Float.X, saturation Float.X, use_1d_color_correction bool, color_correction RID.ColorCorrection) { //gd:RenderingServer.environment_set_adjustment
 	once.Do(singleton)
@@ -3376,7 +3806,9 @@ func EnvironmentSetAdjustment(env RID.Environment, enable bool, brightness Float
 }
 
 /*
-Sets the variables to be used with the screen-space reflections (SSR) post-process effect. See [graphics.gd/classdb/Environment] for more details.
+Sets the variables to be used with the screen-space reflections (SSR) post-process effect. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentSetSsr(env RID.Environment, enable bool, max_steps int, fade_in Float.X, fade_out Float.X, depth_tolerance Float.X) { //gd:RenderingServer.environment_set_ssr
 	once.Do(singleton)
@@ -3384,7 +3816,9 @@ func EnvironmentSetSsr(env RID.Environment, enable bool, max_steps int, fade_in 
 }
 
 /*
-Sets the variables to be used with the screen-space ambient occlusion (SSAO) post-process effect. See [graphics.gd/classdb/Environment] for more details.
+Sets the variables to be used with the screen-space ambient occlusion (SSAO) post-process effect. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentSetSsao(env RID.Environment, enable bool, radius Float.X, intensity Float.X, power Float.X, detail Float.X, horizon Float.X, sharpness Float.X, light_affect Float.X, ao_channel_affect Float.X) { //gd:RenderingServer.environment_set_ssao
 	once.Do(singleton)
@@ -3392,7 +3826,9 @@ func EnvironmentSetSsao(env RID.Environment, enable bool, radius Float.X, intens
 }
 
 /*
-Configures fog for the specified environment RID. See fog_* properties in [graphics.gd/classdb/Environment] for more information.
+Configures fog for the specified environment RID. See fog_* properties in [Environment] for more information.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentSetFog(env RID.Environment, enable bool, light_color Color.RGBA, light_energy Float.X, sun_scatter Float.X, density Float.X, height Float.X, height_density Float.X, aerial_perspective Float.X, sky_affect Float.X, fog_mode EnvironmentFogMode) { //gd:RenderingServer.environment_set_fog
 	once.Do(singleton)
@@ -3400,7 +3836,9 @@ func EnvironmentSetFog(env RID.Environment, enable bool, light_color Color.RGBA,
 }
 
 /*
-Configures fog for the specified environment RID. See fog_* properties in [graphics.gd/classdb/Environment] for more information.
+Configures fog for the specified environment RID. See fog_* properties in [Environment] for more information.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentSetFogOptions(env RID.Environment, enable bool, light_color Color.RGBA, light_energy Float.X, sun_scatter Float.X, density Float.X, height Float.X, height_density Float.X, aerial_perspective Float.X, sky_affect Float.X, fog_mode EnvironmentFogMode) { //gd:RenderingServer.environment_set_fog
 	once.Do(singleton)
@@ -3408,7 +3846,9 @@ func EnvironmentSetFogOptions(env RID.Environment, enable bool, light_color Colo
 }
 
 /*
-Configures fog depth for the specified environment RID. Only has an effect when the fog mode of the environment is [EnvFogModeDepth]. See fog_depth_* properties in [graphics.gd/classdb/Environment] for more information.
+Configures fog depth for the specified environment RID. Only has an effect when the fog mode of the environment is [EnvFogModeDepth]. See fog_depth_* properties in [Environment] for more information.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentSetFogDepth(env RID.Environment, curve Float.X, begin Float.X, end Float.X) { //gd:RenderingServer.environment_set_fog_depth
 	once.Do(singleton)
@@ -3416,7 +3856,9 @@ func EnvironmentSetFogDepth(env RID.Environment, curve Float.X, begin Float.X, e
 }
 
 /*
-Configures signed distance field global illumination for the specified environment RID. See sdfgi_* properties in [graphics.gd/classdb/Environment] for more information.
+Configures signed distance field global illumination for the specified environment RID. See sdfgi_* properties in [Environment] for more information.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentSetSdfgi(env RID.Environment, enable bool, cascades int, min_cell_size Float.X, y_scale EnvironmentSDFGIYScale, use_occlusion bool, bounce_feedback Float.X, read_sky bool, energy Float.X, normal_bias Float.X, probe_bias Float.X) { //gd:RenderingServer.environment_set_sdfgi
 	once.Do(singleton)
@@ -3424,7 +3866,9 @@ func EnvironmentSetSdfgi(env RID.Environment, enable bool, cascades int, min_cel
 }
 
 /*
-Sets the variables to be used with the volumetric fog post-process effect. See [graphics.gd/classdb/Environment] for more details.
+Sets the variables to be used with the volumetric fog post-process effect. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentSetVolumetricFog(env RID.Environment, enable bool, density Float.X, albedo Color.RGBA, emission Color.RGBA, emission_energy Float.X, anisotropy Float.X, length Float.X, p_detail_spread Float.X, gi_inject Float.X, temporal_reprojection bool, temporal_reprojection_amount Float.X, ambient_inject Float.X, sky_affect Float.X) { //gd:RenderingServer.environment_set_volumetric_fog
 	once.Do(singleton)
@@ -3432,9 +3876,11 @@ func EnvironmentSetVolumetricFog(env RID.Environment, enable bool, density Float
 }
 
 /*
-If 'enable' is true, enables bicubic upscaling for glow which improves quality at the cost of performance. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/environment/glow/upscale_mode".
+If 'enable' is true, enables bicubic upscaling for glow which improves quality at the cost of performance. Equivalent to [ProjectSettings] "rendering/environment/glow/upscale_mode".
 
 Note: This setting is only effective when using the Forward+ or Mobile rendering methods, as Compatibility uses a different glow implementation.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func EnvironmentGlowSetUseBicubicUpscale(enable bool) { //gd:RenderingServer.environment_glow_set_use_bicubic_upscale
 	once.Do(singleton)
@@ -3446,7 +3892,9 @@ func EnvironmentSetSsrRoughnessQuality(quality EnvironmentSSRRoughnessQuality) {
 }
 
 /*
-Sets the quality level of the screen-space ambient occlusion (SSAO) post-process effect. See [graphics.gd/classdb/Environment] for more details.
+Sets the quality level of the screen-space ambient occlusion (SSAO) post-process effect. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentSetSsaoQuality(quality EnvironmentSSAOQuality, half_size bool, adaptive_target Float.X, blur_passes int, fadeout_from Float.X, fadeout_to Float.X) { //gd:RenderingServer.environment_set_ssao_quality
 	once.Do(singleton)
@@ -3454,7 +3902,9 @@ func EnvironmentSetSsaoQuality(quality EnvironmentSSAOQuality, half_size bool, a
 }
 
 /*
-Sets the quality level of the screen-space indirect lighting (SSIL) post-process effect. See [graphics.gd/classdb/Environment] for more details.
+Sets the quality level of the screen-space indirect lighting (SSIL) post-process effect. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentSetSsilQuality(quality EnvironmentSSILQuality, half_size bool, adaptive_target Float.X, blur_passes int, fadeout_from Float.X, fadeout_to Float.X) { //gd:RenderingServer.environment_set_ssil_quality
 	once.Do(singleton)
@@ -3462,7 +3912,9 @@ func EnvironmentSetSsilQuality(quality EnvironmentSSILQuality, half_size bool, a
 }
 
 /*
-Sets the number of rays to throw per frame when computing signed distance field global illumination. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/global_illumination/sdfgi/probe_ray_count".
+Sets the number of rays to throw per frame when computing signed distance field global illumination. Equivalent to [ProjectSettings] "rendering/global_illumination/sdfgi/probe_ray_count".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func EnvironmentSetSdfgiRayCount(ray_count EnvironmentSDFGIRayCount) { //gd:RenderingServer.environment_set_sdfgi_ray_count
 	once.Do(singleton)
@@ -3470,7 +3922,9 @@ func EnvironmentSetSdfgiRayCount(ray_count EnvironmentSDFGIRayCount) { //gd:Rend
 }
 
 /*
-Sets the number of frames to use for converging signed distance field global illumination. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_converge".
+Sets the number of frames to use for converging signed distance field global illumination. Equivalent to [ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_converge".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func EnvironmentSetSdfgiFramesToConverge(frames EnvironmentSDFGIFramesToConverge) { //gd:RenderingServer.environment_set_sdfgi_frames_to_converge
 	once.Do(singleton)
@@ -3478,7 +3932,9 @@ func EnvironmentSetSdfgiFramesToConverge(frames EnvironmentSDFGIFramesToConverge
 }
 
 /*
-Sets the update speed for dynamic lights' indirect lighting when computing signed distance field global illumination. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_update_lights".
+Sets the update speed for dynamic lights' indirect lighting when computing signed distance field global illumination. Equivalent to [ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_update_lights".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func EnvironmentSetSdfgiFramesToUpdateLight(frames EnvironmentSDFGIFramesToUpdateLight) { //gd:RenderingServer.environment_set_sdfgi_frames_to_update_light
 	once.Do(singleton)
@@ -3502,11 +3958,14 @@ func EnvironmentSetVolumetricFogFilterActive(active bool) { //gd:RenderingServer
 }
 
 /*
-Generates and returns an [graphics.gd/classdb/Image] containing the radiance map for the specified 'environment' RID's sky. This supports built-in sky material and custom sky shaders. If 'bake_irradiance' is true, the irradiance map is saved instead of the radiance map. The radiance map is used to render reflected light, while the irradiance map is used to render ambient light. See also [SkyBakePanorama].
+Generates and returns an [Image] containing the radiance map for the specified 'environment' RID's sky. This supports built-in sky material and custom sky shaders. If 'bake_irradiance' is true, the irradiance map is saved instead of the radiance map. The radiance map is used to render reflected light, while the irradiance map is used to render ambient light. See also [SkyBakePanorama].
 
 Note: The image is saved in linear color space without any tonemapping performed, which means it will look too dark if viewed directly in an image editor.
 
-Note: 'size' should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [graphics.gd/classdb/Sky.Instance.RadianceSize], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
+Note: 'size' should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [Sky.RadianceSize], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
+
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[Sky.RadianceSize]: https://pkg.go.dev/graphics.gd/classdb/Sky#Instance.RadianceSize
 */
 func EnvironmentBakePanorama(environment RID.Environment, bake_irradiance bool, size Vector2i.XY) Image.Instance { //gd:RenderingServer.environment_bake_panorama
 	once.Do(singleton)
@@ -3514,7 +3973,9 @@ func EnvironmentBakePanorama(environment RID.Environment, bake_irradiance bool, 
 }
 
 /*
-Sets the screen-space roughness limiter parameters, such as whether it should be enabled and its thresholds. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/screen_space_roughness_limiter/enabled", [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/screen_space_roughness_limiter/amount" and [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/screen_space_roughness_limiter/limit".
+Sets the screen-space roughness limiter parameters, such as whether it should be enabled and its thresholds. Equivalent to [ProjectSettings] "rendering/anti_aliasing/screen_space_roughness_limiter/enabled", [ProjectSettings] "rendering/anti_aliasing/screen_space_roughness_limiter/amount" and [ProjectSettings] "rendering/anti_aliasing/screen_space_roughness_limiter/limit".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func ScreenSpaceRoughnessLimiterSetActive(enable bool, amount Float.X, limit Float.X) { //gd:RenderingServer.screen_space_roughness_limiter_set_active
 	once.Do(singleton)
@@ -3522,7 +3983,9 @@ func ScreenSpaceRoughnessLimiterSetActive(enable bool, amount Float.X, limit Flo
 }
 
 /*
-Sets [graphics.gd/classdb/ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_quality" to use when rendering materials that have subsurface scattering enabled.
+Sets [ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_quality" to use when rendering materials that have subsurface scattering enabled.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func SubSurfaceScatteringSetQuality(quality SubSurfaceScatteringQuality) { //gd:RenderingServer.sub_surface_scattering_set_quality
 	once.Do(singleton)
@@ -3530,7 +3993,9 @@ func SubSurfaceScatteringSetQuality(quality SubSurfaceScatteringQuality) { //gd:
 }
 
 /*
-Sets the [graphics.gd/classdb/ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_scale" and [graphics.gd/classdb/ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_depth_scale" to use when rendering materials that have subsurface scattering enabled.
+Sets the [ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_scale" and [ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_depth_scale" to use when rendering materials that have subsurface scattering enabled.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func SubSurfaceScatteringSetScale(scale Float.X, depth_scale Float.X) { //gd:RenderingServer.sub_surface_scattering_set_scale
 	once.Do(singleton)
@@ -3542,7 +4007,9 @@ Creates a camera attributes object and adds it to the RenderingServer. It can be
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/CameraAttributes].
+Note: The equivalent resource is [CameraAttributes].
+
+[CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
 */
 func CameraAttributesCreate() RID.CameraAttributes { //gd:RenderingServer.camera_attributes_create
 	once.Do(singleton)
@@ -3566,7 +4033,9 @@ func CameraAttributesSetDofBlurBokehShape(shape DOFBokehShape) { //gd:RenderingS
 }
 
 /*
-Sets the parameters to use with the DOF blur effect. These parameters take on the same meaning as their counterparts in [graphics.gd/classdb/CameraAttributesPractical].
+Sets the parameters to use with the DOF blur effect. These parameters take on the same meaning as their counterparts in [CameraAttributesPractical].
+
+[CameraAttributesPractical]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical
 */
 func CameraAttributesSetDofBlur(camera_attributes RID.CameraAttributes, far_enable bool, far_distance Float.X, far_transition Float.X, near_enable bool, near_distance Float.X, near_transition Float.X, amount Float.X) { //gd:RenderingServer.camera_attributes_set_dof_blur
 	once.Do(singleton)
@@ -3586,7 +4055,10 @@ func CameraAttributesSetExposure(camera_attributes RID.CameraAttributes, multipl
 }
 
 /*
-Sets the parameters to use with the auto-exposure effect. These parameters take on the same meaning as their counterparts in [graphics.gd/classdb/CameraAttributes] and [graphics.gd/classdb/CameraAttributesPractical].
+Sets the parameters to use with the auto-exposure effect. These parameters take on the same meaning as their counterparts in [CameraAttributes] and [CameraAttributesPractical].
+
+[CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
+[CameraAttributesPractical]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical
 */
 func CameraAttributesSetAutoExposure(camera_attributes RID.CameraAttributes, enable bool, min_sensitivity Float.X, max_sensitivity Float.X, speed Float.X, scale Float.X) { //gd:RenderingServer.camera_attributes_set_auto_exposure
 	once.Do(singleton)
@@ -3606,7 +4078,9 @@ func ScenarioCreate() RID.Scenario { //gd:RenderingServer.scenario_create
 }
 
 /*
-Sets the environment that will be used with this scenario. See also [graphics.gd/classdb/Environment].
+Sets the environment that will be used with this scenario. See also [Environment].
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func ScenarioSetEnvironment(scenario RID.Scenario, environment RID.Environment) { //gd:RenderingServer.scenario_set_environment
 	once.Do(singleton)
@@ -3622,7 +4096,9 @@ func ScenarioSetFallbackEnvironment(scenario RID.Scenario, environment RID.Envir
 }
 
 /*
-Sets the camera attributes ('effects') that will be used with this scenario. See also [graphics.gd/classdb/CameraAttributes].
+Sets the camera attributes ('effects') that will be used with this scenario. See also [CameraAttributes].
+
+[CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
 */
 func ScenarioSetCameraAttributes(scenario RID.Scenario, effects RID.CameraAttributes) { //gd:RenderingServer.scenario_set_camera_attributes
 	once.Do(singleton)
@@ -3630,7 +4106,9 @@ func ScenarioSetCameraAttributes(scenario RID.Scenario, effects RID.CameraAttrib
 }
 
 /*
-Sets the compositor ('compositor') that will be used with this scenario. See also [graphics.gd/classdb/Compositor].
+Sets the compositor ('compositor') that will be used with this scenario. See also [Compositor].
+
+[Compositor]: https://pkg.go.dev/graphics.gd/classdb/Compositor
 */
 func ScenarioSetCompositor(scenario RID.Scenario, compositor RID.Compositor) { //gd:RenderingServer.scenario_set_compositor
 	once.Do(singleton)
@@ -3654,7 +4132,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 An instance is a way of placing a 3D object in the scenario. Objects like particles, meshes, reflection probes and decals need to be associated with an instance to be visible in the scenario using [InstanceSetBase].
 
-Note: The equivalent node is [graphics.gd/classdb/VisualInstance3D].
+Note: The equivalent node is [VisualInstance3D].
+
+[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
 */
 func InstanceCreate() RID.VisualInstance { //gd:RenderingServer.instance_create
 	once.Do(singleton)
@@ -3678,7 +4158,9 @@ func InstanceSetScenario(instance RID.VisualInstance, scenario RID.Scenario) { /
 }
 
 /*
-Sets the render layers that this instance will be drawn to. Equivalent to [graphics.gd/classdb/VisualInstance3D.Instance.Layers].
+Sets the render layers that this instance will be drawn to. Equivalent to [VisualInstance3D.Layers].
+
+[VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
 */
 func InstanceSetLayerMask(instance RID.VisualInstance, mask int) { //gd:RenderingServer.instance_set_layer_mask
 	once.Do(singleton)
@@ -3694,7 +4176,9 @@ func InstanceSetPivotData(instance RID.VisualInstance, sorting_offset Float.X, u
 }
 
 /*
-Sets the world space transform of the instance. Equivalent to [graphics.gd/classdb/Node3D.Instance.GlobalTransform].
+Sets the world space transform of the instance. Equivalent to [Node3D.GlobalTransform].
+
+[Node3D.GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
 */
 func InstanceSetTransform(instance RID.VisualInstance, transform Transform3D.BasisOrigin) { //gd:RenderingServer.instance_set_transform
 	once.Do(singleton)
@@ -3718,7 +4202,9 @@ func InstanceSetBlendShapeWeight(instance RID.VisualInstance, shape int, weight 
 }
 
 /*
-Sets the override material of a specific surface. Equivalent to [graphics.gd/classdb/MeshInstance3D.Instance.SetSurfaceOverrideMaterial].
+Sets the override material of a specific surface. Equivalent to [MeshInstance3D.SetSurfaceOverrideMaterial].
+
+[MeshInstance3D.SetSurfaceOverrideMaterial]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D#Instance.SetSurfaceOverrideMaterial
 */
 func InstanceSetSurfaceOverrideMaterial(instance RID.VisualInstance, surface int, material RID.Material) { //gd:RenderingServer.instance_set_surface_override_material
 	once.Do(singleton)
@@ -3726,7 +4212,9 @@ func InstanceSetSurfaceOverrideMaterial(instance RID.VisualInstance, surface int
 }
 
 /*
-Sets whether an instance is drawn or not. Equivalent to [graphics.gd/classdb/Node3D.Instance.Visible].
+Sets whether an instance is drawn or not. Equivalent to [Node3D.Visible].
+
+[Node3D.Visible]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Visible
 */
 func InstanceSetVisible(instance RID.VisualInstance, visible bool) { //gd:RenderingServer.instance_set_visible
 	once.Do(singleton)
@@ -3734,13 +4222,15 @@ func InstanceSetVisible(instance RID.VisualInstance, visible bool) { //gd:Render
 }
 
 /*
-Sets the transparency for the given geometry instance. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.Transparency].
+Sets the transparency for the given geometry instance. Equivalent to [GeometryInstance3D.Transparency].
 
 A transparency of 0.0 is fully opaque, while 1.0 is fully transparent. Values greater than 0.0 (exclusive) will force the geometry's materials to go through the transparent pipeline, which is slower to render and can exhibit rendering issues due to incorrect transparency sorting. However, unlike using a transparent material, setting 'transparency' to a value greater than 0.0 (exclusive) will not disable shadow rendering.
 
 In spatial shaders, 1.0 - transparency is set as the default value of the ALPHA built-in.
 
 Note: 'transparency' is clamped between 0.0 and 1.0, so this property cannot be used to make transparent materials more opaque than they originally are.
+
+[GeometryInstance3D.Transparency]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.Transparency
 */
 func InstanceGeometrySetTransparency(instance RID.VisualInstance, transparency Float.X) { //gd:RenderingServer.instance_geometry_set_transparency
 	once.Do(singleton)
@@ -3756,7 +4246,9 @@ func InstanceTeleport(instance RID.VisualInstance) { //gd:RenderingServer.instan
 }
 
 /*
-Sets a custom AABB to use when culling objects from the view frustum. Equivalent to setting [graphics.gd/classdb/GeometryInstance3D.Instance.CustomAabb].
+Sets a custom AABB to use when culling objects from the view frustum. Equivalent to setting [GeometryInstance3D.CustomAabb].
+
+[GeometryInstance3D.CustomAabb]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.CustomAabb
 */
 func InstanceSetCustomAabb(instance RID.VisualInstance, aabb AABB.PositionSize) { //gd:RenderingServer.instance_set_custom_aabb
 	once.Do(singleton)
@@ -3772,7 +4264,9 @@ func InstanceAttachSkeleton(instance RID.VisualInstance, skeleton RID.Skeleton) 
 }
 
 /*
-Sets a margin to increase the size of the AABB when culling objects from the view frustum. This allows you to avoid culling objects that fall outside the view frustum. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.ExtraCullMargin].
+Sets a margin to increase the size of the AABB when culling objects from the view frustum. This allows you to avoid culling objects that fall outside the view frustum. Equivalent to [GeometryInstance3D.ExtraCullMargin].
+
+[GeometryInstance3D.ExtraCullMargin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.ExtraCullMargin
 */
 func InstanceSetExtraVisibilityMargin(instance RID.VisualInstance, margin Float.X) { //gd:RenderingServer.instance_set_extra_visibility_margin
 	once.Do(singleton)
@@ -3780,7 +4274,9 @@ func InstanceSetExtraVisibilityMargin(instance RID.VisualInstance, margin Float.
 }
 
 /*
-Sets the visibility parent for the given instance. Equivalent to [graphics.gd/classdb/Node3D.Instance.VisibilityParent].
+Sets the visibility parent for the given instance. Equivalent to [Node3D.VisibilityParent].
+
+[Node3D.VisibilityParent]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.VisibilityParent
 */
 func InstanceSetVisibilityParent(instance RID.VisualInstance, parent RID.VisualInstance) { //gd:RenderingServer.instance_set_visibility_parent
 	once.Do(singleton)
@@ -3788,7 +4284,9 @@ func InstanceSetVisibilityParent(instance RID.VisualInstance, parent RID.VisualI
 }
 
 /*
-If true, ignores both frustum and occlusion culling on the specified 3D geometry instance. This is not the same as [graphics.gd/classdb/GeometryInstance3D.Instance.IgnoreOcclusionCulling], which only ignores occlusion culling and leaves frustum culling intact.
+If true, ignores both frustum and occlusion culling on the specified 3D geometry instance. This is not the same as [GeometryInstance3D.IgnoreOcclusionCulling], which only ignores occlusion culling and leaves frustum culling intact.
+
+[GeometryInstance3D.IgnoreOcclusionCulling]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.IgnoreOcclusionCulling
 */
 func InstanceSetIgnoreCulling(instance RID.VisualInstance, enabled bool) { //gd:RenderingServer.instance_set_ignore_culling
 	once.Do(singleton)
@@ -3804,7 +4302,9 @@ func InstanceGeometrySetFlag(instance RID.VisualInstance, flag InstanceFlags, en
 }
 
 /*
-Sets the shadow casting setting. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.CastShadow].
+Sets the shadow casting setting. Equivalent to [GeometryInstance3D.CastShadow].
+
+[GeometryInstance3D.CastShadow]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.CastShadow
 */
 func InstanceGeometrySetCastShadowsSetting(instance RID.VisualInstance, shadow_casting_setting ShadowCastingSetting) { //gd:RenderingServer.instance_geometry_set_cast_shadows_setting
 	once.Do(singleton)
@@ -3812,7 +4312,9 @@ func InstanceGeometrySetCastShadowsSetting(instance RID.VisualInstance, shadow_c
 }
 
 /*
-Sets a material that will override the material for all surfaces on the mesh associated with this instance. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.MaterialOverride].
+Sets a material that will override the material for all surfaces on the mesh associated with this instance. Equivalent to [GeometryInstance3D.MaterialOverride].
+
+[GeometryInstance3D.MaterialOverride]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.MaterialOverride
 */
 func InstanceGeometrySetMaterialOverride(instance RID.VisualInstance, material RID.Material) { //gd:RenderingServer.instance_geometry_set_material_override
 	once.Do(singleton)
@@ -3820,7 +4322,9 @@ func InstanceGeometrySetMaterialOverride(instance RID.VisualInstance, material R
 }
 
 /*
-Sets a material that will be rendered for all surfaces on top of active materials for the mesh associated with this instance. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.MaterialOverlay].
+Sets a material that will be rendered for all surfaces on top of active materials for the mesh associated with this instance. Equivalent to [GeometryInstance3D.MaterialOverlay].
+
+[GeometryInstance3D.MaterialOverlay]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.MaterialOverlay
 */
 func InstanceGeometrySetMaterialOverlay(instance RID.VisualInstance, material RID.Material) { //gd:RenderingServer.instance_geometry_set_material_overlay
 	once.Do(singleton)
@@ -3828,7 +4332,9 @@ func InstanceGeometrySetMaterialOverlay(instance RID.VisualInstance, material RI
 }
 
 /*
-Sets the visibility range values for the given geometry instance. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.VisibilityRangeBegin] and related properties.
+Sets the visibility range values for the given geometry instance. Equivalent to [GeometryInstance3D.VisibilityRangeBegin] and related properties.
+
+[GeometryInstance3D.VisibilityRangeBegin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeBegin
 */
 func InstanceGeometrySetVisibilityRange(instance RID.VisualInstance, min Float.X, max Float.X, min_margin Float.X, max_margin Float.X, fade_mode VisibilityRangeFadeMode) { //gd:RenderingServer.instance_geometry_set_visibility_range
 	once.Do(singleton)
@@ -3836,7 +4342,9 @@ func InstanceGeometrySetVisibilityRange(instance RID.VisualInstance, min Float.X
 }
 
 /*
-Sets the lightmap GI instance to use for the specified 3D geometry instance. The lightmap UV scale for the specified instance (equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.GiLightmapScale]) and lightmap atlas slice must also be specified.
+Sets the lightmap GI instance to use for the specified 3D geometry instance. The lightmap UV scale for the specified instance (equivalent to [GeometryInstance3D.GiLightmapScale]) and lightmap atlas slice must also be specified.
+
+[GeometryInstance3D.GiLightmapScale]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GiLightmapScale
 */
 func InstanceGeometrySetLightmap(instance RID.VisualInstance, lightmap RID.Lightmap, lightmap_uv_scale Rect2.PositionSize, lightmap_slice int) { //gd:RenderingServer.instance_geometry_set_lightmap
 	once.Do(singleton)
@@ -3844,7 +4352,9 @@ func InstanceGeometrySetLightmap(instance RID.VisualInstance, lightmap RID.Light
 }
 
 /*
-Sets the level of detail bias to use when rendering the specified 3D geometry instance. Higher values result in higher detail from further away. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.LodBias].
+Sets the level of detail bias to use when rendering the specified 3D geometry instance. Higher values result in higher detail from further away. Equivalent to [GeometryInstance3D.LodBias].
+
+[GeometryInstance3D.LodBias]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.LodBias
 */
 func InstanceGeometrySetLodBias(instance RID.VisualInstance, lod_bias Float.X) { //gd:RenderingServer.instance_geometry_set_lod_bias
 	once.Do(singleton)
@@ -3852,7 +4362,9 @@ func InstanceGeometrySetLodBias(instance RID.VisualInstance, lod_bias Float.X) {
 }
 
 /*
-Sets the per-instance shader uniform on the specified 3D geometry instance. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.SetInstanceShaderParameter].
+Sets the per-instance shader uniform on the specified 3D geometry instance. Equivalent to [GeometryInstance3D.SetInstanceShaderParameter].
+
+[GeometryInstance3D.SetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.SetInstanceShaderParameter
 */
 func InstanceGeometrySetShaderParameter(instance RID.VisualInstance, parameter string, value any) { //gd:RenderingServer.instance_geometry_set_shader_parameter
 	once.Do(singleton)
@@ -3860,9 +4372,11 @@ func InstanceGeometrySetShaderParameter(instance RID.VisualInstance, parameter s
 }
 
 /*
-Returns the value of the per-instance shader uniform from the specified 3D geometry instance. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.GetInstanceShaderParameter].
+Returns the value of the per-instance shader uniform from the specified 3D geometry instance. Equivalent to [GeometryInstance3D.GetInstanceShaderParameter].
 
 Note: Per-instance shader parameter names are case-sensitive.
+
+[GeometryInstance3D.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GetInstanceShaderParameter
 */
 func InstanceGeometryGetShaderParameter(instance RID.VisualInstance, parameter string) any { //gd:RenderingServer.instance_geometry_get_shader_parameter
 	once.Do(singleton)
@@ -3870,7 +4384,9 @@ func InstanceGeometryGetShaderParameter(instance RID.VisualInstance, parameter s
 }
 
 /*
-Returns the default value of the per-instance shader uniform from the specified 3D geometry instance. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.GetInstanceShaderParameter].
+Returns the default value of the per-instance shader uniform from the specified 3D geometry instance. Equivalent to [GeometryInstance3D.GetInstanceShaderParameter].
+
+[GeometryInstance3D.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GetInstanceShaderParameter
 */
 func InstanceGeometryGetShaderParameterDefaultValue(instance RID.VisualInstance, parameter string) any { //gd:RenderingServer.instance_geometry_get_shader_parameter_default_value
 	once.Do(singleton)
@@ -3878,7 +4394,9 @@ func InstanceGeometryGetShaderParameterDefaultValue(instance RID.VisualInstance,
 }
 
 /*
-Returns a dictionary of per-instance shader uniform names of the per-instance shader uniform from the specified 3D geometry instance. The returned dictionary is in PropertyInfo format, with the keys name, class_name, type, hint, hint_string and usage. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.GetInstanceShaderParameter].
+Returns a dictionary of per-instance shader uniform names of the per-instance shader uniform from the specified 3D geometry instance. The returned dictionary is in PropertyInfo format, with the keys name, class_name, type, hint, hint_string and usage. Equivalent to [GeometryInstance3D.GetInstanceShaderParameter].
+
+[GeometryInstance3D.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GetInstanceShaderParameter
 */
 func InstanceGeometryGetShaderParameterList(instance RID.VisualInstance) []map[string]interface{} { //gd:RenderingServer.instance_geometry_get_shader_parameter_list
 	once.Do(singleton)
@@ -3886,9 +4404,15 @@ func InstanceGeometryGetShaderParameterList(instance RID.VisualInstance) []map[s
 }
 
 /*
-Returns an array of object IDs intersecting with the provided AABB. Only 3D nodes that inherit from [graphics.gd/classdb/VisualInstance3D] are considered, such as [graphics.gd/classdb/MeshInstance3D] or [graphics.gd/classdb/DirectionalLight3D]. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [graphics.gd/classdb/World3D] you want to query. This forces an update for all resources queued to update.
+Returns an array of object IDs intersecting with the provided AABB. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
 
 Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
+[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
 */
 func InstancesCullAabb(aabb AABB.PositionSize, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_aabb
 	once.Do(singleton)
@@ -3896,9 +4420,15 @@ func InstancesCullAabb(aabb AABB.PositionSize, scenario RID.Scenario) []int64 { 
 }
 
 /*
-Returns an array of object IDs intersecting with the provided AABB. Only 3D nodes that inherit from [graphics.gd/classdb/VisualInstance3D] are considered, such as [graphics.gd/classdb/MeshInstance3D] or [graphics.gd/classdb/DirectionalLight3D]. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [graphics.gd/classdb/World3D] you want to query. This forces an update for all resources queued to update.
+Returns an array of object IDs intersecting with the provided AABB. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
 
 Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
+[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
 */
 func InstancesCullAabbOptions(aabb AABB.PositionSize, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_aabb
 	once.Do(singleton)
@@ -3906,9 +4436,15 @@ func InstancesCullAabbOptions(aabb AABB.PositionSize, scenario RID.Scenario) []i
 }
 
 /*
-Returns an array of object IDs intersecting with the provided 3D ray. Only 3D nodes that inherit from [graphics.gd/classdb/VisualInstance3D] are considered, such as [graphics.gd/classdb/MeshInstance3D] or [graphics.gd/classdb/DirectionalLight3D]. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [graphics.gd/classdb/World3D] you want to query. This forces an update for all resources queued to update.
+Returns an array of object IDs intersecting with the provided 3D ray. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
 
 Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
+[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
 */
 func InstancesCullRay(from Vector3.XYZ, to Vector3.XYZ, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_ray
 	once.Do(singleton)
@@ -3916,9 +4452,15 @@ func InstancesCullRay(from Vector3.XYZ, to Vector3.XYZ, scenario RID.Scenario) [
 }
 
 /*
-Returns an array of object IDs intersecting with the provided 3D ray. Only 3D nodes that inherit from [graphics.gd/classdb/VisualInstance3D] are considered, such as [graphics.gd/classdb/MeshInstance3D] or [graphics.gd/classdb/DirectionalLight3D]. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [graphics.gd/classdb/World3D] you want to query. This forces an update for all resources queued to update.
+Returns an array of object IDs intersecting with the provided 3D ray. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
 
 Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
+[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
 */
 func InstancesCullRayOptions(from Vector3.XYZ, to Vector3.XYZ, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_ray
 	once.Do(singleton)
@@ -3926,9 +4468,15 @@ func InstancesCullRayOptions(from Vector3.XYZ, to Vector3.XYZ, scenario RID.Scen
 }
 
 /*
-Returns an array of object IDs intersecting with the provided convex shape. Only 3D nodes that inherit from [graphics.gd/classdb/VisualInstance3D] are considered, such as [graphics.gd/classdb/MeshInstance3D] or [graphics.gd/classdb/DirectionalLight3D]. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [graphics.gd/classdb/World3D] you want to query. This forces an update for all resources queued to update.
+Returns an array of object IDs intersecting with the provided convex shape. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
 
 Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
+[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
 */
 func InstancesCullConvex(convex []Plane.NormalD, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_convex
 	once.Do(singleton)
@@ -3936,9 +4484,15 @@ func InstancesCullConvex(convex []Plane.NormalD, scenario RID.Scenario) []int64 
 }
 
 /*
-Returns an array of object IDs intersecting with the provided convex shape. Only 3D nodes that inherit from [graphics.gd/classdb/VisualInstance3D] are considered, such as [graphics.gd/classdb/MeshInstance3D] or [graphics.gd/classdb/DirectionalLight3D]. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [graphics.gd/classdb/World3D] you want to query. This forces an update for all resources queued to update.
+Returns an array of object IDs intersecting with the provided convex shape. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
 
 Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
+[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
 */
 func InstancesCullConvexOptions(convex []Plane.NormalD, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_convex
 	once.Do(singleton)
@@ -3946,7 +4500,9 @@ func InstancesCullConvexOptions(convex []Plane.NormalD, scenario RID.Scenario) [
 }
 
 /*
-Bakes the material data of the Mesh passed in the 'base' parameter with optional 'material_overrides' to a set of [graphics.gd/classdb/Image]s of size 'image_size'. Returns an array of [graphics.gd/classdb/Image]s containing material properties as specified in [BakeChannels].
+Bakes the material data of the Mesh passed in the 'base' parameter with optional 'material_overrides' to a set of [Image]s of size 'image_size'. Returns an array of [Image]s containing material properties as specified in [BakeChannels].
+
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
 */
 func BakeRenderUv2(base RID.Mesh, material_overrides [][]RID.Material, image_size Vector2i.XY) []Image.Instance { //gd:RenderingServer.bake_render_uv2
 	once.Do(singleton)
@@ -3958,7 +4514,11 @@ Creates a canvas and returns the assigned [Resource.ID]. It can be accessed with
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Canvas has no [graphics.gd/classdb/Resource] or [graphics.gd/classdb/Node] equivalent.
+Canvas has no [Resource] or [Node] equivalent.
+
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasCreate() RID.Canvas { //gd:RenderingServer.canvas_create
 	once.Do(singleton)
@@ -4000,7 +4560,9 @@ Creates a canvas texture and adds it to the RenderingServer. It can be accessed 
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method. See also [Texture2dCreate].
 
-Note: The equivalent resource is [graphics.gd/classdb/CanvasTexture] and is only meant to be used in 2D rendering, not 3D.
+Note: The equivalent resource is [CanvasTexture] and is only meant to be used in 2D rendering, not 3D.
+
+[CanvasTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture
 */
 func CanvasTextureCreate() RID.CanvasTexture { //gd:RenderingServer.canvas_texture_create
 	once.Do(singleton)
@@ -4008,7 +4570,11 @@ func CanvasTextureCreate() RID.CanvasTexture { //gd:RenderingServer.canvas_textu
 }
 
 /*
-Sets the 'channel”s 'texture' for the canvas texture specified by the 'canvas_texture' RID. Equivalent to [graphics.gd/classdb/CanvasTexture.Instance.DiffuseTexture], [graphics.gd/classdb/CanvasTexture.Instance.NormalTexture] and [graphics.gd/classdb/CanvasTexture.Instance.SpecularTexture].
+Sets the 'channel”s 'texture' for the canvas texture specified by the 'canvas_texture' RID. Equivalent to [CanvasTexture.DiffuseTexture], [CanvasTexture.NormalTexture] and [CanvasTexture.SpecularTexture].
+
+[CanvasTexture.DiffuseTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.DiffuseTexture
+[CanvasTexture.NormalTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.NormalTexture
+[CanvasTexture.SpecularTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.SpecularTexture
 */
 func CanvasTextureSetChannel(canvas_texture RID.CanvasTexture, channel CanvasTextureChannel, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_texture_set_channel
 	once.Do(singleton)
@@ -4016,7 +4582,10 @@ func CanvasTextureSetChannel(canvas_texture RID.CanvasTexture, channel CanvasTex
 }
 
 /*
-Sets the 'base_color' and 'shininess' to use for the canvas texture specified by the 'canvas_texture' RID. Equivalent to [graphics.gd/classdb/CanvasTexture.Instance.SpecularColor] and [graphics.gd/classdb/CanvasTexture.Instance.SpecularShininess].
+Sets the 'base_color' and 'shininess' to use for the canvas texture specified by the 'canvas_texture' RID. Equivalent to [CanvasTexture.SpecularColor] and [CanvasTexture.SpecularShininess].
+
+[CanvasTexture.SpecularColor]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.SpecularColor
+[CanvasTexture.SpecularShininess]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.SpecularShininess
 */
 func CanvasTextureSetShadingParameters(canvas_texture RID.CanvasTexture, base_color Color.RGBA, shininess Float.X) { //gd:RenderingServer.canvas_texture_set_shading_parameters
 	once.Do(singleton)
@@ -4044,7 +4613,10 @@ Creates a new CanvasItem instance and returns its [Resource.ID]. It can be acces
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/CanvasItem].
+Note: The equivalent node is [CanvasItem].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemCreate() RID.CanvasItem { //gd:RenderingServer.canvas_item_create
 	once.Do(singleton)
@@ -4052,7 +4624,9 @@ func CanvasItemCreate() RID.CanvasItem { //gd:RenderingServer.canvas_item_create
 }
 
 /*
-Sets a parent [graphics.gd/classdb/CanvasItem] to the [graphics.gd/classdb/CanvasItem]. The item will inherit transform, modulation and visibility from its parent, like [graphics.gd/classdb/CanvasItem] nodes in the scene tree.
+Sets a parent [CanvasItem] to the [CanvasItem]. The item will inherit transform, modulation and visibility from its parent, like [CanvasItem] nodes in the scene tree.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 func CanvasItemSetParent(item RID.CanvasItem, parent RID.CanvasItem) { //gd:RenderingServer.canvas_item_set_parent
 	once.Do(singleton)
@@ -4060,7 +4634,9 @@ func CanvasItemSetParent(item RID.CanvasItem, parent RID.CanvasItem) { //gd:Rend
 }
 
 /*
-Sets the default texture filter mode for the canvas item specified by the 'item' RID. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.TextureFilter].
+Sets the default texture filter mode for the canvas item specified by the 'item' RID. Equivalent to [CanvasItem.TextureFilter].
+
+[CanvasItem.TextureFilter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TextureFilter
 */
 func CanvasItemSetDefaultTextureFilter(item RID.CanvasItem, filter CanvasItemTextureFilter) { //gd:RenderingServer.canvas_item_set_default_texture_filter
 	once.Do(singleton)
@@ -4068,7 +4644,9 @@ func CanvasItemSetDefaultTextureFilter(item RID.CanvasItem, filter CanvasItemTex
 }
 
 /*
-Sets the default texture repeat mode for the canvas item specified by the 'item' RID. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.TextureRepeat].
+Sets the default texture repeat mode for the canvas item specified by the 'item' RID. Equivalent to [CanvasItem.TextureRepeat].
+
+[CanvasItem.TextureRepeat]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TextureRepeat
 */
 func CanvasItemSetDefaultTextureRepeat(item RID.CanvasItem, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.canvas_item_set_default_texture_repeat
 	once.Do(singleton)
@@ -4076,7 +4654,9 @@ func CanvasItemSetDefaultTextureRepeat(item RID.CanvasItem, repeat CanvasItemTex
 }
 
 /*
-Sets the visibility of the [graphics.gd/classdb/CanvasItem].
+Sets the visibility of the [CanvasItem].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 func CanvasItemSetVisible(item RID.CanvasItem, visible bool) { //gd:RenderingServer.canvas_item_set_visible
 	once.Do(singleton)
@@ -4084,7 +4664,9 @@ func CanvasItemSetVisible(item RID.CanvasItem, visible bool) { //gd:RenderingSer
 }
 
 /*
-Sets the light 'mask' for the canvas item specified by the 'item' RID. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.LightMask].
+Sets the light 'mask' for the canvas item specified by the 'item' RID. Equivalent to [CanvasItem.LightMask].
+
+[CanvasItem.LightMask]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.LightMask
 */
 func CanvasItemSetLightMask(item RID.CanvasItem, mask int) { //gd:RenderingServer.canvas_item_set_light_mask
 	once.Do(singleton)
@@ -4092,7 +4674,10 @@ func CanvasItemSetLightMask(item RID.CanvasItem, mask int) { //gd:RenderingServe
 }
 
 /*
-Sets the rendering visibility layer associated with this [graphics.gd/classdb/CanvasItem]. Only [graphics.gd/classdb/Viewport] nodes with a matching rendering mask will render this [graphics.gd/classdb/CanvasItem].
+Sets the rendering visibility layer associated with this [CanvasItem]. Only [Viewport] nodes with a matching rendering mask will render this [CanvasItem].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
 func CanvasItemSetVisibilityLayer(item RID.CanvasItem, visibility_layer int) { //gd:RenderingServer.canvas_item_set_visibility_layer
 	once.Do(singleton)
@@ -4100,7 +4685,9 @@ func CanvasItemSetVisibilityLayer(item RID.CanvasItem, visibility_layer int) { /
 }
 
 /*
-Sets the 'transform' of the canvas item specified by the 'item' RID. This affects where and how the item will be drawn. Child canvas items' transforms are multiplied by their parent's transform. Equivalent to [graphics.gd/classdb/Node2D.Instance.Transform].
+Sets the 'transform' of the canvas item specified by the 'item' RID. This affects where and how the item will be drawn. Child canvas items' transforms are multiplied by their parent's transform. Equivalent to [Node2D.Transform].
+
+[Node2D.Transform]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Transform
 */
 func CanvasItemSetTransform(item RID.CanvasItem, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_set_transform
 	once.Do(singleton)
@@ -4110,7 +4697,10 @@ func CanvasItemSetTransform(item RID.CanvasItem, transform Transform2D.OriginXY)
 /*
 If 'clip' is true, makes the canvas item specified by the 'item' RID not draw anything outside of its rect's coordinates. This clipping is fast, but works only with axis-aligned rectangles. This means that rotation is ignored by the clipping rectangle. For more advanced clipping shapes, use [CanvasItemSetCanvasGroupMode] instead.
 
-Note: The equivalent node functionality is found in [graphics.gd/classdb/Label.Instance.ClipText], [graphics.gd/classdb/RichTextLabel] (always enabled) and more.
+Note: The equivalent node functionality is found in [Label.ClipText], [RichTextLabel] (always enabled) and more.
+
+[Label.ClipText]: https://pkg.go.dev/graphics.gd/classdb/Label#Instance.ClipText
+[RichTextLabel]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel
 */
 func CanvasItemSetClip(item RID.CanvasItem, clip bool) { //gd:RenderingServer.canvas_item_set_clip
 	once.Do(singleton)
@@ -4144,7 +4734,9 @@ func CanvasItemSetCustomRectOptions(item RID.CanvasItem, use_custom_rect bool, r
 }
 
 /*
-Multiplies the color of the canvas item specified by the 'item' RID, while affecting its children. See also [CanvasItemSetSelfModulate]. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.Modulate].
+Multiplies the color of the canvas item specified by the 'item' RID, while affecting its children. See also [CanvasItemSetSelfModulate]. Equivalent to [CanvasItem.Modulate].
+
+[CanvasItem.Modulate]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Modulate
 */
 func CanvasItemSetModulate(item RID.CanvasItem, color Color.RGBA) { //gd:RenderingServer.canvas_item_set_modulate
 	once.Do(singleton)
@@ -4152,7 +4744,9 @@ func CanvasItemSetModulate(item RID.CanvasItem, color Color.RGBA) { //gd:Renderi
 }
 
 /*
-Multiplies the color of the canvas item specified by the 'item' RID, without affecting its children. See also [CanvasItemSetModulate]. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.SelfModulate].
+Multiplies the color of the canvas item specified by the 'item' RID, without affecting its children. See also [CanvasItemSetModulate]. Equivalent to [CanvasItem.SelfModulate].
+
+[CanvasItem.SelfModulate]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.SelfModulate
 */
 func CanvasItemSetSelfModulate(item RID.CanvasItem, color Color.RGBA) { //gd:RenderingServer.canvas_item_set_self_modulate
 	once.Do(singleton)
@@ -4160,7 +4754,9 @@ func CanvasItemSetSelfModulate(item RID.CanvasItem, color Color.RGBA) { //gd:Ren
 }
 
 /*
-If 'enabled' is true, draws the canvas item specified by the 'item' RID behind its parent. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.ShowBehindParent].
+If 'enabled' is true, draws the canvas item specified by the 'item' RID behind its parent. Equivalent to [CanvasItem.ShowBehindParent].
+
+[CanvasItem.ShowBehindParent]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ShowBehindParent
 */
 func CanvasItemSetDrawBehindParent(item RID.CanvasItem, enabled bool) { //gd:RenderingServer.canvas_item_set_draw_behind_parent
 	once.Do(singleton)
@@ -4196,7 +4792,11 @@ func CanvasItemTransformPhysicsInterpolation(item RID.CanvasItem, transform Tran
 }
 
 /*
-Draws a line on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawLine].
+Draws a line on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawLine].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawLine]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawLine
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddLine(item RID.CanvasItem, from Vector2.XY, to Vector2.XY, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_line
 	once.Do(singleton)
@@ -4204,7 +4804,11 @@ func CanvasItemAddLine(item RID.CanvasItem, from Vector2.XY, to Vector2.XY, colo
 }
 
 /*
-Draws a line on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawLine].
+Draws a line on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawLine].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawLine]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawLine
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddLineOptions(item RID.CanvasItem, from Vector2.XY, to Vector2.XY, color Color.RGBA, width Float.X, antialiased bool) { //gd:RenderingServer.canvas_item_add_line
 	once.Do(singleton)
@@ -4212,7 +4816,12 @@ func CanvasItemAddLineOptions(item RID.CanvasItem, from Vector2.XY, to Vector2.X
 }
 
 /*
-Draws a 2D polyline on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawPolyline] and [graphics.gd/classdb/CanvasItem.Instance.DrawPolylineColors].
+Draws a 2D polyline on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawPolyline] and [CanvasItem.DrawPolylineColors].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawPolyline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolyline
+[CanvasItem.DrawPolylineColors]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolylineColors
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddPolyline(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_polyline
 	once.Do(singleton)
@@ -4220,7 +4829,12 @@ func CanvasItemAddPolyline(item RID.CanvasItem, points []Vector2.XY, colors []Co
 }
 
 /*
-Draws a 2D polyline on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawPolyline] and [graphics.gd/classdb/CanvasItem.Instance.DrawPolylineColors].
+Draws a 2D polyline on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawPolyline] and [CanvasItem.DrawPolylineColors].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawPolyline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolyline
+[CanvasItem.DrawPolylineColors]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolylineColors
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddPolylineOptions(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA, width Float.X, antialiased bool) { //gd:RenderingServer.canvas_item_add_polyline
 	once.Do(singleton)
@@ -4228,7 +4842,12 @@ func CanvasItemAddPolylineOptions(item RID.CanvasItem, points []Vector2.XY, colo
 }
 
 /*
-Draws a 2D multiline on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultiline] and [graphics.gd/classdb/CanvasItem.Instance.DrawMultilineColors].
+Draws a 2D multiline on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawMultiline] and [CanvasItem.DrawMultilineColors].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawMultiline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultiline
+[CanvasItem.DrawMultilineColors]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineColors
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddMultiline(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_multiline
 	once.Do(singleton)
@@ -4236,7 +4855,12 @@ func CanvasItemAddMultiline(item RID.CanvasItem, points []Vector2.XY, colors []C
 }
 
 /*
-Draws a 2D multiline on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultiline] and [graphics.gd/classdb/CanvasItem.Instance.DrawMultilineColors].
+Draws a 2D multiline on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawMultiline] and [CanvasItem.DrawMultilineColors].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawMultiline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultiline
+[CanvasItem.DrawMultilineColors]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineColors
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddMultilineOptions(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA, width Float.X, antialiased bool) { //gd:RenderingServer.canvas_item_add_multiline
 	once.Do(singleton)
@@ -4244,7 +4868,11 @@ func CanvasItemAddMultilineOptions(item RID.CanvasItem, points []Vector2.XY, col
 }
 
 /*
-Draws a rectangle on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawRect].
+Draws a rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawRect].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawRect
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddRect(item RID.CanvasItem, rect Rect2.PositionSize, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_rect
 	once.Do(singleton)
@@ -4252,7 +4880,11 @@ func CanvasItemAddRect(item RID.CanvasItem, rect Rect2.PositionSize, color Color
 }
 
 /*
-Draws a rectangle on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawRect].
+Draws a rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawRect].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawRect
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddRectOptions(item RID.CanvasItem, rect Rect2.PositionSize, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_rect
 	once.Do(singleton)
@@ -4260,7 +4892,11 @@ func CanvasItemAddRectOptions(item RID.CanvasItem, rect Rect2.PositionSize, colo
 }
 
 /*
-Draws a circle on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawCircle].
+Draws a circle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawCircle].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawCircle]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawCircle
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddCircle(item RID.CanvasItem, pos Vector2.XY, radius Float.X, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_circle
 	once.Do(singleton)
@@ -4268,7 +4904,11 @@ func CanvasItemAddCircle(item RID.CanvasItem, pos Vector2.XY, radius Float.X, co
 }
 
 /*
-Draws a circle on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawCircle].
+Draws a circle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawCircle].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawCircle]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawCircle
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddCircleOptions(item RID.CanvasItem, pos Vector2.XY, radius Float.X, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_circle
 	once.Do(singleton)
@@ -4276,7 +4916,12 @@ func CanvasItemAddCircleOptions(item RID.CanvasItem, pos Vector2.XY, radius Floa
 }
 
 /*
-Draws a 2D textured rectangle on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawTextureRect] and [graphics.gd/classdb/Texture2D.Instance.DrawRect].
+Draws a 2D textured rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawTextureRect] and [Texture2D.DrawRect].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawTextureRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawTextureRect
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[Texture2D.DrawRect]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.DrawRect
 */
 func CanvasItemAddTextureRect(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, tile bool, transpose bool) { //gd:RenderingServer.canvas_item_add_texture_rect
 	once.Do(singleton)
@@ -4284,7 +4929,12 @@ func CanvasItemAddTextureRect(item RID.CanvasItem, rect Rect2.PositionSize, text
 }
 
 /*
-Draws a 2D textured rectangle on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawTextureRect] and [graphics.gd/classdb/Texture2D.Instance.DrawRect].
+Draws a 2D textured rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawTextureRect] and [Texture2D.DrawRect].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawTextureRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawTextureRect
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[Texture2D.DrawRect]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.DrawRect
 */
 func CanvasItemAddTextureRectOptions(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, tile bool, modulate Color.RGBA, transpose bool) { //gd:RenderingServer.canvas_item_add_texture_rect
 	once.Do(singleton)
@@ -4292,7 +4942,9 @@ func CanvasItemAddTextureRectOptions(item RID.CanvasItem, rect Rect2.PositionSiz
 }
 
 /*
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawMsdfTextureRectRegion].
+See also [CanvasItem.DrawMsdfTextureRectRegion].
+
+[CanvasItem.DrawMsdfTextureRectRegion]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMsdfTextureRectRegion
 */
 func CanvasItemAddMsdfTextureRectRegion(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, src_rect Rect2.PositionSize, outline_size int) { //gd:RenderingServer.canvas_item_add_msdf_texture_rect_region
 	once.Do(singleton)
@@ -4300,7 +4952,9 @@ func CanvasItemAddMsdfTextureRectRegion(item RID.CanvasItem, rect Rect2.Position
 }
 
 /*
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawMsdfTextureRectRegion].
+See also [CanvasItem.DrawMsdfTextureRectRegion].
+
+[CanvasItem.DrawMsdfTextureRectRegion]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMsdfTextureRectRegion
 */
 func CanvasItemAddMsdfTextureRectRegionOptions(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, src_rect Rect2.PositionSize, modulate Color.RGBA, outline_size int, px_range Float.X, scale Float.X) { //gd:RenderingServer.canvas_item_add_msdf_texture_rect_region
 	once.Do(singleton)
@@ -4308,7 +4962,9 @@ func CanvasItemAddMsdfTextureRectRegionOptions(item RID.CanvasItem, rect Rect2.P
 }
 
 /*
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawLcdTextureRectRegion].
+See also [CanvasItem.DrawLcdTextureRectRegion].
+
+[CanvasItem.DrawLcdTextureRectRegion]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawLcdTextureRectRegion
 */
 func CanvasItemAddLcdTextureRectRegion(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, src_rect Rect2.PositionSize, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_lcd_texture_rect_region
 	once.Do(singleton)
@@ -4316,7 +4972,12 @@ func CanvasItemAddLcdTextureRectRegion(item RID.CanvasItem, rect Rect2.PositionS
 }
 
 /*
-Draws the specified region of a 2D textured rectangle on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawTextureRectRegion] and [graphics.gd/classdb/Texture2D.Instance.DrawRectRegion].
+Draws the specified region of a 2D textured rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawTextureRectRegion] and [Texture2D.DrawRectRegion].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawTextureRectRegion]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawTextureRectRegion
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[Texture2D.DrawRectRegion]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.DrawRectRegion
 */
 func CanvasItemAddTextureRectRegion(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, src_rect Rect2.PositionSize, transpose bool) { //gd:RenderingServer.canvas_item_add_texture_rect_region
 	once.Do(singleton)
@@ -4324,7 +4985,12 @@ func CanvasItemAddTextureRectRegion(item RID.CanvasItem, rect Rect2.PositionSize
 }
 
 /*
-Draws the specified region of a 2D textured rectangle on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawTextureRectRegion] and [graphics.gd/classdb/Texture2D.Instance.DrawRectRegion].
+Draws the specified region of a 2D textured rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawTextureRectRegion] and [Texture2D.DrawRectRegion].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawTextureRectRegion]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawTextureRectRegion
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[Texture2D.DrawRectRegion]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.DrawRectRegion
 */
 func CanvasItemAddTextureRectRegionOptions(item RID.CanvasItem, rect Rect2.PositionSize, texture RID.CanvasTexture, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:RenderingServer.canvas_item_add_texture_rect_region
 	once.Do(singleton)
@@ -4332,7 +4998,10 @@ func CanvasItemAddTextureRectRegionOptions(item RID.CanvasItem, rect Rect2.Posit
 }
 
 /*
-Draws a nine-patch rectangle on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID].
+Draws a nine-patch rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddNinePatch(item RID.CanvasItem, rect Rect2.PositionSize, source Rect2.PositionSize, texture RID.CanvasTexture, topleft Vector2.XY, bottomright Vector2.XY, x_axis_mode NinePatchAxisMode, y_axis_mode NinePatchAxisMode) { //gd:RenderingServer.canvas_item_add_nine_patch
 	once.Do(singleton)
@@ -4340,7 +5009,10 @@ func CanvasItemAddNinePatch(item RID.CanvasItem, rect Rect2.PositionSize, source
 }
 
 /*
-Draws a nine-patch rectangle on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID].
+Draws a nine-patch rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddNinePatchOptions(item RID.CanvasItem, rect Rect2.PositionSize, source Rect2.PositionSize, texture RID.CanvasTexture, topleft Vector2.XY, bottomright Vector2.XY, x_axis_mode NinePatchAxisMode, y_axis_mode NinePatchAxisMode, draw_center bool, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_nine_patch
 	once.Do(singleton)
@@ -4348,7 +5020,11 @@ func CanvasItemAddNinePatchOptions(item RID.CanvasItem, rect Rect2.PositionSize,
 }
 
 /*
-Draws a 2D primitive on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawPrimitive].
+Draws a 2D primitive on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawPrimitive].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawPrimitive]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPrimitive
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddPrimitive(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_item_add_primitive
 	once.Do(singleton)
@@ -4356,9 +5032,16 @@ func CanvasItemAddPrimitive(item RID.CanvasItem, points []Vector2.XY, colors []C
 }
 
 /*
-Draws a 2D polygon on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. If you need more flexibility (such as being able to use bones), use [CanvasItemAddTriangleArray] instead. See also [graphics.gd/classdb/CanvasItem.Instance.DrawPolygon].
+Draws a 2D polygon on the [CanvasItem] pointed to by the 'item' [Resource.ID]. If you need more flexibility (such as being able to use bones), use [CanvasItemAddTriangleArray] instead. See also [CanvasItem.DrawPolygon].
 
-Note: If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [graphics.gd/classdb/Geometry2D.TriangulatePolygon] and using [graphics.gd/classdb/CanvasItem.Instance.DrawMesh], [graphics.gd/classdb/CanvasItem.Instance.DrawMultimesh], or [CanvasItemAddTriangleArray].
+Note: If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [Geometry2D.TriangulatePolygon] and using [CanvasItem.DrawMesh], [CanvasItem.DrawMultimesh], or [CanvasItemAddTriangleArray].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawMesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMesh
+[CanvasItem.DrawMultimesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultimesh
+[CanvasItem.DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
+[Geometry2D.TriangulatePolygon]: https://pkg.go.dev/graphics.gd/classdb/Geometry2D#TriangulatePolygon
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddPolygon(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_item_add_polygon
 	once.Do(singleton)
@@ -4366,9 +5049,16 @@ func CanvasItemAddPolygon(item RID.CanvasItem, points []Vector2.XY, colors []Col
 }
 
 /*
-Draws a 2D polygon on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. If you need more flexibility (such as being able to use bones), use [CanvasItemAddTriangleArray] instead. See also [graphics.gd/classdb/CanvasItem.Instance.DrawPolygon].
+Draws a 2D polygon on the [CanvasItem] pointed to by the 'item' [Resource.ID]. If you need more flexibility (such as being able to use bones), use [CanvasItemAddTriangleArray] instead. See also [CanvasItem.DrawPolygon].
 
-Note: If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [graphics.gd/classdb/Geometry2D.TriangulatePolygon] and using [graphics.gd/classdb/CanvasItem.Instance.DrawMesh], [graphics.gd/classdb/CanvasItem.Instance.DrawMultimesh], or [CanvasItemAddTriangleArray].
+Note: If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [Geometry2D.TriangulatePolygon] and using [CanvasItem.DrawMesh], [CanvasItem.DrawMultimesh], or [CanvasItemAddTriangleArray].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawMesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMesh
+[CanvasItem.DrawMultimesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultimesh
+[CanvasItem.DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
+[Geometry2D.TriangulatePolygon]: https://pkg.go.dev/graphics.gd/classdb/Geometry2D#TriangulatePolygon
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddPolygonOptions(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_item_add_polygon
 	once.Do(singleton)
@@ -4376,9 +5066,14 @@ func CanvasItemAddPolygonOptions(item RID.CanvasItem, points []Vector2.XY, color
 }
 
 /*
-Draws a triangle array on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. This is internally used by [graphics.gd/classdb/Line2D] and [graphics.gd/classdb/StyleBoxFlat] for rendering. [CanvasItemAddTriangleArray] is highly flexible, but more complex to use than [CanvasItemAddPolygon].
+Draws a triangle array on the [CanvasItem] pointed to by the 'item' [Resource.ID]. This is internally used by [Line2D] and [StyleBoxFlat] for rendering. [CanvasItemAddTriangleArray] is highly flexible, but more complex to use than [CanvasItemAddPolygon].
 
 Note: If 'count' is set to a non-negative value, only the first count * 3 indices (corresponding to count triangles) will be drawn. Otherwise, all indices are drawn.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Line2D]: https://pkg.go.dev/graphics.gd/classdb/Line2D
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[StyleBoxFlat]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat
 */
 func CanvasItemAddTriangleArray(item RID.CanvasItem, indices []int32, points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, bones []int32, weights []float32, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_item_add_triangle_array
 	once.Do(singleton)
@@ -4386,9 +5081,14 @@ func CanvasItemAddTriangleArray(item RID.CanvasItem, indices []int32, points []V
 }
 
 /*
-Draws a triangle array on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. This is internally used by [graphics.gd/classdb/Line2D] and [graphics.gd/classdb/StyleBoxFlat] for rendering. [CanvasItemAddTriangleArray] is highly flexible, but more complex to use than [CanvasItemAddPolygon].
+Draws a triangle array on the [CanvasItem] pointed to by the 'item' [Resource.ID]. This is internally used by [Line2D] and [StyleBoxFlat] for rendering. [CanvasItemAddTriangleArray] is highly flexible, but more complex to use than [CanvasItemAddPolygon].
 
 Note: If 'count' is set to a non-negative value, only the first count * 3 indices (corresponding to count triangles) will be drawn. Otherwise, all indices are drawn.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Line2D]: https://pkg.go.dev/graphics.gd/classdb/Line2D
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[StyleBoxFlat]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat
 */
 func CanvasItemAddTriangleArrayOptions(item RID.CanvasItem, indices []int32, points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, bones []int32, weights []float32, texture RID.CanvasTexture, count int) { //gd:RenderingServer.canvas_item_add_triangle_array
 	once.Do(singleton)
@@ -4396,7 +5096,9 @@ func CanvasItemAddTriangleArrayOptions(item RID.CanvasItem, indices []int32, poi
 }
 
 /*
-Draws a mesh created with [MeshCreate] with given 'transform', 'modulate' color, and 'texture'. This is used internally by [graphics.gd/classdb/MeshInstance2D].
+Draws a mesh created with [MeshCreate] with given 'transform', 'modulate' color, and 'texture'. This is used internally by [MeshInstance2D].
+
+[MeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance2D
 */
 func CanvasItemAddMesh(item RID.CanvasItem, mesh RID.Mesh, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_item_add_mesh
 	once.Do(singleton)
@@ -4404,7 +5106,9 @@ func CanvasItemAddMesh(item RID.CanvasItem, mesh RID.Mesh, texture RID.CanvasTex
 }
 
 /*
-Draws a mesh created with [MeshCreate] with given 'transform', 'modulate' color, and 'texture'. This is used internally by [graphics.gd/classdb/MeshInstance2D].
+Draws a mesh created with [MeshCreate] with given 'transform', 'modulate' color, and 'texture'. This is used internally by [MeshInstance2D].
+
+[MeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance2D
 */
 func CanvasItemAddMeshOptions(item RID.CanvasItem, mesh RID.Mesh, transform Transform2D.OriginXY, modulate Color.RGBA, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_item_add_mesh
 	once.Do(singleton)
@@ -4412,7 +5116,12 @@ func CanvasItemAddMeshOptions(item RID.CanvasItem, mesh RID.Mesh, transform Tran
 }
 
 /*
-Draws a 2D [graphics.gd/classdb/MultiMesh] on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultimesh].
+Draws a 2D [MultiMesh] on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawMultimesh].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawMultimesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultimesh
+[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddMultimesh(item RID.CanvasItem, mesh RID.MultiMesh, texture RID.Texture) { //gd:RenderingServer.canvas_item_add_multimesh
 	once.Do(singleton)
@@ -4420,7 +5129,12 @@ func CanvasItemAddMultimesh(item RID.CanvasItem, mesh RID.MultiMesh, texture RID
 }
 
 /*
-Draws a 2D [graphics.gd/classdb/MultiMesh] on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultimesh].
+Draws a 2D [MultiMesh] on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawMultimesh].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawMultimesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultimesh
+[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddMultimeshOptions(item RID.CanvasItem, mesh RID.MultiMesh, texture RID.Texture) { //gd:RenderingServer.canvas_item_add_multimesh
 	once.Do(singleton)
@@ -4428,7 +5142,10 @@ func CanvasItemAddMultimeshOptions(item RID.CanvasItem, mesh RID.MultiMesh, text
 }
 
 /*
-Draws particles on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID].
+Draws particles on the [CanvasItem] pointed to by the 'item' [Resource.ID].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddParticles(item RID.CanvasItem, particles RID.Particles, texture RID.Texture) { //gd:RenderingServer.canvas_item_add_particles
 	once.Do(singleton)
@@ -4437,6 +5154,8 @@ func CanvasItemAddParticles(item RID.CanvasItem, particles RID.Particles, textur
 
 /*
 Sets a [Transform2D.OriginXY] that will be used to transform subsequent canvas item commands.
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 func CanvasItemAddSetTransform(item RID.CanvasItem, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_add_set_transform
 	once.Do(singleton)
@@ -4468,7 +5187,9 @@ func CanvasItemAddAnimationSliceOptions(item RID.CanvasItem, animation_length Fl
 }
 
 /*
-If 'enabled' is true, child nodes with the lowest Y position are drawn before those with a higher Y position. Y-sorting only affects children that inherit from the canvas item specified by the 'item' RID, not the canvas item itself. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.YSortEnabled].
+If 'enabled' is true, child nodes with the lowest Y position are drawn before those with a higher Y position. Y-sorting only affects children that inherit from the canvas item specified by the 'item' RID, not the canvas item itself. Equivalent to [CanvasItem.YSortEnabled].
+
+[CanvasItem.YSortEnabled]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.YSortEnabled
 */
 func CanvasItemSetSortChildrenByY(item RID.CanvasItem, enabled bool) { //gd:RenderingServer.canvas_item_set_sort_children_by_y
 	once.Do(singleton)
@@ -4476,7 +5197,9 @@ func CanvasItemSetSortChildrenByY(item RID.CanvasItem, enabled bool) { //gd:Rend
 }
 
 /*
-Sets the [graphics.gd/classdb/CanvasItem]'s Z index, i.e. its draw order (lower indexes are drawn first).
+Sets the [CanvasItem]'s Z index, i.e. its draw order (lower indexes are drawn first).
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 func CanvasItemSetZIndex(item RID.CanvasItem, z_index int) { //gd:RenderingServer.canvas_item_set_z_index
 	once.Do(singleton)
@@ -4492,7 +5215,9 @@ func CanvasItemSetZAsRelativeToParent(item RID.CanvasItem, enabled bool) { //gd:
 }
 
 /*
-Sets the [graphics.gd/classdb/CanvasItem] to copy a rect to the backbuffer.
+Sets the [CanvasItem] to copy a rect to the backbuffer.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 func CanvasItemSetCopyToBackbuffer(item RID.CanvasItem, enabled bool, rect Rect2.PositionSize) { //gd:RenderingServer.canvas_item_set_copy_to_backbuffer
 	once.Do(singleton)
@@ -4500,7 +5225,9 @@ func CanvasItemSetCopyToBackbuffer(item RID.CanvasItem, enabled bool, rect Rect2
 }
 
 /*
-Attaches a skeleton to the [graphics.gd/classdb/CanvasItem]. Removes the previous skeleton.
+Attaches a skeleton to the [CanvasItem]. Removes the previous skeleton.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 func CanvasItemAttachSkeleton(item RID.CanvasItem, skeleton RID.Skeleton) { //gd:RenderingServer.canvas_item_attach_skeleton
 	once.Do(singleton)
@@ -4508,7 +5235,9 @@ func CanvasItemAttachSkeleton(item RID.CanvasItem, skeleton RID.Skeleton) { //gd
 }
 
 /*
-Clears the [graphics.gd/classdb/CanvasItem] and removes all commands in it.
+Clears the [CanvasItem] and removes all commands in it.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 func CanvasItemClear(item RID.CanvasItem) { //gd:RenderingServer.canvas_item_clear
 	once.Do(singleton)
@@ -4516,7 +5245,9 @@ func CanvasItemClear(item RID.CanvasItem) { //gd:RenderingServer.canvas_item_cle
 }
 
 /*
-Sets the index for the [graphics.gd/classdb/CanvasItem].
+Sets the index for the [CanvasItem].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 func CanvasItemSetDrawIndex(item RID.CanvasItem, index int) { //gd:RenderingServer.canvas_item_set_draw_index
 	once.Do(singleton)
@@ -4524,7 +5255,9 @@ func CanvasItemSetDrawIndex(item RID.CanvasItem, index int) { //gd:RenderingServ
 }
 
 /*
-Sets a new 'material' to the canvas item specified by the 'item' RID. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.Material].
+Sets a new 'material' to the canvas item specified by the 'item' RID. Equivalent to [CanvasItem.Material].
+
+[CanvasItem.Material]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Material
 */
 func CanvasItemSetMaterial(item RID.CanvasItem, material RID.Material) { //gd:RenderingServer.canvas_item_set_material
 	once.Do(singleton)
@@ -4532,7 +5265,9 @@ func CanvasItemSetMaterial(item RID.CanvasItem, material RID.Material) { //gd:Re
 }
 
 /*
-Sets if the [graphics.gd/classdb/CanvasItem] uses its parent's material.
+Sets if the [CanvasItem] uses its parent's material.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 func CanvasItemSetUseParentMaterial(item RID.CanvasItem, enabled bool) { //gd:RenderingServer.canvas_item_set_use_parent_material
 	once.Do(singleton)
@@ -4540,7 +5275,9 @@ func CanvasItemSetUseParentMaterial(item RID.CanvasItem, enabled bool) { //gd:Re
 }
 
 /*
-Sets the per-instance shader uniform on the specified canvas item instance. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.SetInstanceShaderParameter].
+Sets the per-instance shader uniform on the specified canvas item instance. Equivalent to [CanvasItem.SetInstanceShaderParameter].
+
+[CanvasItem.SetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.SetInstanceShaderParameter
 */
 func CanvasItemSetInstanceShaderParameter(instance RID.CanvasItem, parameter string, value any) { //gd:RenderingServer.canvas_item_set_instance_shader_parameter
 	once.Do(singleton)
@@ -4548,7 +5285,9 @@ func CanvasItemSetInstanceShaderParameter(instance RID.CanvasItem, parameter str
 }
 
 /*
-Returns the value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.GetInstanceShaderParameter].
+Returns the value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [CanvasItem.GetInstanceShaderParameter].
+
+[CanvasItem.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.GetInstanceShaderParameter
 */
 func CanvasItemGetInstanceShaderParameter(instance RID.CanvasItem, parameter string) any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter
 	once.Do(singleton)
@@ -4556,7 +5295,9 @@ func CanvasItemGetInstanceShaderParameter(instance RID.CanvasItem, parameter str
 }
 
 /*
-Returns the default value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.GetInstanceShaderParameter].
+Returns the default value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [CanvasItem.GetInstanceShaderParameter].
+
+[CanvasItem.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.GetInstanceShaderParameter
 */
 func CanvasItemGetInstanceShaderParameterDefaultValue(instance RID.CanvasItem, parameter string) any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_default_value
 	once.Do(singleton)
@@ -4574,9 +5315,12 @@ func CanvasItemGetInstanceShaderParameterList(instance RID.CanvasItem) []Object.
 }
 
 /*
-Sets the given [graphics.gd/classdb/CanvasItem] as visibility notifier. 'area' defines the area of detecting visibility. 'enter_callable' is called when the [graphics.gd/classdb/CanvasItem] enters the screen, 'exit_callable' is called when the [graphics.gd/classdb/CanvasItem] exits the screen. If 'enable' is false, the item will no longer function as notifier.
+Sets the given [CanvasItem] as visibility notifier. 'area' defines the area of detecting visibility. 'enter_callable' is called when the [CanvasItem] enters the screen, 'exit_callable' is called when the [CanvasItem] exits the screen. If 'enable' is false, the item will no longer function as notifier.
 
-This method can be used to manually mimic [graphics.gd/classdb/VisibleOnScreenNotifier2D].
+This method can be used to manually mimic [VisibleOnScreenNotifier2D].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[VisibleOnScreenNotifier2D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier2D
 */
 func CanvasItemSetVisibilityNotifier(item RID.CanvasItem, enable bool, area Rect2.PositionSize, enter_callable func(), exit_callable func()) { //gd:RenderingServer.canvas_item_set_visibility_notifier
 	once.Do(singleton)
@@ -4586,7 +5330,10 @@ func CanvasItemSetVisibilityNotifier(item RID.CanvasItem, enable bool, area Rect
 /*
 Sets the canvas group mode used during 2D rendering for the canvas item specified by the 'item' RID. For faster but more limited clipping, use [CanvasItemSetClip] instead.
 
-Note: The equivalent node functionality is found in [graphics.gd/classdb/CanvasGroup] and [graphics.gd/classdb/CanvasItem.Instance.ClipChildren].
+Note: The equivalent node functionality is found in [CanvasGroup] and [CanvasItem.ClipChildren].
+
+[CanvasGroup]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup
+[CanvasItem.ClipChildren]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ClipChildren
 */
 func CanvasItemSetCanvasGroupMode(item RID.CanvasItem, mode CanvasGroupMode, fit_empty bool, fit_margin Float.X, blur_mipmaps bool) { //gd:RenderingServer.canvas_item_set_canvas_group_mode
 	once.Do(singleton)
@@ -4596,7 +5343,10 @@ func CanvasItemSetCanvasGroupMode(item RID.CanvasItem, mode CanvasGroupMode, fit
 /*
 Sets the canvas group mode used during 2D rendering for the canvas item specified by the 'item' RID. For faster but more limited clipping, use [CanvasItemSetClip] instead.
 
-Note: The equivalent node functionality is found in [graphics.gd/classdb/CanvasGroup] and [graphics.gd/classdb/CanvasItem.Instance.ClipChildren].
+Note: The equivalent node functionality is found in [CanvasGroup] and [CanvasItem.ClipChildren].
+
+[CanvasGroup]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup
+[CanvasItem.ClipChildren]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ClipChildren
 */
 func CanvasItemSetCanvasGroupModeOptions(item RID.CanvasItem, mode CanvasGroupMode, clear_margin Float.X, fit_empty bool, fit_margin Float.X, blur_mipmaps bool) { //gd:RenderingServer.canvas_item_set_canvas_group_mode
 	once.Do(singleton)
@@ -4607,6 +5357,8 @@ func CanvasItemSetCanvasGroupModeOptions(item RID.CanvasItem, mode CanvasGroupMo
 Returns the bounding rectangle for a canvas item in local space, as calculated by the renderer. This bound is used internally for culling.
 
 Warning: This function is intended for debugging in the editor, and will pass through and return a zero [Rect2.PositionSize] in exported projects.
+
+[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 */
 func DebugCanvasItemGetRect(item RID.CanvasItem) Rect2.PositionSize { //gd:RenderingServer.debug_canvas_item_get_rect
 	once.Do(singleton)
@@ -4618,7 +5370,9 @@ Creates a canvas light and adds it to the RenderingServer. It can be accessed wi
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/Light2D].
+Note: The equivalent node is [Light2D].
+
+[Light2D]: https://pkg.go.dev/graphics.gd/classdb/Light2D
 */
 func CanvasLightCreate() RID.CanvasLight { //gd:RenderingServer.canvas_light_create
 	once.Do(singleton)
@@ -4642,7 +5396,10 @@ func CanvasLightSetEnabled(light RID.CanvasLight, enabled bool) { //gd:Rendering
 }
 
 /*
-Sets the scale factor of a [graphics.gd/classdb/PointLight2D]'s texture. Equivalent to [graphics.gd/classdb/PointLight2D.Instance.TextureScale].
+Sets the scale factor of a [PointLight2D]'s texture. Equivalent to [PointLight2D.TextureScale].
+
+[PointLight2D]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D
+[PointLight2D.TextureScale]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.TextureScale
 */
 func CanvasLightSetTextureScale(light RID.CanvasLight, scale Float.X) { //gd:RenderingServer.canvas_light_set_texture_scale
 	once.Do(singleton)
@@ -4651,6 +5408,8 @@ func CanvasLightSetTextureScale(light RID.CanvasLight, scale Float.X) { //gd:Ren
 
 /*
 Sets the canvas light's [Transform2D.OriginXY].
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 func CanvasLightSetTransform(light RID.CanvasLight, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_set_transform
 	once.Do(singleton)
@@ -4658,7 +5417,10 @@ func CanvasLightSetTransform(light RID.CanvasLight, transform Transform2D.Origin
 }
 
 /*
-Sets the texture to be used by a [graphics.gd/classdb/PointLight2D]. Equivalent to [graphics.gd/classdb/PointLight2D.Instance.Texture].
+Sets the texture to be used by a [PointLight2D]. Equivalent to [PointLight2D.Texture].
+
+[PointLight2D]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D
+[PointLight2D.Texture]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.Texture
 */
 func CanvasLightSetTexture(light RID.CanvasLight, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_light_set_texture
 	once.Do(singleton)
@@ -4666,7 +5428,10 @@ func CanvasLightSetTexture(light RID.CanvasLight, texture RID.CanvasTexture) { /
 }
 
 /*
-Sets the offset of a [graphics.gd/classdb/PointLight2D]'s texture. Equivalent to [graphics.gd/classdb/PointLight2D.Instance.Offset].
+Sets the offset of a [PointLight2D]'s texture. Equivalent to [PointLight2D.Offset].
+
+[PointLight2D]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D
+[PointLight2D.Offset]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.Offset
 */
 func CanvasLightSetTextureOffset(light RID.CanvasLight, offset Vector2.XY) { //gd:RenderingServer.canvas_light_set_texture_offset
 	once.Do(singleton)
@@ -4698,7 +5463,10 @@ func CanvasLightSetEnergy(light RID.CanvasLight, energy Float.X) { //gd:Renderin
 }
 
 /*
-Sets the Z range of objects that will be affected by this light. Equivalent to [graphics.gd/classdb/Light2D.Instance.RangeZMin] and [graphics.gd/classdb/Light2D.Instance.RangeZMax].
+Sets the Z range of objects that will be affected by this light. Equivalent to [Light2D.RangeZMin] and [Light2D.RangeZMax].
+
+[Light2D.RangeZMax]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.RangeZMax
+[Light2D.RangeZMin]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.RangeZMin
 */
 func CanvasLightSetZRange(light RID.CanvasLight, min_z int, max_z int) { //gd:RenderingServer.canvas_light_set_z_range
 	once.Do(singleton)
@@ -4714,7 +5482,9 @@ func CanvasLightSetLayerRange(light RID.CanvasLight, min_layer int, max_layer in
 }
 
 /*
-The light mask. See [graphics.gd/classdb/LightOccluder2D] for more information on light masks.
+The light mask. See [LightOccluder2D] for more information on light masks.
+
+[LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
 */
 func CanvasLightSetItemCullMask(light RID.CanvasLight, mask int) { //gd:RenderingServer.canvas_light_set_item_cull_mask
 	once.Do(singleton)
@@ -4722,7 +5492,9 @@ func CanvasLightSetItemCullMask(light RID.CanvasLight, mask int) { //gd:Renderin
 }
 
 /*
-The binary mask used to determine which layers this canvas light's shadows affects. See [graphics.gd/classdb/LightOccluder2D] for more information on light masks.
+The binary mask used to determine which layers this canvas light's shadows affects. See [LightOccluder2D] for more information on light masks.
+
+[LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
 */
 func CanvasLightSetItemShadowCullMask(light RID.CanvasLight, mask int) { //gd:RenderingServer.canvas_light_set_item_shadow_cull_mask
 	once.Do(singleton)
@@ -4770,7 +5542,9 @@ func CanvasLightSetShadowSmooth(light RID.CanvasLight, smooth Float.X) { //gd:Re
 }
 
 /*
-Sets the blend mode for the given canvas light to 'mode'. Equivalent to [graphics.gd/classdb/Light2D.Instance.BlendMode].
+Sets the blend mode for the given canvas light to 'mode'. Equivalent to [Light2D.BlendMode].
+
+[Light2D.BlendMode]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.BlendMode
 */
 func CanvasLightSetBlendMode(light RID.CanvasLight, mode CanvasLightBlendMode) { //gd:RenderingServer.canvas_light_set_blend_mode
 	once.Do(singleton)
@@ -4810,7 +5584,9 @@ Creates a light occluder and adds it to the RenderingServer. It can be accessed 
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/LightOccluder2D].
+Note: The equivalent node is [LightOccluder2D].
+
+[LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
 */
 func CanvasLightOccluderCreate() RID.CanvasLightOccluder { //gd:RenderingServer.canvas_light_occluder_create
 	once.Do(singleton)
@@ -4847,6 +5623,8 @@ func CanvasLightOccluderSetAsSdfCollision(occluder RID.CanvasLightOccluder, enab
 
 /*
 Sets a light occluder's [Transform2D.OriginXY].
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 func CanvasLightOccluderSetTransform(occluder RID.CanvasLightOccluder, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_occluder_set_transform
 	once.Do(singleton)
@@ -4854,7 +5632,9 @@ func CanvasLightOccluderSetTransform(occluder RID.CanvasLightOccluder, transform
 }
 
 /*
-The light mask. See [graphics.gd/classdb/LightOccluder2D] for more information on light masks.
+The light mask. See [LightOccluder2D] for more information on light masks.
+
+[LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
 */
 func CanvasLightOccluderSetLightMask(occluder RID.CanvasLightOccluder, mask int) { //gd:RenderingServer.canvas_light_occluder_set_light_mask
 	once.Do(singleton)
@@ -4894,7 +5674,9 @@ Creates a new light occluder polygon and adds it to the RenderingServer. It can 
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/OccluderPolygon2D].
+Note: The equivalent resource is [OccluderPolygon2D].
+
+[OccluderPolygon2D]: https://pkg.go.dev/graphics.gd/classdb/OccluderPolygon2D
 */
 func CanvasOccluderPolygonCreate() RID.CanvasLightOccluderPolygon { //gd:RenderingServer.canvas_occluder_polygon_create
 	once.Do(singleton)
@@ -4918,7 +5700,10 @@ func CanvasOccluderPolygonSetCullMode(occluder_polygon RID.CanvasLightOccluderPo
 }
 
 /*
-Sets the [graphics.gd/classdb/ProjectSettings] "rendering/2d/shadow_atlas/size" to use for [graphics.gd/classdb/Light2D] shadow rendering (in pixels). The value is rounded up to the nearest power of 2.
+Sets the [ProjectSettings] "rendering/2d/shadow_atlas/size" to use for [Light2D] shadow rendering (in pixels). The value is rounded up to the nearest power of 2.
+
+[Light2D]: https://pkg.go.dev/graphics.gd/classdb/Light2D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func CanvasSetShadowTextureSize(size int) { //gd:RenderingServer.canvas_set_shadow_texture_size
 	once.Do(singleton)
@@ -4962,7 +5747,9 @@ func GlobalShaderParameterSet(name string, value any) { //gd:RenderingServer.glo
 }
 
 /*
-Overrides the global shader uniform 'name' with 'value'. Equivalent to the [graphics.gd/classdb/ShaderGlobalsOverride] node.
+Overrides the global shader uniform 'name' with 'value'. Equivalent to the [ShaderGlobalsOverride] node.
+
+[ShaderGlobalsOverride]: https://pkg.go.dev/graphics.gd/classdb/ShaderGlobalsOverride
 */
 func GlobalShaderParameterSetOverride(name string, value any) { //gd:RenderingServer.global_shader_parameter_set_override
 	once.Do(singleton)
@@ -5058,9 +5845,11 @@ func GetVideoAdapterType() Rendering.DeviceType { //gd:RenderingServer.get_video
 }
 
 /*
-Returns the version of the graphics video adapter currently in use (e.g. "1.2.189" for Vulkan, "3.3.0 NVIDIA 510.60.02" for OpenGL). This version may be different from the actual latest version supported by the hardware, as Godot may not always request the latest version. See also [graphics.gd/classdb/OS.GetVideoAdapterDriverInfo].
+Returns the version of the graphics video adapter currently in use (e.g. "1.2.189" for Vulkan, "3.3.0 NVIDIA 510.60.02" for OpenGL). This version may be different from the actual latest version supported by the hardware, as Godot may not always request the latest version. See also [OS.GetVideoAdapterDriverInfo].
 
 Note: When running a headless or server binary, this function returns an empty string.
+
+[OS.GetVideoAdapterDriverInfo]: https://pkg.go.dev/graphics.gd/classdb/OS#GetVideoAdapterDriverInfo
 */
 func GetVideoAdapterApiVersion() string { //gd:RenderingServer.get_video_adapter_api_version
 	once.Do(singleton)
@@ -5070,11 +5859,13 @@ func GetVideoAdapterApiVersion() string { //gd:RenderingServer.get_video_adapter
 /*
 Returns the name of the current rendering driver. This can be vulkan, d3d12, metal, opengl3, opengl3_es, or opengl3_angle. See also [GetCurrentRenderingMethod].
 
-When [graphics.gd/classdb/ProjectSettings] "rendering/renderer/rendering_method" is forward_plus or mobile, the rendering driver is determined by [graphics.gd/classdb/ProjectSettings] "rendering/rendering_device/driver".
+When [ProjectSettings] "rendering/renderer/rendering_method" is forward_plus or mobile, the rendering driver is determined by [ProjectSettings] "rendering/rendering_device/driver".
 
-When [graphics.gd/classdb/ProjectSettings] "rendering/renderer/rendering_method" is gl_compatibility, the rendering driver is determined by [graphics.gd/classdb/ProjectSettings] "rendering/gl_compatibility/driver".
+When [ProjectSettings] "rendering/renderer/rendering_method" is gl_compatibility, the rendering driver is determined by [ProjectSettings] "rendering/gl_compatibility/driver".
 
 The rendering driver is also determined by the --rendering-driver command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func GetCurrentRenderingDriverName() string { //gd:RenderingServer.get_current_rendering_driver_name
 	once.Do(singleton)
@@ -5084,7 +5875,9 @@ func GetCurrentRenderingDriverName() string { //gd:RenderingServer.get_current_r
 /*
 Returns the name of the current rendering method. This can be forward_plus, mobile, or gl_compatibility. See also [GetCurrentRenderingDriverName].
 
-The rendering method is determined by [graphics.gd/classdb/ProjectSettings] "rendering/renderer/rendering_method", the --rendering-method command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
+The rendering method is determined by [ProjectSettings] "rendering/renderer/rendering_method", the --rendering-method command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 func GetCurrentRenderingMethod() string { //gd:RenderingServer.get_current_rendering_method
 	once.Do(singleton)
@@ -5110,7 +5903,9 @@ func GetTestCube() RID.Mesh { //gd:RenderingServer.get_test_cube
 /*
 Returns the RID of a 256×256 texture with a testing pattern on it (in [Image.FormatRgb8] format). This texture will be created and returned on the first call to [GetTestTexture], then it will be cached for subsequent calls. See also [GetWhiteTexture].
 
-Example: Get the test texture and apply it to a [graphics.gd/classdb/Sprite2D] node:
+Example: Get the test texture and apply it to a [Sprite2D] node:
+
+[Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
 */
 func GetTestTexture() RID.Texture { //gd:RenderingServer.get_test_texture
 	once.Do(singleton)
@@ -5120,7 +5915,9 @@ func GetTestTexture() RID.Texture { //gd:RenderingServer.get_test_texture
 /*
 Returns the ID of a 4×4 white texture (in [Image.FormatRgb8] format). This texture will be created and returned on the first call to [GetWhiteTexture], then it will be cached for subsequent calls. See also [GetTestTexture].
 
-Example: Get the white texture and apply it to a [graphics.gd/classdb/Sprite2D] node:
+Example: Get the white texture and apply it to a [Sprite2D] node:
+
+[Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
 */
 func GetWhiteTexture() RID.Texture { //gd:RenderingServer.get_white_texture
 	once.Do(singleton)
@@ -5238,7 +6035,9 @@ func IsOnRenderThread() bool { //gd:RenderingServer.is_on_render_thread
 }
 
 /*
-As the RenderingServer actual logic may run on a separate thread, accessing its internals from the main (or any other) thread will result in errors. To make it easier to run code that can safely access the rendering internals (such as [graphics.gd/classdb/RenderingDevice] and similar RD classes), push a callable via this function so it will be executed on the render thread.
+As the RenderingServer actual logic may run on a separate thread, accessing its internals from the main (or any other) thread will result in errors. To make it easier to run code that can safely access the rendering internals (such as [RenderingDevice] and similar RD classes), push a callable via this function so it will be executed on the render thread.
+
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
 */
 func CallOnRenderThread(callable func()) { //gd:RenderingServer.call_on_render_thread
 	once.Do(singleton)
@@ -5291,9 +6090,12 @@ Creates a 2-dimensional texture and adds it to the RenderingServer. It can be ac
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/Texture2D].
+Note: The equivalent resource is [Texture2D].
 
-Note: Not to be confused with [graphics.gd/classdb/RenderingDevice.Instance.TextureCreate], which creates the graphics API's own texture type as opposed to the Godot-specific [graphics.gd/classdb/Texture2D] resource.
+Note: Not to be confused with [RenderingDevice.TextureCreate], which creates the graphics API's own texture type as opposed to the Godot-specific [Texture2D] resource.
+
+[RenderingDevice.TextureCreate]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.TextureCreate
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
 //go:nosplit
 func (self class) Texture2dCreate(image [1]gdclass.Image) RID.Any { //gd:RenderingServer.texture_2d_create
@@ -5307,7 +6109,9 @@ Creates a 2-dimensional layered texture and adds it to the RenderingServer. It c
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/TextureLayered].
+Note: The equivalent resource is [TextureLayered].
+
+[TextureLayered]: https://pkg.go.dev/graphics.gd/classdb/TextureLayered
 */
 //go:nosplit
 func (self class) Texture2dLayeredCreate(layers Array.Contains[[1]gdclass.Image], layered_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_2d_layered_create
@@ -5320,7 +6124,9 @@ func (self class) Texture2dLayeredCreate(layers Array.Contains[[1]gdclass.Image]
 }
 
 /*
-Note: The equivalent resource is [graphics.gd/classdb/Texture3D].
+Note: The equivalent resource is [Texture3D].
+
+[Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
 */
 //go:nosplit
 func (self class) Texture3dCreate(format Image.Format, width int64, height int64, depth int64, mipmaps bool, data Array.Contains[[1]gdclass.Image]) RID.Any { //gd:RenderingServer.texture_3d_create
@@ -5338,6 +6144,8 @@ func (self class) Texture3dCreate(format Image.Format, width int64, height int64
 
 /*
 This method does nothing and always returns an invalid [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) TextureProxyCreate(base RID.Any) RID.Any { //gd:RenderingServer.texture_proxy_create
@@ -5349,7 +6157,10 @@ func (self class) TextureProxyCreate(base RID.Any) RID.Any { //gd:RenderingServe
 /*
 Creates a texture based on a native handle that was created outside of Godot's renderer.
 
-Note: If using only the rendering device renderer, it's recommend to use [graphics.gd/classdb/RenderingDevice.Instance.TextureCreateFromExtension] together with [graphics.gd/classdb/RenderingServer.TextureRdCreate], rather than this method. It will give you much more control over the texture's format and usage.
+Note: If using only the rendering device renderer, it's recommend to use [RenderingDevice.TextureCreateFromExtension] together with [RenderingServer.TextureRdCreate], rather than this method. It will give you much more control over the texture's format and usage.
+
+[RenderingDevice.TextureCreateFromExtension]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.TextureCreateFromExtension
+[RenderingServer.TextureRdCreate]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#TextureRdCreate
 */
 //go:nosplit
 func (self class) TextureCreateFromNativeHandle(atype TextureType, format Image.Format, native_handle int64, width int64, height int64, depth int64, layers int64, layered_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_create_from_native_handle
@@ -5368,9 +6179,12 @@ func (self class) TextureCreateFromNativeHandle(atype TextureType, format Image.
 }
 
 /*
-Updates the texture specified by the 'texture' [Resource.ID] with the data in 'image'. A 'layer' must also be specified, which should be 0 when updating a single-layer texture ([graphics.gd/classdb/Texture2D]).
+Updates the texture specified by the 'texture' [Resource.ID] with the data in 'image'. A 'layer' must also be specified, which should be 0 when updating a single-layer texture ([Texture2D]).
 
 Note: The 'image' must have the same width, height and format as the current 'texture' data. Otherwise, an error will be printed and the original texture won't be modified. If you need to use different width, height or format, use [TextureReplace] instead.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 */
 //go:nosplit
 func (self class) Texture2dUpdate(texture RID.Any, image [1]gdclass.Image, layer int64) { //gd:RenderingServer.texture_2d_update
@@ -5385,6 +6199,8 @@ func (self class) Texture2dUpdate(texture RID.Any, image [1]gdclass.Image, layer
 Updates the texture specified by the 'texture' [Resource.ID]'s data with the data in 'data'. All the texture's layers must be replaced at once.
 
 Note: The 'texture' must have the same width, height, depth and format as the current texture data. Otherwise, an error will be printed and the original texture won't be modified. If you need to use different width, height, depth or format, use [TextureReplace] instead.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) Texture3dUpdate(texture RID.Any, data Array.Contains[[1]gdclass.Image]) { //gd:RenderingServer.texture_3d_update
@@ -5410,7 +6226,9 @@ Creates a placeholder for a 2-dimensional layered texture and adds it to the Ren
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/PlaceholderTexture2D].
+Note: The equivalent resource is [PlaceholderTexture2D].
+
+[PlaceholderTexture2D]: https://pkg.go.dev/graphics.gd/classdb/PlaceholderTexture2D
 */
 //go:nosplit
 func (self class) Texture2dPlaceholderCreate() RID.Any { //gd:RenderingServer.texture_2d_placeholder_create
@@ -5422,7 +6240,9 @@ func (self class) Texture2dPlaceholderCreate() RID.Any { //gd:RenderingServer.te
 /*
 Creates a placeholder for a 2-dimensional layered texture and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID will be used in all texture_2d_layered_* RenderingServer functions, although it does nothing when used. See also [Texture2dPlaceholderCreate].
 
-Note: The equivalent resource is [graphics.gd/classdb/PlaceholderTextureLayered].
+Note: The equivalent resource is [PlaceholderTextureLayered].
+
+[PlaceholderTextureLayered]: https://pkg.go.dev/graphics.gd/classdb/PlaceholderTextureLayered
 */
 //go:nosplit
 func (self class) Texture2dLayeredPlaceholderCreate(layered_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_2d_layered_placeholder_create
@@ -5436,7 +6256,9 @@ Creates a placeholder for a 3-dimensional texture and adds it to the RenderingSe
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/PlaceholderTexture3D].
+Note: The equivalent resource is [PlaceholderTexture3D].
+
+[PlaceholderTexture3D]: https://pkg.go.dev/graphics.gd/classdb/PlaceholderTexture3D
 */
 //go:nosplit
 func (self class) Texture3dPlaceholderCreate() RID.Any { //gd:RenderingServer.texture_3d_placeholder_create
@@ -5446,11 +6268,15 @@ func (self class) Texture3dPlaceholderCreate() RID.Any { //gd:RenderingServer.te
 }
 
 /*
-Returns an [graphics.gd/classdb/Image] instance from the given 'texture' [Resource.ID].
+Returns an [Image] instance from the given 'texture' [Resource.ID].
 
-Example: Get the test texture from [GetTestTexture] and apply it to a [graphics.gd/classdb/Sprite2D] node:
+Example: Get the test texture from [GetTestTexture] and apply it to a [Sprite2D] node:
 
 
+
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
 */
 //go:nosplit
 func (self class) Texture2dGet(texture RID.Any) [1]gdclass.Image { //gd:RenderingServer.texture_2d_get
@@ -5460,7 +6286,10 @@ func (self class) Texture2dGet(texture RID.Any) [1]gdclass.Image { //gd:Renderin
 }
 
 /*
-Returns an [graphics.gd/classdb/Image] instance from the given 'texture' [Resource.ID] and 'layer'.
+Returns an [Image] instance from the given 'texture' [Resource.ID] and 'layer'.
+
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) Texture2dLayerGet(texture RID.Any, layer int64) [1]gdclass.Image { //gd:RenderingServer.texture_2d_layer_get
@@ -5473,7 +6302,10 @@ func (self class) Texture2dLayerGet(texture RID.Any, layer int64) [1]gdclass.Ima
 }
 
 /*
-Returns 3D texture data as an array of [graphics.gd/classdb/Image]s for the specified texture [Resource.ID].
+Returns 3D texture data as an array of [Image]s for the specified texture [Resource.ID].
+
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) Texture3dGet(texture RID.Any) Array.Contains[[1]gdclass.Image] { //gd:RenderingServer.texture_3d_get
@@ -5536,7 +6368,9 @@ func (self class) TextureSetForceRedrawIfVisible(texture RID.Any, enable bool) {
 }
 
 /*
-Creates a new texture object based on a texture created directly on the [graphics.gd/classdb/RenderingDevice]. If the texture contains layers, 'layer_type' is used to define the layer type.
+Creates a new texture object based on a texture created directly on the [RenderingDevice]. If the texture contains layers, 'layer_type' is used to define the layer type.
+
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
 */
 //go:nosplit
 func (self class) TextureRdCreate(rd_texture RID.Any, layer_type TextureLayeredType) RID.Any { //gd:RenderingServer.texture_rd_create
@@ -5549,7 +6383,10 @@ func (self class) TextureRdCreate(rd_texture RID.Any, layer_type TextureLayeredT
 }
 
 /*
-Returns a texture [Resource.ID] that can be used with [graphics.gd/classdb/RenderingDevice].
+Returns a texture [Resource.ID] that can be used with [RenderingDevice].
+
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) TextureGetRdTexture(texture RID.Any, srgb bool) RID.Any { //gd:RenderingServer.texture_get_rd_texture
@@ -5581,7 +6418,9 @@ Creates an empty shader and adds it to the RenderingServer. It can be accessed w
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/Shader].
+Note: The equivalent resource is [Shader].
+
+[Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
 */
 //go:nosplit
 func (self class) ShaderCreate() RID.Any { //gd:RenderingServer.shader_create
@@ -5602,7 +6441,10 @@ func (self class) ShaderSetCode(shader RID.Any, code String.Readable) { //gd:Ren
 }
 
 /*
-Sets the path hint for the specified shader. This should generally match the [graphics.gd/classdb/Shader] resource's [graphics.gd/classdb/Resource.Instance.ResourcePath].
+Sets the path hint for the specified shader. This should generally match the [Shader] resource's [Resource.ResourcePath].
+
+[Resource.ResourcePath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourcePath
+[Shader]: https://pkg.go.dev/graphics.gd/classdb/Shader
 */
 //go:nosplit
 func (self class) ShaderSetPathHint(shader RID.Any, path String.Readable) { //gd:RenderingServer.shader_set_path_hint
@@ -5681,7 +6523,9 @@ Creates an empty material and adds it to the RenderingServer. It can be accessed
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/Material].
+Note: The equivalent resource is [Material].
+
+[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
 */
 //go:nosplit
 func (self class) MaterialCreate() RID.Any { //gd:RenderingServer.material_create
@@ -5765,7 +6609,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach this mesh to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent resource is [graphics.gd/classdb/Mesh].
+Note: The equivalent resource is [Mesh].
+
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
 */
 //go:nosplit
 func (self class) MeshCreate() RID.Any { //gd:RenderingServer.mesh_create
@@ -6073,7 +6919,10 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach this multimesh to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent resource is [graphics.gd/classdb/MultiMesh].
+Note: The equivalent resource is [MultiMesh].
+
+[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) MultimeshCreate() RID.Any { //gd:RenderingServer.multimesh_create
@@ -6105,7 +6954,9 @@ func (self class) MultimeshGetInstanceCount(multimesh RID.Any) int64 { //gd:Rend
 }
 
 /*
-Sets the mesh to be drawn by the multimesh. Equivalent to [graphics.gd/classdb/MultiMesh.Instance.Mesh].
+Sets the mesh to be drawn by the multimesh. Equivalent to [MultiMesh.Mesh].
+
+[MultiMesh.Mesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.Mesh
 */
 //go:nosplit
 func (self class) MultimeshSetMesh(multimesh RID.Any, mesh RID.Any) { //gd:RenderingServer.multimesh_set_mesh
@@ -6116,7 +6967,10 @@ func (self class) MultimeshSetMesh(multimesh RID.Any, mesh RID.Any) { //gd:Rende
 }
 
 /*
-Sets the [Transform3D.BasisOrigin] for this instance. Equivalent to [graphics.gd/classdb/MultiMesh.Instance.SetInstanceTransform].
+Sets the [Transform3D.BasisOrigin] for this instance. Equivalent to [MultiMesh.SetInstanceTransform].
+
+[MultiMesh.SetInstanceTransform]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceTransform
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 //go:nosplit
 func (self class) MultimeshInstanceSetTransform(multimesh RID.Any, index int64, transform Transform3D.BasisOrigin) { //gd:RenderingServer.multimesh_instance_set_transform
@@ -6128,7 +6982,10 @@ func (self class) MultimeshInstanceSetTransform(multimesh RID.Any, index int64, 
 }
 
 /*
-Sets the [Transform2D.OriginXY] for this instance. For use when multimesh is used in 2D. Equivalent to [graphics.gd/classdb/MultiMesh.Instance.SetInstanceTransform2d].
+Sets the [Transform2D.OriginXY] for this instance. For use when multimesh is used in 2D. Equivalent to [MultiMesh.SetInstanceTransform2d].
+
+[MultiMesh.SetInstanceTransform2d]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceTransform2d
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 //go:nosplit
 func (self class) MultimeshInstanceSetTransform2d(multimesh RID.Any, index int64, transform Transform2D.OriginXY) { //gd:RenderingServer.multimesh_instance_set_transform_2d
@@ -6140,7 +6997,9 @@ func (self class) MultimeshInstanceSetTransform2d(multimesh RID.Any, index int64
 }
 
 /*
-Sets the color by which this instance will be modulated. Equivalent to [graphics.gd/classdb/MultiMesh.Instance.SetInstanceColor].
+Sets the color by which this instance will be modulated. Equivalent to [MultiMesh.SetInstanceColor].
+
+[MultiMesh.SetInstanceColor]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceColor
 */
 //go:nosplit
 func (self class) MultimeshInstanceSetColor(multimesh RID.Any, index int64, color Color.RGBA) { //gd:RenderingServer.multimesh_instance_set_color
@@ -6152,7 +7011,10 @@ func (self class) MultimeshInstanceSetColor(multimesh RID.Any, index int64, colo
 }
 
 /*
-Sets the custom data for this instance. Custom data is passed as a [Color.RGBA], but is interpreted as a vec4 in the shader. Equivalent to [graphics.gd/classdb/MultiMesh.Instance.SetInstanceCustomData].
+Sets the custom data for this instance. Custom data is passed as a [Color.RGBA], but is interpreted as a vec4 in the shader. Equivalent to [MultiMesh.SetInstanceCustomData].
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[MultiMesh.SetInstanceCustomData]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.SetInstanceCustomData
 */
 //go:nosplit
 func (self class) MultimeshInstanceSetCustomData(multimesh RID.Any, index int64, custom_data Color.RGBA) { //gd:RenderingServer.multimesh_instance_set_custom_data
@@ -6206,6 +7068,8 @@ func (self class) MultimeshGetCustomAabb(multimesh RID.Any) AABB.PositionSize { 
 
 /*
 Returns the [Transform3D.BasisOrigin] of the specified instance.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 //go:nosplit
 func (self class) MultimeshInstanceGetTransform(multimesh RID.Any, index int64) Transform3D.BasisOrigin { //gd:RenderingServer.multimesh_instance_get_transform
@@ -6219,6 +7083,8 @@ func (self class) MultimeshInstanceGetTransform(multimesh RID.Any, index int64) 
 
 /*
 Returns the [Transform2D.OriginXY] of the specified instance. For use when the multimesh is set to use 2D transforms.
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 //go:nosplit
 func (self class) MultimeshInstanceGetTransform2d(multimesh RID.Any, index int64) Transform2D.OriginXY { //gd:RenderingServer.multimesh_instance_get_transform_2d
@@ -6257,7 +7123,9 @@ func (self class) MultimeshInstanceGetCustomData(multimesh RID.Any, index int64)
 }
 
 /*
-Sets the number of instances visible at a given time. If -1, all instances that have been allocated are drawn. Equivalent to [graphics.gd/classdb/MultiMesh.Instance.VisibleInstanceCount].
+Sets the number of instances visible at a given time. If -1, all instances that have been allocated are drawn. Equivalent to [MultiMesh.VisibleInstanceCount].
+
+[MultiMesh.VisibleInstanceCount]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh#Instance.VisibleInstanceCount
 */
 //go:nosplit
 func (self class) MultimeshSetVisibleInstances(multimesh RID.Any, visible int64) { //gd:RenderingServer.multimesh_set_visible_instances
@@ -6289,6 +7157,9 @@ Instance transforms are in row-major order. Specifically:
 - For [Transform2D.OriginXY] the float-order is: (x.x, y.x, padding_float, origin.x, x.y, y.y, padding_float, origin.y).
 
 - For [Transform3D.BasisOrigin] the float-order is: (basis.x.x, basis.y.x, basis.z.x, origin.x, basis.x.y, basis.y.y, basis.z.y, origin.y, basis.x.z, basis.y.z, basis.z.z, origin.z).
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 //go:nosplit
 func (self class) MultimeshSetBuffer(multimesh RID.Any, buffer Packed.Array[float32]) { //gd:RenderingServer.multimesh_set_buffer
@@ -6299,13 +7170,17 @@ func (self class) MultimeshSetBuffer(multimesh RID.Any, buffer Packed.Array[floa
 }
 
 /*
-Returns the [graphics.gd/classdb/RenderingDevice] [Resource.ID] handle of the [graphics.gd/classdb/MultiMesh] command buffer. This [Resource.ID] is only valid if use_indirect is set to true when allocating data through [MultimeshAllocateData]. It can be used to directly modify the instance count via buffer.
+Returns the [RenderingDevice] [Resource.ID] handle of the [MultiMesh] command buffer. This [Resource.ID] is only valid if use_indirect is set to true when allocating data through [MultimeshAllocateData]. It can be used to directly modify the instance count via buffer.
 
 The data structure is dependent on both how many surfaces the mesh contains and whether it is indexed or not, the buffer has 5 integers in it, with the last unused if the mesh is not indexed.
 
 Each of the values in the buffer correspond to these options:
 
 
+
+[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) MultimeshGetCommandBufferRdRid(multimesh RID.Any) RID.Any { //gd:RenderingServer.multimesh_get_command_buffer_rd_rid
@@ -6315,7 +7190,11 @@ func (self class) MultimeshGetCommandBufferRdRid(multimesh RID.Any) RID.Any { //
 }
 
 /*
-Returns the [graphics.gd/classdb/RenderingDevice] [Resource.ID] handle of the [graphics.gd/classdb/MultiMesh], which can be used as any other buffer on the Rendering Device.
+Returns the [RenderingDevice] [Resource.ID] handle of the [MultiMesh], which can be used as any other buffer on the Rendering Device.
+
+[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) MultimeshGetBufferRdRid(multimesh RID.Any) RID.Any { //gd:RenderingServer.multimesh_get_buffer_rd_rid
@@ -6362,9 +7241,11 @@ func (self class) MultimeshSetPhysicsInterpolated(multimesh RID.Any, interpolate
 }
 
 /*
-Sets the physics interpolation quality for the [graphics.gd/classdb/MultiMesh].
+Sets the physics interpolation quality for the [MultiMesh].
 
 A value of [MultimeshInterpQualityFast] gives fast but low quality interpolation, a value of [MultimeshInterpQualityHigh] gives slower but higher quality interpolation.
+
+[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
 */
 //go:nosplit
 func (self class) MultimeshSetPhysicsInterpolationQuality(multimesh RID.Any, quality MultimeshPhysicsInterpolationQuality) { //gd:RenderingServer.multimesh_set_physics_interpolation_quality
@@ -6420,6 +7301,8 @@ func (self class) SkeletonGetBoneCount(skeleton RID.Any) int64 { //gd:RenderingS
 
 /*
 Sets the [Transform3D.BasisOrigin] for a specific bone of this skeleton.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 //go:nosplit
 func (self class) SkeletonBoneSetTransform(skeleton RID.Any, bone int64, transform Transform3D.BasisOrigin) { //gd:RenderingServer.skeleton_bone_set_transform
@@ -6432,6 +7315,8 @@ func (self class) SkeletonBoneSetTransform(skeleton RID.Any, bone int64, transfo
 
 /*
 Returns the [Transform3D.BasisOrigin] set for a specific bone of this skeleton.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 //go:nosplit
 func (self class) SkeletonBoneGetTransform(skeleton RID.Any, bone int64) Transform3D.BasisOrigin { //gd:RenderingServer.skeleton_bone_get_transform
@@ -6445,6 +7330,8 @@ func (self class) SkeletonBoneGetTransform(skeleton RID.Any, bone int64) Transfo
 
 /*
 Sets the [Transform2D.OriginXY] for a specific bone of this skeleton.
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 //go:nosplit
 func (self class) SkeletonBoneSetTransform2d(skeleton RID.Any, bone int64, transform Transform2D.OriginXY) { //gd:RenderingServer.skeleton_bone_set_transform_2d
@@ -6457,6 +7344,8 @@ func (self class) SkeletonBoneSetTransform2d(skeleton RID.Any, bone int64, trans
 
 /*
 Returns the [Transform2D.OriginXY] set for a specific bone of this skeleton.
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 //go:nosplit
 func (self class) SkeletonBoneGetTransform2d(skeleton RID.Any, bone int64) Transform2D.OriginXY { //gd:RenderingServer.skeleton_bone_get_transform_2d
@@ -6483,7 +7372,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach this directional light to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent node is [graphics.gd/classdb/DirectionalLight3D].
+Note: The equivalent node is [DirectionalLight3D].
+
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
 */
 //go:nosplit
 func (self class) DirectionalLightCreate() RID.Any { //gd:RenderingServer.directional_light_create
@@ -6499,7 +7390,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach this omni light to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent node is [graphics.gd/classdb/OmniLight3D].
+Note: The equivalent node is [OmniLight3D].
+
+[OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
 */
 //go:nosplit
 func (self class) OmniLightCreate() RID.Any { //gd:RenderingServer.omni_light_create
@@ -6523,7 +7416,9 @@ func (self class) SpotLightCreate() RID.Any { //gd:RenderingServer.spot_light_cr
 }
 
 /*
-Sets the color of the light. Equivalent to [graphics.gd/classdb/Light3D.Instance.LightColor].
+Sets the color of the light. Equivalent to [Light3D.LightColor].
+
+[Light3D.LightColor]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightColor
 */
 //go:nosplit
 func (self class) LightSetColor(light RID.Any, color Color.RGBA) { //gd:RenderingServer.light_set_color
@@ -6534,7 +7429,9 @@ func (self class) LightSetColor(light RID.Any, color Color.RGBA) { //gd:Renderin
 }
 
 /*
-Sets the specified 3D light parameter. Equivalent to [graphics.gd/classdb/Light3D.Instance.SetParam].
+Sets the specified 3D light parameter. Equivalent to [Light3D.SetParam].
+
+[Light3D.SetParam]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.SetParam
 */
 //go:nosplit
 func (self class) LightSetParam(light RID.Any, param LightParam, value float64) { //gd:RenderingServer.light_set_param
@@ -6546,7 +7443,9 @@ func (self class) LightSetParam(light RID.Any, param LightParam, value float64) 
 }
 
 /*
-If true, light will cast shadows. Equivalent to [graphics.gd/classdb/Light3D.Instance.ShadowEnabled].
+If true, light will cast shadows. Equivalent to [Light3D.ShadowEnabled].
+
+[Light3D.ShadowEnabled]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowEnabled
 */
 //go:nosplit
 func (self class) LightSetShadow(light RID.Any, enabled bool) { //gd:RenderingServer.light_set_shadow
@@ -6557,7 +7456,9 @@ func (self class) LightSetShadow(light RID.Any, enabled bool) { //gd:RenderingSe
 }
 
 /*
-Sets the projector texture to use for the specified 3D light. Equivalent to [graphics.gd/classdb/Light3D.Instance.LightProjector].
+Sets the projector texture to use for the specified 3D light. Equivalent to [Light3D.LightProjector].
+
+[Light3D.LightProjector]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightProjector
 */
 //go:nosplit
 func (self class) LightSetProjector(light RID.Any, texture RID.Any) { //gd:RenderingServer.light_set_projector
@@ -6568,7 +7469,9 @@ func (self class) LightSetProjector(light RID.Any, texture RID.Any) { //gd:Rende
 }
 
 /*
-If true, the 3D light will subtract light instead of adding light. Equivalent to [graphics.gd/classdb/Light3D.Instance.LightNegative].
+If true, the 3D light will subtract light instead of adding light. Equivalent to [Light3D.LightNegative].
+
+[Light3D.LightNegative]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightNegative
 */
 //go:nosplit
 func (self class) LightSetNegative(light RID.Any, enable bool) { //gd:RenderingServer.light_set_negative
@@ -6579,7 +7482,9 @@ func (self class) LightSetNegative(light RID.Any, enable bool) { //gd:RenderingS
 }
 
 /*
-Sets the cull mask for this 3D light. Lights only affect objects in the selected layers. Equivalent to [graphics.gd/classdb/Light3D.Instance.LightCullMask].
+Sets the cull mask for this 3D light. Lights only affect objects in the selected layers. Equivalent to [Light3D.LightCullMask].
+
+[Light3D.LightCullMask]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightCullMask
 */
 //go:nosplit
 func (self class) LightSetCullMask(light RID.Any, mask int64) { //gd:RenderingServer.light_set_cull_mask
@@ -6590,7 +7495,12 @@ func (self class) LightSetCullMask(light RID.Any, mask int64) { //gd:RenderingSe
 }
 
 /*
-Sets the distance fade for this 3D light. This acts as a form of level of detail (LOD) and can be used to improve performance. Equivalent to [graphics.gd/classdb/Light3D.Instance.DistanceFadeEnabled], [graphics.gd/classdb/Light3D.Instance.DistanceFadeBegin], [graphics.gd/classdb/Light3D.Instance.DistanceFadeShadow], and [graphics.gd/classdb/Light3D.Instance.DistanceFadeLength].
+Sets the distance fade for this 3D light. This acts as a form of level of detail (LOD) and can be used to improve performance. Equivalent to [Light3D.DistanceFadeEnabled], [Light3D.DistanceFadeBegin], [Light3D.DistanceFadeShadow], and [Light3D.DistanceFadeLength].
+
+[Light3D.DistanceFadeBegin]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeBegin
+[Light3D.DistanceFadeEnabled]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeEnabled
+[Light3D.DistanceFadeLength]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeLength
+[Light3D.DistanceFadeShadow]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeShadow
 */
 //go:nosplit
 func (self class) LightSetDistanceFade(decal RID.Any, enabled bool, begin float64, shadow float64, length float64) { //gd:RenderingServer.light_set_distance_fade
@@ -6604,7 +7514,9 @@ func (self class) LightSetDistanceFade(decal RID.Any, enabled bool, begin float6
 }
 
 /*
-If true, reverses the backface culling of the mesh. This can be useful when you have a flat mesh that has a light behind it. If you need to cast a shadow on both sides of the mesh, set the mesh to use double-sided shadows with [InstanceGeometrySetCastShadowsSetting]. Equivalent to [graphics.gd/classdb/Light3D.Instance.ShadowReverseCullFace].
+If true, reverses the backface culling of the mesh. This can be useful when you have a flat mesh that has a light behind it. If you need to cast a shadow on both sides of the mesh, set the mesh to use double-sided shadows with [InstanceGeometrySetCastShadowsSetting]. Equivalent to [Light3D.ShadowReverseCullFace].
+
+[Light3D.ShadowReverseCullFace]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowReverseCullFace
 */
 //go:nosplit
 func (self class) LightSetReverseCullFaceMode(light RID.Any, enabled bool) { //gd:RenderingServer.light_set_reverse_cull_face_mode
@@ -6615,7 +7527,9 @@ func (self class) LightSetReverseCullFaceMode(light RID.Any, enabled bool) { //g
 }
 
 /*
-Sets the shadow caster mask for this 3D light. Shadows will only be cast using objects in the selected layers. Equivalent to [graphics.gd/classdb/Light3D.Instance.ShadowCasterMask].
+Sets the shadow caster mask for this 3D light. Shadows will only be cast using objects in the selected layers. Equivalent to [Light3D.ShadowCasterMask].
+
+[Light3D.ShadowCasterMask]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowCasterMask
 */
 //go:nosplit
 func (self class) LightSetShadowCasterMask(light RID.Any, mask int64) { //gd:RenderingServer.light_set_shadow_caster_mask
@@ -6626,7 +7540,9 @@ func (self class) LightSetShadowCasterMask(light RID.Any, mask int64) { //gd:Ren
 }
 
 /*
-Sets the bake mode to use for the specified 3D light. Equivalent to [graphics.gd/classdb/Light3D.Instance.LightBakeMode].
+Sets the bake mode to use for the specified 3D light. Equivalent to [Light3D.LightBakeMode].
+
+[Light3D.LightBakeMode]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightBakeMode
 */
 //go:nosplit
 func (self class) LightSetBakeMode(light RID.Any, bake_mode LightBakeMode) { //gd:RenderingServer.light_set_bake_mode
@@ -6648,7 +7564,9 @@ func (self class) LightSetMaxSdfgiCascade(light RID.Any, cascade int64) { //gd:R
 }
 
 /*
-Sets whether to use a dual paraboloid or a cubemap for the shadow map. Dual paraboloid is faster but may suffer from artifacts. Equivalent to [graphics.gd/classdb/OmniLight3D.Instance.OmniShadowMode].
+Sets whether to use a dual paraboloid or a cubemap for the shadow map. Dual paraboloid is faster but may suffer from artifacts. Equivalent to [OmniLight3D.OmniShadowMode].
+
+[OmniLight3D.OmniShadowMode]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D#Instance.OmniShadowMode
 */
 //go:nosplit
 func (self class) LightOmniSetShadowMode(light RID.Any, mode LightOmniShadowMode) { //gd:RenderingServer.light_omni_set_shadow_mode
@@ -6659,7 +7577,9 @@ func (self class) LightOmniSetShadowMode(light RID.Any, mode LightOmniShadowMode
 }
 
 /*
-Sets the shadow mode for this directional light. Equivalent to [graphics.gd/classdb/DirectionalLight3D.Instance.DirectionalShadowMode].
+Sets the shadow mode for this directional light. Equivalent to [DirectionalLight3D.DirectionalShadowMode].
+
+[DirectionalLight3D.DirectionalShadowMode]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D#Instance.DirectionalShadowMode
 */
 //go:nosplit
 func (self class) LightDirectionalSetShadowMode(light RID.Any, mode LightDirectionalShadowMode) { //gd:RenderingServer.light_directional_set_shadow_mode
@@ -6670,7 +7590,9 @@ func (self class) LightDirectionalSetShadowMode(light RID.Any, mode LightDirecti
 }
 
 /*
-If true, this directional light will blend between shadow map splits resulting in a smoother transition between them. Equivalent to [graphics.gd/classdb/DirectionalLight3D.Instance.DirectionalShadowBlendSplits].
+If true, this directional light will blend between shadow map splits resulting in a smoother transition between them. Equivalent to [DirectionalLight3D.DirectionalShadowBlendSplits].
+
+[DirectionalLight3D.DirectionalShadowBlendSplits]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D#Instance.DirectionalShadowBlendSplits
 */
 //go:nosplit
 func (self class) LightDirectionalSetBlendSplits(light RID.Any, enable bool) { //gd:RenderingServer.light_directional_set_blend_splits
@@ -6708,7 +7630,9 @@ func (self class) LightmapsSetBicubicFilter(enable bool) { //gd:RenderingServer.
 }
 
 /*
-Sets the filter quality for omni and spot light shadows in 3D. See also [graphics.gd/classdb/ProjectSettings] "rendering/lights_and_shadows/positional_shadow/soft_shadow_filter_quality". This parameter is global and cannot be set on a per-viewport basis.
+Sets the filter quality for omni and spot light shadows in 3D. See also [ProjectSettings] "rendering/lights_and_shadows/positional_shadow/soft_shadow_filter_quality". This parameter is global and cannot be set on a per-viewport basis.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) PositionalSoftShadowFilterSetQuality(quality ShadowQuality) { //gd:RenderingServer.positional_soft_shadow_filter_set_quality
@@ -6716,7 +7640,9 @@ func (self class) PositionalSoftShadowFilterSetQuality(quality ShadowQuality) { 
 }
 
 /*
-Sets the filter 'quality' for directional light shadows in 3D. See also [graphics.gd/classdb/ProjectSettings] "rendering/lights_and_shadows/directional_shadow/soft_shadow_filter_quality". This parameter is global and cannot be set on a per-viewport basis.
+Sets the filter 'quality' for directional light shadows in 3D. See also [ProjectSettings] "rendering/lights_and_shadows/directional_shadow/soft_shadow_filter_quality". This parameter is global and cannot be set on a per-viewport basis.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) DirectionalSoftShadowFilterSetQuality(quality ShadowQuality) { //gd:RenderingServer.directional_soft_shadow_filter_set_quality
@@ -6724,7 +7650,9 @@ func (self class) DirectionalSoftShadowFilterSetQuality(quality ShadowQuality) {
 }
 
 /*
-Sets the 'size' of the directional light shadows in 3D. See also [graphics.gd/classdb/ProjectSettings] "rendering/lights_and_shadows/directional_shadow/size". This parameter is global and cannot be set on a per-viewport basis.
+Sets the 'size' of the directional light shadows in 3D. See also [ProjectSettings] "rendering/lights_and_shadows/directional_shadow/size". This parameter is global and cannot be set on a per-viewport basis.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) DirectionalShadowAtlasSetSize(size int64, is_16bits bool) { //gd:RenderingServer.directional_shadow_atlas_set_size
@@ -6741,7 +7669,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach this reflection probe to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent node is [graphics.gd/classdb/ReflectionProbe].
+Note: The equivalent node is [ReflectionProbe].
+
+[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
 */
 //go:nosplit
 func (self class) ReflectionProbeCreate() RID.Any { //gd:RenderingServer.reflection_probe_create
@@ -6762,7 +7692,9 @@ func (self class) ReflectionProbeSetUpdateMode(probe RID.Any, mode ReflectionPro
 }
 
 /*
-Sets the intensity of the reflection probe. Intensity modulates the strength of the reflection. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.Intensity].
+Sets the intensity of the reflection probe. Intensity modulates the strength of the reflection. Equivalent to [ReflectionProbe.Intensity].
+
+[ReflectionProbe.Intensity]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Intensity
 */
 //go:nosplit
 func (self class) ReflectionProbeSetIntensity(probe RID.Any, intensity float64) { //gd:RenderingServer.reflection_probe_set_intensity
@@ -6784,7 +7716,9 @@ func (self class) ReflectionProbeSetBlendDistance(probe RID.Any, blend_distance 
 }
 
 /*
-Sets the reflection probe's ambient light mode. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.AmbientMode].
+Sets the reflection probe's ambient light mode. Equivalent to [ReflectionProbe.AmbientMode].
+
+[ReflectionProbe.AmbientMode]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.AmbientMode
 */
 //go:nosplit
 func (self class) ReflectionProbeSetAmbientMode(probe RID.Any, mode ReflectionProbeAmbientMode) { //gd:RenderingServer.reflection_probe_set_ambient_mode
@@ -6795,7 +7729,9 @@ func (self class) ReflectionProbeSetAmbientMode(probe RID.Any, mode ReflectionPr
 }
 
 /*
-Sets the reflection probe's custom ambient light color. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.AmbientColor].
+Sets the reflection probe's custom ambient light color. Equivalent to [ReflectionProbe.AmbientColor].
+
+[ReflectionProbe.AmbientColor]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.AmbientColor
 */
 //go:nosplit
 func (self class) ReflectionProbeSetAmbientColor(probe RID.Any, color Color.RGBA) { //gd:RenderingServer.reflection_probe_set_ambient_color
@@ -6806,7 +7742,9 @@ func (self class) ReflectionProbeSetAmbientColor(probe RID.Any, color Color.RGBA
 }
 
 /*
-Sets the reflection probe's custom ambient light energy. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.AmbientColorEnergy].
+Sets the reflection probe's custom ambient light energy. Equivalent to [ReflectionProbe.AmbientColorEnergy].
+
+[ReflectionProbe.AmbientColorEnergy]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.AmbientColorEnergy
 */
 //go:nosplit
 func (self class) ReflectionProbeSetAmbientEnergy(probe RID.Any, energy float64) { //gd:RenderingServer.reflection_probe_set_ambient_energy
@@ -6817,7 +7755,9 @@ func (self class) ReflectionProbeSetAmbientEnergy(probe RID.Any, energy float64)
 }
 
 /*
-Sets the max distance away from the probe an object can be before it is culled. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.MaxDistance].
+Sets the max distance away from the probe an object can be before it is culled. Equivalent to [ReflectionProbe.MaxDistance].
+
+[ReflectionProbe.MaxDistance]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.MaxDistance
 */
 //go:nosplit
 func (self class) ReflectionProbeSetMaxDistance(probe RID.Any, distance float64) { //gd:RenderingServer.reflection_probe_set_max_distance
@@ -6828,7 +7768,9 @@ func (self class) ReflectionProbeSetMaxDistance(probe RID.Any, distance float64)
 }
 
 /*
-Sets the size of the area that the reflection probe will capture. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.Size].
+Sets the size of the area that the reflection probe will capture. Equivalent to [ReflectionProbe.Size].
+
+[ReflectionProbe.Size]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Size
 */
 //go:nosplit
 func (self class) ReflectionProbeSetSize(probe RID.Any, size Vector3.XYZ) { //gd:RenderingServer.reflection_probe_set_size
@@ -6839,7 +7781,9 @@ func (self class) ReflectionProbeSetSize(probe RID.Any, size Vector3.XYZ) { //gd
 }
 
 /*
-Sets the origin offset to be used when this reflection probe is in box project mode. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.OriginOffset].
+Sets the origin offset to be used when this reflection probe is in box project mode. Equivalent to [ReflectionProbe.OriginOffset].
+
+[ReflectionProbe.OriginOffset]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.OriginOffset
 */
 //go:nosplit
 func (self class) ReflectionProbeSetOriginOffset(probe RID.Any, offset Vector3.XYZ) { //gd:RenderingServer.reflection_probe_set_origin_offset
@@ -6850,7 +7794,9 @@ func (self class) ReflectionProbeSetOriginOffset(probe RID.Any, offset Vector3.X
 }
 
 /*
-If true, reflections will ignore sky contribution. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.Interior].
+If true, reflections will ignore sky contribution. Equivalent to [ReflectionProbe.Interior].
+
+[ReflectionProbe.Interior]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Interior
 */
 //go:nosplit
 func (self class) ReflectionProbeSetAsInterior(probe RID.Any, enable bool) { //gd:RenderingServer.reflection_probe_set_as_interior
@@ -6861,7 +7807,9 @@ func (self class) ReflectionProbeSetAsInterior(probe RID.Any, enable bool) { //g
 }
 
 /*
-If true, uses box projection. This can make reflections look more correct in certain situations. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.BoxProjection].
+If true, uses box projection. This can make reflections look more correct in certain situations. Equivalent to [ReflectionProbe.BoxProjection].
+
+[ReflectionProbe.BoxProjection]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.BoxProjection
 */
 //go:nosplit
 func (self class) ReflectionProbeSetEnableBoxProjection(probe RID.Any, enable bool) { //gd:RenderingServer.reflection_probe_set_enable_box_projection
@@ -6872,7 +7820,9 @@ func (self class) ReflectionProbeSetEnableBoxProjection(probe RID.Any, enable bo
 }
 
 /*
-If true, computes shadows in the reflection probe. This makes the reflection much slower to compute. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.EnableShadows].
+If true, computes shadows in the reflection probe. This makes the reflection much slower to compute. Equivalent to [ReflectionProbe.EnableShadows].
+
+[ReflectionProbe.EnableShadows]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.EnableShadows
 */
 //go:nosplit
 func (self class) ReflectionProbeSetEnableShadows(probe RID.Any, enable bool) { //gd:RenderingServer.reflection_probe_set_enable_shadows
@@ -6883,7 +7833,9 @@ func (self class) ReflectionProbeSetEnableShadows(probe RID.Any, enable bool) { 
 }
 
 /*
-Sets the render cull mask for this reflection probe. Only instances with a matching layer will be reflected by this probe. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.CullMask].
+Sets the render cull mask for this reflection probe. Only instances with a matching layer will be reflected by this probe. Equivalent to [ReflectionProbe.CullMask].
+
+[ReflectionProbe.CullMask]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.CullMask
 */
 //go:nosplit
 func (self class) ReflectionProbeSetCullMask(probe RID.Any, layers int64) { //gd:RenderingServer.reflection_probe_set_cull_mask
@@ -6894,7 +7846,9 @@ func (self class) ReflectionProbeSetCullMask(probe RID.Any, layers int64) { //gd
 }
 
 /*
-Sets the render reflection mask for this reflection probe. Only instances with a matching layer will have reflections applied from this probe. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.ReflectionMask].
+Sets the render reflection mask for this reflection probe. Only instances with a matching layer will have reflections applied from this probe. Equivalent to [ReflectionProbe.ReflectionMask].
+
+[ReflectionProbe.ReflectionMask]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.ReflectionMask
 */
 //go:nosplit
 func (self class) ReflectionProbeSetReflectionMask(probe RID.Any, layers int64) { //gd:RenderingServer.reflection_probe_set_reflection_mask
@@ -6916,7 +7870,9 @@ func (self class) ReflectionProbeSetResolution(probe RID.Any, resolution int64) 
 }
 
 /*
-Sets the mesh level of detail to use in the reflection probe rendering. Higher values will use less detailed versions of meshes that have LOD variations generated, which can improve performance. Equivalent to [graphics.gd/classdb/ReflectionProbe.Instance.MeshLodThreshold].
+Sets the mesh level of detail to use in the reflection probe rendering. Higher values will use less detailed versions of meshes that have LOD variations generated, which can improve performance. Equivalent to [ReflectionProbe.MeshLodThreshold].
+
+[ReflectionProbe.MeshLodThreshold]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.MeshLodThreshold
 */
 //go:nosplit
 func (self class) ReflectionProbeSetMeshLodThreshold(probe RID.Any, pixels float64) { //gd:RenderingServer.reflection_probe_set_mesh_lod_threshold
@@ -6933,7 +7889,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach this decal to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent node is [graphics.gd/classdb/Decal].
+Note: The equivalent node is [Decal].
+
+[Decal]: https://pkg.go.dev/graphics.gd/classdb/Decal
 */
 //go:nosplit
 func (self class) DecalCreate() RID.Any { //gd:RenderingServer.decal_create
@@ -6943,7 +7901,9 @@ func (self class) DecalCreate() RID.Any { //gd:RenderingServer.decal_create
 }
 
 /*
-Sets the 'size' of the decal specified by the 'decal' RID. Equivalent to [graphics.gd/classdb/Decal.Instance.Size].
+Sets the 'size' of the decal specified by the 'decal' RID. Equivalent to [Decal.Size].
+
+[Decal.Size]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.Size
 */
 //go:nosplit
 func (self class) DecalSetSize(decal RID.Any, size Vector3.XYZ) { //gd:RenderingServer.decal_set_size
@@ -6954,7 +7914,9 @@ func (self class) DecalSetSize(decal RID.Any, size Vector3.XYZ) { //gd:Rendering
 }
 
 /*
-Sets the 'texture' in the given texture 'type' slot for the specified decal. Equivalent to [graphics.gd/classdb/Decal.Instance.SetTexture].
+Sets the 'texture' in the given texture 'type' slot for the specified decal. Equivalent to [Decal.SetTexture].
+
+[Decal.SetTexture]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.SetTexture
 */
 //go:nosplit
 func (self class) DecalSetTexture(decal RID.Any, atype DecalTexture, texture RID.Any) { //gd:RenderingServer.decal_set_texture
@@ -6966,7 +7928,9 @@ func (self class) DecalSetTexture(decal RID.Any, atype DecalTexture, texture RID
 }
 
 /*
-Sets the emission 'energy' in the decal specified by the 'decal' RID. Equivalent to [graphics.gd/classdb/Decal.Instance.EmissionEnergy].
+Sets the emission 'energy' in the decal specified by the 'decal' RID. Equivalent to [Decal.EmissionEnergy].
+
+[Decal.EmissionEnergy]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.EmissionEnergy
 */
 //go:nosplit
 func (self class) DecalSetEmissionEnergy(decal RID.Any, energy float64) { //gd:RenderingServer.decal_set_emission_energy
@@ -6977,7 +7941,9 @@ func (self class) DecalSetEmissionEnergy(decal RID.Any, energy float64) { //gd:R
 }
 
 /*
-Sets the 'albedo_mix' in the decal specified by the 'decal' RID. Equivalent to [graphics.gd/classdb/Decal.Instance.AlbedoMix].
+Sets the 'albedo_mix' in the decal specified by the 'decal' RID. Equivalent to [Decal.AlbedoMix].
+
+[Decal.AlbedoMix]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.AlbedoMix
 */
 //go:nosplit
 func (self class) DecalSetAlbedoMix(decal RID.Any, albedo_mix float64) { //gd:RenderingServer.decal_set_albedo_mix
@@ -6988,7 +7954,9 @@ func (self class) DecalSetAlbedoMix(decal RID.Any, albedo_mix float64) { //gd:Re
 }
 
 /*
-Sets the color multiplier in the decal specified by the 'decal' RID to 'color'. Equivalent to [graphics.gd/classdb/Decal.Instance.Modulate].
+Sets the color multiplier in the decal specified by the 'decal' RID to 'color'. Equivalent to [Decal.Modulate].
+
+[Decal.Modulate]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.Modulate
 */
 //go:nosplit
 func (self class) DecalSetModulate(decal RID.Any, color Color.RGBA) { //gd:RenderingServer.decal_set_modulate
@@ -6999,7 +7967,9 @@ func (self class) DecalSetModulate(decal RID.Any, color Color.RGBA) { //gd:Rende
 }
 
 /*
-Sets the cull 'mask' in the decal specified by the 'decal' RID. Equivalent to [graphics.gd/classdb/Decal.Instance.CullMask].
+Sets the cull 'mask' in the decal specified by the 'decal' RID. Equivalent to [Decal.CullMask].
+
+[Decal.CullMask]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.CullMask
 */
 //go:nosplit
 func (self class) DecalSetCullMask(decal RID.Any, mask int64) { //gd:RenderingServer.decal_set_cull_mask
@@ -7010,7 +7980,11 @@ func (self class) DecalSetCullMask(decal RID.Any, mask int64) { //gd:RenderingSe
 }
 
 /*
-Sets the distance fade parameters in the decal specified by the 'decal' RID. Equivalent to [graphics.gd/classdb/Decal.Instance.DistanceFadeEnabled], [graphics.gd/classdb/Decal.Instance.DistanceFadeBegin] and [graphics.gd/classdb/Decal.Instance.DistanceFadeLength].
+Sets the distance fade parameters in the decal specified by the 'decal' RID. Equivalent to [Decal.DistanceFadeEnabled], [Decal.DistanceFadeBegin] and [Decal.DistanceFadeLength].
+
+[Decal.DistanceFadeBegin]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.DistanceFadeBegin
+[Decal.DistanceFadeEnabled]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.DistanceFadeEnabled
+[Decal.DistanceFadeLength]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.DistanceFadeLength
 */
 //go:nosplit
 func (self class) DecalSetDistanceFade(decal RID.Any, enabled bool, begin float64, length float64) { //gd:RenderingServer.decal_set_distance_fade
@@ -7023,7 +7997,10 @@ func (self class) DecalSetDistanceFade(decal RID.Any, enabled bool, begin float6
 }
 
 /*
-Sets the upper fade ('above') and lower fade ('below') in the decal specified by the 'decal' RID. Equivalent to [graphics.gd/classdb/Decal.Instance.UpperFade] and [graphics.gd/classdb/Decal.Instance.LowerFade].
+Sets the upper fade ('above') and lower fade ('below') in the decal specified by the 'decal' RID. Equivalent to [Decal.UpperFade] and [Decal.LowerFade].
+
+[Decal.LowerFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.LowerFade
+[Decal.UpperFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.UpperFade
 */
 //go:nosplit
 func (self class) DecalSetFade(decal RID.Any, above float64, below float64) { //gd:RenderingServer.decal_set_fade
@@ -7035,7 +8012,9 @@ func (self class) DecalSetFade(decal RID.Any, above float64, below float64) { //
 }
 
 /*
-Sets the normal 'fade' in the decal specified by the 'decal' RID. Equivalent to [graphics.gd/classdb/Decal.Instance.NormalFade].
+Sets the normal 'fade' in the decal specified by the 'decal' RID. Equivalent to [Decal.NormalFade].
+
+[Decal.NormalFade]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.NormalFade
 */
 //go:nosplit
 func (self class) DecalSetNormalFade(decal RID.Any, fade float64) { //gd:RenderingServer.decal_set_normal_fade
@@ -7054,7 +8033,12 @@ func (self class) DecalsSetFilter(filter DecalFilter) { //gd:RenderingServer.dec
 }
 
 /*
-If 'half_resolution' is true, renders [graphics.gd/classdb/VoxelGI] and SDFGI ([graphics.gd/classdb/Environment.Instance.SdfgiEnabled]) buffers at halved resolution on each axis (e.g. 960×540 when the viewport size is 1920×1080). This improves performance significantly when VoxelGI or SDFGI is enabled, at the cost of artifacts that may be visible on polygon edges. The loss in quality becomes less noticeable as the viewport resolution increases. [graphics.gd/classdb/LightmapGI] rendering is not affected by this setting. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/global_illumination/gi/use_half_resolution".
+If 'half_resolution' is true, renders [VoxelGI] and SDFGI ([Environment.SdfgiEnabled]) buffers at halved resolution on each axis (e.g. 960×540 when the viewport size is 1920×1080). This improves performance significantly when VoxelGI or SDFGI is enabled, at the cost of artifacts that may be visible on polygon edges. The loss in quality becomes less noticeable as the viewport resolution increases. [LightmapGI] rendering is not affected by this setting. Equivalent to [ProjectSettings] "rendering/global_illumination/gi/use_half_resolution".
+
+[Environment.SdfgiEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiEnabled
+[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
 //go:nosplit
 func (self class) GiSetUseHalfResolution(half_resolution bool) { //gd:RenderingServer.gi_set_use_half_resolution
@@ -7066,7 +8050,9 @@ Creates a new voxel-based global illumination object and adds it to the Renderin
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/VoxelGI].
+Note: The equivalent node is [VoxelGI].
+
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 */
 //go:nosplit
 func (self class) VoxelGiCreate() RID.Any { //gd:RenderingServer.voxel_gi_create
@@ -7132,7 +8118,10 @@ func (self class) VoxelGiGetToCellXform(voxel_gi RID.Any) Transform3D.BasisOrigi
 }
 
 /*
-Sets the [graphics.gd/classdb/VoxelGIData.Instance.DynamicRange] value to use on the specified 'voxel_gi''s [Resource.ID].
+Sets the [VoxelGIData.DynamicRange] value to use on the specified 'voxel_gi''s [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[VoxelGIData.DynamicRange]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.DynamicRange
 */
 //go:nosplit
 func (self class) VoxelGiSetDynamicRange(voxel_gi RID.Any, arange float64) { //gd:RenderingServer.voxel_gi_set_dynamic_range
@@ -7143,7 +8132,10 @@ func (self class) VoxelGiSetDynamicRange(voxel_gi RID.Any, arange float64) { //g
 }
 
 /*
-Sets the [graphics.gd/classdb/VoxelGIData.Instance.Propagation] value to use on the specified 'voxel_gi''s [Resource.ID].
+Sets the [VoxelGIData.Propagation] value to use on the specified 'voxel_gi''s [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[VoxelGIData.Propagation]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Propagation
 */
 //go:nosplit
 func (self class) VoxelGiSetPropagation(voxel_gi RID.Any, amount float64) { //gd:RenderingServer.voxel_gi_set_propagation
@@ -7154,7 +8146,10 @@ func (self class) VoxelGiSetPropagation(voxel_gi RID.Any, amount float64) { //gd
 }
 
 /*
-Sets the [graphics.gd/classdb/VoxelGIData.Instance.Energy] value to use on the specified 'voxel_gi''s [Resource.ID].
+Sets the [VoxelGIData.Energy] value to use on the specified 'voxel_gi''s [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[VoxelGIData.Energy]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Energy
 */
 //go:nosplit
 func (self class) VoxelGiSetEnergy(voxel_gi RID.Any, energy float64) { //gd:RenderingServer.voxel_gi_set_energy
@@ -7176,7 +8171,10 @@ func (self class) VoxelGiSetBakedExposureNormalization(voxel_gi RID.Any, baked_e
 }
 
 /*
-Sets the [graphics.gd/classdb/VoxelGIData.Instance.Bias] value to use on the specified 'voxel_gi''s [Resource.ID].
+Sets the [VoxelGIData.Bias] value to use on the specified 'voxel_gi''s [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[VoxelGIData.Bias]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Bias
 */
 //go:nosplit
 func (self class) VoxelGiSetBias(voxel_gi RID.Any, bias float64) { //gd:RenderingServer.voxel_gi_set_bias
@@ -7187,7 +8185,10 @@ func (self class) VoxelGiSetBias(voxel_gi RID.Any, bias float64) { //gd:Renderin
 }
 
 /*
-Sets the [graphics.gd/classdb/VoxelGIData.Instance.NormalBias] value to use on the specified 'voxel_gi''s [Resource.ID].
+Sets the [VoxelGIData.NormalBias] value to use on the specified 'voxel_gi''s [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[VoxelGIData.NormalBias]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.NormalBias
 */
 //go:nosplit
 func (self class) VoxelGiSetNormalBias(voxel_gi RID.Any, bias float64) { //gd:RenderingServer.voxel_gi_set_normal_bias
@@ -7198,7 +8199,10 @@ func (self class) VoxelGiSetNormalBias(voxel_gi RID.Any, bias float64) { //gd:Re
 }
 
 /*
-Sets the [graphics.gd/classdb/VoxelGIData.Instance.Interior] value to use on the specified 'voxel_gi''s [Resource.ID].
+Sets the [VoxelGIData.Interior] value to use on the specified 'voxel_gi''s [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[VoxelGIData.Interior]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Interior
 */
 //go:nosplit
 func (self class) VoxelGiSetInterior(voxel_gi RID.Any, enable bool) { //gd:RenderingServer.voxel_gi_set_interior
@@ -7209,7 +8213,10 @@ func (self class) VoxelGiSetInterior(voxel_gi RID.Any, enable bool) { //gd:Rende
 }
 
 /*
-Sets the [graphics.gd/classdb/VoxelGIData.Instance.UseTwoBounces] value to use on the specified 'voxel_gi''s [Resource.ID].
+Sets the [VoxelGIData.UseTwoBounces] value to use on the specified 'voxel_gi''s [Resource.ID].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[VoxelGIData.UseTwoBounces]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.UseTwoBounces
 */
 //go:nosplit
 func (self class) VoxelGiSetUseTwoBounces(voxel_gi RID.Any, enable bool) { //gd:RenderingServer.voxel_gi_set_use_two_bounces
@@ -7220,7 +8227,9 @@ func (self class) VoxelGiSetUseTwoBounces(voxel_gi RID.Any, enable bool) { //gd:
 }
 
 /*
-Sets the [graphics.gd/classdb/ProjectSettings] "rendering/global_illumination/voxel_gi/quality" value to use when rendering. This parameter is global and cannot be set on a per-VoxelGI basis.
+Sets the [ProjectSettings] "rendering/global_illumination/voxel_gi/quality" value to use when rendering. This parameter is global and cannot be set on a per-VoxelGI basis.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) VoxelGiSetQuality(quality VoxelGIQuality) { //gd:RenderingServer.voxel_gi_set_quality
@@ -7232,7 +8241,9 @@ Creates a new lightmap global illumination instance and adds it to the Rendering
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/LightmapGI].
+Note: The equivalent node is [LightmapGI].
+
+[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
 */
 //go:nosplit
 func (self class) LightmapCreate() RID.Any { //gd:RenderingServer.lightmap_create
@@ -7242,7 +8253,9 @@ func (self class) LightmapCreate() RID.Any { //gd:RenderingServer.lightmap_creat
 }
 
 /*
-Set the textures on the given 'lightmap' GI instance to the texture array pointed to by the 'light' RID. If the lightmap texture was baked with [graphics.gd/classdb/LightmapGI.Instance.Directional] set to true, then 'uses_sh' must also be true.
+Set the textures on the given 'lightmap' GI instance to the texture array pointed to by the 'light' RID. If the lightmap texture was baked with [LightmapGI.Directional] set to true, then 'uses_sh' must also be true.
+
+[LightmapGI.Directional]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.Directional
 */
 //go:nosplit
 func (self class) LightmapSetTextures(lightmap RID.Any, light RID.Any, uses_sh bool) { //gd:RenderingServer.lightmap_set_textures
@@ -7331,9 +8344,16 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach these particles to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent nodes are [graphics.gd/classdb/GPUParticles2D] and [graphics.gd/classdb/GPUParticles3D].
+Note: The equivalent nodes are [GPUParticles2D] and [GPUParticles3D].
 
-Note: All particles_* methods only apply to GPU-based particles, not CPU-based particles. [graphics.gd/classdb/CPUParticles2D] and [graphics.gd/classdb/CPUParticles3D] do not have equivalent RenderingServer functions available, as these use [graphics.gd/classdb/MultiMeshInstance2D] and [graphics.gd/classdb/MultiMeshInstance3D] under the hood (see multimesh_* methods).
+Note: All particles_* methods only apply to GPU-based particles, not CPU-based particles. [CPUParticles2D] and [CPUParticles3D] do not have equivalent RenderingServer functions available, as these use [MultiMeshInstance2D] and [MultiMeshInstance3D] under the hood (see multimesh_* methods).
+
+[CPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D
+[CPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles3D
+[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
+[GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+[MultiMeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MultiMeshInstance2D
+[MultiMeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MultiMeshInstance3D
 */
 //go:nosplit
 func (self class) ParticlesCreate() RID.Any { //gd:RenderingServer.particles_create
@@ -7354,7 +8374,9 @@ func (self class) ParticlesSetMode(particles RID.Any, mode ParticlesMode) { //gd
 }
 
 /*
-If true, particles will emit over time. Setting to false does not reset the particles, but only stops their emission. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.Emitting].
+If true, particles will emit over time. Setting to false does not reset the particles, but only stops their emission. Equivalent to [GPUParticles3D.Emitting].
+
+[GPUParticles3D.Emitting]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Emitting
 */
 //go:nosplit
 func (self class) ParticlesSetEmitting(particles RID.Any, emitting bool) { //gd:RenderingServer.particles_set_emitting
@@ -7375,7 +8397,9 @@ func (self class) ParticlesGetEmitting(particles RID.Any) bool { //gd:RenderingS
 }
 
 /*
-Sets the number of particles to be drawn and allocates the memory for them. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.Amount].
+Sets the number of particles to be drawn and allocates the memory for them. Equivalent to [GPUParticles3D.Amount].
+
+[GPUParticles3D.Amount]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Amount
 */
 //go:nosplit
 func (self class) ParticlesSetAmount(particles RID.Any, amount int64) { //gd:RenderingServer.particles_set_amount
@@ -7386,7 +8410,9 @@ func (self class) ParticlesSetAmount(particles RID.Any, amount int64) { //gd:Ren
 }
 
 /*
-Sets the amount ratio for particles to be emitted. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.AmountRatio].
+Sets the amount ratio for particles to be emitted. Equivalent to [GPUParticles3D.AmountRatio].
+
+[GPUParticles3D.AmountRatio]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.AmountRatio
 */
 //go:nosplit
 func (self class) ParticlesSetAmountRatio(particles RID.Any, ratio float64) { //gd:RenderingServer.particles_set_amount_ratio
@@ -7397,7 +8423,9 @@ func (self class) ParticlesSetAmountRatio(particles RID.Any, ratio float64) { //
 }
 
 /*
-Sets the lifetime of each particle in the system. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.Lifetime].
+Sets the lifetime of each particle in the system. Equivalent to [GPUParticles3D.Lifetime].
+
+[GPUParticles3D.Lifetime]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Lifetime
 */
 //go:nosplit
 func (self class) ParticlesSetLifetime(particles RID.Any, lifetime float64) { //gd:RenderingServer.particles_set_lifetime
@@ -7408,7 +8436,9 @@ func (self class) ParticlesSetLifetime(particles RID.Any, lifetime float64) { //
 }
 
 /*
-If true, particles will emit once and then stop. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.OneShot].
+If true, particles will emit once and then stop. Equivalent to [GPUParticles3D.OneShot].
+
+[GPUParticles3D.OneShot]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.OneShot
 */
 //go:nosplit
 func (self class) ParticlesSetOneShot(particles RID.Any, one_shot bool) { //gd:RenderingServer.particles_set_one_shot
@@ -7419,7 +8449,9 @@ func (self class) ParticlesSetOneShot(particles RID.Any, one_shot bool) { //gd:R
 }
 
 /*
-Sets the preprocess time for the particles' animation. This lets you delay starting an animation until after the particles have begun emitting. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.Preprocess].
+Sets the preprocess time for the particles' animation. This lets you delay starting an animation until after the particles have begun emitting. Equivalent to [GPUParticles3D.Preprocess].
+
+[GPUParticles3D.Preprocess]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Preprocess
 */
 //go:nosplit
 func (self class) ParticlesSetPreProcessTime(particles RID.Any, time float64) { //gd:RenderingServer.particles_set_pre_process_time
@@ -7441,7 +8473,9 @@ func (self class) ParticlesRequestProcessTime(particles RID.Any, time float64) {
 }
 
 /*
-Sets the explosiveness ratio. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.Explosiveness].
+Sets the explosiveness ratio. Equivalent to [GPUParticles3D.Explosiveness].
+
+[GPUParticles3D.Explosiveness]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Explosiveness
 */
 //go:nosplit
 func (self class) ParticlesSetExplosivenessRatio(particles RID.Any, ratio float64) { //gd:RenderingServer.particles_set_explosiveness_ratio
@@ -7452,7 +8486,9 @@ func (self class) ParticlesSetExplosivenessRatio(particles RID.Any, ratio float6
 }
 
 /*
-Sets the emission randomness ratio. This randomizes the emission of particles within their phase. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.Randomness].
+Sets the emission randomness ratio. This randomizes the emission of particles within their phase. Equivalent to [GPUParticles3D.Randomness].
+
+[GPUParticles3D.Randomness]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Randomness
 */
 //go:nosplit
 func (self class) ParticlesSetRandomnessRatio(particles RID.Any, ratio float64) { //gd:RenderingServer.particles_set_randomness_ratio
@@ -7463,7 +8499,9 @@ func (self class) ParticlesSetRandomnessRatio(particles RID.Any, ratio float64) 
 }
 
 /*
-Sets the value that informs a [graphics.gd/classdb/ParticleProcessMaterial] to rush all particles towards the end of their lifetime.
+Sets the value that informs a [ParticleProcessMaterial] to rush all particles towards the end of their lifetime.
+
+[ParticleProcessMaterial]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial
 */
 //go:nosplit
 func (self class) ParticlesSetInterpToEnd(particles RID.Any, factor float64) { //gd:RenderingServer.particles_set_interp_to_end
@@ -7474,7 +8512,9 @@ func (self class) ParticlesSetInterpToEnd(particles RID.Any, factor float64) { /
 }
 
 /*
-Sets the velocity of a particle node, that will be used by [graphics.gd/classdb/ParticleProcessMaterial.Instance.InheritVelocityRatio].
+Sets the velocity of a particle node, that will be used by [ParticleProcessMaterial.InheritVelocityRatio].
+
+[ParticleProcessMaterial.InheritVelocityRatio]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.InheritVelocityRatio
 */
 //go:nosplit
 func (self class) ParticlesSetEmitterVelocity(particles RID.Any, velocity Vector3.XYZ) { //gd:RenderingServer.particles_set_emitter_velocity
@@ -7485,7 +8525,9 @@ func (self class) ParticlesSetEmitterVelocity(particles RID.Any, velocity Vector
 }
 
 /*
-Sets a custom axis-aligned bounding box for the particle system. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.VisibilityAabb].
+Sets a custom axis-aligned bounding box for the particle system. Equivalent to [GPUParticles3D.VisibilityAabb].
+
+[GPUParticles3D.VisibilityAabb]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.VisibilityAabb
 */
 //go:nosplit
 func (self class) ParticlesSetCustomAabb(particles RID.Any, aabb AABB.PositionSize) { //gd:RenderingServer.particles_set_custom_aabb
@@ -7496,7 +8538,9 @@ func (self class) ParticlesSetCustomAabb(particles RID.Any, aabb AABB.PositionSi
 }
 
 /*
-Sets the speed scale of the particle system. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.SpeedScale].
+Sets the speed scale of the particle system. Equivalent to [GPUParticles3D.SpeedScale].
+
+[GPUParticles3D.SpeedScale]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.SpeedScale
 */
 //go:nosplit
 func (self class) ParticlesSetSpeedScale(particles RID.Any, scale float64) { //gd:RenderingServer.particles_set_speed_scale
@@ -7507,7 +8551,9 @@ func (self class) ParticlesSetSpeedScale(particles RID.Any, scale float64) { //g
 }
 
 /*
-If true, particles use local coordinates. If false they use global coordinates. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.LocalCoords].
+If true, particles use local coordinates. If false they use global coordinates. Equivalent to [GPUParticles3D.LocalCoords].
+
+[GPUParticles3D.LocalCoords]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.LocalCoords
 */
 //go:nosplit
 func (self class) ParticlesSetUseLocalCoordinates(particles RID.Any, enable bool) { //gd:RenderingServer.particles_set_use_local_coordinates
@@ -7520,7 +8566,9 @@ func (self class) ParticlesSetUseLocalCoordinates(particles RID.Any, enable bool
 /*
 Sets the material for processing the particles.
 
-Note: This is not the material used to draw the materials. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.ProcessMaterial].
+Note: This is not the material used to draw the materials. Equivalent to [GPUParticles3D.ProcessMaterial].
+
+[GPUParticles3D.ProcessMaterial]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.ProcessMaterial
 */
 //go:nosplit
 func (self class) ParticlesSetProcessMaterial(particles RID.Any, material RID.Any) { //gd:RenderingServer.particles_set_process_material
@@ -7531,7 +8579,9 @@ func (self class) ParticlesSetProcessMaterial(particles RID.Any, material RID.An
 }
 
 /*
-Sets the frame rate that the particle system rendering will be fixed to. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.FixedFps].
+Sets the frame rate that the particle system rendering will be fixed to. Equivalent to [GPUParticles3D.FixedFps].
+
+[GPUParticles3D.FixedFps]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.FixedFps
 */
 //go:nosplit
 func (self class) ParticlesSetFixedFps(particles RID.Any, fps int64) { //gd:RenderingServer.particles_set_fixed_fps
@@ -7550,7 +8600,9 @@ func (self class) ParticlesSetInterpolate(particles RID.Any, enable bool) { //gd
 }
 
 /*
-If true, uses fractional delta which smooths the movement of the particles. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.FractDelta].
+If true, uses fractional delta which smooths the movement of the particles. Equivalent to [GPUParticles3D.FractDelta].
+
+[GPUParticles3D.FractDelta]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.FractDelta
 */
 //go:nosplit
 func (self class) ParticlesSetFractionalDelta(particles RID.Any, enable bool) { //gd:RenderingServer.particles_set_fractional_delta
@@ -7577,7 +8629,10 @@ func (self class) ParticlesSetTransformAlign(particles RID.Any, align ParticlesT
 }
 
 /*
-If 'enable' is true, enables trails for the 'particles' with the specified 'length_sec' in seconds. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.TrailEnabled] and [graphics.gd/classdb/GPUParticles3D.Instance.TrailLifetime].
+If 'enable' is true, enables trails for the 'particles' with the specified 'length_sec' in seconds. Equivalent to [GPUParticles3D.TrailEnabled] and [GPUParticles3D.TrailLifetime].
+
+[GPUParticles3D.TrailEnabled]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.TrailEnabled
+[GPUParticles3D.TrailLifetime]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.TrailLifetime
 */
 //go:nosplit
 func (self class) ParticlesSetTrails(particles RID.Any, enable bool, length_sec float64) { //gd:RenderingServer.particles_set_trails
@@ -7615,7 +8670,9 @@ func (self class) ParticlesRequestProcess(particles RID.Any) { //gd:RenderingSer
 }
 
 /*
-Reset the particles on the next update. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.Restart].
+Reset the particles on the next update. Equivalent to [GPUParticles3D.Restart].
+
+[GPUParticles3D.Restart]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Restart
 */
 //go:nosplit
 func (self class) ParticlesRestart(particles RID.Any) { //gd:RenderingServer.particles_restart
@@ -7646,7 +8703,9 @@ func (self class) ParticlesEmit(particles RID.Any, transform Transform3D.BasisOr
 }
 
 /*
-Sets the draw order of the particles. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.DrawOrder].
+Sets the draw order of the particles. Equivalent to [GPUParticles3D.DrawOrder].
+
+[GPUParticles3D.DrawOrder]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawOrder
 */
 //go:nosplit
 func (self class) ParticlesSetDrawOrder(particles RID.Any, order ParticlesDrawOrder) { //gd:RenderingServer.particles_set_draw_order
@@ -7657,7 +8716,9 @@ func (self class) ParticlesSetDrawOrder(particles RID.Any, order ParticlesDrawOr
 }
 
 /*
-Sets the number of draw passes to use. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.DrawPasses].
+Sets the number of draw passes to use. Equivalent to [GPUParticles3D.DrawPasses].
+
+[GPUParticles3D.DrawPasses]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawPasses
 */
 //go:nosplit
 func (self class) ParticlesSetDrawPasses(particles RID.Any, count int64) { //gd:RenderingServer.particles_set_draw_passes
@@ -7668,7 +8729,12 @@ func (self class) ParticlesSetDrawPasses(particles RID.Any, count int64) { //gd:
 }
 
 /*
-Sets the mesh to be used for the specified draw pass. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.DrawPass1], [graphics.gd/classdb/GPUParticles3D.Instance.DrawPass2], [graphics.gd/classdb/GPUParticles3D.Instance.DrawPass3], and [graphics.gd/classdb/GPUParticles3D.Instance.DrawPass4].
+Sets the mesh to be used for the specified draw pass. Equivalent to [GPUParticles3D.DrawPass1], [GPUParticles3D.DrawPass2], [GPUParticles3D.DrawPass3], and [GPUParticles3D.DrawPass4].
+
+[GPUParticles3D.DrawPass1]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawPass1
+[GPUParticles3D.DrawPass2]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawPass2
+[GPUParticles3D.DrawPass3]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawPass3
+[GPUParticles3D.DrawPass4]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.DrawPass4
 */
 //go:nosplit
 func (self class) ParticlesSetDrawPassMesh(particles RID.Any, pass int64, mesh RID.Any) { //gd:RenderingServer.particles_set_draw_pass_mesh
@@ -7680,7 +8746,9 @@ func (self class) ParticlesSetDrawPassMesh(particles RID.Any, pass int64, mesh R
 }
 
 /*
-Calculates and returns the axis-aligned bounding box that contains all the particles. Equivalent to [graphics.gd/classdb/GPUParticles3D.Instance.CaptureAabb].
+Calculates and returns the axis-aligned bounding box that contains all the particles. Equivalent to [GPUParticles3D.CaptureAabb].
+
+[GPUParticles3D.CaptureAabb]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.CaptureAabb
 */
 //go:nosplit
 func (self class) ParticlesGetCurrentAabb(particles RID.Any) AABB.PositionSize { //gd:RenderingServer.particles_get_current_aabb
@@ -7691,6 +8759,8 @@ func (self class) ParticlesGetCurrentAabb(particles RID.Any) AABB.PositionSize {
 
 /*
 Sets the [Transform3D.BasisOrigin] that will be used by the particles when they first emit.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 //go:nosplit
 func (self class) ParticlesSetEmissionTransform(particles RID.Any, transform Transform3D.BasisOrigin) { //gd:RenderingServer.particles_set_emission_transform
@@ -7703,7 +8773,10 @@ func (self class) ParticlesSetEmissionTransform(particles RID.Any, transform Tra
 /*
 Creates a new 3D GPU particle collision or attractor and adds it to the RenderingServer. It can be accessed with the RID that is returned. This RID can be used in most particles_collision_* RenderingServer functions.
 
-Note: The equivalent nodes are [graphics.gd/classdb/GPUParticlesCollision3D] and [graphics.gd/classdb/GPUParticlesAttractor3D].
+Note: The equivalent nodes are [GPUParticlesCollision3D] and [GPUParticlesAttractor3D].
+
+[GPUParticlesAttractor3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D
+[GPUParticlesCollision3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollision3D
 */
 //go:nosplit
 func (self class) ParticlesCollisionCreate() RID.Any { //gd:RenderingServer.particles_collision_create
@@ -7724,7 +8797,10 @@ func (self class) ParticlesCollisionSetCollisionType(particles_collision RID.Any
 }
 
 /*
-Sets the cull 'mask' for the 3D GPU particles collision or attractor specified by the 'particles_collision' RID. Equivalent to [graphics.gd/classdb/GPUParticlesCollision3D.Instance.CullMask] or [graphics.gd/classdb/GPUParticlesAttractor3D.Instance.CullMask] depending on the 'particles_collision' type.
+Sets the cull 'mask' for the 3D GPU particles collision or attractor specified by the 'particles_collision' RID. Equivalent to [GPUParticlesCollision3D.CullMask] or [GPUParticlesAttractor3D.CullMask] depending on the 'particles_collision' type.
+
+[GPUParticlesAttractor3D.CullMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.CullMask
+[GPUParticlesCollision3D.CullMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollision3D#Instance.CullMask
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetCullMask(particles_collision RID.Any, mask int64) { //gd:RenderingServer.particles_collision_set_cull_mask
@@ -7735,7 +8811,10 @@ func (self class) ParticlesCollisionSetCullMask(particles_collision RID.Any, mas
 }
 
 /*
-Sets the 'radius' for the 3D GPU particles sphere collision or attractor specified by the 'particles_collision' RID. Equivalent to [graphics.gd/classdb/GPUParticlesCollisionSphere3D.Instance.Radius] or [graphics.gd/classdb/GPUParticlesAttractorSphere3D.Instance.Radius] depending on the 'particles_collision' type.
+Sets the 'radius' for the 3D GPU particles sphere collision or attractor specified by the 'particles_collision' RID. Equivalent to [GPUParticlesCollisionSphere3D.Radius] or [GPUParticlesAttractorSphere3D.Radius] depending on the 'particles_collision' type.
+
+[GPUParticlesAttractorSphere3D.Radius]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorSphere3D#Instance.Radius
+[GPUParticlesCollisionSphere3D.Radius]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSphere3D#Instance.Radius
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetSphereRadius(particles_collision RID.Any, radius float64) { //gd:RenderingServer.particles_collision_set_sphere_radius
@@ -7746,7 +8825,13 @@ func (self class) ParticlesCollisionSetSphereRadius(particles_collision RID.Any,
 }
 
 /*
-Sets the 'extents' for the 3D GPU particles collision by the 'particles_collision' RID. Equivalent to [graphics.gd/classdb/GPUParticlesCollisionBox3D.Instance.Size], [graphics.gd/classdb/GPUParticlesCollisionSDF3D.Instance.Size], [graphics.gd/classdb/GPUParticlesCollisionHeightField3D.Instance.Size], [graphics.gd/classdb/GPUParticlesAttractorBox3D.Instance.Size] or [graphics.gd/classdb/GPUParticlesAttractorVectorField3D.Instance.Size] depending on the 'particles_collision' type.
+Sets the 'extents' for the 3D GPU particles collision by the 'particles_collision' RID. Equivalent to [GPUParticlesCollisionBox3D.Size], [GPUParticlesCollisionSDF3D.Size], [GPUParticlesCollisionHeightField3D.Size], [GPUParticlesAttractorBox3D.Size] or [GPUParticlesAttractorVectorField3D.Size] depending on the 'particles_collision' type.
+
+[GPUParticlesAttractorBox3D.Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorBox3D#Instance.Size
+[GPUParticlesAttractorVectorField3D.Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorVectorField3D#Instance.Size
+[GPUParticlesCollisionBox3D.Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionBox3D#Instance.Size
+[GPUParticlesCollisionHeightField3D.Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.Size
+[GPUParticlesCollisionSDF3D.Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.Size
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetBoxExtents(particles_collision RID.Any, extents Vector3.XYZ) { //gd:RenderingServer.particles_collision_set_box_extents
@@ -7757,7 +8842,9 @@ func (self class) ParticlesCollisionSetBoxExtents(particles_collision RID.Any, e
 }
 
 /*
-Sets the 'strength' for the 3D GPU particles attractor specified by the 'particles_collision' RID. Only used for attractors, not colliders. Equivalent to [graphics.gd/classdb/GPUParticlesAttractor3D.Instance.Strength].
+Sets the 'strength' for the 3D GPU particles attractor specified by the 'particles_collision' RID. Only used for attractors, not colliders. Equivalent to [GPUParticlesAttractor3D.Strength].
+
+[GPUParticlesAttractor3D.Strength]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Strength
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetAttractorStrength(particles_collision RID.Any, strength float64) { //gd:RenderingServer.particles_collision_set_attractor_strength
@@ -7768,7 +8855,9 @@ func (self class) ParticlesCollisionSetAttractorStrength(particles_collision RID
 }
 
 /*
-Sets the directionality 'amount' for the 3D GPU particles attractor specified by the 'particles_collision' RID. Only used for attractors, not colliders. Equivalent to [graphics.gd/classdb/GPUParticlesAttractor3D.Instance.Directionality].
+Sets the directionality 'amount' for the 3D GPU particles attractor specified by the 'particles_collision' RID. Only used for attractors, not colliders. Equivalent to [GPUParticlesAttractor3D.Directionality].
+
+[GPUParticlesAttractor3D.Directionality]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Directionality
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetAttractorDirectionality(particles_collision RID.Any, amount float64) { //gd:RenderingServer.particles_collision_set_attractor_directionality
@@ -7779,7 +8868,9 @@ func (self class) ParticlesCollisionSetAttractorDirectionality(particles_collisi
 }
 
 /*
-Sets the attenuation 'curve' for the 3D GPU particles attractor specified by the 'particles_collision' RID. Only used for attractors, not colliders. Equivalent to [graphics.gd/classdb/GPUParticlesAttractor3D.Instance.Attenuation].
+Sets the attenuation 'curve' for the 3D GPU particles attractor specified by the 'particles_collision' RID. Only used for attractors, not colliders. Equivalent to [GPUParticlesAttractor3D.Attenuation].
+
+[GPUParticlesAttractor3D.Attenuation]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractor3D#Instance.Attenuation
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetAttractorAttenuation(particles_collision RID.Any, curve float64) { //gd:RenderingServer.particles_collision_set_attractor_attenuation
@@ -7790,7 +8881,10 @@ func (self class) ParticlesCollisionSetAttractorAttenuation(particles_collision 
 }
 
 /*
-Sets the signed distance field 'texture' for the 3D GPU particles collision specified by the 'particles_collision' RID. Equivalent to [graphics.gd/classdb/GPUParticlesCollisionSDF3D.Instance.Texture] or [graphics.gd/classdb/GPUParticlesAttractorVectorField3D.Instance.Texture] depending on the 'particles_collision' type.
+Sets the signed distance field 'texture' for the 3D GPU particles collision specified by the 'particles_collision' RID. Equivalent to [GPUParticlesCollisionSDF3D.Texture] or [GPUParticlesAttractorVectorField3D.Texture] depending on the 'particles_collision' type.
+
+[GPUParticlesAttractorVectorField3D.Texture]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorVectorField3D#Instance.Texture
+[GPUParticlesCollisionSDF3D.Texture]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionSDF3D#Instance.Texture
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetFieldTexture(particles_collision RID.Any, texture RID.Any) { //gd:RenderingServer.particles_collision_set_field_texture
@@ -7801,7 +8895,9 @@ func (self class) ParticlesCollisionSetFieldTexture(particles_collision RID.Any,
 }
 
 /*
-Requests an update for the 3D GPU particle collision heightfield. This may be automatically called by the 3D GPU particle collision heightfield depending on its [graphics.gd/classdb/GPUParticlesCollisionHeightField3D.Instance.UpdateMode].
+Requests an update for the 3D GPU particle collision heightfield. This may be automatically called by the 3D GPU particle collision heightfield depending on its [GPUParticlesCollisionHeightField3D.UpdateMode].
+
+[GPUParticlesCollisionHeightField3D.UpdateMode]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.UpdateMode
 */
 //go:nosplit
 func (self class) ParticlesCollisionHeightFieldUpdate(particles_collision RID.Any) { //gd:RenderingServer.particles_collision_height_field_update
@@ -7809,7 +8905,9 @@ func (self class) ParticlesCollisionHeightFieldUpdate(particles_collision RID.An
 }
 
 /*
-Sets the heightmap 'resolution' for the 3D GPU particles heightfield collision specified by the 'particles_collision' RID. Equivalent to [graphics.gd/classdb/GPUParticlesCollisionHeightField3D.Instance.Resolution].
+Sets the heightmap 'resolution' for the 3D GPU particles heightfield collision specified by the 'particles_collision' RID. Equivalent to [GPUParticlesCollisionHeightField3D.Resolution].
+
+[GPUParticlesCollisionHeightField3D.Resolution]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.Resolution
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetHeightFieldResolution(particles_collision RID.Any, resolution ParticlesCollisionHeightfieldResolution) { //gd:RenderingServer.particles_collision_set_height_field_resolution
@@ -7820,7 +8918,9 @@ func (self class) ParticlesCollisionSetHeightFieldResolution(particles_collision
 }
 
 /*
-Sets the heightfield 'mask' for the 3D GPU particles heightfield collision specified by the 'particles_collision' RID. Equivalent to [graphics.gd/classdb/GPUParticlesCollisionHeightField3D.Instance.HeightfieldMask].
+Sets the heightfield 'mask' for the 3D GPU particles heightfield collision specified by the 'particles_collision' RID. Equivalent to [GPUParticlesCollisionHeightField3D.HeightfieldMask].
+
+[GPUParticlesCollisionHeightField3D.HeightfieldMask]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollisionHeightField3D#Instance.HeightfieldMask
 */
 //go:nosplit
 func (self class) ParticlesCollisionSetHeightFieldMask(particles_collision RID.Any, mask int64) { //gd:RenderingServer.particles_collision_set_height_field_mask
@@ -7835,7 +8935,9 @@ Creates a new fog volume and adds it to the RenderingServer. It can be accessed 
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/FogVolume].
+Note: The equivalent node is [FogVolume].
+
+[FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
 */
 //go:nosplit
 func (self class) FogVolumeCreate() RID.Any { //gd:RenderingServer.fog_volume_create
@@ -7867,7 +8969,11 @@ func (self class) FogVolumeSetSize(fog_volume RID.Any, size Vector3.XYZ) { //gd:
 }
 
 /*
-Sets the [graphics.gd/classdb/Material] of the fog volume. Can be either a [graphics.gd/classdb/FogMaterial] or a custom [graphics.gd/classdb/ShaderMaterial].
+Sets the [Material] of the fog volume. Can be either a [FogMaterial] or a custom [ShaderMaterial].
+
+[FogMaterial]: https://pkg.go.dev/graphics.gd/classdb/FogMaterial
+[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
 */
 //go:nosplit
 func (self class) FogVolumeSetMaterial(fog_volume RID.Any, material RID.Any) { //gd:RenderingServer.fog_volume_set_material
@@ -7884,7 +8990,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 To place in a scene, attach this notifier to an instance using [InstanceSetBase] using the returned RID.
 
-Note: The equivalent node is [graphics.gd/classdb/VisibleOnScreenNotifier3D].
+Note: The equivalent node is [VisibleOnScreenNotifier3D].
+
+[VisibleOnScreenNotifier3D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier3D
 */
 //go:nosplit
 func (self class) VisibilityNotifierCreate() RID.Any { //gd:RenderingServer.visibility_notifier_create
@@ -7915,7 +9023,10 @@ Creates an occluder instance and adds it to the RenderingServer. It can be acces
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/Occluder3D] (not to be confused with the [graphics.gd/classdb/OccluderInstance3D] node).
+Note: The equivalent resource is [Occluder3D] (not to be confused with the [OccluderInstance3D] node).
+
+[Occluder3D]: https://pkg.go.dev/graphics.gd/classdb/Occluder3D
+[OccluderInstance3D]: https://pkg.go.dev/graphics.gd/classdb/OccluderInstance3D
 */
 //go:nosplit
 func (self class) OccluderCreate() RID.Any { //gd:RenderingServer.occluder_create
@@ -7941,7 +9052,9 @@ Creates a 3D camera and adds it to the RenderingServer. It can be accessed with 
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/Camera3D].
+Note: The equivalent node is [Camera3D].
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
 */
 //go:nosplit
 func (self class) CameraCreate() RID.Any { //gd:RenderingServer.camera_create
@@ -7992,6 +9105,8 @@ func (self class) CameraSetFrustum(camera RID.Any, size float64, offset Vector2.
 
 /*
 Sets [Transform3D.BasisOrigin] of camera.
+
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 */
 //go:nosplit
 func (self class) CameraSetTransform(camera RID.Any, transform Transform3D.BasisOrigin) { //gd:RenderingServer.camera_set_transform
@@ -8002,7 +9117,9 @@ func (self class) CameraSetTransform(camera RID.Any, transform Transform3D.Basis
 }
 
 /*
-Sets the cull mask associated with this camera. The cull mask describes which 3D layers are rendered by this camera. Equivalent to [graphics.gd/classdb/Camera3D.Instance.CullMask].
+Sets the cull mask associated with this camera. The cull mask describes which 3D layers are rendered by this camera. Equivalent to [Camera3D.CullMask].
+
+[Camera3D.CullMask]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.CullMask
 */
 //go:nosplit
 func (self class) CameraSetCullMask(camera RID.Any, layers int64) { //gd:RenderingServer.camera_set_cull_mask
@@ -8013,7 +9130,9 @@ func (self class) CameraSetCullMask(camera RID.Any, layers int64) { //gd:Renderi
 }
 
 /*
-Sets the environment used by this camera. Equivalent to [graphics.gd/classdb/Camera3D.Instance.Environment].
+Sets the environment used by this camera. Equivalent to [Camera3D.Environment].
+
+[Camera3D.Environment]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Environment
 */
 //go:nosplit
 func (self class) CameraSetEnvironment(camera RID.Any, env RID.Any) { //gd:RenderingServer.camera_set_environment
@@ -8035,7 +9154,9 @@ func (self class) CameraSetCameraAttributes(camera RID.Any, effects RID.Any) { /
 }
 
 /*
-Sets the compositor used by this camera. Equivalent to [graphics.gd/classdb/Camera3D.Instance.Compositor].
+Sets the compositor used by this camera. Equivalent to [Camera3D.Compositor].
+
+[Camera3D.Compositor]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Compositor
 */
 //go:nosplit
 func (self class) CameraSetCompositor(camera RID.Any, compositor RID.Any) { //gd:RenderingServer.camera_set_compositor
@@ -8061,7 +9182,9 @@ Creates an empty viewport and adds it to the RenderingServer. It can be accessed
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/Viewport].
+Note: The equivalent node is [Viewport].
+
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
 //go:nosplit
 func (self class) ViewportCreate() RID.Any { //gd:RenderingServer.viewport_create
@@ -8071,7 +9194,9 @@ func (self class) ViewportCreate() RID.Any { //gd:RenderingServer.viewport_creat
 }
 
 /*
-If true, the viewport uses augmented or virtual reality technologies. See [graphics.gd/classdb/XRInterface].
+If true, the viewport uses augmented or virtual reality technologies. See [XRInterface].
+
+[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 */
 //go:nosplit
 func (self class) ViewportSetUseXr(viewport RID.Any, use_xr bool) { //gd:RenderingServer.viewport_set_use_xr
@@ -8145,7 +9270,10 @@ func (self class) ViewportSetRenderDirectToScreen(viewport RID.Any, enabled bool
 }
 
 /*
-Sets the rendering mask associated with this [graphics.gd/classdb/Viewport]. Only [graphics.gd/classdb/CanvasItem] nodes with a matching rendering visibility layer will be rendered by this [graphics.gd/classdb/Viewport].
+Sets the rendering mask associated with this [Viewport]. Only [CanvasItem] nodes with a matching rendering visibility layer will be rendered by this [Viewport].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
 //go:nosplit
 func (self class) ViewportSetCanvasCullMask(viewport RID.Any, canvas_cull_mask int64) { //gd:RenderingServer.viewport_set_canvas_cull_mask
@@ -8191,9 +9319,11 @@ func (self class) ViewportSetFsrSharpness(viewport RID.Any, sharpness float64) {
 }
 
 /*
-Affects the final texture sharpness by reading from a lower or higher mipmap (also called "texture LOD bias"). Negative values make mipmapped textures sharper but grainier when viewed at a distance, while positive values make mipmapped textures blurrier (even when up close). To get sharper textures at a distance without introducing too much graininess, set this between -0.75 and 0.0. Enabling temporal antialiasing ([graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/use_taa") can help reduce the graininess visible when using negative mipmap bias.
+Affects the final texture sharpness by reading from a lower or higher mipmap (also called "texture LOD bias"). Negative values make mipmapped textures sharper but grainier when viewed at a distance, while positive values make mipmapped textures blurrier (even when up close). To get sharper textures at a distance without introducing too much graininess, set this between -0.75 and 0.0. Enabling temporal antialiasing ([ProjectSettings] "rendering/anti_aliasing/quality/use_taa") can help reduce the graininess visible when using negative mipmap bias.
 
 Note: When the 3D scaling mode is set to FSR 1.0, this value is used to adjust the automatic mipmap bias which is calculated internally based on the scale factor. The formula for this is -log2(1.0 / scale) + mipmap_bias.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) ViewportSetTextureMipmapBias(viewport RID.Any, mipmap_bias float64) { //gd:RenderingServer.viewport_set_texture_mipmap_bias
@@ -8206,11 +9336,17 @@ func (self class) ViewportSetTextureMipmapBias(viewport RID.Any, mipmap_bias flo
 /*
 Sets the maximum number of samples to take when using anisotropic filtering on textures (as a power of two). A higher sample count will result in sharper textures at oblique angles, but is more expensive to compute. A value of 0 forcibly disables anisotropic filtering, even on materials where it is enabled.
 
-The anisotropic filtering level also affects decals and light projectors if they are configured to use anisotropic filtering. See [graphics.gd/classdb/ProjectSettings] "rendering/textures/decals/filter" and [graphics.gd/classdb/ProjectSettings] "rendering/textures/light_projectors/filter".
+The anisotropic filtering level also affects decals and light projectors if they are configured to use anisotropic filtering. See [ProjectSettings] "rendering/textures/decals/filter" and [ProjectSettings] "rendering/textures/light_projectors/filter".
 
-Note: In 3D, for this setting to have an effect, set [graphics.gd/classdb/BaseMaterial3D.Instance.TextureFilter] to [Basematerial3d.TextureFilterLinearWithMipmapsAnisotropic] or [Basematerial3d.TextureFilterNearestWithMipmapsAnisotropic] on materials.
+Note: In 3D, for this setting to have an effect, set [BaseMaterial3D.TextureFilter] to [Basematerial3d.TextureFilterLinearWithMipmapsAnisotropic] or [Basematerial3d.TextureFilterNearestWithMipmapsAnisotropic] on materials.
 
-Note: In 2D, for this setting to have an effect, set [graphics.gd/classdb/CanvasItem.Instance.TextureFilter] to [Canvasitem.TextureFilterLinearWithMipmapsAnisotropic] or [Canvasitem.TextureFilterNearestWithMipmapsAnisotropic] on the [graphics.gd/classdb/CanvasItem] node displaying the texture (or in [graphics.gd/classdb/CanvasTexture]). However, anisotropic filtering is rarely useful in 2D, so only enable it for textures in 2D if it makes a meaningful visual difference.
+Note: In 2D, for this setting to have an effect, set [CanvasItem.TextureFilter] to [Canvasitem.TextureFilterLinearWithMipmapsAnisotropic] or [Canvasitem.TextureFilterNearestWithMipmapsAnisotropic] on the [CanvasItem] node displaying the texture (or in [CanvasTexture]). However, anisotropic filtering is rarely useful in 2D, so only enable it for textures in 2D if it makes a meaningful visual difference.
+
+[BaseMaterial3D.TextureFilter]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.TextureFilter
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.TextureFilter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TextureFilter
+[CanvasTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) ViewportSetAnisotropicFilteringLevel(viewport RID.Any, anisotropic_filtering_level ViewportAnisotropicFiltering) { //gd:RenderingServer.viewport_set_anisotropic_filtering_level
@@ -8352,7 +9488,10 @@ func (self class) ViewportRemoveCanvas(viewport RID.Any, canvas RID.Any) { //gd:
 }
 
 /*
-If true, canvas item transforms (i.e. origin position) are snapped to the nearest pixel when rendering. This can lead to a crisper appearance at the cost of less smooth movement, especially when [graphics.gd/classdb/Camera2D] smoothing is enabled. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/2d/snap/snap_2d_transforms_to_pixel".
+If true, canvas item transforms (i.e. origin position) are snapped to the nearest pixel when rendering. This can lead to a crisper appearance at the cost of less smooth movement, especially when [Camera2D] smoothing is enabled. Equivalent to [ProjectSettings] "rendering/2d/snap/snap_2d_transforms_to_pixel".
+
+[Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) ViewportSetSnap2dTransformsToPixel(viewport RID.Any, enabled bool) { //gd:RenderingServer.viewport_set_snap_2d_transforms_to_pixel
@@ -8363,7 +9502,10 @@ func (self class) ViewportSetSnap2dTransformsToPixel(viewport RID.Any, enabled b
 }
 
 /*
-If true, canvas item vertices (i.e. polygon points) are snapped to the nearest pixel when rendering. This can lead to a crisper appearance at the cost of less smooth movement, especially when [graphics.gd/classdb/Camera2D] smoothing is enabled. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/2d/snap/snap_2d_vertices_to_pixel".
+If true, canvas item vertices (i.e. polygon points) are snapped to the nearest pixel when rendering. This can lead to a crisper appearance at the cost of less smooth movement, especially when [Camera2D] smoothing is enabled. Equivalent to [ProjectSettings] "rendering/2d/snap/snap_2d_vertices_to_pixel".
+
+[Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) ViewportSetSnap2dVerticesToPixel(viewport RID.Any, enabled bool) { //gd:RenderingServer.viewport_set_snap_2d_vertices_to_pixel
@@ -8447,7 +9589,11 @@ func (self class) ViewportSetGlobalCanvasTransform(viewport RID.Any, transform T
 }
 
 /*
-Sets the viewport's 2D signed distance field [graphics.gd/classdb/ProjectSettings] "rendering/2d/sdf/oversize" and [graphics.gd/classdb/ProjectSettings] "rendering/2d/sdf/scale". This is used when sampling the signed distance field in [graphics.gd/classdb/CanvasItem] shaders as well as [graphics.gd/classdb/GPUParticles2D] collision. This is not used by SDFGI in 3D rendering.
+Sets the viewport's 2D signed distance field [ProjectSettings] "rendering/2d/sdf/oversize" and [ProjectSettings] "rendering/2d/sdf/scale". This is used when sampling the signed distance field in [CanvasItem] shaders as well as [GPUParticles2D] collision. This is not used by SDFGI in 3D rendering.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) ViewportSetSdfOversizeAndScale(viewport RID.Any, oversize ViewportSDFOversize, scale ViewportSDFScale) { //gd:RenderingServer.viewport_set_sdf_oversize_and_scale
@@ -8473,7 +9619,9 @@ func (self class) ViewportSetPositionalShadowAtlasSize(viewport RID.Any, size in
 }
 
 /*
-Sets the number of subdivisions to use in the specified shadow atlas 'quadrant' for omni and spot shadows. See also [graphics.gd/classdb/Viewport.Instance.SetPositionalShadowAtlasQuadrantSubdiv].
+Sets the number of subdivisions to use in the specified shadow atlas 'quadrant' for omni and spot shadows. See also [Viewport.SetPositionalShadowAtlasQuadrantSubdiv].
+
+[Viewport.SetPositionalShadowAtlasQuadrantSubdiv]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetPositionalShadowAtlasQuadrantSubdiv
 */
 //go:nosplit
 func (self class) ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport RID.Any, quadrant int64, subdivision int64) { //gd:RenderingServer.viewport_set_positional_shadow_atlas_quadrant_subdivision
@@ -8485,7 +9633,10 @@ func (self class) ViewportSetPositionalShadowAtlasQuadrantSubdivision(viewport R
 }
 
 /*
-Sets the multisample antialiasing mode for 3D on the specified 'viewport' RID. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/msaa_3d" or [graphics.gd/classdb/Viewport.Instance.Msaa3d].
+Sets the multisample antialiasing mode for 3D on the specified 'viewport' RID. Equivalent to [ProjectSettings] "rendering/anti_aliasing/quality/msaa_3d" or [Viewport.Msaa3d].
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Viewport.Msaa3d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Msaa3d
 */
 //go:nosplit
 func (self class) ViewportSetMsaa3d(viewport RID.Any, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_3d
@@ -8496,7 +9647,10 @@ func (self class) ViewportSetMsaa3d(viewport RID.Any, msaa ViewportMSAA) { //gd:
 }
 
 /*
-Sets the multisample antialiasing mode for 2D/Canvas on the specified 'viewport' RID. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/msaa_2d" or [graphics.gd/classdb/Viewport.Instance.Msaa2d].
+Sets the multisample antialiasing mode for 2D/Canvas on the specified 'viewport' RID. Equivalent to [ProjectSettings] "rendering/anti_aliasing/quality/msaa_2d" or [Viewport.Msaa2d].
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Viewport.Msaa2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Msaa2d
 */
 //go:nosplit
 func (self class) ViewportSetMsaa2d(viewport RID.Any, msaa ViewportMSAA) { //gd:RenderingServer.viewport_set_msaa_2d
@@ -8511,7 +9665,9 @@ If true, 2D rendering will use a high dynamic range (HDR) format framebuffer mat
 
 Additionally, 2D rendering will take place in linear color space and will be converted to sRGB space immediately before blitting to the screen (if the Viewport is attached to the screen).
 
-Practically speaking, this means that the end result of the Viewport will not be clamped to the 0-1 range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients. This setting has the same effect as [graphics.gd/classdb/Viewport.Instance.UseHdr2d].
+Practically speaking, this means that the end result of the Viewport will not be clamped to the 0-1 range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients. This setting has the same effect as [Viewport.UseHdr2d].
+
+[Viewport.UseHdr2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseHdr2d
 */
 //go:nosplit
 func (self class) ViewportSetUseHdr2d(viewport RID.Any, enabled bool) { //gd:RenderingServer.viewport_set_use_hdr_2d
@@ -8522,7 +9678,10 @@ func (self class) ViewportSetUseHdr2d(viewport RID.Any, enabled bool) { //gd:Ren
 }
 
 /*
-Sets the viewport's screen-space antialiasing mode. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/screen_space_aa" or [graphics.gd/classdb/Viewport.Instance.ScreenSpaceAa].
+Sets the viewport's screen-space antialiasing mode. Equivalent to [ProjectSettings] "rendering/anti_aliasing/quality/screen_space_aa" or [Viewport.ScreenSpaceAa].
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Viewport.ScreenSpaceAa]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.ScreenSpaceAa
 */
 //go:nosplit
 func (self class) ViewportSetScreenSpaceAa(viewport RID.Any, mode ViewportScreenSpaceAA) { //gd:RenderingServer.viewport_set_screen_space_aa
@@ -8533,7 +9692,10 @@ func (self class) ViewportSetScreenSpaceAa(viewport RID.Any, mode ViewportScreen
 }
 
 /*
-If true, use temporal antialiasing. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/use_taa" or [graphics.gd/classdb/Viewport.Instance.UseTaa].
+If true, use temporal antialiasing. Equivalent to [ProjectSettings] "rendering/anti_aliasing/quality/use_taa" or [Viewport.UseTaa].
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Viewport.UseTaa]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseTaa
 */
 //go:nosplit
 func (self class) ViewportSetUseTaa(viewport RID.Any, enable bool) { //gd:RenderingServer.viewport_set_use_taa
@@ -8544,7 +9706,10 @@ func (self class) ViewportSetUseTaa(viewport RID.Any, enable bool) { //gd:Render
 }
 
 /*
-Equivalent to [graphics.gd/classdb/Viewport.Instance.UseDebanding]. See also [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/quality/use_debanding".
+Equivalent to [Viewport.UseDebanding]. See also [ProjectSettings] "rendering/anti_aliasing/quality/use_debanding".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Viewport.UseDebanding]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseDebanding
 */
 //go:nosplit
 func (self class) ViewportSetUseDebanding(viewport RID.Any, enable bool) { //gd:RenderingServer.viewport_set_use_debanding
@@ -8555,7 +9720,9 @@ func (self class) ViewportSetUseDebanding(viewport RID.Any, enable bool) { //gd:
 }
 
 /*
-If true, enables occlusion culling on the specified viewport. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/occlusion_culling/use_occlusion_culling".
+If true, enables occlusion culling on the specified viewport. Equivalent to [ProjectSettings] "rendering/occlusion_culling/use_occlusion_culling".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) ViewportSetUseOcclusionCulling(viewport RID.Any, enable bool) { //gd:RenderingServer.viewport_set_use_occlusion_culling
@@ -8566,7 +9733,9 @@ func (self class) ViewportSetUseOcclusionCulling(viewport RID.Any, enable bool) 
 }
 
 /*
-Sets the [graphics.gd/classdb/ProjectSettings] "rendering/occlusion_culling/occlusion_rays_per_thread" to use for occlusion culling. This parameter is global and cannot be set on a per-viewport basis.
+Sets the [ProjectSettings] "rendering/occlusion_culling/occlusion_rays_per_thread" to use for occlusion culling. This parameter is global and cannot be set on a per-viewport basis.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) ViewportSetOcclusionRaysPerThread(rays_per_thread int64) { //gd:RenderingServer.viewport_set_occlusion_rays_per_thread
@@ -8574,7 +9743,9 @@ func (self class) ViewportSetOcclusionRaysPerThread(rays_per_thread int64) { //g
 }
 
 /*
-Sets the [graphics.gd/classdb/ProjectSettings] "rendering/occlusion_culling/bvh_build_quality" to use for occlusion culling. This parameter is global and cannot be set on a per-viewport basis.
+Sets the [ProjectSettings] "rendering/occlusion_culling/bvh_build_quality" to use for occlusion culling. This parameter is global and cannot be set on a per-viewport basis.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) ViewportSetOcclusionCullingBuildQuality(quality ViewportOcclusionCullingBuildQuality) { //gd:RenderingServer.viewport_set_occlusion_culling_build_quality
@@ -8615,7 +9786,9 @@ func (self class) ViewportSetDebugDraw(viewport RID.Any, draw ViewportDebugDraw)
 }
 
 /*
-Sets the measurement for the given 'viewport' RID (obtained using [graphics.gd/classdb/Viewport.Instance.GetViewportRid]). Once enabled, [ViewportGetMeasuredRenderTimeCpu] and [ViewportGetMeasuredRenderTimeGpu] will return values greater than 0.0 when queried with the given 'viewport'.
+Sets the measurement for the given 'viewport' RID (obtained using [Viewport.GetViewportRid]). Once enabled, [ViewportGetMeasuredRenderTimeCpu] and [ViewportGetMeasuredRenderTimeGpu] will return values greater than 0.0 when queried with the given 'viewport'.
+
+[Viewport.GetViewportRid]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GetViewportRid
 */
 //go:nosplit
 func (self class) ViewportSetMeasureRenderTime(viewport RID.Any, enable bool) { //gd:RenderingServer.viewport_set_measure_render_time
@@ -8626,9 +9799,12 @@ func (self class) ViewportSetMeasureRenderTime(viewport RID.Any, enable bool) { 
 }
 
 /*
-Returns the CPU time taken to render the last frame in milliseconds. This only includes time spent in rendering-related operations; scripts' _process functions and other engine subsystems are not included in this readout. To get a complete readout of CPU time spent to render the scene, sum the render times of all viewports that are drawn every frame plus [GetFrameSetupTimeCpu]. Unlike [graphics.gd/classdb/Engine.GetFramesPerSecond], this method will accurately reflect CPU utilization even if framerate is capped via V-Sync or [graphics.gd/classdb/Engine.MaxFps]. See also [ViewportGetMeasuredRenderTimeGpu].
+Returns the CPU time taken to render the last frame in milliseconds. This only includes time spent in rendering-related operations; scripts' _process functions and other engine subsystems are not included in this readout. To get a complete readout of CPU time spent to render the scene, sum the render times of all viewports that are drawn every frame plus [GetFrameSetupTimeCpu]. Unlike [Engine.GetFramesPerSecond], this method will accurately reflect CPU utilization even if framerate is capped via V-Sync or [Engine.MaxFps]. See also [ViewportGetMeasuredRenderTimeGpu].
 
 Note: Requires measurements to be enabled on the specified 'viewport' using [ViewportSetMeasureRenderTime]. Otherwise, this method returns 0.0.
+
+[Engine.GetFramesPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#GetFramesPerSecond
+[Engine.MaxFps]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxFps
 */
 //go:nosplit
 func (self class) ViewportGetMeasuredRenderTimeCpu(viewport RID.Any) float64 { //gd:RenderingServer.viewport_get_measured_render_time_cpu
@@ -8638,11 +9814,14 @@ func (self class) ViewportGetMeasuredRenderTimeCpu(viewport RID.Any) float64 { /
 }
 
 /*
-Returns the GPU time taken to render the last frame in milliseconds. To get a complete readout of GPU time spent to render the scene, sum the render times of all viewports that are drawn every frame. Unlike [graphics.gd/classdb/Engine.GetFramesPerSecond], this method accurately reflects GPU utilization even if framerate is capped via V-Sync or [graphics.gd/classdb/Engine.MaxFps]. See also [ViewportGetMeasuredRenderTimeCpu].
+Returns the GPU time taken to render the last frame in milliseconds. To get a complete readout of GPU time spent to render the scene, sum the render times of all viewports that are drawn every frame. Unlike [Engine.GetFramesPerSecond], this method accurately reflects GPU utilization even if framerate is capped via V-Sync or [Engine.MaxFps]. See also [ViewportGetMeasuredRenderTimeCpu].
 
 Note: Requires measurements to be enabled on the specified 'viewport' using [ViewportSetMeasureRenderTime]. Otherwise, this method returns 0.0.
 
 Note: When GPU utilization is low enough during a certain period of time, GPUs will decrease their power state (which in turn decreases core and memory clock speeds). This can cause the reported GPU time to increase if GPU utilization is kept low enough by a framerate cap (compared to what it would be at the GPU's highest power state). Keep this in mind when benchmarking using [ViewportGetMeasuredRenderTimeGpu]. This behavior can be overridden in the graphics driver settings at the cost of higher power usage.
+
+[Engine.GetFramesPerSecond]: https://pkg.go.dev/graphics.gd/classdb/Engine#GetFramesPerSecond
+[Engine.MaxFps]: https://pkg.go.dev/graphics.gd/classdb/Engine#MaxFps
 */
 //go:nosplit
 func (self class) ViewportGetMeasuredRenderTimeGpu(viewport RID.Any) float64 { //gd:RenderingServer.viewport_get_measured_render_time_gpu
@@ -8652,7 +9831,9 @@ func (self class) ViewportGetMeasuredRenderTimeGpu(viewport RID.Any) float64 { /
 }
 
 /*
-Sets the Variable Rate Shading (VRS) mode for the viewport. If the GPU does not support VRS, this property is ignored. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/vrs/mode".
+Sets the Variable Rate Shading (VRS) mode for the viewport. If the GPU does not support VRS, this property is ignored. Equivalent to [ProjectSettings] "rendering/vrs/mode".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) ViewportSetVrsMode(viewport RID.Any, mode ViewportVRSMode) { //gd:RenderingServer.viewport_set_vrs_mode
@@ -8676,7 +9857,9 @@ func (self class) ViewportSetVrsUpdateMode(viewport RID.Any, mode ViewportVRSUpd
 }
 
 /*
-The texture to use when the VRS mode is set to [Renderingserver.ViewportVrsTexture]. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/vrs/texture".
+The texture to use when the VRS mode is set to [Renderingserver.ViewportVrsTexture]. Equivalent to [ProjectSettings] "rendering/vrs/texture".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) ViewportSetVrsTexture(viewport RID.Any, texture RID.Any) { //gd:RenderingServer.viewport_set_vrs_texture
@@ -8699,7 +9882,9 @@ func (self class) SkyCreate() RID.Any { //gd:RenderingServer.sky_create
 }
 
 /*
-Sets the 'radiance_size' of the sky specified by the 'sky' RID (in pixels). Equivalent to [graphics.gd/classdb/Sky.Instance.RadianceSize].
+Sets the 'radiance_size' of the sky specified by the 'sky' RID (in pixels). Equivalent to [Sky.RadianceSize].
+
+[Sky.RadianceSize]: https://pkg.go.dev/graphics.gd/classdb/Sky#Instance.RadianceSize
 */
 //go:nosplit
 func (self class) SkySetRadianceSize(sky RID.Any, radiance_size int64) { //gd:RenderingServer.sky_set_radiance_size
@@ -8710,7 +9895,9 @@ func (self class) SkySetRadianceSize(sky RID.Any, radiance_size int64) { //gd:Re
 }
 
 /*
-Sets the process 'mode' of the sky specified by the 'sky' RID. Equivalent to [graphics.gd/classdb/Sky.Instance.ProcessMode].
+Sets the process 'mode' of the sky specified by the 'sky' RID. Equivalent to [Sky.ProcessMode].
+
+[Sky.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Sky#Instance.ProcessMode
 */
 //go:nosplit
 func (self class) SkySetMode(sky RID.Any, mode SkyMode) { //gd:RenderingServer.sky_set_mode
@@ -8732,11 +9919,14 @@ func (self class) SkySetMaterial(sky RID.Any, material RID.Any) { //gd:Rendering
 }
 
 /*
-Generates and returns an [graphics.gd/classdb/Image] containing the radiance map for the specified 'sky' RID. This supports built-in sky material and custom sky shaders. If 'bake_irradiance' is true, the irradiance map is saved instead of the radiance map. The radiance map is used to render reflected light, while the irradiance map is used to render ambient light. See also [EnvironmentBakePanorama].
+Generates and returns an [Image] containing the radiance map for the specified 'sky' RID. This supports built-in sky material and custom sky shaders. If 'bake_irradiance' is true, the irradiance map is saved instead of the radiance map. The radiance map is used to render reflected light, while the irradiance map is used to render ambient light. See also [EnvironmentBakePanorama].
 
 Note: The image is saved in linear color space without any tonemapping performed, which means it will look too dark if viewed directly in an image editor. 'energy' values above 1.0 can be used to brighten the resulting image.
 
-Note: 'size' should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [graphics.gd/classdb/Sky.Instance.RadianceSize], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
+Note: 'size' should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [Sky.RadianceSize], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
+
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[Sky.RadianceSize]: https://pkg.go.dev/graphics.gd/classdb/Sky#Instance.RadianceSize
 */
 //go:nosplit
 func (self class) SkyBakePanorama(sky RID.Any, energy float64, bake_irradiance bool, size Vector2i.XY) [1]gdclass.Image { //gd:RenderingServer.sky_bake_panorama
@@ -8825,7 +10015,9 @@ Creates an environment and adds it to the RenderingServer. It can be accessed wi
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/Environment].
+Note: The equivalent resource is [Environment].
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 //go:nosplit
 func (self class) EnvironmentCreate() RID.Any { //gd:RenderingServer.environment_create
@@ -8835,7 +10027,9 @@ func (self class) EnvironmentCreate() RID.Any { //gd:RenderingServer.environment
 }
 
 /*
-Sets the environment's background mode. Equivalent to [graphics.gd/classdb/Environment.Instance.BackgroundMode].
+Sets the environment's background mode. Equivalent to [Environment.BackgroundMode].
+
+[Environment.BackgroundMode]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.BackgroundMode
 */
 //go:nosplit
 func (self class) EnvironmentSetBackground(env RID.Any, bg EnvironmentBG) { //gd:RenderingServer.environment_set_background
@@ -8857,7 +10051,10 @@ func (self class) EnvironmentSetCameraId(env RID.Any, id int64) { //gd:Rendering
 }
 
 /*
-Sets the [graphics.gd/classdb/Sky] to be used as the environment's background when using BGMode sky. Equivalent to [graphics.gd/classdb/Environment.Instance.Sky].
+Sets the [Sky] to be used as the environment's background when using BGMode sky. Equivalent to [Environment.Sky].
+
+[Environment.Sky]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.Sky
+[Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
 */
 //go:nosplit
 func (self class) EnvironmentSetSky(env RID.Any, sky RID.Any) { //gd:RenderingServer.environment_set_sky
@@ -8868,7 +10065,10 @@ func (self class) EnvironmentSetSky(env RID.Any, sky RID.Any) { //gd:RenderingSe
 }
 
 /*
-Sets a custom field of view for the background [graphics.gd/classdb/Sky]. Equivalent to [graphics.gd/classdb/Environment.Instance.SkyCustomFov].
+Sets a custom field of view for the background [Sky]. Equivalent to [Environment.SkyCustomFov].
+
+[Environment.SkyCustomFov]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SkyCustomFov
+[Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
 */
 //go:nosplit
 func (self class) EnvironmentSetSkyCustomFov(env RID.Any, scale float64) { //gd:RenderingServer.environment_set_sky_custom_fov
@@ -8879,7 +10079,11 @@ func (self class) EnvironmentSetSkyCustomFov(env RID.Any, scale float64) { //gd:
 }
 
 /*
-Sets the rotation of the background [graphics.gd/classdb/Sky] expressed as a [Basis.XYZ]. Equivalent to [graphics.gd/classdb/Environment.Instance.SkyRotation], where the rotation vector is used to construct the [Basis.XYZ].
+Sets the rotation of the background [Sky] expressed as a [Basis.XYZ]. Equivalent to [Environment.SkyRotation], where the rotation vector is used to construct the [Basis.XYZ].
+
+[Basis.XYZ]: https://pkg.go.dev/graphics.gd/variant/Basis#XYZ
+[Environment.SkyRotation]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SkyRotation
+[Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
 */
 //go:nosplit
 func (self class) EnvironmentSetSkyOrientation(env RID.Any, orientation Basis.XYZ) { //gd:RenderingServer.environment_set_sky_orientation
@@ -8924,7 +10128,9 @@ func (self class) EnvironmentSetCanvasMaxLayer(env RID.Any, max_layer int64) { /
 }
 
 /*
-Sets the values to be used for ambient light rendering. See [graphics.gd/classdb/Environment] for more details.
+Sets the values to be used for ambient light rendering. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 //go:nosplit
 func (self class) EnvironmentSetAmbientLight(env RID.Any, color Color.RGBA, ambient EnvironmentAmbientSource, energy float64, sky_contribution float64, reflection_source EnvironmentReflectionSource) { //gd:RenderingServer.environment_set_ambient_light
@@ -8939,7 +10145,9 @@ func (self class) EnvironmentSetAmbientLight(env RID.Any, color Color.RGBA, ambi
 }
 
 /*
-Configures glow for the specified environment RID. See glow_* properties in [graphics.gd/classdb/Environment] for more information.
+Configures glow for the specified environment RID. See glow_* properties in [Environment] for more information.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 //go:nosplit
 func (self class) EnvironmentSetGlow(env RID.Any, enable bool, levels Packed.Array[float32], intensity float64, strength float64, mix float64, bloom_threshold float64, blend_mode EnvironmentGlowBlendMode, hdr_bleed_threshold float64, hdr_bleed_scale float64, hdr_luminance_cap float64, glow_map_strength float64, glow_map RID.Any) { //gd:RenderingServer.environment_set_glow
@@ -8961,7 +10169,9 @@ func (self class) EnvironmentSetGlow(env RID.Any, enable bool, levels Packed.Arr
 }
 
 /*
-Sets the variables to be used with the "tonemap" post-process effect. See [graphics.gd/classdb/Environment] for more details.
+Sets the variables to be used with the "tonemap" post-process effect. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 //go:nosplit
 func (self class) EnvironmentSetTonemap(env RID.Any, tone_mapper EnvironmentToneMapper, exposure float64, white float64) { //gd:RenderingServer.environment_set_tonemap
@@ -8974,7 +10184,9 @@ func (self class) EnvironmentSetTonemap(env RID.Any, tone_mapper EnvironmentTone
 }
 
 /*
-Sets the values to be used with the "adjustments" post-process effect. See [graphics.gd/classdb/Environment] for more details.
+Sets the values to be used with the "adjustments" post-process effect. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 //go:nosplit
 func (self class) EnvironmentSetAdjustment(env RID.Any, enable bool, brightness float64, contrast float64, saturation float64, use_1d_color_correction bool, color_correction RID.Any) { //gd:RenderingServer.environment_set_adjustment
@@ -8990,7 +10202,9 @@ func (self class) EnvironmentSetAdjustment(env RID.Any, enable bool, brightness 
 }
 
 /*
-Sets the variables to be used with the screen-space reflections (SSR) post-process effect. See [graphics.gd/classdb/Environment] for more details.
+Sets the variables to be used with the screen-space reflections (SSR) post-process effect. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 //go:nosplit
 func (self class) EnvironmentSetSsr(env RID.Any, enable bool, max_steps int64, fade_in float64, fade_out float64, depth_tolerance float64) { //gd:RenderingServer.environment_set_ssr
@@ -9005,7 +10219,9 @@ func (self class) EnvironmentSetSsr(env RID.Any, enable bool, max_steps int64, f
 }
 
 /*
-Sets the variables to be used with the screen-space ambient occlusion (SSAO) post-process effect. See [graphics.gd/classdb/Environment] for more details.
+Sets the variables to be used with the screen-space ambient occlusion (SSAO) post-process effect. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 //go:nosplit
 func (self class) EnvironmentSetSsao(env RID.Any, enable bool, radius float64, intensity float64, power float64, detail float64, horizon float64, sharpness float64, light_affect float64, ao_channel_affect float64) { //gd:RenderingServer.environment_set_ssao
@@ -9024,7 +10240,9 @@ func (self class) EnvironmentSetSsao(env RID.Any, enable bool, radius float64, i
 }
 
 /*
-Configures fog for the specified environment RID. See fog_* properties in [graphics.gd/classdb/Environment] for more information.
+Configures fog for the specified environment RID. See fog_* properties in [Environment] for more information.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 //go:nosplit
 func (self class) EnvironmentSetFog(env RID.Any, enable bool, light_color Color.RGBA, light_energy float64, sun_scatter float64, density float64, height float64, height_density float64, aerial_perspective float64, sky_affect float64, fog_mode EnvironmentFogMode) { //gd:RenderingServer.environment_set_fog
@@ -9044,7 +10262,9 @@ func (self class) EnvironmentSetFog(env RID.Any, enable bool, light_color Color.
 }
 
 /*
-Configures fog depth for the specified environment RID. Only has an effect when the fog mode of the environment is [EnvFogModeDepth]. See fog_depth_* properties in [graphics.gd/classdb/Environment] for more information.
+Configures fog depth for the specified environment RID. Only has an effect when the fog mode of the environment is [EnvFogModeDepth]. See fog_depth_* properties in [Environment] for more information.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 //go:nosplit
 func (self class) EnvironmentSetFogDepth(env RID.Any, curve float64, begin float64, end float64) { //gd:RenderingServer.environment_set_fog_depth
@@ -9057,7 +10277,9 @@ func (self class) EnvironmentSetFogDepth(env RID.Any, curve float64, begin float
 }
 
 /*
-Configures signed distance field global illumination for the specified environment RID. See sdfgi_* properties in [graphics.gd/classdb/Environment] for more information.
+Configures signed distance field global illumination for the specified environment RID. See sdfgi_* properties in [Environment] for more information.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 //go:nosplit
 func (self class) EnvironmentSetSdfgi(env RID.Any, enable bool, cascades int64, min_cell_size float64, y_scale EnvironmentSDFGIYScale, use_occlusion bool, bounce_feedback float64, read_sky bool, energy float64, normal_bias float64, probe_bias float64) { //gd:RenderingServer.environment_set_sdfgi
@@ -9077,7 +10299,9 @@ func (self class) EnvironmentSetSdfgi(env RID.Any, enable bool, cascades int64, 
 }
 
 /*
-Sets the variables to be used with the volumetric fog post-process effect. See [graphics.gd/classdb/Environment] for more details.
+Sets the variables to be used with the volumetric fog post-process effect. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 //go:nosplit
 func (self class) EnvironmentSetVolumetricFog(env RID.Any, enable bool, density float64, albedo Color.RGBA, emission Color.RGBA, emission_energy float64, anisotropy float64, length float64, p_detail_spread float64, gi_inject float64, temporal_reprojection bool, temporal_reprojection_amount float64, ambient_inject float64, sky_affect float64) { //gd:RenderingServer.environment_set_volumetric_fog
@@ -9100,9 +10324,11 @@ func (self class) EnvironmentSetVolumetricFog(env RID.Any, enable bool, density 
 }
 
 /*
-If 'enable' is true, enables bicubic upscaling for glow which improves quality at the cost of performance. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/environment/glow/upscale_mode".
+If 'enable' is true, enables bicubic upscaling for glow which improves quality at the cost of performance. Equivalent to [ProjectSettings] "rendering/environment/glow/upscale_mode".
 
 Note: This setting is only effective when using the Forward+ or Mobile rendering methods, as Compatibility uses a different glow implementation.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) EnvironmentGlowSetUseBicubicUpscale(enable bool) { //gd:RenderingServer.environment_glow_set_use_bicubic_upscale
@@ -9117,7 +10343,9 @@ func (self class) EnvironmentSetSsrRoughnessQuality(quality EnvironmentSSRRoughn
 }
 
 /*
-Sets the quality level of the screen-space ambient occlusion (SSAO) post-process effect. See [graphics.gd/classdb/Environment] for more details.
+Sets the quality level of the screen-space ambient occlusion (SSAO) post-process effect. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 //go:nosplit
 func (self class) EnvironmentSetSsaoQuality(quality EnvironmentSSAOQuality, half_size bool, adaptive_target float64, blur_passes int64, fadeout_from float64, fadeout_to float64) { //gd:RenderingServer.environment_set_ssao_quality
@@ -9132,7 +10360,9 @@ func (self class) EnvironmentSetSsaoQuality(quality EnvironmentSSAOQuality, half
 }
 
 /*
-Sets the quality level of the screen-space indirect lighting (SSIL) post-process effect. See [graphics.gd/classdb/Environment] for more details.
+Sets the quality level of the screen-space indirect lighting (SSIL) post-process effect. See [Environment] for more details.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 //go:nosplit
 func (self class) EnvironmentSetSsilQuality(quality EnvironmentSSILQuality, half_size bool, adaptive_target float64, blur_passes int64, fadeout_from float64, fadeout_to float64) { //gd:RenderingServer.environment_set_ssil_quality
@@ -9147,7 +10377,9 @@ func (self class) EnvironmentSetSsilQuality(quality EnvironmentSSILQuality, half
 }
 
 /*
-Sets the number of rays to throw per frame when computing signed distance field global illumination. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/global_illumination/sdfgi/probe_ray_count".
+Sets the number of rays to throw per frame when computing signed distance field global illumination. Equivalent to [ProjectSettings] "rendering/global_illumination/sdfgi/probe_ray_count".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) EnvironmentSetSdfgiRayCount(ray_count EnvironmentSDFGIRayCount) { //gd:RenderingServer.environment_set_sdfgi_ray_count
@@ -9155,7 +10387,9 @@ func (self class) EnvironmentSetSdfgiRayCount(ray_count EnvironmentSDFGIRayCount
 }
 
 /*
-Sets the number of frames to use for converging signed distance field global illumination. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_converge".
+Sets the number of frames to use for converging signed distance field global illumination. Equivalent to [ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_converge".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) EnvironmentSetSdfgiFramesToConverge(frames EnvironmentSDFGIFramesToConverge) { //gd:RenderingServer.environment_set_sdfgi_frames_to_converge
@@ -9165,7 +10399,9 @@ func (self class) EnvironmentSetSdfgiFramesToConverge(frames EnvironmentSDFGIFra
 }
 
 /*
-Sets the update speed for dynamic lights' indirect lighting when computing signed distance field global illumination. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_update_lights".
+Sets the update speed for dynamic lights' indirect lighting when computing signed distance field global illumination. Equivalent to [ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_update_lights".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) EnvironmentSetSdfgiFramesToUpdateLight(frames EnvironmentSDFGIFramesToUpdateLight) { //gd:RenderingServer.environment_set_sdfgi_frames_to_update_light
@@ -9194,11 +10430,14 @@ func (self class) EnvironmentSetVolumetricFogFilterActive(active bool) { //gd:Re
 }
 
 /*
-Generates and returns an [graphics.gd/classdb/Image] containing the radiance map for the specified 'environment' RID's sky. This supports built-in sky material and custom sky shaders. If 'bake_irradiance' is true, the irradiance map is saved instead of the radiance map. The radiance map is used to render reflected light, while the irradiance map is used to render ambient light. See also [SkyBakePanorama].
+Generates and returns an [Image] containing the radiance map for the specified 'environment' RID's sky. This supports built-in sky material and custom sky shaders. If 'bake_irradiance' is true, the irradiance map is saved instead of the radiance map. The radiance map is used to render reflected light, while the irradiance map is used to render ambient light. See also [SkyBakePanorama].
 
 Note: The image is saved in linear color space without any tonemapping performed, which means it will look too dark if viewed directly in an image editor.
 
-Note: 'size' should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [graphics.gd/classdb/Sky.Instance.RadianceSize], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
+Note: 'size' should be a 2:1 aspect ratio for the generated panorama to have square pixels. For radiance maps, there is no point in using a height greater than [Sky.RadianceSize], as it won't increase detail. Irradiance maps only contain low-frequency data, so there is usually no point in going past a size of 128×64 pixels when saving an irradiance map.
+
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[Sky.RadianceSize]: https://pkg.go.dev/graphics.gd/classdb/Sky#Instance.RadianceSize
 */
 //go:nosplit
 func (self class) EnvironmentBakePanorama(environment RID.Any, bake_irradiance bool, size Vector2i.XY) [1]gdclass.Image { //gd:RenderingServer.environment_bake_panorama
@@ -9212,7 +10451,9 @@ func (self class) EnvironmentBakePanorama(environment RID.Any, bake_irradiance b
 }
 
 /*
-Sets the screen-space roughness limiter parameters, such as whether it should be enabled and its thresholds. Equivalent to [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/screen_space_roughness_limiter/enabled", [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/screen_space_roughness_limiter/amount" and [graphics.gd/classdb/ProjectSettings] "rendering/anti_aliasing/screen_space_roughness_limiter/limit".
+Sets the screen-space roughness limiter parameters, such as whether it should be enabled and its thresholds. Equivalent to [ProjectSettings] "rendering/anti_aliasing/screen_space_roughness_limiter/enabled", [ProjectSettings] "rendering/anti_aliasing/screen_space_roughness_limiter/amount" and [ProjectSettings] "rendering/anti_aliasing/screen_space_roughness_limiter/limit".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) ScreenSpaceRoughnessLimiterSetActive(enable bool, amount float64, limit float64) { //gd:RenderingServer.screen_space_roughness_limiter_set_active
@@ -9224,7 +10465,9 @@ func (self class) ScreenSpaceRoughnessLimiterSetActive(enable bool, amount float
 }
 
 /*
-Sets [graphics.gd/classdb/ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_quality" to use when rendering materials that have subsurface scattering enabled.
+Sets [ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_quality" to use when rendering materials that have subsurface scattering enabled.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) SubSurfaceScatteringSetQuality(quality SubSurfaceScatteringQuality) { //gd:RenderingServer.sub_surface_scattering_set_quality
@@ -9232,7 +10475,9 @@ func (self class) SubSurfaceScatteringSetQuality(quality SubSurfaceScatteringQua
 }
 
 /*
-Sets the [graphics.gd/classdb/ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_scale" and [graphics.gd/classdb/ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_depth_scale" to use when rendering materials that have subsurface scattering enabled.
+Sets the [ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_scale" and [ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_depth_scale" to use when rendering materials that have subsurface scattering enabled.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) SubSurfaceScatteringSetScale(scale float64, depth_scale float64) { //gd:RenderingServer.sub_surface_scattering_set_scale
@@ -9247,7 +10492,9 @@ Creates a camera attributes object and adds it to the RenderingServer. It can be
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/CameraAttributes].
+Note: The equivalent resource is [CameraAttributes].
+
+[CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
 */
 //go:nosplit
 func (self class) CameraAttributesCreate() RID.Any { //gd:RenderingServer.camera_attributes_create
@@ -9276,7 +10523,9 @@ func (self class) CameraAttributesSetDofBlurBokehShape(shape DOFBokehShape) { //
 }
 
 /*
-Sets the parameters to use with the DOF blur effect. These parameters take on the same meaning as their counterparts in [graphics.gd/classdb/CameraAttributesPractical].
+Sets the parameters to use with the DOF blur effect. These parameters take on the same meaning as their counterparts in [CameraAttributesPractical].
+
+[CameraAttributesPractical]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical
 */
 //go:nosplit
 func (self class) CameraAttributesSetDofBlur(camera_attributes RID.Any, far_enable bool, far_distance float64, far_transition float64, near_enable bool, near_distance float64, near_transition float64, amount float64) { //gd:RenderingServer.camera_attributes_set_dof_blur
@@ -9313,7 +10562,10 @@ func (self class) CameraAttributesSetExposure(camera_attributes RID.Any, multipl
 }
 
 /*
-Sets the parameters to use with the auto-exposure effect. These parameters take on the same meaning as their counterparts in [graphics.gd/classdb/CameraAttributes] and [graphics.gd/classdb/CameraAttributesPractical].
+Sets the parameters to use with the auto-exposure effect. These parameters take on the same meaning as their counterparts in [CameraAttributes] and [CameraAttributesPractical].
+
+[CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
+[CameraAttributesPractical]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical
 */
 //go:nosplit
 func (self class) CameraAttributesSetAutoExposure(camera_attributes RID.Any, enable bool, min_sensitivity float64, max_sensitivity float64, speed float64, scale float64) { //gd:RenderingServer.camera_attributes_set_auto_exposure
@@ -9342,7 +10594,9 @@ func (self class) ScenarioCreate() RID.Any { //gd:RenderingServer.scenario_creat
 }
 
 /*
-Sets the environment that will be used with this scenario. See also [graphics.gd/classdb/Environment].
+Sets the environment that will be used with this scenario. See also [Environment].
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 //go:nosplit
 func (self class) ScenarioSetEnvironment(scenario RID.Any, environment RID.Any) { //gd:RenderingServer.scenario_set_environment
@@ -9364,7 +10618,9 @@ func (self class) ScenarioSetFallbackEnvironment(scenario RID.Any, environment R
 }
 
 /*
-Sets the camera attributes ('effects') that will be used with this scenario. See also [graphics.gd/classdb/CameraAttributes].
+Sets the camera attributes ('effects') that will be used with this scenario. See also [CameraAttributes].
+
+[CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
 */
 //go:nosplit
 func (self class) ScenarioSetCameraAttributes(scenario RID.Any, effects RID.Any) { //gd:RenderingServer.scenario_set_camera_attributes
@@ -9375,7 +10631,9 @@ func (self class) ScenarioSetCameraAttributes(scenario RID.Any, effects RID.Any)
 }
 
 /*
-Sets the compositor ('compositor') that will be used with this scenario. See also [graphics.gd/classdb/Compositor].
+Sets the compositor ('compositor') that will be used with this scenario. See also [Compositor].
+
+[Compositor]: https://pkg.go.dev/graphics.gd/classdb/Compositor
 */
 //go:nosplit
 func (self class) ScenarioSetCompositor(scenario RID.Any, compositor RID.Any) { //gd:RenderingServer.scenario_set_compositor
@@ -9407,7 +10665,9 @@ Once finished with your RID, you will want to free the RID using the RenderingSe
 
 An instance is a way of placing a 3D object in the scenario. Objects like particles, meshes, reflection probes and decals need to be associated with an instance to be visible in the scenario using [InstanceSetBase].
 
-Note: The equivalent node is [graphics.gd/classdb/VisualInstance3D].
+Note: The equivalent node is [VisualInstance3D].
+
+[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
 */
 //go:nosplit
 func (self class) InstanceCreate() RID.Any { //gd:RenderingServer.instance_create
@@ -9439,7 +10699,9 @@ func (self class) InstanceSetScenario(instance RID.Any, scenario RID.Any) { //gd
 }
 
 /*
-Sets the render layers that this instance will be drawn to. Equivalent to [graphics.gd/classdb/VisualInstance3D.Instance.Layers].
+Sets the render layers that this instance will be drawn to. Equivalent to [VisualInstance3D.Layers].
+
+[VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
 */
 //go:nosplit
 func (self class) InstanceSetLayerMask(instance RID.Any, mask int64) { //gd:RenderingServer.instance_set_layer_mask
@@ -9462,7 +10724,9 @@ func (self class) InstanceSetPivotData(instance RID.Any, sorting_offset float64,
 }
 
 /*
-Sets the world space transform of the instance. Equivalent to [graphics.gd/classdb/Node3D.Instance.GlobalTransform].
+Sets the world space transform of the instance. Equivalent to [Node3D.GlobalTransform].
+
+[Node3D.GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
 */
 //go:nosplit
 func (self class) InstanceSetTransform(instance RID.Any, transform Transform3D.BasisOrigin) { //gd:RenderingServer.instance_set_transform
@@ -9496,7 +10760,9 @@ func (self class) InstanceSetBlendShapeWeight(instance RID.Any, shape int64, wei
 }
 
 /*
-Sets the override material of a specific surface. Equivalent to [graphics.gd/classdb/MeshInstance3D.Instance.SetSurfaceOverrideMaterial].
+Sets the override material of a specific surface. Equivalent to [MeshInstance3D.SetSurfaceOverrideMaterial].
+
+[MeshInstance3D.SetSurfaceOverrideMaterial]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D#Instance.SetSurfaceOverrideMaterial
 */
 //go:nosplit
 func (self class) InstanceSetSurfaceOverrideMaterial(instance RID.Any, surface int64, material RID.Any) { //gd:RenderingServer.instance_set_surface_override_material
@@ -9508,7 +10774,9 @@ func (self class) InstanceSetSurfaceOverrideMaterial(instance RID.Any, surface i
 }
 
 /*
-Sets whether an instance is drawn or not. Equivalent to [graphics.gd/classdb/Node3D.Instance.Visible].
+Sets whether an instance is drawn or not. Equivalent to [Node3D.Visible].
+
+[Node3D.Visible]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Visible
 */
 //go:nosplit
 func (self class) InstanceSetVisible(instance RID.Any, visible bool) { //gd:RenderingServer.instance_set_visible
@@ -9519,13 +10787,15 @@ func (self class) InstanceSetVisible(instance RID.Any, visible bool) { //gd:Rend
 }
 
 /*
-Sets the transparency for the given geometry instance. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.Transparency].
+Sets the transparency for the given geometry instance. Equivalent to [GeometryInstance3D.Transparency].
 
 A transparency of 0.0 is fully opaque, while 1.0 is fully transparent. Values greater than 0.0 (exclusive) will force the geometry's materials to go through the transparent pipeline, which is slower to render and can exhibit rendering issues due to incorrect transparency sorting. However, unlike using a transparent material, setting 'transparency' to a value greater than 0.0 (exclusive) will not disable shadow rendering.
 
 In spatial shaders, 1.0 - transparency is set as the default value of the ALPHA built-in.
 
 Note: 'transparency' is clamped between 0.0 and 1.0, so this property cannot be used to make transparent materials more opaque than they originally are.
+
+[GeometryInstance3D.Transparency]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.Transparency
 */
 //go:nosplit
 func (self class) InstanceGeometrySetTransparency(instance RID.Any, transparency float64) { //gd:RenderingServer.instance_geometry_set_transparency
@@ -9544,7 +10814,9 @@ func (self class) InstanceTeleport(instance RID.Any) { //gd:RenderingServer.inst
 }
 
 /*
-Sets a custom AABB to use when culling objects from the view frustum. Equivalent to setting [graphics.gd/classdb/GeometryInstance3D.Instance.CustomAabb].
+Sets a custom AABB to use when culling objects from the view frustum. Equivalent to setting [GeometryInstance3D.CustomAabb].
+
+[GeometryInstance3D.CustomAabb]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.CustomAabb
 */
 //go:nosplit
 func (self class) InstanceSetCustomAabb(instance RID.Any, aabb AABB.PositionSize) { //gd:RenderingServer.instance_set_custom_aabb
@@ -9566,7 +10838,9 @@ func (self class) InstanceAttachSkeleton(instance RID.Any, skeleton RID.Any) { /
 }
 
 /*
-Sets a margin to increase the size of the AABB when culling objects from the view frustum. This allows you to avoid culling objects that fall outside the view frustum. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.ExtraCullMargin].
+Sets a margin to increase the size of the AABB when culling objects from the view frustum. This allows you to avoid culling objects that fall outside the view frustum. Equivalent to [GeometryInstance3D.ExtraCullMargin].
+
+[GeometryInstance3D.ExtraCullMargin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.ExtraCullMargin
 */
 //go:nosplit
 func (self class) InstanceSetExtraVisibilityMargin(instance RID.Any, margin float64) { //gd:RenderingServer.instance_set_extra_visibility_margin
@@ -9577,7 +10851,9 @@ func (self class) InstanceSetExtraVisibilityMargin(instance RID.Any, margin floa
 }
 
 /*
-Sets the visibility parent for the given instance. Equivalent to [graphics.gd/classdb/Node3D.Instance.VisibilityParent].
+Sets the visibility parent for the given instance. Equivalent to [Node3D.VisibilityParent].
+
+[Node3D.VisibilityParent]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.VisibilityParent
 */
 //go:nosplit
 func (self class) InstanceSetVisibilityParent(instance RID.Any, parent RID.Any) { //gd:RenderingServer.instance_set_visibility_parent
@@ -9588,7 +10864,9 @@ func (self class) InstanceSetVisibilityParent(instance RID.Any, parent RID.Any) 
 }
 
 /*
-If true, ignores both frustum and occlusion culling on the specified 3D geometry instance. This is not the same as [graphics.gd/classdb/GeometryInstance3D.Instance.IgnoreOcclusionCulling], which only ignores occlusion culling and leaves frustum culling intact.
+If true, ignores both frustum and occlusion culling on the specified 3D geometry instance. This is not the same as [GeometryInstance3D.IgnoreOcclusionCulling], which only ignores occlusion culling and leaves frustum culling intact.
+
+[GeometryInstance3D.IgnoreOcclusionCulling]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.IgnoreOcclusionCulling
 */
 //go:nosplit
 func (self class) InstanceSetIgnoreCulling(instance RID.Any, enabled bool) { //gd:RenderingServer.instance_set_ignore_culling
@@ -9611,7 +10889,9 @@ func (self class) InstanceGeometrySetFlag(instance RID.Any, flag InstanceFlags, 
 }
 
 /*
-Sets the shadow casting setting. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.CastShadow].
+Sets the shadow casting setting. Equivalent to [GeometryInstance3D.CastShadow].
+
+[GeometryInstance3D.CastShadow]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.CastShadow
 */
 //go:nosplit
 func (self class) InstanceGeometrySetCastShadowsSetting(instance RID.Any, shadow_casting_setting ShadowCastingSetting) { //gd:RenderingServer.instance_geometry_set_cast_shadows_setting
@@ -9622,7 +10902,9 @@ func (self class) InstanceGeometrySetCastShadowsSetting(instance RID.Any, shadow
 }
 
 /*
-Sets a material that will override the material for all surfaces on the mesh associated with this instance. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.MaterialOverride].
+Sets a material that will override the material for all surfaces on the mesh associated with this instance. Equivalent to [GeometryInstance3D.MaterialOverride].
+
+[GeometryInstance3D.MaterialOverride]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.MaterialOverride
 */
 //go:nosplit
 func (self class) InstanceGeometrySetMaterialOverride(instance RID.Any, material RID.Any) { //gd:RenderingServer.instance_geometry_set_material_override
@@ -9633,7 +10915,9 @@ func (self class) InstanceGeometrySetMaterialOverride(instance RID.Any, material
 }
 
 /*
-Sets a material that will be rendered for all surfaces on top of active materials for the mesh associated with this instance. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.MaterialOverlay].
+Sets a material that will be rendered for all surfaces on top of active materials for the mesh associated with this instance. Equivalent to [GeometryInstance3D.MaterialOverlay].
+
+[GeometryInstance3D.MaterialOverlay]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.MaterialOverlay
 */
 //go:nosplit
 func (self class) InstanceGeometrySetMaterialOverlay(instance RID.Any, material RID.Any) { //gd:RenderingServer.instance_geometry_set_material_overlay
@@ -9644,7 +10928,9 @@ func (self class) InstanceGeometrySetMaterialOverlay(instance RID.Any, material 
 }
 
 /*
-Sets the visibility range values for the given geometry instance. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.VisibilityRangeBegin] and related properties.
+Sets the visibility range values for the given geometry instance. Equivalent to [GeometryInstance3D.VisibilityRangeBegin] and related properties.
+
+[GeometryInstance3D.VisibilityRangeBegin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeBegin
 */
 //go:nosplit
 func (self class) InstanceGeometrySetVisibilityRange(instance RID.Any, min float64, max float64, min_margin float64, max_margin float64, fade_mode VisibilityRangeFadeMode) { //gd:RenderingServer.instance_geometry_set_visibility_range
@@ -9659,7 +10945,9 @@ func (self class) InstanceGeometrySetVisibilityRange(instance RID.Any, min float
 }
 
 /*
-Sets the lightmap GI instance to use for the specified 3D geometry instance. The lightmap UV scale for the specified instance (equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.GiLightmapScale]) and lightmap atlas slice must also be specified.
+Sets the lightmap GI instance to use for the specified 3D geometry instance. The lightmap UV scale for the specified instance (equivalent to [GeometryInstance3D.GiLightmapScale]) and lightmap atlas slice must also be specified.
+
+[GeometryInstance3D.GiLightmapScale]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GiLightmapScale
 */
 //go:nosplit
 func (self class) InstanceGeometrySetLightmap(instance RID.Any, lightmap RID.Any, lightmap_uv_scale Rect2.PositionSize, lightmap_slice int64) { //gd:RenderingServer.instance_geometry_set_lightmap
@@ -9672,7 +10960,9 @@ func (self class) InstanceGeometrySetLightmap(instance RID.Any, lightmap RID.Any
 }
 
 /*
-Sets the level of detail bias to use when rendering the specified 3D geometry instance. Higher values result in higher detail from further away. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.LodBias].
+Sets the level of detail bias to use when rendering the specified 3D geometry instance. Higher values result in higher detail from further away. Equivalent to [GeometryInstance3D.LodBias].
+
+[GeometryInstance3D.LodBias]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.LodBias
 */
 //go:nosplit
 func (self class) InstanceGeometrySetLodBias(instance RID.Any, lod_bias float64) { //gd:RenderingServer.instance_geometry_set_lod_bias
@@ -9683,7 +10973,9 @@ func (self class) InstanceGeometrySetLodBias(instance RID.Any, lod_bias float64)
 }
 
 /*
-Sets the per-instance shader uniform on the specified 3D geometry instance. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.SetInstanceShaderParameter].
+Sets the per-instance shader uniform on the specified 3D geometry instance. Equivalent to [GeometryInstance3D.SetInstanceShaderParameter].
+
+[GeometryInstance3D.SetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.SetInstanceShaderParameter
 */
 //go:nosplit
 func (self class) InstanceGeometrySetShaderParameter(instance RID.Any, parameter String.Name, value variant.Any) { //gd:RenderingServer.instance_geometry_set_shader_parameter
@@ -9695,9 +10987,11 @@ func (self class) InstanceGeometrySetShaderParameter(instance RID.Any, parameter
 }
 
 /*
-Returns the value of the per-instance shader uniform from the specified 3D geometry instance. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.GetInstanceShaderParameter].
+Returns the value of the per-instance shader uniform from the specified 3D geometry instance. Equivalent to [GeometryInstance3D.GetInstanceShaderParameter].
 
 Note: Per-instance shader parameter names are case-sensitive.
+
+[GeometryInstance3D.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GetInstanceShaderParameter
 */
 //go:nosplit
 func (self class) InstanceGeometryGetShaderParameter(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.instance_geometry_get_shader_parameter
@@ -9710,7 +11004,9 @@ func (self class) InstanceGeometryGetShaderParameter(instance RID.Any, parameter
 }
 
 /*
-Returns the default value of the per-instance shader uniform from the specified 3D geometry instance. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.GetInstanceShaderParameter].
+Returns the default value of the per-instance shader uniform from the specified 3D geometry instance. Equivalent to [GeometryInstance3D.GetInstanceShaderParameter].
+
+[GeometryInstance3D.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GetInstanceShaderParameter
 */
 //go:nosplit
 func (self class) InstanceGeometryGetShaderParameterDefaultValue(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.instance_geometry_get_shader_parameter_default_value
@@ -9723,7 +11019,9 @@ func (self class) InstanceGeometryGetShaderParameterDefaultValue(instance RID.An
 }
 
 /*
-Returns a dictionary of per-instance shader uniform names of the per-instance shader uniform from the specified 3D geometry instance. The returned dictionary is in PropertyInfo format, with the keys name, class_name, type, hint, hint_string and usage. Equivalent to [graphics.gd/classdb/GeometryInstance3D.Instance.GetInstanceShaderParameter].
+Returns a dictionary of per-instance shader uniform names of the per-instance shader uniform from the specified 3D geometry instance. The returned dictionary is in PropertyInfo format, with the keys name, class_name, type, hint, hint_string and usage. Equivalent to [GeometryInstance3D.GetInstanceShaderParameter].
+
+[GeometryInstance3D.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GetInstanceShaderParameter
 */
 //go:nosplit
 func (self class) InstanceGeometryGetShaderParameterList(instance RID.Any) Array.Contains[Dictionary.Any] { //gd:RenderingServer.instance_geometry_get_shader_parameter_list
@@ -9733,9 +11031,15 @@ func (self class) InstanceGeometryGetShaderParameterList(instance RID.Any) Array
 }
 
 /*
-Returns an array of object IDs intersecting with the provided AABB. Only 3D nodes that inherit from [graphics.gd/classdb/VisualInstance3D] are considered, such as [graphics.gd/classdb/MeshInstance3D] or [graphics.gd/classdb/DirectionalLight3D]. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [graphics.gd/classdb/World3D] you want to query. This forces an update for all resources queued to update.
+Returns an array of object IDs intersecting with the provided AABB. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
 
 Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
+[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
 */
 //go:nosplit
 func (self class) InstancesCullAabb(aabb AABB.PositionSize, scenario RID.Any) Packed.Array[int64] { //gd:RenderingServer.instances_cull_aabb
@@ -9748,9 +11052,15 @@ func (self class) InstancesCullAabb(aabb AABB.PositionSize, scenario RID.Any) Pa
 }
 
 /*
-Returns an array of object IDs intersecting with the provided 3D ray. Only 3D nodes that inherit from [graphics.gd/classdb/VisualInstance3D] are considered, such as [graphics.gd/classdb/MeshInstance3D] or [graphics.gd/classdb/DirectionalLight3D]. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [graphics.gd/classdb/World3D] you want to query. This forces an update for all resources queued to update.
+Returns an array of object IDs intersecting with the provided 3D ray. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
 
 Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
+[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
 */
 //go:nosplit
 func (self class) InstancesCullRay(from Vector3.XYZ, to Vector3.XYZ, scenario RID.Any) Packed.Array[int64] { //gd:RenderingServer.instances_cull_ray
@@ -9764,9 +11074,15 @@ func (self class) InstancesCullRay(from Vector3.XYZ, to Vector3.XYZ, scenario RI
 }
 
 /*
-Returns an array of object IDs intersecting with the provided convex shape. Only 3D nodes that inherit from [graphics.gd/classdb/VisualInstance3D] are considered, such as [graphics.gd/classdb/MeshInstance3D] or [graphics.gd/classdb/DirectionalLight3D]. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [graphics.gd/classdb/World3D] you want to query. This forces an update for all resources queued to update.
+Returns an array of object IDs intersecting with the provided convex shape. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
 
 Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
+[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
 */
 //go:nosplit
 func (self class) InstancesCullConvex(convex Array.Contains[Plane.NormalD], scenario RID.Any) Packed.Array[int64] { //gd:RenderingServer.instances_cull_convex
@@ -9779,7 +11095,9 @@ func (self class) InstancesCullConvex(convex Array.Contains[Plane.NormalD], scen
 }
 
 /*
-Bakes the material data of the Mesh passed in the 'base' parameter with optional 'material_overrides' to a set of [graphics.gd/classdb/Image]s of size 'image_size'. Returns an array of [graphics.gd/classdb/Image]s containing material properties as specified in [BakeChannels].
+Bakes the material data of the Mesh passed in the 'base' parameter with optional 'material_overrides' to a set of [Image]s of size 'image_size'. Returns an array of [Image]s containing material properties as specified in [BakeChannels].
+
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
 */
 //go:nosplit
 func (self class) BakeRenderUv2(base RID.Any, material_overrides Array.Contains[RID.Any], image_size Vector2i.XY) Array.Contains[[1]gdclass.Image] { //gd:RenderingServer.bake_render_uv2
@@ -9797,7 +11115,11 @@ Creates a canvas and returns the assigned [Resource.ID]. It can be accessed with
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Canvas has no [graphics.gd/classdb/Resource] or [graphics.gd/classdb/Node] equivalent.
+Canvas has no [Resource] or [Node] equivalent.
+
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) CanvasCreate() RID.Any { //gd:RenderingServer.canvas_create
@@ -9853,7 +11175,9 @@ Creates a canvas texture and adds it to the RenderingServer. It can be accessed 
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method. See also [Texture2dCreate].
 
-Note: The equivalent resource is [graphics.gd/classdb/CanvasTexture] and is only meant to be used in 2D rendering, not 3D.
+Note: The equivalent resource is [CanvasTexture] and is only meant to be used in 2D rendering, not 3D.
+
+[CanvasTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture
 */
 //go:nosplit
 func (self class) CanvasTextureCreate() RID.Any { //gd:RenderingServer.canvas_texture_create
@@ -9863,7 +11187,11 @@ func (self class) CanvasTextureCreate() RID.Any { //gd:RenderingServer.canvas_te
 }
 
 /*
-Sets the 'channel''s 'texture' for the canvas texture specified by the 'canvas_texture' RID. Equivalent to [graphics.gd/classdb/CanvasTexture.Instance.DiffuseTexture], [graphics.gd/classdb/CanvasTexture.Instance.NormalTexture] and [graphics.gd/classdb/CanvasTexture.Instance.SpecularTexture].
+Sets the 'channel''s 'texture' for the canvas texture specified by the 'canvas_texture' RID. Equivalent to [CanvasTexture.DiffuseTexture], [CanvasTexture.NormalTexture] and [CanvasTexture.SpecularTexture].
+
+[CanvasTexture.DiffuseTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.DiffuseTexture
+[CanvasTexture.NormalTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.NormalTexture
+[CanvasTexture.SpecularTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.SpecularTexture
 */
 //go:nosplit
 func (self class) CanvasTextureSetChannel(canvas_texture RID.Any, channel CanvasTextureChannel, texture RID.Any) { //gd:RenderingServer.canvas_texture_set_channel
@@ -9875,7 +11203,10 @@ func (self class) CanvasTextureSetChannel(canvas_texture RID.Any, channel Canvas
 }
 
 /*
-Sets the 'base_color' and 'shininess' to use for the canvas texture specified by the 'canvas_texture' RID. Equivalent to [graphics.gd/classdb/CanvasTexture.Instance.SpecularColor] and [graphics.gd/classdb/CanvasTexture.Instance.SpecularShininess].
+Sets the 'base_color' and 'shininess' to use for the canvas texture specified by the 'canvas_texture' RID. Equivalent to [CanvasTexture.SpecularColor] and [CanvasTexture.SpecularShininess].
+
+[CanvasTexture.SpecularColor]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.SpecularColor
+[CanvasTexture.SpecularShininess]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.SpecularShininess
 */
 //go:nosplit
 func (self class) CanvasTextureSetShadingParameters(canvas_texture RID.Any, base_color Color.RGBA, shininess float64) { //gd:RenderingServer.canvas_texture_set_shading_parameters
@@ -9913,7 +11244,10 @@ Creates a new CanvasItem instance and returns its [Resource.ID]. It can be acces
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/CanvasItem].
+Note: The equivalent node is [CanvasItem].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) CanvasItemCreate() RID.Any { //gd:RenderingServer.canvas_item_create
@@ -9923,7 +11257,9 @@ func (self class) CanvasItemCreate() RID.Any { //gd:RenderingServer.canvas_item_
 }
 
 /*
-Sets a parent [graphics.gd/classdb/CanvasItem] to the [graphics.gd/classdb/CanvasItem]. The item will inherit transform, modulation and visibility from its parent, like [graphics.gd/classdb/CanvasItem] nodes in the scene tree.
+Sets a parent [CanvasItem] to the [CanvasItem]. The item will inherit transform, modulation and visibility from its parent, like [CanvasItem] nodes in the scene tree.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 //go:nosplit
 func (self class) CanvasItemSetParent(item RID.Any, parent RID.Any) { //gd:RenderingServer.canvas_item_set_parent
@@ -9934,7 +11270,9 @@ func (self class) CanvasItemSetParent(item RID.Any, parent RID.Any) { //gd:Rende
 }
 
 /*
-Sets the default texture filter mode for the canvas item specified by the 'item' RID. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.TextureFilter].
+Sets the default texture filter mode for the canvas item specified by the 'item' RID. Equivalent to [CanvasItem.TextureFilter].
+
+[CanvasItem.TextureFilter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TextureFilter
 */
 //go:nosplit
 func (self class) CanvasItemSetDefaultTextureFilter(item RID.Any, filter CanvasItemTextureFilter) { //gd:RenderingServer.canvas_item_set_default_texture_filter
@@ -9945,7 +11283,9 @@ func (self class) CanvasItemSetDefaultTextureFilter(item RID.Any, filter CanvasI
 }
 
 /*
-Sets the default texture repeat mode for the canvas item specified by the 'item' RID. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.TextureRepeat].
+Sets the default texture repeat mode for the canvas item specified by the 'item' RID. Equivalent to [CanvasItem.TextureRepeat].
+
+[CanvasItem.TextureRepeat]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TextureRepeat
 */
 //go:nosplit
 func (self class) CanvasItemSetDefaultTextureRepeat(item RID.Any, repeat CanvasItemTextureRepeat) { //gd:RenderingServer.canvas_item_set_default_texture_repeat
@@ -9956,7 +11296,9 @@ func (self class) CanvasItemSetDefaultTextureRepeat(item RID.Any, repeat CanvasI
 }
 
 /*
-Sets the visibility of the [graphics.gd/classdb/CanvasItem].
+Sets the visibility of the [CanvasItem].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 //go:nosplit
 func (self class) CanvasItemSetVisible(item RID.Any, visible bool) { //gd:RenderingServer.canvas_item_set_visible
@@ -9967,7 +11309,9 @@ func (self class) CanvasItemSetVisible(item RID.Any, visible bool) { //gd:Render
 }
 
 /*
-Sets the light 'mask' for the canvas item specified by the 'item' RID. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.LightMask].
+Sets the light 'mask' for the canvas item specified by the 'item' RID. Equivalent to [CanvasItem.LightMask].
+
+[CanvasItem.LightMask]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.LightMask
 */
 //go:nosplit
 func (self class) CanvasItemSetLightMask(item RID.Any, mask int64) { //gd:RenderingServer.canvas_item_set_light_mask
@@ -9978,7 +11322,10 @@ func (self class) CanvasItemSetLightMask(item RID.Any, mask int64) { //gd:Render
 }
 
 /*
-Sets the rendering visibility layer associated with this [graphics.gd/classdb/CanvasItem]. Only [graphics.gd/classdb/Viewport] nodes with a matching rendering mask will render this [graphics.gd/classdb/CanvasItem].
+Sets the rendering visibility layer associated with this [CanvasItem]. Only [Viewport] nodes with a matching rendering mask will render this [CanvasItem].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 */
 //go:nosplit
 func (self class) CanvasItemSetVisibilityLayer(item RID.Any, visibility_layer int64) { //gd:RenderingServer.canvas_item_set_visibility_layer
@@ -9989,7 +11336,9 @@ func (self class) CanvasItemSetVisibilityLayer(item RID.Any, visibility_layer in
 }
 
 /*
-Sets the 'transform' of the canvas item specified by the 'item' RID. This affects where and how the item will be drawn. Child canvas items' transforms are multiplied by their parent's transform. Equivalent to [graphics.gd/classdb/Node2D.Instance.Transform].
+Sets the 'transform' of the canvas item specified by the 'item' RID. This affects where and how the item will be drawn. Child canvas items' transforms are multiplied by their parent's transform. Equivalent to [Node2D.Transform].
+
+[Node2D.Transform]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Transform
 */
 //go:nosplit
 func (self class) CanvasItemSetTransform(item RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_set_transform
@@ -10002,7 +11351,10 @@ func (self class) CanvasItemSetTransform(item RID.Any, transform Transform2D.Ori
 /*
 If 'clip' is true, makes the canvas item specified by the 'item' RID not draw anything outside of its rect's coordinates. This clipping is fast, but works only with axis-aligned rectangles. This means that rotation is ignored by the clipping rectangle. For more advanced clipping shapes, use [CanvasItemSetCanvasGroupMode] instead.
 
-Note: The equivalent node functionality is found in [graphics.gd/classdb/Label.Instance.ClipText], [graphics.gd/classdb/RichTextLabel] (always enabled) and more.
+Note: The equivalent node functionality is found in [Label.ClipText], [RichTextLabel] (always enabled) and more.
+
+[Label.ClipText]: https://pkg.go.dev/graphics.gd/classdb/Label#Instance.ClipText
+[RichTextLabel]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel
 */
 //go:nosplit
 func (self class) CanvasItemSetClip(item RID.Any, clip bool) { //gd:RenderingServer.canvas_item_set_clip
@@ -10038,7 +11390,9 @@ func (self class) CanvasItemSetCustomRect(item RID.Any, use_custom_rect bool, re
 }
 
 /*
-Multiplies the color of the canvas item specified by the 'item' RID, while affecting its children. See also [CanvasItemSetSelfModulate]. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.Modulate].
+Multiplies the color of the canvas item specified by the 'item' RID, while affecting its children. See also [CanvasItemSetSelfModulate]. Equivalent to [CanvasItem.Modulate].
+
+[CanvasItem.Modulate]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Modulate
 */
 //go:nosplit
 func (self class) CanvasItemSetModulate(item RID.Any, color Color.RGBA) { //gd:RenderingServer.canvas_item_set_modulate
@@ -10049,7 +11403,9 @@ func (self class) CanvasItemSetModulate(item RID.Any, color Color.RGBA) { //gd:R
 }
 
 /*
-Multiplies the color of the canvas item specified by the 'item' RID, without affecting its children. See also [CanvasItemSetModulate]. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.SelfModulate].
+Multiplies the color of the canvas item specified by the 'item' RID, without affecting its children. See also [CanvasItemSetModulate]. Equivalent to [CanvasItem.SelfModulate].
+
+[CanvasItem.SelfModulate]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.SelfModulate
 */
 //go:nosplit
 func (self class) CanvasItemSetSelfModulate(item RID.Any, color Color.RGBA) { //gd:RenderingServer.canvas_item_set_self_modulate
@@ -10060,7 +11416,9 @@ func (self class) CanvasItemSetSelfModulate(item RID.Any, color Color.RGBA) { //
 }
 
 /*
-If 'enabled' is true, draws the canvas item specified by the 'item' RID behind its parent. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.ShowBehindParent].
+If 'enabled' is true, draws the canvas item specified by the 'item' RID behind its parent. Equivalent to [CanvasItem.ShowBehindParent].
+
+[CanvasItem.ShowBehindParent]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ShowBehindParent
 */
 //go:nosplit
 func (self class) CanvasItemSetDrawBehindParent(item RID.Any, enabled bool) { //gd:RenderingServer.canvas_item_set_draw_behind_parent
@@ -10105,7 +11463,11 @@ func (self class) CanvasItemTransformPhysicsInterpolation(item RID.Any, transfor
 }
 
 /*
-Draws a line on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawLine].
+Draws a line on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawLine].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawLine]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawLine
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) CanvasItemAddLine(item RID.Any, from Vector2.XY, to Vector2.XY, color Color.RGBA, width float64, antialiased bool) { //gd:RenderingServer.canvas_item_add_line
@@ -10120,7 +11482,12 @@ func (self class) CanvasItemAddLine(item RID.Any, from Vector2.XY, to Vector2.XY
 }
 
 /*
-Draws a 2D polyline on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawPolyline] and [graphics.gd/classdb/CanvasItem.Instance.DrawPolylineColors].
+Draws a 2D polyline on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawPolyline] and [CanvasItem.DrawPolylineColors].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawPolyline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolyline
+[CanvasItem.DrawPolylineColors]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolylineColors
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) CanvasItemAddPolyline(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width float64, antialiased bool) { //gd:RenderingServer.canvas_item_add_polyline
@@ -10134,7 +11501,12 @@ func (self class) CanvasItemAddPolyline(item RID.Any, points Packed.Array[Vector
 }
 
 /*
-Draws a 2D multiline on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultiline] and [graphics.gd/classdb/CanvasItem.Instance.DrawMultilineColors].
+Draws a 2D multiline on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawMultiline] and [CanvasItem.DrawMultilineColors].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawMultiline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultiline
+[CanvasItem.DrawMultilineColors]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineColors
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) CanvasItemAddMultiline(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], width float64, antialiased bool) { //gd:RenderingServer.canvas_item_add_multiline
@@ -10148,7 +11520,11 @@ func (self class) CanvasItemAddMultiline(item RID.Any, points Packed.Array[Vecto
 }
 
 /*
-Draws a rectangle on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawRect].
+Draws a rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawRect].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawRect
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) CanvasItemAddRect(item RID.Any, rect Rect2.PositionSize, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_rect
@@ -10161,7 +11537,11 @@ func (self class) CanvasItemAddRect(item RID.Any, rect Rect2.PositionSize, color
 }
 
 /*
-Draws a circle on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawCircle].
+Draws a circle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawCircle].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawCircle]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawCircle
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) CanvasItemAddCircle(item RID.Any, pos Vector2.XY, radius float64, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_circle
@@ -10175,7 +11555,12 @@ func (self class) CanvasItemAddCircle(item RID.Any, pos Vector2.XY, radius float
 }
 
 /*
-Draws a 2D textured rectangle on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawTextureRect] and [graphics.gd/classdb/Texture2D.Instance.DrawRect].
+Draws a 2D textured rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawTextureRect] and [Texture2D.DrawRect].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawTextureRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawTextureRect
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[Texture2D.DrawRect]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.DrawRect
 */
 //go:nosplit
 func (self class) CanvasItemAddTextureRect(item RID.Any, rect Rect2.PositionSize, texture RID.Any, tile bool, modulate Color.RGBA, transpose bool) { //gd:RenderingServer.canvas_item_add_texture_rect
@@ -10190,7 +11575,9 @@ func (self class) CanvasItemAddTextureRect(item RID.Any, rect Rect2.PositionSize
 }
 
 /*
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawMsdfTextureRectRegion].
+See also [CanvasItem.DrawMsdfTextureRectRegion].
+
+[CanvasItem.DrawMsdfTextureRectRegion]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMsdfTextureRectRegion
 */
 //go:nosplit
 func (self class) CanvasItemAddMsdfTextureRectRegion(item RID.Any, rect Rect2.PositionSize, texture RID.Any, src_rect Rect2.PositionSize, modulate Color.RGBA, outline_size int64, px_range float64, scale float64) { //gd:RenderingServer.canvas_item_add_msdf_texture_rect_region
@@ -10207,7 +11594,9 @@ func (self class) CanvasItemAddMsdfTextureRectRegion(item RID.Any, rect Rect2.Po
 }
 
 /*
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawLcdTextureRectRegion].
+See also [CanvasItem.DrawLcdTextureRectRegion].
+
+[CanvasItem.DrawLcdTextureRectRegion]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawLcdTextureRectRegion
 */
 //go:nosplit
 func (self class) CanvasItemAddLcdTextureRectRegion(item RID.Any, rect Rect2.PositionSize, texture RID.Any, src_rect Rect2.PositionSize, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_lcd_texture_rect_region
@@ -10221,7 +11610,12 @@ func (self class) CanvasItemAddLcdTextureRectRegion(item RID.Any, rect Rect2.Pos
 }
 
 /*
-Draws the specified region of a 2D textured rectangle on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawTextureRectRegion] and [graphics.gd/classdb/Texture2D.Instance.DrawRectRegion].
+Draws the specified region of a 2D textured rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawTextureRectRegion] and [Texture2D.DrawRectRegion].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawTextureRectRegion]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawTextureRectRegion
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[Texture2D.DrawRectRegion]: https://pkg.go.dev/graphics.gd/classdb/Texture2D#Instance.DrawRectRegion
 */
 //go:nosplit
 func (self class) CanvasItemAddTextureRectRegion(item RID.Any, rect Rect2.PositionSize, texture RID.Any, src_rect Rect2.PositionSize, modulate Color.RGBA, transpose bool, clip_uv bool) { //gd:RenderingServer.canvas_item_add_texture_rect_region
@@ -10237,7 +11631,10 @@ func (self class) CanvasItemAddTextureRectRegion(item RID.Any, rect Rect2.Positi
 }
 
 /*
-Draws a nine-patch rectangle on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID].
+Draws a nine-patch rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) CanvasItemAddNinePatch(item RID.Any, rect Rect2.PositionSize, source Rect2.PositionSize, texture RID.Any, topleft Vector2.XY, bottomright Vector2.XY, x_axis_mode NinePatchAxisMode, y_axis_mode NinePatchAxisMode, draw_center bool, modulate Color.RGBA) { //gd:RenderingServer.canvas_item_add_nine_patch
@@ -10256,7 +11653,11 @@ func (self class) CanvasItemAddNinePatch(item RID.Any, rect Rect2.PositionSize, 
 }
 
 /*
-Draws a 2D primitive on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawPrimitive].
+Draws a 2D primitive on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawPrimitive].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawPrimitive]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPrimitive
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) CanvasItemAddPrimitive(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture RID.Any) { //gd:RenderingServer.canvas_item_add_primitive
@@ -10270,9 +11671,16 @@ func (self class) CanvasItemAddPrimitive(item RID.Any, points Packed.Array[Vecto
 }
 
 /*
-Draws a 2D polygon on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. If you need more flexibility (such as being able to use bones), use [CanvasItemAddTriangleArray] instead. See also [graphics.gd/classdb/CanvasItem.Instance.DrawPolygon].
+Draws a 2D polygon on the [CanvasItem] pointed to by the 'item' [Resource.ID]. If you need more flexibility (such as being able to use bones), use [CanvasItemAddTriangleArray] instead. See also [CanvasItem.DrawPolygon].
 
-Note: If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [graphics.gd/classdb/Geometry2D.TriangulatePolygon] and using [graphics.gd/classdb/CanvasItem.Instance.DrawMesh], [graphics.gd/classdb/CanvasItem.Instance.DrawMultimesh], or [CanvasItemAddTriangleArray].
+Note: If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [Geometry2D.TriangulatePolygon] and using [CanvasItem.DrawMesh], [CanvasItem.DrawMultimesh], or [CanvasItemAddTriangleArray].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawMesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMesh
+[CanvasItem.DrawMultimesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultimesh
+[CanvasItem.DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
+[Geometry2D.TriangulatePolygon]: https://pkg.go.dev/graphics.gd/classdb/Geometry2D#TriangulatePolygon
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) CanvasItemAddPolygon(item RID.Any, points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], texture RID.Any) { //gd:RenderingServer.canvas_item_add_polygon
@@ -10286,9 +11694,14 @@ func (self class) CanvasItemAddPolygon(item RID.Any, points Packed.Array[Vector2
 }
 
 /*
-Draws a triangle array on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. This is internally used by [graphics.gd/classdb/Line2D] and [graphics.gd/classdb/StyleBoxFlat] for rendering. [CanvasItemAddTriangleArray] is highly flexible, but more complex to use than [CanvasItemAddPolygon].
+Draws a triangle array on the [CanvasItem] pointed to by the 'item' [Resource.ID]. This is internally used by [Line2D] and [StyleBoxFlat] for rendering. [CanvasItemAddTriangleArray] is highly flexible, but more complex to use than [CanvasItemAddPolygon].
 
 Note: If 'count' is set to a non-negative value, only the first count * 3 indices (corresponding to count triangles) will be drawn. Otherwise, all indices are drawn.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Line2D]: https://pkg.go.dev/graphics.gd/classdb/Line2D
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[StyleBoxFlat]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat
 */
 //go:nosplit
 func (self class) CanvasItemAddTriangleArray(item RID.Any, indices Packed.Array[int32], points Packed.Array[Vector2.XY], colors Packed.Array[Color.RGBA], uvs Packed.Array[Vector2.XY], bones Packed.Array[int32], weights Packed.Array[float32], texture RID.Any, count int64) { //gd:RenderingServer.canvas_item_add_triangle_array
@@ -10306,7 +11719,9 @@ func (self class) CanvasItemAddTriangleArray(item RID.Any, indices Packed.Array[
 }
 
 /*
-Draws a mesh created with [MeshCreate] with given 'transform', 'modulate' color, and 'texture'. This is used internally by [graphics.gd/classdb/MeshInstance2D].
+Draws a mesh created with [MeshCreate] with given 'transform', 'modulate' color, and 'texture'. This is used internally by [MeshInstance2D].
+
+[MeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance2D
 */
 //go:nosplit
 func (self class) CanvasItemAddMesh(item RID.Any, mesh RID.Any, transform Transform2D.OriginXY, modulate Color.RGBA, texture RID.Any) { //gd:RenderingServer.canvas_item_add_mesh
@@ -10320,7 +11735,12 @@ func (self class) CanvasItemAddMesh(item RID.Any, mesh RID.Any, transform Transf
 }
 
 /*
-Draws a 2D [graphics.gd/classdb/MultiMesh] on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID]. See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultimesh].
+Draws a 2D [MultiMesh] on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawMultimesh].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.DrawMultimesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultimesh
+[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) CanvasItemAddMultimesh(item RID.Any, mesh RID.Any, texture RID.Any) { //gd:RenderingServer.canvas_item_add_multimesh
@@ -10332,7 +11752,10 @@ func (self class) CanvasItemAddMultimesh(item RID.Any, mesh RID.Any, texture RID
 }
 
 /*
-Draws particles on the [graphics.gd/classdb/CanvasItem] pointed to by the 'item' [Resource.ID].
+Draws particles on the [CanvasItem] pointed to by the 'item' [Resource.ID].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) CanvasItemAddParticles(item RID.Any, particles RID.Any, texture RID.Any) { //gd:RenderingServer.canvas_item_add_particles
@@ -10345,6 +11768,8 @@ func (self class) CanvasItemAddParticles(item RID.Any, particles RID.Any, textur
 
 /*
 Sets a [Transform2D.OriginXY] that will be used to transform subsequent canvas item commands.
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 //go:nosplit
 func (self class) CanvasItemAddSetTransform(item RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_item_add_set_transform
@@ -10380,7 +11805,9 @@ func (self class) CanvasItemAddAnimationSlice(item RID.Any, animation_length flo
 }
 
 /*
-If 'enabled' is true, child nodes with the lowest Y position are drawn before those with a higher Y position. Y-sorting only affects children that inherit from the canvas item specified by the 'item' RID, not the canvas item itself. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.YSortEnabled].
+If 'enabled' is true, child nodes with the lowest Y position are drawn before those with a higher Y position. Y-sorting only affects children that inherit from the canvas item specified by the 'item' RID, not the canvas item itself. Equivalent to [CanvasItem.YSortEnabled].
+
+[CanvasItem.YSortEnabled]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.YSortEnabled
 */
 //go:nosplit
 func (self class) CanvasItemSetSortChildrenByY(item RID.Any, enabled bool) { //gd:RenderingServer.canvas_item_set_sort_children_by_y
@@ -10391,7 +11818,9 @@ func (self class) CanvasItemSetSortChildrenByY(item RID.Any, enabled bool) { //g
 }
 
 /*
-Sets the [graphics.gd/classdb/CanvasItem]'s Z index, i.e. its draw order (lower indexes are drawn first).
+Sets the [CanvasItem]'s Z index, i.e. its draw order (lower indexes are drawn first).
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 //go:nosplit
 func (self class) CanvasItemSetZIndex(item RID.Any, z_index int64) { //gd:RenderingServer.canvas_item_set_z_index
@@ -10413,7 +11842,9 @@ func (self class) CanvasItemSetZAsRelativeToParent(item RID.Any, enabled bool) {
 }
 
 /*
-Sets the [graphics.gd/classdb/CanvasItem] to copy a rect to the backbuffer.
+Sets the [CanvasItem] to copy a rect to the backbuffer.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 //go:nosplit
 func (self class) CanvasItemSetCopyToBackbuffer(item RID.Any, enabled bool, rect Rect2.PositionSize) { //gd:RenderingServer.canvas_item_set_copy_to_backbuffer
@@ -10425,7 +11856,9 @@ func (self class) CanvasItemSetCopyToBackbuffer(item RID.Any, enabled bool, rect
 }
 
 /*
-Attaches a skeleton to the [graphics.gd/classdb/CanvasItem]. Removes the previous skeleton.
+Attaches a skeleton to the [CanvasItem]. Removes the previous skeleton.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 //go:nosplit
 func (self class) CanvasItemAttachSkeleton(item RID.Any, skeleton RID.Any) { //gd:RenderingServer.canvas_item_attach_skeleton
@@ -10436,7 +11869,9 @@ func (self class) CanvasItemAttachSkeleton(item RID.Any, skeleton RID.Any) { //g
 }
 
 /*
-Clears the [graphics.gd/classdb/CanvasItem] and removes all commands in it.
+Clears the [CanvasItem] and removes all commands in it.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 //go:nosplit
 func (self class) CanvasItemClear(item RID.Any) { //gd:RenderingServer.canvas_item_clear
@@ -10444,7 +11879,9 @@ func (self class) CanvasItemClear(item RID.Any) { //gd:RenderingServer.canvas_it
 }
 
 /*
-Sets the index for the [graphics.gd/classdb/CanvasItem].
+Sets the index for the [CanvasItem].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 //go:nosplit
 func (self class) CanvasItemSetDrawIndex(item RID.Any, index int64) { //gd:RenderingServer.canvas_item_set_draw_index
@@ -10455,7 +11892,9 @@ func (self class) CanvasItemSetDrawIndex(item RID.Any, index int64) { //gd:Rende
 }
 
 /*
-Sets a new 'material' to the canvas item specified by the 'item' RID. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.Material].
+Sets a new 'material' to the canvas item specified by the 'item' RID. Equivalent to [CanvasItem.Material].
+
+[CanvasItem.Material]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Material
 */
 //go:nosplit
 func (self class) CanvasItemSetMaterial(item RID.Any, material RID.Any) { //gd:RenderingServer.canvas_item_set_material
@@ -10466,7 +11905,9 @@ func (self class) CanvasItemSetMaterial(item RID.Any, material RID.Any) { //gd:R
 }
 
 /*
-Sets if the [graphics.gd/classdb/CanvasItem] uses its parent's material.
+Sets if the [CanvasItem] uses its parent's material.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
 */
 //go:nosplit
 func (self class) CanvasItemSetUseParentMaterial(item RID.Any, enabled bool) { //gd:RenderingServer.canvas_item_set_use_parent_material
@@ -10477,7 +11918,9 @@ func (self class) CanvasItemSetUseParentMaterial(item RID.Any, enabled bool) { /
 }
 
 /*
-Sets the per-instance shader uniform on the specified canvas item instance. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.SetInstanceShaderParameter].
+Sets the per-instance shader uniform on the specified canvas item instance. Equivalent to [CanvasItem.SetInstanceShaderParameter].
+
+[CanvasItem.SetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.SetInstanceShaderParameter
 */
 //go:nosplit
 func (self class) CanvasItemSetInstanceShaderParameter(instance RID.Any, parameter String.Name, value variant.Any) { //gd:RenderingServer.canvas_item_set_instance_shader_parameter
@@ -10489,7 +11932,9 @@ func (self class) CanvasItemSetInstanceShaderParameter(instance RID.Any, paramet
 }
 
 /*
-Returns the value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.GetInstanceShaderParameter].
+Returns the value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [CanvasItem.GetInstanceShaderParameter].
+
+[CanvasItem.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.GetInstanceShaderParameter
 */
 //go:nosplit
 func (self class) CanvasItemGetInstanceShaderParameter(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter
@@ -10502,7 +11947,9 @@ func (self class) CanvasItemGetInstanceShaderParameter(instance RID.Any, paramet
 }
 
 /*
-Returns the default value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [graphics.gd/classdb/CanvasItem.Instance.GetInstanceShaderParameter].
+Returns the default value of the per-instance shader uniform from the specified canvas item instance. Equivalent to [CanvasItem.GetInstanceShaderParameter].
+
+[CanvasItem.GetInstanceShaderParameter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.GetInstanceShaderParameter
 */
 //go:nosplit
 func (self class) CanvasItemGetInstanceShaderParameterDefaultValue(instance RID.Any, parameter String.Name) variant.Any { //gd:RenderingServer.canvas_item_get_instance_shader_parameter_default_value
@@ -10527,9 +11974,12 @@ func (self class) CanvasItemGetInstanceShaderParameterList(instance RID.Any) Arr
 }
 
 /*
-Sets the given [graphics.gd/classdb/CanvasItem] as visibility notifier. 'area' defines the area of detecting visibility. 'enter_callable' is called when the [graphics.gd/classdb/CanvasItem] enters the screen, 'exit_callable' is called when the [graphics.gd/classdb/CanvasItem] exits the screen. If 'enable' is false, the item will no longer function as notifier.
+Sets the given [CanvasItem] as visibility notifier. 'area' defines the area of detecting visibility. 'enter_callable' is called when the [CanvasItem] enters the screen, 'exit_callable' is called when the [CanvasItem] exits the screen. If 'enable' is false, the item will no longer function as notifier.
 
-This method can be used to manually mimic [graphics.gd/classdb/VisibleOnScreenNotifier2D].
+This method can be used to manually mimic [VisibleOnScreenNotifier2D].
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[VisibleOnScreenNotifier2D]: https://pkg.go.dev/graphics.gd/classdb/VisibleOnScreenNotifier2D
 */
 //go:nosplit
 func (self class) CanvasItemSetVisibilityNotifier(item RID.Any, enable bool, area Rect2.PositionSize, enter_callable Callable.Function, exit_callable Callable.Function) { //gd:RenderingServer.canvas_item_set_visibility_notifier
@@ -10545,7 +11995,10 @@ func (self class) CanvasItemSetVisibilityNotifier(item RID.Any, enable bool, are
 /*
 Sets the canvas group mode used during 2D rendering for the canvas item specified by the 'item' RID. For faster but more limited clipping, use [CanvasItemSetClip] instead.
 
-Note: The equivalent node functionality is found in [graphics.gd/classdb/CanvasGroup] and [graphics.gd/classdb/CanvasItem.Instance.ClipChildren].
+Note: The equivalent node functionality is found in [CanvasGroup] and [CanvasItem.ClipChildren].
+
+[CanvasGroup]: https://pkg.go.dev/graphics.gd/classdb/CanvasGroup
+[CanvasItem.ClipChildren]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ClipChildren
 */
 //go:nosplit
 func (self class) CanvasItemSetCanvasGroupMode(item RID.Any, mode CanvasGroupMode, clear_margin float64, fit_empty bool, fit_margin float64, blur_mipmaps bool) { //gd:RenderingServer.canvas_item_set_canvas_group_mode
@@ -10563,6 +12016,8 @@ func (self class) CanvasItemSetCanvasGroupMode(item RID.Any, mode CanvasGroupMod
 Returns the bounding rectangle for a canvas item in local space, as calculated by the renderer. This bound is used internally for culling.
 
 Warning: This function is intended for debugging in the editor, and will pass through and return a zero [Rect2.PositionSize] in exported projects.
+
+[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 */
 //go:nosplit
 func (self class) DebugCanvasItemGetRect(item RID.Any) Rect2.PositionSize { //gd:RenderingServer.debug_canvas_item_get_rect
@@ -10576,7 +12031,9 @@ Creates a canvas light and adds it to the RenderingServer. It can be accessed wi
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/Light2D].
+Note: The equivalent node is [Light2D].
+
+[Light2D]: https://pkg.go.dev/graphics.gd/classdb/Light2D
 */
 //go:nosplit
 func (self class) CanvasLightCreate() RID.Any { //gd:RenderingServer.canvas_light_create
@@ -10608,7 +12065,10 @@ func (self class) CanvasLightSetEnabled(light RID.Any, enabled bool) { //gd:Rend
 }
 
 /*
-Sets the scale factor of a [graphics.gd/classdb/PointLight2D]'s texture. Equivalent to [graphics.gd/classdb/PointLight2D.Instance.TextureScale].
+Sets the scale factor of a [PointLight2D]'s texture. Equivalent to [PointLight2D.TextureScale].
+
+[PointLight2D]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D
+[PointLight2D.TextureScale]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.TextureScale
 */
 //go:nosplit
 func (self class) CanvasLightSetTextureScale(light RID.Any, scale float64) { //gd:RenderingServer.canvas_light_set_texture_scale
@@ -10620,6 +12080,8 @@ func (self class) CanvasLightSetTextureScale(light RID.Any, scale float64) { //g
 
 /*
 Sets the canvas light's [Transform2D.OriginXY].
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 //go:nosplit
 func (self class) CanvasLightSetTransform(light RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_set_transform
@@ -10630,7 +12092,10 @@ func (self class) CanvasLightSetTransform(light RID.Any, transform Transform2D.O
 }
 
 /*
-Sets the texture to be used by a [graphics.gd/classdb/PointLight2D]. Equivalent to [graphics.gd/classdb/PointLight2D.Instance.Texture].
+Sets the texture to be used by a [PointLight2D]. Equivalent to [PointLight2D.Texture].
+
+[PointLight2D]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D
+[PointLight2D.Texture]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.Texture
 */
 //go:nosplit
 func (self class) CanvasLightSetTexture(light RID.Any, texture RID.Any) { //gd:RenderingServer.canvas_light_set_texture
@@ -10641,7 +12106,10 @@ func (self class) CanvasLightSetTexture(light RID.Any, texture RID.Any) { //gd:R
 }
 
 /*
-Sets the offset of a [graphics.gd/classdb/PointLight2D]'s texture. Equivalent to [graphics.gd/classdb/PointLight2D.Instance.Offset].
+Sets the offset of a [PointLight2D]'s texture. Equivalent to [PointLight2D.Offset].
+
+[PointLight2D]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D
+[PointLight2D.Offset]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D#Instance.Offset
 */
 //go:nosplit
 func (self class) CanvasLightSetTextureOffset(light RID.Any, offset Vector2.XY) { //gd:RenderingServer.canvas_light_set_texture_offset
@@ -10685,7 +12153,10 @@ func (self class) CanvasLightSetEnergy(light RID.Any, energy float64) { //gd:Ren
 }
 
 /*
-Sets the Z range of objects that will be affected by this light. Equivalent to [graphics.gd/classdb/Light2D.Instance.RangeZMin] and [graphics.gd/classdb/Light2D.Instance.RangeZMax].
+Sets the Z range of objects that will be affected by this light. Equivalent to [Light2D.RangeZMin] and [Light2D.RangeZMax].
+
+[Light2D.RangeZMax]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.RangeZMax
+[Light2D.RangeZMin]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.RangeZMin
 */
 //go:nosplit
 func (self class) CanvasLightSetZRange(light RID.Any, min_z int64, max_z int64) { //gd:RenderingServer.canvas_light_set_z_range
@@ -10709,7 +12180,9 @@ func (self class) CanvasLightSetLayerRange(light RID.Any, min_layer int64, max_l
 }
 
 /*
-The light mask. See [graphics.gd/classdb/LightOccluder2D] for more information on light masks.
+The light mask. See [LightOccluder2D] for more information on light masks.
+
+[LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
 */
 //go:nosplit
 func (self class) CanvasLightSetItemCullMask(light RID.Any, mask int64) { //gd:RenderingServer.canvas_light_set_item_cull_mask
@@ -10720,7 +12193,9 @@ func (self class) CanvasLightSetItemCullMask(light RID.Any, mask int64) { //gd:R
 }
 
 /*
-The binary mask used to determine which layers this canvas light's shadows affects. See [graphics.gd/classdb/LightOccluder2D] for more information on light masks.
+The binary mask used to determine which layers this canvas light's shadows affects. See [LightOccluder2D] for more information on light masks.
+
+[LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
 */
 //go:nosplit
 func (self class) CanvasLightSetItemShadowCullMask(light RID.Any, mask int64) { //gd:RenderingServer.canvas_light_set_item_shadow_cull_mask
@@ -10786,7 +12261,9 @@ func (self class) CanvasLightSetShadowSmooth(light RID.Any, smooth float64) { //
 }
 
 /*
-Sets the blend mode for the given canvas light to 'mode'. Equivalent to [graphics.gd/classdb/Light2D.Instance.BlendMode].
+Sets the blend mode for the given canvas light to 'mode'. Equivalent to [Light2D.BlendMode].
+
+[Light2D.BlendMode]: https://pkg.go.dev/graphics.gd/classdb/Light2D#Instance.BlendMode
 */
 //go:nosplit
 func (self class) CanvasLightSetBlendMode(light RID.Any, mode CanvasLightBlendMode) { //gd:RenderingServer.canvas_light_set_blend_mode
@@ -10835,7 +12312,9 @@ Creates a light occluder and adds it to the RenderingServer. It can be accessed 
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent node is [graphics.gd/classdb/LightOccluder2D].
+Note: The equivalent node is [LightOccluder2D].
+
+[LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
 */
 //go:nosplit
 func (self class) CanvasLightOccluderCreate() RID.Any { //gd:RenderingServer.canvas_light_occluder_create
@@ -10887,6 +12366,8 @@ func (self class) CanvasLightOccluderSetAsSdfCollision(occluder RID.Any, enable 
 
 /*
 Sets a light occluder's [Transform2D.OriginXY].
+
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 */
 //go:nosplit
 func (self class) CanvasLightOccluderSetTransform(occluder RID.Any, transform Transform2D.OriginXY) { //gd:RenderingServer.canvas_light_occluder_set_transform
@@ -10897,7 +12378,9 @@ func (self class) CanvasLightOccluderSetTransform(occluder RID.Any, transform Tr
 }
 
 /*
-The light mask. See [graphics.gd/classdb/LightOccluder2D] for more information on light masks.
+The light mask. See [LightOccluder2D] for more information on light masks.
+
+[LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
 */
 //go:nosplit
 func (self class) CanvasLightOccluderSetLightMask(occluder RID.Any, mask int64) { //gd:RenderingServer.canvas_light_occluder_set_light_mask
@@ -10946,7 +12429,9 @@ Creates a new light occluder polygon and adds it to the RenderingServer. It can 
 
 Once finished with your RID, you will want to free the RID using the RenderingServer's [FreeRid] method.
 
-Note: The equivalent resource is [graphics.gd/classdb/OccluderPolygon2D].
+Note: The equivalent resource is [OccluderPolygon2D].
+
+[OccluderPolygon2D]: https://pkg.go.dev/graphics.gd/classdb/OccluderPolygon2D
 */
 //go:nosplit
 func (self class) CanvasOccluderPolygonCreate() RID.Any { //gd:RenderingServer.canvas_occluder_polygon_create
@@ -10979,7 +12464,10 @@ func (self class) CanvasOccluderPolygonSetCullMode(occluder_polygon RID.Any, mod
 }
 
 /*
-Sets the [graphics.gd/classdb/ProjectSettings] "rendering/2d/shadow_atlas/size" to use for [graphics.gd/classdb/Light2D] shadow rendering (in pixels). The value is rounded up to the nearest power of 2.
+Sets the [ProjectSettings] "rendering/2d/shadow_atlas/size" to use for [Light2D] shadow rendering (in pixels). The value is rounded up to the nearest power of 2.
+
+[Light2D]: https://pkg.go.dev/graphics.gd/classdb/Light2D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) CanvasSetShadowTextureSize(size int64) { //gd:RenderingServer.canvas_set_shadow_texture_size
@@ -11032,7 +12520,9 @@ func (self class) GlobalShaderParameterSet(name String.Name, value variant.Any) 
 }
 
 /*
-Overrides the global shader uniform 'name' with 'value'. Equivalent to the [graphics.gd/classdb/ShaderGlobalsOverride] node.
+Overrides the global shader uniform 'name' with 'value'. Equivalent to the [ShaderGlobalsOverride] node.
+
+[ShaderGlobalsOverride]: https://pkg.go.dev/graphics.gd/classdb/ShaderGlobalsOverride
 */
 //go:nosplit
 func (self class) GlobalShaderParameterSetOverride(name String.Name, value variant.Any) { //gd:RenderingServer.global_shader_parameter_set_override
@@ -11147,9 +12637,11 @@ func (self class) GetVideoAdapterType() Rendering.DeviceType { //gd:RenderingSer
 }
 
 /*
-Returns the version of the graphics video adapter currently in use (e.g. "1.2.189" for Vulkan, "3.3.0 NVIDIA 510.60.02" for OpenGL). This version may be different from the actual latest version supported by the hardware, as Godot may not always request the latest version. See also [graphics.gd/classdb/OS.GetVideoAdapterDriverInfo].
+Returns the version of the graphics video adapter currently in use (e.g. "1.2.189" for Vulkan, "3.3.0 NVIDIA 510.60.02" for OpenGL). This version may be different from the actual latest version supported by the hardware, as Godot may not always request the latest version. See also [OS.GetVideoAdapterDriverInfo].
 
 Note: When running a headless or server binary, this function returns an empty string.
+
+[OS.GetVideoAdapterDriverInfo]: https://pkg.go.dev/graphics.gd/classdb/OS#GetVideoAdapterDriverInfo
 */
 //go:nosplit
 func (self class) GetVideoAdapterApiVersion() String.Readable { //gd:RenderingServer.get_video_adapter_api_version
@@ -11161,11 +12653,13 @@ func (self class) GetVideoAdapterApiVersion() String.Readable { //gd:RenderingSe
 /*
 Returns the name of the current rendering driver. This can be vulkan, d3d12, metal, opengl3, opengl3_es, or opengl3_angle. See also [GetCurrentRenderingMethod].
 
-When [graphics.gd/classdb/ProjectSettings] "rendering/renderer/rendering_method" is forward_plus or mobile, the rendering driver is determined by [graphics.gd/classdb/ProjectSettings] "rendering/rendering_device/driver".
+When [ProjectSettings] "rendering/renderer/rendering_method" is forward_plus or mobile, the rendering driver is determined by [ProjectSettings] "rendering/rendering_device/driver".
 
-When [graphics.gd/classdb/ProjectSettings] "rendering/renderer/rendering_method" is gl_compatibility, the rendering driver is determined by [graphics.gd/classdb/ProjectSettings] "rendering/gl_compatibility/driver".
+When [ProjectSettings] "rendering/renderer/rendering_method" is gl_compatibility, the rendering driver is determined by [ProjectSettings] "rendering/gl_compatibility/driver".
 
 The rendering driver is also determined by the --rendering-driver command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) GetCurrentRenderingDriverName() String.Readable { //gd:RenderingServer.get_current_rendering_driver_name
@@ -11177,7 +12671,9 @@ func (self class) GetCurrentRenderingDriverName() String.Readable { //gd:Renderi
 /*
 Returns the name of the current rendering method. This can be forward_plus, mobile, or gl_compatibility. See also [GetCurrentRenderingDriverName].
 
-The rendering method is determined by [graphics.gd/classdb/ProjectSettings] "rendering/renderer/rendering_method", the --rendering-method command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
+The rendering method is determined by [ProjectSettings] "rendering/renderer/rendering_method", the --rendering-method command line argument that overrides this project setting, or an automatic fallback that is applied depending on the hardware.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 */
 //go:nosplit
 func (self class) GetCurrentRenderingMethod() String.Readable { //gd:RenderingServer.get_current_rendering_method
@@ -11213,9 +12709,11 @@ func (self class) GetTestCube() RID.Any { //gd:RenderingServer.get_test_cube
 /*
 Returns the RID of a 256×256 texture with a testing pattern on it (in [Image.FormatRgb8] format). This texture will be created and returned on the first call to [GetTestTexture], then it will be cached for subsequent calls. See also [GetWhiteTexture].
 
-Example: Get the test texture and apply it to a [graphics.gd/classdb/Sprite2D] node:
+Example: Get the test texture and apply it to a [Sprite2D] node:
 
 
+
+[Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
 */
 //go:nosplit
 func (self class) GetTestTexture() RID.Any { //gd:RenderingServer.get_test_texture
@@ -11227,9 +12725,11 @@ func (self class) GetTestTexture() RID.Any { //gd:RenderingServer.get_test_textu
 /*
 Returns the ID of a 4×4 white texture (in [Image.FormatRgb8] format). This texture will be created and returned on the first call to [GetWhiteTexture], then it will be cached for subsequent calls. See also [GetTestTexture].
 
-Example: Get the white texture and apply it to a [graphics.gd/classdb/Sprite2D] node:
+Example: Get the white texture and apply it to a [Sprite2D] node:
 
 
+
+[Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
 */
 //go:nosplit
 func (self class) GetWhiteTexture() RID.Any { //gd:RenderingServer.get_white_texture
@@ -11365,7 +12865,9 @@ func (self class) IsOnRenderThread() bool { //gd:RenderingServer.is_on_render_th
 }
 
 /*
-As the RenderingServer actual logic may run on a separate thread, accessing its internals from the main (or any other) thread will result in errors. To make it easier to run code that can safely access the rendering internals (such as [graphics.gd/classdb/RenderingDevice] and similar RD classes), push a callable via this function so it will be executed on the render thread.
+As the RenderingServer actual logic may run on a separate thread, accessing its internals from the main (or any other) thread will result in errors. To make it easier to run code that can safely access the rendering internals (such as [RenderingDevice] and similar RD classes), push a callable via this function so it will be executed on the render thread.
+
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
 */
 //go:nosplit
 func (self class) CallOnRenderThread(callable Callable.Function) { //gd:RenderingServer.call_on_render_thread
@@ -11436,28 +12938,46 @@ const (
 type TextureLayeredType int //gd:RenderingServer.TextureLayeredType
 
 const (
-	// Array of 2-dimensional textures (see [graphics.gd/classdb/Texture2DArray]).
+	// Array of 2-dimensional textures (see [Texture2DArray]).
+	//
+	// [Texture2DArray]: https://pkg.go.dev/graphics.gd/classdb/Texture2DArray
 	TextureLayered2dArray TextureLayeredType = 0
-	// Cubemap texture (see [graphics.gd/classdb/Cubemap]).
+	// Cubemap texture (see [Cubemap]).
+	//
+	// [Cubemap]: https://pkg.go.dev/graphics.gd/classdb/Cubemap
 	TextureLayeredCubemap TextureLayeredType = 1
-	// Array of cubemap textures (see [graphics.gd/classdb/CubemapArray]).
+	// Array of cubemap textures (see [CubemapArray]).
+	//
+	// [CubemapArray]: https://pkg.go.dev/graphics.gd/classdb/CubemapArray
 	TextureLayeredCubemapArray TextureLayeredType = 2
 )
 
 type CubeMapLayer int //gd:RenderingServer.CubeMapLayer
 
 const (
-	// Left face of a [graphics.gd/classdb/Cubemap].
+	// Left face of a [Cubemap].
+	//
+	// [Cubemap]: https://pkg.go.dev/graphics.gd/classdb/Cubemap
 	CubemapLayerLeft CubeMapLayer = 0
-	// Right face of a [graphics.gd/classdb/Cubemap].
+	// Right face of a [Cubemap].
+	//
+	// [Cubemap]: https://pkg.go.dev/graphics.gd/classdb/Cubemap
 	CubemapLayerRight CubeMapLayer = 1
-	// Bottom face of a [graphics.gd/classdb/Cubemap].
+	// Bottom face of a [Cubemap].
+	//
+	// [Cubemap]: https://pkg.go.dev/graphics.gd/classdb/Cubemap
 	CubemapLayerBottom CubeMapLayer = 2
-	// Top face of a [graphics.gd/classdb/Cubemap].
+	// Top face of a [Cubemap].
+	//
+	// [Cubemap]: https://pkg.go.dev/graphics.gd/classdb/Cubemap
 	CubemapLayerTop CubeMapLayer = 3
-	// Front face of a [graphics.gd/classdb/Cubemap].
+	// Front face of a [Cubemap].
+	//
+	// [Cubemap]: https://pkg.go.dev/graphics.gd/classdb/Cubemap
 	CubemapLayerFront CubeMapLayer = 4
-	// Back face of a [graphics.gd/classdb/Cubemap].
+	// Back face of a [Cubemap].
+	//
+	// [Cubemap]: https://pkg.go.dev/graphics.gd/classdb/Cubemap
 	CubemapLayerBack CubeMapLayer = 5
 )
 
@@ -11579,7 +13099,10 @@ const (
 	ArrayFormatCustom3Shift ArrayFormat = 22
 	// Mask of custom format bits per custom channel. Must be shifted by one of the SHIFT constants. See [ArrayCustomFormat].
 	ArrayFormatCustomMask ArrayFormat = 7
-	// Shift of first compress flag. Compress flags should be passed to [graphics.gd/classdb/ArrayMesh.Instance.AddSurfaceFromArrays] and [graphics.gd/classdb/SurfaceTool.Instance.Commit].
+	// Shift of first compress flag. Compress flags should be passed to [ArrayMesh.AddSurfaceFromArrays] and [SurfaceTool.Commit].
+	//
+	// [ArrayMesh.AddSurfaceFromArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh#Instance.AddSurfaceFromArrays
+	// [SurfaceTool.Commit]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.Commit
 	ArrayCompressFlagsBase ArrayFormat = 25
 	// Flag used to mark that the array contains 2D vertices.
 	ArrayFlagUse2dVertices ArrayFormat = 33554432
@@ -11635,8 +13158,12 @@ type MultimeshTransformFormat int //gd:RenderingServer.MultimeshTransformFormat
 
 const (
 	// Use [Transform2D.OriginXY] to store MultiMesh transform.
+	//
+	// [Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 	MultimeshTransform2d MultimeshTransformFormat = 0
 	// Use [Transform3D.BasisOrigin] to store MultiMesh transform.
+	//
+	// [Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 	MultimeshTransform3d MultimeshTransformFormat = 1
 )
 
@@ -11660,20 +13187,30 @@ const (
 	LightProjectorFilterNearestMipmaps LightProjectorFilter = 2
 	// Linear filter for light projectors (use for non-pixel art light projectors). Isotropic mipmaps are used for rendering, which means light projectors at a distance will look smooth but blurry. This has roughly the same performance cost as not using mipmaps.
 	LightProjectorFilterLinearMipmaps LightProjectorFilter = 3
-	// Nearest-neighbor filter for light projectors (use for pixel art light projectors). Anisotropic mipmaps are used for rendering, which means light projectors at a distance will look smooth and sharp when viewed from oblique angles. This looks better compared to isotropic mipmaps, but is slower. The level of anisotropic filtering is defined by [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	// Nearest-neighbor filter for light projectors (use for pixel art light projectors). Anisotropic mipmaps are used for rendering, which means light projectors at a distance will look smooth and sharp when viewed from oblique angles. This looks better compared to isotropic mipmaps, but is slower. The level of anisotropic filtering is defined by [ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	LightProjectorFilterNearestMipmapsAnisotropic LightProjectorFilter = 4
-	// Linear filter for light projectors (use for non-pixel art light projectors). Anisotropic mipmaps are used for rendering, which means light projectors at a distance will look smooth and sharp when viewed from oblique angles. This looks better compared to isotropic mipmaps, but is slower. The level of anisotropic filtering is defined by [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	// Linear filter for light projectors (use for non-pixel art light projectors). Anisotropic mipmaps are used for rendering, which means light projectors at a distance will look smooth and sharp when viewed from oblique angles. This looks better compared to isotropic mipmaps, but is slower. The level of anisotropic filtering is defined by [ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	LightProjectorFilterLinearMipmapsAnisotropic LightProjectorFilter = 5
 )
 
 type LightType int //gd:RenderingServer.LightType
 
 const (
-	// Directional (sun/moon) light (see [graphics.gd/classdb/DirectionalLight3D]).
+	// Directional (sun/moon) light (see [DirectionalLight3D]).
+	//
+	// [DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
 	LightDirectional LightType = 0
-	// Omni light (see [graphics.gd/classdb/OmniLight3D]).
+	// Omni light (see [OmniLight3D]).
+	//
+	// [OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
 	LightOmni LightType = 1
-	// Spot light (see [graphics.gd/classdb/SpotLight3D]).
+	// Spot light (see [SpotLight3D]).
+	//
+	// [SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
 	LightSpot LightType = 2
 )
 
@@ -11719,7 +13256,12 @@ const (
 	// Blurs the edges of the shadow. Can be used to hide pixel artifacts in low resolution shadow maps. A high value can make shadows appear grainy and can cause other unwanted artifacts. Try to keep as near default as possible.
 	LightParamShadowBlur        LightParam = 18
 	LightParamTransmittanceBias LightParam = 19
-	// Constant representing the intensity of the light, measured in Lumens when dealing with a [graphics.gd/classdb/SpotLight3D] or [graphics.gd/classdb/OmniLight3D], or measured in Lux with a [graphics.gd/classdb/DirectionalLight3D]. Only used when [graphics.gd/classdb/ProjectSettings] "rendering/lights_and_shadows/use_physical_light_units" is true.
+	// Constant representing the intensity of the light, measured in Lumens when dealing with a [SpotLight3D] or [OmniLight3D], or measured in Lux with a [DirectionalLight3D]. Only used when [ProjectSettings] "rendering/lights_and_shadows/use_physical_light_units" is true.
+	//
+	// [DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+	// [OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+	// [SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
 	LightParamIntensity LightParam = 20
 	// Represents the size of the [LightParam] enum.
 	LightParamMax LightParam = 21
@@ -11730,9 +13272,17 @@ type LightBakeMode int //gd:RenderingServer.LightBakeMode
 const (
 	// Light is ignored when baking. This is the fastest mode, but the light will be taken into account when baking global illumination. This mode should generally be used for dynamic lights that change quickly, as the effect of global illumination is less noticeable on those lights.
 	LightBakeDisabled LightBakeMode = 0
-	// Light is taken into account in static baking ([graphics.gd/classdb/VoxelGI], [graphics.gd/classdb/LightmapGI], SDFGI ([graphics.gd/classdb/Environment.Instance.SdfgiEnabled])). The light can be moved around or modified, but its global illumination will not update in real-time. This is suitable for subtle changes (such as flickering torches), but generally not large changes such as toggling a light on and off.
+	// Light is taken into account in static baking ([VoxelGI], [LightmapGI], SDFGI ([Environment.SdfgiEnabled])). The light can be moved around or modified, but its global illumination will not update in real-time. This is suitable for subtle changes (such as flickering torches), but generally not large changes such as toggling a light on and off.
+	//
+	// [Environment.SdfgiEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiEnabled
+	// [LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	LightBakeStatic LightBakeMode = 1
-	// Light is taken into account in dynamic baking ([graphics.gd/classdb/VoxelGI] and SDFGI ([graphics.gd/classdb/Environment.Instance.SdfgiEnabled]) only). The light can be moved around or modified with global illumination updating in real-time. The light's global illumination appearance will be slightly different compared to [LightBakeStatic]. This has a greater performance cost compared to [LightBakeStatic]. When using SDFGI, the update speed of dynamic lights is affected by [graphics.gd/classdb/ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_update_lights".
+	// Light is taken into account in dynamic baking ([VoxelGI] and SDFGI ([Environment.SdfgiEnabled]) only). The light can be moved around or modified with global illumination updating in real-time. The light's global illumination appearance will be slightly different compared to [LightBakeStatic]. This has a greater performance cost compared to [LightBakeStatic]. When using SDFGI, the update speed of dynamic lights is affected by [ProjectSettings] "rendering/global_illumination/sdfgi/frames_to_update_lights".
+	//
+	// [Environment.SdfgiEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiEnabled
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	LightBakeDynamic LightBakeMode = 2
 )
 
@@ -11770,19 +13320,35 @@ const (
 type ShadowQuality int //gd:RenderingServer.ShadowQuality
 
 const (
-	// Lowest shadow filtering quality (fastest). Soft shadows are not available with this quality setting, which means the [graphics.gd/classdb/Light3D.Instance.ShadowBlur] property is ignored if [graphics.gd/classdb/Light3D.Instance.LightSize] and [graphics.gd/classdb/Light3D.Instance.LightAngularDistance] is 0.0.
+	// Lowest shadow filtering quality (fastest). Soft shadows are not available with this quality setting, which means the [Light3D.ShadowBlur] property is ignored if [Light3D.LightSize] and [Light3D.LightAngularDistance] is 0.0.
 	//
-	// Note: The variable shadow blur performed by [graphics.gd/classdb/Light3D.Instance.LightSize] and [graphics.gd/classdb/Light3D.Instance.LightAngularDistance] is still effective when using hard shadow filtering. In this case, [graphics.gd/classdb/Light3D.Instance.ShadowBlur] is taken into account. However, the results will not be blurred, instead the blur amount is treated as a maximum radius for the penumbra.
+	// Note: The variable shadow blur performed by [Light3D.LightSize] and [Light3D.LightAngularDistance] is still effective when using hard shadow filtering. In this case, [Light3D.ShadowBlur] is taken into account. However, the results will not be blurred, instead the blur amount is treated as a maximum radius for the penumbra.
+	//
+	// [Light3D.LightAngularDistance]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightAngularDistance
+	// [Light3D.LightSize]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightSize
+	// [Light3D.ShadowBlur]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowBlur
 	ShadowQualityHard ShadowQuality = 0
-	// Very low shadow filtering quality (faster). When using this quality setting, [graphics.gd/classdb/Light3D.Instance.ShadowBlur] is automatically multiplied by 0.75× to avoid introducing too much noise. This division only applies to lights whose [graphics.gd/classdb/Light3D.Instance.LightSize] or [graphics.gd/classdb/Light3D.Instance.LightAngularDistance] is 0.0).
+	// Very low shadow filtering quality (faster). When using this quality setting, [Light3D.ShadowBlur] is automatically multiplied by 0.75× to avoid introducing too much noise. This division only applies to lights whose [Light3D.LightSize] or [Light3D.LightAngularDistance] is 0.0).
+	//
+	// [Light3D.LightAngularDistance]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightAngularDistance
+	// [Light3D.LightSize]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightSize
+	// [Light3D.ShadowBlur]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowBlur
 	ShadowQualitySoftVeryLow ShadowQuality = 1
 	// Low shadow filtering quality (fast).
 	ShadowQualitySoftLow ShadowQuality = 2
 	// Medium low shadow filtering quality (average).
 	ShadowQualitySoftMedium ShadowQuality = 3
-	// High low shadow filtering quality (slow). When using this quality setting, [graphics.gd/classdb/Light3D.Instance.ShadowBlur] is automatically multiplied by 1.5× to better make use of the high sample count. This increased blur also improves the stability of dynamic object shadows. This multiplier only applies to lights whose [graphics.gd/classdb/Light3D.Instance.LightSize] or [graphics.gd/classdb/Light3D.Instance.LightAngularDistance] is 0.0).
+	// High low shadow filtering quality (slow). When using this quality setting, [Light3D.ShadowBlur] is automatically multiplied by 1.5× to better make use of the high sample count. This increased blur also improves the stability of dynamic object shadows. This multiplier only applies to lights whose [Light3D.LightSize] or [Light3D.LightAngularDistance] is 0.0).
+	//
+	// [Light3D.LightAngularDistance]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightAngularDistance
+	// [Light3D.LightSize]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightSize
+	// [Light3D.ShadowBlur]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowBlur
 	ShadowQualitySoftHigh ShadowQuality = 4
-	// Highest low shadow filtering quality (slowest). When using this quality setting, [graphics.gd/classdb/Light3D.Instance.ShadowBlur] is automatically multiplied by 2× to better make use of the high sample count. This increased blur also improves the stability of dynamic object shadows. This multiplier only applies to lights whose [graphics.gd/classdb/Light3D.Instance.LightSize] or [graphics.gd/classdb/Light3D.Instance.LightAngularDistance] is 0.0).
+	// Highest low shadow filtering quality (slowest). When using this quality setting, [Light3D.ShadowBlur] is automatically multiplied by 2× to better make use of the high sample count. This increased blur also improves the stability of dynamic object shadows. This multiplier only applies to lights whose [Light3D.LightSize] or [Light3D.LightAngularDistance] is 0.0).
+	//
+	// [Light3D.LightAngularDistance]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightAngularDistance
+	// [Light3D.LightSize]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightSize
+	// [Light3D.ShadowBlur]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowBlur
 	ShadowQualitySoftUltra ShadowQuality = 5
 	// Represents the size of the [ShadowQuality] enum.
 	ShadowQualityMax ShadowQuality = 6
@@ -11804,20 +13370,31 @@ const (
 	ReflectionProbeAmbientDisabled ReflectionProbeAmbientMode = 0
 	// Apply automatically-sourced environment lighting inside the reflection probe's box defined by its size.
 	ReflectionProbeAmbientEnvironment ReflectionProbeAmbientMode = 1
-	// Apply custom ambient lighting inside the reflection probe's box defined by its size. See [Instance.ReflectionProbeSetAmbientColor] and [Instance.ReflectionProbeSetAmbientEnergy].
+	// Apply custom ambient lighting inside the reflection probe's box defined by its size. See [ReflectionProbeSetAmbientColor] and [ReflectionProbeSetAmbientEnergy].
+	//
+	// [ReflectionProbeSetAmbientColor]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ReflectionProbeSetAmbientColor
+	// [ReflectionProbeSetAmbientEnergy]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ReflectionProbeSetAmbientEnergy
 	ReflectionProbeAmbientColor ReflectionProbeAmbientMode = 2
 )
 
 type DecalTexture int //gd:RenderingServer.DecalTexture
 
 const (
-	// Albedo texture slot in a decal ([graphics.gd/classdb/Decal.Instance.TextureAlbedo]).
+	// Albedo texture slot in a decal ([Decal.TextureAlbedo]).
+	//
+	// [Decal.TextureAlbedo]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.TextureAlbedo
 	DecalTextureAlbedo DecalTexture = 0
-	// Normal map texture slot in a decal ([graphics.gd/classdb/Decal.Instance.TextureNormal]).
+	// Normal map texture slot in a decal ([Decal.TextureNormal]).
+	//
+	// [Decal.TextureNormal]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.TextureNormal
 	DecalTextureNormal DecalTexture = 1
-	// Occlusion/Roughness/Metallic texture slot in a decal ([graphics.gd/classdb/Decal.Instance.TextureOrm]).
+	// Occlusion/Roughness/Metallic texture slot in a decal ([Decal.TextureOrm]).
+	//
+	// [Decal.TextureOrm]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.TextureOrm
 	DecalTextureOrm DecalTexture = 2
-	// Emission texture slot in a decal ([graphics.gd/classdb/Decal.Instance.TextureEmission]).
+	// Emission texture slot in a decal ([Decal.TextureEmission]).
+	//
+	// [Decal.TextureEmission]: https://pkg.go.dev/graphics.gd/classdb/Decal#Instance.TextureEmission
 	DecalTextureEmission DecalTexture = 3
 	// Represents the size of the [DecalTexture] enum.
 	DecalTextureMax DecalTexture = 4
@@ -11834,18 +13411,26 @@ const (
 	DecalFilterNearestMipmaps DecalFilter = 2
 	// Linear filter for decals (use for non-pixel art decals). Isotropic mipmaps are used for rendering, which means decals at a distance will look smooth but blurry. This has roughly the same performance cost as not using mipmaps.
 	DecalFilterLinearMipmaps DecalFilter = 3
-	// Nearest-neighbor filter for decals (use for pixel art decals). Anisotropic mipmaps are used for rendering, which means decals at a distance will look smooth and sharp when viewed from oblique angles. This looks better compared to isotropic mipmaps, but is slower. The level of anisotropic filtering is defined by [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	// Nearest-neighbor filter for decals (use for pixel art decals). Anisotropic mipmaps are used for rendering, which means decals at a distance will look smooth and sharp when viewed from oblique angles. This looks better compared to isotropic mipmaps, but is slower. The level of anisotropic filtering is defined by [ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	DecalFilterNearestMipmapsAnisotropic DecalFilter = 4
-	// Linear filter for decals (use for non-pixel art decals). Anisotropic mipmaps are used for rendering, which means decals at a distance will look smooth and sharp when viewed from oblique angles. This looks better compared to isotropic mipmaps, but is slower. The level of anisotropic filtering is defined by [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	// Linear filter for decals (use for non-pixel art decals). Anisotropic mipmaps are used for rendering, which means decals at a distance will look smooth and sharp when viewed from oblique angles. This looks better compared to isotropic mipmaps, but is slower. The level of anisotropic filtering is defined by [ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	DecalFilterLinearMipmapsAnisotropic DecalFilter = 5
 )
 
 type VoxelGIQuality int //gd:RenderingServer.VoxelGIQuality
 
 const (
-	// Low [graphics.gd/classdb/VoxelGI] rendering quality using 4 cones.
+	// Low [VoxelGI] rendering quality using 4 cones.
+	//
+	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	VoxelGiQualityLow VoxelGIQuality = 0
-	// High [graphics.gd/classdb/VoxelGI] rendering quality using 6 cones.
+	// High [VoxelGI] rendering quality using 6 cones.
+	//
+	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	VoxelGiQualityHigh VoxelGIQuality = 1
 )
 
@@ -11908,15 +13493,25 @@ const (
 type FogVolumeShape int //gd:RenderingServer.FogVolumeShape
 
 const (
-	// [graphics.gd/classdb/FogVolume] will be shaped like an ellipsoid (stretched sphere).
+	// [FogVolume] will be shaped like an ellipsoid (stretched sphere).
+	//
+	// [FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
 	FogVolumeShapeEllipsoid FogVolumeShape = 0
-	// [graphics.gd/classdb/FogVolume] will be shaped like a cone pointing upwards (in local coordinates). The cone's angle is set automatically to fill the size. The cone will be adjusted to fit within the size. Rotate the [graphics.gd/classdb/FogVolume] node to reorient the cone. Non-uniform scaling via size is not supported (scale the [graphics.gd/classdb/FogVolume] node instead).
+	// [FogVolume] will be shaped like a cone pointing upwards (in local coordinates). The cone's angle is set automatically to fill the size. The cone will be adjusted to fit within the size. Rotate the [FogVolume] node to reorient the cone. Non-uniform scaling via size is not supported (scale the [FogVolume] node instead).
+	//
+	// [FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
 	FogVolumeShapeCone FogVolumeShape = 1
-	// [graphics.gd/classdb/FogVolume] will be shaped like an upright cylinder (in local coordinates). Rotate the [graphics.gd/classdb/FogVolume] node to reorient the cylinder. The cylinder will be adjusted to fit within the size. Non-uniform scaling via size is not supported (scale the [graphics.gd/classdb/FogVolume] node instead).
+	// [FogVolume] will be shaped like an upright cylinder (in local coordinates). Rotate the [FogVolume] node to reorient the cylinder. The cylinder will be adjusted to fit within the size. Non-uniform scaling via size is not supported (scale the [FogVolume] node instead).
+	//
+	// [FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
 	FogVolumeShapeCylinder FogVolumeShape = 2
-	// [graphics.gd/classdb/FogVolume] will be shaped like a box.
+	// [FogVolume] will be shaped like a box.
+	//
+	// [FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
 	FogVolumeShapeBox FogVolumeShape = 3
-	// [graphics.gd/classdb/FogVolume] will have no shape, will cover the whole world and will not be culled.
+	// [FogVolume] will have no shape, will cover the whole world and will not be culled.
+	//
+	// [FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
 	FogVolumeShapeWorld FogVolumeShape = 4
 	// Represents the size of the [FogVolumeShape] enum.
 	FogVolumeShapeMax FogVolumeShape = 5
@@ -11925,19 +13520,29 @@ const (
 type ViewportScaling3DMode int //gd:RenderingServer.ViewportScaling3DMode
 
 const (
-	// Use bilinear scaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will result in undersampling while values greater than 1.0 will result in supersampling. A value of 1.0 disables scaling.
+	// Use bilinear scaling for the viewport's 3D buffer. The amount of scaling can be set using [Viewport.Scaling3dScale]. Values less than 1.0 will result in undersampling while values greater than 1.0 will result in supersampling. A value of 1.0 disables scaling.
+	//
+	// [Viewport.Scaling3dScale]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Scaling3dScale
 	ViewportScaling3dModeBilinear ViewportScaling3DMode = 0
-	// Use AMD FidelityFX Super Resolution 1.0 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will result in the viewport being upscaled using FSR. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 disables scaling.
+	// Use AMD FidelityFX Super Resolution 1.0 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [Viewport.Scaling3dScale]. Values less than 1.0 will result in the viewport being upscaled using FSR. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 disables scaling.
+	//
+	// [Viewport.Scaling3dScale]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Scaling3dScale
 	ViewportScaling3dModeFsr ViewportScaling3DMode = 1
-	// Use AMD FidelityFX Super Resolution 2.2 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will result in the viewport being upscaled using FSR2. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 will use FSR2 at native resolution as a TAA solution.
+	// Use AMD FidelityFX Super Resolution 2.2 upscaling for the viewport's 3D buffer. The amount of scaling can be set using [Viewport.Scaling3dScale]. Values less than 1.0 will result in the viewport being upscaled using FSR2. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 will use FSR2 at native resolution as a TAA solution.
+	//
+	// [Viewport.Scaling3dScale]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Scaling3dScale
 	ViewportScaling3dModeFsr2 ViewportScaling3DMode = 2
-	// Use MetalFX spatial upscaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will result in the viewport being upscaled using MetalFX. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 disables scaling.
+	// Use MetalFX spatial upscaling for the viewport's 3D buffer. The amount of scaling can be set using [Viewport.Scaling3dScale]. Values less than 1.0 will result in the viewport being upscaled using MetalFX. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 disables scaling.
 	//
 	// Note: Only supported when the Metal rendering driver is in use, which limits this scaling mode to macOS and iOS.
+	//
+	// [Viewport.Scaling3dScale]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Scaling3dScale
 	ViewportScaling3dModeMetalfxSpatial ViewportScaling3DMode = 3
-	// Use MetalFX temporal upscaling for the viewport's 3D buffer. The amount of scaling can be set using [graphics.gd/classdb/Viewport.Instance.Scaling3dScale]. Values less than 1.0 will result in the viewport being upscaled using MetalFX. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 will use MetalFX at native resolution as a TAA solution.
+	// Use MetalFX temporal upscaling for the viewport's 3D buffer. The amount of scaling can be set using [Viewport.Scaling3dScale]. Values less than 1.0 will result in the viewport being upscaled using MetalFX. Values greater than 1.0 are not supported and bilinear downsampling will be used instead. A value of 1.0 will use MetalFX at native resolution as a TAA solution.
 	//
 	// Note: Only supported when the Metal rendering driver is in use, which limits this scaling mode to macOS and iOS.
+	//
+	// [Viewport.Scaling3dScale]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Scaling3dScale
 	ViewportScaling3dModeMetalfxTemporal ViewportScaling3DMode = 4
 	// Represents the size of the [ViewportScaling3DMode] enum.
 	ViewportScaling3dModeMax ViewportScaling3DMode = 5
@@ -11985,7 +13590,9 @@ const (
 type ViewportSDFOversize int //gd:RenderingServer.ViewportSDFOversize
 
 const (
-	// Do not oversize the 2D signed distance field. Occluders may disappear when touching the viewport's edges, and [graphics.gd/classdb/GPUParticles3D] collision may stop working earlier than intended. This has the lowest GPU requirements.
+	// Do not oversize the 2D signed distance field. Occluders may disappear when touching the viewport's edges, and [GPUParticles3D] collision may stop working earlier than intended. This has the lowest GPU requirements.
+	//
+	// [GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
 	ViewportSdfOversize100Percent ViewportSDFOversize = 0
 	// 2D signed distance field covers 20% of the viewport's size outside the viewport on each side (top, right, bottom, left).
 	ViewportSdfOversize120Percent ViewportSDFOversize = 1
@@ -12109,51 +13716,76 @@ const (
 	ViewportDebugDrawOverdraw ViewportDebugDraw = 3
 	// Debug draw draws objects in wireframe.
 	//
-	// Note: [Instance.SetDebugGenerateWireframes] must be called before loading any meshes for wireframes to be visible when using the Compatibility renderer.
+	// Note: [SetDebugGenerateWireframes] must be called before loading any meshes for wireframes to be visible when using the Compatibility renderer.
+	//
+	// [SetDebugGenerateWireframes]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetDebugGenerateWireframes
 	ViewportDebugDrawWireframe ViewportDebugDraw = 4
 	// Normal buffer is drawn instead of regular scene so you can see the per-pixel normals that will be used by post-processing effects.
 	ViewportDebugDrawNormalBuffer ViewportDebugDraw = 5
-	// Objects are displayed with only the albedo value from [graphics.gd/classdb/VoxelGI]s. Requires at least one visible [graphics.gd/classdb/VoxelGI] node that has been baked to have a visible effect.
+	// Objects are displayed with only the albedo value from [VoxelGI]s. Requires at least one visible [VoxelGI] node that has been baked to have a visible effect.
 	//
 	// Note: Only supported when using the Forward+ rendering method.
+	//
+	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	ViewportDebugDrawVoxelGiAlbedo ViewportDebugDraw = 6
-	// Objects are displayed with only the lighting value from [graphics.gd/classdb/VoxelGI]s. Requires at least one visible [graphics.gd/classdb/VoxelGI] node that has been baked to have a visible effect.
+	// Objects are displayed with only the lighting value from [VoxelGI]s. Requires at least one visible [VoxelGI] node that has been baked to have a visible effect.
 	//
 	// Note: Only supported when using the Forward+ rendering method.
+	//
+	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	ViewportDebugDrawVoxelGiLighting ViewportDebugDraw = 7
-	// Objects are displayed with only the emission color from [graphics.gd/classdb/VoxelGI]s. Requires at least one visible [graphics.gd/classdb/VoxelGI] node that has been baked to have a visible effect.
+	// Objects are displayed with only the emission color from [VoxelGI]s. Requires at least one visible [VoxelGI] node that has been baked to have a visible effect.
 	//
 	// Note: Only supported when using the Forward+ rendering method.
+	//
+	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	ViewportDebugDrawVoxelGiEmission ViewportDebugDraw = 8
-	// Draws the shadow atlas that stores shadows from [graphics.gd/classdb/OmniLight3D]s and [graphics.gd/classdb/SpotLight3D]s in the upper left quadrant of the [graphics.gd/classdb/Viewport].
+	// Draws the shadow atlas that stores shadows from [OmniLight3D]s and [SpotLight3D]s in the upper left quadrant of the [Viewport].
+	//
+	// [OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
+	// [SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
+	// [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 	ViewportDebugDrawShadowAtlas ViewportDebugDraw = 9
-	// Draws the shadow atlas that stores shadows from [graphics.gd/classdb/DirectionalLight3D]s in the upper left quadrant of the [graphics.gd/classdb/Viewport].
+	// Draws the shadow atlas that stores shadows from [DirectionalLight3D]s in the upper left quadrant of the [Viewport].
 	//
 	// The slice of the camera frustum related to the shadow map cascade is superimposed to visualize coverage. The color of each slice matches the colors used for [ViewportDebugDrawPssmSplits]. When shadow cascades are blended the overlap is taken into account when drawing the frustum slices.
 	//
 	// The last cascade shows all frustum slices to illustrate the coverage of all slices.
+	//
+	// [DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+	// [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 	ViewportDebugDrawDirectionalShadowAtlas ViewportDebugDraw = 10
 	// Draws the estimated scene luminance. This is a 1×1 texture that is generated when autoexposure is enabled to control the scene's exposure.
 	//
 	// Note: Only supported when using the Forward+ or Mobile rendering methods.
 	ViewportDebugDrawSceneLuminance ViewportDebugDraw = 11
-	// Draws the screen space ambient occlusion texture instead of the scene so that you can clearly see how it is affecting objects. In order for this display mode to work, you must have [graphics.gd/classdb/Environment.Instance.SsaoEnabled] set in your [graphics.gd/classdb/WorldEnvironment].
+	// Draws the screen space ambient occlusion texture instead of the scene so that you can clearly see how it is affecting objects. In order for this display mode to work, you must have [Environment.SsaoEnabled] set in your [WorldEnvironment].
 	//
 	// Note: Only supported when using the Forward+ rendering method.
+	//
+	// [Environment.SsaoEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SsaoEnabled
+	// [WorldEnvironment]: https://pkg.go.dev/graphics.gd/classdb/WorldEnvironment
 	ViewportDebugDrawSsao ViewportDebugDraw = 12
-	// Draws the screen space indirect lighting texture instead of the scene so that you can clearly see how it is affecting objects. In order for this display mode to work, you must have [graphics.gd/classdb/Environment.Instance.SsilEnabled] set in your [graphics.gd/classdb/WorldEnvironment].
+	// Draws the screen space indirect lighting texture instead of the scene so that you can clearly see how it is affecting objects. In order for this display mode to work, you must have [Environment.SsilEnabled] set in your [WorldEnvironment].
 	//
 	// Note: Only supported when using the Forward+ rendering method.
+	//
+	// [Environment.SsilEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SsilEnabled
+	// [WorldEnvironment]: https://pkg.go.dev/graphics.gd/classdb/WorldEnvironment
 	ViewportDebugDrawSsil ViewportDebugDraw = 13
-	// Colors each PSSM split for the [graphics.gd/classdb/DirectionalLight3D]s in the scene a different color so you can see where the splits are. In order (from closest to furthest from the camera), they are colored red, green, blue, and yellow.
+	// Colors each PSSM split for the [DirectionalLight3D]s in the scene a different color so you can see where the splits are. In order (from closest to furthest from the camera), they are colored red, green, blue, and yellow.
 	//
 	// Note: When using this debug draw mode, custom shaders are ignored since all materials in the scene temporarily use a debug material. This means the result from custom shader functions (such as vertex displacement) won't be visible anymore when using this debug draw mode.
 	//
 	// Note: Only supported when using the Forward+ or Mobile rendering methods.
+	//
+	// [DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
 	ViewportDebugDrawPssmSplits ViewportDebugDraw = 14
-	// Draws the decal atlas that stores decal textures from [graphics.gd/classdb/Decal]s.
+	// Draws the decal atlas that stores decal textures from [Decal]s.
 	//
 	// Note: Only supported when using the Forward+ or Mobile rendering methods.
+	//
+	// [Decal]: https://pkg.go.dev/graphics.gd/classdb/Decal
 	ViewportDebugDrawDecalAtlas ViewportDebugDraw = 15
 	// Draws SDFGI cascade data. This is the data structure that is used to bounce lighting against and create reflections.
 	//
@@ -12163,27 +13795,38 @@ const (
 	//
 	// Note: Only supported when using the Forward+ rendering method.
 	ViewportDebugDrawSdfgiProbes ViewportDebugDraw = 17
-	// Draws the global illumination buffer from [graphics.gd/classdb/VoxelGI] or SDFGI. Requires [graphics.gd/classdb/VoxelGI] (at least one visible baked VoxelGI node) or SDFGI ([graphics.gd/classdb/Environment.Instance.SdfgiEnabled]) to be enabled to have a visible effect.
+	// Draws the global illumination buffer from [VoxelGI] or SDFGI. Requires [VoxelGI] (at least one visible baked VoxelGI node) or SDFGI ([Environment.SdfgiEnabled]) to be enabled to have a visible effect.
 	//
 	// Note: Only supported when using the Forward+ rendering method.
+	//
+	// [Environment.SdfgiEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiEnabled
+	// [VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
 	ViewportDebugDrawGiBuffer ViewportDebugDraw = 18
 	// Disable mesh LOD. All meshes are drawn with full detail, which can be used to compare performance.
 	ViewportDebugDrawDisableLod ViewportDebugDraw = 19
-	// Draws the [graphics.gd/classdb/OmniLight3D] cluster. Clustering determines where lights are positioned in screen-space, which allows the engine to only process these portions of the screen for lighting.
+	// Draws the [OmniLight3D] cluster. Clustering determines where lights are positioned in screen-space, which allows the engine to only process these portions of the screen for lighting.
 	//
 	// Note: Only supported when using the Forward+ rendering method.
+	//
+	// [OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
 	ViewportDebugDrawClusterOmniLights ViewportDebugDraw = 20
-	// Draws the [graphics.gd/classdb/SpotLight3D] cluster. Clustering determines where lights are positioned in screen-space, which allows the engine to only process these portions of the screen for lighting.
+	// Draws the [SpotLight3D] cluster. Clustering determines where lights are positioned in screen-space, which allows the engine to only process these portions of the screen for lighting.
 	//
 	// Note: Only supported when using the Forward+ rendering method.
+	//
+	// [SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
 	ViewportDebugDrawClusterSpotLights ViewportDebugDraw = 21
-	// Draws the [graphics.gd/classdb/Decal] cluster. Clustering determines where decals are positioned in screen-space, which allows the engine to only process these portions of the screen for decals.
+	// Draws the [Decal] cluster. Clustering determines where decals are positioned in screen-space, which allows the engine to only process these portions of the screen for decals.
 	//
 	// Note: Only supported when using the Forward+ rendering method.
+	//
+	// [Decal]: https://pkg.go.dev/graphics.gd/classdb/Decal
 	ViewportDebugDrawClusterDecals ViewportDebugDraw = 22
-	// Draws the [graphics.gd/classdb/ReflectionProbe] cluster. Clustering determines where reflection probes are positioned in screen-space, which allows the engine to only process these portions of the screen for reflection probes.
+	// Draws the [ReflectionProbe] cluster. Clustering determines where reflection probes are positioned in screen-space, which allows the engine to only process these portions of the screen for reflection probes.
 	//
 	// Note: Only supported when using the Forward+ rendering method.
+	//
+	// [ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
 	ViewportDebugDrawClusterReflectionProbes ViewportDebugDraw = 23
 	// Draws the occlusion culling buffer. This low-resolution occlusion culling buffer is rasterized on the CPU and is used to check whether instances are occluded by other objects.
 	//
@@ -12206,7 +13849,9 @@ const (
 	ViewportVrsDisabled ViewportVRSMode = 0
 	// Variable rate shading uses a texture. Note, for stereoscopic use a texture atlas with a texture for each view.
 	ViewportVrsTexture ViewportVRSMode = 1
-	// Variable rate shading texture is supplied by the primary [graphics.gd/classdb/XRInterface]. Note that this may override the update mode.
+	// Variable rate shading texture is supplied by the primary [XRInterface]. Note that this may override the update mode.
+	//
+	// [XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
 	ViewportVrsXr ViewportVRSMode = 2
 	// Represents the size of the [ViewportVRSMode] enum.
 	ViewportVrsMax ViewportVRSMode = 3
@@ -12230,13 +13875,20 @@ type SkyMode int //gd:RenderingServer.SkyMode
 const (
 	// Automatically selects the appropriate process mode based on your sky shader. If your shader uses TIME or POSITION, this will use [SkyModeRealtime]. If your shader uses any of the LIGHT_* variables or any custom uniforms, this uses [SkyModeIncremental]. Otherwise, this defaults to [SkyModeQuality].
 	SkyModeAutomatic SkyMode = 0
-	// Uses high quality importance sampling to process the radiance map. In general, this results in much higher quality than [SkyModeRealtime] but takes much longer to generate. This should not be used if you plan on changing the sky at runtime. If you are finding that the reflection is not blurry enough and is showing sparkles or fireflies, try increasing [graphics.gd/classdb/ProjectSettings] "rendering/reflections/sky_reflections/ggx_samples".
-	SkyModeQuality SkyMode = 1
-	// Uses the same high quality importance sampling to process the radiance map as [SkyModeQuality], but updates over several frames. The number of frames is determined by [graphics.gd/classdb/ProjectSettings] "rendering/reflections/sky_reflections/roughness_layers". Use this when you need highest quality radiance maps, but have a sky that updates slowly.
-	SkyModeIncremental SkyMode = 2
-	// Uses the fast filtering algorithm to process the radiance map. In general this results in lower quality, but substantially faster run times. If you need better quality, but still need to update the sky every frame, consider turning on [graphics.gd/classdb/ProjectSettings] "rendering/reflections/sky_reflections/fast_filter_high_quality".
+	// Uses high quality importance sampling to process the radiance map. In general, this results in much higher quality than [SkyModeRealtime] but takes much longer to generate. This should not be used if you plan on changing the sky at runtime. If you are finding that the reflection is not blurry enough and is showing sparkles or fireflies, try increasing [ProjectSettings] "rendering/reflections/sky_reflections/ggx_samples".
 	//
-	// Note: The fast filtering algorithm is limited to 256×256 cubemaps, so [Instance.SkySetRadianceSize] must be set to 256. Otherwise, a warning is printed and the overridden radiance size is ignored.
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+	SkyModeQuality SkyMode = 1
+	// Uses the same high quality importance sampling to process the radiance map as [SkyModeQuality], but updates over several frames. The number of frames is determined by [ProjectSettings] "rendering/reflections/sky_reflections/roughness_layers". Use this when you need highest quality radiance maps, but have a sky that updates slowly.
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+	SkyModeIncremental SkyMode = 2
+	// Uses the fast filtering algorithm to process the radiance map. In general this results in lower quality, but substantially faster run times. If you need better quality, but still need to update the sky every frame, consider turning on [ProjectSettings] "rendering/reflections/sky_reflections/fast_filter_high_quality".
+	//
+	// Note: The fast filtering algorithm is limited to 256×256 cubemaps, so [SkySetRadianceSize] must be set to 256. Otherwise, a warning is printed and the overridden radiance size is ignored.
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+	// [SkySetRadianceSize]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SkySetRadianceSize
 	SkyModeRealtime SkyMode = 3
 )
 
@@ -12298,8 +13950,12 @@ const (
 	// Disable ambient light.
 	EnvAmbientSourceDisabled EnvironmentAmbientSource = 1
 	// Specify a specific [Color.RGBA] for ambient light.
+	//
+	// [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 	EnvAmbientSourceColor EnvironmentAmbientSource = 2
-	// Gather ambient light from the [graphics.gd/classdb/Sky] regardless of what the background is.
+	// Gather ambient light from the [Sky] regardless of what the background is.
+	//
+	// [Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
 	EnvAmbientSourceSky EnvironmentAmbientSource = 3
 )
 
@@ -12310,7 +13966,9 @@ const (
 	EnvReflectionSourceBg EnvironmentReflectionSource = 0
 	// Disable reflections.
 	EnvReflectionSourceDisabled EnvironmentReflectionSource = 1
-	// Use the [graphics.gd/classdb/Sky] for reflections regardless of what the background is.
+	// Use the [Sky] for reflections regardless of what the background is.
+	//
+	// [Sky]: https://pkg.go.dev/graphics.gd/classdb/Sky
 	EnvReflectionSourceSky EnvironmentReflectionSource = 2
 )
 
@@ -12345,7 +14003,9 @@ const (
 	EnvToneMapperLinear EnvironmentToneMapper = 0
 	// A simple tonemapping curve that rolls off bright values to prevent clipping. This results in an image that can appear dull and low contrast. Slower than [EnvToneMapperLinear].
 	//
-	// Note: When [graphics.gd/classdb/Environment.Instance.TonemapWhite] is left at the default value of 1.0, [EnvToneMapperReinhard] produces an identical image to [EnvToneMapperLinear].
+	// Note: When [Environment.TonemapWhite] is left at the default value of 1.0, [EnvToneMapperReinhard] produces an identical image to [EnvToneMapperLinear].
+	//
+	// [Environment.TonemapWhite]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapWhite
 	EnvToneMapperReinhard EnvironmentToneMapper = 1
 	// Uses a film-like tonemapping curve to prevent clipping of bright values and provide better contrast than [EnvToneMapperReinhard]. Slightly slower than [EnvToneMapperReinhard].
 	EnvToneMapperFilmic EnvironmentToneMapper = 2
@@ -12355,7 +14015,9 @@ const (
 	EnvToneMapperAces EnvironmentToneMapper = 3
 	// Uses a film-like tonemapping curve and desaturates bright values for a more realistic appearance. Better than other tonemappers at maintaining the hue of colors as they become brighter. The slowest tonemapping option.
 	//
-	// Note: [graphics.gd/classdb/Environment.Instance.TonemapWhite] is fixed at a value of 16.29, which makes [EnvToneMapperAgx] unsuitable for use with the Mobile rendering method.
+	// Note: [Environment.TonemapWhite] is fixed at a value of 16.29, which makes [EnvToneMapperAgx] unsuitable for use with the Mobile rendering method.
+	//
+	// [Environment.TonemapWhite]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.TonemapWhite
 	EnvToneMapperAgx EnvironmentToneMapper = 4
 )
 
@@ -12473,7 +14135,9 @@ const (
 type SubSurfaceScatteringQuality int //gd:RenderingServer.SubSurfaceScatteringQuality
 
 const (
-	// Disables subsurface scattering entirely, even on materials that have [graphics.gd/classdb/BaseMaterial3D.Instance.SubsurfScatterEnabled] set to true. This has the lowest GPU requirements.
+	// Disables subsurface scattering entirely, even on materials that have [BaseMaterial3D.SubsurfScatterEnabled] set to true. This has the lowest GPU requirements.
+	//
+	// [BaseMaterial3D.SubsurfScatterEnabled]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.SubsurfScatterEnabled
 	SubSurfaceScatteringQualityDisabled SubSurfaceScatteringQuality = 0
 	// Low subsurface scattering quality.
 	SubSurfaceScatteringQualityLow SubSurfaceScatteringQuality = 1
@@ -12584,24 +14248,42 @@ const (
 type BakeChannels int //gd:RenderingServer.BakeChannels
 
 const (
-	// Index of [graphics.gd/classdb/Image] in array of [graphics.gd/classdb/Image]s returned by [Instance.BakeRenderUv2]. Image uses [Image.FormatRgba8] and contains albedo color in the .rgb channels and alpha in the .a channel.
+	// Index of [Image] in array of [Image]s returned by [BakeRenderUv2]. Image uses [Image.FormatRgba8] and contains albedo color in the .rgb channels and alpha in the .a channel.
+	//
+	// [BakeRenderUv2]: https://pkg.go.dev/graphics.gd/classdb/#Instance.BakeRenderUv2
+	// [Image]: https://pkg.go.dev/graphics.gd/classdb/Image
 	BakeChannelAlbedoAlpha BakeChannels = 0
-	// Index of [graphics.gd/classdb/Image] in array of [graphics.gd/classdb/Image]s returned by [Instance.BakeRenderUv2]. Image uses [Image.FormatRgba8] and contains the per-pixel normal of the object in the .rgb channels and nothing in the .a channel. The per-pixel normal is encoded as normal * 0.5 + 0.5.
+	// Index of [Image] in array of [Image]s returned by [BakeRenderUv2]. Image uses [Image.FormatRgba8] and contains the per-pixel normal of the object in the .rgb channels and nothing in the .a channel. The per-pixel normal is encoded as normal * 0.5 + 0.5.
+	//
+	// [BakeRenderUv2]: https://pkg.go.dev/graphics.gd/classdb/#Instance.BakeRenderUv2
+	// [Image]: https://pkg.go.dev/graphics.gd/classdb/Image
 	BakeChannelNormal BakeChannels = 1
-	// Index of [graphics.gd/classdb/Image] in array of [graphics.gd/classdb/Image]s returned by [Instance.BakeRenderUv2]. Image uses [Image.FormatRgba8] and contains ambient occlusion (from material and decals only) in the .r channel, roughness in the .g channel, metallic in the .b channel and sub surface scattering amount in the .a channel.
+	// Index of [Image] in array of [Image]s returned by [BakeRenderUv2]. Image uses [Image.FormatRgba8] and contains ambient occlusion (from material and decals only) in the .r channel, roughness in the .g channel, metallic in the .b channel and sub surface scattering amount in the .a channel.
+	//
+	// [BakeRenderUv2]: https://pkg.go.dev/graphics.gd/classdb/#Instance.BakeRenderUv2
+	// [Image]: https://pkg.go.dev/graphics.gd/classdb/Image
 	BakeChannelOrm BakeChannels = 2
-	// Index of [graphics.gd/classdb/Image] in array of [graphics.gd/classdb/Image]s returned by [Instance.BakeRenderUv2]. Image uses [Image.FormatRgbah] and contains emission color in the .rgb channels and nothing in the .a channel.
+	// Index of [Image] in array of [Image]s returned by [BakeRenderUv2]. Image uses [Image.FormatRgbah] and contains emission color in the .rgb channels and nothing in the .a channel.
+	//
+	// [BakeRenderUv2]: https://pkg.go.dev/graphics.gd/classdb/#Instance.BakeRenderUv2
+	// [Image]: https://pkg.go.dev/graphics.gd/classdb/Image
 	BakeChannelEmission BakeChannels = 3
 )
 
 type CanvasTextureChannel int //gd:RenderingServer.CanvasTextureChannel
 
 const (
-	// Diffuse canvas texture ([graphics.gd/classdb/CanvasTexture.Instance.DiffuseTexture]).
+	// Diffuse canvas texture ([CanvasTexture.DiffuseTexture]).
+	//
+	// [CanvasTexture.DiffuseTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.DiffuseTexture
 	CanvasTextureChannelDiffuse CanvasTextureChannel = 0
-	// Normal map canvas texture ([graphics.gd/classdb/CanvasTexture.Instance.NormalTexture]).
+	// Normal map canvas texture ([CanvasTexture.NormalTexture]).
+	//
+	// [CanvasTexture.NormalTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.NormalTexture
 	CanvasTextureChannelNormal CanvasTextureChannel = 1
-	// Specular map canvas texture ([graphics.gd/classdb/CanvasTexture.Instance.SpecularTexture]).
+	// Specular map canvas texture ([CanvasTexture.SpecularTexture]).
+	//
+	// [CanvasTexture.SpecularTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture#Instance.SpecularTexture
 	CanvasTextureChannelSpecular CanvasTextureChannel = 2
 )
 
@@ -12619,27 +14301,39 @@ const (
 type CanvasItemTextureFilter int //gd:RenderingServer.CanvasItemTextureFilter
 
 const (
-	// Uses the default filter mode for this [graphics.gd/classdb/Viewport].
+	// Uses the default filter mode for this [Viewport].
+	//
+	// [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 	CanvasItemTextureFilterDefault CanvasItemTextureFilter = 0
 	// The texture filter reads from the nearest pixel only. This makes the texture look pixelated from up close, and grainy from a distance (due to mipmaps not being sampled).
 	CanvasItemTextureFilterNearest CanvasItemTextureFilter = 1
 	// The texture filter blends between the nearest 4 pixels. This makes the texture look smooth from up close, and grainy from a distance (due to mipmaps not being sampled).
 	CanvasItemTextureFilterLinear CanvasItemTextureFilter = 2
-	// The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look pixelated from up close, and smooth from a distance.
+	// The texture filter reads from the nearest pixel and blends between the nearest 2 mipmaps (or uses the nearest mipmap if [ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look pixelated from up close, and smooth from a distance.
 	//
-	// Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [graphics.gd/classdb/Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.
+	// Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.
+	//
+	// [Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	CanvasItemTextureFilterNearestWithMipmaps CanvasItemTextureFilter = 3
-	// The texture filter blends between the nearest 4 pixels and between the nearest 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look smooth from up close, and smooth from a distance.
+	// The texture filter blends between the nearest 4 pixels and between the nearest 2 mipmaps (or uses the nearest mipmap if [ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true). This makes the texture look smooth from up close, and smooth from a distance.
 	//
-	// Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [graphics.gd/classdb/Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.
+	// Use this for non-pixel art textures that may be viewed at a low scale (e.g. due to [Camera2D] zoom or sprite scaling), as mipmaps are important to smooth out pixels that are smaller than on-screen pixels.
+	//
+	// [Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	CanvasItemTextureFilterLinearWithMipmaps CanvasItemTextureFilter = 4
-	// The texture filter reads from the nearest pixel and blends between 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look pixelated from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	// The texture filter reads from the nearest pixel and blends between 2 mipmaps (or uses the nearest mipmap if [ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look pixelated from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
 	//
 	// Note: This texture filter is rarely useful in 2D projects. [CanvasItemTextureFilterNearestWithMipmaps] is usually more appropriate in this case.
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	CanvasItemTextureFilterNearestWithMipmapsAnisotropic CanvasItemTextureFilter = 5
-	// The texture filter blends between the nearest 4 pixels and blends between 2 mipmaps (or uses the nearest mipmap if [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look smooth from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [graphics.gd/classdb/ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
+	// The texture filter blends between the nearest 4 pixels and blends between 2 mipmaps (or uses the nearest mipmap if [ProjectSettings] "rendering/textures/default_filters/use_nearest_mipmap_filter" is true) based on the angle between the surface and the camera view. This makes the texture look smooth from up close, and smooth from a distance. Anisotropic filtering improves texture quality on surfaces that are almost in line with the camera, but is slightly slower. The anisotropic filtering level can be changed by adjusting [ProjectSettings] "rendering/textures/default_filters/anisotropic_filtering_level".
 	//
 	// Note: This texture filter is rarely useful in 2D projects. [CanvasItemTextureFilterLinearWithMipmaps] is usually more appropriate in this case.
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	CanvasItemTextureFilterLinearWithMipmapsAnisotropic CanvasItemTextureFilter = 6
 	// Max value for [CanvasItemTextureFilter] enum.
 	CanvasItemTextureFilterMax CanvasItemTextureFilter = 7
@@ -12648,7 +14342,9 @@ const (
 type CanvasItemTextureRepeat int //gd:RenderingServer.CanvasItemTextureRepeat
 
 const (
-	// Uses the default repeat mode for this [graphics.gd/classdb/Viewport].
+	// Uses the default repeat mode for this [Viewport].
+	//
+	// [Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
 	CanvasItemTextureRepeatDefault CanvasItemTextureRepeat = 0
 	// Disables textures repeating. Instead, when reading UVs outside the 0-1 range, the value will be clamped to the edge of the texture, resulting in a stretched out look at the borders of the texture.
 	CanvasItemTextureRepeatDisabled CanvasItemTextureRepeat = 1
@@ -12675,9 +14371,13 @@ const (
 type CanvasLightMode int //gd:RenderingServer.CanvasLightMode
 
 const (
-	// 2D point light (see [graphics.gd/classdb/PointLight2D]).
+	// 2D point light (see [PointLight2D]).
+	//
+	// [PointLight2D]: https://pkg.go.dev/graphics.gd/classdb/PointLight2D
 	CanvasLightModePoint CanvasLightMode = 0
-	// 2D directional (sun/moon) light (see [graphics.gd/classdb/DirectionalLight2D]).
+	// 2D directional (sun/moon) light (see [DirectionalLight2D]).
+	//
+	// [DirectionalLight2D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight2D
 	CanvasLightModeDirectional CanvasLightMode = 1
 )
 
@@ -12736,6 +14436,8 @@ const (
 	// 4-dimensional integer vector global shader parameter (global uniform ivec4 ...).
 	GlobalVarTypeIvec4 GlobalShaderParameterType = 7
 	// 2-dimensional integer rectangle global shader parameter (global uniform ivec4 ...). Equivalent to [GlobalVarTypeIvec4] in shader code, but exposed as a [Rect2i.PositionSize] in the editor UI.
+	//
+	// [Rect2i.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2i#PositionSize
 	GlobalVarTypeRect2i GlobalShaderParameterType = 8
 	// Unsigned integer global shader parameter (global uniform uint ...).
 	GlobalVarTypeUint GlobalShaderParameterType = 9
@@ -12754,28 +14456,50 @@ const (
 	// 4-dimensional floating-point vector global shader parameter (global uniform vec4 ...).
 	GlobalVarTypeVec4 GlobalShaderParameterType = 16
 	// Color global shader parameter (global uniform vec4 ...). Equivalent to [GlobalVarTypeVec4] in shader code, but exposed as a [Color.RGBA] in the editor UI.
+	//
+	// [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 	GlobalVarTypeColor GlobalShaderParameterType = 17
 	// 2-dimensional floating-point rectangle global shader parameter (global uniform vec4 ...). Equivalent to [GlobalVarTypeVec4] in shader code, but exposed as a [Rect2.PositionSize] in the editor UI.
+	//
+	// [Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
 	GlobalVarTypeRect2 GlobalShaderParameterType = 18
 	// 2×2 matrix global shader parameter (global uniform mat2 ...). Exposed as a []int32 in the editor UI.
 	GlobalVarTypeMat2 GlobalShaderParameterType = 19
 	// 3×3 matrix global shader parameter (global uniform mat3 ...). Exposed as a [Basis.XYZ] in the editor UI.
+	//
+	// [Basis.XYZ]: https://pkg.go.dev/graphics.gd/variant/Basis#XYZ
 	GlobalVarTypeMat3 GlobalShaderParameterType = 20
 	// 4×4 matrix global shader parameter (global uniform mat4 ...). Exposed as a [Projection.XYZW] in the editor UI.
+	//
+	// [Projection.XYZW]: https://pkg.go.dev/graphics.gd/variant/Projection#XYZW
 	GlobalVarTypeMat4 GlobalShaderParameterType = 21
 	// 2-dimensional transform global shader parameter (global uniform mat2x3 ...). Exposed as a [Transform2D.OriginXY] in the editor UI.
+	//
+	// [Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
 	GlobalVarTypeTransform2d GlobalShaderParameterType = 22
 	// 3-dimensional transform global shader parameter (global uniform mat3x4 ...). Exposed as a [Transform3D.BasisOrigin] in the editor UI.
+	//
+	// [Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
 	GlobalVarTypeTransform GlobalShaderParameterType = 23
-	// 2D sampler global shader parameter (global uniform sampler2D ...). Exposed as a [graphics.gd/classdb/Texture2D] in the editor UI.
+	// 2D sampler global shader parameter (global uniform sampler2D ...). Exposed as a [Texture2D] in the editor UI.
+	//
+	// [Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
 	GlobalVarTypeSampler2d GlobalShaderParameterType = 24
-	// 2D sampler array global shader parameter (global uniform sampler2DArray ...). Exposed as a [graphics.gd/classdb/Texture2DArray] in the editor UI.
+	// 2D sampler array global shader parameter (global uniform sampler2DArray ...). Exposed as a [Texture2DArray] in the editor UI.
+	//
+	// [Texture2DArray]: https://pkg.go.dev/graphics.gd/classdb/Texture2DArray
 	GlobalVarTypeSampler2darray GlobalShaderParameterType = 25
-	// 3D sampler global shader parameter (global uniform sampler3D ...). Exposed as a [graphics.gd/classdb/Texture3D] in the editor UI.
+	// 3D sampler global shader parameter (global uniform sampler3D ...). Exposed as a [Texture3D] in the editor UI.
+	//
+	// [Texture3D]: https://pkg.go.dev/graphics.gd/classdb/Texture3D
 	GlobalVarTypeSampler3d GlobalShaderParameterType = 26
-	// Cubemap sampler global shader parameter (global uniform samplerCube ...). Exposed as a [graphics.gd/classdb/Cubemap] in the editor UI.
+	// Cubemap sampler global shader parameter (global uniform samplerCube ...). Exposed as a [Cubemap] in the editor UI.
+	//
+	// [Cubemap]: https://pkg.go.dev/graphics.gd/classdb/Cubemap
 	GlobalVarTypeSamplercube GlobalShaderParameterType = 27
-	// External sampler global shader parameter (global uniform samplerExternalOES ...). Exposed as an [graphics.gd/classdb/ExternalTexture] in the editor UI.
+	// External sampler global shader parameter (global uniform samplerExternalOES ...). Exposed as an [ExternalTexture] in the editor UI.
+	//
+	// [ExternalTexture]: https://pkg.go.dev/graphics.gd/classdb/ExternalTexture
 	GlobalVarTypeSamplerext GlobalShaderParameterType = 28
 	// Represents the size of the [GlobalShaderParameterType] enum.
 	GlobalVarTypeMax GlobalShaderParameterType = 29

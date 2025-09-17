@@ -3,7 +3,10 @@
 /*
 Provides access to metadata stored for every available engine class.
 
-Note: Script-defined classes with class_name are not part of [graphics.gd/classdb/ClassDB], so they will not return reflection data such as a method or property list. However, [graphics.gd/classdb/GDExtension]-defined classes are part of [graphics.gd/classdb/ClassDB], so they will return reflection data.
+Note: Script-defined classes with class_name are not part of [ClassDB], so they will not return reflection data such as a method or property list. However, [GDExtension]-defined classes are part of [ClassDB], so they will return reflection data.
+
+[ClassDB]: https://pkg.go.dev/graphics.gd/classdb/ClassDB
+[GDExtension]: https://pkg.go.dev/graphics.gd/classdb/GDExtension
 */
 package ClassDB
 
@@ -130,7 +133,9 @@ func singleton() {
 /*
 Returns the names of all engine classes available.
 
-Note: Script-defined classes with class_name are not included in this list. Use [graphics.gd/classdb/ProjectSettings.GetGlobalClassList] to get a list of script-defined classes instead.
+Note: Script-defined classes with class_name are not included in this list. Use [ProjectSettings.GetGlobalClassList] to get a list of script-defined classes instead.
+
+[ProjectSettings.GetGlobalClassList]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings#GetGlobalClassList
 */
 func GetClassList() []string { //gd:ClassDB.get_class_list
 	once.Do(singleton)
@@ -491,7 +496,9 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 /*
 Returns the names of all engine classes available.
 
-Note: Script-defined classes with class_name are not included in this list. Use [graphics.gd/classdb/ProjectSettings.GetGlobalClassList] to get a list of script-defined classes instead.
+Note: Script-defined classes with class_name are not included in this list. Use [ProjectSettings.GetGlobalClassList] to get a list of script-defined classes instead.
+
+[ProjectSettings.GetGlobalClassList]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings#GetGlobalClassList
 */
 //go:nosplit
 func (self class) GetClassList() Packed.Strings { //gd:ClassDB.get_class_list
@@ -915,7 +922,9 @@ const (
 	MethodFlagVararg MethodFlags = 16
 	// Flag for a static method.
 	MethodFlagStatic MethodFlags = 32
-	// Used internally. Allows to not dump core virtual methods (such as [graphics.gd/classdb/Object.Instance.Notification]) to the JSON API.
+	// Used internally. Allows to not dump core virtual methods (such as [Object.Notification]) to the JSON API.
+	//
+	// [Object.Notification]: https://pkg.go.dev/graphics.gd/variant/Object#Notification
 	MethodFlagObjectCore MethodFlags = 64
 	// Flag for a virtual method that is required. In GDScript, this flag is set for abstract functions.
 	MethodFlagVirtualRequired MethodFlags = 128
@@ -933,6 +942,8 @@ const (
 	// Example: "-360,360,1,or_greater,or_less".
 	//
 	// Additionally, other keywords can be included: "exp" for exponential range editing, "radians_as_degrees" for editing radian angles in degrees (the range values are also in degrees), "degrees" to hint at an angle and "hide_slider" to hide the slider.
+	//
+	// [Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 	PropertyHintRange PropertyHint = 1
 	// Hints that an int or string property is an enumerated value to pick in a list specified via a hint string.
 	//
@@ -943,8 +954,13 @@ const (
 	// Unlike [PropertyHintEnum], a property with this hint still accepts arbitrary values and can be empty. The list of values serves to suggest possible values.
 	PropertyHintEnumSuggestion PropertyHint = 3
 	// Hints that a [Float.X] property should be edited via an exponential easing function. The hint string can include "attenuation" to flip the curve horizontally and/or "positive_only" to exclude in/out easing and limit values to be greater than or equal to zero.
+	//
+	// [Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
 	PropertyHintExpEasing PropertyHint = 4
-	// Hints that a vector property should allow its components to be linked. For example, this allows [graphics.gd/classdb/Vector2.Instance.X] and [graphics.gd/classdb/Vector2.Instance.Y] to be edited together.
+	// Hints that a vector property should allow its components to be linked. For example, this allows [Vector2.X] and [Vector2.Y] to be edited together.
+	//
+	// [Vector2.X]: https://pkg.go.dev/graphics.gd/classdb/Vector2#Instance.X
+	// [Vector2.Y]: https://pkg.go.dev/graphics.gd/classdb/Vector2#Instance.Y
 	PropertyHintLink PropertyHint = 5
 	// Hints that an int property is a bitmask with named bit flags.
 	//
@@ -968,7 +984,9 @@ const (
 	PropertyHintLayers3dNavigation PropertyHint = 12
 	// Hints that an integer property is a bitmask using the optionally named avoidance layers.
 	PropertyHintLayersAvoidance PropertyHint = 37
-	// Hints that a string property is a path to a file. Editing it will show a file dialog for picking the path. The hint string can be a set of filters with wildcards like "*.png,*.jpg". By default the file will be stored as UID whenever available. You can use [graphics.gd/classdb/ResourceUID] methods to convert it back to path. For storing a raw path, use [PropertyHintFilePath].
+	// Hints that a string property is a path to a file. Editing it will show a file dialog for picking the path. The hint string can be a set of filters with wildcards like "*.png,*.jpg". By default the file will be stored as UID whenever available. You can use [ResourceUID] methods to convert it back to path. For storing a raw path, use [PropertyHintFilePath].
+	//
+	// [ResourceUID]: https://pkg.go.dev/graphics.gd/classdb/ResourceUID
 	PropertyHintFile PropertyHint = 13
 	// Hints that a string property is a path to a directory. Editing it will show a file dialog for picking the path.
 	PropertyHintDir PropertyHint = 14
@@ -976,15 +994,22 @@ const (
 	PropertyHintGlobalFile PropertyHint = 15
 	// Hints that a string property is an absolute path to a directory outside the project folder. Editing it will show a file dialog for picking the path.
 	PropertyHintGlobalDir PropertyHint = 16
-	// Hints that a property is an instance of a [graphics.gd/classdb/Resource]-derived type, optionally specified via the hint string (e.g. "Texture2D"). Editing it will show a popup menu of valid resource types to instantiate.
+	// Hints that a property is an instance of a [Resource]-derived type, optionally specified via the hint string (e.g. "Texture2D"). Editing it will show a popup menu of valid resource types to instantiate.
+	//
+	// [Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
 	PropertyHintResourceType PropertyHint = 17
 	// Hints that a string property is text with line breaks. Editing it will show a text input field where line breaks can be typed.
 	PropertyHintMultilineText PropertyHint = 18
-	// Hints that a string property is an [graphics.gd/classdb/Expression].
+	// Hints that a string property is an [Expression].
+	//
+	// [Expression]: https://pkg.go.dev/graphics.gd/classdb/Expression
 	PropertyHintExpression PropertyHint = 19
 	// Hints that a string property should show a placeholder text on its input field, if empty. The hint string is the placeholder text to use.
 	PropertyHintPlaceholderText PropertyHint = 20
-	// Hints that a [Color.RGBA] property should be edited without affecting its transparency ([graphics.gd/classdb/Color.Instance.A] is not editable).
+	// Hints that a [Color.RGBA] property should be edited without affecting its transparency ([Color.A] is not editable).
+	//
+	// [Color.A]: https://pkg.go.dev/graphics.gd/classdb/Color#Instance.A
+	// [Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
 	PropertyHintColorNoAlpha PropertyHint = 21
 	// Hints that the property's value is an object encoded as object ID, with its type specified in the hint string. Used by the debugger.
 	PropertyHintObjectId PropertyHint = 22
@@ -1105,9 +1130,13 @@ const (
 	PropertyHintObjectTooBig PropertyHint = 25
 	// Hints that the hint string specifies valid node types for property of type node path.
 	PropertyHintNodePathValidTypes PropertyHint = 26
-	// Hints that a string property is a path to a file. Editing it will show a file dialog for picking the path for the file to be saved at. The dialog has access to the project's directory. The hint string can be a set of filters with wildcards like "*.png,*.jpg". See also [graphics.gd/classdb/FileDialog.Instance.Filters].
+	// Hints that a string property is a path to a file. Editing it will show a file dialog for picking the path for the file to be saved at. The dialog has access to the project's directory. The hint string can be a set of filters with wildcards like "*.png,*.jpg". See also [FileDialog.Filters].
+	//
+	// [FileDialog.Filters]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.Filters
 	PropertyHintSaveFile PropertyHint = 27
-	// Hints that a string property is a path to a file. Editing it will show a file dialog for picking the path for the file to be saved at. The dialog has access to the entire filesystem. The hint string can be a set of filters with wildcards like "*.png,*.jpg". See also [graphics.gd/classdb/FileDialog.Instance.Filters].
+	// Hints that a string property is a path to a file. Editing it will show a file dialog for picking the path for the file to be saved at. The dialog has access to the entire filesystem. The hint string can be a set of filters with wildcards like "*.png,*.jpg". See also [FileDialog.Filters].
+	//
+	// [FileDialog.Filters]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.Filters
 	PropertyHintGlobalSaveFile PropertyHint = 28
 	PropertyHintIntIsObjectid  PropertyHint = 29
 	// Hints that an int property is a pointer. Used by GDExtension.
@@ -1124,7 +1153,9 @@ const (
 	PropertyHintLocaleId PropertyHint = 32
 	// Hints that a dictionary property is string translation map. Dictionary keys are locale codes and, values are translated strings.
 	PropertyHintLocalizableString PropertyHint = 33
-	// Hints that a property is an instance of a [graphics.gd/classdb/Node]-derived type, optionally specified via the hint string (e.g. "Node2D"). Editing it will show a dialog for picking a node from the scene.
+	// Hints that a property is an instance of a [Node]-derived type, optionally specified via the hint string (e.g. "Node2D"). Editing it will show a dialog for picking a node from the scene.
+	//
+	// [Node]: https://pkg.go.dev/graphics.gd/classdb/Node
 	PropertyHintNodeType PropertyHint = 34
 	// Hints that a quaternion property should disable the temporary euler editor.
 	PropertyHintHideQuaternionEdit PropertyHint = 35
@@ -1142,7 +1173,10 @@ const (
 	//
 	// Note: A func cannot be properly serialized and stored in a file, so it is recommended to use [PropertyUsageEditor] instead of [PropertyUsageDefault].
 	PropertyHintToolButton PropertyHint = 39
-	// Hints that a property will be changed on its own after setting, such as [graphics.gd/classdb/AudioStreamPlayer.Instance.Playing] or [graphics.gd/classdb/GPUParticles3D.Instance.Emitting].
+	// Hints that a property will be changed on its own after setting, such as [AudioStreamPlayer.Playing] or [GPUParticles3D.Emitting].
+	//
+	// [AudioStreamPlayer.Playing]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer#Instance.Playing
+	// [GPUParticles3D.Emitting]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Emitting
 	PropertyHintOneshot PropertyHint = 40
 	// Hints that a boolean property will enable the feature associated with the group that it occurs in. The property will be displayed as a checkbox on the group header. Only works within a group or subgroup.
 	//
@@ -1167,29 +1201,45 @@ const (
 	PropertyUsageNone PropertyUsageFlags = 0
 	// The property is serialized and saved in the scene file (default for exported properties).
 	PropertyUsageStorage PropertyUsageFlags = 2
-	// The property is shown in the [graphics.gd/classdb/EditorInspector] (default for exported properties).
+	// The property is shown in the [EditorInspector] (default for exported properties).
+	//
+	// [EditorInspector]: https://pkg.go.dev/graphics.gd/classdb/EditorInspector
 	PropertyUsageEditor PropertyUsageFlags = 4
 	// The property is excluded from the class reference.
 	PropertyUsageInternal PropertyUsageFlags = 8
-	// The property can be checked in the [graphics.gd/classdb/EditorInspector].
+	// The property can be checked in the [EditorInspector].
+	//
+	// [EditorInspector]: https://pkg.go.dev/graphics.gd/classdb/EditorInspector
 	PropertyUsageCheckable PropertyUsageFlags = 16
-	// The property is checked in the [graphics.gd/classdb/EditorInspector].
+	// The property is checked in the [EditorInspector].
+	//
+	// [EditorInspector]: https://pkg.go.dev/graphics.gd/classdb/EditorInspector
 	PropertyUsageChecked PropertyUsageFlags = 32
-	// Used to group properties together in the editor. See [graphics.gd/classdb/EditorInspector].
+	// Used to group properties together in the editor. See [EditorInspector].
+	//
+	// [EditorInspector]: https://pkg.go.dev/graphics.gd/classdb/EditorInspector
 	PropertyUsageGroup PropertyUsageFlags = 64
 	// Used to categorize properties together in the editor.
 	PropertyUsageCategory PropertyUsageFlags = 128
-	// Used to group properties together in the editor in a subgroup (under a group). See [graphics.gd/classdb/EditorInspector].
+	// Used to group properties together in the editor in a subgroup (under a group). See [EditorInspector].
+	//
+	// [EditorInspector]: https://pkg.go.dev/graphics.gd/classdb/EditorInspector
 	PropertyUsageSubgroup PropertyUsageFlags = 256
 	// The property is a bitfield, i.e. it contains multiple flags represented as bits.
 	PropertyUsageClassIsBitfield PropertyUsageFlags = 512
-	// The property does not save its state in [graphics.gd/classdb/PackedScene].
+	// The property does not save its state in [PackedScene].
+	//
+	// [PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
 	PropertyUsageNoInstanceState PropertyUsageFlags = 1024
 	// Editing the property prompts the user for restarting the editor.
 	PropertyUsageRestartIfChanged PropertyUsageFlags = 2048
-	// The property is a script variable. [PropertyUsageScriptVariable] can be used to distinguish between exported script variables from built-in variables (which don't have this usage flag). By default, [PropertyUsageScriptVariable] is not applied to variables that are created by overriding [graphics.gd/classdb/Object.Instance.GetPropertyList] in a script.
+	// The property is a script variable. [PropertyUsageScriptVariable] can be used to distinguish between exported script variables from built-in variables (which don't have this usage flag). By default, [PropertyUsageScriptVariable] is not applied to variables that are created by overriding [Object.GetPropertyList] in a script.
+	//
+	// [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 	PropertyUsageScriptVariable PropertyUsageFlags = 4096
-	// The property value of type [graphics.gd/classdb/Object] will be stored even if its value is null.
+	// The property value of type [Object] will be stored even if its value is null.
+	//
+	// [Object]: https://pkg.go.dev/graphics.gd/variant/Object
 	PropertyUsageStoreIfNull PropertyUsageFlags = 8192
 	// If this property is modified, all inspector fields will be refreshed.
 	PropertyUsageUpdateAllIfModified PropertyUsageFlags = 16384
@@ -1200,24 +1250,35 @@ const (
 	PropertyUsageNilIsVariant PropertyUsageFlags = 131072
 	// The property is an array.
 	PropertyUsageArray PropertyUsageFlags = 262144
-	// When duplicating a resource with [graphics.gd/classdb/Resource.Instance.Duplicate], and this flag is set on a property of that resource, the property should always be duplicated, regardless of the subresources bool parameter.
+	// When duplicating a resource with [Resource.Duplicate], and this flag is set on a property of that resource, the property should always be duplicated, regardless of the subresources bool parameter.
+	//
+	// [Resource.Duplicate]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.Duplicate
 	PropertyUsageAlwaysDuplicate PropertyUsageFlags = 524288
-	// When duplicating a resource with [graphics.gd/classdb/Resource.Instance.Duplicate], and this flag is set on a property of that resource, the property should never be duplicated, regardless of the subresources bool parameter.
+	// When duplicating a resource with [Resource.Duplicate], and this flag is set on a property of that resource, the property should never be duplicated, regardless of the subresources bool parameter.
+	//
+	// [Resource.Duplicate]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.Duplicate
 	PropertyUsageNeverDuplicate PropertyUsageFlags = 1048576
 	// The property is only shown in the editor if modern renderers are supported (the Compatibility rendering method is excluded).
 	PropertyUsageHighEndGfx PropertyUsageFlags = 2097152
 	// The node path property will always be relative to the scene's root. Mostly useful for local resources.
 	PropertyUsageNodePathFromSceneRoot PropertyUsageFlags = 4194304
-	// Use when a resource is created on the fly, i.e. the getter will always return a different instance. [graphics.gd/classdb/ResourceSaver] needs this information to properly save such resources.
+	// Use when a resource is created on the fly, i.e. the getter will always return a different instance. [ResourceSaver] needs this information to properly save such resources.
+	//
+	// [ResourceSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceSaver
 	PropertyUsageResourceNotPersistent PropertyUsageFlags = 8388608
 	// Inserting an animation key frame of this property will automatically increment the value, allowing to easily keyframe multiple values in a row.
 	PropertyUsageKeyingIncrements    PropertyUsageFlags = 16777216
 	PropertyUsageDeferredSetResource PropertyUsageFlags = 33554432
-	// When this property is a [graphics.gd/classdb/Resource] and base object is a [graphics.gd/classdb/Node], a resource instance will be automatically created whenever the node is created in the editor.
+	// When this property is a [Resource] and base object is a [Node], a resource instance will be automatically created whenever the node is created in the editor.
+	//
+	// [Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+	// [Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
 	PropertyUsageEditorInstantiateObject PropertyUsageFlags = 67108864
 	// The property is considered a basic setting and will appear even when advanced mode is disabled. Used for project settings.
 	PropertyUsageEditorBasicSetting PropertyUsageFlags = 134217728
-	// The property is read-only in the [graphics.gd/classdb/EditorInspector].
+	// The property is read-only in the [EditorInspector].
+	//
+	// [EditorInspector]: https://pkg.go.dev/graphics.gd/classdb/EditorInspector
 	PropertyUsageReadOnly PropertyUsageFlags = 268435456
 	// An export preset property with this flag contains confidential information and is stored separately from the rest of the export preset configuration.
 	PropertyUsageSecret PropertyUsageFlags = 536870912

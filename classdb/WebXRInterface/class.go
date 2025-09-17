@@ -7,7 +7,7 @@ As such, this interface is only available when running in Web exports.
 
 WebXR supports a wide range of devices, from the very capable (like Valve Index, HTC Vive, Oculus Rift and Quest) down to the much less capable (like Google Cardboard, Oculus Go, GearVR, or plain smartphones).
 
-Since WebXR is based on JavaScript, it makes extensive use of callbacks, which means that [graphics.gd/classdb/WebXRInterface] is forced to use signals, where other XR interfaces would instead use functions that return a result immediately. This makes [graphics.gd/classdb/WebXRInterface] quite a bit more complicated to initialize than other XR interfaces.
+Since WebXR is based on JavaScript, it makes extensive use of callbacks, which means that [WebXRInterface] is forced to use signals, where other XR interfaces would instead use functions that return a result immediately. This makes [WebXRInterface] quite a bit more complicated to initialize than other XR interfaces.
 
 Here's the minimum code required to start an immersive VR session:
 
@@ -99,11 +99,18 @@ Here's the minimum code required to start an immersive VR session:
 
 There are a couple ways to handle "controller" input:
 
-- Using [graphics.gd/classdb/XRController3D] nodes and their [Instance.OnXrcontroller3d.ButtonPressed] and [Instance.OnXrcontroller3d.ButtonReleased] signals. This is how controllers are typically handled in XR apps in Godot, however, this will only work with advanced VR controllers like the Oculus Touch or Index controllers, for example.
+- Using [XRController3D] nodes and their [OnXrcontroller3d.ButtonPressed] and [OnXrcontroller3d.ButtonReleased] signals. This is how controllers are typically handled in XR apps in Godot, however, this will only work with advanced VR controllers like the Oculus Touch or Index controllers, for example.
 
-- Using the [Instance.OnSelect], [Instance.OnSqueeze] and related signals. This method will work for both advanced VR controllers, and non-traditional input sources like a tap on the screen, a spoken voice command or a button press on the device itself.
+- Using the [OnSelect], [OnSqueeze] and related signals. This method will work for both advanced VR controllers, and non-traditional input sources like a tap on the screen, a spoken voice command or a button press on the device itself.
 
 You can use both methods to allow your game or app to support a wider or narrower set of devices and input methods, or to allow more advanced interactions with more advanced devices.
+
+[OnSelect]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSelect
+[OnSqueeze]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSqueeze
+[OnXrcontroller3d.ButtonPressed]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnXrcontroller3d.ButtonPressed
+[OnXrcontroller3d.ButtonReleased]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnXrcontroller3d.ButtonReleased
+[WebXRInterface]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface
+[XRController3D]: https://pkg.go.dev/graphics.gd/classdb/XRController3D
 */
 package WebXRInterface
 
@@ -222,8 +229,9 @@ Checks if the given 'session_mode' is supported by the user's browser.
 
 Possible values come from [WebXR's XRSessionMode], including: "immersive-vr", "immersive-ar", and "inline".
 
-This method returns nothing, instead it emits the [Instance.OnSessionSupported] signal with the result.
+This method returns nothing, instead it emits the [OnSessionSupported] signal with the result.
 
+[OnSessionSupported]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSessionSupported
 [WebXR's XRSessionMode]: https://developer.mozilla.org/en-US/docs/Web/API/XRSessionMode
 */
 func (self Instance) IsSessionSupported(session_mode string) { //gd:WebXRInterface.is_session_supported
@@ -238,23 +246,31 @@ func (self Instance) IsInputSourceActive(input_source_id int) bool { //gd:WebXRI
 }
 
 /*
-Gets an [graphics.gd/classdb/XRControllerTracker] for the given 'input_source_id'.
+Gets an [XRControllerTracker] for the given 'input_source_id'.
 
-In the context of WebXR, an input source can be an advanced VR controller like the Oculus Touch or Index controllers, or even a tap on the screen, a spoken voice command or a button press on the device itself. When a non-traditional input source is used, interpret the position and orientation of the [graphics.gd/classdb/XRPositionalTracker] as a ray pointing at the object the user wishes to interact with.
+In the context of WebXR, an input source can be an advanced VR controller like the Oculus Touch or Index controllers, or even a tap on the screen, a spoken voice command or a button press on the device itself. When a non-traditional input source is used, interpret the position and orientation of the [XRPositionalTracker] as a ray pointing at the object the user wishes to interact with.
 
 Use this method to get information about the input source that triggered one of these signals:
 
-- [Instance.OnSelectstart]
+- [OnSelectstart]
 
-- [Instance.OnSelect]
+- [OnSelect]
 
-- [Instance.OnSelectend]
+- [OnSelectend]
 
-- [Instance.OnSqueezestart]
+- [OnSqueezestart]
 
-- [Instance.OnSqueeze]
+- [OnSqueeze]
 
-- [Instance.OnSqueezestart]
+- [OnSqueezestart]
+
+[OnSelect]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSelect
+[OnSelectend]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSelectend
+[OnSelectstart]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSelectstart
+[OnSqueeze]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSqueeze
+[OnSqueezestart]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSqueezestart
+[XRControllerTracker]: https://pkg.go.dev/graphics.gd/classdb/XRControllerTracker
+[XRPositionalTracker]: https://pkg.go.dev/graphics.gd/classdb/XRPositionalTracker
 */
 func (self Instance) GetInputSourceTracker(input_source_id int) XRControllerTracker.Instance { //gd:WebXRInterface.get_input_source_tracker
 	return XRControllerTracker.Instance(Advanced(self).GetInputSourceTracker(int64(input_source_id)))
@@ -272,14 +288,18 @@ func (self Instance) GetInputSourceTargetRayMode(input_source_id int) TargetRayM
 }
 
 /*
-Returns the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It may not report an accurate value until after using [Instance.SetDisplayRefreshRate].
+Returns the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It may not report an accurate value until after using [SetDisplayRefreshRate].
+
+[SetDisplayRefreshRate]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.SetDisplayRefreshRate
 */
 func (self Instance) GetDisplayRefreshRate() Float.X { //gd:WebXRInterface.get_display_refresh_rate
 	return Float.X(Float.X(Advanced(self).GetDisplayRefreshRate()))
 }
 
 /*
-Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [Instance.OnDisplayRefreshRateChanged] is emitted.
+Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [OnDisplayRefreshRateChanged] is emitted.
+
+[OnDisplayRefreshRateChanged]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnDisplayRefreshRateChanged
 */
 func (self Instance) SetDisplayRefreshRate(refresh_rate Float.X) { //gd:WebXRInterface.set_display_refresh_rate
 	Advanced(self).SetDisplayRefreshRate(float64(refresh_rate))
@@ -384,8 +404,9 @@ Checks if the given 'session_mode' is supported by the user's browser.
 
 Possible values come from [WebXR's XRSessionMode], including: "immersive-vr", "immersive-ar", and "inline".
 
-This method returns nothing, instead it emits the [Instance.OnSessionSupported] signal with the result.
+This method returns nothing, instead it emits the [OnSessionSupported] signal with the result.
 
+[OnSessionSupported]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSessionSupported
 [WebXR's XRSessionMode]: https://developer.mozilla.org/en-US/docs/Web/API/XRSessionMode
 */
 //go:nosplit
@@ -466,23 +487,31 @@ func (self class) IsInputSourceActive(input_source_id int64) bool { //gd:WebXRIn
 }
 
 /*
-Gets an [graphics.gd/classdb/XRControllerTracker] for the given 'input_source_id'.
+Gets an [XRControllerTracker] for the given 'input_source_id'.
 
-In the context of WebXR, an input source can be an advanced VR controller like the Oculus Touch or Index controllers, or even a tap on the screen, a spoken voice command or a button press on the device itself. When a non-traditional input source is used, interpret the position and orientation of the [graphics.gd/classdb/XRPositionalTracker] as a ray pointing at the object the user wishes to interact with.
+In the context of WebXR, an input source can be an advanced VR controller like the Oculus Touch or Index controllers, or even a tap on the screen, a spoken voice command or a button press on the device itself. When a non-traditional input source is used, interpret the position and orientation of the [XRPositionalTracker] as a ray pointing at the object the user wishes to interact with.
 
 Use this method to get information about the input source that triggered one of these signals:
 
-- [Instance.OnSelectstart]
+- [OnSelectstart]
 
-- [Instance.OnSelect]
+- [OnSelect]
 
-- [Instance.OnSelectend]
+- [OnSelectend]
 
-- [Instance.OnSqueezestart]
+- [OnSqueezestart]
 
-- [Instance.OnSqueeze]
+- [OnSqueeze]
 
-- [Instance.OnSqueezestart]
+- [OnSqueezestart]
+
+[OnSelect]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSelect
+[OnSelectend]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSelectend
+[OnSelectstart]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSelectstart
+[OnSqueeze]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSqueeze
+[OnSqueezestart]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSqueezestart
+[XRControllerTracker]: https://pkg.go.dev/graphics.gd/classdb/XRControllerTracker
+[XRPositionalTracker]: https://pkg.go.dev/graphics.gd/classdb/XRPositionalTracker
 */
 //go:nosplit
 func (self class) GetInputSourceTracker(input_source_id int64) [1]gdclass.XRControllerTracker { //gd:WebXRInterface.get_input_source_tracker
@@ -513,7 +542,9 @@ func (self class) GetVisibilityState() String.Readable { //gd:WebXRInterface.get
 }
 
 /*
-Returns the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It may not report an accurate value until after using [Instance.SetDisplayRefreshRate].
+Returns the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It may not report an accurate value until after using [SetDisplayRefreshRate].
+
+[SetDisplayRefreshRate]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.SetDisplayRefreshRate
 */
 //go:nosplit
 func (self class) GetDisplayRefreshRate() float64 { //gd:WebXRInterface.get_display_refresh_rate
@@ -523,7 +554,9 @@ func (self class) GetDisplayRefreshRate() float64 { //gd:WebXRInterface.get_disp
 }
 
 /*
-Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [Instance.OnDisplayRefreshRateChanged] is emitted.
+Sets the display refresh rate for the current HMD. Not supported on all HMDs and browsers. It won't take effect right away until after [OnDisplayRefreshRateChanged] is emitted.
+
+[OnDisplayRefreshRateChanged]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnDisplayRefreshRateChanged
 */
 //go:nosplit
 func (self class) SetDisplayRefreshRate(refresh_rate float64) { //gd:WebXRInterface.set_display_refresh_rate

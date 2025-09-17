@@ -22,7 +22,9 @@ Here's a sample on how to generate a triangular face:
 		mesh.SurfaceEnd()
 	}
 
-Note: Generating complex geometries with [graphics.gd/classdb/ImmediateMesh] is highly inefficient. Instead, it is designed to generate simple geometry that changes often.
+Note: Generating complex geometries with [ImmediateMesh] is highly inefficient. Instead, it is designed to generate simple geometry that changes often.
+
+[ImmediateMesh]: https://pkg.go.dev/graphics.gd/classdb/ImmediateMesh
 */
 package ImmediateMesh
 
@@ -125,7 +127,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.ImmediateMesh
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.ImmediateMesh
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -145,7 +152,7 @@ func (self Instance) SurfaceBegin(primitive Mesh.PrimitiveType) { //gd:Immediate
 /*
 Begin a new surface.
 */
-func (self Expanded) SurfaceBegin(primitive Mesh.PrimitiveType, material Material.Instance) { //gd:ImmediateMesh.surface_begin
+func (self MoreArgs) SurfaceBegin(primitive Mesh.PrimitiveType, material Material.Instance) { //gd:ImmediateMesh.surface_begin
 	Advanced(self).SurfaceBegin(primitive, material)
 }
 

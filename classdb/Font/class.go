@@ -127,7 +127,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.Font
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.Font
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -138,21 +143,29 @@ type Any interface {
 }
 
 /*
-Returns [graphics.gd/classdb/TextServer] RID of the font cache for specific variation.
+Returns [TextServer] RID of the font cache for specific variation.
+
+[TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
 */
 func (self Instance) FindVariation(variation_coordinates map[string]float32) RID.Font { //gd:Font.find_variation
 	return RID.Font(RID.Font(Advanced(self).FindVariation(gd.DictionaryFromMap(variation_coordinates), int64(0), float64(0.0), Transform2D.OriginXY(gd.NewTransform2D(1, 0, 0, 1, 0, 0)), int64(0), int64(0), int64(0), int64(0), float64(0.0))))
 }
 
 /*
-Returns [graphics.gd/classdb/TextServer] RID of the font cache for specific variation.
+Returns [TextServer] RID of the font cache for specific variation.
+
+[TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
 */
-func (self Expanded) FindVariation(variation_coordinates map[string]float32, face_index int, strength Float.X, transform Transform2D.OriginXY, spacing_top int, spacing_bottom int, spacing_space int, spacing_glyph int, baseline_offset Float.X) RID.Font { //gd:Font.find_variation
+func (self MoreArgs) FindVariation(variation_coordinates map[string]float32, face_index int, strength Float.X, transform Transform2D.OriginXY, spacing_top int, spacing_bottom int, spacing_space int, spacing_glyph int, baseline_offset Float.X) RID.Font { //gd:Font.find_variation
 	return RID.Font(RID.Font(Advanced(self).FindVariation(gd.DictionaryFromMap(variation_coordinates), int64(face_index), float64(strength), Transform2D.OriginXY(transform), int64(spacing_top), int64(spacing_bottom), int64(spacing_space), int64(spacing_glyph), float64(baseline_offset))))
 }
 
 /*
-Returns slice of valid [graphics.gd/classdb/Font] [Resource.ID]s, which can be passed to the [graphics.gd/classdb/TextServer] methods.
+Returns slice of valid [Font] [Resource.ID]s, which can be passed to the [TextServer] methods.
+
+[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
 */
 func (self Instance) GetRids() [][]RID.Font { //gd:Font.get_rids
 	return [][]RID.Font(gd.ArrayAs[[][]RID.Font](gd.InternalArray(Advanced(self).GetRids())))
@@ -172,7 +185,7 @@ Returns the total average font height (ascent plus descent) in pixels.
 
 Note: Real height of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the height of empty line).
 */
-func (self Expanded) GetHeight(font_size int) Float.X { //gd:Font.get_height
+func (self MoreArgs) GetHeight(font_size int) Float.X { //gd:Font.get_height
 	return Float.X(Float.X(Advanced(self).GetHeight(int64(font_size))))
 }
 
@@ -190,7 +203,7 @@ Returns the average font ascent (number of pixels above the baseline).
 
 Note: Real ascent of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the ascent of empty line).
 */
-func (self Expanded) GetAscent(font_size int) Float.X { //gd:Font.get_ascent
+func (self MoreArgs) GetAscent(font_size int) Float.X { //gd:Font.get_ascent
 	return Float.X(Float.X(Advanced(self).GetAscent(int64(font_size))))
 }
 
@@ -208,7 +221,7 @@ Returns the average font descent (number of pixels below the baseline).
 
 Note: Real descent of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate (e.g. as the descent of empty line).
 */
-func (self Expanded) GetDescent(font_size int) Float.X { //gd:Font.get_descent
+func (self MoreArgs) GetDescent(font_size int) Float.X { //gd:Font.get_descent
 	return Float.X(Float.X(Advanced(self).GetDescent(int64(font_size))))
 }
 
@@ -226,7 +239,7 @@ Returns average pixel offset of the underline below the baseline.
 
 Note: Real underline position of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate.
 */
-func (self Expanded) GetUnderlinePosition(font_size int) Float.X { //gd:Font.get_underline_position
+func (self MoreArgs) GetUnderlinePosition(font_size int) Float.X { //gd:Font.get_underline_position
 	return Float.X(Float.X(Advanced(self).GetUnderlinePosition(int64(font_size))))
 }
 
@@ -244,7 +257,7 @@ Returns average thickness of the underline.
 
 Note: Real underline thickness of the string is context-dependent and can be significantly different from the value returned by this function. Use it only as rough estimate.
 */
-func (self Expanded) GetUnderlineThickness(font_size int) Float.X { //gd:Font.get_underline_thickness
+func (self MoreArgs) GetUnderlineThickness(font_size int) Float.X { //gd:Font.get_underline_thickness
 	return Float.X(Float.X(Advanced(self).GetUnderlineThickness(int64(font_size))))
 }
 
@@ -314,41 +327,53 @@ func (self Instance) SetCacheCapacity(single_line int, multi_line int) { //gd:Fo
 }
 
 /*
-Returns the size of a bounding box of a single-line string, taking kerning, advance and subpixel positioning into account. See also [Instance.GetMultilineStringSize] and [Instance.DrawString].
+Returns the size of a bounding box of a single-line string, taking kerning, advance and subpixel positioning into account. See also [GetMultilineStringSize] and [DrawString].
 
 For example, to get the string size as displayed by a single-line Label, use:
 
-	var string_size = Font.Expanded(label.AsControl().GetThemeFont("font")).GetStringSize(label.Text(), GUI.HorizontalAlignmentLeft, -1, label.AsControl().GetThemeFontSize("font_size"),
+	var string_size = label.AsControl().GetThemeFont("font").MoreArgs().GetStringSize(label.Text(), GUI.HorizontalAlignmentLeft, -1, label.AsControl().GetThemeFontSize("font_size"),
 		TextServer.JustificationKashida|TextServer.JustificationWordBound, 0, 0)
 
-Note: Since kerning, advance and subpixel positioning are taken into account by [Instance.GetStringSize], using separate [Instance.GetStringSize] calls on substrings of a string then adding the results together will return a different result compared to using a single [Instance.GetStringSize] call on the full string.
+Note: Since kerning, advance and subpixel positioning are taken into account by [GetStringSize], using separate [GetStringSize] calls on substrings of a string then adding the results together will return a different result compared to using a single [GetStringSize] call on the full string.
 
-Note: Real height of the string is context-dependent and can be significantly different from the value returned by [Instance.GetHeight].
+Note: Real height of the string is context-dependent and can be significantly different from the value returned by [GetHeight].
+
+[DrawString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawString
+[GetHeight]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetHeight
+[GetMultilineStringSize]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetMultilineStringSize
+[GetStringSize]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetStringSize
 */
 func (self Instance) GetStringSize(text string) Vector2.XY { //gd:Font.get_string_size
 	return Vector2.XY(Advanced(self).GetStringSize(String.New(text), 0, float64(-1), int64(16), 3, 0, 0))
 }
 
 /*
-Returns the size of a bounding box of a single-line string, taking kerning, advance and subpixel positioning into account. See also [Instance.GetMultilineStringSize] and [Instance.DrawString].
+Returns the size of a bounding box of a single-line string, taking kerning, advance and subpixel positioning into account. See also [GetMultilineStringSize] and [DrawString].
 
 For example, to get the string size as displayed by a single-line Label, use:
 
-	var string_size = Font.Expanded(label.AsControl().GetThemeFont("font")).GetStringSize(label.Text(), GUI.HorizontalAlignmentLeft, -1, label.AsControl().GetThemeFontSize("font_size"),
+	var string_size = label.AsControl().GetThemeFont("font").MoreArgs().GetStringSize(label.Text(), GUI.HorizontalAlignmentLeft, -1, label.AsControl().GetThemeFontSize("font_size"),
 		TextServer.JustificationKashida|TextServer.JustificationWordBound, 0, 0)
 
-Note: Since kerning, advance and subpixel positioning are taken into account by [Instance.GetStringSize], using separate [Instance.GetStringSize] calls on substrings of a string then adding the results together will return a different result compared to using a single [Instance.GetStringSize] call on the full string.
+Note: Since kerning, advance and subpixel positioning are taken into account by [GetStringSize], using separate [GetStringSize] calls on substrings of a string then adding the results together will return a different result compared to using a single [GetStringSize] call on the full string.
 
-Note: Real height of the string is context-dependent and can be significantly different from the value returned by [Instance.GetHeight].
+Note: Real height of the string is context-dependent and can be significantly different from the value returned by [GetHeight].
+
+[DrawString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawString
+[GetHeight]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetHeight
+[GetMultilineStringSize]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetMultilineStringSize
+[GetStringSize]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetStringSize
 */
-func (self Expanded) GetStringSize(text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_string_size
+func (self MoreArgs) GetStringSize(text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_string_size
 	return Vector2.XY(Advanced(self).GetStringSize(String.New(text), alignment, float64(width), int64(font_size), justification_flags, direction, orientation))
 }
 
 /*
 Returns the size of a bounding box of a string broken into the lines, taking kerning and advance into account.
 
-See also [Instance.DrawMultilineString].
+See also [DrawMultilineString].
+
+[DrawMultilineString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawMultilineString
 */
 func (self Instance) GetMultilineStringSize(text string) Vector2.XY { //gd:Font.get_multiline_string_size
 	return Vector2.XY(Advanced(self).GetMultilineStringSize(String.New(text), 0, float64(-1), int64(16), int64(-1), 3, 3, 0, 0))
@@ -357,16 +382,20 @@ func (self Instance) GetMultilineStringSize(text string) Vector2.XY { //gd:Font.
 /*
 Returns the size of a bounding box of a string broken into the lines, taking kerning and advance into account.
 
-See also [Instance.DrawMultilineString].
+See also [DrawMultilineString].
+
+[DrawMultilineString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawMultilineString
 */
-func (self Expanded) GetMultilineStringSize(text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_multiline_string_size
+func (self MoreArgs) GetMultilineStringSize(text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_multiline_string_size
 	return Vector2.XY(Advanced(self).GetMultilineStringSize(String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), brk_flags, justification_flags, direction, orientation))
 }
 
 /*
 Draw 'text' into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawString].
+See also [CanvasItem.DrawString].
+
+[CanvasItem.DrawString]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawString
 */
 func (self Instance) DrawString(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_string
 	Advanced(self).DrawString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0, float64(0.0))
@@ -375,16 +404,20 @@ func (self Instance) DrawString(canvas_item RID.CanvasItem, pos Vector2.XY, text
 /*
 Draw 'text' into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawString].
+See also [CanvasItem.DrawString].
+
+[CanvasItem.DrawString]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawString
 */
-func (self Expanded) DrawString(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_string
+func (self MoreArgs) DrawString(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_string
 	Advanced(self).DrawString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), Color.RGBA(modulate), justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
 Breaks 'text' into lines using rules specified by 'brk_flags' and draws it into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultilineString].
+See also [CanvasItem.DrawMultilineString].
+
+[CanvasItem.DrawMultilineString]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineString
 */
 func (self Instance) DrawMultilineString(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_multiline_string
 	Advanced(self).DrawMultilineString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0, float64(0.0))
@@ -393,16 +426,20 @@ func (self Instance) DrawMultilineString(canvas_item RID.CanvasItem, pos Vector2
 /*
 Breaks 'text' into lines using rules specified by 'brk_flags' and draws it into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultilineString].
+See also [CanvasItem.DrawMultilineString].
+
+[CanvasItem.DrawMultilineString]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineString
 */
-func (self Expanded) DrawMultilineString(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_multiline_string
+func (self MoreArgs) DrawMultilineString(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_multiline_string
 	Advanced(self).DrawMultilineString(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
 Draw 'text' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawStringOutline].
+See also [CanvasItem.DrawStringOutline].
+
+[CanvasItem.DrawStringOutline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawStringOutline
 */
 func (self Instance) DrawStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_string_outline
 	Advanced(self).DrawStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 0, 0, float64(0.0))
@@ -411,16 +448,20 @@ func (self Instance) DrawStringOutline(canvas_item RID.CanvasItem, pos Vector2.X
 /*
 Draw 'text' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawStringOutline].
+See also [CanvasItem.DrawStringOutline].
+
+[CanvasItem.DrawStringOutline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawStringOutline
 */
-func (self Expanded) DrawStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_string_outline
+func (self MoreArgs) DrawStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, size int, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_string_outline
 	Advanced(self).DrawStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(size), Color.RGBA(modulate), justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
 Breaks 'text' to the lines using rules specified by 'brk_flags' and draws text outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultilineStringOutline].
+See also [CanvasItem.DrawMultilineStringOutline].
+
+[CanvasItem.DrawMultilineStringOutline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineStringOutline
 */
 func (self Instance) DrawMultilineStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string) { //gd:Font.draw_multiline_string_outline
 	Advanced(self).DrawMultilineStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), 0, float64(-1), int64(16), int64(-1), int64(1), Color.RGBA(gd.Color{1, 1, 1, 1}), 3, 3, 0, 0, float64(0.0))
@@ -429,16 +470,22 @@ func (self Instance) DrawMultilineStringOutline(canvas_item RID.CanvasItem, pos 
 /*
 Breaks 'text' to the lines using rules specified by 'brk_flags' and draws text outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultilineStringOutline].
+See also [CanvasItem.DrawMultilineStringOutline].
+
+[CanvasItem.DrawMultilineStringOutline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineStringOutline
 */
-func (self Expanded) DrawMultilineStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, size int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_multiline_string_outline
+func (self MoreArgs) DrawMultilineStringOutline(canvas_item RID.CanvasItem, pos Vector2.XY, text string, alignment GUI.HorizontalAlignment, width Float.X, font_size int, max_lines int, size int, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling Float.X) { //gd:Font.draw_multiline_string_outline
 	Advanced(self).DrawMultilineStringOutline(RID.Any(canvas_item), Vector2.XY(pos), String.New(text), alignment, float64(width), int64(font_size), int64(max_lines), int64(size), Color.RGBA(modulate), brk_flags, justification_flags, direction, orientation, float64(oversampling))
 }
 
 /*
 Returns the size of a character. Does not take kerning into account.
 
-Note: Do not use this function to calculate width of the string character by character, use [Instance.GetStringSize] or [graphics.gd/classdb/TextLine] instead. The height returned is the font height (see also [Instance.GetHeight]) and has no relation to the glyph height.
+Note: Do not use this function to calculate width of the string character by character, use [GetStringSize] or [TextLine] instead. The height returned is the font height (see also [GetHeight]) and has no relation to the glyph height.
+
+[GetHeight]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetHeight
+[GetStringSize]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetStringSize
+[TextLine]: https://pkg.go.dev/graphics.gd/classdb/TextLine
 */
 func (self Instance) GetCharSize(char int, font_size int) Vector2.XY { //gd:Font.get_char_size
 	return Vector2.XY(Advanced(self).GetCharSize(int64(char), int64(font_size)))
@@ -447,7 +494,10 @@ func (self Instance) GetCharSize(char int, font_size int) Vector2.XY { //gd:Font
 /*
 Draw a single Unicode character 'char' into a canvas item using the font, at a given position, with 'modulate' color. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-Note: Do not use this function to draw strings character by character, use [Instance.DrawString] or [graphics.gd/classdb/TextLine] instead.
+Note: Do not use this function to draw strings character by character, use [DrawString] or [TextLine] instead.
+
+[DrawString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawString
+[TextLine]: https://pkg.go.dev/graphics.gd/classdb/TextLine
 */
 func (self Instance) DrawChar(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int) Float.X { //gd:Font.draw_char
 	return Float.X(Float.X(Advanced(self).DrawChar(RID.Any(canvas_item), Vector2.XY(pos), int64(char), int64(font_size), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))))
@@ -456,16 +506,22 @@ func (self Instance) DrawChar(canvas_item RID.CanvasItem, pos Vector2.XY, char i
 /*
 Draw a single Unicode character 'char' into a canvas item using the font, at a given position, with 'modulate' color. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-Note: Do not use this function to draw strings character by character, use [Instance.DrawString] or [graphics.gd/classdb/TextLine] instead.
+Note: Do not use this function to draw strings character by character, use [DrawString] or [TextLine] instead.
+
+[DrawString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawString
+[TextLine]: https://pkg.go.dev/graphics.gd/classdb/TextLine
 */
-func (self Expanded) DrawChar(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int, modulate Color.RGBA, oversampling Float.X) Float.X { //gd:Font.draw_char
+func (self MoreArgs) DrawChar(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int, modulate Color.RGBA, oversampling Float.X) Float.X { //gd:Font.draw_char
 	return Float.X(Float.X(Advanced(self).DrawChar(RID.Any(canvas_item), Vector2.XY(pos), int64(char), int64(font_size), Color.RGBA(modulate), float64(oversampling))))
 }
 
 /*
 Draw a single Unicode character 'char' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-Note: Do not use this function to draw strings character by character, use [Instance.DrawString] or [graphics.gd/classdb/TextLine] instead.
+Note: Do not use this function to draw strings character by character, use [DrawString] or [TextLine] instead.
+
+[DrawString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawString
+[TextLine]: https://pkg.go.dev/graphics.gd/classdb/TextLine
 */
 func (self Instance) DrawCharOutline(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int) Float.X { //gd:Font.draw_char_outline
 	return Float.X(Float.X(Advanced(self).DrawCharOutline(RID.Any(canvas_item), Vector2.XY(pos), int64(char), int64(font_size), int64(-1), Color.RGBA(gd.Color{1, 1, 1, 1}), float64(0.0))))
@@ -474,9 +530,12 @@ func (self Instance) DrawCharOutline(canvas_item RID.CanvasItem, pos Vector2.XY,
 /*
 Draw a single Unicode character 'char' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-Note: Do not use this function to draw strings character by character, use [Instance.DrawString] or [graphics.gd/classdb/TextLine] instead.
+Note: Do not use this function to draw strings character by character, use [DrawString] or [TextLine] instead.
+
+[DrawString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawString
+[TextLine]: https://pkg.go.dev/graphics.gd/classdb/TextLine
 */
-func (self Expanded) DrawCharOutline(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int, size int, modulate Color.RGBA, oversampling Float.X) Float.X { //gd:Font.draw_char_outline
+func (self MoreArgs) DrawCharOutline(canvas_item RID.CanvasItem, pos Vector2.XY, char int, font_size int, size int, modulate Color.RGBA, oversampling Float.X) Float.X { //gd:Font.draw_char_outline
 	return Float.X(Float.X(Advanced(self).DrawCharOutline(RID.Any(canvas_item), Vector2.XY(pos), int64(char), int64(font_size), int64(size), Color.RGBA(modulate), float64(oversampling))))
 }
 
@@ -537,8 +596,10 @@ To print available variation axes of a variable font:
 		fmt.Printf("variation axis: %s (%d)\n\tmin, max, default: %v\n", name, tag, values)
 	}
 
-Note: To set and get variation coordinates of a [graphics.gd/classdb/FontVariation], use [graphics.gd/classdb/FontVariation.Instance.VariationOpentype].
+Note: To set and get variation coordinates of a [FontVariation], use [FontVariation.VariationOpentype].
 
+[FontVariation]: https://pkg.go.dev/graphics.gd/classdb/FontVariation
+[FontVariation.VariationOpentype]: https://pkg.go.dev/graphics.gd/classdb/FontVariation#Instance.VariationOpentype
 [variation coordinates]: https://docs.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg
 */
 func (self Instance) GetSupportedVariationList() map[int]struct {
@@ -628,7 +689,9 @@ func (self class) GetFallbacks() Array.Contains[[1]gdclass.Font] { //gd:Font.get
 }
 
 /*
-Returns [graphics.gd/classdb/TextServer] RID of the font cache for specific variation.
+Returns [TextServer] RID of the font cache for specific variation.
+
+[TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
 */
 //go:nosplit
 func (self class) FindVariation(variation_coordinates Dictionary.Any, face_index int64, strength float64, transform Transform2D.OriginXY, spacing_top int64, spacing_bottom int64, spacing_space int64, spacing_glyph int64, baseline_offset float64) RID.Any { //gd:Font.find_variation
@@ -648,7 +711,11 @@ func (self class) FindVariation(variation_coordinates Dictionary.Any, face_index
 }
 
 /*
-Returns slice of valid [graphics.gd/classdb/Font] [Resource.ID]s, which can be passed to the [graphics.gd/classdb/TextServer] methods.
+Returns slice of valid [Font] [Resource.ID]s, which can be passed to the [TextServer] methods.
+
+[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[TextServer]: https://pkg.go.dev/graphics.gd/classdb/TextServer
 */
 //go:nosplit
 func (self class) GetRids() Array.Contains[RID.Any] { //gd:Font.get_rids
@@ -811,18 +878,23 @@ func (self class) SetCacheCapacity(single_line int64, multi_line int64) { //gd:F
 }
 
 /*
-Returns the size of a bounding box of a single-line string, taking kerning, advance and subpixel positioning into account. See also [Instance.GetMultilineStringSize] and [Instance.DrawString].
+Returns the size of a bounding box of a single-line string, taking kerning, advance and subpixel positioning into account. See also [GetMultilineStringSize] and [DrawString].
 
 For example, to get the string size as displayed by a single-line Label, use:
 
 
-	var string_size = Font.Expanded(label.AsControl().GetThemeFont("font")).GetStringSize(label.Text(), GUI.HorizontalAlignmentLeft, -1, label.AsControl().GetThemeFontSize("font_size"),
+	var string_size = label.AsControl().GetThemeFont("font").MoreArgs().GetStringSize(label.Text(), GUI.HorizontalAlignmentLeft, -1, label.AsControl().GetThemeFontSize("font_size"),
 		TextServer.JustificationKashida|TextServer.JustificationWordBound, 0, 0)
 
 
-Note: Since kerning, advance and subpixel positioning are taken into account by [Instance.GetStringSize], using separate [Instance.GetStringSize] calls on substrings of a string then adding the results together will return a different result compared to using a single [Instance.GetStringSize] call on the full string.
+Note: Since kerning, advance and subpixel positioning are taken into account by [GetStringSize], using separate [GetStringSize] calls on substrings of a string then adding the results together will return a different result compared to using a single [GetStringSize] call on the full string.
 
-Note: Real height of the string is context-dependent and can be significantly different from the value returned by [Instance.GetHeight].
+Note: Real height of the string is context-dependent and can be significantly different from the value returned by [GetHeight].
+
+[DrawString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawString
+[GetHeight]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetHeight
+[GetMultilineStringSize]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetMultilineStringSize
+[GetStringSize]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetStringSize
 */
 //go:nosplit
 func (self class) GetStringSize(text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_string_size
@@ -842,7 +914,9 @@ func (self class) GetStringSize(text String.Readable, alignment GUI.HorizontalAl
 /*
 Returns the size of a bounding box of a string broken into the lines, taking kerning and advance into account.
 
-See also [Instance.DrawMultilineString].
+See also [DrawMultilineString].
+
+[DrawMultilineString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawMultilineString
 */
 //go:nosplit
 func (self class) GetMultilineStringSize(text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation) Vector2.XY { //gd:Font.get_multiline_string_size
@@ -864,7 +938,9 @@ func (self class) GetMultilineStringSize(text String.Readable, alignment GUI.Hor
 /*
 Draw 'text' into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawString].
+See also [CanvasItem.DrawString].
+
+[CanvasItem.DrawString]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawString
 */
 //go:nosplit
 func (self class) DrawString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:Font.draw_string
@@ -886,7 +962,9 @@ func (self class) DrawString(canvas_item RID.Any, pos Vector2.XY, text String.Re
 /*
 Breaks 'text' into lines using rules specified by 'brk_flags' and draws it into a canvas item using the font, at a given position, with 'modulate' color, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultilineString].
+See also [CanvasItem.DrawMultilineString].
+
+[CanvasItem.DrawMultilineString]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineString
 */
 //go:nosplit
 func (self class) DrawMultilineString(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:Font.draw_multiline_string
@@ -910,7 +988,9 @@ func (self class) DrawMultilineString(canvas_item RID.Any, pos Vector2.XY, text 
 /*
 Draw 'text' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawStringOutline].
+See also [CanvasItem.DrawStringOutline].
+
+[CanvasItem.DrawStringOutline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawStringOutline
 */
 //go:nosplit
 func (self class) DrawStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, size int64, modulate Color.RGBA, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:Font.draw_string_outline
@@ -933,7 +1013,9 @@ func (self class) DrawStringOutline(canvas_item RID.Any, pos Vector2.XY, text St
 /*
 Breaks 'text' to the lines using rules specified by 'brk_flags' and draws text outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size, optionally clipping the width and aligning horizontally. 'pos' specifies the baseline of the first line, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-See also [graphics.gd/classdb/CanvasItem.Instance.DrawMultilineStringOutline].
+See also [CanvasItem.DrawMultilineStringOutline].
+
+[CanvasItem.DrawMultilineStringOutline]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultilineStringOutline
 */
 //go:nosplit
 func (self class) DrawMultilineStringOutline(canvas_item RID.Any, pos Vector2.XY, text String.Readable, alignment GUI.HorizontalAlignment, width float64, font_size int64, max_lines int64, size int64, modulate Color.RGBA, brk_flags TextServer.LineBreakFlag, justification_flags TextServer.JustificationFlag, direction TextServer.Direction, orientation TextServer.Orientation, oversampling float64) { //gd:Font.draw_multiline_string_outline
@@ -958,7 +1040,11 @@ func (self class) DrawMultilineStringOutline(canvas_item RID.Any, pos Vector2.XY
 /*
 Returns the size of a character. Does not take kerning into account.
 
-Note: Do not use this function to calculate width of the string character by character, use [Instance.GetStringSize] or [graphics.gd/classdb/TextLine] instead. The height returned is the font height (see also [Instance.GetHeight]) and has no relation to the glyph height.
+Note: Do not use this function to calculate width of the string character by character, use [GetStringSize] or [TextLine] instead. The height returned is the font height (see also [GetHeight]) and has no relation to the glyph height.
+
+[GetHeight]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetHeight
+[GetStringSize]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.GetStringSize
+[TextLine]: https://pkg.go.dev/graphics.gd/classdb/TextLine
 */
 //go:nosplit
 func (self class) GetCharSize(char int64, font_size int64) Vector2.XY { //gd:Font.get_char_size
@@ -973,7 +1059,10 @@ func (self class) GetCharSize(char int64, font_size int64) Vector2.XY { //gd:Fon
 /*
 Draw a single Unicode character 'char' into a canvas item using the font, at a given position, with 'modulate' color. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-Note: Do not use this function to draw strings character by character, use [Instance.DrawString] or [graphics.gd/classdb/TextLine] instead.
+Note: Do not use this function to draw strings character by character, use [DrawString] or [TextLine] instead.
+
+[DrawString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawString
+[TextLine]: https://pkg.go.dev/graphics.gd/classdb/TextLine
 */
 //go:nosplit
 func (self class) DrawChar(canvas_item RID.Any, pos Vector2.XY, char int64, font_size int64, modulate Color.RGBA, oversampling float64) float64 { //gd:Font.draw_char
@@ -992,7 +1081,10 @@ func (self class) DrawChar(canvas_item RID.Any, pos Vector2.XY, char int64, font
 /*
 Draw a single Unicode character 'char' outline into a canvas item using the font, at a given position, with 'modulate' color and 'size' outline size. 'pos' specifies the baseline, not the top. To draw from the top, ascent must be added to the Y axis. If 'oversampling' is greater than zero, it is used as font oversampling factor, otherwise viewport oversampling settings are used.
 
-Note: Do not use this function to draw strings character by character, use [Instance.DrawString] or [graphics.gd/classdb/TextLine] instead.
+Note: Do not use this function to draw strings character by character, use [DrawString] or [TextLine] instead.
+
+[DrawString]: https://pkg.go.dev/graphics.gd/classdb/Font#Instance.DrawString
+[TextLine]: https://pkg.go.dev/graphics.gd/classdb/TextLine
 */
 //go:nosplit
 func (self class) DrawCharOutline(canvas_item RID.Any, pos Vector2.XY, char int64, font_size int64, size int64, modulate Color.RGBA, oversampling float64) float64 { //gd:Font.draw_char_outline
@@ -1083,8 +1175,10 @@ To print available variation axes of a variable font:
 	}
 
 
-Note: To set and get variation coordinates of a [graphics.gd/classdb/FontVariation], use [graphics.gd/classdb/FontVariation.Instance.VariationOpentype].
+Note: To set and get variation coordinates of a [FontVariation], use [FontVariation.VariationOpentype].
 
+[FontVariation]: https://pkg.go.dev/graphics.gd/classdb/FontVariation
+[FontVariation.VariationOpentype]: https://pkg.go.dev/graphics.gd/classdb/FontVariation#Instance.VariationOpentype
 [variation coordinates]: https://docs.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg
 */
 //go:nosplit

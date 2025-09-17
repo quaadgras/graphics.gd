@@ -9,7 +9,9 @@ The container can be expanded or collapsed by clicking the title or by pressing 
 
 Child control nodes are hidden when the container is collapsed. Ignores non-control children.
 
-Can allow grouping with other FoldableContainers, check [Instance.FoldableGroup] and [graphics.gd/classdb/FoldableGroup].
+Can allow grouping with other FoldableContainers, check [FoldableGroup] and [FoldableGroup].
+
+[FoldableGroup]: https://pkg.go.dev/graphics.gd/classdb/FoldableGroup
 */
 package FoldableContainer
 
@@ -130,30 +132,41 @@ type Any interface {
 }
 
 /*
-Folds the container and emits [Instance.OnFoldingChanged].
+Folds the container and emits [OnFoldingChanged].
+
+[OnFoldingChanged]: https://pkg.go.dev/graphics.gd/classdb/FoldableContainer#Instance.OnFoldingChanged
 */
 func (self Instance) Fold() { //gd:FoldableContainer.fold
 	Advanced(self).Fold()
 }
 
 /*
-Expands the container and emits [Instance.OnFoldingChanged].
+Expands the container and emits [OnFoldingChanged].
+
+[OnFoldingChanged]: https://pkg.go.dev/graphics.gd/classdb/FoldableContainer#Instance.OnFoldingChanged
 */
 func (self Instance) Expand() { //gd:FoldableContainer.expand
 	Advanced(self).Expand()
 }
 
 /*
-Adds a [graphics.gd/classdb/Control] that will be placed next to the container's title, obscuring the clickable area. Prime usage is adding [graphics.gd/classdb/Button] nodes, but it can be any [graphics.gd/classdb/Control].
+Adds a [Control] that will be placed next to the container's title, obscuring the clickable area. Prime usage is adding [Button] nodes, but it can be any [Control].
 
 The control will be added as a child of this container and removed from previous parent if necessary. The controls will be placed aligned to the right, with the first added control being the leftmost one.
+
+[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 func (self Instance) AddTitleBarControl(control Control.Instance) { //gd:FoldableContainer.add_title_bar_control
 	Advanced(self).AddTitleBarControl(control)
 }
 
 /*
-Removes a [graphics.gd/classdb/Control] added with [Instance.AddTitleBarControl]. The node is not freed automatically, you need to use [graphics.gd/classdb/Node.Instance.QueueFree].
+Removes a [Control] added with [AddTitleBarControl]. The node is not freed automatically, you need to use [Node.QueueFree].
+
+[AddTitleBarControl]: https://pkg.go.dev/graphics.gd/classdb/FoldableContainer#Instance.AddTitleBarControl
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
 */
 func (self Instance) RemoveTitleBarControl(control Control.Instance) { //gd:FoldableContainer.remove_title_bar_control
 	Advanced(self).RemoveTitleBarControl(control)
@@ -258,7 +271,9 @@ func (self Instance) SetLanguage(value string) {
 }
 
 /*
-Folds the container and emits [Instance.OnFoldingChanged].
+Folds the container and emits [OnFoldingChanged].
+
+[OnFoldingChanged]: https://pkg.go.dev/graphics.gd/classdb/FoldableContainer#Instance.OnFoldingChanged
 */
 //go:nosplit
 func (self class) Fold() { //gd:FoldableContainer.fold
@@ -266,7 +281,9 @@ func (self class) Fold() { //gd:FoldableContainer.fold
 }
 
 /*
-Expands the container and emits [Instance.OnFoldingChanged].
+Expands the container and emits [OnFoldingChanged].
+
+[OnFoldingChanged]: https://pkg.go.dev/graphics.gd/classdb/FoldableContainer#Instance.OnFoldingChanged
 */
 //go:nosplit
 func (self class) Expand() { //gd:FoldableContainer.expand
@@ -370,9 +387,12 @@ func (self class) GetTitlePosition() TitlePosition { //gd:FoldableContainer.get_
 }
 
 /*
-Adds a [graphics.gd/classdb/Control] that will be placed next to the container's title, obscuring the clickable area. Prime usage is adding [graphics.gd/classdb/Button] nodes, but it can be any [graphics.gd/classdb/Control].
+Adds a [Control] that will be placed next to the container's title, obscuring the clickable area. Prime usage is adding [Button] nodes, but it can be any [Control].
 
 The control will be added as a child of this container and removed from previous parent if necessary. The controls will be placed aligned to the right, with the first added control being the leftmost one.
+
+[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 */
 //go:nosplit
 func (self class) AddTitleBarControl(control [1]gdclass.Control) { //gd:FoldableContainer.add_title_bar_control
@@ -380,7 +400,11 @@ func (self class) AddTitleBarControl(control [1]gdclass.Control) { //gd:Foldable
 }
 
 /*
-Removes a [graphics.gd/classdb/Control] added with [Instance.AddTitleBarControl]. The node is not freed automatically, you need to use [graphics.gd/classdb/Node.Instance.QueueFree].
+Removes a [Control] added with [AddTitleBarControl]. The node is not freed automatically, you need to use [Node.QueueFree].
+
+[AddTitleBarControl]: https://pkg.go.dev/graphics.gd/classdb/FoldableContainer#Instance.AddTitleBarControl
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Node.QueueFree]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.QueueFree
 */
 //go:nosplit
 func (self class) RemoveTitleBarControl(control [1]gdclass.Control) { //gd:FoldableContainer.remove_title_bar_control

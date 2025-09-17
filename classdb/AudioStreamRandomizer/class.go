@@ -104,7 +104,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.AudioStreamRandomizer
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.AudioStreamRandomizer
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -124,7 +129,7 @@ func (self Instance) AddStream(index int, stream AudioStream.Instance) { //gd:Au
 /*
 Insert a stream at the specified index. If the index is less than zero, the insertion occurs at the end of the underlying pool.
 */
-func (self Expanded) AddStream(index int, stream AudioStream.Instance, weight Float.X) { //gd:AudioStreamRandomizer.add_stream
+func (self MoreArgs) AddStream(index int, stream AudioStream.Instance, weight Float.X) { //gd:AudioStreamRandomizer.add_stream
 	Advanced(self).AddStream(int64(index), stream, float64(weight))
 }
 

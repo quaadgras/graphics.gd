@@ -3,11 +3,18 @@
 /*
 A singleton used to load resource files from the filesystem.
 
-It uses the many [graphics.gd/classdb/ResourceFormatLoader] classes registered in the engine (either built-in or from a plugin) to load files into memory and convert them to a format that can be used by the engine.
+It uses the many [ResourceFormatLoader] classes registered in the engine (either built-in or from a plugin) to load files into memory and convert them to a format that can be used by the engine.
 
-Note: You have to import the files into the engine first to load them using [Load]. If you want to load [graphics.gd/classdb/Image]s at run-time, you may use [graphics.gd/classdb/Image.Instance.Load]. If you want to import audio files, you can use the snippet described in [graphics.gd/classdb/AudioStreamMP3.Instance.Data].
+Note: You have to import the files into the engine first to load them using [Load]. If you want to load [Image]s at run-time, you may use [Image.Load]. If you want to import audio files, you can use the snippet described in [AudioStreamMP3.Data].
 
-Note: Non-resource files such as plain text files cannot be read using [graphics.gd/classdb/ResourceLoader]. Use [graphics.gd/classdb/FileAccess] for those files instead, and be aware that non-resource files are not exported by default (see notes in the [graphics.gd/classdb/FileAccess] class description for instructions on exporting them).
+Note: Non-resource files such as plain text files cannot be read using [ResourceLoader]. Use [FileAccess] for those files instead, and be aware that non-resource files are not exported by default (see notes in the [FileAccess] class description for instructions on exporting them).
+
+[AudioStreamMP3.Data]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamMP3#Instance.Data
+[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[Image.Load]: https://pkg.go.dev/graphics.gd/classdb/Image#Instance.Load
+[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
+[ResourceLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader
 */
 package ResourceLoader
 
@@ -142,11 +149,15 @@ Returns the status of a threaded loading operation started with [LoadThreadedReq
 
 An array variable can optionally be passed via 'progress', and will return a one-element array containing the ratio of completion of the threaded loading (between 0.0 and 1.0).
 
-Note: The recommended way of using this method is to call it during different frames (e.g., in [graphics.gd/classdb/Node.Instance.Process], instead of a loop).
+Note: The recommended way of using this method is to call it during different frames (e.g., in [Node.Process], instead of a loop).
+
+[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
 */
-func LoadThreadedGetStatus(path string, progress []float32) ThreadLoadStatus { //gd:ResourceLoader.load_threaded_get_status
+func LoadThreadedGetStatus(path string) (float32, ThreadLoadStatus) { //gd:ResourceLoader.load_threaded_get_status
 	once.Do(singleton)
-	return ThreadLoadStatus(Advanced().LoadThreadedGetStatus(String.New(path), gd.EngineArrayFromSlice(progress)))
+	var returns_progress = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(gd.NewArray()))
+	results := Advanced().LoadThreadedGetStatus(String.New(path), returns_progress)
+	return gd.VariantAs[float32](gd.InternalArray(returns_progress).Index(0)), results
 }
 
 /*
@@ -154,11 +165,15 @@ Returns the status of a threaded loading operation started with [LoadThreadedReq
 
 An array variable can optionally be passed via 'progress', and will return a one-element array containing the ratio of completion of the threaded loading (between 0.0 and 1.0).
 
-Note: The recommended way of using this method is to call it during different frames (e.g., in [graphics.gd/classdb/Node.Instance.Process], instead of a loop).
+Note: The recommended way of using this method is to call it during different frames (e.g., in [Node.Process], instead of a loop).
+
+[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
 */
-func LoadThreadedGetStatusOptions(path string, progress []float32) ThreadLoadStatus { //gd:ResourceLoader.load_threaded_get_status
+func LoadThreadedGetStatusOptions(path string) (float32, ThreadLoadStatus) { //gd:ResourceLoader.load_threaded_get_status
 	once.Do(singleton)
-	return ThreadLoadStatus(Advanced().LoadThreadedGetStatus(String.New(path), gd.EngineArrayFromSlice(progress)))
+	var returns_progress = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(gd.NewArray()))
+	results := Advanced().LoadThreadedGetStatus(String.New(path), returns_progress)
+	return gd.VariantAs[float32](gd.InternalArray(returns_progress).Index(0)), results
 }
 
 /*
@@ -174,19 +189,26 @@ func LoadThreadedGet(path string) Resource.Instance { //gd:ResourceLoader.load_t
 /*
 Loads a resource at the given 'path', caching the result for further access.
 
-The registered [graphics.gd/classdb/ResourceFormatLoader]s are queried sequentially to find the first one which can handle the file's extension, and then attempt loading. If loading fails, the remaining ResourceFormatLoaders are also attempted.
+The registered [ResourceFormatLoader]s are queried sequentially to find the first one which can handle the file's extension, and then attempt loading. If loading fails, the remaining ResourceFormatLoaders are also attempted.
 
-An optional 'type_hint' can be used to further specify the [graphics.gd/classdb/Resource] type that should be handled by the [graphics.gd/classdb/ResourceFormatLoader]. Anything that inherits from [graphics.gd/classdb/Resource] can be used as a type hint, for example [graphics.gd/classdb/Image].
+An optional 'type_hint' can be used to further specify the [Resource] type that should be handled by the [ResourceFormatLoader]. Anything that inherits from [Resource] can be used as a type hint, for example [Image].
 
 The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource.
 
-Returns an empty resource if no [graphics.gd/classdb/ResourceFormatLoader] could handle the file, and prints an error if no file is found at the specified path.
+Returns an empty resource if no [ResourceFormatLoader] could handle the file, and prints an error if no file is found at the specified path.
 
-GDScript has a simplified [graphics.gd/classdb/@GDScript.Instance.Load] built-in method which can be used in most situations, leaving the use of [graphics.gd/classdb/ResourceLoader] for more advanced scenarios.
+GDScript has a simplified [@GDScript.Load] built-in method which can be used in most situations, leaving the use of [ResourceLoader] for more advanced scenarios.
 
-Note: If [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary" is true, [graphics.gd/classdb/@GDScript.Instance.Load] will not be able to read converted files in an exported project. If you rely on run-time loading of files present within the PCK, set [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary" to false.
+Note: If [ProjectSettings] "editor/export/convert_text_resources_to_binary" is true, [@GDScript.Load] will not be able to read converted files in an exported project. If you rely on run-time loading of files present within the PCK, set [ProjectSettings] "editor/export/convert_text_resources_to_binary" to false.
 
 Note: Relative paths will be prefixed with "res://" before loading, to avoid unexpected results make sure your paths are absolute.
+
+[@GDScript.Load]: https://pkg.go.dev/graphics.gd/classdb/@GDScript#Instance.Load
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
+[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
+[ResourceLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader
 */
 func Load(path string, type_hint string) Resource.Instance { //gd:ResourceLoader.load
 	once.Do(singleton)
@@ -196,19 +218,26 @@ func Load(path string, type_hint string) Resource.Instance { //gd:ResourceLoader
 /*
 Loads a resource at the given 'path', caching the result for further access.
 
-The registered [graphics.gd/classdb/ResourceFormatLoader]s are queried sequentially to find the first one which can handle the file's extension, and then attempt loading. If loading fails, the remaining ResourceFormatLoaders are also attempted.
+The registered [ResourceFormatLoader]s are queried sequentially to find the first one which can handle the file's extension, and then attempt loading. If loading fails, the remaining ResourceFormatLoaders are also attempted.
 
-An optional 'type_hint' can be used to further specify the [graphics.gd/classdb/Resource] type that should be handled by the [graphics.gd/classdb/ResourceFormatLoader]. Anything that inherits from [graphics.gd/classdb/Resource] can be used as a type hint, for example [graphics.gd/classdb/Image].
+An optional 'type_hint' can be used to further specify the [Resource] type that should be handled by the [ResourceFormatLoader]. Anything that inherits from [Resource] can be used as a type hint, for example [Image].
 
 The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource.
 
-Returns an empty resource if no [graphics.gd/classdb/ResourceFormatLoader] could handle the file, and prints an error if no file is found at the specified path.
+Returns an empty resource if no [ResourceFormatLoader] could handle the file, and prints an error if no file is found at the specified path.
 
-GDScript has a simplified [graphics.gd/classdb/@GDScript.Instance.Load] built-in method which can be used in most situations, leaving the use of [graphics.gd/classdb/ResourceLoader] for more advanced scenarios.
+GDScript has a simplified [@GDScript.Load] built-in method which can be used in most situations, leaving the use of [ResourceLoader] for more advanced scenarios.
 
-Note: If [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary" is true, [graphics.gd/classdb/@GDScript.Instance.Load] will not be able to read converted files in an exported project. If you rely on run-time loading of files present within the PCK, set [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary" to false.
+Note: If [ProjectSettings] "editor/export/convert_text_resources_to_binary" is true, [@GDScript.Load] will not be able to read converted files in an exported project. If you rely on run-time loading of files present within the PCK, set [ProjectSettings] "editor/export/convert_text_resources_to_binary" to false.
 
 Note: Relative paths will be prefixed with "res://" before loading, to avoid unexpected results make sure your paths are absolute.
+
+[@GDScript.Load]: https://pkg.go.dev/graphics.gd/classdb/@GDScript#Instance.Load
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
+[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
+[ResourceLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader
 */
 func LoadOptions(path string, type_hint string, cache_mode CacheMode) Resource.Instance { //gd:ResourceLoader.load
 	once.Do(singleton)
@@ -224,9 +253,11 @@ func GetRecognizedExtensionsForType(atype string) []string { //gd:ResourceLoader
 }
 
 /*
-Registers a new [graphics.gd/classdb/ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [Load].
+Registers a new [ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [Load].
 
-This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [graphics.gd/classdb/ResourceFormatLoader] for more information).
+This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [ResourceFormatLoader] for more information).
+
+[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
 */
 func AddResourceFormatLoader(format_loader ResourceFormatLoader.Instance, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
 	once.Do(singleton)
@@ -234,9 +265,11 @@ func AddResourceFormatLoader(format_loader ResourceFormatLoader.Instance, at_fro
 }
 
 /*
-Registers a new [graphics.gd/classdb/ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [Load].
+Registers a new [ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [Load].
 
-This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [graphics.gd/classdb/ResourceFormatLoader] for more information).
+This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [ResourceFormatLoader] for more information).
+
+[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
 */
 func AddResourceFormatLoaderOptions(format_loader ResourceFormatLoader.Instance, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
 	once.Do(singleton)
@@ -244,7 +277,9 @@ func AddResourceFormatLoaderOptions(format_loader ResourceFormatLoader.Instance,
 }
 
 /*
-Unregisters the given [graphics.gd/classdb/ResourceFormatLoader].
+Unregisters the given [ResourceFormatLoader].
+
+[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
 */
 func RemoveResourceFormatLoader(format_loader ResourceFormatLoader.Instance) { //gd:ResourceLoader.remove_resource_format_loader
 	once.Do(singleton)
@@ -272,7 +307,9 @@ func GetDependencies(path string) []string { //gd:ResourceLoader.get_dependencie
 /*
 Returns whether a cached resource is available for the given 'path'.
 
-Once a resource has been loaded by the engine, it is cached in memory for faster access, and future calls to the [Load] method will use the cached version. The cached resource can be overridden by using [graphics.gd/classdb/Resource.Instance.TakeOverPath] on a new resource for that same path.
+Once a resource has been loaded by the engine, it is cached in memory for faster access, and future calls to the [Load] method will use the cached version. The cached resource can be overridden by using [Resource.TakeOverPath] on a new resource for that same path.
+
+[Resource.TakeOverPath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.TakeOverPath
 */
 func HasCached(path string) bool { //gd:ResourceLoader.has_cached
 	once.Do(singleton)
@@ -282,7 +319,9 @@ func HasCached(path string) bool { //gd:ResourceLoader.has_cached
 /*
 Returns the cached resource reference for the given 'path'.
 
-Note: If the resource is not cached, the returned [graphics.gd/classdb/Resource] will be invalid.
+Note: If the resource is not cached, the returned [Resource] will be invalid.
+
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
 */
 func GetCachedRef(path string) Resource.Instance { //gd:ResourceLoader.get_cached_ref
 	once.Do(singleton)
@@ -292,9 +331,14 @@ func GetCachedRef(path string) Resource.Instance { //gd:ResourceLoader.get_cache
 /*
 Returns whether a recognized resource exists for the given 'path'.
 
-An optional 'type_hint' can be used to further specify the [graphics.gd/classdb/Resource] type that should be handled by the [graphics.gd/classdb/ResourceFormatLoader]. Anything that inherits from [graphics.gd/classdb/Resource] can be used as a type hint, for example [graphics.gd/classdb/Image].
+An optional 'type_hint' can be used to further specify the [Resource] type that should be handled by the [ResourceFormatLoader]. Anything that inherits from [Resource] can be used as a type hint, for example [Image].
 
-Note: If you use [graphics.gd/classdb/Resource.Instance.TakeOverPath], this method will return true for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
+Note: If you use [Resource.TakeOverPath], this method will return true for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
+
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
+[Resource.TakeOverPath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.TakeOverPath
+[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
 */
 func Exists(path string, type_hint string) bool { //gd:ResourceLoader.exists
 	once.Do(singleton)
@@ -304,9 +348,14 @@ func Exists(path string, type_hint string) bool { //gd:ResourceLoader.exists
 /*
 Returns whether a recognized resource exists for the given 'path'.
 
-An optional 'type_hint' can be used to further specify the [graphics.gd/classdb/Resource] type that should be handled by the [graphics.gd/classdb/ResourceFormatLoader]. Anything that inherits from [graphics.gd/classdb/Resource] can be used as a type hint, for example [graphics.gd/classdb/Image].
+An optional 'type_hint' can be used to further specify the [Resource] type that should be handled by the [ResourceFormatLoader]. Anything that inherits from [Resource] can be used as a type hint, for example [Image].
 
-Note: If you use [graphics.gd/classdb/Resource.Instance.TakeOverPath], this method will return true for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
+Note: If you use [Resource.TakeOverPath], this method will return true for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
+
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
+[Resource.TakeOverPath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.TakeOverPath
+[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
 */
 func ExistsOptions(path string, type_hint string) bool { //gd:ResourceLoader.exists
 	once.Do(singleton)
@@ -326,7 +375,9 @@ Lists a directory, returning all resources and subdirectories contained within. 
 
 Note: The order of files and directories returned by this method is not deterministic, and can vary between operating systems.
 
-Note: To normally traverse the filesystem, see [graphics.gd/classdb/DirAccess].
+Note: To normally traverse the filesystem, see [DirAccess].
+
+[DirAccess]: https://pkg.go.dev/graphics.gd/classdb/DirAccess
 */
 func ListDirectory(directory_path string) []string { //gd:ResourceLoader.list_directory
 	once.Do(singleton)
@@ -378,7 +429,9 @@ Returns the status of a threaded loading operation started with [LoadThreadedReq
 
 An array variable can optionally be passed via 'progress', and will return a one-element array containing the ratio of completion of the threaded loading (between 0.0 and 1.0).
 
-Note: The recommended way of using this method is to call it during different frames (e.g., in [graphics.gd/classdb/Node.Instance.Process], instead of a loop).
+Note: The recommended way of using this method is to call it during different frames (e.g., in [Node.Process], instead of a loop).
+
+[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
 */
 //go:nosplit
 func (self class) LoadThreadedGetStatus(path String.Readable, progress Array.Any) ThreadLoadStatus { //gd:ResourceLoader.load_threaded_get_status
@@ -405,19 +458,26 @@ func (self class) LoadThreadedGet(path String.Readable) [1]gdclass.Resource { //
 /*
 Loads a resource at the given 'path', caching the result for further access.
 
-The registered [graphics.gd/classdb/ResourceFormatLoader]s are queried sequentially to find the first one which can handle the file's extension, and then attempt loading. If loading fails, the remaining ResourceFormatLoaders are also attempted.
+The registered [ResourceFormatLoader]s are queried sequentially to find the first one which can handle the file's extension, and then attempt loading. If loading fails, the remaining ResourceFormatLoaders are also attempted.
 
-An optional 'type_hint' can be used to further specify the [graphics.gd/classdb/Resource] type that should be handled by the [graphics.gd/classdb/ResourceFormatLoader]. Anything that inherits from [graphics.gd/classdb/Resource] can be used as a type hint, for example [graphics.gd/classdb/Image].
+An optional 'type_hint' can be used to further specify the [Resource] type that should be handled by the [ResourceFormatLoader]. Anything that inherits from [Resource] can be used as a type hint, for example [Image].
 
 The 'cache_mode' property defines whether and how the cache should be used or updated when loading the resource.
 
-Returns an empty resource if no [graphics.gd/classdb/ResourceFormatLoader] could handle the file, and prints an error if no file is found at the specified path.
+Returns an empty resource if no [ResourceFormatLoader] could handle the file, and prints an error if no file is found at the specified path.
 
-GDScript has a simplified [graphics.gd/classdb/@GDScript.Instance.Load] built-in method which can be used in most situations, leaving the use of [graphics.gd/classdb/ResourceLoader] for more advanced scenarios.
+GDScript has a simplified [@GDScript.Load] built-in method which can be used in most situations, leaving the use of [ResourceLoader] for more advanced scenarios.
 
-Note: If [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary" is true, [graphics.gd/classdb/@GDScript.Instance.Load] will not be able to read converted files in an exported project. If you rely on run-time loading of files present within the PCK, set [graphics.gd/classdb/ProjectSettings] "editor/export/convert_text_resources_to_binary" to false.
+Note: If [ProjectSettings] "editor/export/convert_text_resources_to_binary" is true, [@GDScript.Load] will not be able to read converted files in an exported project. If you rely on run-time loading of files present within the PCK, set [ProjectSettings] "editor/export/convert_text_resources_to_binary" to false.
 
 Note: Relative paths will be prefixed with "res://" before loading, to avoid unexpected results make sure your paths are absolute.
+
+[@GDScript.Load]: https://pkg.go.dev/graphics.gd/classdb/@GDScript#Instance.Load
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
+[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
+[ResourceLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceLoader
 */
 //go:nosplit
 func (self class) Load(path String.Readable, type_hint String.Readable, cache_mode CacheMode) [1]gdclass.Resource { //gd:ResourceLoader.load
@@ -441,9 +501,11 @@ func (self class) GetRecognizedExtensionsForType(atype String.Readable) Packed.S
 }
 
 /*
-Registers a new [graphics.gd/classdb/ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [Load].
+Registers a new [ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [Load].
 
-This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [graphics.gd/classdb/ResourceFormatLoader] for more information).
+This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [ResourceFormatLoader] for more information).
+
+[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
 */
 //go:nosplit
 func (self class) AddResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
@@ -454,7 +516,9 @@ func (self class) AddResourceFormatLoader(format_loader [1]gdclass.ResourceForma
 }
 
 /*
-Unregisters the given [graphics.gd/classdb/ResourceFormatLoader].
+Unregisters the given [ResourceFormatLoader].
+
+[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
 */
 //go:nosplit
 func (self class) RemoveResourceFormatLoader(format_loader [1]gdclass.ResourceFormatLoader) { //gd:ResourceLoader.remove_resource_format_loader
@@ -486,7 +550,9 @@ func (self class) GetDependencies(path String.Readable) Packed.Strings { //gd:Re
 /*
 Returns whether a cached resource is available for the given 'path'.
 
-Once a resource has been loaded by the engine, it is cached in memory for faster access, and future calls to the [Load] method will use the cached version. The cached resource can be overridden by using [graphics.gd/classdb/Resource.Instance.TakeOverPath] on a new resource for that same path.
+Once a resource has been loaded by the engine, it is cached in memory for faster access, and future calls to the [Load] method will use the cached version. The cached resource can be overridden by using [Resource.TakeOverPath] on a new resource for that same path.
+
+[Resource.TakeOverPath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.TakeOverPath
 */
 //go:nosplit
 func (self class) HasCached(path String.Readable) bool { //gd:ResourceLoader.has_cached
@@ -498,7 +564,9 @@ func (self class) HasCached(path String.Readable) bool { //gd:ResourceLoader.has
 /*
 Returns the cached resource reference for the given 'path'.
 
-Note: If the resource is not cached, the returned [graphics.gd/classdb/Resource] will be invalid.
+Note: If the resource is not cached, the returned [Resource] will be invalid.
+
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
 */
 //go:nosplit
 func (self class) GetCachedRef(path String.Readable) [1]gdclass.Resource { //gd:ResourceLoader.get_cached_ref
@@ -510,9 +578,14 @@ func (self class) GetCachedRef(path String.Readable) [1]gdclass.Resource { //gd:
 /*
 Returns whether a recognized resource exists for the given 'path'.
 
-An optional 'type_hint' can be used to further specify the [graphics.gd/classdb/Resource] type that should be handled by the [graphics.gd/classdb/ResourceFormatLoader]. Anything that inherits from [graphics.gd/classdb/Resource] can be used as a type hint, for example [graphics.gd/classdb/Image].
+An optional 'type_hint' can be used to further specify the [Resource] type that should be handled by the [ResourceFormatLoader]. Anything that inherits from [Resource] can be used as a type hint, for example [Image].
 
-Note: If you use [graphics.gd/classdb/Resource.Instance.TakeOverPath], this method will return true for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
+Note: If you use [Resource.TakeOverPath], this method will return true for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
+
+[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
+[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
+[Resource.TakeOverPath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.TakeOverPath
+[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
 */
 //go:nosplit
 func (self class) Exists(path String.Readable, type_hint String.Readable) bool { //gd:ResourceLoader.exists
@@ -541,7 +614,9 @@ Lists a directory, returning all resources and subdirectories contained within. 
 
 Note: The order of files and directories returned by this method is not deterministic, and can vary between operating systems.
 
-Note: To normally traverse the filesystem, see [graphics.gd/classdb/DirAccess].
+Note: To normally traverse the filesystem, see [DirAccess].
+
+[DirAccess]: https://pkg.go.dev/graphics.gd/classdb/DirAccess
 */
 //go:nosplit
 func (self class) ListDirectory(directory_path String.Readable) Packed.Strings { //gd:ResourceLoader.list_directory
@@ -569,13 +644,17 @@ func init() {
 type ThreadLoadStatus int //gd:ResourceLoader.ThreadLoadStatus
 
 const (
-	// The resource is invalid, or has not been loaded with [Instance.LoadThreadedRequest].
+	// The resource is invalid, or has not been loaded with [LoadThreadedRequest].
+	//
+	// [LoadThreadedRequest]: https://pkg.go.dev/graphics.gd/classdb/#Instance.LoadThreadedRequest
 	ThreadLoadInvalidResource ThreadLoadStatus = 0
 	// The resource is still being loaded.
 	ThreadLoadInProgress ThreadLoadStatus = 1
 	// Some error occurred during loading and it failed.
 	ThreadLoadFailed ThreadLoadStatus = 2
-	// The resource was loaded successfully and can be accessed via [Instance.LoadThreadedGet].
+	// The resource was loaded successfully and can be accessed via [LoadThreadedGet].
+	//
+	// [LoadThreadedGet]: https://pkg.go.dev/graphics.gd/classdb/#Instance.LoadThreadedGet
 	ThreadLoadLoaded ThreadLoadStatus = 3
 )
 

@@ -13,9 +13,11 @@ PhysicsServer2D is the server responsible for all 2D physics. It can directly cr
 
 - A joint is a constraint, either between two bodies or on one body relative to a point. Parameters such as the joint bias and the rest length of a spring joint can be adjusted.
 
-Physics objects in [graphics.gd/classdb/PhysicsServer2D] may be created and manipulated independently; they do not have to be tied to nodes in the scene tree.
+Physics objects in [PhysicsServer2D] may be created and manipulated independently; they do not have to be tied to nodes in the scene tree.
 
 Note: All the 2D physics nodes use the physics server internally. Adding a physics node to the scene tree will cause a corresponding physics object to be created in the physics server. A rigid body node registers a callback that updates the node's transform with the transform of the respective body object in the physics server (every physics update). An area node registers a callback to inform the area node about overlaps with the respective area object in the physics server. The raycast node queries the direct state of the relevant space in the physics server.
+
+[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
 */
 package PhysicsServer2D
 
@@ -236,6 +238,8 @@ func singleton() {
 
 /*
 Creates a 2D world boundary shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the shape's normal direction and distance properties.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func WorldBoundaryShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.world_boundary_shape_create
 	once.Do(singleton)
@@ -244,6 +248,8 @@ func WorldBoundaryShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.world_boundar
 
 /*
 Creates a 2D separation ray shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the shape's length and slide_on_slope properties.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func SeparationRayShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.separation_ray_shape_create
 	once.Do(singleton)
@@ -252,6 +258,8 @@ func SeparationRayShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.separation_ra
 
 /*
 Creates a 2D segment shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the segment's start and end points.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func SegmentShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.segment_shape_create
 	once.Do(singleton)
@@ -260,6 +268,8 @@ func SegmentShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.segment_shape_creat
 
 /*
 Creates a 2D circle shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the circle's radius.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CircleShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.circle_shape_create
 	once.Do(singleton)
@@ -268,6 +278,8 @@ func CircleShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.circle_shape_create
 
 /*
 Creates a 2D rectangle shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the rectangle's half-extents.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func RectangleShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.rectangle_shape_create
 	once.Do(singleton)
@@ -276,6 +288,8 @@ func RectangleShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.rectangle_shape_c
 
 /*
 Creates a 2D capsule shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the capsule's height and radius.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CapsuleShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.capsule_shape_create
 	once.Do(singleton)
@@ -284,6 +298,8 @@ func CapsuleShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.capsule_shape_creat
 
 /*
 Creates a 2D convex polygon shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the convex polygon's points.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func ConvexPolygonShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.convex_polygon_shape_create
 	once.Do(singleton)
@@ -292,6 +308,8 @@ func ConvexPolygonShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.convex_polygo
 
 /*
 Creates a 2D concave polygon shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the concave polygon's segments.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func ConcavePolygonShapeCreate() RID.Shape2D { //gd:PhysicsServer2D.concave_polygon_shape_create
 	once.Do(singleton)
@@ -317,7 +335,12 @@ Sets the shape data that defines the configuration of the shape. The 'data' to b
 
 - [ShapeConcavePolygon]: a [][Vector2.XY] of length divisible by two (each pair of points forms one segment).
 
-Warning: In the case of [ShapeConvexPolygon], this method does not check if the points supplied actually form a convex polygon (unlike the [graphics.gd/classdb/CollisionPolygon2D.Instance.Polygon] property).
+Warning: In the case of [ShapeConvexPolygon], this method does not check if the points supplied actually form a convex polygon (unlike the [CollisionPolygon2D.Polygon] property).
+
+[CollisionPolygon2D.Polygon]: https://pkg.go.dev/graphics.gd/classdb/CollisionPolygon2D#Instance.Polygon
+[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
+[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 func ShapeSetData(shape RID.Shape2D, data any) { //gd:PhysicsServer2D.shape_set_data
 	once.Do(singleton)
@@ -342,6 +365,8 @@ func ShapeGetData(shape RID.Shape2D) any { //gd:PhysicsServer2D.shape_get_data
 
 /*
 Creates a 2D space in the physics server, and returns the [Resource.ID] that identifies it. A space contains bodies and areas, and controls the stepping of the physics simulation of the objects in it.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func SpaceCreate() RID.Space2D { //gd:PhysicsServer2D.space_create
 	once.Do(singleton)
@@ -381,7 +406,9 @@ func SpaceGetParam(space RID.Space2D, param SpaceParameter) Float.X { //gd:Physi
 }
 
 /*
-Returns the state of a space, a [graphics.gd/classdb/PhysicsDirectSpaceState2D]. This object can be used for collision/intersection queries.
+Returns the state of a space, a [PhysicsDirectSpaceState2D]. This object can be used for collision/intersection queries.
+
+[PhysicsDirectSpaceState2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState2D
 */
 func SpaceGetDirectState(space RID.Space2D) PhysicsDirectSpaceState2D.Instance { //gd:PhysicsServer2D.space_get_direct_state
 	once.Do(singleton)
@@ -392,6 +419,8 @@ func SpaceGetDirectState(space RID.Space2D) PhysicsDirectSpaceState2D.Instance {
 Creates a 2D area object in the physics server, and returns the [Resource.ID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and monitorable set to false.
 
 Use [AreaAddShape] to add shapes to it, use [AreaSetTransform] to set its transform, and use [AreaSetSpace] to add the area to a space. If you want the area to be detectable use [AreaSetMonitorable].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func AreaCreate() RID.Area2D { //gd:PhysicsServer2D.area_create
 	once.Do(singleton)
@@ -410,6 +439,8 @@ func AreaSetSpace(area RID.Area2D, space RID.Space2D) { //gd:PhysicsServer2D.are
 
 /*
 Returns the [Resource.ID] of the space assigned to the area. Returns an empty [Resource.ID] if no space is assigned.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func AreaGetSpace(area RID.Area2D) RID.Space2D { //gd:PhysicsServer2D.area_get_space
 	once.Do(singleton)
@@ -466,6 +497,8 @@ func AreaGetShapeCount(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_shap
 
 /*
 Returns the [Resource.ID] of the shape with the given index in the area's array of shapes.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func AreaGetShape(area RID.Area2D, shape_idx int) RID.Shape2D { //gd:PhysicsServer2D.area_get_shape
 	once.Do(singleton)
@@ -561,7 +594,11 @@ func AreaGetTransform(area RID.Area2D) Transform2D.OriginXY { //gd:PhysicsServer
 }
 
 /*
-Attaches the ObjectID of an [graphics.gd/classdb/Object] to the area. Use [graphics.gd/classdb/Object.Instance.GetInstanceId] to get the ObjectID of a [graphics.gd/classdb/CollisionObject2D].
+Attaches the ObjectID of an [Object] to the area. Use [Object.GetInstanceId] to get the ObjectID of a [CollisionObject2D].
+
+[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
+[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
 */
 func AreaAttachObjectInstanceId(area RID.Area2D, id int) { //gd:PhysicsServer2D.area_attach_object_instance_id
 	once.Do(singleton)
@@ -569,7 +606,10 @@ func AreaAttachObjectInstanceId(area RID.Area2D, id int) { //gd:PhysicsServer2D.
 }
 
 /*
-Returns the ObjectID attached to the area. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to retrieve an [graphics.gd/classdb/Object] from a nonzero ObjectID.
+Returns the ObjectID attached to the area. Use [@GlobalScope.InstanceFromId] to retrieve an [Object] from a nonzero ObjectID.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
 func AreaGetObjectInstanceId(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_object_instance_id
 	once.Do(singleton)
@@ -577,7 +617,10 @@ func AreaGetObjectInstanceId(area RID.Area2D) int { //gd:PhysicsServer2D.area_ge
 }
 
 /*
-Attaches the ObjectID of a canvas to the area. Use [graphics.gd/classdb/Object.Instance.GetInstanceId] to get the ObjectID of a [graphics.gd/classdb/CanvasLayer].
+Attaches the ObjectID of a canvas to the area. Use [Object.GetInstanceId] to get the ObjectID of a [CanvasLayer].
+
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
+[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
 */
 func AreaAttachCanvasInstanceId(area RID.Area2D, id int) { //gd:PhysicsServer2D.area_attach_canvas_instance_id
 	once.Do(singleton)
@@ -585,7 +628,10 @@ func AreaAttachCanvasInstanceId(area RID.Area2D, id int) { //gd:PhysicsServer2D.
 }
 
 /*
-Returns the ObjectID of the canvas attached to the area. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to retrieve a [graphics.gd/classdb/CanvasLayer] from a nonzero ObjectID.
+Returns the ObjectID of the canvas attached to the area. Use [@GlobalScope.InstanceFromId] to retrieve a [CanvasLayer] from a nonzero ObjectID.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
 */
 func AreaGetCanvasInstanceId(area RID.Area2D) int { //gd:PhysicsServer2D.area_get_canvas_instance_id
 	once.Do(singleton)
@@ -606,6 +652,8 @@ Sets the area's body monitor callback. This callback will be called when any oth
 5. an integer self_shape_idx: the index of the shape of the area where the body entered or exited.
 
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if a body (with all its shapes) is entering for the first time or exiting for the last time.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func AreaSetMonitorCallback(area RID.Area2D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) { //gd:PhysicsServer2D.area_set_monitor_callback
 	once.Do(singleton)
@@ -626,6 +674,8 @@ Sets the area's area monitor callback. This callback will be called when any oth
 5. an integer self_shape_idx: the index of the shape of the area where the other area entered or exited.
 
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if an area (with all its shapes) is entering for the first time or exiting for the last time.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func AreaSetAreaMonitorCallback(area RID.Area2D, callback func(status int, body_rid RID.Any, instance_id Object.ID, body_shape_idx int, self_shape_idx int)) { //gd:PhysicsServer2D.area_set_area_monitor_callback
 	once.Do(singleton)
@@ -644,6 +694,8 @@ func AreaSetMonitorable(area RID.Area2D, monitorable bool) { //gd:PhysicsServer2
 Creates a 2D body object in the physics server, and returns the [Resource.ID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and body mode set to [BodyModeRigid].
 
 Use [BodyAddShape] to add shapes to it, use [BodySetState] to set its transform, and use [BodySetSpace] to add the body to a space.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func BodyCreate() RID.Body2D { //gd:PhysicsServer2D.body_create
 	once.Do(singleton)
@@ -666,6 +718,8 @@ func BodySetSpace(body RID.Body2D, space RID.Space2D) { //gd:PhysicsServer2D.bod
 
 /*
 Returns the [Resource.ID] of the space assigned to the body. Returns an empty [Resource.ID] if no space is assigned.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func BodyGetSpace(body RID.Body2D) RID.Space2D { //gd:PhysicsServer2D.body_get_space
 	once.Do(singleton)
@@ -730,6 +784,8 @@ func BodyGetShapeCount(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_shap
 
 /*
 Returns the [Resource.ID] of the shape with the given index in the body's array of shapes.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func BodyGetShape(body RID.Body2D, shape_idx int) RID.Shape2D { //gd:PhysicsServer2D.body_get_shape
 	once.Do(singleton)
@@ -777,7 +833,11 @@ func BodySetShapeAsOneWayCollision(body RID.Body2D, shape_idx int, enable bool, 
 }
 
 /*
-Attaches the ObjectID of an [graphics.gd/classdb/Object] to the body. Use [graphics.gd/classdb/Object.Instance.GetInstanceId] to get the ObjectID of a [graphics.gd/classdb/CollisionObject2D].
+Attaches the ObjectID of an [Object] to the body. Use [Object.GetInstanceId] to get the ObjectID of a [CollisionObject2D].
+
+[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
+[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
 */
 func BodyAttachObjectInstanceId(body RID.Body2D, id int) { //gd:PhysicsServer2D.body_attach_object_instance_id
 	once.Do(singleton)
@@ -785,7 +845,10 @@ func BodyAttachObjectInstanceId(body RID.Body2D, id int) { //gd:PhysicsServer2D.
 }
 
 /*
-Returns the ObjectID attached to the body. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to retrieve an [graphics.gd/classdb/Object] from a nonzero ObjectID.
+Returns the ObjectID attached to the body. Use [@GlobalScope.InstanceFromId] to retrieve an [Object] from a nonzero ObjectID.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
 func BodyGetObjectInstanceId(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_object_instance_id
 	once.Do(singleton)
@@ -793,7 +856,10 @@ func BodyGetObjectInstanceId(body RID.Body2D) int { //gd:PhysicsServer2D.body_ge
 }
 
 /*
-Attaches the ObjectID of a canvas to the body. Use [graphics.gd/classdb/Object.Instance.GetInstanceId] to get the ObjectID of a [graphics.gd/classdb/CanvasLayer].
+Attaches the ObjectID of a canvas to the body. Use [Object.GetInstanceId] to get the ObjectID of a [CanvasLayer].
+
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
+[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
 */
 func BodyAttachCanvasInstanceId(body RID.Body2D, id int) { //gd:PhysicsServer2D.body_attach_canvas_instance_id
 	once.Do(singleton)
@@ -801,7 +867,10 @@ func BodyAttachCanvasInstanceId(body RID.Body2D, id int) { //gd:PhysicsServer2D.
 }
 
 /*
-Returns the ObjectID of the canvas attached to the body. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to retrieve a [graphics.gd/classdb/CanvasLayer] from a nonzero ObjectID.
+Returns the ObjectID of the canvas attached to the body. Use [@GlobalScope.InstanceFromId] to retrieve a [CanvasLayer] from a nonzero ObjectID.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
 */
 func BodyGetCanvasInstanceId(body RID.Body2D) int { //gd:PhysicsServer2D.body_get_canvas_instance_id
 	once.Do(singleton)
@@ -1121,7 +1190,9 @@ func BodyGetMaxContactsReported(body RID.Body2D) int { //gd:PhysicsServer2D.body
 /*
 Sets whether the body omits the standard force integration. If 'enable' is true, the body will not automatically use applied forces, torques, and damping to update the body's linear and angular velocity. In this case, [BodySetForceIntegrationCallback] can be used to manually update the linear and angular velocity instead.
 
-This method is called when the property [graphics.gd/classdb/RigidBody2D.Instance.CustomIntegrator] is set.
+This method is called when the property [RigidBody2D.CustomIntegrator] is set.
+
+[RigidBody2D.CustomIntegrator]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.CustomIntegrator
 */
 func BodySetOmitForceIntegration(body RID.Body2D, enable bool) { //gd:PhysicsServer2D.body_set_omit_force_integration
 	once.Do(singleton)
@@ -1143,7 +1214,9 @@ The function 'callable' will be called every physics frame, assuming that the bo
 
 The function 'callable' must take the following parameters:
 
-1. state: a [graphics.gd/classdb/PhysicsDirectBodyState2D], used to retrieve the body's state.
+1. state: a [PhysicsDirectBodyState2D], used to retrieve the body's state.
+
+[PhysicsDirectBodyState2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D
 */
 func BodySetStateSyncCallback(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance)) { //gd:PhysicsServer2D.body_set_state_sync_callback
 	once.Do(singleton)
@@ -1157,11 +1230,13 @@ The function 'callable' will be called every physics tick, before the standard f
 
 If 'userdata' is not null, the function 'callable' must take the following two parameters:
 
-1. state: a [graphics.gd/classdb/PhysicsDirectBodyState2D] used to retrieve and modify the body's state,
+1. state: a [PhysicsDirectBodyState2D] used to retrieve and modify the body's state,
 
 2. userdata: a any; its value will be the 'userdata' passed into this method.
 
 If 'userdata' is null, then 'callable' must take only the state parameter.
+
+[PhysicsDirectBodyState2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D
 */
 func BodySetForceIntegrationCallback(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance, userdata any), userdata any) { //gd:PhysicsServer2D.body_set_force_integration_callback
 	once.Do(singleton)
@@ -1175,11 +1250,13 @@ The function 'callable' will be called every physics tick, before the standard f
 
 If 'userdata' is not null, the function 'callable' must take the following two parameters:
 
-1. state: a [graphics.gd/classdb/PhysicsDirectBodyState2D] used to retrieve and modify the body's state,
+1. state: a [PhysicsDirectBodyState2D] used to retrieve and modify the body's state,
 
 2. userdata: a any; its value will be the 'userdata' passed into this method.
 
 If 'userdata' is null, then 'callable' must take only the state parameter.
+
+[PhysicsDirectBodyState2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D
 */
 func BodySetForceIntegrationCallbackOptions(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance, userdata any), userdata any) { //gd:PhysicsServer2D.body_set_force_integration_callback
 	once.Do(singleton)
@@ -1187,7 +1264,10 @@ func BodySetForceIntegrationCallbackOptions(body RID.Body2D, callable func(state
 }
 
 /*
-Returns true if a collision would result from moving the body along a motion vector from a given point in space. See [graphics.gd/classdb/PhysicsTestMotionParameters2D] for the available motion parameters. Optionally a [graphics.gd/classdb/PhysicsTestMotionResult2D] object can be passed, which will be used to store the information about the resulting collision.
+Returns true if a collision would result from moving the body along a motion vector from a given point in space. See [PhysicsTestMotionParameters2D] for the available motion parameters. Optionally a [PhysicsTestMotionResult2D] object can be passed, which will be used to store the information about the resulting collision.
+
+[PhysicsTestMotionParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionParameters2D
+[PhysicsTestMotionResult2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionResult2D
 */
 func BodyTestMotion(body RID.Body2D, parameters PhysicsTestMotionParameters2D.Instance, result PhysicsTestMotionResult2D.Instance) bool { //gd:PhysicsServer2D.body_test_motion
 	once.Do(singleton)
@@ -1195,7 +1275,10 @@ func BodyTestMotion(body RID.Body2D, parameters PhysicsTestMotionParameters2D.In
 }
 
 /*
-Returns true if a collision would result from moving the body along a motion vector from a given point in space. See [graphics.gd/classdb/PhysicsTestMotionParameters2D] for the available motion parameters. Optionally a [graphics.gd/classdb/PhysicsTestMotionResult2D] object can be passed, which will be used to store the information about the resulting collision.
+Returns true if a collision would result from moving the body along a motion vector from a given point in space. See [PhysicsTestMotionParameters2D] for the available motion parameters. Optionally a [PhysicsTestMotionResult2D] object can be passed, which will be used to store the information about the resulting collision.
+
+[PhysicsTestMotionParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionParameters2D
+[PhysicsTestMotionResult2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionResult2D
 */
 func BodyTestMotionOptions(body RID.Body2D, parameters PhysicsTestMotionParameters2D.Instance, result PhysicsTestMotionResult2D.Instance) bool { //gd:PhysicsServer2D.body_test_motion
 	once.Do(singleton)
@@ -1203,7 +1286,9 @@ func BodyTestMotionOptions(body RID.Body2D, parameters PhysicsTestMotionParamete
 }
 
 /*
-Returns the [graphics.gd/classdb/PhysicsDirectBodyState2D] of the body. Returns null if the body is destroyed or not assigned to a space.
+Returns the [PhysicsDirectBodyState2D] of the body. Returns null if the body is destroyed or not assigned to a space.
+
+[PhysicsDirectBodyState2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D
 */
 func BodyGetDirectState(body RID.Body2D) PhysicsDirectBodyState2D.Instance { //gd:PhysicsServer2D.body_get_direct_state
 	once.Do(singleton)
@@ -1212,6 +1297,8 @@ func BodyGetDirectState(body RID.Body2D) PhysicsDirectBodyState2D.Instance { //g
 
 /*
 Creates a 2D joint in the physics server, and returns the [Resource.ID] that identifies it. To set the joint type, use [JointMakeDampedSpring], [JointMakeGroove] or [JointMakePin]. Use [JointSetParam] to set generic joint parameters.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func JointCreate() RID.Joint2D { //gd:PhysicsServer2D.joint_create
 	once.Do(singleton)
@@ -1220,6 +1307,8 @@ func JointCreate() RID.Joint2D { //gd:PhysicsServer2D.joint_create
 
 /*
 Destroys the joint with the given [Resource.ID], creates a new uninitialized joint, and makes the [Resource.ID] refer to this new joint.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func JointClear(joint RID.Joint2D) { //gd:PhysicsServer2D.joint_clear
 	once.Do(singleton)
@@ -1243,7 +1332,9 @@ func JointGetParam(joint RID.Joint2D, param JointParam) Float.X { //gd:PhysicsSe
 }
 
 /*
-Sets whether the bodies attached to the [graphics.gd/classdb/Joint2D] will collide with each other.
+Sets whether the bodies attached to the [Joint2D] will collide with each other.
+
+[Joint2D]: https://pkg.go.dev/graphics.gd/classdb/Joint2D
 */
 func JointDisableCollisionsBetweenBodies(joint RID.Joint2D, disable bool) { //gd:PhysicsServer2D.joint_disable_collisions_between_bodies
 	once.Do(singleton)
@@ -1251,7 +1342,9 @@ func JointDisableCollisionsBetweenBodies(joint RID.Joint2D, disable bool) { //gd
 }
 
 /*
-Returns whether the bodies attached to the [graphics.gd/classdb/Joint2D] will collide with each other.
+Returns whether the bodies attached to the [Joint2D] will collide with each other.
+
+[Joint2D]: https://pkg.go.dev/graphics.gd/classdb/Joint2D
 */
 func JointIsDisabledCollisionsBetweenBodies(joint RID.Joint2D) bool { //gd:PhysicsServer2D.joint_is_disabled_collisions_between_bodies
 	once.Do(singleton)
@@ -1260,6 +1353,8 @@ func JointIsDisabledCollisionsBetweenBodies(joint RID.Joint2D) bool { //gd:Physi
 
 /*
 Makes the joint a pin joint. If 'body_b' is an empty [Resource.ID], then 'body_a' is pinned to the point 'anchor' (given in global coordinates); otherwise, 'body_a' is pinned to 'body_b' at the point 'anchor' (given in global coordinates). To set the parameters which are specific to the pin joint, see [PinJointSetParam].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func JointMakePin(joint RID.Joint2D, anchor Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_pin
 	once.Do(singleton)
@@ -1268,6 +1363,8 @@ func JointMakePin(joint RID.Joint2D, anchor Vector2.XY, body_a RID.Body2D, body_
 
 /*
 Makes the joint a pin joint. If 'body_b' is an empty [Resource.ID], then 'body_a' is pinned to the point 'anchor' (given in global coordinates); otherwise, 'body_a' is pinned to 'body_b' at the point 'anchor' (given in global coordinates). To set the parameters which are specific to the pin joint, see [PinJointSetParam].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func JointMakePinOptions(joint RID.Joint2D, anchor Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_pin
 	once.Do(singleton)
@@ -1364,6 +1461,8 @@ func JointGetType(joint RID.Joint2D) JointType { //gd:PhysicsServer2D.joint_get_
 
 /*
 Destroys any of the objects created by PhysicsServer2D. If the [Resource.ID] passed is not one of the objects that can be created by PhysicsServer2D, an error will be printed to the console.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func FreeRid(rid RID.Any) { //gd:PhysicsServer2D.free_rid
 	once.Do(singleton)
@@ -1411,6 +1510,8 @@ func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject
 
 /*
 Creates a 2D world boundary shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the shape's normal direction and distance properties.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) WorldBoundaryShapeCreate() RID.Any { //gd:PhysicsServer2D.world_boundary_shape_create
@@ -1421,6 +1522,8 @@ func (self class) WorldBoundaryShapeCreate() RID.Any { //gd:PhysicsServer2D.worl
 
 /*
 Creates a 2D separation ray shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the shape's length and slide_on_slope properties.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) SeparationRayShapeCreate() RID.Any { //gd:PhysicsServer2D.separation_ray_shape_create
@@ -1431,6 +1534,8 @@ func (self class) SeparationRayShapeCreate() RID.Any { //gd:PhysicsServer2D.sepa
 
 /*
 Creates a 2D segment shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the segment's start and end points.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) SegmentShapeCreate() RID.Any { //gd:PhysicsServer2D.segment_shape_create
@@ -1441,6 +1546,8 @@ func (self class) SegmentShapeCreate() RID.Any { //gd:PhysicsServer2D.segment_sh
 
 /*
 Creates a 2D circle shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the circle's radius.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) CircleShapeCreate() RID.Any { //gd:PhysicsServer2D.circle_shape_create
@@ -1451,6 +1558,8 @@ func (self class) CircleShapeCreate() RID.Any { //gd:PhysicsServer2D.circle_shap
 
 /*
 Creates a 2D rectangle shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the rectangle's half-extents.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) RectangleShapeCreate() RID.Any { //gd:PhysicsServer2D.rectangle_shape_create
@@ -1461,6 +1570,8 @@ func (self class) RectangleShapeCreate() RID.Any { //gd:PhysicsServer2D.rectangl
 
 /*
 Creates a 2D capsule shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the capsule's height and radius.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) CapsuleShapeCreate() RID.Any { //gd:PhysicsServer2D.capsule_shape_create
@@ -1471,6 +1582,8 @@ func (self class) CapsuleShapeCreate() RID.Any { //gd:PhysicsServer2D.capsule_sh
 
 /*
 Creates a 2D convex polygon shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the convex polygon's points.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) ConvexPolygonShapeCreate() RID.Any { //gd:PhysicsServer2D.convex_polygon_shape_create
@@ -1481,6 +1594,8 @@ func (self class) ConvexPolygonShapeCreate() RID.Any { //gd:PhysicsServer2D.conv
 
 /*
 Creates a 2D concave polygon shape in the physics server, and returns the [Resource.ID] that identifies it. Use [ShapeSetData] to set the concave polygon's segments.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) ConcavePolygonShapeCreate() RID.Any { //gd:PhysicsServer2D.concave_polygon_shape_create
@@ -1508,7 +1623,12 @@ Sets the shape data that defines the configuration of the shape. The 'data' to b
 
 - [ShapeConcavePolygon]: a [][Vector2.XY] of length divisible by two (each pair of points forms one segment).
 
-Warning: In the case of [ShapeConvexPolygon], this method does not check if the points supplied actually form a convex polygon (unlike the [graphics.gd/classdb/CollisionPolygon2D.Instance.Polygon] property).
+Warning: In the case of [ShapeConvexPolygon], this method does not check if the points supplied actually form a convex polygon (unlike the [CollisionPolygon2D.Polygon] property).
+
+[CollisionPolygon2D.Polygon]: https://pkg.go.dev/graphics.gd/classdb/CollisionPolygon2D#Instance.Polygon
+[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
+[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
+[Vector2.XY]: https://pkg.go.dev/graphics.gd/variant/Vector2#XY
 */
 //go:nosplit
 func (self class) ShapeSetData(shape RID.Any, data variant.Any) { //gd:PhysicsServer2D.shape_set_data
@@ -1540,6 +1660,8 @@ func (self class) ShapeGetData(shape RID.Any) variant.Any { //gd:PhysicsServer2D
 
 /*
 Creates a 2D space in the physics server, and returns the [Resource.ID] that identifies it. A space contains bodies and areas, and controls the stepping of the physics simulation of the objects in it.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) SpaceCreate() RID.Any { //gd:PhysicsServer2D.space_create
@@ -1595,7 +1717,9 @@ func (self class) SpaceGetParam(space RID.Any, param SpaceParameter) float64 { /
 }
 
 /*
-Returns the state of a space, a [graphics.gd/classdb/PhysicsDirectSpaceState2D]. This object can be used for collision/intersection queries.
+Returns the state of a space, a [PhysicsDirectSpaceState2D]. This object can be used for collision/intersection queries.
+
+[PhysicsDirectSpaceState2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState2D
 */
 //go:nosplit
 func (self class) SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpaceState2D { //gd:PhysicsServer2D.space_get_direct_state
@@ -1608,6 +1732,8 @@ func (self class) SpaceGetDirectState(space RID.Any) [1]gdclass.PhysicsDirectSpa
 Creates a 2D area object in the physics server, and returns the [Resource.ID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and monitorable set to false.
 
 Use [AreaAddShape] to add shapes to it, use [AreaSetTransform] to set its transform, and use [AreaSetSpace] to add the area to a space. If you want the area to be detectable use [AreaSetMonitorable].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) AreaCreate() RID.Any { //gd:PhysicsServer2D.area_create
@@ -1631,6 +1757,8 @@ func (self class) AreaSetSpace(area RID.Any, space RID.Any) { //gd:PhysicsServer
 
 /*
 Returns the [Resource.ID] of the space assigned to the area. Returns an empty [Resource.ID] if no space is assigned.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) AreaGetSpace(area RID.Any) RID.Any { //gd:PhysicsServer2D.area_get_space
@@ -1700,6 +1828,8 @@ func (self class) AreaGetShapeCount(area RID.Any) int64 { //gd:PhysicsServer2D.a
 
 /*
 Returns the [Resource.ID] of the shape with the given index in the area's array of shapes.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) AreaGetShape(area RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer2D.area_get_shape
@@ -1832,7 +1962,11 @@ func (self class) AreaGetTransform(area RID.Any) Transform2D.OriginXY { //gd:Phy
 }
 
 /*
-Attaches the ObjectID of an [graphics.gd/classdb/Object] to the area. Use [graphics.gd/classdb/Object.Instance.GetInstanceId] to get the ObjectID of a [graphics.gd/classdb/CollisionObject2D].
+Attaches the ObjectID of an [Object] to the area. Use [Object.GetInstanceId] to get the ObjectID of a [CollisionObject2D].
+
+[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
+[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
 */
 //go:nosplit
 func (self class) AreaAttachObjectInstanceId(area RID.Any, id int64) { //gd:PhysicsServer2D.area_attach_object_instance_id
@@ -1843,7 +1977,10 @@ func (self class) AreaAttachObjectInstanceId(area RID.Any, id int64) { //gd:Phys
 }
 
 /*
-Returns the ObjectID attached to the area. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to retrieve an [graphics.gd/classdb/Object] from a nonzero ObjectID.
+Returns the ObjectID attached to the area. Use [@GlobalScope.InstanceFromId] to retrieve an [Object] from a nonzero ObjectID.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
 //go:nosplit
 func (self class) AreaGetObjectInstanceId(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_object_instance_id
@@ -1853,7 +1990,10 @@ func (self class) AreaGetObjectInstanceId(area RID.Any) int64 { //gd:PhysicsServ
 }
 
 /*
-Attaches the ObjectID of a canvas to the area. Use [graphics.gd/classdb/Object.Instance.GetInstanceId] to get the ObjectID of a [graphics.gd/classdb/CanvasLayer].
+Attaches the ObjectID of a canvas to the area. Use [Object.GetInstanceId] to get the ObjectID of a [CanvasLayer].
+
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
+[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
 */
 //go:nosplit
 func (self class) AreaAttachCanvasInstanceId(area RID.Any, id int64) { //gd:PhysicsServer2D.area_attach_canvas_instance_id
@@ -1864,7 +2004,10 @@ func (self class) AreaAttachCanvasInstanceId(area RID.Any, id int64) { //gd:Phys
 }
 
 /*
-Returns the ObjectID of the canvas attached to the area. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to retrieve a [graphics.gd/classdb/CanvasLayer] from a nonzero ObjectID.
+Returns the ObjectID of the canvas attached to the area. Use [@GlobalScope.InstanceFromId] to retrieve a [CanvasLayer] from a nonzero ObjectID.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
 */
 //go:nosplit
 func (self class) AreaGetCanvasInstanceId(area RID.Any) int64 { //gd:PhysicsServer2D.area_get_canvas_instance_id
@@ -1887,6 +2030,8 @@ Sets the area's body monitor callback. This callback will be called when any oth
 5. an integer self_shape_idx: the index of the shape of the area where the body entered or exited.
 
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if a body (with all its shapes) is entering for the first time or exiting for the last time.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) AreaSetMonitorCallback(area RID.Any, callback Callable.Function) { //gd:PhysicsServer2D.area_set_monitor_callback
@@ -1910,6 +2055,8 @@ Sets the area's area monitor callback. This callback will be called when any oth
 5. an integer self_shape_idx: the index of the shape of the area where the other area entered or exited.
 
 By counting (or keeping track of) the shapes that enter and exit, it can be determined if an area (with all its shapes) is entering for the first time or exiting for the last time.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) AreaSetAreaMonitorCallback(area RID.Any, callback Callable.Function) { //gd:PhysicsServer2D.area_set_area_monitor_callback
@@ -1934,6 +2081,8 @@ func (self class) AreaSetMonitorable(area RID.Any, monitorable bool) { //gd:Phys
 Creates a 2D body object in the physics server, and returns the [Resource.ID] that identifies it. The default settings for the created area include a collision layer and mask set to 1, and body mode set to [BodyModeRigid].
 
 Use [BodyAddShape] to add shapes to it, use [BodySetState] to set its transform, and use [BodySetSpace] to add the body to a space.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) BodyCreate() RID.Any { //gd:PhysicsServer2D.body_create
@@ -1961,6 +2110,8 @@ func (self class) BodySetSpace(body RID.Any, space RID.Any) { //gd:PhysicsServer
 
 /*
 Returns the [Resource.ID] of the space assigned to the body. Returns an empty [Resource.ID] if no space is assigned.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) BodyGetSpace(body RID.Any) RID.Any { //gd:PhysicsServer2D.body_get_space
@@ -2039,6 +2190,8 @@ func (self class) BodyGetShapeCount(body RID.Any) int64 { //gd:PhysicsServer2D.b
 
 /*
 Returns the [Resource.ID] of the shape with the given index in the body's array of shapes.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) BodyGetShape(body RID.Any, shape_idx int64) RID.Any { //gd:PhysicsServer2D.body_get_shape
@@ -2108,7 +2261,11 @@ func (self class) BodySetShapeAsOneWayCollision(body RID.Any, shape_idx int64, e
 }
 
 /*
-Attaches the ObjectID of an [graphics.gd/classdb/Object] to the body. Use [graphics.gd/classdb/Object.Instance.GetInstanceId] to get the ObjectID of a [graphics.gd/classdb/CollisionObject2D].
+Attaches the ObjectID of an [Object] to the body. Use [Object.GetInstanceId] to get the ObjectID of a [CollisionObject2D].
+
+[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
+[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
 */
 //go:nosplit
 func (self class) BodyAttachObjectInstanceId(body RID.Any, id int64) { //gd:PhysicsServer2D.body_attach_object_instance_id
@@ -2119,7 +2276,10 @@ func (self class) BodyAttachObjectInstanceId(body RID.Any, id int64) { //gd:Phys
 }
 
 /*
-Returns the ObjectID attached to the body. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to retrieve an [graphics.gd/classdb/Object] from a nonzero ObjectID.
+Returns the ObjectID attached to the body. Use [@GlobalScope.InstanceFromId] to retrieve an [Object] from a nonzero ObjectID.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
 */
 //go:nosplit
 func (self class) BodyGetObjectInstanceId(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_object_instance_id
@@ -2129,7 +2289,10 @@ func (self class) BodyGetObjectInstanceId(body RID.Any) int64 { //gd:PhysicsServ
 }
 
 /*
-Attaches the ObjectID of a canvas to the body. Use [graphics.gd/classdb/Object.Instance.GetInstanceId] to get the ObjectID of a [graphics.gd/classdb/CanvasLayer].
+Attaches the ObjectID of a canvas to the body. Use [Object.GetInstanceId] to get the ObjectID of a [CanvasLayer].
+
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
+[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
 */
 //go:nosplit
 func (self class) BodyAttachCanvasInstanceId(body RID.Any, id int64) { //gd:PhysicsServer2D.body_attach_canvas_instance_id
@@ -2140,7 +2303,10 @@ func (self class) BodyAttachCanvasInstanceId(body RID.Any, id int64) { //gd:Phys
 }
 
 /*
-Returns the ObjectID of the canvas attached to the body. Use [graphics.gd/classdb/@GlobalScope.Instance.InstanceFromId] to retrieve a [graphics.gd/classdb/CanvasLayer] from a nonzero ObjectID.
+Returns the ObjectID of the canvas attached to the body. Use [@GlobalScope.InstanceFromId] to retrieve a [CanvasLayer] from a nonzero ObjectID.
+
+[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
 */
 //go:nosplit
 func (self class) BodyGetCanvasInstanceId(body RID.Any) int64 { //gd:PhysicsServer2D.body_get_canvas_instance_id
@@ -2522,7 +2688,9 @@ func (self class) BodyGetMaxContactsReported(body RID.Any) int64 { //gd:PhysicsS
 /*
 Sets whether the body omits the standard force integration. If 'enable' is true, the body will not automatically use applied forces, torques, and damping to update the body's linear and angular velocity. In this case, [BodySetForceIntegrationCallback] can be used to manually update the linear and angular velocity instead.
 
-This method is called when the property [graphics.gd/classdb/RigidBody2D.Instance.CustomIntegrator] is set.
+This method is called when the property [RigidBody2D.CustomIntegrator] is set.
+
+[RigidBody2D.CustomIntegrator]: https://pkg.go.dev/graphics.gd/classdb/RigidBody2D#Instance.CustomIntegrator
 */
 //go:nosplit
 func (self class) BodySetOmitForceIntegration(body RID.Any, enable bool) { //gd:PhysicsServer2D.body_set_omit_force_integration
@@ -2549,7 +2717,9 @@ The function 'callable' will be called every physics frame, assuming that the bo
 
 The function 'callable' must take the following parameters:
 
-1. state: a [graphics.gd/classdb/PhysicsDirectBodyState2D], used to retrieve the body's state.
+1. state: a [PhysicsDirectBodyState2D], used to retrieve the body's state.
+
+[PhysicsDirectBodyState2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D
 */
 //go:nosplit
 func (self class) BodySetStateSyncCallback(body RID.Any, callable Callable.Function) { //gd:PhysicsServer2D.body_set_state_sync_callback
@@ -2566,11 +2736,13 @@ The function 'callable' will be called every physics tick, before the standard f
 
 If 'userdata' is not null, the function 'callable' must take the following two parameters:
 
-1. state: a [graphics.gd/classdb/PhysicsDirectBodyState2D] used to retrieve and modify the body's state,
+1. state: a [PhysicsDirectBodyState2D] used to retrieve and modify the body's state,
 
 2. userdata: a any; its value will be the 'userdata' passed into this method.
 
 If 'userdata' is null, then 'callable' must take only the state parameter.
+
+[PhysicsDirectBodyState2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D
 */
 //go:nosplit
 func (self class) BodySetForceIntegrationCallback(body RID.Any, callable Callable.Function, userdata variant.Any) { //gd:PhysicsServer2D.body_set_force_integration_callback
@@ -2582,7 +2754,10 @@ func (self class) BodySetForceIntegrationCallback(body RID.Any, callable Callabl
 }
 
 /*
-Returns true if a collision would result from moving the body along a motion vector from a given point in space. See [graphics.gd/classdb/PhysicsTestMotionParameters2D] for the available motion parameters. Optionally a [graphics.gd/classdb/PhysicsTestMotionResult2D] object can be passed, which will be used to store the information about the resulting collision.
+Returns true if a collision would result from moving the body along a motion vector from a given point in space. See [PhysicsTestMotionParameters2D] for the available motion parameters. Optionally a [PhysicsTestMotionResult2D] object can be passed, which will be used to store the information about the resulting collision.
+
+[PhysicsTestMotionParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionParameters2D
+[PhysicsTestMotionResult2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionResult2D
 */
 //go:nosplit
 func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTestMotionParameters2D, result [1]gdclass.PhysicsTestMotionResult2D) bool { //gd:PhysicsServer2D.body_test_motion
@@ -2596,7 +2771,9 @@ func (self class) BodyTestMotion(body RID.Any, parameters [1]gdclass.PhysicsTest
 }
 
 /*
-Returns the [graphics.gd/classdb/PhysicsDirectBodyState2D] of the body. Returns null if the body is destroyed or not assigned to a space.
+Returns the [PhysicsDirectBodyState2D] of the body. Returns null if the body is destroyed or not assigned to a space.
+
+[PhysicsDirectBodyState2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D
 */
 //go:nosplit
 func (self class) BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyState2D { //gd:PhysicsServer2D.body_get_direct_state
@@ -2607,6 +2784,8 @@ func (self class) BodyGetDirectState(body RID.Any) [1]gdclass.PhysicsDirectBodyS
 
 /*
 Creates a 2D joint in the physics server, and returns the [Resource.ID] that identifies it. To set the joint type, use [JointMakeDampedSpring], [JointMakeGroove] or [JointMakePin]. Use [JointSetParam] to set generic joint parameters.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) JointCreate() RID.Any { //gd:PhysicsServer2D.joint_create
@@ -2617,6 +2796,8 @@ func (self class) JointCreate() RID.Any { //gd:PhysicsServer2D.joint_create
 
 /*
 Destroys the joint with the given [Resource.ID], creates a new uninitialized joint, and makes the [Resource.ID] refer to this new joint.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) JointClear(joint RID.Any) { //gd:PhysicsServer2D.joint_clear
@@ -2649,7 +2830,9 @@ func (self class) JointGetParam(joint RID.Any, param JointParam) float64 { //gd:
 }
 
 /*
-Sets whether the bodies attached to the [graphics.gd/classdb/Joint2D] will collide with each other.
+Sets whether the bodies attached to the [Joint2D] will collide with each other.
+
+[Joint2D]: https://pkg.go.dev/graphics.gd/classdb/Joint2D
 */
 //go:nosplit
 func (self class) JointDisableCollisionsBetweenBodies(joint RID.Any, disable bool) { //gd:PhysicsServer2D.joint_disable_collisions_between_bodies
@@ -2660,7 +2843,9 @@ func (self class) JointDisableCollisionsBetweenBodies(joint RID.Any, disable boo
 }
 
 /*
-Returns whether the bodies attached to the [graphics.gd/classdb/Joint2D] will collide with each other.
+Returns whether the bodies attached to the [Joint2D] will collide with each other.
+
+[Joint2D]: https://pkg.go.dev/graphics.gd/classdb/Joint2D
 */
 //go:nosplit
 func (self class) JointIsDisabledCollisionsBetweenBodies(joint RID.Any) bool { //gd:PhysicsServer2D.joint_is_disabled_collisions_between_bodies
@@ -2671,6 +2856,8 @@ func (self class) JointIsDisabledCollisionsBetweenBodies(joint RID.Any) bool { /
 
 /*
 Makes the joint a pin joint. If 'body_b' is an empty [Resource.ID], then 'body_a' is pinned to the point 'anchor' (given in global coordinates); otherwise, 'body_a' is pinned to 'body_b' at the point 'anchor' (given in global coordinates). To set the parameters which are specific to the pin joint, see [PinJointSetParam].
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) JointMakePin(joint RID.Any, anchor Vector2.XY, body_a RID.Any, body_b RID.Any) { //gd:PhysicsServer2D.joint_make_pin
@@ -2798,6 +2985,8 @@ func (self class) JointGetType(joint RID.Any) JointType { //gd:PhysicsServer2D.j
 
 /*
 Destroys any of the objects created by PhysicsServer2D. If the [Resource.ID] passed is not one of the objects that can be created by PhysicsServer2D, an error will be printed to the console.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 //go:nosplit
 func (self class) FreeRid(rid RID.Any) { //gd:PhysicsServer2D.free_rid
@@ -2841,23 +3030,41 @@ func init() {
 type SpaceParameter int //gd:PhysicsServer2D.SpaceParameter
 
 const (
-	// Constant to set/get the maximum distance a pair of bodies has to move before their collision status has to be recalculated. The default value of this parameter is [graphics.gd/classdb/ProjectSettings] "physics/2d/solver/contact_recycle_radius".
+	// Constant to set/get the maximum distance a pair of bodies has to move before their collision status has to be recalculated. The default value of this parameter is [ProjectSettings] "physics/2d/solver/contact_recycle_radius".
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	SpaceParamContactRecycleRadius SpaceParameter = 0
-	// Constant to set/get the maximum distance a shape can be from another before they are considered separated and the contact is discarded. The default value of this parameter is [graphics.gd/classdb/ProjectSettings] "physics/2d/solver/contact_max_separation".
+	// Constant to set/get the maximum distance a shape can be from another before they are considered separated and the contact is discarded. The default value of this parameter is [ProjectSettings] "physics/2d/solver/contact_max_separation".
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	SpaceParamContactMaxSeparation SpaceParameter = 1
-	// Constant to set/get the maximum distance a shape can penetrate another shape before it is considered a collision. The default value of this parameter is [graphics.gd/classdb/ProjectSettings] "physics/2d/solver/contact_max_allowed_penetration".
+	// Constant to set/get the maximum distance a shape can penetrate another shape before it is considered a collision. The default value of this parameter is [ProjectSettings] "physics/2d/solver/contact_max_allowed_penetration".
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	SpaceParamContactMaxAllowedPenetration SpaceParameter = 2
-	// Constant to set/get the default solver bias for all physics contacts. A solver bias is a factor controlling how much two objects "rebound", after overlapping, to avoid leaving them in that state because of numerical imprecision. The default value of this parameter is [graphics.gd/classdb/ProjectSettings] "physics/2d/solver/default_contact_bias".
+	// Constant to set/get the default solver bias for all physics contacts. A solver bias is a factor controlling how much two objects "rebound", after overlapping, to avoid leaving them in that state because of numerical imprecision. The default value of this parameter is [ProjectSettings] "physics/2d/solver/default_contact_bias".
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	SpaceParamContactDefaultBias SpaceParameter = 3
-	// Constant to set/get the threshold linear velocity of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after the time given. The default value of this parameter is [graphics.gd/classdb/ProjectSettings] "physics/2d/sleep_threshold_linear".
+	// Constant to set/get the threshold linear velocity of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after the time given. The default value of this parameter is [ProjectSettings] "physics/2d/sleep_threshold_linear".
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	SpaceParamBodyLinearVelocitySleepThreshold SpaceParameter = 4
-	// Constant to set/get the threshold angular velocity of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after the time given. The default value of this parameter is [graphics.gd/classdb/ProjectSettings] "physics/2d/sleep_threshold_angular".
+	// Constant to set/get the threshold angular velocity of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after the time given. The default value of this parameter is [ProjectSettings] "physics/2d/sleep_threshold_angular".
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	SpaceParamBodyAngularVelocitySleepThreshold SpaceParameter = 5
-	// Constant to set/get the maximum time of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after this time. The default value of this parameter is [graphics.gd/classdb/ProjectSettings] "physics/2d/time_before_sleep".
+	// Constant to set/get the maximum time of activity. A body marked as potentially inactive for both linear and angular velocity will be put to sleep after this time. The default value of this parameter is [ProjectSettings] "physics/2d/time_before_sleep".
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	SpaceParamBodyTimeToSleep SpaceParameter = 6
-	// Constant to set/get the default solver bias for all physics constraints. A solver bias is a factor controlling how much two objects "rebound", after violating a constraint, to avoid leaving them in that state because of numerical imprecision. The default value of this parameter is [graphics.gd/classdb/ProjectSettings] "physics/2d/solver/default_constraint_bias".
+	// Constant to set/get the default solver bias for all physics constraints. A solver bias is a factor controlling how much two objects "rebound", after violating a constraint, to avoid leaving them in that state because of numerical imprecision. The default value of this parameter is [ProjectSettings] "physics/2d/solver/default_constraint_bias".
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	SpaceParamConstraintDefaultBias SpaceParameter = 7
-	// Constant to set/get the number of solver iterations for all contacts and constraints. The greater the number of iterations, the more accurate the collisions will be. However, a greater number of iterations requires more CPU power, which can decrease performance. The default value of this parameter is [graphics.gd/classdb/ProjectSettings] "physics/2d/solver/solver_iterations".
+	// Constant to set/get the number of solver iterations for all contacts and constraints. The greater the number of iterations, the more accurate the collisions will be. However, a greater number of iterations requires more CPU power, which can decrease performance. The default value of this parameter is [ProjectSettings] "physics/2d/solver/solver_iterations".
+	//
+	// [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
 	SpaceParamSolverIterations SpaceParameter = 8
 )
 
@@ -2954,7 +3161,9 @@ const (
 	BodyParamMass BodyParameter = 2
 	// Constant to set/get a body's inertia. The default value of this parameter is 0.0. If the body's inertia is set to a value <= 0.0, then the inertia will be recalculated based on the body's shapes, mass, and center of mass.
 	BodyParamInertia BodyParameter = 3
-	// Constant to set/get a body's center of mass position in the body's local coordinate system. The default value of this parameter is Vector2(0, 0). If this parameter is never set explicitly, then it is recalculated based on the body's shapes when setting the parameter [BodyParamMass] or when calling [Instance.BodySetSpace].
+	// Constant to set/get a body's center of mass position in the body's local coordinate system. The default value of this parameter is Vector2(0, 0). If this parameter is never set explicitly, then it is recalculated based on the body's shapes when setting the parameter [BodyParamMass] or when calling [BodySetSpace].
+	//
+	// [BodySetSpace]: https://pkg.go.dev/graphics.gd/classdb/#Instance.BodySetSpace
 	BodyParamCenterOfMass BodyParameter = 4
 	// Constant to set/get a body's gravity multiplier. The default value of this parameter is 1.0.
 	BodyParamGravityScale BodyParameter = 5

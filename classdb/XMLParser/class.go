@@ -3,9 +3,9 @@
 /*
 Provides a low-level interface for creating parsers for [XML] files. This class can serve as base to make custom XML parsers.
 
-To parse XML, you must open a file with the [Instance.Open] method or a buffer with the [Instance.OpenBuffer] method. Then, the [Instance.Read] method must be called to parse the next nodes. Most of the methods take into consideration the currently parsed node.
+To parse XML, you must open a file with the [Open] method or a buffer with the [OpenBuffer] method. Then, the [Read] method must be called to parse the next nodes. Most of the methods take into consideration the currently parsed node.
 
-Here is an example of using [graphics.gd/classdb/XMLParser] to parse an SVG file (which is based on XML), printing each element and its attributes as a dictionary:
+Here is an example of using [XMLParser] to parse an SVG file (which is based on XML), printing each element and its attributes as a dictionary:
 
 	package main
 
@@ -26,7 +26,11 @@ Here is an example of using [graphics.gd/classdb/XMLParser] to parse an SVG file
 		}
 	}
 
+[Open]: https://pkg.go.dev/graphics.gd/classdb/XMLParser#Instance.Open
+[OpenBuffer]: https://pkg.go.dev/graphics.gd/classdb/XMLParser#Instance.OpenBuffer
+[Read]: https://pkg.go.dev/graphics.gd/classdb/XMLParser#Instance.Read
 [XML]: https://en.wikipedia.org/wiki/XML
+[XMLParser]: https://pkg.go.dev/graphics.gd/classdb/XMLParser
 */
 package XMLParser
 

@@ -9,7 +9,6 @@ func _popup_menu(paths):
 package main
 
 import (
-	"graphics.gd/classdb/EditorContextMenuPlugin"
 	"graphics.gd/classdb/Texture2D"
 )
 
@@ -17,5 +16,5 @@ var icon Texture2D.Instance
 
 func EditorContextMenuPlugin_AddContextMenuItemFromShortcut() {
 	editorContextMenuPlugin.AddMenuShortcut(shortcut, func(array []any) {})
-	EditorContextMenuPlugin.Expanded(editorContextMenuPlugin).AddContextMenuItemFromShortcut("File Custom options", shortcut, icon)
+	editorContextMenuPlugin.MoreArgs().AddContextMenuItemFromShortcut("File Custom options", shortcut, icon)
 }

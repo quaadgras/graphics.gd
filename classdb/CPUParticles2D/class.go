@@ -3,7 +3,9 @@
 /*
 CPU-based 2D particle node used to create a variety of particle systems and effects.
 
-See also [graphics.gd/classdb/GPUParticles2D], which provides the same functionality with hardware acceleration, but may not run on older devices.
+See also [GPUParticles2D], which provides the same functionality with hardware acceleration, but may not run on older devices.
+
+[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
 */
 package CPUParticles2D
 
@@ -170,7 +172,12 @@ func init() {
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
 
-type Expanded [1]gdclass.CPUParticles2D
+// MoreArgs is a container for [Instance] functions with additional 'optional' arguments.
+type MoreArgs [1]gdclass.CPUParticles2D
+type Expanded = MoreArgs
+
+// MoreArgs enables certain functions to be called with additional 'optional' arguments.
+func (self Instance) MoreArgs() MoreArgs { return MoreArgs(self) }
 
 // Nil is a nil/null instance of the class. Equivalent to the zero value.
 var Nil Instance
@@ -183,7 +190,10 @@ type Any interface {
 /*
 Requests the particles to process for extra process time during a single frame.
 
-Useful for particle playback, if used in combination with [Instance.UseFixedSeed] or by calling [Instance.Restart] with parameter keep_seed set to true.
+Useful for particle playback, if used in combination with [UseFixedSeed] or by calling [Restart] with parameter keep_seed set to true.
+
+[Restart]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.Restart
+[UseFixedSeed]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.UseFixedSeed
 */
 func (self Instance) RequestParticlesProcess(process_time Float.X) { //gd:CPUParticles2D.request_particles_process
 	Advanced(self).RequestParticlesProcess(float64(process_time))
@@ -203,12 +213,15 @@ Restarts the particle emitter.
 
 If 'keep_seed' is true, the current random seed will be preserved. Useful for seeking and playback.
 */
-func (self Expanded) Restart(keep_seed bool) { //gd:CPUParticles2D.restart
+func (self MoreArgs) Restart(keep_seed bool) { //gd:CPUParticles2D.restart
 	Advanced(self).Restart(keep_seed)
 }
 
 /*
-Sets this node's properties to match a given [graphics.gd/classdb/GPUParticles2D] node with an assigned [graphics.gd/classdb/ParticleProcessMaterial].
+Sets this node's properties to match a given [GPUParticles2D] node with an assigned [ParticleProcessMaterial].
+
+[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
+[ParticleProcessMaterial]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial
 */
 func (self Instance) ConvertFromParticles(particles Node.Instance) { //gd:CPUParticles2D.convert_from_particles
 	Advanced(self).ConvertFromParticles(particles)
@@ -855,7 +868,10 @@ func (self class) SetSpeedScale(scale float64) { //gd:CPUParticles2D.set_speed_s
 /*
 Requests the particles to process for extra process time during a single frame.
 
-Useful for particle playback, if used in combination with [Instance.UseFixedSeed] or by calling [Instance.Restart] with parameter keep_seed set to true.
+Useful for particle playback, if used in combination with [UseFixedSeed] or by calling [Restart] with parameter keep_seed set to true.
+
+[Restart]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.Restart
+[UseFixedSeed]: https://pkg.go.dev/graphics.gd/classdb/CPUParticles2D#Instance.UseFixedSeed
 */
 //go:nosplit
 func (self class) RequestParticlesProcess(process_time float64) { //gd:CPUParticles2D.request_particles_process
@@ -1071,7 +1087,9 @@ func (self class) GetParamMax(param Parameter) float64 { //gd:CPUParticles2D.get
 }
 
 /*
-Sets the [graphics.gd/classdb/Curve] of the parameter specified by [Parameter]. Should be a unit [graphics.gd/classdb/Curve].
+Sets the [Curve] of the parameter specified by [Parameter]. Should be a unit [Curve].
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
 //go:nosplit
 func (self class) SetParamCurve(param Parameter, curve [1]gdclass.Curve) { //gd:CPUParticles2D.set_param_curve
@@ -1082,7 +1100,9 @@ func (self class) SetParamCurve(param Parameter, curve [1]gdclass.Curve) { //gd:
 }
 
 /*
-Returns the [graphics.gd/classdb/Curve] of the parameter specified by [Parameter].
+Returns the [Curve] of the parameter specified by [Parameter].
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
 */
 //go:nosplit
 func (self class) GetParamCurve(param Parameter) [1]gdclass.Curve { //gd:CPUParticles2D.get_param_curve
@@ -1275,7 +1295,10 @@ func (self class) SetScaleCurveY(scale_curve [1]gdclass.Curve) { //gd:CPUParticl
 }
 
 /*
-Sets this node's properties to match a given [graphics.gd/classdb/GPUParticles2D] node with an assigned [graphics.gd/classdb/ParticleProcessMaterial].
+Sets this node's properties to match a given [GPUParticles2D] node with an assigned [ParticleProcessMaterial].
+
+[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
+[ParticleProcessMaterial]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial
 */
 //go:nosplit
 func (self class) ConvertFromParticles(particles [1]gdclass.Node) { //gd:CPUParticles2D.convert_from_particles
@@ -1349,29 +1372,77 @@ const (
 type Parameter int //gd:CPUParticles2D.Parameter
 
 const (
-	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set initial velocity properties.
+	// Use with [SetParamMin], [SetParamMax], and [SetParamCurve] to set initial velocity properties.
+	//
+	// [SetParamCurve]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamCurve
+	// [SetParamMax]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMax
+	// [SetParamMin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMin
 	ParamInitialLinearVelocity Parameter = 0
-	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set angular velocity properties.
+	// Use with [SetParamMin], [SetParamMax], and [SetParamCurve] to set angular velocity properties.
+	//
+	// [SetParamCurve]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamCurve
+	// [SetParamMax]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMax
+	// [SetParamMin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMin
 	ParamAngularVelocity Parameter = 1
-	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set orbital velocity properties.
+	// Use with [SetParamMin], [SetParamMax], and [SetParamCurve] to set orbital velocity properties.
+	//
+	// [SetParamCurve]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamCurve
+	// [SetParamMax]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMax
+	// [SetParamMin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMin
 	ParamOrbitVelocity Parameter = 2
-	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set linear acceleration properties.
+	// Use with [SetParamMin], [SetParamMax], and [SetParamCurve] to set linear acceleration properties.
+	//
+	// [SetParamCurve]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamCurve
+	// [SetParamMax]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMax
+	// [SetParamMin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMin
 	ParamLinearAccel Parameter = 3
-	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set radial acceleration properties.
+	// Use with [SetParamMin], [SetParamMax], and [SetParamCurve] to set radial acceleration properties.
+	//
+	// [SetParamCurve]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamCurve
+	// [SetParamMax]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMax
+	// [SetParamMin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMin
 	ParamRadialAccel Parameter = 4
-	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set tangential acceleration properties.
+	// Use with [SetParamMin], [SetParamMax], and [SetParamCurve] to set tangential acceleration properties.
+	//
+	// [SetParamCurve]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamCurve
+	// [SetParamMax]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMax
+	// [SetParamMin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMin
 	ParamTangentialAccel Parameter = 5
-	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set damping properties.
+	// Use with [SetParamMin], [SetParamMax], and [SetParamCurve] to set damping properties.
+	//
+	// [SetParamCurve]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamCurve
+	// [SetParamMax]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMax
+	// [SetParamMin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMin
 	ParamDamping Parameter = 6
-	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set angle properties.
+	// Use with [SetParamMin], [SetParamMax], and [SetParamCurve] to set angle properties.
+	//
+	// [SetParamCurve]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamCurve
+	// [SetParamMax]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMax
+	// [SetParamMin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMin
 	ParamAngle Parameter = 7
-	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set scale properties.
+	// Use with [SetParamMin], [SetParamMax], and [SetParamCurve] to set scale properties.
+	//
+	// [SetParamCurve]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamCurve
+	// [SetParamMax]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMax
+	// [SetParamMin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMin
 	ParamScale Parameter = 8
-	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set hue variation properties.
+	// Use with [SetParamMin], [SetParamMax], and [SetParamCurve] to set hue variation properties.
+	//
+	// [SetParamCurve]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamCurve
+	// [SetParamMax]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMax
+	// [SetParamMin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMin
 	ParamHueVariation Parameter = 9
-	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set animation speed properties.
+	// Use with [SetParamMin], [SetParamMax], and [SetParamCurve] to set animation speed properties.
+	//
+	// [SetParamCurve]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamCurve
+	// [SetParamMax]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMax
+	// [SetParamMin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMin
 	ParamAnimSpeed Parameter = 10
-	// Use with [Instance.SetParamMin], [Instance.SetParamMax], and [Instance.SetParamCurve] to set animation offset properties.
+	// Use with [SetParamMin], [SetParamMax], and [SetParamCurve] to set animation offset properties.
+	//
+	// [SetParamCurve]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamCurve
+	// [SetParamMax]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMax
+	// [SetParamMin]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParamMin
 	ParamAnimOffset Parameter = 11
 	// Represents the size of the [Parameter] enum.
 	ParamMax Parameter = 12
@@ -1380,7 +1451,10 @@ const (
 type ParticleFlags int //gd:CPUParticles2D.ParticleFlags
 
 const (
-	// Use with [Instance.SetParticleFlag] to set [Instance.ParticleFlagAlignY].
+	// Use with [SetParticleFlag] to set [ParticleFlagAlignY].
+	//
+	// [ParticleFlagAlignY]: https://pkg.go.dev/graphics.gd/classdb/#Instance.ParticleFlagAlignY
+	// [SetParticleFlag]: https://pkg.go.dev/graphics.gd/classdb/#Instance.SetParticleFlag
 	ParticleFlagAlignYToVelocity ParticleFlags = 0
 	// Present for consistency with 3D particle nodes, not used in 2D.
 	ParticleFlagRotateY ParticleFlags = 1
@@ -1401,9 +1475,16 @@ const (
 	EmissionShapeSphereSurface EmissionShape = 2
 	// Particles will be emitted in the area of a rectangle.
 	EmissionShapeRectangle EmissionShape = 3
-	// Particles will be emitted at a position chosen randomly among [Instance.EmissionPoints]. Particle color will be modulated by [Instance.EmissionColors].
+	// Particles will be emitted at a position chosen randomly among [EmissionPoints]. Particle color will be modulated by [EmissionColors].
+	//
+	// [EmissionColors]: https://pkg.go.dev/graphics.gd/classdb/#Instance.EmissionColors
+	// [EmissionPoints]: https://pkg.go.dev/graphics.gd/classdb/#Instance.EmissionPoints
 	EmissionShapePoints EmissionShape = 4
-	// Particles will be emitted at a position chosen randomly among [Instance.EmissionPoints]. Particle velocity and rotation will be set based on [Instance.EmissionNormals]. Particle color will be modulated by [Instance.EmissionColors].
+	// Particles will be emitted at a position chosen randomly among [EmissionPoints]. Particle velocity and rotation will be set based on [EmissionNormals]. Particle color will be modulated by [EmissionColors].
+	//
+	// [EmissionColors]: https://pkg.go.dev/graphics.gd/classdb/#Instance.EmissionColors
+	// [EmissionNormals]: https://pkg.go.dev/graphics.gd/classdb/#Instance.EmissionNormals
+	// [EmissionPoints]: https://pkg.go.dev/graphics.gd/classdb/#Instance.EmissionPoints
 	EmissionShapeDirectedPoints EmissionShape = 5
 	// Represents the size of the [EmissionShape] enum.
 	EmissionShapeMax EmissionShape = 6
