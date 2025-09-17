@@ -282,20 +282,6 @@ func RegisterGltfDocumentExtension(extension GLTFDocumentExtension.Instance, fir
 }
 
 /*
-Registers the given [GLTFDocumentExtension] instance with GLTFDocument. If 'first_priority' is true, this extension will be run first. Otherwise, it will be run last.
-
-Note: Like GLTFDocument itself, all GLTFDocumentExtension classes must be stateless in order to function properly. If you need to store data, use the set_additional_data and get_additional_data methods in [GLTFState] or [GLTFNode].
-
-[GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension
-[GLTFNode]: https://pkg.go.dev/graphics.gd/classdb/GLTFNode
-[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
-*/
-func RegisterGltfDocumentExtensionOptions(extension GLTFDocumentExtension.Instance, first_priority bool) { //gd:GLTFDocument.register_gltf_document_extension
-	self := Instance{}
-	Advanced(self).RegisterGltfDocumentExtension(extension, first_priority)
-}
-
-/*
 Unregisters the given [GLTFDocumentExtension] instance.
 
 [GLTFDocumentExtension]: https://pkg.go.dev/graphics.gd/classdb/GLTFDocumentExtension

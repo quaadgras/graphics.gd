@@ -512,17 +512,6 @@ func QueryPath(parameters NavigationPathQueryParameters2D.Instance, result Navig
 }
 
 /*
-Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters2D]. Updates the provided [NavigationPathQueryResult2D] result object with the path among other results requested by the query. After the process is finished the optional 'callback' will be called.
-
-[NavigationPathQueryParameters2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationPathQueryParameters2D
-[NavigationPathQueryResult2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationPathQueryResult2D
-*/
-func QueryPathOptions(parameters NavigationPathQueryParameters2D.Instance, result NavigationPathQueryResult2D.Instance, callback func()) { //gd:NavigationServer2D.query_path
-	once.Do(singleton)
-	Advanced().QueryPath(parameters, result, Callable.New(callback))
-}
-
-/*
 Creates a new region.
 */
 func RegionCreate() RID.NavigationRegion2D { //gd:NavigationServer2D.region_create
@@ -1355,22 +1344,6 @@ func ParseSourceGeometryData(navigation_polygon NavigationPolygon.Instance, sour
 }
 
 /*
-Parses the [SceneTree] for source geometry according to the properties of 'navigation_polygon'. Updates the provided 'source_geometry_data' resource with the resulting data. The resource can then be used to bake a navigation mesh with [BakeFromSourceGeometryData]. After the process is finished the optional 'callback' will be called.
-
-Note: This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe.
-
-Performance: While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-func ParseSourceGeometryDataOptions(navigation_polygon NavigationPolygon.Instance, source_geometry_data NavigationMeshSourceGeometryData2D.Instance, root_node Node.Instance, callback func()) { //gd:NavigationServer2D.parse_source_geometry_data
-	once.Do(singleton)
-	Advanced().ParseSourceGeometryData(navigation_polygon, source_geometry_data, root_node, Callable.New(callback))
-}
-
-/*
 Bakes the provided 'navigation_polygon' with the data from the provided 'source_geometry_data'. After the process is finished the optional 'callback' will be called.
 */
 func BakeFromSourceGeometryData(navigation_polygon NavigationPolygon.Instance, source_geometry_data NavigationMeshSourceGeometryData2D.Instance, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data
@@ -1379,25 +1352,9 @@ func BakeFromSourceGeometryData(navigation_polygon NavigationPolygon.Instance, s
 }
 
 /*
-Bakes the provided 'navigation_polygon' with the data from the provided 'source_geometry_data'. After the process is finished the optional 'callback' will be called.
-*/
-func BakeFromSourceGeometryDataOptions(navigation_polygon NavigationPolygon.Instance, source_geometry_data NavigationMeshSourceGeometryData2D.Instance, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data
-	once.Do(singleton)
-	Advanced().BakeFromSourceGeometryData(navigation_polygon, source_geometry_data, Callable.New(callback))
-}
-
-/*
 Bakes the provided 'navigation_polygon' with the data from the provided 'source_geometry_data' as an async task running on a background thread. After the process is finished the optional 'callback' will be called.
 */
 func BakeFromSourceGeometryDataAsync(navigation_polygon NavigationPolygon.Instance, source_geometry_data NavigationMeshSourceGeometryData2D.Instance, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data_async
-	once.Do(singleton)
-	Advanced().BakeFromSourceGeometryDataAsync(navigation_polygon, source_geometry_data, Callable.New(callback))
-}
-
-/*
-Bakes the provided 'navigation_polygon' with the data from the provided 'source_geometry_data' as an async task running on a background thread. After the process is finished the optional 'callback' will be called.
-*/
-func BakeFromSourceGeometryDataAsyncOptions(navigation_polygon NavigationPolygon.Instance, source_geometry_data NavigationMeshSourceGeometryData2D.Instance, callback func()) { //gd:NavigationServer2D.bake_from_source_geometry_data_async
 	once.Do(singleton)
 	Advanced().BakeFromSourceGeometryDataAsync(navigation_polygon, source_geometry_data, Callable.New(callback))
 }

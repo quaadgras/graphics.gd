@@ -177,14 +177,6 @@ func StandardizeLocale(locale string, add_defaults bool) string { //gd:Translati
 }
 
 /*
-Returns a 'locale' string standardized to match known locales (e.g. en-US would be matched to en_US). If 'add_defaults' is true, the locale may have a default script or country added.
-*/
-func StandardizeLocaleOptions(locale string, add_defaults bool) string { //gd:TranslationServer.standardize_locale
-	once.Do(singleton)
-	return string(Advanced().StandardizeLocale(String.New(locale), add_defaults).String())
-}
-
-/*
 Returns array of known language codes.
 */
 func GetAllLanguages() []string { //gd:TranslationServer.get_all_languages
@@ -251,16 +243,6 @@ func Translate(message string, context string) string { //gd:TranslationServer.t
 }
 
 /*
-Returns the current locale's translation for the given message and context.
-
-Note: This method always uses the main translation domain.
-*/
-func TranslateOptions(message string, context string) string { //gd:TranslationServer.translate
-	once.Do(singleton)
-	return string(Advanced().Translate(String.Name(String.New(message)), String.Name(String.New(context))).String())
-}
-
-/*
 Returns the current locale's translation for the given message, plural message and context.
 
 The number 'n' is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
@@ -268,18 +250,6 @@ The number 'n' is the number or quantity of the plural object. It will be used t
 Note: This method always uses the main translation domain.
 */
 func TranslatePlural(message string, plural_message string, n int, context string) string { //gd:TranslationServer.translate_plural
-	once.Do(singleton)
-	return string(Advanced().TranslatePlural(String.Name(String.New(message)), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(context))).String())
-}
-
-/*
-Returns the current locale's translation for the given message, plural message and context.
-
-The number 'n' is the number or quantity of the plural object. It will be used to guide the translation system to fetch the correct plural form for the selected language.
-
-Note: This method always uses the main translation domain.
-*/
-func TranslatePluralOptions(message string, plural_message string, n int, context string) string { //gd:TranslationServer.translate_plural
 	once.Do(singleton)
 	return string(Advanced().TranslatePlural(String.Name(String.New(message)), String.Name(String.New(plural_message)), int64(n), String.Name(String.New(context))).String())
 }

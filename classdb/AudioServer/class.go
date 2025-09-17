@@ -379,16 +379,6 @@ func GetBusEffectInstance(bus_idx Bus, effect_idx Effect, channel int) AudioEffe
 }
 
 /*
-Returns the [AudioEffectInstance] assigned to the given bus and effect indices (and optionally channel).
-
-[AudioEffectInstance]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectInstance
-*/
-func GetBusEffectInstanceOptions(bus_idx Bus, effect_idx Effect, channel int) AudioEffectInstance.Instance { //gd:AudioServer.get_bus_effect_instance
-	once.Do(singleton)
-	return AudioEffectInstance.Instance(Advanced().GetBusEffectInstance(int64(bus_idx), int64(effect_idx), int64(channel)))
-}
-
-/*
 Swaps the position of two effects in bus 'bus_idx'.
 */
 func SwapBusEffects(bus_idx Bus, effect_idx Effect, by_effect_idx Effect) { //gd:AudioServer.swap_bus_effects

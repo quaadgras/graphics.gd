@@ -138,20 +138,6 @@ func LoadFromBuffer(stream_data []byte, options Options) Instance { //gd:AudioSt
 }
 
 /*
-Creates a new [AudioStreamWAV] instance from the given buffer. The buffer must contain WAV data.
-
-The keys and values of 'options' match the properties of [ResourceImporterWAV]. The usage of 'options' is identical to [AudioStreamWAV.LoadFromFile].
-
-[AudioStreamWAV]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamWAV
-[AudioStreamWAV.LoadFromFile]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamWAV#Instance.LoadFromFile
-[ResourceImporterWAV]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterWAV
-*/
-func LoadFromBufferOptions(stream_data []byte, options Options) Instance { //gd:AudioStreamWAV.load_from_buffer
-	self := Instance{}
-	return Instance(Advanced(self).LoadFromBuffer(Packed.BytesFrom(stream_data...), gd.DictionaryFromMap(options)))
-}
-
-/*
 Creates a new [AudioStreamWAV] instance from the given file path. The file must be in WAV format.
 
 The keys and values of 'options' match the properties of [ResourceImporterWAV].
@@ -191,50 +177,6 @@ Example: Load the first file dropped as a WAV and play it:
 [ResourceImporterWAV]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterWAV
 */
 func LoadFromFile(path string, options Options) Instance { //gd:AudioStreamWAV.load_from_file
-	self := Instance{}
-	return Instance(Advanced(self).LoadFromFile(String.New(path), gd.DictionaryFromMap(options)))
-}
-
-/*
-Creates a new [AudioStreamWAV] instance from the given file path. The file must be in WAV format.
-
-The keys and values of 'options' match the properties of [ResourceImporterWAV].
-
-Example: Load the first file dropped as a WAV and play it:
-
-	package main
-
-	import (
-		"path/filepath"
-
-		"graphics.gd/classdb/AudioStreamPlayer"
-		"graphics.gd/classdb/AudioStreamWAV"
-		"graphics.gd/classdb/Node"
-		"graphics.gd/classdb/Window"
-	)
-
-	type MyAudioLoader struct {
-		Node.Extension[MyAudioLoader]
-
-		AudioPlayer AudioStreamPlayer.Instance
-	}
-
-	func (m *MyAudioLoader) Ready() {
-		Window.Get(m.AsNode()).OnFilesDropped(func(files []string) {
-			if filepath.Ext(files[0]) == "wav" {
-				m.AudioPlayer.SetStream(AudioStreamWAV.LoadFromFile(files[0], AudioStreamWAV.Options{
-					ForceMaxRate:   true,
-					ForceMaxRateHz: 11025,
-				}).AsAudioStream())
-				m.AudioPlayer.Play()
-			}
-		})
-	}
-
-[AudioStreamWAV]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamWAV
-[ResourceImporterWAV]: https://pkg.go.dev/graphics.gd/classdb/ResourceImporterWAV
-*/
-func LoadFromFileOptions(path string, options Options) Instance { //gd:AudioStreamWAV.load_from_file
 	self := Instance{}
 	return Instance(Advanced(self).LoadFromFile(String.New(path), gd.DictionaryFromMap(options)))
 }

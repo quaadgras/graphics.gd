@@ -949,18 +949,6 @@ func BodyApplyImpulse(body RID.Body3D, impulse Vector3.XYZ, position Vector3.XYZ
 }
 
 /*
-Applies a positioned impulse to the body.
-
-An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
-
-'position' is the offset from the body origin in global coordinates.
-*/
-func BodyApplyImpulseOptions(body RID.Body3D, impulse Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_impulse
-	once.Do(singleton)
-	Advanced().BodyApplyImpulse(RID.Any(body), Vector3.XYZ(impulse), Vector3.XYZ(position))
-}
-
-/*
 Applies a rotational impulse to the body without affecting the position.
 
 An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
@@ -991,16 +979,6 @@ func BodyApplyForce(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) { 
 }
 
 /*
-Applies a positioned force to the body. A force is time dependent and meant to be applied every physics update.
-
-'position' is the offset from the body origin in global coordinates.
-*/
-func BodyApplyForceOptions(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_force
-	once.Do(singleton)
-	Advanced().BodyApplyForce(RID.Any(body), Vector3.XYZ(force), Vector3.XYZ(position))
-}
-
-/*
 Applies a rotational force without affecting position. A force is time dependent and meant to be applied every physics update.
 */
 func BodyApplyTorque(body RID.Body3D, torque Vector3.XYZ) { //gd:PhysicsServer3D.body_apply_torque
@@ -1024,16 +1002,6 @@ Adds a constant positioned force to the body that keeps being applied over time 
 'position' is the offset from the body origin in global coordinates.
 */
 func BodyAddConstantForce(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_force
-	once.Do(singleton)
-	Advanced().BodyAddConstantForce(RID.Any(body), Vector3.XYZ(force), Vector3.XYZ(position))
-}
-
-/*
-Adds a constant positioned force to the body that keeps being applied over time until cleared with body_set_constant_force(body, Vector3(0, 0, 0)).
-
-'position' is the offset from the body origin in global coordinates.
-*/
-func BodyAddConstantForceOptions(body RID.Body3D, force Vector3.XYZ, position Vector3.XYZ) { //gd:PhysicsServer3D.body_add_constant_force
 	once.Do(singleton)
 	Advanced().BodyAddConstantForce(RID.Any(body), Vector3.XYZ(force), Vector3.XYZ(position))
 }
@@ -1193,26 +1161,6 @@ func BodySetForceIntegrationCallback(body RID.Body3D, callable func(state Physic
 }
 
 /*
-Sets the body's custom force integration callback function to 'callable'. Use an empty func (Callable()) to clear the custom callback.
-
-The function 'callable' will be called every physics tick, before the standard force integration (see [BodySetOmitForceIntegration]). It can be used for example to update the body's linear and angular velocity based on contact with other bodies.
-
-If 'userdata' is not null, the function 'callable' must take the following two parameters:
-
-1. state: a [PhysicsDirectBodyState3D], used to retrieve and modify the body's state,
-
-2. userdata: a any; its value will be the 'userdata' passed into this method.
-
-If 'userdata' is null, then 'callable' must take only the state parameter.
-
-[PhysicsDirectBodyState3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState3D
-*/
-func BodySetForceIntegrationCallbackOptions(body RID.Body3D, callable func(state PhysicsDirectBodyState3D.Instance, userdata any), userdata any) { //gd:PhysicsServer3D.body_set_force_integration_callback
-	once.Do(singleton)
-	Advanced().BodySetForceIntegrationCallback(RID.Any(body), Callable.New(callable), variant.New(userdata))
-}
-
-/*
 Sets the body pickable with rays if 'enable' is set.
 */
 func BodySetRayPickable(body RID.Body3D, enable bool) { //gd:PhysicsServer3D.body_set_ray_pickable
@@ -1227,17 +1175,6 @@ Returns true if a collision would result from moving along a motion vector from 
 [PhysicsTestMotionResult3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionResult3D
 */
 func BodyTestMotion(body RID.Body3D, parameters PhysicsTestMotionParameters3D.Instance, result PhysicsTestMotionResult3D.Instance) bool { //gd:PhysicsServer3D.body_test_motion
-	once.Do(singleton)
-	return bool(Advanced().BodyTestMotion(RID.Any(body), parameters, result))
-}
-
-/*
-Returns true if a collision would result from moving along a motion vector from a given point in space. [PhysicsTestMotionParameters3D] is passed to set motion parameters. [PhysicsTestMotionResult3D] can be passed to return additional information.
-
-[PhysicsTestMotionParameters3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionParameters3D
-[PhysicsTestMotionResult3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionResult3D
-*/
-func BodyTestMotionOptions(body RID.Body3D, parameters PhysicsTestMotionParameters3D.Instance, result PhysicsTestMotionResult3D.Instance) bool { //gd:PhysicsServer3D.body_test_motion
 	once.Do(singleton)
 	return bool(Advanced().BodyTestMotion(RID.Any(body), parameters, result))
 }

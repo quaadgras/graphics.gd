@@ -1020,18 +1020,6 @@ func BodyApplyImpulse(body RID.Body2D, impulse Vector2.XY, position Vector2.XY) 
 }
 
 /*
-Applies a positioned impulse to the body. The impulse can affect rotation if 'position' is different from the body's center of mass.
-
-An impulse is time-independent! Applying an impulse every frame would result in a framerate-dependent force. For this reason, it should only be used when simulating one-time impacts (use the "_force" functions otherwise).
-
-'position' is the offset from the body origin in global coordinates.
-*/
-func BodyApplyImpulseOptions(body RID.Body2D, impulse Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_apply_impulse
-	once.Do(singleton)
-	Advanced().BodyApplyImpulse(RID.Any(body), Vector2.XY(impulse), Vector2.XY(position))
-}
-
-/*
 Applies a directional force to the body, at the body's center of mass. The force does not affect rotation. A force is time dependent and meant to be applied every physics update.
 
 This is equivalent to using [BodyApplyForce] at the body's center of mass.
@@ -1047,16 +1035,6 @@ Applies a positioned force to the body. The force can affect rotation if 'positi
 'position' is the offset from the body origin in global coordinates.
 */
 func BodyApplyForce(body RID.Body2D, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_apply_force
-	once.Do(singleton)
-	Advanced().BodyApplyForce(RID.Any(body), Vector2.XY(force), Vector2.XY(position))
-}
-
-/*
-Applies a positioned force to the body. The force can affect rotation if 'position' is different from the body's center of mass. A force is time dependent and meant to be applied every physics update.
-
-'position' is the offset from the body origin in global coordinates.
-*/
-func BodyApplyForceOptions(body RID.Body2D, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_apply_force
 	once.Do(singleton)
 	Advanced().BodyApplyForce(RID.Any(body), Vector2.XY(force), Vector2.XY(position))
 }
@@ -1085,16 +1063,6 @@ Adds a constant positioned force to the body. The force can affect rotation if '
 'position' is the offset from the body origin in global coordinates.
 */
 func BodyAddConstantForce(body RID.Body2D, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_add_constant_force
-	once.Do(singleton)
-	Advanced().BodyAddConstantForce(RID.Any(body), Vector2.XY(force), Vector2.XY(position))
-}
-
-/*
-Adds a constant positioned force to the body. The force can affect rotation if 'position' is different from the body's center of mass. The force remains applied over time until cleared with PhysicsServer2D.body_set_constant_force(body, Vector2(0, 0)).
-
-'position' is the offset from the body origin in global coordinates.
-*/
-func BodyAddConstantForceOptions(body RID.Body2D, force Vector2.XY, position Vector2.XY) { //gd:PhysicsServer2D.body_add_constant_force
 	once.Do(singleton)
 	Advanced().BodyAddConstantForce(RID.Any(body), Vector2.XY(force), Vector2.XY(position))
 }
@@ -1244,43 +1212,12 @@ func BodySetForceIntegrationCallback(body RID.Body2D, callable func(state Physic
 }
 
 /*
-Sets the body's custom force integration callback function to 'callable'. Use an empty func (Callable()) to clear the custom callback.
-
-The function 'callable' will be called every physics tick, before the standard force integration (see [BodySetOmitForceIntegration]). It can be used for example to update the body's linear and angular velocity based on contact with other bodies.
-
-If 'userdata' is not null, the function 'callable' must take the following two parameters:
-
-1. state: a [PhysicsDirectBodyState2D] used to retrieve and modify the body's state,
-
-2. userdata: a any; its value will be the 'userdata' passed into this method.
-
-If 'userdata' is null, then 'callable' must take only the state parameter.
-
-[PhysicsDirectBodyState2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectBodyState2D
-*/
-func BodySetForceIntegrationCallbackOptions(body RID.Body2D, callable func(state PhysicsDirectBodyState2D.Instance, userdata any), userdata any) { //gd:PhysicsServer2D.body_set_force_integration_callback
-	once.Do(singleton)
-	Advanced().BodySetForceIntegrationCallback(RID.Any(body), Callable.New(callable), variant.New(userdata))
-}
-
-/*
 Returns true if a collision would result from moving the body along a motion vector from a given point in space. See [PhysicsTestMotionParameters2D] for the available motion parameters. Optionally a [PhysicsTestMotionResult2D] object can be passed, which will be used to store the information about the resulting collision.
 
 [PhysicsTestMotionParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionParameters2D
 [PhysicsTestMotionResult2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionResult2D
 */
 func BodyTestMotion(body RID.Body2D, parameters PhysicsTestMotionParameters2D.Instance, result PhysicsTestMotionResult2D.Instance) bool { //gd:PhysicsServer2D.body_test_motion
-	once.Do(singleton)
-	return bool(Advanced().BodyTestMotion(RID.Any(body), parameters, result))
-}
-
-/*
-Returns true if a collision would result from moving the body along a motion vector from a given point in space. See [PhysicsTestMotionParameters2D] for the available motion parameters. Optionally a [PhysicsTestMotionResult2D] object can be passed, which will be used to store the information about the resulting collision.
-
-[PhysicsTestMotionParameters2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionParameters2D
-[PhysicsTestMotionResult2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsTestMotionResult2D
-*/
-func BodyTestMotionOptions(body RID.Body2D, parameters PhysicsTestMotionParameters2D.Instance, result PhysicsTestMotionResult2D.Instance) bool { //gd:PhysicsServer2D.body_test_motion
 	once.Do(singleton)
 	return bool(Advanced().BodyTestMotion(RID.Any(body), parameters, result))
 }
@@ -1362,16 +1299,6 @@ func JointMakePin(joint RID.Joint2D, anchor Vector2.XY, body_a RID.Body2D, body_
 }
 
 /*
-Makes the joint a pin joint. If 'body_b' is an empty [Resource.ID], then 'body_a' is pinned to the point 'anchor' (given in global coordinates); otherwise, 'body_a' is pinned to 'body_b' at the point 'anchor' (given in global coordinates). To set the parameters which are specific to the pin joint, see [PinJointSetParam].
-
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-func JointMakePinOptions(joint RID.Joint2D, anchor Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_pin
-	once.Do(singleton)
-	Advanced().JointMakePin(RID.Any(joint), Vector2.XY(anchor), RID.Any(body_a), RID.Any(body_b))
-}
-
-/*
 Makes the joint a groove joint.
 */
 func JointMakeGroove(joint RID.Joint2D, groove1_a Vector2.XY, groove2_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_groove
@@ -1380,25 +1307,9 @@ func JointMakeGroove(joint RID.Joint2D, groove1_a Vector2.XY, groove2_a Vector2.
 }
 
 /*
-Makes the joint a groove joint.
-*/
-func JointMakeGrooveOptions(joint RID.Joint2D, groove1_a Vector2.XY, groove2_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_groove
-	once.Do(singleton)
-	Advanced().JointMakeGroove(RID.Any(joint), Vector2.XY(groove1_a), Vector2.XY(groove2_a), Vector2.XY(anchor_b), RID.Any(body_a), RID.Any(body_b))
-}
-
-/*
 Makes the joint a damped spring joint, attached at the point 'anchor_a' (given in global coordinates) on the body 'body_a' and at the point 'anchor_b' (given in global coordinates) on the body 'body_b'. To set the parameters which are specific to the damped spring, see [DampedSpringJointSetParam].
 */
 func JointMakeDampedSpring(joint RID.Joint2D, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_damped_spring
-	once.Do(singleton)
-	Advanced().JointMakeDampedSpring(RID.Any(joint), Vector2.XY(anchor_a), Vector2.XY(anchor_b), RID.Any(body_a), RID.Any(body_b))
-}
-
-/*
-Makes the joint a damped spring joint, attached at the point 'anchor_a' (given in global coordinates) on the body 'body_a' and at the point 'anchor_b' (given in global coordinates) on the body 'body_b'. To set the parameters which are specific to the damped spring, see [DampedSpringJointSetParam].
-*/
-func JointMakeDampedSpringOptions(joint RID.Joint2D, anchor_a Vector2.XY, anchor_b Vector2.XY, body_a RID.Body2D, body_b RID.Body2D) { //gd:PhysicsServer2D.joint_make_damped_spring
 	once.Do(singleton)
 	Advanced().JointMakeDampedSpring(RID.Any(joint), Vector2.XY(anchor_a), Vector2.XY(anchor_b), RID.Any(body_a), RID.Any(body_b))
 }

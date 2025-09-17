@@ -883,16 +883,6 @@ func TextureRdCreate(rd_texture RID.Texture, layer_type TextureLayeredType) RID.
 }
 
 /*
-Creates a new texture object based on a texture created directly on the [RenderingDevice]. If the texture contains layers, 'layer_type' is used to define the layer type.
-
-[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
-*/
-func TextureRdCreateOptions(rd_texture RID.Texture, layer_type TextureLayeredType) RID.Texture { //gd:RenderingServer.texture_rd_create
-	once.Do(singleton)
-	return RID.Texture(RID.Texture(Advanced().TextureRdCreate(RID.Any(rd_texture), layer_type)))
-}
-
-/*
 Returns a texture [Resource.ID] that can be used with [RenderingDevice].
 
 [RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
@@ -904,32 +894,11 @@ func TextureGetRdTexture(texture RID.Texture, srgb bool) RID.Texture { //gd:Rend
 }
 
 /*
-Returns a texture [Resource.ID] that can be used with [RenderingDevice].
-
-[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-func TextureGetRdTextureOptions(texture RID.Texture, srgb bool) RID.Texture { //gd:RenderingServer.texture_get_rd_texture
-	once.Do(singleton)
-	return RID.Texture(RID.Texture(Advanced().TextureGetRdTexture(RID.Any(texture), srgb)))
-}
-
-/*
 Returns the internal graphics handle for this texture object. For use when communicating with third-party APIs mostly with GDExtension.
 
 Note: This function returns a uint64_t which internally maps to a GLuint (OpenGL) or VkImage (Vulkan).
 */
 func TextureGetNativeHandle(texture RID.Texture, srgb bool) int { //gd:RenderingServer.texture_get_native_handle
-	once.Do(singleton)
-	return int(int(Advanced().TextureGetNativeHandle(RID.Any(texture), srgb)))
-}
-
-/*
-Returns the internal graphics handle for this texture object. For use when communicating with third-party APIs mostly with GDExtension.
-
-Note: This function returns a uint64_t which internally maps to a GLuint (OpenGL) or VkImage (Vulkan).
-*/
-func TextureGetNativeHandleOptions(texture RID.Texture, srgb bool) int { //gd:RenderingServer.texture_get_native_handle
 	once.Do(singleton)
 	return int(int(Advanced().TextureGetNativeHandle(RID.Any(texture), srgb)))
 }
@@ -1002,31 +971,11 @@ func ShaderSetDefaultTextureParameter(shader RID.Shader, name string, texture RI
 }
 
 /*
-Sets a shader's default texture. Overwrites the texture given by name.
-
-Note: If the sampler array is used use 'index' to access the specified texture.
-*/
-func ShaderSetDefaultTextureParameterOptions(shader RID.Shader, name string, texture RID.Texture, index int) { //gd:RenderingServer.shader_set_default_texture_parameter
-	once.Do(singleton)
-	Advanced().ShaderSetDefaultTextureParameter(RID.Any(shader), String.Name(String.New(name)), RID.Any(texture), int64(index))
-}
-
-/*
 Returns a default texture from a shader searched by name.
 
 Note: If the sampler array is used use 'index' to access the specified texture.
 */
 func ShaderGetDefaultTextureParameter(shader RID.Shader, name string, index int) RID.Texture { //gd:RenderingServer.shader_get_default_texture_parameter
-	once.Do(singleton)
-	return RID.Texture(RID.Texture(Advanced().ShaderGetDefaultTextureParameter(RID.Any(shader), String.Name(String.New(name)), int64(index))))
-}
-
-/*
-Returns a default texture from a shader searched by name.
-
-Note: If the sampler array is used use 'index' to access the specified texture.
-*/
-func ShaderGetDefaultTextureParameterOptions(shader RID.Shader, name string, index int) RID.Texture { //gd:RenderingServer.shader_get_default_texture_parameter
 	once.Do(singleton)
 	return RID.Texture(RID.Texture(Advanced().ShaderGetDefaultTextureParameter(RID.Any(shader), String.Name(String.New(name)), int64(index))))
 }
@@ -1085,10 +1034,6 @@ func MaterialSetNextPass(material RID.Material, next_material RID.Material) { //
 	Advanced().MaterialSetNextPass(RID.Any(material), RID.Any(next_material))
 }
 func MeshCreateFromSurfaces(surfaces []Surface, blend_shape_count int) RID.Mesh { //gd:RenderingServer.mesh_create_from_surfaces
-	once.Do(singleton)
-	return RID.Mesh(RID.Mesh(Advanced().MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](surfaces), int64(blend_shape_count))))
-}
-func MeshCreateFromSurfacesOptions(surfaces []Surface, blend_shape_count int) RID.Mesh { //gd:RenderingServer.mesh_create_from_surfaces
 	once.Do(singleton)
 	return RID.Mesh(RID.Mesh(Advanced().MeshCreateFromSurfaces(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](surfaces), int64(blend_shape_count))))
 }
@@ -1161,10 +1106,6 @@ func MeshAddSurface(mesh RID.Mesh, surface Surface) { //gd:RenderingServer.mesh_
 	Advanced().MeshAddSurface(RID.Any(mesh), gd.DictionaryFromMap(surface))
 }
 func MeshAddSurfaceFromArrays(mesh RID.Mesh, primitive PrimitiveType, arrays []any, blend_shapes [][]interface{}, lods map[float32][]int32, compress_format ArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
-	once.Do(singleton)
-	Advanced().MeshAddSurfaceFromArrays(RID.Any(mesh), primitive, gd.EngineArrayFromSlice(arrays), gd.EngineArrayFromSlice(blend_shapes), gd.DictionaryFromMap(lods), compress_format)
-}
-func MeshAddSurfaceFromArraysOptions(mesh RID.Mesh, primitive PrimitiveType, arrays []any, blend_shapes [][]interface{}, lods map[float32][]int32, compress_format ArrayFormat) { //gd:RenderingServer.mesh_add_surface_from_arrays
 	once.Do(singleton)
 	Advanced().MeshAddSurfaceFromArrays(RID.Any(mesh), primitive, gd.EngineArrayFromSlice(arrays), gd.EngineArrayFromSlice(blend_shapes), gd.DictionaryFromMap(lods), compress_format)
 }
@@ -1310,10 +1251,6 @@ func MultimeshCreate() RID.MultiMesh { //gd:RenderingServer.multimesh_create
 	return RID.MultiMesh(RID.MultiMesh(Advanced().MultimeshCreate()))
 }
 func MultimeshAllocateData(multimesh RID.MultiMesh, instances int, transform_format MultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
-	once.Do(singleton)
-	Advanced().MultimeshAllocateData(RID.Any(multimesh), int64(instances), transform_format, color_format, custom_data_format, use_indirect)
-}
-func MultimeshAllocateDataOptions(multimesh RID.MultiMesh, instances int, transform_format MultimeshTransformFormat, color_format bool, custom_data_format bool, use_indirect bool) { //gd:RenderingServer.multimesh_allocate_data
 	once.Do(singleton)
 	Advanced().MultimeshAllocateData(RID.Any(multimesh), int64(instances), transform_format, color_format, custom_data_format, use_indirect)
 }
@@ -1572,10 +1509,6 @@ func SkeletonCreate() RID.Skeleton { //gd:RenderingServer.skeleton_create
 	return RID.Skeleton(RID.Skeleton(Advanced().SkeletonCreate()))
 }
 func SkeletonAllocateData(skeleton RID.Skeleton, bones int, is_2d_skeleton bool) { //gd:RenderingServer.skeleton_allocate_data
-	once.Do(singleton)
-	Advanced().SkeletonAllocateData(RID.Any(skeleton), int64(bones), is_2d_skeleton)
-}
-func SkeletonAllocateDataOptions(skeleton RID.Skeleton, bones int, is_2d_skeleton bool) { //gd:RenderingServer.skeleton_allocate_data
 	once.Do(singleton)
 	Advanced().SkeletonAllocateData(RID.Any(skeleton), int64(bones), is_2d_skeleton)
 }
@@ -3071,18 +3004,6 @@ func ViewportAttachToScreen(viewport RID.Viewport, rect Rect2.PositionSize, scre
 }
 
 /*
-Copies the viewport to a region of the screen specified by 'rect'. If [ViewportSetRenderDirectToScreen] is true, then the viewport does not use a framebuffer and the contents of the viewport are rendered directly to screen. However, note that the root viewport is drawn last, therefore it will draw over the screen. Accordingly, you must set the root viewport to an area that does not cover the area that you have attached this viewport to.
-
-For example, you can set the root viewport to not render at all with the following code:
-
-Using this can result in significant optimization, especially on lower-end devices. However, it comes at the cost of having to manage your viewports manually. For further optimization, see [ViewportSetRenderDirectToScreen].
-*/
-func ViewportAttachToScreenOptions(viewport RID.Viewport, rect Rect2.PositionSize, screen int) { //gd:RenderingServer.viewport_attach_to_screen
-	once.Do(singleton)
-	Advanced().ViewportAttachToScreen(RID.Any(viewport), Rect2.PositionSize(rect), int64(screen))
-}
-
-/*
 If true, render the contents of the viewport directly to screen. This allows a low-level optimization where you can skip drawing a viewport to the root viewport. While this optimization can result in a significant increase in speed (especially on older devices), it comes at a cost of usability. When this is enabled, you cannot read from the viewport or from the screen_texture. You also lose the benefit of certain window settings, such as the various stretch modes. Another consequence to be aware of is that in 2D the rendering happens in window coordinates, so if you have a viewport that is double the size of the window, and you set this, then only the portion that fits within the window will be drawn, no automatic scaling is possible, even if your game scene is significantly larger than the window size.
 */
 func ViewportSetRenderDirectToScreen(viewport RID.Viewport, enabled bool) { //gd:RenderingServer.viewport_set_render_direct_to_screen
@@ -3349,16 +3270,6 @@ Sets the 'size' of the shadow atlas's images (used for omni and spot lights) on 
 Note: If this is set to 0, no positional shadows will be visible at all. This can improve performance significantly on low-end systems by reducing both the CPU and GPU load (as fewer draw calls are needed to draw the scene without shadows).
 */
 func ViewportSetPositionalShadowAtlasSize(viewport RID.Viewport, size int, use_16_bits bool) { //gd:RenderingServer.viewport_set_positional_shadow_atlas_size
-	once.Do(singleton)
-	Advanced().ViewportSetPositionalShadowAtlasSize(RID.Any(viewport), int64(size), use_16_bits)
-}
-
-/*
-Sets the 'size' of the shadow atlas's images (used for omni and spot lights) on the viewport specified by the 'viewport' RID. The value is rounded up to the nearest power of 2. If 'use_16_bits' is true, use 16 bits for the omni/spot shadow depth map. Enabling this results in shadows having less precision and may result in shadow acne, but can lead to performance improvements on some devices.
-
-Note: If this is set to 0, no positional shadows will be visible at all. This can improve performance significantly on low-end systems by reducing both the CPU and GPU load (as fewer draw calls are needed to draw the scene without shadows).
-*/
-func ViewportSetPositionalShadowAtlasSizeOptions(viewport RID.Viewport, size int, use_16_bits bool) { //gd:RenderingServer.viewport_set_positional_shadow_atlas_size
 	once.Do(singleton)
 	Advanced().ViewportSetPositionalShadowAtlasSize(RID.Any(viewport), int64(size), use_16_bits)
 }
@@ -3831,16 +3742,6 @@ Configures fog for the specified environment RID. See fog_* properties in [Envir
 [Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
 */
 func EnvironmentSetFog(env RID.Environment, enable bool, light_color Color.RGBA, light_energy Float.X, sun_scatter Float.X, density Float.X, height Float.X, height_density Float.X, aerial_perspective Float.X, sky_affect Float.X, fog_mode EnvironmentFogMode) { //gd:RenderingServer.environment_set_fog
-	once.Do(singleton)
-	Advanced().EnvironmentSetFog(RID.Any(env), enable, Color.RGBA(light_color), float64(light_energy), float64(sun_scatter), float64(density), float64(height), float64(height_density), float64(aerial_perspective), float64(sky_affect), fog_mode)
-}
-
-/*
-Configures fog for the specified environment RID. See fog_* properties in [Environment] for more information.
-
-[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
-*/
-func EnvironmentSetFogOptions(env RID.Environment, enable bool, light_color Color.RGBA, light_energy Float.X, sun_scatter Float.X, density Float.X, height Float.X, height_density Float.X, aerial_perspective Float.X, sky_affect Float.X, fog_mode EnvironmentFogMode) { //gd:RenderingServer.environment_set_fog
 	once.Do(singleton)
 	Advanced().EnvironmentSetFog(RID.Any(env), enable, Color.RGBA(light_color), float64(light_energy), float64(sun_scatter), float64(density), float64(height), float64(height_density), float64(aerial_perspective), float64(sky_affect), fog_mode)
 }
@@ -4420,22 +4321,6 @@ func InstancesCullAabb(aabb AABB.PositionSize, scenario RID.Scenario) []int64 { 
 }
 
 /*
-Returns an array of object IDs intersecting with the provided AABB. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
-
-Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
-
-[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
-[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
-[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
-[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
-[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
-*/
-func InstancesCullAabbOptions(aabb AABB.PositionSize, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_aabb
-	once.Do(singleton)
-	return []int64(slices.Collect(Advanced().InstancesCullAabb(AABB.PositionSize(aabb), RID.Any(scenario)).Values()))
-}
-
-/*
 Returns an array of object IDs intersecting with the provided 3D ray. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
 
 Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
@@ -4452,22 +4337,6 @@ func InstancesCullRay(from Vector3.XYZ, to Vector3.XYZ, scenario RID.Scenario) [
 }
 
 /*
-Returns an array of object IDs intersecting with the provided 3D ray. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
-
-Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
-
-[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
-[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
-[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
-[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
-[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
-*/
-func InstancesCullRayOptions(from Vector3.XYZ, to Vector3.XYZ, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_ray
-	once.Do(singleton)
-	return []int64(slices.Collect(Advanced().InstancesCullRay(Vector3.XYZ(from), Vector3.XYZ(to), RID.Any(scenario)).Values()))
-}
-
-/*
 Returns an array of object IDs intersecting with the provided convex shape. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
 
 Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
@@ -4479,22 +4348,6 @@ Warning: This function is primarily intended for editor usage. For in-game use c
 [World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
 */
 func InstancesCullConvex(convex []Plane.NormalD, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_convex
-	once.Do(singleton)
-	return []int64(slices.Collect(Advanced().InstancesCullConvex(gd.ArrayFromSlice[Array.Contains[Plane.NormalD]](convex), RID.Any(scenario)).Values()))
-}
-
-/*
-Returns an array of object IDs intersecting with the provided convex shape. Only 3D nodes that inherit from [VisualInstance3D] are considered, such as [MeshInstance3D] or [DirectionalLight3D]. Use [@GlobalScope.InstanceFromId] to obtain the actual nodes. A scenario RID must be provided, which is available in the [World3D] you want to query. This forces an update for all resources queued to update.
-
-Warning: This function is primarily intended for editor usage. For in-game use cases, prefer physics collision.
-
-[@GlobalScope.InstanceFromId]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.InstanceFromId
-[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
-[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
-[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
-[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
-*/
-func InstancesCullConvexOptions(convex []Plane.NormalD, scenario RID.Scenario) []int64 { //gd:RenderingServer.instances_cull_convex
 	once.Do(singleton)
 	return []int64(slices.Collect(Advanced().InstancesCullConvex(gd.ArrayFromSlice[Array.Contains[Plane.NormalD]](convex), RID.Any(scenario)).Values()))
 }
@@ -4726,14 +4579,6 @@ func CanvasItemSetCustomRect(item RID.CanvasItem, use_custom_rect bool, rect Rec
 }
 
 /*
-If 'use_custom_rect' is true, sets the custom visibility rectangle (used for culling) to 'rect' for the canvas item specified by 'item'. Setting a custom visibility rect can reduce CPU load when drawing lots of 2D instances. If 'use_custom_rect' is false, automatically computes a visibility rectangle based on the canvas item's draw commands.
-*/
-func CanvasItemSetCustomRectOptions(item RID.CanvasItem, use_custom_rect bool, rect Rect2.PositionSize) { //gd:RenderingServer.canvas_item_set_custom_rect
-	once.Do(singleton)
-	Advanced().CanvasItemSetCustomRect(RID.Any(item), use_custom_rect, Rect2.PositionSize(rect))
-}
-
-/*
 Multiplies the color of the canvas item specified by the 'item' RID, while affecting its children. See also [CanvasItemSetSelfModulate]. Equivalent to [CanvasItem.Modulate].
 
 [CanvasItem.Modulate]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Modulate
@@ -4880,18 +4725,6 @@ func CanvasItemAddRect(item RID.CanvasItem, rect Rect2.PositionSize, color Color
 }
 
 /*
-Draws a rectangle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawRect].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.DrawRect]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawRect
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-func CanvasItemAddRectOptions(item RID.CanvasItem, rect Rect2.PositionSize, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_rect
-	once.Do(singleton)
-	Advanced().CanvasItemAddRect(RID.Any(item), Rect2.PositionSize(rect), Color.RGBA(color), antialiased)
-}
-
-/*
 Draws a circle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawCircle].
 
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
@@ -4899,18 +4732,6 @@ Draws a circle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See a
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 */
 func CanvasItemAddCircle(item RID.CanvasItem, pos Vector2.XY, radius Float.X, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_circle
-	once.Do(singleton)
-	Advanced().CanvasItemAddCircle(RID.Any(item), Vector2.XY(pos), float64(radius), Color.RGBA(color), antialiased)
-}
-
-/*
-Draws a circle on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawCircle].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.DrawCircle]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawCircle
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-func CanvasItemAddCircleOptions(item RID.CanvasItem, pos Vector2.XY, radius Float.X, color Color.RGBA, antialiased bool) { //gd:RenderingServer.canvas_item_add_circle
 	once.Do(singleton)
 	Advanced().CanvasItemAddCircle(RID.Any(item), Vector2.XY(pos), float64(radius), Color.RGBA(color), antialiased)
 }
@@ -5049,23 +4870,6 @@ func CanvasItemAddPolygon(item RID.CanvasItem, points []Vector2.XY, colors []Col
 }
 
 /*
-Draws a 2D polygon on the [CanvasItem] pointed to by the 'item' [Resource.ID]. If you need more flexibility (such as being able to use bones), use [CanvasItemAddTriangleArray] instead. See also [CanvasItem.DrawPolygon].
-
-Note: If you frequently redraw the same polygon with a large number of vertices, consider pre-calculating the triangulation with [Geometry2D.TriangulatePolygon] and using [CanvasItem.DrawMesh], [CanvasItem.DrawMultimesh], or [CanvasItemAddTriangleArray].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.DrawMesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMesh
-[CanvasItem.DrawMultimesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultimesh
-[CanvasItem.DrawPolygon]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawPolygon
-[Geometry2D.TriangulatePolygon]: https://pkg.go.dev/graphics.gd/classdb/Geometry2D#TriangulatePolygon
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-func CanvasItemAddPolygonOptions(item RID.CanvasItem, points []Vector2.XY, colors []Color.RGBA, uvs []Vector2.XY, texture RID.CanvasTexture) { //gd:RenderingServer.canvas_item_add_polygon
-	once.Do(singleton)
-	Advanced().CanvasItemAddPolygon(RID.Any(item), Packed.New(points...), Packed.New(colors...), Packed.New(uvs...), RID.Any(texture))
-}
-
-/*
 Draws a triangle array on the [CanvasItem] pointed to by the 'item' [Resource.ID]. This is internally used by [Line2D] and [StyleBoxFlat] for rendering. [CanvasItemAddTriangleArray] is highly flexible, but more complex to use than [CanvasItemAddPolygon].
 
 Note: If 'count' is set to a non-negative value, only the first count * 3 indices (corresponding to count triangles) will be drawn. Otherwise, all indices are drawn.
@@ -5129,19 +4933,6 @@ func CanvasItemAddMultimesh(item RID.CanvasItem, mesh RID.MultiMesh, texture RID
 }
 
 /*
-Draws a 2D [MultiMesh] on the [CanvasItem] pointed to by the 'item' [Resource.ID]. See also [CanvasItem.DrawMultimesh].
-
-[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
-[CanvasItem.DrawMultimesh]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.DrawMultimesh
-[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
-[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
-*/
-func CanvasItemAddMultimeshOptions(item RID.CanvasItem, mesh RID.MultiMesh, texture RID.Texture) { //gd:RenderingServer.canvas_item_add_multimesh
-	once.Do(singleton)
-	Advanced().CanvasItemAddMultimesh(RID.Any(item), RID.Any(mesh), RID.Any(texture))
-}
-
-/*
 Draws particles on the [CanvasItem] pointed to by the 'item' [Resource.ID].
 
 [CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
@@ -5174,14 +4965,6 @@ func CanvasItemAddClipIgnore(item RID.CanvasItem, ignore bool) { //gd:RenderingS
 Subsequent drawing commands will be ignored unless they fall within the specified animation slice. This is a faster way to implement animations that loop on background rather than redrawing constantly.
 */
 func CanvasItemAddAnimationSlice(item RID.CanvasItem, animation_length Float.X, slice_begin Float.X, slice_end Float.X, offset Float.X) { //gd:RenderingServer.canvas_item_add_animation_slice
-	once.Do(singleton)
-	Advanced().CanvasItemAddAnimationSlice(RID.Any(item), float64(animation_length), float64(slice_begin), float64(slice_end), float64(offset))
-}
-
-/*
-Subsequent drawing commands will be ignored unless they fall within the specified animation slice. This is a faster way to implement animations that loop on background rather than redrawing constantly.
-*/
-func CanvasItemAddAnimationSliceOptions(item RID.CanvasItem, animation_length Float.X, slice_begin Float.X, slice_end Float.X, offset Float.X) { //gd:RenderingServer.canvas_item_add_animation_slice
 	once.Do(singleton)
 	Advanced().CanvasItemAddAnimationSlice(RID.Any(item), float64(animation_length), float64(slice_begin), float64(slice_end), float64(offset))
 }

@@ -395,17 +395,6 @@ func GetEditorViewport3d(idx int) SubViewport.Instance { //gd:EditorInterface.ge
 }
 
 /*
-Returns the specified 3D editor [SubViewport], from 0 to 3. The viewport can be used to access the active editor cameras with [Viewport.GetCamera3d].
-
-[SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
-[Viewport.GetCamera3d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GetCamera3d
-*/
-func GetEditorViewport3dOptions(idx int) SubViewport.Instance { //gd:EditorInterface.get_editor_viewport_3d
-	once.Do(singleton)
-	return SubViewport.Instance(Advanced().GetEditorViewport3d(int64(idx)))
-}
-
-/*
 Sets the editor's current main screen to the one specified in 'name'. 'name' must match the title of the tab in question exactly (e.g. 2D, 3D, Script, Game, or AssetLib for default tabs).
 */
 func SetMainScreenEditor(name string) { //gd:EditorInterface.set_main_screen_editor
@@ -457,19 +446,6 @@ func PopupDialog(dialog Window.Instance, rect Rect2i.PositionSize) { //gd:Editor
 }
 
 /*
-Pops up the 'dialog' in the editor UI with [Window.PopupExclusive]. The dialog must have no current parent, otherwise the method fails.
-
-See also [Window.SetUnparentWhenInvisible].
-
-[Window.PopupExclusive]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.PopupExclusive
-[Window.SetUnparentWhenInvisible]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.SetUnparentWhenInvisible
-*/
-func PopupDialogOptions(dialog Window.Instance, rect Rect2i.PositionSize) { //gd:EditorInterface.popup_dialog
-	once.Do(singleton)
-	Advanced().PopupDialog(dialog, Rect2i.PositionSize(rect))
-}
-
-/*
 Pops up the 'dialog' in the editor UI with [Window.PopupExclusiveCentered]. The dialog must have no current parent, otherwise the method fails.
 
 See also [Window.SetUnparentWhenInvisible].
@@ -478,19 +454,6 @@ See also [Window.SetUnparentWhenInvisible].
 [Window.SetUnparentWhenInvisible]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.SetUnparentWhenInvisible
 */
 func PopupDialogCentered(dialog Window.Instance, minsize Vector2i.XY) { //gd:EditorInterface.popup_dialog_centered
-	once.Do(singleton)
-	Advanced().PopupDialogCentered(dialog, Vector2i.XY(minsize))
-}
-
-/*
-Pops up the 'dialog' in the editor UI with [Window.PopupExclusiveCentered]. The dialog must have no current parent, otherwise the method fails.
-
-See also [Window.SetUnparentWhenInvisible].
-
-[Window.PopupExclusiveCentered]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.PopupExclusiveCentered
-[Window.SetUnparentWhenInvisible]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.SetUnparentWhenInvisible
-*/
-func PopupDialogCenteredOptions(dialog Window.Instance, minsize Vector2i.XY) { //gd:EditorInterface.popup_dialog_centered
 	once.Do(singleton)
 	Advanced().PopupDialogCentered(dialog, Vector2i.XY(minsize))
 }
@@ -591,33 +554,11 @@ func PopupNodeSelector(callback func(selected string), valid_types []string, cur
 }
 
 /*
-Pops up an editor dialog for selecting a [Node] from the edited scene. The 'callback' must take a single argument of type node path. It is called on the selected node path or the empty path ^"" if the dialog is canceled. If 'valid_types' is provided, the dialog will only show Nodes that match one of the listed Node types. If 'current_value' is provided, the Node will be automatically selected in the tree, if it exists.
-
-Example: Display the node selection dialog as soon as this node is added to the tree for the first time:
-
-[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
-*/
-func PopupNodeSelectorOptions(callback func(selected string), valid_types []string, current_value Node.Instance) { //gd:EditorInterface.popup_node_selector
-	once.Do(singleton)
-	Advanced().PopupNodeSelector(Callable.New(callback), gd.ArrayFromSlice[Array.Contains[String.Name]](valid_types), current_value)
-}
-
-/*
 Pops up an editor dialog for selecting properties from 'object'. The 'callback' must take a single argument of type node path. It is called on the selected property path (see [NodePath.GetAsPropertyPath]) or the empty path ^"" if the dialog is canceled. If 'type_filter' is provided, the dialog will only show properties that match one of the listed [Variant.Type] values. If 'current_value' is provided, the property will be selected automatically in the property list, if it exists.
 
 [NodePath.GetAsPropertyPath]: https://pkg.go.dev/graphics.gd/classdb/NodePath#Instance.GetAsPropertyPath
 */
 func PopupPropertySelector(obj Object.Instance, callback func(selected string), type_filter []int32, current_value string) { //gd:EditorInterface.popup_property_selector
-	once.Do(singleton)
-	Advanced().PopupPropertySelector(obj, Callable.New(callback), Packed.New(type_filter...), String.New(current_value))
-}
-
-/*
-Pops up an editor dialog for selecting properties from 'object'. The 'callback' must take a single argument of type node path. It is called on the selected property path (see [NodePath.GetAsPropertyPath]) or the empty path ^"" if the dialog is canceled. If 'type_filter' is provided, the dialog will only show properties that match one of the listed [Variant.Type] values. If 'current_value' is provided, the property will be selected automatically in the property list, if it exists.
-
-[NodePath.GetAsPropertyPath]: https://pkg.go.dev/graphics.gd/classdb/NodePath#Instance.GetAsPropertyPath
-*/
-func PopupPropertySelectorOptions(obj Object.Instance, callback func(selected string), type_filter []int32, current_value string) { //gd:EditorInterface.popup_property_selector
 	once.Do(singleton)
 	Advanced().PopupPropertySelector(obj, Callable.New(callback), Packed.New(type_filter...), String.New(current_value))
 }
@@ -631,29 +572,11 @@ func PopupMethodSelector(obj Object.Instance, callback func(selected string), cu
 }
 
 /*
-Pops up an editor dialog for selecting a method from 'object'. The 'callback' must take a single argument of type string which will contain the name of the selected method or be empty if the dialog is canceled. If 'current_value' is provided, the method will be selected automatically in the method list, if it exists.
-*/
-func PopupMethodSelectorOptions(obj Object.Instance, callback func(selected string), current_value string) { //gd:EditorInterface.popup_method_selector
-	once.Do(singleton)
-	Advanced().PopupMethodSelector(obj, Callable.New(callback), String.New(current_value))
-}
-
-/*
 Pops up an editor dialog for quick selecting a resource file. The 'callback' must take a single argument of type string which will contain the path of the selected resource or be empty if the dialog is canceled. If 'base_types' is provided, the dialog will only show resources that match these types. Only types deriving from [Resource] are supported.
 
 [Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
 */
 func PopupQuickOpen(callback func(selected string), base_types []string) { //gd:EditorInterface.popup_quick_open
-	once.Do(singleton)
-	Advanced().PopupQuickOpen(Callable.New(callback), gd.ArrayFromSlice[Array.Contains[String.Name]](base_types))
-}
-
-/*
-Pops up an editor dialog for quick selecting a resource file. The 'callback' must take a single argument of type string which will contain the path of the selected resource or be empty if the dialog is canceled. If 'base_types' is provided, the dialog will only show resources that match these types. Only types deriving from [Resource] are supported.
-
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-*/
-func PopupQuickOpenOptions(callback func(selected string), base_types []string) { //gd:EditorInterface.popup_quick_open
 	once.Do(singleton)
 	Advanced().PopupQuickOpen(Callable.New(callback), gd.ArrayFromSlice[Array.Contains[String.Name]](base_types))
 }
@@ -676,28 +599,6 @@ Note: Trying to list the base type in the 'type_blocklist' will hide all types d
 [Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
 */
 func PopupCreateDialog(callback func(selected string), base_type string, current_type string, dialog_title string, type_blocklist []string) { //gd:EditorInterface.popup_create_dialog
-	once.Do(singleton)
-	Advanced().PopupCreateDialog(Callable.New(callback), String.Name(String.New(base_type)), String.New(current_type), String.New(dialog_title), gd.ArrayFromSlice[Array.Contains[String.Name]](type_blocklist))
-}
-
-/*
-Pops up an editor dialog for creating an object.
-
-The 'callback' must take a single argument of type string which will contain the type name of the selected object or be empty if no item is selected.
-
-The 'base_type' specifies the base type of objects to display. For example, if you set this to "Resource", all types derived from [Resource] will display in the create dialog.
-
-The 'current_type' will be passed in the search box of the create dialog, and the specified type can be immediately selected when the dialog pops up. If the 'current_type' is not derived from 'base_type', there will be no result of the type in the dialog.
-
-The 'dialog_title' allows you to define a custom title for the dialog. This is useful if you want to accurately hint the usage of the dialog. If the 'dialog_title' is an empty string, the dialog will use "Create New 'Base Type'" as the default title.
-
-The 'type_blocklist' contains a list of type names, and the types in the blocklist will be hidden from the create dialog.
-
-Note: Trying to list the base type in the 'type_blocklist' will hide all types derived from the base type from the create dialog.
-
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-*/
-func PopupCreateDialogOptions(callback func(selected string), base_type string, current_type string, dialog_title string, type_blocklist []string) { //gd:EditorInterface.popup_create_dialog
 	once.Do(singleton)
 	Advanced().PopupCreateDialog(Callable.New(callback), String.Name(String.New(base_type)), String.New(current_type), String.New(dialog_title), gd.ArrayFromSlice[Array.Contains[String.Name]](type_blocklist))
 }
@@ -774,14 +675,6 @@ func InspectObject(obj Object.Instance, for_property string, inspector_only bool
 }
 
 /*
-Shows the given property on the given 'object' in the editor's Inspector dock. If 'inspector_only' is true, plugins will not attempt to edit 'object'.
-*/
-func InspectObjectOptions(obj Object.Instance, for_property string, inspector_only bool) { //gd:EditorInterface.inspect_object
-	once.Do(singleton)
-	Advanced().InspectObject(obj, String.New(for_property), inspector_only)
-}
-
-/*
 Edits the given [Resource]. If the resource is a [Script] you can also edit it with [EditScript] to specify the line and column position.
 
 [Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
@@ -826,14 +719,6 @@ func EditScriptOptions(script Script.Instance, line int, column int, grab_focus 
 Opens the scene at the given path. If 'set_inherited' is true, creates a new inherited scene.
 */
 func OpenSceneFromPath(scene_filepath string, set_inherited bool) { //gd:EditorInterface.open_scene_from_path
-	once.Do(singleton)
-	Advanced().OpenSceneFromPath(String.New(scene_filepath), set_inherited)
-}
-
-/*
-Opens the scene at the given path. If 'set_inherited' is true, creates a new inherited scene.
-*/
-func OpenSceneFromPathOptions(scene_filepath string, set_inherited bool) { //gd:EditorInterface.open_scene_from_path
 	once.Do(singleton)
 	Advanced().OpenSceneFromPath(String.New(scene_filepath), set_inherited)
 }

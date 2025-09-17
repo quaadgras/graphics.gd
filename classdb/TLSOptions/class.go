@@ -138,33 +138,11 @@ func Client(trusted_chain X509Certificate.Instance, common_name_override string)
 }
 
 /*
-Creates a TLS client configuration which validates certificates and their common names (fully qualified domain names).
-
-You can specify a custom 'trusted_chain' of certification authorities (the default CA list will be used if null), and optionally provide a 'common_name_override' if you expect the certificate to have a common name other than the server FQDN.
-
-Note: On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
-*/
-func ClientOptions(trusted_chain X509Certificate.Instance, common_name_override string) Instance { //gd:TLSOptions.client
-	self := Instance{}
-	return Instance(Advanced(self).Client(trusted_chain, String.New(common_name_override)))
-}
-
-/*
 Creates an unsafe TLS client configuration where certificate validation is optional. You can optionally provide a valid 'trusted_chain', but the common name of the certificates will never be checked. Using this configuration for purposes other than testing is not recommended.
 
 Note: On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
 */
 func ClientUnsafe(trusted_chain X509Certificate.Instance) Instance { //gd:TLSOptions.client_unsafe
-	self := Instance{}
-	return Instance(Advanced(self).ClientUnsafe(trusted_chain))
-}
-
-/*
-Creates an unsafe TLS client configuration where certificate validation is optional. You can optionally provide a valid 'trusted_chain', but the common name of the certificates will never be checked. Using this configuration for purposes other than testing is not recommended.
-
-Note: On the Web platform, TLS verification is always enforced against the CA list of the web browser. This is considered a security feature.
-*/
-func ClientUnsafeOptions(trusted_chain X509Certificate.Instance) Instance { //gd:TLSOptions.client_unsafe
 	self := Instance{}
 	return Instance(Advanced(self).ClientUnsafe(trusted_chain))
 }

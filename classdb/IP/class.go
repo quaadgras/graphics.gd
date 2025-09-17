@@ -222,14 +222,6 @@ func ClearCache(hostname string) { //gd:IP.clear_cache
 	Advanced().ClearCache(String.New(hostname))
 }
 
-/*
-Removes all of a 'hostname”s cached references. If no 'hostname' is given, all cached IP addresses are removed.
-*/
-func ClearCacheOptions(hostname string) { //gd:IP.clear_cache
-	once.Do(singleton)
-	Advanced().ClearCache(String.New(hostname))
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 func Advanced() class { once.Do(singleton); return self }
 

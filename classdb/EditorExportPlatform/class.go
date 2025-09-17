@@ -421,14 +421,6 @@ func GetForcedExportFiles(preset EditorExportPreset.Instance) []string { //gd:Ed
 	return []string(Advanced(self).GetForcedExportFiles(preset).Strings())
 }
 
-/*
-Returns array of core file names that always should be exported regardless of preset config.
-*/
-func GetForcedExportFilesOptions(preset EditorExportPreset.Instance) []string { //gd:EditorExportPlatform.get_forced_export_files
-	self := Instance{}
-	return []string(Advanced(self).GetForcedExportFiles(preset).Strings())
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.EditorExportPlatform

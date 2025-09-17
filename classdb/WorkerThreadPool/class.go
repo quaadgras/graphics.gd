@@ -150,18 +150,6 @@ func AddTask(action func(int), high_priority bool, description string) int { //g
 }
 
 /*
-Adds 'action' as a task to be executed by a worker thread. 'high_priority' determines if the task has a high priority or a low priority (default). You can optionally provide a 'description' to help with debugging.
-
-Returns a task ID that can be used by other methods.
-
-Warning: Every task must be waited for completion using [WaitForTaskCompletion] or [WaitForGroupTaskCompletion] at some point so that any allocated resources inside the task can be cleaned up.
-*/
-func AddTaskOptions(action func(int), high_priority bool, description string) int { //gd:WorkerThreadPool.add_task
-	once.Do(singleton)
-	return int(int(Advanced().AddTask(Callable.New(action), high_priority, String.New(description))))
-}
-
-/*
 Returns true if the task with the given ID is completed.
 
 Note: You should only call this method between adding the task and awaiting its completion.

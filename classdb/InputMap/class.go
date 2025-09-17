@@ -261,21 +261,6 @@ func EventIsAction(event InputEvent.Instance, action string, exact_match bool) b
 }
 
 /*
-Returns true if the given event is part of an existing action. This method ignores keyboard modifiers if the given [InputEvent] is not pressed (for proper release detection). See [ActionHasEvent] if you don't want this behavior.
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-*/
-func EventIsActionOptions(event InputEvent.Instance, action string, exact_match bool) bool { //gd:InputMap.event_is_action
-	once.Do(singleton)
-	return bool(Advanced().EventIsAction(event, String.Name(String.New(action)), exact_match))
-}
-
-/*
 Clears all [InputEventAction] in the [InputMap] and load it anew from [ProjectSettings].
 
 [InputEventAction]: https://pkg.go.dev/graphics.gd/classdb/InputEventAction

@@ -1884,16 +1884,6 @@ func WindowGetNativeHandle(handle_type HandleType, window_id Window) int { //gd:
 }
 
 /*
-Returns internal structure pointers for use in plugins.
-
-Note: This method is implemented on Android, Linux (X11/Wayland), macOS, and Windows.
-*/
-func WindowGetNativeHandleOptions(handle_type HandleType, window_id Window) int { //gd:DisplayServer.window_get_native_handle
-	once.Do(singleton)
-	return int(int(Advanced().WindowGetNativeHandle(handle_type, int64(window_id))))
-}
-
-/*
 Returns ID of the active popup window, or [InvalidWindowId] if there is none.
 */
 func WindowGetActivePopup() int { //gd:DisplayServer.window_get_active_popup
@@ -1932,35 +1922,11 @@ func WindowSetTitle(title string, window_id Window) { //gd:DisplayServer.window_
 }
 
 /*
-Sets the title of the given window to 'title'.
-
-Note: It's recommended to change this value using [Window.Title] instead.
-
-Note: Avoid changing the window title every frame, as this can cause performance issues on certain window managers. Try to change the window title only a few times per second at most.
-
-[Window.Title]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Title
-*/
-func WindowSetTitleOptions(title string, window_id Window) { //gd:DisplayServer.window_set_title
-	once.Do(singleton)
-	Advanced().WindowSetTitle(String.New(title), int64(window_id))
-}
-
-/*
 Returns the estimated window title bar size (including text and window buttons) for the window specified by 'window_id' (in pixels). This method does not change the window title.
 
 Note: This method is implemented on macOS and Windows.
 */
 func WindowGetTitleSize(title string, window_id Window) Vector2i.XY { //gd:DisplayServer.window_get_title_size
-	once.Do(singleton)
-	return Vector2i.XY(Advanced().WindowGetTitleSize(String.New(title), int64(window_id)))
-}
-
-/*
-Returns the estimated window title bar size (including text and window buttons) for the window specified by 'window_id' (in pixels). This method does not change the window title.
-
-Note: This method is implemented on macOS and Windows.
-*/
-func WindowGetTitleSizeOptions(title string, window_id Window) Vector2i.XY { //gd:DisplayServer.window_get_title_size
 	once.Do(singleton)
 	return Vector2i.XY(Advanced().WindowGetTitleSize(String.New(title), int64(window_id)))
 }
@@ -1989,44 +1955,11 @@ func WindowSetMousePassthrough(region []Vector2.XY, window_id Window) { //gd:Dis
 }
 
 /*
-Sets a polygonal region of the window which accepts mouse events. Mouse events outside the region will be passed through.
-
-Passing an empty array will disable passthrough support (all mouse events will be intercepted by the window, which is the default behavior).
-
-	// Set region, using Path2D node.
-	DisplayServer.WindowSetMousePassthrough(path2d.Curve().GetBakedPoints(), 0)
-
-	// Set region, using Polygon2D node.
-	DisplayServer.WindowSetMousePassthrough(polygon2d.Polygon(), 0)
-
-	// Reset region to default.
-	DisplayServer.WindowSetMousePassthrough(nil, 0)
-
-Note: On Windows, the portion of a window that lies outside the region is not drawn, while on Linux (X11) and macOS it is.
-
-Note: This method is implemented on Linux (X11), macOS and Windows.
-*/
-func WindowSetMousePassthroughOptions(region []Vector2.XY, window_id Window) { //gd:DisplayServer.window_set_mouse_passthrough
-	once.Do(singleton)
-	Advanced().WindowSetMousePassthrough(Packed.New(region...), int64(window_id))
-}
-
-/*
 Returns the screen the window specified by 'window_id' is currently positioned on. If the screen overlaps multiple displays, the screen where the window's center is located is returned. See also [WindowSetCurrentScreen]. Returns [InvalidScreen] if 'window_id' is invalid.
 
 Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns 0.
 */
 func WindowGetCurrentScreen(window_id Window) int { //gd:DisplayServer.window_get_current_screen
-	once.Do(singleton)
-	return int(int(Advanced().WindowGetCurrentScreen(int64(window_id))))
-}
-
-/*
-Returns the screen the window specified by 'window_id' is currently positioned on. If the screen overlaps multiple displays, the screen where the window's center is located is returned. See also [WindowSetCurrentScreen]. Returns [InvalidScreen] if 'window_id' is invalid.
-
-Note: This method is implemented on Linux/X11, macOS, and Windows. On other platforms, this method always returns 0.
-*/
-func WindowGetCurrentScreenOptions(window_id Window) int { //gd:DisplayServer.window_get_current_screen
 	once.Do(singleton)
 	return int(int(Advanced().WindowGetCurrentScreen(int64(window_id))))
 }
@@ -2044,18 +1977,6 @@ func WindowSetCurrentScreen(screen Screen, window_id Window) { //gd:DisplayServe
 }
 
 /*
-Moves the window specified by 'window_id' to the specified 'screen'. See also [WindowGetCurrentScreen].
-
-Note: One of the following constants can be used as 'screen': [ScreenOfMainWindow], [ScreenPrimary], [ScreenWithMouseFocus], or [ScreenWithKeyboardFocus].
-
-Note: This method is implemented on Linux/X11, macOS, and Windows.
-*/
-func WindowSetCurrentScreenOptions(screen Screen, window_id Window) { //gd:DisplayServer.window_set_current_screen
-	once.Do(singleton)
-	Advanced().WindowSetCurrentScreen(int64(screen), int64(window_id))
-}
-
-/*
 Returns the position of the client area of the given window on the screen.
 */
 func WindowGetPosition(window_id Window) Vector2i.XY { //gd:DisplayServer.window_get_position
@@ -2064,25 +1985,9 @@ func WindowGetPosition(window_id Window) Vector2i.XY { //gd:DisplayServer.window
 }
 
 /*
-Returns the position of the client area of the given window on the screen.
-*/
-func WindowGetPositionOptions(window_id Window) Vector2i.XY { //gd:DisplayServer.window_get_position
-	once.Do(singleton)
-	return Vector2i.XY(Advanced().WindowGetPosition(int64(window_id)))
-}
-
-/*
 Returns the position of the given window on the screen including the borders drawn by the operating system. See also [WindowGetPosition].
 */
 func WindowGetPositionWithDecorations(window_id Window) Vector2i.XY { //gd:DisplayServer.window_get_position_with_decorations
-	once.Do(singleton)
-	return Vector2i.XY(Advanced().WindowGetPositionWithDecorations(int64(window_id)))
-}
-
-/*
-Returns the position of the given window on the screen including the borders drawn by the operating system. See also [WindowGetPosition].
-*/
-func WindowGetPositionWithDecorationsOptions(window_id Window) Vector2i.XY { //gd:DisplayServer.window_get_position_with_decorations
 	once.Do(singleton)
 	return Vector2i.XY(Advanced().WindowGetPositionWithDecorations(int64(window_id)))
 }
@@ -2104,33 +2009,9 @@ func WindowSetPosition(position Vector2i.XY, window_id Window) { //gd:DisplaySer
 }
 
 /*
-Sets the position of the given window to 'position'. On multi-monitor setups, the screen position is relative to the virtual desktop area. On multi-monitor setups with different screen resolutions or orientations, the origin may be located outside any display like this:
-
-See also [WindowGetPosition] and [WindowSetSize].
-
-Note: It's recommended to change this value using [Window.Position] instead.
-
-Note: On Linux (Wayland): this method is a no-op.
-
-[Window.Position]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Position
-*/
-func WindowSetPositionOptions(position Vector2i.XY, window_id Window) { //gd:DisplayServer.window_set_position
-	once.Do(singleton)
-	Advanced().WindowSetPosition(Vector2i.XY(position), int64(window_id))
-}
-
-/*
 Returns the size of the window specified by 'window_id' (in pixels), excluding the borders drawn by the operating system. This is also called the "client area". See also [WindowGetSizeWithDecorations], [WindowSetSize] and [WindowGetPosition].
 */
 func WindowGetSize(window_id Window) Vector2i.XY { //gd:DisplayServer.window_get_size
-	once.Do(singleton)
-	return Vector2i.XY(Advanced().WindowGetSize(int64(window_id)))
-}
-
-/*
-Returns the size of the window specified by 'window_id' (in pixels), excluding the borders drawn by the operating system. This is also called the "client area". See also [WindowGetSizeWithDecorations], [WindowSetSize] and [WindowGetPosition].
-*/
-func WindowGetSizeOptions(window_id Window) Vector2i.XY { //gd:DisplayServer.window_get_size
 	once.Do(singleton)
 	return Vector2i.XY(Advanced().WindowGetSize(int64(window_id)))
 }
@@ -2148,18 +2029,6 @@ func WindowSetSize(size Vector2i.XY, window_id Window) { //gd:DisplayServer.wind
 }
 
 /*
-Sets the size of the given window to 'size' (in pixels). See also [WindowGetSize] and [WindowGetPosition].
-
-Note: It's recommended to change this value using [Window.Size] instead.
-
-[Window.Size]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Size
-*/
-func WindowSetSizeOptions(size Vector2i.XY, window_id Window) { //gd:DisplayServer.window_set_size
-	once.Do(singleton)
-	Advanced().WindowSetSize(Vector2i.XY(size), int64(window_id))
-}
-
-/*
 Sets the 'callback' that will be called when the window specified by 'window_id' is moved or resized.
 
 Warning: Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
@@ -2172,18 +2041,6 @@ func WindowSetRectChangedCallback(callback func(rect Rect2i.PositionSize), windo
 }
 
 /*
-Sets the 'callback' that will be called when the window specified by 'window_id' is moved or resized.
-
-Warning: Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
-
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-func WindowSetRectChangedCallbackOptions(callback func(rect Rect2i.PositionSize), window_id Window) { //gd:DisplayServer.window_set_rect_changed_callback
-	once.Do(singleton)
-	Advanced().WindowSetRectChangedCallback(Callable.New(callback), int64(window_id))
-}
-
-/*
 Sets the 'callback' that will be called when an event occurs in the window specified by 'window_id'.
 
 Warning: Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
@@ -2191,18 +2048,6 @@ Warning: Advanced users only! Adding such a callback to a [Window] node will ove
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
 func WindowSetWindowEventCallback(callback func(event WindowEvent), window_id Window) { //gd:DisplayServer.window_set_window_event_callback
-	once.Do(singleton)
-	Advanced().WindowSetWindowEventCallback(Callable.New(callback), int64(window_id))
-}
-
-/*
-Sets the 'callback' that will be called when an event occurs in the window specified by 'window_id'.
-
-Warning: Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
-
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-func WindowSetWindowEventCallbackOptions(callback func(event WindowEvent), window_id Window) { //gd:DisplayServer.window_set_window_event_callback
 	once.Do(singleton)
 	Advanced().WindowSetWindowEventCallback(Callable.New(callback), int64(window_id))
 }
@@ -2221,19 +2066,6 @@ func WindowSetInputEventCallback(callback func(event InputEvent.Instance), windo
 }
 
 /*
-Sets the 'callback' that should be called when any [InputEvent] is sent to the window specified by 'window_id'.
-
-Warning: Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
-
-[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-func WindowSetInputEventCallbackOptions(callback func(event InputEvent.Instance), window_id Window) { //gd:DisplayServer.window_set_input_event_callback
-	once.Do(singleton)
-	Advanced().WindowSetInputEventCallback(Callable.New(callback), int64(window_id))
-}
-
-/*
 Sets the 'callback' that should be called when text is entered using the virtual keyboard to the window specified by 'window_id'.
 
 Warning: Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
@@ -2241,18 +2073,6 @@ Warning: Advanced users only! Adding such a callback to a [Window] node will ove
 [Window]: https://pkg.go.dev/graphics.gd/classdb/Window
 */
 func WindowSetInputTextCallback(callback func(text string), window_id Window) { //gd:DisplayServer.window_set_input_text_callback
-	once.Do(singleton)
-	Advanced().WindowSetInputTextCallback(Callable.New(callback), int64(window_id))
-}
-
-/*
-Sets the 'callback' that should be called when text is entered using the virtual keyboard to the window specified by 'window_id'.
-
-Warning: Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
-
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-func WindowSetInputTextCallbackOptions(callback func(text string), window_id Window) { //gd:DisplayServer.window_set_input_text_callback
 	once.Do(singleton)
 	Advanced().WindowSetInputTextCallback(Callable.New(callback), int64(window_id))
 }
@@ -2272,20 +2092,6 @@ func WindowSetDropFilesCallback(callback func(tag any), window_id Window) { //gd
 }
 
 /*
-Sets the 'callback' that should be called when files are dropped from the operating system's file manager to the window specified by 'window_id'. 'callback' should take one []string argument, which is the list of dropped files.
-
-Warning: Advanced users only! Adding such a callback to a [Window] node will override its default implementation, which can introduce bugs.
-
-Note: This method is implemented on Windows, macOS, Linux (X11/Wayland), and Web.
-
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-func WindowSetDropFilesCallbackOptions(callback func(tag any), window_id Window) { //gd:DisplayServer.window_set_drop_files_callback
-	once.Do(singleton)
-	Advanced().WindowSetDropFilesCallback(Callable.New(callback), int64(window_id))
-}
-
-/*
 Returns the [Object.GetInstanceId] of the [Window] the 'window_id' is attached to.
 
 [Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
@@ -2297,28 +2103,9 @@ func WindowGetAttachedInstanceId(window_id Window) int { //gd:DisplayServer.wind
 }
 
 /*
-Returns the [Object.GetInstanceId] of the [Window] the 'window_id' is attached to.
-
-[Object.GetInstanceId]: https://pkg.go.dev/graphics.gd/variant/Object#GetInstanceId
-[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
-*/
-func WindowGetAttachedInstanceIdOptions(window_id Window) int { //gd:DisplayServer.window_get_attached_instance_id
-	once.Do(singleton)
-	return int(int(Advanced().WindowGetAttachedInstanceId(int64(window_id))))
-}
-
-/*
 Returns the window's maximum size (in pixels). See also [WindowSetMaxSize].
 */
 func WindowGetMaxSize(window_id Window) Vector2i.XY { //gd:DisplayServer.window_get_max_size
-	once.Do(singleton)
-	return Vector2i.XY(Advanced().WindowGetMaxSize(int64(window_id)))
-}
-
-/*
-Returns the window's maximum size (in pixels). See also [WindowSetMaxSize].
-*/
-func WindowGetMaxSizeOptions(window_id Window) Vector2i.XY { //gd:DisplayServer.window_get_max_size
 	once.Do(singleton)
 	return Vector2i.XY(Advanced().WindowGetMaxSize(int64(window_id)))
 }
@@ -2338,31 +2125,9 @@ func WindowSetMaxSize(max_size Vector2i.XY, window_id Window) { //gd:DisplayServ
 }
 
 /*
-Sets the maximum size of the window specified by 'window_id' in pixels. Normally, the user will not be able to drag the window to make it larger than the specified size. See also [WindowGetMaxSize].
-
-Note: It's recommended to change this value using [Window.MaxSize] instead.
-
-Note: Using third-party tools, it is possible for users to disable window geometry restrictions and therefore bypass this limit.
-
-[Window.MaxSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.MaxSize
-*/
-func WindowSetMaxSizeOptions(max_size Vector2i.XY, window_id Window) { //gd:DisplayServer.window_set_max_size
-	once.Do(singleton)
-	Advanced().WindowSetMaxSize(Vector2i.XY(max_size), int64(window_id))
-}
-
-/*
 Returns the window's minimum size (in pixels). See also [WindowSetMinSize].
 */
 func WindowGetMinSize(window_id Window) Vector2i.XY { //gd:DisplayServer.window_get_min_size
-	once.Do(singleton)
-	return Vector2i.XY(Advanced().WindowGetMinSize(int64(window_id)))
-}
-
-/*
-Returns the window's minimum size (in pixels). See also [WindowSetMinSize].
-*/
-func WindowGetMinSizeOptions(window_id Window) Vector2i.XY { //gd:DisplayServer.window_get_min_size
 	once.Do(singleton)
 	return Vector2i.XY(Advanced().WindowGetMinSize(int64(window_id)))
 }
@@ -2384,22 +2149,6 @@ func WindowSetMinSize(min_size Vector2i.XY, window_id Window) { //gd:DisplayServ
 }
 
 /*
-Sets the minimum size for the given window to 'min_size' in pixels. Normally, the user will not be able to drag the window to make it smaller than the specified size. See also [WindowGetMinSize].
-
-Note: It's recommended to change this value using [Window.MinSize] instead.
-
-Note: By default, the main window has a minimum size of Vector2i(64, 64). This prevents issues that can arise when the window is resized to a near-zero size.
-
-Note: Using third-party tools, it is possible for users to disable window geometry restrictions and therefore bypass this limit.
-
-[Window.MinSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.MinSize
-*/
-func WindowSetMinSizeOptions(min_size Vector2i.XY, window_id Window) { //gd:DisplayServer.window_set_min_size
-	once.Do(singleton)
-	Advanced().WindowSetMinSize(Vector2i.XY(min_size), int64(window_id))
-}
-
-/*
 Returns the size of the window specified by 'window_id' (in pixels), including the borders drawn by the operating system. See also [WindowGetSize].
 */
 func WindowGetSizeWithDecorations(window_id Window) Vector2i.XY { //gd:DisplayServer.window_get_size_with_decorations
@@ -2408,25 +2157,9 @@ func WindowGetSizeWithDecorations(window_id Window) Vector2i.XY { //gd:DisplaySe
 }
 
 /*
-Returns the size of the window specified by 'window_id' (in pixels), including the borders drawn by the operating system. See also [WindowGetSize].
-*/
-func WindowGetSizeWithDecorationsOptions(window_id Window) Vector2i.XY { //gd:DisplayServer.window_get_size_with_decorations
-	once.Do(singleton)
-	return Vector2i.XY(Advanced().WindowGetSizeWithDecorations(int64(window_id)))
-}
-
-/*
 Returns the mode of the given window.
 */
 func WindowGetMode(window_id Window) WindowMode { //gd:DisplayServer.window_get_mode
-	once.Do(singleton)
-	return WindowMode(Advanced().WindowGetMode(int64(window_id)))
-}
-
-/*
-Returns the mode of the given window.
-*/
-func WindowGetModeOptions(window_id Window) WindowMode { //gd:DisplayServer.window_get_mode
 	once.Do(singleton)
 	return WindowMode(Advanced().WindowGetMode(int64(window_id)))
 }
@@ -2444,18 +2177,6 @@ func WindowSetMode(mode WindowMode, window_id Window) { //gd:DisplayServer.windo
 }
 
 /*
-Sets window mode for the given window to 'mode'.
-
-Note: On Android, setting it to [WindowModeFullscreen] or [WindowModeExclusiveFullscreen] will enable immersive mode.
-
-Note: Setting the window to full screen forcibly sets the borderless flag to true, so make sure to set it back to false when not wanted.
-*/
-func WindowSetModeOptions(mode WindowMode, window_id Window) { //gd:DisplayServer.window_set_mode
-	once.Do(singleton)
-	Advanced().WindowSetMode(mode, int64(window_id))
-}
-
-/*
 Enables or disables the given window's given 'flag'.
 */
 func WindowSetFlag(flag WindowFlags, enabled bool, window_id Window) { //gd:DisplayServer.window_set_flag
@@ -2464,25 +2185,9 @@ func WindowSetFlag(flag WindowFlags, enabled bool, window_id Window) { //gd:Disp
 }
 
 /*
-Enables or disables the given window's given 'flag'.
-*/
-func WindowSetFlagOptions(flag WindowFlags, enabled bool, window_id Window) { //gd:DisplayServer.window_set_flag
-	once.Do(singleton)
-	Advanced().WindowSetFlag(flag, enabled, int64(window_id))
-}
-
-/*
 Returns the current value of the given window's 'flag'.
 */
 func WindowGetFlag(flag WindowFlags, window_id Window) bool { //gd:DisplayServer.window_get_flag
-	once.Do(singleton)
-	return bool(Advanced().WindowGetFlag(flag, int64(window_id)))
-}
-
-/*
-Returns the current value of the given window's 'flag'.
-*/
-func WindowGetFlagOptions(flag WindowFlags, window_id Window) bool { //gd:DisplayServer.window_get_flag
 	once.Do(singleton)
 	return bool(Advanced().WindowGetFlag(flag, int64(window_id)))
 }
@@ -2498,27 +2203,9 @@ func WindowSetWindowButtonsOffset(offset Vector2i.XY, window_id Window) { //gd:D
 }
 
 /*
-When [WindowFlagExtendToTitle] flag is set, set offset to the center of the first titlebar button.
-
-Note: This flag is implemented only on macOS.
-*/
-func WindowSetWindowButtonsOffsetOptions(offset Vector2i.XY, window_id Window) { //gd:DisplayServer.window_set_window_buttons_offset
-	once.Do(singleton)
-	Advanced().WindowSetWindowButtonsOffset(Vector2i.XY(offset), int64(window_id))
-}
-
-/*
 Returns left margins (x), right margins (y) and height (z) of the title that are safe to use (contains no buttons or other elements) when [WindowFlagExtendToTitle] flag is set.
 */
 func WindowGetSafeTitleMargins(window_id Window) Vector3i.XYZ { //gd:DisplayServer.window_get_safe_title_margins
-	once.Do(singleton)
-	return Vector3i.XYZ(Advanced().WindowGetSafeTitleMargins(int64(window_id)))
-}
-
-/*
-Returns left margins (x), right margins (y) and height (z) of the title that are safe to use (contains no buttons or other elements) when [WindowFlagExtendToTitle] flag is set.
-*/
-func WindowGetSafeTitleMarginsOptions(window_id Window) Vector3i.XYZ { //gd:DisplayServer.window_get_safe_title_margins
 	once.Do(singleton)
 	return Vector3i.XYZ(Advanced().WindowGetSafeTitleMargins(int64(window_id)))
 }
@@ -2532,25 +2219,9 @@ func WindowRequestAttention(window_id Window) { //gd:DisplayServer.window_reques
 }
 
 /*
-Makes the window specified by 'window_id' request attention, which is materialized by the window title and taskbar entry blinking until the window is focused. This usually has no visible effect if the window is currently focused. The exact behavior varies depending on the operating system.
-*/
-func WindowRequestAttentionOptions(window_id Window) { //gd:DisplayServer.window_request_attention
-	once.Do(singleton)
-	Advanced().WindowRequestAttention(int64(window_id))
-}
-
-/*
 Moves the window specified by 'window_id' to the foreground, so that it is visible over other windows.
 */
 func WindowMoveToForeground(window_id Window) { //gd:DisplayServer.window_move_to_foreground
-	once.Do(singleton)
-	Advanced().WindowMoveToForeground(int64(window_id))
-}
-
-/*
-Moves the window specified by 'window_id' to the foreground, so that it is visible over other windows.
-*/
-func WindowMoveToForegroundOptions(window_id Window) { //gd:DisplayServer.window_move_to_foreground
 	once.Do(singleton)
 	Advanced().WindowMoveToForeground(int64(window_id))
 }
@@ -2564,25 +2235,9 @@ func WindowIsFocused(window_id Window) bool { //gd:DisplayServer.window_is_focus
 }
 
 /*
-Returns true if the window specified by 'window_id' is focused.
-*/
-func WindowIsFocusedOptions(window_id Window) bool { //gd:DisplayServer.window_is_focused
-	once.Do(singleton)
-	return bool(Advanced().WindowIsFocused(int64(window_id)))
-}
-
-/*
 Returns true if anything can be drawn in the window specified by 'window_id', false otherwise. Using the --disable-render-loop command line argument or a headless build will return false.
 */
 func WindowCanDraw(window_id Window) bool { //gd:DisplayServer.window_can_draw
-	once.Do(singleton)
-	return bool(Advanced().WindowCanDraw(int64(window_id)))
-}
-
-/*
-Returns true if anything can be drawn in the window specified by 'window_id', false otherwise. Using the --disable-render-loop command line argument or a headless build will return false.
-*/
-func WindowCanDrawOptions(window_id Window) bool { //gd:DisplayServer.window_can_draw
 	once.Do(singleton)
 	return bool(Advanced().WindowCanDraw(int64(window_id)))
 }
@@ -2624,31 +2279,11 @@ func WindowSetImeActive(active bool, window_id Window) { //gd:DisplayServer.wind
 }
 
 /*
-Sets whether [Input Method Editor] should be enabled for the window specified by 'window_id'. See also [WindowSetImePosition].
-
-[Input Method Editor]: https://en.wikipedia.org/wiki/Input_method
-*/
-func WindowSetImeActiveOptions(active bool, window_id Window) { //gd:DisplayServer.window_set_ime_active
-	once.Do(singleton)
-	Advanced().WindowSetImeActive(active, int64(window_id))
-}
-
-/*
 Sets the position of the [Input Method Editor] popup for the specified 'window_id'. Only effective if [WindowSetImeActive] was set to true for the specified 'window_id'.
 
 [Input Method Editor]: https://en.wikipedia.org/wiki/Input_method
 */
 func WindowSetImePosition(position Vector2i.XY, window_id Window) { //gd:DisplayServer.window_set_ime_position
-	once.Do(singleton)
-	Advanced().WindowSetImePosition(Vector2i.XY(position), int64(window_id))
-}
-
-/*
-Sets the position of the [Input Method Editor] popup for the specified 'window_id'. Only effective if [WindowSetImeActive] was set to true for the specified 'window_id'.
-
-[Input Method Editor]: https://en.wikipedia.org/wiki/Input_method
-*/
-func WindowSetImePositionOptions(position Vector2i.XY, window_id Window) { //gd:DisplayServer.window_set_ime_position
 	once.Do(singleton)
 	Advanced().WindowSetImePosition(Vector2i.XY(position), int64(window_id))
 }
@@ -2668,20 +2303,6 @@ func WindowSetVsyncMode(vsync_mode VSyncMode, window_id Window) { //gd:DisplaySe
 }
 
 /*
-Sets the V-Sync mode of the given window. See also [ProjectSettings] "display/window/vsync/vsync_mode".
-
-Depending on the platform and used renderer, the engine will fall back to [VsyncEnabled] if the desired mode is not supported.
-
-Note: V-Sync modes other than [VsyncEnabled] are only supported in the Forward+ and Mobile rendering methods, not Compatibility.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-*/
-func WindowSetVsyncModeOptions(vsync_mode VSyncMode, window_id Window) { //gd:DisplayServer.window_set_vsync_mode
-	once.Do(singleton)
-	Advanced().WindowSetVsyncMode(vsync_mode, int64(window_id))
-}
-
-/*
 Returns the V-Sync mode of the given window.
 */
 func WindowGetVsyncMode(window_id Window) VSyncMode { //gd:DisplayServer.window_get_vsync_mode
@@ -2690,25 +2311,9 @@ func WindowGetVsyncMode(window_id Window) VSyncMode { //gd:DisplayServer.window_
 }
 
 /*
-Returns the V-Sync mode of the given window.
-*/
-func WindowGetVsyncModeOptions(window_id Window) VSyncMode { //gd:DisplayServer.window_get_vsync_mode
-	once.Do(singleton)
-	return VSyncMode(Advanced().WindowGetVsyncMode(int64(window_id)))
-}
-
-/*
 Returns true if the given window can be maximized (the maximize button is enabled).
 */
 func WindowIsMaximizeAllowed(window_id Window) bool { //gd:DisplayServer.window_is_maximize_allowed
-	once.Do(singleton)
-	return bool(Advanced().WindowIsMaximizeAllowed(int64(window_id)))
-}
-
-/*
-Returns true if the given window can be maximized (the maximize button is enabled).
-*/
-func WindowIsMaximizeAllowedOptions(window_id Window) bool { //gd:DisplayServer.window_is_maximize_allowed
 	once.Do(singleton)
 	return bool(Advanced().WindowIsMaximizeAllowed(int64(window_id)))
 }
@@ -2744,31 +2349,11 @@ func WindowStartDrag(window_id Window) { //gd:DisplayServer.window_start_drag
 }
 
 /*
-Starts an interactive drag operation on the window with the given 'window_id', using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's title bar. Using this method allows the window to participate in space switching, tiling, and other system features.
-
-Note: This method is implemented on Linux (X11/Wayland), macOS, and Windows.
-*/
-func WindowStartDragOptions(window_id Window) { //gd:DisplayServer.window_start_drag
-	once.Do(singleton)
-	Advanced().WindowStartDrag(int64(window_id))
-}
-
-/*
 Starts an interactive resize operation on the window with the given 'window_id', using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's edge.
 
 Note: This method is implemented on Linux (X11/Wayland), macOS, and Windows.
 */
 func WindowStartResize(edge WindowResizeEdge, window_id Window) { //gd:DisplayServer.window_start_resize
-	once.Do(singleton)
-	Advanced().WindowStartResize(edge, int64(window_id))
-}
-
-/*
-Starts an interactive resize operation on the window with the given 'window_id', using the current mouse position. Call this method when handling a mouse button being pressed to simulate a pressed event on the window's edge.
-
-Note: This method is implemented on Linux (X11/Wayland), macOS, and Windows.
-*/
-func WindowStartResizeOptions(edge WindowResizeEdge, window_id Window) { //gd:DisplayServer.window_start_resize
 	once.Do(singleton)
 	Advanced().WindowStartResize(edge, int64(window_id))
 }
@@ -3580,19 +3165,6 @@ func CursorSetCustomImage(cursor Resource.Instance, shape CursorShape, hotspot V
 }
 
 /*
-Sets a custom mouse cursor image for the given 'shape'. This means the user's operating system and mouse cursor theme will no longer influence the mouse cursor's appearance.
-
-'cursor' can be either a [Texture2D] or an [Image], and it should not be larger than 256×256 to display correctly. Optionally, 'hotspot' can be set to offset the image's position relative to the click point. By default, 'hotspot' is set to the top-left corner of the image. See also [CursorSetShape].
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-*/
-func CursorSetCustomImageOptions(cursor Resource.Instance, shape CursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
-	once.Do(singleton)
-	Advanced().CursorSetCustomImage(cursor, shape, Vector2.XY(hotspot))
-}
-
-/*
 Returns true if positions of OK and Cancel buttons are swapped in dialogs. This is enabled by default on Windows to follow interface conventions, and be toggled by changing [ProjectSettings] "gui/common/swap_cancel_ok".
 
 Note: This doesn't affect native dialogs such as the ones spawned by [DisplayServer.DialogShow].
@@ -3663,33 +3235,6 @@ func FileDialogShow(title string, current_directory string, filename string, sho
 }
 
 /*
-Displays OS native dialog for selecting files or directories in the file system.
-
-Each filter string in the 'filters' array should be formatted like this: *.png,*.jpg,*.jpeg;Image Files;image/png,image/jpeg. The description text of the filter is optional and can be omitted. It is recommended to set both file extension and MIME type. See also [FileDialog.Filters].
-
-Callbacks have the following arguments: status: bool, selected_paths: PackedStringArray, selected_filter_index: int. On Android, the third callback argument (selected_filter_index) is always 0.
-
-Note: This method is implemented if the display server has the [FeatureNativeDialogFile] feature. Supported platforms include Linux (X11/Wayland), Windows, macOS, and Android (API level 29+).
-
-Note: 'current_directory' might be ignored.
-
-Note: Embedded file dialog and Windows file dialog support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
-
-Note: On Android and Linux, 'show_hidden' is ignored.
-
-Note: On Android and macOS, native file dialogs have no title.
-
-Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [OS.GetGrantedPermissions] to get a list of saved bookmarks.
-
-[FileDialog.Filters]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.Filters
-[OS.GetGrantedPermissions]: https://pkg.go.dev/graphics.gd/classdb/OS#GetGrantedPermissions
-*/
-func FileDialogShowOptions(title string, current_directory string, filename string, show_hidden bool, mode FileDialogMode, filters []string, callback func(status bool, selected_paths []string, selected_filter_index int), parent_window_id Window) error { //gd:DisplayServer.file_dialog_show
-	once.Do(singleton)
-	return error(gd.ToError(Advanced().FileDialogShow(String.New(title), String.New(current_directory), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), Callable.New(callback), int64(parent_window_id))))
-}
-
-/*
 Displays OS native dialog for selecting files or directories in the file system with additional user selectable options.
 
 Each filter string in the 'filters' array should be formatted like this: *.png,*.jpg,*.jpeg;Image Files;image/png,image/jpeg. The description text of the filter is optional and can be omitted. It is recommended to set both file extension and MIME type. See also [FileDialog.Filters].
@@ -3720,41 +3265,6 @@ Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain acc
 [OS.GetGrantedPermissions]: https://pkg.go.dev/graphics.gd/classdb/OS#GetGrantedPermissions
 */
 func FileDialogWithOptionsShow(title string, current_directory string, root string, filename string, show_hidden bool, mode FileDialogMode, filters []string, options []FileDialogOption, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any), parent_window_id Window) error { //gd:DisplayServer.file_dialog_with_options_show
-	once.Do(singleton)
-	return error(gd.ToError(Advanced().FileDialogWithOptionsShow(String.New(title), String.New(current_directory), String.New(root), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](options), Callable.New(callback), int64(parent_window_id))))
-}
-
-/*
-Displays OS native dialog for selecting files or directories in the file system with additional user selectable options.
-
-Each filter string in the 'filters' array should be formatted like this: *.png,*.jpg,*.jpeg;Image Files;image/png,image/jpeg. The description text of the filter is optional and can be omitted. It is recommended to set both file extension and MIME type. See also [FileDialog.Filters].
-
-'options' is array of data structures with the following keys:
-
-- "name" - option's name string.
-
-- "values" - []string of values. If empty, boolean option (check box) is used.
-
-- "default" - default selected option index (int) or default boolean value (bool).
-
-Callbacks have the following arguments: status: bool, selected_paths: PackedStringArray, selected_filter_index: int, selected_option: Dictionary.
-
-Note: This method is implemented if the display server has the [FeatureNativeDialogFileExtra] feature. Supported platforms include Linux (X11/Wayland), Windows, and macOS.
-
-Note: 'current_directory' might be ignored.
-
-Note: Embedded file dialog and Windows file dialog support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
-
-Note: On Linux (X11), 'show_hidden' is ignored.
-
-Note: On macOS, native file dialogs have no title.
-
-Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [OS.GetGrantedPermissions] to get a list of saved bookmarks.
-
-[FileDialog.Filters]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.Filters
-[OS.GetGrantedPermissions]: https://pkg.go.dev/graphics.gd/classdb/OS#GetGrantedPermissions
-*/
-func FileDialogWithOptionsShowOptions(title string, current_directory string, root string, filename string, show_hidden bool, mode FileDialogMode, filters []string, options []FileDialogOption, callback func(status bool, selected_paths []string, selected_filter_index int, selected_option map[any]any), parent_window_id Window) error { //gd:DisplayServer.file_dialog_with_options_show
 	once.Do(singleton)
 	return error(gd.ToError(Advanced().FileDialogWithOptionsShow(String.New(title), String.New(current_directory), String.New(root), String.New(filename), show_hidden, mode, Packed.MakeStrings(filters...), gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](options), Callable.New(callback), int64(parent_window_id))))
 }

@@ -163,16 +163,6 @@ func GetDatetimeStringFromUnixTime(unix_time_val int, use_space bool) string { /
 }
 
 /*
-Converts the given Unix timestamp to an ISO 8601 date and time string (YYYY-MM-DDTHH:MM:SS).
-
-If 'use_space' is true, the date and time bits are separated by an empty space character instead of the letter T.
-*/
-func GetDatetimeStringFromUnixTimeOptions(unix_time_val int, use_space bool) string { //gd:Time.get_datetime_string_from_unix_time
-	once.Do(singleton)
-	return string(Advanced().GetDatetimeStringFromUnixTime(int64(unix_time_val), use_space).String())
-}
-
-/*
 Converts the given Unix timestamp to an ISO 8601 date string (YYYY-MM-DD).
 */
 func GetDateStringFromUnixTime(unix_time_val int) string { //gd:Time.get_date_string_from_unix_time
@@ -259,14 +249,6 @@ func GetDatetimeDictFromSystem(utc bool) Date { //gd:Time.get_datetime_dict_from
 }
 
 /*
-Returns the current date as a dictionary of keys: year, month, day, weekday, hour, minute, second, and dst (Daylight Savings Time).
-*/
-func GetDatetimeDictFromSystemOptions(utc bool) Date { //gd:Time.get_datetime_dict_from_system
-	once.Do(singleton)
-	return Date(gd.DictionaryAs[Date](Advanced().GetDatetimeDictFromSystem(utc)))
-}
-
-/*
 Returns the current date as a dictionary of keys: year, month, day, and weekday.
 
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
@@ -277,31 +259,11 @@ func GetDateDictFromSystem(utc bool) DateOnly { //gd:Time.get_date_dict_from_sys
 }
 
 /*
-Returns the current date as a dictionary of keys: year, month, day, and weekday.
-
-The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
-*/
-func GetDateDictFromSystemOptions(utc bool) DateOnly { //gd:Time.get_date_dict_from_system
-	once.Do(singleton)
-	return DateOnly(gd.DictionaryAs[DateOnly](Advanced().GetDateDictFromSystem(utc)))
-}
-
-/*
 Returns the current time as a dictionary of keys: hour, minute, and second.
 
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
 */
 func GetTimeDictFromSystem(utc bool) OnTheClock { //gd:Time.get_time_dict_from_system
-	once.Do(singleton)
-	return OnTheClock(gd.DictionaryAs[OnTheClock](Advanced().GetTimeDictFromSystem(utc)))
-}
-
-/*
-Returns the current time as a dictionary of keys: hour, minute, and second.
-
-The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
-*/
-func GetTimeDictFromSystemOptions(utc bool) OnTheClock { //gd:Time.get_time_dict_from_system
 	once.Do(singleton)
 	return OnTheClock(gd.DictionaryAs[OnTheClock](Advanced().GetTimeDictFromSystem(utc)))
 }
@@ -319,18 +281,6 @@ func GetDatetimeStringFromSystem(utc bool, use_space bool) string { //gd:Time.ge
 }
 
 /*
-Returns the current date and time as an ISO 8601 date and time string (YYYY-MM-DDTHH:MM:SS).
-
-The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
-
-If 'use_space' is true, the date and time bits are separated by an empty space character instead of the letter T.
-*/
-func GetDatetimeStringFromSystemOptions(utc bool, use_space bool) string { //gd:Time.get_datetime_string_from_system
-	once.Do(singleton)
-	return string(Advanced().GetDatetimeStringFromSystem(utc, use_space).String())
-}
-
-/*
 Returns the current date as an ISO 8601 date string (YYYY-MM-DD).
 
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
@@ -341,31 +291,11 @@ func GetDateStringFromSystem(utc bool) string { //gd:Time.get_date_string_from_s
 }
 
 /*
-Returns the current date as an ISO 8601 date string (YYYY-MM-DD).
-
-The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
-*/
-func GetDateStringFromSystemOptions(utc bool) string { //gd:Time.get_date_string_from_system
-	once.Do(singleton)
-	return string(Advanced().GetDateStringFromSystem(utc).String())
-}
-
-/*
 Returns the current time as an ISO 8601 time string (HH:MM:SS).
 
 The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
 */
 func GetTimeStringFromSystem(utc bool) string { //gd:Time.get_time_string_from_system
-	once.Do(singleton)
-	return string(Advanced().GetTimeStringFromSystem(utc).String())
-}
-
-/*
-Returns the current time as an ISO 8601 time string (HH:MM:SS).
-
-The returned values are in the system's local time when 'utc' is false, otherwise they are in UTC.
-*/
-func GetTimeStringFromSystemOptions(utc bool) string { //gd:Time.get_time_string_from_system
 	once.Do(singleton)
 	return string(Advanced().GetTimeStringFromSystem(utc).String())
 }

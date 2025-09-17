@@ -227,22 +227,6 @@ func CreateTemp(prefix string, keep bool) Instance { //gd:DirAccess.create_temp
 }
 
 /*
-Creates a temporary directory. This directory will be freed when the returned [DirAccess] is freed.
-
-If 'prefix' is not empty, it will be prefixed to the directory name, separated by a -.
-
-If 'keep' is true, the directory is not deleted when the returned [DirAccess] is freed.
-
-Returns null if opening the directory failed. You can use [GetOpenError] to check the error that occurred.
-
-[DirAccess]: https://pkg.go.dev/graphics.gd/classdb/DirAccess
-*/
-func CreateTempOptions(prefix string, keep bool) Instance { //gd:DirAccess.create_temp
-	self := Instance{}
-	return Instance(Advanced(self).CreateTemp(String.New(prefix), keep))
-}
-
-/*
 Initializes the stream used to list all files and directories using the [GetNext] function, closing the currently opened stream if needed. Once the stream has been processed, it should typically be closed with [ListDirEnd].
 
 Affected by [IncludeHidden] and [IncludeNavigational].

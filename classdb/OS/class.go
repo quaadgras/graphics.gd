@@ -526,44 +526,6 @@ func Execute(path string, arguments []string, read_stderr bool, open_console boo
 }
 
 /*
-Executes the given process in a blocking way. The file specified in 'path' must exist and be executable. The system path resolution will be used. The 'arguments' are used in the given order, separated by spaces, and wrapped in quotes.
-
-If an 'output' array is provided, the complete shell output of the process is appended to 'output' as a single string element. If 'read_stderr' is true, the output to the standard error stream is also appended to the array.
-
-On Windows, if 'open_console' is true and the process is a console app, a new terminal window is opened.
-
-This method returns the exit code of the command, or -1 if the process fails to execute.
-
-Note: The main thread will be blocked until the executed command terminates. Use [Thread] to create a separate thread that will not block the main thread, or use [CreateProcess] to create a completely independent process.
-
-For example, to retrieve a list of the working directory's contents:
-
-	output, exit_code := OS.Execute("ls", []string{"-l", "/tmp"}, false, false)
-
-If you wish to access a shell built-in or execute a composite command, a platform-specific shell can be invoked. For example:
-
-Note: This method is implemented on Android, Linux, macOS, and Windows.
-
-Note: To execute a Windows command interpreter built-in command, specify cmd.exe in 'path', /c as the first argument, and the desired command as the second argument.
-
-Note: To execute a PowerShell built-in command, specify powershell.exe in 'path', -Command as the first argument, and the desired command as the second argument.
-
-Note: To execute a Unix shell built-in command, specify shell executable name in 'path', -c as the first argument, and the desired command as the second argument.
-
-Note: On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export.
-
-Note: On Android, system commands such as dumpsys can only be run on a rooted device.
-
-[Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
-*/
-func ExecuteOptions(path string, arguments []string, read_stderr bool, open_console bool) ([]string, int) { //gd:OS.execute
-	once.Do(singleton)
-	var returns_output = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(gd.NewArray()))
-	results := Advanced().Execute(String.New(path), Packed.MakeStrings(arguments...), returns_output, read_stderr, open_console)
-	return gd.ArrayAs[[]string](gd.InternalArray(returns_output)), int(results)
-}
-
-/*
 Creates a new process that runs independently of Godot with redirected IO. It will not terminate when Godot terminates. The path specified in 'path' must exist and be an executable file or macOS .app bundle. The path is resolved based on the current platform. The 'arguments' are used in the given order and separated by a space.
 
 If 'blocking' is false, created pipes work in non-blocking mode, i.e. read and write operations will return immediately. Use [FileAccess.GetError] to check if the last read/write operation was successful.
@@ -641,26 +603,6 @@ Note: This method is implemented on Android, Linux, macOS, and Windows.
 Note: On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
 */
 func CreateProcess(path string, arguments []string, open_console bool) int { //gd:OS.create_process
-	once.Do(singleton)
-	return int(int(Advanced().CreateProcess(String.New(path), Packed.MakeStrings(arguments...), open_console)))
-}
-
-/*
-Creates a new process that runs independently of Godot. It will not terminate when Godot terminates. The path specified in 'path' must exist and be an executable file or macOS .app bundle. The path is resolved based on the current platform. The 'arguments' are used in the given order and separated by a space.
-
-On Windows, if 'open_console' is true and the process is a console app, a new terminal window will be opened.
-
-If the process is successfully created, this method returns its process ID, which you can use to monitor the process (and potentially terminate it with [Kill]). Otherwise, this method returns -1.
-
-Example: Run another instance of the project:
-
-See [Execute] if you wish to run an external command and retrieve the results.
-
-Note: This method is implemented on Android, Linux, macOS, and Windows.
-
-Note: On macOS, sandboxed applications are limited to run only embedded helper executables, specified during export or system .app bundle, system .app bundles will ignore arguments.
-*/
-func CreateProcessOptions(path string, arguments []string, open_console bool) int { //gd:OS.create_process
 	once.Do(singleton)
 	return int(int(Advanced().CreateProcess(String.New(path), Packed.MakeStrings(arguments...), open_console)))
 }
@@ -969,22 +911,6 @@ Note: If the project process crashes or is killed by the user (by sending SIGKIL
 [SceneTree.Quit]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Quit
 */
 func SetRestartOnExit(restart bool, arguments []string) { //gd:OS.set_restart_on_exit
-	once.Do(singleton)
-	Advanced().SetRestartOnExit(restart, Packed.MakeStrings(arguments...))
-}
-
-/*
-If 'restart' is true, restarts the project automatically when it is exited with [SceneTree.Quit] or [Node.NotificationWmCloseRequest]. Command-line 'arguments' can be supplied. To restart the project with the same command line arguments as originally used to run the project, pass [GetCmdlineArgs] as the value for 'arguments'.
-
-This method can be used to apply setting changes that require a restart. See also [IsRestartOnExitSet] and [GetRestartOnExitArguments].
-
-Note: This method is only effective on desktop platforms, and only when the project isn't started from the editor. It will have no effect on mobile and Web platforms, or when the project is started from the editor.
-
-Note: If the project process crashes or is killed by the user (by sending SIGKILL instead of the usual SIGTERM), the project won't restart automatically.
-
-[SceneTree.Quit]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Quit
-*/
-func SetRestartOnExitOptions(restart bool, arguments []string) { //gd:OS.set_restart_on_exit
 	once.Do(singleton)
 	Advanced().SetRestartOnExit(restart, Packed.MakeStrings(arguments...))
 }

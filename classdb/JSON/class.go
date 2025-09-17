@@ -290,18 +290,6 @@ func FromNative(v any, full_objects bool) any { //gd:JSON.from_native
 }
 
 /*
-Converts a native engine type to a JSON-compliant value.
-
-By default, objects are ignored for security reasons, unless 'full_objects' is true.
-
-You can convert a native value to a JSON string like this:
-*/
-func FromNativeOptions(v any, full_objects bool) any { //gd:JSON.from_native
-	self := Instance{}
-	return any(Advanced(self).FromNative(variant.New(v), full_objects).Interface())
-}
-
-/*
 Converts a JSON-compliant value that was created with [FromNative] back to native engine types.
 
 By default, objects are ignored for security reasons, unless 'allow_objects' is true.
@@ -309,18 +297,6 @@ By default, objects are ignored for security reasons, unless 'allow_objects' is 
 You can convert a JSON string back to a native value like this:
 */
 func ToNative(json any, allow_objects bool) any { //gd:JSON.to_native
-	self := Instance{}
-	return any(Advanced(self).ToNative(variant.New(json), allow_objects).Interface())
-}
-
-/*
-Converts a JSON-compliant value that was created with [FromNative] back to native engine types.
-
-By default, objects are ignored for security reasons, unless 'allow_objects' is true.
-
-You can convert a JSON string back to a native value like this:
-*/
-func ToNativeOptions(json any, allow_objects bool) any { //gd:JSON.to_native
 	self := Instance{}
 	return any(Advanced(self).ToNative(variant.New(json), allow_objects).Interface())
 }

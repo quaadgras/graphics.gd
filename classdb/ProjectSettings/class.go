@@ -156,18 +156,6 @@ func GetSetting(name string, default_value any) any { //gd:ProjectSettings.get_s
 }
 
 /*
-Returns the value of the setting identified by 'name'. If the setting doesn't exist and 'default_value' is specified, the value of 'default_value' is returned. Otherwise, null is returned.
-
-Note: This method doesn't take potential feature overrides into account automatically. Use [GetSettingWithOverride] to handle seamlessly.
-
-See also [HasSetting] to check whether a setting exists.
-*/
-func GetSettingOptions(name string, default_value any) any { //gd:ProjectSettings.get_setting
-	once.Do(singleton)
-	return any(Advanced().GetSetting(String.New(name), variant.New(default_value)).Interface())
-}
-
-/*
 Similar to [GetSetting], but applies feature tag overrides if any exists and is valid.
 
 Example: If the setting override "application/config/name.windows" exists, and the following code is executed on a Windows operating system, the overridden setting is printed instead:
