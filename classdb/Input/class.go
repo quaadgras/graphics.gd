@@ -241,23 +241,6 @@ func IsActionPressed(action string, exact_match bool) bool { //gd:Input.is_actio
 }
 
 /*
-Returns true if you are pressing the action event.
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-Note: Due to keyboard ghosting, [IsActionPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
-
-[Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-*/
-func IsActionPressedOptions(action string, exact_match bool) bool { //gd:Input.is_action_pressed
-	once.Do(singleton)
-	return bool(Advanced().IsActionPressed(String.Name(String.New(action)), exact_match))
-}
-
-/*
 Returns true when the user has started pressing the action event in the current frame or physics tick. It will only return true on the frame or tick that the user pressed down the button.
 
 This is useful for code that needs to run only once when an action is pressed, instead of every frame while it's pressed.
@@ -283,31 +266,6 @@ func IsActionJustPressed(action string, exact_match bool) bool { //gd:Input.is_a
 }
 
 /*
-Returns true when the user has started pressing the action event in the current frame or physics tick. It will only return true on the frame or tick that the user pressed down the button.
-
-This is useful for code that needs to run only once when an action is pressed, instead of every frame while it's pressed.
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-Note: Returning true does not imply that the action is still pressed. An action can be pressed and released again rapidly, and true will still be returned so as not to miss input.
-
-Note: Due to keyboard ghosting, [IsActionJustPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
-
-Note: During input handling (e.g. [Node.Input]), use [InputEvent.IsActionPressed] instead to query the action state of the current event. See also [IsActionJustPressedByEvent].
-
-[Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
-[InputEvent.IsActionPressed]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.IsActionPressed
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
-*/
-func IsActionJustPressedOptions(action string, exact_match bool) bool { //gd:Input.is_action_just_pressed
-	once.Do(singleton)
-	return bool(Advanced().IsActionJustPressed(String.Name(String.New(action)), exact_match))
-}
-
-/*
 Returns true when the user stops pressing the action event in the current frame or physics tick. It will only return true on the frame or tick that the user releases the button.
 
 Note: Returning true does not imply that the action is still not pressed. An action can be released and pressed again rapidly, and true will still be returned so as not to miss input.
@@ -323,26 +281,6 @@ Note: During input handling (e.g. [Node.Input]), use [InputEvent.IsActionRelease
 [Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
 */
 func IsActionJustReleased(action string, exact_match bool) bool { //gd:Input.is_action_just_released
-	once.Do(singleton)
-	return bool(Advanced().IsActionJustReleased(String.Name(String.New(action)), exact_match))
-}
-
-/*
-Returns true when the user stops pressing the action event in the current frame or physics tick. It will only return true on the frame or tick that the user releases the button.
-
-Note: Returning true does not imply that the action is still not pressed. An action can be released and pressed again rapidly, and true will still be returned so as not to miss input.
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-Note: During input handling (e.g. [Node.Input]), use [InputEvent.IsActionReleased] instead to query the action state of the current event. See also [IsActionJustReleasedByEvent].
-
-[InputEvent.IsActionReleased]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.IsActionReleased
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
-*/
-func IsActionJustReleasedOptions(action string, exact_match bool) bool { //gd:Input.is_action_just_released
 	once.Do(singleton)
 	return bool(Advanced().IsActionJustReleased(String.Name(String.New(action)), exact_match))
 }
@@ -370,28 +308,6 @@ func IsActionJustPressedByEvent(action string, event InputEvent.Instance, exact_
 }
 
 /*
-Returns true when the user has started pressing the action event in the current frame or physics tick, and the first event that triggered action press in the current frame/physics tick was 'event'. It will only return true on the frame or tick that the user pressed down the button.
-
-This is useful for code that needs to run only once when an action is pressed, and the action is processed during input handling (e.g. [Node.Input]).
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-Note: Returning true does not imply that the action is still pressed. An action can be pressed and released again rapidly, and true will still be returned so as not to miss input.
-
-Note: Due to keyboard ghosting, [IsActionJustPressed] may return false even if one of the action's keys is pressed. See [Input examples] in the documentation for more information.
-
-[Input examples]: https://docs.godotengine.org/tutorials/inputs/input_examples.html#keyboard-events
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
-*/
-func IsActionJustPressedByEventOptions(action string, event InputEvent.Instance, exact_match bool) bool { //gd:Input.is_action_just_pressed_by_event
-	once.Do(singleton)
-	return bool(Advanced().IsActionJustPressedByEvent(String.Name(String.New(action)), event, exact_match))
-}
-
-/*
 Returns true when the user stops pressing the action event in the current frame or physics tick, and the first event that triggered action release in the current frame/physics tick was 'event'. It will only return true on the frame or tick that the user releases the button.
 
 This is useful when an action is processed during input handling (e.g. [Node.Input]).
@@ -411,25 +327,6 @@ func IsActionJustReleasedByEvent(action string, event InputEvent.Instance, exact
 }
 
 /*
-Returns true when the user stops pressing the action event in the current frame or physics tick, and the first event that triggered action release in the current frame/physics tick was 'event'. It will only return true on the frame or tick that the user releases the button.
-
-This is useful when an action is processed during input handling (e.g. [Node.Input]).
-
-Note: Returning true does not imply that the action is still not pressed. An action can be released and pressed again rapidly, and true will still be returned so as not to miss input.
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
-*/
-func IsActionJustReleasedByEventOptions(action string, event InputEvent.Instance, exact_match bool) bool { //gd:Input.is_action_just_released_by_event
-	once.Do(singleton)
-	return bool(Advanced().IsActionJustReleasedByEvent(String.Name(String.New(action)), event, exact_match))
-}
-
-/*
 Returns a value between 0 and 1 representing the intensity of the given action. In a joypad, for example, the further away the axis (analog sticks or L2, R2 triggers) is from the dead zone, the closer the value will be to 1. If the action is mapped to a control that has no axis such as the keyboard, the value returned will be 0 or 1.
 
 If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
@@ -444,20 +341,6 @@ func GetActionStrength(action string, exact_match bool) Float.X { //gd:Input.get
 }
 
 /*
-Returns a value between 0 and 1 representing the intensity of the given action. In a joypad, for example, the further away the axis (analog sticks or L2, R2 triggers) is from the dead zone, the closer the value will be to 1. If the action is mapped to a control that has no axis such as the keyboard, the value returned will be 0 or 1.
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-*/
-func GetActionStrengthOptions(action string, exact_match bool) Float.X { //gd:Input.get_action_strength
-	once.Do(singleton)
-	return Float.X(Float.X(Advanced().GetActionStrength(String.Name(String.New(action)), exact_match)))
-}
-
-/*
 Returns a value between 0 and 1 representing the raw intensity of the given action, ignoring the action's deadzone. In most cases, you should use [GetActionStrength] instead.
 
 If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
@@ -467,20 +350,6 @@ If 'exact_match' is false, it ignores additional input modifiers for [InputEvent
 [InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
 */
 func GetActionRawStrength(action string, exact_match bool) Float.X { //gd:Input.get_action_raw_strength
-	once.Do(singleton)
-	return Float.X(Float.X(Advanced().GetActionRawStrength(String.Name(String.New(action)), exact_match)))
-}
-
-/*
-Returns a value between 0 and 1 representing the raw intensity of the given action, ignoring the action's deadzone. In most cases, you should use [GetActionStrength] instead.
-
-If 'exact_match' is false, it ignores additional input modifiers for [InputEventKey] and [InputEventMouseButton] events, and the direction for [InputEventJoypadMotion] events.
-
-[InputEventJoypadMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventJoypadMotion
-[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
-[InputEventMouseButton]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseButton
-*/
-func GetActionRawStrengthOptions(action string, exact_match bool) Float.X { //gd:Input.get_action_raw_strength
 	once.Do(singleton)
 	return Float.X(Float.X(Advanced().GetActionRawStrength(String.Name(String.New(action)), exact_match)))
 }
@@ -523,14 +392,6 @@ func GetVectorOptions(negative_x string, positive_x string, negative_y string, p
 Adds a new mapping entry (in SDL2 format) to the mapping database. Optionally update already connected devices.
 */
 func AddJoyMapping(mapping string, update_existing bool) { //gd:Input.add_joy_mapping
-	once.Do(singleton)
-	Advanced().AddJoyMapping(String.New(mapping), update_existing)
-}
-
-/*
-Adds a new mapping entry (in SDL2 format) to the mapping database. Optionally update already connected devices.
-*/
-func AddJoyMappingOptions(mapping string, update_existing bool) { //gd:Input.add_joy_mapping
 	once.Do(singleton)
 	Advanced().AddJoyMapping(String.New(mapping), update_existing)
 }
@@ -651,18 +512,6 @@ Note: Not every hardware is compatible with long effect durations; it is recomme
 Note: For macOS, vibration is only supported in macOS 11 and later.
 */
 func StartJoyVibration(device Device, weak_magnitude Float.X, strong_magnitude Float.X, duration Float.X) { //gd:Input.start_joy_vibration
-	once.Do(singleton)
-	Advanced().StartJoyVibration(int64(device), float64(weak_magnitude), float64(strong_magnitude), float64(duration))
-}
-
-/*
-Starts to vibrate the joypad. Joypads usually come with two rumble motors, a strong and a weak one. 'weak_magnitude' is the strength of the weak motor (between 0 and 1) and 'strong_magnitude' is the strength of the strong motor (between 0 and 1). 'duration' is the duration of the effect in seconds (a duration of 0 will try to play the vibration indefinitely). The vibration can be stopped early by calling [StopJoyVibration].
-
-Note: Not every hardware is compatible with long effect durations; it is recommended to restart an effect if it has to be played for more than a few seconds.
-
-Note: For macOS, vibration is only supported in macOS 11 and later.
-*/
-func StartJoyVibrationOptions(device Device, weak_magnitude Float.X, strong_magnitude Float.X, duration Float.X) { //gd:Input.start_joy_vibration
 	once.Do(singleton)
 	Advanced().StartJoyVibration(int64(device), float64(weak_magnitude), float64(strong_magnitude), float64(duration))
 }
@@ -905,22 +754,6 @@ func SetDefaultCursorShape(shape CursorShape) { //gd:Input.set_default_cursor_sh
 }
 
 /*
-Sets the default cursor shape to be used in the viewport instead of [CursorArrow].
-
-Note: If you want to change the default cursor shape for [Control]'s nodes, use [Control.MouseDefaultCursorShape] instead.
-
-Note: This method generates an [InputEventMouseMotion] to update cursor immediately.
-
-[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
-[Control.MouseDefaultCursorShape]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MouseDefaultCursorShape
-[InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
-*/
-func SetDefaultCursorShapeOptions(shape CursorShape) { //gd:Input.set_default_cursor_shape
-	once.Do(singleton)
-	Advanced().SetDefaultCursorShape(shape)
-}
-
-/*
 Returns the currently assigned cursor shape.
 */
 func GetCurrentCursorShape() CursorShape { //gd:Input.get_current_cursor_shape
@@ -947,29 +780,6 @@ Note: On the web platform, the maximum allowed cursor image size is 128×128. Cu
 [security reasons]: https://chromestatus.com/feature/5825971391299584
 */
 func SetCustomMouseCursor(image Resource.Instance, shape CursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
-	once.Do(singleton)
-	Advanced().SetCustomMouseCursor(image, shape, Vector2.XY(hotspot))
-}
-
-/*
-Sets a custom mouse cursor image, which is only visible inside the game window, for the given mouse 'shape'. The hotspot can also be specified. Passing null to the image parameter resets to the system cursor.
-
-'image' can be either [Texture2D] or [Image] and its size must be lower than or equal to 256×256. To avoid rendering issues, sizes lower than or equal to 128×128 are recommended.
-
-'hotspot' must be within 'image”s size.
-
-Note: [AnimatedTexture]s aren't supported as custom mouse cursors. If using an [AnimatedTexture], only the first frame will be displayed.
-
-Note: The Lossless, Lossy or Uncompressed compression modes are recommended. The Video RAM compression mode can be used, but it will be decompressed on the CPU, which means loading times are slowed down and no memory is saved compared to lossless modes.
-
-Note: On the web platform, the maximum allowed cursor image size is 128×128. Cursor images larger than 32×32 will also only be displayed if the mouse cursor image is entirely located within the page for [security reasons].
-
-[AnimatedTexture]: https://pkg.go.dev/graphics.gd/classdb/AnimatedTexture
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
-[security reasons]: https://chromestatus.com/feature/5825971391299584
-*/
-func SetCustomMouseCursorOptions(image Resource.Instance, shape CursorShape, hotspot Vector2.XY) { //gd:Input.set_custom_mouse_cursor
 	once.Do(singleton)
 	Advanced().SetCustomMouseCursor(image, shape, Vector2.XY(hotspot))
 }

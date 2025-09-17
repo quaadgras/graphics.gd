@@ -450,16 +450,6 @@ func MapGetClosestPointToSegment(map_ RID.NavigationMap3D, start Vector3.XYZ, en
 }
 
 /*
-Returns the navigation mesh surface point closest to the provided 'start' and 'end' segment on the navigation 'map'.
-
-If 'use_collision' is true, a closest point test is only done when the segment intersects with the navigation mesh surface.
-*/
-func MapGetClosestPointToSegmentOptions(map_ RID.NavigationMap3D, start Vector3.XYZ, end Vector3.XYZ, use_collision bool) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point_to_segment
-	once.Do(singleton)
-	return Vector3.XYZ(Advanced().MapGetClosestPointToSegment(RID.Any(map_), Vector3.XYZ(start), Vector3.XYZ(end), use_collision))
-}
-
-/*
 Returns the navigation mesh surface point closest to the provided 'to_point' on the navigation 'map'.
 */
 func MapGetClosestPoint(map_ RID.NavigationMap3D, to_point Vector3.XYZ) Vector3.XYZ { //gd:NavigationServer3D.map_get_closest_point
@@ -584,17 +574,6 @@ Queries a path in a given navigation map. Start and target position and other pa
 [NavigationPathQueryResult3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationPathQueryResult3D
 */
 func QueryPath(parameters NavigationPathQueryParameters3D.Instance, result NavigationPathQueryResult3D.Instance, callback func()) { //gd:NavigationServer3D.query_path
-	once.Do(singleton)
-	Advanced().QueryPath(parameters, result, Callable.New(callback))
-}
-
-/*
-Queries a path in a given navigation map. Start and target position and other parameters are defined through [NavigationPathQueryParameters3D]. Updates the provided [NavigationPathQueryResult3D] result object with the path among other results requested by the query. After the process is finished the optional 'callback' will be called.
-
-[NavigationPathQueryParameters3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationPathQueryParameters3D
-[NavigationPathQueryResult3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationPathQueryResult3D
-*/
-func QueryPathOptions(parameters NavigationPathQueryParameters3D.Instance, result NavigationPathQueryResult3D.Instance, callback func()) { //gd:NavigationServer3D.query_path
 	once.Do(singleton)
 	Advanced().QueryPath(parameters, result, Callable.New(callback))
 }
@@ -823,16 +802,6 @@ Returns the navigation mesh surface point closest to the provided 'start' and 'e
 If 'use_collision' is true, a closest point test is only done when the segment intersects with the navigation mesh surface.
 */
 func RegionGetClosestPointToSegment(region RID.NavigationRegion3D, start Vector3.XYZ, end Vector3.XYZ, use_collision bool) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point_to_segment
-	once.Do(singleton)
-	return Vector3.XYZ(Advanced().RegionGetClosestPointToSegment(RID.Any(region), Vector3.XYZ(start), Vector3.XYZ(end), use_collision))
-}
-
-/*
-Returns the navigation mesh surface point closest to the provided 'start' and 'end' segment on the navigation 'region'.
-
-If 'use_collision' is true, a closest point test is only done when the segment intersects with the navigation mesh surface.
-*/
-func RegionGetClosestPointToSegmentOptions(region RID.NavigationRegion3D, start Vector3.XYZ, end Vector3.XYZ, use_collision bool) Vector3.XYZ { //gd:NavigationServer3D.region_get_closest_point_to_segment
 	once.Do(singleton)
 	return Vector3.XYZ(Advanced().RegionGetClosestPointToSegment(RID.Any(region), Vector3.XYZ(start), Vector3.XYZ(end), use_collision))
 }
@@ -1534,22 +1503,6 @@ func ParseSourceGeometryData(navigation_mesh NavigationMesh.Instance, source_geo
 }
 
 /*
-Parses the [SceneTree] for source geometry according to the properties of 'navigation_mesh'. Updates the provided 'source_geometry_data' resource with the resulting data. The resource can then be used to bake a navigation mesh with [BakeFromSourceGeometryData]. After the process is finished the optional 'callback' will be called.
-
-Note: This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe.
-
-Performance: While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-func ParseSourceGeometryDataOptions(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, root_node Node.Instance, callback func()) { //gd:NavigationServer3D.parse_source_geometry_data
-	once.Do(singleton)
-	Advanced().ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, Callable.New(callback))
-}
-
-/*
 Bakes the provided 'navigation_mesh' with the data from the provided 'source_geometry_data'. After the process is finished the optional 'callback' will be called.
 */
 func BakeFromSourceGeometryData(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data
@@ -1558,25 +1511,9 @@ func BakeFromSourceGeometryData(navigation_mesh NavigationMesh.Instance, source_
 }
 
 /*
-Bakes the provided 'navigation_mesh' with the data from the provided 'source_geometry_data'. After the process is finished the optional 'callback' will be called.
-*/
-func BakeFromSourceGeometryDataOptions(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data
-	once.Do(singleton)
-	Advanced().BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, Callable.New(callback))
-}
-
-/*
 Bakes the provided 'navigation_mesh' with the data from the provided 'source_geometry_data' as an async task running on a background thread. After the process is finished the optional 'callback' will be called.
 */
 func BakeFromSourceGeometryDataAsync(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data_async
-	once.Do(singleton)
-	Advanced().BakeFromSourceGeometryDataAsync(navigation_mesh, source_geometry_data, Callable.New(callback))
-}
-
-/*
-Bakes the provided 'navigation_mesh' with the data from the provided 'source_geometry_data' as an async task running on a background thread. After the process is finished the optional 'callback' will be called.
-*/
-func BakeFromSourceGeometryDataAsyncOptions(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, callback func()) { //gd:NavigationServer3D.bake_from_source_geometry_data_async
 	once.Do(singleton)
 	Advanced().BakeFromSourceGeometryDataAsync(navigation_mesh, source_geometry_data, Callable.New(callback))
 }

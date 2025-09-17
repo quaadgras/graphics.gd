@@ -154,14 +154,6 @@ func InstantiatePropertyEditor(obj Object.Instance, atype variant.Type, path str
 	return EditorProperty.Instance(Advanced(self).InstantiatePropertyEditor(obj, atype, String.New(path), hint, String.New(hint_text), int64(usage), wide))
 }
 
-/*
-Creates a property editor that can be used by plugin UI to edit the specified property of an 'object'.
-*/
-func InstantiatePropertyEditorOptions(obj Object.Instance, atype variant.Type, path string, hint ClassDB.PropertyHint, hint_text string, usage int, wide bool) EditorProperty.Instance { //gd:EditorInspector.instantiate_property_editor
-	self := Instance{}
-	return EditorProperty.Instance(Advanced(self).InstantiatePropertyEditor(obj, atype, String.New(path), hint, String.New(hint_text), int64(usage), wide))
-}
-
 // Advanced exposes a 1:1 low-level instance of the class, undocumented, for those who know what they are doing.
 type Advanced = class
 type class [1]gdclass.EditorInspector

@@ -121,16 +121,6 @@ func Eval(code string, use_global_execution_context bool) any { //gd:JavaScriptB
 }
 
 /*
-Execute the string 'code' as JavaScript code within the browser window. This is a call to the actual global JavaScript function eval().
-
-If 'use_global_execution_context' is true, the code will be evaluated in the global execution context. Otherwise, it is evaluated in the execution context of a function within the engine's runtime environment.
-*/
-func EvalOptions(code string, use_global_execution_context bool) any { //gd:JavaScriptBridge.eval
-	once.Do(singleton)
-	return any(Advanced().Eval(String.New(code), use_global_execution_context).Interface())
-}
-
-/*
 Returns an interface to a JavaScript object that can be used by scripts. The 'interface' must be a valid property of the JavaScript window. The callback must accept a single slice argument, which will contain the JavaScript arguments. See [JavaScriptObject] for usage.
 
 [JavaScriptObject]: https://pkg.go.dev/graphics.gd/classdb/JavaScriptObject

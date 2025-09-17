@@ -161,22 +161,6 @@ func LoadThreadedGetStatus(path string) (float32, ThreadLoadStatus) { //gd:Resou
 }
 
 /*
-Returns the status of a threaded loading operation started with [LoadThreadedRequest] for the resource at 'path'.
-
-An array variable can optionally be passed via 'progress', and will return a one-element array containing the ratio of completion of the threaded loading (between 0.0 and 1.0).
-
-Note: The recommended way of using this method is to call it during different frames (e.g., in [Node.Process], instead of a loop).
-
-[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
-*/
-func LoadThreadedGetStatusOptions(path string) (float32, ThreadLoadStatus) { //gd:ResourceLoader.load_threaded_get_status
-	once.Do(singleton)
-	var returns_progress = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(gd.NewArray()))
-	results := Advanced().LoadThreadedGetStatus(String.New(path), returns_progress)
-	return gd.VariantAs[float32](gd.InternalArray(returns_progress).Index(0)), results
-}
-
-/*
 Returns the resource loaded by [LoadThreadedRequest].
 
 If this is called before the loading thread is done (i.e. [LoadThreadedGetStatus] is not [ThreadLoadLoaded]), the calling thread will be blocked until the resource has finished loading. However, it's recommended to use [LoadThreadedGetStatus] to known when the load has actually completed.
@@ -265,18 +249,6 @@ func AddResourceFormatLoader(format_loader ResourceFormatLoader.Instance, at_fro
 }
 
 /*
-Registers a new [ResourceFormatLoader]. The ResourceLoader will use the ResourceFormatLoader as described in [Load].
-
-This method is performed implicitly for ResourceFormatLoaders written in GDScript (see [ResourceFormatLoader] for more information).
-
-[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
-*/
-func AddResourceFormatLoaderOptions(format_loader ResourceFormatLoader.Instance, at_front bool) { //gd:ResourceLoader.add_resource_format_loader
-	once.Do(singleton)
-	Advanced().AddResourceFormatLoader(format_loader, at_front)
-}
-
-/*
 Unregisters the given [ResourceFormatLoader].
 
 [ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
@@ -341,23 +313,6 @@ Note: If you use [Resource.TakeOverPath], this method will return true for the t
 [ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
 */
 func Exists(path string, type_hint string) bool { //gd:ResourceLoader.exists
-	once.Do(singleton)
-	return bool(Advanced().Exists(String.New(path), String.New(type_hint)))
-}
-
-/*
-Returns whether a recognized resource exists for the given 'path'.
-
-An optional 'type_hint' can be used to further specify the [Resource] type that should be handled by the [ResourceFormatLoader]. Anything that inherits from [Resource] can be used as a type hint, for example [Image].
-
-Note: If you use [Resource.TakeOverPath], this method will return true for the taken path even if the resource wasn't saved (i.e. exists only in resource cache).
-
-[Image]: https://pkg.go.dev/graphics.gd/classdb/Image
-[Resource]: https://pkg.go.dev/graphics.gd/classdb/Resource
-[Resource.TakeOverPath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.TakeOverPath
-[ResourceFormatLoader]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatLoader
-*/
-func ExistsOptions(path string, type_hint string) bool { //gd:ResourceLoader.exists
 	once.Do(singleton)
 	return bool(Advanced().Exists(String.New(path), String.New(type_hint)))
 }

@@ -477,23 +477,6 @@ func CaptureScriptBacktraces(include_variables bool) []ScriptBacktrace.Instance 
 }
 
 /*
-Captures and returns backtraces from all registered script languages.
-
-By default, the returned [ScriptBacktrace] will only contain stack frames in editor builds and debug builds. To enable them for release builds as well, you need to enable [ProjectSettings] "debug/settings/gdscript/always_track_call_stacks".
-
-If 'include_variables' is true, the backtrace will also include the names and values of any global variables (e.g. autoload singletons) at the point of the capture, as well as local variables and class member variables at each stack frame. This will however will only be respected when running the game with a debugger attached, like when running the game from the editor. To enable it for export builds as well, you need to enable [ProjectSettings] "debug/settings/gdscript/always_track_local_variables".
-
-Warning: When 'include_variables' is true, any captured variables can potentially (e.g. with GDScript backtraces) be their actual values, including any object references. This means that storing such a [ScriptBacktrace] will prevent those objects from being deallocated, so it's generally recommended not to do so.
-
-[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
-[ScriptBacktrace]: https://pkg.go.dev/graphics.gd/classdb/ScriptBacktrace
-*/
-func CaptureScriptBacktracesOptions(include_variables bool) []ScriptBacktrace.Instance { //gd:Engine.capture_script_backtraces
-	once.Do(singleton)
-	return []ScriptBacktrace.Instance(gd.ArrayAs[[]ScriptBacktrace.Instance](gd.InternalArray(Advanced().CaptureScriptBacktraces(include_variables))))
-}
-
-/*
 Returns true if the script is currently running inside the editor, otherwise returns false. This is useful for @tool scripts to conditionally draw editor helpers, or prevent accidentally running "game" code that would affect the scene state while in the editor:
 
 	if Engine.IsEditorHint() {

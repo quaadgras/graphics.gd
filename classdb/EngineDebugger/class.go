@@ -181,14 +181,6 @@ func ProfilerEnable(name string, enable bool, arguments []any) { //gd:EngineDebu
 }
 
 /*
-Calls the toggle callable of the profiler with given 'name' and 'arguments'. Enables/Disables the same profiler depending on 'enable' argument.
-*/
-func ProfilerEnableOptions(name string, enable bool, arguments []any) { //gd:EngineDebugger.profiler_enable
-	once.Do(singleton)
-	Advanced().ProfilerEnable(String.Name(String.New(name)), enable, gd.EngineArrayFromSlice(arguments))
-}
-
-/*
 Registers a message capture with given 'name'. If 'name' is "my_message" then messages starting with "my_message:" will be called with the given callable.
 
 The callable must accept a message string and a data array as argument. The callable should return true if the message is recognized.

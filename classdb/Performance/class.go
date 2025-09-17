@@ -133,18 +133,6 @@ func AddCustomMonitor(id string, callable Callable.Function, arguments []any) { 
 }
 
 /*
-Adds a custom monitor with the name 'id'. You can specify the category of the monitor using slash delimiters in 'id' (for example: "Game/NumberOfNPCs"). If there is more than one slash delimiter, then the default category is used. The default category is "Custom". Prints an error if given 'id' is already present.
-
-The debugger calls the callable to get the value of custom monitor. The callable must return a zero or positive integer or floating-point number.
-
-Callables are called with arguments supplied in argument array.
-*/
-func AddCustomMonitorOptions(id string, callable Callable.Function, arguments []any) { //gd:Performance.add_custom_monitor
-	once.Do(singleton)
-	Advanced().AddCustomMonitor(String.Name(String.New(id)), Callable.New(callable), gd.EngineArrayFromSlice(arguments))
-}
-
-/*
 Removes the custom monitor with given 'id'. Prints an error if the given 'id' is already absent.
 */
 func RemoveCustomMonitor(id string) { //gd:Performance.remove_custom_monitor

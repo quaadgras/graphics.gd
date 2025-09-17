@@ -230,20 +230,6 @@ func OpenEncrypted(path string, mode_flags ModeFlags, key []byte, iv []byte) Ins
 }
 
 /*
-Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a binary key to encrypt/decrypt it.
-
-Note: The provided key must be 32 bytes long.
-
-Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
-
-[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
-*/
-func OpenEncryptedOptions(path string, mode_flags ModeFlags, key []byte, iv []byte) Instance { //gd:FileAccess.open_encrypted
-	self := Instance{}
-	return Instance(Advanced(self).OpenEncrypted(String.New(path), mode_flags, Packed.BytesFrom(key...), Packed.BytesFrom(iv...)))
-}
-
-/*
 Creates a new [FileAccess] object and opens an encrypted file in write or read mode. You need to pass a password to encrypt/decrypt it.
 
 Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
@@ -271,21 +257,6 @@ func OpenCompressed(path string, mode_flags ModeFlags, compression_mode Compress
 }
 
 /*
-Creates a new [FileAccess] object and opens a compressed file for reading or writing.
-
-Note: [OpenCompressed] can only read files that were saved by Godot, not third-party compression formats. See [GitHub issue #28999] for a workaround.
-
-Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
-
-[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
-[GitHub issue #28999]: https://github.com/godotengine/godot/issues/28999
-*/
-func OpenCompressedOptions(path string, mode_flags ModeFlags, compression_mode CompressionMode) Instance { //gd:FileAccess.open_compressed
-	self := Instance{}
-	return Instance(Advanced(self).OpenCompressed(String.New(path), mode_flags, compression_mode))
-}
-
-/*
 Returns the result of the last [Open] call in the current thread.
 */
 func GetOpenError() error { //gd:FileAccess.get_open_error
@@ -307,24 +278,6 @@ Returns null if opening the file failed. You can use [GetOpenError] to check the
 [FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
 */
 func CreateTemp(mode_flags int, prefix string, extension string, keep bool) Instance { //gd:FileAccess.create_temp
-	self := Instance{}
-	return Instance(Advanced(self).CreateTemp(int64(mode_flags), String.New(prefix), String.New(extension), keep))
-}
-
-/*
-Creates a temporary file. This file will be freed when the returned [FileAccess] is freed.
-
-If 'prefix' is not empty, it will be prefixed to the file name, separated by a -.
-
-If 'extension' is not empty, it will be appended to the temporary file name.
-
-If 'keep' is true, the file is not deleted when the returned [FileAccess] is freed.
-
-Returns null if opening the file failed. You can use [GetOpenError] to check the error that occurred.
-
-[FileAccess]: https://pkg.go.dev/graphics.gd/classdb/FileAccess
-*/
-func CreateTempOptions(mode_flags int, prefix string, extension string, keep bool) Instance { //gd:FileAccess.create_temp
 	self := Instance{}
 	return Instance(Advanced(self).CreateTemp(int64(mode_flags), String.New(prefix), String.New(extension), keep))
 }

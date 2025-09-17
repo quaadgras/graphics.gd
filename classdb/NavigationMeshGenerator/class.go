@@ -154,33 +154,9 @@ func ParseSourceGeometryData(navigation_mesh NavigationMesh.Instance, source_geo
 }
 
 /*
-Parses the [SceneTree] for source geometry according to the properties of 'navigation_mesh'. Updates the provided 'source_geometry_data' resource with the resulting data. The resource can then be used to bake a navigation mesh with [BakeFromSourceGeometryData]. After the process is finished the optional 'callback' will be called.
-
-Note: This function needs to run on the main thread or with a deferred call as the SceneTree is not thread-safe.
-
-Performance: While convenient, reading data arrays from [Mesh] resources can affect the frame rate negatively. The data needs to be received from the GPU, stalling the [RenderingServer] in the process. For performance prefer the use of e.g. collision shapes or creating the data arrays entirely in code.
-
-[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
-[RenderingServer]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer
-[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
-*/
-func ParseSourceGeometryDataOptions(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, root_node Node.Instance, callback func()) { //gd:NavigationMeshGenerator.parse_source_geometry_data
-	once.Do(singleton)
-	Advanced().ParseSourceGeometryData(navigation_mesh, source_geometry_data, root_node, Callable.New(callback))
-}
-
-/*
 Bakes the provided 'navigation_mesh' with the data from the provided 'source_geometry_data'. After the process is finished the optional 'callback' will be called.
 */
 func BakeFromSourceGeometryData(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, callback func()) { //gd:NavigationMeshGenerator.bake_from_source_geometry_data
-	once.Do(singleton)
-	Advanced().BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, Callable.New(callback))
-}
-
-/*
-Bakes the provided 'navigation_mesh' with the data from the provided 'source_geometry_data'. After the process is finished the optional 'callback' will be called.
-*/
-func BakeFromSourceGeometryDataOptions(navigation_mesh NavigationMesh.Instance, source_geometry_data NavigationMeshSourceGeometryData3D.Instance, callback func()) { //gd:NavigationMeshGenerator.bake_from_source_geometry_data
 	once.Do(singleton)
 	Advanced().BakeFromSourceGeometryData(navigation_mesh, source_geometry_data, Callable.New(callback))
 }

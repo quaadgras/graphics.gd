@@ -1234,19 +1234,19 @@ Fetches a node and its most nested resource as specified by the node path's subn
 Example: Assume that the child's [Sprite2D.Texture] has been assigned an [AtlasTexture]:
 
 	node, res, path := node.GetNodeAndResource("Area2D/Sprite2D")
-	println(node.Name()) // Prints Sprite2D
-	println(res)         // Prints <null>
-	println(path)        // Prints ^""
+	fmt.Println(node.Name()) // Prints Sprite2D
+	fmt.Println(res)         // Prints <null>
+	fmt.Println(path)        // Prints ^""
 
 	node, res, path = node.GetNodeAndResource("Area2D/Sprite2D:texture:atlas")
-	println(node.Name())                                 // Prints Sprite2D
-	println(Object.Instance(res.AsObject()).ClassName()) // Prints AtlasTexture
-	println(path)                                        // Prints ^""
+	fmt.Println(node.Name())                                 // Prints Sprite2D
+	fmt.Println(Object.Instance(res.AsObject()).ClassName()) // Prints AtlasTexture
+	fmt.Println(path)                                        // Prints ^""
 
 	node, res, path = node.GetNodeAndResource("Area2D/Sprite2D:texture:atlas:region")
-	println(node.Name())                                 // Prints Sprite2D
-	println(Object.Instance(res.AsObject()).ClassName()) // Prints AtlasTexture
-	println(path)                                        // Prints ^":region"
+	fmt.Println(node.Name())                                 // Prints Sprite2D
+	fmt.Println(Object.Instance(res.AsObject()).ClassName()) // Prints AtlasTexture
+	fmt.Println(path)                                        // Prints ^":region"
 
 [AtlasTexture]: https://pkg.go.dev/graphics.gd/classdb/AtlasTexture
 [Node]: https://pkg.go.dev/graphics.gd/classdb/Node
@@ -3121,19 +3121,19 @@ Example: Assume that the child's [Sprite2D.Texture] has been assigned an [AtlasT
 
 
 	node, res, path := node.GetNodeAndResource("Area2D/Sprite2D")
-	println(node.Name()) // Prints Sprite2D
-	println(res)         // Prints <null>
-	println(path)        // Prints ^""
+	fmt.Println(node.Name()) // Prints Sprite2D
+	fmt.Println(res)         // Prints <null>
+	fmt.Println(path)        // Prints ^""
 
 	node, res, path = node.GetNodeAndResource("Area2D/Sprite2D:texture:atlas")
-	println(node.Name())                                 // Prints Sprite2D
-	println(Object.Instance(res.AsObject()).ClassName()) // Prints AtlasTexture
-	println(path)                                        // Prints ^""
+	fmt.Println(node.Name())                                 // Prints Sprite2D
+	fmt.Println(Object.Instance(res.AsObject()).ClassName()) // Prints AtlasTexture
+	fmt.Println(path)                                        // Prints ^""
 
 	node, res, path = node.GetNodeAndResource("Area2D/Sprite2D:texture:atlas:region")
-	println(node.Name())                                 // Prints Sprite2D
-	println(Object.Instance(res.AsObject()).ClassName()) // Prints AtlasTexture
-	println(path)                                        // Prints ^":region"
+	fmt.Println(node.Name())                                 // Prints Sprite2D
+	fmt.Println(Object.Instance(res.AsObject()).ClassName()) // Prints AtlasTexture
+	fmt.Println(path)                                        // Prints ^":region"
 
 
 [AtlasTexture]: https://pkg.go.dev/graphics.gd/classdb/AtlasTexture

@@ -126,24 +126,6 @@ func Save(resource Resource.Instance, path string, flags SaverFlags) error { //g
 }
 
 /*
-Saves a resource to disk to the given path, using a [ResourceFormatSaver] that recognizes the resource object. If 'path' is empty, [ResourceSaver] will try to use [Resource.ResourcePath].
-
-The 'flags' bitmask can be specified to customize the save behavior.
-
-Returns [Ok] on success.
-
-Note: When the project is running, any generated UID associated with the resource will not be saved as the required code is only executed in editor mode.
-
-[Resource.ResourcePath]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourcePath
-[ResourceFormatSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver
-[ResourceSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceSaver
-*/
-func SaveOptions(resource Resource.Instance, path string, flags SaverFlags) error { //gd:ResourceSaver.save
-	once.Do(singleton)
-	return error(gd.ToError(Advanced().Save(resource, String.New(path), flags)))
-}
-
-/*
 Sets the UID of the given 'resource' path to 'uid'. You can generate a new UID using [ResourceUID.CreateId].
 
 Since resources will normally get a UID automatically, this method is only useful in very specific cases.
@@ -176,18 +158,6 @@ func AddResourceFormatSaver(format_saver ResourceFormatSaver.Instance, at_front 
 }
 
 /*
-Registers a new [ResourceFormatSaver]. The ResourceSaver will use the ResourceFormatSaver as described in [Save].
-
-This method is performed implicitly for ResourceFormatSavers written in GDScript (see [ResourceFormatSaver] for more information).
-
-[ResourceFormatSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver
-*/
-func AddResourceFormatSaverOptions(format_saver ResourceFormatSaver.Instance, at_front bool) { //gd:ResourceSaver.add_resource_format_saver
-	once.Do(singleton)
-	Advanced().AddResourceFormatSaver(format_saver, at_front)
-}
-
-/*
 Unregisters the given [ResourceFormatSaver].
 
 [ResourceFormatSaver]: https://pkg.go.dev/graphics.gd/classdb/ResourceFormatSaver
@@ -201,14 +171,6 @@ func RemoveResourceFormatSaver(format_saver ResourceFormatSaver.Instance) { //gd
 Returns the resource ID for the given path. If 'generate' is true, a new resource ID will be generated if one for the path is not found. If 'generate' is false and the path is not found, [Resourceuid.InvalidId] is returned.
 */
 func GetResourceIdForPath(path string, generate bool) int { //gd:ResourceSaver.get_resource_id_for_path
-	once.Do(singleton)
-	return int(int(Advanced().GetResourceIdForPath(String.New(path), generate)))
-}
-
-/*
-Returns the resource ID for the given path. If 'generate' is true, a new resource ID will be generated if one for the path is not found. If 'generate' is false and the path is not found, [Resourceuid.InvalidId] is returned.
-*/
-func GetResourceIdForPathOptions(path string, generate bool) int { //gd:ResourceSaver.get_resource_id_for_path
 	once.Do(singleton)
 	return int(int(Advanced().GetResourceIdForPath(String.New(path), generate)))
 }

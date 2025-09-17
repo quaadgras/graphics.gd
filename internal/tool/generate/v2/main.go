@@ -300,8 +300,8 @@ func (classDB ClassDB) generateObjectPackage(class gdjson.Class, singleton bool,
 			}
 			classDB.simpleCall(file, class, method, singleton, true)
 			var hasDefault bool
-			for _, argument := range method.Arguments {
-				if argument.DefaultValue != nil {
+			for _, arg := range method.Arguments {
+				if arg.DefaultValue != nil && !((singleton || method.IsStatic) && arg.DefaultValue != nil && gdjson.IsTheDefaultValueZero(*arg.DefaultValue)) {
 					hasDefault = true
 				}
 			}

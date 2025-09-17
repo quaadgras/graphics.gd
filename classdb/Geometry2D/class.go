@@ -338,29 +338,6 @@ func OffsetPolygon(polygon []Vector2.XY, delta Float.X, join_type PolyJoinType) 
 }
 
 /*
-Inflates or deflates 'polygon' by 'delta' units (pixels). If 'delta' is positive, makes the polygon grow outward. If 'delta' is negative, shrinks the polygon inward. Returns an array of polygons because inflating/deflating may result in multiple discrete polygons. Returns an empty array if 'delta' is negative and the absolute value of it approximately exceeds the minimum bounding rectangle dimensions of the polygon.
-
-Each polygon's vertices will be rounded as determined by 'join_type'.
-
-The operation may result in an outer polygon (boundary) and inner polygon (hole) produced which could be distinguished by calling [IsPolygonClockwise].
-
-Note: To translate the polygon's vertices specifically, multiply them to a [Transform2D.OriginXY]:
-
-	var polygon = []Vector2.XY{Vector2.New(0, 0), Vector2.New(100, 0), Vector2.New(100, 100), Vector2.New(0, 100)}
-	var offset = Vector2.New(50, 50)
-	for i := range polygon {
-		polygon[i] = Transform2D.Vector(polygon[i], Transform2D.OriginXY{Origin: offset})
-	}
-	fmt.Println(polygon) // Prints [(50, 50), (150, 50), (150, 150), (50, 150)]
-
-[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
-*/
-func OffsetPolygonOptions(polygon []Vector2.XY, delta Float.X, join_type PolyJoinType) [][]Vector2.XY { //gd:Geometry2D.offset_polygon
-	once.Do(singleton)
-	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(Advanced().OffsetPolygon(Packed.New(polygon...), float64(delta), join_type))))
-}
-
-/*
 Inflates or deflates 'polyline' by 'delta' units (pixels), producing polygons. If 'delta' is positive, makes the polyline grow outward. Returns an array of polygons because inflating/deflating may result in multiple discrete polygons. If 'delta' is negative, returns an empty array.
 
 Each polygon's vertices will be rounded as determined by 'join_type'.
