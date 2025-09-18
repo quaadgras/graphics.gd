@@ -18,6 +18,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +52,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -104,7 +106,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -215,81 +217,81 @@ Loads the buffer view data from the buffer referenced by this buffer view in the
 */
 //go:nosplit
 func (self class) LoadBufferViewData(state [1]gdclass.GLTFState) Packed.Bytes { //gd:GLTFBufferView.load_buffer_view_data
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.load_buffer_view_data, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ state gdextension.Object }{gdextension.Object(gd.ObjectChecked(state[0].AsObject()))})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.load_buffer_view_data, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ state gdextension.Object }{gdextension.Object(gd.ObjectChecked(state[0].AsObject()))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetBuffer() int64 { //gd:GLTFBufferView.get_buffer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_buffer, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_buffer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBuffer(buffer int64) { //gd:GLTFBufferView.set_buffer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer, 0|(gdextension.SizeInt<<4), &struct{ buffer int64 }{buffer})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer, 0|(gdextension.SizeInt<<4), &struct{ buffer int64 }{buffer})
 }
 
 //go:nosplit
 func (self class) GetByteOffset() int64 { //gd:GLTFBufferView.get_byte_offset
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_byte_offset, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_byte_offset, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetByteOffset(byte_offset int64) { //gd:GLTFBufferView.set_byte_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_byte_offset, 0|(gdextension.SizeInt<<4), &struct{ byte_offset int64 }{byte_offset})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_byte_offset, 0|(gdextension.SizeInt<<4), &struct{ byte_offset int64 }{byte_offset})
 }
 
 //go:nosplit
 func (self class) GetByteLength() int64 { //gd:GLTFBufferView.get_byte_length
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_byte_length, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_byte_length, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetByteLength(byte_length int64) { //gd:GLTFBufferView.set_byte_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_byte_length, 0|(gdextension.SizeInt<<4), &struct{ byte_length int64 }{byte_length})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_byte_length, 0|(gdextension.SizeInt<<4), &struct{ byte_length int64 }{byte_length})
 }
 
 //go:nosplit
 func (self class) GetByteStride() int64 { //gd:GLTFBufferView.get_byte_stride
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_byte_stride, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_byte_stride, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetByteStride(byte_stride int64) { //gd:GLTFBufferView.set_byte_stride
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_byte_stride, 0|(gdextension.SizeInt<<4), &struct{ byte_stride int64 }{byte_stride})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_byte_stride, 0|(gdextension.SizeInt<<4), &struct{ byte_stride int64 }{byte_stride})
 }
 
 //go:nosplit
 func (self class) GetIndices() bool { //gd:GLTFBufferView.get_indices
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_indices, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_indices, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIndices(indices bool) { //gd:GLTFBufferView.set_indices
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_indices, 0|(gdextension.SizeBool<<4), &struct{ indices bool }{indices})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_indices, 0|(gdextension.SizeBool<<4), &struct{ indices bool }{indices})
 }
 
 //go:nosplit
 func (self class) GetVertexAttributes() bool { //gd:GLTFBufferView.get_vertex_attributes
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_vertex_attributes, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_vertex_attributes, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVertexAttributes(is_attributes bool) { //gd:GLTFBufferView.set_vertex_attributes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_attributes, 0|(gdextension.SizeBool<<4), &struct{ is_attributes bool }{is_attributes})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex_attributes, 0|(gdextension.SizeBool<<4), &struct{ is_attributes bool }{is_attributes})
 }
 func (self class) AsGLTFBufferView() Advanced {
 	return Advanced{pointers.AsA[gdclass.GLTFBufferView](self[0])}

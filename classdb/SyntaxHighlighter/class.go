@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +50,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -93,7 +95,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -318,7 +320,7 @@ Example: Possible return value. This means columns 0 to 4 should be red, and col
 */
 //go:nosplit
 func (self class) GetLineSyntaxHighlighting(line int64) Dictionary.Any { //gd:SyntaxHighlighter.get_line_syntax_highlighting
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_line_syntax_highlighting, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_line_syntax_highlighting, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -334,7 +336,7 @@ Note: This is called automatically when the associated [TextEdit] node, updates 
 */
 //go:nosplit
 func (self class) UpdateCache() { //gd:SyntaxHighlighter.update_cache
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_cache, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_cache, 0, &struct{}{})
 }
 
 /*
@@ -346,7 +348,7 @@ Then calls overridable method [ClearHighlightingCache].
 */
 //go:nosplit
 func (self class) ClearHighlightingCache() { //gd:SyntaxHighlighter.clear_highlighting_cache
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_highlighting_cache, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_highlighting_cache, 0, &struct{}{})
 }
 
 /*
@@ -356,7 +358,7 @@ Returns the associated [TextEdit] node.
 */
 //go:nosplit
 func (self class) GetTextEdit() [1]gdclass.TextEdit { //gd:SyntaxHighlighter.get_text_edit
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_text_edit, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_text_edit, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TextEdit{gd.PointerMustAssertInstanceID[gdclass.TextEdit](r_ret)}
 	return ret
 }

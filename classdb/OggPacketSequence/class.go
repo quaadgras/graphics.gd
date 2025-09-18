@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -43,6 +44,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -90,7 +92,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -179,38 +181,38 @@ func (self Instance) SetSamplingRate(value Float.X) {
 
 //go:nosplit
 func (self class) SetPacketData(packet_data Array.Contains[Array.Any]) { //gd:OggPacketSequence.set_packet_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_packet_data, 0|(gdextension.SizeArray<<4), &struct{ packet_data gdextension.Array }{pointers.Get(gd.InternalArray(packet_data))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_packet_data, 0|(gdextension.SizeArray<<4), &struct{ packet_data gdextension.Array }{pointers.Get(gd.InternalArray(packet_data))})
 }
 
 //go:nosplit
 func (self class) GetPacketData() Array.Contains[Array.Any] { //gd:OggPacketSequence.get_packet_data
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_packet_data, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_packet_data, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Array.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPacketGranulePositions(granule_positions Packed.Array[int64]) { //gd:OggPacketSequence.set_packet_granule_positions
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_packet_granule_positions, 0|(gdextension.SizePackedArray<<4), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_packet_granule_positions, 0|(gdextension.SizePackedArray<<4), &struct {
 		granule_positions gdextension.PackedArray[int64]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](granule_positions))})
 }
 
 //go:nosplit
 func (self class) GetPacketGranulePositions() Packed.Array[int64] { //gd:OggPacketSequence.get_packet_granule_positions
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_packet_granule_positions, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_packet_granule_positions, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSamplingRate(sampling_rate float64) { //gd:OggPacketSequence.set_sampling_rate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sampling_rate, 0|(gdextension.SizeFloat<<4), &struct{ sampling_rate float64 }{sampling_rate})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sampling_rate, 0|(gdextension.SizeFloat<<4), &struct{ sampling_rate float64 }{sampling_rate})
 }
 
 //go:nosplit
 func (self class) GetSamplingRate() float64 { //gd:OggPacketSequence.get_sampling_rate
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sampling_rate, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_sampling_rate, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -220,7 +222,7 @@ The length of this stream, in seconds.
 */
 //go:nosplit
 func (self class) GetLength() float64 { //gd:OggPacketSequence.get_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

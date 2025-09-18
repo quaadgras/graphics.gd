@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -46,6 +47,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -99,7 +101,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -215,36 +217,36 @@ func (self Instance) SetTrackingConfidence(value TrackingConfidence) {
 
 //go:nosplit
 func (self class) SetHasTrackingData(has_tracking_data bool) { //gd:XRPose.set_has_tracking_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_has_tracking_data, 0|(gdextension.SizeBool<<4), &struct{ has_tracking_data bool }{has_tracking_data})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_has_tracking_data, 0|(gdextension.SizeBool<<4), &struct{ has_tracking_data bool }{has_tracking_data})
 }
 
 //go:nosplit
 func (self class) GetHasTrackingData() bool { //gd:XRPose.get_has_tracking_data
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetName(name String.Name) { //gd:XRPose.set_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_name, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 //go:nosplit
 func (self class) GetName() String.Name { //gd:XRPose.get_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransform(transform Transform3D.BasisOrigin) { //gd:XRPose.set_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform, 0|(gdextension.SizeTransform3D<<4), &struct{ transform Transform3D.BasisOrigin }{gd.Transposed(transform)})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform, 0|(gdextension.SizeTransform3D<<4), &struct{ transform Transform3D.BasisOrigin }{gd.Transposed(transform)})
 }
 
 //go:nosplit
 func (self class) GetTransform() Transform3D.BasisOrigin { //gd:XRPose.get_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -257,43 +259,43 @@ Returns the [Transform] with world scale and our reference frame applied. This i
 */
 //go:nosplit
 func (self class) GetAdjustedTransform() Transform3D.BasisOrigin { //gd:XRPose.get_adjusted_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_adjusted_transform, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_adjusted_transform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearVelocity(velocity Vector3.XYZ) { //gd:XRPose.set_linear_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector3<<4), &struct{ velocity Vector3.XYZ }{velocity})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector3<<4), &struct{ velocity Vector3.XYZ }{velocity})
 }
 
 //go:nosplit
 func (self class) GetLinearVelocity() Vector3.XYZ { //gd:XRPose.get_linear_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularVelocity(velocity Vector3.XYZ) { //gd:XRPose.set_angular_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeVector3<<4), &struct{ velocity Vector3.XYZ }{velocity})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeVector3<<4), &struct{ velocity Vector3.XYZ }{velocity})
 }
 
 //go:nosplit
 func (self class) GetAngularVelocity() Vector3.XYZ { //gd:XRPose.get_angular_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTrackingConfidence(tracking_confidence TrackingConfidence) { //gd:XRPose.set_tracking_confidence
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracking_confidence, 0|(gdextension.SizeInt<<4), &struct{ tracking_confidence TrackingConfidence }{tracking_confidence})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracking_confidence, 0|(gdextension.SizeInt<<4), &struct{ tracking_confidence TrackingConfidence }{tracking_confidence})
 }
 
 //go:nosplit
 func (self class) GetTrackingConfidence() TrackingConfidence { //gd:XRPose.get_tracking_confidence
-	var r_ret = gdextension.Call[TrackingConfidence](gd.ObjectChecked(self.AsObject()), methods.get_tracking_confidence, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TrackingConfidence](gd.ObjectChecked(self.AsObject()), methods.get_tracking_confidence, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

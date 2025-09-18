@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +49,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -90,7 +92,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -255,7 +257,7 @@ Queue resort of the contained children. This is called automatically anyway, but
 */
 //go:nosplit
 func (self class) QueueSort() { //gd:Container.queue_sort
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_sort, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_sort, 0, &struct{}{})
 }
 
 /*
@@ -263,7 +265,7 @@ Fit a child control in a given rect. This is mainly a helper for creating custom
 */
 //go:nosplit
 func (self class) FitChildInRect(child [1]gdclass.Control, rect Rect2.PositionSize) { //gd:Container.fit_child_in_rect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fit_child_in_rect, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.fit_child_in_rect, 0|(gdextension.SizeObject<<4)|(gdextension.SizeRect2<<8), &struct {
 		child gdextension.Object
 		rect  Rect2.PositionSize
 	}{gdextension.Object(gd.ObjectChecked(child[0].AsObject())), rect})

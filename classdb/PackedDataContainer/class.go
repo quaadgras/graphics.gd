@@ -52,6 +52,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -85,6 +86,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -127,7 +129,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -209,7 +211,7 @@ Note: Subsequent calls to this method will overwrite the existing data.
 */
 //go:nosplit
 func (self class) Pack(value variant.Any) Error.Code { //gd:PackedDataContainer.pack
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pack, gdextension.SizeInt|(gdextension.SizeVariant<<4), &struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pack, gdextension.SizeInt|(gdextension.SizeVariant<<4), &struct{ value gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -222,7 +224,7 @@ Returns the size of the packed container (see [Array.Size] and [Dictionary.Size]
 */
 //go:nosplit
 func (self class) Size() int64 { //gd:PackedDataContainer.size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.size, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -53,6 +53,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -88,6 +89,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -134,7 +136,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -215,36 +217,36 @@ func (self Instance) SetUseMipmaps(value bool) {
 
 //go:nosplit
 func (self class) SetFitMargin(fit_margin float64) { //gd:CanvasGroup.set_fit_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fit_margin, 0|(gdextension.SizeFloat<<4), &struct{ fit_margin float64 }{fit_margin})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fit_margin, 0|(gdextension.SizeFloat<<4), &struct{ fit_margin float64 }{fit_margin})
 }
 
 //go:nosplit
 func (self class) GetFitMargin() float64 { //gd:CanvasGroup.get_fit_margin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fit_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fit_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClearMargin(clear_margin float64) { //gd:CanvasGroup.set_clear_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clear_margin, 0|(gdextension.SizeFloat<<4), &struct{ clear_margin float64 }{clear_margin})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clear_margin, 0|(gdextension.SizeFloat<<4), &struct{ clear_margin float64 }{clear_margin})
 }
 
 //go:nosplit
 func (self class) GetClearMargin() float64 { //gd:CanvasGroup.get_clear_margin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_clear_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_clear_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseMipmaps(use_mipmaps bool) { //gd:CanvasGroup.set_use_mipmaps
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_mipmaps, 0|(gdextension.SizeBool<<4), &struct{ use_mipmaps bool }{use_mipmaps})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_mipmaps, 0|(gdextension.SizeBool<<4), &struct{ use_mipmaps bool }{use_mipmaps})
 }
 
 //go:nosplit
 func (self class) IsUsingMipmaps() bool { //gd:CanvasGroup.is_using_mipmaps
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_mipmaps, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_mipmaps, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

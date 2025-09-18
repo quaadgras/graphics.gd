@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +48,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -91,7 +93,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -165,24 +167,24 @@ func (self Instance) SetDistance(value Float.X) {
 
 //go:nosplit
 func (self class) SetNormal(normal Vector2.XY) { //gd:WorldBoundaryShape2D.set_normal
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal, 0|(gdextension.SizeVector2<<4), &struct{ normal Vector2.XY }{normal})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal, 0|(gdextension.SizeVector2<<4), &struct{ normal Vector2.XY }{normal})
 }
 
 //go:nosplit
 func (self class) GetNormal() Vector2.XY { //gd:WorldBoundaryShape2D.get_normal
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_normal, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_normal, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDistance(distance float64) { //gd:WorldBoundaryShape2D.set_distance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 
 //go:nosplit
 func (self class) GetDistance() float64 { //gd:WorldBoundaryShape2D.get_distance
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

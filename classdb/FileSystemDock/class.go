@@ -16,6 +16,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -56,6 +57,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -99,7 +101,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -184,7 +186,7 @@ Sets the given 'path' as currently selected, ensuring that the selected file/dir
 */
 //go:nosplit
 func (self class) NavigateToPath(path String.Readable) { //gd:FileSystemDock.navigate_to_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.navigate_to_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.navigate_to_path, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 
 /*
@@ -194,7 +196,7 @@ Registers a new [EditorResourceTooltipPlugin].
 */
 //go:nosplit
 func (self class) AddResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.add_resource_tooltip_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
 }
 
 /*
@@ -204,7 +206,7 @@ Removes an [EditorResourceTooltipPlugin]. Fails if the plugin wasn't previously 
 */
 //go:nosplit
 func (self class) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.remove_resource_tooltip_plugin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
 }
 func (self Instance) OnInherit(cb func(file string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags

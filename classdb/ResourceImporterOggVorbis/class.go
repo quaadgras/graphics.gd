@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +52,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -93,7 +95,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -176,7 +178,7 @@ Creates a new [AudioStreamOggVorbis] instance from the given buffer. The buffer 
 */
 //go:nosplit
 func (self class) LoadFromBuffer(stream_data Packed.Bytes) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_buffer
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4), &struct{ stream_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data.Array)))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4), &struct{ stream_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data.Array)))})
 	var ret = [1]gdclass.AudioStreamOggVorbis{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamOggVorbis](r_ret)}
 	return ret
 }
@@ -188,7 +190,7 @@ Creates a new [AudioStreamOggVorbis] instance from the given file path. The file
 */
 //go:nosplit
 func (self class) LoadFromFile(path String.Readable) [1]gdclass.AudioStreamOggVorbis { //gd:ResourceImporterOggVorbis.load_from_file
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_file, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.load_from_file, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = [1]gdclass.AudioStreamOggVorbis{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamOggVorbis](r_ret)}
 	return ret
 }

@@ -23,6 +23,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -59,6 +60,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -126,7 +128,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -353,7 +355,7 @@ Adds a new point that represents a 'node' at the position set by 'pos'. You can 
 */
 //go:nosplit
 func (self class) AddBlendPoint(node [1]gdclass.AnimationRootNode, pos Vector2.XY, at_index int64) { //gd:AnimationNodeBlendSpace2D.add_blend_point
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_blend_point, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_blend_point, 0|(gdextension.SizeObject<<4)|(gdextension.SizeVector2<<8)|(gdextension.SizeInt<<12), &struct {
 		node     gdextension.Object
 		pos      Vector2.XY
 		at_index int64
@@ -365,7 +367,7 @@ Updates the position of the point at index 'point' in the blend space.
 */
 //go:nosplit
 func (self class) SetBlendPointPosition(point int64, pos Vector2.XY) { //gd:AnimationNodeBlendSpace2D.set_blend_point_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_point_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_point_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector2<<8), &struct {
 		point int64
 		pos   Vector2.XY
 	}{point, pos})
@@ -376,7 +378,7 @@ Returns the position of the point at index 'point'.
 */
 //go:nosplit
 func (self class) GetBlendPointPosition(point int64) Vector2.XY { //gd:AnimationNodeBlendSpace2D.get_blend_point_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_blend_point_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ point int64 }{point})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_blend_point_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ point int64 }{point})
 	var ret = r_ret
 	return ret
 }
@@ -388,7 +390,7 @@ Changes the [AnimationNode] referenced by the point at index 'point'.
 */
 //go:nosplit
 func (self class) SetBlendPointNode(point int64, node [1]gdclass.AnimationRootNode) { //gd:AnimationNodeBlendSpace2D.set_blend_point_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_point_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_point_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		point int64
 		node  gdextension.Object
 	}{point, gdextension.Object(gd.ObjectChecked(node[0].AsObject()))})
@@ -401,7 +403,7 @@ Returns the [AnimationRootNode] referenced by the point at index 'point'.
 */
 //go:nosplit
 func (self class) GetBlendPointNode(point int64) [1]gdclass.AnimationRootNode { //gd:AnimationNodeBlendSpace2D.get_blend_point_node
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_blend_point_node, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ point int64 }{point})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_blend_point_node, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ point int64 }{point})
 	var ret = [1]gdclass.AnimationRootNode{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationRootNode](r_ret)}
 	return ret
 }
@@ -411,7 +413,7 @@ Removes the point at index 'point' from the blend space.
 */
 //go:nosplit
 func (self class) RemoveBlendPoint(point int64) { //gd:AnimationNodeBlendSpace2D.remove_blend_point
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_blend_point, 0|(gdextension.SizeInt<<4), &struct{ point int64 }{point})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_blend_point, 0|(gdextension.SizeInt<<4), &struct{ point int64 }{point})
 }
 
 /*
@@ -419,7 +421,7 @@ Returns the number of points in the blend space.
 */
 //go:nosplit
 func (self class) GetBlendPointCount() int64 { //gd:AnimationNodeBlendSpace2D.get_blend_point_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_blend_point_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_blend_point_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -429,7 +431,7 @@ Creates a new triangle using three points 'x', 'y', and 'z'. Triangles can overl
 */
 //go:nosplit
 func (self class) AddTriangle(x int64, y int64, z int64, at_index int64) { //gd:AnimationNodeBlendSpace2D.add_triangle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_triangle, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_triangle, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		x        int64
 		y        int64
 		z        int64
@@ -442,7 +444,7 @@ Returns the position of the point at index 'point' in the triangle of index 'tri
 */
 //go:nosplit
 func (self class) GetTrianglePoint(triangle int64, point int64) int64 { //gd:AnimationNodeBlendSpace2D.get_triangle_point
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_triangle_point, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_triangle_point, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		triangle int64
 		point    int64
 	}{triangle, point})
@@ -455,7 +457,7 @@ Removes the triangle at index 'triangle' from the blend space.
 */
 //go:nosplit
 func (self class) RemoveTriangle(triangle int64) { //gd:AnimationNodeBlendSpace2D.remove_triangle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_triangle, 0|(gdextension.SizeInt<<4), &struct{ triangle int64 }{triangle})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_triangle, 0|(gdextension.SizeInt<<4), &struct{ triangle int64 }{triangle})
 }
 
 /*
@@ -463,103 +465,103 @@ Returns the number of triangles in the blend space.
 */
 //go:nosplit
 func (self class) GetTriangleCount() int64 { //gd:AnimationNodeBlendSpace2D.get_triangle_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_triangle_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_triangle_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMinSpace(min_space Vector2.XY) { //gd:AnimationNodeBlendSpace2D.set_min_space
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_space, 0|(gdextension.SizeVector2<<4), &struct{ min_space Vector2.XY }{min_space})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_space, 0|(gdextension.SizeVector2<<4), &struct{ min_space Vector2.XY }{min_space})
 }
 
 //go:nosplit
 func (self class) GetMinSpace() Vector2.XY { //gd:AnimationNodeBlendSpace2D.get_min_space
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_min_space, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_min_space, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxSpace(max_space Vector2.XY) { //gd:AnimationNodeBlendSpace2D.set_max_space
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_space, 0|(gdextension.SizeVector2<<4), &struct{ max_space Vector2.XY }{max_space})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_space, 0|(gdextension.SizeVector2<<4), &struct{ max_space Vector2.XY }{max_space})
 }
 
 //go:nosplit
 func (self class) GetMaxSpace() Vector2.XY { //gd:AnimationNodeBlendSpace2D.get_max_space
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_max_space, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_max_space, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSnap(snap Vector2.XY) { //gd:AnimationNodeBlendSpace2D.set_snap
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_snap, 0|(gdextension.SizeVector2<<4), &struct{ snap Vector2.XY }{snap})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_snap, 0|(gdextension.SizeVector2<<4), &struct{ snap Vector2.XY }{snap})
 }
 
 //go:nosplit
 func (self class) GetSnap() Vector2.XY { //gd:AnimationNodeBlendSpace2D.get_snap
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_snap, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_snap, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetXLabel(text String.Readable) { //gd:AnimationNodeBlendSpace2D.set_x_label
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_x_label, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_x_label, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 
 //go:nosplit
 func (self class) GetXLabel() String.Readable { //gd:AnimationNodeBlendSpace2D.get_x_label
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_x_label, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_x_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetYLabel(text String.Readable) { //gd:AnimationNodeBlendSpace2D.set_y_label
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_y_label, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_y_label, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 
 //go:nosplit
 func (self class) GetYLabel() String.Readable { //gd:AnimationNodeBlendSpace2D.get_y_label
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_y_label, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_y_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoTriangles(enable bool) { //gd:AnimationNodeBlendSpace2D.set_auto_triangles
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_triangles, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_triangles, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) GetAutoTriangles() bool { //gd:AnimationNodeBlendSpace2D.get_auto_triangles
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_auto_triangles, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_auto_triangles, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBlendMode(mode BlendMode) { //gd:AnimationNodeBlendSpace2D.set_blend_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_mode, 0|(gdextension.SizeInt<<4), &struct{ mode BlendMode }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_mode, 0|(gdextension.SizeInt<<4), &struct{ mode BlendMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetBlendMode() BlendMode { //gd:AnimationNodeBlendSpace2D.get_blend_mode
-	var r_ret = gdextension.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseSync(enable bool) { //gd:AnimationNodeBlendSpace2D.set_use_sync
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_sync, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_sync, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsUsingSync() bool { //gd:AnimationNodeBlendSpace2D.is_using_sync
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_sync, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_sync, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

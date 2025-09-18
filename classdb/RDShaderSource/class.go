@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +51,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -94,7 +96,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -211,7 +213,7 @@ Note: If you set the compute shader source code using this method directly, reme
 */
 //go:nosplit
 func (self class) SetStageSource(stage Rendering.ShaderStage, source String.Readable) { //gd:RDShaderSource.set_stage_source
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stage_source, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stage_source, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		stage  Rendering.ShaderStage
 		source gdextension.String
 	}{stage, pointers.Get(gd.InternalString(source))})
@@ -228,19 +230,19 @@ Returns source code for the specified shader 'stage'. Equivalent to getting one 
 */
 //go:nosplit
 func (self class) GetStageSource(stage Rendering.ShaderStage) String.Readable { //gd:RDShaderSource.get_stage_source
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_stage_source, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ stage Rendering.ShaderStage }{stage})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_stage_source, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ stage Rendering.ShaderStage }{stage})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLanguage(language Rendering.ShaderLanguage) { //gd:RDShaderSource.set_language
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeInt<<4), &struct{ language Rendering.ShaderLanguage }{language})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeInt<<4), &struct{ language Rendering.ShaderLanguage }{language})
 }
 
 //go:nosplit
 func (self class) GetLanguage() Rendering.ShaderLanguage { //gd:RDShaderSource.get_language
-	var r_ret = gdextension.Call[Rendering.ShaderLanguage](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Rendering.ShaderLanguage](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

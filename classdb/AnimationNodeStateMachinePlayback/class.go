@@ -26,6 +26,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -59,6 +60,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -109,7 +111,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -283,7 +285,7 @@ If 'reset_on_teleport' is true, the animation is played from the beginning when 
 */
 //go:nosplit
 func (self class) Travel(to_node String.Name, reset_on_teleport bool) { //gd:AnimationNodeStateMachinePlayback.travel
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.travel, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.travel, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		to_node           gdextension.StringName
 		reset_on_teleport bool
 	}{pointers.Get(gd.InternalStringName(to_node)), reset_on_teleport})
@@ -296,7 +298,7 @@ If 'reset' is true, the animation is played from the beginning.
 */
 //go:nosplit
 func (self class) Start(node String.Name, reset bool) { //gd:AnimationNodeStateMachinePlayback.start
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		node  gdextension.StringName
 		reset bool
 	}{pointers.Get(gd.InternalStringName(node)), reset})
@@ -307,7 +309,7 @@ If there is a next path by travel or auto advance, immediately transitions from 
 */
 //go:nosplit
 func (self class) Next() { //gd:AnimationNodeStateMachinePlayback.next
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.next, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.next, 0, &struct{}{})
 }
 
 /*
@@ -315,7 +317,7 @@ Stops the currently playing animation.
 */
 //go:nosplit
 func (self class) Stop() { //gd:AnimationNodeStateMachinePlayback.stop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
 }
 
 /*
@@ -323,7 +325,7 @@ Returns true if an animation is playing.
 */
 //go:nosplit
 func (self class) IsPlaying() bool { //gd:AnimationNodeStateMachinePlayback.is_playing
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -335,7 +337,7 @@ Note: When using a cross-fade, the current state changes to the next state immed
 */
 //go:nosplit
 func (self class) GetCurrentNode() String.Name { //gd:AnimationNodeStateMachinePlayback.get_current_node
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_current_node, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_current_node, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -345,7 +347,7 @@ Returns the playback position within the current animation state.
 */
 //go:nosplit
 func (self class) GetCurrentPlayPosition() float64 { //gd:AnimationNodeStateMachinePlayback.get_current_play_position
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_play_position, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_play_position, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -359,7 +361,7 @@ Note: It is possible that any [AnimationRootNode] can be nodes as well as animat
 */
 //go:nosplit
 func (self class) GetCurrentLength() float64 { //gd:AnimationNodeStateMachinePlayback.get_current_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -369,7 +371,7 @@ Returns the starting state of currently fading animation.
 */
 //go:nosplit
 func (self class) GetFadingFromNode() String.Name { //gd:AnimationNodeStateMachinePlayback.get_fading_from_node
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_fading_from_node, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_fading_from_node, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -379,7 +381,7 @@ Returns the current travel path as computed internally by the A* algorithm.
 */
 //go:nosplit
 func (self class) GetTravelPath() Array.Contains[String.Name] { //gd:AnimationNodeStateMachinePlayback.get_travel_path
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_travel_path, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_travel_path, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

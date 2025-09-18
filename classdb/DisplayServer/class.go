@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -62,6 +63,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -370,7 +372,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -3616,7 +3618,7 @@ Returns true if the specified 'feature' is supported by the current [DisplayServ
 */
 //go:nosplit
 func (self class) HasFeature(feature Feature) bool { //gd:DisplayServer.has_feature
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
 	var ret = r_ret
 	return ret
 }
@@ -3631,7 +3633,7 @@ The names of built-in display servers are Windows, macOS, X11 (Linux), Wayland (
 */
 //go:nosplit
 func (self class) GetName() String.Readable { //gd:DisplayServer.get_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3647,7 +3649,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) HelpSetSearchCallbacks(search_callback Callable.Function, action_callback Callable.Function) { //gd:DisplayServer.help_set_search_callbacks
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.help_set_search_callbacks, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.help_set_search_callbacks, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeCallable<<8), &struct {
 		search_callback gdextension.Callable
 		action_callback gdextension.Callable
 	}{pointers.Get(gd.InternalCallable(search_callback)), pointers.Get(gd.InternalCallable(action_callback))})
@@ -3658,7 +3660,7 @@ Registers callables to emit when the menu is respectively about to show or close
 */
 //go:nosplit
 func (self class) GlobalMenuSetPopupCallbacks(menu_root String.Readable, open_callback Callable.Function, close_callback Callable.Function) { //gd:DisplayServer.global_menu_set_popup_callbacks
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_popup_callbacks, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_popup_callbacks, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeCallable<<12), &struct {
 		menu_root      gdextension.String
 		open_callback  gdextension.Callable
 		close_callback gdextension.Callable
@@ -3678,7 +3680,7 @@ Supported system menu IDs:
 */
 //go:nosplit
 func (self class) GlobalMenuAddSubmenuItem(menu_root String.Readable, label String.Readable, submenu String.Readable, index int64) int64 { //gd:DisplayServer.global_menu_add_submenu_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_submenu_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_submenu_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16), &struct {
 		menu_root gdextension.String
 		label     gdextension.String
 		submenu   gdextension.String
@@ -3705,7 +3707,7 @@ Supported system menu IDs:
 */
 //go:nosplit
 func (self class) GlobalMenuAddItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		menu_root    gdextension.String
 		label        gdextension.String
 		callback     gdextension.Callable
@@ -3735,7 +3737,7 @@ Supported system menu IDs:
 */
 //go:nosplit
 func (self class) GlobalMenuAddCheckItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_check_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		menu_root    gdextension.String
 		label        gdextension.String
 		callback     gdextension.Callable
@@ -3765,7 +3767,7 @@ Supported system menu IDs:
 */
 //go:nosplit
 func (self class) GlobalMenuAddIconItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_icon_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_icon_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_icon_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
 		menu_root    gdextension.String
 		icon         gdextension.Object
 		label        gdextension.String
@@ -3796,7 +3798,7 @@ Supported system menu IDs:
 */
 //go:nosplit
 func (self class) GlobalMenuAddIconCheckItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_icon_check_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_icon_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_icon_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
 		menu_root    gdextension.String
 		icon         gdextension.Object
 		label        gdextension.String
@@ -3829,7 +3831,7 @@ Supported system menu IDs:
 */
 //go:nosplit
 func (self class) GlobalMenuAddRadioCheckItem(menu_root String.Readable, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_radio_check_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_radio_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_radio_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		menu_root    gdextension.String
 		label        gdextension.String
 		callback     gdextension.Callable
@@ -3861,7 +3863,7 @@ Supported system menu IDs:
 */
 //go:nosplit
 func (self class) GlobalMenuAddIconRadioCheckItem(menu_root String.Readable, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_icon_radio_check_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_icon_radio_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_icon_radio_check_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
 		menu_root    gdextension.String
 		icon         gdextension.Object
 		label        gdextension.String
@@ -3896,7 +3898,7 @@ Supported system menu IDs:
 */
 //go:nosplit
 func (self class) GlobalMenuAddMultistateItem(menu_root String.Readable, label String.Readable, max_states int64, default_state int64, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:DisplayServer.global_menu_add_multistate_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_multistate_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeCallable<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_multistate_item, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeCallable<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), &struct {
 		menu_root     gdextension.String
 		label         gdextension.String
 		max_states    int64
@@ -3924,7 +3926,7 @@ Supported system menu IDs:
 */
 //go:nosplit
 func (self class) GlobalMenuAddSeparator(menu_root String.Readable, index int64) int64 { //gd:DisplayServer.global_menu_add_separator
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_separator, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_add_separator, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		index     int64
 	}{pointers.Get(gd.InternalString(menu_root)), index})
@@ -3939,7 +3941,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuGetItemIndexFromText(menu_root String.Readable, text String.Readable) int64 { //gd:DisplayServer.global_menu_get_item_index_from_text
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_index_from_text, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_index_from_text, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		menu_root gdextension.String
 		text      gdextension.String
 	}{pointers.Get(gd.InternalString(menu_root)), pointers.Get(gd.InternalString(text))})
@@ -3954,7 +3956,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuGetItemIndexFromTag(menu_root String.Readable, tag variant.Any) int64 { //gd:DisplayServer.global_menu_get_item_index_from_tag
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_index_from_tag, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_index_from_tag, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
 		menu_root gdextension.String
 		tag       gdextension.Variant
 	}{pointers.Get(gd.InternalString(menu_root)), gdextension.Variant(pointers.Get(gd.InternalVariant(tag)))})
@@ -3969,7 +3971,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuIsItemChecked(menu_root String.Readable, idx int64) bool { //gd:DisplayServer.global_menu_is_item_checked
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.global_menu_is_item_checked, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.global_menu_is_item_checked, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -3984,7 +3986,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuIsItemCheckable(menu_root String.Readable, idx int64) bool { //gd:DisplayServer.global_menu_is_item_checkable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.global_menu_is_item_checkable, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.global_menu_is_item_checkable, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4001,7 +4003,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuIsItemRadioCheckable(menu_root String.Readable, idx int64) bool { //gd:DisplayServer.global_menu_is_item_radio_checkable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.global_menu_is_item_radio_checkable, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.global_menu_is_item_radio_checkable, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4016,7 +4018,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuGetItemCallback(menu_root String.Readable, idx int64) Callable.Function { //gd:DisplayServer.global_menu_get_item_callback
-	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_callback, gdextension.SizeCallable|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_callback, gdextension.SizeCallable|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4031,7 +4033,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuGetItemKeyCallback(menu_root String.Readable, idx int64) Callable.Function { //gd:DisplayServer.global_menu_get_item_key_callback
-	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_key_callback, gdextension.SizeCallable|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_key_callback, gdextension.SizeCallable|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4046,7 +4048,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuGetItemTag(menu_root String.Readable, idx int64) variant.Any { //gd:DisplayServer.global_menu_get_item_tag
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_tag, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_tag, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4061,7 +4063,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuGetItemText(menu_root String.Readable, idx int64) String.Readable { //gd:DisplayServer.global_menu_get_item_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_text, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_text, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4076,7 +4078,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuGetItemSubmenu(menu_root String.Readable, idx int64) String.Readable { //gd:DisplayServer.global_menu_get_item_submenu
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_submenu, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_submenu, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4091,7 +4093,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuGetItemAccelerator(menu_root String.Readable, idx int64) Input.Key { //gd:DisplayServer.global_menu_get_item_accelerator
-	var r_ret = gdextension.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_accelerator, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_accelerator, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4108,7 +4110,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuIsItemDisabled(menu_root String.Readable, idx int64) bool { //gd:DisplayServer.global_menu_is_item_disabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.global_menu_is_item_disabled, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.global_menu_is_item_disabled, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4125,7 +4127,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuIsItemHidden(menu_root String.Readable, idx int64) bool { //gd:DisplayServer.global_menu_is_item_hidden
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.global_menu_is_item_hidden, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.global_menu_is_item_hidden, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4140,7 +4142,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuGetItemTooltip(menu_root String.Readable, idx int64) String.Readable { //gd:DisplayServer.global_menu_get_item_tooltip
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_tooltip, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_tooltip, gdextension.SizeString|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4155,7 +4157,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuGetItemState(menu_root String.Readable, idx int64) int64 { //gd:DisplayServer.global_menu_get_item_state
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_state, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_state, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4170,7 +4172,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuGetItemMaxStates(menu_root String.Readable, idx int64) int64 { //gd:DisplayServer.global_menu_get_item_max_states
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_max_states, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_max_states, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4185,7 +4187,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuGetItemIcon(menu_root String.Readable, idx int64) [1]gdclass.Texture2D { //gd:DisplayServer.global_menu_get_item_icon
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_icon, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_icon, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4200,7 +4202,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuGetItemIndentationLevel(menu_root String.Readable, idx int64) int64 { //gd:DisplayServer.global_menu_get_item_indentation_level
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_indentation_level, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_indentation_level, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4215,7 +4217,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemChecked(menu_root String.Readable, idx int64, checked bool) { //gd:DisplayServer.global_menu_set_item_checked
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_checked, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_checked, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		checked   bool
@@ -4229,7 +4231,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemCheckable(menu_root String.Readable, idx int64, checkable bool) { //gd:DisplayServer.global_menu_set_item_checkable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_checkable, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_checkable, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		checkable bool
@@ -4245,7 +4247,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemRadioCheckable(menu_root String.Readable, idx int64, checkable bool) { //gd:DisplayServer.global_menu_set_item_radio_checkable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_radio_checkable, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_radio_checkable, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		checkable bool
@@ -4261,7 +4263,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemCallback(menu_root String.Readable, idx int64, callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_callback, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_callback, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		callback  gdextension.Callable
@@ -4277,7 +4279,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemHoverCallbacks(menu_root String.Readable, idx int64, callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_hover_callbacks
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_hover_callbacks, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_hover_callbacks, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		callback  gdextension.Callable
@@ -4293,7 +4295,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemKeyCallback(menu_root String.Readable, idx int64, key_callback Callable.Function) { //gd:DisplayServer.global_menu_set_item_key_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_key_callback, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_key_callback, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		menu_root    gdextension.String
 		idx          int64
 		key_callback gdextension.Callable
@@ -4307,7 +4309,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemTag(menu_root String.Readable, idx int64, tag variant.Any) { //gd:DisplayServer.global_menu_set_item_tag
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_tag, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_tag, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		tag       gdextension.Variant
@@ -4321,7 +4323,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemText(menu_root String.Readable, idx int64, text String.Readable) { //gd:DisplayServer.global_menu_set_item_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_text, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_text, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		text      gdextension.String
@@ -4335,7 +4337,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemSubmenu(menu_root String.Readable, idx int64, submenu String.Readable) { //gd:DisplayServer.global_menu_set_item_submenu
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_submenu, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_submenu, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		submenu   gdextension.String
@@ -4349,7 +4351,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemAccelerator(menu_root String.Readable, idx int64, keycode Input.Key) { //gd:DisplayServer.global_menu_set_item_accelerator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_accelerator, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_accelerator, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		keycode   Input.Key
@@ -4363,7 +4365,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemDisabled(menu_root String.Readable, idx int64, disabled bool) { //gd:DisplayServer.global_menu_set_item_disabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_disabled, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_disabled, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		disabled  bool
@@ -4377,7 +4379,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemHidden(menu_root String.Readable, idx int64, hidden bool) { //gd:DisplayServer.global_menu_set_item_hidden
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_hidden, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_hidden, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		hidden    bool
@@ -4391,7 +4393,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemTooltip(menu_root String.Readable, idx int64, tooltip String.Readable) { //gd:DisplayServer.global_menu_set_item_tooltip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_tooltip, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_tooltip, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		tooltip   gdextension.String
@@ -4405,7 +4407,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemState(menu_root String.Readable, idx int64, state int64) { //gd:DisplayServer.global_menu_set_item_state
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_state, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_state, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		state     int64
@@ -4419,7 +4421,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemMaxStates(menu_root String.Readable, idx int64, max_states int64) { //gd:DisplayServer.global_menu_set_item_max_states
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_max_states, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_max_states, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		menu_root  gdextension.String
 		idx        int64
 		max_states int64
@@ -4437,7 +4439,7 @@ Note: This method is not supported by macOS "_dock" menu items.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemIcon(menu_root String.Readable, idx int64, icon [1]gdclass.Texture2D) { //gd:DisplayServer.global_menu_set_item_icon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_icon, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_icon, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		icon      gdextension.Object
@@ -4451,7 +4453,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuSetItemIndentationLevel(menu_root String.Readable, idx int64, level int64) { //gd:DisplayServer.global_menu_set_item_indentation_level
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_indentation_level, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_set_item_indentation_level, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		menu_root gdextension.String
 		idx       int64
 		level     int64
@@ -4465,7 +4467,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuGetItemCount(menu_root String.Readable) int64 { //gd:DisplayServer.global_menu_get_item_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_count, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ menu_root gdextension.String }{pointers.Get(gd.InternalString(menu_root))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_item_count, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ menu_root gdextension.String }{pointers.Get(gd.InternalString(menu_root))})
 	var ret = r_ret
 	return ret
 }
@@ -4479,7 +4481,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuRemoveItem(menu_root String.Readable, idx int64) { //gd:DisplayServer.global_menu_remove_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_remove_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_remove_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		menu_root gdextension.String
 		idx       int64
 	}{pointers.Get(gd.InternalString(menu_root)), idx})
@@ -4496,7 +4498,7 @@ Supported system menu IDs:
 */
 //go:nosplit
 func (self class) GlobalMenuClear(menu_root String.Readable) { //gd:DisplayServer.global_menu_clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_clear, 0|(gdextension.SizeString<<4), &struct{ menu_root gdextension.String }{pointers.Get(gd.InternalString(menu_root))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.global_menu_clear, 0|(gdextension.SizeString<<4), &struct{ menu_root gdextension.String }{pointers.Get(gd.InternalString(menu_root))})
 }
 
 /*
@@ -4506,7 +4508,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GlobalMenuGetSystemMenuRoots() Dictionary.Any { //gd:DisplayServer.global_menu_get_system_menu_roots
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_system_menu_roots, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.global_menu_get_system_menu_roots, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -4518,7 +4520,7 @@ Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macO
 */
 //go:nosplit
 func (self class) TtsIsSpeaking() bool { //gd:DisplayServer.tts_is_speaking
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.tts_is_speaking, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.tts_is_speaking, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4530,7 +4532,7 @@ Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macO
 */
 //go:nosplit
 func (self class) TtsIsPaused() bool { //gd:DisplayServer.tts_is_paused
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.tts_is_paused, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.tts_is_paused, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4552,7 +4554,7 @@ Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macO
 */
 //go:nosplit
 func (self class) TtsGetVoices() Array.Contains[Dictionary.Any] { //gd:DisplayServer.tts_get_voices
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.tts_get_voices, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.tts_get_voices, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -4564,7 +4566,7 @@ Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macO
 */
 //go:nosplit
 func (self class) TtsGetVoicesForLanguage(language String.Readable) Packed.Strings { //gd:DisplayServer.tts_get_voices_for_language
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.tts_get_voices_for_language, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.tts_get_voices_for_language, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -4590,7 +4592,7 @@ Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macO
 */
 //go:nosplit
 func (self class) TtsSpeak(text String.Readable, voice String.Readable, volume int64, pitch float64, rate float64, utterance_id int64, interrupt bool) { //gd:DisplayServer.tts_speak
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tts_speak, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tts_speak, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), &struct {
 		text         gdextension.String
 		voice        gdextension.String
 		volume       int64
@@ -4608,7 +4610,7 @@ Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macO
 */
 //go:nosplit
 func (self class) TtsPause() { //gd:DisplayServer.tts_pause
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tts_pause, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tts_pause, 0, &struct{}{})
 }
 
 /*
@@ -4618,7 +4620,7 @@ Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macO
 */
 //go:nosplit
 func (self class) TtsResume() { //gd:DisplayServer.tts_resume
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tts_resume, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tts_resume, 0, &struct{}{})
 }
 
 /*
@@ -4628,7 +4630,7 @@ Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macO
 */
 //go:nosplit
 func (self class) TtsStop() { //gd:DisplayServer.tts_stop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tts_stop, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tts_stop, 0, &struct{}{})
 }
 
 /*
@@ -4644,7 +4646,7 @@ Note: This method is implemented on Android, iOS, Web, Linux (X11/Wayland), macO
 */
 //go:nosplit
 func (self class) TtsSetUtteranceCallback(event TTSUtteranceEvent, callable Callable.Function) { //gd:DisplayServer.tts_set_utterance_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tts_set_utterance_callback, 0|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tts_set_utterance_callback, 0|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), &struct {
 		event    TTSUtteranceEvent
 		callable gdextension.Callable
 	}{event, pointers.Get(gd.InternalCallable(callable))})
@@ -4657,7 +4659,7 @@ Note: This method is implemented on Android, iOS, macOS, Windows, and Linux (X11
 */
 //go:nosplit
 func (self class) IsDarkModeSupported() bool { //gd:DisplayServer.is_dark_mode_supported
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dark_mode_supported, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dark_mode_supported, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4669,7 +4671,7 @@ Note: This method is implemented on Android, iOS, macOS, Windows, and Linux (X11
 */
 //go:nosplit
 func (self class) IsDarkMode() bool { //gd:DisplayServer.is_dark_mode
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dark_mode, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_dark_mode, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4681,7 +4683,7 @@ Note: This method is implemented on macOS, Windows, Android, and Linux (X11/Wayl
 */
 //go:nosplit
 func (self class) GetAccentColor() Color.RGBA { //gd:DisplayServer.get_accent_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_accent_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_accent_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4693,7 +4695,7 @@ Note: This method is implemented on macOS, Windows, and Android.
 */
 //go:nosplit
 func (self class) GetBaseColor() Color.RGBA { //gd:DisplayServer.get_base_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_base_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_base_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4705,7 +4707,7 @@ Note: This method is implemented on Android, iOS, macOS, Windows, and Linux (X11
 */
 //go:nosplit
 func (self class) SetSystemThemeChangeCallback(callable Callable.Function) { //gd:DisplayServer.set_system_theme_change_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_system_theme_change_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_system_theme_change_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
 
 /*
@@ -4713,7 +4715,7 @@ Sets the current mouse mode. See also [MouseGetMode].
 */
 //go:nosplit
 func (self class) MouseSetMode(mouse_mode MouseModeValue) { //gd:DisplayServer.mouse_set_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mouse_set_mode, 0|(gdextension.SizeInt<<4), &struct{ mouse_mode MouseModeValue }{mouse_mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mouse_set_mode, 0|(gdextension.SizeInt<<4), &struct{ mouse_mode MouseModeValue }{mouse_mode})
 }
 
 /*
@@ -4721,7 +4723,7 @@ Returns the current mouse mode. See also [MouseSetMode].
 */
 //go:nosplit
 func (self class) MouseGetMode() MouseModeValue { //gd:DisplayServer.mouse_get_mode
-	var r_ret = gdextension.Call[MouseModeValue](gd.ObjectChecked(self.AsObject()), methods.mouse_get_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[MouseModeValue](gd.ObjectChecked(self.AsObject()), methods.mouse_get_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4733,7 +4735,7 @@ Note: [WarpMouse] is only supported on Windows, macOS, and Linux (X11/Wayland). 
 */
 //go:nosplit
 func (self class) WarpMouse(position Vector2i.XY) { //gd:DisplayServer.warp_mouse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.warp_mouse, 0|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.warp_mouse, 0|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
 }
 
 /*
@@ -4741,7 +4743,7 @@ Returns the mouse cursor's current position in screen coordinates.
 */
 //go:nosplit
 func (self class) MouseGetPosition() Vector2i.XY { //gd:DisplayServer.mouse_get_position
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.mouse_get_position, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.mouse_get_position, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4753,7 +4755,7 @@ Returns the current state of mouse buttons (whether each button is pressed) as a
 */
 //go:nosplit
 func (self class) MouseGetButtonState() Input.MouseButtonMask { //gd:DisplayServer.mouse_get_button_state
-	var r_ret = gdextension.Call[Input.MouseButtonMask](gd.ObjectChecked(self.AsObject()), methods.mouse_get_button_state, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Input.MouseButtonMask](gd.ObjectChecked(self.AsObject()), methods.mouse_get_button_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4763,7 +4765,7 @@ Sets the user's clipboard content to the given string.
 */
 //go:nosplit
 func (self class) ClipboardSet(clipboard String.Readable) { //gd:DisplayServer.clipboard_set
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clipboard_set, 0|(gdextension.SizeString<<4), &struct{ clipboard gdextension.String }{pointers.Get(gd.InternalString(clipboard))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clipboard_set, 0|(gdextension.SizeString<<4), &struct{ clipboard gdextension.String }{pointers.Get(gd.InternalString(clipboard))})
 }
 
 /*
@@ -4771,7 +4773,7 @@ Returns the user's clipboard as a string if possible.
 */
 //go:nosplit
 func (self class) ClipboardGet() String.Readable { //gd:DisplayServer.clipboard_get
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.clipboard_get, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.clipboard_get, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -4783,7 +4785,7 @@ Note: This method uses the copied pixel data, e.g. from an image editing softwar
 */
 //go:nosplit
 func (self class) ClipboardGetImage() [1]gdclass.Image { //gd:DisplayServer.clipboard_get_image
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.clipboard_get_image, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.clipboard_get_image, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
@@ -4793,7 +4795,7 @@ Returns true if there is a text content on the user's clipboard.
 */
 //go:nosplit
 func (self class) ClipboardHas() bool { //gd:DisplayServer.clipboard_has
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.clipboard_has, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.clipboard_has, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4803,7 +4805,7 @@ Returns true if there is an image content on the user's clipboard.
 */
 //go:nosplit
 func (self class) ClipboardHasImage() bool { //gd:DisplayServer.clipboard_has_image
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.clipboard_has_image, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.clipboard_has_image, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4817,7 +4819,7 @@ Note: This method is only implemented on Linux (X11/Wayland).
 */
 //go:nosplit
 func (self class) ClipboardSetPrimary(clipboard_primary String.Readable) { //gd:DisplayServer.clipboard_set_primary
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clipboard_set_primary, 0|(gdextension.SizeString<<4), &struct{ clipboard_primary gdextension.String }{pointers.Get(gd.InternalString(clipboard_primary))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clipboard_set_primary, 0|(gdextension.SizeString<<4), &struct{ clipboard_primary gdextension.String }{pointers.Get(gd.InternalString(clipboard_primary))})
 }
 
 /*
@@ -4829,7 +4831,7 @@ Note: This method is only implemented on Linux (X11/Wayland).
 */
 //go:nosplit
 func (self class) ClipboardGetPrimary() String.Readable { //gd:DisplayServer.clipboard_get_primary
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.clipboard_get_primary, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.clipboard_get_primary, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -4843,7 +4845,7 @@ Note: Currently only implemented on Android. Other platforms will return an empt
 */
 //go:nosplit
 func (self class) GetDisplayCutouts() Array.Contains[Rect2.PositionSize] { //gd:DisplayServer.get_display_cutouts
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_display_cutouts, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_display_cutouts, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Rect2.PositionSize]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -4855,7 +4857,7 @@ Note: Currently only implemented on Android and iOS. On other platforms, screen_
 */
 //go:nosplit
 func (self class) GetDisplaySafeArea() Rect2i.PositionSize { //gd:DisplayServer.get_display_safe_area
-	var r_ret = gdextension.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_display_safe_area, gdextension.SizeRect2i, &struct{}{})
+	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_display_safe_area, gdextension.SizeRect2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4867,7 +4869,7 @@ Note: This method is implemented on Linux (X11 and Wayland), macOS, and Windows.
 */
 //go:nosplit
 func (self class) GetScreenCount() int64 { //gd:DisplayServer.get_screen_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_screen_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_screen_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4879,7 +4881,7 @@ Note: This method is implemented on Linux/X11, macOS, and Windows. On other plat
 */
 //go:nosplit
 func (self class) GetPrimaryScreen() int64 { //gd:DisplayServer.get_primary_screen
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_primary_screen, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_primary_screen, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4891,7 +4893,7 @@ Note: This method is implemented on Linux/X11, macOS, and Windows. On other plat
 */
 //go:nosplit
 func (self class) GetKeyboardFocusScreen() int64 { //gd:DisplayServer.get_keyboard_focus_screen
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_keyboard_focus_screen, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_keyboard_focus_screen, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -4901,7 +4903,7 @@ Returns the index of the screen that overlaps the most with the given rectangle.
 */
 //go:nosplit
 func (self class) GetScreenFromRect(rect Rect2.PositionSize) int64 { //gd:DisplayServer.get_screen_from_rect
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_screen_from_rect, gdextension.SizeInt|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_screen_from_rect, gdextension.SizeInt|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
 	var ret = r_ret
 	return ret
 }
@@ -4917,7 +4919,7 @@ Note: One of the following constants can be used as 'screen': [ScreenOfMainWindo
 */
 //go:nosplit
 func (self class) ScreenGetPosition(screen int64) Vector2i.XY { //gd:DisplayServer.screen_get_position
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.screen_get_position, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.screen_get_position, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
@@ -4929,7 +4931,7 @@ Note: One of the following constants can be used as 'screen': [ScreenOfMainWindo
 */
 //go:nosplit
 func (self class) ScreenGetSize(screen int64) Vector2i.XY { //gd:DisplayServer.screen_get_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.screen_get_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.screen_get_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
@@ -4943,7 +4945,7 @@ Note: This method is implemented on Linux/X11, macOS, and Windows. On other plat
 */
 //go:nosplit
 func (self class) ScreenGetUsableRect(screen int64) Rect2i.PositionSize { //gd:DisplayServer.screen_get_usable_rect
-	var r_ret = gdextension.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.screen_get_usable_rect, gdextension.SizeRect2i|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.screen_get_usable_rect, gdextension.SizeRect2i|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
@@ -4963,7 +4965,7 @@ Note: This method is implemented on Android, iOS, Linux (X11/Wayland), macOS, We
 */
 //go:nosplit
 func (self class) ScreenGetDpi(screen int64) int64 { //gd:DisplayServer.screen_get_dpi
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.screen_get_dpi, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.screen_get_dpi, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
@@ -4981,7 +4983,7 @@ Note: This method is implemented on Android, iOS, Web, macOS, and Linux (Wayland
 */
 //go:nosplit
 func (self class) ScreenGetScale(screen int64) float64 { //gd:DisplayServer.screen_get_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.screen_get_scale, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.screen_get_scale, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
@@ -4993,7 +4995,7 @@ Returns true if touch events are available (Android or iOS), the capability is d
 */
 //go:nosplit
 func (self class) IsTouchscreenAvailable() bool { //gd:DisplayServer.is_touchscreen_available
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_touchscreen_available, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_touchscreen_available, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -5007,7 +5009,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) ScreenGetMaxScale() float64 { //gd:DisplayServer.screen_get_max_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.screen_get_max_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.screen_get_max_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -5032,7 +5034,7 @@ Note: This method is implemented on Android, iOS, macOS, Linux (X11 and Wayland)
 */
 //go:nosplit
 func (self class) ScreenGetRefreshRate(screen int64) float64 { //gd:DisplayServer.screen_get_refresh_rate
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.screen_get_refresh_rate, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.screen_get_refresh_rate, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
@@ -5048,7 +5050,7 @@ Note: On macOS, this method requires the "Screen Recording" permission. If permi
 */
 //go:nosplit
 func (self class) ScreenGetPixel(position Vector2i.XY) Color.RGBA { //gd:DisplayServer.screen_get_pixel
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.screen_get_pixel, gdextension.SizeColor|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.screen_get_pixel, gdextension.SizeColor|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
 	var ret = r_ret
 	return ret
 }
@@ -5066,7 +5068,7 @@ Note: On macOS, this method requires the "Screen Recording" permission. If permi
 */
 //go:nosplit
 func (self class) ScreenGetImage(screen int64) [1]gdclass.Image { //gd:DisplayServer.screen_get_image
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.screen_get_image, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.screen_get_image, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
@@ -5082,7 +5084,7 @@ Note: On macOS, this method requires the "Screen Recording" permission. If permi
 */
 //go:nosplit
 func (self class) ScreenGetImageRect(rect Rect2i.PositionSize) [1]gdclass.Image { //gd:DisplayServer.screen_get_image_rect
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.screen_get_image_rect, gdextension.SizeObject|(gdextension.SizeRect2i<<4), &struct{ rect Rect2i.PositionSize }{rect})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.screen_get_image_rect, gdextension.SizeObject|(gdextension.SizeRect2i<<4), &struct{ rect Rect2i.PositionSize }{rect})
 	var ret = [1]gdclass.Image{gd.PointerWithOwnershipTransferredToGo[gdclass.Image](r_ret)}
 	return ret
 }
@@ -5100,7 +5102,7 @@ Note: On iOS, this method has no effect if [ProjectSettings] "display/window/han
 */
 //go:nosplit
 func (self class) ScreenSetOrientation(orientation ScreenOrientation, screen int64) { //gd:DisplayServer.screen_set_orientation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.screen_set_orientation, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.screen_set_orientation, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		orientation ScreenOrientation
 		screen      int64
 	}{orientation, screen})
@@ -5115,7 +5117,7 @@ Note: This method is implemented on Android and iOS. On other platforms, this me
 */
 //go:nosplit
 func (self class) ScreenGetOrientation(screen int64) ScreenOrientation { //gd:DisplayServer.screen_get_orientation
-	var r_ret = gdextension.Call[ScreenOrientation](gd.ObjectChecked(self.AsObject()), methods.screen_get_orientation, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[ScreenOrientation](gd.ObjectChecked(self.AsObject()), methods.screen_get_orientation, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
@@ -5125,7 +5127,7 @@ Sets whether the screen should never be turned off by the operating system's pow
 */
 //go:nosplit
 func (self class) ScreenSetKeepOn(enable bool) { //gd:DisplayServer.screen_set_keep_on
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.screen_set_keep_on, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.screen_set_keep_on, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 /*
@@ -5133,7 +5135,7 @@ Returns true if the screen should never be turned off by the operating system's 
 */
 //go:nosplit
 func (self class) ScreenIsKeptOn() bool { //gd:DisplayServer.screen_is_kept_on
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.screen_is_kept_on, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.screen_is_kept_on, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -5145,7 +5147,7 @@ Note: Native dialogs are not included in this list.
 */
 //go:nosplit
 func (self class) GetWindowList() Packed.Array[int32] { //gd:DisplayServer.get_window_list
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_window_list, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_window_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -5157,7 +5159,7 @@ Returns the ID of the window at the specified screen 'position' (in pixels). On 
 */
 //go:nosplit
 func (self class) GetWindowAtScreenPosition(position Vector2i.XY) int64 { //gd:DisplayServer.get_window_at_screen_position
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_window_at_screen_position, gdextension.SizeInt|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_window_at_screen_position, gdextension.SizeInt|(gdextension.SizeVector2i<<4), &struct{ position Vector2i.XY }{position})
 	var ret = r_ret
 	return ret
 }
@@ -5169,7 +5171,7 @@ Note: This method is implemented on Android, Linux (X11/Wayland), macOS, and Win
 */
 //go:nosplit
 func (self class) WindowGetNativeHandle(handle_type HandleType, window_id int64) int64 { //gd:DisplayServer.window_get_native_handle
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.window_get_native_handle, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.window_get_native_handle, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		handle_type HandleType
 		window_id   int64
 	}{handle_type, window_id})
@@ -5182,7 +5184,7 @@ Returns ID of the active popup window, or [InvalidWindowId] if there is none.
 */
 //go:nosplit
 func (self class) WindowGetActivePopup() int64 { //gd:DisplayServer.window_get_active_popup
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.window_get_active_popup, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.window_get_active_popup, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -5192,7 +5194,7 @@ Sets the bounding box of control, or menu item that was used to open the popup w
 */
 //go:nosplit
 func (self class) WindowSetPopupSafeRect(window int64, rect Rect2i.PositionSize) { //gd:DisplayServer.window_set_popup_safe_rect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_popup_safe_rect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2i<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_popup_safe_rect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2i<<8), &struct {
 		window int64
 		rect   Rect2i.PositionSize
 	}{window, rect})
@@ -5203,7 +5205,7 @@ Returns the bounding box of control, or menu item that was used to open the popu
 */
 //go:nosplit
 func (self class) WindowGetPopupSafeRect(window int64) Rect2i.PositionSize { //gd:DisplayServer.window_get_popup_safe_rect
-	var r_ret = gdextension.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.window_get_popup_safe_rect, gdextension.SizeRect2i|(gdextension.SizeInt<<4), &struct{ window int64 }{window})
+	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.window_get_popup_safe_rect, gdextension.SizeRect2i|(gdextension.SizeInt<<4), &struct{ window int64 }{window})
 	var ret = r_ret
 	return ret
 }
@@ -5219,7 +5221,7 @@ Note: Avoid changing the window title every frame, as this can cause performance
 */
 //go:nosplit
 func (self class) WindowSetTitle(title String.Readable, window_id int64) { //gd:DisplayServer.window_set_title
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_title, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_title, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		title     gdextension.String
 		window_id int64
 	}{pointers.Get(gd.InternalString(title)), window_id})
@@ -5232,7 +5234,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) WindowGetTitleSize(title String.Readable, window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_title_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_title_size, gdextension.SizeVector2i|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_title_size, gdextension.SizeVector2i|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		title     gdextension.String
 		window_id int64
 	}{pointers.Get(gd.InternalString(title)), window_id})
@@ -5262,7 +5264,7 @@ Note: This method is implemented on Linux (X11), macOS and Windows.
 */
 //go:nosplit
 func (self class) WindowSetMousePassthrough(region Packed.Array[Vector2.XY], window_id int64) { //gd:DisplayServer.window_set_mouse_passthrough
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_mouse_passthrough, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_mouse_passthrough, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeInt<<8), &struct {
 		region    gdextension.PackedArray[Vector2.XY]
 		window_id int64
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](region)), window_id})
@@ -5275,7 +5277,7 @@ Note: This method is implemented on Linux/X11, macOS, and Windows. On other plat
 */
 //go:nosplit
 func (self class) WindowGetCurrentScreen(window_id int64) int64 { //gd:DisplayServer.window_get_current_screen
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.window_get_current_screen, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.window_get_current_screen, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -5289,7 +5291,7 @@ Note: This method is implemented on Linux/X11, macOS, and Windows.
 */
 //go:nosplit
 func (self class) WindowSetCurrentScreen(screen int64, window_id int64) { //gd:DisplayServer.window_set_current_screen
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_current_screen, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_current_screen, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		screen    int64
 		window_id int64
 	}{screen, window_id})
@@ -5300,7 +5302,7 @@ Returns the position of the client area of the given window on the screen.
 */
 //go:nosplit
 func (self class) WindowGetPosition(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_position
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_position, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_position, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -5310,7 +5312,7 @@ Returns the position of the given window on the screen including the borders dra
 */
 //go:nosplit
 func (self class) WindowGetPositionWithDecorations(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_position_with_decorations
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_position_with_decorations, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_position_with_decorations, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -5330,7 +5332,7 @@ Note: On Linux (Wayland): this method is a no-op.
 */
 //go:nosplit
 func (self class) WindowSetPosition(position Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_position, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_position, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		position  Vector2i.XY
 		window_id int64
 	}{position, window_id})
@@ -5341,7 +5343,7 @@ Returns the size of the window specified by 'window_id' (in pixels), excluding t
 */
 //go:nosplit
 func (self class) WindowGetSize(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -5355,7 +5357,7 @@ Note: It's recommended to change this value using [Window.Size] instead.
 */
 //go:nosplit
 func (self class) WindowSetSize(size Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_size, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_size, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		size      Vector2i.XY
 		window_id int64
 	}{size, window_id})
@@ -5370,7 +5372,7 @@ Warning: Advanced users only! Adding such a callback to a [Window] node will ove
 */
 //go:nosplit
 func (self class) WindowSetRectChangedCallback(callback Callable.Function, window_id int64) { //gd:DisplayServer.window_set_rect_changed_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_rect_changed_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_rect_changed_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
 		callback  gdextension.Callable
 		window_id int64
 	}{pointers.Get(gd.InternalCallable(callback)), window_id})
@@ -5385,7 +5387,7 @@ Warning: Advanced users only! Adding such a callback to a [Window] node will ove
 */
 //go:nosplit
 func (self class) WindowSetWindowEventCallback(callback Callable.Function, window_id int64) { //gd:DisplayServer.window_set_window_event_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_window_event_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_window_event_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
 		callback  gdextension.Callable
 		window_id int64
 	}{pointers.Get(gd.InternalCallable(callback)), window_id})
@@ -5401,7 +5403,7 @@ Warning: Advanced users only! Adding such a callback to a [Window] node will ove
 */
 //go:nosplit
 func (self class) WindowSetInputEventCallback(callback Callable.Function, window_id int64) { //gd:DisplayServer.window_set_input_event_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_input_event_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_input_event_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
 		callback  gdextension.Callable
 		window_id int64
 	}{pointers.Get(gd.InternalCallable(callback)), window_id})
@@ -5416,7 +5418,7 @@ Warning: Advanced users only! Adding such a callback to a [Window] node will ove
 */
 //go:nosplit
 func (self class) WindowSetInputTextCallback(callback Callable.Function, window_id int64) { //gd:DisplayServer.window_set_input_text_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_input_text_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_input_text_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
 		callback  gdextension.Callable
 		window_id int64
 	}{pointers.Get(gd.InternalCallable(callback)), window_id})
@@ -5433,7 +5435,7 @@ Note: This method is implemented on Windows, macOS, Linux (X11/Wayland), and Web
 */
 //go:nosplit
 func (self class) WindowSetDropFilesCallback(callback Callable.Function, window_id int64) { //gd:DisplayServer.window_set_drop_files_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_drop_files_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_drop_files_callback, 0|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
 		callback  gdextension.Callable
 		window_id int64
 	}{pointers.Get(gd.InternalCallable(callback)), window_id})
@@ -5447,7 +5449,7 @@ Returns the [Object.GetInstanceId] of the [Window] the 'window_id' is attached t
 */
 //go:nosplit
 func (self class) WindowGetAttachedInstanceId(window_id int64) int64 { //gd:DisplayServer.window_get_attached_instance_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.window_get_attached_instance_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.window_get_attached_instance_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -5457,7 +5459,7 @@ Returns the window's maximum size (in pixels). See also [WindowSetMaxSize].
 */
 //go:nosplit
 func (self class) WindowGetMaxSize(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_max_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_max_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_max_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -5473,7 +5475,7 @@ Note: Using third-party tools, it is possible for users to disable window geomet
 */
 //go:nosplit
 func (self class) WindowSetMaxSize(max_size Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_max_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_max_size, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_max_size, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		max_size  Vector2i.XY
 		window_id int64
 	}{max_size, window_id})
@@ -5484,7 +5486,7 @@ Returns the window's minimum size (in pixels). See also [WindowSetMinSize].
 */
 //go:nosplit
 func (self class) WindowGetMinSize(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_min_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_min_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_min_size, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -5502,7 +5504,7 @@ Note: Using third-party tools, it is possible for users to disable window geomet
 */
 //go:nosplit
 func (self class) WindowSetMinSize(min_size Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_min_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_min_size, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_min_size, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		min_size  Vector2i.XY
 		window_id int64
 	}{min_size, window_id})
@@ -5513,7 +5515,7 @@ Returns the size of the window specified by 'window_id' (in pixels), including t
 */
 //go:nosplit
 func (self class) WindowGetSizeWithDecorations(window_id int64) Vector2i.XY { //gd:DisplayServer.window_get_size_with_decorations
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_size_with_decorations, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.window_get_size_with_decorations, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -5523,7 +5525,7 @@ Returns the mode of the given window.
 */
 //go:nosplit
 func (self class) WindowGetMode(window_id int64) WindowMode { //gd:DisplayServer.window_get_mode
-	var r_ret = gdextension.Call[WindowMode](gd.ObjectChecked(self.AsObject()), methods.window_get_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[WindowMode](gd.ObjectChecked(self.AsObject()), methods.window_get_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -5537,7 +5539,7 @@ Note: Setting the window to full screen forcibly sets the borderless flag to tru
 */
 //go:nosplit
 func (self class) WindowSetMode(mode WindowMode, window_id int64) { //gd:DisplayServer.window_set_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		mode      WindowMode
 		window_id int64
 	}{mode, window_id})
@@ -5548,7 +5550,7 @@ Enables or disables the given window's given 'flag'.
 */
 //go:nosplit
 func (self class) WindowSetFlag(flag WindowFlags, enabled bool, window_id int64) { //gd:DisplayServer.window_set_flag
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_flag, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_flag, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12), &struct {
 		flag      WindowFlags
 		enabled   bool
 		window_id int64
@@ -5560,7 +5562,7 @@ Returns the current value of the given window's 'flag'.
 */
 //go:nosplit
 func (self class) WindowGetFlag(flag WindowFlags, window_id int64) bool { //gd:DisplayServer.window_get_flag
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_get_flag, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_get_flag, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		flag      WindowFlags
 		window_id int64
 	}{flag, window_id})
@@ -5575,7 +5577,7 @@ Note: This flag is implemented only on macOS.
 */
 //go:nosplit
 func (self class) WindowSetWindowButtonsOffset(offset Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_window_buttons_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_window_buttons_offset, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_window_buttons_offset, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		offset    Vector2i.XY
 		window_id int64
 	}{offset, window_id})
@@ -5586,7 +5588,7 @@ Returns left margins (x), right margins (y) and height (z) of the title that are
 */
 //go:nosplit
 func (self class) WindowGetSafeTitleMargins(window_id int64) Vector3i.XYZ { //gd:DisplayServer.window_get_safe_title_margins
-	var r_ret = gdextension.Call[Vector3i.XYZ](gd.ObjectChecked(self.AsObject()), methods.window_get_safe_title_margins, gdextension.SizeVector3i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[Vector3i.XYZ](gd.ObjectChecked(self.AsObject()), methods.window_get_safe_title_margins, gdextension.SizeVector3i|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -5596,7 +5598,7 @@ Makes the window specified by 'window_id' request attention, which is materializ
 */
 //go:nosplit
 func (self class) WindowRequestAttention(window_id int64) { //gd:DisplayServer.window_request_attention
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_request_attention, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_request_attention, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 }
 
 /*
@@ -5604,7 +5606,7 @@ Moves the window specified by 'window_id' to the foreground, so that it is visib
 */
 //go:nosplit
 func (self class) WindowMoveToForeground(window_id int64) { //gd:DisplayServer.window_move_to_foreground
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_move_to_foreground, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_move_to_foreground, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 }
 
 /*
@@ -5612,7 +5614,7 @@ Returns true if the window specified by 'window_id' is focused.
 */
 //go:nosplit
 func (self class) WindowIsFocused(window_id int64) bool { //gd:DisplayServer.window_is_focused
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_is_focused, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_is_focused, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -5622,7 +5624,7 @@ Returns true if anything can be drawn in the window specified by 'window_id', fa
 */
 //go:nosplit
 func (self class) WindowCanDraw(window_id int64) bool { //gd:DisplayServer.window_can_draw
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_can_draw, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_can_draw, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -5638,7 +5640,7 @@ Note: The behavior might be different depending on the platform.
 */
 //go:nosplit
 func (self class) WindowSetTransient(window_id int64, parent_window_id int64) { //gd:DisplayServer.window_set_transient
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_transient, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_transient, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		window_id        int64
 		parent_window_id int64
 	}{window_id, parent_window_id})
@@ -5653,7 +5655,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) WindowSetExclusive(window_id int64, exclusive bool) { //gd:DisplayServer.window_set_exclusive
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_exclusive, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_exclusive, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		window_id int64
 		exclusive bool
 	}{window_id, exclusive})
@@ -5666,7 +5668,7 @@ Sets whether [Input Method Editor] should be enabled for the window specified by
 */
 //go:nosplit
 func (self class) WindowSetImeActive(active bool, window_id int64) { //gd:DisplayServer.window_set_ime_active
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_ime_active, 0|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_ime_active, 0|(gdextension.SizeBool<<4)|(gdextension.SizeInt<<8), &struct {
 		active    bool
 		window_id int64
 	}{active, window_id})
@@ -5679,7 +5681,7 @@ Sets the position of the [Input Method Editor] popup for the specified 'window_i
 */
 //go:nosplit
 func (self class) WindowSetImePosition(position Vector2i.XY, window_id int64) { //gd:DisplayServer.window_set_ime_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_ime_position, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_ime_position, 0|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		position  Vector2i.XY
 		window_id int64
 	}{position, window_id})
@@ -5696,7 +5698,7 @@ Note: V-Sync modes other than [VsyncEnabled] are only supported in the Forward+ 
 */
 //go:nosplit
 func (self class) WindowSetVsyncMode(vsync_mode VSyncMode, window_id int64) { //gd:DisplayServer.window_set_vsync_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_vsync_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_set_vsync_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		vsync_mode VSyncMode
 		window_id  int64
 	}{vsync_mode, window_id})
@@ -5707,7 +5709,7 @@ Returns the V-Sync mode of the given window.
 */
 //go:nosplit
 func (self class) WindowGetVsyncMode(window_id int64) VSyncMode { //gd:DisplayServer.window_get_vsync_mode
-	var r_ret = gdextension.Call[VSyncMode](gd.ObjectChecked(self.AsObject()), methods.window_get_vsync_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[VSyncMode](gd.ObjectChecked(self.AsObject()), methods.window_get_vsync_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -5717,7 +5719,7 @@ Returns true if the given window can be maximized (the maximize button is enable
 */
 //go:nosplit
 func (self class) WindowIsMaximizeAllowed(window_id int64) bool { //gd:DisplayServer.window_is_maximize_allowed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_is_maximize_allowed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_is_maximize_allowed, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -5729,7 +5731,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) WindowMaximizeOnTitleDblClick() bool { //gd:DisplayServer.window_maximize_on_title_dbl_click
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_maximize_on_title_dbl_click, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_maximize_on_title_dbl_click, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -5741,7 +5743,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) WindowMinimizeOnTitleDblClick() bool { //gd:DisplayServer.window_minimize_on_title_dbl_click
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_minimize_on_title_dbl_click, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.window_minimize_on_title_dbl_click, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -5753,7 +5755,7 @@ Note: This method is implemented on Linux (X11/Wayland), macOS, and Windows.
 */
 //go:nosplit
 func (self class) WindowStartDrag(window_id int64) { //gd:DisplayServer.window_start_drag
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_start_drag, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_start_drag, 0|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 }
 
 /*
@@ -5763,7 +5765,7 @@ Note: This method is implemented on Linux (X11/Wayland), macOS, and Windows.
 */
 //go:nosplit
 func (self class) WindowStartResize(edge WindowResizeEdge, window_id int64) { //gd:DisplayServer.window_start_resize
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_start_resize, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.window_start_resize, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		edge      WindowResizeEdge
 		window_id int64
 	}{edge, window_id})
@@ -5776,7 +5778,7 @@ Note: This method is implemented on Linux (X11/Wayland, GNOME), macOS, and Windo
 */
 //go:nosplit
 func (self class) AccessibilityShouldIncreaseContrast() int64 { //gd:DisplayServer.accessibility_should_increase_contrast
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_should_increase_contrast, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_should_increase_contrast, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -5788,7 +5790,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) AccessibilityShouldReduceAnimation() int64 { //gd:DisplayServer.accessibility_should_reduce_animation
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_should_reduce_animation, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_should_reduce_animation, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -5800,7 +5802,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) AccessibilityShouldReduceTransparency() int64 { //gd:DisplayServer.accessibility_should_reduce_transparency
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_should_reduce_transparency, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_should_reduce_transparency, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -5816,7 +5818,7 @@ Note: Accessibility debugging tools, such as Accessibility Insights for Windows,
 */
 //go:nosplit
 func (self class) AccessibilityScreenReaderActive() int64 { //gd:DisplayServer.accessibility_screen_reader_active
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_screen_reader_active, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.accessibility_screen_reader_active, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -5830,7 +5832,7 @@ Note: An accessibility element is created and freed automatically for each [Node
 */
 //go:nosplit
 func (self class) AccessibilityCreateElement(window_id int64, role AccessibilityRole) RID.Any { //gd:DisplayServer.accessibility_create_element
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_create_element, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_create_element, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		window_id int64
 		role      AccessibilityRole
 	}{window_id, role})
@@ -5845,7 +5847,7 @@ Creates a new, empty accessibility sub-element resource. Sub-elements can be use
 */
 //go:nosplit
 func (self class) AccessibilityCreateSubElement(parent_rid RID.Any, role AccessibilityRole, insert_pos int64) RID.Any { //gd:DisplayServer.accessibility_create_sub_element
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_create_sub_element, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_create_sub_element, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		parent_rid RID.Any
 		role       AccessibilityRole
 		insert_pos int64
@@ -5859,7 +5861,7 @@ Creates a new, empty accessibility sub-element from the shaped text buffer. Sub-
 */
 //go:nosplit
 func (self class) AccessibilityCreateSubTextEditElements(parent_rid RID.Any, shaped_text RID.Any, min_height float64, insert_pos int64) RID.Any { //gd:DisplayServer.accessibility_create_sub_text_edit_elements
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_create_sub_text_edit_elements, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_create_sub_text_edit_elements, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeInt<<16), &struct {
 		parent_rid  RID.Any
 		shaped_text RID.Any
 		min_height  float64
@@ -5874,7 +5876,7 @@ Returns true if 'id' is a valid accessibility element.
 */
 //go:nosplit
 func (self class) AccessibilityHasElement(id RID.Any) bool { //gd:DisplayServer.accessibility_has_element
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.accessibility_has_element, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.accessibility_has_element, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
 	var ret = r_ret
 	return ret
 }
@@ -5884,7 +5886,7 @@ Frees an object created by [AccessibilityCreateElement], [AccessibilityCreateSub
 */
 //go:nosplit
 func (self class) AccessibilityFreeElement(id RID.Any) { //gd:DisplayServer.accessibility_free_element
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_free_element, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_free_element, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
 }
 
 /*
@@ -5892,7 +5894,7 @@ Sets the metadata of the accessibility element.
 */
 //go:nosplit
 func (self class) AccessibilityElementSetMeta(id RID.Any, meta variant.Any) { //gd:DisplayServer.accessibility_element_set_meta
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_element_set_meta, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_element_set_meta, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
 		id   RID.Any
 		meta gdextension.Variant
 	}{id, gdextension.Variant(pointers.Get(gd.InternalVariant(meta)))})
@@ -5903,7 +5905,7 @@ Returns the metadata of the accessibility element.
 */
 //go:nosplit
 func (self class) AccessibilityElementGetMeta(id RID.Any) variant.Any { //gd:DisplayServer.accessibility_element_get_meta
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.accessibility_element_get_meta, gdextension.SizeVariant|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.accessibility_element_get_meta, gdextension.SizeVariant|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -5919,7 +5921,7 @@ Note: Advanced users only! [Window] objects call this method automatically.
 */
 //go:nosplit
 func (self class) AccessibilitySetWindowRect(window_id int64, rect_out Rect2.PositionSize, rect_in Rect2.PositionSize) { //gd:DisplayServer.accessibility_set_window_rect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_set_window_rect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_set_window_rect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeRect2<<12), &struct {
 		window_id int64
 		rect_out  Rect2.PositionSize
 		rect_in   Rect2.PositionSize
@@ -5937,7 +5939,7 @@ Note: Advanced users only! [Window] objects call this method automatically.
 */
 //go:nosplit
 func (self class) AccessibilitySetWindowFocused(window_id int64, focused bool) { //gd:DisplayServer.accessibility_set_window_focused
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_set_window_focused, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_set_window_focused, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		window_id int64
 		focused   bool
 	}{window_id, focused})
@@ -5948,7 +5950,7 @@ Sets currently focused element.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetFocus(id RID.Any) { //gd:DisplayServer.accessibility_update_set_focus
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_focus, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_focus, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
 }
 
 /*
@@ -5956,7 +5958,7 @@ Returns the main accessibility element of the OS native window.
 */
 //go:nosplit
 func (self class) AccessibilityGetWindowRoot(window_id int64) RID.Any { //gd:DisplayServer.accessibility_get_window_root
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_get_window_root, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.accessibility_get_window_root, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ window_id int64 }{window_id})
 	var ret = r_ret
 	return ret
 }
@@ -5966,7 +5968,7 @@ Sets element accessibility role.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetRole(id RID.Any, role AccessibilityRole) { //gd:DisplayServer.accessibility_update_set_role
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_role, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_role, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id   RID.Any
 		role AccessibilityRole
 	}{id, role})
@@ -5977,7 +5979,7 @@ Sets element accessibility name.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetName(id RID.Any, name String.Readable) { //gd:DisplayServer.accessibility_update_set_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_name, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_name, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id   RID.Any
 		name gdextension.String
 	}{id, pointers.Get(gd.InternalString(name))})
@@ -5988,7 +5990,7 @@ Sets element accessibility extra information added to the element name.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetExtraInfo(id RID.Any, name String.Readable) { //gd:DisplayServer.accessibility_update_set_extra_info
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_extra_info, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_extra_info, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id   RID.Any
 		name gdextension.String
 	}{id, pointers.Get(gd.InternalString(name))})
@@ -5999,7 +6001,7 @@ Sets element accessibility description.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetDescription(id RID.Any, description String.Readable) { //gd:DisplayServer.accessibility_update_set_description
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id          RID.Any
 		description gdextension.String
 	}{id, pointers.Get(gd.InternalString(description))})
@@ -6010,7 +6012,7 @@ Sets element text value.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetValue(id RID.Any, value String.Readable) { //gd:DisplayServer.accessibility_update_set_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id    RID.Any
 		value gdextension.String
 	}{id, pointers.Get(gd.InternalString(value))})
@@ -6021,7 +6023,7 @@ Sets tooltip text.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetTooltip(id RID.Any, tooltip String.Readable) { //gd:DisplayServer.accessibility_update_set_tooltip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_tooltip, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_tooltip, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id      RID.Any
 		tooltip gdextension.String
 	}{id, pointers.Get(gd.InternalString(tooltip))})
@@ -6032,7 +6034,7 @@ Sets element bounding box, relative to the node position.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetBounds(id RID.Any, p_rect Rect2.PositionSize) { //gd:DisplayServer.accessibility_update_set_bounds
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_bounds, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_bounds, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRect2<<8), &struct {
 		id     RID.Any
 		p_rect Rect2.PositionSize
 	}{id, p_rect})
@@ -6043,7 +6045,7 @@ Sets element 2D transform.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetTransform(id RID.Any, transform Transform2D.OriginXY) { //gd:DisplayServer.accessibility_update_set_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_transform, 0|(gdextension.SizeRID<<4)|(gdextension.SizeTransform2D<<8), &struct {
 		id        RID.Any
 		transform Transform2D.OriginXY
 	}{id, transform})
@@ -6058,7 +6060,7 @@ Note: [Node] children and sub-elements are added to the child list automatically
 */
 //go:nosplit
 func (self class) AccessibilityUpdateAddChild(id RID.Any, child_id RID.Any) { //gd:DisplayServer.accessibility_update_add_child
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_child, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_child, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id       RID.Any
 		child_id RID.Any
 	}{id, child_id})
@@ -6069,7 +6071,7 @@ Adds an element that is controlled by this element.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateAddRelatedControls(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_controls
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_controls, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_controls, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id         RID.Any
 		related_id RID.Any
 	}{id, related_id})
@@ -6080,7 +6082,7 @@ Adds an element that details this element.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateAddRelatedDetails(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_details
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_details, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_details, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id         RID.Any
 		related_id RID.Any
 	}{id, related_id})
@@ -6091,7 +6093,7 @@ Adds an element that describes this element.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateAddRelatedDescribedBy(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_described_by
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_described_by, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_described_by, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id         RID.Any
 		related_id RID.Any
 	}{id, related_id})
@@ -6102,7 +6104,7 @@ Adds an element that this element flow into.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateAddRelatedFlowTo(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_flow_to
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_flow_to, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_flow_to, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id         RID.Any
 		related_id RID.Any
 	}{id, related_id})
@@ -6113,7 +6115,7 @@ Adds an element that labels this element.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateAddRelatedLabeledBy(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_labeled_by
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_labeled_by, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_labeled_by, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id         RID.Any
 		related_id RID.Any
 	}{id, related_id})
@@ -6126,7 +6128,7 @@ Note: This method should be called on each element of the group, using all other
 */
 //go:nosplit
 func (self class) AccessibilityUpdateAddRelatedRadioGroup(id RID.Any, related_id RID.Any) { //gd:DisplayServer.accessibility_update_add_related_radio_group
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_radio_group, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_related_radio_group, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id         RID.Any
 		related_id RID.Any
 	}{id, related_id})
@@ -6137,7 +6139,7 @@ Adds an element that is an active descendant of this element.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetActiveDescendant(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_active_descendant
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_active_descendant, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_active_descendant, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id       RID.Any
 		other_id RID.Any
 	}{id, other_id})
@@ -6148,7 +6150,7 @@ Sets next element on the line.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetNextOnLine(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_next_on_line
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_next_on_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_next_on_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id       RID.Any
 		other_id RID.Any
 	}{id, other_id})
@@ -6159,7 +6161,7 @@ Sets previous element on the line.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetPreviousOnLine(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_previous_on_line
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_previous_on_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_previous_on_line, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id       RID.Any
 		other_id RID.Any
 	}{id, other_id})
@@ -6170,7 +6172,7 @@ Sets the element to be a member of the group.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetMemberOf(id RID.Any, group_id RID.Any) { //gd:DisplayServer.accessibility_update_set_member_of
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_member_of, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_member_of, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id       RID.Any
 		group_id RID.Any
 	}{id, group_id})
@@ -6181,7 +6183,7 @@ Sets target element for the link.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetInPageLinkTarget(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_in_page_link_target
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_in_page_link_target, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_in_page_link_target, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id       RID.Any
 		other_id RID.Any
 	}{id, other_id})
@@ -6192,7 +6194,7 @@ Sets an element which contains an error message for this element.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetErrorMessage(id RID.Any, other_id RID.Any) { //gd:DisplayServer.accessibility_update_set_error_message
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_error_message, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_error_message, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		id       RID.Any
 		other_id RID.Any
 	}{id, other_id})
@@ -6203,7 +6205,7 @@ Sets the priority of the live region updates.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetLive(id RID.Any, live AccessibilityLiveMode) { //gd:DisplayServer.accessibility_update_set_live
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_live, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_live, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id   RID.Any
 		live AccessibilityLiveMode
 	}{id, live})
@@ -6214,7 +6216,7 @@ Adds a callback for the accessibility action (action which can be performed by u
 */
 //go:nosplit
 func (self class) AccessibilityUpdateAddAction(id RID.Any, action AccessibilityAction, callable Callable.Function) { //gd:DisplayServer.accessibility_update_add_action
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_action, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_action, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		id       RID.Any
 		action   AccessibilityAction
 		callable gdextension.Callable
@@ -6226,7 +6228,7 @@ Adds support for a custom accessibility action. 'action_id' is passed as an argu
 */
 //go:nosplit
 func (self class) AccessibilityUpdateAddCustomAction(id RID.Any, action_id int64, action_description String.Readable) { //gd:DisplayServer.accessibility_update_add_custom_action
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_custom_action, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_add_custom_action, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		id                 RID.Any
 		action_id          int64
 		action_description gdextension.String
@@ -6238,7 +6240,7 @@ Sets number of rows in the table.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetTableRowCount(id RID.Any, count int64) { //gd:DisplayServer.accessibility_update_set_table_row_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_row_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_row_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		count int64
 	}{id, count})
@@ -6249,7 +6251,7 @@ Sets number of columns in the table.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetTableColumnCount(id RID.Any, count int64) { //gd:DisplayServer.accessibility_update_set_table_column_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_column_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_column_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		count int64
 	}{id, count})
@@ -6260,7 +6262,7 @@ Sets position of the row in the table.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetTableRowIndex(id RID.Any, index int64) { //gd:DisplayServer.accessibility_update_set_table_row_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_row_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_row_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		index int64
 	}{id, index})
@@ -6271,7 +6273,7 @@ Sets position of the column.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetTableColumnIndex(id RID.Any, index int64) { //gd:DisplayServer.accessibility_update_set_table_column_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_column_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_column_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		index int64
 	}{id, index})
@@ -6282,7 +6284,7 @@ Sets cell position in the table.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetTableCellPosition(id RID.Any, row_index int64, column_index int64) { //gd:DisplayServer.accessibility_update_set_table_cell_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_cell_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_cell_position, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		id           RID.Any
 		row_index    int64
 		column_index int64
@@ -6294,7 +6296,7 @@ Sets cell row/column span.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetTableCellSpan(id RID.Any, row_span int64, column_span int64) { //gd:DisplayServer.accessibility_update_set_table_cell_span
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_cell_span, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_table_cell_span, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		id          RID.Any
 		row_span    int64
 		column_span int64
@@ -6306,7 +6308,7 @@ Sets number of items in the list.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetListItemCount(id RID.Any, size int64) { //gd:DisplayServer.accessibility_update_set_list_item_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_count, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id   RID.Any
 		size int64
 	}{id, size})
@@ -6317,7 +6319,7 @@ Sets the position of the element in the list.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetListItemIndex(id RID.Any, index int64) { //gd:DisplayServer.accessibility_update_set_list_item_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_index, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		index int64
 	}{id, index})
@@ -6328,7 +6330,7 @@ Sets the hierarchical level of the element in the list.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetListItemLevel(id RID.Any, level int64) { //gd:DisplayServer.accessibility_update_set_list_item_level
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_level, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_level, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		level int64
 	}{id, level})
@@ -6339,7 +6341,7 @@ Sets list/tree item selected status.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetListItemSelected(id RID.Any, selected bool) { //gd:DisplayServer.accessibility_update_set_list_item_selected
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_selected, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_selected, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		id       RID.Any
 		selected bool
 	}{id, selected})
@@ -6350,7 +6352,7 @@ Sets list/tree item expanded status.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetListItemExpanded(id RID.Any, expanded bool) { //gd:DisplayServer.accessibility_update_set_list_item_expanded
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_expanded, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_item_expanded, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		id       RID.Any
 		expanded bool
 	}{id, expanded})
@@ -6361,7 +6363,7 @@ Sets popup type for popup buttons.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetPopupType(id RID.Any, popup AccessibilityPopupType) { //gd:DisplayServer.accessibility_update_set_popup_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_popup_type, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_popup_type, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		popup AccessibilityPopupType
 	}{id, popup})
@@ -6372,7 +6374,7 @@ Sets element checked state.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetChecked(id RID.Any, checekd bool) { //gd:DisplayServer.accessibility_update_set_checked
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_checked, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_checked, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		id      RID.Any
 		checekd bool
 	}{id, checekd})
@@ -6383,7 +6385,7 @@ Sets numeric value.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetNumValue(id RID.Any, position float64) { //gd:DisplayServer.accessibility_update_set_num_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		id       RID.Any
 		position float64
 	}{id, position})
@@ -6394,7 +6396,7 @@ Sets numeric value range.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetNumRange(id RID.Any, min float64, max float64) { //gd:DisplayServer.accessibility_update_set_num_range
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
 		id  RID.Any
 		min float64
 		max float64
@@ -6406,7 +6408,7 @@ Sets numeric value step.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetNumStep(id RID.Any, step float64) { //gd:DisplayServer.accessibility_update_set_num_step
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_step, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_step, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		id   RID.Any
 		step float64
 	}{id, step})
@@ -6417,7 +6419,7 @@ Sets numeric value jump.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetNumJump(id RID.Any, jump float64) { //gd:DisplayServer.accessibility_update_set_num_jump
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_jump, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_num_jump, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		id   RID.Any
 		jump float64
 	}{id, jump})
@@ -6428,7 +6430,7 @@ Sets scroll bar x position.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetScrollX(id RID.Any, position float64) { //gd:DisplayServer.accessibility_update_set_scroll_x
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_x, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_x, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		id       RID.Any
 		position float64
 	}{id, position})
@@ -6439,7 +6441,7 @@ Sets scroll bar x range.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetScrollXRange(id RID.Any, min float64, max float64) { //gd:DisplayServer.accessibility_update_set_scroll_x_range
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_x_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_x_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
 		id  RID.Any
 		min float64
 		max float64
@@ -6451,7 +6453,7 @@ Sets scroll bar y position.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetScrollY(id RID.Any, position float64) { //gd:DisplayServer.accessibility_update_set_scroll_y
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_y, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_y, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		id       RID.Any
 		position float64
 	}{id, position})
@@ -6462,7 +6464,7 @@ Sets scroll bar y range.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetScrollYRange(id RID.Any, min float64, max float64) { //gd:DisplayServer.accessibility_update_set_scroll_y_range
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_y_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_scroll_y_range, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12), &struct {
 		id  RID.Any
 		min float64
 		max float64
@@ -6474,7 +6476,7 @@ Sets text underline/overline/strikethrough.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetTextDecorations(id RID.Any, underline bool, strikethrough bool, overline bool) { //gd:DisplayServer.accessibility_update_set_text_decorations
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_decorations, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_decorations, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		id            RID.Any
 		underline     bool
 		strikethrough bool
@@ -6487,7 +6489,7 @@ Sets element text alignment.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetTextAlign(id RID.Any, align GUI.HorizontalAlignment) { //gd:DisplayServer.accessibility_update_set_text_align
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_align, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_align, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		id    RID.Any
 		align GUI.HorizontalAlignment
 	}{id, align})
@@ -6498,7 +6500,7 @@ Sets text selection to the text field. 'text_start_id' and 'text_end_id' should 
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetTextSelection(id RID.Any, text_start_id RID.Any, start_char int64, text_end_id RID.Any, end_char int64) { //gd:DisplayServer.accessibility_update_set_text_selection
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_selection, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeInt<<20), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_selection, 0|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeRID<<16)|(gdextension.SizeInt<<20), &struct {
 		id            RID.Any
 		text_start_id RID.Any
 		start_char    int64
@@ -6512,7 +6514,7 @@ Sets element flag.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetFlag(id RID.Any, flag AccessibilityFlags, value bool) { //gd:DisplayServer.accessibility_update_set_flag
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_flag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		id    RID.Any
 		flag  AccessibilityFlags
 		value bool
@@ -6524,7 +6526,7 @@ Sets element class name.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetClassname(id RID.Any, classname String.Readable) { //gd:DisplayServer.accessibility_update_set_classname
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_classname, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_classname, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id        RID.Any
 		classname gdextension.String
 	}{id, pointers.Get(gd.InternalString(classname))})
@@ -6535,7 +6537,7 @@ Sets placeholder text.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetPlaceholder(id RID.Any, placeholder String.Readable) { //gd:DisplayServer.accessibility_update_set_placeholder
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_placeholder, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_placeholder, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id          RID.Any
 		placeholder gdextension.String
 	}{id, pointers.Get(gd.InternalString(placeholder))})
@@ -6546,7 +6548,7 @@ Sets element text language.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetLanguage(id RID.Any, language String.Readable) { //gd:DisplayServer.accessibility_update_set_language
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_language, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_language, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id       RID.Any
 		language gdextension.String
 	}{id, pointers.Get(gd.InternalString(language))})
@@ -6557,7 +6559,7 @@ Sets text orientation.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetTextOrientation(id RID.Any, vertical bool) { //gd:DisplayServer.accessibility_update_set_text_orientation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_orientation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_text_orientation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		id       RID.Any
 		vertical bool
 	}{id, vertical})
@@ -6568,7 +6570,7 @@ Sets the orientation of the list elements.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetListOrientation(id RID.Any, vertical bool) { //gd:DisplayServer.accessibility_update_set_list_orientation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_orientation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_list_orientation, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		id       RID.Any
 		vertical bool
 	}{id, vertical})
@@ -6579,7 +6581,7 @@ Sets the list of keyboard shortcuts used by element.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetShortcut(id RID.Any, shortcut String.Readable) { //gd:DisplayServer.accessibility_update_set_shortcut
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_shortcut, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_shortcut, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id       RID.Any
 		shortcut gdextension.String
 	}{id, pointers.Get(gd.InternalString(shortcut))})
@@ -6590,7 +6592,7 @@ Sets link URL.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetUrl(id RID.Any, url String.Readable) { //gd:DisplayServer.accessibility_update_set_url
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_url, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_url, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id  RID.Any
 		url gdextension.String
 	}{id, pointers.Get(gd.InternalString(url))})
@@ -6601,7 +6603,7 @@ Sets element accessibility role description text.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetRoleDescription(id RID.Any, description String.Readable) { //gd:DisplayServer.accessibility_update_set_role_description
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_role_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_role_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id          RID.Any
 		description gdextension.String
 	}{id, pointers.Get(gd.InternalString(description))})
@@ -6612,7 +6614,7 @@ Sets human-readable description of the current checked state.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetStateDescription(id RID.Any, description String.Readable) { //gd:DisplayServer.accessibility_update_set_state_description
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_state_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_state_description, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id          RID.Any
 		description gdextension.String
 	}{id, pointers.Get(gd.InternalString(description))})
@@ -6623,7 +6625,7 @@ Sets element color value.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetColorValue(id RID.Any, color Color.RGBA) { //gd:DisplayServer.accessibility_update_set_color_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_color_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_color_value, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
 		id    RID.Any
 		color Color.RGBA
 	}{id, color})
@@ -6634,7 +6636,7 @@ Sets element background color.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetBackgroundColor(id RID.Any, color Color.RGBA) { //gd:DisplayServer.accessibility_update_set_background_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_background_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_background_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
 		id    RID.Any
 		color Color.RGBA
 	}{id, color})
@@ -6645,7 +6647,7 @@ Sets element foreground color.
 */
 //go:nosplit
 func (self class) AccessibilityUpdateSetForegroundColor(id RID.Any, color Color.RGBA) { //gd:DisplayServer.accessibility_update_set_foreground_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_foreground_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.accessibility_update_set_foreground_color, 0|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8), &struct {
 		id    RID.Any
 		color Color.RGBA
 	}{id, color})
@@ -6661,7 +6663,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) ImeGetSelection() Vector2i.XY { //gd:DisplayServer.ime_get_selection
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.ime_get_selection, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.ime_get_selection, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -6675,7 +6677,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) ImeGetText() String.Readable { //gd:DisplayServer.ime_get_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.ime_get_text, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.ime_get_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -6703,7 +6705,7 @@ Note: This method is implemented on Android, iOS and Web.
 */
 //go:nosplit
 func (self class) VirtualKeyboardShow(existing_text String.Readable, position Rect2.PositionSize, atype VirtualKeyboardType, max_length int64, cursor_start int64, cursor_end int64) { //gd:DisplayServer.virtual_keyboard_show
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.virtual_keyboard_show, 0|(gdextension.SizeString<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.virtual_keyboard_show, 0|(gdextension.SizeString<<4)|(gdextension.SizeRect2<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
 		existing_text gdextension.String
 		position      Rect2.PositionSize
 		atype         VirtualKeyboardType
@@ -6718,7 +6720,7 @@ Hides the virtual keyboard if it is shown, does nothing otherwise.
 */
 //go:nosplit
 func (self class) VirtualKeyboardHide() { //gd:DisplayServer.virtual_keyboard_hide
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.virtual_keyboard_hide, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.virtual_keyboard_hide, 0, &struct{}{})
 }
 
 /*
@@ -6728,7 +6730,7 @@ Note: On Android 7 and 8, the keyboard height may return 0 the first time the ke
 */
 //go:nosplit
 func (self class) VirtualKeyboardGetHeight() int64 { //gd:DisplayServer.virtual_keyboard_get_height
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.virtual_keyboard_get_height, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.virtual_keyboard_get_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -6740,7 +6742,7 @@ Note: This method is implemented on Android and iOS. On other platforms, this me
 */
 //go:nosplit
 func (self class) HasHardwareKeyboard() bool { //gd:DisplayServer.has_hardware_keyboard
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_hardware_keyboard, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_hardware_keyboard, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -6752,7 +6754,7 @@ Note: This method is only implemented on Android.
 */
 //go:nosplit
 func (self class) SetHardwareKeyboardConnectionChangeCallback(callable Callable.Function) { //gd:DisplayServer.set_hardware_keyboard_connection_change_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hardware_keyboard_connection_change_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hardware_keyboard_connection_change_callback, 0|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 }
 
 /*
@@ -6760,7 +6762,7 @@ Sets the default mouse cursor shape. The cursor's appearance will vary depending
 */
 //go:nosplit
 func (self class) CursorSetShape(shape CursorShape) { //gd:DisplayServer.cursor_set_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cursor_set_shape, 0|(gdextension.SizeInt<<4), &struct{ shape CursorShape }{shape})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cursor_set_shape, 0|(gdextension.SizeInt<<4), &struct{ shape CursorShape }{shape})
 }
 
 /*
@@ -6768,7 +6770,7 @@ Returns the default mouse cursor shape set by [CursorSetShape].
 */
 //go:nosplit
 func (self class) CursorGetShape() CursorShape { //gd:DisplayServer.cursor_get_shape
-	var r_ret = gdextension.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.cursor_get_shape, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[CursorShape](gd.ObjectChecked(self.AsObject()), methods.cursor_get_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -6783,7 +6785,7 @@ Sets a custom mouse cursor image for the given 'shape'. This means the user's op
 */
 //go:nosplit
 func (self class) CursorSetCustomImage(cursor [1]gdclass.Resource, shape CursorShape, hotspot Vector2.XY) { //gd:DisplayServer.cursor_set_custom_image
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cursor_set_custom_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cursor_set_custom_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVector2<<12), &struct {
 		cursor  gdextension.Object
 		shape   CursorShape
 		hotspot Vector2.XY
@@ -6800,7 +6802,7 @@ Note: This doesn't affect native dialogs such as the ones spawned by [DisplaySer
 */
 //go:nosplit
 func (self class) GetSwapCancelOk() bool { //gd:DisplayServer.get_swap_cancel_ok
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_swap_cancel_ok, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_swap_cancel_ok, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -6812,7 +6814,7 @@ Note: This method is implemented only on Windows.
 */
 //go:nosplit
 func (self class) EnableForStealingFocus(process_id int64) { //gd:DisplayServer.enable_for_stealing_focus
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.enable_for_stealing_focus, 0|(gdextension.SizeInt<<4), &struct{ process_id int64 }{process_id})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.enable_for_stealing_focus, 0|(gdextension.SizeInt<<4), &struct{ process_id int64 }{process_id})
 }
 
 /*
@@ -6822,7 +6824,7 @@ Note: This method is implemented if the display server has the [FeatureNativeDia
 */
 //go:nosplit
 func (self class) DialogShow(title String.Readable, description String.Readable, buttons Packed.Strings, callback Callable.Function) Error.Code { //gd:DisplayServer.dialog_show
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dialog_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeCallable<<16), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dialog_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeCallable<<16), &struct {
 		title       gdextension.String
 		description gdextension.String
 		buttons     gdextension.PackedArray[gdextension.String]
@@ -6839,7 +6841,7 @@ Note: This method is implemented if the display server has the [FeatureNativeDia
 */
 //go:nosplit
 func (self class) DialogInputText(title String.Readable, description String.Readable, existing_text String.Readable, callback Callable.Function) Error.Code { //gd:DisplayServer.dialog_input_text
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dialog_input_text, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.dialog_input_text, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16), &struct {
 		title         gdextension.String
 		description   gdextension.String
 		existing_text gdextension.String
@@ -6873,7 +6875,7 @@ Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain acc
 */
 //go:nosplit
 func (self class) FileDialogShow(title String.Readable, current_directory String.Readable, filename String.Readable, show_hidden bool, mode FileDialogMode, filters Packed.Strings, callback Callable.Function, parent_window_id int64) Error.Code { //gd:DisplayServer.file_dialog_show
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.file_dialog_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizeCallable<<28)|(gdextension.SizeInt<<32), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.file_dialog_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizeCallable<<28)|(gdextension.SizeInt<<32), &struct {
 		title             gdextension.String
 		current_directory gdextension.String
 		filename          gdextension.String
@@ -6919,7 +6921,7 @@ Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain acc
 */
 //go:nosplit
 func (self class) FileDialogWithOptionsShow(title String.Readable, current_directory String.Readable, root String.Readable, filename String.Readable, show_hidden bool, mode FileDialogMode, filters Packed.Strings, options Array.Contains[Dictionary.Any], callback Callable.Function, parent_window_id int64) Error.Code { //gd:DisplayServer.file_dialog_with_options_show
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.file_dialog_with_options_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizeArray<<32)|(gdextension.SizeCallable<<36)|(gdextension.SizeInt<<40), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.file_dialog_with_options_show, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizeArray<<32)|(gdextension.SizeCallable<<36)|(gdextension.SizeInt<<40), &struct {
 		title             gdextension.String
 		current_directory gdextension.String
 		root              gdextension.String
@@ -6942,7 +6944,7 @@ Note: This method is implemented on macOS, Linux (X11/Wayland), and Windows.
 */
 //go:nosplit
 func (self class) Beep() { //gd:DisplayServer.beep
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.beep, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.beep, 0, &struct{}{})
 }
 
 /*
@@ -6952,7 +6954,7 @@ Note: This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
 func (self class) KeyboardGetLayoutCount() int64 { //gd:DisplayServer.keyboard_get_layout_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_layout_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_layout_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -6964,7 +6966,7 @@ Note: This method is implemented on Linux (X11/Wayland), macOS, and Windows.
 */
 //go:nosplit
 func (self class) KeyboardGetCurrentLayout() int64 { //gd:DisplayServer.keyboard_get_current_layout
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_current_layout, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_current_layout, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -6976,7 +6978,7 @@ Note: This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
 func (self class) KeyboardSetCurrentLayout(index int64) { //gd:DisplayServer.keyboard_set_current_layout
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.keyboard_set_current_layout, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.keyboard_set_current_layout, 0|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 }
 
 /*
@@ -6986,7 +6988,7 @@ Note: This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
 func (self class) KeyboardGetLayoutLanguage(index int64) String.Readable { //gd:DisplayServer.keyboard_get_layout_language
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_layout_language, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_layout_language, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -6998,7 +7000,7 @@ Note: This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
 func (self class) KeyboardGetLayoutName(index int64) String.Readable { //gd:DisplayServer.keyboard_get_layout_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_layout_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_layout_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -7010,7 +7012,7 @@ Note: This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
 func (self class) KeyboardGetKeycodeFromPhysical(keycode Input.Key) Input.Key { //gd:DisplayServer.keyboard_get_keycode_from_physical
-	var r_ret = gdextension.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_keycode_from_physical, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ keycode Input.Key }{keycode})
+	var r_ret = noescape.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_keycode_from_physical, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ keycode Input.Key }{keycode})
 	var ret = r_ret
 	return ret
 }
@@ -7022,7 +7024,7 @@ Note: This method is implemented on Linux (X11/Wayland), macOS and Windows.
 */
 //go:nosplit
 func (self class) KeyboardGetLabelFromPhysical(keycode Input.Key) Input.Key { //gd:DisplayServer.keyboard_get_label_from_physical
-	var r_ret = gdextension.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_label_from_physical, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ keycode Input.Key }{keycode})
+	var r_ret = noescape.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.keyboard_get_label_from_physical, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ keycode Input.Key }{keycode})
 	var ret = r_ret
 	return ret
 }
@@ -7034,7 +7036,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) ShowEmojiAndSymbolPicker() { //gd:DisplayServer.show_emoji_and_symbol_picker
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.show_emoji_and_symbol_picker, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.show_emoji_and_symbol_picker, 0, &struct{}{})
 }
 
 /*
@@ -7048,7 +7050,7 @@ Note: This method is only implemented on Linux (X11/Wayland).
 */
 //go:nosplit
 func (self class) ColorPicker(callback Callable.Function) bool { //gd:DisplayServer.color_picker
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.color_picker, gdextension.SizeBool|(gdextension.SizeCallable<<4), &struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.color_picker, gdextension.SizeBool|(gdextension.SizeCallable<<4), &struct{ callback gdextension.Callable }{pointers.Get(gd.InternalCallable(callback))})
 	var ret = r_ret
 	return ret
 }
@@ -7061,7 +7063,7 @@ Perform window manager processing, including input flushing. See also [ForceProc
 */
 //go:nosplit
 func (self class) ProcessEvents() { //gd:DisplayServer.process_events
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.process_events, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.process_events, 0, &struct{}{})
 }
 
 /*
@@ -7073,7 +7075,7 @@ Note: This method is implemented on Windows and macOS.
 */
 //go:nosplit
 func (self class) ForceProcessAndDropEvents() { //gd:DisplayServer.force_process_and_drop_events
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_process_and_drop_events, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_process_and_drop_events, 0, &struct{}{})
 }
 
 /*
@@ -7083,7 +7085,7 @@ Note: Requires support for [FeatureNativeIcon].
 */
 //go:nosplit
 func (self class) SetNativeIcon(filename String.Readable) { //gd:DisplayServer.set_native_icon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_native_icon, 0|(gdextension.SizeString<<4), &struct{ filename gdextension.String }{pointers.Get(gd.InternalString(filename))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_native_icon, 0|(gdextension.SizeString<<4), &struct{ filename gdextension.String }{pointers.Get(gd.InternalString(filename))})
 }
 
 /*
@@ -7095,7 +7097,7 @@ Note: Requires support for [FeatureIcon].
 */
 //go:nosplit
 func (self class) SetIcon(image [1]gdclass.Image) { //gd:DisplayServer.set_icon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_icon, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))})
 }
 
 /*
@@ -7107,7 +7109,7 @@ Creates a new application status indicator with the specified icon, tooltip, and
 */
 //go:nosplit
 func (self class) CreateStatusIndicator(icon [1]gdclass.Texture2D, tooltip String.Readable, callback Callable.Function) int64 { //gd:DisplayServer.create_status_indicator
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_status_indicator, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_status_indicator, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12), &struct {
 		icon     gdextension.Object
 		tooltip  gdextension.String
 		callback gdextension.Callable
@@ -7123,7 +7125,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) StatusIndicatorSetIcon(id int64, icon [1]gdclass.Texture2D) { //gd:DisplayServer.status_indicator_set_icon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.status_indicator_set_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.status_indicator_set_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		id   int64
 		icon gdextension.Object
 	}{id, gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
@@ -7136,7 +7138,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) StatusIndicatorSetTooltip(id int64, tooltip String.Readable) { //gd:DisplayServer.status_indicator_set_tooltip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.status_indicator_set_tooltip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.status_indicator_set_tooltip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		id      int64
 		tooltip gdextension.String
 	}{id, pointers.Get(gd.InternalString(tooltip))})
@@ -7155,7 +7157,7 @@ Note: Native popup is only supported if [NativeMenu] supports the [Nativemenu.Fe
 */
 //go:nosplit
 func (self class) StatusIndicatorSetMenu(id int64, menu_rid RID.Any) { //gd:DisplayServer.status_indicator_set_menu
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.status_indicator_set_menu, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.status_indicator_set_menu, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
 		id       int64
 		menu_rid RID.Any
 	}{id, menu_rid})
@@ -7170,7 +7172,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) StatusIndicatorSetCallback(id int64, callback Callable.Function) { //gd:DisplayServer.status_indicator_set_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.status_indicator_set_callback, 0|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.status_indicator_set_callback, 0|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), &struct {
 		id       int64
 		callback gdextension.Callable
 	}{id, pointers.Get(gd.InternalCallable(callback))})
@@ -7185,7 +7187,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) StatusIndicatorGetRect(id int64) Rect2.PositionSize { //gd:DisplayServer.status_indicator_get_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.status_indicator_get_rect, gdextension.SizeRect2|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.status_indicator_get_rect, gdextension.SizeRect2|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
@@ -7195,7 +7197,7 @@ Removes the application status indicator.
 */
 //go:nosplit
 func (self class) DeleteStatusIndicator(id int64) { //gd:DisplayServer.delete_status_indicator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.delete_status_indicator, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.delete_status_indicator, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
 
 /*
@@ -7205,7 +7207,7 @@ Note: This method is implemented only on Windows.
 */
 //go:nosplit
 func (self class) TabletGetDriverCount() int64 { //gd:DisplayServer.tablet_get_driver_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.tablet_get_driver_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.tablet_get_driver_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -7217,7 +7219,7 @@ Note: This method is implemented only on Windows.
 */
 //go:nosplit
 func (self class) TabletGetDriverName(idx int64) String.Readable { //gd:DisplayServer.tablet_get_driver_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.tablet_get_driver_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.tablet_get_driver_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -7229,7 +7231,7 @@ Note: This method is implemented only on Windows.
 */
 //go:nosplit
 func (self class) TabletGetCurrentDriver() String.Readable { //gd:DisplayServer.tablet_get_current_driver
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.tablet_get_current_driver, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.tablet_get_current_driver, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -7249,7 +7251,7 @@ Note: This method is implemented only on Windows.
 */
 //go:nosplit
 func (self class) TabletSetCurrentDriver(name String.Readable) { //gd:DisplayServer.tablet_set_current_driver
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tablet_set_current_driver, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.tablet_set_current_driver, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 
 /*
@@ -7259,7 +7261,7 @@ Returns true if the window background can be made transparent. This method retur
 */
 //go:nosplit
 func (self class) IsWindowTransparencyAvailable() bool { //gd:DisplayServer.is_window_transparency_available
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_window_transparency_available, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_window_transparency_available, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -7273,7 +7275,7 @@ This can be used to prevent Godot from skipping rendering when no normal windows
 */
 //go:nosplit
 func (self class) RegisterAdditionalOutput(obj [1]gd.Object) { //gd:DisplayServer.register_additional_output
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(obj[0].AsObject()[0]))})
 }
 
 /*
@@ -7283,7 +7285,7 @@ Unregisters an [Object] representing an additional output, that was registered v
 */
 //go:nosplit
 func (self class) UnregisterAdditionalOutput(obj [1]gd.Object) { //gd:DisplayServer.unregister_additional_output
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unregister_additional_output, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))})
 }
 
 /*
@@ -7291,7 +7293,7 @@ Returns true if any additional outputs have been registered via [RegisterAdditio
 */
 //go:nosplit
 func (self class) HasAdditionalOutputs() bool { //gd:DisplayServer.has_additional_outputs
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_additional_outputs, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_additional_outputs, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

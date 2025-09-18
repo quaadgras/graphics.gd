@@ -26,6 +26,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -58,6 +59,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -104,7 +106,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -287,7 +289,7 @@ Returns [Ok] on success, or [ErrCantCreate] on failure.
 */
 //go:nosplit
 func (self class) Start(callable Callable.Function, priority Priority) Error.Code { //gd:Thread.start
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeCallable<<4)|(gdextension.SizeInt<<8), &struct {
 		callable gdextension.Callable
 		priority Priority
 	}{pointers.Get(gd.InternalCallable(callable)), priority})
@@ -303,7 +305,7 @@ Returns the current [Thread]'s ID, uniquely identifying it among all threads. If
 */
 //go:nosplit
 func (self class) GetId() String.Readable { //gd:Thread.get_id
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_id, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_id, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -317,7 +319,7 @@ Returns true if this [Thread] has been started. Once started, this will return t
 */
 //go:nosplit
 func (self class) IsStarted() bool { //gd:Thread.is_started
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_started, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_started, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -333,7 +335,7 @@ To check if a [Thread] is joinable, use [IsStarted].
 */
 //go:nosplit
 func (self class) IsAlive() bool { //gd:Thread.is_alive
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_alive, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_alive, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -351,7 +353,7 @@ To determine if this can be called without blocking the calling thread, check if
 */
 //go:nosplit
 func (self class) WaitToFinish() variant.Any { //gd:Thread.wait_to_finish
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.wait_to_finish, gdextension.SizeVariant, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.wait_to_finish, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -378,7 +380,7 @@ Note: Even in the case of having disabled the checks in a [WorkerThreadPool] tas
 */
 //go:nosplit
 func (self class) SetThreadSafetyChecksEnabled(enabled bool) { //gd:Thread.set_thread_safety_checks_enabled
-	gdextension.CallStatic[struct{}](methods.set_thread_safety_checks_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.CallStatic[struct{}](methods.set_thread_safety_checks_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) AsThread() Advanced         { return Advanced{pointers.AsA[gdclass.Thread](self[0])} }
 func (self Instance) AsThread() Instance      { return Instance{pointers.AsA[gdclass.Thread](self[0])} }

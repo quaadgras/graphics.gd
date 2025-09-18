@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -46,6 +47,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -88,7 +90,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -154,12 +156,12 @@ func (self Instance) SetTextureArray(value TextureLayered.Instance) {
 
 //go:nosplit
 func (self class) SetTextureArray(value [1]gdclass.TextureLayered) { //gd:VisualShaderNodeTexture2DArray.set_texture_array
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_array, 0|(gdextension.SizeObject<<4), &struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(value[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_array, 0|(gdextension.SizeObject<<4), &struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(value[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetTextureArray() [1]gdclass.TextureLayered { //gd:VisualShaderNodeTexture2DArray.get_texture_array
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_array, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture_array, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TextureLayered{gd.PointerWithOwnershipTransferredToGo[gdclass.TextureLayered](r_ret)}
 	return ret
 }

@@ -29,6 +29,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -76,6 +77,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -254,7 +256,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -1442,7 +1444,7 @@ Returns the text without BBCode mark-up.
 */
 //go:nosplit
 func (self class) GetParsedText() String.Readable { //gd:RichTextLabel.get_parsed_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_parsed_text, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_parsed_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1452,12 +1454,12 @@ Adds raw non-BBCode-parsed text to the tag stack.
 */
 //go:nosplit
 func (self class) AddText(text String.Readable) { //gd:RichTextLabel.add_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_text, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_text, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 
 //go:nosplit
 func (self class) SetText(text String.Readable) { //gd:RichTextLabel.set_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 
 /*
@@ -1469,7 +1471,7 @@ If 'height_in_percent' is set, 'height' values are percentages of the control wi
 */
 //go:nosplit
 func (self class) AddHr(width int64, height int64, color Color.RGBA, alignment GUI.HorizontalAlignment, width_in_percent bool, height_in_percent bool) { //gd:RichTextLabel.add_hr
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_hr, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeBool<<24), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_hr, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeBool<<24), &struct {
 		width             int64
 		height            int64
 		color             Color.RGBA
@@ -1500,7 +1502,7 @@ If 'height_in_percent' is set, 'height' values are percentages of the control wi
 */
 //go:nosplit
 func (self class) AddImage(image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, key variant.Any, pad bool, tooltip String.Readable, width_in_percent bool, height_in_percent bool, alt_text String.Readable) { //gd:RichTextLabel.add_image
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeRect2<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeString<<36)|(gdextension.SizeBool<<40)|(gdextension.SizeBool<<44)|(gdextension.SizeString<<48), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_image, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeColor<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeRect2<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeBool<<32)|(gdextension.SizeString<<36)|(gdextension.SizeBool<<40)|(gdextension.SizeBool<<44)|(gdextension.SizeString<<48), &struct {
 		image             gdextension.Object
 		width             int64
 		height            int64
@@ -1523,7 +1525,7 @@ Updates the existing images with the key 'key'. Only properties specified by 'ma
 */
 //go:nosplit
 func (self class) UpdateImage(key variant.Any, mask ImageUpdateMask, image [1]gdclass.Texture2D, width int64, height int64, color Color.RGBA, inline_align GUI.InlineAlignment, region Rect2.PositionSize, pad bool, tooltip String.Readable, width_in_percent bool, height_in_percent bool) { //gd:RichTextLabel.update_image
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_image, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeRect2<<32)|(gdextension.SizeBool<<36)|(gdextension.SizeString<<40)|(gdextension.SizeBool<<44)|(gdextension.SizeBool<<48), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_image, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeColor<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeRect2<<32)|(gdextension.SizeBool<<36)|(gdextension.SizeString<<40)|(gdextension.SizeBool<<44)|(gdextension.SizeBool<<48), &struct {
 		key               gdextension.Variant
 		mask              ImageUpdateMask
 		image             gdextension.Object
@@ -1544,7 +1546,7 @@ Adds a newline tag to the tag stack.
 */
 //go:nosplit
 func (self class) Newline() { //gd:RichTextLabel.newline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.newline, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.newline, 0, &struct{}{})
 }
 
 /*
@@ -1558,7 +1560,7 @@ If 'no_invalidate' is set to true, cache for the subsequent paragraphs is not in
 */
 //go:nosplit
 func (self class) RemoveParagraph(paragraph int64, no_invalidate bool) bool { //gd:RichTextLabel.remove_paragraph
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.remove_paragraph, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.remove_paragraph, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		paragraph     int64
 		no_invalidate bool
 	}{paragraph, no_invalidate})
@@ -1571,7 +1573,7 @@ Invalidates 'paragraph' and all subsequent paragraphs cache.
 */
 //go:nosplit
 func (self class) InvalidateParagraph(paragraph int64) bool { //gd:RichTextLabel.invalidate_paragraph
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.invalidate_paragraph, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ paragraph int64 }{paragraph})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.invalidate_paragraph, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ paragraph int64 }{paragraph})
 	var ret = r_ret
 	return ret
 }
@@ -1583,7 +1585,7 @@ Passing 0 to 'font_size' will use the existing default font size.
 */
 //go:nosplit
 func (self class) PushFont(font [1]gdclass.Font, font_size int64) { //gd:RichTextLabel.push_font
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_font, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_font, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		font      gdextension.Object
 		font_size int64
 	}{gdextension.Object(gd.ObjectChecked(font[0].AsObject())), font_size})
@@ -1594,7 +1596,7 @@ Adds a [font_size] tag to the tag stack. Overrides default font size for its dur
 */
 //go:nosplit
 func (self class) PushFontSize(font_size int64) { //gd:RichTextLabel.push_font_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_font_size, 0|(gdextension.SizeInt<<4), &struct{ font_size int64 }{font_size})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_font_size, 0|(gdextension.SizeInt<<4), &struct{ font_size int64 }{font_size})
 }
 
 /*
@@ -1602,7 +1604,7 @@ Adds a [font] tag with a normal font to the tag stack.
 */
 //go:nosplit
 func (self class) PushNormal() { //gd:RichTextLabel.push_normal
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_normal, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_normal, 0, &struct{}{})
 }
 
 /*
@@ -1610,7 +1612,7 @@ Adds a [font] tag with a bold font to the tag stack. This is the same as adding 
 */
 //go:nosplit
 func (self class) PushBold() { //gd:RichTextLabel.push_bold
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_bold, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_bold, 0, &struct{}{})
 }
 
 /*
@@ -1618,7 +1620,7 @@ Adds a [font] tag with a bold italics font to the tag stack.
 */
 //go:nosplit
 func (self class) PushBoldItalics() { //gd:RichTextLabel.push_bold_italics
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_bold_italics, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_bold_italics, 0, &struct{}{})
 }
 
 /*
@@ -1626,7 +1628,7 @@ Adds a [font] tag with an italics font to the tag stack. This is the same as add
 */
 //go:nosplit
 func (self class) PushItalics() { //gd:RichTextLabel.push_italics
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_italics, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_italics, 0, &struct{}{})
 }
 
 /*
@@ -1634,7 +1636,7 @@ Adds a [font] tag with a monospace font to the tag stack.
 */
 //go:nosplit
 func (self class) PushMono() { //gd:RichTextLabel.push_mono
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_mono, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_mono, 0, &struct{}{})
 }
 
 /*
@@ -1642,7 +1644,7 @@ Adds a [color] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushColor(color Color.RGBA) { //gd:RichTextLabel.push_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 /*
@@ -1650,7 +1652,7 @@ Adds a [outline_size] tag to the tag stack. Overrides default text outline size 
 */
 //go:nosplit
 func (self class) PushOutlineSize(outline_size int64) { //gd:RichTextLabel.push_outline_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_outline_size, 0|(gdextension.SizeInt<<4), &struct{ outline_size int64 }{outline_size})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_outline_size, 0|(gdextension.SizeInt<<4), &struct{ outline_size int64 }{outline_size})
 }
 
 /*
@@ -1658,7 +1660,7 @@ Adds a [outline_color] tag to the tag stack. Adds text outline for its duration.
 */
 //go:nosplit
 func (self class) PushOutlineColor(color Color.RGBA) { //gd:RichTextLabel.push_outline_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_outline_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_outline_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 /*
@@ -1666,7 +1668,7 @@ Adds a [p] tag to the tag stack.
 */
 //go:nosplit
 func (self class) PushParagraph(alignment GUI.HorizontalAlignment, base_direction Control.TextDirection, language String.Readable, st_parser TextServer.StructuredTextParser, justification_flags TextServer.JustificationFlag, tab_stops Packed.Array[float32]) { //gd:RichTextLabel.push_paragraph
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_paragraph, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizePackedArray<<24), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_paragraph, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizePackedArray<<24), &struct {
 		alignment           GUI.HorizontalAlignment
 		base_direction      Control.TextDirection
 		language            gdextension.String
@@ -1683,7 +1685,7 @@ Adds an [indent] tag to the tag stack. Multiplies 'level' by current [TabSize] t
 */
 //go:nosplit
 func (self class) PushIndent(level int64) { //gd:RichTextLabel.push_indent
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_indent, 0|(gdextension.SizeInt<<4), &struct{ level int64 }{level})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_indent, 0|(gdextension.SizeInt<<4), &struct{ level int64 }{level})
 }
 
 /*
@@ -1693,7 +1695,7 @@ Adds [ol] or [ul] tag to the tag stack. Multiplies 'level' by current [TabSize] 
 */
 //go:nosplit
 func (self class) PushList(level int64, atype ListType, capitalize bool, bullet String.Readable) { //gd:RichTextLabel.push_list
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_list, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeString<<16), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_list, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeString<<16), &struct {
 		level      int64
 		atype      ListType
 		capitalize bool
@@ -1713,7 +1715,7 @@ Note: Meta tags do nothing by default when clicked. To assign behavior when clic
 */
 //go:nosplit
 func (self class) PushMeta(data variant.Any, underline_mode MetaUnderline, tooltip String.Readable) { //gd:RichTextLabel.push_meta
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_meta, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_meta, 0|(gdextension.SizeVariant<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		data           gdextension.Variant
 		underline_mode MetaUnderline
 		tooltip        gdextension.String
@@ -1725,7 +1727,7 @@ Adds a [hint] tag to the tag stack. Same as BBCode [hint=something]{text}[/hint]
 */
 //go:nosplit
 func (self class) PushHint(description String.Readable) { //gd:RichTextLabel.push_hint
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_hint, 0|(gdextension.SizeString<<4), &struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_hint, 0|(gdextension.SizeString<<4), &struct{ description gdextension.String }{pointers.Get(gd.InternalString(description))})
 }
 
 /*
@@ -1733,7 +1735,7 @@ Adds language code used for text shaping algorithm and Open-Type font features.
 */
 //go:nosplit
 func (self class) PushLanguage(language String.Readable) { //gd:RichTextLabel.push_language
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_language, 0|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_language, 0|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
 }
 
 /*
@@ -1741,7 +1743,7 @@ Adds a [u] tag to the tag stack. If 'color' alpha value is zero, current font co
 */
 //go:nosplit
 func (self class) PushUnderline(color Color.RGBA) { //gd:RichTextLabel.push_underline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_underline, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_underline, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 /*
@@ -1749,7 +1751,7 @@ Adds a [s] tag to the tag stack. If 'color' alpha value is zero, current font co
 */
 //go:nosplit
 func (self class) PushStrikethrough(color Color.RGBA) { //gd:RichTextLabel.push_strikethrough
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_strikethrough, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_strikethrough, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 /*
@@ -1760,7 +1762,7 @@ Adds a [table=columns,inline_align] tag to the tag stack. Use [SetTableColumnExp
 */
 //go:nosplit
 func (self class) PushTable(columns int64, inline_align GUI.InlineAlignment, align_to_row int64, name String.Readable) { //gd:RichTextLabel.push_table
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_table, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeString<<16), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_table, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeString<<16), &struct {
 		columns      int64
 		inline_align GUI.InlineAlignment
 		align_to_row int64
@@ -1773,7 +1775,7 @@ Adds a [dropcap] tag to the tag stack. Drop cap (dropped capital) is a decorativ
 */
 //go:nosplit
 func (self class) PushDropcap(s String.Readable, font [1]gdclass.Font, size int64, dropcap_margins Rect2.PositionSize, color Color.RGBA, outline_size int64, outline_color Color.RGBA) { //gd:RichTextLabel.push_dropcap
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_dropcap, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeRect2<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_dropcap, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeRect2<<16)|(gdextension.SizeColor<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeColor<<28), &struct {
 		s               gdextension.String
 		font            gdextension.Object
 		size            int64
@@ -1793,7 +1795,7 @@ If 'expand' is false, the column will not contribute to the total ratio.
 */
 //go:nosplit
 func (self class) SetTableColumnExpand(column int64, expand bool, ratio int64, shrink bool) { //gd:RichTextLabel.set_table_column_expand
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_table_column_expand, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_table_column_expand, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeBool<<16), &struct {
 		column int64
 		expand bool
 		ratio  int64
@@ -1806,7 +1808,7 @@ Sets table column name for assistive apps.
 */
 //go:nosplit
 func (self class) SetTableColumnName(column int64, name String.Readable) { //gd:RichTextLabel.set_table_column_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_table_column_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_table_column_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		column int64
 		name   gdextension.String
 	}{column, pointers.Get(gd.InternalString(name))})
@@ -1817,7 +1819,7 @@ Sets color of a table cell. Separate colors for alternating rows can be specifie
 */
 //go:nosplit
 func (self class) SetCellRowBackgroundColor(odd_row_bg Color.RGBA, even_row_bg Color.RGBA) { //gd:RichTextLabel.set_cell_row_background_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_row_background_color, 0|(gdextension.SizeColor<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_row_background_color, 0|(gdextension.SizeColor<<4)|(gdextension.SizeColor<<8), &struct {
 		odd_row_bg  Color.RGBA
 		even_row_bg Color.RGBA
 	}{odd_row_bg, even_row_bg})
@@ -1828,7 +1830,7 @@ Sets color of a table cell border.
 */
 //go:nosplit
 func (self class) SetCellBorderColor(color Color.RGBA) { //gd:RichTextLabel.set_cell_border_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_border_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_border_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 /*
@@ -1836,7 +1838,7 @@ Sets minimum and maximum size overrides for a table cell.
 */
 //go:nosplit
 func (self class) SetCellSizeOverride(min_size Vector2.XY, max_size Vector2.XY) { //gd:RichTextLabel.set_cell_size_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_size_override, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_size_override, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
 		min_size Vector2.XY
 		max_size Vector2.XY
 	}{min_size, max_size})
@@ -1847,7 +1849,7 @@ Sets inner padding of a table cell.
 */
 //go:nosplit
 func (self class) SetCellPadding(padding Rect2.PositionSize) { //gd:RichTextLabel.set_cell_padding
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_padding, 0|(gdextension.SizeRect2<<4), &struct{ padding Rect2.PositionSize }{padding})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cell_padding, 0|(gdextension.SizeRect2<<4), &struct{ padding Rect2.PositionSize }{padding})
 }
 
 /*
@@ -1862,7 +1864,7 @@ Adds a [cell] tag to the tag stack. Must be inside a [table] tag. See [PushTable
 */
 //go:nosplit
 func (self class) PushCell() { //gd:RichTextLabel.push_cell
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_cell, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_cell, 0, &struct{}{})
 }
 
 /*
@@ -1872,7 +1874,7 @@ Note: The foreground color has padding applied by default, which is controlled u
 */
 //go:nosplit
 func (self class) PushFgcolor(fgcolor Color.RGBA) { //gd:RichTextLabel.push_fgcolor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_fgcolor, 0|(gdextension.SizeColor<<4), &struct{ fgcolor Color.RGBA }{fgcolor})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_fgcolor, 0|(gdextension.SizeColor<<4), &struct{ fgcolor Color.RGBA }{fgcolor})
 }
 
 /*
@@ -1882,7 +1884,7 @@ Note: The background color has padding applied by default, which is controlled u
 */
 //go:nosplit
 func (self class) PushBgcolor(bgcolor Color.RGBA) { //gd:RichTextLabel.push_bgcolor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_bgcolor, 0|(gdextension.SizeColor<<4), &struct{ bgcolor Color.RGBA }{bgcolor})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_bgcolor, 0|(gdextension.SizeColor<<4), &struct{ bgcolor Color.RGBA }{bgcolor})
 }
 
 /*
@@ -1892,7 +1894,7 @@ Adds a custom effect tag to the tag stack. The effect does not need to be in [Cu
 */
 //go:nosplit
 func (self class) PushCustomfx(effect [1]gdclass.RichTextEffect, env Dictionary.Any) { //gd:RichTextLabel.push_customfx
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_customfx, 0|(gdextension.SizeObject<<4)|(gdextension.SizeDictionary<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_customfx, 0|(gdextension.SizeObject<<4)|(gdextension.SizeDictionary<<8), &struct {
 		effect gdextension.Object
 		env    gdextension.Dictionary
 	}{gdextension.Object(gd.ObjectChecked(effect[0].AsObject())), pointers.Get(gd.InternalDictionary(env))})
@@ -1905,7 +1907,7 @@ Adds a context marker to the tag stack. See [PopContext].
 */
 //go:nosplit
 func (self class) PushContext() { //gd:RichTextLabel.push_context
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_context, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.push_context, 0, &struct{}{})
 }
 
 /*
@@ -1915,7 +1917,7 @@ Terminates tags opened after the last [PushContext] call (including context mark
 */
 //go:nosplit
 func (self class) PopContext() { //gd:RichTextLabel.pop_context
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pop_context, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pop_context, 0, &struct{}{})
 }
 
 /*
@@ -1923,7 +1925,7 @@ Terminates the current tag. Use after push_* methods to close BBCodes manually. 
 */
 //go:nosplit
 func (self class) Pop() { //gd:RichTextLabel.pop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pop, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pop, 0, &struct{}{})
 }
 
 /*
@@ -1931,7 +1933,7 @@ Terminates all tags opened by push_* methods.
 */
 //go:nosplit
 func (self class) PopAll() { //gd:RichTextLabel.pop_all
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pop_all, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pop_all, 0, &struct{}{})
 }
 
 /*
@@ -1943,189 +1945,189 @@ Note: This method does not affect [Text], and its contents will show again if th
 */
 //go:nosplit
 func (self class) Clear() { //gd:RichTextLabel.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredTextParser) { //gd:RichTextLabel.set_structured_text_bidi_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override, 0|(gdextension.SizeInt<<4), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override, 0|(gdextension.SizeInt<<4), &struct {
 		parser TextServer.StructuredTextParser
 	}{parser})
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:RichTextLabel.get_structured_text_bidi_override
-	var r_ret = gdextension.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:RichTextLabel.set_structured_text_bidi_override_options
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override_options, 0|(gdextension.SizeArray<<4), &struct{ args gdextension.Array }{pointers.Get(gd.InternalArray(args))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override_options, 0|(gdextension.SizeArray<<4), &struct{ args gdextension.Array }{pointers.Get(gd.InternalArray(args))})
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:RichTextLabel.get_structured_text_bidi_override_options
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override_options, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override_options, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextDirection(direction Control.TextDirection) { //gd:RichTextLabel.set_text_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_direction, 0|(gdextension.SizeInt<<4), &struct{ direction Control.TextDirection }{direction})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_direction, 0|(gdextension.SizeInt<<4), &struct{ direction Control.TextDirection }{direction})
 }
 
 //go:nosplit
 func (self class) GetTextDirection() Control.TextDirection { //gd:RichTextLabel.get_text_direction
-	var r_ret = gdextension.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLanguage(language String.Readable) { //gd:RichTextLabel.set_language
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
 }
 
 //go:nosplit
 func (self class) GetLanguage() String.Readable { //gd:RichTextLabel.get_language
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:RichTextLabel.set_horizontal_alignment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.HorizontalAlignment }{alignment})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.HorizontalAlignment }{alignment})
 }
 
 //go:nosplit
 func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:RichTextLabel.get_horizontal_alignment
-	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVerticalAlignment(alignment GUI.VerticalAlignment) { //gd:RichTextLabel.set_vertical_alignment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.VerticalAlignment }{alignment})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.VerticalAlignment }{alignment})
 }
 
 //go:nosplit
 func (self class) GetVerticalAlignment() GUI.VerticalAlignment { //gd:RichTextLabel.get_vertical_alignment
-	var r_ret = gdextension.Call[GUI.VerticalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_vertical_alignment, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[GUI.VerticalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_vertical_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJustificationFlags(justification_flags TextServer.JustificationFlag) { //gd:RichTextLabel.set_justification_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_justification_flags, 0|(gdextension.SizeInt<<4), &struct{ justification_flags TextServer.JustificationFlag }{justification_flags})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_justification_flags, 0|(gdextension.SizeInt<<4), &struct{ justification_flags TextServer.JustificationFlag }{justification_flags})
 }
 
 //go:nosplit
 func (self class) GetJustificationFlags() TextServer.JustificationFlag { //gd:RichTextLabel.get_justification_flags
-	var r_ret = gdextension.Call[TextServer.JustificationFlag](gd.ObjectChecked(self.AsObject()), methods.get_justification_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TextServer.JustificationFlag](gd.ObjectChecked(self.AsObject()), methods.get_justification_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTabStops(tab_stops Packed.Array[float32]) { //gd:RichTextLabel.set_tab_stops
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_stops, 0|(gdextension.SizePackedArray<<4), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_stops, 0|(gdextension.SizePackedArray<<4), &struct {
 		tab_stops gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](tab_stops))})
 }
 
 //go:nosplit
 func (self class) GetTabStops() Packed.Array[float32] { //gd:RichTextLabel.get_tab_stops
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_tab_stops, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_tab_stops, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutowrapMode(autowrap_mode TextServer.AutowrapMode) { //gd:RichTextLabel.set_autowrap_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_mode, 0|(gdextension.SizeInt<<4), &struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_mode, 0|(gdextension.SizeInt<<4), &struct{ autowrap_mode TextServer.AutowrapMode }{autowrap_mode})
 }
 
 //go:nosplit
 func (self class) GetAutowrapMode() TextServer.AutowrapMode { //gd:RichTextLabel.get_autowrap_mode
-	var r_ret = gdextension.Call[TextServer.AutowrapMode](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TextServer.AutowrapMode](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutowrapTrimFlags(autowrap_trim_flags TextServer.LineBreakFlag) { //gd:RichTextLabel.set_autowrap_trim_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_trim_flags, 0|(gdextension.SizeInt<<4), &struct{ autowrap_trim_flags TextServer.LineBreakFlag }{autowrap_trim_flags})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autowrap_trim_flags, 0|(gdextension.SizeInt<<4), &struct{ autowrap_trim_flags TextServer.LineBreakFlag }{autowrap_trim_flags})
 }
 
 //go:nosplit
 func (self class) GetAutowrapTrimFlags() TextServer.LineBreakFlag { //gd:RichTextLabel.get_autowrap_trim_flags
-	var r_ret = gdextension.Call[TextServer.LineBreakFlag](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_trim_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TextServer.LineBreakFlag](gd.ObjectChecked(self.AsObject()), methods.get_autowrap_trim_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMetaUnderline(enable bool) { //gd:RichTextLabel.set_meta_underline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_meta_underline, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_meta_underline, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsMetaUnderlined() bool { //gd:RichTextLabel.is_meta_underlined
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_meta_underlined, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_meta_underlined, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHintUnderline(enable bool) { //gd:RichTextLabel.set_hint_underline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hint_underline, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hint_underline, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsHintUnderlined() bool { //gd:RichTextLabel.is_hint_underlined
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hint_underlined, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hint_underlined, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollActive(active bool) { //gd:RichTextLabel.set_scroll_active
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
 
 //go:nosplit
 func (self class) IsScrollActive() bool { //gd:RichTextLabel.is_scroll_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_active, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollFollowVisibleCharacters(follow bool) { //gd:RichTextLabel.set_scroll_follow_visible_characters
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_follow_visible_characters, 0|(gdextension.SizeBool<<4), &struct{ follow bool }{follow})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_follow_visible_characters, 0|(gdextension.SizeBool<<4), &struct{ follow bool }{follow})
 }
 
 //go:nosplit
 func (self class) IsScrollFollowingVisibleCharacters() bool { //gd:RichTextLabel.is_scroll_following_visible_characters
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_following_visible_characters, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_following_visible_characters, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollFollow(follow bool) { //gd:RichTextLabel.set_scroll_follow
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_follow, 0|(gdextension.SizeBool<<4), &struct{ follow bool }{follow})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_follow, 0|(gdextension.SizeBool<<4), &struct{ follow bool }{follow})
 }
 
 //go:nosplit
 func (self class) IsScrollFollowing() bool { //gd:RichTextLabel.is_scroll_following
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_following, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scroll_following, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2139,7 +2141,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 */
 //go:nosplit
 func (self class) GetVScrollBar() [1]gdclass.VScrollBar { //gd:RichTextLabel.get_v_scroll_bar
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_bar, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_v_scroll_bar, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.VScrollBar{gd.PointerLifetimeBoundTo[gdclass.VScrollBar](self.AsObject(), r_ret)}
 	return ret
 }
@@ -2149,7 +2151,7 @@ Scrolls the window's top line to match 'line'.
 */
 //go:nosplit
 func (self class) ScrollToLine(line int64) { //gd:RichTextLabel.scroll_to_line
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scroll_to_line, 0|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scroll_to_line, 0|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 }
 
 /*
@@ -2157,7 +2159,7 @@ Scrolls the window's top line to match first line of the 'paragraph'.
 */
 //go:nosplit
 func (self class) ScrollToParagraph(paragraph int64) { //gd:RichTextLabel.scroll_to_paragraph
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scroll_to_paragraph, 0|(gdextension.SizeInt<<4), &struct{ paragraph int64 }{paragraph})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scroll_to_paragraph, 0|(gdextension.SizeInt<<4), &struct{ paragraph int64 }{paragraph})
 }
 
 /*
@@ -2165,89 +2167,89 @@ Scrolls to the beginning of the current selection.
 */
 //go:nosplit
 func (self class) ScrollToSelection() { //gd:RichTextLabel.scroll_to_selection
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scroll_to_selection, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.scroll_to_selection, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetTabSize(spaces int64) { //gd:RichTextLabel.set_tab_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_size, 0|(gdextension.SizeInt<<4), &struct{ spaces int64 }{spaces})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tab_size, 0|(gdextension.SizeInt<<4), &struct{ spaces int64 }{spaces})
 }
 
 //go:nosplit
 func (self class) GetTabSize() int64 { //gd:RichTextLabel.get_tab_size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tab_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tab_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFitContent(enabled bool) { //gd:RichTextLabel.set_fit_content
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fit_content, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fit_content, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsFitContentEnabled() bool { //gd:RichTextLabel.is_fit_content_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_fit_content_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_fit_content_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelectionEnabled(enabled bool) { //gd:RichTextLabel.set_selection_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selection_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selection_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsSelectionEnabled() bool { //gd:RichTextLabel.is_selection_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selection_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selection_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetContextMenuEnabled(enabled bool) { //gd:RichTextLabel.set_context_menu_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_context_menu_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_context_menu_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsContextMenuEnabled() bool { //gd:RichTextLabel.is_context_menu_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_context_menu_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_context_menu_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShortcutKeysEnabled(enabled bool) { //gd:RichTextLabel.set_shortcut_keys_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_keys_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_keys_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsShortcutKeysEnabled() bool { //gd:RichTextLabel.is_shortcut_keys_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shortcut_keys_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shortcut_keys_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDeselectOnFocusLossEnabled(enable bool) { //gd:RichTextLabel.set_deselect_on_focus_loss_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deselect_on_focus_loss_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deselect_on_focus_loss_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsDeselectOnFocusLossEnabled() bool { //gd:RichTextLabel.is_deselect_on_focus_loss_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deselect_on_focus_loss_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deselect_on_focus_loss_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragAndDropSelectionEnabled(enable bool) { //gd:RichTextLabel.set_drag_and_drop_selection_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_and_drop_selection_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_and_drop_selection_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsDragAndDropSelectionEnabled() bool { //gd:RichTextLabel.is_drag_and_drop_selection_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_and_drop_selection_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_and_drop_selection_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2257,7 +2259,7 @@ Returns the current selection first character index if a selection is active, -1
 */
 //go:nosplit
 func (self class) GetSelectionFrom() int64 { //gd:RichTextLabel.get_selection_from
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selection_from, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selection_from, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2267,7 +2269,7 @@ Returns the current selection last character index if a selection is active, -1 
 */
 //go:nosplit
 func (self class) GetSelectionTo() int64 { //gd:RichTextLabel.get_selection_to
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selection_to, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selection_to, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2277,7 +2279,7 @@ Returns the current selection vertical line offset if a selection is active, -1.
 */
 //go:nosplit
 func (self class) GetSelectionLineOffset() float64 { //gd:RichTextLabel.get_selection_line_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_selection_line_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_selection_line_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2291,7 +2293,7 @@ If [SelectionEnabled] is false, no selection will occur.
 */
 //go:nosplit
 func (self class) SelectAll() { //gd:RichTextLabel.select_all
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_all, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_all, 0, &struct{}{})
 }
 
 /*
@@ -2299,7 +2301,7 @@ Returns the current selection text. Does not include BBCodes.
 */
 //go:nosplit
 func (self class) GetSelectedText() String.Readable { //gd:RichTextLabel.get_selected_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_selected_text, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_selected_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2309,7 +2311,7 @@ Clears the current selection.
 */
 //go:nosplit
 func (self class) Deselect() { //gd:RichTextLabel.deselect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.deselect, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.deselect, 0, &struct{}{})
 }
 
 /*
@@ -2319,7 +2321,7 @@ The assignment version of [AppendText]. Clears the tag stack and inserts the new
 */
 //go:nosplit
 func (self class) ParseBbcode(bbcode String.Readable) { //gd:RichTextLabel.parse_bbcode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.parse_bbcode, 0|(gdextension.SizeString<<4), &struct{ bbcode gdextension.String }{pointers.Get(gd.InternalString(bbcode))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.parse_bbcode, 0|(gdextension.SizeString<<4), &struct{ bbcode gdextension.String }{pointers.Get(gd.InternalString(bbcode))})
 }
 
 /*
@@ -2332,12 +2334,12 @@ Note: Using this method, you can't close a tag that was opened in a previous [Ap
 */
 //go:nosplit
 func (self class) AppendText(bbcode String.Readable) { //gd:RichTextLabel.append_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_text, 0|(gdextension.SizeString<<4), &struct{ bbcode gdextension.String }{pointers.Get(gd.InternalString(bbcode))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_text, 0|(gdextension.SizeString<<4), &struct{ bbcode gdextension.String }{pointers.Get(gd.InternalString(bbcode))})
 }
 
 //go:nosplit
 func (self class) GetText() String.Readable { //gd:RichTextLabel.get_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -2349,7 +2351,7 @@ If [Threaded] is enabled, returns true if the background thread has finished tex
 */
 //go:nosplit
 func (self class) IsReady() bool { //gd:RichTextLabel.is_ready
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ready, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ready, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2361,69 +2363,69 @@ If [Threaded] is enabled, returns true if the background thread has finished tex
 */
 //go:nosplit
 func (self class) IsFinished() bool { //gd:RichTextLabel.is_finished
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_finished, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_finished, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetThreaded(threaded bool) { //gd:RichTextLabel.set_threaded
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_threaded, 0|(gdextension.SizeBool<<4), &struct{ threaded bool }{threaded})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_threaded, 0|(gdextension.SizeBool<<4), &struct{ threaded bool }{threaded})
 }
 
 //go:nosplit
 func (self class) IsThreaded() bool { //gd:RichTextLabel.is_threaded
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_threaded, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_threaded, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProgressBarDelay(delay_ms int64) { //gd:RichTextLabel.set_progress_bar_delay
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress_bar_delay, 0|(gdextension.SizeInt<<4), &struct{ delay_ms int64 }{delay_ms})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_progress_bar_delay, 0|(gdextension.SizeInt<<4), &struct{ delay_ms int64 }{delay_ms})
 }
 
 //go:nosplit
 func (self class) GetProgressBarDelay() int64 { //gd:RichTextLabel.get_progress_bar_delay
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_progress_bar_delay, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_progress_bar_delay, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibleCharacters(amount int64) { //gd:RichTextLabel.set_visible_characters
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible_characters, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible_characters, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
 
 //go:nosplit
 func (self class) GetVisibleCharacters() int64 { //gd:RichTextLabel.get_visible_characters
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visible_characters, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visible_characters, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetVisibleCharactersBehavior() TextServer.VisibleCharactersBehavior { //gd:RichTextLabel.get_visible_characters_behavior
-	var r_ret = gdextension.Call[TextServer.VisibleCharactersBehavior](gd.ObjectChecked(self.AsObject()), methods.get_visible_characters_behavior, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TextServer.VisibleCharactersBehavior](gd.ObjectChecked(self.AsObject()), methods.get_visible_characters_behavior, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibleCharactersBehavior(behavior TextServer.VisibleCharactersBehavior) { //gd:RichTextLabel.set_visible_characters_behavior
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible_characters_behavior, 0|(gdextension.SizeInt<<4), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible_characters_behavior, 0|(gdextension.SizeInt<<4), &struct {
 		behavior TextServer.VisibleCharactersBehavior
 	}{behavior})
 }
 
 //go:nosplit
 func (self class) SetVisibleRatio(ratio float64) { //gd:RichTextLabel.set_visible_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible_ratio, 0|(gdextension.SizeFloat<<4), &struct{ ratio float64 }{ratio})
 }
 
 //go:nosplit
 func (self class) GetVisibleRatio() float64 { //gd:RichTextLabel.get_visible_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visible_ratio, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_visible_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2439,7 +2441,7 @@ Note: If [Threaded] is enabled, this method returns a value for the loaded part 
 */
 //go:nosplit
 func (self class) GetCharacterLine(character int64) int64 { //gd:RichTextLabel.get_character_line
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_character_line, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ character int64 }{character})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_character_line, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ character int64 }{character})
 	var ret = r_ret
 	return ret
 }
@@ -2455,7 +2457,7 @@ Note: If [Threaded] is enabled, this method returns a value for the loaded part 
 */
 //go:nosplit
 func (self class) GetCharacterParagraph(character int64) int64 { //gd:RichTextLabel.get_character_paragraph
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_character_paragraph, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ character int64 }{character})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_character_paragraph, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ character int64 }{character})
 	var ret = r_ret
 	return ret
 }
@@ -2465,19 +2467,19 @@ Returns the total number of characters from text tags. Does not include BBCodes.
 */
 //go:nosplit
 func (self class) GetTotalCharacterCount() int64 { //gd:RichTextLabel.get_total_character_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_total_character_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_total_character_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseBbcode(enable bool) { //gd:RichTextLabel.set_use_bbcode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_bbcode, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_bbcode, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsUsingBbcode() bool { //gd:RichTextLabel.is_using_bbcode
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_bbcode, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_bbcode, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2493,7 +2495,7 @@ Note: If [Threaded] is enabled, this method returns a value for the loaded part 
 */
 //go:nosplit
 func (self class) GetLineCount() int64 { //gd:RichTextLabel.get_line_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2513,7 +2515,7 @@ Note: If [Threaded] is enabled, this method returns a value for the loaded part 
 */
 //go:nosplit
 func (self class) GetLineRange(line int64) Vector2i.XY { //gd:RichTextLabel.get_line_range
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_line_range, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_line_range, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = r_ret
 	return ret
 }
@@ -2531,7 +2533,7 @@ Note: If [Threaded] is enabled, this method returns a value for the loaded part 
 */
 //go:nosplit
 func (self class) GetVisibleLineCount() int64 { //gd:RichTextLabel.get_visible_line_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visible_line_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visible_line_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2541,7 +2543,7 @@ Returns the total number of paragraphs (newlines or p tags in the tag stack's te
 */
 //go:nosplit
 func (self class) GetParagraphCount() int64 { //gd:RichTextLabel.get_paragraph_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_paragraph_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_paragraph_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2559,7 +2561,7 @@ Note: If [Threaded] is enabled, this method returns a value for the loaded part 
 */
 //go:nosplit
 func (self class) GetVisibleParagraphCount() int64 { //gd:RichTextLabel.get_visible_paragraph_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visible_paragraph_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visible_paragraph_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2580,7 +2582,7 @@ Note: If [Threaded] is enabled, this method returns a value for the loaded part 
 */
 //go:nosplit
 func (self class) GetContentHeight() int64 { //gd:RichTextLabel.get_content_height
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_content_height, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_content_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2601,7 +2603,7 @@ Note: If [Threaded] is enabled, this method returns a value for the loaded part 
 */
 //go:nosplit
 func (self class) GetContentWidth() int64 { //gd:RichTextLabel.get_content_width
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_content_width, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_content_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2617,7 +2619,7 @@ Note: If [Threaded] is enabled, this method returns a value for the loaded part 
 */
 //go:nosplit
 func (self class) GetLineHeight(line int64) int64 { //gd:RichTextLabel.get_line_height
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_height, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_height, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = r_ret
 	return ret
 }
@@ -2633,7 +2635,7 @@ Note: If [Threaded] is enabled, this method returns a value for the loaded part 
 */
 //go:nosplit
 func (self class) GetLineWidth(line int64) int64 { //gd:RichTextLabel.get_line_width
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_width, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_line_width, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = r_ret
 	return ret
 }
@@ -2647,7 +2649,7 @@ Note: This method returns a correct value only after the label has been drawn.
 */
 //go:nosplit
 func (self class) GetVisibleContentRect() Rect2i.PositionSize { //gd:RichTextLabel.get_visible_content_rect
-	var r_ret = gdextension.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_visible_content_rect, gdextension.SizeRect2i, &struct{}{})
+	var r_ret = noescape.Call[Rect2i.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_visible_content_rect, gdextension.SizeRect2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2663,7 +2665,7 @@ Note: If [Threaded] is enabled, this method returns a value for the loaded part 
 */
 //go:nosplit
 func (self class) GetLineOffset(line int64) float64 { //gd:RichTextLabel.get_line_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_line_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ line int64 }{line})
 	var ret = r_ret
 	return ret
 }
@@ -2679,7 +2681,7 @@ Note: If [Threaded] is enabled, this method returns a value for the loaded part 
 */
 //go:nosplit
 func (self class) GetParagraphOffset(paragraph int64) float64 { //gd:RichTextLabel.get_paragraph_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_paragraph_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ paragraph int64 }{paragraph})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_paragraph_offset, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ paragraph int64 }{paragraph})
 	var ret = r_ret
 	return ret
 }
@@ -2689,7 +2691,7 @@ Parses BBCode parameter 'expressions' into a dictionary.
 */
 //go:nosplit
 func (self class) ParseExpressionsForValues(expressions Packed.Strings) Dictionary.Any { //gd:RichTextLabel.parse_expressions_for_values
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.parse_expressions_for_values, gdextension.SizeDictionary|(gdextension.SizePackedArray<<4), &struct {
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.parse_expressions_for_values, gdextension.SizeDictionary|(gdextension.SizePackedArray<<4), &struct {
 		expressions gdextension.PackedArray[gdextension.String]
 	}{pointers.Get(gd.InternalPackedStrings(expressions))})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
@@ -2698,12 +2700,12 @@ func (self class) ParseExpressionsForValues(expressions Packed.Strings) Dictiona
 
 //go:nosplit
 func (self class) SetEffects(effects Array.Any) { //gd:RichTextLabel.set_effects
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_effects, 0|(gdextension.SizeArray<<4), &struct{ effects gdextension.Array }{pointers.Get(gd.InternalArray(effects))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_effects, 0|(gdextension.SizeArray<<4), &struct{ effects gdextension.Array }{pointers.Get(gd.InternalArray(effects))})
 }
 
 //go:nosplit
 func (self class) GetEffects() Array.Any { //gd:RichTextLabel.get_effects
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_effects, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_effects, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -2725,7 +2727,7 @@ The above effect can be installed in [RichTextLabel] from a script:
 */
 //go:nosplit
 func (self class) InstallEffect(effect variant.Any) { //gd:RichTextLabel.install_effect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.install_effect, 0|(gdextension.SizeVariant<<4), &struct{ effect gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(effect)))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.install_effect, 0|(gdextension.SizeVariant<<4), &struct{ effect gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(effect)))})
 }
 
 /*
@@ -2735,7 +2737,7 @@ Reloads custom effects. Useful when [CustomEffects] is modified manually.
 */
 //go:nosplit
 func (self class) ReloadEffects() { //gd:RichTextLabel.reload_effects
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reload_effects, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reload_effects, 0, &struct{}{})
 }
 
 /*
@@ -2753,7 +2755,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 */
 //go:nosplit
 func (self class) GetMenu() [1]gdclass.PopupMenu { //gd:RichTextLabel.get_menu
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_menu, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_menu, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }
@@ -2763,7 +2765,7 @@ Returns whether the menu is visible. Use this instead of get_menu().visible to i
 */
 //go:nosplit
 func (self class) IsMenuVisible() bool { //gd:RichTextLabel.is_menu_visible
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_menu_visible, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_menu_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2773,7 +2775,7 @@ Executes a given action as defined in the [MenuItems] enum.
 */
 //go:nosplit
 func (self class) MenuOption(option int64) { //gd:RichTextLabel.menu_option
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.menu_option, 0|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.menu_option, 0|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
 }
 func (self Instance) OnMetaClicked(cb func(meta any), flags ...Signal.Flags) {
 	var flags_together Signal.Flags

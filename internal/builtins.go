@@ -4,6 +4,7 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 )
 
@@ -499,14 +500,14 @@ var refcounted_methods struct {
 }
 
 func (o Object) Get(name StringName) Variant {
-	return pointers.New[Variant]([3]uint64(gdextension.Call[gdextension.Variant](ObjectChecked(o.AsObject()), object_methods.get, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
+	return pointers.New[Variant]([3]uint64(noescape.Call[gdextension.Variant](ObjectChecked(o.AsObject()), object_methods.get, gdextension.SizeVariant|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
 		Name gdextension.StringName
 	}{
 		pointers.Get(name),
 	}))))
 }
 func (o Object) Set(name StringName, value Variant) {
-	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set, 0|gdextension.SizeStringName<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
+	noescape.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set, 0|gdextension.SizeStringName<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
 		Name  gdextension.StringName
 		Value gdextension.Variant
 	}{
@@ -514,7 +515,7 @@ func (o Object) Set(name StringName, value Variant) {
 	}))
 }
 func (o Object) HasMethod(name StringName) bool {
-	return gdextension.Call[bool](ObjectChecked(o.AsObject()), object_methods.has_method, gdextension.SizeBool|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
+	return noescape.Call[bool](ObjectChecked(o.AsObject()), object_methods.has_method, gdextension.SizeBool|gdextension.SizeStringName<<4, unsafe.Pointer(&struct {
 		Name gdextension.StringName
 	}{
 		pointers.Get(name),
@@ -542,33 +543,33 @@ func (o Object) Call(method StringName, args ...Variant) (Variant, error) {
 }
 
 func (o Object) CanTranslateMessages() bool {
-	return gdextension.Call[bool](ObjectChecked(o.AsObject()), object_methods.can_translate_messages, gdextension.SizeBool, nil)
+	return noescape.Call[bool](ObjectChecked(o.AsObject()), object_methods.can_translate_messages, gdextension.SizeBool, nil)
 }
 func (o Object) GetScript() Variant {
-	return pointers.New[Variant]([3]uint64(gdextension.Call[gdextension.Variant](ObjectChecked(o.AsObject()), object_methods.get_script, gdextension.SizeVariant, nil)))
+	return pointers.New[Variant]([3]uint64(noescape.Call[gdextension.Variant](ObjectChecked(o.AsObject()), object_methods.get_script, gdextension.SizeVariant, nil)))
 }
 func (o Object) NotifyPropertyListChanged() {
-	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.notify_property_list_changed, 0, nil)
+	noescape.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.notify_property_list_changed, 0, nil)
 }
 func (o Object) SetBlockSignals(blocking bool) {
-	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set_block_signals, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
+	noescape.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set_block_signals, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
 		Blocking bool
 	}{
 		blocking,
 	}))
 }
 func (o Object) SetScript(script Variant) {
-	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set_script, 0|gdextension.SizeVariant<<4, unsafe.Pointer(&struct {
+	noescape.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set_script, 0|gdextension.SizeVariant<<4, unsafe.Pointer(&struct {
 		Script gdextension.Variant
 	}{
 		gdextension.Variant(pointers.Get(script)),
 	}))
 }
 func (o Object) ToString() String {
-	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), object_methods.to_string, gdextension.SizeString, nil))
+	return pointers.New[String](noescape.Call[gdextension.String](ObjectChecked(o.AsObject()), object_methods.to_string, gdextension.SizeString, nil))
 }
 func (o Object) Tr(message StringName, context StringName) String {
-	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), object_methods.tr, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
+	return pointers.New[String](noescape.Call[gdextension.String](ObjectChecked(o.AsObject()), object_methods.tr, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
 		Message gdextension.StringName
 		Context gdextension.StringName
 	}{
@@ -576,7 +577,7 @@ func (o Object) Tr(message StringName, context StringName) String {
 	})))
 }
 func (o Object) TrN(message StringName, plural StringName, n int64, context StringName) String {
-	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), object_methods.tr_n, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8|gdextension.SizeInt<<12|gdextension.SizeStringName<<16, unsafe.Pointer(&struct {
+	return pointers.New[String](noescape.Call[gdextension.String](ObjectChecked(o.AsObject()), object_methods.tr_n, gdextension.SizeString|gdextension.SizeStringName<<4|gdextension.SizeStringName<<8|gdextension.SizeInt<<12|gdextension.SizeStringName<<16, unsafe.Pointer(&struct {
 		Message gdextension.StringName
 		Plural  gdextension.StringName
 		N       int64
@@ -586,20 +587,20 @@ func (o Object) TrN(message StringName, plural StringName, n int64, context Stri
 	})))
 }
 func (o Object) SetMessageTranslation(enable bool) {
-	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set_message_translation, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
+	noescape.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set_message_translation, 0|gdextension.SizeBool<<4, unsafe.Pointer(&struct {
 		Enable bool
 	}{
 		enable,
 	}))
 }
 func (o Object) IsBlockingSignals() bool {
-	return gdextension.Call[bool](ObjectChecked(o.AsObject()), object_methods.is_blocking_signals, gdextension.SizeBool, nil)
+	return noescape.Call[bool](ObjectChecked(o.AsObject()), object_methods.is_blocking_signals, gdextension.SizeBool, nil)
 }
 func (o Object) GetClass() String {
-	return pointers.New[String](gdextension.Call[gdextension.String](ObjectChecked(o.AsObject()), object_methods.get_class, gdextension.SizeString, nil))
+	return pointers.New[String](noescape.Call[gdextension.String](ObjectChecked(o.AsObject()), object_methods.get_class, gdextension.SizeString, nil))
 }
 func (o Object) Connect(signal StringName, callable Callable, flags int64) int64 {
-	return gdextension.Call[int64](ObjectChecked(o.AsObject()), object_methods.connect, gdextension.SizeInt|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
+	return noescape.Call[int64](ObjectChecked(o.AsObject()), object_methods.connect, gdextension.SizeInt|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8|gdextension.SizeInt<<12, unsafe.Pointer(&struct {
 		Signal   gdextension.StringName
 		Callable gdextension.Callable
 		Flags    int64
@@ -608,7 +609,7 @@ func (o Object) Connect(signal StringName, callable Callable, flags int64) int64
 	}))
 }
 func (o Object) IsConnected(signal StringName, callable Callable) bool {
-	return gdextension.Call[bool](ObjectChecked(o.AsObject()), object_methods.is_connected, gdextension.SizeBool|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8, unsafe.Pointer(&struct {
+	return noescape.Call[bool](ObjectChecked(o.AsObject()), object_methods.is_connected, gdextension.SizeBool|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8, unsafe.Pointer(&struct {
 		Signal   gdextension.StringName
 		Callable gdextension.Callable
 	}{
@@ -616,7 +617,7 @@ func (o Object) IsConnected(signal StringName, callable Callable) bool {
 	}))
 }
 func (o Object) Disconnect(signal StringName, callable Callable) {
-	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.disconnect, 0|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8, unsafe.Pointer(&struct {
+	noescape.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.disconnect, 0|gdextension.SizeStringName<<4|gdextension.SizeCallable<<8, unsafe.Pointer(&struct {
 		Signal   gdextension.StringName
 		Callable gdextension.Callable
 	}{
@@ -624,10 +625,10 @@ func (o Object) Disconnect(signal StringName, callable Callable) {
 	}))
 }
 func (o Object) IsQueuedForDeletion() bool {
-	return gdextension.Call[bool](ObjectChecked(o.AsObject()), object_methods.is_queued_for_deletion, gdextension.SizeBool, nil)
+	return noescape.Call[bool](ObjectChecked(o.AsObject()), object_methods.is_queued_for_deletion, gdextension.SizeBool, nil)
 }
 func (o Object) Notification(what Int, reversed bool) {
-	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.notification, 0|gdextension.SizeInt<<4|gdextension.SizeBool<<8, unsafe.Pointer(&struct {
+	noescape.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.notification, 0|gdextension.SizeInt<<4|gdextension.SizeBool<<8, unsafe.Pointer(&struct {
 		What     int64
 		Reversed bool
 	}{
@@ -635,11 +636,11 @@ func (o Object) Notification(what Int, reversed bool) {
 	}))
 }
 func (o Object) GetPropertyList() Array {
-	return pointers.New[Array](gdextension.Call[gdextension.Array](ObjectChecked(o.AsObject()), object_methods.get_property_list, gdextension.SizeArray, nil))
+	return pointers.New[Array](noescape.Call[gdextension.Array](ObjectChecked(o.AsObject()), object_methods.get_property_list, gdextension.SizeArray, nil))
 }
 
 func (o Object) SetIndex(i int, v Variant) {
-	gdextension.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set_indexed, 0|gdextension.SizeInt<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
+	noescape.Call[struct{}](ObjectChecked(o.AsObject()), object_methods.set_indexed, 0|gdextension.SizeInt<<4|gdextension.SizeVariant<<8, unsafe.Pointer(&struct {
 		Index   int64
 		Element gdextension.Variant
 	}{
@@ -648,7 +649,7 @@ func (o Object) SetIndex(i int, v Variant) {
 }
 
 func (o Object) GetIndex(i int) Variant {
-	return pointers.New[Variant]([3]uint64(gdextension.Call[gdextension.Variant](ObjectChecked(o.AsObject()), object_methods.get_indexed, gdextension.SizeVariant|gdextension.SizeInt<<4, unsafe.Pointer(&struct {
+	return pointers.New[Variant]([3]uint64(noescape.Call[gdextension.Variant](ObjectChecked(o.AsObject()), object_methods.get_indexed, gdextension.SizeVariant|gdextension.SizeInt<<4, unsafe.Pointer(&struct {
 		Index int64
 	}{
 		int64(i),
@@ -656,15 +657,15 @@ func (o Object) GetIndex(i int) Variant {
 }
 
 func (rc RefCounted) Reference() {
-	gdextension.Call[struct{}](ObjectChecked(rc.AsObject()), refcounted_methods.reference, 0, nil)
+	noescape.Call[struct{}](ObjectChecked(rc.AsObject()), refcounted_methods.reference, 0, nil)
 }
 func (rc RefCounted) Unreference() bool {
-	return gdextension.Call[bool](ObjectChecked(rc.AsObject()), refcounted_methods.unreference, gdextension.SizeBool, nil)
+	return noescape.Call[bool](ObjectChecked(rc.AsObject()), refcounted_methods.unreference, gdextension.SizeBool, nil)
 }
 func (rc RefCounted) InitRef() bool {
-	return gdextension.Call[bool](ObjectChecked(rc.AsObject()), refcounted_methods.init_ref, gdextension.SizeBool, nil)
+	return noescape.Call[bool](ObjectChecked(rc.AsObject()), refcounted_methods.init_ref, gdextension.SizeBool, nil)
 }
 
 func (rc RefCounted) GetReferenceCount() int {
-	return int(gdextension.Call[int64](ObjectChecked(rc.AsObject()), refcounted_methods.get_reference_count, gdextension.SizeInt, nil))
+	return int(noescape.Call[int64](ObjectChecked(rc.AsObject()), refcounted_methods.get_reference_count, gdextension.SizeInt, nil))
 }

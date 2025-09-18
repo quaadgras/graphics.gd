@@ -21,6 +21,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -56,6 +57,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -101,7 +103,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -191,7 +193,7 @@ If true, the sound will be recorded. Note that restarting the recording will rem
 */
 //go:nosplit
 func (self class) SetRecordingActive(record bool) { //gd:AudioEffectRecord.set_recording_active
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recording_active, 0|(gdextension.SizeBool<<4), &struct{ record bool }{record})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_recording_active, 0|(gdextension.SizeBool<<4), &struct{ record bool }{record})
 }
 
 /*
@@ -199,19 +201,19 @@ Returns whether the recording is active or not.
 */
 //go:nosplit
 func (self class) IsRecordingActive() bool { //gd:AudioEffectRecord.is_recording_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recording_active, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_recording_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFormat(format AudioStreamWAV.Format) { //gd:AudioEffectRecord.set_format
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ format AudioStreamWAV.Format }{format})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_format, 0|(gdextension.SizeInt<<4), &struct{ format AudioStreamWAV.Format }{format})
 }
 
 //go:nosplit
 func (self class) GetFormat() AudioStreamWAV.Format { //gd:AudioEffectRecord.get_format
-	var r_ret = gdextension.Call[AudioStreamWAV.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[AudioStreamWAV.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -221,7 +223,7 @@ Returns the recorded sample.
 */
 //go:nosplit
 func (self class) GetRecording() [1]gdclass.AudioStreamWAV { //gd:AudioEffectRecord.get_recording
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_recording, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_recording, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioStreamWAV{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamWAV](r_ret)}
 	return ret
 }

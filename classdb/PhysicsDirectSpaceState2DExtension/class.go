@@ -14,6 +14,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +50,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -90,7 +92,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -373,7 +375,7 @@ func (class) _rest_info(impl func(ptr gdclass.Receiver, shape_rid RID.Any, trans
 
 //go:nosplit
 func (self class) IsBodyExcludedFromQuery(body RID.Any) bool { //gd:PhysicsDirectSpaceState2DExtension.is_body_excluded_from_query
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_body_excluded_from_query, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_body_excluded_from_query, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }

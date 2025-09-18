@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -43,6 +44,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -87,7 +89,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -185,7 +187,7 @@ Allows for renaming old interaction profile paths to new paths to maintain backw
 */
 //go:nosplit
 func (self class) RegisterProfileRename(old_name String.Readable, new_name String.Readable) { //gd:OpenXRInteractionProfileMetadata.register_profile_rename
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_profile_rename, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_profile_rename, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		old_name gdextension.String
 		new_name gdextension.String
 	}{pointers.Get(gd.InternalString(old_name)), pointers.Get(gd.InternalString(new_name))})
@@ -202,7 +204,7 @@ When a top level path ends up being bound by OpenXR, an [XRPositionalTracker] is
 */
 //go:nosplit
 func (self class) RegisterTopLevelPath(display_name String.Readable, openxr_path String.Readable, openxr_extension_name String.Readable) { //gd:OpenXRInteractionProfileMetadata.register_top_level_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_top_level_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_top_level_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), &struct {
 		display_name          gdextension.String
 		openxr_path           gdextension.String
 		openxr_extension_name gdextension.String
@@ -216,7 +218,7 @@ Registers an interaction profile using its OpenXR designation (e.g. /interaction
 */
 //go:nosplit
 func (self class) RegisterInteractionProfile(display_name String.Readable, openxr_path String.Readable, openxr_extension_name String.Readable) { //gd:OpenXRInteractionProfileMetadata.register_interaction_profile
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_interaction_profile, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_interaction_profile, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), &struct {
 		display_name          gdextension.String
 		openxr_path           gdextension.String
 		openxr_extension_name gdextension.String
@@ -230,7 +232,7 @@ Registers an input/output path for the given 'interaction_profile'. The profile 
 */
 //go:nosplit
 func (self class) RegisterIoPath(interaction_profile String.Readable, display_name String.Readable, toplevel_path String.Readable, openxr_path String.Readable, openxr_extension_name String.Readable, action_type OpenXRAction.ActionType) { //gd:OpenXRInteractionProfileMetadata.register_io_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_io_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_io_path, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24), &struct {
 		interaction_profile   gdextension.String
 		display_name          gdextension.String
 		toplevel_path         gdextension.String

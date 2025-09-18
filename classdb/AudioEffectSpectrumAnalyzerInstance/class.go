@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +50,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -90,7 +92,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -178,7 +180,7 @@ Returns the magnitude of the frequencies from 'from_hz' to 'to_hz' in linear ene
 */
 //go:nosplit
 func (self class) GetMagnitudeForFrequencyRange(from_hz float64, to_hz float64, mode MagnitudeMode) Vector2.XY { //gd:AudioEffectSpectrumAnalyzerInstance.get_magnitude_for_frequency_range
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_magnitude_for_frequency_range, gdextension.SizeVector2|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_magnitude_for_frequency_range, gdextension.SizeVector2|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12), &struct {
 		from_hz float64
 		to_hz   float64
 		mode    MagnitudeMode

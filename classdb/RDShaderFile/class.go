@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +52,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -96,7 +98,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -207,7 +209,7 @@ Sets the SPIR-V 'bytecode' that will be compiled for the specified 'version'.
 */
 //go:nosplit
 func (self class) SetBytecode(bytecode [1]gdclass.RDShaderSPIRV, version String.Name) { //gd:RDShaderFile.set_bytecode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bytecode, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bytecode, 0|(gdextension.SizeObject<<4)|(gdextension.SizeStringName<<8), &struct {
 		bytecode gdextension.Object
 		version  gdextension.StringName
 	}{gdextension.Object(gd.ObjectChecked(bytecode[0].AsObject())), pointers.Get(gd.InternalStringName(version))})
@@ -218,7 +220,7 @@ Returns the SPIR-V intermediate representation for the specified shader 'version
 */
 //go:nosplit
 func (self class) GetSpirv(version String.Name) [1]gdclass.RDShaderSPIRV { //gd:RDShaderFile.get_spirv
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_spirv, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ version gdextension.StringName }{pointers.Get(gd.InternalStringName(version))})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_spirv, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ version gdextension.StringName }{pointers.Get(gd.InternalStringName(version))})
 	var ret = [1]gdclass.RDShaderSPIRV{gd.PointerWithOwnershipTransferredToGo[gdclass.RDShaderSPIRV](r_ret)}
 	return ret
 }
@@ -228,19 +230,19 @@ Returns the list of compiled versions for this shader.
 */
 //go:nosplit
 func (self class) GetVersionList() Array.Contains[String.Name] { //gd:RDShaderFile.get_version_list
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_version_list, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_version_list, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBaseError(error String.Readable) { //gd:RDShaderFile.set_base_error
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_error, 0|(gdextension.SizeString<<4), &struct{ error gdextension.String }{pointers.Get(gd.InternalString(error))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_error, 0|(gdextension.SizeString<<4), &struct{ error gdextension.String }{pointers.Get(gd.InternalString(error))})
 }
 
 //go:nosplit
 func (self class) GetBaseError() String.Readable { //gd:RDShaderFile.get_base_error
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_error, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_error, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

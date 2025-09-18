@@ -25,6 +25,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -76,6 +77,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -233,7 +235,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -1918,7 +1920,7 @@ Note: Not to be confused with [RenderingServer.Texture2dCreate], which creates t
 */
 //go:nosplit
 func (self class) TextureCreate(format [1]gdclass.RDTextureFormat, view [1]gdclass.RDTextureView, data Array.Contains[Packed.Bytes]) RID.Any { //gd:RenderingDevice.texture_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_create, gdextension.SizeRID|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeArray<<12), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_create, gdextension.SizeRID|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeArray<<12), &struct {
 		format gdextension.Object
 		view   gdextension.Object
 		data   gdextension.Array
@@ -1932,7 +1934,7 @@ Creates a shared texture using the specified 'view' and the texture information 
 */
 //go:nosplit
 func (self class) TextureCreateShared(view [1]gdclass.RDTextureView, with_texture RID.Any) RID.Any { //gd:RenderingDevice.texture_create_shared
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_create_shared, gdextension.SizeRID|(gdextension.SizeObject<<4)|(gdextension.SizeRID<<8), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_create_shared, gdextension.SizeRID|(gdextension.SizeObject<<4)|(gdextension.SizeRID<<8), &struct {
 		view         gdextension.Object
 		with_texture RID.Any
 	}{gdextension.Object(gd.ObjectChecked(view[0].AsObject())), with_texture})
@@ -1951,7 +1953,7 @@ Note: Layer slicing is only supported for 2D texture arrays, not 3D textures or 
 */
 //go:nosplit
 func (self class) TextureCreateSharedFromSlice(view [1]gdclass.RDTextureView, with_texture RID.Any, layer int64, mipmap int64, mipmaps int64, slice_type Rendering.TextureSliceType) RID.Any { //gd:RenderingDevice.texture_create_shared_from_slice
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_create_shared_from_slice, gdextension.SizeRID|(gdextension.SizeObject<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_create_shared_from_slice, gdextension.SizeRID|(gdextension.SizeObject<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
 		view         gdextension.Object
 		with_texture RID.Any
 		layer        int64
@@ -1968,7 +1970,7 @@ Returns an RID for an existing 'image' (VkImage) with the given 'type', 'format'
 */
 //go:nosplit
 func (self class) TextureCreateFromExtension(atype Rendering.TextureType, format Rendering.DataFormat, samples Rendering.TextureSamples, usage_flags Rendering.TextureUsageBits, image int64, width int64, height int64, depth int64, layers int64, mipmaps int64) RID.Any { //gd:RenderingDevice.texture_create_from_extension
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_create_from_extension, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_create_from_extension, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40), &struct {
 		atype       Rendering.TextureType
 		format      Rendering.DataFormat
 		samples     Rendering.TextureSamples
@@ -1995,7 +1997,7 @@ Note: The existing 'texture' requires the [TextureUsageCanUpdateBit] to be updat
 */
 //go:nosplit
 func (self class) TextureUpdate(texture RID.Any, layer int64, data Packed.Bytes) Error.Code { //gd:RenderingDevice.texture_update
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.texture_update, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.texture_update, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), &struct {
 		texture RID.Any
 		layer   int64
 		data    gdextension.PackedArray[byte]
@@ -2017,7 +2019,7 @@ Note: This method will block the GPU from working until the data is retrieved. R
 */
 //go:nosplit
 func (self class) TextureGetData(texture RID.Any, layer int64) Packed.Bytes { //gd:RenderingDevice.texture_get_data
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.texture_get_data, gdextension.SizePackedArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.texture_get_data, gdextension.SizePackedArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		texture RID.Any
 		layer   int64
 	}{texture, layer})
@@ -2039,7 +2041,7 @@ Note: Downloading large textures can have a prohibitive cost for real-time even 
 */
 //go:nosplit
 func (self class) TextureGetDataAsync(texture RID.Any, layer int64, callback Callable.Function) Error.Code { //gd:RenderingDevice.texture_get_data_async
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.texture_get_data_async, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.texture_get_data_async, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		texture  RID.Any
 		layer    int64
 		callback gdextension.Callable
@@ -2053,7 +2055,7 @@ Returns true if the specified 'format' is supported for the given 'usage_flags',
 */
 //go:nosplit
 func (self class) TextureIsFormatSupportedForUsage(format Rendering.DataFormat, usage_flags Rendering.TextureUsageBits) bool { //gd:RenderingDevice.texture_is_format_supported_for_usage
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.texture_is_format_supported_for_usage, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.texture_is_format_supported_for_usage, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		format      Rendering.DataFormat
 		usage_flags Rendering.TextureUsageBits
 	}{format, usage_flags})
@@ -2068,7 +2070,7 @@ Returns true if the 'texture' is shared, false otherwise. See [RDTextureView].
 */
 //go:nosplit
 func (self class) TextureIsShared(texture RID.Any) bool { //gd:RenderingDevice.texture_is_shared
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.texture_is_shared, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.texture_is_shared, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
 	var ret = r_ret
 	return ret
 }
@@ -2078,7 +2080,7 @@ Returns true if the 'texture' is valid, false otherwise.
 */
 //go:nosplit
 func (self class) TextureIsValid(texture RID.Any) bool { //gd:RenderingDevice.texture_is_valid
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.texture_is_valid, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.texture_is_valid, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
 	var ret = r_ret
 	return ret
 }
@@ -2094,7 +2096,7 @@ This information is used by [RenderingDevice] to figure out if a texture's conte
 */
 //go:nosplit
 func (self class) TextureSetDiscardable(texture RID.Any, discardable bool) { //gd:RenderingDevice.texture_set_discardable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.texture_set_discardable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.texture_set_discardable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		texture     RID.Any
 		discardable bool
 	}{texture, discardable})
@@ -2108,7 +2110,7 @@ Returns true if the 'texture' is discardable, false otherwise. See [RDTextureFor
 */
 //go:nosplit
 func (self class) TextureIsDiscardable(texture RID.Any) bool { //gd:RenderingDevice.texture_is_discardable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.texture_is_discardable, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.texture_is_discardable, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
 	var ret = r_ret
 	return ret
 }
@@ -2128,7 +2130,7 @@ Note: 'from_texture' and 'to_texture' must be of the same type (color or depth).
 */
 //go:nosplit
 func (self class) TextureCopy(from_texture RID.Any, to_texture RID.Any, from_pos Vector3.XYZ, to_pos Vector3.XYZ, size Vector3.XYZ, src_mipmap int64, dst_mipmap int64, src_layer int64, dst_layer int64) Error.Code { //gd:RenderingDevice.texture_copy
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.texture_copy, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16)|(gdextension.SizeVector3<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.texture_copy, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16)|(gdextension.SizeVector3<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), &struct {
 		from_texture RID.Any
 		to_texture   RID.Any
 		from_pos     Vector3.XYZ
@@ -2150,7 +2152,7 @@ Note: 'texture' can't be cleared while a draw list that uses it as part of a fra
 */
 //go:nosplit
 func (self class) TextureClear(texture RID.Any, color Color.RGBA, base_mipmap int64, mipmap_count int64, base_layer int64, layer_count int64) Error.Code { //gd:RenderingDevice.texture_clear
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.texture_clear, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.texture_clear, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeColor<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
 		texture      RID.Any
 		color        Color.RGBA
 		base_mipmap  int64
@@ -2181,7 +2183,7 @@ Note: 'to_texture' texture must not be multisampled and must also be 2D (or a sl
 */
 //go:nosplit
 func (self class) TextureResolveMultisample(from_texture RID.Any, to_texture RID.Any) Error.Code { //gd:RenderingDevice.texture_resolve_multisample
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.texture_resolve_multisample, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.texture_resolve_multisample, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		from_texture RID.Any
 		to_texture   RID.Any
 	}{from_texture, to_texture})
@@ -2194,7 +2196,7 @@ Returns the data format used to create this texture.
 */
 //go:nosplit
 func (self class) TextureGetFormat(texture RID.Any) [1]gdclass.RDTextureFormat { //gd:RenderingDevice.texture_get_format
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.texture_get_format, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.texture_get_format, gdextension.SizeObject|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
 	var ret = [1]gdclass.RDTextureFormat{gd.PointerWithOwnershipTransferredToGo[gdclass.RDTextureFormat](r_ret)}
 	return ret
 }
@@ -2206,7 +2208,7 @@ Note: This function returns a uint64_t which internally maps to a GLuint (OpenGL
 */
 //go:nosplit
 func (self class) TextureGetNativeHandle(texture RID.Any) int64 { //gd:RenderingDevice.texture_get_native_handle
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.texture_get_native_handle, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.texture_get_native_handle, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ texture RID.Any }{texture})
 	var ret = r_ret
 	return ret
 }
@@ -2218,7 +2220,7 @@ If 'view_count' is greater than or equal to 2, enables multiview which is used f
 */
 //go:nosplit
 func (self class) FramebufferFormatCreate(attachments Array.Contains[[1]gdclass.RDAttachmentFormat], view_count int64) int64 { //gd:RenderingDevice.framebuffer_format_create
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.framebuffer_format_create, gdextension.SizeInt|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.framebuffer_format_create, gdextension.SizeInt|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8), &struct {
 		attachments gdextension.Array
 		view_count  int64
 	}{pointers.Get(gd.InternalArray(attachments)), view_count})
@@ -2231,7 +2233,7 @@ Creates a multipass framebuffer format with the specified 'attachments', 'passes
 */
 //go:nosplit
 func (self class) FramebufferFormatCreateMultipass(attachments Array.Contains[[1]gdclass.RDAttachmentFormat], passes Array.Contains[[1]gdclass.RDFramebufferPass], view_count int64) int64 { //gd:RenderingDevice.framebuffer_format_create_multipass
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.framebuffer_format_create_multipass, gdextension.SizeInt|(gdextension.SizeArray<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.framebuffer_format_create_multipass, gdextension.SizeInt|(gdextension.SizeArray<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12), &struct {
 		attachments gdextension.Array
 		passes      gdextension.Array
 		view_count  int64
@@ -2245,7 +2247,7 @@ Creates a new empty framebuffer format with the specified number of 'samples' an
 */
 //go:nosplit
 func (self class) FramebufferFormatCreateEmpty(samples Rendering.TextureSamples) int64 { //gd:RenderingDevice.framebuffer_format_create_empty
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.framebuffer_format_create_empty, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ samples Rendering.TextureSamples }{samples})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.framebuffer_format_create_empty, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ samples Rendering.TextureSamples }{samples})
 	var ret = r_ret
 	return ret
 }
@@ -2257,7 +2259,7 @@ Returns the number of texture samples used for the given framebuffer 'format' ID
 */
 //go:nosplit
 func (self class) FramebufferFormatGetTextureSamples(format int64, render_pass int64) Rendering.TextureSamples { //gd:RenderingDevice.framebuffer_format_get_texture_samples
-	var r_ret = gdextension.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), methods.framebuffer_format_get_texture_samples, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Rendering.TextureSamples](gd.ObjectChecked(self.AsObject()), methods.framebuffer_format_get_texture_samples, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		format      int64
 		render_pass int64
 	}{format, render_pass})
@@ -2274,7 +2276,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) FramebufferCreate(textures Array.Contains[RID.Any], validate_with_format int64, view_count int64) RID.Any { //gd:RenderingDevice.framebuffer_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.framebuffer_create, gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.framebuffer_create, gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		textures             gdextension.Array
 		validate_with_format int64
 		view_count           int64
@@ -2292,7 +2294,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) FramebufferCreateMultipass(textures Array.Contains[RID.Any], passes Array.Contains[[1]gdclass.RDFramebufferPass], validate_with_format int64, view_count int64) RID.Any { //gd:RenderingDevice.framebuffer_create_multipass
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.framebuffer_create_multipass, gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.framebuffer_create_multipass, gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		textures             gdextension.Array
 		passes               gdextension.Array
 		validate_with_format int64
@@ -2311,7 +2313,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) FramebufferCreateEmpty(size Vector2i.XY, samples Rendering.TextureSamples, validate_with_format int64) RID.Any { //gd:RenderingDevice.framebuffer_create_empty
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.framebuffer_create_empty, gdextension.SizeRID|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.framebuffer_create_empty, gdextension.SizeRID|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		size                 Vector2i.XY
 		samples              Rendering.TextureSamples
 		validate_with_format int64
@@ -2325,7 +2327,7 @@ Returns the format ID of the framebuffer specified by the 'framebuffer' RID. Thi
 */
 //go:nosplit
 func (self class) FramebufferGetFormat(framebuffer RID.Any) int64 { //gd:RenderingDevice.framebuffer_get_format
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.framebuffer_get_format, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ framebuffer RID.Any }{framebuffer})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.framebuffer_get_format, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ framebuffer RID.Any }{framebuffer})
 	var ret = r_ret
 	return ret
 }
@@ -2335,7 +2337,7 @@ Returns true if the framebuffer specified by the 'framebuffer' RID is valid, fal
 */
 //go:nosplit
 func (self class) FramebufferIsValid(framebuffer RID.Any) bool { //gd:RenderingDevice.framebuffer_is_valid
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.framebuffer_is_valid, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ framebuffer RID.Any }{framebuffer})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.framebuffer_is_valid, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ framebuffer RID.Any }{framebuffer})
 	var ret = r_ret
 	return ret
 }
@@ -2349,7 +2351,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) SamplerCreate(state [1]gdclass.RDSamplerState) RID.Any { //gd:RenderingDevice.sampler_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.sampler_create, gdextension.SizeRID|(gdextension.SizeObject<<4), &struct{ state gdextension.Object }{gdextension.Object(gd.ObjectChecked(state[0].AsObject()))})
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.sampler_create, gdextension.SizeRID|(gdextension.SizeObject<<4), &struct{ state gdextension.Object }{gdextension.Object(gd.ObjectChecked(state[0].AsObject()))})
 	var ret = r_ret
 	return ret
 }
@@ -2359,7 +2361,7 @@ Returns true if implementation supports using a texture of 'format' with the giv
 */
 //go:nosplit
 func (self class) SamplerIsFormatSupportedForFilter(format Rendering.DataFormat, sampler_filter Rendering.SamplerFilter) bool { //gd:RenderingDevice.sampler_is_format_supported_for_filter
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.sampler_is_format_supported_for_filter, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.sampler_is_format_supported_for_filter, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		format         Rendering.DataFormat
 		sampler_filter Rendering.SamplerFilter
 	}{format, sampler_filter})
@@ -2376,7 +2378,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) VertexBufferCreate(size_bytes int64, data Packed.Bytes, creation_bits Rendering.BufferCreationBits) RID.Any { //gd:RenderingDevice.vertex_buffer_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.vertex_buffer_create, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.vertex_buffer_create, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
 		size_bytes    int64
 		data          gdextension.PackedArray[byte]
 		creation_bits Rendering.BufferCreationBits
@@ -2390,7 +2392,7 @@ Creates a new vertex format with the specified 'vertex_descriptions'. Returns a 
 */
 //go:nosplit
 func (self class) VertexFormatCreate(vertex_descriptions Array.Contains[[1]gdclass.RDVertexAttribute]) int64 { //gd:RenderingDevice.vertex_format_create
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.vertex_format_create, gdextension.SizeInt|(gdextension.SizeArray<<4), &struct{ vertex_descriptions gdextension.Array }{pointers.Get(gd.InternalArray(vertex_descriptions))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.vertex_format_create, gdextension.SizeInt|(gdextension.SizeArray<<4), &struct{ vertex_descriptions gdextension.Array }{pointers.Get(gd.InternalArray(vertex_descriptions))})
 	var ret = r_ret
 	return ret
 }
@@ -2400,7 +2402,7 @@ Creates a vertex array based on the specified buffers. Optionally, 'offsets' (in
 */
 //go:nosplit
 func (self class) VertexArrayCreate(vertex_count int64, vertex_format int64, src_buffers Array.Contains[RID.Any], offsets Packed.Array[int64]) RID.Any { //gd:RenderingDevice.vertex_array_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.vertex_array_create, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeArray<<12)|(gdextension.SizePackedArray<<16), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.vertex_array_create, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeArray<<12)|(gdextension.SizePackedArray<<16), &struct {
 		vertex_count  int64
 		vertex_format int64
 		src_buffers   gdextension.Array
@@ -2419,7 +2421,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) IndexBufferCreate(size_indices int64, format Rendering.IndexBufferFormat, data Packed.Bytes, use_restart_indices bool, creation_bits Rendering.BufferCreationBits) RID.Any { //gd:RenderingDevice.index_buffer_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.index_buffer_create, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.index_buffer_create, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeBool<<16)|(gdextension.SizeInt<<20), &struct {
 		size_indices        int64
 		format              Rendering.IndexBufferFormat
 		data                gdextension.PackedArray[byte]
@@ -2439,7 +2441,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) IndexArrayCreate(index_buffer RID.Any, index_offset int64, index_count int64) RID.Any { //gd:RenderingDevice.index_array_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.index_array_create, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.index_array_create, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		index_buffer RID.Any
 		index_offset int64
 		index_count  int64
@@ -2458,7 +2460,7 @@ If 'allow_cache' is true, make use of the shader cache generated by Godot. This 
 */
 //go:nosplit
 func (self class) ShaderCompileSpirvFromSource(shader_source [1]gdclass.RDShaderSource, allow_cache bool) [1]gdclass.RDShaderSPIRV { //gd:RenderingDevice.shader_compile_spirv_from_source
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.shader_compile_spirv_from_source, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.shader_compile_spirv_from_source, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeBool<<8), &struct {
 		shader_source gdextension.Object
 		allow_cache   bool
 	}{gdextension.Object(gd.ObjectChecked(shader_source[0].AsObject())), allow_cache})
@@ -2475,7 +2477,7 @@ Compiles a binary shader from 'spirv_data' and returns the compiled binary data 
 */
 //go:nosplit
 func (self class) ShaderCompileBinaryFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV, name String.Readable) Packed.Bytes { //gd:RenderingDevice.shader_compile_binary_from_spirv
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.shader_compile_binary_from_spirv, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.shader_compile_binary_from_spirv, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		spirv_data gdextension.Object
 		name       gdextension.String
 	}{gdextension.Object(gd.ObjectChecked(spirv_data[0].AsObject())), pointers.Get(gd.InternalString(name))})
@@ -2494,7 +2496,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) ShaderCreateFromSpirv(spirv_data [1]gdclass.RDShaderSPIRV, name String.Readable) RID.Any { //gd:RenderingDevice.shader_create_from_spirv
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.shader_create_from_spirv, gdextension.SizeRID|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.shader_create_from_spirv, gdextension.SizeRID|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		spirv_data gdextension.Object
 		name       gdextension.String
 	}{gdextension.Object(gd.ObjectChecked(spirv_data[0].AsObject())), pointers.Get(gd.InternalString(name))})
@@ -2513,7 +2515,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) ShaderCreateFromBytecode(binary_data Packed.Bytes, placeholder_rid RID.Any) RID.Any { //gd:RenderingDevice.shader_create_from_bytecode
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.shader_create_from_bytecode, gdextension.SizeRID|(gdextension.SizePackedArray<<4)|(gdextension.SizeRID<<8), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.shader_create_from_bytecode, gdextension.SizeRID|(gdextension.SizePackedArray<<4)|(gdextension.SizeRID<<8), &struct {
 		binary_data     gdextension.PackedArray[byte]
 		placeholder_rid RID.Any
 	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](binary_data.Array))), placeholder_rid})
@@ -2528,7 +2530,7 @@ Create a placeholder RID by allocating an RID without initializing it for use in
 */
 //go:nosplit
 func (self class) ShaderCreatePlaceholder() RID.Any { //gd:RenderingDevice.shader_create_placeholder
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.shader_create_placeholder, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.shader_create_placeholder, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -2538,7 +2540,7 @@ Returns the internal vertex input mask. Internally, the vertex input mask is an 
 */
 //go:nosplit
 func (self class) ShaderGetVertexInputAttributeMask(shader RID.Any) int64 { //gd:RenderingDevice.shader_get_vertex_input_attribute_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shader_get_vertex_input_attribute_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ shader RID.Any }{shader})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.shader_get_vertex_input_attribute_mask, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ shader RID.Any }{shader})
 	var ret = r_ret
 	return ret
 }
@@ -2552,7 +2554,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) UniformBufferCreate(size_bytes int64, data Packed.Bytes, creation_bits Rendering.BufferCreationBits) RID.Any { //gd:RenderingDevice.uniform_buffer_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.uniform_buffer_create, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.uniform_buffer_create, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
 		size_bytes    int64
 		data          gdextension.PackedArray[byte]
 		creation_bits Rendering.BufferCreationBits
@@ -2571,7 +2573,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) StorageBufferCreate(size_bytes int64, data Packed.Bytes, usage Rendering.StorageBufferUsage, creation_bits Rendering.BufferCreationBits) RID.Any { //gd:RenderingDevice.storage_buffer_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.storage_buffer_create, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.storage_buffer_create, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		size_bytes    int64
 		data          gdextension.PackedArray[byte]
 		usage         Rendering.StorageBufferUsage
@@ -2590,7 +2592,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) TextureBufferCreate(size_bytes int64, format Rendering.DataFormat, data Packed.Bytes) RID.Any { //gd:RenderingDevice.texture_buffer_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_buffer_create, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.texture_buffer_create, gdextension.SizeRID|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12), &struct {
 		size_bytes int64
 		format     Rendering.DataFormat
 		data       gdextension.PackedArray[byte]
@@ -2608,7 +2610,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) UniformSetCreate(uniforms Array.Contains[[1]gdclass.RDUniform], shader RID.Any, shader_set int64) RID.Any { //gd:RenderingDevice.uniform_set_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.uniform_set_create, gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.uniform_set_create, gdextension.SizeRID|(gdextension.SizeArray<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12), &struct {
 		uniforms   gdextension.Array
 		shader     RID.Any
 		shader_set int64
@@ -2622,7 +2624,7 @@ Checks if the 'uniform_set' is valid, i.e. is owned.
 */
 //go:nosplit
 func (self class) UniformSetIsValid(uniform_set RID.Any) bool { //gd:RenderingDevice.uniform_set_is_valid
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.uniform_set_is_valid, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ uniform_set RID.Any }{uniform_set})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.uniform_set_is_valid, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ uniform_set RID.Any }{uniform_set})
 	var ret = r_ret
 	return ret
 }
@@ -2643,7 +2645,7 @@ Prints an error if:
 */
 //go:nosplit
 func (self class) BufferCopy(src_buffer RID.Any, dst_buffer RID.Any, src_offset int64, dst_offset int64, size int64) Error.Code { //gd:RenderingDevice.buffer_copy
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.buffer_copy, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.buffer_copy, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), &struct {
 		src_buffer RID.Any
 		dst_buffer RID.Any
 		src_offset int64
@@ -2670,7 +2672,7 @@ Prints an error if:
 */
 //go:nosplit
 func (self class) BufferUpdate(buffer RID.Any, offset int64, size_bytes int64, data Packed.Bytes) Error.Code { //gd:RenderingDevice.buffer_update
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.buffer_update, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.buffer_update, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizePackedArray<<16), &struct {
 		buffer     RID.Any
 		offset     int64
 		size_bytes int64
@@ -2698,7 +2700,7 @@ Prints an error if:
 */
 //go:nosplit
 func (self class) BufferClear(buffer RID.Any, offset int64, size_bytes int64) Error.Code { //gd:RenderingDevice.buffer_clear
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.buffer_clear, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.buffer_clear, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		buffer     RID.Any
 		offset     int64
 		size_bytes int64
@@ -2716,7 +2718,7 @@ Note: This method will block the GPU from working until the data is retrieved. R
 */
 //go:nosplit
 func (self class) BufferGetData(buffer RID.Any, offset_bytes int64, size_bytes int64) Packed.Bytes { //gd:RenderingDevice.buffer_get_data
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.buffer_get_data, gdextension.SizePackedArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.buffer_get_data, gdextension.SizePackedArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		buffer       RID.Any
 		offset_bytes int64
 		size_bytes   int64
@@ -2739,7 +2741,7 @@ Note: Downloading large buffers can have a prohibitive cost for real-time even w
 */
 //go:nosplit
 func (self class) BufferGetDataAsync(buffer RID.Any, callback Callable.Function, offset_bytes int64, size_bytes int64) Error.Code { //gd:RenderingDevice.buffer_get_data_async
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.buffer_get_data_async, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.buffer_get_data_async, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		buffer       RID.Any
 		callback     gdextension.Callable
 		offset_bytes int64
@@ -2758,7 +2760,7 @@ Note: You must check that the GPU supports this functionality by calling [HasFea
 */
 //go:nosplit
 func (self class) BufferGetDeviceAddress(buffer RID.Any) int64 { //gd:RenderingDevice.buffer_get_device_address
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.buffer_get_device_address, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ buffer RID.Any }{buffer})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.buffer_get_device_address, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ buffer RID.Any }{buffer})
 	var ret = r_ret
 	return ret
 }
@@ -2772,7 +2774,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) RenderPipelineCreate(shader RID.Any, framebuffer_format int64, vertex_format int64, primitive Rendering.RenderPrimitive, rasterization_state [1]gdclass.RDPipelineRasterizationState, multisample_state [1]gdclass.RDPipelineMultisampleState, stencil_state [1]gdclass.RDPipelineDepthStencilState, color_blend_state [1]gdclass.RDPipelineColorBlendState, dynamic_state_flags Rendering.PipelineDynamicStateFlags, for_render_pass int64, specialization_constants Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]) RID.Any { //gd:RenderingDevice.render_pipeline_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.render_pipeline_create, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeObject<<20)|(gdextension.SizeObject<<24)|(gdextension.SizeObject<<28)|(gdextension.SizeObject<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeArray<<44), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.render_pipeline_create, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeObject<<20)|(gdextension.SizeObject<<24)|(gdextension.SizeObject<<28)|(gdextension.SizeObject<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeInt<<40)|(gdextension.SizeArray<<44), &struct {
 		shader                   RID.Any
 		framebuffer_format       int64
 		vertex_format            int64
@@ -2794,7 +2796,7 @@ Returns true if the render pipeline specified by the 'render_pipeline' RID is va
 */
 //go:nosplit
 func (self class) RenderPipelineIsValid(render_pipeline RID.Any) bool { //gd:RenderingDevice.render_pipeline_is_valid
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.render_pipeline_is_valid, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ render_pipeline RID.Any }{render_pipeline})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.render_pipeline_is_valid, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ render_pipeline RID.Any }{render_pipeline})
 	var ret = r_ret
 	return ret
 }
@@ -2808,7 +2810,7 @@ Once finished with your RID, you will want to free the RID using the RenderingDe
 */
 //go:nosplit
 func (self class) ComputePipelineCreate(shader RID.Any, specialization_constants Array.Contains[[1]gdclass.RDPipelineSpecializationConstant]) RID.Any { //gd:RenderingDevice.compute_pipeline_create
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.compute_pipeline_create, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.compute_pipeline_create, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeArray<<8), &struct {
 		shader                   RID.Any
 		specialization_constants gdextension.Array
 	}{shader, pointers.Get(gd.InternalArray(specialization_constants))})
@@ -2821,7 +2823,7 @@ Returns true if the compute pipeline specified by the 'compute_pipeline' RID is 
 */
 //go:nosplit
 func (self class) ComputePipelineIsValid(compute_pipeline RID.Any) bool { //gd:RenderingDevice.compute_pipeline_is_valid
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.compute_pipeline_is_valid, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ compute_pipeline RID.Any }{compute_pipeline})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.compute_pipeline_is_valid, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ compute_pipeline RID.Any }{compute_pipeline})
 	var ret = r_ret
 	return ret
 }
@@ -2837,7 +2839,7 @@ Note: Only the main [RenderingDevice] returned by [RenderingServer.GetRenderingD
 */
 //go:nosplit
 func (self class) ScreenGetWidth(screen int64) int64 { //gd:RenderingDevice.screen_get_width
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.screen_get_width, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.screen_get_width, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
@@ -2853,7 +2855,7 @@ Note: Only the main [RenderingDevice] returned by [RenderingServer.GetRenderingD
 */
 //go:nosplit
 func (self class) ScreenGetHeight(screen int64) int64 { //gd:RenderingDevice.screen_get_height
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.screen_get_height, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.screen_get_height, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
@@ -2868,7 +2870,7 @@ Note: Only the main [RenderingDevice] returned by [RenderingServer.GetRenderingD
 */
 //go:nosplit
 func (self class) ScreenGetFramebufferFormat(screen int64) int64 { //gd:RenderingDevice.screen_get_framebuffer_format
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.screen_get_framebuffer_format, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.screen_get_framebuffer_format, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ screen int64 }{screen})
 	var ret = r_ret
 	return ret
 }
@@ -2883,7 +2885,7 @@ Note: Cannot be used with local RenderingDevices, as these don't have a screen. 
 */
 //go:nosplit
 func (self class) DrawListBeginForScreen(screen int64, clear_color Color.RGBA) int64 { //gd:RenderingDevice.draw_list_begin_for_screen
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.draw_list_begin_for_screen, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.draw_list_begin_for_screen, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		screen      int64
 		clear_color Color.RGBA
 	}{screen, clear_color})
@@ -2914,7 +2916,7 @@ It does not affect rendering behavior and can be set to 0. It is recommended to 
 */
 //go:nosplit
 func (self class) DrawListBegin(framebuffer RID.Any, draw_flags Rendering.DrawFlags, clear_color_values Packed.Array[Color.RGBA], clear_depth_value float64, clear_stencil_value int64, region Rect2.PositionSize, breadcrumb int64) int64 { //gd:RenderingDevice.draw_list_begin
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.draw_list_begin, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeRect2<<24)|(gdextension.SizeInt<<28), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.draw_list_begin, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeRect2<<24)|(gdextension.SizeInt<<28), &struct {
 		framebuffer         RID.Any
 		draw_flags          Rendering.DrawFlags
 		clear_color_values  gdextension.PackedArray[Color.RGBA]
@@ -2932,7 +2934,7 @@ This method does nothing and always returns an empty []int64.
 */
 //go:nosplit
 func (self class) DrawListBeginSplit(framebuffer RID.Any, splits int64, initial_color_action Rendering.InitialAction, final_color_action Rendering.FinalAction, initial_depth_action Rendering.InitialAction, final_depth_action Rendering.FinalAction, clear_color_values Packed.Array[Color.RGBA], clear_depth float64, clear_stencil int64, region Rect2.PositionSize, storage_textures Array.Contains[RID.Any]) Packed.Array[int64] { //gd:RenderingDevice.draw_list_begin_split
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.draw_list_begin_split, gdextension.SizePackedArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeRect2<<40)|(gdextension.SizeArray<<44), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.draw_list_begin_split, gdextension.SizePackedArray|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24)|(gdextension.SizePackedArray<<28)|(gdextension.SizeFloat<<32)|(gdextension.SizeInt<<36)|(gdextension.SizeRect2<<40)|(gdextension.SizeArray<<44), &struct {
 		framebuffer          RID.Any
 		splits               int64
 		initial_color_action Rendering.InitialAction
@@ -2954,7 +2956,7 @@ Sets blend constants for the specified 'draw_list' to 'color'. Blend constants a
 */
 //go:nosplit
 func (self class) DrawListSetBlendConstants(draw_list int64, color Color.RGBA) { //gd:RenderingDevice.draw_list_set_blend_constants
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_set_blend_constants, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_set_blend_constants, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		draw_list int64
 		color     Color.RGBA
 	}{draw_list, color})
@@ -2965,7 +2967,7 @@ Binds 'render_pipeline' to the specified 'draw_list'.
 */
 //go:nosplit
 func (self class) DrawListBindRenderPipeline(draw_list int64, render_pipeline RID.Any) { //gd:RenderingDevice.draw_list_bind_render_pipeline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_bind_render_pipeline, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_bind_render_pipeline, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
 		draw_list       int64
 		render_pipeline RID.Any
 	}{draw_list, render_pipeline})
@@ -2976,7 +2978,7 @@ Binds 'uniform_set' to the specified 'draw_list'. A 'set_index' must also be spe
 */
 //go:nosplit
 func (self class) DrawListBindUniformSet(draw_list int64, uniform_set RID.Any, set_index int64) { //gd:RenderingDevice.draw_list_bind_uniform_set
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_bind_uniform_set, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_bind_uniform_set, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12), &struct {
 		draw_list   int64
 		uniform_set RID.Any
 		set_index   int64
@@ -2988,7 +2990,7 @@ Binds 'vertex_array' to the specified 'draw_list'.
 */
 //go:nosplit
 func (self class) DrawListBindVertexArray(draw_list int64, vertex_array RID.Any) { //gd:RenderingDevice.draw_list_bind_vertex_array
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_bind_vertex_array, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_bind_vertex_array, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
 		draw_list    int64
 		vertex_array RID.Any
 	}{draw_list, vertex_array})
@@ -2999,7 +3001,7 @@ Binds 'index_array' to the specified 'draw_list'.
 */
 //go:nosplit
 func (self class) DrawListBindIndexArray(draw_list int64, index_array RID.Any) { //gd:RenderingDevice.draw_list_bind_index_array
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_bind_index_array, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_bind_index_array, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
 		draw_list   int64
 		index_array RID.Any
 	}{draw_list, index_array})
@@ -3012,7 +3014,7 @@ Sets the push constant data to 'buffer' for the specified 'draw_list'. The shade
 */
 //go:nosplit
 func (self class) DrawListSetPushConstant(draw_list int64, buffer Packed.Bytes, size_bytes int64) { //gd:RenderingDevice.draw_list_set_push_constant
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_set_push_constant, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_set_push_constant, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
 		draw_list  int64
 		buffer     gdextension.PackedArray[byte]
 		size_bytes int64
@@ -3026,7 +3028,7 @@ Submits 'draw_list' for rendering on the GPU. This is the raster equivalent to [
 */
 //go:nosplit
 func (self class) DrawListDraw(draw_list int64, use_indices bool, instances int64, procedural_vertex_count int64) { //gd:RenderingDevice.draw_list_draw
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_draw, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_draw, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		draw_list               int64
 		use_indices             bool
 		instances               int64
@@ -3039,7 +3041,7 @@ Submits 'draw_list' for rendering on the GPU with the given parameters stored in
 */
 //go:nosplit
 func (self class) DrawListDrawIndirect(draw_list int64, use_indices bool, buffer RID.Any, offset int64, draw_count int64, stride int64) { //gd:RenderingDevice.draw_list_draw_indirect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_draw_indirect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_draw_indirect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeInt<<24), &struct {
 		draw_list   int64
 		use_indices bool
 		buffer      RID.Any
@@ -3058,7 +3060,7 @@ Note: The specified 'rect' is automatically intersected with the screen's dimens
 */
 //go:nosplit
 func (self class) DrawListEnableScissor(draw_list int64, rect Rect2.PositionSize) { //gd:RenderingDevice.draw_list_enable_scissor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_enable_scissor, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_enable_scissor, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRect2<<8), &struct {
 		draw_list int64
 		rect      Rect2.PositionSize
 	}{draw_list, rect})
@@ -3071,7 +3073,7 @@ Removes and disables the scissor rectangle for the specified 'draw_list'. See al
 */
 //go:nosplit
 func (self class) DrawListDisableScissor(draw_list int64) { //gd:RenderingDevice.draw_list_disable_scissor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_disable_scissor, 0|(gdextension.SizeInt<<4), &struct{ draw_list int64 }{draw_list})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_disable_scissor, 0|(gdextension.SizeInt<<4), &struct{ draw_list int64 }{draw_list})
 }
 
 /*
@@ -3079,7 +3081,7 @@ Switches to the next draw pass.
 */
 //go:nosplit
 func (self class) DrawListSwitchToNextPass() int64 { //gd:RenderingDevice.draw_list_switch_to_next_pass
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.draw_list_switch_to_next_pass, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.draw_list_switch_to_next_pass, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3089,7 +3091,7 @@ This method does nothing and always returns an empty []int64.
 */
 //go:nosplit
 func (self class) DrawListSwitchToNextPassSplit(splits int64) Packed.Array[int64] { //gd:RenderingDevice.draw_list_switch_to_next_pass_split
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.draw_list_switch_to_next_pass_split, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ splits int64 }{splits})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.draw_list_switch_to_next_pass_split, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ splits int64 }{splits})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -3099,7 +3101,7 @@ Finishes a list of raster drawing commands created with the draw_* methods.
 */
 //go:nosplit
 func (self class) DrawListEnd() { //gd:RenderingDevice.draw_list_end
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_end, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_list_end, 0, &struct{}{})
 }
 
 /*
@@ -3115,7 +3117,7 @@ A simple compute operation might look like this (code is not a complete example)
 */
 //go:nosplit
 func (self class) ComputeListBegin() int64 { //gd:RenderingDevice.compute_list_begin
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.compute_list_begin, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.compute_list_begin, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3127,7 +3129,7 @@ Tells the GPU what compute pipeline to use when processing the compute list. If 
 */
 //go:nosplit
 func (self class) ComputeListBindComputePipeline(compute_list int64, compute_pipeline RID.Any) { //gd:RenderingDevice.compute_list_bind_compute_pipeline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compute_list_bind_compute_pipeline, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compute_list_bind_compute_pipeline, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8), &struct {
 		compute_list     int64
 		compute_pipeline RID.Any
 	}{compute_list, compute_pipeline})
@@ -3140,7 +3142,7 @@ Sets the push constant data to 'buffer' for the specified 'compute_list'. The sh
 */
 //go:nosplit
 func (self class) ComputeListSetPushConstant(compute_list int64, buffer Packed.Bytes, size_bytes int64) { //gd:RenderingDevice.compute_list_set_push_constant
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compute_list_set_push_constant, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compute_list_set_push_constant, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeInt<<12), &struct {
 		compute_list int64
 		buffer       gdextension.PackedArray[byte]
 		size_bytes   int64
@@ -3152,7 +3154,7 @@ Binds the 'uniform_set' to this 'compute_list'. Godot ensures that all textures 
 */
 //go:nosplit
 func (self class) ComputeListBindUniformSet(compute_list int64, uniform_set RID.Any, set_index int64) { //gd:RenderingDevice.compute_list_bind_uniform_set
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compute_list_bind_uniform_set, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compute_list_bind_uniform_set, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12), &struct {
 		compute_list int64
 		uniform_set  RID.Any
 		set_index    int64
@@ -3166,7 +3168,7 @@ Submits the compute list for processing on the GPU. This is the compute equivale
 */
 //go:nosplit
 func (self class) ComputeListDispatch(compute_list int64, x_groups int64, y_groups int64, z_groups int64) { //gd:RenderingDevice.compute_list_dispatch
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compute_list_dispatch, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compute_list_dispatch, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		compute_list int64
 		x_groups     int64
 		y_groups     int64
@@ -3179,7 +3181,7 @@ Submits the compute list for processing on the GPU with the given group counts s
 */
 //go:nosplit
 func (self class) ComputeListDispatchIndirect(compute_list int64, buffer RID.Any, offset int64) { //gd:RenderingDevice.compute_list_dispatch_indirect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compute_list_dispatch_indirect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compute_list_dispatch_indirect, 0|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12), &struct {
 		compute_list int64
 		buffer       RID.Any
 		offset       int64
@@ -3191,7 +3193,7 @@ Raises a Vulkan compute barrier in the specified 'compute_list'.
 */
 //go:nosplit
 func (self class) ComputeListAddBarrier(compute_list int64) { //gd:RenderingDevice.compute_list_add_barrier
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compute_list_add_barrier, 0|(gdextension.SizeInt<<4), &struct{ compute_list int64 }{compute_list})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compute_list_add_barrier, 0|(gdextension.SizeInt<<4), &struct{ compute_list int64 }{compute_list})
 }
 
 /*
@@ -3199,7 +3201,7 @@ Finishes a list of compute commands created with the compute_* methods.
 */
 //go:nosplit
 func (self class) ComputeListEnd() { //gd:RenderingDevice.compute_list_end
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compute_list_end, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.compute_list_end, 0, &struct{}{})
 }
 
 /*
@@ -3207,7 +3209,7 @@ Tries to free an object in the RenderingDevice. To avoid memory leaks, this shou
 */
 //go:nosplit
 func (self class) FreeRid(rid RID.Any) { //gd:RenderingDevice.free_rid
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
 
 /*
@@ -3219,7 +3221,7 @@ Creates a timestamp marker with the specified 'name'. This is used for performan
 */
 //go:nosplit
 func (self class) CaptureTimestamp(name String.Readable) { //gd:RenderingDevice.capture_timestamp
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.capture_timestamp, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.capture_timestamp, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 
 /*
@@ -3227,7 +3229,7 @@ Returns the total number of timestamps (rendering steps) available for profiling
 */
 //go:nosplit
 func (self class) GetCapturedTimestampsCount() int64 { //gd:RenderingDevice.get_captured_timestamps_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_captured_timestamps_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_captured_timestamps_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3237,7 +3239,7 @@ Returns the index of the last frame rendered that has rendering timestamps avail
 */
 //go:nosplit
 func (self class) GetCapturedTimestampsFrame() int64 { //gd:RenderingDevice.get_captured_timestamps_frame
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_captured_timestamps_frame, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_captured_timestamps_frame, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3250,7 +3252,7 @@ Returns the timestamp in GPU time for the rendering step specified by 'index' (i
 */
 //go:nosplit
 func (self class) GetCapturedTimestampGpuTime(index int64) int64 { //gd:RenderingDevice.get_captured_timestamp_gpu_time
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_captured_timestamp_gpu_time, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_captured_timestamp_gpu_time, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -3263,7 +3265,7 @@ Returns the timestamp in CPU time for the rendering step specified by 'index' (i
 */
 //go:nosplit
 func (self class) GetCapturedTimestampCpuTime(index int64) int64 { //gd:RenderingDevice.get_captured_timestamp_cpu_time
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_captured_timestamp_cpu_time, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_captured_timestamp_cpu_time, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -3275,7 +3277,7 @@ Returns the timestamp's name for the rendering step specified by 'index'. See al
 */
 //go:nosplit
 func (self class) GetCapturedTimestampName(index int64) String.Readable { //gd:RenderingDevice.get_captured_timestamp_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_captured_timestamp_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_captured_timestamp_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3285,7 +3287,7 @@ Returns true if the 'feature' is supported by the GPU.
 */
 //go:nosplit
 func (self class) HasFeature(feature Rendering.Features) bool { //gd:RenderingDevice.has_feature
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Rendering.Features }{feature})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Rendering.Features }{feature})
 	var ret = r_ret
 	return ret
 }
@@ -3299,7 +3301,7 @@ Limits for various graphics hardware can be found in the [Vulkan Hardware Databa
 */
 //go:nosplit
 func (self class) LimitGet(limit Rendering.Limit) int64 { //gd:RenderingDevice.limit_get
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.limit_get, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ limit Rendering.Limit }{limit})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.limit_get, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ limit Rendering.Limit }{limit})
 	var ret = r_ret
 	return ret
 }
@@ -3311,7 +3313,7 @@ Returns the frame count kept by the graphics API. Higher values result in higher
 */
 //go:nosplit
 func (self class) GetFrameDelay() int64 { //gd:RenderingDevice.get_frame_delay
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame_delay, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame_delay, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3325,7 +3327,7 @@ Note: Only available in local RenderingDevices.
 */
 //go:nosplit
 func (self class) Submit() { //gd:RenderingDevice.submit
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.submit, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.submit, 0, &struct{}{})
 }
 
 /*
@@ -3340,7 +3342,7 @@ Note: [Sync] can only be called after a [Submit].
 */
 //go:nosplit
 func (self class) Sync() { //gd:RenderingDevice.sync
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.sync, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.sync, 0, &struct{}{})
 }
 
 /*
@@ -3348,7 +3350,7 @@ This method does nothing.
 */
 //go:nosplit
 func (self class) Barrier(from Rendering.BarrierMask, to Rendering.BarrierMask) { //gd:RenderingDevice.barrier
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.barrier, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.barrier, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from Rendering.BarrierMask
 		to   Rendering.BarrierMask
 	}{from, to})
@@ -3359,7 +3361,7 @@ This method does nothing.
 */
 //go:nosplit
 func (self class) FullBarrier() { //gd:RenderingDevice.full_barrier
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.full_barrier, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.full_barrier, 0, &struct{}{})
 }
 
 /*
@@ -3369,7 +3371,7 @@ Create a new local [RenderingDevice]. This is most useful for performing compute
 */
 //go:nosplit
 func (self class) CreateLocalDevice() [1]gdclass.RenderingDevice { //gd:RenderingDevice.create_local_device
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_local_device, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_local_device, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.RenderingDevice{gd.PointerWithOwnershipTransferredToGo[gdclass.RenderingDevice](r_ret)}
 	return ret
 }
@@ -3386,7 +3388,7 @@ Note: Resource names are only set when the engine runs in verbose mode ([OS.IsSt
 */
 //go:nosplit
 func (self class) SetResourceName(id RID.Any, name String.Readable) { //gd:RenderingDevice.set_resource_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resource_name, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_resource_name, 0|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		id   RID.Any
 		name gdextension.String
 	}{id, pointers.Get(gd.InternalString(name))})
@@ -3403,7 +3405,7 @@ The VK_EXT_DEBUG_UTILS_EXTENSION_NAME Vulkan extension must be available and ena
 */
 //go:nosplit
 func (self class) DrawCommandBeginLabel(name String.Readable, color Color.RGBA) { //gd:RenderingDevice.draw_command_begin_label
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_command_begin_label, 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_command_begin_label, 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8), &struct {
 		name  gdextension.String
 		color Color.RGBA
 	}{pointers.Get(gd.InternalString(name)), color})
@@ -3414,7 +3416,7 @@ This method does nothing.
 */
 //go:nosplit
 func (self class) DrawCommandInsertLabel(name String.Readable, color Color.RGBA) { //gd:RenderingDevice.draw_command_insert_label
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_command_insert_label, 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_command_insert_label, 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8), &struct {
 		name  gdextension.String
 		color Color.RGBA
 	}{pointers.Get(gd.InternalString(name)), color})
@@ -3427,7 +3429,7 @@ Ends the command buffer debug label region started by a [DrawCommandBeginLabel] 
 */
 //go:nosplit
 func (self class) DrawCommandEndLabel() { //gd:RenderingDevice.draw_command_end_label
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_command_end_label, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.draw_command_end_label, 0, &struct{}{})
 }
 
 /*
@@ -3438,7 +3440,7 @@ Returns the vendor of the video adapter (e.g. "NVIDIA Corporation"). Equivalent 
 */
 //go:nosplit
 func (self class) GetDeviceVendorName() String.Readable { //gd:RenderingDevice.get_device_vendor_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_device_vendor_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_device_vendor_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3451,7 +3453,7 @@ Returns the name of the video adapter (e.g. "GeForce GTX 1080/PCIe/SSE2"). Equiv
 */
 //go:nosplit
 func (self class) GetDeviceName() String.Readable { //gd:RenderingDevice.get_device_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_device_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_device_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3461,7 +3463,7 @@ Returns the universally unique identifier for the pipeline cache. This is used t
 */
 //go:nosplit
 func (self class) GetDevicePipelineCacheUuid() String.Readable { //gd:RenderingDevice.get_device_pipeline_cache_uuid
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_device_pipeline_cache_uuid, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_device_pipeline_cache_uuid, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3473,7 +3475,7 @@ Returns the memory usage in bytes corresponding to the given 'type'. When using 
 */
 //go:nosplit
 func (self class) GetMemoryUsage(atype Rendering.MemoryType) int64 { //gd:RenderingDevice.get_memory_usage
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_memory_usage, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype Rendering.MemoryType }{atype})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_memory_usage, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype Rendering.MemoryType }{atype})
 	var ret = r_ret
 	return ret
 }
@@ -3483,7 +3485,7 @@ Returns the unique identifier of the driver 'resource' for the specified 'rid'. 
 */
 //go:nosplit
 func (self class) GetDriverResource(resource Rendering.DriverResource, rid RID.Any, index int64) int64 { //gd:RenderingDevice.get_driver_resource
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_driver_resource, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_driver_resource, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeRID<<8)|(gdextension.SizeInt<<12), &struct {
 		resource Rendering.DriverResource
 		rid      RID.Any
 		index    int64
@@ -3497,7 +3499,7 @@ Returns a string with a performance report from the past frame. Updates every fr
 */
 //go:nosplit
 func (self class) GetPerfReport() String.Readable { //gd:RenderingDevice.get_perf_report
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_perf_report, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_perf_report, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3541,7 +3543,7 @@ This is only used by Vulkan in debug builds. Godot must also be started with the
 */
 //go:nosplit
 func (self class) GetDriverAndDeviceMemoryReport() String.Readable { //gd:RenderingDevice.get_driver_and_device_memory_report
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_driver_and_device_memory_report, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_driver_and_device_memory_report, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3572,7 +3574,7 @@ This is only used by Vulkan in debug builds. Godot must also be started with the
 */
 //go:nosplit
 func (self class) GetTrackedObjectName(type_index int64) String.Readable { //gd:RenderingDevice.get_tracked_object_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tracked_object_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ type_index int64 }{type_index})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_tracked_object_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ type_index int64 }{type_index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -3586,7 +3588,7 @@ This is only used by Vulkan in debug builds. Godot must also be started with the
 */
 //go:nosplit
 func (self class) GetTrackedObjectTypeCount() int64 { //gd:RenderingDevice.get_tracked_object_type_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tracked_object_type_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tracked_object_type_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3598,7 +3600,7 @@ This is only used by Vulkan in debug builds and can return 0 when this informati
 */
 //go:nosplit
 func (self class) GetDriverTotalMemory() int64 { //gd:RenderingDevice.get_driver_total_memory
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_driver_total_memory, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_driver_total_memory, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3610,7 +3612,7 @@ This is only used by Vulkan in debug builds and can return 0 when this informati
 */
 //go:nosplit
 func (self class) GetDriverAllocationCount() int64 { //gd:RenderingDevice.get_driver_allocation_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_driver_allocation_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_driver_allocation_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3627,7 +3629,7 @@ This is only used by Vulkan in debug builds and can return 0 when this informati
 */
 //go:nosplit
 func (self class) GetDriverMemoryByObjectType(atype int64) int64 { //gd:RenderingDevice.get_driver_memory_by_object_type
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_driver_memory_by_object_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype int64 }{atype})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_driver_memory_by_object_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype int64 }{atype})
 	var ret = r_ret
 	return ret
 }
@@ -3644,7 +3646,7 @@ This is only used by Vulkan in debug builds and can return 0 when this informati
 */
 //go:nosplit
 func (self class) GetDriverAllocsByObjectType(atype int64) int64 { //gd:RenderingDevice.get_driver_allocs_by_object_type
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_driver_allocs_by_object_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype int64 }{atype})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_driver_allocs_by_object_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype int64 }{atype})
 	var ret = r_ret
 	return ret
 }
@@ -3656,7 +3658,7 @@ This is only used by Vulkan in debug builds and can return 0 when this informati
 */
 //go:nosplit
 func (self class) GetDeviceTotalMemory() int64 { //gd:RenderingDevice.get_device_total_memory
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_device_total_memory, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_device_total_memory, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3668,7 +3670,7 @@ This is only used by Vulkan in debug builds and can return 0 when this informati
 */
 //go:nosplit
 func (self class) GetDeviceAllocationCount() int64 { //gd:RenderingDevice.get_device_allocation_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_device_allocation_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_device_allocation_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -3685,7 +3687,7 @@ This is only used by Vulkan in debug builds and can return 0 when this informati
 */
 //go:nosplit
 func (self class) GetDeviceMemoryByObjectType(atype int64) int64 { //gd:RenderingDevice.get_device_memory_by_object_type
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_device_memory_by_object_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype int64 }{atype})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_device_memory_by_object_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype int64 }{atype})
 	var ret = r_ret
 	return ret
 }
@@ -3702,7 +3704,7 @@ This is only used by Vulkan in debug builds and can return 0 when this informati
 */
 //go:nosplit
 func (self class) GetDeviceAllocsByObjectType(atype int64) int64 { //gd:RenderingDevice.get_device_allocs_by_object_type
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_device_allocs_by_object_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype int64 }{atype})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_device_allocs_by_object_type, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ atype int64 }{atype})
 	var ret = r_ret
 	return ret
 }

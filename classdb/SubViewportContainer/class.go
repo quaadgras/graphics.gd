@@ -19,6 +19,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -56,6 +57,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -102,7 +104,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -229,36 +231,36 @@ func (class) _propagate_input_event(impl func(ptr gdclass.Receiver, event [1]gdc
 
 //go:nosplit
 func (self class) SetStretch(enable bool) { //gd:SubViewportContainer.set_stretch
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsStretchEnabled() bool { //gd:SubViewportContainer.is_stretch_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stretch_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stretch_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStretchShrink(amount int64) { //gd:SubViewportContainer.set_stretch_shrink
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_shrink, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stretch_shrink, 0|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 }
 
 //go:nosplit
 func (self class) GetStretchShrink() int64 { //gd:SubViewportContainer.get_stretch_shrink
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stretch_shrink, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_stretch_shrink, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMouseTarget(amount bool) { //gd:SubViewportContainer.set_mouse_target
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_target, 0|(gdextension.SizeBool<<4), &struct{ amount bool }{amount})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mouse_target, 0|(gdextension.SizeBool<<4), &struct{ amount bool }{amount})
 }
 
 //go:nosplit
 func (self class) IsMouseTargetEnabled() bool { //gd:SubViewportContainer.is_mouse_target_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_mouse_target_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_mouse_target_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

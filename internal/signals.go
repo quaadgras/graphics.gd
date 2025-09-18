@@ -7,6 +7,7 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	CallableType "graphics.gd/variant/Callable"
@@ -18,12 +19,12 @@ import (
 
 func (s Signal) Free() {
 	if ptr, ok := pointers.End(s); ok {
-		gdextension.Free(gdextension.TypeSignal, &ptr)
+		noescape.Free(gdextension.TypeSignal, &ptr)
 	}
 }
 
 func NewSignalOf(object [1]Object, signal StringName) Signal {
-	return pointers.New[Signal](gdextension.Make[gdextension.Signal](builtin.creation.Signal[2], gdextension.SizeObject<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
+	return pointers.New[Signal](noescape.Make[gdextension.Signal](builtin.creation.Signal[2], gdextension.SizeObject<<4|gdextension.SizeStringName<<8, unsafe.Pointer(&struct {
 		object gdextension.Object
 		signal gdextension.StringName
 	}{

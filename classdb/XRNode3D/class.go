@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +51,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -100,7 +102,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -227,36 +229,36 @@ func (self Instance) SetShowWhenTracked(value bool) {
 
 //go:nosplit
 func (self class) SetTracker(tracker_name String.Name) { //gd:XRNode3D.set_tracker
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker, 0|(gdextension.SizeStringName<<4), &struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tracker, 0|(gdextension.SizeStringName<<4), &struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))})
 }
 
 //go:nosplit
 func (self class) GetTracker() String.Name { //gd:XRNode3D.get_tracker
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tracker, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_tracker, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPoseName(pose String.Name) { //gd:XRNode3D.set_pose_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pose_name, 0|(gdextension.SizeStringName<<4), &struct{ pose gdextension.StringName }{pointers.Get(gd.InternalStringName(pose))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pose_name, 0|(gdextension.SizeStringName<<4), &struct{ pose gdextension.StringName }{pointers.Get(gd.InternalStringName(pose))})
 }
 
 //go:nosplit
 func (self class) GetPoseName() String.Name { //gd:XRNode3D.get_pose_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_pose_name, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_pose_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShowWhenTracked(show bool) { //gd:XRNode3D.set_show_when_tracked
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_when_tracked, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_when_tracked, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
 }
 
 //go:nosplit
 func (self class) GetShowWhenTracked() bool { //gd:XRNode3D.get_show_when_tracked
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_show_when_tracked, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_show_when_tracked, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -269,7 +271,7 @@ Returns true if the [Tracker] has been registered and the [Pose] is being tracke
 */
 //go:nosplit
 func (self class) GetIsActive() bool { //gd:XRNode3D.get_is_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_active, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -282,7 +284,7 @@ Returns true if the [Tracker] has current tracking data for the [Pose] being tra
 */
 //go:nosplit
 func (self class) GetHasTrackingData() bool { //gd:XRNode3D.get_has_tracking_data
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_has_tracking_data, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -294,7 +296,7 @@ Returns the [XRPose] containing the current state of the pose being tracked. Thi
 */
 //go:nosplit
 func (self class) GetPose() [1]gdclass.XRPose { //gd:XRNode3D.get_pose
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_pose, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_pose, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.XRPose{gd.PointerWithOwnershipTransferredToGo[gdclass.XRPose](r_ret)}
 	return ret
 }
@@ -314,7 +316,7 @@ Triggers a haptic pulse on a device associated with this interface.
 */
 //go:nosplit
 func (self class) TriggerHapticPulse(action_name String.Readable, frequency float64, amplitude float64, duration_sec float64, delay_sec float64) { //gd:XRNode3D.trigger_haptic_pulse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.trigger_haptic_pulse, 0|(gdextension.SizeString<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.trigger_haptic_pulse, 0|(gdextension.SizeString<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20), &struct {
 		action_name  gdextension.String
 		frequency    float64
 		amplitude    float64

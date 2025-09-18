@@ -18,6 +18,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +54,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -98,7 +100,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -347,31 +349,31 @@ Get parent [Skeleton3D] node if found.
 */
 //go:nosplit
 func (self class) GetSkeleton() [1]gdclass.Skeleton3D { //gd:SkeletonModifier3D.get_skeleton
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_skeleton, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Skeleton3D{gd.PointerMustAssertInstanceID[gdclass.Skeleton3D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetActive(active bool) { //gd:SkeletonModifier3D.set_active
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_active, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
 
 //go:nosplit
 func (self class) IsActive() bool { //gd:SkeletonModifier3D.is_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInfluence(influence float64) { //gd:SkeletonModifier3D.set_influence
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_influence, 0|(gdextension.SizeFloat<<4), &struct{ influence float64 }{influence})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_influence, 0|(gdextension.SizeFloat<<4), &struct{ influence float64 }{influence})
 }
 
 //go:nosplit
 func (self class) GetInfluence() float64 { //gd:SkeletonModifier3D.get_influence
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_influence, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_influence, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -112,6 +112,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -146,6 +147,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -188,7 +190,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -480,7 +482,7 @@ Returns the [EditorDebuggerSession] with the given 'id'.
 */
 //go:nosplit
 func (self class) GetSession(id int64) [1]gdclass.EditorDebuggerSession { //gd:EditorDebuggerPlugin.get_session
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_session, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_session, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = [1]gdclass.EditorDebuggerSession{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorDebuggerSession](r_ret)}
 	return ret
 }
@@ -495,7 +497,7 @@ Note: Sessions in the array may be inactive, check their state via [EditorDebugg
 */
 //go:nosplit
 func (self class) GetSessions() Array.Any { //gd:EditorDebuggerPlugin.get_sessions
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_sessions, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_sessions, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

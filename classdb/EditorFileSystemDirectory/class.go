@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -42,6 +43,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -96,7 +98,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -254,7 +256,7 @@ Returns the number of subdirectories in this directory.
 */
 //go:nosplit
 func (self class) GetSubdirCount() int64 { //gd:EditorFileSystemDirectory.get_subdir_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdir_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_subdir_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -264,7 +266,7 @@ Returns the subdirectory at index 'idx'.
 */
 //go:nosplit
 func (self class) GetSubdir(idx int64) [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystemDirectory.get_subdir
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_subdir, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_subdir, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = [1]gdclass.EditorFileSystemDirectory{gd.PointerMustAssertInstanceID[gdclass.EditorFileSystemDirectory](r_ret)}
 	return ret
 }
@@ -274,7 +276,7 @@ Returns the number of files in this directory.
 */
 //go:nosplit
 func (self class) GetFileCount() int64 { //gd:EditorFileSystemDirectory.get_file_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_file_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_file_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -284,7 +286,7 @@ Returns the name of the file at index 'idx'.
 */
 //go:nosplit
 func (self class) GetFile(idx int64) String.Readable { //gd:EditorFileSystemDirectory.get_file
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -294,7 +296,7 @@ Returns the path to the file at index 'idx'.
 */
 //go:nosplit
 func (self class) GetFilePath(idx int64) String.Readable { //gd:EditorFileSystemDirectory.get_file_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file_path, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file_path, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -304,7 +306,7 @@ Returns the resource type of the file at index 'idx'. This returns a string such
 */
 //go:nosplit
 func (self class) GetFileType(idx int64) String.Name { //gd:EditorFileSystemDirectory.get_file_type
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_file_type, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_file_type, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -314,7 +316,7 @@ Returns the name of the script class defined in the file at index 'idx'. If the 
 */
 //go:nosplit
 func (self class) GetFileScriptClassName(idx int64) String.Readable { //gd:EditorFileSystemDirectory.get_file_script_class_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file_script_class_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file_script_class_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -324,7 +326,7 @@ Returns the base class of the script class defined in the file at index 'idx'. I
 */
 //go:nosplit
 func (self class) GetFileScriptClassExtends(idx int64) String.Readable { //gd:EditorFileSystemDirectory.get_file_script_class_extends
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file_script_class_extends, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_file_script_class_extends, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -334,7 +336,7 @@ Returns true if the file at index 'idx' imported properly.
 */
 //go:nosplit
 func (self class) GetFileImportIsValid(idx int64) bool { //gd:EditorFileSystemDirectory.get_file_import_is_valid
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_file_import_is_valid, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_file_import_is_valid, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -344,7 +346,7 @@ Returns the name of this directory.
 */
 //go:nosplit
 func (self class) GetName() String.Readable { //gd:EditorFileSystemDirectory.get_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -354,7 +356,7 @@ Returns the path to this directory.
 */
 //go:nosplit
 func (self class) GetPath() String.Readable { //gd:EditorFileSystemDirectory.get_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -364,7 +366,7 @@ Returns the parent directory for this directory or null if called on a directory
 */
 //go:nosplit
 func (self class) GetParent() [1]gdclass.EditorFileSystemDirectory { //gd:EditorFileSystemDirectory.get_parent
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_parent, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorFileSystemDirectory{gd.PointerMustAssertInstanceID[gdclass.EditorFileSystemDirectory](r_ret)}
 	return ret
 }
@@ -374,7 +376,7 @@ Returns the index of the file with name 'name' or -1 if not found.
 */
 //go:nosplit
 func (self class) FindFileIndex(name String.Readable) int64 { //gd:EditorFileSystemDirectory.find_file_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_file_index, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_file_index, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
@@ -384,7 +386,7 @@ Returns the index of the directory with name 'name' or -1 if not found.
 */
 //go:nosplit
 func (self class) FindDirIndex(name String.Readable) int64 { //gd:EditorFileSystemDirectory.find_dir_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_dir_index, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_dir_index, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }

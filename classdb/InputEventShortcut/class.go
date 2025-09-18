@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +51,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -92,7 +94,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -158,12 +160,12 @@ func (self Instance) SetShortcut(value Shortcut.Instance) {
 
 //go:nosplit
 func (self class) SetShortcut(shortcut [1]gdclass.Shortcut) { //gd:InputEventShortcut.set_shortcut
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut, 0|(gdextension.SizeObject<<4), &struct{ shortcut gdextension.Object }{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut, 0|(gdextension.SizeObject<<4), &struct{ shortcut gdextension.Object }{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetShortcut() [1]gdclass.Shortcut { //gd:InputEventShortcut.get_shortcut
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shortcut, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_shortcut, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Shortcut{gd.PointerWithOwnershipTransferredToGo[gdclass.Shortcut](r_ret)}
 	return ret
 }

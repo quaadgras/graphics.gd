@@ -8,6 +8,7 @@ import (
 	gd "graphics.gd/internal"
 	"graphics.gd/internal/gdclass"
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Object"
@@ -106,7 +107,7 @@ func init() {
 		gd.LinkMethods(loader_sname, &loader_methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &loader_sname)
+		noescape.Free(gdextension.TypeStringName, &loader_sname)
 	})
 }
 
@@ -119,7 +120,7 @@ func singleton() {
 
 func load(path String.Readable, type_hint String.Readable, cache_mode int) [1]gdclass.Resource { //gd:ResourceLoader.load
 	once.Do(singleton)
-	var r_ret = gdextension.Call[gdextension.Object](gdextension.Object(gd.ObjectChecked(self[0].AsObject())), loader_methods.load, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
+	var r_ret = noescape.Call[gdextension.Object](gdextension.Object(gd.ObjectChecked(self[0].AsObject())), loader_methods.load, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), unsafe.Pointer(&struct {
 		path       gdextension.String
 		type_hint  gdextension.String
 		cache_mode int64

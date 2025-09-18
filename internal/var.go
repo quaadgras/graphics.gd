@@ -6,6 +6,7 @@ import (
 	"reflect"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 
 	float "graphics.gd/variant/Float"
@@ -59,7 +60,7 @@ func (c Callable) Free() {
 	if !ok {
 		return
 	}
-	gdextension.Free(gdextension.TypeCallable, &ptr)
+	noescape.Free(gdextension.TypeCallable, &ptr)
 }
 
 func (s Variant) Free() {

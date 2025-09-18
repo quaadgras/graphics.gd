@@ -18,6 +18,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -58,6 +59,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -106,7 +108,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -211,12 +213,12 @@ func (self Instance) SetEditIntensity(value bool) {
 
 //go:nosplit
 func (self class) SetPickColor(color Color.RGBA) { //gd:ColorPickerButton.set_pick_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pick_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pick_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetPickColor() Color.RGBA { //gd:ColorPickerButton.get_pick_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_pick_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_pick_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -231,7 +233,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 */
 //go:nosplit
 func (self class) GetPicker() [1]gdclass.ColorPicker { //gd:ColorPickerButton.get_picker
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_picker, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_picker, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ColorPicker{gd.PointerLifetimeBoundTo[gdclass.ColorPicker](self.AsObject(), r_ret)}
 	return ret
 }
@@ -246,31 +248,31 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 */
 //go:nosplit
 func (self class) GetPopup() [1]gdclass.PopupPanel { //gd:ColorPickerButton.get_popup
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_popup, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_popup, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PopupPanel{gd.PointerLifetimeBoundTo[gdclass.PopupPanel](self.AsObject(), r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditAlpha(show bool) { //gd:ColorPickerButton.set_edit_alpha
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edit_alpha, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edit_alpha, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
 }
 
 //go:nosplit
 func (self class) IsEditingAlpha() bool { //gd:ColorPickerButton.is_editing_alpha
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_alpha, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_alpha, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditIntensity(show bool) { //gd:ColorPickerButton.set_edit_intensity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edit_intensity, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edit_intensity, 0|(gdextension.SizeBool<<4), &struct{ show bool }{show})
 }
 
 //go:nosplit
 func (self class) IsEditingIntensity() bool { //gd:ColorPickerButton.is_editing_intensity
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_intensity, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_intensity, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

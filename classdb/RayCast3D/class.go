@@ -25,6 +25,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -62,6 +63,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -137,7 +139,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -418,24 +420,24 @@ func (self Instance) SetDebugShapeThickness(value int) {
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:RayCast3D.set_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsEnabled() bool { //gd:RayCast3D.is_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTargetPosition(local_point Vector3.XYZ) { //gd:RayCast3D.set_target_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_position, 0|(gdextension.SizeVector3<<4), &struct{ local_point Vector3.XYZ }{local_point})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_position, 0|(gdextension.SizeVector3<<4), &struct{ local_point Vector3.XYZ }{local_point})
 }
 
 //go:nosplit
 func (self class) GetTargetPosition() Vector3.XYZ { //gd:RayCast3D.get_target_position
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_target_position, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_target_position, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -445,7 +447,7 @@ Returns whether any object is intersecting with the ray's vector (considering th
 */
 //go:nosplit
 func (self class) IsColliding() bool { //gd:RayCast3D.is_colliding
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_colliding, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_colliding, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -459,7 +461,7 @@ Note: [Enabled] does not need to be true for this to work.
 */
 //go:nosplit
 func (self class) ForceRaycastUpdate() { //gd:RayCast3D.force_raycast_update
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_raycast_update, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_raycast_update, 0, &struct{}{})
 }
 
 /*
@@ -474,7 +476,7 @@ Note: This object is not guaranteed to be a [CollisionObject3D]. For example, if
 */
 //go:nosplit
 func (self class) GetCollider() [1]gd.Object { //gd:RayCast3D.get_collider
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_collider, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_collider, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
@@ -487,7 +489,7 @@ Returns the [Resource.ID] of the first object that the ray intersects, or an emp
 */
 //go:nosplit
 func (self class) GetColliderRid() RID.Any { //gd:RayCast3D.get_collider_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_collider_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_collider_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -504,7 +506,7 @@ To get the intersected shape node, for a [CollisionObject3D] target, use:
 */
 //go:nosplit
 func (self class) GetColliderShape() int64 { //gd:RayCast3D.get_collider_shape
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collider_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -519,7 +521,7 @@ Note: Check that [IsColliding] returns true before calling this method to ensure
 */
 //go:nosplit
 func (self class) GetCollisionPoint() Vector3.XYZ { //gd:RayCast3D.get_collision_point
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_collision_point, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_collision_point, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -534,7 +536,7 @@ Note: Check that [IsColliding] returns true before calling this method to ensure
 */
 //go:nosplit
 func (self class) GetCollisionNormal() Vector3.XYZ { //gd:RayCast3D.get_collision_normal
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_collision_normal, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_collision_normal, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -546,7 +548,7 @@ Returns the collision object's face index at the collision point, or -1 if the s
 */
 //go:nosplit
 func (self class) GetCollisionFaceIndex() int64 { //gd:RayCast3D.get_collision_face_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_face_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_face_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -558,7 +560,7 @@ Adds a collision exception so the ray does not report collisions with the specif
 */
 //go:nosplit
 func (self class) AddExceptionRid(rid RID.Any) { //gd:RayCast3D.add_exception_rid
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_exception_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_exception_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
 
 /*
@@ -566,7 +568,7 @@ Adds a collision exception so the ray does not report collisions with the specif
 */
 //go:nosplit
 func (self class) AddException(node [1]gdclass.CollisionObject3D) { //gd:RayCast3D.add_exception
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_exception, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_exception, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))})
 }
 
 /*
@@ -576,7 +578,7 @@ Removes a collision exception so the ray can report collisions with the specifie
 */
 //go:nosplit
 func (self class) RemoveExceptionRid(rid RID.Any) { //gd:RayCast3D.remove_exception_rid
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_exception_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_exception_rid, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
 
 /*
@@ -584,7 +586,7 @@ Removes a collision exception so the ray can report collisions with the specifie
 */
 //go:nosplit
 func (self class) RemoveException(node [1]gdclass.CollisionObject3D) { //gd:RayCast3D.remove_exception
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_exception, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_exception, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))})
 }
 
 /*
@@ -592,17 +594,17 @@ Removes all collision exceptions for this ray.
 */
 //go:nosplit
 func (self class) ClearExceptions() { //gd:RayCast3D.clear_exceptions
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_exceptions, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_exceptions, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetCollisionMask(mask int64) { //gd:RayCast3D.set_collision_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 
 //go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:RayCast3D.get_collision_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -614,7 +616,7 @@ Based on 'value', enables or disables the specified layer in the [CollisionMask]
 */
 //go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:RayCast3D.set_collision_mask_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
@@ -627,91 +629,91 @@ Returns whether or not the specified layer of the [CollisionMask] is enabled, gi
 */
 //go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:RayCast3D.get_collision_mask_value
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExcludeParentBody(mask bool) { //gd:RayCast3D.set_exclude_parent_body
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude_parent_body, 0|(gdextension.SizeBool<<4), &struct{ mask bool }{mask})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude_parent_body, 0|(gdextension.SizeBool<<4), &struct{ mask bool }{mask})
 }
 
 //go:nosplit
 func (self class) GetExcludeParentBody() bool { //gd:RayCast3D.get_exclude_parent_body
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_exclude_parent_body, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_exclude_parent_body, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollideWithAreas(enable bool) { //gd:RayCast3D.set_collide_with_areas
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_areas, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_areas, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsCollideWithAreasEnabled() bool { //gd:RayCast3D.is_collide_with_areas_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_areas_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_areas_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollideWithBodies(enable bool) { //gd:RayCast3D.set_collide_with_bodies
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsCollideWithBodiesEnabled() bool { //gd:RayCast3D.is_collide_with_bodies_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHitFromInside(enable bool) { //gd:RayCast3D.set_hit_from_inside
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hit_from_inside, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hit_from_inside, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsHitFromInsideEnabled() bool { //gd:RayCast3D.is_hit_from_inside_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hit_from_inside_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hit_from_inside_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHitBackFaces(enable bool) { //gd:RayCast3D.set_hit_back_faces
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hit_back_faces, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hit_back_faces, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsHitBackFacesEnabled() bool { //gd:RayCast3D.is_hit_back_faces_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hit_back_faces_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hit_back_faces_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDebugShapeCustomColor(debug_shape_custom_color Color.RGBA) { //gd:RayCast3D.set_debug_shape_custom_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_shape_custom_color, 0|(gdextension.SizeColor<<4), &struct{ debug_shape_custom_color Color.RGBA }{debug_shape_custom_color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_shape_custom_color, 0|(gdextension.SizeColor<<4), &struct{ debug_shape_custom_color Color.RGBA }{debug_shape_custom_color})
 }
 
 //go:nosplit
 func (self class) GetDebugShapeCustomColor() Color.RGBA { //gd:RayCast3D.get_debug_shape_custom_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_debug_shape_custom_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_debug_shape_custom_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDebugShapeThickness(debug_shape_thickness int64) { //gd:RayCast3D.set_debug_shape_thickness
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_shape_thickness, 0|(gdextension.SizeInt<<4), &struct{ debug_shape_thickness int64 }{debug_shape_thickness})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_shape_thickness, 0|(gdextension.SizeInt<<4), &struct{ debug_shape_thickness int64 }{debug_shape_thickness})
 }
 
 //go:nosplit
 func (self class) GetDebugShapeThickness() int64 { //gd:RayCast3D.get_debug_shape_thickness
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_debug_shape_thickness, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_debug_shape_thickness, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

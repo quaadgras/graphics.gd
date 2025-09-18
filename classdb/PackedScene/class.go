@@ -65,6 +65,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -99,6 +100,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -143,7 +145,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -245,7 +247,7 @@ Packs the 'path' node, and all owned sub-nodes, into this [PackedScene]. Any exi
 */
 //go:nosplit
 func (self class) Pack(path [1]gdclass.Node) Error.Code { //gd:PackedScene.pack
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pack, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ path gdextension.Object }{gdextension.Object(gd.ObjectChecked(path[0].AsObject()))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pack, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ path gdextension.Object }{gdextension.Object(gd.ObjectChecked(path[0].AsObject()))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -255,7 +257,7 @@ Instantiates the scene's node hierarchy. Triggers child scene instantiation(s). 
 */
 //go:nosplit
 func (self class) Instantiate(edit_state GenEditState) [1]gdclass.Node { //gd:PackedScene.instantiate
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.instantiate, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ edit_state GenEditState }{edit_state})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.instantiate, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ edit_state GenEditState }{edit_state})
 	var ret = [1]gdclass.Node{gd.PointerWithOwnershipTransferredToGo[gdclass.Node](r_ret)}
 	return ret
 }
@@ -265,7 +267,7 @@ Returns true if the scene file has nodes.
 */
 //go:nosplit
 func (self class) CanInstantiate() bool { //gd:PackedScene.can_instantiate
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_instantiate, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_instantiate, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -277,7 +279,7 @@ Returns the [SceneState] representing the scene file contents.
 */
 //go:nosplit
 func (self class) GetState() [1]gdclass.SceneState { //gd:PackedScene.get_state
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_state, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_state, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SceneState{gd.PointerWithOwnershipTransferredToGo[gdclass.SceneState](r_ret)}
 	return ret
 }

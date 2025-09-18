@@ -119,6 +119,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -153,6 +154,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -211,7 +213,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -411,67 +413,67 @@ This method returns nothing, instead it emits the [OnSessionSupported] signal wi
 */
 //go:nosplit
 func (self class) IsSessionSupported(session_mode String.Readable) { //gd:WebXRInterface.is_session_supported
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.is_session_supported, 0|(gdextension.SizeString<<4), &struct{ session_mode gdextension.String }{pointers.Get(gd.InternalString(session_mode))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.is_session_supported, 0|(gdextension.SizeString<<4), &struct{ session_mode gdextension.String }{pointers.Get(gd.InternalString(session_mode))})
 }
 
 //go:nosplit
 func (self class) SetSessionMode(session_mode String.Readable) { //gd:WebXRInterface.set_session_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_session_mode, 0|(gdextension.SizeString<<4), &struct{ session_mode gdextension.String }{pointers.Get(gd.InternalString(session_mode))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_session_mode, 0|(gdextension.SizeString<<4), &struct{ session_mode gdextension.String }{pointers.Get(gd.InternalString(session_mode))})
 }
 
 //go:nosplit
 func (self class) GetSessionMode() String.Readable { //gd:WebXRInterface.get_session_mode
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_session_mode, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_session_mode, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRequiredFeatures(required_features String.Readable) { //gd:WebXRInterface.set_required_features
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_required_features, 0|(gdextension.SizeString<<4), &struct{ required_features gdextension.String }{pointers.Get(gd.InternalString(required_features))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_required_features, 0|(gdextension.SizeString<<4), &struct{ required_features gdextension.String }{pointers.Get(gd.InternalString(required_features))})
 }
 
 //go:nosplit
 func (self class) GetRequiredFeatures() String.Readable { //gd:WebXRInterface.get_required_features
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_required_features, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_required_features, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOptionalFeatures(optional_features String.Readable) { //gd:WebXRInterface.set_optional_features
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_optional_features, 0|(gdextension.SizeString<<4), &struct{ optional_features gdextension.String }{pointers.Get(gd.InternalString(optional_features))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_optional_features, 0|(gdextension.SizeString<<4), &struct{ optional_features gdextension.String }{pointers.Get(gd.InternalString(optional_features))})
 }
 
 //go:nosplit
 func (self class) GetOptionalFeatures() String.Readable { //gd:WebXRInterface.get_optional_features
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_optional_features, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_optional_features, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetReferenceSpaceType() String.Readable { //gd:WebXRInterface.get_reference_space_type
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_reference_space_type, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_reference_space_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetEnabledFeatures() String.Readable { //gd:WebXRInterface.get_enabled_features
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_enabled_features, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_enabled_features, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRequestedReferenceSpaceTypes(requested_reference_space_types String.Readable) { //gd:WebXRInterface.set_requested_reference_space_types
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_requested_reference_space_types, 0|(gdextension.SizeString<<4), &struct{ requested_reference_space_types gdextension.String }{pointers.Get(gd.InternalString(requested_reference_space_types))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_requested_reference_space_types, 0|(gdextension.SizeString<<4), &struct{ requested_reference_space_types gdextension.String }{pointers.Get(gd.InternalString(requested_reference_space_types))})
 }
 
 //go:nosplit
 func (self class) GetRequestedReferenceSpaceTypes() String.Readable { //gd:WebXRInterface.get_requested_reference_space_types
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_requested_reference_space_types, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_requested_reference_space_types, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -481,7 +483,7 @@ Returns true if there is an active input source with the given 'input_source_id'
 */
 //go:nosplit
 func (self class) IsInputSourceActive(input_source_id int64) bool { //gd:WebXRInterface.is_input_source_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_input_source_active, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ input_source_id int64 }{input_source_id})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_input_source_active, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ input_source_id int64 }{input_source_id})
 	var ret = r_ret
 	return ret
 }
@@ -515,7 +517,7 @@ Use this method to get information about the input source that triggered one of 
 */
 //go:nosplit
 func (self class) GetInputSourceTracker(input_source_id int64) [1]gdclass.XRControllerTracker { //gd:WebXRInterface.get_input_source_tracker
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_input_source_tracker, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ input_source_id int64 }{input_source_id})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_input_source_tracker, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ input_source_id int64 }{input_source_id})
 	var ret = [1]gdclass.XRControllerTracker{gd.PointerWithOwnershipTransferredToGo[gdclass.XRControllerTracker](r_ret)}
 	return ret
 }
@@ -529,14 +531,14 @@ This can help interpret the input coming from that input source. See [XRInputSou
 */
 //go:nosplit
 func (self class) GetInputSourceTargetRayMode(input_source_id int64) TargetRayMode { //gd:WebXRInterface.get_input_source_target_ray_mode
-	var r_ret = gdextension.Call[TargetRayMode](gd.ObjectChecked(self.AsObject()), methods.get_input_source_target_ray_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ input_source_id int64 }{input_source_id})
+	var r_ret = noescape.Call[TargetRayMode](gd.ObjectChecked(self.AsObject()), methods.get_input_source_target_ray_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ input_source_id int64 }{input_source_id})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetVisibilityState() String.Readable { //gd:WebXRInterface.get_visibility_state
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_visibility_state, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_visibility_state, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -548,7 +550,7 @@ Returns the display refresh rate for the current HMD. Not supported on all HMDs 
 */
 //go:nosplit
 func (self class) GetDisplayRefreshRate() float64 { //gd:WebXRInterface.get_display_refresh_rate
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_display_refresh_rate, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_display_refresh_rate, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -560,7 +562,7 @@ Sets the display refresh rate for the current HMD. Not supported on all HMDs and
 */
 //go:nosplit
 func (self class) SetDisplayRefreshRate(refresh_rate float64) { //gd:WebXRInterface.set_display_refresh_rate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_refresh_rate, 0|(gdextension.SizeFloat<<4), &struct{ refresh_rate float64 }{refresh_rate})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_refresh_rate, 0|(gdextension.SizeFloat<<4), &struct{ refresh_rate float64 }{refresh_rate})
 }
 
 /*
@@ -568,7 +570,7 @@ Returns display refresh rates supported by the current HMD. Only returned if thi
 */
 //go:nosplit
 func (self class) GetAvailableDisplayRefreshRates() Array.Any { //gd:WebXRInterface.get_available_display_refresh_rates
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_available_display_refresh_rates, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_available_display_refresh_rates, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

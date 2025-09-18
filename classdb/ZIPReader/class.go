@@ -63,6 +63,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -95,6 +96,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -141,7 +143,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -296,7 +298,7 @@ Opens the zip archive at the given 'path' and reads its file index.
 */
 //go:nosplit
 func (self class) Open(path String.Readable) Error.Code { //gd:ZIPReader.open
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -306,7 +308,7 @@ Closes the underlying resources used by this instance.
 */
 //go:nosplit
 func (self class) Close() Error.Code { //gd:ZIPReader.close
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -320,7 +322,7 @@ Must be called after [Open].
 */
 //go:nosplit
 func (self class) GetFiles() Packed.Strings { //gd:ZIPReader.get_files
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_files, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_files, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -334,7 +336,7 @@ Must be called after [Open].
 */
 //go:nosplit
 func (self class) ReadFile(path String.Readable, case_sensitive bool) Packed.Bytes { //gd:ZIPReader.read_file
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.read_file, gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.read_file, gdextension.SizePackedArray|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path           gdextension.String
 		case_sensitive bool
 	}{pointers.Get(gd.InternalString(path)), case_sensitive})
@@ -351,7 +353,7 @@ Must be called after [Open].
 */
 //go:nosplit
 func (self class) FileExists(path String.Readable, case_sensitive bool) bool { //gd:ZIPReader.file_exists
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.file_exists, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.file_exists, gdextension.SizeBool|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path           gdextension.String
 		case_sensitive bool
 	}{pointers.Get(gd.InternalString(path)), case_sensitive})
@@ -366,7 +368,7 @@ Returns the compression level of the file in the loaded zip archive. Returns -1 
 */
 //go:nosplit
 func (self class) GetCompressionLevel(path String.Readable, case_sensitive bool) int64 { //gd:ZIPReader.get_compression_level
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_compression_level, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_compression_level, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path           gdextension.String
 		case_sensitive bool
 	}{pointers.Get(gd.InternalString(path)), case_sensitive})

@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +48,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -97,7 +99,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -195,60 +197,60 @@ func (self Instance) SetIsHemisphere(value bool) {
 
 //go:nosplit
 func (self class) SetRadius(radius float64) { //gd:SphereMesh.set_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 
 //go:nosplit
 func (self class) GetRadius() float64 { //gd:SphereMesh.get_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeight(height float64) { //gd:SphereMesh.set_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
 
 //go:nosplit
 func (self class) GetHeight() float64 { //gd:SphereMesh.get_height
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRadialSegments(radial_segments int64) { //gd:SphereMesh.set_radial_segments
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radial_segments, 0|(gdextension.SizeInt<<4), &struct{ radial_segments int64 }{radial_segments})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radial_segments, 0|(gdextension.SizeInt<<4), &struct{ radial_segments int64 }{radial_segments})
 }
 
 //go:nosplit
 func (self class) GetRadialSegments() int64 { //gd:SphereMesh.get_radial_segments
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_radial_segments, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_radial_segments, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRings(rings int64) { //gd:SphereMesh.set_rings
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rings, 0|(gdextension.SizeInt<<4), &struct{ rings int64 }{rings})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rings, 0|(gdextension.SizeInt<<4), &struct{ rings int64 }{rings})
 }
 
 //go:nosplit
 func (self class) GetRings() int64 { //gd:SphereMesh.get_rings
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rings, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_rings, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIsHemisphere(is_hemisphere bool) { //gd:SphereMesh.set_is_hemisphere
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_hemisphere, 0|(gdextension.SizeBool<<4), &struct{ is_hemisphere bool }{is_hemisphere})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_hemisphere, 0|(gdextension.SizeBool<<4), &struct{ is_hemisphere bool }{is_hemisphere})
 }
 
 //go:nosplit
 func (self class) GetIsHemisphere() bool { //gd:SphereMesh.get_is_hemisphere
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_hemisphere, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_hemisphere, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

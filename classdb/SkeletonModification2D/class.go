@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +50,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -99,7 +101,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -347,12 +349,12 @@ func (class) _draw_editor_gizmo(impl func(ptr gdclass.Receiver)) (cb gd.Extensio
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:SkeletonModification2D.set_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetEnabled() bool { //gd:SkeletonModification2D.get_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -364,7 +366,7 @@ Returns the [SkeletonModificationStack2D] that this modification is bound to. Th
 */
 //go:nosplit
 func (self class) GetModificationStack() [1]gdclass.SkeletonModificationStack2D { //gd:SkeletonModification2D.get_modification_stack
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification_stack, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_modification_stack, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SkeletonModificationStack2D{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonModificationStack2D](r_ret)}
 	return ret
 }
@@ -376,7 +378,7 @@ Manually allows you to set the setup state of the modification. This function sh
 */
 //go:nosplit
 func (self class) SetIsSetup(is_setup bool) { //gd:SkeletonModification2D.set_is_setup
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_setup, 0|(gdextension.SizeBool<<4), &struct{ is_setup bool }{is_setup})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_setup, 0|(gdextension.SizeBool<<4), &struct{ is_setup bool }{is_setup})
 }
 
 /*
@@ -384,19 +386,19 @@ Returns whether this modification has been successfully setup or not.
 */
 //go:nosplit
 func (self class) GetIsSetup() bool { //gd:SkeletonModification2D.get_is_setup
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_setup, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_setup, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExecutionMode(execution_mode int64) { //gd:SkeletonModification2D.set_execution_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_execution_mode, 0|(gdextension.SizeInt<<4), &struct{ execution_mode int64 }{execution_mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_execution_mode, 0|(gdextension.SizeInt<<4), &struct{ execution_mode int64 }{execution_mode})
 }
 
 //go:nosplit
 func (self class) GetExecutionMode() int64 { //gd:SkeletonModification2D.get_execution_mode
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_execution_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_execution_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -406,7 +408,7 @@ Takes an angle and clamps it so it is within the passed-in 'min' and 'max' range
 */
 //go:nosplit
 func (self class) ClampAngle(angle float64, min float64, max float64, invert bool) float64 { //gd:SkeletonModification2D.clamp_angle
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.clamp_angle, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.clamp_angle, gdextension.SizeFloat|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
 		angle  float64
 		min    float64
 		max    float64
@@ -423,7 +425,7 @@ Sets whether this modification will call [DrawEditorGizmo] in the Godot editor t
 */
 //go:nosplit
 func (self class) SetEditorDrawGizmo(draw_gizmo bool) { //gd:SkeletonModification2D.set_editor_draw_gizmo
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_draw_gizmo, 0|(gdextension.SizeBool<<4), &struct{ draw_gizmo bool }{draw_gizmo})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_draw_gizmo, 0|(gdextension.SizeBool<<4), &struct{ draw_gizmo bool }{draw_gizmo})
 }
 
 /*
@@ -433,7 +435,7 @@ Returns whether this modification will call [DrawEditorGizmo] in the Godot edito
 */
 //go:nosplit
 func (self class) GetEditorDrawGizmo() bool { //gd:SkeletonModification2D.get_editor_draw_gizmo
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_editor_draw_gizmo, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_editor_draw_gizmo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

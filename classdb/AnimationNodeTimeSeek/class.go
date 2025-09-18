@@ -30,6 +30,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -64,6 +65,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -106,7 +108,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -172,12 +174,12 @@ func (self Instance) SetExplicitElapse(value bool) {
 
 //go:nosplit
 func (self class) SetExplicitElapse(enable bool) { //gd:AnimationNodeTimeSeek.set_explicit_elapse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_explicit_elapse, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_explicit_elapse, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsExplicitElapse() bool { //gd:AnimationNodeTimeSeek.is_explicit_elapse
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_explicit_elapse, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_explicit_elapse, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

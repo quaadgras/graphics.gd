@@ -27,6 +27,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -61,6 +62,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -107,7 +109,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -216,7 +218,7 @@ Returns how many tiles this atlas source defines (not including alternative tile
 */
 //go:nosplit
 func (self class) GetTilesCount() int64 { //gd:TileSetSource.get_tiles_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tiles_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_tiles_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -226,7 +228,7 @@ Returns the tile coordinates ID of the tile with index 'index'.
 */
 //go:nosplit
 func (self class) GetTileId(index int64) Vector2i.XY { //gd:TileSetSource.get_tile_id
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_tile_id, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_tile_id, gdextension.SizeVector2i|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -236,7 +238,7 @@ Returns if this atlas has a tile with coordinates ID 'atlas_coords'.
 */
 //go:nosplit
 func (self class) HasTile(atlas_coords Vector2i.XY) bool { //gd:TileSetSource.has_tile
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_tile, gdextension.SizeBool|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_tile, gdextension.SizeBool|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
 	var ret = r_ret
 	return ret
 }
@@ -252,7 +254,7 @@ Returns -1 if there is not tile at the given coords.
 */
 //go:nosplit
 func (self class) GetAlternativeTilesCount(atlas_coords Vector2i.XY) int64 { //gd:TileSetSource.get_alternative_tiles_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_alternative_tiles_count, gdextension.SizeInt|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_alternative_tiles_count, gdextension.SizeInt|(gdextension.SizeVector2i<<4), &struct{ atlas_coords Vector2i.XY }{atlas_coords})
 	var ret = r_ret
 	return ret
 }
@@ -262,7 +264,7 @@ Returns the alternative ID for the tile with coordinates ID 'atlas_coords' at in
 */
 //go:nosplit
 func (self class) GetAlternativeTileId(atlas_coords Vector2i.XY, index int64) int64 { //gd:TileSetSource.get_alternative_tile_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_alternative_tile_id, gdextension.SizeInt|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_alternative_tile_id, gdextension.SizeInt|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		atlas_coords Vector2i.XY
 		index        int64
 	}{atlas_coords, index})
@@ -275,7 +277,7 @@ Returns if the base tile at coordinates 'atlas_coords' has an alternative with I
 */
 //go:nosplit
 func (self class) HasAlternativeTile(atlas_coords Vector2i.XY, alternative_tile int64) bool { //gd:TileSetSource.has_alternative_tile
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_alternative_tile, gdextension.SizeBool|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_alternative_tile, gdextension.SizeBool|(gdextension.SizeVector2i<<4)|(gdextension.SizeInt<<8), &struct {
 		atlas_coords     Vector2i.XY
 		alternative_tile int64
 	}{atlas_coords, alternative_tile})

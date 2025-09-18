@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +49,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -98,7 +100,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -274,7 +276,7 @@ If 'use_global_execution_context' is true, the code will be evaluated in the glo
 */
 //go:nosplit
 func (self class) Eval(code String.Readable, use_global_execution_context bool) variant.Any { //gd:JavaScriptBridge.eval
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.eval, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.eval, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		code                         gdextension.String
 		use_global_execution_context bool
 	}{pointers.Get(gd.InternalString(code)), use_global_execution_context})
@@ -289,7 +291,7 @@ Returns an interface to a JavaScript object that can be used by scripts. The 'in
 */
 //go:nosplit
 func (self class) GetInterface(intf String.Readable) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.get_interface
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_interface, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ intf gdextension.String }{pointers.Get(gd.InternalString(intf))})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_interface, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ intf gdextension.String }{pointers.Get(gd.InternalString(intf))})
 	var ret = [1]gdclass.JavaScriptObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaScriptObject](r_ret)}
 	return ret
 }
@@ -304,7 +306,7 @@ Note: The callback function must take exactly one slice argument, which is going
 */
 //go:nosplit
 func (self class) CreateCallback(callable Callable.Function) [1]gdclass.JavaScriptObject { //gd:JavaScriptBridge.create_callback
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_callback, gdextension.SizeObject|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_callback, gdextension.SizeObject|(gdextension.SizeCallable<<4), &struct{ callable gdextension.Callable }{pointers.Get(gd.InternalCallable(callable))})
 	var ret = [1]gdclass.JavaScriptObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaScriptObject](r_ret)}
 	return ret
 }
@@ -318,7 +320,7 @@ Returns true if the given 'javascript_object' is of type [[code]ArrayBuffer[/cod
 */
 //go:nosplit
 func (self class) IsJsBuffer(javascript_object [1]gdclass.JavaScriptObject) bool { //gd:JavaScriptBridge.is_js_buffer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_js_buffer, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ javascript_object gdextension.Object }{gdextension.Object(gd.ObjectChecked(javascript_object[0].AsObject()))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_js_buffer, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ javascript_object gdextension.Object }{gdextension.Object(gd.ObjectChecked(javascript_object[0].AsObject()))})
 	var ret = r_ret
 	return ret
 }
@@ -328,7 +330,7 @@ Returns a copy of 'javascript_buffer''s contents as a []byte. See also [IsJsBuff
 */
 //go:nosplit
 func (self class) JsBufferToPackedByteArray(javascript_buffer [1]gdclass.JavaScriptObject) Packed.Bytes { //gd:JavaScriptBridge.js_buffer_to_packed_byte_array
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.js_buffer_to_packed_byte_array, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ javascript_buffer gdextension.Object }{gdextension.Object(gd.ObjectChecked(javascript_buffer[0].AsObject()))})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.js_buffer_to_packed_byte_array, gdextension.SizePackedArray|(gdextension.SizeObject<<4), &struct{ javascript_buffer gdextension.Object }{gdextension.Object(gd.ObjectChecked(javascript_buffer[0].AsObject()))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -345,7 +347,7 @@ func (self class) CreateObject(obj String.Readable, args ...gd.Variant) variant.
 	for _, arg := range args {
 		dynamic = append(dynamic, gdextension.Variant(pointers.Get(gd.NewVariant(arg))))
 	}
-	ret, err := methods.create_object.Call(gd.ObjectChecked(self.AsObject()), append(fixed[:], dynamic...)...)
+	ret, err := noescape.MethodForClass(methods.create_object).Call(gd.ObjectChecked(self.AsObject()), append(fixed[:], dynamic...)...)
 	if err != nil {
 		panic(err)
 	}
@@ -365,7 +367,7 @@ Note: Browsers might ask the user for permission or block the download if multip
 */
 //go:nosplit
 func (self class) DownloadBuffer(buffer Packed.Bytes, name String.Readable, mime String.Readable) { //gd:JavaScriptBridge.download_buffer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.download_buffer, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.download_buffer, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12), &struct {
 		buffer gdextension.PackedArray[byte]
 		name   gdextension.String
 		mime   gdextension.String
@@ -379,7 +381,7 @@ Note: Only relevant when exported as a Progressive Web App.
 */
 //go:nosplit
 func (self class) PwaNeedsUpdate() bool { //gd:JavaScriptBridge.pwa_needs_update
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.pwa_needs_update, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.pwa_needs_update, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -393,7 +395,7 @@ Note: Only relevant when exported as a Progressive Web App and [PwaNeedsUpdate] 
 */
 //go:nosplit
 func (self class) PwaUpdate() Error.Code { //gd:JavaScriptBridge.pwa_update
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pwa_update, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pwa_update, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -407,7 +409,7 @@ Note: This is only useful for modules or extensions that can't use [FileAccess] 
 */
 //go:nosplit
 func (self class) ForceFsSync() { //gd:JavaScriptBridge.force_fs_sync
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_fs_sync, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_fs_sync, 0, &struct{}{})
 }
 func OnPwaUpdateAvailable(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags

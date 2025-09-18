@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +52,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -103,7 +105,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -217,12 +219,12 @@ func (self Instance) SetMetaPressed(value bool) {
 
 //go:nosplit
 func (self class) SetCommandOrControlAutoremap(enable bool) { //gd:InputEventWithModifiers.set_command_or_control_autoremap
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_command_or_control_autoremap, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_command_or_control_autoremap, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsCommandOrControlAutoremap() bool { //gd:InputEventWithModifiers.is_command_or_control_autoremap
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_command_or_control_autoremap, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_command_or_control_autoremap, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -234,55 +236,55 @@ On other platforms, returns true if Ctrl is pressed.
 */
 //go:nosplit
 func (self class) IsCommandOrControlPressed() bool { //gd:InputEventWithModifiers.is_command_or_control_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_command_or_control_pressed, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_command_or_control_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAltPressed(pressed bool) { //gd:InputEventWithModifiers.set_alt_pressed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alt_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alt_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 
 //go:nosplit
 func (self class) IsAltPressed() bool { //gd:InputEventWithModifiers.is_alt_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_alt_pressed, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_alt_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShiftPressed(pressed bool) { //gd:InputEventWithModifiers.set_shift_pressed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shift_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shift_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 
 //go:nosplit
 func (self class) IsShiftPressed() bool { //gd:InputEventWithModifiers.is_shift_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shift_pressed, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shift_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCtrlPressed(pressed bool) { //gd:InputEventWithModifiers.set_ctrl_pressed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ctrl_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ctrl_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 
 //go:nosplit
 func (self class) IsCtrlPressed() bool { //gd:InputEventWithModifiers.is_ctrl_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ctrl_pressed, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ctrl_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMetaPressed(pressed bool) { //gd:InputEventWithModifiers.set_meta_pressed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_meta_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_meta_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 
 //go:nosplit
 func (self class) IsMetaPressed() bool { //gd:InputEventWithModifiers.is_meta_pressed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_meta_pressed, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_meta_pressed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -292,7 +294,7 @@ Returns the keycode combination of modifier keys.
 */
 //go:nosplit
 func (self class) GetModifiersMask() Input.KeyModifierMask { //gd:InputEventWithModifiers.get_modifiers_mask
-	var r_ret = gdextension.Call[Input.KeyModifierMask](gd.ObjectChecked(self.AsObject()), methods.get_modifiers_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Input.KeyModifierMask](gd.ObjectChecked(self.AsObject()), methods.get_modifiers_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

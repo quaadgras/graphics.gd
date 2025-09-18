@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -44,6 +45,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -92,7 +94,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -980,7 +982,7 @@ Helper function to create a data structure for storing a line diff. 'new_line_no
 */
 //go:nosplit
 func (self class) CreateDiffLine(new_line_no int64, old_line_no int64, content String.Readable, status String.Readable) Dictionary.Any { //gd:EditorVCSInterface.create_diff_line
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_diff_line, gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16), &struct {
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_diff_line, gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16), &struct {
 		new_line_no int64
 		old_line_no int64
 		content     gdextension.String
@@ -995,7 +997,7 @@ Helper function to create a data structure for storing diff hunk data. 'old_star
 */
 //go:nosplit
 func (self class) CreateDiffHunk(old_start int64, new_start int64, old_lines int64, new_lines int64) Dictionary.Any { //gd:EditorVCSInterface.create_diff_hunk
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_diff_hunk, gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_diff_hunk, gdextension.SizeDictionary|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		old_start int64
 		new_start int64
 		old_lines int64
@@ -1010,7 +1012,7 @@ Helper function to create a data structure for storing old and new diff file pat
 */
 //go:nosplit
 func (self class) CreateDiffFile(new_file String.Readable, old_file String.Readable) Dictionary.Any { //gd:EditorVCSInterface.create_diff_file
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_diff_file, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_diff_file, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		new_file gdextension.String
 		old_file gdextension.String
 	}{pointers.Get(gd.InternalString(new_file)), pointers.Get(gd.InternalString(old_file))})
@@ -1023,7 +1025,7 @@ Helper function to create a commit data structure item. 'msg' is the commit mess
 */
 //go:nosplit
 func (self class) CreateCommit(msg String.Readable, author String.Readable, id String.Readable, unix_timestamp int64, offset_minutes int64) Dictionary.Any { //gd:EditorVCSInterface.create_commit
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_commit, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), &struct {
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_commit, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), &struct {
 		msg            gdextension.String
 		author         gdextension.String
 		id             gdextension.String
@@ -1039,7 +1041,7 @@ Helper function to create a data structure used by editor to read the status of 
 */
 //go:nosplit
 func (self class) CreateStatusFile(file_path String.Readable, change_type ChangeType, area TreeArea) Dictionary.Any { //gd:EditorVCSInterface.create_status_file
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_status_file, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.create_status_file, gdextension.SizeDictionary|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		file_path   gdextension.String
 		change_type ChangeType
 		area        TreeArea
@@ -1053,7 +1055,7 @@ Helper function to add an array of 'diff_hunks' into a 'diff_file'.
 */
 //go:nosplit
 func (self class) AddDiffHunksIntoDiffFile(diff_file Dictionary.Any, diff_hunks Array.Contains[Dictionary.Any]) Dictionary.Any { //gd:EditorVCSInterface.add_diff_hunks_into_diff_file
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.add_diff_hunks_into_diff_file, gdextension.SizeDictionary|(gdextension.SizeDictionary<<4)|(gdextension.SizeArray<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.add_diff_hunks_into_diff_file, gdextension.SizeDictionary|(gdextension.SizeDictionary<<4)|(gdextension.SizeArray<<8), &struct {
 		diff_file  gdextension.Dictionary
 		diff_hunks gdextension.Array
 	}{pointers.Get(gd.InternalDictionary(diff_file)), pointers.Get(gd.InternalArray(diff_hunks))})
@@ -1066,7 +1068,7 @@ Helper function to add an array of 'line_diffs' into a 'diff_hunk'.
 */
 //go:nosplit
 func (self class) AddLineDiffsIntoDiffHunk(diff_hunk Dictionary.Any, line_diffs Array.Contains[Dictionary.Any]) Dictionary.Any { //gd:EditorVCSInterface.add_line_diffs_into_diff_hunk
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.add_line_diffs_into_diff_hunk, gdextension.SizeDictionary|(gdextension.SizeDictionary<<4)|(gdextension.SizeArray<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.add_line_diffs_into_diff_hunk, gdextension.SizeDictionary|(gdextension.SizeDictionary<<4)|(gdextension.SizeArray<<8), &struct {
 		diff_hunk  gdextension.Dictionary
 		line_diffs gdextension.Array
 	}{pointers.Get(gd.InternalDictionary(diff_hunk)), pointers.Get(gd.InternalArray(line_diffs))})
@@ -1079,7 +1081,7 @@ Pops up an error message in the editor which is shown as coming from the underly
 */
 //go:nosplit
 func (self class) PopupError(msg String.Readable) { //gd:EditorVCSInterface.popup_error
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_error, 0|(gdextension.SizeString<<4), &struct{ msg gdextension.String }{pointers.Get(gd.InternalString(msg))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup_error, 0|(gdextension.SizeString<<4), &struct{ msg gdextension.String }{pointers.Get(gd.InternalString(msg))})
 }
 func (self class) AsEditorVCSInterface() Advanced {
 	return Advanced{pointers.AsA[gdclass.EditorVCSInterface](self[0])}

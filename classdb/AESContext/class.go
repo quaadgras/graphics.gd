@@ -58,6 +58,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -90,6 +91,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -134,7 +136,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -247,7 +249,7 @@ Start the AES context in the given 'mode'. A 'key' of either 16 or 32 bytes must
 */
 //go:nosplit
 func (self class) Start(mode Mode, key Packed.Bytes, iv Packed.Bytes) Error.Code { //gd:AESContext.start
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), &struct {
 		mode Mode
 		key  gdextension.PackedArray[byte]
 		iv   gdextension.PackedArray[byte]
@@ -265,7 +267,7 @@ Note: The size of 'src' must be a multiple of 16. Apply some padding if needed.
 */
 //go:nosplit
 func (self class) Update(src Packed.Bytes) Packed.Bytes { //gd:AESContext.update
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), &struct{ src gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](src.Array)))})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.update, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), &struct{ src gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](src.Array)))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -279,7 +281,7 @@ Note: This function only makes sense when the context is started with [ModeCbcEn
 */
 //go:nosplit
 func (self class) GetIvState() Packed.Bytes { //gd:AESContext.get_iv_state
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_iv_state, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_iv_state, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -291,7 +293,7 @@ Close this AES context so it can be started again. See [Start].
 */
 //go:nosplit
 func (self class) Finish() { //gd:AESContext.finish
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.finish, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.finish, 0, &struct{}{})
 }
 func (self class) AsAESContext() Advanced { return Advanced{pointers.AsA[gdclass.AESContext](self[0])} }
 func (self Instance) AsAESContext() Instance {

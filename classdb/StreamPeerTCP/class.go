@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -45,6 +46,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -94,7 +96,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -250,7 +252,7 @@ This method is generally not needed, and only used to force the subsequent call 
 */
 //go:nosplit
 func (self class) Bind(port int64, host String.Readable) Error.Code { //gd:StreamPeerTCP.bind
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.bind, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.bind, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		port int64
 		host gdextension.String
 	}{port, pointers.Get(gd.InternalString(host))})
@@ -263,7 +265,7 @@ Connects to the specified host:port pair. A hostname will be resolved if valid. 
 */
 //go:nosplit
 func (self class) ConnectToHost(host String.Readable, port int64) Error.Code { //gd:StreamPeerTCP.connect_to_host
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_to_host, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_to_host, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host gdextension.String
 		port int64
 	}{pointers.Get(gd.InternalString(host)), port})
@@ -278,7 +280,7 @@ Poll the socket, updating its state. See [GetStatus].
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:StreamPeerTCP.poll
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -288,7 +290,7 @@ Returns the status of the connection.
 */
 //go:nosplit
 func (self class) GetStatus() Status { //gd:StreamPeerTCP.get_status
-	var r_ret = gdextension.Call[Status](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Status](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -298,7 +300,7 @@ Returns the IP of this peer.
 */
 //go:nosplit
 func (self class) GetConnectedHost() String.Readable { //gd:StreamPeerTCP.get_connected_host
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_connected_host, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_connected_host, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -308,7 +310,7 @@ Returns the port of this peer.
 */
 //go:nosplit
 func (self class) GetConnectedPort() int64 { //gd:StreamPeerTCP.get_connected_port
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_connected_port, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_connected_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -318,7 +320,7 @@ Returns the local port to which this peer is bound.
 */
 //go:nosplit
 func (self class) GetLocalPort() int64 { //gd:StreamPeerTCP.get_local_port
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -328,7 +330,7 @@ Disconnects from host.
 */
 //go:nosplit
 func (self class) DisconnectFromHost() { //gd:StreamPeerTCP.disconnect_from_host
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_from_host, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_from_host, 0, &struct{}{})
 }
 
 /*
@@ -340,7 +342,7 @@ Note: It's recommended to leave this disabled for applications that send large p
 */
 //go:nosplit
 func (self class) SetNoDelay(enabled bool) { //gd:StreamPeerTCP.set_no_delay
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_no_delay, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_no_delay, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 func (self class) AsStreamPeerTCP() Advanced {
 	return Advanced{pointers.AsA[gdclass.StreamPeerTCP](self[0])}

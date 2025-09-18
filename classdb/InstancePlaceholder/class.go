@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +52,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -94,7 +96,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -226,7 +228,7 @@ If 'with_order' is true, a key named .order (note the leading period) is added t
 */
 //go:nosplit
 func (self class) GetStoredValues(with_order bool) Dictionary.Any { //gd:InstancePlaceholder.get_stored_values
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_stored_values, gdextension.SizeDictionary|(gdextension.SizeBool<<4), &struct{ with_order bool }{with_order})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_stored_values, gdextension.SizeDictionary|(gdextension.SizeBool<<4), &struct{ with_order bool }{with_order})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -243,7 +245,7 @@ Note: [CreateInstance] is not thread-safe. Use [Object.CallDeferred] if calling 
 */
 //go:nosplit
 func (self class) CreateInstance(replace bool, custom_scene [1]gdclass.PackedScene) [1]gdclass.Node { //gd:InstancePlaceholder.create_instance
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_instance, gdextension.SizeObject|(gdextension.SizeBool<<4)|(gdextension.SizeObject<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_instance, gdextension.SizeObject|(gdextension.SizeBool<<4)|(gdextension.SizeObject<<8), &struct {
 		replace      bool
 		custom_scene gdextension.Object
 	}{replace, gdextension.Object(gd.ObjectChecked(custom_scene[0].AsObject()))})
@@ -260,7 +262,7 @@ Gets the path to the [PackedScene] resource file that is loaded by default when 
 */
 //go:nosplit
 func (self class) GetInstancePath() String.Readable { //gd:InstancePlaceholder.get_instance_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_instance_path, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_instance_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

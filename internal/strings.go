@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	"graphics.gd/variant/Path"
 	StringType "graphics.gd/variant/String"
@@ -13,13 +14,13 @@ import (
 
 func (s String) StringName() StringName {
 	var arg = pointers.Get(s)
-	return pointers.New[StringName](gdextension.Make[gdextension.StringName](builtin.creation.StringName[2], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
+	return pointers.New[StringName](noescape.Make[gdextension.StringName](builtin.creation.StringName[2], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
 }
 
 // Copy returns a copy of the string that is owned by the provided context.
 func (s String) Copy() String {
 	var arg = pointers.Get(s)
-	return pointers.New[String](gdextension.Make[gdextension.String](builtin.creation.String[1], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
+	return pointers.New[String](noescape.Make[gdextension.String](builtin.creation.String[1], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
 }
 
 func (s String) Free() {
@@ -27,7 +28,7 @@ func (s String) Free() {
 	if !ok {
 		return
 	}
-	gdextension.Free(gdextension.TypeString, &ptr)
+	noescape.Free(gdextension.TypeString, &ptr)
 }
 
 func (s String) Len() int { return int(s.Length()) }
@@ -47,17 +48,17 @@ func (s String) String() string {
 
 func StringFromStringName(s StringName) String {
 	var arg = pointers.Get(s)
-	return pointers.New[String](gdextension.Make[gdextension.String](builtin.creation.String[2], gdextension.SizeStringName<<4, unsafe.Pointer(&arg)))
+	return pointers.New[String](noescape.Make[gdextension.String](builtin.creation.String[2], gdextension.SizeStringName<<4, unsafe.Pointer(&arg)))
 }
 
 func StringFromNodePath(s NodePath) String {
 	var arg = pointers.Get(s)
-	return pointers.New[String](gdextension.Make[gdextension.String](builtin.creation.String[3], gdextension.SizeNodePath<<4, unsafe.Pointer(&arg)))
+	return pointers.New[String](noescape.Make[gdextension.String](builtin.creation.String[3], gdextension.SizeNodePath<<4, unsafe.Pointer(&arg)))
 }
 
 func NewStringNameFromString(s String) StringName {
 	var arg = pointers.Get(s)
-	return pointers.New[StringName](gdextension.Make[gdextension.StringName](builtin.creation.StringName[2], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
+	return pointers.New[StringName](noescape.Make[gdextension.StringName](builtin.creation.StringName[2], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
 }
 
 func (s StringName) Free() {
@@ -68,7 +69,7 @@ func (s StringName) Free() {
 	if ptr == (gdextension.StringName{}) {
 		return
 	}
-	gdextension.Free(gdextension.TypeStringName, &ptr)
+	noescape.Free(gdextension.TypeStringName, &ptr)
 }
 
 func (s StringName) String() string {
@@ -81,12 +82,12 @@ func (s StringName) String() string {
 
 func (s String) NodePath() NodePath {
 	var arg = pointers.Get(s)
-	return pointers.New[NodePath](gdextension.Make[gdextension.NodePath](builtin.creation.NodePath[2], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
+	return pointers.New[NodePath](noescape.Make[gdextension.NodePath](builtin.creation.NodePath[2], gdextension.SizeString<<4, unsafe.Pointer(&arg)))
 }
 
 func (n NodePath) InternalString() String {
 	var ptr = pointers.Get(n)
-	return pointers.New[String](gdextension.Make[gdextension.String](builtin.creation.String[2], gdextension.SizeNodePath<<4, unsafe.Pointer(&ptr)))
+	return pointers.New[String](noescape.Make[gdextension.String](builtin.creation.String[2], gdextension.SizeNodePath<<4, unsafe.Pointer(&ptr)))
 }
 
 func (n NodePath) String() string {
@@ -98,7 +99,7 @@ func (n NodePath) Free() {
 	if !ok {
 		return
 	}
-	gdextension.Free(gdextension.TypeNodePath, &ptr)
+	noescape.Free(gdextension.TypeNodePath, &ptr)
 }
 
 func InternalString(s StringType.Readable) String {

@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -46,6 +47,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -94,7 +96,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -184,48 +186,48 @@ func (self Instance) SetSoftClipRatio(value Float.X) {
 
 //go:nosplit
 func (self class) SetCeilingDb(ceiling float64) { //gd:AudioEffectLimiter.set_ceiling_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ceiling_db, 0|(gdextension.SizeFloat<<4), &struct{ ceiling float64 }{ceiling})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ceiling_db, 0|(gdextension.SizeFloat<<4), &struct{ ceiling float64 }{ceiling})
 }
 
 //go:nosplit
 func (self class) GetCeilingDb() float64 { //gd:AudioEffectLimiter.get_ceiling_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ceiling_db, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ceiling_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetThresholdDb(threshold float64) { //gd:AudioEffectLimiter.set_threshold_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_threshold_db, 0|(gdextension.SizeFloat<<4), &struct{ threshold float64 }{threshold})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_threshold_db, 0|(gdextension.SizeFloat<<4), &struct{ threshold float64 }{threshold})
 }
 
 //go:nosplit
 func (self class) GetThresholdDb() float64 { //gd:AudioEffectLimiter.get_threshold_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_threshold_db, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_threshold_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSoftClipDb(soft_clip float64) { //gd:AudioEffectLimiter.set_soft_clip_db
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_soft_clip_db, 0|(gdextension.SizeFloat<<4), &struct{ soft_clip float64 }{soft_clip})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_soft_clip_db, 0|(gdextension.SizeFloat<<4), &struct{ soft_clip float64 }{soft_clip})
 }
 
 //go:nosplit
 func (self class) GetSoftClipDb() float64 { //gd:AudioEffectLimiter.get_soft_clip_db
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_soft_clip_db, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_soft_clip_db, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSoftClipRatio(soft_clip float64) { //gd:AudioEffectLimiter.set_soft_clip_ratio
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_soft_clip_ratio, 0|(gdextension.SizeFloat<<4), &struct{ soft_clip float64 }{soft_clip})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_soft_clip_ratio, 0|(gdextension.SizeFloat<<4), &struct{ soft_clip float64 }{soft_clip})
 }
 
 //go:nosplit
 func (self class) GetSoftClipRatio() float64 { //gd:AudioEffectLimiter.get_soft_clip_ratio
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_soft_clip_ratio, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_soft_clip_ratio, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

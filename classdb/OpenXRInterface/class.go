@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +49,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -120,7 +122,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -385,33 +387,33 @@ Returns the current state of our OpenXR session.
 */
 //go:nosplit
 func (self class) GetSessionState() SessionState { //gd:OpenXRInterface.get_session_state
-	var r_ret = gdextension.Call[SessionState](gd.ObjectChecked(self.AsObject()), methods.get_session_state, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[SessionState](gd.ObjectChecked(self.AsObject()), methods.get_session_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetDisplayRefreshRate() float64 { //gd:OpenXRInterface.get_display_refresh_rate
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_display_refresh_rate, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_display_refresh_rate, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDisplayRefreshRate(refresh_rate float64) { //gd:OpenXRInterface.set_display_refresh_rate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_refresh_rate, 0|(gdextension.SizeFloat<<4), &struct{ refresh_rate float64 }{refresh_rate})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_display_refresh_rate, 0|(gdextension.SizeFloat<<4), &struct{ refresh_rate float64 }{refresh_rate})
 }
 
 //go:nosplit
 func (self class) GetRenderTargetSizeMultiplier() float64 { //gd:OpenXRInterface.get_render_target_size_multiplier
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_render_target_size_multiplier, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_render_target_size_multiplier, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRenderTargetSizeMultiplier(multiplier float64) { //gd:OpenXRInterface.set_render_target_size_multiplier
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_render_target_size_multiplier, 0|(gdextension.SizeFloat<<4), &struct{ multiplier float64 }{multiplier})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_render_target_size_multiplier, 0|(gdextension.SizeFloat<<4), &struct{ multiplier float64 }{multiplier})
 }
 
 /*
@@ -423,33 +425,33 @@ Note: This feature is only available on the Compatibility renderer and currently
 */
 //go:nosplit
 func (self class) IsFoveationSupported() bool { //gd:OpenXRInterface.is_foveation_supported
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_foveation_supported, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_foveation_supported, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetFoveationLevel() int64 { //gd:OpenXRInterface.get_foveation_level
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_foveation_level, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_foveation_level, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFoveationLevel(foveation_level int64) { //gd:OpenXRInterface.set_foveation_level
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_foveation_level, 0|(gdextension.SizeInt<<4), &struct{ foveation_level int64 }{foveation_level})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_foveation_level, 0|(gdextension.SizeInt<<4), &struct{ foveation_level int64 }{foveation_level})
 }
 
 //go:nosplit
 func (self class) GetFoveationDynamic() bool { //gd:OpenXRInterface.get_foveation_dynamic
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_foveation_dynamic, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_foveation_dynamic, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFoveationDynamic(foveation_dynamic bool) { //gd:OpenXRInterface.set_foveation_dynamic
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_foveation_dynamic, 0|(gdextension.SizeBool<<4), &struct{ foveation_dynamic bool }{foveation_dynamic})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_foveation_dynamic, 0|(gdextension.SizeBool<<4), &struct{ foveation_dynamic bool }{foveation_dynamic})
 }
 
 /*
@@ -457,7 +459,7 @@ Returns true if the given action set is active.
 */
 //go:nosplit
 func (self class) IsActionSetActive(name String.Readable) bool { //gd:OpenXRInterface.is_action_set_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_set_active, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_action_set_active, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = r_ret
 	return ret
 }
@@ -467,7 +469,7 @@ Sets the given action set as active or inactive.
 */
 //go:nosplit
 func (self class) SetActionSetActive(name String.Readable, active bool) { //gd:OpenXRInterface.set_action_set_active
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_set_active, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_action_set_active, 0|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		name   gdextension.String
 		active bool
 	}{pointers.Get(gd.InternalString(name)), active})
@@ -478,7 +480,7 @@ Returns a list of action sets registered with Godot (loaded from the action map 
 */
 //go:nosplit
 func (self class) GetActionSets() Array.Any { //gd:OpenXRInterface.get_action_sets
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_action_sets, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_action_sets, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -488,7 +490,7 @@ Returns display refresh rates supported by the current HMD. Only returned if thi
 */
 //go:nosplit
 func (self class) GetAvailableDisplayRefreshRates() Array.Any { //gd:OpenXRInterface.get_available_display_refresh_rates
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_available_display_refresh_rates, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_available_display_refresh_rates, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -498,7 +500,7 @@ If handtracking is enabled and motion range is supported, sets the currently con
 */
 //go:nosplit
 func (self class) SetMotionRange(hand Hand, motion_range HandMotionRange) { //gd:OpenXRInterface.set_motion_range
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion_range, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion_range, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		hand         Hand
 		motion_range HandMotionRange
 	}{hand, motion_range})
@@ -509,7 +511,7 @@ If handtracking is enabled and motion range is supported, gets the currently con
 */
 //go:nosplit
 func (self class) GetMotionRange(hand Hand) HandMotionRange { //gd:OpenXRInterface.get_motion_range
-	var r_ret = gdextension.Call[HandMotionRange](gd.ObjectChecked(self.AsObject()), methods.get_motion_range, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ hand Hand }{hand})
+	var r_ret = noescape.Call[HandMotionRange](gd.ObjectChecked(self.AsObject()), methods.get_motion_range, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ hand Hand }{hand})
 	var ret = r_ret
 	return ret
 }
@@ -519,7 +521,7 @@ If handtracking is enabled and hand tracking source is supported, gets the sourc
 */
 //go:nosplit
 func (self class) GetHandTrackingSource(hand Hand) HandTrackedSource { //gd:OpenXRInterface.get_hand_tracking_source
-	var r_ret = gdextension.Call[HandTrackedSource](gd.ObjectChecked(self.AsObject()), methods.get_hand_tracking_source, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ hand Hand }{hand})
+	var r_ret = noescape.Call[HandTrackedSource](gd.ObjectChecked(self.AsObject()), methods.get_hand_tracking_source, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ hand Hand }{hand})
 	var ret = r_ret
 	return ret
 }
@@ -529,7 +531,7 @@ If handtracking is enabled, returns flags that inform us of the validity of the 
 */
 //go:nosplit
 func (self class) GetHandJointFlags(hand Hand, joint HandJoints) HandJointFlags { //gd:OpenXRInterface.get_hand_joint_flags
-	var r_ret = gdextension.Call[HandJointFlags](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_flags, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[HandJointFlags](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_flags, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		hand  Hand
 		joint HandJoints
 	}{hand, joint})
@@ -542,7 +544,7 @@ If handtracking is enabled, returns the rotation of a joint ('joint') of a hand 
 */
 //go:nosplit
 func (self class) GetHandJointRotation(hand Hand, joint HandJoints) Quaternion.IJKX { //gd:OpenXRInterface.get_hand_joint_rotation
-	var r_ret = gdextension.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_rotation, gdextension.SizeQuaternion|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Quaternion.IJKX](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_rotation, gdextension.SizeQuaternion|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		hand  Hand
 		joint HandJoints
 	}{hand, joint})
@@ -557,7 +559,7 @@ If handtracking is enabled, returns the position of a joint ('joint') of a hand 
 */
 //go:nosplit
 func (self class) GetHandJointPosition(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_position
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_position, gdextension.SizeVector3|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_position, gdextension.SizeVector3|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		hand  Hand
 		joint HandJoints
 	}{hand, joint})
@@ -570,7 +572,7 @@ If handtracking is enabled, returns the radius of a joint ('joint') of a hand ('
 */
 //go:nosplit
 func (self class) GetHandJointRadius(hand Hand, joint HandJoints) float64 { //gd:OpenXRInterface.get_hand_joint_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_radius, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_radius, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		hand  Hand
 		joint HandJoints
 	}{hand, joint})
@@ -585,7 +587,7 @@ If handtracking is enabled, returns the linear velocity of a joint ('joint') of 
 */
 //go:nosplit
 func (self class) GetHandJointLinearVelocity(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_linear_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_linear_velocity, gdextension.SizeVector3|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_linear_velocity, gdextension.SizeVector3|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		hand  Hand
 		joint HandJoints
 	}{hand, joint})
@@ -600,7 +602,7 @@ If handtracking is enabled, returns the angular velocity of a joint ('joint') of
 */
 //go:nosplit
 func (self class) GetHandJointAngularVelocity(hand Hand, joint HandJoints) Vector3.XYZ { //gd:OpenXRInterface.get_hand_joint_angular_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_angular_velocity, gdextension.SizeVector3|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_hand_joint_angular_velocity, gdextension.SizeVector3|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		hand  Hand
 		joint HandJoints
 	}{hand, joint})
@@ -615,7 +617,7 @@ Note: This only returns a valid value after OpenXR has been initialized.
 */
 //go:nosplit
 func (self class) IsHandTrackingSupported() bool { //gd:OpenXRInterface.is_hand_tracking_supported
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hand_tracking_supported, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hand_tracking_supported, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -627,7 +629,7 @@ Note: This only returns a valid value after OpenXR has been initialized.
 */
 //go:nosplit
 func (self class) IsHandInteractionSupported() bool { //gd:OpenXRInterface.is_hand_interaction_supported
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hand_interaction_supported, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_hand_interaction_supported, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -639,33 +641,33 @@ Note: This only returns a valid value after OpenXR has been initialized.
 */
 //go:nosplit
 func (self class) IsEyeGazeInteractionSupported() bool { //gd:OpenXRInterface.is_eye_gaze_interaction_supported
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_eye_gaze_interaction_supported, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_eye_gaze_interaction_supported, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetVrsMinRadius() float64 { //gd:OpenXRInterface.get_vrs_min_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vrs_min_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vrs_min_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVrsMinRadius(radius float64) { //gd:OpenXRInterface.set_vrs_min_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_min_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_min_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 
 //go:nosplit
 func (self class) GetVrsStrength() float64 { //gd:OpenXRInterface.get_vrs_strength
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vrs_strength, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_vrs_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVrsStrength(strength float64) { //gd:OpenXRInterface.set_vrs_strength
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_strength, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vrs_strength, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
 }
 
 /*
@@ -673,7 +675,7 @@ Sets the CPU performance level of the OpenXR device.
 */
 //go:nosplit
 func (self class) SetCpuLevel(level PerfSettingsLevel) { //gd:OpenXRInterface.set_cpu_level
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cpu_level, 0|(gdextension.SizeInt<<4), &struct{ level PerfSettingsLevel }{level})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cpu_level, 0|(gdextension.SizeInt<<4), &struct{ level PerfSettingsLevel }{level})
 }
 
 /*
@@ -681,7 +683,7 @@ Sets the GPU performance level of the OpenXR device.
 */
 //go:nosplit
 func (self class) SetGpuLevel(level PerfSettingsLevel) { //gd:OpenXRInterface.set_gpu_level
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gpu_level, 0|(gdextension.SizeInt<<4), &struct{ level PerfSettingsLevel }{level})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gpu_level, 0|(gdextension.SizeInt<<4), &struct{ level PerfSettingsLevel }{level})
 }
 func (self Instance) OnSessionBegun(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags

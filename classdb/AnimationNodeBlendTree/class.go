@@ -18,6 +18,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +55,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -106,7 +108,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -267,7 +269,7 @@ Adds an [AnimationNode] at the given 'position'. The 'name' is used to identify 
 */
 //go:nosplit
 func (self class) AddNode(name String.Name, node [1]gdclass.AnimationNode, position Vector2.XY) { //gd:AnimationNodeBlendTree.add_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_node, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeVector2<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_node, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeVector2<<12), &struct {
 		name     gdextension.StringName
 		node     gdextension.Object
 		position Vector2.XY
@@ -279,7 +281,7 @@ Returns the sub animation node with the specified 'name'.
 */
 //go:nosplit
 func (self class) GetNode(name String.Name) [1]gdclass.AnimationNode { //gd:AnimationNodeBlendTree.get_node
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = [1]gdclass.AnimationNode{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationNode](r_ret)}
 	return ret
 }
@@ -289,7 +291,7 @@ Removes a sub animation node.
 */
 //go:nosplit
 func (self class) RemoveNode(name String.Name) { //gd:AnimationNodeBlendTree.remove_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_node, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_node, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 /*
@@ -297,7 +299,7 @@ Changes the name of a sub animation node.
 */
 //go:nosplit
 func (self class) RenameNode(name String.Name, new_name String.Name) { //gd:AnimationNodeBlendTree.rename_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_node, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_node, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name     gdextension.StringName
 		new_name gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(new_name))})
@@ -308,7 +310,7 @@ Returns true if a sub animation node with specified 'name' exists.
 */
 //go:nosplit
 func (self class) HasNode(name String.Name) bool { //gd:AnimationNodeBlendTree.has_node
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_node, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_node, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
@@ -320,7 +322,7 @@ Connects the output of an [AnimationNode] as input for another [AnimationNode], 
 */
 //go:nosplit
 func (self class) ConnectNode(input_node String.Name, input_index int64, output_node String.Name) { //gd:AnimationNodeBlendTree.connect_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.connect_node, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeStringName<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.connect_node, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeStringName<<12), &struct {
 		input_node  gdextension.StringName
 		input_index int64
 		output_node gdextension.StringName
@@ -332,7 +334,7 @@ Disconnects the animation node connected to the specified input.
 */
 //go:nosplit
 func (self class) DisconnectNode(input_node String.Name, input_index int64) { //gd:AnimationNodeBlendTree.disconnect_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_node, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.disconnect_node, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeInt<<8), &struct {
 		input_node  gdextension.StringName
 		input_index int64
 	}{pointers.Get(gd.InternalStringName(input_node)), input_index})
@@ -343,7 +345,7 @@ Returns a list containing the names of all sub animation nodes in this blend tre
 */
 //go:nosplit
 func (self class) GetNodeList() Array.Contains[String.Name] { //gd:AnimationNodeBlendTree.get_node_list
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_node_list, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_node_list, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -353,7 +355,7 @@ Modifies the position of a sub animation node.
 */
 //go:nosplit
 func (self class) SetNodePosition(name String.Name, position Vector2.XY) { //gd:AnimationNodeBlendTree.set_node_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_position, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVector2<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_position, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVector2<<8), &struct {
 		name     gdextension.StringName
 		position Vector2.XY
 	}{pointers.Get(gd.InternalStringName(name)), position})
@@ -364,19 +366,19 @@ Returns the position of the sub animation node with the specified 'name'.
 */
 //go:nosplit
 func (self class) GetNodePosition(name String.Name) Vector2.XY { //gd:AnimationNodeBlendTree.get_node_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_node_position, gdextension.SizeVector2|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_node_position, gdextension.SizeVector2|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGraphOffset(offset Vector2.XY) { //gd:AnimationNodeBlendTree.set_graph_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_graph_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_graph_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 
 //go:nosplit
 func (self class) GetGraphOffset() Vector2.XY { //gd:AnimationNodeBlendTree.get_graph_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_graph_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_graph_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

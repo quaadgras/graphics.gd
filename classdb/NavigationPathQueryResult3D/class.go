@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -45,6 +46,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -96,7 +98,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -201,66 +203,66 @@ func (self Instance) SetPathLength(value Float.X) {
 
 //go:nosplit
 func (self class) SetPath(path Packed.Array[Vector3.XYZ]) { //gd:NavigationPathQueryResult3D.set_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path, 0|(gdextension.SizePackedArray<<4), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path, 0|(gdextension.SizePackedArray<<4), &struct {
 		path gdextension.PackedArray[Vector3.XYZ]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](path))})
 }
 
 //go:nosplit
 func (self class) GetPath() Packed.Array[Vector3.XYZ] { //gd:NavigationPathQueryResult3D.get_path
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathTypes(path_types Packed.Array[int32]) { //gd:NavigationPathQueryResult3D.set_path_types
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_types, 0|(gdextension.SizePackedArray<<4), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_types, 0|(gdextension.SizePackedArray<<4), &struct {
 		path_types gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](path_types))})
 }
 
 //go:nosplit
 func (self class) GetPathTypes() Packed.Array[int32] { //gd:NavigationPathQueryResult3D.get_path_types
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path_types, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path_types, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathRids(path_rids Array.Contains[RID.Any]) { //gd:NavigationPathQueryResult3D.set_path_rids
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_rids, 0|(gdextension.SizeArray<<4), &struct{ path_rids gdextension.Array }{pointers.Get(gd.InternalArray(path_rids))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_rids, 0|(gdextension.SizeArray<<4), &struct{ path_rids gdextension.Array }{pointers.Get(gd.InternalArray(path_rids))})
 }
 
 //go:nosplit
 func (self class) GetPathRids() Array.Contains[RID.Any] { //gd:NavigationPathQueryResult3D.get_path_rids
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_path_rids, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_path_rids, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathOwnerIds(path_owner_ids Packed.Array[int64]) { //gd:NavigationPathQueryResult3D.set_path_owner_ids
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_owner_ids, 0|(gdextension.SizePackedArray<<4), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_owner_ids, 0|(gdextension.SizePackedArray<<4), &struct {
 		path_owner_ids gdextension.PackedArray[int64]
 	}{pointers.Get(gd.InternalPacked[gd.PackedInt64Array, int64](path_owner_ids))})
 }
 
 //go:nosplit
 func (self class) GetPathOwnerIds() Packed.Array[int64] { //gd:NavigationPathQueryResult3D.get_path_owner_ids
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path_owner_ids, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_path_owner_ids, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int64](Array.Through(gd.PackedProxy[gd.PackedInt64Array, int64]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathLength(length float64) { //gd:NavigationPathQueryResult3D.set_path_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
 
 //go:nosplit
 func (self class) GetPathLength() float64 { //gd:NavigationPathQueryResult3D.get_path_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -270,7 +272,7 @@ Reset the result object to its initial state. This is useful to reuse the object
 */
 //go:nosplit
 func (self class) Reset() { //gd:NavigationPathQueryResult3D.reset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset, 0, &struct{}{})
 }
 func (self class) AsNavigationPathQueryResult3D() Advanced {
 	return Advanced{pointers.AsA[gdclass.NavigationPathQueryResult3D](self[0])}

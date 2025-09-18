@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +51,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -92,7 +94,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -167,7 +169,7 @@ Returns true if this extension's library has been opened.
 */
 //go:nosplit
 func (self class) IsLibraryOpen() bool { //gd:GDExtension.is_library_open
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_library_open, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_library_open, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -177,7 +179,7 @@ Returns the lowest level required for this extension to be properly initialized 
 */
 //go:nosplit
 func (self class) GetMinimumLibraryInitializationLevel() InitializationLevel { //gd:GDExtension.get_minimum_library_initialization_level
-	var r_ret = gdextension.Call[InitializationLevel](gd.ObjectChecked(self.AsObject()), methods.get_minimum_library_initialization_level, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[InitializationLevel](gd.ObjectChecked(self.AsObject()), methods.get_minimum_library_initialization_level, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -13,6 +13,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +48,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -91,7 +93,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -165,24 +167,24 @@ func (self Instance) SetSlideOnSlope(value bool) {
 
 //go:nosplit
 func (self class) SetLength(length float64) { //gd:SeparationRayShape3D.set_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
 
 //go:nosplit
 func (self class) GetLength() float64 { //gd:SeparationRayShape3D.get_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSlideOnSlope(active bool) { //gd:SeparationRayShape3D.set_slide_on_slope
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slide_on_slope, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_slide_on_slope, 0|(gdextension.SizeBool<<4), &struct{ active bool }{active})
 }
 
 //go:nosplit
 func (self class) GetSlideOnSlope() bool { //gd:SeparationRayShape3D.get_slide_on_slope
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_slide_on_slope, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_slide_on_slope, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

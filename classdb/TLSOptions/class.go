@@ -29,6 +29,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -63,6 +64,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -112,7 +114,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -267,7 +269,7 @@ Note: On the Web platform, TLS verification is always enforced against the CA li
 */
 //go:nosplit
 func (self class) Client(trusted_chain [1]gdclass.X509Certificate, common_name_override String.Readable) [1]gdclass.TLSOptions { //gd:TLSOptions.client
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.client, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.client, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8), &struct {
 		trusted_chain        gdextension.Object
 		common_name_override gdextension.String
 	}{gdextension.Object(gd.ObjectChecked(trusted_chain[0].AsObject())), pointers.Get(gd.InternalString(common_name_override))})
@@ -282,7 +284,7 @@ Note: On the Web platform, TLS verification is always enforced against the CA li
 */
 //go:nosplit
 func (self class) ClientUnsafe(trusted_chain [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.client_unsafe
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.client_unsafe, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ trusted_chain gdextension.Object }{gdextension.Object(gd.ObjectChecked(trusted_chain[0].AsObject()))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.client_unsafe, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ trusted_chain gdextension.Object }{gdextension.Object(gd.ObjectChecked(trusted_chain[0].AsObject()))})
 	var ret = [1]gdclass.TLSOptions{gd.PointerWithOwnershipTransferredToGo[gdclass.TLSOptions](r_ret)}
 	return ret
 }
@@ -294,7 +296,7 @@ Note: The 'certificate' should include the full certificate chain up to the sign
 */
 //go:nosplit
 func (self class) Server(key [1]gdclass.CryptoKey, certificate [1]gdclass.X509Certificate) [1]gdclass.TLSOptions { //gd:TLSOptions.server
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.server, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.server, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8), &struct {
 		key         gdextension.Object
 		certificate gdextension.Object
 	}{gdextension.Object(gd.ObjectChecked(key[0].AsObject())), gdextension.Object(gd.ObjectChecked(certificate[0].AsObject()))})
@@ -309,7 +311,7 @@ Returns true if created with [TLSOptions.Server], false otherwise.
 */
 //go:nosplit
 func (self class) IsServer() bool { //gd:TLSOptions.is_server
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_server, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_server, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -321,7 +323,7 @@ Returns true if created with [TLSOptions.ClientUnsafe], false otherwise.
 */
 //go:nosplit
 func (self class) IsUnsafeClient() bool { //gd:TLSOptions.is_unsafe_client
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_unsafe_client, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_unsafe_client, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -333,7 +335,7 @@ Returns the common name (domain name) override specified when creating with [TLS
 */
 //go:nosplit
 func (self class) GetCommonNameOverride() String.Readable { //gd:TLSOptions.get_common_name_override
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_common_name_override, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_common_name_override, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -347,7 +349,7 @@ Returns the CA [X509Certificate] chain specified when creating with [TLSOptions.
 */
 //go:nosplit
 func (self class) GetTrustedCaChain() [1]gdclass.X509Certificate { //gd:TLSOptions.get_trusted_ca_chain
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_trusted_ca_chain, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_trusted_ca_chain, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.X509Certificate{gd.PointerWithOwnershipTransferredToGo[gdclass.X509Certificate](r_ret)}
 	return ret
 }
@@ -360,7 +362,7 @@ Returns the [CryptoKey] specified when creating with [TLSOptions.Server].
 */
 //go:nosplit
 func (self class) GetPrivateKey() [1]gdclass.CryptoKey { //gd:TLSOptions.get_private_key
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_private_key, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_private_key, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.CryptoKey{gd.PointerWithOwnershipTransferredToGo[gdclass.CryptoKey](r_ret)}
 	return ret
 }
@@ -373,7 +375,7 @@ Returns the [X509Certificate] specified when creating with [TLSOptions.Server].
 */
 //go:nosplit
 func (self class) GetOwnCertificate() [1]gdclass.X509Certificate { //gd:TLSOptions.get_own_certificate
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_own_certificate, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_own_certificate, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.X509Certificate{gd.PointerWithOwnershipTransferredToGo[gdclass.X509Certificate](r_ret)}
 	return ret
 }

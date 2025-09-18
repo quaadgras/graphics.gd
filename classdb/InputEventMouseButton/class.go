@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +54,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -101,7 +103,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -191,46 +193,46 @@ func (self Instance) SetDoubleClick(value bool) {
 
 //go:nosplit
 func (self class) SetFactor(factor float64) { //gd:InputEventMouseButton.set_factor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_factor, 0|(gdextension.SizeFloat<<4), &struct{ factor float64 }{factor})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_factor, 0|(gdextension.SizeFloat<<4), &struct{ factor float64 }{factor})
 }
 
 //go:nosplit
 func (self class) GetFactor() float64 { //gd:InputEventMouseButton.get_factor
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_factor, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_factor, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetButtonIndex(button_index Input.MouseButton) { //gd:InputEventMouseButton.set_button_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_index, 0|(gdextension.SizeInt<<4), &struct{ button_index Input.MouseButton }{button_index})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_index, 0|(gdextension.SizeInt<<4), &struct{ button_index Input.MouseButton }{button_index})
 }
 
 //go:nosplit
 func (self class) GetButtonIndex() Input.MouseButton { //gd:InputEventMouseButton.get_button_index
-	var r_ret = gdextension.Call[Input.MouseButton](gd.ObjectChecked(self.AsObject()), methods.get_button_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Input.MouseButton](gd.ObjectChecked(self.AsObject()), methods.get_button_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPressed(pressed bool) { //gd:InputEventMouseButton.set_pressed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 
 //go:nosplit
 func (self class) SetCanceled(canceled bool) { //gd:InputEventMouseButton.set_canceled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_canceled, 0|(gdextension.SizeBool<<4), &struct{ canceled bool }{canceled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_canceled, 0|(gdextension.SizeBool<<4), &struct{ canceled bool }{canceled})
 }
 
 //go:nosplit
 func (self class) SetDoubleClick(double_click bool) { //gd:InputEventMouseButton.set_double_click
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_double_click, 0|(gdextension.SizeBool<<4), &struct{ double_click bool }{double_click})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_double_click, 0|(gdextension.SizeBool<<4), &struct{ double_click bool }{double_click})
 }
 
 //go:nosplit
 func (self class) IsDoubleClick() bool { //gd:InputEventMouseButton.is_double_click
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_double_click, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_double_click, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

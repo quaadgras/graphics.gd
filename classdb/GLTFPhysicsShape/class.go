@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +48,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -107,7 +109,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -304,7 +306,7 @@ Creates a new GLTFPhysicsShape instance from the given Godot [CollisionShape3D] 
 */
 //go:nosplit
 func (self class) FromNode(shape_node [1]gdclass.CollisionShape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_node
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ shape_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape_node[0].AsObject()))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_node, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ shape_node gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape_node[0].AsObject()))})
 	var ret = [1]gdclass.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsShape](r_ret)}
 	return ret
 }
@@ -316,7 +318,7 @@ Converts this GLTFPhysicsShape instance into a Godot [CollisionShape3D] node.
 */
 //go:nosplit
 func (self class) ToNode(cache_shapes bool) [1]gdclass.CollisionShape3D { //gd:GLTFPhysicsShape.to_node
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.to_node, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ cache_shapes bool }{cache_shapes})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.to_node, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ cache_shapes bool }{cache_shapes})
 	var ret = [1]gdclass.CollisionShape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.CollisionShape3D](r_ret)}
 	return ret
 }
@@ -328,7 +330,7 @@ Creates a new GLTFPhysicsShape instance from the given Godot [Shape3D] resource.
 */
 //go:nosplit
 func (self class) FromResource(shape_resource [1]gdclass.Shape3D) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_resource
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.from_resource, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ shape_resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape_resource[0].AsObject()))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_resource, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ shape_resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(shape_resource[0].AsObject()))})
 	var ret = [1]gdclass.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsShape](r_ret)}
 	return ret
 }
@@ -340,7 +342,7 @@ Converts this GLTFPhysicsShape instance into a Godot [Shape3D] resource.
 */
 //go:nosplit
 func (self class) ToResource(cache_shapes bool) [1]gdclass.Shape3D { //gd:GLTFPhysicsShape.to_resource
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.to_resource, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ cache_shapes bool }{cache_shapes})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.to_resource, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ cache_shapes bool }{cache_shapes})
 	var ret = [1]gdclass.Shape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Shape3D](r_ret)}
 	return ret
 }
@@ -350,7 +352,7 @@ Creates a new GLTFPhysicsShape instance by parsing the given data structure.
 */
 //go:nosplit
 func (self class) FromDictionary(dictionary Dictionary.Any) [1]gdclass.GLTFPhysicsShape { //gd:GLTFPhysicsShape.from_dictionary
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.from_dictionary, gdextension.SizeObject|(gdextension.SizeDictionary<<4), &struct{ dictionary gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(dictionary))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.from_dictionary, gdextension.SizeObject|(gdextension.SizeDictionary<<4), &struct{ dictionary gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(dictionary))})
 	var ret = [1]gdclass.GLTFPhysicsShape{gd.PointerWithOwnershipTransferredToGo[gdclass.GLTFPhysicsShape](r_ret)}
 	return ret
 }
@@ -360,93 +362,93 @@ Serializes this GLTFPhysicsShape instance into a data structure in the format de
 */
 //go:nosplit
 func (self class) ToDictionary() Dictionary.Any { //gd:GLTFPhysicsShape.to_dictionary
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.to_dictionary, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.to_dictionary, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetShapeType() String.Readable { //gd:GLTFPhysicsShape.get_shape_type
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_shape_type, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_shape_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShapeType(shape_type String.Readable) { //gd:GLTFPhysicsShape.set_shape_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape_type, 0|(gdextension.SizeString<<4), &struct{ shape_type gdextension.String }{pointers.Get(gd.InternalString(shape_type))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape_type, 0|(gdextension.SizeString<<4), &struct{ shape_type gdextension.String }{pointers.Get(gd.InternalString(shape_type))})
 }
 
 //go:nosplit
 func (self class) GetSize() Vector3.XYZ { //gd:GLTFPhysicsShape.get_size
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSize(size Vector3.XYZ) { //gd:GLTFPhysicsShape.set_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector3<<4), &struct{ size Vector3.XYZ }{size})
 }
 
 //go:nosplit
 func (self class) GetRadius() float64 { //gd:GLTFPhysicsShape.get_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRadius(radius float64) { //gd:GLTFPhysicsShape.set_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 
 //go:nosplit
 func (self class) GetHeight() float64 { //gd:GLTFPhysicsShape.get_height
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeight(height float64) { //gd:GLTFPhysicsShape.set_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
 
 //go:nosplit
 func (self class) GetIsTrigger() bool { //gd:GLTFPhysicsShape.get_is_trigger
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_trigger, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_is_trigger, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIsTrigger(is_trigger bool) { //gd:GLTFPhysicsShape.set_is_trigger
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_trigger, 0|(gdextension.SizeBool<<4), &struct{ is_trigger bool }{is_trigger})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_is_trigger, 0|(gdextension.SizeBool<<4), &struct{ is_trigger bool }{is_trigger})
 }
 
 //go:nosplit
 func (self class) GetMeshIndex() int64 { //gd:GLTFPhysicsShape.get_mesh_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mesh_index, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_mesh_index, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMeshIndex(mesh_index int64) { //gd:GLTFPhysicsShape.set_mesh_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh_index, 0|(gdextension.SizeInt<<4), &struct{ mesh_index int64 }{mesh_index})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh_index, 0|(gdextension.SizeInt<<4), &struct{ mesh_index int64 }{mesh_index})
 }
 
 //go:nosplit
 func (self class) GetImporterMesh() [1]gdclass.ImporterMesh { //gd:GLTFPhysicsShape.get_importer_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_importer_mesh, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_importer_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ImporterMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ImporterMesh](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetImporterMesh(importer_mesh [1]gdclass.ImporterMesh) { //gd:GLTFPhysicsShape.set_importer_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_importer_mesh, 0|(gdextension.SizeObject<<4), &struct{ importer_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(importer_mesh[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_importer_mesh, 0|(gdextension.SizeObject<<4), &struct{ importer_mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(importer_mesh[0].AsObject()))})
 }
 func (self class) AsGLTFPhysicsShape() Advanced {
 	return Advanced{pointers.AsA[gdclass.GLTFPhysicsShape](self[0])}

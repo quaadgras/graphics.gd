@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -45,6 +46,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -95,7 +97,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -193,60 +195,60 @@ func (self Instance) SetCollideWithAreas(value bool) {
 
 //go:nosplit
 func (self class) SetPosition(position Vector3.XYZ) { //gd:PhysicsPointQueryParameters3D.set_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector3<<4), &struct{ position Vector3.XYZ }{position})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector3<<4), &struct{ position Vector3.XYZ }{position})
 }
 
 //go:nosplit
 func (self class) GetPosition() Vector3.XYZ { //gd:PhysicsPointQueryParameters3D.get_position
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionMask(collision_mask int64) { //gd:PhysicsPointQueryParameters3D.set_collision_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ collision_mask int64 }{collision_mask})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ collision_mask int64 }{collision_mask})
 }
 
 //go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:PhysicsPointQueryParameters3D.get_collision_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExclude(exclude Array.Contains[RID.Any]) { //gd:PhysicsPointQueryParameters3D.set_exclude
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude, 0|(gdextension.SizeArray<<4), &struct{ exclude gdextension.Array }{pointers.Get(gd.InternalArray(exclude))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_exclude, 0|(gdextension.SizeArray<<4), &struct{ exclude gdextension.Array }{pointers.Get(gd.InternalArray(exclude))})
 }
 
 //go:nosplit
 func (self class) GetExclude() Array.Contains[RID.Any] { //gd:PhysicsPointQueryParameters3D.get_exclude
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_exclude, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_exclude, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollideWithBodies(enable bool) { //gd:PhysicsPointQueryParameters3D.set_collide_with_bodies
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_bodies, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsCollideWithBodiesEnabled() bool { //gd:PhysicsPointQueryParameters3D.is_collide_with_bodies_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_bodies_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollideWithAreas(enable bool) { //gd:PhysicsPointQueryParameters3D.set_collide_with_areas
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_areas, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collide_with_areas, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsCollideWithAreasEnabled() bool { //gd:PhysicsPointQueryParameters3D.is_collide_with_areas_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_areas_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_collide_with_areas_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

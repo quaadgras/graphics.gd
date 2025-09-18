@@ -19,6 +19,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +54,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -103,7 +105,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -200,60 +202,60 @@ func (self Instance) SetBoneUpdate(value BoneUpdate) {
 
 //go:nosplit
 func (self class) SetHand(hand Hands) { //gd:OpenXRHand.set_hand
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand, 0|(gdextension.SizeInt<<4), &struct{ hand Hands }{hand})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand, 0|(gdextension.SizeInt<<4), &struct{ hand Hands }{hand})
 }
 
 //go:nosplit
 func (self class) GetHand() Hands { //gd:OpenXRHand.get_hand
-	var r_ret = gdextension.Call[Hands](gd.ObjectChecked(self.AsObject()), methods.get_hand, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Hands](gd.ObjectChecked(self.AsObject()), methods.get_hand, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHandSkeleton(hand_skeleton Path.ToNode) { //gd:OpenXRHand.set_hand_skeleton
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand_skeleton, 0|(gdextension.SizeNodePath<<4), &struct{ hand_skeleton gdextension.NodePath }{pointers.Get(gd.InternalNodePath(hand_skeleton))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand_skeleton, 0|(gdextension.SizeNodePath<<4), &struct{ hand_skeleton gdextension.NodePath }{pointers.Get(gd.InternalNodePath(hand_skeleton))})
 }
 
 //go:nosplit
 func (self class) GetHandSkeleton() Path.ToNode { //gd:OpenXRHand.get_hand_skeleton
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_hand_skeleton, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_hand_skeleton, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMotionRange(motion_range MotionRange) { //gd:OpenXRHand.set_motion_range
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion_range, 0|(gdextension.SizeInt<<4), &struct{ motion_range MotionRange }{motion_range})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_motion_range, 0|(gdextension.SizeInt<<4), &struct{ motion_range MotionRange }{motion_range})
 }
 
 //go:nosplit
 func (self class) GetMotionRange() MotionRange { //gd:OpenXRHand.get_motion_range
-	var r_ret = gdextension.Call[MotionRange](gd.ObjectChecked(self.AsObject()), methods.get_motion_range, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[MotionRange](gd.ObjectChecked(self.AsObject()), methods.get_motion_range, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSkeletonRig(skeleton_rig SkeletonRig) { //gd:OpenXRHand.set_skeleton_rig
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton_rig, 0|(gdextension.SizeInt<<4), &struct{ skeleton_rig SkeletonRig }{skeleton_rig})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton_rig, 0|(gdextension.SizeInt<<4), &struct{ skeleton_rig SkeletonRig }{skeleton_rig})
 }
 
 //go:nosplit
 func (self class) GetSkeletonRig() SkeletonRig { //gd:OpenXRHand.get_skeleton_rig
-	var r_ret = gdextension.Call[SkeletonRig](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_rig, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[SkeletonRig](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_rig, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBoneUpdate(bone_update BoneUpdate) { //gd:OpenXRHand.set_bone_update
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_update, 0|(gdextension.SizeInt<<4), &struct{ bone_update BoneUpdate }{bone_update})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_update, 0|(gdextension.SizeInt<<4), &struct{ bone_update BoneUpdate }{bone_update})
 }
 
 //go:nosplit
 func (self class) GetBoneUpdate() BoneUpdate { //gd:OpenXRHand.get_bone_update
-	var r_ret = gdextension.Call[BoneUpdate](gd.ObjectChecked(self.AsObject()), methods.get_bone_update, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[BoneUpdate](gd.ObjectChecked(self.AsObject()), methods.get_bone_update, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

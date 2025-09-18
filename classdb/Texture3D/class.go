@@ -19,6 +19,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +55,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -101,7 +103,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -430,7 +432,7 @@ Returns the current format being used by this texture.
 */
 //go:nosplit
 func (self class) GetFormat() Image.Format { //gd:Texture3D.get_format
-	var r_ret = gdextension.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -442,7 +444,7 @@ Returns the [Texture3D]'s width in pixels. Width is typically represented by the
 */
 //go:nosplit
 func (self class) GetWidth() int64 { //gd:Texture3D.get_width
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_width, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -454,7 +456,7 @@ Returns the [Texture3D]'s height in pixels. Width is typically represented by th
 */
 //go:nosplit
 func (self class) GetHeight() int64 { //gd:Texture3D.get_height
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -467,7 +469,7 @@ Returns the [Texture3D]'s depth in pixels. Depth is typically represented by the
 */
 //go:nosplit
 func (self class) GetDepth() int64 { //gd:Texture3D.get_depth
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -479,7 +481,7 @@ Returns true if the [Texture3D] has generated mipmaps.
 */
 //go:nosplit
 func (self class) HasMipmaps() bool { //gd:Texture3D.has_mipmaps
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_mipmaps, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_mipmaps, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -492,7 +494,7 @@ Returns the [Texture3D]'s data as an array of [Image]s. Each [Image] represents 
 */
 //go:nosplit
 func (self class) GetData() Array.Contains[[1]gdclass.Image] { //gd:Texture3D.get_data
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Image]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -504,7 +506,7 @@ Creates a placeholder version of this resource ([PlaceholderTexture3D]).
 */
 //go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Texture3D.create_placeholder
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }

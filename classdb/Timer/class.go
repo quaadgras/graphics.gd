@@ -36,6 +36,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -69,6 +70,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -125,7 +127,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -286,36 +288,36 @@ func (self Instance) TimeLeft() Float.X {
 
 //go:nosplit
 func (self class) SetWaitTime(time_sec float64) { //gd:Timer.set_wait_time
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wait_time, 0|(gdextension.SizeFloat<<4), &struct{ time_sec float64 }{time_sec})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_wait_time, 0|(gdextension.SizeFloat<<4), &struct{ time_sec float64 }{time_sec})
 }
 
 //go:nosplit
 func (self class) GetWaitTime() float64 { //gd:Timer.get_wait_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wait_time, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_wait_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOneShot(enable bool) { //gd:Timer.set_one_shot
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_shot, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_one_shot, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsOneShot() bool { //gd:Timer.is_one_shot
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_one_shot, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_one_shot, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutostart(enable bool) { //gd:Timer.set_autostart
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autostart, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autostart, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) HasAutostart() bool { //gd:Timer.has_autostart
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_autostart, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_autostart, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -330,7 +332,7 @@ Note: This method does not resume a paused timer. See [Paused].
 */
 //go:nosplit
 func (self class) Start(time_sec float64) { //gd:Timer.start
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start, 0|(gdextension.SizeFloat<<4), &struct{ time_sec float64 }{time_sec})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.start, 0|(gdextension.SizeFloat<<4), &struct{ time_sec float64 }{time_sec})
 }
 
 /*
@@ -345,29 +347,29 @@ Note: Calling [Stop] does not emit the [OnTimeout] signal, as the timer is not c
 */
 //go:nosplit
 func (self class) Stop() { //gd:Timer.stop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetPaused(paused bool) { //gd:Timer.set_paused
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_paused, 0|(gdextension.SizeBool<<4), &struct{ paused bool }{paused})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_paused, 0|(gdextension.SizeBool<<4), &struct{ paused bool }{paused})
 }
 
 //go:nosplit
 func (self class) IsPaused() bool { //gd:Timer.is_paused
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_paused, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_paused, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIgnoreTimeScale(ignore bool) { //gd:Timer.set_ignore_time_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_time_scale, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_time_scale, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
 }
 
 //go:nosplit
 func (self class) IsIgnoringTimeScale() bool { //gd:Timer.is_ignoring_time_scale
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_time_scale, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignoring_time_scale, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -377,26 +379,26 @@ Returns true if the timer is stopped or has not started.
 */
 //go:nosplit
 func (self class) IsStopped() bool { //gd:Timer.is_stopped
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stopped, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stopped, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetTimeLeft() float64 { //gd:Timer.get_time_left
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_left, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_time_left, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTimerProcessCallback(callback TimerProcessCallback) { //gd:Timer.set_timer_process_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_timer_process_callback, 0|(gdextension.SizeInt<<4), &struct{ callback TimerProcessCallback }{callback})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_timer_process_callback, 0|(gdextension.SizeInt<<4), &struct{ callback TimerProcessCallback }{callback})
 }
 
 //go:nosplit
 func (self class) GetTimerProcessCallback() TimerProcessCallback { //gd:Timer.get_timer_process_callback
-	var r_ret = gdextension.Call[TimerProcessCallback](gd.ObjectChecked(self.AsObject()), methods.get_timer_process_callback, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TimerProcessCallback](gd.ObjectChecked(self.AsObject()), methods.get_timer_process_callback, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

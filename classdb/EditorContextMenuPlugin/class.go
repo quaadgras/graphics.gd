@@ -14,6 +14,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +50,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -93,7 +95,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -303,7 +305,7 @@ Registers a shortcut associated with the plugin's context menu. This method shou
 */
 //go:nosplit
 func (self class) AddMenuShortcut(shortcut [1]gdclass.Shortcut, callback Callable.Function) { //gd:EditorContextMenuPlugin.add_menu_shortcut
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_menu_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_menu_shortcut, 0|(gdextension.SizeObject<<4)|(gdextension.SizeCallable<<8), &struct {
 		shortcut gdextension.Object
 		callback gdextension.Callable
 	}{gdextension.Object(gd.ObjectChecked(shortcut[0].AsObject())), pointers.Get(gd.InternalCallable(callback))})
@@ -322,7 +324,7 @@ If you want to assign shortcut to the menu item, use [AddContextMenuItemFromShor
 */
 //go:nosplit
 func (self class) AddContextMenuItem(name String.Readable, callback Callable.Function, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_menu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeObject<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_menu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeCallable<<8)|(gdextension.SizeObject<<12), &struct {
 		name     gdextension.String
 		callback gdextension.Callable
 		icon     gdextension.Object
@@ -341,7 +343,7 @@ Add custom option to the context menu of the plugin's specified slot. The option
 */
 //go:nosplit
 func (self class) AddContextMenuItemFromShortcut(name String.Readable, shortcut [1]gdclass.Shortcut, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_menu_item_from_shortcut
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_menu_item_from_shortcut, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_menu_item_from_shortcut, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
 		name     gdextension.String
 		shortcut gdextension.Object
 		icon     gdextension.Object
@@ -363,7 +365,7 @@ Add a submenu to the context menu of the plugin's specified slot. The submenu is
 */
 //go:nosplit
 func (self class) AddContextSubmenuItem(name String.Readable, menu [1]gdclass.PopupMenu, icon [1]gdclass.Texture2D) { //gd:EditorContextMenuPlugin.add_context_submenu_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_submenu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_context_submenu_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeObject<<12), &struct {
 		name gdextension.String
 		menu gdextension.Object
 		icon gdextension.Object

@@ -55,6 +55,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -91,6 +92,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -197,7 +199,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -1153,7 +1155,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) HasFeature(feature Feature) bool { //gd:NativeMenu.has_feature
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_feature, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
 	var ret = r_ret
 	return ret
 }
@@ -1165,7 +1167,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) HasSystemMenu(menu_id SystemMenus) bool { //gd:NativeMenu.has_system_menu
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_system_menu, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_system_menu, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
 	var ret = r_ret
 	return ret
 }
@@ -1177,7 +1179,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetSystemMenu(menu_id SystemMenus) RID.Any { //gd:NativeMenu.get_system_menu
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_system_menu, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_system_menu, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
 	var ret = r_ret
 	return ret
 }
@@ -1189,7 +1191,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetSystemMenuName(menu_id SystemMenus) String.Readable { //gd:NativeMenu.get_system_menu_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_system_menu_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_system_menu_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ menu_id SystemMenus }{menu_id})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1201,7 +1203,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) CreateMenu() RID.Any { //gd:NativeMenu.create_menu
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.create_menu, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.create_menu, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1213,7 +1215,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) HasMenu(rid RID.Any) bool { //gd:NativeMenu.has_menu
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_menu, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_menu, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
@@ -1227,7 +1229,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) FreeMenu(rid RID.Any) { //gd:NativeMenu.free_menu
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_menu, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.free_menu, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
 
 /*
@@ -1237,7 +1239,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetSize(rid RID.Any) Vector2.XY { //gd:NativeMenu.get_size
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
@@ -1249,7 +1251,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) Popup(rid RID.Any, position Vector2i.XY) { //gd:NativeMenu.popup
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2i<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.popup, 0|(gdextension.SizeRID<<4)|(gdextension.SizeVector2i<<8), &struct {
 		rid      RID.Any
 		position Vector2i.XY
 	}{rid, position})
@@ -1262,7 +1264,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetInterfaceDirection(rid RID.Any, is_rtl bool) { //gd:NativeMenu.set_interface_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interface_direction, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interface_direction, 0|(gdextension.SizeRID<<4)|(gdextension.SizeBool<<8), &struct {
 		rid    RID.Any
 		is_rtl bool
 	}{rid, is_rtl})
@@ -1275,7 +1277,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetPopupOpenCallback(rid RID.Any, callback Callable.Function) { //gd:NativeMenu.set_popup_open_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_popup_open_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_popup_open_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		rid      RID.Any
 		callback gdextension.Callable
 	}{rid, pointers.Get(gd.InternalCallable(callback))})
@@ -1288,7 +1290,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetPopupOpenCallback(rid RID.Any) Callable.Function { //gd:NativeMenu.get_popup_open_callback
-	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_popup_open_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_popup_open_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
@@ -1302,7 +1304,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetPopupCloseCallback(rid RID.Any, callback Callable.Function) { //gd:NativeMenu.set_popup_close_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_popup_close_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_popup_close_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeCallable<<8), &struct {
 		rid      RID.Any
 		callback gdextension.Callable
 	}{rid, pointers.Get(gd.InternalCallable(callback))})
@@ -1315,7 +1317,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetPopupCloseCallback(rid RID.Any) Callable.Function { //gd:NativeMenu.get_popup_close_callback
-	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_popup_close_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_popup_close_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = Callable.Through(gd.CallableProxy{}, pointers.Pack(pointers.New[gd.Callable](r_ret)))
 	return ret
 }
@@ -1327,7 +1329,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetMinimumWidth(rid RID.Any, width float64) { //gd:NativeMenu.set_minimum_width
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_minimum_width, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_minimum_width, 0|(gdextension.SizeRID<<4)|(gdextension.SizeFloat<<8), &struct {
 		rid   RID.Any
 		width float64
 	}{rid, width})
@@ -1340,7 +1342,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetMinimumWidth(rid RID.Any) float64 { //gd:NativeMenu.get_minimum_width
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_minimum_width, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_minimum_width, gdextension.SizeFloat|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
@@ -1352,7 +1354,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) IsOpened(rid RID.Any) bool { //gd:NativeMenu.is_opened
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_opened, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_opened, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
@@ -1366,7 +1368,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) AddSubmenuItem(rid RID.Any, label String.Readable, submenu_rid RID.Any, tag variant.Any, index int64) int64 { //gd:NativeMenu.add_submenu_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_submenu_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeVariant<<16)|(gdextension.SizeInt<<20), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_submenu_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeRID<<12)|(gdextension.SizeVariant<<16)|(gdextension.SizeInt<<20), &struct {
 		rid         RID.Any
 		label       gdextension.String
 		submenu_rid RID.Any
@@ -1392,7 +1394,7 @@ Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 //go:nosplit
 func (self class) AddItem(rid RID.Any, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		rid          RID.Any
 		label        gdextension.String
 		callback     gdextension.Callable
@@ -1420,7 +1422,7 @@ Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 //go:nosplit
 func (self class) AddCheckItem(rid RID.Any, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_check_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		rid          RID.Any
 		label        gdextension.String
 		callback     gdextension.Callable
@@ -1448,7 +1450,7 @@ Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 //go:nosplit
 func (self class) AddIconItem(rid RID.Any, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_icon_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
 		rid          RID.Any
 		icon         gdextension.Object
 		label        gdextension.String
@@ -1477,7 +1479,7 @@ Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 //go:nosplit
 func (self class) AddIconCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_icon_check_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
 		rid          RID.Any
 		icon         gdextension.Object
 		label        gdextension.String
@@ -1508,7 +1510,7 @@ Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 //go:nosplit
 func (self class) AddRadioCheckItem(rid RID.Any, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_radio_check_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_radio_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_radio_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeCallable<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeVariant<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		rid          RID.Any
 		label        gdextension.String
 		callback     gdextension.Callable
@@ -1538,7 +1540,7 @@ Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 //go:nosplit
 func (self class) AddIconRadioCheckItem(rid RID.Any, icon [1]gdclass.Texture2D, label String.Readable, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_icon_radio_check_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_radio_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_icon_radio_check_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeString<<12)|(gdextension.SizeCallable<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeVariant<<24)|(gdextension.SizeInt<<28)|(gdextension.SizeInt<<32), &struct {
 		rid          RID.Any
 		icon         gdextension.Object
 		label        gdextension.String
@@ -1571,7 +1573,7 @@ Note: On Windows, 'accelerator' and 'key_callback' are ignored.
 */
 //go:nosplit
 func (self class) AddMultistateItem(rid RID.Any, label String.Readable, max_states int64, default_state int64, callback Callable.Function, key_callback Callable.Function, tag variant.Any, accelerator Input.Key, index int64) int64 { //gd:NativeMenu.add_multistate_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_multistate_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeCallable<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_multistate_item, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeCallable<<20)|(gdextension.SizeCallable<<24)|(gdextension.SizeVariant<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeInt<<36), &struct {
 		rid           RID.Any
 		label         gdextension.String
 		max_states    int64
@@ -1595,7 +1597,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) AddSeparator(rid RID.Any, index int64) int64 { //gd:NativeMenu.add_separator
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_separator, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_separator, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid   RID.Any
 		index int64
 	}{rid, index})
@@ -1610,7 +1612,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) FindItemIndexWithText(rid RID.Any, text String.Readable) int64 { //gd:NativeMenu.find_item_index_with_text
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_text, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_text, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeString<<8), &struct {
 		rid  RID.Any
 		text gdextension.String
 	}{rid, pointers.Get(gd.InternalString(text))})
@@ -1625,7 +1627,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) FindItemIndexWithTag(rid RID.Any, tag variant.Any) int64 { //gd:NativeMenu.find_item_index_with_tag
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_tag, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_tag, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeVariant<<8), &struct {
 		rid RID.Any
 		tag gdextension.Variant
 	}{rid, gdextension.Variant(pointers.Get(gd.InternalVariant(tag)))})
@@ -1640,7 +1642,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) FindItemIndexWithSubmenu(rid RID.Any, submenu_rid RID.Any) int64 { //gd:NativeMenu.find_item_index_with_submenu
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_submenu, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.find_item_index_with_submenu, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeRID<<8), &struct {
 		rid         RID.Any
 		submenu_rid RID.Any
 	}{rid, submenu_rid})
@@ -1655,7 +1657,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) IsItemChecked(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_checked
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_checked, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_checked, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1670,7 +1672,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) IsItemCheckable(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_checkable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_checkable, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_checkable, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1687,7 +1689,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) IsItemRadioCheckable(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_radio_checkable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_radio_checkable, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_radio_checkable, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1702,7 +1704,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemCallback(rid RID.Any, idx int64) Callable.Function { //gd:NativeMenu.get_item_callback
-	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_item_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_item_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1717,7 +1719,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetItemKeyCallback(rid RID.Any, idx int64) Callable.Function { //gd:NativeMenu.get_item_key_callback
-	var r_ret = gdextension.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_item_key_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Callable](gd.ObjectChecked(self.AsObject()), methods.get_item_key_callback, gdextension.SizeCallable|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1732,7 +1734,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemTag(rid RID.Any, idx int64) variant.Any { //gd:NativeMenu.get_item_tag
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_item_tag, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_item_tag, gdextension.SizeVariant|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1747,7 +1749,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemText(rid RID.Any, idx int64) String.Readable { //gd:NativeMenu.get_item_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_text, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_text, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1762,7 +1764,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemSubmenu(rid RID.Any, idx int64) RID.Any { //gd:NativeMenu.get_item_submenu
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_item_submenu, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_item_submenu, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1777,7 +1779,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetItemAccelerator(rid RID.Any, idx int64) Input.Key { //gd:NativeMenu.get_item_accelerator
-	var r_ret = gdextension.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.get_item_accelerator, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[Input.Key](gd.ObjectChecked(self.AsObject()), methods.get_item_accelerator, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1794,7 +1796,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) IsItemDisabled(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_disabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_disabled, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_disabled, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1811,7 +1813,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) IsItemHidden(rid RID.Any, idx int64) bool { //gd:NativeMenu.is_item_hidden
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_hidden, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_hidden, gdextension.SizeBool|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1826,7 +1828,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetItemTooltip(rid RID.Any, idx int64) String.Readable { //gd:NativeMenu.get_item_tooltip
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_tooltip, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_tooltip, gdextension.SizeString|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1841,7 +1843,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemState(rid RID.Any, idx int64) int64 { //gd:NativeMenu.get_item_state
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_state, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_state, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1856,7 +1858,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemMaxStates(rid RID.Any, idx int64) int64 { //gd:NativeMenu.get_item_max_states
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_max_states, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_max_states, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1871,7 +1873,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemIcon(rid RID.Any, idx int64) [1]gdclass.Texture2D { //gd:NativeMenu.get_item_icon
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_icon, gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_icon, gdextension.SizeObject|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1886,7 +1888,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) GetItemIndentationLevel(rid RID.Any, idx int64) int64 { //gd:NativeMenu.get_item_indentation_level
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_indentation_level, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_indentation_level, gdextension.SizeInt|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -1901,7 +1903,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemChecked(rid RID.Any, idx int64, checked bool) { //gd:NativeMenu.set_item_checked
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_checked, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_checked, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		rid     RID.Any
 		idx     int64
 		checked bool
@@ -1915,7 +1917,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemCheckable(rid RID.Any, idx int64, checkable bool) { //gd:NativeMenu.set_item_checkable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_checkable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_checkable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		rid       RID.Any
 		idx       int64
 		checkable bool
@@ -1931,7 +1933,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemRadioCheckable(rid RID.Any, idx int64, checkable bool) { //gd:NativeMenu.set_item_radio_checkable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_radio_checkable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_radio_checkable, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		rid       RID.Any
 		idx       int64
 		checkable bool
@@ -1947,7 +1949,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemCallback(rid RID.Any, idx int64, callback Callable.Function) { //gd:NativeMenu.set_item_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		rid      RID.Any
 		idx      int64
 		callback gdextension.Callable
@@ -1963,7 +1965,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetItemHoverCallbacks(rid RID.Any, idx int64, callback Callable.Function) { //gd:NativeMenu.set_item_hover_callbacks
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_hover_callbacks, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_hover_callbacks, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		rid      RID.Any
 		idx      int64
 		callback gdextension.Callable
@@ -1979,7 +1981,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetItemKeyCallback(rid RID.Any, idx int64, key_callback Callable.Function) { //gd:NativeMenu.set_item_key_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_key_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_key_callback, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeCallable<<12), &struct {
 		rid          RID.Any
 		idx          int64
 		key_callback gdextension.Callable
@@ -1993,7 +1995,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemTag(rid RID.Any, idx int64, tag variant.Any) { //gd:NativeMenu.set_item_tag
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tag, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeVariant<<12), &struct {
 		rid RID.Any
 		idx int64
 		tag gdextension.Variant
@@ -2007,7 +2009,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemText(rid RID.Any, idx int64, text String.Readable) { //gd:NativeMenu.set_item_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_text, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_text, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		rid  RID.Any
 		idx  int64
 		text gdextension.String
@@ -2021,7 +2023,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemSubmenu(rid RID.Any, idx int64, submenu_rid RID.Any) { //gd:NativeMenu.set_item_submenu
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_submenu, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_submenu, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeRID<<12), &struct {
 		rid         RID.Any
 		idx         int64
 		submenu_rid RID.Any
@@ -2035,7 +2037,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetItemAccelerator(rid RID.Any, idx int64, keycode Input.Key) { //gd:NativeMenu.set_item_accelerator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_accelerator, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_accelerator, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		rid     RID.Any
 		idx     int64
 		keycode Input.Key
@@ -2049,7 +2051,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemDisabled(rid RID.Any, idx int64, disabled bool) { //gd:NativeMenu.set_item_disabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_disabled, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		rid      RID.Any
 		idx      int64
 		disabled bool
@@ -2063,7 +2065,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetItemHidden(rid RID.Any, idx int64, hidden bool) { //gd:NativeMenu.set_item_hidden
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_hidden, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_hidden, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeBool<<12), &struct {
 		rid    RID.Any
 		idx    int64
 		hidden bool
@@ -2077,7 +2079,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetItemTooltip(rid RID.Any, idx int64, tooltip String.Readable) { //gd:NativeMenu.set_item_tooltip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tooltip, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tooltip, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		rid     RID.Any
 		idx     int64
 		tooltip gdextension.String
@@ -2091,7 +2093,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemState(rid RID.Any, idx int64, state int64) { //gd:NativeMenu.set_item_state
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_state, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		rid   RID.Any
 		idx   int64
 		state int64
@@ -2105,7 +2107,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) SetItemMaxStates(rid RID.Any, idx int64, max_states int64) { //gd:NativeMenu.set_item_max_states
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_max_states, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_max_states, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		rid        RID.Any
 		idx        int64
 		max_states int64
@@ -2123,7 +2125,7 @@ Note: This method is not supported by macOS Dock menu items.
 */
 //go:nosplit
 func (self class) SetItemIcon(rid RID.Any, idx int64, icon [1]gdclass.Texture2D) { //gd:NativeMenu.set_item_icon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
 		rid  RID.Any
 		idx  int64
 		icon gdextension.Object
@@ -2137,7 +2139,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) SetItemIndentationLevel(rid RID.Any, idx int64, level int64) { //gd:NativeMenu.set_item_indentation_level
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_indentation_level, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_indentation_level, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12), &struct {
 		rid   RID.Any
 		idx   int64
 		level int64
@@ -2151,7 +2153,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) GetItemCount(rid RID.Any) int64 { //gd:NativeMenu.get_item_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_count, gdextension.SizeInt|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
@@ -2163,7 +2165,7 @@ Note: This method is implemented only on macOS.
 */
 //go:nosplit
 func (self class) IsSystemMenu(rid RID.Any) bool { //gd:NativeMenu.is_system_menu
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_system_menu, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_system_menu, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 	var ret = r_ret
 	return ret
 }
@@ -2177,7 +2179,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) RemoveItem(rid RID.Any, idx int64) { //gd:NativeMenu.remove_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_item, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_item, 0|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8), &struct {
 		rid RID.Any
 		idx int64
 	}{rid, idx})
@@ -2190,7 +2192,7 @@ Note: This method is implemented on macOS and Windows.
 */
 //go:nosplit
 func (self class) Clear(rid RID.Any) { //gd:NativeMenu.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0|(gdextension.SizeRID<<4), &struct{ rid RID.Any }{rid})
 }
 func (self class) Virtual(name string) reflect.Value {
 	switch name {

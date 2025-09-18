@@ -20,6 +20,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -56,6 +57,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -101,7 +103,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -185,24 +187,24 @@ func (self Instance) SetShowRect(value bool) {
 
 //go:nosplit
 func (self class) SetRect(rect Rect2.PositionSize) { //gd:VisibleOnScreenNotifier2D.set_rect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rect, 0|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rect, 0|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
 }
 
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:VisibleOnScreenNotifier2D.get_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShowRect(show_rect bool) { //gd:VisibleOnScreenNotifier2D.set_show_rect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_rect, 0|(gdextension.SizeBool<<4), &struct{ show_rect bool }{show_rect})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_show_rect, 0|(gdextension.SizeBool<<4), &struct{ show_rect bool }{show_rect})
 }
 
 //go:nosplit
 func (self class) IsShowingRect() bool { //gd:VisibleOnScreenNotifier2D.is_showing_rect
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_rect, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_showing_rect, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -216,7 +218,7 @@ Note: It takes one frame for the [VisibleOnScreenNotifier2D]'s visibility to be 
 */
 //go:nosplit
 func (self class) IsOnScreen() bool { //gd:VisibleOnScreenNotifier2D.is_on_screen
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_screen, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_on_screen, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

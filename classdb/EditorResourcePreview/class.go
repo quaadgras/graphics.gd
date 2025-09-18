@@ -14,6 +14,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +50,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -94,7 +96,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -201,7 +203,7 @@ Note: If it was not possible to create the preview the 'receiver_func' will stil
 */
 //go:nosplit
 func (self class) QueueResourcePreview(path String.Readable, receiver [1]gd.Object, receiver_func String.Name, userdata variant.Any) { //gd:EditorResourcePreview.queue_resource_preview
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_resource_preview, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_resource_preview, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), &struct {
 		path          gdextension.String
 		receiver      gdextension.Object
 		receiver_func gdextension.StringName
@@ -218,7 +220,7 @@ Note: If it was not possible to create the preview the 'receiver_func' will stil
 */
 //go:nosplit
 func (self class) QueueEditedResourcePreview(resource [1]gdclass.Resource, receiver [1]gd.Object, receiver_func String.Name, userdata variant.Any) { //gd:EditorResourcePreview.queue_edited_resource_preview
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_edited_resource_preview, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue_edited_resource_preview, 0|(gdextension.SizeObject<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeVariant<<16), &struct {
 		resource      gdextension.Object
 		receiver      gdextension.Object
 		receiver_func gdextension.StringName
@@ -231,7 +233,7 @@ Create an own, custom preview generator.
 */
 //go:nosplit
 func (self class) AddPreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.add_preview_generator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))})
 }
 
 /*
@@ -239,7 +241,7 @@ Removes a custom preview generator.
 */
 //go:nosplit
 func (self class) RemovePreviewGenerator(generator [1]gdclass.EditorResourcePreviewGenerator) { //gd:EditorResourcePreview.remove_preview_generator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_preview_generator, 0|(gdextension.SizeObject<<4), &struct{ generator gdextension.Object }{gdextension.Object(gd.ObjectChecked(generator[0].AsObject()))})
 }
 
 /*
@@ -247,7 +249,7 @@ Check if the resource changed, if so, it will be invalidated and the correspondi
 */
 //go:nosplit
 func (self class) CheckForInvalidation(path String.Readable) { //gd:EditorResourcePreview.check_for_invalidation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.check_for_invalidation, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.check_for_invalidation, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 func (self Instance) OnPreviewInvalidated(cb func(path string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags

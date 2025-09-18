@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +52,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -95,7 +97,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -242,7 +244,7 @@ Sets the SPIR-V 'bytecode' for the given shader 'stage'. Equivalent to setting o
 */
 //go:nosplit
 func (self class) SetStageBytecode(stage Rendering.ShaderStage, bytecode Packed.Bytes) { //gd:RDShaderSPIRV.set_stage_bytecode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stage_bytecode, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stage_bytecode, 0|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8), &struct {
 		stage    Rendering.ShaderStage
 		bytecode gdextension.PackedArray[byte]
 	}{stage, pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](bytecode.Array)))})
@@ -259,7 +261,7 @@ Equivalent to getting one of [BytecodeCompute], [BytecodeFragment], [BytecodeTes
 */
 //go:nosplit
 func (self class) GetStageBytecode(stage Rendering.ShaderStage) Packed.Bytes { //gd:RDShaderSPIRV.get_stage_bytecode
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_stage_bytecode, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ stage Rendering.ShaderStage }{stage})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_stage_bytecode, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ stage Rendering.ShaderStage }{stage})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -275,7 +277,7 @@ Sets the compilation error message for the given shader 'stage' to 'compile_erro
 */
 //go:nosplit
 func (self class) SetStageCompileError(stage Rendering.ShaderStage, compile_error String.Readable) { //gd:RDShaderSPIRV.set_stage_compile_error
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stage_compile_error, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stage_compile_error, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		stage         Rendering.ShaderStage
 		compile_error gdextension.String
 	}{stage, pointers.Get(gd.InternalString(compile_error))})
@@ -292,7 +294,7 @@ Returns the compilation error message for the given shader 'stage'. Equivalent t
 */
 //go:nosplit
 func (self class) GetStageCompileError(stage Rendering.ShaderStage) String.Readable { //gd:RDShaderSPIRV.get_stage_compile_error
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_stage_compile_error, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ stage Rendering.ShaderStage }{stage})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_stage_compile_error, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ stage Rendering.ShaderStage }{stage})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

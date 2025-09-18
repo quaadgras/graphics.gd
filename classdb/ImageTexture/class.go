@@ -73,6 +73,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -110,6 +111,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -155,7 +157,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -270,7 +272,7 @@ Creates a new [ImageTexture] and initializes it by allocating and setting the da
 */
 //go:nosplit
 func (self class) CreateFromImage(image [1]gdclass.Image) [1]gdclass.ImageTexture { //gd:ImageTexture.create_from_image
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.create_from_image, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.create_from_image, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))})
 	var ret = [1]gdclass.ImageTexture{gd.PointerWithOwnershipTransferredToGo[gdclass.ImageTexture](r_ret)}
 	return ret
 }
@@ -280,7 +282,7 @@ Returns the format of the texture.
 */
 //go:nosplit
 func (self class) GetFormat() Image.Format { //gd:ImageTexture.get_format
-	var r_ret = gdextension.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Image.Format](gd.ObjectChecked(self.AsObject()), methods.get_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -295,7 +297,7 @@ If you want to update the image, but don't need to change its parameters (format
 */
 //go:nosplit
 func (self class) SetImage(image [1]gdclass.Image) { //gd:ImageTexture.set_image
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_image, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_image, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))})
 }
 
 /*
@@ -310,7 +312,7 @@ Use this method over [SetImage] if you need to update the texture frequently, wh
 */
 //go:nosplit
 func (self class) Update(image [1]gdclass.Image) { //gd:ImageTexture.update
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update, 0|(gdextension.SizeObject<<4), &struct{ image gdextension.Object }{gdextension.Object(gd.ObjectChecked(image[0].AsObject()))})
 }
 
 /*
@@ -318,7 +320,7 @@ Resizes the texture to the specified dimensions.
 */
 //go:nosplit
 func (self class) SetSizeOverride(size Vector2i.XY) { //gd:ImageTexture.set_size_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_override, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_override, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
 func (self class) AsImageTexture() Advanced {
 	return Advanced{pointers.AsA[gdclass.ImageTexture](self[0])}

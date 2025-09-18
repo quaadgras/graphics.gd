@@ -14,6 +14,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -52,6 +53,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -111,7 +113,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -329,36 +331,36 @@ func (self Instance) SetSpeedScale(value Float.X) {
 
 //go:nosplit
 func (self class) SetSpriteFrames(sprite_frames [1]gdclass.SpriteFrames) { //gd:AnimatedSprite3D.set_sprite_frames
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sprite_frames, 0|(gdextension.SizeObject<<4), &struct{ sprite_frames gdextension.Object }{gdextension.Object(gd.ObjectChecked(sprite_frames[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sprite_frames, 0|(gdextension.SizeObject<<4), &struct{ sprite_frames gdextension.Object }{gdextension.Object(gd.ObjectChecked(sprite_frames[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetSpriteFrames() [1]gdclass.SpriteFrames { //gd:AnimatedSprite3D.get_sprite_frames
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sprite_frames, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_sprite_frames, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SpriteFrames{gd.PointerWithOwnershipTransferredToGo[gdclass.SpriteFrames](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAnimation(name String.Name) { //gd:AnimatedSprite3D.set_animation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animation, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_animation, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 //go:nosplit
 func (self class) GetAnimation() String.Name { //gd:AnimatedSprite3D.get_animation
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_animation, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_animation, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoplay(name String.Readable) { //gd:AnimatedSprite3D.set_autoplay
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 
 //go:nosplit
 func (self class) GetAutoplay() String.Readable { //gd:AnimatedSprite3D.get_autoplay
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_autoplay, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_autoplay, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -370,7 +372,7 @@ Returns true if an animation is currently playing (even if [SpeedScale] and/or c
 */
 //go:nosplit
 func (self class) IsPlaying() bool { //gd:AnimatedSprite3D.is_playing
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -384,7 +386,7 @@ If this method is called with that same animation 'name', or with no 'name' para
 */
 //go:nosplit
 func (self class) Play(name String.Name, custom_speed float64, from_end bool) { //gd:AnimatedSprite3D.play
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeBool<<12), &struct {
 		name         gdextension.StringName
 		custom_speed float64
 		from_end     bool
@@ -400,7 +402,7 @@ This method is a shorthand for [Play] with custom_speed = -1.0 and from_end = tr
 */
 //go:nosplit
 func (self class) PlayBackwards(name String.Name) { //gd:AnimatedSprite3D.play_backwards
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_backwards, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_backwards, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 /*
@@ -416,7 +418,7 @@ See also [Stop].
 */
 //go:nosplit
 func (self class) Pause() { //gd:AnimatedSprite3D.pause
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pause, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pause, 0, &struct{}{})
 }
 
 /*
@@ -426,29 +428,29 @@ Stops the currently playing animation. The animation position is reset to 0 and 
 */
 //go:nosplit
 func (self class) Stop() { //gd:AnimatedSprite3D.stop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetFrame(frame_ int64) { //gd:AnimatedSprite3D.set_frame
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame, 0|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame, 0|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})
 }
 
 //go:nosplit
 func (self class) GetFrame() int64 { //gd:AnimatedSprite3D.get_frame
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrameProgress(progress float64) { //gd:AnimatedSprite3D.set_frame_progress
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame_progress, 0|(gdextension.SizeFloat<<4), &struct{ progress float64 }{progress})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame_progress, 0|(gdextension.SizeFloat<<4), &struct{ progress float64 }{progress})
 }
 
 //go:nosplit
 func (self class) GetFrameProgress() float64 { //gd:AnimatedSprite3D.get_frame_progress
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_frame_progress, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_frame_progress, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -470,7 +472,7 @@ Example: Change the animation while keeping the same [Frame] and [FrameProgress]
 */
 //go:nosplit
 func (self class) SetFrameAndProgress(frame_ int64, progress float64) { //gd:AnimatedSprite3D.set_frame_and_progress
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame_and_progress, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame_and_progress, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		frame_   int64
 		progress float64
 	}{frame_, progress})
@@ -478,12 +480,12 @@ func (self class) SetFrameAndProgress(frame_ int64, progress float64) { //gd:Ani
 
 //go:nosplit
 func (self class) SetSpeedScale(speed_scale float64) { //gd:AnimatedSprite3D.set_speed_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ speed_scale float64 }{speed_scale})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ speed_scale float64 }{speed_scale})
 }
 
 //go:nosplit
 func (self class) GetSpeedScale() float64 { //gd:AnimatedSprite3D.get_speed_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -498,7 +500,7 @@ Returns a negative value if the current animation is playing backwards.
 */
 //go:nosplit
 func (self class) GetPlayingSpeed() float64 { //gd:AnimatedSprite3D.get_playing_speed
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_playing_speed, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_playing_speed, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

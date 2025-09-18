@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -44,6 +45,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -85,7 +87,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -161,7 +163,7 @@ Note: This method is intended to be used in the editor. It does nothing when cal
 */
 //go:nosplit
 func (self class) Generate(from [1]gdclass.Translation) { //gd:OptimizedTranslation.generate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generate, 0|(gdextension.SizeObject<<4), &struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(from[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.generate, 0|(gdextension.SizeObject<<4), &struct{ from gdextension.Object }{gdextension.Object(gd.ObjectChecked(from[0].AsObject()))})
 }
 func (self class) AsOptimizedTranslation() Advanced {
 	return Advanced{pointers.AsA[gdclass.OptimizedTranslation](self[0])}

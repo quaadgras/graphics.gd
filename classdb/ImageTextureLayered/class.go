@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +52,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -93,7 +95,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -258,7 +260,7 @@ Each [Image] represents one layer.
 */
 //go:nosplit
 func (self class) CreateFromImages(images Array.Contains[[1]gdclass.Image]) Error.Code { //gd:ImageTextureLayered.create_from_images
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_from_images, gdextension.SizeInt|(gdextension.SizeArray<<4), &struct{ images gdextension.Array }{pointers.Get(gd.InternalArray(images))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_from_images, gdextension.SizeInt|(gdextension.SizeArray<<4), &struct{ images gdextension.Array }{pointers.Get(gd.InternalArray(images))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -276,7 +278,7 @@ The update is immediate: it's synchronized with drawing.
 */
 //go:nosplit
 func (self class) UpdateLayer(image [1]gdclass.Image, layer int64) { //gd:ImageTextureLayered.update_layer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_layer, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update_layer, 0|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8), &struct {
 		image gdextension.Object
 		layer int64
 	}{gdextension.Object(gd.ObjectChecked(image[0].AsObject())), layer})

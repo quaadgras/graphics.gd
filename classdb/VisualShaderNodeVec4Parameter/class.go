@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -46,6 +47,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -90,7 +92,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -164,24 +166,24 @@ func (self Instance) SetDefaultValue(value Vector4.XYZW) {
 
 //go:nosplit
 func (self class) SetDefaultValueEnabled(enabled bool) { //gd:VisualShaderNodeVec4Parameter.set_default_value_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsDefaultValueEnabled() bool { //gd:VisualShaderNodeVec4Parameter.is_default_value_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_default_value_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_default_value_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDefaultValue(value Vector4.XYZW) { //gd:VisualShaderNodeVec4Parameter.set_default_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value, 0|(gdextension.SizeVector4<<4), &struct{ value Vector4.XYZW }{value})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_value, 0|(gdextension.SizeVector4<<4), &struct{ value Vector4.XYZW }{value})
 }
 
 //go:nosplit
 func (self class) GetDefaultValue() Vector4.XYZW { //gd:VisualShaderNodeVec4Parameter.get_default_value
-	var r_ret = gdextension.Call[Vector4.XYZW](gd.ObjectChecked(self.AsObject()), methods.get_default_value, gdextension.SizeVector4, &struct{}{})
+	var r_ret = noescape.Call[Vector4.XYZW](gd.ObjectChecked(self.AsObject()), methods.get_default_value, gdextension.SizeVector4, &struct{}{})
 	var ret = r_ret
 	return ret
 }

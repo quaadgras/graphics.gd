@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +48,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -115,7 +117,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -376,7 +378,7 @@ The keyword cannot contain any symbols except '_'.
 */
 //go:nosplit
 func (self class) AddKeywordColor(keyword String.Readable, color Color.RGBA) { //gd:CodeHighlighter.add_keyword_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_keyword_color, 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_keyword_color, 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8), &struct {
 		keyword gdextension.String
 		color   Color.RGBA
 	}{pointers.Get(gd.InternalString(keyword)), color})
@@ -387,7 +389,7 @@ Removes the keyword.
 */
 //go:nosplit
 func (self class) RemoveKeywordColor(keyword String.Readable) { //gd:CodeHighlighter.remove_keyword_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_keyword_color, 0|(gdextension.SizeString<<4), &struct{ keyword gdextension.String }{pointers.Get(gd.InternalString(keyword))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_keyword_color, 0|(gdextension.SizeString<<4), &struct{ keyword gdextension.String }{pointers.Get(gd.InternalString(keyword))})
 }
 
 /*
@@ -395,7 +397,7 @@ Returns true if the keyword exists, else false.
 */
 //go:nosplit
 func (self class) HasKeywordColor(keyword String.Readable) bool { //gd:CodeHighlighter.has_keyword_color
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_keyword_color, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ keyword gdextension.String }{pointers.Get(gd.InternalString(keyword))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_keyword_color, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ keyword gdextension.String }{pointers.Get(gd.InternalString(keyword))})
 	var ret = r_ret
 	return ret
 }
@@ -405,14 +407,14 @@ Returns the color for a keyword.
 */
 //go:nosplit
 func (self class) GetKeywordColor(keyword String.Readable) Color.RGBA { //gd:CodeHighlighter.get_keyword_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_keyword_color, gdextension.SizeColor|(gdextension.SizeString<<4), &struct{ keyword gdextension.String }{pointers.Get(gd.InternalString(keyword))})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_keyword_color, gdextension.SizeColor|(gdextension.SizeString<<4), &struct{ keyword gdextension.String }{pointers.Get(gd.InternalString(keyword))})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeywordColors(keywords Dictionary.Any) { //gd:CodeHighlighter.set_keyword_colors
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keyword_colors, 0|(gdextension.SizeDictionary<<4), &struct{ keywords gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(keywords))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keyword_colors, 0|(gdextension.SizeDictionary<<4), &struct{ keywords gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(keywords))})
 }
 
 /*
@@ -420,12 +422,12 @@ Removes all keywords.
 */
 //go:nosplit
 func (self class) ClearKeywordColors() { //gd:CodeHighlighter.clear_keyword_colors
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_keyword_colors, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_keyword_colors, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) GetKeywordColors() Dictionary.Any { //gd:CodeHighlighter.get_keyword_colors
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_keyword_colors, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_keyword_colors, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -439,7 +441,7 @@ It will not be highlighted if preceded by a '.'.
 */
 //go:nosplit
 func (self class) AddMemberKeywordColor(member_keyword String.Readable, color Color.RGBA) { //gd:CodeHighlighter.add_member_keyword_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_member_keyword_color, 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_member_keyword_color, 0|(gdextension.SizeString<<4)|(gdextension.SizeColor<<8), &struct {
 		member_keyword gdextension.String
 		color          Color.RGBA
 	}{pointers.Get(gd.InternalString(member_keyword)), color})
@@ -450,7 +452,7 @@ Removes the member keyword.
 */
 //go:nosplit
 func (self class) RemoveMemberKeywordColor(member_keyword String.Readable) { //gd:CodeHighlighter.remove_member_keyword_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_member_keyword_color, 0|(gdextension.SizeString<<4), &struct{ member_keyword gdextension.String }{pointers.Get(gd.InternalString(member_keyword))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_member_keyword_color, 0|(gdextension.SizeString<<4), &struct{ member_keyword gdextension.String }{pointers.Get(gd.InternalString(member_keyword))})
 }
 
 /*
@@ -458,7 +460,7 @@ Returns true if the member keyword exists, else false.
 */
 //go:nosplit
 func (self class) HasMemberKeywordColor(member_keyword String.Readable) bool { //gd:CodeHighlighter.has_member_keyword_color
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_member_keyword_color, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ member_keyword gdextension.String }{pointers.Get(gd.InternalString(member_keyword))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_member_keyword_color, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ member_keyword gdextension.String }{pointers.Get(gd.InternalString(member_keyword))})
 	var ret = r_ret
 	return ret
 }
@@ -468,14 +470,14 @@ Returns the color for a member keyword.
 */
 //go:nosplit
 func (self class) GetMemberKeywordColor(member_keyword String.Readable) Color.RGBA { //gd:CodeHighlighter.get_member_keyword_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_member_keyword_color, gdextension.SizeColor|(gdextension.SizeString<<4), &struct{ member_keyword gdextension.String }{pointers.Get(gd.InternalString(member_keyword))})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_member_keyword_color, gdextension.SizeColor|(gdextension.SizeString<<4), &struct{ member_keyword gdextension.String }{pointers.Get(gd.InternalString(member_keyword))})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMemberKeywordColors(member_keyword Dictionary.Any) { //gd:CodeHighlighter.set_member_keyword_colors
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_member_keyword_colors, 0|(gdextension.SizeDictionary<<4), &struct{ member_keyword gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(member_keyword))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_member_keyword_colors, 0|(gdextension.SizeDictionary<<4), &struct{ member_keyword gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(member_keyword))})
 }
 
 /*
@@ -483,12 +485,12 @@ Removes all member keywords.
 */
 //go:nosplit
 func (self class) ClearMemberKeywordColors() { //gd:CodeHighlighter.clear_member_keyword_colors
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_member_keyword_colors, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_member_keyword_colors, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) GetMemberKeywordColors() Dictionary.Any { //gd:CodeHighlighter.get_member_keyword_colors
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_member_keyword_colors, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_member_keyword_colors, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -500,7 +502,7 @@ If 'line_only' is true or 'end_key' is an empty string, the region does not carr
 */
 //go:nosplit
 func (self class) AddColorRegion(start_key String.Readable, end_key String.Readable, color Color.RGBA, line_only bool) { //gd:CodeHighlighter.add_color_region
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_color_region, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeBool<<16), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_color_region, 0|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeColor<<12)|(gdextension.SizeBool<<16), &struct {
 		start_key gdextension.String
 		end_key   gdextension.String
 		color     Color.RGBA
@@ -513,7 +515,7 @@ Removes the color region that uses that start key.
 */
 //go:nosplit
 func (self class) RemoveColorRegion(start_key String.Readable) { //gd:CodeHighlighter.remove_color_region
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_color_region, 0|(gdextension.SizeString<<4), &struct{ start_key gdextension.String }{pointers.Get(gd.InternalString(start_key))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_color_region, 0|(gdextension.SizeString<<4), &struct{ start_key gdextension.String }{pointers.Get(gd.InternalString(start_key))})
 }
 
 /*
@@ -521,14 +523,14 @@ Returns true if the start key exists, else false.
 */
 //go:nosplit
 func (self class) HasColorRegion(start_key String.Readable) bool { //gd:CodeHighlighter.has_color_region
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_color_region, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ start_key gdextension.String }{pointers.Get(gd.InternalString(start_key))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_color_region, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ start_key gdextension.String }{pointers.Get(gd.InternalString(start_key))})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColorRegions(color_regions Dictionary.Any) { //gd:CodeHighlighter.set_color_regions
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_regions, 0|(gdextension.SizeDictionary<<4), &struct{ color_regions gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(color_regions))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_regions, 0|(gdextension.SizeDictionary<<4), &struct{ color_regions gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(color_regions))})
 }
 
 /*
@@ -536,60 +538,60 @@ Removes all color regions.
 */
 //go:nosplit
 func (self class) ClearColorRegions() { //gd:CodeHighlighter.clear_color_regions
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_color_regions, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_color_regions, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) GetColorRegions() Dictionary.Any { //gd:CodeHighlighter.get_color_regions
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_color_regions, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_color_regions, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFunctionColor(color Color.RGBA) { //gd:CodeHighlighter.set_function_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_function_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_function_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetFunctionColor() Color.RGBA { //gd:CodeHighlighter.get_function_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_function_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_function_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNumberColor(color Color.RGBA) { //gd:CodeHighlighter.set_number_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_number_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_number_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetNumberColor() Color.RGBA { //gd:CodeHighlighter.get_number_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_number_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_number_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSymbolColor(color Color.RGBA) { //gd:CodeHighlighter.set_symbol_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_symbol_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_symbol_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetSymbolColor() Color.RGBA { //gd:CodeHighlighter.get_symbol_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_symbol_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_symbol_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMemberVariableColor(color Color.RGBA) { //gd:CodeHighlighter.set_member_variable_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_member_variable_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_member_variable_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetMemberVariableColor() Color.RGBA { //gd:CodeHighlighter.get_member_variable_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_member_variable_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_member_variable_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }

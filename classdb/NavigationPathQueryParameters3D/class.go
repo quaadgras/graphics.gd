@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -45,6 +46,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -115,7 +117,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -293,180 +295,180 @@ func (self Instance) SetPathSearchMaxDistance(value Float.X) {
 
 //go:nosplit
 func (self class) SetPathfindingAlgorithm(pathfinding_algorithm PathfindingAlgorithm) { //gd:NavigationPathQueryParameters3D.set_pathfinding_algorithm
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pathfinding_algorithm, 0|(gdextension.SizeInt<<4), &struct{ pathfinding_algorithm PathfindingAlgorithm }{pathfinding_algorithm})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_pathfinding_algorithm, 0|(gdextension.SizeInt<<4), &struct{ pathfinding_algorithm PathfindingAlgorithm }{pathfinding_algorithm})
 }
 
 //go:nosplit
 func (self class) GetPathfindingAlgorithm() PathfindingAlgorithm { //gd:NavigationPathQueryParameters3D.get_pathfinding_algorithm
-	var r_ret = gdextension.Call[PathfindingAlgorithm](gd.ObjectChecked(self.AsObject()), methods.get_pathfinding_algorithm, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[PathfindingAlgorithm](gd.ObjectChecked(self.AsObject()), methods.get_pathfinding_algorithm, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathPostprocessing(path_postprocessing PathPostProcessing) { //gd:NavigationPathQueryParameters3D.set_path_postprocessing
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_postprocessing, 0|(gdextension.SizeInt<<4), &struct{ path_postprocessing PathPostProcessing }{path_postprocessing})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_postprocessing, 0|(gdextension.SizeInt<<4), &struct{ path_postprocessing PathPostProcessing }{path_postprocessing})
 }
 
 //go:nosplit
 func (self class) GetPathPostprocessing() PathPostProcessing { //gd:NavigationPathQueryParameters3D.get_path_postprocessing
-	var r_ret = gdextension.Call[PathPostProcessing](gd.ObjectChecked(self.AsObject()), methods.get_path_postprocessing, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[PathPostProcessing](gd.ObjectChecked(self.AsObject()), methods.get_path_postprocessing, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMap(mapping RID.Any) { //gd:NavigationPathQueryParameters3D.set_map
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_map, 0|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_map, 0|(gdextension.SizeRID<<4), &struct{ mapping RID.Any }{mapping})
 }
 
 //go:nosplit
 func (self class) GetMap() RID.Any { //gd:NavigationPathQueryParameters3D.get_map
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_map, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_map, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStartPosition(start_position Vector3.XYZ) { //gd:NavigationPathQueryParameters3D.set_start_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_start_position, 0|(gdextension.SizeVector3<<4), &struct{ start_position Vector3.XYZ }{start_position})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_start_position, 0|(gdextension.SizeVector3<<4), &struct{ start_position Vector3.XYZ }{start_position})
 }
 
 //go:nosplit
 func (self class) GetStartPosition() Vector3.XYZ { //gd:NavigationPathQueryParameters3D.get_start_position
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_start_position, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_start_position, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTargetPosition(target_position Vector3.XYZ) { //gd:NavigationPathQueryParameters3D.set_target_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_position, 0|(gdextension.SizeVector3<<4), &struct{ target_position Vector3.XYZ }{target_position})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_position, 0|(gdextension.SizeVector3<<4), &struct{ target_position Vector3.XYZ }{target_position})
 }
 
 //go:nosplit
 func (self class) GetTargetPosition() Vector3.XYZ { //gd:NavigationPathQueryParameters3D.get_target_position
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_target_position, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_target_position, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNavigationLayers(navigation_layers int64) { //gd:NavigationPathQueryParameters3D.set_navigation_layers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layers, 0|(gdextension.SizeInt<<4), &struct{ navigation_layers int64 }{navigation_layers})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_layers, 0|(gdextension.SizeInt<<4), &struct{ navigation_layers int64 }{navigation_layers})
 }
 
 //go:nosplit
 func (self class) GetNavigationLayers() int64 { //gd:NavigationPathQueryParameters3D.get_navigation_layers
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layers, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_navigation_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMetadataFlags(flags PathMetadataFlags) { //gd:NavigationPathQueryParameters3D.set_metadata_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_metadata_flags, 0|(gdextension.SizeInt<<4), &struct{ flags PathMetadataFlags }{flags})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_metadata_flags, 0|(gdextension.SizeInt<<4), &struct{ flags PathMetadataFlags }{flags})
 }
 
 //go:nosplit
 func (self class) GetMetadataFlags() PathMetadataFlags { //gd:NavigationPathQueryParameters3D.get_metadata_flags
-	var r_ret = gdextension.Call[PathMetadataFlags](gd.ObjectChecked(self.AsObject()), methods.get_metadata_flags, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[PathMetadataFlags](gd.ObjectChecked(self.AsObject()), methods.get_metadata_flags, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSimplifyPath(enabled bool) { //gd:NavigationPathQueryParameters3D.set_simplify_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simplify_path, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simplify_path, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetSimplifyPath() bool { //gd:NavigationPathQueryParameters3D.get_simplify_path
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_simplify_path, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_simplify_path, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSimplifyEpsilon(epsilon float64) { //gd:NavigationPathQueryParameters3D.set_simplify_epsilon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simplify_epsilon, 0|(gdextension.SizeFloat<<4), &struct{ epsilon float64 }{epsilon})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_simplify_epsilon, 0|(gdextension.SizeFloat<<4), &struct{ epsilon float64 }{epsilon})
 }
 
 //go:nosplit
 func (self class) GetSimplifyEpsilon() float64 { //gd:NavigationPathQueryParameters3D.get_simplify_epsilon
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_simplify_epsilon, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_simplify_epsilon, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIncludedRegions(regions Array.Contains[RID.Any]) { //gd:NavigationPathQueryParameters3D.set_included_regions
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_included_regions, 0|(gdextension.SizeArray<<4), &struct{ regions gdextension.Array }{pointers.Get(gd.InternalArray(regions))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_included_regions, 0|(gdextension.SizeArray<<4), &struct{ regions gdextension.Array }{pointers.Get(gd.InternalArray(regions))})
 }
 
 //go:nosplit
 func (self class) GetIncludedRegions() Array.Contains[RID.Any] { //gd:NavigationPathQueryParameters3D.get_included_regions
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_included_regions, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_included_regions, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExcludedRegions(regions Array.Contains[RID.Any]) { //gd:NavigationPathQueryParameters3D.set_excluded_regions
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_excluded_regions, 0|(gdextension.SizeArray<<4), &struct{ regions gdextension.Array }{pointers.Get(gd.InternalArray(regions))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_excluded_regions, 0|(gdextension.SizeArray<<4), &struct{ regions gdextension.Array }{pointers.Get(gd.InternalArray(regions))})
 }
 
 //go:nosplit
 func (self class) GetExcludedRegions() Array.Contains[RID.Any] { //gd:NavigationPathQueryParameters3D.get_excluded_regions
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_excluded_regions, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_excluded_regions, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathReturnMaxLength(length float64) { //gd:NavigationPathQueryParameters3D.set_path_return_max_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_return_max_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_return_max_length, 0|(gdextension.SizeFloat<<4), &struct{ length float64 }{length})
 }
 
 //go:nosplit
 func (self class) GetPathReturnMaxLength() float64 { //gd:NavigationPathQueryParameters3D.get_path_return_max_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_return_max_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_return_max_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathReturnMaxRadius(radius float64) { //gd:NavigationPathQueryParameters3D.set_path_return_max_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_return_max_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_return_max_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 
 //go:nosplit
 func (self class) GetPathReturnMaxRadius() float64 { //gd:NavigationPathQueryParameters3D.get_path_return_max_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_return_max_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_return_max_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathSearchMaxPolygons(max_polygons int64) { //gd:NavigationPathQueryParameters3D.set_path_search_max_polygons
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_search_max_polygons, 0|(gdextension.SizeInt<<4), &struct{ max_polygons int64 }{max_polygons})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_search_max_polygons, 0|(gdextension.SizeInt<<4), &struct{ max_polygons int64 }{max_polygons})
 }
 
 //go:nosplit
 func (self class) GetPathSearchMaxPolygons() int64 { //gd:NavigationPathQueryParameters3D.get_path_search_max_polygons
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_path_search_max_polygons, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_path_search_max_polygons, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPathSearchMaxDistance(distance float64) { //gd:NavigationPathQueryParameters3D.set_path_search_max_distance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_search_max_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_path_search_max_distance, 0|(gdextension.SizeFloat<<4), &struct{ distance float64 }{distance})
 }
 
 //go:nosplit
 func (self class) GetPathSearchMaxDistance() float64 { //gd:NavigationPathQueryParameters3D.get_path_search_max_distance
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_search_max_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_path_search_max_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

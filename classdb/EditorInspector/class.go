@@ -24,6 +24,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -64,6 +65,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -108,7 +110,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -205,7 +207,7 @@ Note: If you want to edit an object in the editor's main inspector, use the edit
 */
 //go:nosplit
 func (self class) Edit(obj [1]gd.Object) { //gd:EditorInspector.edit
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit, 0|(gdextension.SizeObject<<4), &struct{ obj gdextension.Object }{gdextension.Object(gd.ObjectChecked(obj[0].AsObject()))})
 }
 
 /*
@@ -213,7 +215,7 @@ Gets the path of the currently selected property.
 */
 //go:nosplit
 func (self class) GetSelectedPath() String.Readable { //gd:EditorInspector.get_selected_path
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_selected_path, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_selected_path, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -223,7 +225,7 @@ Returns the object currently selected in this inspector.
 */
 //go:nosplit
 func (self class) GetEditedObject() [1]gd.Object { //gd:EditorInspector.get_edited_object
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_object, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_object, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
@@ -233,7 +235,7 @@ Creates a property editor that can be used by plugin UI to edit the specified pr
 */
 //go:nosplit
 func (self class) InstantiatePropertyEditor(obj [1]gd.Object, atype variant.Type, path String.Readable, hint ClassDB.PropertyHint, hint_text String.Readable, usage int64, wide bool) [1]gdclass.EditorProperty { //gd:EditorInspector.instantiate_property_editor
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.instantiate_property_editor, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), &struct {
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.instantiate_property_editor, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeBool<<28), &struct {
 		obj       gdextension.Object
 		atype     variant.Type
 		path      gdextension.String

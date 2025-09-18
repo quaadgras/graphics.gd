@@ -7,6 +7,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -42,6 +43,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -82,7 +84,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -124,12 +126,12 @@ type Interface interface {
 	IsAbstract() bool
 	GetLanguage() ScriptLanguage.Instance
 	HasScriptSignal(signal string) bool
-	GetScriptSignalList() [][]Object.MethodInfo
+	GetScriptSignalList() [][]struct{}
 	HasPropertyDefaultValue(property string) bool
 	GetPropertyDefaultValue(property string) any
 	UpdateExports()
-	GetScriptMethodList() [][]Object.MethodInfo
-	GetScriptPropertyList() [][]Object.PropertyInfo
+	GetScriptMethodList() [][]struct{}
+	GetScriptPropertyList() [][]struct{}
 	GetMemberLine(member string) int
 	GetConstants() map[string]interface{}
 	GetMembers() []string
@@ -170,12 +172,12 @@ func (self implementation) IsValid() (_ bool)                                  {
 func (self implementation) IsAbstract() (_ bool)                               { return }
 func (self implementation) GetLanguage() (_ ScriptLanguage.Instance)           { return }
 func (self implementation) HasScriptSignal(signal string) (_ bool)             { return }
-func (self implementation) GetScriptSignalList() (_ [][]Object.MethodInfo)     { return }
+func (self implementation) GetScriptSignalList() (_ [][]struct{})              { return }
 func (self implementation) HasPropertyDefaultValue(property string) (_ bool)   { return }
 func (self implementation) GetPropertyDefaultValue(property string) (_ any)    { return }
 func (self implementation) UpdateExports()                                     { return }
-func (self implementation) GetScriptMethodList() (_ [][]Object.MethodInfo)     { return }
-func (self implementation) GetScriptPropertyList() (_ [][]Object.PropertyInfo) { return }
+func (self implementation) GetScriptMethodList() (_ [][]struct{})              { return }
+func (self implementation) GetScriptPropertyList() (_ [][]struct{})            { return }
 func (self implementation) GetMemberLine(member string) (_ int)                { return }
 func (self implementation) GetConstants() (_ map[string]interface{})           { return }
 func (self implementation) GetMembers() (_ []string)                           { return }
@@ -447,7 +449,7 @@ func (Instance) _has_script_signal(impl func(ptr gdclass.Receiver, signal string
 		gd.UnsafeSet(p_back, ret)
 	}
 }
-func (Instance) _get_script_signal_list(impl func(ptr gdclass.Receiver) [][]Object.MethodInfo) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_script_signal_list(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -488,7 +490,7 @@ func (Instance) _update_exports(impl func(ptr gdclass.Receiver)) (cb gd.Extensio
 		impl(self)
 	}
 }
-func (Instance) _get_script_method_list(impl func(ptr gdclass.Receiver) [][]Object.MethodInfo) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_script_method_list(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -500,7 +502,7 @@ func (Instance) _get_script_method_list(impl func(ptr gdclass.Receiver) [][]Obje
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_script_property_list(impl func(ptr gdclass.Receiver) [][]Object.PropertyInfo) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_script_property_list(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)

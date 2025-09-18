@@ -7,6 +7,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -40,6 +41,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -84,7 +86,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -158,26 +160,26 @@ func (self Instance) SetSampler(value int) {
 
 //go:nosplit
 func (self class) GetSrcImage() int64 { //gd:GLTFTexture.get_src_image
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_src_image, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_src_image, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSrcImage(src_image int64) { //gd:GLTFTexture.set_src_image
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_src_image, 0|(gdextension.SizeInt<<4), &struct{ src_image int64 }{src_image})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_src_image, 0|(gdextension.SizeInt<<4), &struct{ src_image int64 }{src_image})
 }
 
 //go:nosplit
 func (self class) GetSampler() int64 { //gd:GLTFTexture.get_sampler
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sampler, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sampler, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSampler(sampler int64) { //gd:GLTFTexture.set_sampler
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sampler, 0|(gdextension.SizeInt<<4), &struct{ sampler int64 }{sampler})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sampler, 0|(gdextension.SizeInt<<4), &struct{ sampler int64 }{sampler})
 }
 func (self class) AsGLTFTexture() Advanced {
 	return Advanced{pointers.AsA[gdclass.GLTFTexture](self[0])}

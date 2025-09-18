@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +49,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -94,7 +96,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -176,36 +178,36 @@ func (self Instance) SetGlobalPosition(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetButtonMask(button_mask Input.MouseButtonMask) { //gd:InputEventMouse.set_button_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_mask, 0|(gdextension.SizeInt<<4), &struct{ button_mask Input.MouseButtonMask }{button_mask})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_button_mask, 0|(gdextension.SizeInt<<4), &struct{ button_mask Input.MouseButtonMask }{button_mask})
 }
 
 //go:nosplit
 func (self class) GetButtonMask() Input.MouseButtonMask { //gd:InputEventMouse.get_button_mask
-	var r_ret = gdextension.Call[Input.MouseButtonMask](gd.ObjectChecked(self.AsObject()), methods.get_button_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Input.MouseButtonMask](gd.ObjectChecked(self.AsObject()), methods.get_button_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPosition(position Vector2.XY) { //gd:InputEventMouse.set_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_position, 0|(gdextension.SizeVector2<<4), &struct{ position Vector2.XY }{position})
 }
 
 //go:nosplit
 func (self class) GetPosition() Vector2.XY { //gd:InputEventMouse.get_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGlobalPosition(global_position Vector2.XY) { //gd:InputEventMouse.set_global_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_position, 0|(gdextension.SizeVector2<<4), &struct{ global_position Vector2.XY }{global_position})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_global_position, 0|(gdextension.SizeVector2<<4), &struct{ global_position Vector2.XY }{global_position})
 }
 
 //go:nosplit
 func (self class) GetGlobalPosition() Vector2.XY { //gd:InputEventMouse.get_global_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_global_position, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_global_position, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -19,6 +19,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +54,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -113,7 +115,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -303,36 +305,36 @@ func (self Instance) SetCcdikDataChainLength(value int) {
 
 //go:nosplit
 func (self class) SetTargetNode(target_nodepath Path.ToNode) { //gd:SkeletonModification2DCCDIK.set_target_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_node, 0|(gdextension.SizeNodePath<<4), &struct{ target_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_nodepath))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_target_node, 0|(gdextension.SizeNodePath<<4), &struct{ target_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(target_nodepath))})
 }
 
 //go:nosplit
 func (self class) GetTargetNode() Path.ToNode { //gd:SkeletonModification2DCCDIK.get_target_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_target_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTipNode(tip_nodepath Path.ToNode) { //gd:SkeletonModification2DCCDIK.set_tip_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tip_node, 0|(gdextension.SizeNodePath<<4), &struct{ tip_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(tip_nodepath))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tip_node, 0|(gdextension.SizeNodePath<<4), &struct{ tip_nodepath gdextension.NodePath }{pointers.Get(gd.InternalNodePath(tip_nodepath))})
 }
 
 //go:nosplit
 func (self class) GetTipNode() Path.ToNode { //gd:SkeletonModification2DCCDIK.get_tip_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_tip_node, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_tip_node, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCcdikDataChainLength(length int64) { //gd:SkeletonModification2DCCDIK.set_ccdik_data_chain_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_data_chain_length, 0|(gdextension.SizeInt<<4), &struct{ length int64 }{length})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_data_chain_length, 0|(gdextension.SizeInt<<4), &struct{ length int64 }{length})
 }
 
 //go:nosplit
 func (self class) GetCcdikDataChainLength() int64 { //gd:SkeletonModification2DCCDIK.get_ccdik_data_chain_length
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_data_chain_length, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_data_chain_length, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -344,7 +346,7 @@ Sets the [Bone2D] node assigned to the CCDIK joint at 'joint_idx'.
 */
 //go:nosplit
 func (self class) SetCcdikJointBone2dNode(joint_idx int64, bone2d_nodepath Path.ToNode) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone2d_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_joint_bone2d_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_joint_bone2d_node, 0|(gdextension.SizeInt<<4)|(gdextension.SizeNodePath<<8), &struct {
 		joint_idx       int64
 		bone2d_nodepath gdextension.NodePath
 	}{joint_idx, pointers.Get(gd.InternalNodePath(bone2d_nodepath))})
@@ -357,7 +359,7 @@ Returns the [Bone2D] node assigned to the CCDIK joint at 'joint_idx'.
 */
 //go:nosplit
 func (self class) GetCcdikJointBone2dNode(joint_idx int64) Path.ToNode { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_bone2d_node
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_joint_bone2d_node, gdextension.SizeNodePath|(gdextension.SizeInt<<4), &struct{ joint_idx int64 }{joint_idx})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_joint_bone2d_node, gdextension.SizeNodePath|(gdextension.SizeInt<<4), &struct{ joint_idx int64 }{joint_idx})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
@@ -367,7 +369,7 @@ Sets the bone index, 'bone_idx', of the CCDIK joint at 'joint_idx'. When possibl
 */
 //go:nosplit
 func (self class) SetCcdikJointBoneIndex(joint_idx int64, bone_idx int64) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_bone_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_joint_bone_index, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_joint_bone_index, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		joint_idx int64
 		bone_idx  int64
 	}{joint_idx, bone_idx})
@@ -380,7 +382,7 @@ Returns the index of the [Bone2D] node assigned to the CCDIK joint at 'joint_idx
 */
 //go:nosplit
 func (self class) GetCcdikJointBoneIndex(joint_idx int64) int64 { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_bone_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_joint_bone_index, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ joint_idx int64 }{joint_idx})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_joint_bone_index, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ joint_idx int64 }{joint_idx})
 	var ret = r_ret
 	return ret
 }
@@ -390,7 +392,7 @@ Sets whether the joint at 'joint_idx' is set to rotate from the joint, true, or 
 */
 //go:nosplit
 func (self class) SetCcdikJointRotateFromJoint(joint_idx int64, rotate_from_joint bool) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_rotate_from_joint
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_joint_rotate_from_joint, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_joint_rotate_from_joint, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		joint_idx         int64
 		rotate_from_joint bool
 	}{joint_idx, rotate_from_joint})
@@ -401,7 +403,7 @@ Returns whether the joint at 'joint_idx' is set to rotate from the joint, true, 
 */
 //go:nosplit
 func (self class) GetCcdikJointRotateFromJoint(joint_idx int64) bool { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_rotate_from_joint
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_joint_rotate_from_joint, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ joint_idx int64 }{joint_idx})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_joint_rotate_from_joint, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ joint_idx int64 }{joint_idx})
 	var ret = r_ret
 	return ret
 }
@@ -411,7 +413,7 @@ Determines whether angle constraints on the CCDIK joint at 'joint_idx' are enabl
 */
 //go:nosplit
 func (self class) SetCcdikJointEnableConstraint(joint_idx int64, enable_constraint bool) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_enable_constraint
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_joint_enable_constraint, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_joint_enable_constraint, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		joint_idx         int64
 		enable_constraint bool
 	}{joint_idx, enable_constraint})
@@ -422,7 +424,7 @@ Returns whether angle constraints on the CCDIK joint at 'joint_idx' are enabled.
 */
 //go:nosplit
 func (self class) GetCcdikJointEnableConstraint(joint_idx int64) bool { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_enable_constraint
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_joint_enable_constraint, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ joint_idx int64 }{joint_idx})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_joint_enable_constraint, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ joint_idx int64 }{joint_idx})
 	var ret = r_ret
 	return ret
 }
@@ -432,7 +434,7 @@ Sets the minimum angle constraint for the joint at 'joint_idx'.
 */
 //go:nosplit
 func (self class) SetCcdikJointConstraintAngleMin(joint_idx int64, angle_min float64) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_min
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_joint_constraint_angle_min, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_joint_constraint_angle_min, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		joint_idx int64
 		angle_min float64
 	}{joint_idx, angle_min})
@@ -443,7 +445,7 @@ Returns the minimum angle constraint for the joint at 'joint_idx'.
 */
 //go:nosplit
 func (self class) GetCcdikJointConstraintAngleMin(joint_idx int64) float64 { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_min
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_joint_constraint_angle_min, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ joint_idx int64 }{joint_idx})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_joint_constraint_angle_min, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ joint_idx int64 }{joint_idx})
 	var ret = r_ret
 	return ret
 }
@@ -453,7 +455,7 @@ Sets the maximum angle constraint for the joint at 'joint_idx'.
 */
 //go:nosplit
 func (self class) SetCcdikJointConstraintAngleMax(joint_idx int64, angle_max float64) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_max
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_joint_constraint_angle_max, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_joint_constraint_angle_max, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		joint_idx int64
 		angle_max float64
 	}{joint_idx, angle_max})
@@ -464,7 +466,7 @@ Returns the maximum angle constraint for the joint at 'joint_idx'.
 */
 //go:nosplit
 func (self class) GetCcdikJointConstraintAngleMax(joint_idx int64) float64 { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_max
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_joint_constraint_angle_max, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ joint_idx int64 }{joint_idx})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_joint_constraint_angle_max, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ joint_idx int64 }{joint_idx})
 	var ret = r_ret
 	return ret
 }
@@ -476,7 +478,7 @@ An inverted joint constraint only constraints the CCDIK joint to the angles outs
 */
 //go:nosplit
 func (self class) SetCcdikJointConstraintAngleInvert(joint_idx int64, invert bool) { //gd:SkeletonModification2DCCDIK.set_ccdik_joint_constraint_angle_invert
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_joint_constraint_angle_invert, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ccdik_joint_constraint_angle_invert, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		joint_idx int64
 		invert    bool
 	}{joint_idx, invert})
@@ -489,7 +491,7 @@ Returns whether the CCDIK joint at 'joint_idx' uses an inverted joint constraint
 */
 //go:nosplit
 func (self class) GetCcdikJointConstraintAngleInvert(joint_idx int64) bool { //gd:SkeletonModification2DCCDIK.get_ccdik_joint_constraint_angle_invert
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_joint_constraint_angle_invert, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ joint_idx int64 }{joint_idx})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_ccdik_joint_constraint_angle_invert, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ joint_idx int64 }{joint_idx})
 	var ret = r_ret
 	return ret
 }

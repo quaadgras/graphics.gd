@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +48,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -89,7 +91,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -155,12 +157,12 @@ func (self Instance) SetTextureRdRid(value RID.Texture) {
 
 //go:nosplit
 func (self class) SetTextureRdRid(texture_rd_rid RID.Any) { //gd:Texture2DRD.set_texture_rd_rid
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_rd_rid, 0|(gdextension.SizeRID<<4), &struct{ texture_rd_rid RID.Any }{texture_rd_rid})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_rd_rid, 0|(gdextension.SizeRID<<4), &struct{ texture_rd_rid RID.Any }{texture_rd_rid})
 }
 
 //go:nosplit
 func (self class) GetTextureRdRid() RID.Any { //gd:Texture2DRD.get_texture_rd_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_texture_rd_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_texture_rd_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -21,6 +21,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -56,6 +57,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -106,7 +108,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -203,60 +205,60 @@ func (self Instance) SetRenderTargetUpdateMode(value UpdateMode) {
 
 //go:nosplit
 func (self class) SetSize(size Vector2i.XY) { //gd:SubViewport.set_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
 
 //go:nosplit
 func (self class) GetSize() Vector2i.XY { //gd:SubViewport.get_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSize2dOverride(size Vector2i.XY) { //gd:SubViewport.set_size_2d_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_2d_override, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_2d_override, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
 
 //go:nosplit
 func (self class) GetSize2dOverride() Vector2i.XY { //gd:SubViewport.get_size_2d_override
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_size_2d_override, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_size_2d_override, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSize2dOverrideStretch(enable bool) { //gd:SubViewport.set_size_2d_override_stretch
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_2d_override_stretch, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size_2d_override_stretch, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsSize2dOverrideStretchEnabled() bool { //gd:SubViewport.is_size_2d_override_stretch_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_size_2d_override_stretch_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_size_2d_override_stretch_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpdateMode(mode UpdateMode) { //gd:SubViewport.set_update_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_mode, 0|(gdextension.SizeInt<<4), &struct{ mode UpdateMode }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_mode, 0|(gdextension.SizeInt<<4), &struct{ mode UpdateMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetUpdateMode() UpdateMode { //gd:SubViewport.get_update_mode
-	var r_ret = gdextension.Call[UpdateMode](gd.ObjectChecked(self.AsObject()), methods.get_update_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[UpdateMode](gd.ObjectChecked(self.AsObject()), methods.get_update_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClearMode(mode ClearMode) { //gd:SubViewport.set_clear_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clear_mode, 0|(gdextension.SizeInt<<4), &struct{ mode ClearMode }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clear_mode, 0|(gdextension.SizeInt<<4), &struct{ mode ClearMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetClearMode() ClearMode { //gd:SubViewport.get_clear_mode
-	var r_ret = gdextension.Call[ClearMode](gd.ObjectChecked(self.AsObject()), methods.get_clear_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[ClearMode](gd.ObjectChecked(self.AsObject()), methods.get_clear_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

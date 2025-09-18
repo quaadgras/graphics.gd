@@ -14,6 +14,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +49,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -102,7 +104,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -233,7 +235,7 @@ Creates a new [AudioStreamMP3] instance from the given buffer. The buffer must c
 */
 //go:nosplit
 func (self class) LoadFromBuffer(stream_data Packed.Bytes) [1]gdclass.AudioStreamMP3 { //gd:AudioStreamMP3.load_from_buffer
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4), &struct{ stream_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data.Array)))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4), &struct{ stream_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data.Array)))})
 	var ret = [1]gdclass.AudioStreamMP3{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamMP3](r_ret)}
 	return ret
 }
@@ -245,79 +247,79 @@ Creates a new [AudioStreamMP3] instance from the given file path. The file must 
 */
 //go:nosplit
 func (self class) LoadFromFile(path String.Readable) [1]gdclass.AudioStreamMP3 { //gd:AudioStreamMP3.load_from_file
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_file, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.load_from_file, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = [1]gdclass.AudioStreamMP3{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamMP3](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetData(data Packed.Bytes) { //gd:AudioStreamMP3.set_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 }
 
 //go:nosplit
 func (self class) GetData() Packed.Bytes { //gd:AudioStreamMP3.get_data
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLoop(enable bool) { //gd:AudioStreamMP3.set_loop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) HasLoop() bool { //gd:AudioStreamMP3.has_loop
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLoopOffset(seconds float64) { //gd:AudioStreamMP3.set_loop_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_offset, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_offset, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
 }
 
 //go:nosplit
 func (self class) GetLoopOffset() float64 { //gd:AudioStreamMP3.get_loop_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_loop_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_loop_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBpm(bpm float64) { //gd:AudioStreamMP3.set_bpm
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bpm, 0|(gdextension.SizeFloat<<4), &struct{ bpm float64 }{bpm})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bpm, 0|(gdextension.SizeFloat<<4), &struct{ bpm float64 }{bpm})
 }
 
 //go:nosplit
 func (self class) GetBpm() float64 { //gd:AudioStreamMP3.get_bpm
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bpm, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bpm, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBeatCount(count int64) { //gd:AudioStreamMP3.set_beat_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_beat_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_beat_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 
 //go:nosplit
 func (self class) GetBeatCount() int64 { //gd:AudioStreamMP3.get_beat_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_beat_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_beat_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBarBeats(count int64) { //gd:AudioStreamMP3.set_bar_beats
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bar_beats, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bar_beats, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 
 //go:nosplit
 func (self class) GetBarBeats() int64 { //gd:AudioStreamMP3.get_bar_beats
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bar_beats, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bar_beats, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -44,6 +45,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -87,7 +89,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -196,7 +198,7 @@ Returns true if futures are available in the OpenXR runtime used. This function 
 */
 //go:nosplit
 func (self class) IsActive() bool { //gd:OpenXRFutureExtension.is_active
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_active, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -215,7 +217,7 @@ Or you can use the returned [OpenXRFutureResult] object to await its [OnOpenxrfu
 */
 //go:nosplit
 func (self class) RegisterFuture(future int64, on_success Callable.Function) [1]gdclass.OpenXRFutureResult { //gd:OpenXRFutureExtension.register_future
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.register_future, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.register_future, gdextension.SizeObject|(gdextension.SizeInt<<4)|(gdextension.SizeCallable<<8), &struct {
 		future     int64
 		on_success gdextension.Callable
 	}{future, pointers.Get(gd.InternalCallable(on_success))})
@@ -228,7 +230,7 @@ Cancels an in-progress future. 'future' must be an XrFutureEXT value previously 
 */
 //go:nosplit
 func (self class) CancelFuture(future int64) { //gd:OpenXRFutureExtension.cancel_future
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cancel_future, 0|(gdextension.SizeInt<<4), &struct{ future int64 }{future})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cancel_future, 0|(gdextension.SizeInt<<4), &struct{ future int64 }{future})
 }
 func (self class) AsOpenXRFutureExtension() Advanced {
 	return Advanced{pointers.AsA[gdclass.OpenXRFutureExtension](self[0])}

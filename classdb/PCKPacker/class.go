@@ -29,6 +29,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -61,6 +62,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -105,7 +107,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -230,7 +232,7 @@ Creates a new PCK file at the file path 'pck_path'. The .pck file extension isn'
 */
 //go:nosplit
 func (self class) PckStart(pck_path String.Readable, alignment int64, key String.Readable, encrypt_directory bool) Error.Code { //gd:PCKPacker.pck_start
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pck_start, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.pck_start, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12)|(gdextension.SizeBool<<16), &struct {
 		pck_path          gdextension.String
 		alignment         int64
 		key               gdextension.String
@@ -245,7 +247,7 @@ Adds the 'source_path' file to the current PCK package at the 'target_path' inte
 */
 //go:nosplit
 func (self class) AddFile(target_path String.Readable, source_path String.Readable, encrypt bool) Error.Code { //gd:PCKPacker.add_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_file, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_file, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12), &struct {
 		target_path gdextension.String
 		source_path gdextension.String
 		encrypt     bool
@@ -259,7 +261,7 @@ Registers a file removal of the 'target_path' internal path to the PCK. This is 
 */
 //go:nosplit
 func (self class) AddFileRemoval(target_path String.Readable) Error.Code { //gd:PCKPacker.add_file_removal
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_file_removal, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ target_path gdextension.String }{pointers.Get(gd.InternalString(target_path))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_file_removal, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ target_path gdextension.String }{pointers.Get(gd.InternalString(target_path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -273,7 +275,7 @@ Note: [PCKPacker] will automatically flush when it's freed, which happens when i
 */
 //go:nosplit
 func (self class) Flush(verbose bool) Error.Code { //gd:PCKPacker.flush
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.flush, gdextension.SizeInt|(gdextension.SizeBool<<4), &struct{ verbose bool }{verbose})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.flush, gdextension.SizeInt|(gdextension.SizeBool<<4), &struct{ verbose bool }{verbose})
 	var ret = Error.Code(r_ret)
 	return ret
 }

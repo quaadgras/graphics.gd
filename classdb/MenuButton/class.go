@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +54,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -100,7 +102,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -210,7 +212,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 */
 //go:nosplit
 func (self class) GetPopup() [1]gdclass.PopupMenu { //gd:MenuButton.get_popup
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_popup, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_popup, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }
@@ -223,17 +225,17 @@ Adjusts popup position and sizing for the [MenuButton], then shows the [PopupMen
 */
 //go:nosplit
 func (self class) ShowPopup() { //gd:MenuButton.show_popup
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.show_popup, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.show_popup, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetSwitchOnHover(enable bool) { //gd:MenuButton.set_switch_on_hover
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_switch_on_hover, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_switch_on_hover, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsSwitchOnHover() bool { //gd:MenuButton.is_switch_on_hover
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_switch_on_hover, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_switch_on_hover, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -243,17 +245,17 @@ If true, shortcuts are disabled and cannot be used to trigger the button.
 */
 //go:nosplit
 func (self class) SetDisableShortcuts(disabled bool) { //gd:MenuButton.set_disable_shortcuts
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_shortcuts, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_shortcuts, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
 }
 
 //go:nosplit
 func (self class) SetItemCount(count int64) { //gd:MenuButton.set_item_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 
 //go:nosplit
 func (self class) GetItemCount() int64 { //gd:MenuButton.get_item_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

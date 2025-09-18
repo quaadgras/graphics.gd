@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -44,6 +45,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -86,7 +88,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -152,14 +154,14 @@ func (self Instance) SetAllowGeometryHelperNodes(value bool) {
 
 //go:nosplit
 func (self class) GetAllowGeometryHelperNodes() bool { //gd:FBXState.get_allow_geometry_helper_nodes
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_geometry_helper_nodes, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_geometry_helper_nodes, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowGeometryHelperNodes(allow bool) { //gd:FBXState.set_allow_geometry_helper_nodes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_geometry_helper_nodes, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_geometry_helper_nodes, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
 func (self class) AsFBXState() Advanced         { return Advanced{pointers.AsA[gdclass.FBXState](self[0])} }
 func (self Instance) AsFBXState() Instance      { return Instance{pointers.AsA[gdclass.FBXState](self[0])} }

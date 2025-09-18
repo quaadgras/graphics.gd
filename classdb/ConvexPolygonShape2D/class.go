@@ -23,6 +23,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -58,6 +59,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -101,7 +103,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -183,21 +185,21 @@ Based on the set of points provided, this assigns the [Points] property using th
 */
 //go:nosplit
 func (self class) SetPointCloud(point_cloud Packed.Array[Vector2.XY]) { //gd:ConvexPolygonShape2D.set_point_cloud
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_cloud, 0|(gdextension.SizePackedArray<<4), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_cloud, 0|(gdextension.SizePackedArray<<4), &struct {
 		point_cloud gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](point_cloud))})
 }
 
 //go:nosplit
 func (self class) SetPoints(points Packed.Array[Vector2.XY]) { //gd:ConvexPolygonShape2D.set_points
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_points, 0|(gdextension.SizePackedArray<<4), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_points, 0|(gdextension.SizePackedArray<<4), &struct {
 		points gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points))})
 }
 
 //go:nosplit
 func (self class) GetPoints() Packed.Array[Vector2.XY] { //gd:ConvexPolygonShape2D.get_points
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_points, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_points, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector2.XY](Array.Through(gd.PackedProxy[gd.PackedVector2Array, Vector2.XY]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
