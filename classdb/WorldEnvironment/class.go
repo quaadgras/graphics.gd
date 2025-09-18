@@ -157,26 +157,47 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [Environment] resource used by this [WorldEnvironment], defining the default properties.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
+[WorldEnvironment]: https://pkg.go.dev/graphics.gd/classdb/WorldEnvironment
+*/
 func (self Instance) Environment() Environment.Instance {
 	return Environment.Instance(class(self).GetEnvironment())
 }
 
+// SetEnvironment sets the property returned by [GetEnvironment].
 func (self Instance) SetEnvironment(value Environment.Instance) {
 	class(self).SetEnvironment(value)
 }
 
+/*
+The default [CameraAttributes] resource to use if none set on the [Camera3D].
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
+*/
 func (self Instance) CameraAttributes() CameraAttributes.Instance {
 	return CameraAttributes.Instance(class(self).GetCameraAttributes())
 }
 
+// SetCameraAttributes sets the property returned by [GetCameraAttributes].
 func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) {
 	class(self).SetCameraAttributes(value)
 }
 
+/*
+The default [Compositor] resource to use if none set on the [Camera3D].
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[Compositor]: https://pkg.go.dev/graphics.gd/classdb/Compositor
+*/
 func (self Instance) Compositor() Compositor.Instance {
 	return Compositor.Instance(class(self).GetCompositor())
 }
 
+// SetCompositor sets the property returned by [GetCompositor].
 func (self Instance) SetCompositor(value Compositor.Instance) {
 	class(self).SetCompositor(value)
 }

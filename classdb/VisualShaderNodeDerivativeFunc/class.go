@@ -148,26 +148,38 @@ func New() Instance {
 	return casted
 }
 
+/*
+A type of operands and returned value.
+*/
 func (self Instance) OpType() OpType {
 	return OpType(class(self).GetOpType())
 }
 
+// SetOpType sets the property returned by [GetOpType].
 func (self Instance) SetOpType(value OpType) {
 	class(self).SetOpType(value)
 }
 
+/*
+A derivative function type.
+*/
 func (self Instance) Function() Function {
 	return Function(class(self).GetFunction())
 }
 
+// SetFunction sets the property returned by [GetFunction].
 func (self Instance) SetFunction(value Function) {
 	class(self).SetFunction(value)
 }
 
+/*
+Sets the level of precision to use for the derivative function. When using the Compatibility renderer, this setting has no effect.
+*/
 func (self Instance) Precision() Precision {
 	return Precision(class(self).GetPrecision())
 }
 
+// SetPrecision sets the property returned by [GetPrecision].
 func (self Instance) SetPrecision(value Precision) {
 	class(self).SetPrecision(value)
 }

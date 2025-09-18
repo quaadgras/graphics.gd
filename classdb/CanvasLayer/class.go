@@ -216,74 +216,132 @@ func New() Instance {
 	return casted
 }
 
+/*
+Layer index for draw order. Lower values are drawn behind higher values.
+
+Note: If multiple CanvasLayers have the same layer index, [CanvasItem] children of one CanvasLayer are drawn behind the [CanvasItem] children of the other CanvasLayer. Which CanvasLayer is drawn in front is non-deterministic.
+
+Note: The layer index should be between [Renderingserver.CanvasLayerMin] and [Renderingserver.CanvasLayerMax] (inclusive). Any other value will wrap around.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+*/
 func (self Instance) Layer() int {
 	return int(int(class(self).GetLayer()))
 }
 
+// SetLayer sets the property returned by [GetLayer].
 func (self Instance) SetLayer(value int) {
 	class(self).SetLayer(int64(value))
 }
 
+/*
+If false, any [CanvasItem] under this [CanvasLayer] will be hidden.
+
+Unlike [CanvasItem.Visible], visibility of a [CanvasLayer] isn't propagated to underlying layers.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.Visible
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
+*/
 func (self Instance) Visible() bool {
 	return bool(class(self).IsVisible())
 }
 
+// SetVisible sets the property returned by [IsVisible].
 func (self Instance) SetVisible(value bool) {
 	class(self).SetVisible(value)
 }
 
+/*
+The layer's base offset.
+*/
 func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
+// SetOffset sets the property returned by [GetOffset].
 func (self Instance) SetOffset(value Vector2.XY) {
 	class(self).SetOffset(Vector2.XY(value))
 }
 
+/*
+The layer's rotation in radians.
+*/
 func (self Instance) Rotation() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetRotation()))
 }
 
+// SetRotation sets the property returned by [GetRotation].
 func (self Instance) SetRotation(value Angle.Radians) {
 	class(self).SetRotation(float64(value))
 }
 
+/*
+The layer's scale.
+*/
 func (self Instance) Scale() Vector2.XY {
 	return Vector2.XY(class(self).GetScale())
 }
 
+// SetScale sets the property returned by [GetScale].
 func (self Instance) SetScale(value Vector2.XY) {
 	class(self).SetScale(Vector2.XY(value))
 }
 
+/*
+The layer's transform.
+*/
 func (self Instance) Transform() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
+// SetTransform sets the property returned by [GetTransform].
 func (self Instance) SetTransform(value Transform2D.OriginXY) {
 	class(self).SetTransform(Transform2D.OriginXY(value))
 }
 
+/*
+The custom [Viewport] node assigned to the [CanvasLayer]. If null, uses the default viewport instead.
+
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+*/
 func (self Instance) CustomViewport() Node.Instance {
 	return Node.Instance(class(self).GetCustomViewport())
 }
 
+// SetCustomViewport sets the property returned by [GetCustomViewport].
 func (self Instance) SetCustomViewport(value Node.Instance) {
 	class(self).SetCustomViewport(value)
 }
 
+/*
+If enabled, the [CanvasLayer] maintains its position in world space. If disabled, the [CanvasLayer] stays in a fixed position on the screen.
+
+Together with [FollowViewportScale], this can be used for a pseudo-3D effect.
+
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
+[FollowViewportScale]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer#Instance.FollowViewportScale
+*/
 func (self Instance) FollowViewportEnabled() bool {
 	return bool(class(self).IsFollowingViewport())
 }
 
+// SetFollowViewportEnabled sets the property returned by [IsFollowingViewport].
 func (self Instance) SetFollowViewportEnabled(value bool) {
 	class(self).SetFollowViewport(value)
 }
 
+/*
+Scales the layer when using [FollowViewportEnabled]. Layers moving into the foreground should have increasing scales, while layers moving into the background should have decreasing scales.
+
+[FollowViewportEnabled]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer#Instance.FollowViewportEnabled
+*/
 func (self Instance) FollowViewportScale() Float.X {
 	return Float.X(Float.X(class(self).GetFollowViewportScale()))
 }
 
+// SetFollowViewportScale sets the property returned by [GetFollowViewportScale].
 func (self Instance) SetFollowViewportScale(value Float.X) {
 	class(self).SetFollowViewportScale(float64(value))
 }
@@ -442,6 +500,12 @@ func (self class) GetCanvas() RID.Any { //gd:CanvasLayer.get_canvas
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when visibility of the layer is changed. See [Visible].
+
+[Visible]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer#Instance.Visible
+*/
 func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

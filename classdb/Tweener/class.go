@@ -143,6 +143,11 @@ func New() Instance {
 	return casted
 }
 
+/*
+Emitted when the [Tweener] has just finished its job or became invalid (e.g. due to a freed object).
+
+[Tweener]: https://pkg.go.dev/graphics.gd/classdb/Tweener
+*/
 func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

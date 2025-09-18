@@ -2272,370 +2272,595 @@ func New() Instance {
 	return casted
 }
 
+/*
+String value of the [TextEdit].
+
+[TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
+*/
 func (self Instance) Text() string {
 	return string(class(self).GetText().String())
 }
 
+// SetText sets the property returned by [GetText].
 func (self Instance) SetText(value string) {
 	class(self).SetText(String.New(value))
 }
 
+/*
+Text shown when the [TextEdit] is empty. It is not the [TextEdit]'s default value (see [Text]).
+
+[Text]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.Text
+[TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
+*/
 func (self Instance) PlaceholderText() string {
 	return string(class(self).GetPlaceholder().String())
 }
 
+// SetPlaceholderText sets the property returned by [GetPlaceholder].
 func (self Instance) SetPlaceholderText(value string) {
 	class(self).SetPlaceholder(String.New(value))
 }
 
+/*
+If false, existing text cannot be modified and new text cannot be added.
+*/
 func (self Instance) Editable() bool {
 	return bool(class(self).IsEditable())
 }
 
+// SetEditable sets the property returned by [IsEditable].
 func (self Instance) SetEditable(value bool) {
 	class(self).SetEditable(value)
 }
 
+/*
+If true, a right-click displays the context menu.
+*/
 func (self Instance) ContextMenuEnabled() bool {
 	return bool(class(self).IsContextMenuEnabled())
 }
 
+// SetContextMenuEnabled sets the property returned by [IsContextMenuEnabled].
 func (self Instance) SetContextMenuEnabled(value bool) {
 	class(self).SetContextMenuEnabled(value)
 }
 
+/*
+If true, "Emoji and Symbols" menu is enabled.
+*/
 func (self Instance) EmojiMenuEnabled() bool {
 	return bool(class(self).IsEmojiMenuEnabled())
 }
 
+// SetEmojiMenuEnabled sets the property returned by [IsEmojiMenuEnabled].
 func (self Instance) SetEmojiMenuEnabled(value bool) {
 	class(self).SetEmojiMenuEnabled(value)
 }
 
+/*
+If true and [CaretMidGrapheme] is false, backspace deletes an entire composite character such as ❤️‍🩹, instead of deleting part of the composite character.
+
+[CaretMidGrapheme]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.CaretMidGrapheme
+*/
 func (self Instance) BackspaceDeletesCompositeCharacterEnabled() bool {
 	return bool(class(self).IsBackspaceDeletesCompositeCharacterEnabled())
 }
 
+// SetBackspaceDeletesCompositeCharacterEnabled sets the property returned by [IsBackspaceDeletesCompositeCharacterEnabled].
 func (self Instance) SetBackspaceDeletesCompositeCharacterEnabled(value bool) {
 	class(self).SetBackspaceDeletesCompositeCharacterEnabled(value)
 }
 
+/*
+If true, shortcut keys for context menu items are enabled, even if the context menu is disabled.
+*/
 func (self Instance) ShortcutKeysEnabled() bool {
 	return bool(class(self).IsShortcutKeysEnabled())
 }
 
+// SetShortcutKeysEnabled sets the property returned by [IsShortcutKeysEnabled].
 func (self Instance) SetShortcutKeysEnabled(value bool) {
 	class(self).SetShortcutKeysEnabled(value)
 }
 
+/*
+If true, text can be selected.
+
+If false, text can not be selected by the user or by the [Select] or [SelectAll] methods.
+
+[Select]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.Select
+[SelectAll]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.SelectAll
+*/
 func (self Instance) SelectingEnabled() bool {
 	return bool(class(self).IsSelectingEnabled())
 }
 
+// SetSelectingEnabled sets the property returned by [IsSelectingEnabled].
 func (self Instance) SetSelectingEnabled(value bool) {
 	class(self).SetSelectingEnabled(value)
 }
 
+/*
+If true, the selected text will be deselected when focus is lost.
+*/
 func (self Instance) DeselectOnFocusLossEnabled() bool {
 	return bool(class(self).IsDeselectOnFocusLossEnabled())
 }
 
+// SetDeselectOnFocusLossEnabled sets the property returned by [IsDeselectOnFocusLossEnabled].
 func (self Instance) SetDeselectOnFocusLossEnabled(value bool) {
 	class(self).SetDeselectOnFocusLossEnabled(value)
 }
 
+/*
+If true, allow drag and drop of selected text. Text can still be dropped from other sources.
+*/
 func (self Instance) DragAndDropSelectionEnabled() bool {
 	return bool(class(self).IsDragAndDropSelectionEnabled())
 }
 
+// SetDragAndDropSelectionEnabled sets the property returned by [IsDragAndDropSelectionEnabled].
 func (self Instance) SetDragAndDropSelectionEnabled(value bool) {
 	class(self).SetDragAndDropSelectionEnabled(value)
 }
 
+/*
+If true, the native virtual keyboard is enabled on platforms that support it.
+*/
 func (self Instance) VirtualKeyboardEnabled() bool {
 	return bool(class(self).IsVirtualKeyboardEnabled())
 }
 
+// SetVirtualKeyboardEnabled sets the property returned by [IsVirtualKeyboardEnabled].
 func (self Instance) SetVirtualKeyboardEnabled(value bool) {
 	class(self).SetVirtualKeyboardEnabled(value)
 }
 
+/*
+If true, the native virtual keyboard is shown on focus events on platforms that support it.
+*/
 func (self Instance) VirtualKeyboardShowOnFocus() bool {
 	return bool(class(self).GetVirtualKeyboardShowOnFocus())
 }
 
+// SetVirtualKeyboardShowOnFocus sets the property returned by [GetVirtualKeyboardShowOnFocus].
 func (self Instance) SetVirtualKeyboardShowOnFocus(value bool) {
 	class(self).SetVirtualKeyboardShowOnFocus(value)
 }
 
+/*
+If false, using middle mouse button to paste clipboard will be disabled.
+
+Note: This method is only implemented on Linux.
+*/
 func (self Instance) MiddleMousePasteEnabled() bool {
 	return bool(class(self).IsMiddleMousePasteEnabled())
 }
 
+// SetMiddleMousePasteEnabled sets the property returned by [IsMiddleMousePasteEnabled].
 func (self Instance) SetMiddleMousePasteEnabled(value bool) {
 	class(self).SetMiddleMousePasteEnabled(value)
 }
 
+/*
+If true, copying or cutting without a selection is performed on all lines with a caret. Otherwise, copy and cut require a selection.
+*/
 func (self Instance) EmptySelectionClipboardEnabled() bool {
 	return bool(class(self).IsEmptySelectionClipboardEnabled())
 }
 
+// SetEmptySelectionClipboardEnabled sets the property returned by [IsEmptySelectionClipboardEnabled].
 func (self Instance) SetEmptySelectionClipboardEnabled(value bool) {
 	class(self).SetEmptySelectionClipboardEnabled(value)
 }
 
+/*
+Sets the line wrapping mode to use.
+*/
 func (self Instance) WrapMode() LineWrappingMode {
 	return LineWrappingMode(class(self).GetLineWrappingMode())
 }
 
+// SetWrapMode sets the property returned by [GetLineWrappingMode].
 func (self Instance) SetWrapMode(value LineWrappingMode) {
 	class(self).SetLineWrappingMode(value)
 }
 
+/*
+If [WrapMode] is set to [LineWrappingBoundary], sets text wrapping mode.
+
+[WrapMode]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.WrapMode
+*/
 func (self Instance) AutowrapMode() TextServer.AutowrapMode {
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
+// SetAutowrapMode sets the property returned by [GetAutowrapMode].
 func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
 	class(self).SetAutowrapMode(value)
 }
 
+/*
+If true, all wrapped lines are indented to the same amount as the unwrapped line.
+*/
 func (self Instance) IndentWrappedLines() bool {
 	return bool(class(self).IsIndentWrappedLines())
 }
 
+// SetIndentWrappedLines sets the property returned by [IsIndentWrappedLines].
 func (self Instance) SetIndentWrappedLines(value bool) {
 	class(self).SetIndentWrappedLines(value)
 }
 
+/*
+If true, [ProjectSettings] "input/ui_text_indent" input Tab character, otherwise it moves keyboard focus to the next [Control] in the scene.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) TabInputMode() bool {
 	return bool(class(self).GetTabInputMode())
 }
 
+// SetTabInputMode sets the property returned by [GetTabInputMode].
 func (self Instance) SetTabInputMode(value bool) {
 	class(self).SetTabInputMode(value)
 }
 
+/*
+Scroll smoothly over the text rather than jumping to the next location.
+*/
 func (self Instance) ScrollSmooth() bool {
 	return bool(class(self).IsSmoothScrollEnabled())
 }
 
+// SetScrollSmooth sets the property returned by [IsSmoothScrollEnabled].
 func (self Instance) SetScrollSmooth(value bool) {
 	class(self).SetSmoothScrollEnabled(value)
 }
 
+/*
+Sets the scroll speed with the minimap or when [ScrollSmooth] is enabled.
+
+[ScrollSmooth]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.ScrollSmooth
+*/
 func (self Instance) ScrollVScrollSpeed() Float.X {
 	return Float.X(Float.X(class(self).GetVScrollSpeed()))
 }
 
+// SetScrollVScrollSpeed sets the property returned by [GetVScrollSpeed].
 func (self Instance) SetScrollVScrollSpeed(value Float.X) {
 	class(self).SetVScrollSpeed(float64(value))
 }
 
+/*
+Allow scrolling past the last line into "virtual" space.
+*/
 func (self Instance) ScrollPastEndOfFile() bool {
 	return bool(class(self).IsScrollPastEndOfFileEnabled())
 }
 
+// SetScrollPastEndOfFile sets the property returned by [IsScrollPastEndOfFileEnabled].
 func (self Instance) SetScrollPastEndOfFile(value bool) {
 	class(self).SetScrollPastEndOfFileEnabled(value)
 }
 
+/*
+If there is a vertical scrollbar, this determines the current vertical scroll value in line numbers, starting at 0 for the top line.
+*/
 func (self Instance) ScrollVertical() Float.X {
 	return Float.X(Float.X(class(self).GetVScroll()))
 }
 
+// SetScrollVertical sets the property returned by [GetVScroll].
 func (self Instance) SetScrollVertical(value Float.X) {
 	class(self).SetVScroll(float64(value))
 }
 
+/*
+If there is a horizontal scrollbar, this determines the current horizontal scroll value in pixels.
+*/
 func (self Instance) ScrollHorizontal() int {
 	return int(int(class(self).GetHScroll()))
 }
 
+// SetScrollHorizontal sets the property returned by [GetHScroll].
 func (self Instance) SetScrollHorizontal(value int) {
 	class(self).SetHScroll(int64(value))
 }
 
+/*
+If true, [TextEdit] will disable vertical scroll and fit minimum height to the number of visible lines. When both this property and [ScrollFitContentWidth] are true, no scrollbars will be displayed.
+
+[ScrollFitContentWidth]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.ScrollFitContentWidth
+[TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
+*/
 func (self Instance) ScrollFitContentHeight() bool {
 	return bool(class(self).IsFitContentHeightEnabled())
 }
 
+// SetScrollFitContentHeight sets the property returned by [IsFitContentHeightEnabled].
 func (self Instance) SetScrollFitContentHeight(value bool) {
 	class(self).SetFitContentHeightEnabled(value)
 }
 
+/*
+If true, [TextEdit] will disable horizontal scroll and fit minimum width to the widest line in the text. When both this property and [ScrollFitContentHeight] are true, no scrollbars will be displayed.
+
+[ScrollFitContentHeight]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.ScrollFitContentHeight
+[TextEdit]: https://pkg.go.dev/graphics.gd/classdb/TextEdit
+*/
 func (self Instance) ScrollFitContentWidth() bool {
 	return bool(class(self).IsFitContentWidthEnabled())
 }
 
+// SetScrollFitContentWidth sets the property returned by [IsFitContentWidthEnabled].
 func (self Instance) SetScrollFitContentWidth(value bool) {
 	class(self).SetFitContentWidthEnabled(value)
 }
 
+/*
+If true, a minimap is shown, providing an outline of your source code. The minimap uses a fixed-width text size.
+*/
 func (self Instance) MinimapDraw() bool {
 	return bool(class(self).IsDrawingMinimap())
 }
 
+// SetMinimapDraw sets the property returned by [IsDrawingMinimap].
 func (self Instance) SetMinimapDraw(value bool) {
 	class(self).SetDrawMinimap(value)
 }
 
+/*
+The width, in pixels, of the minimap.
+*/
 func (self Instance) MinimapWidth() int {
 	return int(int(class(self).GetMinimapWidth()))
 }
 
+// SetMinimapWidth sets the property returned by [GetMinimapWidth].
 func (self Instance) SetMinimapWidth(value int) {
 	class(self).SetMinimapWidth(int64(value))
 }
 
+/*
+Set the type of caret to draw.
+*/
 func (self Instance) CaretType() CaretType {
 	return CaretType(class(self).GetCaretType())
 }
 
+// SetCaretType sets the property returned by [GetCaretType].
 func (self Instance) SetCaretType(value CaretType) {
 	class(self).SetCaretType(value)
 }
 
+/*
+If true, makes the caret blink.
+*/
 func (self Instance) CaretBlink() bool {
 	return bool(class(self).IsCaretBlinkEnabled())
 }
 
+// SetCaretBlink sets the property returned by [IsCaretBlinkEnabled].
 func (self Instance) SetCaretBlink(value bool) {
 	class(self).SetCaretBlinkEnabled(value)
 }
 
+/*
+The interval at which the caret blinks (in seconds).
+*/
 func (self Instance) CaretBlinkInterval() Float.X {
 	return Float.X(Float.X(class(self).GetCaretBlinkInterval()))
 }
 
+// SetCaretBlinkInterval sets the property returned by [GetCaretBlinkInterval].
 func (self Instance) SetCaretBlinkInterval(value Float.X) {
 	class(self).SetCaretBlinkInterval(float64(value))
 }
 
+/*
+If true, caret will be visible when [Editable] is disabled.
+
+[Editable]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.Editable
+*/
 func (self Instance) CaretDrawWhenEditableDisabled() bool {
 	return bool(class(self).IsDrawingCaretWhenEditableDisabled())
 }
 
+// SetCaretDrawWhenEditableDisabled sets the property returned by [IsDrawingCaretWhenEditableDisabled].
 func (self Instance) SetCaretDrawWhenEditableDisabled(value bool) {
 	class(self).SetDrawCaretWhenEditableDisabled(value)
 }
 
+/*
+If true, a right-click moves the caret at the mouse position before displaying the context menu.
+
+If false, the context menu ignores mouse location.
+*/
 func (self Instance) CaretMoveOnRightClick() bool {
 	return bool(class(self).IsMoveCaretOnRightClickEnabled())
 }
 
+// SetCaretMoveOnRightClick sets the property returned by [IsMoveCaretOnRightClickEnabled].
 func (self Instance) SetCaretMoveOnRightClick(value bool) {
 	class(self).SetMoveCaretOnRightClickEnabled(value)
 }
 
+/*
+Allow moving caret, selecting and removing the individual composite character components.
+
+Note: Backspace is always removing individual composite character components.
+*/
 func (self Instance) CaretMidGrapheme() bool {
 	return bool(class(self).IsCaretMidGraphemeEnabled())
 }
 
+// SetCaretMidGrapheme sets the property returned by [IsCaretMidGraphemeEnabled].
 func (self Instance) SetCaretMidGrapheme(value bool) {
 	class(self).SetCaretMidGraphemeEnabled(value)
 }
 
+/*
+If true, multiple carets are allowed. Left-clicking with Alt adds a new caret. See [AddCaret] and [GetCaretCount].
+
+[AddCaret]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.AddCaret
+[GetCaretCount]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.GetCaretCount
+*/
 func (self Instance) CaretMultiple() bool {
 	return bool(class(self).IsMultipleCaretsEnabled())
 }
 
+// SetCaretMultiple sets the property returned by [IsMultipleCaretsEnabled].
 func (self Instance) SetCaretMultiple(value bool) {
 	class(self).SetMultipleCaretsEnabled(value)
 }
 
+/*
+If false, using Ctrl + Left or Ctrl + Right (Cmd + Left or Cmd + Right on macOS) bindings will stop moving caret only if a space or punctuation is detected. If true, it will also stop the caret if a character is part of !"#$%&'()*+,-./:;<=>?@[\]^`{|}~, the Unicode General Punctuation table, or the Unicode CJK Punctuation table. Useful for subword moving. This behavior also will be applied to the behavior of text selection.
+*/
 func (self Instance) UseDefaultWordSeparators() bool {
 	return bool(class(self).IsDefaultWordSeparatorsEnabled())
 }
 
+// SetUseDefaultWordSeparators sets the property returned by [IsDefaultWordSeparatorsEnabled].
 func (self Instance) SetUseDefaultWordSeparators(value bool) {
 	class(self).SetUseDefaultWordSeparators(value)
 }
 
+/*
+If false, using Ctrl + Left or Ctrl + Right (Cmd + Left or Cmd + Right on macOS) bindings will use the behavior of [UseDefaultWordSeparators]. If true, it will also stop the caret if a character within [CustomWordSeparators] is detected. Useful for subword moving. This behavior also will be applied to the behavior of text selection.
+
+[CustomWordSeparators]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.CustomWordSeparators
+[UseDefaultWordSeparators]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.UseDefaultWordSeparators
+*/
 func (self Instance) UseCustomWordSeparators() bool {
 	return bool(class(self).IsCustomWordSeparatorsEnabled())
 }
 
+// SetUseCustomWordSeparators sets the property returned by [IsCustomWordSeparatorsEnabled].
 func (self Instance) SetUseCustomWordSeparators(value bool) {
 	class(self).SetUseCustomWordSeparators(value)
 }
 
+/*
+The characters to consider as word delimiters if [UseCustomWordSeparators] is true. The characters should be defined without separation, for example #_!.
+
+[UseCustomWordSeparators]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.UseCustomWordSeparators
+*/
 func (self Instance) CustomWordSeparators() string {
 	return string(class(self).GetCustomWordSeparators().String())
 }
 
+// SetCustomWordSeparators sets the property returned by [GetCustomWordSeparators].
 func (self Instance) SetCustomWordSeparators(value string) {
 	class(self).SetCustomWordSeparators(String.New(value))
 }
 
+/*
+If true, all occurrences of the selected text will be highlighted.
+*/
 func (self Instance) HighlightAllOccurrences() bool {
 	return bool(class(self).IsHighlightAllOccurrencesEnabled())
 }
 
+// SetHighlightAllOccurrences sets the property returned by [IsHighlightAllOccurrencesEnabled].
 func (self Instance) SetHighlightAllOccurrences(value bool) {
 	class(self).SetHighlightAllOccurrences(value)
 }
 
+/*
+If true, the line containing the cursor is highlighted.
+*/
 func (self Instance) HighlightCurrentLine() bool {
 	return bool(class(self).IsHighlightCurrentLineEnabled())
 }
 
+// SetHighlightCurrentLine sets the property returned by [IsHighlightCurrentLineEnabled].
 func (self Instance) SetHighlightCurrentLine(value bool) {
 	class(self).SetHighlightCurrentLine(value)
 }
 
+/*
+If true, control characters are displayed.
+*/
 func (self Instance) DrawControlChars() bool {
 	return bool(class(self).GetDrawControlChars())
 }
 
+// SetDrawControlChars sets the property returned by [GetDrawControlChars].
 func (self Instance) SetDrawControlChars(value bool) {
 	class(self).SetDrawControlChars(value)
 }
 
+/*
+If true, the "tab" character will have a visible representation.
+*/
 func (self Instance) DrawTabs() bool {
 	return bool(class(self).IsDrawingTabs())
 }
 
+// SetDrawTabs sets the property returned by [IsDrawingTabs].
 func (self Instance) SetDrawTabs(value bool) {
 	class(self).SetDrawTabs(value)
 }
 
+/*
+If true, the "space" character will have a visible representation.
+*/
 func (self Instance) DrawSpaces() bool {
 	return bool(class(self).IsDrawingSpaces())
 }
 
+// SetDrawSpaces sets the property returned by [IsDrawingSpaces].
 func (self Instance) SetDrawSpaces(value bool) {
 	class(self).SetDrawSpaces(value)
 }
 
+/*
+Base text writing direction.
+*/
 func (self Instance) TextDirection() Control.TextDirection {
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
+// SetTextDirection sets the property returned by [GetTextDirection].
 func (self Instance) SetTextDirection(value Control.TextDirection) {
 	class(self).SetTextDirection(value)
 }
 
+/*
+Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+*/
 func (self Instance) Language() string {
 	return string(class(self).GetLanguage().String())
 }
 
+// SetLanguage sets the property returned by [GetLanguage].
 func (self Instance) SetLanguage(value string) {
 	class(self).SetLanguage(String.New(value))
 }
 
+/*
+Set BiDi algorithm override for the structured text.
+*/
 func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
 	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
+// SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride].
 func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) {
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
+/*
+Set additional options for BiDi override.
+*/
 func (self Instance) StructuredTextBidiOverrideOptions() []any {
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
+// SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions].
 func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
 }
@@ -5131,6 +5356,13 @@ func (self class) GetSelectionColumn(caret_index int64) int64 { //gd:TextEdit.ge
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when [Clear] is called or [Text] is set.
+
+[Clear]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.Clear
+[Text]: https://pkg.go.dev/graphics.gd/classdb/TextEdit#Instance.Text
+*/
 func (self Instance) OnTextSet(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -5143,6 +5375,9 @@ func (self class) TextSet() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextSet`))))
 }
 
+/*
+Emitted when the text changes.
+*/
 func (self Instance) OnTextChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -5155,6 +5390,11 @@ func (self class) TextChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TextChanged`))))
 }
 
+/*
+Emitted immediately when the text changes.
+
+When text is added 'from_line' will be less than 'to_line'. On a remove 'to_line' will be less than 'from_line'.
+*/
 func (self Instance) OnLinesEditedFrom(cb func(from_line int, to_line int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -5167,6 +5407,9 @@ func (self class) LinesEditedFrom() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`LinesEditedFrom`))))
 }
 
+/*
+Emitted when any caret changes position.
+*/
 func (self Instance) OnCaretChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -5179,6 +5422,9 @@ func (self class) CaretChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CaretChanged`))))
 }
 
+/*
+Emitted when a gutter is clicked.
+*/
 func (self Instance) OnGutterClicked(cb func(line int, gutter int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -5191,6 +5437,9 @@ func (self class) GutterClicked() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GutterClicked`))))
 }
 
+/*
+Emitted when a gutter is added.
+*/
 func (self Instance) OnGutterAdded(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -5203,6 +5452,9 @@ func (self class) GutterAdded() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GutterAdded`))))
 }
 
+/*
+Emitted when a gutter is removed.
+*/
 func (self Instance) OnGutterRemoved(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

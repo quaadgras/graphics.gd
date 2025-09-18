@@ -680,138 +680,300 @@ func New() Instance {
 	return casted
 }
 
+/*
+The local transformation of this node, in parent space (relative to the parent node). Contains and represents this node's [Position], [Rotation], and [Scale].
+
+[Position]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Position
+[Rotation]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Rotation
+[Scale]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Scale
+*/
 func (self Instance) Transform() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetTransform())
 }
 
+// SetTransform sets the property returned by [GetTransform].
 func (self Instance) SetTransform(value Transform3D.BasisOrigin) {
 	class(self).SetTransform(Transform3D.BasisOrigin(value))
 }
 
+/*
+The transformation of this node, in global space (relative to the world). Contains and represents this node's [GlobalPosition], [GlobalRotation], and global scale.
+
+Note: If the node is not inside the tree, getting this property fails and returns [Transform3d.Identity].
+
+[GlobalPosition]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalPosition
+[GlobalRotation]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalRotation
+*/
 func (self Instance) GlobalTransform() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetGlobalTransform())
 }
 
+// SetGlobalTransform sets the property returned by [GetGlobalTransform].
 func (self Instance) SetGlobalTransform(value Transform3D.BasisOrigin) {
 	class(self).SetGlobalTransform(Transform3D.BasisOrigin(value))
 }
 
+/*
+Position (translation) of this node in parent space (relative to the parent node). This is equivalent to the [Transform]'s [Transform3D.Origin].
+
+[Transform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Transform
+[Transform3D.Origin]: https://pkg.go.dev/graphics.gd/classdb/Transform3D#Instance.Origin
+*/
 func (self Instance) Position() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetPosition())
 }
 
+// SetPosition sets the property returned by [GetPosition].
 func (self Instance) SetPosition(value Vector3.XYZ) {
 	class(self).SetPosition(Vector3.XYZ(value))
 }
 
+/*
+Rotation of this node as [Euler angles], in radians and in parent space (relative to the parent node). This value is obtained from [Basis]'s rotation.
+
+- The [Vector3.X] is the angle around the local X axis (pitch);
+
+- The [Vector3.Y] is the angle around the local Y axis (yaw);
+
+- The [Vector3.Z] is the angle around the local Z axis (roll).
+
+The order of each consecutive rotation can be changed with [RotationOrder] (see [EulerOrder] constants). By default, the YXZ convention is used ([EulerOrderYxz]).
+
+Note: This property is edited in degrees in the inspector. If you want to use degrees in a script, use [RotationDegrees].
+
+[Basis]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Basis
+[Euler angles]: https://en.wikipedia.org/wiki/Euler_angles
+[RotationDegrees]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.RotationDegrees
+[RotationOrder]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.RotationOrder
+[Vector3.X]: https://pkg.go.dev/graphics.gd/classdb/Vector3#Instance.X
+[Vector3.Y]: https://pkg.go.dev/graphics.gd/classdb/Vector3#Instance.Y
+[Vector3.Z]: https://pkg.go.dev/graphics.gd/classdb/Vector3#Instance.Z
+*/
 func (self Instance) Rotation() Euler.Radians {
 	return Euler.Radians(Vector3.EulerRadians(class(self).GetRotation()))
 }
 
+// SetRotation sets the property returned by [GetRotation].
 func (self Instance) SetRotation(value Euler.Radians) {
 	class(self).SetRotation(value.Vector3())
 }
 
+/*
+The [Rotation] of this node, in degrees instead of radians.
+
+Note: This is not the property available in the Inspector dock.
+
+[Rotation]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Rotation
+*/
 func (self Instance) RotationDegrees() Euler.Degrees {
 	return Euler.Degrees(Vector3.EulerDegrees(class(self).GetRotationDegrees()))
 }
 
+// SetRotationDegrees sets the property returned by [GetRotationDegrees].
 func (self Instance) SetRotationDegrees(value Euler.Degrees) {
 	class(self).SetRotationDegrees(value.Vector3())
 }
 
+/*
+Rotation of this node represented as a [Quaternion.IJKX] in parent space (relative to the parent node). This value is obtained from [Basis]'s rotation.
+
+Note: Quaternions are much more suitable for 3D math but are less intuitive. Setting this property can be useful for interpolation (see [Quaternion.Slerp]).
+
+[Basis]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Basis
+[Quaternion.IJKX]: https://pkg.go.dev/graphics.gd/variant/Quaternion#IJKX
+[Quaternion.Slerp]: https://pkg.go.dev/graphics.gd/classdb/Quaternion#Instance.Slerp
+*/
 func (self Instance) Quaternion() Quaternion.IJKX {
 	return Quaternion.IJKX(class(self).GetQuaternion())
 }
 
+// SetQuaternion sets the property returned by [GetQuaternion].
 func (self Instance) SetQuaternion(value Quaternion.IJKX) {
 	class(self).SetQuaternion(value)
 }
 
+/*
+Basis of the [Transform] property. Represents the rotation, scale, and shear of this node in parent space (relative to the parent node).
+
+[Transform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Transform
+*/
 func (self Instance) Basis() Basis.XYZ {
 	return Basis.XYZ(class(self).GetBasis())
 }
 
+// SetBasis sets the property returned by [GetBasis].
 func (self Instance) SetBasis(value Basis.XYZ) {
 	class(self).SetBasis(Basis.XYZ(value))
 }
 
+/*
+Scale of this node in local space (relative to this node). This value is obtained from [Basis]'s scale.
+
+Note: The behavior of some 3D node types is not affected by this property. These include [Light3D], [Camera3D], [AudioStreamPlayer3D], and more.
+
+Warning: The scale's components must either be all positive or all negative, and not exactly 0.0. Otherwise, it won't be possible to obtain the scale from the [Basis]. This may cause the intended scale to be lost when reloaded from disk, and potentially other unstable behavior.
+
+[AudioStreamPlayer3D]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer3D
+[Basis]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Basis
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
+*/
 func (self Instance) Scale() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetScale())
 }
 
+// SetScale sets the property returned by [GetScale].
 func (self Instance) SetScale(value Vector3.XYZ) {
 	class(self).SetScale(Vector3.XYZ(value))
 }
 
+/*
+How this node's rotation and scale are displayed in the Inspector dock.
+*/
 func (self Instance) RotationEditMode() RotationEditMode {
 	return RotationEditMode(class(self).GetRotationEditMode())
 }
 
+// SetRotationEditMode sets the property returned by [GetRotationEditMode].
 func (self Instance) SetRotationEditMode(value RotationEditMode) {
 	class(self).SetRotationEditMode(value)
 }
 
+/*
+The axis rotation order of the [Rotation] property. The final orientation is calculated by rotating around the local X, Y, and Z axis in this order.
+
+[Rotation]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Rotation
+*/
 func (self Instance) RotationOrder() Angle.Order {
 	return Angle.Order(class(self).GetRotationOrder())
 }
 
+// SetRotationOrder sets the property returned by [GetRotationOrder].
 func (self Instance) SetRotationOrder(value Angle.Order) {
 	class(self).SetRotationOrder(value)
 }
 
+/*
+If true, the node does not inherit its transformations from its parent. As such, node transformations will only be in global space, which also means that [GlobalTransform] and [Transform] will be identical.
+
+[GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
+[Transform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Transform
+*/
 func (self Instance) TopLevel() bool {
 	return bool(class(self).IsSetAsTopLevel())
 }
 
+// SetTopLevel sets the property returned by [IsSetAsTopLevel].
 func (self Instance) SetTopLevel(value bool) {
 	class(self).SetAsTopLevel(value)
 }
 
+/*
+Global position (translation) of this node in global space (relative to the world). This is equivalent to the [GlobalTransform]'s [Transform3D.Origin].
+
+Note: If the node is not inside the tree, getting this property fails and returns [Vector3.Zero].
+
+[GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
+[Transform3D.Origin]: https://pkg.go.dev/graphics.gd/classdb/Transform3D#Instance.Origin
+*/
 func (self Instance) GlobalPosition() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetGlobalPosition())
 }
 
+// SetGlobalPosition sets the property returned by [GetGlobalPosition].
 func (self Instance) SetGlobalPosition(value Vector3.XYZ) {
 	class(self).SetGlobalPosition(Vector3.XYZ(value))
 }
 
+/*
+Basis of the [GlobalTransform] property. Represents the rotation, scale, and shear of this node in global space (relative to the world).
+
+Note: If the node is not inside the tree, getting this property fails and returns [Basis.Identity].
+
+[GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalTransform
+*/
 func (self Instance) GlobalBasis() Basis.XYZ {
 	return Basis.XYZ(class(self).GetGlobalBasis())
 }
 
+// SetGlobalBasis sets the property returned by [GetGlobalBasis].
 func (self Instance) SetGlobalBasis(value Basis.XYZ) {
 	class(self).SetGlobalBasis(Basis.XYZ(value))
 }
 
+/*
+Global rotation of this node as [Euler angles], in radians and in global space (relative to the world). This value is obtained from [GlobalBasis]'s rotation.
+
+- The [Vector3.X] is the angle around the global X axis (pitch);
+
+- The [Vector3.Y] is the angle around the global Y axis (yaw);
+
+- The [Vector3.Z] is the angle around the global Z axis (roll).
+
+Note: Unlike [Rotation], this property always follows the YXZ convention ([EulerOrderYxz]).
+
+Note: If the node is not inside the tree, getting this property fails and returns [Vector3.Zero].
+
+[Euler angles]: https://en.wikipedia.org/wiki/Euler_angles
+[GlobalBasis]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalBasis
+[Rotation]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Rotation
+[Vector3.X]: https://pkg.go.dev/graphics.gd/classdb/Vector3#Instance.X
+[Vector3.Y]: https://pkg.go.dev/graphics.gd/classdb/Vector3#Instance.Y
+[Vector3.Z]: https://pkg.go.dev/graphics.gd/classdb/Vector3#Instance.Z
+*/
 func (self Instance) GlobalRotation() Euler.Radians {
 	return Euler.Radians(Vector3.EulerRadians(class(self).GetGlobalRotation()))
 }
 
+// SetGlobalRotation sets the property returned by [GetGlobalRotation].
 func (self Instance) SetGlobalRotation(value Euler.Radians) {
 	class(self).SetGlobalRotation(value.Vector3())
 }
 
+/*
+The [GlobalRotation] of this node, in degrees instead of radians.
+
+Note: If the node is not inside the tree, getting this property fails and returns [Vector3.Zero].
+
+[GlobalRotation]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.GlobalRotation
+*/
 func (self Instance) GlobalRotationDegrees() Euler.Degrees {
 	return Euler.Degrees(Vector3.EulerDegrees(class(self).GetGlobalRotationDegrees()))
 }
 
+// SetGlobalRotationDegrees sets the property returned by [GetGlobalRotationDegrees].
 func (self Instance) SetGlobalRotationDegrees(value Euler.Degrees) {
 	class(self).SetGlobalRotationDegrees(value.Vector3())
 }
 
+/*
+If true, this node can be visible. The node is only rendered when all of its ancestors are visible, as well. That means [IsVisibleInTree] must return true.
+
+[IsVisibleInTree]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.IsVisibleInTree
+*/
 func (self Instance) Visible() bool {
 	return bool(class(self).IsVisible())
 }
 
+// SetVisible sets the property returned by [IsVisible].
 func (self Instance) SetVisible(value bool) {
 	class(self).SetVisible(value)
 }
 
+/*
+Path to the visibility range parent for this node and its descendants. The visibility parent must be a [GeometryInstance3D].
+
+Any visual instance will only be visible if the visibility parent (and all of its visibility ancestors) is hidden by being closer to the camera than its own [GeometryInstance3D.VisibilityRangeBegin]. Nodes hidden via the [Node3D.Visible] property are essentially removed from the visibility dependency tree, so dependent instances will not take the hidden node or its descendants into account.
+
+[GeometryInstance3D]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D
+[GeometryInstance3D.VisibilityRangeBegin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeBegin
+[Node3D.Visible]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Visible
+*/
 func (self Instance) VisibilityParent() string {
 	return string(class(self).GetVisibilityParent().String())
 }
 
+// SetVisibilityParent sets the property returned by [GetVisibilityParent].
 func (self Instance) SetVisibilityParent(value string) {
 	class(self).SetVisibilityParent(Path.ToNode(String.New(value)))
 }
@@ -1517,6 +1679,15 @@ func (self class) ToGlobal(local_point Vector3.XYZ) Vector3.XYZ { //gd:Node3D.to
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when this node's visibility changes (see [Visible] and [IsVisibleInTree]).
+
+This signal is emitted after the related [NotificationVisibilityChanged] notification.
+
+[IsVisibleInTree]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.IsVisibleInTree
+[Visible]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Visible
+*/
 func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

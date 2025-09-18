@@ -164,34 +164,62 @@ func New() Instance {
 	return casted
 }
 
+/*
+Path to the first node (A) attached to the joint. The node must inherit [PhysicsBody3D].
+
+If left empty and [NodeB] is set, the body is attached to a fixed [StaticBody3D] without collision shapes.
+
+[NodeB]: https://pkg.go.dev/graphics.gd/classdb/Joint3D#Instance.NodeB
+[PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
+[StaticBody3D]: https://pkg.go.dev/graphics.gd/classdb/StaticBody3D
+*/
 func (self Instance) NodeA() string {
 	return string(class(self).GetNodeA().String())
 }
 
+// SetNodeA sets the property returned by [GetNodeA].
 func (self Instance) SetNodeA(value string) {
 	class(self).SetNodeA(Path.ToNode(String.New(value)))
 }
 
+/*
+Path to the second node (B) attached to the joint. The node must inherit [PhysicsBody3D].
+
+If left empty and [NodeA] is set, the body is attached to a fixed [StaticBody3D] without collision shapes.
+
+[NodeA]: https://pkg.go.dev/graphics.gd/classdb/Joint3D#Instance.NodeA
+[PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
+[StaticBody3D]: https://pkg.go.dev/graphics.gd/classdb/StaticBody3D
+*/
 func (self Instance) NodeB() string {
 	return string(class(self).GetNodeB().String())
 }
 
+// SetNodeB sets the property returned by [GetNodeB].
 func (self Instance) SetNodeB(value string) {
 	class(self).SetNodeB(Path.ToNode(String.New(value)))
 }
 
+/*
+The priority used to define which solver is executed first for multiple joints. The lower the value, the higher the priority.
+*/
 func (self Instance) SolverPriority() int {
 	return int(int(class(self).GetSolverPriority()))
 }
 
+// SetSolverPriority sets the property returned by [GetSolverPriority].
 func (self Instance) SetSolverPriority(value int) {
 	class(self).SetSolverPriority(int64(value))
 }
 
+/*
+If true, the two bodies bound together do not collide with each other.
+*/
 func (self Instance) ExcludeNodesFromCollision() bool {
 	return bool(class(self).GetExcludeNodesFromCollision())
 }
 
+// SetExcludeNodesFromCollision sets the property returned by [GetExcludeNodesFromCollision].
 func (self Instance) SetExcludeNodesFromCollision(value bool) {
 	class(self).SetExcludeNodesFromCollision(value)
 }

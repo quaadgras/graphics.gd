@@ -148,18 +148,28 @@ func New() Instance {
 	return casted
 }
 
+/*
+Enables usage of the [DefaultValue].
+
+[DefaultValue]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeVec2Parameter#Instance.DefaultValue
+*/
 func (self Instance) DefaultValueEnabled() bool {
 	return bool(class(self).IsDefaultValueEnabled())
 }
 
+// SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled].
 func (self Instance) SetDefaultValueEnabled(value bool) {
 	class(self).SetDefaultValueEnabled(value)
 }
 
+/*
+A default value to be assigned within the shader.
+*/
 func (self Instance) DefaultValue() Vector2.XY {
 	return Vector2.XY(class(self).GetDefaultValue())
 }
 
+// SetDefaultValue sets the property returned by [GetDefaultValue].
 func (self Instance) SetDefaultValue(value Vector2.XY) {
 	class(self).SetDefaultValue(Vector2.XY(value))
 }

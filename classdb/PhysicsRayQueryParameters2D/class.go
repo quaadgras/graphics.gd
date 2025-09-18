@@ -184,58 +184,98 @@ func New() Instance {
 	return casted
 }
 
+/*
+The starting point of the ray being queried for, in global coordinates.
+*/
 func (self Instance) From() Vector2.XY {
 	return Vector2.XY(class(self).GetFrom())
 }
 
+// SetFrom sets the property returned by [GetFrom].
 func (self Instance) SetFrom(value Vector2.XY) {
 	class(self).SetFrom(Vector2.XY(value))
 }
 
+/*
+The ending point of the ray being queried for, in global coordinates.
+*/
 func (self Instance) To() Vector2.XY {
 	return Vector2.XY(class(self).GetTo())
 }
 
+// SetTo sets the property returned by [GetTo].
 func (self Instance) SetTo(value Vector2.XY) {
 	class(self).SetTo(Vector2.XY(value))
 }
 
+/*
+The physics layers the query will detect (as a bitmask). By default, all collision layers are detected. See [Collision layers and masks] in the documentation for more information.
+
+[Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
+*/
 func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
+// SetCollisionMask sets the property returned by [GetCollisionMask].
 func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
+/*
+The list of object [Resource.ID]s that will be excluded from collisions. Use [CollisionObject2D.GetRid] to get the [Resource.ID] associated with a [CollisionObject2D]-derived node.
+
+Note: The returned array is copied and any changes to it will not update the original property value. To update the value you need to modify the returned array, and then assign it to the property again.
+
+[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
+[CollisionObject2D.GetRid]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.GetRid
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func (self Instance) Exclude() [][]RID.Body2D {
 	return [][]RID.Body2D(gd.ArrayAs[[][]RID.Body2D](gd.InternalArray(class(self).GetExclude())))
 }
 
+// SetExclude sets the property returned by [GetExclude].
 func (self Instance) SetExclude(value [][]RID.Body2D) {
 	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 }
 
+/*
+If true, the query will take [PhysicsBody2D]s into account.
+
+[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
+*/
 func (self Instance) CollideWithBodies() bool {
 	return bool(class(self).IsCollideWithBodiesEnabled())
 }
 
+// SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled].
 func (self Instance) SetCollideWithBodies(value bool) {
 	class(self).SetCollideWithBodies(value)
 }
 
+/*
+If true, the query will take [Area2D]s into account.
+
+[Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
+*/
 func (self Instance) CollideWithAreas() bool {
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
 
+// SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled].
 func (self Instance) SetCollideWithAreas(value bool) {
 	class(self).SetCollideWithAreas(value)
 }
 
+/*
+If true, the query will detect a hit when starting inside shapes. In this case the collision normal will be Vector2(0, 0). Does not affect concave polygon shapes.
+*/
 func (self Instance) HitFromInside() bool {
 	return bool(class(self).IsHitFromInsideEnabled())
 }
 
+// SetHitFromInside sets the property returned by [IsHitFromInsideEnabled].
 func (self Instance) SetHitFromInside(value bool) {
 	class(self).SetHitFromInside(value)
 }

@@ -148,26 +148,40 @@ func New() Instance {
 	return casted
 }
 
+/*
+The name of the class this node was supposed to be (see [Object.GetClass]).
+
+[Object.GetClass]: https://pkg.go.dev/graphics.gd/variant/Object#GetClass
+*/
 func (self Instance) OriginalClass() string {
 	return string(class(self).GetOriginalClass().String())
 }
 
+// SetOriginalClass sets the property returned by [GetOriginalClass].
 func (self Instance) SetOriginalClass(value string) {
 	class(self).SetOriginalClass(String.New(value))
 }
 
+/*
+Returns the path of the scene this node was instance of originally.
+*/
 func (self Instance) OriginalScene() string {
 	return string(class(self).GetOriginalScene().String())
 }
 
+// SetOriginalScene sets the property returned by [GetOriginalScene].
 func (self Instance) SetOriginalScene(value string) {
 	class(self).SetOriginalScene(String.New(value))
 }
 
+/*
+If true, allows new properties to be set along with existing ones. If false, only existing properties' values can be set, and new properties cannot be added.
+*/
 func (self Instance) RecordingProperties() bool {
 	return bool(class(self).IsRecordingProperties())
 }
 
+// SetRecordingProperties sets the property returned by [IsRecordingProperties].
 func (self Instance) SetRecordingProperties(value bool) {
 	class(self).SetRecordingProperties(value)
 }

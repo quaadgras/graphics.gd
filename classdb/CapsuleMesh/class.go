@@ -153,34 +153,60 @@ func New() Instance {
 	return casted
 }
 
+/*
+Radius of the capsule mesh.
+
+Note: The [Radius] of a capsule cannot be greater than half of its [Height]. Otherwise, the capsule becomes a circle. If the [Radius] is greater than half of the [Height], the properties adjust to a valid value.
+
+[Height]: https://pkg.go.dev/graphics.gd/classdb/CapsuleMesh#Instance.Height
+[Radius]: https://pkg.go.dev/graphics.gd/classdb/CapsuleMesh#Instance.Radius
+*/
 func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetRadius sets the property returned by [GetRadius].
 func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }
 
+/*
+Total height of the capsule mesh (including the hemispherical ends).
+
+Note: The [Height] of a capsule must be at least twice its [Radius]. Otherwise, the capsule becomes a circle. If the [Height] is less than twice the [Radius], the properties adjust to a valid value.
+
+[Height]: https://pkg.go.dev/graphics.gd/classdb/CapsuleMesh#Instance.Height
+[Radius]: https://pkg.go.dev/graphics.gd/classdb/CapsuleMesh#Instance.Radius
+*/
 func (self Instance) Height() Float.X {
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
+// SetHeight sets the property returned by [GetHeight].
 func (self Instance) SetHeight(value Float.X) {
 	class(self).SetHeight(float64(value))
 }
 
+/*
+Number of radial segments on the capsule mesh.
+*/
 func (self Instance) RadialSegments() int {
 	return int(int(class(self).GetRadialSegments()))
 }
 
+// SetRadialSegments sets the property returned by [GetRadialSegments].
 func (self Instance) SetRadialSegments(value int) {
 	class(self).SetRadialSegments(int64(value))
 }
 
+/*
+Number of rings along the height of the capsule.
+*/
 func (self Instance) Rings() int {
 	return int(int(class(self).GetRings()))
 }
 
+// SetRings sets the property returned by [GetRings].
 func (self Instance) SetRings(value int) {
 	class(self).SetRings(int64(value))
 }

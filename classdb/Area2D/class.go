@@ -270,122 +270,201 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the area detects bodies or areas entering and exiting it.
+*/
 func (self Instance) Monitoring() bool {
 	return bool(class(self).IsMonitoring())
 }
 
+// SetMonitoring sets the property returned by [IsMonitoring].
 func (self Instance) SetMonitoring(value bool) {
 	class(self).SetMonitoring(value)
 }
 
+/*
+If true, other monitoring areas can detect this area.
+*/
 func (self Instance) Monitorable() bool {
 	return bool(class(self).IsMonitorable())
 }
 
+// SetMonitorable sets the property returned by [IsMonitorable].
 func (self Instance) SetMonitorable(value bool) {
 	class(self).SetMonitorable(value)
 }
 
+/*
+The area's priority. Higher priority areas are processed first. The [World2D]'s physics is always processed last, after all areas.
+
+[World2D]: https://pkg.go.dev/graphics.gd/classdb/World2D
+*/
 func (self Instance) Priority() int {
 	return int(int(class(self).GetPriority()))
 }
 
+// SetPriority sets the property returned by [GetPriority].
 func (self Instance) SetPriority(value int) {
 	class(self).SetPriority(int64(value))
 }
 
+/*
+Override mode for gravity calculations within this area.
+*/
 func (self Instance) GravitySpaceOverride() SpaceOverride {
 	return SpaceOverride(class(self).GetGravitySpaceOverrideMode())
 }
 
+// SetGravitySpaceOverride sets the property returned by [GetGravitySpaceOverrideMode].
 func (self Instance) SetGravitySpaceOverride(value SpaceOverride) {
 	class(self).SetGravitySpaceOverrideMode(value)
 }
 
+/*
+If true, gravity is calculated from a point (set via [GravityPointCenter]). See also [GravitySpaceOverride].
+
+[GravityPointCenter]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.GravityPointCenter
+[GravitySpaceOverride]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.GravitySpaceOverride
+*/
 func (self Instance) GravityPoint() bool {
 	return bool(class(self).IsGravityAPoint())
 }
 
+// SetGravityPoint sets the property returned by [IsGravityAPoint].
 func (self Instance) SetGravityPoint(value bool) {
 	class(self).SetGravityIsPoint(value)
 }
 
+/*
+The distance at which the gravity strength is equal to [Gravity]. For example, on a planet 100 pixels in radius with a surface gravity of 4.0 px/s², set the [Gravity] to 4.0 and the unit distance to 100.0. The gravity will have falloff according to the inverse square law, so in the example, at 200 pixels from the center the gravity will be 1.0 px/s² (twice the distance, 1/4th the gravity), at 50 pixels it will be 16.0 px/s² (half the distance, 4x the gravity), and so on.
+
+The above is true only when the unit distance is a positive number. When this is set to 0.0, the gravity will be constant regardless of distance.
+
+[Gravity]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.Gravity
+*/
 func (self Instance) GravityPointUnitDistance() Float.X {
 	return Float.X(Float.X(class(self).GetGravityPointUnitDistance()))
 }
 
+// SetGravityPointUnitDistance sets the property returned by [GetGravityPointUnitDistance].
 func (self Instance) SetGravityPointUnitDistance(value Float.X) {
 	class(self).SetGravityPointUnitDistance(float64(value))
 }
 
+/*
+If gravity is a point (see [GravityPoint]), this will be the point of attraction.
+
+[GravityPoint]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.GravityPoint
+*/
 func (self Instance) GravityPointCenter() Vector2.XY {
 	return Vector2.XY(class(self).GetGravityPointCenter())
 }
 
+// SetGravityPointCenter sets the property returned by [GetGravityPointCenter].
 func (self Instance) SetGravityPointCenter(value Vector2.XY) {
 	class(self).SetGravityPointCenter(Vector2.XY(value))
 }
 
+/*
+The area's gravity vector (not normalized).
+*/
 func (self Instance) GravityDirection() Vector2.XY {
 	return Vector2.XY(class(self).GetGravityDirection())
 }
 
+// SetGravityDirection sets the property returned by [GetGravityDirection].
 func (self Instance) SetGravityDirection(value Vector2.XY) {
 	class(self).SetGravityDirection(Vector2.XY(value))
 }
 
+/*
+The area's gravity intensity (in pixels per second squared). This value multiplies the gravity direction. This is useful to alter the force of gravity without altering its direction.
+*/
 func (self Instance) Gravity() Float.X {
 	return Float.X(Float.X(class(self).GetGravity()))
 }
 
+// SetGravity sets the property returned by [GetGravity].
 func (self Instance) SetGravity(value Float.X) {
 	class(self).SetGravity(float64(value))
 }
 
+/*
+Override mode for linear damping calculations within this area.
+*/
 func (self Instance) LinearDampSpaceOverride() SpaceOverride {
 	return SpaceOverride(class(self).GetLinearDampSpaceOverrideMode())
 }
 
+// SetLinearDampSpaceOverride sets the property returned by [GetLinearDampSpaceOverrideMode].
 func (self Instance) SetLinearDampSpaceOverride(value SpaceOverride) {
 	class(self).SetLinearDampSpaceOverrideMode(value)
 }
 
+/*
+The rate at which objects stop moving in this area. Represents the linear velocity lost per second.
+
+See [ProjectSettings] "physics/2d/default_linear_damp" for more details about damping.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) LinearDamp() Float.X {
 	return Float.X(Float.X(class(self).GetLinearDamp()))
 }
 
+// SetLinearDamp sets the property returned by [GetLinearDamp].
 func (self Instance) SetLinearDamp(value Float.X) {
 	class(self).SetLinearDamp(float64(value))
 }
 
+/*
+Override mode for angular damping calculations within this area.
+*/
 func (self Instance) AngularDampSpaceOverride() SpaceOverride {
 	return SpaceOverride(class(self).GetAngularDampSpaceOverrideMode())
 }
 
+// SetAngularDampSpaceOverride sets the property returned by [GetAngularDampSpaceOverrideMode].
 func (self Instance) SetAngularDampSpaceOverride(value SpaceOverride) {
 	class(self).SetAngularDampSpaceOverrideMode(value)
 }
 
+/*
+The rate at which objects stop spinning in this area. Represents the angular velocity lost per second.
+
+See [ProjectSettings] "physics/2d/default_angular_damp" for more details about damping.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) AngularDamp() Float.X {
 	return Float.X(Float.X(class(self).GetAngularDamp()))
 }
 
+// SetAngularDamp sets the property returned by [GetAngularDamp].
 func (self Instance) SetAngularDamp(value Float.X) {
 	class(self).SetAngularDamp(float64(value))
 }
 
+/*
+If true, the area's audio bus overrides the default audio bus.
+*/
 func (self Instance) AudioBusOverride() bool {
 	return bool(class(self).IsOverridingAudioBus())
 }
 
+// SetAudioBusOverride sets the property returned by [IsOverridingAudioBus].
 func (self Instance) SetAudioBusOverride(value bool) {
 	class(self).SetAudioBusOverride(value)
 }
 
+/*
+The name of the area's audio bus.
+*/
 func (self Instance) AudioBusName() string {
 	return string(class(self).GetAudioBusName().String())
 }
 
+// SetAudioBusName sets the property returned by [GetAudioBusName].
 func (self Instance) SetAudioBusName(value string) {
 	class(self).SetAudioBusName(String.Name(String.New(value)))
 }
@@ -667,6 +746,23 @@ func (self class) IsOverridingAudioBus() bool { //gd:Area2D.is_overriding_audio_
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when a [Shape2D] of the received 'body' enters a shape of this area. 'body' can be a [PhysicsBody2D] or a [TileMap]. [TileMap]s are detected if their [TileSet] has collision shapes configured. Requires [Monitoring] to be set to true.
+
+'local_shape_index' and 'body_shape_index' contain indices of the interacting shapes from this area and the interacting body, respectively. 'body_rid' contains the [Resource.ID] of the body. These values can be used with the [PhysicsServer2D].
+
+Example: Get the [CollisionShape2D] node from the shape index:
+
+[CollisionShape2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape2D
+[Monitoring]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.Monitoring
+[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
+[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[Shape2D]: https://pkg.go.dev/graphics.gd/classdb/Shape2D
+[TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
+[TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
+*/
 func (self Instance) OnBodyShapeEntered(cb func(body_rid RID.Any, body Node2D.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -679,6 +775,18 @@ func (self class) BodyShapeEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyShapeEntered`))))
 }
 
+/*
+Emitted when a [Shape2D] of the received 'body' exits a shape of this area. 'body' can be a [PhysicsBody2D] or a [TileMap]. [TileMap]s are detected if their [TileSet] has collision shapes configured. Requires [Monitoring] to be set to true.
+
+See also [OnBodyShapeEntered].
+
+[Monitoring]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.Monitoring
+[OnBodyShapeEntered]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.OnBodyShapeEntered
+[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
+[Shape2D]: https://pkg.go.dev/graphics.gd/classdb/Shape2D
+[TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
+[TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
+*/
 func (self Instance) OnBodyShapeExited(cb func(body_rid RID.Any, body Node2D.Instance, body_shape_index int, local_shape_index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -691,6 +799,14 @@ func (self class) BodyShapeExited() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyShapeExited`))))
 }
 
+/*
+Emitted when the received 'body' enters this area. 'body' can be a [PhysicsBody2D] or a [TileMap]. [TileMap]s are detected if their [TileSet] has collision shapes configured. Requires [Monitoring] to be set to true.
+
+[Monitoring]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.Monitoring
+[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
+[TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
+[TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
+*/
 func (self Instance) OnBodyEntered(cb func(body Node2D.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -703,6 +819,14 @@ func (self class) BodyEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyEntered`))))
 }
 
+/*
+Emitted when the received 'body' exits this area. 'body' can be a [PhysicsBody2D] or a [TileMap]. [TileMap]s are detected if their [TileSet] has collision shapes configured. Requires [Monitoring] to be set to true.
+
+[Monitoring]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.Monitoring
+[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
+[TileMap]: https://pkg.go.dev/graphics.gd/classdb/TileMap
+[TileSet]: https://pkg.go.dev/graphics.gd/classdb/TileSet
+*/
 func (self Instance) OnBodyExited(cb func(body Node2D.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -715,6 +839,19 @@ func (self class) BodyExited() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BodyExited`))))
 }
 
+/*
+Emitted when a [Shape2D] of the received 'area' enters a shape of this area. Requires [Monitoring] to be set to true.
+
+'local_shape_index' and 'area_shape_index' contain indices of the interacting shapes from this area and the other area, respectively. 'area_rid' contains the [Resource.ID] of the other area. These values can be used with the [PhysicsServer2D].
+
+Example: Get the [CollisionShape2D] node from the shape index:
+
+[CollisionShape2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionShape2D
+[Monitoring]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.Monitoring
+[PhysicsServer2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsServer2D
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[Shape2D]: https://pkg.go.dev/graphics.gd/classdb/Shape2D
+*/
 func (self Instance) OnAreaShapeEntered(cb func(area_rid RID.Any, area Instance, area_shape_index int, local_shape_index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -727,6 +864,15 @@ func (self class) AreaShapeEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AreaShapeEntered`))))
 }
 
+/*
+Emitted when a [Shape2D] of the received 'area' exits a shape of this area. Requires [Monitoring] to be set to true.
+
+See also [OnAreaShapeEntered].
+
+[Monitoring]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.Monitoring
+[OnAreaShapeEntered]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.OnAreaShapeEntered
+[Shape2D]: https://pkg.go.dev/graphics.gd/classdb/Shape2D
+*/
 func (self Instance) OnAreaShapeExited(cb func(area_rid RID.Any, area Instance, area_shape_index int, local_shape_index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -739,6 +885,11 @@ func (self class) AreaShapeExited() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AreaShapeExited`))))
 }
 
+/*
+Emitted when the received 'area' enters this area. Requires [Monitoring] to be set to true.
+
+[Monitoring]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.Monitoring
+*/
 func (self Instance) OnAreaEntered(cb func(area Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -751,6 +902,11 @@ func (self class) AreaEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AreaEntered`))))
 }
 
+/*
+Emitted when the received 'area' exits this area. Requires [Monitoring] to be set to true.
+
+[Monitoring]: https://pkg.go.dev/graphics.gd/classdb/Area2D#Instance.Monitoring
+*/
 func (self Instance) OnAreaExited(cb func(area Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

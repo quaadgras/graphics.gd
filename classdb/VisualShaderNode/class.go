@@ -201,10 +201,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Sets the output port index which will be showed for preview. If set to -1 no port will be open for preview.
+*/
 func (self Instance) OutputPortForPreview() int {
 	return int(int(class(self).GetOutputPortForPreview()))
 }
 
+// SetOutputPortForPreview sets the property returned by [GetOutputPortForPreview].
 func (self Instance) SetOutputPortForPreview(value int) {
 	class(self).SetOutputPortForPreview(int64(value))
 }
@@ -213,14 +217,19 @@ func (self Instance) DefaultInputValues() []any {
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetDefaultInputValues())))
 }
 
+// SetDefaultInputValues sets the property returned by [GetDefaultInputValues].
 func (self Instance) SetDefaultInputValues(value []any) {
 	class(self).SetDefaultInputValues(gd.EngineArrayFromSlice(value))
 }
 
+/*
+Represents the index of the frame this node is linked to. If set to -1 the node is not linked to any frame.
+*/
 func (self Instance) LinkedParentGraphFrame() int {
 	return int(int(class(self).GetFrame()))
 }
 
+// SetLinkedParentGraphFrame sets the property returned by [GetFrame].
 func (self Instance) SetLinkedParentGraphFrame(value int) {
 	class(self).SetFrame(int64(value))
 }

@@ -182,10 +182,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Contains the raw Ogg data for this stream.
+*/
 func (self Instance) PacketSequence() OggPacketSequence.Instance {
 	return OggPacketSequence.Instance(class(self).GetPacketSequence())
 }
 
+// SetPacketSequence sets the property returned by [GetPacketSequence].
 func (self Instance) SetPacketSequence(value OggPacketSequence.Instance) {
 	class(self).SetPacketSequence(value)
 }
@@ -194,6 +198,7 @@ func (self Instance) Bpm() Float.X {
 	return Float.X(Float.X(class(self).GetBpm()))
 }
 
+// SetBpm sets the property returned by [GetBpm].
 func (self Instance) SetBpm(value Float.X) {
 	class(self).SetBpm(float64(value))
 }
@@ -202,6 +207,7 @@ func (self Instance) BeatCount() int {
 	return int(int(class(self).GetBeatCount()))
 }
 
+// SetBeatCount sets the property returned by [GetBeatCount].
 func (self Instance) SetBeatCount(value int) {
 	class(self).SetBeatCount(int64(value))
 }
@@ -210,30 +216,49 @@ func (self Instance) BarBeats() int {
 	return int(int(class(self).GetBarBeats()))
 }
 
+// SetBarBeats sets the property returned by [GetBarBeats].
 func (self Instance) SetBarBeats(value int) {
 	class(self).SetBarBeats(int64(value))
 }
 
+/*
+Contains user-defined tags if found in the Ogg Vorbis data.
+
+Commonly used tags include title, artist, album, tracknumber, and date (date does not have a standard date format).
+
+Note: No tag is guaranteed to be present in every file, so make sure to account for the keys not always existing.
+*/
 func (self Instance) Tags() map[string]interface{} {
 	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetTags()))
 }
 
+// SetTags sets the property returned by [GetTags].
 func (self Instance) SetTags(value map[string]interface{}) {
 	class(self).SetTags(gd.DictionaryFromMap(value))
 }
 
+/*
+If true, the audio will play again from the specified [LoopOffset] once it is done playing. Useful for ambient sounds and background music.
+
+[LoopOffset]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamOggVorbis#Instance.LoopOffset
+*/
 func (self Instance) Loop() bool {
 	return bool(class(self).HasLoop())
 }
 
+// SetLoop sets the property returned by [HasLoop].
 func (self Instance) SetLoop(value bool) {
 	class(self).SetLoop(value)
 }
 
+/*
+Time in seconds at which the stream starts after being looped.
+*/
 func (self Instance) LoopOffset() Float.X {
 	return Float.X(Float.X(class(self).GetLoopOffset()))
 }
 
+// SetLoopOffset sets the property returned by [GetLoopOffset].
 func (self Instance) SetLoopOffset(value Float.X) {
 	class(self).SetLoopOffset(float64(value))
 }

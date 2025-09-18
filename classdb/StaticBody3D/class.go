@@ -163,26 +163,40 @@ func New() Instance {
 	return casted
 }
 
+/*
+The physics material override for the body.
+
+If a material is assigned to this property, it will be used instead of any other physics material, such as an inherited one.
+*/
 func (self Instance) PhysicsMaterialOverride() PhysicsMaterial.Instance {
 	return PhysicsMaterial.Instance(class(self).GetPhysicsMaterialOverride())
 }
 
+// SetPhysicsMaterialOverride sets the property returned by [GetPhysicsMaterialOverride].
 func (self Instance) SetPhysicsMaterialOverride(value PhysicsMaterial.Instance) {
 	class(self).SetPhysicsMaterialOverride(value)
 }
 
+/*
+The body's constant linear velocity. This does not move the body, but affects touching bodies, as if it were moving.
+*/
 func (self Instance) ConstantLinearVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetConstantLinearVelocity())
 }
 
+// SetConstantLinearVelocity sets the property returned by [GetConstantLinearVelocity].
 func (self Instance) SetConstantLinearVelocity(value Vector3.XYZ) {
 	class(self).SetConstantLinearVelocity(Vector3.XYZ(value))
 }
 
+/*
+The body's constant angular velocity. This does not rotate the body, but affects touching bodies, as if it were rotating.
+*/
 func (self Instance) ConstantAngularVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetConstantAngularVelocity())
 }
 
+// SetConstantAngularVelocity sets the property returned by [GetConstantAngularVelocity].
 func (self Instance) SetConstantAngularVelocity(value Vector3.XYZ) {
 	class(self).SetConstantAngularVelocity(Vector3.XYZ(value))
 }

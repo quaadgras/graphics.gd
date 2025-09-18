@@ -147,10 +147,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, centers children relative to the [CenterContainer]'s top left corner.
+
+[CenterContainer]: https://pkg.go.dev/graphics.gd/classdb/CenterContainer
+*/
 func (self Instance) UseTopLeft() bool {
 	return bool(class(self).IsUsingTopLeft())
 }
 
+// SetUseTopLeft sets the property returned by [IsUsingTopLeft].
 func (self Instance) SetUseTopLeft(value bool) {
 	class(self).SetUseTopLeft(value)
 }

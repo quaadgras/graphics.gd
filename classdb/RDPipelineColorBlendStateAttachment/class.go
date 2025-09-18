@@ -281,90 +281,145 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, performs blending between the source and destination according to the factors defined in [SrcColorBlendFactor], [DstColorBlendFactor], [SrcAlphaBlendFactor] and [DstAlphaBlendFactor]. The blend modes [ColorBlendOp] and [AlphaBlendOp] are also taken into account, with [WriteR], [WriteG], [WriteB] and [WriteA] controlling the output.
+
+[AlphaBlendOp]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.AlphaBlendOp
+[ColorBlendOp]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.ColorBlendOp
+[DstAlphaBlendFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.DstAlphaBlendFactor
+[DstColorBlendFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.DstColorBlendFactor
+[SrcAlphaBlendFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.SrcAlphaBlendFactor
+[SrcColorBlendFactor]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.SrcColorBlendFactor
+[WriteA]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.WriteA
+[WriteB]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.WriteB
+[WriteG]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.WriteG
+[WriteR]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendStateAttachment#Instance.WriteR
+*/
 func (self Instance) EnableBlend() bool {
 	return bool(class(self).GetEnableBlend())
 }
 
+// SetEnableBlend sets the property returned by [GetEnableBlend].
 func (self Instance) SetEnableBlend(value bool) {
 	class(self).SetEnableBlend(value)
 }
 
+/*
+Controls how the blend factor for the color channels is determined based on the source's fragments.
+*/
 func (self Instance) SrcColorBlendFactor() Rendering.BlendFactor {
 	return Rendering.BlendFactor(class(self).GetSrcColorBlendFactor())
 }
 
+// SetSrcColorBlendFactor sets the property returned by [GetSrcColorBlendFactor].
 func (self Instance) SetSrcColorBlendFactor(value Rendering.BlendFactor) {
 	class(self).SetSrcColorBlendFactor(value)
 }
 
+/*
+Controls how the blend factor for the color channels is determined based on the destination's fragments.
+*/
 func (self Instance) DstColorBlendFactor() Rendering.BlendFactor {
 	return Rendering.BlendFactor(class(self).GetDstColorBlendFactor())
 }
 
+// SetDstColorBlendFactor sets the property returned by [GetDstColorBlendFactor].
 func (self Instance) SetDstColorBlendFactor(value Rendering.BlendFactor) {
 	class(self).SetDstColorBlendFactor(value)
 }
 
+/*
+The blend mode to use for the red/green/blue color channels.
+*/
 func (self Instance) ColorBlendOp() Rendering.BlendOperation {
 	return Rendering.BlendOperation(class(self).GetColorBlendOp())
 }
 
+// SetColorBlendOp sets the property returned by [GetColorBlendOp].
 func (self Instance) SetColorBlendOp(value Rendering.BlendOperation) {
 	class(self).SetColorBlendOp(value)
 }
 
+/*
+Controls how the blend factor for the alpha channel is determined based on the source's fragments.
+*/
 func (self Instance) SrcAlphaBlendFactor() Rendering.BlendFactor {
 	return Rendering.BlendFactor(class(self).GetSrcAlphaBlendFactor())
 }
 
+// SetSrcAlphaBlendFactor sets the property returned by [GetSrcAlphaBlendFactor].
 func (self Instance) SetSrcAlphaBlendFactor(value Rendering.BlendFactor) {
 	class(self).SetSrcAlphaBlendFactor(value)
 }
 
+/*
+Controls how the blend factor for the alpha channel is determined based on the destination's fragments.
+*/
 func (self Instance) DstAlphaBlendFactor() Rendering.BlendFactor {
 	return Rendering.BlendFactor(class(self).GetDstAlphaBlendFactor())
 }
 
+// SetDstAlphaBlendFactor sets the property returned by [GetDstAlphaBlendFactor].
 func (self Instance) SetDstAlphaBlendFactor(value Rendering.BlendFactor) {
 	class(self).SetDstAlphaBlendFactor(value)
 }
 
+/*
+The blend mode to use for the alpha channel.
+*/
 func (self Instance) AlphaBlendOp() Rendering.BlendOperation {
 	return Rendering.BlendOperation(class(self).GetAlphaBlendOp())
 }
 
+// SetAlphaBlendOp sets the property returned by [GetAlphaBlendOp].
 func (self Instance) SetAlphaBlendOp(value Rendering.BlendOperation) {
 	class(self).SetAlphaBlendOp(value)
 }
 
+/*
+If true, writes the new red color channel to the final result.
+*/
 func (self Instance) WriteR() bool {
 	return bool(class(self).GetWriteR())
 }
 
+// SetWriteR sets the property returned by [GetWriteR].
 func (self Instance) SetWriteR(value bool) {
 	class(self).SetWriteR(value)
 }
 
+/*
+If true, writes the new green color channel to the final result.
+*/
 func (self Instance) WriteG() bool {
 	return bool(class(self).GetWriteG())
 }
 
+// SetWriteG sets the property returned by [GetWriteG].
 func (self Instance) SetWriteG(value bool) {
 	class(self).SetWriteG(value)
 }
 
+/*
+If true, writes the new blue color channel to the final result.
+*/
 func (self Instance) WriteB() bool {
 	return bool(class(self).GetWriteB())
 }
 
+// SetWriteB sets the property returned by [GetWriteB].
 func (self Instance) SetWriteB(value bool) {
 	class(self).SetWriteB(value)
 }
 
+/*
+If true, writes the new alpha channel to the final result.
+*/
 func (self Instance) WriteA() bool {
 	return bool(class(self).GetWriteA())
 }
 
+// SetWriteA sets the property returned by [GetWriteA].
 func (self Instance) SetWriteA(value bool) {
 	class(self).SetWriteA(value)
 }

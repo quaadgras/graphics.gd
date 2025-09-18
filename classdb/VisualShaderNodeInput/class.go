@@ -154,10 +154,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+One of the several input constants in lower-case style like: "vertex" (VERTEX) or "point_size" (POINT_SIZE).
+*/
 func (self Instance) InputName() string {
 	return string(class(self).GetInputName().String())
 }
 
+// SetInputName sets the property returned by [GetInputName].
 func (self Instance) SetInputName(value string) {
 	class(self).SetInputName(String.New(value))
 }
@@ -185,6 +189,12 @@ func (self class) GetInputRealName() String.Readable { //gd:VisualShaderNodeInpu
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
+
+/*
+Emitted when input is changed via [InputName].
+
+[InputName]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeInput#Instance.InputName
+*/
 func (self Instance) OnInputTypeChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

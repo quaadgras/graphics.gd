@@ -568,6 +568,10 @@ func (self class) ClearHistory(id int64, increase_version bool) { //gd:EditorUnd
 		increase_version bool
 	}{id, increase_version})
 }
+
+/*
+Emitted when the list of actions in any history has changed, either when an action is committed or a history is cleared.
+*/
 func (self Instance) OnHistoryChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -580,6 +584,9 @@ func (self class) HistoryChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`HistoryChanged`))))
 }
 
+/*
+Emitted when the version of any history has changed as a result of undo or redo call.
+*/
 func (self Instance) OnVersionChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

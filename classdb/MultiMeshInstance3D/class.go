@@ -152,10 +152,17 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [MultiMesh] resource that will be used and shared among all instances of the [MultiMeshInstance3D].
+
+[MultiMesh]: https://pkg.go.dev/graphics.gd/classdb/MultiMesh
+[MultiMeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MultiMeshInstance3D
+*/
 func (self Instance) Multimesh() MultiMesh.Instance {
 	return MultiMesh.Instance(class(self).GetMultimesh())
 }
 
+// SetMultimesh sets the property returned by [GetMultimesh].
 func (self Instance) SetMultimesh(value MultiMesh.Instance) {
 	class(self).SetMultimesh(value)
 }

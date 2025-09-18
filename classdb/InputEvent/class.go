@@ -430,10 +430,18 @@ func New() Instance {
 	return casted
 }
 
+/*
+The event's device ID.
+
+Note: [Device] can be negative for special use cases that don't refer to devices physically present on the system. See [DeviceIdEmulation].
+
+[Device]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.Device
+*/
 func (self Instance) Device() int {
 	return int(int(class(self).GetDevice()))
 }
 
+// SetDevice sets the property returned by [GetDevice].
 func (self Instance) SetDevice(value int) {
 	class(self).SetDevice(int64(value))
 }

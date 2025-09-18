@@ -155,42 +155,62 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the slider can be interacted with. If false, the value can be changed only by code.
+*/
 func (self Instance) Editable() bool {
 	return bool(class(self).IsEditable())
 }
 
+// SetEditable sets the property returned by [IsEditable].
 func (self Instance) SetEditable(value bool) {
 	class(self).SetEditable(value)
 }
 
+/*
+If true, the value can be changed using the mouse wheel.
+*/
 func (self Instance) Scrollable() bool {
 	return bool(class(self).IsScrollable())
 }
 
+// SetScrollable sets the property returned by [IsScrollable].
 func (self Instance) SetScrollable(value bool) {
 	class(self).SetScrollable(value)
 }
 
+/*
+Number of ticks displayed on the slider, including border ticks. Ticks are uniformly-distributed value markers.
+*/
 func (self Instance) TickCount() int {
 	return int(int(class(self).GetTicks()))
 }
 
+// SetTickCount sets the property returned by [GetTicks].
 func (self Instance) SetTickCount(value int) {
 	class(self).SetTicks(int64(value))
 }
 
+/*
+If true, the slider will display ticks for minimum and maximum values.
+*/
 func (self Instance) TicksOnBorders() bool {
 	return bool(class(self).GetTicksOnBorders())
 }
 
+// SetTicksOnBorders sets the property returned by [GetTicksOnBorders].
 func (self Instance) SetTicksOnBorders(value bool) {
 	class(self).SetTicksOnBorders(value)
 }
 
+/*
+Sets the position of the ticks. See [TickPosition] for details.
+*/
 func (self Instance) TicksPosition() TickPosition {
 	return TickPosition(class(self).GetTicksPosition())
 }
 
+// SetTicksPosition sets the property returned by [GetTicksPosition].
 func (self Instance) SetTicksPosition(value TickPosition) {
 	class(self).SetTicksPosition(value)
 }
@@ -254,6 +274,12 @@ func (self class) IsScrollable() bool { //gd:Slider.is_scrollable
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the grabber starts being dragged. This is emitted before the corresponding [OnRange.ValueChanged] signal.
+
+[OnRange.ValueChanged]: https://pkg.go.dev/graphics.gd/classdb/Slider#Instance.OnRange.ValueChanged
+*/
 func (self Instance) OnDragStarted(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -266,6 +292,11 @@ func (self class) DragStarted() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DragStarted`))))
 }
 
+/*
+Emitted when the grabber stops being dragged. If 'value_changed' is true, [Range.Value] is different from the value when the dragging was started.
+
+[Range.Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
+*/
 func (self Instance) OnDragEnded(cb func(value_changed bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -546,82 +546,163 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the [AnimationMixer] will be processing.
+
+[AnimationMixer]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer
+*/
 func (self Instance) Active() bool {
 	return bool(class(self).IsActive())
 }
 
+// SetActive sets the property returned by [IsActive].
 func (self Instance) SetActive(value bool) {
 	class(self).SetActive(value)
 }
 
+/*
+If true, the blending uses the deterministic algorithm. The total weight is not normalized and the result is accumulated with an initial value (0 or a "RESET" animation if present).
+
+This means that if the total amount of blending is 0.0, the result is equal to the "RESET" animation.
+
+If the number of tracks between the blended animations is different, the animation with the missing track is treated as if it had the initial value.
+
+If false, The blend does not use the deterministic algorithm. The total weight is normalized and always 1.0. If the number of tracks between the blended animations is different, nothing is done about the animation that is missing a track.
+
+Note: In [AnimationTree], the blending with [AnimationNodeAdd2], [AnimationNodeAdd3], [AnimationNodeSub2] or the weight greater than 1.0 may produce unexpected results.
+
+For example, if [AnimationNodeAdd2] blends two nodes with the amount 1.0, then total weight is 2.0 but it will be normalized to make the total amount 1.0 and the result will be equal to [AnimationNodeBlend2] with the amount 0.5.
+
+[AnimationNodeAdd2]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAdd2
+[AnimationNodeAdd3]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAdd3
+[AnimationNodeBlend2]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlend2
+[AnimationNodeSub2]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeSub2
+[AnimationTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree
+*/
 func (self Instance) Deterministic() bool {
 	return bool(class(self).IsDeterministic())
 }
 
+// SetDeterministic sets the property returned by [IsDeterministic].
 func (self Instance) SetDeterministic(value bool) {
 	class(self).SetDeterministic(value)
 }
 
+/*
+This is used by the editor. If set to true, the scene will be saved with the effects of the reset animation (the animation with the key "RESET") applied as if it had been seeked to time 0, with the editor keeping the values that the scene had before saving.
+
+This makes it more convenient to preview and edit animations in the editor, as changes to the scene will not be saved as long as they are set in the reset animation.
+*/
 func (self Instance) ResetOnSave() bool {
 	return bool(class(self).IsResetOnSaveEnabled())
 }
 
+// SetResetOnSave sets the property returned by [IsResetOnSaveEnabled].
 func (self Instance) SetResetOnSave(value bool) {
 	class(self).SetResetOnSaveEnabled(value)
 }
 
+/*
+The node which node path references will travel from.
+*/
 func (self Instance) RootNode() string {
 	return string(class(self).GetRootNode().String())
 }
 
+// SetRootNode sets the property returned by [GetRootNode].
 func (self Instance) SetRootNode(value string) {
 	class(self).SetRootNode(Path.ToNode(String.New(value)))
 }
 
+/*
+The path to the Animation track used for root motion. Paths must be valid scene-tree paths to a node, and must be specified starting from the parent node of the node that will reproduce the animation. The [RootMotionTrack] uses the same format as [Animation.TrackSetPath], but note that a bone must be specified.
+
+If the track has type [Animation.TypePosition3d], [Animation.TypeRotation3d], or [Animation.TypeScale3d] the transformation will be canceled visually, and the animation will appear to stay in place. See also [GetRootMotionPosition], [GetRootMotionRotation], [GetRootMotionScale], and [RootMotionView].
+
+[Animation.TrackSetPath]: https://pkg.go.dev/graphics.gd/classdb/Animation#Instance.TrackSetPath
+[GetRootMotionPosition]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.GetRootMotionPosition
+[GetRootMotionRotation]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.GetRootMotionRotation
+[GetRootMotionScale]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.GetRootMotionScale
+[RootMotionTrack]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.RootMotionTrack
+[RootMotionView]: https://pkg.go.dev/graphics.gd/classdb/RootMotionView
+*/
 func (self Instance) RootMotionTrack() string {
 	return string(class(self).GetRootMotionTrack().String())
 }
 
+// SetRootMotionTrack sets the property returned by [GetRootMotionTrack].
 func (self Instance) SetRootMotionTrack(value string) {
 	class(self).SetRootMotionTrack(Path.ToNode(String.New(value)))
 }
 
+/*
+If true, [GetRootMotionPosition] value is extracted as a local translation value before blending. In other words, it is treated like the translation is done after the rotation.
+
+[GetRootMotionPosition]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.GetRootMotionPosition
+*/
 func (self Instance) RootMotionLocal() bool {
 	return bool(class(self).IsRootMotionLocal())
 }
 
+// SetRootMotionLocal sets the property returned by [IsRootMotionLocal].
 func (self Instance) SetRootMotionLocal(value bool) {
 	class(self).SetRootMotionLocal(value)
 }
 
+/*
+The number of possible simultaneous sounds for each of the assigned AudioStreamPlayers.
+
+For example, if this value is 32 and the animation has two audio tracks, the two [AudioStreamPlayer]s assigned can play simultaneously up to 32 voices each.
+
+[AudioStreamPlayer]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer
+*/
 func (self Instance) AudioMaxPolyphony() int {
 	return int(int(class(self).GetAudioMaxPolyphony()))
 }
 
+// SetAudioMaxPolyphony sets the property returned by [GetAudioMaxPolyphony].
 func (self Instance) SetAudioMaxPolyphony(value int) {
 	class(self).SetAudioMaxPolyphony(int64(value))
 }
 
+/*
+The process notification in which to update animations.
+*/
 func (self Instance) CallbackModeProcess() AnimationCallbackModeProcess {
 	return AnimationCallbackModeProcess(class(self).GetCallbackModeProcess())
 }
 
+// SetCallbackModeProcess sets the property returned by [GetCallbackModeProcess].
 func (self Instance) SetCallbackModeProcess(value AnimationCallbackModeProcess) {
 	class(self).SetCallbackModeProcess(value)
 }
 
+/*
+The call mode used for "Call Method" tracks.
+*/
 func (self Instance) CallbackModeMethod() AnimationCallbackModeMethod {
 	return AnimationCallbackModeMethod(class(self).GetCallbackModeMethod())
 }
 
+// SetCallbackModeMethod sets the property returned by [GetCallbackModeMethod].
 func (self Instance) SetCallbackModeMethod(value AnimationCallbackModeMethod) {
 	class(self).SetCallbackModeMethod(value)
 }
 
+/*
+Ordinarily, tracks can be set to [Animation.UpdateDiscrete] to update infrequently, usually when using nearest interpolation.
+
+However, when blending with [Animation.UpdateContinuous] several results are considered. The [CallbackModeDiscrete] specify it explicitly. See also [AnimationCallbackModeDiscrete].
+
+To make the blended results look good, it is recommended to set this to [AnimationCallbackModeDiscreteForceContinuous] to update every frame during blending. Other values exist for compatibility and they are fine if there is no blending, but not so, may produce artifacts.
+
+[CallbackModeDiscrete]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.CallbackModeDiscrete
+*/
 func (self Instance) CallbackModeDiscrete() AnimationCallbackModeDiscrete {
 	return AnimationCallbackModeDiscrete(class(self).GetCallbackModeDiscrete())
 }
 
+// SetCallbackModeDiscrete sets the property returned by [GetCallbackModeDiscrete].
 func (self Instance) SetCallbackModeDiscrete(value AnimationCallbackModeDiscrete) {
 	class(self).SetCallbackModeDiscrete(value)
 }
@@ -1147,6 +1228,10 @@ func (self class) FindAnimationLibrary(animation [1]gdclass.Animation) String.Na
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
+
+/*
+Notifies when an animation list is changed.
+*/
 func (self Instance) OnAnimationListChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1159,6 +1244,9 @@ func (self class) AnimationListChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationListChanged`))))
 }
 
+/*
+Notifies when the animation libraries have changed.
+*/
 func (self Instance) OnAnimationLibrariesUpdated(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1171,6 +1259,11 @@ func (self class) AnimationLibrariesUpdated() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationLibrariesUpdated`))))
 }
 
+/*
+Notifies when an animation finished playing.
+
+Note: This signal is not emitted if an animation is looping.
+*/
 func (self Instance) OnAnimationFinished(cb func(anim_name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1183,6 +1276,11 @@ func (self class) AnimationFinished() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationFinished`))))
 }
 
+/*
+Notifies when an animation starts playing.
+
+Note: This signal is not emitted if an animation is looping.
+*/
 func (self Instance) OnAnimationStarted(cb func(anim_name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1195,6 +1293,11 @@ func (self class) AnimationStarted() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationStarted`))))
 }
 
+/*
+Notifies when the caches have been cleared, either automatically, or manually via [ClearCaches].
+
+[ClearCaches]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.ClearCaches
+*/
 func (self Instance) OnCachesCleared(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1207,6 +1310,9 @@ func (self class) CachesCleared() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CachesCleared`))))
 }
 
+/*
+Notifies when the blending result related have been applied to the target objects.
+*/
 func (self Instance) OnMixerApplied(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1219,6 +1325,9 @@ func (self class) MixerApplied() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MixerApplied`))))
 }
 
+/*
+Notifies when the property related process have been updated.
+*/
 func (self Instance) OnMixerUpdated(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

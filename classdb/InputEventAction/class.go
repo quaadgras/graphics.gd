@@ -158,30 +158,50 @@ func New() Instance {
 	return casted
 }
 
+/*
+The action's name. This is usually the name of an existing action in the [InputMap] which you want this custom event to match.
+
+[InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
+*/
 func (self Instance) Action() string {
 	return string(class(self).GetAction().String())
 }
 
+// SetAction sets the property returned by [GetAction].
 func (self Instance) SetAction(value string) {
 	class(self).SetAction(String.Name(String.New(value)))
 }
 
+/*
+If true, the action's state is pressed. If false, the action's state is released.
+*/
 func (self Instance) SetPressed(value bool) {
 	class(self).SetPressed(value)
 }
 
+/*
+The action's strength between 0 and 1. This value is considered as equal to 0 if pressed is false. The event strength allows faking analog joypad motion events, by specifying how strongly the joypad axis is bent or pressed.
+*/
 func (self Instance) Strength() Float.X {
 	return Float.X(Float.X(class(self).GetStrength()))
 }
 
+// SetStrength sets the property returned by [GetStrength].
 func (self Instance) SetStrength(value Float.X) {
 	class(self).SetStrength(float64(value))
 }
 
+/*
+The real event index in action this event corresponds to (from events defined for this action in the [InputMap]). If -1, a unique ID will be used and actions pressed with this ID will need to be released with another [InputEventAction].
+
+[InputEventAction]: https://pkg.go.dev/graphics.gd/classdb/InputEventAction
+[InputMap]: https://pkg.go.dev/graphics.gd/classdb/InputMap
+*/
 func (self Instance) EventIndex() int {
 	return int(int(class(self).GetEventIndex()))
 }
 
+// SetEventIndex sets the property returned by [GetEventIndex].
 func (self Instance) SetEventIndex(value int) {
 	class(self).SetEventIndex(int64(value))
 }

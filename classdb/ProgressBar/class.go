@@ -153,34 +153,52 @@ func New() Instance {
 	return casted
 }
 
+/*
+The fill direction. See [FillMode] for possible values.
+*/
 func (self Instance) FillMode() int {
 	return int(int(class(self).GetFillMode()))
 }
 
+// SetFillMode sets the property returned by [GetFillMode].
 func (self Instance) SetFillMode(value int) {
 	class(self).SetFillMode(int64(value))
 }
 
+/*
+If true, the fill percentage is displayed on the bar.
+*/
 func (self Instance) ShowPercentage() bool {
 	return bool(class(self).IsPercentageShown())
 }
 
+// SetShowPercentage sets the property returned by [IsPercentageShown].
 func (self Instance) SetShowPercentage(value bool) {
 	class(self).SetShowPercentage(value)
 }
 
+/*
+When set to true, the progress bar indicates that something is happening with an animation, but does not show the fill percentage or value.
+*/
 func (self Instance) Indeterminate() bool {
 	return bool(class(self).IsIndeterminate())
 }
 
+// SetIndeterminate sets the property returned by [IsIndeterminate].
 func (self Instance) SetIndeterminate(value bool) {
 	class(self).SetIndeterminate(value)
 }
 
+/*
+If false, the [Indeterminate] animation will be paused in the editor.
+
+[Indeterminate]: https://pkg.go.dev/graphics.gd/classdb/ProgressBar#Instance.Indeterminate
+*/
 func (self Instance) EditorPreviewIndeterminate() bool {
 	return bool(class(self).IsEditorPreviewIndeterminateEnabled())
 }
 
+// SetEditorPreviewIndeterminate sets the property returned by [IsEditorPreviewIndeterminateEnabled].
 func (self Instance) SetEditorPreviewIndeterminate(value bool) {
 	class(self).SetEditorPreviewIndeterminate(value)
 }

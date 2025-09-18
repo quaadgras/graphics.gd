@@ -171,82 +171,152 @@ func New() Instance {
 	return casted
 }
 
+/*
+Multiplier to the final [Parallax2D]'s offset. Can be used to simulate distance from the camera.
+
+For example, a value of 1 scrolls at the same speed as the camera. A value greater than 1 scrolls faster, making objects appear closer. Less than 1 scrolls slower, making objects appear further, and a value of 0 stops the objects completely.
+
+[Parallax2D]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D
+*/
 func (self Instance) ScrollScale() Vector2.XY {
 	return Vector2.XY(class(self).GetScrollScale())
 }
 
+// SetScrollScale sets the property returned by [GetScrollScale].
 func (self Instance) SetScrollScale(value Vector2.XY) {
 	class(self).SetScrollScale(Vector2.XY(value))
 }
 
+/*
+The [Parallax2D]'s offset. Similar to [ScreenOffset] and [Node2D.Position], but will not be overridden.
+
+Note: Values will loop if [RepeatSize] is set higher than 0.
+
+[Node2D.Position]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Position
+[Parallax2D]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D
+[RepeatSize]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D#Instance.RepeatSize
+[ScreenOffset]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D#Instance.ScreenOffset
+*/
 func (self Instance) ScrollOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetScrollOffset())
 }
 
+// SetScrollOffset sets the property returned by [GetScrollOffset].
 func (self Instance) SetScrollOffset(value Vector2.XY) {
 	class(self).SetScrollOffset(Vector2.XY(value))
 }
 
+/*
+Repeats the [Texture2D] of each of this node's children and offsets them by this value. When scrolling, the node's position loops, giving the illusion of an infinite scrolling background if the values are larger than the screen size. If an axis is set to 0, the [Texture2D] will not be repeated.
+
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
 func (self Instance) RepeatSize() Vector2.XY {
 	return Vector2.XY(class(self).GetRepeatSize())
 }
 
+// SetRepeatSize sets the property returned by [GetRepeatSize].
 func (self Instance) SetRepeatSize(value Vector2.XY) {
 	class(self).SetRepeatSize(Vector2.XY(value))
 }
 
+/*
+Velocity at which the offset scrolls automatically, in pixels per second.
+*/
 func (self Instance) Autoscroll() Vector2.XY {
 	return Vector2.XY(class(self).GetAutoscroll())
 }
 
+// SetAutoscroll sets the property returned by [GetAutoscroll].
 func (self Instance) SetAutoscroll(value Vector2.XY) {
 	class(self).SetAutoscroll(Vector2.XY(value))
 }
 
+/*
+Overrides the amount of times the texture repeats. Each texture copy spreads evenly from the original by [RepeatSize]. Useful for when zooming out with a camera.
+
+[RepeatSize]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D#Instance.RepeatSize
+*/
 func (self Instance) RepeatTimes() int {
 	return int(int(class(self).GetRepeatTimes()))
 }
 
+// SetRepeatTimes sets the property returned by [GetRepeatTimes].
 func (self Instance) SetRepeatTimes(value int) {
 	class(self).SetRepeatTimes(int64(value))
 }
 
+/*
+Top-left limits for scrolling to begin. If the camera is outside of this limit, the [Parallax2D] stops scrolling. Must be lower than [LimitEnd] minus the viewport size to work.
+
+[LimitEnd]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D#Instance.LimitEnd
+[Parallax2D]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D
+*/
 func (self Instance) LimitBegin() Vector2.XY {
 	return Vector2.XY(class(self).GetLimitBegin())
 }
 
+// SetLimitBegin sets the property returned by [GetLimitBegin].
 func (self Instance) SetLimitBegin(value Vector2.XY) {
 	class(self).SetLimitBegin(Vector2.XY(value))
 }
 
+/*
+Bottom-right limits for scrolling to end. If the camera is outside of this limit, the [Parallax2D] will stop scrolling. Must be higher than [LimitBegin] and the viewport size combined to work.
+
+[LimitBegin]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D#Instance.LimitBegin
+[Parallax2D]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D
+*/
 func (self Instance) LimitEnd() Vector2.XY {
 	return Vector2.XY(class(self).GetLimitEnd())
 }
 
+// SetLimitEnd sets the property returned by [GetLimitEnd].
 func (self Instance) SetLimitEnd(value Vector2.XY) {
 	class(self).SetLimitEnd(Vector2.XY(value))
 }
 
+/*
+If true, this [Parallax2D] is offset by the current camera's position. If the [Parallax2D] is in a [CanvasLayer] separate from the current camera, it may be desired to match the value with [CanvasLayer.FollowViewportEnabled].
+
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
+[CanvasLayer.FollowViewportEnabled]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer#Instance.FollowViewportEnabled
+[Parallax2D]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D
+*/
 func (self Instance) FollowViewport() bool {
 	return bool(class(self).GetFollowViewport())
 }
 
+// SetFollowViewport sets the property returned by [GetFollowViewport].
 func (self Instance) SetFollowViewport(value bool) {
 	class(self).SetFollowViewport(value)
 }
 
+/*
+If true, [Parallax2D]'s position is not affected by the position of the camera.
+
+[Parallax2D]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D
+*/
 func (self Instance) IgnoreCameraScroll() bool {
 	return bool(class(self).IsIgnoreCameraScroll())
 }
 
+// SetIgnoreCameraScroll sets the property returned by [IsIgnoreCameraScroll].
 func (self Instance) SetIgnoreCameraScroll(value bool) {
 	class(self).SetIgnoreCameraScroll(value)
 }
 
+/*
+Offset used to scroll this [Parallax2D]. This value is updated automatically unless [IgnoreCameraScroll] is true.
+
+[IgnoreCameraScroll]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D#Instance.IgnoreCameraScroll
+[Parallax2D]: https://pkg.go.dev/graphics.gd/classdb/Parallax2D
+*/
 func (self Instance) ScreenOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetScreenOffset())
 }
 
+// SetScreenOffset sets the property returned by [GetScreenOffset].
 func (self Instance) SetScreenOffset(value Vector2.XY) {
 	class(self).SetScreenOffset(Vector2.XY(value))
 }

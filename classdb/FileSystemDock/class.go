@@ -208,6 +208,10 @@ Removes an [EditorResourceTooltipPlugin]. Fails if the plugin wasn't previously 
 func (self class) RemoveResourceTooltipPlugin(plugin [1]gdclass.EditorResourceTooltipPlugin) { //gd:FileSystemDock.remove_resource_tooltip_plugin
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_resource_tooltip_plugin, 0|(gdextension.SizeObject<<4), &struct{ plugin gdextension.Object }{gdextension.Object(gd.ObjectChecked(plugin[0].AsObject()))})
 }
+
+/*
+Emitted when a new scene is created that inherits the scene at 'file' path.
+*/
 func (self Instance) OnInherit(cb func(file string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -220,6 +224,9 @@ func (self class) Inherit() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Inherit`))))
 }
 
+/*
+Emitted when the given scenes are being instantiated in the editor.
+*/
 func (self Instance) OnInstantiate(cb func(files []string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -232,6 +239,9 @@ func (self class) Instantiate() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Instantiate`))))
 }
 
+/*
+Emitted when an external 'resource' had its file removed.
+*/
 func (self Instance) OnResourceRemoved(cb func(resource Resource.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -244,6 +254,9 @@ func (self class) ResourceRemoved() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourceRemoved`))))
 }
 
+/*
+Emitted when the given 'file' was removed.
+*/
 func (self Instance) OnFileRemoved(cb func(file string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -256,6 +269,9 @@ func (self class) FileRemoved() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FileRemoved`))))
 }
 
+/*
+Emitted when the given 'folder' was removed.
+*/
 func (self Instance) OnFolderRemoved(cb func(folder string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -268,6 +284,9 @@ func (self class) FolderRemoved() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FolderRemoved`))))
 }
 
+/*
+Emitted when a file is moved from 'old_file' path to 'new_file' path.
+*/
 func (self Instance) OnFilesMoved(cb func(old_file string, new_file string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -280,6 +299,9 @@ func (self class) FilesMoved() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FilesMoved`))))
 }
 
+/*
+Emitted when a folder is moved from 'old_folder' path to 'new_folder' path.
+*/
 func (self Instance) OnFolderMoved(cb func(old_folder string, new_folder string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -292,6 +314,9 @@ func (self class) FolderMoved() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FolderMoved`))))
 }
 
+/*
+Emitted when folders change color.
+*/
 func (self Instance) OnFolderColorChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -304,6 +329,9 @@ func (self class) FolderColorChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FolderColorChanged`))))
 }
 
+/*
+Emitted when the user switches file display mode or split mode.
+*/
 func (self Instance) OnDisplayModeChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

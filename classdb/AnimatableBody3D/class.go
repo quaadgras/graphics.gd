@@ -153,10 +153,17 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the body's movement will be synchronized to the physics frame. This is useful when animating movement via [AnimationPlayer], for example on moving platforms. Do not use together with [PhysicsBody3D.MoveAndCollide].
+
+[AnimationPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer
+[PhysicsBody3D.MoveAndCollide]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D#Instance.MoveAndCollide
+*/
 func (self Instance) SyncToPhysics() bool {
 	return bool(class(self).IsSyncToPhysicsEnabled())
 }
 
+// SetSyncToPhysics sets the property returned by [IsSyncToPhysicsEnabled].
 func (self Instance) SetSyncToPhysics(value bool) {
 	class(self).SetSyncToPhysics(value)
 }

@@ -214,18 +214,26 @@ func New() Instance {
 	return casted
 }
 
+/*
+The profile associated with this tracker, interface dependent but will indicate the type of controller being tracked.
+*/
 func (self Instance) Profile() string {
 	return string(class(self).GetTrackerProfile().String())
 }
 
+// SetProfile sets the property returned by [GetTrackerProfile].
 func (self Instance) SetProfile(value string) {
 	class(self).SetTrackerProfile(String.New(value))
 }
 
+/*
+Defines which hand this tracker relates to.
+*/
 func (self Instance) Hand() TrackerHand {
 	return TrackerHand(class(self).GetTrackerHand())
 }
 
+// SetHand sets the property returned by [GetTrackerHand].
 func (self Instance) SetHand(value TrackerHand) {
 	class(self).SetTrackerHand(value)
 }
@@ -324,6 +332,10 @@ func (self class) SetInput(name String.Name, value variant.Any) { //gd:XRPositio
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
 }
+
+/*
+Emitted when the state of a pose tracked by this tracker changes.
+*/
 func (self Instance) OnPoseChanged(cb func(pose XRPose.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -336,6 +348,9 @@ func (self class) PoseChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PoseChanged`))))
 }
 
+/*
+Emitted when a pose tracked by this tracker stops getting updated tracking data.
+*/
 func (self Instance) OnPoseLostTracking(cb func(pose XRPose.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -348,6 +363,9 @@ func (self class) PoseLostTracking() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PoseLostTracking`))))
 }
 
+/*
+Emitted when a button on this tracker is pressed. Note that many XR runtimes allow other inputs to be mapped to buttons.
+*/
 func (self Instance) OnButtonPressed(cb func(name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -360,6 +378,9 @@ func (self class) ButtonPressed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonPressed`))))
 }
 
+/*
+Emitted when a button on this tracker is released.
+*/
 func (self Instance) OnButtonReleased(cb func(name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -372,6 +393,9 @@ func (self class) ButtonReleased() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonReleased`))))
 }
 
+/*
+Emitted when a trigger or similar input on this tracker changes value.
+*/
 func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -384,6 +408,9 @@ func (self class) InputFloatChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InputFloatChanged`))))
 }
 
+/*
+Emitted when a thumbstick or thumbpad on this tracker moves.
+*/
 func (self Instance) OnInputVector2Changed(cb func(name string, vector Vector2.XY), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -396,6 +423,9 @@ func (self class) InputVector2Changed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InputVector2Changed`))))
 }
 
+/*
+Emitted when the profile of our tracker changes.
+*/
 func (self Instance) OnProfileChanged(cb func(role string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -168,58 +168,86 @@ func New() Instance {
 	return casted
 }
 
+/*
+The level above which compression is applied to the audio. Value can range from -60 to 0.
+*/
 func (self Instance) Threshold() Float.X {
 	return Float.X(Float.X(class(self).GetThreshold()))
 }
 
+// SetThreshold sets the property returned by [GetThreshold].
 func (self Instance) SetThreshold(value Float.X) {
 	class(self).SetThreshold(float64(value))
 }
 
+/*
+Amount of compression applied to the audio once it passes the threshold level. The higher the ratio, the more the loud parts of the audio will be compressed. Value can range from 1 to 48.
+*/
 func (self Instance) Ratio() Float.X {
 	return Float.X(Float.X(class(self).GetRatio()))
 }
 
+// SetRatio sets the property returned by [GetRatio].
 func (self Instance) SetRatio(value Float.X) {
 	class(self).SetRatio(float64(value))
 }
 
+/*
+Gain applied to the output signal.
+*/
 func (self Instance) Gain() Float.X {
 	return Float.X(Float.X(class(self).GetGain()))
 }
 
+// SetGain sets the property returned by [GetGain].
 func (self Instance) SetGain(value Float.X) {
 	class(self).SetGain(float64(value))
 }
 
+/*
+Compressor's reaction time when the signal exceeds the threshold, in microseconds. Value can range from 20 to 2000.
+*/
 func (self Instance) AttackUs() Float.X {
 	return Float.X(Float.X(class(self).GetAttackUs()))
 }
 
+// SetAttackUs sets the property returned by [GetAttackUs].
 func (self Instance) SetAttackUs(value Float.X) {
 	class(self).SetAttackUs(float64(value))
 }
 
+/*
+Compressor's delay time to stop reducing the signal after the signal level falls below the threshold, in milliseconds. Value can range from 20 to 2000.
+*/
 func (self Instance) ReleaseMs() Float.X {
 	return Float.X(Float.X(class(self).GetReleaseMs()))
 }
 
+// SetReleaseMs sets the property returned by [GetReleaseMs].
 func (self Instance) SetReleaseMs(value Float.X) {
 	class(self).SetReleaseMs(float64(value))
 }
 
+/*
+Balance between original signal and effect signal. Value can range from 0 (totally dry) to 1 (totally wet).
+*/
 func (self Instance) Mix() Float.X {
 	return Float.X(Float.X(class(self).GetMix()))
 }
 
+// SetMix sets the property returned by [GetMix].
 func (self Instance) SetMix(value Float.X) {
 	class(self).SetMix(float64(value))
 }
 
+/*
+Reduce the sound level using another audio bus for threshold detection.
+*/
 func (self Instance) Sidechain() string {
 	return string(class(self).GetSidechain().String())
 }
 
+// SetSidechain sets the property returned by [GetSidechain].
 func (self Instance) SetSidechain(value string) {
 	class(self).SetSidechain(String.Name(String.New(value)))
 }

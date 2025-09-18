@@ -193,82 +193,142 @@ func New() Instance {
 	return casted
 }
 
+/*
+The initial offset of the splitting between the two [Control]s, with 0 being at the end of the first [Control].
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+*/
 func (self Instance) SplitOffset() int {
 	return int(int(class(self).GetSplitOffset()))
 }
 
+// SetSplitOffset sets the property returned by [GetSplitOffset].
 func (self Instance) SetSplitOffset(value int) {
 	class(self).SetSplitOffset(int64(value))
 }
 
+/*
+If true, the dragger will be disabled and the children will be sized as if the [SplitOffset] was 0.
+
+[SplitOffset]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer#Instance.SplitOffset
+*/
 func (self Instance) Collapsed() bool {
 	return bool(class(self).IsCollapsed())
 }
 
+// SetCollapsed sets the property returned by [IsCollapsed].
 func (self Instance) SetCollapsed(value bool) {
 	class(self).SetCollapsed(value)
 }
 
+/*
+Enables or disables split dragging.
+*/
 func (self Instance) DraggingEnabled() bool {
 	return bool(class(self).IsDraggingEnabled())
 }
 
+// SetDraggingEnabled sets the property returned by [IsDraggingEnabled].
 func (self Instance) SetDraggingEnabled(value bool) {
 	class(self).SetDraggingEnabled(value)
 }
 
+/*
+Determines the dragger's visibility. This property does not determine whether dragging is enabled or not. Use [DraggingEnabled] for that.
+
+[DraggingEnabled]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer#Instance.DraggingEnabled
+*/
 func (self Instance) DraggerVisibility() DraggerVisibility {
 	return DraggerVisibility(class(self).GetDraggerVisibility())
 }
 
+// SetDraggerVisibility sets the property returned by [GetDraggerVisibility].
 func (self Instance) SetDraggerVisibility(value DraggerVisibility) {
 	class(self).SetDraggerVisibility(value)
 }
 
+/*
+If true, the [SplitContainer] will arrange its children vertically, rather than horizontally.
+
+Can't be changed when using [HSplitContainer] and [VSplitContainer].
+
+[HSplitContainer]: https://pkg.go.dev/graphics.gd/classdb/HSplitContainer
+[SplitContainer]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer
+[VSplitContainer]: https://pkg.go.dev/graphics.gd/classdb/VSplitContainer
+*/
 func (self Instance) Vertical() bool {
 	return bool(class(self).IsVertical())
 }
 
+// SetVertical sets the property returned by [IsVertical].
 func (self Instance) SetVertical(value bool) {
 	class(self).SetVertical(value)
 }
 
+/*
+If true, a touch-friendly drag handle will be enabled for better usability on smaller screens. Unlike the standard grabber, this drag handle overlaps the [SplitContainer]'s children and does not affect their minimum separation. The standard grabber will no longer be drawn when this option is enabled.
+
+[SplitContainer]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer
+*/
 func (self Instance) TouchDraggerEnabled() bool {
 	return bool(class(self).IsTouchDraggerEnabled())
 }
 
+// SetTouchDraggerEnabled sets the property returned by [IsTouchDraggerEnabled].
 func (self Instance) SetTouchDraggerEnabled(value bool) {
 	class(self).SetTouchDraggerEnabled(value)
 }
 
+/*
+Reduces the size of the drag area and split bar theme's 'split_bar_background' at the beginning of the container.
+*/
 func (self Instance) DragAreaMarginBegin() int {
 	return int(int(class(self).GetDragAreaMarginBegin()))
 }
 
+// SetDragAreaMarginBegin sets the property returned by [GetDragAreaMarginBegin].
 func (self Instance) SetDragAreaMarginBegin(value int) {
 	class(self).SetDragAreaMarginBegin(int64(value))
 }
 
+/*
+Reduces the size of the drag area and split bar theme's 'split_bar_background' at the end of the container.
+*/
 func (self Instance) DragAreaMarginEnd() int {
 	return int(int(class(self).GetDragAreaMarginEnd()))
 }
 
+// SetDragAreaMarginEnd sets the property returned by [GetDragAreaMarginEnd].
 func (self Instance) SetDragAreaMarginEnd(value int) {
 	class(self).SetDragAreaMarginEnd(int64(value))
 }
 
+/*
+Shifts the drag area in the axis of the container to prevent the drag area from overlapping the [ScrollBar] or other selectable [Control] of a child node.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[ScrollBar]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar
+*/
 func (self Instance) DragAreaOffset() int {
 	return int(int(class(self).GetDragAreaOffset()))
 }
 
+// SetDragAreaOffset sets the property returned by [GetDragAreaOffset].
 func (self Instance) SetDragAreaOffset(value int) {
 	class(self).SetDragAreaOffset(int64(value))
 }
 
+/*
+Highlights the drag area [Rect2.PositionSize] so you can see where it is during development. The drag area is gold if [DraggingEnabled] is true, and red if false.
+
+[DraggingEnabled]: https://pkg.go.dev/graphics.gd/classdb/SplitContainer#Instance.DraggingEnabled
+[Rect2.PositionSize]: https://pkg.go.dev/graphics.gd/variant/Rect2#PositionSize
+*/
 func (self Instance) DragAreaHighlightInEditor() bool {
 	return bool(class(self).IsDragAreaHighlightInEditorEnabled())
 }
 
+// SetDragAreaHighlightInEditor sets the property returned by [IsDragAreaHighlightInEditorEnabled].
 func (self Instance) SetDragAreaHighlightInEditor(value bool) {
 	class(self).SetDragAreaHighlightInEditor(value)
 }
@@ -426,6 +486,10 @@ func (self class) IsTouchDraggerEnabled() bool { //gd:SplitContainer.is_touch_dr
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the dragger is dragged by user.
+*/
 func (self Instance) OnDragged(cb func(offset int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -438,6 +502,9 @@ func (self class) Dragged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Dragged`))))
 }
 
+/*
+Emitted when the user starts dragging.
+*/
 func (self Instance) OnDragStarted(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -450,6 +517,9 @@ func (self class) DragStarted() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DragStarted`))))
 }
 
+/*
+Emitted when the user ends dragging.
+*/
 func (self Instance) OnDragEnded(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

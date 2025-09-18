@@ -149,26 +149,38 @@ func New() Instance {
 	return casted
 }
 
+/*
+The attachment's data format.
+*/
 func (self Instance) Format() Rendering.DataFormat {
 	return Rendering.DataFormat(class(self).GetFormat())
 }
 
+// SetFormat sets the property returned by [GetFormat].
 func (self Instance) SetFormat(value Rendering.DataFormat) {
 	class(self).SetFormat(value)
 }
 
+/*
+The number of samples used when sampling the attachment.
+*/
 func (self Instance) Samples() Rendering.TextureSamples {
 	return Rendering.TextureSamples(class(self).GetSamples())
 }
 
+// SetSamples sets the property returned by [GetSamples].
 func (self Instance) SetSamples(value Rendering.TextureSamples) {
 	class(self).SetSamples(value)
 }
 
+/*
+The attachment's usage flags, which determine what can be done with it.
+*/
 func (self Instance) UsageFlags() int {
 	return int(int(class(self).GetUsageFlags()))
 }
 
+// SetUsageFlags sets the property returned by [GetUsageFlags].
 func (self Instance) SetUsageFlags(value int) {
 	class(self).SetUsageFlags(int64(value))
 }

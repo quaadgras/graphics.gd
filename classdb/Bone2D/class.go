@@ -256,10 +256,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+Rest transform of the bone. You can reset the node's transforms to this value using [ApplyRest].
+
+[ApplyRest]: https://pkg.go.dev/graphics.gd/classdb/Bone2D#Instance.ApplyRest
+*/
 func (self Instance) Rest() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetRest())
 }
 
+// SetRest sets the property returned by [GetRest].
 func (self Instance) SetRest(value Transform2D.OriginXY) {
 	class(self).SetRest(Transform2D.OriginXY(value))
 }

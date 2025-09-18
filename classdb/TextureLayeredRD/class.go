@@ -149,10 +149,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The RID of the texture object created on the [RenderingDevice].
+
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
+*/
 func (self Instance) TextureRdRid() RID.Texture {
 	return RID.Texture(RID.Texture(class(self).GetTextureRdRid()))
 }
 
+// SetTextureRdRid sets the property returned by [GetTextureRdRid].
 func (self Instance) SetTextureRdRid(value RID.Texture) {
 	class(self).SetTextureRdRid(RID.Any(value))
 }

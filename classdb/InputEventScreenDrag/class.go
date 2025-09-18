@@ -164,74 +164,126 @@ func New() Instance {
 	return casted
 }
 
+/*
+The drag event index in the case of a multi-drag event.
+*/
 func (self Instance) Index() int {
 	return int(int(class(self).GetIndex()))
 }
 
+// SetIndex sets the property returned by [GetIndex].
 func (self Instance) SetIndex(value int) {
 	class(self).SetIndex(int64(value))
 }
 
+/*
+Represents the angles of tilt of the pen. Positive X-coordinate value indicates a tilt to the right. Positive Y-coordinate value indicates a tilt toward the user. Ranges from -1.0 to 1.0 for both axes.
+*/
 func (self Instance) Tilt() Vector2.XY {
 	return Vector2.XY(class(self).GetTilt())
 }
 
+// SetTilt sets the property returned by [GetTilt].
 func (self Instance) SetTilt(value Vector2.XY) {
 	class(self).SetTilt(Vector2.XY(value))
 }
 
+/*
+Represents the pressure the user puts on the pen. Ranges from 0.0 to 1.0.
+*/
 func (self Instance) Pressure() Float.X {
 	return Float.X(Float.X(class(self).GetPressure()))
 }
 
+// SetPressure sets the property returned by [GetPressure].
 func (self Instance) SetPressure(value Float.X) {
 	class(self).SetPressure(float64(value))
 }
 
+/*
+Returns true when using the eraser end of a stylus pen.
+*/
 func (self Instance) PenInverted() bool {
 	return bool(class(self).GetPenInverted())
 }
 
+// SetPenInverted sets the property returned by [GetPenInverted].
 func (self Instance) SetPenInverted(value bool) {
 	class(self).SetPenInverted(value)
 }
 
+/*
+The drag position in the viewport the node is in, using the coordinate system of this viewport.
+*/
 func (self Instance) Position() Vector2.XY {
 	return Vector2.XY(class(self).GetPosition())
 }
 
+// SetPosition sets the property returned by [GetPosition].
 func (self Instance) SetPosition(value Vector2.XY) {
 	class(self).SetPosition(Vector2.XY(value))
 }
 
+/*
+The drag position relative to the previous position (position at the last frame).
+
+Note: [Relative] is automatically scaled according to the content scale factor, which is defined by the project's stretch mode settings. This means touch sensitivity will appear different depending on resolution when using [Relative] in a script that handles touch aiming. To avoid this, use [ScreenRelative] instead.
+
+[Relative]: https://pkg.go.dev/graphics.gd/classdb/InputEventScreenDrag#Instance.Relative
+[ScreenRelative]: https://pkg.go.dev/graphics.gd/classdb/InputEventScreenDrag#Instance.ScreenRelative
+*/
 func (self Instance) Relative() Vector2.XY {
 	return Vector2.XY(class(self).GetRelative())
 }
 
+// SetRelative sets the property returned by [GetRelative].
 func (self Instance) SetRelative(value Vector2.XY) {
 	class(self).SetRelative(Vector2.XY(value))
 }
 
+/*
+The unscaled drag position relative to the previous position in screen coordinates (position at the last frame). This position is not scaled according to the content scale factor or calls to [InputEvent.XformedBy]. This should be preferred over [Relative] for touch aiming regardless of the project's stretch mode.
+
+[InputEvent.XformedBy]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.XformedBy
+[Relative]: https://pkg.go.dev/graphics.gd/classdb/InputEventScreenDrag#Instance.Relative
+*/
 func (self Instance) ScreenRelative() Vector2.XY {
 	return Vector2.XY(class(self).GetScreenRelative())
 }
 
+// SetScreenRelative sets the property returned by [GetScreenRelative].
 func (self Instance) SetScreenRelative(value Vector2.XY) {
 	class(self).SetScreenRelative(Vector2.XY(value))
 }
 
+/*
+The drag velocity.
+
+Note: [Velocity] is automatically scaled according to the content scale factor, which is defined by the project's stretch mode settings. This means touch sensitivity will appear different depending on resolution when using [Velocity] in a script that handles touch aiming. To avoid this, use [ScreenVelocity] instead.
+
+[ScreenVelocity]: https://pkg.go.dev/graphics.gd/classdb/InputEventScreenDrag#Instance.ScreenVelocity
+[Velocity]: https://pkg.go.dev/graphics.gd/classdb/InputEventScreenDrag#Instance.Velocity
+*/
 func (self Instance) Velocity() Vector2.XY {
 	return Vector2.XY(class(self).GetVelocity())
 }
 
+// SetVelocity sets the property returned by [GetVelocity].
 func (self Instance) SetVelocity(value Vector2.XY) {
 	class(self).SetVelocity(Vector2.XY(value))
 }
 
+/*
+The unscaled drag velocity in pixels per second in screen coordinates. This velocity is not scaled according to the content scale factor or calls to [InputEvent.XformedBy]. This should be preferred over [Velocity] for touch aiming regardless of the project's stretch mode.
+
+[InputEvent.XformedBy]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.XformedBy
+[Velocity]: https://pkg.go.dev/graphics.gd/classdb/InputEventScreenDrag#Instance.Velocity
+*/
 func (self Instance) ScreenVelocity() Vector2.XY {
 	return Vector2.XY(class(self).GetScreenVelocity())
 }
 
+// SetScreenVelocity sets the property returned by [GetScreenVelocity].
 func (self Instance) SetScreenVelocity(value Vector2.XY) {
 	class(self).SetScreenVelocity(Vector2.XY(value))
 }

@@ -186,18 +186,29 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, when the cursor hovers above another [MenuButton] within the same parent which also has [SwitchOnHover] enabled, it will close the current [MenuButton] and open the other one.
+
+[MenuButton]: https://pkg.go.dev/graphics.gd/classdb/MenuButton
+[SwitchOnHover]: https://pkg.go.dev/graphics.gd/classdb/MenuButton#Instance.SwitchOnHover
+*/
 func (self Instance) SwitchOnHover() bool {
 	return bool(class(self).IsSwitchOnHover())
 }
 
+// SetSwitchOnHover sets the property returned by [IsSwitchOnHover].
 func (self Instance) SetSwitchOnHover(value bool) {
 	class(self).SetSwitchOnHover(value)
 }
 
+/*
+The number of items currently in the list.
+*/
 func (self Instance) ItemCount() int {
 	return int(int(class(self).GetItemCount()))
 }
 
+// SetItemCount sets the property returned by [GetItemCount].
 func (self Instance) SetItemCount(value int) {
 	class(self).SetItemCount(int64(value))
 }
@@ -259,6 +270,12 @@ func (self class) GetItemCount() int64 { //gd:MenuButton.get_item_count
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the [PopupMenu] of this MenuButton is about to show.
+
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+*/
 func (self Instance) OnAboutToPopup(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

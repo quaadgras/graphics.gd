@@ -167,50 +167,84 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true our tracking data is up to date. If false we're no longer receiving new tracking data and our state is whatever that last valid state was.
+*/
 func (self Instance) HasTrackingData() bool {
 	return bool(class(self).GetHasTrackingData())
 }
 
+// SetHasTrackingData sets the property returned by [GetHasTrackingData].
 func (self Instance) SetHasTrackingData(value bool) {
 	class(self).SetHasTrackingData(value)
 }
 
+/*
+The name of this pose. Usually, this name is derived from an action map set up by the user. Godot also suggests some pose names that [XRInterface] objects are expected to implement:
+
+- root is the root location, often used for tracked objects that do not have further nodes.
+
+- aim is the tip of a controller with its orientation pointing outwards, often used for raycasts.
+
+- grip is the location where the user grips the controller.
+
+- skeleton is the root location for a hand mesh, when using hand tracking and an animated skeleton is supplied by the XR runtime.
+
+[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
+*/
 func (self Instance) Name() string {
 	return string(class(self).GetName().String())
 }
 
+// SetName sets the property returned by [GetName].
 func (self Instance) SetName(value string) {
 	class(self).SetName(String.Name(String.New(value)))
 }
 
+/*
+The transform containing the original and transform as reported by the XR runtime.
+*/
 func (self Instance) Transform() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetTransform())
 }
 
+// SetTransform sets the property returned by [GetTransform].
 func (self Instance) SetTransform(value Transform3D.BasisOrigin) {
 	class(self).SetTransform(Transform3D.BasisOrigin(value))
 }
 
+/*
+The linear velocity of this pose.
+*/
 func (self Instance) LinearVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetLinearVelocity())
 }
 
+// SetLinearVelocity sets the property returned by [GetLinearVelocity].
 func (self Instance) SetLinearVelocity(value Vector3.XYZ) {
 	class(self).SetLinearVelocity(Vector3.XYZ(value))
 }
 
+/*
+The angular velocity for this pose.
+*/
 func (self Instance) AngularVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetAngularVelocity())
 }
 
+// SetAngularVelocity sets the property returned by [GetAngularVelocity].
 func (self Instance) SetAngularVelocity(value Vector3.XYZ) {
 	class(self).SetAngularVelocity(Vector3.XYZ(value))
 }
 
+/*
+The tracking confidence for this pose, provides insight on how accurate the spatial positioning of this record is.
+*/
 func (self Instance) TrackingConfidence() TrackingConfidence {
 	return TrackingConfidence(class(self).GetTrackingConfidence())
 }
 
+// SetTrackingConfidence sets the property returned by [GetTrackingConfidence].
 func (self Instance) SetTrackingConfidence(value TrackingConfidence) {
 	class(self).SetTrackingConfidence(value)
 }

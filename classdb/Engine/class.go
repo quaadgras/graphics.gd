@@ -541,71 +541,151 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
+/*
+If false, stops printing error and warning messages to the console and editor Output log. This can be used to hide error and warning messages during unit test suite runs. This property is equivalent to the [ProjectSettings] "application/run/disable_stderr" project setting.
+
+Note: This property does not impact the editor's Errors tab when running a project from the editor.
+
+Warning: If set to false anywhere in the project, important error messages may be hidden even if they are emitted from other scripts. In a @tool script, this will also impact the editor itself. Do not report bugs before ensuring error messages are enabled (as they are by default).
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func PrintErrorMessages() bool {
 	once.Do(singleton)
 	return bool(class(self).IsPrintingErrorMessages())
 }
 
+// SetPrintErrorMessages sets the property returned by [IsPrintingErrorMessages].
 func SetPrintErrorMessages(value bool) {
 	once.Do(singleton)
 	class(self).SetPrintErrorMessages(value)
 }
 
+/*
+If false, stops printing messages (for example using [@GlobalScope.Print]) to the console, log files, and editor Output log. This property is equivalent to the [ProjectSettings] "application/run/disable_stdout" project setting.
+
+Note: This does not stop printing errors or warnings produced by scripts to the console or log files, for more details see [PrintErrorMessages].
+
+[@GlobalScope.Print]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.Print
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func PrintToStdout() bool {
 	once.Do(singleton)
 	return bool(class(self).IsPrintingToStdout())
 }
 
+// SetPrintToStdout sets the property returned by [IsPrintingToStdout].
 func SetPrintToStdout(value bool) {
 	once.Do(singleton)
 	class(self).SetPrintToStdout(value)
 }
 
+/*
+The number of fixed iterations per second. This controls how often physics simulation and [Node.PhysicsProcess] methods are run. This value should generally always be set to 60 or above, as Godot doesn't interpolate the physics step. As a result, values lower than 60 will look stuttery. This value can be increased to make input more reactive or work around collision tunneling issues, but keep in mind doing so will increase CPU usage. See also [MaxFps] and [ProjectSettings] "physics/common/physics_ticks_per_second".
+
+Note: Only [MaxPhysicsStepsPerFrame] physics ticks may be simulated per rendered frame at most. If more physics ticks have to be simulated per rendered frame to keep up with rendering, the project will appear to slow down (even if delta is used consistently in physics calculations). Therefore, it is recommended to also increase [MaxPhysicsStepsPerFrame] if increasing [PhysicsTicksPerSecond] significantly above its default value.
+
+[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func PhysicsTicksPerSecond() int {
 	once.Do(singleton)
 	return int(int(class(self).GetPhysicsTicksPerSecond()))
 }
 
+// SetPhysicsTicksPerSecond sets the property returned by [GetPhysicsTicksPerSecond].
 func SetPhysicsTicksPerSecond(value int) {
 	once.Do(singleton)
 	class(self).SetPhysicsTicksPerSecond(int64(value))
 }
 
+/*
+The maximum number of physics steps that can be simulated each rendered frame.
+
+Note: The default value is tuned to prevent expensive physics simulations from triggering even more expensive simulations indefinitely. However, the game will appear to slow down if the rendering FPS is less than 1 / max_physics_steps_per_frame of [PhysicsTicksPerSecond]. This occurs even if delta is consistently used in physics calculations. To avoid this, increase [MaxPhysicsStepsPerFrame] if you have increased [PhysicsTicksPerSecond] significantly above its default value.
+*/
 func MaxPhysicsStepsPerFrame() int {
 	once.Do(singleton)
 	return int(int(class(self).GetMaxPhysicsStepsPerFrame()))
 }
 
+// SetMaxPhysicsStepsPerFrame sets the property returned by [GetMaxPhysicsStepsPerFrame].
 func SetMaxPhysicsStepsPerFrame(value int) {
 	once.Do(singleton)
 	class(self).SetMaxPhysicsStepsPerFrame(int64(value))
 }
 
+/*
+The maximum number of frames that can be rendered every second (FPS). A value of 0 means the framerate is uncapped.
+
+Limiting the FPS can be useful to reduce the host machine's power consumption, which reduces heat, noise emissions, and improves battery life.
+
+If [ProjectSettings] "display/window/vsync/vsync_mode" is Enabled or Adaptive, the setting takes precedence and the max FPS number cannot exceed the monitor's refresh rate.
+
+If [ProjectSettings] "display/window/vsync/vsync_mode" is Enabled, on monitors with variable refresh rate enabled (G-Sync/FreeSync), using an FPS limit a few frames lower than the monitor's refresh rate will [reduce input lag while avoiding tearing].
+
+See also [PhysicsTicksPerSecond] and [ProjectSettings] "application/run/max_fps".
+
+Note: The actual number of frames per second may still be below this value if the CPU or GPU cannot keep up with the project's logic and rendering.
+
+Note: If [ProjectSettings] "display/window/vsync/vsync_mode" is Disabled, limiting the FPS to a high value that can be consistently reached on the system can reduce input lag compared to an uncapped framerate. Since this works by ensuring the GPU load is lower than 100%, this latency reduction is only effective in GPU-bottlenecked scenarios, not CPU-bottlenecked scenarios.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[reduce input lag while avoiding tearing]: https://blurbusters.com/howto-low-lag-vsync-on/
+*/
 func MaxFps() int {
 	once.Do(singleton)
 	return int(int(class(self).GetMaxFps()))
 }
 
+// SetMaxFps sets the property returned by [GetMaxFps].
 func SetMaxFps(value int) {
 	once.Do(singleton)
 	class(self).SetMaxFps(int64(value))
 }
 
+/*
+The speed multiplier at which the in-game clock updates, compared to real time. For example, if set to 2.0 the game runs twice as fast, and if set to 0.5 the game runs half as fast.
+
+This value affects [Timer], [SceneTreeTimer], and all other simulations that make use of delta time (such as [Node.Process] and [Node.PhysicsProcess]).
+
+Note: It's recommended to keep this property above 0.0, as the game may behave unexpectedly otherwise.
+
+Note: This does not affect audio playback speed. Use [AudioServer.PlaybackSpeedScale] to adjust audio playback speed independently of [Engine.TimeScale].
+
+Note: This does not automatically adjust [PhysicsTicksPerSecond]. With values above 1.0 physics simulation may become less precise, as each physics tick will stretch over a larger period of engine time. If you're modifying [Engine.TimeScale] to speed up simulation by a large factor, consider also increasing [PhysicsTicksPerSecond] to make the simulation more reliable.
+
+[AudioServer.PlaybackSpeedScale]: https://pkg.go.dev/graphics.gd/classdb/AudioServer#PlaybackSpeedScale
+[Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
+[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
+[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
+[SceneTreeTimer]: https://pkg.go.dev/graphics.gd/classdb/SceneTreeTimer
+[Timer]: https://pkg.go.dev/graphics.gd/classdb/Timer
+*/
 func TimeScale() Float.X {
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetTimeScale()))
 }
 
+// SetTimeScale sets the property returned by [GetTimeScale].
 func SetTimeScale(value Float.X) {
 	once.Do(singleton)
 	class(self).SetTimeScale(float64(value))
 }
 
+/*
+How much physics ticks are synchronized with real time. If 0 or less, the ticks are fully synchronized. Higher values cause the in-game clock to deviate more from the real clock, but they smooth out framerate jitters.
+
+Note: The default value of 0.5 should be good enough for most cases; values above 2 could cause the game to react to dropped frames with a noticeable delay and are not recommended.
+
+Note: When using a custom physics interpolation solution, or within a network game, it's recommended to disable the physics jitter fix by setting this property to 0.
+*/
 func PhysicsJitterFix() Float.X {
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetPhysicsJitterFix()))
 }
 
+// SetPhysicsJitterFix sets the property returned by [GetPhysicsJitterFix].
 func SetPhysicsJitterFix(value Float.X) {
 	once.Do(singleton)
 	class(self).SetPhysicsJitterFix(float64(value))

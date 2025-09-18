@@ -145,10 +145,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+A floating-point constant which represents a state of this node.
+*/
 func (self Instance) Constant() Float.X {
 	return Float.X(Float.X(class(self).GetConstant()))
 }
 
+// SetConstant sets the property returned by [GetConstant].
 func (self Instance) SetConstant(value Float.X) {
 	class(self).SetConstant(float64(value))
 }

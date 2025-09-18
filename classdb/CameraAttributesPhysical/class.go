@@ -185,66 +185,122 @@ func New() Instance {
 	return casted
 }
 
+/*
+Distance from camera of object that will be in focus, measured in meters. Internally this will be clamped to be at least 1 millimeter larger than [FrustumFocalLength].
+
+[FrustumFocalLength]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPhysical#Instance.FrustumFocalLength
+*/
 func (self Instance) FrustumFocusDistance() Float.X {
 	return Float.X(Float.X(class(self).GetFocusDistance()))
 }
 
+// SetFrustumFocusDistance sets the property returned by [GetFocusDistance].
 func (self Instance) SetFrustumFocusDistance(value Float.X) {
 	class(self).SetFocusDistance(float64(value))
 }
 
+/*
+Distance between camera lens and camera aperture, measured in millimeters. Controls field of view and depth of field. A larger focal length will result in a smaller field of view and a narrower depth of field meaning fewer objects will be in focus. A smaller focal length will result in a wider field of view and a larger depth of field meaning more objects will be in focus. When attached to a [Camera3D] as its [Camera3D.Attributes], it will override the [Camera3D.Fov] property and the [Camera3D.KeepAspect] property.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[Camera3D.Attributes]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Attributes
+[Camera3D.Fov]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Fov
+[Camera3D.KeepAspect]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.KeepAspect
+*/
 func (self Instance) FrustumFocalLength() Float.X {
 	return Float.X(Float.X(class(self).GetFocalLength()))
 }
 
+// SetFrustumFocalLength sets the property returned by [GetFocalLength].
 func (self Instance) SetFrustumFocalLength(value Float.X) {
 	class(self).SetFocalLength(float64(value))
 }
 
+/*
+Override value for [Camera3D.Near]. Used internally when calculating depth of field. When attached to a [Camera3D] as its [Camera3D.Attributes], it will override the [Camera3D.Near] property.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[Camera3D.Attributes]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Attributes
+[Camera3D.Near]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Near
+*/
 func (self Instance) FrustumNear() Float.X {
 	return Float.X(Float.X(class(self).GetNear()))
 }
 
+// SetFrustumNear sets the property returned by [GetNear].
 func (self Instance) SetFrustumNear(value Float.X) {
 	class(self).SetNear(float64(value))
 }
 
+/*
+Override value for [Camera3D.Far]. Used internally when calculating depth of field. When attached to a [Camera3D] as its [Camera3D.Attributes], it will override the [Camera3D.Far] property.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[Camera3D.Attributes]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Attributes
+[Camera3D.Far]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Far
+*/
 func (self Instance) FrustumFar() Float.X {
 	return Float.X(Float.X(class(self).GetFar()))
 }
 
+// SetFrustumFar sets the property returned by [GetFar].
 func (self Instance) SetFrustumFar(value Float.X) {
 	class(self).SetFar(float64(value))
 }
 
+/*
+Size of the aperture of the camera, measured in f-stops. An f-stop is a unitless ratio between the focal length of the camera and the diameter of the aperture. A high aperture setting will result in a smaller aperture which leads to a dimmer image and sharper focus. A low aperture results in a wide aperture which lets in more light resulting in a brighter, less-focused image. Default is appropriate for outdoors at daytime (i.e. for use with a default [DirectionalLight3D]), for indoor lighting, a value between 2 and 4 is more appropriate.
+
+Only available when [ProjectSettings] "rendering/lights_and_shadows/use_physical_light_units" is enabled.
+
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) ExposureAperture() Float.X {
 	return Float.X(Float.X(class(self).GetAperture()))
 }
 
+// SetExposureAperture sets the property returned by [GetAperture].
 func (self Instance) SetExposureAperture(value Float.X) {
 	class(self).SetAperture(float64(value))
 }
 
+/*
+Time for shutter to open and close, evaluated as 1 / shutter_speed seconds. A higher value will allow less light (leading to a darker image), while a lower value will allow more light (leading to a brighter image).
+
+Only available when [ProjectSettings] "rendering/lights_and_shadows/use_physical_light_units" is enabled.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) ExposureShutterSpeed() Float.X {
 	return Float.X(Float.X(class(self).GetShutterSpeed()))
 }
 
+// SetExposureShutterSpeed sets the property returned by [GetShutterSpeed].
 func (self Instance) SetExposureShutterSpeed(value Float.X) {
 	class(self).SetShutterSpeed(float64(value))
 }
 
+/*
+The minimum luminance (in EV100) used when calculating auto exposure. When calculating scene average luminance, color values will be clamped to at least this value. This limits the auto-exposure from exposing above a certain brightness, resulting in a cut off point where the scene will remain dark.
+*/
 func (self Instance) AutoExposureMinExposureValue() Float.X {
 	return Float.X(Float.X(class(self).GetAutoExposureMinExposureValue()))
 }
 
+// SetAutoExposureMinExposureValue sets the property returned by [GetAutoExposureMinExposureValue].
 func (self Instance) SetAutoExposureMinExposureValue(value Float.X) {
 	class(self).SetAutoExposureMinExposureValue(float64(value))
 }
 
+/*
+The maximum luminance (in EV100) used when calculating auto exposure. When calculating scene average luminance, color values will be clamped to at least this value. This limits the auto-exposure from exposing below a certain brightness, resulting in a cut off point where the scene will remain bright.
+*/
 func (self Instance) AutoExposureMaxExposureValue() Float.X {
 	return Float.X(Float.X(class(self).GetAutoExposureMaxExposureValue()))
 }
 
+// SetAutoExposureMaxExposureValue sets the property returned by [GetAutoExposureMaxExposureValue].
 func (self Instance) SetAutoExposureMaxExposureValue(value Float.X) {
 	class(self).SetAutoExposureMaxExposureValue(float64(value))
 }

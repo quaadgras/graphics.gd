@@ -234,18 +234,32 @@ func New() Instance {
 	return casted
 }
 
+/*
+Allow overriding the texture size (for 2D only).
+*/
 func (self Instance) SizeOverride() Vector2.XY {
 	return Vector2.XY(class(self).GetSizeOverride())
 }
 
+// SetSizeOverride sets the property returned by [GetSizeOverride].
 func (self Instance) SetSizeOverride(value Vector2.XY) {
 	class(self).SetSizeOverride(Vector2.XY(value))
 }
 
+/*
+When running on the editor, this class will keep the source compressed data in memory. Otherwise, the source compressed data is lost after loading and the resource can't be re saved.
+
+This flag allows to keep the compressed data in memory if you intend it to persist after loading.
+
+Note: This must be set before [CreateFromImage] to take effect.
+
+[CreateFromImage]: https://pkg.go.dev/graphics.gd/classdb/PortableCompressedTexture2D#Instance.CreateFromImage
+*/
 func (self Instance) KeepCompressedBuffer() bool {
 	return bool(class(self).IsKeepingCompressedBuffer())
 }
 
+// SetKeepCompressedBuffer sets the property returned by [IsKeepingCompressedBuffer].
 func (self Instance) SetKeepCompressedBuffer(value bool) {
 	class(self).SetKeepCompressedBuffer(value)
 }

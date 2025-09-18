@@ -174,74 +174,125 @@ func New() Instance {
 	return casted
 }
 
+/*
+The distance from the first vertex, measured in 3D units along the path. Changing this value sets this node's position to a point within the path.
+*/
 func (self Instance) Progress() Float.X {
 	return Float.X(Float.X(class(self).GetProgress()))
 }
 
+// SetProgress sets the property returned by [GetProgress].
 func (self Instance) SetProgress(value Float.X) {
 	class(self).SetProgress(float64(value))
 }
 
+/*
+The distance from the first vertex, considering 0.0 as the first vertex and 1.0 as the last. This is just another way of expressing the progress within the path, as the progress supplied is multiplied internally by the path's length.
+
+It can be set or get only if the [PathFollow3D] is the child of a [Path3D] which is part of the scene tree, and that this [Path3D] has a [Curve3D] with a non-zero length. Otherwise, trying to set this field will print an error, and getting this field will return 0.0.
+
+[Curve3D]: https://pkg.go.dev/graphics.gd/classdb/Curve3D
+[Path3D]: https://pkg.go.dev/graphics.gd/classdb/Path3D
+[PathFollow3D]: https://pkg.go.dev/graphics.gd/classdb/PathFollow3D
+*/
 func (self Instance) ProgressRatio() Float.X {
 	return Float.X(Float.X(class(self).GetProgressRatio()))
 }
 
+// SetProgressRatio sets the property returned by [GetProgressRatio].
 func (self Instance) SetProgressRatio(value Float.X) {
 	class(self).SetProgressRatio(float64(value))
 }
 
+/*
+The node's offset along the curve.
+*/
 func (self Instance) HOffset() Float.X {
 	return Float.X(Float.X(class(self).GetHOffset()))
 }
 
+// SetHOffset sets the property returned by [GetHOffset].
 func (self Instance) SetHOffset(value Float.X) {
 	class(self).SetHOffset(float64(value))
 }
 
+/*
+The node's offset perpendicular to the curve.
+*/
 func (self Instance) VOffset() Float.X {
 	return Float.X(Float.X(class(self).GetVOffset()))
 }
 
+// SetVOffset sets the property returned by [GetVOffset].
 func (self Instance) SetVOffset(value Float.X) {
 	class(self).SetVOffset(float64(value))
 }
 
+/*
+Allows or forbids rotation on one or more axes, depending on the [RotationMode] constants being used.
+*/
 func (self Instance) RotationMode() RotationMode {
 	return RotationMode(class(self).GetRotationMode())
 }
 
+// SetRotationMode sets the property returned by [GetRotationMode].
 func (self Instance) SetRotationMode(value RotationMode) {
 	class(self).SetRotationMode(value)
 }
 
+/*
+If true, the node moves on the travel path with orienting the +Z axis as forward. See also [Vector3.Forward] and [Vector3.ModelFront].
+*/
 func (self Instance) UseModelFront() bool {
 	return bool(class(self).IsUsingModelFront())
 }
 
+// SetUseModelFront sets the property returned by [IsUsingModelFront].
 func (self Instance) SetUseModelFront(value bool) {
 	class(self).SetUseModelFront(value)
 }
 
+/*
+If true, the position between two cached points is interpolated cubically, and linearly otherwise.
+
+The points along the [Curve3D] of the [Path3D] are precomputed before use, for faster calculations. The point at the requested offset is then calculated interpolating between two adjacent cached points. This may present a problem if the curve makes sharp turns, as the cached points may not follow the curve closely enough.
+
+There are two answers to this problem: either increase the number of cached points and increase memory consumption, or make a cubic interpolation between two points at the cost of (slightly) slower calculations.
+
+[Curve3D]: https://pkg.go.dev/graphics.gd/classdb/Curve3D
+[Path3D]: https://pkg.go.dev/graphics.gd/classdb/Path3D
+*/
 func (self Instance) CubicInterp() bool {
 	return bool(class(self).GetCubicInterpolation())
 }
 
+// SetCubicInterp sets the property returned by [GetCubicInterpolation].
 func (self Instance) SetCubicInterp(value bool) {
 	class(self).SetCubicInterpolation(value)
 }
 
+/*
+If true, any offset outside the path's length will wrap around, instead of stopping at the ends. Use it for cyclic paths.
+*/
 func (self Instance) Loop() bool {
 	return bool(class(self).HasLoop())
 }
 
+// SetLoop sets the property returned by [HasLoop].
 func (self Instance) SetLoop(value bool) {
 	class(self).SetLoop(value)
 }
 
+/*
+If true, the tilt property of [Curve3D] takes effect.
+
+[Curve3D]: https://pkg.go.dev/graphics.gd/classdb/Curve3D
+*/
 func (self Instance) TiltEnabled() bool {
 	return bool(class(self).IsTiltEnabled())
 }
 
+// SetTiltEnabled sets the property returned by [IsTiltEnabled].
 func (self Instance) SetTiltEnabled(value bool) {
 	class(self).SetTiltEnabled(value)
 }

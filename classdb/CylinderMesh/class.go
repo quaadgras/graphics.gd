@@ -161,58 +161,102 @@ func New() Instance {
 	return casted
 }
 
+/*
+Top radius of the cylinder. If set to 0.0, the top faces will not be generated, resulting in a conic shape. See also [CapTop].
+
+[CapTop]: https://pkg.go.dev/graphics.gd/classdb/CylinderMesh#Instance.CapTop
+*/
 func (self Instance) TopRadius() Float.X {
 	return Float.X(Float.X(class(self).GetTopRadius()))
 }
 
+// SetTopRadius sets the property returned by [GetTopRadius].
 func (self Instance) SetTopRadius(value Float.X) {
 	class(self).SetTopRadius(float64(value))
 }
 
+/*
+Bottom radius of the cylinder. If set to 0.0, the bottom faces will not be generated, resulting in a conic shape. See also [CapBottom].
+
+[CapBottom]: https://pkg.go.dev/graphics.gd/classdb/CylinderMesh#Instance.CapBottom
+*/
 func (self Instance) BottomRadius() Float.X {
 	return Float.X(Float.X(class(self).GetBottomRadius()))
 }
 
+// SetBottomRadius sets the property returned by [GetBottomRadius].
 func (self Instance) SetBottomRadius(value Float.X) {
 	class(self).SetBottomRadius(float64(value))
 }
 
+/*
+Full height of the cylinder.
+*/
 func (self Instance) Height() Float.X {
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
+// SetHeight sets the property returned by [GetHeight].
 func (self Instance) SetHeight(value Float.X) {
 	class(self).SetHeight(float64(value))
 }
 
+/*
+Number of radial segments on the cylinder. Higher values result in a more detailed cylinder/cone at the cost of performance.
+*/
 func (self Instance) RadialSegments() int {
 	return int(int(class(self).GetRadialSegments()))
 }
 
+// SetRadialSegments sets the property returned by [GetRadialSegments].
 func (self Instance) SetRadialSegments(value int) {
 	class(self).SetRadialSegments(int64(value))
 }
 
+/*
+Number of edge rings along the height of the cylinder. Changing [Rings] does not have any visual impact unless a shader or procedural mesh tool is used to alter the vertex data. Higher values result in more subdivisions, which can be used to create smoother-looking effects with shaders or procedural mesh tools (at the cost of performance). When not altering the vertex data using a shader or procedural mesh tool, [Rings] should be kept to its default value.
+
+[Rings]: https://pkg.go.dev/graphics.gd/classdb/CylinderMesh#Instance.Rings
+*/
 func (self Instance) Rings() int {
 	return int(int(class(self).GetRings()))
 }
 
+// SetRings sets the property returned by [GetRings].
 func (self Instance) SetRings(value int) {
 	class(self).SetRings(int64(value))
 }
 
+/*
+If true, generates a cap at the top of the cylinder. This can be set to false to speed up generation and rendering when the cap is never seen by the camera. See also [TopRadius].
+
+Note: If [TopRadius] is 0.0, cap generation is always skipped even if [CapTop] is true.
+
+[CapTop]: https://pkg.go.dev/graphics.gd/classdb/CylinderMesh#Instance.CapTop
+[TopRadius]: https://pkg.go.dev/graphics.gd/classdb/CylinderMesh#Instance.TopRadius
+*/
 func (self Instance) CapTop() bool {
 	return bool(class(self).IsCapTop())
 }
 
+// SetCapTop sets the property returned by [IsCapTop].
 func (self Instance) SetCapTop(value bool) {
 	class(self).SetCapTop(value)
 }
 
+/*
+If true, generates a cap at the bottom of the cylinder. This can be set to false to speed up generation and rendering when the cap is never seen by the camera. See also [BottomRadius].
+
+Note: If [BottomRadius] is 0.0, cap generation is always skipped even if [CapBottom] is true.
+
+[BottomRadius]: https://pkg.go.dev/graphics.gd/classdb/CylinderMesh#Instance.BottomRadius
+[CapBottom]: https://pkg.go.dev/graphics.gd/classdb/CylinderMesh#Instance.CapBottom
+*/
 func (self Instance) CapBottom() bool {
 	return bool(class(self).IsCapBottom())
 }
 
+// SetCapBottom sets the property returned by [IsCapBottom].
 func (self Instance) SetCapBottom(value bool) {
 	class(self).SetCapBottom(value)
 }

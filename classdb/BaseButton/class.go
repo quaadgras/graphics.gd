@@ -243,74 +243,133 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the button is in disabled state and can't be clicked or toggled.
+
+Note: If the button is disabled while held down, [OnButtonUp] will be emitted.
+
+[OnButtonUp]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.OnButtonUp
+*/
 func (self Instance) Disabled() bool {
 	return bool(class(self).IsDisabled())
 }
 
+// SetDisabled sets the property returned by [IsDisabled].
 func (self Instance) SetDisabled(value bool) {
 	class(self).SetDisabled(value)
 }
 
+/*
+If true, the button is in toggle mode. Makes the button flip state between pressed and unpressed each time its area is clicked.
+*/
 func (self Instance) ToggleMode() bool {
 	return bool(class(self).IsToggleMode())
 }
 
+// SetToggleMode sets the property returned by [IsToggleMode].
 func (self Instance) SetToggleMode(value bool) {
 	class(self).SetToggleMode(value)
 }
 
+/*
+If true, the button's state is pressed. Means the button is pressed down or toggled (if [ToggleMode] is active). Only works if [ToggleMode] is true.
+
+Note: Changing the value of [ButtonPressed] will result in [OnToggled] to be emitted. If you want to change the pressed state without emitting that signal, use [SetPressedNoSignal].
+
+[ButtonPressed]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.ButtonPressed
+[OnToggled]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.OnToggled
+[SetPressedNoSignal]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.SetPressedNoSignal
+[ToggleMode]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.ToggleMode
+*/
 func (self Instance) ButtonPressed() bool {
 	return bool(class(self).IsPressed())
 }
 
+// SetButtonPressed sets the property returned by [IsPressed].
 func (self Instance) SetButtonPressed(value bool) {
 	class(self).SetPressed(value)
 }
 
+/*
+Determines when the button is considered clicked.
+*/
 func (self Instance) ActionMode() ActionMode {
 	return ActionMode(class(self).GetActionMode())
 }
 
+// SetActionMode sets the property returned by [GetActionMode].
 func (self Instance) SetActionMode(value ActionMode) {
 	class(self).SetActionMode(value)
 }
 
+/*
+Binary mask to choose which mouse buttons this button will respond to.
+
+To allow both left-click and right-click, use MOUSE_BUTTON_MASK_LEFT | MOUSE_BUTTON_MASK_RIGHT.
+*/
 func (self Instance) ButtonMask() Input.MouseButtonMask {
 	return Input.MouseButtonMask(class(self).GetButtonMask())
 }
 
+// SetButtonMask sets the property returned by [GetButtonMask].
 func (self Instance) SetButtonMask(value Input.MouseButtonMask) {
 	class(self).SetButtonMask(value)
 }
 
+/*
+If true, the button stays pressed when moving the cursor outside the button while pressing it.
+
+Note: This property only affects the button's visual appearance. Signals will be emitted at the same moment regardless of this property's value.
+*/
 func (self Instance) KeepPressedOutside() bool {
 	return bool(class(self).IsKeepPressedOutside())
 }
 
+// SetKeepPressedOutside sets the property returned by [IsKeepPressedOutside].
 func (self Instance) SetKeepPressedOutside(value bool) {
 	class(self).SetKeepPressedOutside(value)
 }
 
+/*
+[Shortcut] associated to the button.
+
+[Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut
+*/
 func (self Instance) Shortcut() Shortcut.Instance {
 	return Shortcut.Instance(class(self).GetShortcut())
 }
 
+// SetShortcut sets the property returned by [GetShortcut].
 func (self Instance) SetShortcut(value Shortcut.Instance) {
 	class(self).SetShortcut(value)
 }
 
+/*
+If true, the button will highlight for a short amount of time when its shortcut is activated. If false and [ToggleMode] is false, the shortcut will activate without any visual feedback.
+
+[ToggleMode]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.ToggleMode
+*/
 func (self Instance) ShortcutFeedback() bool {
 	return bool(class(self).IsShortcutFeedback())
 }
 
+// SetShortcutFeedback sets the property returned by [IsShortcutFeedback].
 func (self Instance) SetShortcutFeedback(value bool) {
 	class(self).SetShortcutFeedback(value)
 }
 
+/*
+If true, the button will add information about its shortcut in the tooltip.
+
+Note: This property does nothing when the tooltip control is customized using [Control.MakeCustomTooltip].
+
+[Control.MakeCustomTooltip]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.MakeCustomTooltip
+*/
 func (self Instance) ShortcutInTooltip() bool {
 	return bool(class(self).IsShortcutInTooltipEnabled())
 }
 
+// SetShortcutInTooltip sets the property returned by [IsShortcutInTooltipEnabled].
 func (self Instance) SetShortcutInTooltip(value bool) {
 	class(self).SetShortcutInTooltip(value)
 }
@@ -495,6 +554,18 @@ func (self class) GetButtonGroup() [1]gdclass.ButtonGroup { //gd:BaseButton.get_
 	var ret = [1]gdclass.ButtonGroup{gd.PointerWithOwnershipTransferredToGo[gdclass.ButtonGroup](r_ret)}
 	return ret
 }
+
+/*
+Emitted when the button is toggled or pressed. This is on [OnButtonDown] if [ActionMode] is [ActionModeButtonPress] and on [OnButtonUp] otherwise.
+
+If you need to know the button's pressed state (and [ToggleMode] is active), use [OnToggled] instead.
+
+[ActionMode]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.ActionMode
+[OnButtonDown]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.OnButtonDown
+[OnButtonUp]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.OnButtonUp
+[OnToggled]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.OnToggled
+[ToggleMode]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.ToggleMode
+*/
 func (self Instance) OnPressed(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -507,6 +578,9 @@ func (self class) Pressed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Pressed`))))
 }
 
+/*
+Emitted when the button stops being held down.
+*/
 func (self Instance) OnButtonUp(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -519,6 +593,9 @@ func (self class) ButtonUp() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonUp`))))
 }
 
+/*
+Emitted when the button starts being held down.
+*/
 func (self Instance) OnButtonDown(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -531,6 +608,11 @@ func (self class) ButtonDown() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonDown`))))
 }
 
+/*
+Emitted when the button was just toggled between pressed and normal states (only if [ToggleMode] is active). The new state is contained in the 'toggled_on' argument.
+
+[ToggleMode]: https://pkg.go.dev/graphics.gd/classdb/BaseButton#Instance.ToggleMode
+*/
 func (self Instance) OnToggled(cb func(toggled_on bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -287,50 +287,74 @@ func New() Instance {
 	return casted
 }
 
+/*
+Lock the body's linear movement in the X axis.
+*/
 func (self Instance) AxisLockLinearX() bool {
 	return bool(class(self).GetAxisLock(1))
 }
 
+// SetAxisLockLinearX sets the property returned by [GetAxisLock].
 func (self Instance) SetAxisLockLinearX(value bool) {
 	class(self).SetAxisLock(1, value)
 }
 
+/*
+Lock the body's linear movement in the Y axis.
+*/
 func (self Instance) AxisLockLinearY() bool {
 	return bool(class(self).GetAxisLock(2))
 }
 
+// SetAxisLockLinearY sets the property returned by [GetAxisLock].
 func (self Instance) SetAxisLockLinearY(value bool) {
 	class(self).SetAxisLock(2, value)
 }
 
+/*
+Lock the body's linear movement in the Z axis.
+*/
 func (self Instance) AxisLockLinearZ() bool {
 	return bool(class(self).GetAxisLock(4))
 }
 
+// SetAxisLockLinearZ sets the property returned by [GetAxisLock].
 func (self Instance) SetAxisLockLinearZ(value bool) {
 	class(self).SetAxisLock(4, value)
 }
 
+/*
+Lock the body's rotation in the X axis.
+*/
 func (self Instance) AxisLockAngularX() bool {
 	return bool(class(self).GetAxisLock(8))
 }
 
+// SetAxisLockAngularX sets the property returned by [GetAxisLock].
 func (self Instance) SetAxisLockAngularX(value bool) {
 	class(self).SetAxisLock(8, value)
 }
 
+/*
+Lock the body's rotation in the Y axis.
+*/
 func (self Instance) AxisLockAngularY() bool {
 	return bool(class(self).GetAxisLock(16))
 }
 
+// SetAxisLockAngularY sets the property returned by [GetAxisLock].
 func (self Instance) SetAxisLockAngularY(value bool) {
 	class(self).SetAxisLock(16, value)
 }
 
+/*
+Lock the body's rotation in the Z axis.
+*/
 func (self Instance) AxisLockAngularZ() bool {
 	return bool(class(self).GetAxisLock(32))
 }
 
+// SetAxisLockAngularZ sets the property returned by [GetAxisLock].
 func (self Instance) SetAxisLockAngularZ(value bool) {
 	class(self).SetAxisLock(32, value)
 }

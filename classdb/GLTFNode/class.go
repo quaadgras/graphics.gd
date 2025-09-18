@@ -222,114 +222,191 @@ func New() Instance {
 	return casted
 }
 
+/*
+The original name of the node.
+*/
 func (self Instance) OriginalName() string {
 	return string(class(self).GetOriginalName().String())
 }
 
+// SetOriginalName sets the property returned by [GetOriginalName].
 func (self Instance) SetOriginalName(value string) {
 	class(self).SetOriginalName(String.New(value))
 }
 
+/*
+The index of the parent node in the [GLTFState]. If -1, this node is a root node.
+
+[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
+*/
 func (self Instance) Parent() int {
 	return int(int(class(self).GetParent()))
 }
 
+// SetParent sets the property returned by [GetParent].
 func (self Instance) SetParent(value int) {
 	class(self).SetParent(int64(value))
 }
 
+/*
+How deep into the node hierarchy this node is. A root node will have a height of 0, its children will have a height of 1, and so on. If -1, the height has not been calculated.
+*/
 func (self Instance) Height() int {
 	return int(int(class(self).GetHeight()))
 }
 
+// SetHeight sets the property returned by [GetHeight].
 func (self Instance) SetHeight(value int) {
 	class(self).SetHeight(int64(value))
 }
 
+/*
+The transform of the glTF node relative to its parent. This property is usually unused since the position, rotation, and scale properties are preferred.
+*/
 func (self Instance) Xform() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetXform())
 }
 
+// SetXform sets the property returned by [GetXform].
 func (self Instance) SetXform(value Transform3D.BasisOrigin) {
 	class(self).SetXform(Transform3D.BasisOrigin(value))
 }
 
+/*
+If this glTF node is a mesh, the index of the [GLTFMesh] in the [GLTFState] that describes the mesh's properties. If -1, this node is not a mesh.
+
+[GLTFMesh]: https://pkg.go.dev/graphics.gd/classdb/GLTFMesh
+[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
+*/
 func (self Instance) Mesh() int {
 	return int(int(class(self).GetMesh()))
 }
 
+// SetMesh sets the property returned by [GetMesh].
 func (self Instance) SetMesh(value int) {
 	class(self).SetMesh(int64(value))
 }
 
+/*
+If this glTF node is a camera, the index of the [GLTFCamera] in the [GLTFState] that describes the camera's properties. If -1, this node is not a camera.
+
+[GLTFCamera]: https://pkg.go.dev/graphics.gd/classdb/GLTFCamera
+[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
+*/
 func (self Instance) Camera() int {
 	return int(int(class(self).GetCamera()))
 }
 
+// SetCamera sets the property returned by [GetCamera].
 func (self Instance) SetCamera(value int) {
 	class(self).SetCamera(int64(value))
 }
 
+/*
+If this glTF node has a skin, the index of the [GLTFSkin] in the [GLTFState] that describes the skin's properties. If -1, this node does not have a skin.
+
+[GLTFSkin]: https://pkg.go.dev/graphics.gd/classdb/GLTFSkin
+[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
+*/
 func (self Instance) Skin() int {
 	return int(int(class(self).GetSkin()))
 }
 
+// SetSkin sets the property returned by [GetSkin].
 func (self Instance) SetSkin(value int) {
 	class(self).SetSkin(int64(value))
 }
 
+/*
+If this glTF node has a skeleton, the index of the [GLTFSkeleton] in the [GLTFState] that describes the skeleton's properties. If -1, this node does not have a skeleton.
+
+[GLTFSkeleton]: https://pkg.go.dev/graphics.gd/classdb/GLTFSkeleton
+[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
+*/
 func (self Instance) Skeleton() int {
 	return int(int(class(self).GetSkeleton()))
 }
 
+// SetSkeleton sets the property returned by [GetSkeleton].
 func (self Instance) SetSkeleton(value int) {
 	class(self).SetSkeleton(int64(value))
 }
 
+/*
+The position of the glTF node relative to its parent.
+*/
 func (self Instance) Position() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetPosition())
 }
 
+// SetPosition sets the property returned by [GetPosition].
 func (self Instance) SetPosition(value Vector3.XYZ) {
 	class(self).SetPosition(Vector3.XYZ(value))
 }
 
+/*
+The rotation of the glTF node relative to its parent.
+*/
 func (self Instance) Rotation() Quaternion.IJKX {
 	return Quaternion.IJKX(class(self).GetRotation())
 }
 
+// SetRotation sets the property returned by [GetRotation].
 func (self Instance) SetRotation(value Quaternion.IJKX) {
 	class(self).SetRotation(value)
 }
 
+/*
+The scale of the glTF node relative to its parent.
+*/
 func (self Instance) Scale() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetScale())
 }
 
+// SetScale sets the property returned by [GetScale].
 func (self Instance) SetScale(value Vector3.XYZ) {
 	class(self).SetScale(Vector3.XYZ(value))
 }
 
+/*
+The indices of the child nodes in the [GLTFState]. If this glTF node has no children, this will be an empty array.
+
+[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
+*/
 func (self Instance) Children() []int32 {
 	return []int32(slices.Collect(class(self).GetChildren().Values()))
 }
 
+// SetChildren sets the property returned by [GetChildren].
 func (self Instance) SetChildren(value []int32) {
 	class(self).SetChildren(Packed.New(value...))
 }
 
+/*
+If this glTF node is a light, the index of the [GLTFLight] in the [GLTFState] that describes the light's properties. If -1, this node is not a light.
+
+[GLTFLight]: https://pkg.go.dev/graphics.gd/classdb/GLTFLight
+[GLTFState]: https://pkg.go.dev/graphics.gd/classdb/GLTFState
+*/
 func (self Instance) Light() int {
 	return int(int(class(self).GetLight()))
 }
 
+// SetLight sets the property returned by [GetLight].
 func (self Instance) SetLight(value int) {
 	class(self).SetLight(int64(value))
 }
 
+/*
+If true, the GLTF node is visible. If false, the GLTF node is not visible. This is translated to the [Node3D.Visible] property in the Godot scene, and is exported to KHR_node_visibility when false.
+
+[Node3D.Visible]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Visible
+*/
 func (self Instance) Visible() bool {
 	return bool(class(self).GetVisible())
 }
 
+// SetVisible sets the property returned by [GetVisible].
 func (self Instance) SetVisible(value bool) {
 	class(self).SetVisible(value)
 }

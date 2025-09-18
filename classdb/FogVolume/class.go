@@ -161,26 +161,56 @@ func New() Instance {
 	return casted
 }
 
+/*
+The size of the [FogVolume] when [Shape] is [Renderingserver.FogVolumeShapeEllipsoid], [Renderingserver.FogVolumeShapeCone], [Renderingserver.FogVolumeShapeCylinder] or [Renderingserver.FogVolumeShapeBox].
+
+Note: Thin fog volumes may appear to flicker when the camera moves or rotates. This can be alleviated by increasing [ProjectSettings] "rendering/environment/volumetric_fog/volume_depth" (at a performance cost) or by decreasing [Environment.VolumetricFogLength] (at no performance cost, but at the cost of lower fog range). Alternatively, the [FogVolume] can be made thicker and use a lower density in the [Material].
+
+Note: If [Shape] is [Renderingserver.FogVolumeShapeCone] or [Renderingserver.FogVolumeShapeCylinder], the cone/cylinder will be adjusted to fit within the size. Non-uniform scaling of cone/cylinder shapes via the [Size] property is not supported, but you can scale the [FogVolume] node instead.
+
+[Environment.VolumetricFogLength]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.VolumetricFogLength
+[FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
+[Material]: https://pkg.go.dev/graphics.gd/classdb/FogVolume#Instance.Material
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Shape]: https://pkg.go.dev/graphics.gd/classdb/FogVolume#Instance.Shape
+[Size]: https://pkg.go.dev/graphics.gd/classdb/FogVolume#Instance.Size
+*/
 func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
+/*
+The shape of the [FogVolume]. This can be set to either [Renderingserver.FogVolumeShapeEllipsoid], [Renderingserver.FogVolumeShapeCone], [Renderingserver.FogVolumeShapeCylinder], [Renderingserver.FogVolumeShapeBox] or [Renderingserver.FogVolumeShapeWorld].
+
+[FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
+*/
 func (self Instance) Shape() RenderingServer.FogVolumeShape {
 	return RenderingServer.FogVolumeShape(class(self).GetShape())
 }
 
+// SetShape sets the property returned by [GetShape].
 func (self Instance) SetShape(value RenderingServer.FogVolumeShape) {
 	class(self).SetShape(value)
 }
 
+/*
+The [Material] used by the [FogVolume]. Can be either a built-in [FogMaterial] or a custom [ShaderMaterial].
+
+[FogMaterial]: https://pkg.go.dev/graphics.gd/classdb/FogMaterial
+[FogVolume]: https://pkg.go.dev/graphics.gd/classdb/FogVolume
+[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+*/
 func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
+// SetMaterial sets the property returned by [GetMaterial].
 func (self Instance) SetMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }

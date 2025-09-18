@@ -385,6 +385,10 @@ func (self class) GetTravelPath() Array.Contains[String.Name] { //gd:AnimationNo
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
+
+/*
+Emitted when the 'state' starts playback. If 'state' is a state machine set to grouped mode, its signals are passed through with its name prefixed.
+*/
 func (self Instance) OnStateStarted(cb func(state string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -397,6 +401,13 @@ func (self class) StateStarted() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`StateStarted`))))
 }
 
+/*
+Emitted when the 'state' finishes playback. If 'state' is a state machine set to grouped mode, its signals are passed through with its name prefixed.
+
+If there is a crossfade, this will be fired when the influence of the [GetFadingFromNode] animation is no longer present.
+
+[GetFadingFromNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachinePlayback#Instance.GetFadingFromNode
+*/
 func (self Instance) OnStateFinished(cb func(state string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

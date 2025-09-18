@@ -188,90 +188,138 @@ func New() Instance {
 	return casted
 }
 
+/*
+The texture's pixel data format.
+*/
 func (self Instance) Format() Rendering.DataFormat {
 	return Rendering.DataFormat(class(self).GetFormat())
 }
 
+// SetFormat sets the property returned by [GetFormat].
 func (self Instance) SetFormat(value Rendering.DataFormat) {
 	class(self).SetFormat(value)
 }
 
+/*
+The texture's width (in pixels).
+*/
 func (self Instance) Width() int {
 	return int(int(class(self).GetWidth()))
 }
 
+// SetWidth sets the property returned by [GetWidth].
 func (self Instance) SetWidth(value int) {
 	class(self).SetWidth(int64(value))
 }
 
+/*
+The texture's height (in pixels).
+*/
 func (self Instance) Height() int {
 	return int(int(class(self).GetHeight()))
 }
 
+// SetHeight sets the property returned by [GetHeight].
 func (self Instance) SetHeight(value int) {
 	class(self).SetHeight(int64(value))
 }
 
+/*
+The texture's depth (in pixels). This is always 1 for 2D textures.
+*/
 func (self Instance) Depth() int {
 	return int(int(class(self).GetDepth()))
 }
 
+// SetDepth sets the property returned by [GetDepth].
 func (self Instance) SetDepth(value int) {
 	class(self).SetDepth(int64(value))
 }
 
+/*
+The number of layers in the texture. Only relevant for 2D texture arrays.
+*/
 func (self Instance) ArrayLayers() int {
 	return int(int(class(self).GetArrayLayers()))
 }
 
+// SetArrayLayers sets the property returned by [GetArrayLayers].
 func (self Instance) SetArrayLayers(value int) {
 	class(self).SetArrayLayers(int64(value))
 }
 
+/*
+The number of mipmaps available in the texture.
+*/
 func (self Instance) Mipmaps() int {
 	return int(int(class(self).GetMipmaps()))
 }
 
+// SetMipmaps sets the property returned by [GetMipmaps].
 func (self Instance) SetMipmaps(value int) {
 	class(self).SetMipmaps(int64(value))
 }
 
+/*
+The texture type.
+*/
 func (self Instance) TextureType() Rendering.TextureType {
 	return Rendering.TextureType(class(self).GetTextureType())
 }
 
+// SetTextureType sets the property returned by [GetTextureType].
 func (self Instance) SetTextureType(value Rendering.TextureType) {
 	class(self).SetTextureType(value)
 }
 
+/*
+The number of samples used when sampling the texture.
+*/
 func (self Instance) Samples() Rendering.TextureSamples {
 	return Rendering.TextureSamples(class(self).GetSamples())
 }
 
+// SetSamples sets the property returned by [GetSamples].
 func (self Instance) SetSamples(value Rendering.TextureSamples) {
 	class(self).SetSamples(value)
 }
 
+/*
+The texture's usage bits, which determine what can be done using the texture.
+*/
 func (self Instance) UsageBits() Rendering.TextureUsageBits {
 	return Rendering.TextureUsageBits(class(self).GetUsageBits())
 }
 
+// SetUsageBits sets the property returned by [GetUsageBits].
 func (self Instance) SetUsageBits(value Rendering.TextureUsageBits) {
 	class(self).SetUsageBits(value)
 }
 
+/*
+The texture will be used as the destination of a resolve operation.
+*/
 func (self Instance) IsResolveBuffer() bool {
 	return bool(class(self).GetIsResolveBuffer())
 }
 
+// SetIsResolveBuffer sets the property returned by [GetIsResolveBuffer].
 func (self Instance) SetIsResolveBuffer(value bool) {
 	class(self).SetIsResolveBuffer(value)
 }
 
+/*
+If a texture is discardable, its contents do not need to be preserved between frames. This flag is only relevant when the texture is used as target in a draw list.
+
+This information is used by [RenderingDevice] to figure out if a texture's contents can be discarded, eliminating unnecessary writes to memory and boosting performance.
+
+[RenderingDevice]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice
+*/
 func (self Instance) IsDiscardable() bool {
 	return bool(class(self).GetIsDiscardable())
 }
 
+// SetIsDiscardable sets the property returned by [GetIsDiscardable].
 func (self Instance) SetIsDiscardable(value bool) {
 	class(self).SetIsDiscardable(value)
 }

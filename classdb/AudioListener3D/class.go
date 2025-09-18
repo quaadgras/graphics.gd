@@ -185,10 +185,20 @@ func New() Instance {
 	return casted
 }
 
+/*
+If not [DopplerTrackingDisabled], this listener will simulate the [Doppler effect] for objects changed in particular _process methods.
+
+Note: The Doppler effect will only be heard on [AudioStreamPlayer3D]s if [AudioStreamPlayer3D.DopplerTracking] is not set to [Audiostreamplayer3d.DopplerTrackingDisabled].
+
+[AudioStreamPlayer3D]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer3D
+[AudioStreamPlayer3D.DopplerTracking]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer3D#Instance.DopplerTracking
+[Doppler effect]: https://en.wikipedia.org/wiki/Doppler_effect
+*/
 func (self Instance) DopplerTracking() DopplerTracking {
 	return DopplerTracking(class(self).GetDopplerTracking())
 }
 
+// SetDopplerTracking sets the property returned by [GetDopplerTracking].
 func (self Instance) SetDopplerTracking(value DopplerTracking) {
 	class(self).SetDopplerTracking(value)
 }

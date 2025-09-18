@@ -207,10 +207,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The underlying data buffer. Setting this value resets the cursor.
+*/
 func (self Instance) DataArray() []byte {
 	return []byte(class(self).GetDataArray().Bytes())
 }
 
+// SetDataArray sets the property returned by [GetDataArray].
 func (self Instance) SetDataArray(value []byte) {
 	class(self).SetDataArray(Packed.BytesFrom(value...))
 }

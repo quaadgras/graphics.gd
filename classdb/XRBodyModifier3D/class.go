@@ -156,26 +156,41 @@ func New() Instance {
 	return casted
 }
 
+/*
+The name of the [XRBodyTracker] registered with [XRServer] to obtain the body tracking data from.
+
+[XRBodyTracker]: https://pkg.go.dev/graphics.gd/classdb/XRBodyTracker
+[XRServer]: https://pkg.go.dev/graphics.gd/classdb/XRServer
+*/
 func (self Instance) BodyTracker() string {
 	return string(class(self).GetBodyTracker().String())
 }
 
+// SetBodyTracker sets the property returned by [GetBodyTracker].
 func (self Instance) SetBodyTracker(value string) {
 	class(self).SetBodyTracker(String.Name(String.New(value)))
 }
 
+/*
+Specifies the body parts to update.
+*/
 func (self Instance) BodyUpdate() BodyUpdate {
 	return BodyUpdate(class(self).GetBodyUpdate())
 }
 
+// SetBodyUpdate sets the property returned by [GetBodyUpdate].
 func (self Instance) SetBodyUpdate(value BodyUpdate) {
 	class(self).SetBodyUpdate(value)
 }
 
+/*
+Specifies the type of updates to perform on the bones.
+*/
 func (self Instance) BoneUpdate() BoneUpdate {
 	return BoneUpdate(class(self).GetBoneUpdate())
 }
 
+// SetBoneUpdate sets the property returned by [GetBoneUpdate].
 func (self Instance) SetBoneUpdate(value BoneUpdate) {
 	class(self).SetBoneUpdate(value)
 }

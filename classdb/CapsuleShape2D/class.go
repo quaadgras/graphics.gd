@@ -155,26 +155,50 @@ func New() Instance {
 	return casted
 }
 
+/*
+The capsule's radius.
+
+Note: The [Radius] of a capsule cannot be greater than half of its [Height]. Otherwise, the capsule becomes a circle. If the [Radius] is greater than half of the [Height], the properties adjust to a valid value.
+
+[Height]: https://pkg.go.dev/graphics.gd/classdb/CapsuleShape2D#Instance.Height
+[Radius]: https://pkg.go.dev/graphics.gd/classdb/CapsuleShape2D#Instance.Radius
+*/
 func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetRadius sets the property returned by [GetRadius].
 func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }
 
+/*
+The capsule's full height, including the semicircles.
+
+Note: The [Height] of a capsule must be at least twice its [Radius]. Otherwise, the capsule becomes a circle. If the [Height] is less than twice the [Radius], the properties adjust to a valid value.
+
+[Height]: https://pkg.go.dev/graphics.gd/classdb/CapsuleShape2D#Instance.Height
+[Radius]: https://pkg.go.dev/graphics.gd/classdb/CapsuleShape2D#Instance.Radius
+*/
 func (self Instance) Height() Float.X {
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
+// SetHeight sets the property returned by [GetHeight].
 func (self Instance) SetHeight(value Float.X) {
 	class(self).SetHeight(float64(value))
 }
 
+/*
+The capsule's height, excluding the semicircles. This is the height of the central rectangular part in the middle of the capsule, and is the distance between the centers of the two semicircles. This is a wrapper for [Height].
+
+[Height]: https://pkg.go.dev/graphics.gd/classdb/CapsuleShape2D#Instance.Height
+*/
 func (self Instance) MidHeight() Float.X {
 	return Float.X(Float.X(class(self).GetMidHeight()))
 }
 
+// SetMidHeight sets the property returned by [GetMidHeight].
 func (self Instance) SetMidHeight(value Float.X) {
 	class(self).SetMidHeight(float64(value))
 }

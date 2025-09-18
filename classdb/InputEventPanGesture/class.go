@@ -152,10 +152,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Panning amount since last pan event.
+*/
 func (self Instance) Delta() Vector2.XY {
 	return Vector2.XY(class(self).GetDelta())
 }
 
+// SetDelta sets the property returned by [GetDelta].
 func (self Instance) SetDelta(value Vector2.XY) {
 	class(self).SetDelta(Vector2.XY(value))
 }

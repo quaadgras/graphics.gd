@@ -449,6 +449,12 @@ Note: This should be called whenever the script is changed to keep the open docu
 func (self class) ClearDocsFromScript(script [1]gdclass.Script) { //gd:ScriptEditor.clear_docs_from_script
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_docs_from_script, 0|(gdextension.SizeObject<<4), &struct{ script gdextension.Object }{gdextension.Object(gd.ObjectChecked(script[0].AsObject()))})
 }
+
+/*
+Emitted when user changed active script. Argument is a freshly activated [Script].
+
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
+*/
 func (self Instance) OnEditorScriptChanged(cb func(script Script.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -461,6 +467,11 @@ func (self class) EditorScriptChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EditorScriptChanged`))))
 }
 
+/*
+Emitted when editor is about to close the active script. Argument is a [Script] that is going to be closed.
+
+[Script]: https://pkg.go.dev/graphics.gd/classdb/Script
+*/
 func (self Instance) OnScriptClose(cb func(script Script.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

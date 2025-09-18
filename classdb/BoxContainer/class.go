@@ -157,18 +157,32 @@ func New() Instance {
 	return casted
 }
 
+/*
+The alignment of the container's children (must be one of [AlignmentBegin], [AlignmentCenter], or [AlignmentEnd]).
+*/
 func (self Instance) Alignment() AlignmentMode {
 	return AlignmentMode(class(self).GetAlignment())
 }
 
+// SetAlignment sets the property returned by [GetAlignment].
 func (self Instance) SetAlignment(value AlignmentMode) {
 	class(self).SetAlignment(value)
 }
 
+/*
+If true, the [BoxContainer] will arrange its children vertically, rather than horizontally.
+
+Can't be changed when using [HBoxContainer] and [VBoxContainer].
+
+[BoxContainer]: https://pkg.go.dev/graphics.gd/classdb/BoxContainer
+[HBoxContainer]: https://pkg.go.dev/graphics.gd/classdb/HBoxContainer
+[VBoxContainer]: https://pkg.go.dev/graphics.gd/classdb/VBoxContainer
+*/
 func (self Instance) Vertical() bool {
 	return bool(class(self).IsVertical())
 }
 
+// SetVertical sets the property returned by [IsVertical].
 func (self Instance) SetVertical(value bool) {
 	class(self).SetVertical(value)
 }

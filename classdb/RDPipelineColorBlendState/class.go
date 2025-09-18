@@ -153,34 +153,56 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, performs the logic operation defined in [LogicOp].
+
+[LogicOp]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendState#Instance.LogicOp
+*/
 func (self Instance) EnableLogicOp() bool {
 	return bool(class(self).GetEnableLogicOp())
 }
 
+// SetEnableLogicOp sets the property returned by [GetEnableLogicOp].
 func (self Instance) SetEnableLogicOp(value bool) {
 	class(self).SetEnableLogicOp(value)
 }
 
+/*
+The logic operation to perform for blending. Only effective if [EnableLogicOp] is true.
+
+[EnableLogicOp]: https://pkg.go.dev/graphics.gd/classdb/RDPipelineColorBlendState#Instance.EnableLogicOp
+*/
 func (self Instance) LogicOp() Rendering.LogicOperation {
 	return Rendering.LogicOperation(class(self).GetLogicOp())
 }
 
+// SetLogicOp sets the property returned by [GetLogicOp].
 func (self Instance) SetLogicOp(value Rendering.LogicOperation) {
 	class(self).SetLogicOp(value)
 }
 
+/*
+The constant color to blend with. See also [RenderingDevice.DrawListSetBlendConstants].
+
+[RenderingDevice.DrawListSetBlendConstants]: https://pkg.go.dev/graphics.gd/classdb/RenderingDevice#Instance.DrawListSetBlendConstants
+*/
 func (self Instance) BlendConstant() Color.RGBA {
 	return Color.RGBA(class(self).GetBlendConstant())
 }
 
+// SetBlendConstant sets the property returned by [GetBlendConstant].
 func (self Instance) SetBlendConstant(value Color.RGBA) {
 	class(self).SetBlendConstant(Color.RGBA(value))
 }
 
+/*
+The attachments that are blended together.
+*/
 func (self Instance) Attachments() []RDPipelineColorBlendStateAttachment.Instance {
 	return []RDPipelineColorBlendStateAttachment.Instance(gd.ArrayAs[[]RDPipelineColorBlendStateAttachment.Instance](gd.InternalArray(class(self).GetAttachments())))
 }
 
+// SetAttachments sets the property returned by [GetAttachments].
 func (self Instance) SetAttachments(value []RDPipelineColorBlendStateAttachment.Instance) {
 	class(self).SetAttachments(gd.ArrayFromSlice[Array.Contains[[1]gdclass.RDPipelineColorBlendStateAttachment]](value))
 }

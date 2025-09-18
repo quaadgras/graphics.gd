@@ -175,122 +175,182 @@ func New() Instance {
 	return casted
 }
 
+/*
+The index of the buffer view this accessor is referencing. If -1, this accessor is not referencing any buffer view.
+*/
 func (self Instance) BufferView() int {
 	return int(int(class(self).GetBufferView()))
 }
 
+// SetBufferView sets the property returned by [GetBufferView].
 func (self Instance) SetBufferView(value int) {
 	class(self).SetBufferView(int64(value))
 }
 
+/*
+The offset relative to the start of the buffer view in bytes.
+*/
 func (self Instance) ByteOffset() int {
 	return int(int(class(self).GetByteOffset()))
 }
 
+// SetByteOffset sets the property returned by [GetByteOffset].
 func (self Instance) SetByteOffset(value int) {
 	class(self).SetByteOffset(int64(value))
 }
 
+/*
+The glTF component type as an enum. See [GLTFComponentType] for possible values. Within the core glTF specification, a value of 5125 or "UNSIGNED_INT" must not be used for any accessor that is not referenced by mesh.primitive.indices.
+*/
 func (self Instance) ComponentType() GLTFComponentType {
 	return GLTFComponentType(class(self).GetComponentType())
 }
 
+// SetComponentType sets the property returned by [GetComponentType].
 func (self Instance) SetComponentType(value GLTFComponentType) {
 	class(self).SetComponentType(value)
 }
 
+/*
+Specifies whether integer data values are normalized before usage.
+*/
 func (self Instance) Normalized() bool {
 	return bool(class(self).GetNormalized())
 }
 
+// SetNormalized sets the property returned by [GetNormalized].
 func (self Instance) SetNormalized(value bool) {
 	class(self).SetNormalized(value)
 }
 
+/*
+The number of elements referenced by this accessor.
+*/
 func (self Instance) Count() int {
 	return int(int(class(self).GetCount()))
 }
 
+// SetCount sets the property returned by [GetCount].
 func (self Instance) SetCount(value int) {
 	class(self).SetCount(int64(value))
 }
 
+/*
+The glTF accessor type, as an enum.
+*/
 func (self Instance) AccessorType() GLTFAccessorType {
 	return GLTFAccessorType(class(self).GetAccessorType())
 }
 
+// SetAccessorType sets the property returned by [GetAccessorType].
 func (self Instance) SetAccessorType(value GLTFAccessorType) {
 	class(self).SetAccessorType(value)
 }
 
+/*
+The glTF accessor type, as an int. Possible values are 0 for "SCALAR", 1 for "VEC2", 2 for "VEC3", 3 for "VEC4", 4 for "MAT2", 5 for "MAT3", and 6 for "MAT4".
+*/
 func (self Instance) Type() int {
 	return int(int(class(self).GetType()))
 }
 
+// SetType sets the property returned by [GetType].
 func (self Instance) SetType(value int) {
 	class(self).SetType(int64(value))
 }
 
+/*
+Minimum value of each component in this accessor.
+*/
 func (self Instance) Min() []float64 {
 	return []float64(slices.Collect(class(self).GetMin().Values()))
 }
 
+// SetMin sets the property returned by [GetMin].
 func (self Instance) SetMin(value []float64) {
 	class(self).SetMin(Packed.New(value...))
 }
 
+/*
+Maximum value of each component in this accessor.
+*/
 func (self Instance) Max() []float64 {
 	return []float64(slices.Collect(class(self).GetMax().Values()))
 }
 
+// SetMax sets the property returned by [GetMax].
 func (self Instance) SetMax(value []float64) {
 	class(self).SetMax(Packed.New(value...))
 }
 
+/*
+Number of deviating accessor values stored in the sparse array.
+*/
 func (self Instance) SparseCount() int {
 	return int(int(class(self).GetSparseCount()))
 }
 
+// SetSparseCount sets the property returned by [GetSparseCount].
 func (self Instance) SetSparseCount(value int) {
 	class(self).SetSparseCount(int64(value))
 }
 
+/*
+The index of the buffer view with sparse indices. The referenced buffer view MUST NOT have its target or byteStride properties defined. The buffer view and the optional byteOffset MUST be aligned to the componentType byte length.
+*/
 func (self Instance) SparseIndicesBufferView() int {
 	return int(int(class(self).GetSparseIndicesBufferView()))
 }
 
+// SetSparseIndicesBufferView sets the property returned by [GetSparseIndicesBufferView].
 func (self Instance) SetSparseIndicesBufferView(value int) {
 	class(self).SetSparseIndicesBufferView(int64(value))
 }
 
+/*
+The offset relative to the start of the buffer view in bytes.
+*/
 func (self Instance) SparseIndicesByteOffset() int {
 	return int(int(class(self).GetSparseIndicesByteOffset()))
 }
 
+// SetSparseIndicesByteOffset sets the property returned by [GetSparseIndicesByteOffset].
 func (self Instance) SetSparseIndicesByteOffset(value int) {
 	class(self).SetSparseIndicesByteOffset(int64(value))
 }
 
+/*
+The indices component data type as an enum. Possible values are 5121 for "UNSIGNED_BYTE", 5123 for "UNSIGNED_SHORT", and 5125 for "UNSIGNED_INT".
+*/
 func (self Instance) SparseIndicesComponentType() GLTFComponentType {
 	return GLTFComponentType(class(self).GetSparseIndicesComponentType())
 }
 
+// SetSparseIndicesComponentType sets the property returned by [GetSparseIndicesComponentType].
 func (self Instance) SetSparseIndicesComponentType(value GLTFComponentType) {
 	class(self).SetSparseIndicesComponentType(value)
 }
 
+/*
+The index of the bufferView with sparse values. The referenced buffer view MUST NOT have its target or byteStride properties defined.
+*/
 func (self Instance) SparseValuesBufferView() int {
 	return int(int(class(self).GetSparseValuesBufferView()))
 }
 
+// SetSparseValuesBufferView sets the property returned by [GetSparseValuesBufferView].
 func (self Instance) SetSparseValuesBufferView(value int) {
 	class(self).SetSparseValuesBufferView(int64(value))
 }
 
+/*
+The offset relative to the start of the bufferView in bytes.
+*/
 func (self Instance) SparseValuesByteOffset() int {
 	return int(int(class(self).GetSparseValuesByteOffset()))
 }
 
+// SetSparseValuesByteOffset sets the property returned by [GetSparseValuesByteOffset].
 func (self Instance) SetSparseValuesByteOffset(value int) {
 	class(self).SetSparseValuesByteOffset(int64(value))
 }

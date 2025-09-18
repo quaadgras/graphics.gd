@@ -212,42 +212,68 @@ func New() Instance {
 	return casted
 }
 
+/*
+Number of frames to use in the animation. While you can create the frames independently with [SetFrameTexture], you need to set this value for the animation to take new frames into account. The maximum number of frames is [MaxFrames].
+
+[SetFrameTexture]: https://pkg.go.dev/graphics.gd/classdb/AnimatedTexture#Instance.SetFrameTexture
+*/
 func (self Instance) Frames() int {
 	return int(int(class(self).GetFrames()))
 }
 
+// SetFrames sets the property returned by [GetFrames].
 func (self Instance) SetFrames(value int) {
 	class(self).SetFrames(int64(value))
 }
 
+/*
+Sets the currently visible frame of the texture. Setting this frame while playing resets the current frame time, so the newly selected frame plays for its whole configured frame duration.
+*/
 func (self Instance) CurrentFrame() int {
 	return int(int(class(self).GetCurrentFrame()))
 }
 
+// SetCurrentFrame sets the property returned by [GetCurrentFrame].
 func (self Instance) SetCurrentFrame(value int) {
 	class(self).SetCurrentFrame(int64(value))
 }
 
+/*
+If true, the animation will pause where it currently is (i.e. at [CurrentFrame]). The animation will continue from where it was paused when changing this property to false.
+
+[CurrentFrame]: https://pkg.go.dev/graphics.gd/classdb/AnimatedTexture#Instance.CurrentFrame
+*/
 func (self Instance) Pause() bool {
 	return bool(class(self).GetPause())
 }
 
+// SetPause sets the property returned by [GetPause].
 func (self Instance) SetPause(value bool) {
 	class(self).SetPause(value)
 }
 
+/*
+If true, the animation will only play once and will not loop back to the first frame after reaching the end. Note that reaching the end will not set [Pause] to true.
+
+[Pause]: https://pkg.go.dev/graphics.gd/classdb/AnimatedTexture#Instance.Pause
+*/
 func (self Instance) OneShot() bool {
 	return bool(class(self).GetOneShot())
 }
 
+// SetOneShot sets the property returned by [GetOneShot].
 func (self Instance) SetOneShot(value bool) {
 	class(self).SetOneShot(value)
 }
 
+/*
+The animation speed is multiplied by this value. If set to a negative value, the animation is played in reverse.
+*/
 func (self Instance) SpeedScale() Float.X {
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
+// SetSpeedScale sets the property returned by [GetSpeedScale].
 func (self Instance) SetSpeedScale(value Float.X) {
 	class(self).SetSpeedScale(float64(value))
 }

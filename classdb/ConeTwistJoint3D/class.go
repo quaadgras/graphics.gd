@@ -146,42 +146,74 @@ func New() Instance {
 	return casted
 }
 
+/*
+Swing is rotation from side to side, around the axis perpendicular to the twist axis.
+
+The swing span defines, how much rotation will not get corrected along the swing axis.
+
+Could be defined as looseness in the [ConeTwistJoint3D].
+
+If below 0.05, this behavior is locked.
+
+[ConeTwistJoint3D]: https://pkg.go.dev/graphics.gd/classdb/ConeTwistJoint3D
+*/
 func (self Instance) SwingSpan() Float.X {
 	return Float.X(Float.X(class(self).GetParam(0)))
 }
 
+// SetSwingSpan sets the property returned by [GetParam].
 func (self Instance) SetSwingSpan(value Float.X) {
 	class(self).SetParam(0, float64(value))
 }
 
+/*
+Twist is the rotation around the twist axis, this value defined how far the joint can twist.
+
+Twist is locked if below 0.05.
+*/
 func (self Instance) TwistSpan() Float.X {
 	return Float.X(Float.X(class(self).GetParam(1)))
 }
 
+// SetTwistSpan sets the property returned by [GetParam].
 func (self Instance) SetTwistSpan(value Float.X) {
 	class(self).SetParam(1, float64(value))
 }
 
+/*
+The speed with which the swing or twist will take place.
+
+The higher, the faster.
+*/
 func (self Instance) Bias() Float.X {
 	return Float.X(Float.X(class(self).GetParam(2)))
 }
 
+// SetBias sets the property returned by [GetParam].
 func (self Instance) SetBias(value Float.X) {
 	class(self).SetParam(2, float64(value))
 }
 
+/*
+The ease with which the joint starts to twist. If it's too low, it takes more force to start twisting the joint.
+*/
 func (self Instance) Softness() Float.X {
 	return Float.X(Float.X(class(self).GetParam(3)))
 }
 
+// SetSoftness sets the property returned by [GetParam].
 func (self Instance) SetSoftness(value Float.X) {
 	class(self).SetParam(3, float64(value))
 }
 
+/*
+Defines, how fast the swing- and twist-speed-difference on both sides gets synced.
+*/
 func (self Instance) Relaxation() Float.X {
 	return Float.X(Float.X(class(self).GetParam(4)))
 }
 
+// SetRelaxation sets the property returned by [GetParam].
 func (self Instance) SetRelaxation(value Float.X) {
 	class(self).SetParam(4, float64(value))
 }

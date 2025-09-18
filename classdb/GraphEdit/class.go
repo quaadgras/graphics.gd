@@ -745,202 +745,308 @@ func New() Instance {
 	return casted
 }
 
+/*
+The scroll offset.
+*/
 func (self Instance) ScrollOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetScrollOffset())
 }
 
+// SetScrollOffset sets the property returned by [GetScrollOffset].
 func (self Instance) SetScrollOffset(value Vector2.XY) {
 	class(self).SetScrollOffset(Vector2.XY(value))
 }
 
+/*
+If true, the grid is visible.
+*/
 func (self Instance) ShowGrid() bool {
 	return bool(class(self).IsShowingGrid())
 }
 
+// SetShowGrid sets the property returned by [IsShowingGrid].
 func (self Instance) SetShowGrid(value bool) {
 	class(self).SetShowGrid(value)
 }
 
+/*
+The pattern used for drawing the grid.
+*/
 func (self Instance) GridPattern() GridPattern {
 	return GridPattern(class(self).GetGridPattern())
 }
 
+// SetGridPattern sets the property returned by [GetGridPattern].
 func (self Instance) SetGridPattern(value GridPattern) {
 	class(self).SetGridPattern(value)
 }
 
+/*
+If true, enables snapping.
+*/
 func (self Instance) SnappingEnabled() bool {
 	return bool(class(self).IsSnappingEnabled())
 }
 
+// SetSnappingEnabled sets the property returned by [IsSnappingEnabled].
 func (self Instance) SetSnappingEnabled(value bool) {
 	class(self).SetSnappingEnabled(value)
 }
 
+/*
+The snapping distance in pixels, also determines the grid line distance.
+*/
 func (self Instance) SnappingDistance() int {
 	return int(int(class(self).GetSnappingDistance()))
 }
 
+// SetSnappingDistance sets the property returned by [GetSnappingDistance].
 func (self Instance) SetSnappingDistance(value int) {
 	class(self).SetSnappingDistance(int64(value))
 }
 
+/*
+Defines the control scheme for panning with mouse wheel.
+*/
 func (self Instance) PanningScheme() PanningScheme {
 	return PanningScheme(class(self).GetPanningScheme())
 }
 
+// SetPanningScheme sets the property returned by [GetPanningScheme].
 func (self Instance) SetPanningScheme(value PanningScheme) {
 	class(self).SetPanningScheme(value)
 }
 
+/*
+If true, enables disconnection of existing connections in the GraphEdit by dragging the right end.
+*/
 func (self Instance) RightDisconnects() bool {
 	return bool(class(self).IsRightDisconnectsEnabled())
 }
 
+// SetRightDisconnects sets the property returned by [IsRightDisconnectsEnabled].
 func (self Instance) SetRightDisconnects(value bool) {
 	class(self).SetRightDisconnects(value)
 }
 
+/*
+data structure of human readable port type names.
+*/
 func (self Instance) TypeNames() map[int]string {
 	return map[int]string(gd.DictionaryAs[map[int]string](class(self).GetTypeNames()))
 }
 
+// SetTypeNames sets the property returned by [GetTypeNames].
 func (self Instance) SetTypeNames(value map[int]string) {
 	class(self).SetTypeNames(gd.DictionaryFromMap(value))
 }
 
+/*
+The curvature of the lines between the nodes. 0 results in straight lines.
+*/
 func (self Instance) ConnectionLinesCurvature() Float.X {
 	return Float.X(Float.X(class(self).GetConnectionLinesCurvature()))
 }
 
+// SetConnectionLinesCurvature sets the property returned by [GetConnectionLinesCurvature].
 func (self Instance) SetConnectionLinesCurvature(value Float.X) {
 	class(self).SetConnectionLinesCurvature(float64(value))
 }
 
+/*
+The thickness of the lines between the nodes.
+*/
 func (self Instance) ConnectionLinesThickness() Float.X {
 	return Float.X(Float.X(class(self).GetConnectionLinesThickness()))
 }
 
+// SetConnectionLinesThickness sets the property returned by [GetConnectionLinesThickness].
 func (self Instance) SetConnectionLinesThickness(value Float.X) {
 	class(self).SetConnectionLinesThickness(float64(value))
 }
 
+/*
+If true, the lines between nodes will use antialiasing.
+*/
 func (self Instance) ConnectionLinesAntialiased() bool {
 	return bool(class(self).IsConnectionLinesAntialiased())
 }
 
+// SetConnectionLinesAntialiased sets the property returned by [IsConnectionLinesAntialiased].
 func (self Instance) SetConnectionLinesAntialiased(value bool) {
 	class(self).SetConnectionLinesAntialiased(value)
 }
 
+/*
+The connections between [GraphNode]s.
+
+A connection is represented as a data structure in the form of:
+
+Connections with keep_alive set to false may be deleted automatically if invalid during a redraw.
+
+[GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
+*/
 func (self Instance) Connections() []Connection {
 	return []Connection(gd.ArrayAs[[]Connection](gd.InternalArray(class(self).GetConnectionList())))
 }
 
+// SetConnections sets the property returned by [GetConnectionList].
 func (self Instance) SetConnections(value []Connection) {
 	class(self).SetConnections(gd.ArrayFromSlice[Array.Contains[Dictionary.Any]](value))
 }
 
+/*
+The current zoom value.
+*/
 func (self Instance) Zoom() Float.X {
 	return Float.X(Float.X(class(self).GetZoom()))
 }
 
+// SetZoom sets the property returned by [GetZoom].
 func (self Instance) SetZoom(value Float.X) {
 	class(self).SetZoom(float64(value))
 }
 
+/*
+The lower zoom limit.
+*/
 func (self Instance) ZoomMin() Float.X {
 	return Float.X(Float.X(class(self).GetZoomMin()))
 }
 
+// SetZoomMin sets the property returned by [GetZoomMin].
 func (self Instance) SetZoomMin(value Float.X) {
 	class(self).SetZoomMin(float64(value))
 }
 
+/*
+The upper zoom limit.
+*/
 func (self Instance) ZoomMax() Float.X {
 	return Float.X(Float.X(class(self).GetZoomMax()))
 }
 
+// SetZoomMax sets the property returned by [GetZoomMax].
 func (self Instance) SetZoomMax(value Float.X) {
 	class(self).SetZoomMax(float64(value))
 }
 
+/*
+The step of each zoom level.
+*/
 func (self Instance) ZoomStep() Float.X {
 	return Float.X(Float.X(class(self).GetZoomStep()))
 }
 
+// SetZoomStep sets the property returned by [GetZoomStep].
 func (self Instance) SetZoomStep(value Float.X) {
 	class(self).SetZoomStep(float64(value))
 }
 
+/*
+If true, the minimap is visible.
+*/
 func (self Instance) MinimapEnabled() bool {
 	return bool(class(self).IsMinimapEnabled())
 }
 
+// SetMinimapEnabled sets the property returned by [IsMinimapEnabled].
 func (self Instance) SetMinimapEnabled(value bool) {
 	class(self).SetMinimapEnabled(value)
 }
 
+/*
+The size of the minimap rectangle. The map itself is based on the size of the grid area and is scaled to fit this rectangle.
+*/
 func (self Instance) MinimapSize() Vector2.XY {
 	return Vector2.XY(class(self).GetMinimapSize())
 }
 
+// SetMinimapSize sets the property returned by [GetMinimapSize].
 func (self Instance) SetMinimapSize(value Vector2.XY) {
 	class(self).SetMinimapSize(Vector2.XY(value))
 }
 
+/*
+The opacity of the minimap rectangle.
+*/
 func (self Instance) MinimapOpacity() Float.X {
 	return Float.X(Float.X(class(self).GetMinimapOpacity()))
 }
 
+// SetMinimapOpacity sets the property returned by [GetMinimapOpacity].
 func (self Instance) SetMinimapOpacity(value Float.X) {
 	class(self).SetMinimapOpacity(float64(value))
 }
 
+/*
+If true, the menu toolbar is visible.
+*/
 func (self Instance) ShowMenu() bool {
 	return bool(class(self).IsShowingMenu())
 }
 
+// SetShowMenu sets the property returned by [IsShowingMenu].
 func (self Instance) SetShowMenu(value bool) {
 	class(self).SetShowMenu(value)
 }
 
+/*
+If true, the label with the current zoom level is visible. The zoom level is displayed in percents.
+*/
 func (self Instance) ShowZoomLabel() bool {
 	return bool(class(self).IsShowingZoomLabel())
 }
 
+// SetShowZoomLabel sets the property returned by [IsShowingZoomLabel].
 func (self Instance) SetShowZoomLabel(value bool) {
 	class(self).SetShowZoomLabel(value)
 }
 
+/*
+If true, buttons that allow to change and reset the zoom level are visible.
+*/
 func (self Instance) ShowZoomButtons() bool {
 	return bool(class(self).IsShowingZoomButtons())
 }
 
+// SetShowZoomButtons sets the property returned by [IsShowingZoomButtons].
 func (self Instance) SetShowZoomButtons(value bool) {
 	class(self).SetShowZoomButtons(value)
 }
 
+/*
+If true, buttons that allow to configure grid and snapping options are visible.
+*/
 func (self Instance) ShowGridButtons() bool {
 	return bool(class(self).IsShowingGridButtons())
 }
 
+// SetShowGridButtons sets the property returned by [IsShowingGridButtons].
 func (self Instance) SetShowGridButtons(value bool) {
 	class(self).SetShowGridButtons(value)
 }
 
+/*
+If true, the button to toggle the minimap is visible.
+*/
 func (self Instance) ShowMinimapButton() bool {
 	return bool(class(self).IsShowingMinimapButton())
 }
 
+// SetShowMinimapButton sets the property returned by [IsShowingMinimapButton].
 func (self Instance) SetShowMinimapButton(value bool) {
 	class(self).SetShowMinimapButton(value)
 }
 
+/*
+If true, the button to automatically arrange graph nodes is visible.
+*/
 func (self Instance) ShowArrangeButton() bool {
 	return bool(class(self).IsShowingArrangeButton())
 }
 
+// SetShowArrangeButton sets the property returned by [IsShowingArrangeButton].
 func (self Instance) SetShowArrangeButton(value bool) {
 	class(self).SetShowArrangeButton(value)
 }
@@ -1719,6 +1825,12 @@ Sets the specified 'node' as the one selected.
 func (self class) SetSelected(node [1]gdclass.Node) { //gd:GraphEdit.set_selected
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selected, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))})
 }
+
+/*
+Emitted to the GraphEdit when the connection between the 'from_port' of the 'from_node' [GraphNode] and the 'to_port' of the 'to_node' [GraphNode] is attempted to be created.
+
+[GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
+*/
 func (self Instance) OnConnectionRequest(cb func(from_node string, from_port int, to_node string, to_port int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1731,6 +1843,11 @@ func (self class) ConnectionRequest() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionRequest`))))
 }
 
+/*
+Emitted to the GraphEdit when the connection between 'from_port' of 'from_node' [GraphNode] and 'to_port' of 'to_node' [GraphNode] is attempted to be removed.
+
+[GraphNode]: https://pkg.go.dev/graphics.gd/classdb/GraphNode
+*/
 func (self Instance) OnDisconnectionRequest(cb func(from_node string, from_port int, to_node string, to_port int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1743,6 +1860,9 @@ func (self class) DisconnectionRequest() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DisconnectionRequest`))))
 }
 
+/*
+Emitted when user drags a connection from an output port into the empty space of the graph.
+*/
 func (self Instance) OnConnectionToEmpty(cb func(from_node string, from_port int, release_position Vector2.XY), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1755,6 +1875,9 @@ func (self class) ConnectionToEmpty() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionToEmpty`))))
 }
 
+/*
+Emitted when user drags a connection from an input port into the empty space of the graph.
+*/
 func (self Instance) OnConnectionFromEmpty(cb func(to_node string, to_port int, release_position Vector2.XY), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1767,6 +1890,9 @@ func (self class) ConnectionFromEmpty() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionFromEmpty`))))
 }
 
+/*
+Emitted at the beginning of a connection drag.
+*/
 func (self Instance) OnConnectionDragStarted(cb func(from_node string, from_port int, is_output bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1779,6 +1905,9 @@ func (self class) ConnectionDragStarted() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionDragStarted`))))
 }
 
+/*
+Emitted at the end of a connection drag.
+*/
 func (self Instance) OnConnectionDragEnded(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1791,6 +1920,12 @@ func (self class) ConnectionDragEnded() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ConnectionDragEnded`))))
 }
 
+/*
+Emitted when this [GraphEdit] captures a ui_copy action (Ctrl + C by default). In general, this signal indicates that the selected [GraphElement]s should be copied.
+
+[GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
+[GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
+*/
 func (self Instance) OnCopyNodesRequest(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1803,6 +1938,12 @@ func (self class) CopyNodesRequest() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CopyNodesRequest`))))
 }
 
+/*
+Emitted when this [GraphEdit] captures a ui_cut action (Ctrl + X by default). In general, this signal indicates that the selected [GraphElement]s should be cut.
+
+[GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
+[GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
+*/
 func (self Instance) OnCutNodesRequest(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1815,6 +1956,12 @@ func (self class) CutNodesRequest() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CutNodesRequest`))))
 }
 
+/*
+Emitted when this [GraphEdit] captures a ui_paste action (Ctrl + V by default). In general, this signal indicates that previously copied [GraphElement]s should be pasted.
+
+[GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
+[GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
+*/
 func (self Instance) OnPasteNodesRequest(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1827,6 +1974,12 @@ func (self class) PasteNodesRequest() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PasteNodesRequest`))))
 }
 
+/*
+Emitted when this [GraphEdit] captures a ui_graph_duplicate action (Ctrl + D by default). In general, this signal indicates that the selected [GraphElement]s should be duplicated.
+
+[GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
+[GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
+*/
 func (self Instance) OnDuplicateNodesRequest(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1839,6 +1992,13 @@ func (self class) DuplicateNodesRequest() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DuplicateNodesRequest`))))
 }
 
+/*
+Emitted when this [GraphEdit] captures a ui_graph_delete action (Delete by default).
+
+'nodes' is an array of node names that should be removed. These usually include all selected nodes.
+
+[GraphEdit]: https://pkg.go.dev/graphics.gd/classdb/GraphEdit
+*/
 func (self Instance) OnDeleteNodesRequest(cb func(nodes []string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1851,6 +2011,11 @@ func (self class) DeleteNodesRequest() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DeleteNodesRequest`))))
 }
 
+/*
+Emitted when the given [GraphElement] node is selected.
+
+[GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
+*/
 func (self Instance) OnNodeSelected(cb func(node Node.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1863,6 +2028,11 @@ func (self class) NodeSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeSelected`))))
 }
 
+/*
+Emitted when the given [GraphElement] node is deselected.
+
+[GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
+*/
 func (self Instance) OnNodeDeselected(cb func(node Node.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1875,6 +2045,11 @@ func (self class) NodeDeselected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeDeselected`))))
 }
 
+/*
+Emitted when the [GraphFrame] 'frame' is resized to 'new_rect'.
+
+[GraphFrame]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame
+*/
 func (self Instance) OnFrameRectChanged(cb func(frame_ GraphFrame.Instance, new_rect Rect2.PositionSize), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1887,6 +2062,9 @@ func (self class) FrameRectChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FrameRectChanged`))))
 }
 
+/*
+Emitted when a popup is requested. Happens on right-clicking in the GraphEdit. 'at_position' is the position of the mouse pointer when the signal is sent.
+*/
 func (self Instance) OnPopupRequest(cb func(at_position Vector2.XY), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1899,6 +2077,11 @@ func (self class) PopupRequest() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PopupRequest`))))
 }
 
+/*
+Emitted at the beginning of a [GraphElement]'s movement.
+
+[GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
+*/
 func (self Instance) OnBeginNodeMove(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1911,6 +2094,11 @@ func (self class) BeginNodeMove() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BeginNodeMove`))))
 }
 
+/*
+Emitted at the end of a [GraphElement]'s movement.
+
+[GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
+*/
 func (self Instance) OnEndNodeMove(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1923,6 +2111,14 @@ func (self class) EndNodeMove() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EndNodeMove`))))
 }
 
+/*
+Emitted when one or more [GraphElement]s are dropped onto the [GraphFrame] named 'frame', when they were not previously attached to any other one.
+
+'elements' is an array of [GraphElement]s to be attached.
+
+[GraphElement]: https://pkg.go.dev/graphics.gd/classdb/GraphElement
+[GraphFrame]: https://pkg.go.dev/graphics.gd/classdb/GraphFrame
+*/
 func (self Instance) OnGraphElementsLinkedToFrameRequest(cb func(elements []any, frame_ string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1935,6 +2131,9 @@ func (self class) GraphElementsLinkedToFrameRequest() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GraphElementsLinkedToFrameRequest`))))
 }
 
+/*
+Emitted when the scroll offset is changed by the user. It will not be emitted when changed in code.
+*/
 func (self Instance) OnScrollOffsetChanged(cb func(offset Vector2.XY), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

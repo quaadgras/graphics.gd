@@ -709,6 +709,10 @@ func (self class) SaveCustom(file String.Readable) Error.Code { //gd:ProjectSett
 	var ret = Error.Code(r_ret)
 	return ret
 }
+
+/*
+Emitted when any setting is changed, up to once per process frame.
+*/
 func OnSettingsChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

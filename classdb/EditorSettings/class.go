@@ -512,6 +512,10 @@ Marks the passed editor setting as being changed, see [GetChangedSettings]. Only
 func (self class) MarkSettingChanged(setting String.Readable) { //gd:EditorSettings.mark_setting_changed
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.mark_setting_changed, 0|(gdextension.SizeString<<4), &struct{ setting gdextension.String }{pointers.Get(gd.InternalString(setting))})
 }
+
+/*
+Emitted after any editor setting has changed.
+*/
 func (self Instance) OnSettingsChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -309,10 +309,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+Define the maximum number of pending connections, during [Poll], any new pending connection exceeding that value will be automatically dropped. Setting this value to 0 effectively prevents any new pending connection to be accepted (e.g. when all your players have connected).
+
+[Poll]: https://pkg.go.dev/graphics.gd/classdb/UDPServer#Instance.Poll
+*/
 func (self Instance) MaxPendingConnections() int {
 	return int(int(class(self).GetMaxPendingConnections()))
 }
 
+// SetMaxPendingConnections sets the property returned by [GetMaxPendingConnections].
 func (self Instance) SetMaxPendingConnections(value int) {
 	class(self).SetMaxPendingConnections(int64(value))
 }

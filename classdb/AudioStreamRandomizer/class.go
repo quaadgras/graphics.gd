@@ -220,34 +220,50 @@ func New() Instance {
 	return casted
 }
 
+/*
+Controls how this AudioStreamRandomizer picks which AudioStream to play next.
+*/
 func (self Instance) PlaybackMode() PlaybackMode {
 	return PlaybackMode(class(self).GetPlaybackMode())
 }
 
+// SetPlaybackMode sets the property returned by [GetPlaybackMode].
 func (self Instance) SetPlaybackMode(value PlaybackMode) {
 	class(self).SetPlaybackMode(value)
 }
 
+/*
+The intensity of random pitch variation. A value of 1 means no variation.
+*/
 func (self Instance) RandomPitch() Float.X {
 	return Float.X(Float.X(class(self).GetRandomPitch()))
 }
 
+// SetRandomPitch sets the property returned by [GetRandomPitch].
 func (self Instance) SetRandomPitch(value Float.X) {
 	class(self).SetRandomPitch(float64(value))
 }
 
+/*
+The intensity of random volume variation. A value of 0 means no variation.
+*/
 func (self Instance) RandomVolumeOffsetDb() Float.X {
 	return Float.X(Float.X(class(self).GetRandomVolumeOffsetDb()))
 }
 
+// SetRandomVolumeOffsetDb sets the property returned by [GetRandomVolumeOffsetDb].
 func (self Instance) SetRandomVolumeOffsetDb(value Float.X) {
 	class(self).SetRandomVolumeOffsetDb(float64(value))
 }
 
+/*
+The number of streams in the stream pool.
+*/
 func (self Instance) StreamsCount() int {
 	return int(int(class(self).GetStreamsCount()))
 }
 
+// SetStreamsCount sets the property returned by [GetStreamsCount].
 func (self Instance) SetStreamsCount(value int) {
 	class(self).SetStreamsCount(int64(value))
 }

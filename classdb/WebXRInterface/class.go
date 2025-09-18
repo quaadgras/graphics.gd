@@ -357,46 +357,130 @@ func New() Instance {
 	return casted
 }
 
+/*
+The session mode used by [XRInterface.Initialize] when setting up the WebXR session.
+
+This doesn't have any effect on the interface when already initialized.
+
+Possible values come from [WebXR's XRSessionMode], including: "immersive-vr", "immersive-ar", and "inline".
+
+[WebXR's XRSessionMode]: https://developer.mozilla.org/en-US/docs/Web/API/XRSessionMode
+[XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
+*/
 func (self Instance) SessionMode() string {
 	return string(class(self).GetSessionMode().String())
 }
 
+// SetSessionMode sets the property returned by [GetSessionMode].
 func (self Instance) SetSessionMode(value string) {
 	class(self).SetSessionMode(String.New(value))
 }
 
+/*
+A comma-seperated list of required features used by [XRInterface.Initialize] when setting up the WebXR session.
+
+If a user's browser or device doesn't support one of the given features, initialization will fail and [OnSessionFailed] will be emitted.
+
+This doesn't have any effect on the interface when already initialized.
+
+See the MDN documentation on [WebXR's session features] for a list of possible values.
+
+[OnSessionFailed]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSessionFailed
+[WebXR's session features]: https://developer.mozilla.org/en-US/docs/Web/API/XRSystem/requestSession#session_features
+[XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
+*/
 func (self Instance) RequiredFeatures() string {
 	return string(class(self).GetRequiredFeatures().String())
 }
 
+// SetRequiredFeatures sets the property returned by [GetRequiredFeatures].
 func (self Instance) SetRequiredFeatures(value string) {
 	class(self).SetRequiredFeatures(String.New(value))
 }
 
+/*
+A comma-seperated list of optional features used by [XRInterface.Initialize] when setting up the WebXR session.
+
+If a user's browser or device doesn't support one of the given features, initialization will continue, but you won't be able to use the requested feature.
+
+This doesn't have any effect on the interface when already initialized.
+
+See the MDN documentation on [WebXR's session features] for a list of possible values.
+
+[WebXR's session features]: https://developer.mozilla.org/en-US/docs/Web/API/XRSystem/requestSession#session_features
+[XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
+*/
 func (self Instance) OptionalFeatures() string {
 	return string(class(self).GetOptionalFeatures().String())
 }
 
+// SetOptionalFeatures sets the property returned by [GetOptionalFeatures].
 func (self Instance) SetOptionalFeatures(value string) {
 	class(self).SetOptionalFeatures(String.New(value))
 }
 
+/*
+A comma-seperated list of reference space types used by [XRInterface.Initialize] when setting up the WebXR session.
+
+The reference space types are requested in order, and the first one supported by the user's device or browser will be used. The [ReferenceSpaceType] property contains the reference space type that was ultimately selected.
+
+This doesn't have any effect on the interface when already initialized.
+
+Possible values come from [WebXR's XRReferenceSpaceType]. If you want to use a particular reference space type, it must be listed in either [RequiredFeatures] or [OptionalFeatures].
+
+[OptionalFeatures]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OptionalFeatures
+[ReferenceSpaceType]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.ReferenceSpaceType
+[RequiredFeatures]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.RequiredFeatures
+[WebXR's XRReferenceSpaceType]: https://developer.mozilla.org/en-US/docs/Web/API/XRReferenceSpaceType
+[XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
+*/
 func (self Instance) RequestedReferenceSpaceTypes() string {
 	return string(class(self).GetRequestedReferenceSpaceTypes().String())
 }
 
+// SetRequestedReferenceSpaceTypes sets the property returned by [GetRequestedReferenceSpaceTypes].
 func (self Instance) SetRequestedReferenceSpaceTypes(value string) {
 	class(self).SetRequestedReferenceSpaceTypes(String.New(value))
 }
 
+/*
+The reference space type (from the list of requested types set in the [RequestedReferenceSpaceTypes] property), that was ultimately used by [XRInterface.Initialize] when setting up the WebXR session.
+
+Possible values come from [WebXR's XRReferenceSpaceType]. If you want to use a particular reference space type, it must be listed in either [RequiredFeatures] or [OptionalFeatures].
+
+[OptionalFeatures]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OptionalFeatures
+[RequestedReferenceSpaceTypes]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.RequestedReferenceSpaceTypes
+[RequiredFeatures]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.RequiredFeatures
+[WebXR's XRReferenceSpaceType]: https://developer.mozilla.org/en-US/docs/Web/API/XRReferenceSpaceType
+[XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
+*/
 func (self Instance) ReferenceSpaceType() string {
 	return string(class(self).GetReferenceSpaceType().String())
 }
 
+/*
+A comma-separated list of features that were successfully enabled by [XRInterface.Initialize] when setting up the WebXR session.
+
+This may include features requested by setting [RequiredFeatures] and [OptionalFeatures], and will only be available after [OnSessionStarted] has been emitted.
+
+Note: This may not be support by all web browsers, in which case it will be an empty string.
+
+[OnSessionStarted]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OnSessionStarted
+[OptionalFeatures]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.OptionalFeatures
+[RequiredFeatures]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.RequiredFeatures
+[XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
+*/
 func (self Instance) EnabledFeatures() string {
 	return string(class(self).GetEnabledFeatures().String())
 }
 
+/*
+Indicates if the WebXR session's imagery is visible to the user.
+
+Possible values come from [WebXR's XRVisibilityState], including "hidden", "visible", and "visible-blurred".
+
+[WebXR's XRVisibilityState]: https://developer.mozilla.org/en-US/docs/Web/API/XRVisibilityState
+*/
 func (self Instance) VisibilityState() string {
 	return string(class(self).GetVisibilityState().String())
 }
@@ -574,6 +658,12 @@ func (self class) GetAvailableDisplayRefreshRates() Array.Any { //gd:WebXRInterf
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
+
+/*
+Emitted by [IsSessionSupported] to indicate if the given 'session_mode' is supported or not.
+
+[IsSessionSupported]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.IsSessionSupported
+*/
 func (self Instance) OnSessionSupported(cb func(session_mode string, supported bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -586,6 +676,13 @@ func (self class) SessionSupported() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionSupported`))))
 }
 
+/*
+Emitted by [XRInterface.Initialize] if the session is successfully started.
+
+At this point, it's safe to do get_viewport().use_xr = true to instruct Godot to start rendering to the XR device.
+
+[XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
+*/
 func (self Instance) OnSessionStarted(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -598,6 +695,11 @@ func (self class) SessionStarted() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionStarted`))))
 }
 
+/*
+Emitted when the user ends the WebXR session (which can be done using UI from the browser or device).
+
+At this point, you should do get_viewport().use_xr = false to instruct Godot to resume rendering to the screen.
+*/
 func (self Instance) OnSessionEnded(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -610,6 +712,13 @@ func (self class) SessionEnded() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionEnded`))))
 }
 
+/*
+Emitted by [XRInterface.Initialize] if the session fails to start.
+
+'message' may optionally contain an error message from WebXR, or an empty string if no message is available.
+
+[XRInterface.Initialize]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.Initialize
+*/
 func (self Instance) OnSessionFailed(cb func(message string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -622,6 +731,14 @@ func (self class) SessionFailed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionFailed`))))
 }
 
+/*
+Emitted when one of the input source has started its "primary action".
+
+Use [GetInputSourceTracker] and [GetInputSourceTargetRayMode] to get more information about the input source.
+
+[GetInputSourceTargetRayMode]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTargetRayMode
+[GetInputSourceTracker]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTracker
+*/
 func (self Instance) OnSelectstart(cb func(input_source_id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -634,6 +751,14 @@ func (self class) Selectstart() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Selectstart`))))
 }
 
+/*
+Emitted after one of the input sources has finished its "primary action".
+
+Use [GetInputSourceTracker] and [GetInputSourceTargetRayMode] to get more information about the input source.
+
+[GetInputSourceTargetRayMode]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTargetRayMode
+[GetInputSourceTracker]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTracker
+*/
 func (self Instance) OnSelect(cb func(input_source_id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -646,6 +771,14 @@ func (self class) Select() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Select`))))
 }
 
+/*
+Emitted when one of the input sources has finished its "primary action".
+
+Use [GetInputSourceTracker] and [GetInputSourceTargetRayMode] to get more information about the input source.
+
+[GetInputSourceTargetRayMode]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTargetRayMode
+[GetInputSourceTracker]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTracker
+*/
 func (self Instance) OnSelectend(cb func(input_source_id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -658,6 +791,14 @@ func (self class) Selectend() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Selectend`))))
 }
 
+/*
+Emitted when one of the input sources has started its "primary squeeze action".
+
+Use [GetInputSourceTracker] and [GetInputSourceTargetRayMode] to get more information about the input source.
+
+[GetInputSourceTargetRayMode]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTargetRayMode
+[GetInputSourceTracker]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTracker
+*/
 func (self Instance) OnSqueezestart(cb func(input_source_id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -670,6 +811,14 @@ func (self class) Squeezestart() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Squeezestart`))))
 }
 
+/*
+Emitted after one of the input sources has finished its "primary squeeze action".
+
+Use [GetInputSourceTracker] and [GetInputSourceTargetRayMode] to get more information about the input source.
+
+[GetInputSourceTargetRayMode]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTargetRayMode
+[GetInputSourceTracker]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTracker
+*/
 func (self Instance) OnSqueeze(cb func(input_source_id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -682,6 +831,14 @@ func (self class) Squeeze() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Squeeze`))))
 }
 
+/*
+Emitted when one of the input sources has finished its "primary squeeze action".
+
+Use [GetInputSourceTracker] and [GetInputSourceTargetRayMode] to get more information about the input source.
+
+[GetInputSourceTargetRayMode]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTargetRayMode
+[GetInputSourceTracker]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.GetInputSourceTracker
+*/
 func (self Instance) OnSqueezeend(cb func(input_source_id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -694,6 +851,11 @@ func (self class) Squeezeend() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Squeezeend`))))
 }
 
+/*
+Emitted when [VisibilityState] has changed.
+
+[VisibilityState]: https://pkg.go.dev/graphics.gd/classdb/WebXRInterface#Instance.VisibilityState
+*/
 func (self Instance) OnVisibilityStateChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -706,6 +868,16 @@ func (self class) VisibilityStateChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`VisibilityStateChanged`))))
 }
 
+/*
+Emitted to indicate that the reference space has been reset or reconfigured.
+
+When (or whether) this is emitted depends on the user's browser or device, but may include when the user has changed the dimensions of their play space (which you may be able to access via [XRInterface.GetPlayArea]) or pressed/held a button to recenter their position.
+
+See [WebXR's XRReferenceSpace reset event] for more information.
+
+[WebXR's XRReferenceSpace reset event]: https://developer.mozilla.org/en-US/docs/Web/API/XRReferenceSpace/reset_event
+[XRInterface.GetPlayArea]: https://pkg.go.dev/graphics.gd/classdb/XRInterface#Instance.GetPlayArea
+*/
 func (self Instance) OnReferenceSpaceReset(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -718,6 +890,9 @@ func (self class) ReferenceSpaceReset() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ReferenceSpaceReset`))))
 }
 
+/*
+Emitted after the display's refresh rate has changed.
+*/
 func (self Instance) OnDisplayRefreshRateChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

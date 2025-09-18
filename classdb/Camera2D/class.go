@@ -294,226 +294,397 @@ func New() Instance {
 	return casted
 }
 
+/*
+The camera's relative offset. Useful for looking around or camera shake animations. The offsetted camera can go past the limits defined in [LimitTop], [LimitBottom], [LimitLeft] and [LimitRight].
+
+[LimitBottom]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.LimitBottom
+[LimitLeft]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.LimitLeft
+[LimitRight]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.LimitRight
+[LimitTop]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.LimitTop
+*/
 func (self Instance) Offset() Vector2.XY {
 	return Vector2.XY(class(self).GetOffset())
 }
 
+// SetOffset sets the property returned by [GetOffset].
 func (self Instance) SetOffset(value Vector2.XY) {
 	class(self).SetOffset(Vector2.XY(value))
 }
 
+/*
+The Camera2D's anchor point.
+*/
 func (self Instance) AnchorMode() AnchorMode {
 	return AnchorMode(class(self).GetAnchorMode())
 }
 
+// SetAnchorMode sets the property returned by [GetAnchorMode].
 func (self Instance) SetAnchorMode(value AnchorMode) {
 	class(self).SetAnchorMode(value)
 }
 
+/*
+If true, the camera's rendered view is not affected by its [Node2D.Rotation] and [Node2D.GlobalRotation].
+
+[Node2D.GlobalRotation]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalRotation
+[Node2D.Rotation]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Rotation
+*/
 func (self Instance) IgnoreRotation() bool {
 	return bool(class(self).IsIgnoringRotation())
 }
 
+// SetIgnoreRotation sets the property returned by [IsIgnoringRotation].
 func (self Instance) SetIgnoreRotation(value bool) {
 	class(self).SetIgnoreRotation(value)
 }
 
+/*
+Controls whether the camera can be active or not. If true, the [Camera2D] will become the main camera when it enters the scene tree and there is no active camera currently (see [Viewport.GetCamera2d]).
+
+When the camera is currently active and [Enabled] is set to false, the next enabled [Camera2D] in the scene tree will become active.
+
+[Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
+[Enabled]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.Enabled
+[Viewport.GetCamera2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GetCamera2d
+*/
 func (self Instance) Enabled() bool {
 	return bool(class(self).IsEnabled())
 }
 
+// SetEnabled sets the property returned by [IsEnabled].
 func (self Instance) SetEnabled(value bool) {
 	class(self).SetEnabled(value)
 }
 
+/*
+The camera's zoom. Higher values are more zoomed in. For example, a zoom of Vector2(2.0, 2.0) will be twice as zoomed in on each axis (the view covers an area four times smaller). In contrast, a zoom of Vector2(0.5, 0.5) will be twice as zoomed out on each axis (the view covers an area four times larger). The X and Y components should generally always be set to the same value, unless you wish to stretch the camera view.
+
+Note: [FontFile.Oversampling] does not take [Camera2D] zoom into account. This means that zooming in/out will cause bitmap fonts and rasterized (non-MSDF) dynamic fonts to appear blurry or pixelated unless the font is part of a [CanvasLayer] that makes it ignore camera zoom. To ensure text remains crisp regardless of zoom, you can enable MSDF font rendering by enabling [ProjectSettings] "gui/theme/default_font_multichannel_signed_distance_field" (applies to the default project font only), or enabling Multichannel Signed Distance Field in the import options of a DynamicFont for custom fonts. On system fonts, [SystemFont.MultichannelSignedDistanceField] can be enabled in the inspector.
+
+[Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
+[FontFile.Oversampling]: https://pkg.go.dev/graphics.gd/classdb/FontFile#Instance.Oversampling
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[SystemFont.MultichannelSignedDistanceField]: https://pkg.go.dev/graphics.gd/classdb/SystemFont#Instance.MultichannelSignedDistanceField
+*/
 func (self Instance) Zoom() Vector2.XY {
 	return Vector2.XY(class(self).GetZoom())
 }
 
+// SetZoom sets the property returned by [GetZoom].
 func (self Instance) SetZoom(value Vector2.XY) {
 	class(self).SetZoom(Vector2.XY(value))
 }
 
+/*
+The custom [Viewport] node attached to the [Camera2D]. If null or not a [Viewport], uses the default viewport instead.
+
+[Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+*/
 func (self Instance) CustomViewport() Node.Instance {
 	return Node.Instance(class(self).GetCustomViewport())
 }
 
+// SetCustomViewport sets the property returned by [GetCustomViewport].
 func (self Instance) SetCustomViewport(value Node.Instance) {
 	class(self).SetCustomViewport(value)
 }
 
+/*
+The camera's process callback.
+*/
 func (self Instance) ProcessCallback() Camera2DProcessCallback {
 	return Camera2DProcessCallback(class(self).GetProcessCallback())
 }
 
+// SetProcessCallback sets the property returned by [GetProcessCallback].
 func (self Instance) SetProcessCallback(value Camera2DProcessCallback) {
 	class(self).SetProcessCallback(value)
 }
 
+/*
+If true, the limits will be enabled. Disabling this will allow the camera to focus anywhere, when the four limit_* properties will not work.
+*/
 func (self Instance) LimitEnabled() bool {
 	return bool(class(self).IsLimitEnabled())
 }
 
+// SetLimitEnabled sets the property returned by [IsLimitEnabled].
 func (self Instance) SetLimitEnabled(value bool) {
 	class(self).SetLimitEnabled(value)
 }
 
+/*
+Left scroll limit in pixels. The camera stops moving when reaching this value, but [Offset] can push the view past the limit.
+
+[Offset]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.Offset
+*/
 func (self Instance) LimitLeft() int {
 	return int(int(class(self).GetLimit(0)))
 }
 
+// SetLimitLeft sets the property returned by [GetLimit].
 func (self Instance) SetLimitLeft(value int) {
 	class(self).SetLimit(0, int64(value))
 }
 
+/*
+Top scroll limit in pixels. The camera stops moving when reaching this value, but [Offset] can push the view past the limit.
+
+[Offset]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.Offset
+*/
 func (self Instance) LimitTop() int {
 	return int(int(class(self).GetLimit(1)))
 }
 
+// SetLimitTop sets the property returned by [GetLimit].
 func (self Instance) SetLimitTop(value int) {
 	class(self).SetLimit(1, int64(value))
 }
 
+/*
+Right scroll limit in pixels. The camera stops moving when reaching this value, but [Offset] can push the view past the limit.
+
+[Offset]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.Offset
+*/
 func (self Instance) LimitRight() int {
 	return int(int(class(self).GetLimit(2)))
 }
 
+// SetLimitRight sets the property returned by [GetLimit].
 func (self Instance) SetLimitRight(value int) {
 	class(self).SetLimit(2, int64(value))
 }
 
+/*
+Bottom scroll limit in pixels. The camera stops moving when reaching this value, but [Offset] can push the view past the limit.
+
+[Offset]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.Offset
+*/
 func (self Instance) LimitBottom() int {
 	return int(int(class(self).GetLimit(3)))
 }
 
+// SetLimitBottom sets the property returned by [GetLimit].
 func (self Instance) SetLimitBottom(value int) {
 	class(self).SetLimit(3, int64(value))
 }
 
+/*
+If true, the camera smoothly stops when reaches its limits.
+
+This property has no effect if [PositionSmoothingEnabled] is false.
+
+Note: To immediately update the camera's position to be within limits without smoothing, even with this setting enabled, invoke [ResetSmoothing].
+
+[PositionSmoothingEnabled]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.PositionSmoothingEnabled
+[ResetSmoothing]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.ResetSmoothing
+*/
 func (self Instance) LimitSmoothed() bool {
 	return bool(class(self).IsLimitSmoothingEnabled())
 }
 
+// SetLimitSmoothed sets the property returned by [IsLimitSmoothingEnabled].
 func (self Instance) SetLimitSmoothed(value bool) {
 	class(self).SetLimitSmoothingEnabled(value)
 }
 
+/*
+If true, the camera's view smoothly moves towards its target position at [PositionSmoothingSpeed].
+
+[PositionSmoothingSpeed]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.PositionSmoothingSpeed
+*/
 func (self Instance) PositionSmoothingEnabled() bool {
 	return bool(class(self).IsPositionSmoothingEnabled())
 }
 
+// SetPositionSmoothingEnabled sets the property returned by [IsPositionSmoothingEnabled].
 func (self Instance) SetPositionSmoothingEnabled(value bool) {
 	class(self).SetPositionSmoothingEnabled(value)
 }
 
+/*
+Speed in pixels per second of the camera's smoothing effect when [PositionSmoothingEnabled] is true.
+
+[PositionSmoothingEnabled]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.PositionSmoothingEnabled
+*/
 func (self Instance) PositionSmoothingSpeed() Float.X {
 	return Float.X(Float.X(class(self).GetPositionSmoothingSpeed()))
 }
 
+// SetPositionSmoothingSpeed sets the property returned by [GetPositionSmoothingSpeed].
 func (self Instance) SetPositionSmoothingSpeed(value Float.X) {
 	class(self).SetPositionSmoothingSpeed(float64(value))
 }
 
+/*
+If true, the camera's view smoothly rotates, via asymptotic smoothing, to align with its target rotation at [RotationSmoothingSpeed].
+
+Note: This property has no effect if [IgnoreRotation] is true.
+
+[IgnoreRotation]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.IgnoreRotation
+[RotationSmoothingSpeed]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.RotationSmoothingSpeed
+*/
 func (self Instance) RotationSmoothingEnabled() bool {
 	return bool(class(self).IsRotationSmoothingEnabled())
 }
 
+// SetRotationSmoothingEnabled sets the property returned by [IsRotationSmoothingEnabled].
 func (self Instance) SetRotationSmoothingEnabled(value bool) {
 	class(self).SetRotationSmoothingEnabled(value)
 }
 
+/*
+The angular, asymptotic speed of the camera's rotation smoothing effect when [RotationSmoothingEnabled] is true.
+
+[RotationSmoothingEnabled]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.RotationSmoothingEnabled
+*/
 func (self Instance) RotationSmoothingSpeed() Float.X {
 	return Float.X(Float.X(class(self).GetRotationSmoothingSpeed()))
 }
 
+// SetRotationSmoothingSpeed sets the property returned by [GetRotationSmoothingSpeed].
 func (self Instance) SetRotationSmoothingSpeed(value Float.X) {
 	class(self).SetRotationSmoothingSpeed(float64(value))
 }
 
+/*
+If true, the camera only moves when reaching the horizontal (left and right) drag margins. If false, the camera moves horizontally regardless of margins.
+*/
 func (self Instance) DragHorizontalEnabled() bool {
 	return bool(class(self).IsDragHorizontalEnabled())
 }
 
+// SetDragHorizontalEnabled sets the property returned by [IsDragHorizontalEnabled].
 func (self Instance) SetDragHorizontalEnabled(value bool) {
 	class(self).SetDragHorizontalEnabled(value)
 }
 
+/*
+If true, the camera only moves when reaching the vertical (top and bottom) drag margins. If false, the camera moves vertically regardless of the drag margins.
+*/
 func (self Instance) DragVerticalEnabled() bool {
 	return bool(class(self).IsDragVerticalEnabled())
 }
 
+// SetDragVerticalEnabled sets the property returned by [IsDragVerticalEnabled].
 func (self Instance) SetDragVerticalEnabled(value bool) {
 	class(self).SetDragVerticalEnabled(value)
 }
 
+/*
+The relative horizontal drag offset of the camera between the right (-1) and left (1) drag margins.
+
+Note: Used to set the initial horizontal drag offset; determine the current offset; or force the current offset. It's not automatically updated when [DragHorizontalEnabled] is true or the drag margins are changed.
+
+[DragHorizontalEnabled]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.DragHorizontalEnabled
+*/
 func (self Instance) DragHorizontalOffset() Float.X {
 	return Float.X(Float.X(class(self).GetDragHorizontalOffset()))
 }
 
+// SetDragHorizontalOffset sets the property returned by [GetDragHorizontalOffset].
 func (self Instance) SetDragHorizontalOffset(value Float.X) {
 	class(self).SetDragHorizontalOffset(float64(value))
 }
 
+/*
+The relative vertical drag offset of the camera between the bottom (-1) and top (1) drag margins.
+
+Note: Used to set the initial vertical drag offset; determine the current offset; or force the current offset. It's not automatically updated when [DragVerticalEnabled] is true or the drag margins are changed.
+
+[DragVerticalEnabled]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.DragVerticalEnabled
+*/
 func (self Instance) DragVerticalOffset() Float.X {
 	return Float.X(Float.X(class(self).GetDragVerticalOffset()))
 }
 
+// SetDragVerticalOffset sets the property returned by [GetDragVerticalOffset].
 func (self Instance) SetDragVerticalOffset(value Float.X) {
 	class(self).SetDragVerticalOffset(float64(value))
 }
 
+/*
+Left margin needed to drag the camera. A value of 1 makes the camera move only when reaching the left edge of the screen.
+*/
 func (self Instance) DragLeftMargin() Float.X {
 	return Float.X(Float.X(class(self).GetDragMargin(0)))
 }
 
+// SetDragLeftMargin sets the property returned by [GetDragMargin].
 func (self Instance) SetDragLeftMargin(value Float.X) {
 	class(self).SetDragMargin(0, float64(value))
 }
 
+/*
+Top margin needed to drag the camera. A value of 1 makes the camera move only when reaching the top edge of the screen.
+*/
 func (self Instance) DragTopMargin() Float.X {
 	return Float.X(Float.X(class(self).GetDragMargin(1)))
 }
 
+// SetDragTopMargin sets the property returned by [GetDragMargin].
 func (self Instance) SetDragTopMargin(value Float.X) {
 	class(self).SetDragMargin(1, float64(value))
 }
 
+/*
+Right margin needed to drag the camera. A value of 1 makes the camera move only when reaching the right edge of the screen.
+*/
 func (self Instance) DragRightMargin() Float.X {
 	return Float.X(Float.X(class(self).GetDragMargin(2)))
 }
 
+// SetDragRightMargin sets the property returned by [GetDragMargin].
 func (self Instance) SetDragRightMargin(value Float.X) {
 	class(self).SetDragMargin(2, float64(value))
 }
 
+/*
+Bottom margin needed to drag the camera. A value of 1 makes the camera move only when reaching the bottom edge of the screen.
+*/
 func (self Instance) DragBottomMargin() Float.X {
 	return Float.X(Float.X(class(self).GetDragMargin(3)))
 }
 
+// SetDragBottomMargin sets the property returned by [GetDragMargin].
 func (self Instance) SetDragBottomMargin(value Float.X) {
 	class(self).SetDragMargin(3, float64(value))
 }
 
+/*
+If true, draws the camera's screen rectangle in the editor.
+*/
 func (self Instance) EditorDrawScreen() bool {
 	return bool(class(self).IsScreenDrawingEnabled())
 }
 
+// SetEditorDrawScreen sets the property returned by [IsScreenDrawingEnabled].
 func (self Instance) SetEditorDrawScreen(value bool) {
 	class(self).SetScreenDrawingEnabled(value)
 }
 
+/*
+If true, draws the camera's limits rectangle in the editor.
+*/
 func (self Instance) EditorDrawLimits() bool {
 	return bool(class(self).IsLimitDrawingEnabled())
 }
 
+// SetEditorDrawLimits sets the property returned by [IsLimitDrawingEnabled].
 func (self Instance) SetEditorDrawLimits(value bool) {
 	class(self).SetLimitDrawingEnabled(value)
 }
 
+/*
+If true, draws the camera's drag margin rectangle in the editor.
+*/
 func (self Instance) EditorDrawDragMargin() bool {
 	return bool(class(self).IsMarginDrawingEnabled())
 }
 
+// SetEditorDrawDragMargin sets the property returned by [IsMarginDrawingEnabled].
 func (self Instance) SetEditorDrawDragMargin(value bool) {
 	class(self).SetMarginDrawingEnabled(value)
 }

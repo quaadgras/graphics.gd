@@ -279,26 +279,40 @@ func New() Instance {
 	return casted
 }
 
+/*
+The NodePath to the node that is the target for the CCDIK modification. This node is what the CCDIK chain will attempt to rotate the bone chain to.
+*/
 func (self Instance) TargetNodepath() string {
 	return string(class(self).GetTargetNode().String())
 }
 
+// SetTargetNodepath sets the property returned by [GetTargetNode].
 func (self Instance) SetTargetNodepath(value string) {
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 }
 
+/*
+The end position of the CCDIK chain. Typically, this should be a child of a [Bone2D] node attached to the final [Bone2D] in the CCDIK chain.
+
+[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
+*/
 func (self Instance) TipNodepath() string {
 	return string(class(self).GetTipNode().String())
 }
 
+// SetTipNodepath sets the property returned by [GetTipNode].
 func (self Instance) SetTipNodepath(value string) {
 	class(self).SetTipNode(Path.ToNode(String.New(value)))
 }
 
+/*
+The number of CCDIK joints in the CCDIK modification.
+*/
 func (self Instance) CcdikDataChainLength() int {
 	return int(int(class(self).GetCcdikDataChainLength()))
 }
 
+// SetCcdikDataChainLength sets the property returned by [GetCcdikDataChainLength].
 func (self Instance) SetCcdikDataChainLength(value int) {
 	class(self).SetCcdikDataChainLength(int64(value))
 }

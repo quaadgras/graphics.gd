@@ -299,1050 +299,1876 @@ func New() Instance {
 	return casted
 }
 
+/*
+The material's transparency mode. Some transparency modes will disable shadow casting. Any transparency mode other than [TransparencyDisabled] has a greater performance impact compared to opaque rendering. See also [BlendMode].
+
+[BlendMode]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.BlendMode
+*/
 func (self Instance) Transparency() Transparency {
 	return Transparency(class(self).GetTransparency())
 }
 
+// SetTransparency sets the property returned by [GetTransparency].
 func (self Instance) SetTransparency(value Transparency) {
 	class(self).SetTransparency(value)
 }
 
+/*
+Threshold at which the alpha scissor will discard values. Higher values will result in more pixels being discarded. If the material becomes too opaque at a distance, try increasing [AlphaScissorThreshold]. If the material disappears at a distance, try decreasing [AlphaScissorThreshold].
+
+[AlphaScissorThreshold]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.AlphaScissorThreshold
+*/
 func (self Instance) AlphaScissorThreshold() Float.X {
 	return Float.X(Float.X(class(self).GetAlphaScissorThreshold()))
 }
 
+// SetAlphaScissorThreshold sets the property returned by [GetAlphaScissorThreshold].
 func (self Instance) SetAlphaScissorThreshold(value Float.X) {
 	class(self).SetAlphaScissorThreshold(float64(value))
 }
 
+/*
+The hashing scale for Alpha Hash. Recommended values between 0 and 2.
+*/
 func (self Instance) AlphaHashScale() Float.X {
 	return Float.X(Float.X(class(self).GetAlphaHashScale()))
 }
 
+// SetAlphaHashScale sets the property returned by [GetAlphaHashScale].
 func (self Instance) SetAlphaHashScale(value Float.X) {
 	class(self).SetAlphaHashScale(float64(value))
 }
 
+/*
+The type of alpha antialiasing to apply.
+*/
 func (self Instance) AlphaAntialiasingMode() AlphaAntiAliasing {
 	return AlphaAntiAliasing(class(self).GetAlphaAntialiasing())
 }
 
+// SetAlphaAntialiasingMode sets the property returned by [GetAlphaAntialiasing].
 func (self Instance) SetAlphaAntialiasingMode(value AlphaAntiAliasing) {
 	class(self).SetAlphaAntialiasing(value)
 }
 
+/*
+Threshold at which antialiasing will be applied on the alpha channel.
+*/
 func (self Instance) AlphaAntialiasingEdge() Float.X {
 	return Float.X(Float.X(class(self).GetAlphaAntialiasingEdge()))
 }
 
+// SetAlphaAntialiasingEdge sets the property returned by [GetAlphaAntialiasingEdge].
 func (self Instance) SetAlphaAntialiasingEdge(value Float.X) {
 	class(self).SetAlphaAntialiasingEdge(float64(value))
 }
 
+/*
+The material's blend mode.
+
+Note: Values other than Mix force the object into the transparent pipeline.
+*/
 func (self Instance) BlendMode() BlendMode {
 	return BlendMode(class(self).GetBlendMode())
 }
 
+// SetBlendMode sets the property returned by [GetBlendMode].
 func (self Instance) SetBlendMode(value BlendMode) {
 	class(self).SetBlendMode(value)
 }
 
+/*
+Determines which side of the triangle to cull depending on whether the triangle faces towards or away from the camera.
+*/
 func (self Instance) CullMode() CullMode {
 	return CullMode(class(self).GetCullMode())
 }
 
+// SetCullMode sets the property returned by [GetCullMode].
 func (self Instance) SetCullMode(value CullMode) {
 	class(self).SetCullMode(value)
 }
 
+/*
+Determines when depth rendering takes place. See also [Transparency].
+
+[Transparency]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Transparency
+*/
 func (self Instance) DepthDrawMode() DepthDrawMode {
 	return DepthDrawMode(class(self).GetDepthDrawMode())
 }
 
+// SetDepthDrawMode sets the property returned by [GetDepthDrawMode].
 func (self Instance) SetDepthDrawMode(value DepthDrawMode) {
 	class(self).SetDepthDrawMode(value)
 }
 
+/*
+If true, depth testing is disabled and the object will be drawn in render order.
+*/
 func (self Instance) NoDepthTest() bool {
 	return bool(class(self).GetFlag(0))
 }
 
+// SetNoDepthTest sets the property returned by [GetFlag].
 func (self Instance) SetNoDepthTest(value bool) {
 	class(self).SetFlag(0, value)
 }
 
+/*
+Determines which comparison operator is used when testing depth. See [DepthTest].
+
+Note: Changing [DepthTest] to a non-default value only has a visible effect when used on a transparent material, or a material that has [DepthDrawMode] set to [DepthDrawDisabled].
+
+[DepthDrawMode]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DepthDrawMode
+[DepthTest]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DepthTest
+*/
 func (self Instance) DepthTest() DepthTest {
 	return DepthTest(class(self).GetDepthTest())
 }
 
+// SetDepthTest sets the property returned by [GetDepthTest].
 func (self Instance) SetDepthTest(value DepthTest) {
 	class(self).SetDepthTest(value)
 }
 
+/*
+Sets whether the shading takes place, per-pixel, per-vertex or unshaded. Per-vertex lighting is faster, making it the best choice for mobile applications, however it looks considerably worse than per-pixel. Unshaded rendering is the fastest, but disables all interactions with lights.
+*/
 func (self Instance) ShadingMode() ShadingMode {
 	return ShadingMode(class(self).GetShadingMode())
 }
 
+// SetShadingMode sets the property returned by [GetShadingMode].
 func (self Instance) SetShadingMode(value ShadingMode) {
 	class(self).SetShadingMode(value)
 }
 
+/*
+The algorithm used for diffuse light scattering.
+*/
 func (self Instance) DiffuseMode() DiffuseMode {
 	return DiffuseMode(class(self).GetDiffuseMode())
 }
 
+// SetDiffuseMode sets the property returned by [GetDiffuseMode].
 func (self Instance) SetDiffuseMode(value DiffuseMode) {
 	class(self).SetDiffuseMode(value)
 }
 
+/*
+The method for rendering the specular blob.
+
+Note: [SpecularMode] only applies to the specular blob. It does not affect specular reflections from the sky, screen-space reflections, [VoxelGI], SDFGI or [ReflectionProbe]s. To disable reflections from these sources as well, set [MetallicSpecular] to 0.0 instead.
+
+[MetallicSpecular]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.MetallicSpecular
+[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
+[SpecularMode]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.SpecularMode
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
+*/
 func (self Instance) SpecularMode() SpecularMode {
 	return SpecularMode(class(self).GetSpecularMode())
 }
 
+// SetSpecularMode sets the property returned by [GetSpecularMode].
 func (self Instance) SetSpecularMode(value SpecularMode) {
 	class(self).SetSpecularMode(value)
 }
 
+/*
+If true, the object receives no ambient light.
+*/
 func (self Instance) DisableAmbientLight() bool {
 	return bool(class(self).GetFlag(14))
 }
 
+// SetDisableAmbientLight sets the property returned by [GetFlag].
 func (self Instance) SetDisableAmbientLight(value bool) {
 	class(self).SetFlag(14, value)
 }
 
+/*
+If true, the object will not be affected by fog (neither volumetric nor depth fog). This is useful for unshaded or transparent materials (e.g. particles), which without this setting will be affected even if fully transparent.
+*/
 func (self Instance) DisableFog() bool {
 	return bool(class(self).GetFlag(21))
 }
 
+// SetDisableFog sets the property returned by [GetFlag].
 func (self Instance) SetDisableFog(value bool) {
 	class(self).SetFlag(21, value)
 }
 
+/*
+If true, disables specular occlusion even if [ProjectSettings] "rendering/reflections/specular_occlusion/enabled" is false.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) DisableSpecularOcclusion() bool {
 	return bool(class(self).GetFlag(22))
 }
 
+// SetDisableSpecularOcclusion sets the property returned by [GetFlag].
 func (self Instance) SetDisableSpecularOcclusion(value bool) {
 	class(self).SetFlag(22, value)
 }
 
+/*
+If true, the vertex color is used as albedo color.
+*/
 func (self Instance) VertexColorUseAsAlbedo() bool {
 	return bool(class(self).GetFlag(1))
 }
 
+// SetVertexColorUseAsAlbedo sets the property returned by [GetFlag].
 func (self Instance) SetVertexColorUseAsAlbedo(value bool) {
 	class(self).SetFlag(1, value)
 }
 
+/*
+If true, vertex colors are considered to be stored in sRGB color space and are converted to linear color space during rendering. If false, vertex colors are considered to be stored in linear color space and are rendered as-is. See also [AlbedoTextureForceSrgb].
+
+Note: Only effective when using the Forward+ and Mobile rendering methods, not Compatibility.
+
+[AlbedoTextureForceSrgb]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.AlbedoTextureForceSrgb
+*/
 func (self Instance) VertexColorIsSrgb() bool {
 	return bool(class(self).GetFlag(2))
 }
 
+// SetVertexColorIsSrgb sets the property returned by [GetFlag].
 func (self Instance) SetVertexColorIsSrgb(value bool) {
 	class(self).SetFlag(2, value)
 }
 
+/*
+The material's base color.
+
+Note: If [DetailEnabled] is true and a [DetailAlbedo] texture is specified, [AlbedoColor] will not modulate the detail texture. This can be used to color partial areas of a material by not specifying an albedo texture and using a transparent [DetailAlbedo] texture instead.
+
+[AlbedoColor]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.AlbedoColor
+[DetailAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DetailAlbedo
+[DetailEnabled]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DetailEnabled
+*/
 func (self Instance) AlbedoColor() Color.RGBA {
 	return Color.RGBA(class(self).GetAlbedo())
 }
 
+// SetAlbedoColor sets the property returned by [GetAlbedo].
 func (self Instance) SetAlbedoColor(value Color.RGBA) {
 	class(self).SetAlbedo(Color.RGBA(value))
 }
 
+/*
+Texture to multiply by [AlbedoColor]. Used for basic texturing of objects.
+
+If the texture appears unexpectedly too dark or too bright, check [AlbedoTextureForceSrgb].
+
+[AlbedoColor]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.AlbedoColor
+[AlbedoTextureForceSrgb]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.AlbedoTextureForceSrgb
+*/
 func (self Instance) AlbedoTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(0))
 }
 
+// SetAlbedoTexture sets the property returned by [GetTexture].
 func (self Instance) SetAlbedoTexture(value Texture2D.Instance) {
 	class(self).SetTexture(0, value)
 }
 
+/*
+If true, forces a conversion of the [AlbedoTexture] from sRGB color space to linear color space. See also [VertexColorIsSrgb].
+
+This should only be enabled when needed (typically when using a [ViewportTexture] as [AlbedoTexture]). If [AlbedoTextureForceSrgb] is true when it shouldn't be, the texture will appear to be too dark. If [AlbedoTextureForceSrgb] is false when it shouldn't be, the texture will appear to be too bright.
+
+[AlbedoTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.AlbedoTexture
+[AlbedoTextureForceSrgb]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.AlbedoTextureForceSrgb
+[VertexColorIsSrgb]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.VertexColorIsSrgb
+[ViewportTexture]: https://pkg.go.dev/graphics.gd/classdb/ViewportTexture
+*/
 func (self Instance) AlbedoTextureForceSrgb() bool {
 	return bool(class(self).GetFlag(12))
 }
 
+// SetAlbedoTextureForceSrgb sets the property returned by [GetFlag].
 func (self Instance) SetAlbedoTextureForceSrgb(value bool) {
 	class(self).SetFlag(12, value)
 }
 
+/*
+Enables multichannel signed distance field rendering shader. Use [MsdfPixelRange] and [MsdfOutlineSize] to configure MSDF parameters.
+
+[MsdfOutlineSize]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.MsdfOutlineSize
+[MsdfPixelRange]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.MsdfPixelRange
+*/
 func (self Instance) AlbedoTextureMsdf() bool {
 	return bool(class(self).GetFlag(20))
 }
 
+// SetAlbedoTextureMsdf sets the property returned by [GetFlag].
 func (self Instance) SetAlbedoTextureMsdf(value bool) {
 	class(self).SetFlag(20, value)
 }
 
+/*
+The Occlusion/Roughness/Metallic texture to use. This is a more efficient replacement of [AoTexture], [RoughnessTexture] and [MetallicTexture] in [ORMMaterial3D]. Ambient occlusion is stored in the red channel. Roughness map is stored in the green channel. Metallic map is stored in the blue channel. The alpha channel is ignored.
+
+[AoTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.AoTexture
+[MetallicTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.MetallicTexture
+[ORMMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/ORMMaterial3D
+[RoughnessTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.RoughnessTexture
+*/
 func (self Instance) OrmTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(17))
 }
 
+// SetOrmTexture sets the property returned by [GetTexture].
 func (self Instance) SetOrmTexture(value Texture2D.Instance) {
 	class(self).SetTexture(17, value)
 }
 
+/*
+A high value makes the material appear more like a metal. Non-metals use their albedo as the diffuse color and add diffuse to the specular reflection. With non-metals, the reflection appears on top of the albedo color. Metals use their albedo as a multiplier to the specular reflection and set the diffuse color to black resulting in a tinted reflection. Materials work better when fully metal or fully non-metal, values between 0 and 1 should only be used for blending between metal and non-metal sections. To alter the amount of reflection use [Roughness].
+
+[Roughness]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Roughness
+*/
 func (self Instance) Metallic() Float.X {
 	return Float.X(Float.X(class(self).GetMetallic()))
 }
 
+// SetMetallic sets the property returned by [GetMetallic].
 func (self Instance) SetMetallic(value Float.X) {
 	class(self).SetMetallic(float64(value))
 }
 
+/*
+Adjusts the strength of specular reflections. Specular reflections are composed of scene reflections and the specular lobe which is the bright spot that is reflected from light sources. When set to 0.0, no specular reflections will be visible. This differs from the [SpecularDisabled] [SpecularMode] as [SpecularDisabled] only applies to the specular lobe from the light source.
+
+Note: Unlike [Metallic], this is not energy-conserving, so it should be left at 0.5 in most cases. See also [Roughness].
+
+[Metallic]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Metallic
+[Roughness]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Roughness
+*/
 func (self Instance) MetallicSpecular() Float.X {
 	return Float.X(Float.X(class(self).GetSpecular()))
 }
 
+// SetMetallicSpecular sets the property returned by [GetSpecular].
 func (self Instance) SetMetallicSpecular(value Float.X) {
 	class(self).SetSpecular(float64(value))
 }
 
+/*
+Texture used to specify metallic for an object. This is multiplied by [Metallic].
+
+[Metallic]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Metallic
+*/
 func (self Instance) MetallicTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(1))
 }
 
+// SetMetallicTexture sets the property returned by [GetTexture].
 func (self Instance) SetMetallicTexture(value Texture2D.Instance) {
 	class(self).SetTexture(1, value)
 }
 
+/*
+Specifies the channel of the [MetallicTexture] in which the metallic information is stored. This is useful when you store the information for multiple effects in a single texture. For example if you stored metallic in the red channel, roughness in the blue, and ambient occlusion in the green you could reduce the number of textures you use.
+
+[MetallicTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.MetallicTexture
+*/
 func (self Instance) MetallicTextureChannel() TextureChannel {
 	return TextureChannel(class(self).GetMetallicTextureChannel())
 }
 
+// SetMetallicTextureChannel sets the property returned by [GetMetallicTextureChannel].
 func (self Instance) SetMetallicTextureChannel(value TextureChannel) {
 	class(self).SetMetallicTextureChannel(value)
 }
 
+/*
+Surface reflection. A value of 0 represents a perfect mirror while a value of 1 completely blurs the reflection. See also [Metallic].
+
+[Metallic]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Metallic
+*/
 func (self Instance) Roughness() Float.X {
 	return Float.X(Float.X(class(self).GetRoughness()))
 }
 
+// SetRoughness sets the property returned by [GetRoughness].
 func (self Instance) SetRoughness(value Float.X) {
 	class(self).SetRoughness(float64(value))
 }
 
+/*
+Texture used to control the roughness per-pixel. Multiplied by [Roughness].
+
+[Roughness]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Roughness
+*/
 func (self Instance) RoughnessTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(2))
 }
 
+// SetRoughnessTexture sets the property returned by [GetTexture].
 func (self Instance) SetRoughnessTexture(value Texture2D.Instance) {
 	class(self).SetTexture(2, value)
 }
 
+/*
+Specifies the channel of the [RoughnessTexture] in which the roughness information is stored. This is useful when you store the information for multiple effects in a single texture. For example if you stored metallic in the red channel, roughness in the blue, and ambient occlusion in the green you could reduce the number of textures you use.
+
+[RoughnessTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.RoughnessTexture
+*/
 func (self Instance) RoughnessTextureChannel() TextureChannel {
 	return TextureChannel(class(self).GetRoughnessTextureChannel())
 }
 
+// SetRoughnessTextureChannel sets the property returned by [GetRoughnessTextureChannel].
 func (self Instance) SetRoughnessTextureChannel(value TextureChannel) {
 	class(self).SetRoughnessTextureChannel(value)
 }
 
+/*
+If true, the body emits light. Emitting light makes the object appear brighter. The object can also cast light on other objects if a [VoxelGI], SDFGI, or [LightmapGI] is used and this object is used in baked lighting.
+
+[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
+*/
 func (self Instance) EmissionEnabled() bool {
 	return bool(class(self).GetFeature(0))
 }
 
+// SetEmissionEnabled sets the property returned by [GetFeature].
 func (self Instance) SetEmissionEnabled(value bool) {
 	class(self).SetFeature(0, value)
 }
 
+/*
+The emitted light's color. See [EmissionEnabled].
+
+[EmissionEnabled]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.EmissionEnabled
+*/
 func (self Instance) Emission() Color.RGBA {
 	return Color.RGBA(class(self).GetEmission())
 }
 
+// SetEmission sets the property returned by [GetEmission].
 func (self Instance) SetEmission(value Color.RGBA) {
 	class(self).SetEmission(Color.RGBA(value))
 }
 
+/*
+Multiplier for emitted light. See [EmissionEnabled].
+
+[EmissionEnabled]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.EmissionEnabled
+*/
 func (self Instance) EmissionEnergyMultiplier() Float.X {
 	return Float.X(Float.X(class(self).GetEmissionEnergyMultiplier()))
 }
 
+// SetEmissionEnergyMultiplier sets the property returned by [GetEmissionEnergyMultiplier].
 func (self Instance) SetEmissionEnergyMultiplier(value Float.X) {
 	class(self).SetEmissionEnergyMultiplier(float64(value))
 }
 
+/*
+Luminance of emitted light, measured in nits (candela per square meter). Only available when [ProjectSettings] "rendering/lights_and_shadows/use_physical_light_units" is enabled. The default is roughly equivalent to an indoor lightbulb.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) EmissionIntensity() Float.X {
 	return Float.X(Float.X(class(self).GetEmissionIntensity()))
 }
 
+// SetEmissionIntensity sets the property returned by [GetEmissionIntensity].
 func (self Instance) SetEmissionIntensity(value Float.X) {
 	class(self).SetEmissionIntensity(float64(value))
 }
 
+/*
+Sets how [Emission] interacts with [EmissionTexture]. Can either add or multiply.
+
+[Emission]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Emission
+[EmissionTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.EmissionTexture
+*/
 func (self Instance) EmissionOperator() EmissionOperator {
 	return EmissionOperator(class(self).GetEmissionOperator())
 }
 
+// SetEmissionOperator sets the property returned by [GetEmissionOperator].
 func (self Instance) SetEmissionOperator(value EmissionOperator) {
 	class(self).SetEmissionOperator(value)
 }
 
+/*
+Use UV2 to read from the [EmissionTexture].
+
+[EmissionTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.EmissionTexture
+*/
 func (self Instance) EmissionOnUv2() bool {
 	return bool(class(self).GetFlag(11))
 }
 
+// SetEmissionOnUv2 sets the property returned by [GetFlag].
 func (self Instance) SetEmissionOnUv2(value bool) {
 	class(self).SetFlag(11, value)
 }
 
+/*
+Texture that specifies how much surface emits light at a given point.
+*/
 func (self Instance) EmissionTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(3))
 }
 
+// SetEmissionTexture sets the property returned by [GetTexture].
 func (self Instance) SetEmissionTexture(value Texture2D.Instance) {
 	class(self).SetTexture(3, value)
 }
 
+/*
+If true, normal mapping is enabled. This has a slight performance cost, especially on mobile GPUs.
+*/
 func (self Instance) NormalEnabled() bool {
 	return bool(class(self).GetFeature(1))
 }
 
+// SetNormalEnabled sets the property returned by [GetFeature].
 func (self Instance) SetNormalEnabled(value bool) {
 	class(self).SetFeature(1, value)
 }
 
+/*
+The strength of the normal map's effect.
+*/
 func (self Instance) NormalScale() Float.X {
 	return Float.X(Float.X(class(self).GetNormalScale()))
 }
 
+// SetNormalScale sets the property returned by [GetNormalScale].
 func (self Instance) SetNormalScale(value Float.X) {
 	class(self).SetNormalScale(float64(value))
 }
 
+/*
+Texture used to specify the normal at a given pixel. The [NormalTexture] only uses the red and green channels; the blue and alpha channels are ignored. The normal read from [NormalTexture] is oriented around the surface normal provided by the [Mesh].
+
+Note: The mesh must have both normals and tangents defined in its vertex data. Otherwise, the normal map won't render correctly and will only appear to darken the whole surface. If creating geometry with [SurfaceTool], you can use [SurfaceTool.GenerateNormals] and [SurfaceTool.GenerateTangents] to automatically generate normals and tangents respectively.
+
+Note: Godot expects the normal map to use X+, Y+, and Z+ coordinates. See [this page] for a comparison of normal map coordinates expected by popular engines.
+
+Note: If [DetailEnabled] is true, the [DetailAlbedo] texture is drawn below the [NormalTexture]. To display a normal map above the [DetailAlbedo] texture, use [DetailNormal] instead.
+
+[DetailAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DetailAlbedo
+[DetailEnabled]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DetailEnabled
+[DetailNormal]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DetailNormal
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+[NormalTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.NormalTexture
+[SurfaceTool]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool
+[SurfaceTool.GenerateNormals]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.GenerateNormals
+[SurfaceTool.GenerateTangents]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.GenerateTangents
+[this page]: http://wiki.polycount.com/wiki/Normal_Map_Technical_Details#Common_Swizzle_Coordinates
+*/
 func (self Instance) NormalTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(4))
 }
 
+// SetNormalTexture sets the property returned by [GetTexture].
 func (self Instance) SetNormalTexture(value Texture2D.Instance) {
 	class(self).SetTexture(4, value)
 }
 
+/*
+If true, the bent normal map is enabled. This allows for more accurate indirect lighting and specular occlusion.
+*/
 func (self Instance) BentNormalEnabled() bool {
 	return bool(class(self).GetFeature(12))
 }
 
+// SetBentNormalEnabled sets the property returned by [GetFeature].
 func (self Instance) SetBentNormalEnabled(value bool) {
 	class(self).SetFeature(12, value)
 }
 
+/*
+Texture that specifies the average direction of incoming ambient light at a given pixel. The [BentNormalTexture] only uses the red and green channels; the blue and alpha channels are ignored. The normal read from [BentNormalTexture] is oriented around the surface normal provided by the [Mesh].
+
+Note: A bent normal map is different from a regular normal map. When baking a bent normal map make sure to use a cosine distribution for the bent normal map to work correctly.
+
+Note: The mesh must have both normals and tangents defined in its vertex data. Otherwise, the shading produced by the bent normal map will not look correct. If creating geometry with [SurfaceTool], you can use [SurfaceTool.GenerateNormals] and [SurfaceTool.GenerateTangents] to automatically generate normals and tangents respectively.
+
+Note: Godot expects the bent normal map to use X+, Y+, and Z+ coordinates. See [this page] for a comparison of normal map coordinates expected by popular engines.
+
+[BentNormalTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.BentNormalTexture
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+[SurfaceTool]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool
+[SurfaceTool.GenerateNormals]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.GenerateNormals
+[SurfaceTool.GenerateTangents]: https://pkg.go.dev/graphics.gd/classdb/SurfaceTool#Instance.GenerateTangents
+[this page]: http://wiki.polycount.com/wiki/Normal_Map_Technical_Details#Common_Swizzle_Coordinates
+*/
 func (self Instance) BentNormalTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(18))
 }
 
+// SetBentNormalTexture sets the property returned by [GetTexture].
 func (self Instance) SetBentNormalTexture(value Texture2D.Instance) {
 	class(self).SetTexture(18, value)
 }
 
+/*
+If true, rim effect is enabled. Rim lighting increases the brightness at glancing angles on an object.
+
+Note: Rim lighting is not visible if the material's [ShadingMode] is [ShadingModeUnshaded].
+
+[ShadingMode]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.ShadingMode
+*/
 func (self Instance) RimEnabled() bool {
 	return bool(class(self).GetFeature(2))
 }
 
+// SetRimEnabled sets the property returned by [GetFeature].
 func (self Instance) SetRimEnabled(value bool) {
 	class(self).SetFeature(2, value)
 }
 
+/*
+Sets the strength of the rim lighting effect.
+*/
 func (self Instance) Rim() Float.X {
 	return Float.X(Float.X(class(self).GetRim()))
 }
 
+// SetRim sets the property returned by [GetRim].
 func (self Instance) SetRim(value Float.X) {
 	class(self).SetRim(float64(value))
 }
 
+/*
+The amount of to blend light and albedo color when rendering rim effect. If 0 the light color is used, while 1 means albedo color is used. An intermediate value generally works best.
+*/
 func (self Instance) RimTint() Float.X {
 	return Float.X(Float.X(class(self).GetRimTint()))
 }
 
+// SetRimTint sets the property returned by [GetRimTint].
 func (self Instance) SetRimTint(value Float.X) {
 	class(self).SetRimTint(float64(value))
 }
 
+/*
+Texture used to set the strength of the rim lighting effect per-pixel. Multiplied by [Rim].
+
+[Rim]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Rim
+*/
 func (self Instance) RimTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(5))
 }
 
+// SetRimTexture sets the property returned by [GetTexture].
 func (self Instance) SetRimTexture(value Texture2D.Instance) {
 	class(self).SetTexture(5, value)
 }
 
+/*
+If true, clearcoat rendering is enabled. Adds a secondary transparent pass to the lighting calculation resulting in an added specular blob. This makes materials appear as if they have a clear layer on them that can be either glossy or rough.
+
+Note: Clearcoat rendering is not visible if the material's [ShadingMode] is [ShadingModeUnshaded].
+
+[ShadingMode]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.ShadingMode
+*/
 func (self Instance) ClearcoatEnabled() bool {
 	return bool(class(self).GetFeature(3))
 }
 
+// SetClearcoatEnabled sets the property returned by [GetFeature].
 func (self Instance) SetClearcoatEnabled(value bool) {
 	class(self).SetFeature(3, value)
 }
 
+/*
+Sets the strength of the clearcoat effect. Setting to 0 looks the same as disabling the clearcoat effect.
+*/
 func (self Instance) Clearcoat() Float.X {
 	return Float.X(Float.X(class(self).GetClearcoat()))
 }
 
+// SetClearcoat sets the property returned by [GetClearcoat].
 func (self Instance) SetClearcoat(value Float.X) {
 	class(self).SetClearcoat(float64(value))
 }
 
+/*
+Sets the roughness of the clearcoat pass. A higher value results in a rougher clearcoat while a lower value results in a smoother clearcoat.
+*/
 func (self Instance) ClearcoatRoughness() Float.X {
 	return Float.X(Float.X(class(self).GetClearcoatRoughness()))
 }
 
+// SetClearcoatRoughness sets the property returned by [GetClearcoatRoughness].
 func (self Instance) SetClearcoatRoughness(value Float.X) {
 	class(self).SetClearcoatRoughness(float64(value))
 }
 
+/*
+Texture that defines the strength of the clearcoat effect and the glossiness of the clearcoat. Strength is specified in the red channel while glossiness is specified in the green channel.
+*/
 func (self Instance) ClearcoatTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(6))
 }
 
+// SetClearcoatTexture sets the property returned by [GetTexture].
 func (self Instance) SetClearcoatTexture(value Texture2D.Instance) {
 	class(self).SetTexture(6, value)
 }
 
+/*
+If true, anisotropy is enabled. Anisotropy changes the shape of the specular blob and aligns it to tangent space. This is useful for brushed aluminum and hair reflections.
+
+Note: Mesh tangents are needed for anisotropy to work. If the mesh does not contain tangents, the anisotropy effect will appear broken.
+
+Note: Material anisotropy should not to be confused with anisotropic texture filtering, which can be enabled by setting [TextureFilter] to [TextureFilterLinearWithMipmapsAnisotropic].
+
+[TextureFilter]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.TextureFilter
+*/
 func (self Instance) AnisotropyEnabled() bool {
 	return bool(class(self).GetFeature(4))
 }
 
+// SetAnisotropyEnabled sets the property returned by [GetFeature].
 func (self Instance) SetAnisotropyEnabled(value bool) {
 	class(self).SetFeature(4, value)
 }
 
+/*
+The strength of the anisotropy effect. This is multiplied by [AnisotropyFlowmap]'s alpha channel if a texture is defined there and the texture contains an alpha channel.
+
+[AnisotropyFlowmap]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.AnisotropyFlowmap
+*/
 func (self Instance) Anisotropy() Float.X {
 	return Float.X(Float.X(class(self).GetAnisotropy()))
 }
 
+// SetAnisotropy sets the property returned by [GetAnisotropy].
 func (self Instance) SetAnisotropy(value Float.X) {
 	class(self).SetAnisotropy(float64(value))
 }
 
+/*
+Texture that offsets the tangent map for anisotropy calculations and optionally controls the anisotropy effect (if an alpha channel is present). The flowmap texture is expected to be a derivative map, with the red channel representing distortion on the X axis and green channel representing distortion on the Y axis. Values below 0.5 will result in negative distortion, whereas values above 0.5 will result in positive distortion.
+
+If present, the texture's alpha channel will be used to multiply the strength of the [Anisotropy] effect. Fully opaque pixels will keep the anisotropy effect's original strength while fully transparent pixels will disable the anisotropy effect entirely. The flowmap texture's blue channel is ignored.
+
+[Anisotropy]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Anisotropy
+*/
 func (self Instance) AnisotropyFlowmap() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(7))
 }
 
+// SetAnisotropyFlowmap sets the property returned by [GetTexture].
 func (self Instance) SetAnisotropyFlowmap(value Texture2D.Instance) {
 	class(self).SetTexture(7, value)
 }
 
+/*
+If true, ambient occlusion is enabled. Ambient occlusion darkens areas based on the [AoTexture].
+
+[AoTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.AoTexture
+*/
 func (self Instance) AoEnabled() bool {
 	return bool(class(self).GetFeature(5))
 }
 
+// SetAoEnabled sets the property returned by [GetFeature].
 func (self Instance) SetAoEnabled(value bool) {
 	class(self).SetFeature(5, value)
 }
 
+/*
+Amount that ambient occlusion affects lighting from lights. If 0, ambient occlusion only affects ambient light. If 1, ambient occlusion affects lights just as much as it affects ambient light. This can be used to impact the strength of the ambient occlusion effect, but typically looks unrealistic.
+*/
 func (self Instance) AoLightAffect() Float.X {
 	return Float.X(Float.X(class(self).GetAoLightAffect()))
 }
 
+// SetAoLightAffect sets the property returned by [GetAoLightAffect].
 func (self Instance) SetAoLightAffect(value Float.X) {
 	class(self).SetAoLightAffect(float64(value))
 }
 
+/*
+Texture that defines the amount of ambient occlusion for a given point on the object.
+*/
 func (self Instance) AoTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(8))
 }
 
+// SetAoTexture sets the property returned by [GetTexture].
 func (self Instance) SetAoTexture(value Texture2D.Instance) {
 	class(self).SetTexture(8, value)
 }
 
+/*
+If true, use UV2 coordinates to look up from the [AoTexture].
+
+[AoTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.AoTexture
+*/
 func (self Instance) AoOnUv2() bool {
 	return bool(class(self).GetFlag(10))
 }
 
+// SetAoOnUv2 sets the property returned by [GetFlag].
 func (self Instance) SetAoOnUv2(value bool) {
 	class(self).SetFlag(10, value)
 }
 
+/*
+Specifies the channel of the [AoTexture] in which the ambient occlusion information is stored. This is useful when you store the information for multiple effects in a single texture. For example if you stored metallic in the red channel, roughness in the blue, and ambient occlusion in the green you could reduce the number of textures you use.
+
+[AoTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.AoTexture
+*/
 func (self Instance) AoTextureChannel() TextureChannel {
 	return TextureChannel(class(self).GetAoTextureChannel())
 }
 
+// SetAoTextureChannel sets the property returned by [GetAoTextureChannel].
 func (self Instance) SetAoTextureChannel(value TextureChannel) {
 	class(self).SetAoTextureChannel(value)
 }
 
+/*
+If true, height mapping is enabled (also called "parallax mapping" or "depth mapping"). See also [NormalEnabled]. Height mapping is a demanding feature on the GPU, so it should only be used on materials where it makes a significant visual difference.
+
+Note: Height mapping is not supported if triplanar mapping is used on the same material. The value of [HeightmapEnabled] will be ignored if [Uv1Triplanar] is enabled.
+
+[HeightmapEnabled]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapEnabled
+[NormalEnabled]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.NormalEnabled
+[Uv1Triplanar]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Uv1Triplanar
+*/
 func (self Instance) HeightmapEnabled() bool {
 	return bool(class(self).GetFeature(6))
 }
 
+// SetHeightmapEnabled sets the property returned by [GetFeature].
 func (self Instance) SetHeightmapEnabled(value bool) {
 	class(self).SetFeature(6, value)
 }
 
+/*
+The heightmap scale to use for the parallax effect (see [HeightmapEnabled]). The default value is tuned so that the highest point (value = 255) appears to be 5 cm higher than the lowest point (value = 0). Higher values result in a deeper appearance, but may result in artifacts appearing when looking at the material from oblique angles, especially when the camera moves. Negative values can be used to invert the parallax effect, but this is different from inverting the texture using [HeightmapFlipTexture] as the material will also appear to be "closer" to the camera. In most cases, [HeightmapScale] should be kept to a positive value.
+
+Note: If the height map effect looks strange regardless of this value, try adjusting [HeightmapFlipBinormal] and [HeightmapFlipTangent]. See also [HeightmapTexture] for recommendations on authoring heightmap textures, as the way the heightmap texture is authored affects how [HeightmapScale] behaves.
+
+[HeightmapEnabled]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapEnabled
+[HeightmapFlipBinormal]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapFlipBinormal
+[HeightmapFlipTangent]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapFlipTangent
+[HeightmapFlipTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapFlipTexture
+[HeightmapScale]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapScale
+[HeightmapTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapTexture
+*/
 func (self Instance) HeightmapScale() Float.X {
 	return Float.X(Float.X(class(self).GetHeightmapScale()))
 }
 
+// SetHeightmapScale sets the property returned by [GetHeightmapScale].
 func (self Instance) SetHeightmapScale(value Float.X) {
 	class(self).SetHeightmapScale(float64(value))
 }
 
+/*
+If true, uses parallax occlusion mapping to represent depth in the material instead of simple offset mapping (see [HeightmapEnabled]). This results in a more convincing depth effect, but is much more expensive on the GPU. Only enable this on materials where it makes a significant visual difference.
+
+[HeightmapEnabled]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapEnabled
+*/
 func (self Instance) HeightmapDeepParallax() bool {
 	return bool(class(self).IsHeightmapDeepParallaxEnabled())
 }
 
+// SetHeightmapDeepParallax sets the property returned by [IsHeightmapDeepParallaxEnabled].
 func (self Instance) SetHeightmapDeepParallax(value bool) {
 	class(self).SetHeightmapDeepParallax(value)
 }
 
+/*
+The number of layers to use for parallax occlusion mapping when the camera is far away from the material. Higher values result in a more convincing depth effect, especially in materials that have steep height changes. Higher values have a significant cost on the GPU, so it should only be increased on materials where it makes a significant visual difference.
+
+Note: Only effective if [HeightmapDeepParallax] is true.
+
+[HeightmapDeepParallax]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapDeepParallax
+*/
 func (self Instance) HeightmapMinLayers() int {
 	return int(int(class(self).GetHeightmapDeepParallaxMinLayers()))
 }
 
+// SetHeightmapMinLayers sets the property returned by [GetHeightmapDeepParallaxMinLayers].
 func (self Instance) SetHeightmapMinLayers(value int) {
 	class(self).SetHeightmapDeepParallaxMinLayers(int64(value))
 }
 
+/*
+The number of layers to use for parallax occlusion mapping when the camera is up close to the material. Higher values result in a more convincing depth effect, especially in materials that have steep height changes. Higher values have a significant cost on the GPU, so it should only be increased on materials where it makes a significant visual difference.
+
+Note: Only effective if [HeightmapDeepParallax] is true.
+
+[HeightmapDeepParallax]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapDeepParallax
+*/
 func (self Instance) HeightmapMaxLayers() int {
 	return int(int(class(self).GetHeightmapDeepParallaxMaxLayers()))
 }
 
+// SetHeightmapMaxLayers sets the property returned by [GetHeightmapDeepParallaxMaxLayers].
 func (self Instance) SetHeightmapMaxLayers(value int) {
 	class(self).SetHeightmapDeepParallaxMaxLayers(int64(value))
 }
 
+/*
+If true, flips the mesh's tangent vectors when interpreting the height map. If the heightmap effect looks strange when the camera moves (even with a reasonable [HeightmapScale]), try setting this to true.
+
+[HeightmapScale]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapScale
+*/
 func (self Instance) HeightmapFlipTangent() bool {
 	return bool(class(self).GetHeightmapDeepParallaxFlipTangent())
 }
 
+// SetHeightmapFlipTangent sets the property returned by [GetHeightmapDeepParallaxFlipTangent].
 func (self Instance) SetHeightmapFlipTangent(value bool) {
 	class(self).SetHeightmapDeepParallaxFlipTangent(value)
 }
 
+/*
+If true, flips the mesh's binormal vectors when interpreting the height map. If the heightmap effect looks strange when the camera moves (even with a reasonable [HeightmapScale]), try setting this to true.
+
+[HeightmapScale]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapScale
+*/
 func (self Instance) HeightmapFlipBinormal() bool {
 	return bool(class(self).GetHeightmapDeepParallaxFlipBinormal())
 }
 
+// SetHeightmapFlipBinormal sets the property returned by [GetHeightmapDeepParallaxFlipBinormal].
 func (self Instance) SetHeightmapFlipBinormal(value bool) {
 	class(self).SetHeightmapDeepParallaxFlipBinormal(value)
 }
 
+/*
+The texture to use as a height map. See also [HeightmapEnabled].
+
+For best results, the texture should be normalized (with [HeightmapScale] reduced to compensate). In [GIMP], this can be done using Colors > Auto > Equalize. If the texture only uses a small part of its available range, the parallax effect may look strange, especially when the camera moves.
+
+Note: To reduce memory usage and improve loading times, you may be able to use a lower-resolution heightmap texture as most heightmaps are only comprised of low-frequency data.
+
+[GIMP]: https://gimp.org
+[HeightmapEnabled]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapEnabled
+[HeightmapScale]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapScale
+*/
 func (self Instance) HeightmapTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(9))
 }
 
+// SetHeightmapTexture sets the property returned by [GetTexture].
 func (self Instance) SetHeightmapTexture(value Texture2D.Instance) {
 	class(self).SetTexture(9, value)
 }
 
+/*
+If true, interprets the height map texture as a depth map, with brighter values appearing to be "lower" in altitude compared to darker values.
+
+This can be enabled for compatibility with some materials authored for Godot 3.x. This is not necessary if the Invert import option was used to invert the depth map in Godot 3.x, in which case [HeightmapFlipTexture] should remain false.
+
+[HeightmapFlipTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapFlipTexture
+*/
 func (self Instance) HeightmapFlipTexture() bool {
 	return bool(class(self).GetFlag(17))
 }
 
+// SetHeightmapFlipTexture sets the property returned by [GetFlag].
 func (self Instance) SetHeightmapFlipTexture(value bool) {
 	class(self).SetFlag(17, value)
 }
 
+/*
+If true, subsurface scattering is enabled. Emulates light that penetrates an object's surface, is scattered, and then emerges. Subsurface scattering quality is controlled by [ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_quality".
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) SubsurfScatterEnabled() bool {
 	return bool(class(self).GetFeature(7))
 }
 
+// SetSubsurfScatterEnabled sets the property returned by [GetFeature].
 func (self Instance) SetSubsurfScatterEnabled(value bool) {
 	class(self).SetFeature(7, value)
 }
 
+/*
+The strength of the subsurface scattering effect. The depth of the effect is also controlled by [ProjectSettings] "rendering/environment/subsurface_scattering/subsurface_scattering_scale", which is set globally.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) SubsurfScatterStrength() Float.X {
 	return Float.X(Float.X(class(self).GetSubsurfaceScatteringStrength()))
 }
 
+// SetSubsurfScatterStrength sets the property returned by [GetSubsurfaceScatteringStrength].
 func (self Instance) SetSubsurfScatterStrength(value Float.X) {
 	class(self).SetSubsurfaceScatteringStrength(float64(value))
 }
 
+/*
+If true, subsurface scattering will use a special mode optimized for the color and density of human skin, such as boosting the intensity of the red channel in subsurface scattering.
+*/
 func (self Instance) SubsurfScatterSkinMode() bool {
 	return bool(class(self).GetFlag(18))
 }
 
+// SetSubsurfScatterSkinMode sets the property returned by [GetFlag].
 func (self Instance) SetSubsurfScatterSkinMode(value bool) {
 	class(self).SetFlag(18, value)
 }
 
+/*
+Texture used to control the subsurface scattering strength. Stored in the red texture channel. Multiplied by [SubsurfScatterStrength].
+
+[SubsurfScatterStrength]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.SubsurfScatterStrength
+*/
 func (self Instance) SubsurfScatterTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(10))
 }
 
+// SetSubsurfScatterTexture sets the property returned by [GetTexture].
 func (self Instance) SetSubsurfScatterTexture(value Texture2D.Instance) {
 	class(self).SetTexture(10, value)
 }
 
+/*
+If true, enables subsurface scattering transmittance. Only effective if [SubsurfScatterEnabled] is true. See also [BacklightEnabled].
+
+[BacklightEnabled]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.BacklightEnabled
+[SubsurfScatterEnabled]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.SubsurfScatterEnabled
+*/
 func (self Instance) SubsurfScatterTransmittanceEnabled() bool {
 	return bool(class(self).GetFeature(8))
 }
 
+// SetSubsurfScatterTransmittanceEnabled sets the property returned by [GetFeature].
 func (self Instance) SetSubsurfScatterTransmittanceEnabled(value bool) {
 	class(self).SetFeature(8, value)
 }
 
+/*
+The color to multiply the subsurface scattering transmittance effect with. Ignored if [SubsurfScatterSkinMode] is true.
+
+[SubsurfScatterSkinMode]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.SubsurfScatterSkinMode
+*/
 func (self Instance) SubsurfScatterTransmittanceColor() Color.RGBA {
 	return Color.RGBA(class(self).GetTransmittanceColor())
 }
 
+// SetSubsurfScatterTransmittanceColor sets the property returned by [GetTransmittanceColor].
 func (self Instance) SetSubsurfScatterTransmittanceColor(value Color.RGBA) {
 	class(self).SetTransmittanceColor(Color.RGBA(value))
 }
 
+/*
+The texture to use for multiplying the intensity of the subsurface scattering transmittance intensity. See also [SubsurfScatterTexture]. Ignored if [SubsurfScatterSkinMode] is true.
+
+[SubsurfScatterSkinMode]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.SubsurfScatterSkinMode
+[SubsurfScatterTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.SubsurfScatterTexture
+*/
 func (self Instance) SubsurfScatterTransmittanceTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(11))
 }
 
+// SetSubsurfScatterTransmittanceTexture sets the property returned by [GetTexture].
 func (self Instance) SetSubsurfScatterTransmittanceTexture(value Texture2D.Instance) {
 	class(self).SetTexture(11, value)
 }
 
+/*
+The depth of the subsurface scattering transmittance effect.
+*/
 func (self Instance) SubsurfScatterTransmittanceDepth() Float.X {
 	return Float.X(Float.X(class(self).GetTransmittanceDepth()))
 }
 
+// SetSubsurfScatterTransmittanceDepth sets the property returned by [GetTransmittanceDepth].
 func (self Instance) SetSubsurfScatterTransmittanceDepth(value Float.X) {
 	class(self).SetTransmittanceDepth(float64(value))
 }
 
+/*
+The intensity of the subsurface scattering transmittance effect.
+*/
 func (self Instance) SubsurfScatterTransmittanceBoost() Float.X {
 	return Float.X(Float.X(class(self).GetTransmittanceBoost()))
 }
 
+// SetSubsurfScatterTransmittanceBoost sets the property returned by [GetTransmittanceBoost].
 func (self Instance) SetSubsurfScatterTransmittanceBoost(value Float.X) {
 	class(self).SetTransmittanceBoost(float64(value))
 }
 
+/*
+If true, the backlight effect is enabled. See also [SubsurfScatterTransmittanceEnabled].
+
+[SubsurfScatterTransmittanceEnabled]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.SubsurfScatterTransmittanceEnabled
+*/
 func (self Instance) BacklightEnabled() bool {
 	return bool(class(self).GetFeature(9))
 }
 
+// SetBacklightEnabled sets the property returned by [GetFeature].
 func (self Instance) SetBacklightEnabled(value bool) {
 	class(self).SetFeature(9, value)
 }
 
+/*
+The color used by the backlight effect. Represents the light passing through an object.
+*/
 func (self Instance) Backlight() Color.RGBA {
 	return Color.RGBA(class(self).GetBacklight())
 }
 
+// SetBacklight sets the property returned by [GetBacklight].
 func (self Instance) SetBacklight(value Color.RGBA) {
 	class(self).SetBacklight(Color.RGBA(value))
 }
 
+/*
+Texture used to control the backlight effect per-pixel. Added to [Backlight].
+
+[Backlight]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Backlight
+*/
 func (self Instance) BacklightTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(12))
 }
 
+// SetBacklightTexture sets the property returned by [GetTexture].
 func (self Instance) SetBacklightTexture(value Texture2D.Instance) {
 	class(self).SetTexture(12, value)
 }
 
+/*
+If true, the refraction effect is enabled. Distorts transparency based on light from behind the object.
+
+Note: Refraction is implemented using the screen texture. Only opaque materials will appear in the refraction, since transparent materials do not appear in the screen texture.
+*/
 func (self Instance) RefractionEnabled() bool {
 	return bool(class(self).GetFeature(10))
 }
 
+// SetRefractionEnabled sets the property returned by [GetFeature].
 func (self Instance) SetRefractionEnabled(value bool) {
 	class(self).SetFeature(10, value)
 }
 
+/*
+The strength of the refraction effect.
+*/
 func (self Instance) RefractionScale() Float.X {
 	return Float.X(Float.X(class(self).GetRefraction()))
 }
 
+// SetRefractionScale sets the property returned by [GetRefraction].
 func (self Instance) SetRefractionScale(value Float.X) {
 	class(self).SetRefraction(float64(value))
 }
 
+/*
+Texture that controls the strength of the refraction per-pixel. Multiplied by [RefractionScale].
+
+[RefractionScale]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.RefractionScale
+*/
 func (self Instance) RefractionTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(13))
 }
 
+// SetRefractionTexture sets the property returned by [GetTexture].
 func (self Instance) SetRefractionTexture(value Texture2D.Instance) {
 	class(self).SetTexture(13, value)
 }
 
+/*
+Specifies the channel of the [RefractionTexture] in which the refraction information is stored. This is useful when you store the information for multiple effects in a single texture. For example if you stored refraction in the red channel, roughness in the blue, and ambient occlusion in the green you could reduce the number of textures you use.
+
+[RefractionTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.RefractionTexture
+*/
 func (self Instance) RefractionTextureChannel() TextureChannel {
 	return TextureChannel(class(self).GetRefractionTextureChannel())
 }
 
+// SetRefractionTextureChannel sets the property returned by [GetRefractionTextureChannel].
 func (self Instance) SetRefractionTextureChannel(value TextureChannel) {
 	class(self).SetRefractionTextureChannel(value)
 }
 
+/*
+If true, enables the detail overlay. Detail is a second texture that gets mixed over the surface of the object based on [DetailMask] and [DetailAlbedo]'s alpha channel. This can be used to add variation to objects, or to blend between two different albedo/normal textures.
+
+[DetailAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DetailAlbedo
+[DetailMask]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DetailMask
+*/
 func (self Instance) DetailEnabled() bool {
 	return bool(class(self).GetFeature(11))
 }
 
+// SetDetailEnabled sets the property returned by [GetFeature].
 func (self Instance) SetDetailEnabled(value bool) {
 	class(self).SetFeature(11, value)
 }
 
+/*
+Texture used to specify how the detail textures get blended with the base textures. [DetailMask] can be used together with [DetailAlbedo]'s alpha channel (if any).
+
+[DetailAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DetailAlbedo
+[DetailMask]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DetailMask
+*/
 func (self Instance) DetailMask() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(14))
 }
 
+// SetDetailMask sets the property returned by [GetTexture].
 func (self Instance) SetDetailMask(value Texture2D.Instance) {
 	class(self).SetTexture(14, value)
 }
 
+/*
+Specifies how the [DetailAlbedo] should blend with the current ALBEDO.
+
+[DetailAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DetailAlbedo
+*/
 func (self Instance) DetailBlendMode() BlendMode {
 	return BlendMode(class(self).GetDetailBlendMode())
 }
 
+// SetDetailBlendMode sets the property returned by [GetDetailBlendMode].
 func (self Instance) SetDetailBlendMode(value BlendMode) {
 	class(self).SetDetailBlendMode(value)
 }
 
+/*
+Specifies whether to use UV or UV2 for the detail layer.
+*/
 func (self Instance) DetailUvLayer() DetailUV {
 	return DetailUV(class(self).GetDetailUv())
 }
 
+// SetDetailUvLayer sets the property returned by [GetDetailUv].
 func (self Instance) SetDetailUvLayer(value DetailUV) {
 	class(self).SetDetailUv(value)
 }
 
+/*
+Texture that specifies the color of the detail overlay. [DetailAlbedo]'s alpha channel is used as a mask, even when the material is opaque. To use a dedicated texture as a mask, see [DetailMask].
+
+Note: [DetailAlbedo] is not modulated by [AlbedoColor].
+
+[AlbedoColor]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.AlbedoColor
+[DetailAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DetailAlbedo
+[DetailMask]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DetailMask
+*/
 func (self Instance) DetailAlbedo() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(15))
 }
 
+// SetDetailAlbedo sets the property returned by [GetTexture].
 func (self Instance) SetDetailAlbedo(value Texture2D.Instance) {
 	class(self).SetTexture(15, value)
 }
 
+/*
+Texture that specifies the per-pixel normal of the detail overlay. The [DetailNormal] texture only uses the red and green channels; the blue and alpha channels are ignored. The normal read from [DetailNormal] is oriented around the surface normal provided by the [Mesh].
+
+Note: Godot expects the normal map to use X+, Y+, and Z+ coordinates. See [this page] for a comparison of normal map coordinates expected by popular engines.
+
+[DetailNormal]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DetailNormal
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+[this page]: http://wiki.polycount.com/wiki/Normal_Map_Technical_Details#Common_Swizzle_Coordinates
+*/
 func (self Instance) DetailNormal() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture(16))
 }
 
+// SetDetailNormal sets the property returned by [GetTexture].
 func (self Instance) SetDetailNormal(value Texture2D.Instance) {
 	class(self).SetTexture(16, value)
 }
 
+/*
+How much to scale the UV coordinates. This is multiplied by UV in the vertex function. The Z component is used when [Uv1Triplanar] is enabled, but it is not used anywhere else.
+
+[Uv1Triplanar]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Uv1Triplanar
+*/
 func (self Instance) Uv1Scale() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetUv1Scale())
 }
 
+// SetUv1Scale sets the property returned by [GetUv1Scale].
 func (self Instance) SetUv1Scale(value Vector3.XYZ) {
 	class(self).SetUv1Scale(Vector3.XYZ(value))
 }
 
+/*
+How much to offset the UV coordinates. This amount will be added to UV in the vertex function. This can be used to offset a texture. The Z component is used when [Uv1Triplanar] is enabled, but it is not used anywhere else.
+
+[Uv1Triplanar]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Uv1Triplanar
+*/
 func (self Instance) Uv1Offset() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetUv1Offset())
 }
 
+// SetUv1Offset sets the property returned by [GetUv1Offset].
 func (self Instance) SetUv1Offset(value Vector3.XYZ) {
 	class(self).SetUv1Offset(Vector3.XYZ(value))
 }
 
+/*
+If true, instead of using UV textures will use a triplanar texture lookup to determine how to apply textures. Triplanar uses the orientation of the object's surface to blend between texture coordinates. It reads from the source texture 3 times, once for each axis and then blends between the results based on how closely the pixel aligns with each axis. This is often used for natural features to get a realistic blend of materials. Because triplanar texturing requires many more texture reads per-pixel it is much slower than normal UV texturing. Additionally, because it is blending the texture between the three axes, it is unsuitable when you are trying to achieve crisp texturing.
+*/
 func (self Instance) Uv1Triplanar() bool {
 	return bool(class(self).GetFlag(6))
 }
 
+// SetUv1Triplanar sets the property returned by [GetFlag].
 func (self Instance) SetUv1Triplanar(value bool) {
 	class(self).SetFlag(6, value)
 }
 
+/*
+A lower number blends the texture more softly while a higher number blends the texture more sharply.
+
+Note: [Uv1TriplanarSharpness] is clamped between 0.0 and 150.0 (inclusive) as values outside that range can look broken depending on the mesh.
+
+[Uv1TriplanarSharpness]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Uv1TriplanarSharpness
+*/
 func (self Instance) Uv1TriplanarSharpness() Float.X {
 	return Float.X(Float.X(class(self).GetUv1TriplanarBlendSharpness()))
 }
 
+// SetUv1TriplanarSharpness sets the property returned by [GetUv1TriplanarBlendSharpness].
 func (self Instance) SetUv1TriplanarSharpness(value Float.X) {
 	class(self).SetUv1TriplanarBlendSharpness(float64(value))
 }
 
+/*
+If true, triplanar mapping for UV is calculated in world space rather than object local space. See also [Uv1Triplanar].
+
+[Uv1Triplanar]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Uv1Triplanar
+*/
 func (self Instance) Uv1WorldTriplanar() bool {
 	return bool(class(self).GetFlag(8))
 }
 
+// SetUv1WorldTriplanar sets the property returned by [GetFlag].
 func (self Instance) SetUv1WorldTriplanar(value bool) {
 	class(self).SetFlag(8, value)
 }
 
+/*
+How much to scale the UV2 coordinates. This is multiplied by UV2 in the vertex function. The Z component is used when [Uv2Triplanar] is enabled, but it is not used anywhere else.
+
+[Uv2Triplanar]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Uv2Triplanar
+*/
 func (self Instance) Uv2Scale() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetUv2Scale())
 }
 
+// SetUv2Scale sets the property returned by [GetUv2Scale].
 func (self Instance) SetUv2Scale(value Vector3.XYZ) {
 	class(self).SetUv2Scale(Vector3.XYZ(value))
 }
 
+/*
+How much to offset the UV2 coordinates. This amount will be added to UV2 in the vertex function. This can be used to offset a texture. The Z component is used when [Uv2Triplanar] is enabled, but it is not used anywhere else.
+
+[Uv2Triplanar]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Uv2Triplanar
+*/
 func (self Instance) Uv2Offset() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetUv2Offset())
 }
 
+// SetUv2Offset sets the property returned by [GetUv2Offset].
 func (self Instance) SetUv2Offset(value Vector3.XYZ) {
 	class(self).SetUv2Offset(Vector3.XYZ(value))
 }
 
+/*
+If true, instead of using UV2 textures will use a triplanar texture lookup to determine how to apply textures. Triplanar uses the orientation of the object's surface to blend between texture coordinates. It reads from the source texture 3 times, once for each axis and then blends between the results based on how closely the pixel aligns with each axis. This is often used for natural features to get a realistic blend of materials. Because triplanar texturing requires many more texture reads per-pixel it is much slower than normal UV texturing. Additionally, because it is blending the texture between the three axes, it is unsuitable when you are trying to achieve crisp texturing.
+*/
 func (self Instance) Uv2Triplanar() bool {
 	return bool(class(self).GetFlag(7))
 }
 
+// SetUv2Triplanar sets the property returned by [GetFlag].
 func (self Instance) SetUv2Triplanar(value bool) {
 	class(self).SetFlag(7, value)
 }
 
+/*
+A lower number blends the texture more softly while a higher number blends the texture more sharply.
+
+Note: [Uv2TriplanarSharpness] is clamped between 0.0 and 150.0 (inclusive) as values outside that range can look broken depending on the mesh.
+
+[Uv2TriplanarSharpness]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Uv2TriplanarSharpness
+*/
 func (self Instance) Uv2TriplanarSharpness() Float.X {
 	return Float.X(Float.X(class(self).GetUv2TriplanarBlendSharpness()))
 }
 
+// SetUv2TriplanarSharpness sets the property returned by [GetUv2TriplanarBlendSharpness].
 func (self Instance) SetUv2TriplanarSharpness(value Float.X) {
 	class(self).SetUv2TriplanarBlendSharpness(float64(value))
 }
 
+/*
+If true, triplanar mapping for UV2 is calculated in world space rather than object local space. See also [Uv2Triplanar].
+
+[Uv2Triplanar]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Uv2Triplanar
+*/
 func (self Instance) Uv2WorldTriplanar() bool {
 	return bool(class(self).GetFlag(9))
 }
 
+// SetUv2WorldTriplanar sets the property returned by [GetFlag].
 func (self Instance) SetUv2WorldTriplanar(value bool) {
 	class(self).SetFlag(9, value)
 }
 
+/*
+Filter flags for the texture.
+
+Note: [HeightmapTexture] is always sampled with linear filtering, even if nearest-neighbor filtering is selected here. This is to ensure the heightmap effect looks as intended. If you need sharper height transitions between pixels, resize the heightmap texture in an image editor with nearest-neighbor filtering.
+
+[HeightmapTexture]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.HeightmapTexture
+*/
 func (self Instance) TextureFilter() TextureFilter {
 	return TextureFilter(class(self).GetTextureFilter())
 }
 
+// SetTextureFilter sets the property returned by [GetTextureFilter].
 func (self Instance) SetTextureFilter(value TextureFilter) {
 	class(self).SetTextureFilter(value)
 }
 
+/*
+If true, the texture repeats when exceeding the texture's size. See [FlagUseTextureRepeat].
+*/
 func (self Instance) TextureRepeat() bool {
 	return bool(class(self).GetFlag(16))
 }
 
+// SetTextureRepeat sets the property returned by [GetFlag].
 func (self Instance) SetTextureRepeat(value bool) {
 	class(self).SetFlag(16, value)
 }
 
+/*
+If true, the object receives no shadow that would otherwise be cast onto it.
+*/
 func (self Instance) DisableReceiveShadows() bool {
 	return bool(class(self).GetFlag(13))
 }
 
+// SetDisableReceiveShadows sets the property returned by [GetFlag].
 func (self Instance) SetDisableReceiveShadows(value bool) {
 	class(self).SetFlag(13, value)
 }
 
+/*
+If true, enables the "shadow to opacity" render mode where lighting modifies the alpha so shadowed areas are opaque and non-shadowed areas are transparent. Useful for overlaying shadows onto a camera feed in AR.
+*/
 func (self Instance) ShadowToOpacity() bool {
 	return bool(class(self).GetFlag(15))
 }
 
+// SetShadowToOpacity sets the property returned by [GetFlag].
 func (self Instance) SetShadowToOpacity(value bool) {
 	class(self).SetFlag(15, value)
 }
 
+/*
+Controls how the object faces the camera.
+
+Note: Billboard mode is not suitable for VR because the left-right vector of the camera is not horizontal when the screen is attached to your head instead of on the table. See [GitHub issue #41567] for details.
+
+[GitHub issue #41567]: https://github.com/godotengine/godot/issues/41567
+*/
 func (self Instance) BillboardMode() BillboardMode {
 	return BillboardMode(class(self).GetBillboardMode())
 }
 
+// SetBillboardMode sets the property returned by [GetBillboardMode].
 func (self Instance) SetBillboardMode(value BillboardMode) {
 	class(self).SetBillboardMode(value)
 }
 
+/*
+If true, the shader will keep the scale set for the mesh. Otherwise, the scale is lost when billboarding. Only applies when [BillboardMode] is not [BillboardDisabled].
+
+[BillboardMode]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.BillboardMode
+*/
 func (self Instance) BillboardKeepScale() bool {
 	return bool(class(self).GetFlag(5))
 }
 
+// SetBillboardKeepScale sets the property returned by [GetFlag].
 func (self Instance) SetBillboardKeepScale(value bool) {
 	class(self).SetFlag(5, value)
 }
 
+/*
+The number of horizontal frames in the particle sprite sheet. Only enabled when using [BillboardParticles]. See [BillboardMode].
+
+[BillboardMode]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.BillboardMode
+*/
 func (self Instance) ParticlesAnimHFrames() int {
 	return int(int(class(self).GetParticlesAnimHFrames()))
 }
 
+// SetParticlesAnimHFrames sets the property returned by [GetParticlesAnimHFrames].
 func (self Instance) SetParticlesAnimHFrames(value int) {
 	class(self).SetParticlesAnimHFrames(int64(value))
 }
 
+/*
+The number of vertical frames in the particle sprite sheet. Only enabled when using [BillboardParticles]. See [BillboardMode].
+
+[BillboardMode]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.BillboardMode
+*/
 func (self Instance) ParticlesAnimVFrames() int {
 	return int(int(class(self).GetParticlesAnimVFrames()))
 }
 
+// SetParticlesAnimVFrames sets the property returned by [GetParticlesAnimVFrames].
 func (self Instance) SetParticlesAnimVFrames(value int) {
 	class(self).SetParticlesAnimVFrames(int64(value))
 }
 
+/*
+If true, particle animations are looped. Only enabled when using [BillboardParticles]. See [BillboardMode].
+
+[BillboardMode]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.BillboardMode
+*/
 func (self Instance) ParticlesAnimLoop() bool {
 	return bool(class(self).GetParticlesAnimLoop())
 }
 
+// SetParticlesAnimLoop sets the property returned by [GetParticlesAnimLoop].
 func (self Instance) SetParticlesAnimLoop(value bool) {
 	class(self).SetParticlesAnimLoop(value)
 }
 
+/*
+If true, enables the vertex grow setting. This can be used to create mesh-based outlines using a second material pass and its [CullMode] set to [CullFront]. See also [GrowAmount].
+
+Note: Vertex growth cannot create new vertices, which means that visible gaps may occur in sharp corners. This can be alleviated by designing the mesh to use smooth normals exclusively using [face weighted normals] in the 3D authoring software. In this case, grow will be able to join every outline together, just like in the original mesh.
+
+[CullMode]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.CullMode
+[GrowAmount]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.GrowAmount
+[face weighted normals]: http://wiki.polycount.com/wiki/Face_weighted_normals
+*/
 func (self Instance) Grow() bool {
 	return bool(class(self).IsGrowEnabled())
 }
 
+// SetGrow sets the property returned by [IsGrowEnabled].
 func (self Instance) SetGrow(value bool) {
 	class(self).SetGrowEnabled(value)
 }
 
+/*
+Grows object vertices in the direction of their normals. Only effective if [Grow] is true.
+
+[Grow]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.Grow
+*/
 func (self Instance) GrowAmount() Float.X {
 	return Float.X(Float.X(class(self).GetGrow()))
 }
 
+// SetGrowAmount sets the property returned by [GetGrow].
 func (self Instance) SetGrowAmount(value Float.X) {
 	class(self).SetGrow(float64(value))
 }
 
+/*
+If true, the object is rendered at the same size regardless of distance. The object's size on screen is the same as if the camera was 1.0 units away from the object's origin, regardless of the actual distance from the camera. The [Camera3D]'s field of view (or [Camera3D.Size] when in orthogonal/frustum mode) still affects the size the object is drawn at.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[Camera3D.Size]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Size
+*/
 func (self Instance) FixedSize() bool {
 	return bool(class(self).GetFlag(4))
 }
 
+// SetFixedSize sets the property returned by [GetFlag].
 func (self Instance) SetFixedSize(value bool) {
 	class(self).SetFlag(4, value)
 }
 
+/*
+If true, render point size can be changed.
+
+Note: This is only effective for objects whose geometry is point-based rather than triangle-based. See also [PointSize].
+
+[PointSize]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.PointSize
+*/
 func (self Instance) UsePointSize() bool {
 	return bool(class(self).GetFlag(3))
 }
 
+// SetUsePointSize sets the property returned by [GetFlag].
 func (self Instance) SetUsePointSize(value bool) {
 	class(self).SetFlag(3, value)
 }
 
+/*
+The point size in pixels. See [UsePointSize].
+
+[UsePointSize]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.UsePointSize
+*/
 func (self Instance) PointSize() Float.X {
 	return Float.X(Float.X(class(self).GetPointSize()))
 }
 
+// SetPointSize sets the property returned by [GetPointSize].
 func (self Instance) SetPointSize(value Float.X) {
 	class(self).SetPointSize(float64(value))
 }
 
+/*
+If true, enables parts of the shader required for [GPUParticles3D] trails to function. This also requires using a mesh with appropriate skinning, such as [RibbonTrailMesh] or [TubeTrailMesh]. Enabling this feature outside of materials used in [GPUParticles3D] meshes will break material rendering.
+
+[GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+[RibbonTrailMesh]: https://pkg.go.dev/graphics.gd/classdb/RibbonTrailMesh
+[TubeTrailMesh]: https://pkg.go.dev/graphics.gd/classdb/TubeTrailMesh
+*/
 func (self Instance) UseParticleTrails() bool {
 	return bool(class(self).GetFlag(19))
 }
 
+// SetUseParticleTrails sets the property returned by [GetFlag].
 func (self Instance) SetUseParticleTrails(value bool) {
 	class(self).SetFlag(19, value)
 }
 
+/*
+If true use [ZClipScale] to scale the object being rendered towards the camera to avoid clipping into things like walls.
+
+[ZClipScale]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.ZClipScale
+*/
 func (self Instance) UseZClipScale() bool {
 	return bool(class(self).GetFlag(23))
 }
 
+// SetUseZClipScale sets the property returned by [GetFlag].
 func (self Instance) SetUseZClipScale(value bool) {
 	class(self).SetFlag(23, value)
 }
 
+/*
+Scales the object being rendered towards the camera to avoid clipping into things like walls. This is intended to be used for objects that are fixed with respect to the camera like player arms, tools, etc. Lighting and shadows will continue to work correctly when this setting is adjusted, but screen-space effects like SSAO and SSR may break with lower scales. Therefore, try to keep this setting as close to 1.0 as possible.
+*/
 func (self Instance) ZClipScale() Float.X {
 	return Float.X(Float.X(class(self).GetZClipScale()))
 }
 
+// SetZClipScale sets the property returned by [GetZClipScale].
 func (self Instance) SetZClipScale(value Float.X) {
 	class(self).SetZClipScale(float64(value))
 }
 
+/*
+If true use [FovOverride] to override the [Camera3D]'s field of view angle.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[FovOverride]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.FovOverride
+*/
 func (self Instance) UseFovOverride() bool {
 	return bool(class(self).GetFlag(24))
 }
 
+// SetUseFovOverride sets the property returned by [GetFlag].
 func (self Instance) SetUseFovOverride(value bool) {
 	class(self).SetFlag(24, value)
 }
 
+/*
+Overrides the [Camera3D]'s field of view angle (in degrees).
+
+Note: This behaves as if the field of view is set on a [Camera3D] with [Camera3D.KeepAspect] set to [Camera3d.KeepHeight]. Additionally, it may not look correct on a non-perspective camera where the field of view setting is ignored.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[Camera3D.KeepAspect]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.KeepAspect
+*/
 func (self Instance) FovOverride() Float.X {
 	return Float.X(Float.X(class(self).GetFovOverride()))
 }
 
+// SetFovOverride sets the property returned by [GetFovOverride].
 func (self Instance) SetFovOverride(value Float.X) {
 	class(self).SetFovOverride(float64(value))
 }
 
+/*
+If true, the proximity fade effect is enabled. The proximity fade effect fades out each pixel based on its distance to another object.
+*/
 func (self Instance) ProximityFadeEnabled() bool {
 	return bool(class(self).IsProximityFadeEnabled())
 }
 
+// SetProximityFadeEnabled sets the property returned by [IsProximityFadeEnabled].
 func (self Instance) SetProximityFadeEnabled(value bool) {
 	class(self).SetProximityFadeEnabled(value)
 }
 
+/*
+Distance over which the fade effect takes place. The larger the distance the longer it takes for an object to fade.
+*/
 func (self Instance) ProximityFadeDistance() Float.X {
 	return Float.X(Float.X(class(self).GetProximityFadeDistance()))
 }
 
+// SetProximityFadeDistance sets the property returned by [GetProximityFadeDistance].
 func (self Instance) SetProximityFadeDistance(value Float.X) {
 	class(self).SetProximityFadeDistance(float64(value))
 }
 
+/*
+The width of the range around the shape between the minimum and maximum representable signed distance.
+*/
 func (self Instance) MsdfPixelRange() Float.X {
 	return Float.X(Float.X(class(self).GetMsdfPixelRange()))
 }
 
+// SetMsdfPixelRange sets the property returned by [GetMsdfPixelRange].
 func (self Instance) SetMsdfPixelRange(value Float.X) {
 	class(self).SetMsdfPixelRange(float64(value))
 }
 
+/*
+The width of the shape outline.
+*/
 func (self Instance) MsdfOutlineSize() Float.X {
 	return Float.X(Float.X(class(self).GetMsdfOutlineSize()))
 }
 
+// SetMsdfOutlineSize sets the property returned by [GetMsdfOutlineSize].
 func (self Instance) SetMsdfOutlineSize(value Float.X) {
 	class(self).SetMsdfOutlineSize(float64(value))
 }
 
+/*
+Specifies which type of fade to use. Can be any of the [DistanceFadeMode]s.
+*/
 func (self Instance) DistanceFadeMode() DistanceFadeMode {
 	return DistanceFadeMode(class(self).GetDistanceFade())
 }
 
+// SetDistanceFadeMode sets the property returned by [GetDistanceFade].
 func (self Instance) SetDistanceFadeMode(value DistanceFadeMode) {
 	class(self).SetDistanceFade(value)
 }
 
+/*
+Distance at which the object starts to become visible. If the object is less than this distance away, it will be invisible.
+
+Note: If [DistanceFadeMinDistance] is greater than [DistanceFadeMaxDistance], the behavior will be reversed. The object will start to fade away at [DistanceFadeMaxDistance] and will fully disappear once it reaches [DistanceFadeMinDistance].
+
+[DistanceFadeMaxDistance]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DistanceFadeMaxDistance
+[DistanceFadeMinDistance]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DistanceFadeMinDistance
+*/
 func (self Instance) DistanceFadeMinDistance() Float.X {
 	return Float.X(Float.X(class(self).GetDistanceFadeMinDistance()))
 }
 
+// SetDistanceFadeMinDistance sets the property returned by [GetDistanceFadeMinDistance].
 func (self Instance) SetDistanceFadeMinDistance(value Float.X) {
 	class(self).SetDistanceFadeMinDistance(float64(value))
 }
 
+/*
+Distance at which the object appears fully opaque.
+
+Note: If [DistanceFadeMaxDistance] is less than [DistanceFadeMinDistance], the behavior will be reversed. The object will start to fade away at [DistanceFadeMaxDistance] and will fully disappear once it reaches [DistanceFadeMinDistance].
+
+[DistanceFadeMaxDistance]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DistanceFadeMaxDistance
+[DistanceFadeMinDistance]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.DistanceFadeMinDistance
+*/
 func (self Instance) DistanceFadeMaxDistance() Float.X {
 	return Float.X(Float.X(class(self).GetDistanceFadeMaxDistance()))
 }
 
+// SetDistanceFadeMaxDistance sets the property returned by [GetDistanceFadeMaxDistance].
 func (self Instance) SetDistanceFadeMaxDistance(value Float.X) {
 	class(self).SetDistanceFadeMaxDistance(float64(value))
 }
 
+/*
+The stencil effect mode. See [StencilMode].
+*/
 func (self Instance) StencilMode() StencilMode {
 	return StencilMode(class(self).GetStencilMode())
 }
 
+// SetStencilMode sets the property returned by [GetStencilMode].
 func (self Instance) SetStencilMode(value StencilMode) {
 	class(self).SetStencilMode(value)
 }
 
+/*
+The flags dictating how the stencil operation behaves. See [StencilFlags].
+*/
 func (self Instance) StencilFlags() int {
 	return int(int(class(self).GetStencilFlags()))
 }
 
+// SetStencilFlags sets the property returned by [GetStencilFlags].
 func (self Instance) SetStencilFlags(value int) {
 	class(self).SetStencilFlags(int64(value))
 }
 
+/*
+The comparison operator to use for stencil masking operations. See [StencilCompare].
+*/
 func (self Instance) StencilCompare() StencilCompare {
 	return StencilCompare(class(self).GetStencilCompare())
 }
 
+// SetStencilCompare sets the property returned by [GetStencilCompare].
 func (self Instance) SetStencilCompare(value StencilCompare) {
 	class(self).SetStencilCompare(value)
 }
 
+/*
+The stencil reference value (0-255). Typically a power of 2.
+*/
 func (self Instance) StencilReference() int {
 	return int(int(class(self).GetStencilReference()))
 }
 
+// SetStencilReference sets the property returned by [GetStencilReference].
 func (self Instance) SetStencilReference(value int) {
 	class(self).SetStencilReference(int64(value))
 }
 
+/*
+The primary color of the stencil effect.
+*/
 func (self Instance) StencilColor() Color.RGBA {
 	return Color.RGBA(class(self).GetStencilEffectColor())
 }
 
+// SetStencilColor sets the property returned by [GetStencilEffectColor].
 func (self Instance) SetStencilColor(value Color.RGBA) {
 	class(self).SetStencilEffectColor(Color.RGBA(value))
 }
 
+/*
+The outline thickness for [StencilModeOutline].
+*/
 func (self Instance) StencilOutlineThickness() Float.X {
 	return Float.X(Float.X(class(self).GetStencilEffectOutlineThickness()))
 }
 
+// SetStencilOutlineThickness sets the property returned by [GetStencilEffectOutlineThickness].
 func (self Instance) SetStencilOutlineThickness(value Float.X) {
 	class(self).SetStencilEffectOutlineThickness(float64(value))
 }

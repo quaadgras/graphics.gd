@@ -601,41 +601,64 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
+/*
+Number of available audio buses.
+*/
 func BusCount() int {
 	once.Do(singleton)
 	return int(int(class(self).GetBusCount()))
 }
 
+// SetBusCount sets the property returned by [GetBusCount].
 func SetBusCount(value int) {
 	once.Do(singleton)
 	class(self).SetBusCount(int64(value))
 }
 
+/*
+Name of the current device for audio output (see [GetOutputDeviceList]). On systems with multiple audio outputs (such as analog, USB and HDMI audio), this can be used to select the audio output device. The value "Default" will play audio on the system-wide default audio output. If an invalid device name is set, the value will be reverted back to "Default".
+*/
 func OutputDevice() string {
 	once.Do(singleton)
 	return string(class(self).GetOutputDevice().String())
 }
 
+// SetOutputDevice sets the property returned by [GetOutputDevice].
 func SetOutputDevice(value string) {
 	once.Do(singleton)
 	class(self).SetOutputDevice(String.New(value))
 }
 
+/*
+Name of the current device for audio input (see [GetInputDeviceList]). On systems with multiple audio inputs (such as analog, USB and HDMI audio), this can be used to select the audio input device. The value "Default" will record audio on the system-wide default audio input. If an invalid device name is set, the value will be reverted back to "Default".
+
+Note: [ProjectSettings] "audio/driver/enable_input" must be true for audio input to work. See also that setting's description for caveats related to permissions and operating system privacy settings.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func InputDevice() string {
 	once.Do(singleton)
 	return string(class(self).GetInputDevice().String())
 }
 
+// SetInputDevice sets the property returned by [GetInputDevice].
 func SetInputDevice(value string) {
 	once.Do(singleton)
 	class(self).SetInputDevice(String.New(value))
 }
 
+/*
+Scales the rate at which audio is played (i.e. setting it to 0.5 will make the audio be played at half its speed). See also [Engine.TimeScale] to affect the general simulation speed, which is independent from [AudioServer.PlaybackSpeedScale].
+
+[AudioServer.PlaybackSpeedScale]: https://pkg.go.dev/graphics.gd/classdb/AudioServer#PlaybackSpeedScale
+[Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
+*/
 func PlaybackSpeedScale() Float.X {
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetPlaybackSpeedScale()))
 }
 
+// SetPlaybackSpeedScale sets the property returned by [GetPlaybackSpeedScale].
 func SetPlaybackSpeedScale(value Float.X) {
 	once.Do(singleton)
 	class(self).SetPlaybackSpeedScale(float64(value))
@@ -1199,6 +1222,10 @@ Note: Lag spikes may occur when calling this method, especially on single-thread
 func (self class) RegisterStreamAsSample(stream [1]gdclass.AudioStream) { //gd:AudioServer.register_stream_as_sample
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_stream_as_sample, 0|(gdextension.SizeObject<<4), &struct{ stream gdextension.Object }{gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))})
 }
+
+/*
+Emitted when an audio bus is added, deleted, or moved.
+*/
 func OnBusLayoutChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1211,6 +1238,9 @@ func (self class) BusLayoutChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BusLayoutChanged`))))
 }
 
+/*
+Emitted when the audio bus at 'bus_index' is renamed from 'old_name' to 'new_name'.
+*/
 func OnBusRenamed(cb func(bus_index Bus, old_name string, new_name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

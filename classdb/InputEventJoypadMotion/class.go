@@ -150,18 +150,26 @@ func New() Instance {
 	return casted
 }
 
+/*
+Axis identifier.
+*/
 func (self Instance) Axis() Input.JoyAxis {
 	return Input.JoyAxis(class(self).GetAxis())
 }
 
+// SetAxis sets the property returned by [GetAxis].
 func (self Instance) SetAxis(value Input.JoyAxis) {
 	class(self).SetAxis(value)
 }
 
+/*
+Current position of the joystick on the given axis. The value ranges from -1.0 to 1.0. A value of 0 means the axis is in its resting position.
+*/
 func (self Instance) AxisValue() Float.X {
 	return Float.X(Float.X(class(self).GetAxisValue()))
 }
 
+// SetAxisValue sets the property returned by [GetAxisValue].
 func (self Instance) SetAxisValue(value Float.X) {
 	class(self).SetAxisValue(float64(value))
 }

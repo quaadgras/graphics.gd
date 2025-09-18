@@ -222,34 +222,63 @@ func New() Instance {
 	return casted
 }
 
+/*
+Number of times to subdivide the grid that the [VoxelGI] operates on. A higher number results in finer detail and thus higher visual quality, while lower numbers result in better performance.
+
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
+*/
 func (self Instance) Subdiv() Subdiv {
 	return Subdiv(class(self).GetSubdiv())
 }
 
+// SetSubdiv sets the property returned by [GetSubdiv].
 func (self Instance) SetSubdiv(value Subdiv) {
 	class(self).SetSubdiv(value)
 }
 
+/*
+The size of the area covered by the [VoxelGI]. If you make the size larger without increasing the subdivisions with [Subdiv], the size of each cell will increase and result in lower detailed lighting.
+
+Note: Size is clamped to 1.0 unit or more on each axis.
+
+[Subdiv]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI#Instance.Subdiv
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
+*/
 func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
+/*
+The [CameraAttributes] resource that specifies exposure levels to bake at. Auto-exposure and non exposure properties will be ignored. Exposure settings should be used to reduce the dynamic range present when baking. If exposure is too high, the [VoxelGI] will have banding artifacts or may have over-exposure artifacts.
+
+[CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
+*/
 func (self Instance) CameraAttributes() CameraAttributes.Instance {
 	return CameraAttributes.Instance(class(self).GetCameraAttributes())
 }
 
+// SetCameraAttributes sets the property returned by [GetCameraAttributes].
 func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) {
 	class(self).SetCameraAttributes(value)
 }
 
+/*
+The [VoxelGIData] resource that holds the data for this [VoxelGI].
+
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
+[VoxelGIData]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData
+*/
 func (self Instance) Data() VoxelGIData.Instance {
 	return VoxelGIData.Instance(class(self).GetProbeData())
 }
 
+// SetData sets the property returned by [GetProbeData].
 func (self Instance) SetData(value VoxelGIData.Instance) {
 	class(self).SetProbeData(value)
 }

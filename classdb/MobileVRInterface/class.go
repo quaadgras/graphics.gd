@@ -187,82 +187,132 @@ func New() Instance {
 	return casted
 }
 
+/*
+The height at which the camera is placed in relation to the ground (i.e. [XROrigin3D] node).
+
+[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
+*/
 func (self Instance) EyeHeight() Float.X {
 	return Float.X(Float.X(class(self).GetEyeHeight()))
 }
 
+// SetEyeHeight sets the property returned by [GetEyeHeight].
 func (self Instance) SetEyeHeight(value Float.X) {
 	class(self).SetEyeHeight(float64(value))
 }
 
+/*
+The interocular distance, also known as the interpupillary distance. The distance between the pupils of the left and right eye.
+*/
 func (self Instance) Iod() Float.X {
 	return Float.X(Float.X(class(self).GetIod()))
 }
 
+// SetIod sets the property returned by [GetIod].
 func (self Instance) SetIod(value Float.X) {
 	class(self).SetIod(float64(value))
 }
 
+/*
+The width of the display in centimeters.
+*/
 func (self Instance) DisplayWidth() Float.X {
 	return Float.X(Float.X(class(self).GetDisplayWidth()))
 }
 
+// SetDisplayWidth sets the property returned by [GetDisplayWidth].
 func (self Instance) SetDisplayWidth(value Float.X) {
 	class(self).SetDisplayWidth(float64(value))
 }
 
+/*
+The distance between the display and the lenses inside of the device in centimeters.
+*/
 func (self Instance) DisplayToLens() Float.X {
 	return Float.X(Float.X(class(self).GetDisplayToLens()))
 }
 
+// SetDisplayToLens sets the property returned by [GetDisplayToLens].
 func (self Instance) SetDisplayToLens(value Float.X) {
 	class(self).SetDisplayToLens(float64(value))
 }
 
+/*
+Set the offset rect relative to the area being rendered. A length of 1 represents the whole rendering area on that axis.
+*/
 func (self Instance) OffsetRect() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetOffsetRect())
 }
 
+// SetOffsetRect sets the property returned by [GetOffsetRect].
 func (self Instance) SetOffsetRect(value Rect2.PositionSize) {
 	class(self).SetOffsetRect(Rect2.PositionSize(value))
 }
 
+/*
+The oversample setting. Because of the lens distortion we have to render our buffers at a higher resolution then the screen can natively handle. A value between 1.5 and 2.0 often provides good results but at the cost of performance.
+*/
 func (self Instance) Oversample() Float.X {
 	return Float.X(Float.X(class(self).GetOversample()))
 }
 
+// SetOversample sets the property returned by [GetOversample].
 func (self Instance) SetOversample(value Float.X) {
 	class(self).SetOversample(float64(value))
 }
 
+/*
+The k1 lens factor is one of the two constants that define the strength of the lens used and directly influences the lens distortion effect.
+*/
 func (self Instance) K1() Float.X {
 	return Float.X(Float.X(class(self).GetK1()))
 }
 
+// SetK1 sets the property returned by [GetK1].
 func (self Instance) SetK1(value Float.X) {
 	class(self).SetK1(float64(value))
 }
 
+/*
+The k2 lens factor, see k1.
+*/
 func (self Instance) K2() Float.X {
 	return Float.X(Float.X(class(self).GetK2()))
 }
 
+// SetK2 sets the property returned by [GetK2].
 func (self Instance) SetK2(value Float.X) {
 	class(self).SetK2(float64(value))
 }
 
+/*
+The minimum radius around the focal point where full quality is guaranteed if VRS is used as a percentage of screen size.
+
+Note: Mobile and Forward+ renderers only. Requires [Viewport.VrsMode] to be set to [Viewport.VrsXr].
+
+[Viewport.VrsMode]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.VrsMode
+*/
 func (self Instance) VrsMinRadius() Float.X {
 	return Float.X(Float.X(class(self).GetVrsMinRadius()))
 }
 
+// SetVrsMinRadius sets the property returned by [GetVrsMinRadius].
 func (self Instance) SetVrsMinRadius(value Float.X) {
 	class(self).SetVrsMinRadius(float64(value))
 }
 
+/*
+The strength used to calculate the VRS density map. The greater this value, the more noticeable VRS is. This improves performance at the cost of quality.
+
+Note: Mobile and Forward+ renderers only. Requires [Viewport.VrsMode] to be set to [Viewport.VrsXr].
+
+[Viewport.VrsMode]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.VrsMode
+*/
 func (self Instance) VrsStrength() Float.X {
 	return Float.X(Float.X(class(self).GetVrsStrength()))
 }
 
+// SetVrsStrength sets the property returned by [GetVrsStrength].
 func (self Instance) SetVrsStrength(value Float.X) {
 	class(self).SetVrsStrength(float64(value))
 }

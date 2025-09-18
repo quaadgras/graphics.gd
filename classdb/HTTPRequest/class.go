@@ -398,58 +398,101 @@ func New() Instance {
 	return casted
 }
 
+/*
+The file to download into. Will output any received file into it.
+*/
 func (self Instance) DownloadFile() string {
 	return string(class(self).GetDownloadFile().String())
 }
 
+// SetDownloadFile sets the property returned by [GetDownloadFile].
 func (self Instance) SetDownloadFile(value string) {
 	class(self).SetDownloadFile(String.New(value))
 }
 
+/*
+The size of the buffer used and maximum bytes to read per iteration. See [HTTPClient.ReadChunkSize].
+
+Set this to a lower value (e.g. 4096 for 4 KiB) when downloading small files to decrease memory usage at the cost of download speeds.
+
+[HTTPClient.ReadChunkSize]: https://pkg.go.dev/graphics.gd/classdb/HTTPClient#Instance.ReadChunkSize
+*/
 func (self Instance) DownloadChunkSize() int {
 	return int(int(class(self).GetDownloadChunkSize()))
 }
 
+// SetDownloadChunkSize sets the property returned by [GetDownloadChunkSize].
 func (self Instance) SetDownloadChunkSize(value int) {
 	class(self).SetDownloadChunkSize(int64(value))
 }
 
+/*
+If true, multithreading is used to improve performance.
+*/
 func (self Instance) UseThreads() bool {
 	return bool(class(self).IsUsingThreads())
 }
 
+// SetUseThreads sets the property returned by [IsUsingThreads].
 func (self Instance) SetUseThreads(value bool) {
 	class(self).SetUseThreads(value)
 }
 
+/*
+If true, this header will be added to each request: Accept-Encoding: gzip, deflate telling servers that it's okay to compress response bodies.
+
+Any Response body declaring a Content-Encoding of either gzip or deflate will then be automatically decompressed, and the uncompressed bytes will be delivered via [OnRequestCompleted].
+
+If the user has specified their own Accept-Encoding header, then no header will be added regardless of [AcceptGzip].
+
+If false no header will be added, and no decompression will be performed on response bodies. The raw bytes of the response body will be returned via [OnRequestCompleted].
+
+[AcceptGzip]: https://pkg.go.dev/graphics.gd/classdb/HTTPRequest#Instance.AcceptGzip
+[OnRequestCompleted]: https://pkg.go.dev/graphics.gd/classdb/HTTPRequest#Instance.OnRequestCompleted
+*/
 func (self Instance) AcceptGzip() bool {
 	return bool(class(self).IsAcceptingGzip())
 }
 
+// SetAcceptGzip sets the property returned by [IsAcceptingGzip].
 func (self Instance) SetAcceptGzip(value bool) {
 	class(self).SetAcceptGzip(value)
 }
 
+/*
+Maximum allowed size for response bodies. If the response body is compressed, this will be used as the maximum allowed size for the decompressed body.
+*/
 func (self Instance) BodySizeLimit() int {
 	return int(int(class(self).GetBodySizeLimit()))
 }
 
+// SetBodySizeLimit sets the property returned by [GetBodySizeLimit].
 func (self Instance) SetBodySizeLimit(value int) {
 	class(self).SetBodySizeLimit(int64(value))
 }
 
+/*
+Maximum number of allowed redirects.
+*/
 func (self Instance) MaxRedirects() int {
 	return int(int(class(self).GetMaxRedirects()))
 }
 
+// SetMaxRedirects sets the property returned by [GetMaxRedirects].
 func (self Instance) SetMaxRedirects(value int) {
 	class(self).SetMaxRedirects(int64(value))
 }
 
+/*
+The duration to wait in seconds before a request times out. If [Timeout] is set to 0.0 then the request will never time out. For simple requests, such as communication with a REST API, it is recommended that [Timeout] is set to a value suitable for the server response time (e.g. between 1.0 and 10.0). This will help prevent unwanted timeouts caused by variation in server response times while still allowing the application to detect when a request has timed out. For larger requests such as file downloads it is suggested the [Timeout] be set to 0.0, disabling the timeout functionality. This will help to prevent large transfers from failing due to exceeding the timeout value.
+
+[Timeout]: https://pkg.go.dev/graphics.gd/classdb/HTTPRequest#Instance.Timeout
+*/
 func (self Instance) Timeout() Float.X {
 	return Float.X(Float.X(class(self).GetTimeout()))
 }
 
+// SetTimeout sets the property returned by [GetTimeout].
 func (self Instance) SetTimeout(value Float.X) {
 	class(self).SetTimeout(float64(value))
 }
@@ -664,6 +707,10 @@ func (self class) SetHttpsProxy(host String.Readable, port int64) { //gd:HTTPReq
 		port int64
 	}{pointers.Get(gd.InternalString(host)), port})
 }
+
+/*
+Emitted when a request is completed.
+*/
 func (self Instance) OnRequestCompleted(cb func(result Result, response_code int, headers []string, body []byte), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -164,82 +164,125 @@ func New() Instance {
 	return casted
 }
 
+/*
+The render target associated with these buffer.
+*/
 func (self Instance) RenderTarget() RID.Framebuffer {
 	return RID.Framebuffer(RID.Framebuffer(class(self).GetRenderTarget()))
 }
 
+// SetRenderTarget sets the property returned by [GetRenderTarget].
 func (self Instance) SetRenderTarget(value RID.Framebuffer) {
 	class(self).SetRenderTarget(RID.Any(value))
 }
 
+/*
+The size of the 3D render buffer used for rendering.
+*/
 func (self Instance) InternalSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetInternalSize())
 }
 
+// SetInternalSize sets the property returned by [GetInternalSize].
 func (self Instance) SetInternalSize(value Vector2i.XY) {
 	class(self).SetInternalSize(Vector2i.XY(value))
 }
 
+/*
+The target (upscale) size if scaling is used.
+*/
 func (self Instance) TargetSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetTargetSize())
 }
 
+// SetTargetSize sets the property returned by [GetTargetSize].
 func (self Instance) SetTargetSize(value Vector2i.XY) {
 	class(self).SetTargetSize(Vector2i.XY(value))
 }
 
+/*
+The number of views we're rendering.
+*/
 func (self Instance) ViewCount() int {
 	return int(int(class(self).GetViewCount()))
 }
 
+// SetViewCount sets the property returned by [GetViewCount].
 func (self Instance) SetViewCount(value int) {
 	class(self).SetViewCount(int64(value))
 }
 
+/*
+The requested scaling mode with which we upscale/downscale if [InternalSize] and [TargetSize] are not equal.
+
+[InternalSize]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneBuffersConfiguration#Instance.InternalSize
+[TargetSize]: https://pkg.go.dev/graphics.gd/classdb/RenderSceneBuffersConfiguration#Instance.TargetSize
+*/
 func (self Instance) Scaling3dMode() RenderingServer.ViewportScaling3DMode {
 	return RenderingServer.ViewportScaling3DMode(class(self).GetScaling3dMode())
 }
 
+// SetScaling3dMode sets the property returned by [GetScaling3dMode].
 func (self Instance) SetScaling3dMode(value RenderingServer.ViewportScaling3DMode) {
 	class(self).SetScaling3dMode(value)
 }
 
+/*
+The MSAA mode we're using for 3D rendering.
+*/
 func (self Instance) Msaa3d() RenderingServer.ViewportMSAA {
 	return RenderingServer.ViewportMSAA(class(self).GetMsaa3d())
 }
 
+// SetMsaa3d sets the property returned by [GetMsaa3d].
 func (self Instance) SetMsaa3d(value RenderingServer.ViewportMSAA) {
 	class(self).SetMsaa3d(value)
 }
 
+/*
+The requested screen space AA applied in post processing.
+*/
 func (self Instance) ScreenSpaceAa() RenderingServer.ViewportScreenSpaceAA {
 	return RenderingServer.ViewportScreenSpaceAA(class(self).GetScreenSpaceAa())
 }
 
+// SetScreenSpaceAa sets the property returned by [GetScreenSpaceAa].
 func (self Instance) SetScreenSpaceAa(value RenderingServer.ViewportScreenSpaceAA) {
 	class(self).SetScreenSpaceAa(value)
 }
 
+/*
+FSR Sharpness applicable if FSR upscaling is used.
+*/
 func (self Instance) FsrSharpness() Float.X {
 	return Float.X(Float.X(class(self).GetFsrSharpness()))
 }
 
+// SetFsrSharpness sets the property returned by [GetFsrSharpness].
 func (self Instance) SetFsrSharpness(value Float.X) {
 	class(self).SetFsrSharpness(float64(value))
 }
 
+/*
+Bias applied to mipmaps.
+*/
 func (self Instance) TextureMipmapBias() Float.X {
 	return Float.X(Float.X(class(self).GetTextureMipmapBias()))
 }
 
+// SetTextureMipmapBias sets the property returned by [GetTextureMipmapBias].
 func (self Instance) SetTextureMipmapBias(value Float.X) {
 	class(self).SetTextureMipmapBias(float64(value))
 }
 
+/*
+Level of the anisotropic filter.
+*/
 func (self Instance) AnisotropicFilteringLevel() RenderingServer.ViewportAnisotropicFiltering {
 	return RenderingServer.ViewportAnisotropicFiltering(class(self).GetAnisotropicFilteringLevel())
 }
 
+// SetAnisotropicFilteringLevel sets the property returned by [GetAnisotropicFilteringLevel].
 func (self Instance) SetAnisotropicFilteringLevel(value RenderingServer.ViewportAnisotropicFiltering) {
 	class(self).SetAnisotropicFilteringLevel(value)
 }

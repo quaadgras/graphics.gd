@@ -152,34 +152,50 @@ func New() Instance {
 	return casted
 }
 
+/*
+Threshold frequency for the filter, in Hz.
+*/
 func (self Instance) CutoffHz() Float.X {
 	return Float.X(Float.X(class(self).GetCutoff()))
 }
 
+// SetCutoffHz sets the property returned by [GetCutoff].
 func (self Instance) SetCutoffHz(value Float.X) {
 	class(self).SetCutoff(float64(value))
 }
 
+/*
+Amount of boost in the frequency range near the cutoff frequency.
+*/
 func (self Instance) Resonance() Float.X {
 	return Float.X(Float.X(class(self).GetResonance()))
 }
 
+// SetResonance sets the property returned by [GetResonance].
 func (self Instance) SetResonance(value Float.X) {
 	class(self).SetResonance(float64(value))
 }
 
+/*
+Gain amount of the frequencies after the filter.
+*/
 func (self Instance) Gain() Float.X {
 	return Float.X(Float.X(class(self).GetGain()))
 }
 
+// SetGain sets the property returned by [GetGain].
 func (self Instance) SetGain(value Float.X) {
 	class(self).SetGain(float64(value))
 }
 
+/*
+Steepness of the cutoff curve in dB per octave, also known as the order of the filter. Higher orders have a more aggressive cutoff.
+*/
 func (self Instance) Db() FilterDB {
 	return FilterDB(class(self).GetDb())
 }
 
+// SetDb sets the property returned by [GetDb].
 func (self Instance) SetDb(value FilterDB) {
 	class(self).SetDb(value)
 }

@@ -151,10 +151,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The polygon to use for occlusion culling. The polygon can be convex or concave, but it should have as few points as possible to maximize performance.
+
+The polygon must not have intersecting lines. Otherwise, triangulation will fail (with an error message printed).
+*/
 func (self Instance) Polygon() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
+// SetPolygon sets the property returned by [GetPolygon].
 func (self Instance) SetPolygon(value []Vector2.XY) {
 	class(self).SetPolygon(Packed.New(value...))
 }

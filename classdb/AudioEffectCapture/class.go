@@ -220,10 +220,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Length of the internal ring buffer, in seconds. Setting the buffer length will have no effect if already initialized.
+*/
 func (self Instance) BufferLength() Float.X {
 	return Float.X(Float.X(class(self).GetBufferLength()))
 }
 
+// SetBufferLength sets the property returned by [GetBufferLength].
 func (self Instance) SetBufferLength(value Float.X) {
 	class(self).SetBufferLength(float64(value))
 }

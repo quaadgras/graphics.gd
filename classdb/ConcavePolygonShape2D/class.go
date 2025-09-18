@@ -161,10 +161,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The array of points that make up the [ConcavePolygonShape2D]'s line segments. The array (of length divisible by two) is naturally divided into pairs (one pair for each segment); each pair consists of the starting point of a segment and the endpoint of a segment.
+
+[ConcavePolygonShape2D]: https://pkg.go.dev/graphics.gd/classdb/ConcavePolygonShape2D
+*/
 func (self Instance) Segments() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetSegments().Values()))
 }
 
+// SetSegments sets the property returned by [GetSegments].
 func (self Instance) SetSegments(value []Vector2.XY) {
 	class(self).SetSegments(Packed.New(value...))
 }

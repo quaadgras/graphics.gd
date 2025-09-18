@@ -203,26 +203,46 @@ func New() Instance {
 	return casted
 }
 
+/*
+The name of the tracker we're bound to. Which trackers are available is not known during design time.
+
+Godot defines a number of standard trackers such as left_hand and right_hand but others may be configured within a given [XRInterface].
+
+[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
+*/
 func (self Instance) Tracker() string {
 	return string(class(self).GetTracker().String())
 }
 
+// SetTracker sets the property returned by [GetTracker].
 func (self Instance) SetTracker(value string) {
 	class(self).SetTracker(String.Name(String.New(value)))
 }
 
+/*
+The name of the pose we're bound to. Which poses a tracker supports is not known during design time.
+
+Godot defines number of standard pose names such as aim and grip but other may be configured within a given [XRInterface].
+
+[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
+*/
 func (self Instance) Pose() string {
 	return string(class(self).GetPoseName().String())
 }
 
+// SetPose sets the property returned by [GetPoseName].
 func (self Instance) SetPose(value string) {
 	class(self).SetPoseName(String.Name(String.New(value)))
 }
 
+/*
+Enables showing the node when tracking starts, and hiding the node when tracking is lost.
+*/
 func (self Instance) ShowWhenTracked() bool {
 	return bool(class(self).GetShowWhenTracked())
 }
 
+// SetShowWhenTracked sets the property returned by [GetShowWhenTracked].
 func (self Instance) SetShowWhenTracked(value bool) {
 	class(self).SetShowWhenTracked(value)
 }
@@ -324,6 +344,13 @@ func (self class) TriggerHapticPulse(action_name String.Readable, frequency floa
 		delay_sec    float64
 	}{pointers.Get(gd.InternalString(action_name)), frequency, amplitude, duration_sec, delay_sec})
 }
+
+/*
+Emitted when the [Tracker] starts or stops receiving updated tracking data for the [Pose] being tracked. The 'tracking' argument indicates whether the tracker is getting updated tracking data.
+
+[Pose]: https://pkg.go.dev/graphics.gd/classdb/XRNode3D#Instance.Pose
+[Tracker]: https://pkg.go.dev/graphics.gd/classdb/XRNode3D#Instance.Tracker
+*/
 func (self Instance) OnTrackingChanged(cb func(tracking bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

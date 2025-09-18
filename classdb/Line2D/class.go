@@ -251,114 +251,195 @@ func New() Instance {
 	return casted
 }
 
+/*
+The points of the polyline, interpreted in local 2D coordinates. Segments are drawn between the adjacent points in this array.
+*/
 func (self Instance) Points() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPoints().Values()))
 }
 
+// SetPoints sets the property returned by [GetPoints].
 func (self Instance) SetPoints(value []Vector2.XY) {
 	class(self).SetPoints(Packed.New(value...))
 }
 
+/*
+If true and the polyline has more than 2 points, the last point and the first one will be connected by a segment.
+
+Note: The shape of the closing segment is not guaranteed to be seamless if a [WidthCurve] is provided.
+
+Note: The joint between the closing segment and the first segment is drawn first and it samples the [Gradient] and the [WidthCurve] at the beginning. This is an implementation detail that might change in a future version.
+
+[Gradient]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.Gradient
+[WidthCurve]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.WidthCurve
+*/
 func (self Instance) Closed() bool {
 	return bool(class(self).IsClosed())
 }
 
+// SetClosed sets the property returned by [IsClosed].
 func (self Instance) SetClosed(value bool) {
 	class(self).SetClosed(value)
 }
 
+/*
+The polyline's width.
+*/
 func (self Instance) Width() Float.X {
 	return Float.X(Float.X(class(self).GetWidth()))
 }
 
+// SetWidth sets the property returned by [GetWidth].
 func (self Instance) SetWidth(value Float.X) {
 	class(self).SetWidth(float64(value))
 }
 
+/*
+The polyline's width curve. The width of the polyline over its length will be equivalent to the value of the width curve over its domain. The width curve should be a unit [Curve].
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
+*/
 func (self Instance) WidthCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetCurve())
 }
 
+// SetWidthCurve sets the property returned by [GetCurve].
 func (self Instance) SetWidthCurve(value Curve.Instance) {
 	class(self).SetCurve(value)
 }
 
+/*
+The color of the polyline. Will not be used if a gradient is set.
+*/
 func (self Instance) DefaultColor() Color.RGBA {
 	return Color.RGBA(class(self).GetDefaultColor())
 }
 
+// SetDefaultColor sets the property returned by [GetDefaultColor].
 func (self Instance) SetDefaultColor(value Color.RGBA) {
 	class(self).SetDefaultColor(Color.RGBA(value))
 }
 
+/*
+The gradient is drawn through the whole line from start to finish. The [DefaultColor] will not be used if this property is set.
+
+[DefaultColor]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.DefaultColor
+*/
 func (self Instance) Gradient() Gradient.Instance {
 	return Gradient.Instance(class(self).GetGradient())
 }
 
+// SetGradient sets the property returned by [GetGradient].
 func (self Instance) SetGradient(value Gradient.Instance) {
 	class(self).SetGradient(value)
 }
 
+/*
+The texture used for the polyline. Uses [TextureMode] for drawing style.
+
+[TextureMode]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.TextureMode
+*/
 func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
+// SetTexture sets the property returned by [GetTexture].
 func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 
+/*
+The style to render the [Texture] of the polyline.
+
+[Texture]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.Texture
+*/
 func (self Instance) TextureMode() LineTextureMode {
 	return LineTextureMode(class(self).GetTextureMode())
 }
 
+// SetTextureMode sets the property returned by [GetTextureMode].
 func (self Instance) SetTextureMode(value LineTextureMode) {
 	class(self).SetTextureMode(value)
 }
 
+/*
+The style of the connections between segments of the polyline.
+*/
 func (self Instance) JointMode() LineJointMode {
 	return LineJointMode(class(self).GetJointMode())
 }
 
+// SetJointMode sets the property returned by [GetJointMode].
 func (self Instance) SetJointMode(value LineJointMode) {
 	class(self).SetJointMode(value)
 }
 
+/*
+The style of the beginning of the polyline, if [Closed] is false.
+
+[Closed]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.Closed
+*/
 func (self Instance) BeginCapMode() LineCapMode {
 	return LineCapMode(class(self).GetBeginCapMode())
 }
 
+// SetBeginCapMode sets the property returned by [GetBeginCapMode].
 func (self Instance) SetBeginCapMode(value LineCapMode) {
 	class(self).SetBeginCapMode(value)
 }
 
+/*
+The style of the end of the polyline, if [Closed] is false.
+
+[Closed]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.Closed
+*/
 func (self Instance) EndCapMode() LineCapMode {
 	return LineCapMode(class(self).GetEndCapMode())
 }
 
+// SetEndCapMode sets the property returned by [GetEndCapMode].
 func (self Instance) SetEndCapMode(value LineCapMode) {
 	class(self).SetEndCapMode(value)
 }
 
+/*
+Determines the miter limit of the polyline. Normally, when [JointMode] is set to [LineJointSharp], sharp angles fall back to using the logic of [LineJointBevel] joints to prevent very long miters. Higher values of this property mean that the fallback to a bevel joint will happen at sharper angles.
+
+[JointMode]: https://pkg.go.dev/graphics.gd/classdb/Line2D#Instance.JointMode
+*/
 func (self Instance) SharpLimit() Float.X {
 	return Float.X(Float.X(class(self).GetSharpLimit()))
 }
 
+// SetSharpLimit sets the property returned by [GetSharpLimit].
 func (self Instance) SetSharpLimit(value Float.X) {
 	class(self).SetSharpLimit(float64(value))
 }
 
+/*
+The smoothness used for rounded joints and caps. Higher values result in smoother corners, but are more demanding to render and update.
+*/
 func (self Instance) RoundPrecision() int {
 	return int(int(class(self).GetRoundPrecision()))
 }
 
+// SetRoundPrecision sets the property returned by [GetRoundPrecision].
 func (self Instance) SetRoundPrecision(value int) {
 	class(self).SetRoundPrecision(int64(value))
 }
 
+/*
+If true, the polyline's border will be anti-aliased.
+
+Note: [Line2D] is not accelerated by batching when being anti-aliased.
+
+[Line2D]: https://pkg.go.dev/graphics.gd/classdb/Line2D
+*/
 func (self Instance) Antialiased() bool {
 	return bool(class(self).GetAntialiased())
 }
 
+// SetAntialiased sets the property returned by [GetAntialiased].
 func (self Instance) SetAntialiased(value bool) {
 	class(self).SetAntialiased(value)
 }

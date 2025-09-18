@@ -209,26 +209,43 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the modification's in the stack will be called. This is handled automatically through the [Skeleton2D] node.
+
+[Skeleton2D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton2D
+*/
 func (self Instance) Enabled() bool {
 	return bool(class(self).GetEnabled())
 }
 
+// SetEnabled sets the property returned by [GetEnabled].
 func (self Instance) SetEnabled(value bool) {
 	class(self).SetEnabled(value)
 }
 
+/*
+The interpolation strength of the modifications in stack. A value of 0 will make it where the modifications are not applied, a strength of 0.5 will be half applied, and a strength of 1 will allow the modifications to be fully applied and override the [Skeleton2D] [Bone2D] poses.
+
+[Bone2D]: https://pkg.go.dev/graphics.gd/classdb/Bone2D
+[Skeleton2D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton2D
+*/
 func (self Instance) Strength() Float.X {
 	return Float.X(Float.X(class(self).GetStrength()))
 }
 
+// SetStrength sets the property returned by [GetStrength].
 func (self Instance) SetStrength(value Float.X) {
 	class(self).SetStrength(float64(value))
 }
 
+/*
+The number of modifications in the stack.
+*/
 func (self Instance) ModificationCount() int {
 	return int(int(class(self).GetModificationCount()))
 }
 
+// SetModificationCount sets the property returned by [GetModificationCount].
 func (self Instance) SetModificationCount(value int) {
 	class(self).SetModificationCount(int64(value))
 }

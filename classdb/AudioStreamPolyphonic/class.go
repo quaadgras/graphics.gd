@@ -152,10 +152,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+Maximum amount of simultaneous streams that can be played.
+*/
 func (self Instance) Polyphony() int {
 	return int(int(class(self).GetPolyphony()))
 }
 
+// SetPolyphony sets the property returned by [GetPolyphony].
 func (self Instance) SetPolyphony(value int) {
 	class(self).SetPolyphony(int64(value))
 }

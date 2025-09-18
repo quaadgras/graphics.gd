@@ -419,50 +419,78 @@ func New() Instance {
 	return casted
 }
 
+/*
+The WebSocket sub-protocols allowed during the WebSocket handshake.
+*/
 func (self Instance) SupportedProtocols() []string {
 	return []string(class(self).GetSupportedProtocols().Strings())
 }
 
+// SetSupportedProtocols sets the property returned by [GetSupportedProtocols].
 func (self Instance) SetSupportedProtocols(value []string) {
 	class(self).SetSupportedProtocols(Packed.MakeStrings(value...))
 }
 
+/*
+The extra HTTP headers to be sent during the WebSocket handshake.
+
+Note: Not supported in Web exports due to browsers' restrictions.
+*/
 func (self Instance) HandshakeHeaders() []string {
 	return []string(class(self).GetHandshakeHeaders().Strings())
 }
 
+// SetHandshakeHeaders sets the property returned by [GetHandshakeHeaders].
 func (self Instance) SetHandshakeHeaders(value []string) {
 	class(self).SetHandshakeHeaders(Packed.MakeStrings(value...))
 }
 
+/*
+The size of the input buffer in bytes (roughly the maximum amount of memory that will be allocated for the inbound packets).
+*/
 func (self Instance) InboundBufferSize() int {
 	return int(int(class(self).GetInboundBufferSize()))
 }
 
+// SetInboundBufferSize sets the property returned by [GetInboundBufferSize].
 func (self Instance) SetInboundBufferSize(value int) {
 	class(self).SetInboundBufferSize(int64(value))
 }
 
+/*
+The size of the input buffer in bytes (roughly the maximum amount of memory that will be allocated for the outbound packets).
+*/
 func (self Instance) OutboundBufferSize() int {
 	return int(int(class(self).GetOutboundBufferSize()))
 }
 
+// SetOutboundBufferSize sets the property returned by [GetOutboundBufferSize].
 func (self Instance) SetOutboundBufferSize(value int) {
 	class(self).SetOutboundBufferSize(int64(value))
 }
 
+/*
+The maximum amount of packets that will be allowed in the queues (both inbound and outbound).
+*/
 func (self Instance) MaxQueuedPackets() int {
 	return int(int(class(self).GetMaxQueuedPackets()))
 }
 
+// SetMaxQueuedPackets sets the property returned by [GetMaxQueuedPackets].
 func (self Instance) SetMaxQueuedPackets(value int) {
 	class(self).SetMaxQueuedPackets(int64(value))
 }
 
+/*
+The interval (in seconds) at which the peer will automatically send WebSocket "ping" control frames. When set to 0, no "ping" control frames will be sent.
+
+Note: Has no effect in Web exports due to browser restrictions.
+*/
 func (self Instance) HeartbeatInterval() Float.X {
 	return Float.X(Float.X(class(self).GetHeartbeatInterval()))
 }
 
+// SetHeartbeatInterval sets the property returned by [GetHeartbeatInterval].
 func (self Instance) SetHeartbeatInterval(value Float.X) {
 	class(self).SetHeartbeatInterval(float64(value))
 }

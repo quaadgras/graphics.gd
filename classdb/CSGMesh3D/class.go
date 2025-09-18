@@ -157,18 +157,41 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [Mesh] resource to use as a CSG shape.
+
+Note: Some [Mesh] types such as [PlaneMesh], [PointMesh], [QuadMesh], and [RibbonTrailMesh] are excluded from the type hint for this property, as these primitives are non-manifold and thus not compatible with the CSG algorithm.
+
+Note: When using an [ArrayMesh], all vertex attributes except [Mesh.ArrayVertex], [Mesh.ArrayNormal] and [Mesh.ArrayTexUv] are left unused. Only [Mesh.ArrayVertex] and [Mesh.ArrayTexUv] will be passed to the GPU.
+
+[Mesh.ArrayNormal] is only used to determine which faces require the use of flat shading. By default, CSGMesh will ignore the mesh's vertex normals, recalculate them for each vertex and use a smooth shader. If a flat shader is required for a face, ensure that all vertex normals of the face are approximately equal.
+
+[ArrayMesh]: https://pkg.go.dev/graphics.gd/classdb/ArrayMesh
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+[PlaneMesh]: https://pkg.go.dev/graphics.gd/classdb/PlaneMesh
+[PointMesh]: https://pkg.go.dev/graphics.gd/classdb/PointMesh
+[QuadMesh]: https://pkg.go.dev/graphics.gd/classdb/QuadMesh
+[RibbonTrailMesh]: https://pkg.go.dev/graphics.gd/classdb/RibbonTrailMesh
+*/
 func (self Instance) Mesh() Mesh.Instance {
 	return Mesh.Instance(class(self).GetMesh())
 }
 
+// SetMesh sets the property returned by [GetMesh].
 func (self Instance) SetMesh(value Mesh.Instance) {
 	class(self).SetMesh(value)
 }
 
+/*
+The [Material] used in drawing the CSG shape.
+
+[Material]: https://pkg.go.dev/graphics.gd/classdb/Material
+*/
 func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
+// SetMaterial sets the property returned by [GetMaterial].
 func (self Instance) SetMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }

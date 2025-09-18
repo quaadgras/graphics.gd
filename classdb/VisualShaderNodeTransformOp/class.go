@@ -146,10 +146,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The type of the operation to be performed on the transforms.
+*/
 func (self Instance) Operator() Operator {
 	return Operator(class(self).GetOperator())
 }
 
+// SetOperator sets the property returned by [GetOperator].
 func (self Instance) SetOperator(value Operator) {
 	class(self).SetOperator(value)
 }

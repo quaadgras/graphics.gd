@@ -161,42 +161,68 @@ func New() Instance {
 	return casted
 }
 
+/*
+The resulting path array from the navigation query. All path array positions are in global coordinates. Without customized query parameters this is the same path as returned by [NavigationServer2D.MapGetPath].
+
+[NavigationServer2D.MapGetPath]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D#MapGetPath
+*/
 func (self Instance) Path() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPath().Values()))
 }
 
+// SetPath sets the property returned by [GetPath].
 func (self Instance) SetPath(value []Vector2.XY) {
 	class(self).SetPath(Packed.New(value...))
 }
 
+/*
+The type of navigation primitive (region or link) that each point of the path goes through.
+*/
 func (self Instance) PathTypes() []int32 {
 	return []int32(slices.Collect(class(self).GetPathTypes().Values()))
 }
 
+// SetPathTypes sets the property returned by [GetPathTypes].
 func (self Instance) SetPathTypes(value []int32) {
 	class(self).SetPathTypes(Packed.New(value...))
 }
 
+/*
+The [Resource.ID]s of the regions and links that each point of the path goes through.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func (self Instance) PathRids() [][]RID.Either[RID.NavigationLink2D, RID.NavigationRegion2D] {
 	return [][]RID.Either[RID.NavigationLink2D, RID.NavigationRegion2D](gd.ArrayAs[[][]RID.Either[RID.NavigationLink2D, RID.NavigationRegion2D]](gd.InternalArray(class(self).GetPathRids())))
 }
 
+// SetPathRids sets the property returned by [GetPathRids].
 func (self Instance) SetPathRids(value [][]RID.Either[RID.NavigationLink2D, RID.NavigationRegion2D]) {
 	class(self).SetPathRids(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 }
 
+/*
+The ObjectIDs of the [Object]s which manage the regions and links each point of the path goes through.
+
+[Object]: https://pkg.go.dev/graphics.gd/variant/Object
+*/
 func (self Instance) PathOwnerIds() []int64 {
 	return []int64(slices.Collect(class(self).GetPathOwnerIds().Values()))
 }
 
+// SetPathOwnerIds sets the property returned by [GetPathOwnerIds].
 func (self Instance) SetPathOwnerIds(value []int64) {
 	class(self).SetPathOwnerIds(Packed.New(value...))
 }
 
+/*
+Returns the length of the path.
+*/
 func (self Instance) PathLength() Float.X {
 	return Float.X(Float.X(class(self).GetPathLength()))
 }
 
+// SetPathLength sets the property returned by [GetPathLength].
 func (self Instance) SetPathLength(value Float.X) {
 	class(self).SetPathLength(float64(value))
 }

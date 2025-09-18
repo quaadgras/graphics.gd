@@ -156,10 +156,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The owner [Node] of the script property that holds the edited resource.
+
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+*/
 func (self Instance) ScriptOwner() Node.Instance {
 	return Node.Instance(class(self).GetScriptOwner())
 }
 
+// SetScriptOwner sets the property returned by [GetScriptOwner].
 func (self Instance) SetScriptOwner(value Node.Instance) {
 	class(self).SetScriptOwner(value)
 }

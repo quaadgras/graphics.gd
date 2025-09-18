@@ -151,26 +151,40 @@ func New() Instance {
 	return casted
 }
 
+/*
+The type to be used in the comparison.
+*/
 func (self Instance) Type() ComparisonType {
 	return ComparisonType(class(self).GetComparisonType())
 }
 
+// SetType sets the property returned by [GetComparisonType].
 func (self Instance) SetType(value ComparisonType) {
 	class(self).SetComparisonType(value)
 }
 
+/*
+A comparison function.
+*/
 func (self Instance) Function() Function {
 	return Function(class(self).GetFunction())
 }
 
+// SetFunction sets the property returned by [GetFunction].
 func (self Instance) SetFunction(value Function) {
 	class(self).SetFunction(value)
 }
 
+/*
+Extra condition which is applied if [Type] is set to [CtypeVector3d].
+
+[Type]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeCompare#Instance.Type
+*/
 func (self Instance) Condition() Condition {
 	return Condition(class(self).GetCondition())
 }
 
+// SetCondition sets the property returned by [GetCondition].
 func (self Instance) SetCondition(value Condition) {
 	class(self).SetCondition(value)
 }

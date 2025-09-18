@@ -147,18 +147,26 @@ func New() Instance {
 	return casted
 }
 
+/*
+Name of the variable. Must be unique.
+*/
 func (self Instance) VaryingName() string {
 	return string(class(self).GetVaryingName().String())
 }
 
+// SetVaryingName sets the property returned by [GetVaryingName].
 func (self Instance) SetVaryingName(value string) {
 	class(self).SetVaryingName(String.New(value))
 }
 
+/*
+Type of the variable. Determines where the variable can be accessed.
+*/
 func (self Instance) VaryingType() VisualShader.VaryingType {
 	return VisualShader.VaryingType(class(self).GetVaryingType())
 }
 
+// SetVaryingType sets the property returned by [GetVaryingType].
 func (self Instance) SetVaryingType(value VisualShader.VaryingType) {
 	class(self).SetVaryingType(value)
 }

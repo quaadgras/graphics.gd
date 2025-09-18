@@ -219,14 +219,23 @@ func New() Instance {
 	return casted
 }
 
+/*
+The source string used with the search pattern to find this matching result.
+*/
 func (self Instance) Subject() string {
 	return string(class(self).GetSubject().String())
 }
 
+/*
+A dictionary of named groups and its corresponding group number. Only groups that were matched are included. If multiple groups have the same name, that name would refer to the first matching one.
+*/
 func (self Instance) Names() map[string]int {
 	return map[string]int(gd.DictionaryAs[map[string]int](class(self).GetNames()))
 }
 
+/*
+An slice of the match and its capturing groups.
+*/
 func (self Instance) Strings() []string {
 	return []string(class(self).GetStrings().Strings())
 }

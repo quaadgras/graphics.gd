@@ -180,114 +180,201 @@ func New() Instance {
 	return casted
 }
 
+/*
+The texture to use when drawing this style box.
+*/
 func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
+// SetTexture sets the property returned by [GetTexture].
 func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 
+/*
+Increases the left margin of the 3×3 texture box.
+
+A higher value means more of the source texture is considered to be part of the left border of the 3×3 box.
+
+This is also the value used as fallback for [StyleBox.ContentMarginLeft] if it is negative.
+
+[StyleBox.ContentMarginLeft]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginLeft
+*/
 func (self Instance) TextureMarginLeft() Float.X {
 	return Float.X(Float.X(class(self).GetTextureMargin(0)))
 }
 
+// SetTextureMarginLeft sets the property returned by [GetTextureMargin].
 func (self Instance) SetTextureMarginLeft(value Float.X) {
 	class(self).SetTextureMargin(0, float64(value))
 }
 
+/*
+Increases the top margin of the 3×3 texture box.
+
+A higher value means more of the source texture is considered to be part of the top border of the 3×3 box.
+
+This is also the value used as fallback for [StyleBox.ContentMarginTop] if it is negative.
+
+[StyleBox.ContentMarginTop]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginTop
+*/
 func (self Instance) TextureMarginTop() Float.X {
 	return Float.X(Float.X(class(self).GetTextureMargin(1)))
 }
 
+// SetTextureMarginTop sets the property returned by [GetTextureMargin].
 func (self Instance) SetTextureMarginTop(value Float.X) {
 	class(self).SetTextureMargin(1, float64(value))
 }
 
+/*
+Increases the right margin of the 3×3 texture box.
+
+A higher value means more of the source texture is considered to be part of the right border of the 3×3 box.
+
+This is also the value used as fallback for [StyleBox.ContentMarginRight] if it is negative.
+
+[StyleBox.ContentMarginRight]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginRight
+*/
 func (self Instance) TextureMarginRight() Float.X {
 	return Float.X(Float.X(class(self).GetTextureMargin(2)))
 }
 
+// SetTextureMarginRight sets the property returned by [GetTextureMargin].
 func (self Instance) SetTextureMarginRight(value Float.X) {
 	class(self).SetTextureMargin(2, float64(value))
 }
 
+/*
+Increases the bottom margin of the 3×3 texture box.
+
+A higher value means more of the source texture is considered to be part of the bottom border of the 3×3 box.
+
+This is also the value used as fallback for [StyleBox.ContentMarginBottom] if it is negative.
+
+[StyleBox.ContentMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginBottom
+*/
 func (self Instance) TextureMarginBottom() Float.X {
 	return Float.X(Float.X(class(self).GetTextureMargin(3)))
 }
 
+// SetTextureMarginBottom sets the property returned by [GetTextureMargin].
 func (self Instance) SetTextureMarginBottom(value Float.X) {
 	class(self).SetTextureMargin(3, float64(value))
 }
 
+/*
+Expands the left margin of this style box when drawing, causing it to be drawn larger than requested.
+*/
 func (self Instance) ExpandMarginLeft() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(0)))
 }
 
+// SetExpandMarginLeft sets the property returned by [GetExpandMargin].
 func (self Instance) SetExpandMarginLeft(value Float.X) {
 	class(self).SetExpandMargin(0, float64(value))
 }
 
+/*
+Expands the top margin of this style box when drawing, causing it to be drawn larger than requested.
+*/
 func (self Instance) ExpandMarginTop() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(1)))
 }
 
+// SetExpandMarginTop sets the property returned by [GetExpandMargin].
 func (self Instance) SetExpandMarginTop(value Float.X) {
 	class(self).SetExpandMargin(1, float64(value))
 }
 
+/*
+Expands the right margin of this style box when drawing, causing it to be drawn larger than requested.
+*/
 func (self Instance) ExpandMarginRight() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(2)))
 }
 
+// SetExpandMarginRight sets the property returned by [GetExpandMargin].
 func (self Instance) SetExpandMarginRight(value Float.X) {
 	class(self).SetExpandMargin(2, float64(value))
 }
 
+/*
+Expands the bottom margin of this style box when drawing, causing it to be drawn larger than requested.
+*/
 func (self Instance) ExpandMarginBottom() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(3)))
 }
 
+// SetExpandMarginBottom sets the property returned by [GetExpandMargin].
 func (self Instance) SetExpandMarginBottom(value Float.X) {
 	class(self).SetExpandMargin(3, float64(value))
 }
 
+/*
+Controls how the stylebox's texture will be stretched or tiled horizontally.
+*/
 func (self Instance) AxisStretchHorizontal() AxisStretchMode {
 	return AxisStretchMode(class(self).GetHAxisStretchMode())
 }
 
+// SetAxisStretchHorizontal sets the property returned by [GetHAxisStretchMode].
 func (self Instance) SetAxisStretchHorizontal(value AxisStretchMode) {
 	class(self).SetHAxisStretchMode(value)
 }
 
+/*
+Controls how the stylebox's texture will be stretched or tiled vertically.
+*/
 func (self Instance) AxisStretchVertical() AxisStretchMode {
 	return AxisStretchMode(class(self).GetVAxisStretchMode())
 }
 
+// SetAxisStretchVertical sets the property returned by [GetVAxisStretchMode].
 func (self Instance) SetAxisStretchVertical(value AxisStretchMode) {
 	class(self).SetVAxisStretchMode(value)
 }
 
+/*
+The region to use from the [Texture].
+
+This is equivalent to first wrapping the [Texture] in an [AtlasTexture] with the same region.
+
+If empty (Rect2(0, 0, 0, 0)), the whole [Texture] is used.
+
+[AtlasTexture]: https://pkg.go.dev/graphics.gd/classdb/AtlasTexture
+[Texture]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxTexture#Instance.Texture
+*/
 func (self Instance) RegionRect() Rect2.PositionSize {
 	return Rect2.PositionSize(class(self).GetRegionRect())
 }
 
+// SetRegionRect sets the property returned by [GetRegionRect].
 func (self Instance) SetRegionRect(value Rect2.PositionSize) {
 	class(self).SetRegionRect(Rect2.PositionSize(value))
 }
 
+/*
+Modulates the color of the texture when this style box is drawn.
+*/
 func (self Instance) ModulateColor() Color.RGBA {
 	return Color.RGBA(class(self).GetModulate())
 }
 
+// SetModulateColor sets the property returned by [GetModulate].
 func (self Instance) SetModulateColor(value Color.RGBA) {
 	class(self).SetModulate(Color.RGBA(value))
 }
 
+/*
+If true, the nine-patch texture's center tile will be drawn.
+*/
 func (self Instance) DrawCenter() bool {
 	return bool(class(self).IsDrawCenterEnabled())
 }
 
+// SetDrawCenter sets the property returned by [IsDrawCenterEnabled].
 func (self Instance) SetDrawCenter(value bool) {
 	class(self).SetDrawCenter(value)
 }

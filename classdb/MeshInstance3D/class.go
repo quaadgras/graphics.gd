@@ -402,26 +402,44 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [Mesh] resource for the instance.
+
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+*/
 func (self Instance) Mesh() Mesh.Instance {
 	return Mesh.Instance(class(self).GetMesh())
 }
 
+// SetMesh sets the property returned by [GetMesh].
 func (self Instance) SetMesh(value Mesh.Instance) {
 	class(self).SetMesh(value)
 }
 
+/*
+The [Skin] to be used by this instance.
+
+[Skin]: https://pkg.go.dev/graphics.gd/classdb/Skin
+*/
 func (self Instance) Skin() Skin.Instance {
 	return Skin.Instance(class(self).GetSkin())
 }
 
+// SetSkin sets the property returned by [GetSkin].
 func (self Instance) SetSkin(value Skin.Instance) {
 	class(self).SetSkin(value)
 }
 
+/*
+node path to the [Skeleton3D] associated with the instance.
+
+[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
+*/
 func (self Instance) Skeleton() string {
 	return string(class(self).GetSkeletonPath().String())
 }
 
+// SetSkeleton sets the property returned by [GetSkeletonPath].
 func (self Instance) SetSkeleton(value string) {
 	class(self).SetSkeletonPath(Path.ToNode(String.New(value)))
 }

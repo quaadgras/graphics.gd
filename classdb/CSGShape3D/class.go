@@ -269,58 +269,100 @@ func New() Instance {
 	return casted
 }
 
+/*
+The operation that is performed on this shape. This is ignored for the first CSG child node as the operation is between this node and the previous child of this nodes parent.
+*/
 func (self Instance) Operation() Operation {
 	return Operation(class(self).GetOperation())
 }
 
+// SetOperation sets the property returned by [GetOperation].
 func (self Instance) SetOperation(value Operation) {
 	class(self).SetOperation(value)
 }
 
+/*
+This property does nothing.
+*/
 func (self Instance) Snap() Float.X {
 	return Float.X(Float.X(class(self).GetSnap()))
 }
 
+// SetSnap sets the property returned by [GetSnap].
 func (self Instance) SetSnap(value Float.X) {
 	class(self).SetSnap(float64(value))
 }
 
+/*
+Calculate tangents for the CSG shape which allows the use of normal and height maps. This is only applied on the root shape, this setting is ignored on any child. Setting this to false can speed up shape generation slightly.
+*/
 func (self Instance) CalculateTangents() bool {
 	return bool(class(self).IsCalculatingTangents())
 }
 
+// SetCalculateTangents sets the property returned by [IsCalculatingTangents].
 func (self Instance) SetCalculateTangents(value bool) {
 	class(self).SetCalculateTangents(value)
 }
 
+/*
+Adds a collision shape to the physics engine for our CSG shape. This will always act like a static body. Note that the collision shape is still active even if the CSG shape itself is hidden. See also [CollisionMask] and [CollisionPriority].
+
+[CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CSGShape3D#Instance.CollisionMask
+[CollisionPriority]: https://pkg.go.dev/graphics.gd/classdb/CSGShape3D#Instance.CollisionPriority
+*/
 func (self Instance) UseCollision() bool {
 	return bool(class(self).IsUsingCollision())
 }
 
+// SetUseCollision sets the property returned by [IsUsingCollision].
 func (self Instance) SetUseCollision(value bool) {
 	class(self).SetUseCollision(value)
 }
 
+/*
+The physics layers this area is in.
+
+Collidable objects can exist in any of 32 different layers. These layers work like a tagging system, and are not visual. A collidable can use these layers to select with which objects it can collide, using the collision_mask property.
+
+A contact is detected if object A is in any of the layers that object B scans, or object B is in any layer scanned by object A. See [Collision layers and masks] in the documentation for more information.
+
+[Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
+*/
 func (self Instance) CollisionLayer() int {
 	return int(int(class(self).GetCollisionLayer()))
 }
 
+// SetCollisionLayer sets the property returned by [GetCollisionLayer].
 func (self Instance) SetCollisionLayer(value int) {
 	class(self).SetCollisionLayer(int64(value))
 }
 
+/*
+The physics layers this CSG shape scans for collisions. Only effective if [UseCollision] is true. See [Collision layers and masks] in the documentation for more information.
+
+[Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
+[UseCollision]: https://pkg.go.dev/graphics.gd/classdb/CSGShape3D#Instance.UseCollision
+*/
 func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
+// SetCollisionMask sets the property returned by [GetCollisionMask].
 func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
+/*
+The priority used to solve colliding when occurring penetration. Only effective if [UseCollision] is true. The higher the priority is, the lower the penetration into the object will be. This can for example be used to prevent the player from breaking through the boundaries of a level.
+
+[UseCollision]: https://pkg.go.dev/graphics.gd/classdb/CSGShape3D#Instance.UseCollision
+*/
 func (self Instance) CollisionPriority() Float.X {
 	return Float.X(Float.X(class(self).GetCollisionPriority()))
 }
 
+// SetCollisionPriority sets the property returned by [GetCollisionPriority].
 func (self Instance) SetCollisionPriority(value Float.X) {
 	class(self).SetCollisionPriority(float64(value))
 }

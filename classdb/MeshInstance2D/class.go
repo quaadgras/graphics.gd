@@ -152,18 +152,32 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [Mesh] that will be drawn by the [MeshInstance2D].
+
+[Mesh]: https://pkg.go.dev/graphics.gd/classdb/Mesh
+[MeshInstance2D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance2D
+*/
 func (self Instance) Mesh() Mesh.Instance {
 	return Mesh.Instance(class(self).GetMesh())
 }
 
+// SetMesh sets the property returned by [GetMesh].
 func (self Instance) SetMesh(value Mesh.Instance) {
 	class(self).SetMesh(value)
 }
 
+/*
+The [Texture2D] that will be used if using the default [CanvasItemMaterial]. Can be accessed as TEXTURE in CanvasItem shader.
+
+[CanvasItemMaterial]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
 func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
+// SetTexture sets the property returned by [GetTexture].
 func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
@@ -191,6 +205,12 @@ func (self class) GetTexture() [1]gdclass.Texture2D { //gd:MeshInstance2D.get_te
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
+
+/*
+Emitted when the [Texture] is changed.
+
+[Texture]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance2D#Instance.Texture
+*/
 func (self Instance) OnTextureChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

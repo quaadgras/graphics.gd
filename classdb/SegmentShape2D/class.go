@@ -149,18 +149,26 @@ func New() Instance {
 	return casted
 }
 
+/*
+The segment's first point position.
+*/
 func (self Instance) A() Vector2.XY {
 	return Vector2.XY(class(self).GetA())
 }
 
+// SetA sets the property returned by [GetA].
 func (self Instance) SetA(value Vector2.XY) {
 	class(self).SetA(Vector2.XY(value))
 }
 
+/*
+The segment's second point position.
+*/
 func (self Instance) B() Vector2.XY {
 	return Vector2.XY(class(self).GetB())
 }
 
+// SetB sets the property returned by [GetB].
 func (self Instance) SetB(value Vector2.XY) {
 	class(self).SetB(Vector2.XY(value))
 }

@@ -211,178 +211,346 @@ func New() Instance {
 	return casted
 }
 
+/*
+The quality preset to use when baking lightmaps. This affects bake times, but output file sizes remain mostly identical across quality levels.
+
+To further speed up bake times, decrease [Bounces], disable [UseDenoiser] and/or decrease [TexelScale].
+
+To further increase quality, enable [Supersampling] and/or increase [TexelScale].
+
+[Bounces]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.Bounces
+[Supersampling]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.Supersampling
+[TexelScale]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.TexelScale
+[UseDenoiser]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.UseDenoiser
+*/
 func (self Instance) Quality() BakeQuality {
 	return BakeQuality(class(self).GetBakeQuality())
 }
 
+// SetQuality sets the property returned by [GetBakeQuality].
 func (self Instance) SetQuality(value BakeQuality) {
 	class(self).SetBakeQuality(value)
 }
 
+/*
+If true, lightmaps are baked with the texel scale multiplied with [SupersamplingFactor] and downsampled before saving the lightmap (so the effective texel density is identical to having supersampling disabled).
+
+Supersampling provides increased lightmap quality with less noise, smoother shadows and better shadowing of small-scale features in objects. However, it may result in significantly increased bake times and memory usage while baking lightmaps. Padding is automatically adjusted to avoid increasing light leaking.
+
+[SupersamplingFactor]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.SupersamplingFactor
+*/
 func (self Instance) Supersampling() bool {
 	return bool(class(self).IsSupersamplingEnabled())
 }
 
+// SetSupersampling sets the property returned by [IsSupersamplingEnabled].
 func (self Instance) SetSupersampling(value bool) {
 	class(self).SetSupersamplingEnabled(value)
 }
 
+/*
+The factor by which the texel density is multiplied for supersampling. For best results, use an integer value. While fractional values are allowed, they can result in increased light leaking and a blurry lightmap.
+
+Higher values may result in better quality, but also increase bake times and memory usage while baking.
+
+See [Supersampling] for more information.
+
+[Supersampling]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.Supersampling
+*/
 func (self Instance) SupersamplingFactor() Float.X {
 	return Float.X(Float.X(class(self).GetSupersamplingFactor()))
 }
 
+// SetSupersamplingFactor sets the property returned by [GetSupersamplingFactor].
 func (self Instance) SetSupersamplingFactor(value Float.X) {
 	class(self).SetSupersamplingFactor(float64(value))
 }
 
+/*
+Number of light bounces that are taken into account during baking. Higher values result in brighter, more realistic lighting, at the cost of longer bake times. If set to 0, only environment lighting, direct light and emissive lighting is baked.
+*/
 func (self Instance) Bounces() int {
 	return int(int(class(self).GetBounces()))
 }
 
+// SetBounces sets the property returned by [GetBounces].
 func (self Instance) SetBounces(value int) {
 	class(self).SetBounces(int64(value))
 }
 
+/*
+The energy multiplier for each bounce. Higher values will make indirect lighting brighter. A value of 1.0 represents physically accurate behavior, but higher values can be used to make indirect lighting propagate more visibly when using a low number of bounces. This can be used to speed up bake times by lowering the number of [Bounces] then increasing [BounceIndirectEnergy].
+
+Note: [BounceIndirectEnergy] only has an effect if [Bounces] is set to a value greater than or equal to 1.
+
+[BounceIndirectEnergy]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.BounceIndirectEnergy
+[Bounces]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.Bounces
+*/
 func (self Instance) BounceIndirectEnergy() Float.X {
 	return Float.X(Float.X(class(self).GetBounceIndirectEnergy()))
 }
 
+// SetBounceIndirectEnergy sets the property returned by [GetBounceIndirectEnergy].
 func (self Instance) SetBounceIndirectEnergy(value Float.X) {
 	class(self).SetBounceIndirectEnergy(float64(value))
 }
 
+/*
+If true, bakes lightmaps to contain directional information as spherical harmonics. This results in more realistic lighting appearance, especially with normal mapped materials and for lights that have their direct light baked ([Light3D.LightBakeMode] set to [Light3d.BakeStatic] and with [Light3D.EditorOnly] set to false). The directional information is also used to provide rough reflections for static and dynamic objects. This has a small run-time performance cost as the shader has to perform more work to interpret the direction information from the lightmap. Directional lightmaps also take longer to bake and result in larger file sizes.
+
+Note: The property's name has no relationship with [DirectionalLight3D]. [Directional] works with all light types.
+
+[Directional]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.Directional
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+[Light3D.EditorOnly]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.EditorOnly
+[Light3D.LightBakeMode]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightBakeMode
+*/
 func (self Instance) Directional() bool {
 	return bool(class(self).IsDirectional())
 }
 
+// SetDirectional sets the property returned by [IsDirectional].
 func (self Instance) SetDirectional(value bool) {
 	class(self).SetDirectional(value)
 }
 
+/*
+The shadowmasking policy to use for directional shadows on static objects that are baked with this [LightmapGI] instance.
+
+Shadowmasking allows [DirectionalLight3D] nodes to cast shadows even outside the range defined by their [DirectionalLight3D.DirectionalShadowMaxDistance] property. This is done by baking a texture that contains a shadowmap for the directional light, then using this texture according to the current shadowmask mode.
+
+Note: The shadowmask texture is only created if [ShadowmaskMode] is not [Lightmapgidata.ShadowmaskModeNone]. To see a difference, you need to bake lightmaps again after switching from [Lightmapgidata.ShadowmaskModeNone] to any other mode.
+
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+[DirectionalLight3D.DirectionalShadowMaxDistance]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D#Instance.DirectionalShadowMaxDistance
+[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+[ShadowmaskMode]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.ShadowmaskMode
+*/
 func (self Instance) ShadowmaskMode() LightmapGIData.ShadowmaskMode {
 	return LightmapGIData.ShadowmaskMode(class(self).GetShadowmaskMode())
 }
 
+// SetShadowmaskMode sets the property returned by [GetShadowmaskMode].
 func (self Instance) SetShadowmaskMode(value LightmapGIData.ShadowmaskMode) {
 	class(self).SetShadowmaskMode(value)
 }
 
+/*
+If true, a texture with the lighting information will be generated to speed up the generation of indirect lighting at the cost of some accuracy. The geometry might exhibit extra light leak artifacts when using low resolution lightmaps or UVs that stretch the lightmap significantly across surfaces. Leave [UseTextureForBounces] at its default value of true if unsure.
+
+Note: [UseTextureForBounces] only has an effect if [Bounces] is set to a value greater than or equal to 1.
+
+[Bounces]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.Bounces
+[UseTextureForBounces]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.UseTextureForBounces
+*/
 func (self Instance) UseTextureForBounces() bool {
 	return bool(class(self).IsUsingTextureForBounces())
 }
 
+// SetUseTextureForBounces sets the property returned by [IsUsingTextureForBounces].
 func (self Instance) SetUseTextureForBounces(value bool) {
 	class(self).SetUseTextureForBounces(value)
 }
 
+/*
+If true, ignore environment lighting when baking lightmaps.
+*/
 func (self Instance) Interior() bool {
 	return bool(class(self).IsInterior())
 }
 
+// SetInterior sets the property returned by [IsInterior].
 func (self Instance) SetInterior(value bool) {
 	class(self).SetInterior(value)
 }
 
+/*
+If true, uses a GPU-based denoising algorithm on the generated lightmap. This eliminates most noise within the generated lightmap at the cost of longer bake times. File sizes are generally not impacted significantly by the use of a denoiser, although lossless compression may do a better job at compressing a denoised image.
+*/
 func (self Instance) UseDenoiser() bool {
 	return bool(class(self).IsUsingDenoiser())
 }
 
+// SetUseDenoiser sets the property returned by [IsUsingDenoiser].
 func (self Instance) SetUseDenoiser(value bool) {
 	class(self).SetUseDenoiser(value)
 }
 
+/*
+The strength of denoising step applied to the generated lightmaps. Only effective if [UseDenoiser] is true and [ProjectSettings] "rendering/lightmapping/denoising/denoiser" is set to JNLM.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[UseDenoiser]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.UseDenoiser
+*/
 func (self Instance) DenoiserStrength() Float.X {
 	return Float.X(Float.X(class(self).GetDenoiserStrength()))
 }
 
+// SetDenoiserStrength sets the property returned by [GetDenoiserStrength].
 func (self Instance) SetDenoiserStrength(value Float.X) {
 	class(self).SetDenoiserStrength(float64(value))
 }
 
+/*
+The distance in pixels from which the denoiser samples. Lower values preserve more details, but may give blotchy results if the lightmap quality is not high enough. Only effective if [UseDenoiser] is true and [ProjectSettings] "rendering/lightmapping/denoising/denoiser" is set to JNLM.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[UseDenoiser]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.UseDenoiser
+*/
 func (self Instance) DenoiserRange() int {
 	return int(int(class(self).GetDenoiserRange()))
 }
 
+// SetDenoiserRange sets the property returned by [GetDenoiserRange].
 func (self Instance) SetDenoiserRange(value int) {
 	class(self).SetDenoiserRange(int64(value))
 }
 
+/*
+The bias to use when computing shadows. Increasing [Bias] can fix shadow acne on the resulting baked lightmap, but can introduce peter-panning (shadows not connecting to their casters). Real-time [Light3D] shadows are not affected by this [Bias] property.
+
+[Bias]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.Bias
+[Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
+*/
 func (self Instance) Bias() Float.X {
 	return Float.X(Float.X(class(self).GetBias()))
 }
 
+// SetBias sets the property returned by [GetBias].
 func (self Instance) SetBias(value Float.X) {
 	class(self).SetBias(float64(value))
 }
 
+/*
+Scales the lightmap texel density of all meshes for the current bake. This is a multiplier that builds upon the existing lightmap texel size defined in each imported 3D scene, along with the per-mesh density multiplier (which is designed to be used when the same mesh is used at different scales). Lower values will result in faster bake times.
+
+For example, doubling [TexelScale] doubles the lightmap texture resolution for all objects on each axis, so it will quadruple the texel count.
+
+[TexelScale]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.TexelScale
+*/
 func (self Instance) TexelScale() Float.X {
 	return Float.X(Float.X(class(self).GetTexelScale()))
 }
 
+// SetTexelScale sets the property returned by [GetTexelScale].
 func (self Instance) SetTexelScale(value Float.X) {
 	class(self).SetTexelScale(float64(value))
 }
 
+/*
+The maximum texture size for the generated texture atlas. Higher values will result in fewer slices being generated, but may not work on all hardware as a result of hardware limitations on texture sizes. Leave [MaxTextureSize] at its default value of 16384 if unsure.
+
+[MaxTextureSize]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.MaxTextureSize
+*/
 func (self Instance) MaxTextureSize() int {
 	return int(int(class(self).GetMaxTextureSize()))
 }
 
+// SetMaxTextureSize sets the property returned by [GetMaxTextureSize].
 func (self Instance) SetMaxTextureSize(value int) {
 	class(self).SetMaxTextureSize(int64(value))
 }
 
+/*
+The environment mode to use when baking lightmaps.
+*/
 func (self Instance) EnvironmentMode() EnvironmentMode {
 	return EnvironmentMode(class(self).GetEnvironmentMode())
 }
 
+// SetEnvironmentMode sets the property returned by [GetEnvironmentMode].
 func (self Instance) SetEnvironmentMode(value EnvironmentMode) {
 	class(self).SetEnvironmentMode(value)
 }
 
+/*
+The sky to use as a source of environment lighting. Only effective if [EnvironmentMode] is [EnvironmentModeCustomSky].
+
+[EnvironmentMode]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.EnvironmentMode
+*/
 func (self Instance) EnvironmentCustomSky() Sky.Instance {
 	return Sky.Instance(class(self).GetEnvironmentCustomSky())
 }
 
+// SetEnvironmentCustomSky sets the property returned by [GetEnvironmentCustomSky].
 func (self Instance) SetEnvironmentCustomSky(value Sky.Instance) {
 	class(self).SetEnvironmentCustomSky(value)
 }
 
+/*
+The color to use for environment lighting. Only effective if [EnvironmentMode] is [EnvironmentModeCustomColor].
+
+[EnvironmentMode]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.EnvironmentMode
+*/
 func (self Instance) EnvironmentCustomColor() Color.RGBA {
 	return Color.RGBA(class(self).GetEnvironmentCustomColor())
 }
 
+// SetEnvironmentCustomColor sets the property returned by [GetEnvironmentCustomColor].
 func (self Instance) SetEnvironmentCustomColor(value Color.RGBA) {
 	class(self).SetEnvironmentCustomColor(Color.RGBA(value))
 }
 
+/*
+The color multiplier to use for environment lighting. Only effective if [EnvironmentMode] is [EnvironmentModeCustomColor].
+
+[EnvironmentMode]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.EnvironmentMode
+*/
 func (self Instance) EnvironmentCustomEnergy() Float.X {
 	return Float.X(Float.X(class(self).GetEnvironmentCustomEnergy()))
 }
 
+// SetEnvironmentCustomEnergy sets the property returned by [GetEnvironmentCustomEnergy].
 func (self Instance) SetEnvironmentCustomEnergy(value Float.X) {
 	class(self).SetEnvironmentCustomEnergy(float64(value))
 }
 
+/*
+The [CameraAttributes] resource that specifies exposure levels to bake at. Auto-exposure and non exposure properties will be ignored. Exposure settings should be used to reduce the dynamic range present when baking. If exposure is too high, the [LightmapGI] will have banding artifacts or may have over-exposure artifacts.
+
+[CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
+[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+*/
 func (self Instance) CameraAttributes() CameraAttributes.Instance {
 	return CameraAttributes.Instance(class(self).GetCameraAttributes())
 }
 
+// SetCameraAttributes sets the property returned by [GetCameraAttributes].
 func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) {
 	class(self).SetCameraAttributes(value)
 }
 
+/*
+The level of subdivision to use when automatically generating [LightmapProbe]s for dynamic object lighting. Higher values result in more accurate indirect lighting on dynamic objects, at the cost of longer bake times and larger file sizes.
+
+Note: Automatically generated [LightmapProbe]s are not visible as nodes in the Scene tree dock, and cannot be modified this way after they are generated.
+
+Note: Regardless of [GenerateProbesSubdiv], direct lighting on dynamic objects is always applied using [Light3D] nodes in real-time.
+
+[GenerateProbesSubdiv]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI#Instance.GenerateProbesSubdiv
+[Light3D]: https://pkg.go.dev/graphics.gd/classdb/Light3D
+[LightmapProbe]: https://pkg.go.dev/graphics.gd/classdb/LightmapProbe
+*/
 func (self Instance) GenerateProbesSubdiv() GenerateProbes {
 	return GenerateProbes(class(self).GetGenerateProbes())
 }
 
+// SetGenerateProbesSubdiv sets the property returned by [GetGenerateProbes].
 func (self Instance) SetGenerateProbesSubdiv(value GenerateProbes) {
 	class(self).SetGenerateProbes(value)
 }
 
+/*
+The [LightmapGIData] associated to this [LightmapGI] node. This resource is automatically created after baking, and is not meant to be created manually.
+
+[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+[LightmapGIData]: https://pkg.go.dev/graphics.gd/classdb/LightmapGIData
+*/
 func (self Instance) LightData() LightmapGIData.Instance {
 	return LightmapGIData.Instance(class(self).GetLightData())
 }
 
+// SetLightData sets the property returned by [GetLightData].
 func (self Instance) SetLightData(value LightmapGIData.Instance) {
 	class(self).SetLightData(value)
 }

@@ -271,41 +271,68 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
+/*
+The scale of the game world compared to the real world. By default, most AR/VR platforms assume that 1 game unit corresponds to 1 real world meter.
+*/
 func WorldScale() Float.X {
 	once.Do(singleton)
 	return Float.X(Float.X(class(self).GetWorldScale()))
 }
 
+// SetWorldScale sets the property returned by [GetWorldScale].
 func SetWorldScale(value Float.X) {
 	once.Do(singleton)
 	class(self).SetWorldScale(float64(value))
 }
 
+/*
+The current origin of our tracking space in the virtual world. This is used by the renderer to properly position the camera with new tracking data.
+
+Note: This property is managed by the current [XROrigin3D] node. It is exposed for access from GDExtensions.
+
+[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
+*/
 func WorldOrigin() Transform3D.BasisOrigin {
 	once.Do(singleton)
 	return Transform3D.BasisOrigin(class(self).GetWorldOrigin())
 }
 
+// SetWorldOrigin sets the property returned by [GetWorldOrigin].
 func SetWorldOrigin(value Transform3D.BasisOrigin) {
 	once.Do(singleton)
 	class(self).SetWorldOrigin(Transform3D.BasisOrigin(value))
 }
 
+/*
+If set to true, the scene will be rendered as if the camera is locked to the [XROrigin3D].
+
+Note: This doesn't provide a very comfortable experience for users. This setting exists for doing benchmarking or automated testing, where you want to control what is rendered via code.
+
+[XROrigin3D]: https://pkg.go.dev/graphics.gd/classdb/XROrigin3D
+*/
 func CameraLockedToOrigin() bool {
 	once.Do(singleton)
 	return bool(class(self).IsCameraLockedToOrigin())
 }
 
+// SetCameraLockedToOrigin sets the property returned by [IsCameraLockedToOrigin].
 func SetCameraLockedToOrigin(value bool) {
 	once.Do(singleton)
 	class(self).SetCameraLockedToOrigin(value)
 }
 
+/*
+The primary [XRInterface] currently bound to the [XRServer].
+
+[XRInterface]: https://pkg.go.dev/graphics.gd/classdb/XRInterface
+[XRServer]: https://pkg.go.dev/graphics.gd/classdb/XRServer
+*/
 func PrimaryInterface() XRInterface.Instance {
 	once.Do(singleton)
 	return XRInterface.Instance(class(self).GetPrimaryInterface())
 }
 
+// SetPrimaryInterface sets the property returned by [GetPrimaryInterface].
 func SetPrimaryInterface(value XRInterface.Instance) {
 	once.Do(singleton)
 	class(self).SetPrimaryInterface(value)
@@ -503,6 +530,10 @@ func (self class) GetPrimaryInterface() [1]gdclass.XRInterface { //gd:XRServer.g
 func (self class) SetPrimaryInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.set_primary_interface
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))})
 }
+
+/*
+Emitted when the reference frame transform changes.
+*/
 func OnReferenceFrameChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -515,6 +546,9 @@ func (self class) ReferenceFrameChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ReferenceFrameChanged`))))
 }
 
+/*
+Emitted when a new interface has been added.
+*/
 func OnInterfaceAdded(cb func(interface_name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -527,6 +561,9 @@ func (self class) InterfaceAdded() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InterfaceAdded`))))
 }
 
+/*
+Emitted when an interface is removed.
+*/
 func OnInterfaceRemoved(cb func(interface_name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -539,6 +576,12 @@ func (self class) InterfaceRemoved() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InterfaceRemoved`))))
 }
 
+/*
+Emitted when a new tracker has been added. If you don't use a fixed number of controllers or if you're using [XRAnchor3D]s for an AR solution, it is important to react to this signal to add the appropriate [XRController3D] or [XRAnchor3D] nodes related to this new tracker.
+
+[XRAnchor3D]: https://pkg.go.dev/graphics.gd/classdb/XRAnchor3D
+[XRController3D]: https://pkg.go.dev/graphics.gd/classdb/XRController3D
+*/
 func OnTrackerAdded(cb func(tracker_name string, atype int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -551,6 +594,9 @@ func (self class) TrackerAdded() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TrackerAdded`))))
 }
 
+/*
+Emitted when an existing tracker has been updated. This can happen if the user switches controllers.
+*/
 func OnTrackerUpdated(cb func(tracker_name string, atype int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -563,6 +609,12 @@ func (self class) TrackerUpdated() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TrackerUpdated`))))
 }
 
+/*
+Emitted when a tracker is removed. You should remove any [XRController3D] or [XRAnchor3D] points if applicable. This is not mandatory, the nodes simply become inactive and will be made active again when a new tracker becomes available (i.e. a new controller is switched on that takes the place of the previous one).
+
+[XRAnchor3D]: https://pkg.go.dev/graphics.gd/classdb/XRAnchor3D
+[XRController3D]: https://pkg.go.dev/graphics.gd/classdb/XRController3D
+*/
 func OnTrackerRemoved(cb func(tracker_name string, atype int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -158,30 +158,51 @@ func New() Instance {
 	return casted
 }
 
+/*
+The width of the texture (in pixels). Higher values make it possible to represent high-frequency data better (such as sudden direction changes), at the cost of increased generation time and memory usage.
+*/
 func (self Instance) SetWidth(value int) {
 	class(self).SetWidth(int64(value))
 }
 
+/*
+The [Curve] that is rendered onto the texture's red channel. Should be a unit [Curve].
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
+*/
 func (self Instance) CurveX() Curve.Instance {
 	return Curve.Instance(class(self).GetCurveX())
 }
 
+// SetCurveX sets the property returned by [GetCurveX].
 func (self Instance) SetCurveX(value Curve.Instance) {
 	class(self).SetCurveX(value)
 }
 
+/*
+The [Curve] that is rendered onto the texture's green channel. Should be a unit [Curve].
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
+*/
 func (self Instance) CurveY() Curve.Instance {
 	return Curve.Instance(class(self).GetCurveY())
 }
 
+// SetCurveY sets the property returned by [GetCurveY].
 func (self Instance) SetCurveY(value Curve.Instance) {
 	class(self).SetCurveY(value)
 }
 
+/*
+The [Curve] that is rendered onto the texture's blue channel. Should be a unit [Curve].
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
+*/
 func (self Instance) CurveZ() Curve.Instance {
 	return Curve.Instance(class(self).GetCurveZ())
 }
 
+// SetCurveZ sets the property returned by [GetCurveZ].
 func (self Instance) SetCurveZ(value Curve.Instance) {
 	class(self).SetCurveZ(value)
 }

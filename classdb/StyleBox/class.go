@@ -273,34 +273,72 @@ func New() Instance {
 	return casted
 }
 
+/*
+The left margin for the contents of this style box. Increasing this value reduces the space available to the contents from the left.
+
+Refer to [ContentMarginBottom] for extra considerations.
+
+[ContentMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginBottom
+*/
 func (self Instance) ContentMarginLeft() Float.X {
 	return Float.X(Float.X(class(self).GetContentMargin(0)))
 }
 
+// SetContentMarginLeft sets the property returned by [GetContentMargin].
 func (self Instance) SetContentMarginLeft(value Float.X) {
 	class(self).SetContentMargin(0, float64(value))
 }
 
+/*
+The top margin for the contents of this style box. Increasing this value reduces the space available to the contents from the top.
+
+Refer to [ContentMarginBottom] for extra considerations.
+
+[ContentMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginBottom
+*/
 func (self Instance) ContentMarginTop() Float.X {
 	return Float.X(Float.X(class(self).GetContentMargin(1)))
 }
 
+// SetContentMarginTop sets the property returned by [GetContentMargin].
 func (self Instance) SetContentMarginTop(value Float.X) {
 	class(self).SetContentMargin(1, float64(value))
 }
 
+/*
+The right margin for the contents of this style box. Increasing this value reduces the space available to the contents from the right.
+
+Refer to [ContentMarginBottom] for extra considerations.
+
+[ContentMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginBottom
+*/
 func (self Instance) ContentMarginRight() Float.X {
 	return Float.X(Float.X(class(self).GetContentMargin(2)))
 }
 
+// SetContentMarginRight sets the property returned by [GetContentMargin].
 func (self Instance) SetContentMarginRight(value Float.X) {
 	class(self).SetContentMargin(2, float64(value))
 }
 
+/*
+The bottom margin for the contents of this style box. Increasing this value reduces the space available to the contents from the bottom.
+
+If this value is negative, it is ignored and a child-specific margin is used instead. For example, for [StyleBoxFlat], the border thickness (if any) is used instead.
+
+It is up to the code using this style box to decide what these contents are: for example, a [Button] respects this content margin for the textual contents of the button.
+
+[GetMargin] should be used to fetch this value as consumer instead of reading these properties directly. This is because it correctly respects negative values and the fallback mentioned above.
+
+[Button]: https://pkg.go.dev/graphics.gd/classdb/Button
+[GetMargin]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.GetMargin
+[StyleBoxFlat]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat
+*/
 func (self Instance) ContentMarginBottom() Float.X {
 	return Float.X(Float.X(class(self).GetContentMargin(3)))
 }
 
+// SetContentMarginBottom sets the property returned by [GetContentMargin].
 func (self Instance) SetContentMarginBottom(value Float.X) {
 	class(self).SetContentMargin(3, float64(value))
 }

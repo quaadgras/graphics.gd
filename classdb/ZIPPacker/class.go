@@ -230,10 +230,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The compression level used when [StartFile] is called. Use [ZIPPacker.CompressionLevel] as a reference.
+
+[StartFile]: https://pkg.go.dev/graphics.gd/classdb/ZIPPacker#Instance.StartFile
+*/
 func (self Instance) CompressionLevel() int {
 	return int(int(class(self).GetCompressionLevel()))
 }
 
+// SetCompressionLevel sets the property returned by [GetCompressionLevel].
 func (self Instance) SetCompressionLevel(value int) {
 	class(self).SetCompressionLevel(int64(value))
 }

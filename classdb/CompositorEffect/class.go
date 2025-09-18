@@ -191,58 +191,105 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true this rendering effect is applied to any viewport it is added to.
+*/
 func (self Instance) Enabled() bool {
 	return bool(class(self).GetEnabled())
 }
 
+// SetEnabled sets the property returned by [GetEnabled].
 func (self Instance) SetEnabled(value bool) {
 	class(self).SetEnabled(value)
 }
 
+/*
+The type of effect that is implemented, determines at what stage of rendering the callback is called.
+*/
 func (self Instance) EffectCallbackType() EffectCallbackType {
 	return EffectCallbackType(class(self).GetEffectCallbackType())
 }
 
+// SetEffectCallbackType sets the property returned by [GetEffectCallbackType].
 func (self Instance) SetEffectCallbackType(value EffectCallbackType) {
 	class(self).SetEffectCallbackType(value)
 }
 
+/*
+If true and MSAA is enabled, this will trigger a color buffer resolve before the effect is run.
+
+Note: In [RenderCallback], to access the resolved buffer use:
+
+[RenderCallback]: https://pkg.go.dev/graphics.gd/classdb/CompositorEffect#Interface
+*/
 func (self Instance) AccessResolvedColor() bool {
 	return bool(class(self).GetAccessResolvedColor())
 }
 
+// SetAccessResolvedColor sets the property returned by [GetAccessResolvedColor].
 func (self Instance) SetAccessResolvedColor(value bool) {
 	class(self).SetAccessResolvedColor(value)
 }
 
+/*
+If true and MSAA is enabled, this will trigger a depth buffer resolve before the effect is run.
+
+Note: In [RenderCallback], to access the resolved buffer use:
+
+[RenderCallback]: https://pkg.go.dev/graphics.gd/classdb/CompositorEffect#Interface
+*/
 func (self Instance) AccessResolvedDepth() bool {
 	return bool(class(self).GetAccessResolvedDepth())
 }
 
+// SetAccessResolvedDepth sets the property returned by [GetAccessResolvedDepth].
 func (self Instance) SetAccessResolvedDepth(value bool) {
 	class(self).SetAccessResolvedDepth(value)
 }
 
+/*
+If true this triggers motion vectors being calculated during the opaque render state.
+
+Note: In [RenderCallback], to access the motion vector buffer use:
+
+[RenderCallback]: https://pkg.go.dev/graphics.gd/classdb/CompositorEffect#Interface
+*/
 func (self Instance) NeedsMotionVectors() bool {
 	return bool(class(self).GetNeedsMotionVectors())
 }
 
+// SetNeedsMotionVectors sets the property returned by [GetNeedsMotionVectors].
 func (self Instance) SetNeedsMotionVectors(value bool) {
 	class(self).SetNeedsMotionVectors(value)
 }
 
+/*
+If true this triggers normal and roughness data to be output during our depth pre-pass, only applicable for the Forward+ renderer.
+
+Note: In [RenderCallback], to access the roughness buffer use:
+
+The raw normal and roughness buffer is stored in an optimized format, different than the one available in Spatial shaders. When sampling the buffer, a conversion function must be applied. Use this function, copied from [here]:
+
+[RenderCallback]: https://pkg.go.dev/graphics.gd/classdb/CompositorEffect#Interface
+[here]: https://github.com/godotengine/godot/blob/da5f39889f155658cef7f7ec3cc1abb94e17d815/servers/rendering/renderer_rd/shaders/forward_clustered/scene_forward_clustered_inc.glsl#L334-L341
+*/
 func (self Instance) NeedsNormalRoughness() bool {
 	return bool(class(self).GetNeedsNormalRoughness())
 }
 
+// SetNeedsNormalRoughness sets the property returned by [GetNeedsNormalRoughness].
 func (self Instance) SetNeedsNormalRoughness(value bool) {
 	class(self).SetNeedsNormalRoughness(value)
 }
 
+/*
+If true this triggers specular data being rendered to a separate buffer and combined after effects have been applied, only applicable for the Forward+ renderer.
+*/
 func (self Instance) NeedsSeparateSpecular() bool {
 	return bool(class(self).GetNeedsSeparateSpecular())
 }
 
+// SetNeedsSeparateSpecular sets the property returned by [GetNeedsSeparateSpecular].
 func (self Instance) SetNeedsSeparateSpecular(value bool) {
 	class(self).SetNeedsSeparateSpecular(value)
 }

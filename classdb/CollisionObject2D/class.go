@@ -512,42 +512,76 @@ func New() Instance {
 	return casted
 }
 
+/*
+Defines the behavior in physics when [Node.ProcessMode] is set to [Node.ProcessModeDisabled].
+
+[Node.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
+*/
 func (self Instance) DisableMode() DisableMode {
 	return DisableMode(class(self).GetDisableMode())
 }
 
+// SetDisableMode sets the property returned by [GetDisableMode].
 func (self Instance) SetDisableMode(value DisableMode) {
 	class(self).SetDisableMode(value)
 }
 
+/*
+The physics layers this CollisionObject2D is in. Collision objects can exist in one or more of 32 different layers. See also [CollisionMask].
+
+Note: Object A can detect a contact with object B only if object B is in any of the layers that object A scans. See [Collision layers and masks] in the documentation for more information.
+
+[Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
+[CollisionMask]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionMask
+*/
 func (self Instance) CollisionLayer() int {
 	return int(int(class(self).GetCollisionLayer()))
 }
 
+// SetCollisionLayer sets the property returned by [GetCollisionLayer].
 func (self Instance) SetCollisionLayer(value int) {
 	class(self).SetCollisionLayer(int64(value))
 }
 
+/*
+The physics layers this CollisionObject2D scans. Collision objects can scan one or more of 32 different layers. See also [CollisionLayer].
+
+Note: Object A can detect a contact with object B only if object B is in any of the layers that object A scans. See [Collision layers and masks] in the documentation for more information.
+
+[Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionLayer
+*/
 func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
+// SetCollisionMask sets the property returned by [GetCollisionMask].
 func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
+/*
+The priority used to solve colliding when occurring penetration. The higher the priority is, the lower the penetration into the object will be. This can for example be used to prevent the player from breaking through the boundaries of a level.
+*/
 func (self Instance) CollisionPriority() Float.X {
 	return Float.X(Float.X(class(self).GetCollisionPriority()))
 }
 
+// SetCollisionPriority sets the property returned by [GetCollisionPriority].
 func (self Instance) SetCollisionPriority(value Float.X) {
 	class(self).SetCollisionPriority(float64(value))
 }
 
+/*
+If true, this object is pickable. A pickable object can detect the mouse pointer entering/leaving, and if the mouse is inside it, report input events. Requires at least one [CollisionLayer] bit to be set.
+
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionLayer
+*/
 func (self Instance) InputPickable() bool {
 	return bool(class(self).IsPickable())
 }
 
+// SetInputPickable sets the property returned by [IsPickable].
 func (self Instance) SetInputPickable(value bool) {
 	class(self).SetPickable(value)
 }
@@ -968,6 +1002,14 @@ func (self class) ShapeFindOwner(shape_index int64) int64 { //gd:CollisionObject
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when an input event occurs. Requires [InputPickable] to be true and at least one [CollisionLayer] bit to be set. See [InputEvent] for details.
+
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionLayer
+[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Interface
+[InputPickable]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.InputPickable
+*/
 func (self Instance) OnInputEvent(cb func(viewport Node.Instance, event InputEvent.Instance, shape_idx int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -980,6 +1022,15 @@ func (self class) InputEvent() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InputEvent`))))
 }
 
+/*
+Emitted when the mouse pointer enters any of this object's shapes. Requires [InputPickable] to be true and at least one [CollisionLayer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this signal to be emitted.
+
+Note: Due to the lack of continuous collision detection, this signal may not be emitted in the expected order if the mouse moves fast enough and the [CollisionObject2D]'s area is small. This signal may also not be emitted if another [CollisionObject2D] is overlapping the [CollisionObject2D] in question.
+
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionLayer
+[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
+[InputPickable]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.InputPickable
+*/
 func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -992,6 +1043,15 @@ func (self class) MouseEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseEntered`))))
 }
 
+/*
+Emitted when the mouse pointer exits all this object's shapes. Requires [InputPickable] to be true and at least one [CollisionLayer] bit to be set. Note that moving between different shapes within a single [CollisionObject2D] won't cause this signal to be emitted.
+
+Note: Due to the lack of continuous collision detection, this signal may not be emitted in the expected order if the mouse moves fast enough and the [CollisionObject2D]'s area is small. This signal may also not be emitted if another [CollisionObject2D] is overlapping the [CollisionObject2D] in question.
+
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionLayer
+[CollisionObject2D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D
+[InputPickable]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.InputPickable
+*/
 func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1004,6 +1064,13 @@ func (self class) MouseExited() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseExited`))))
 }
 
+/*
+Emitted when the mouse pointer enters any of this object's shapes or moves from one shape to another. 'shape_idx' is the child index of the newly entered [Shape2D]. Requires [InputPickable] to be true and at least one [CollisionLayer] bit to be set.
+
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionLayer
+[InputPickable]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.InputPickable
+[Shape2D]: https://pkg.go.dev/graphics.gd/classdb/Shape2D
+*/
 func (self Instance) OnMouseShapeEntered(cb func(shape_idx int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1016,6 +1083,13 @@ func (self class) MouseShapeEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseShapeEntered`))))
 }
 
+/*
+Emitted when the mouse pointer exits any of this object's shapes. 'shape_idx' is the child index of the exited [Shape2D]. Requires [InputPickable] to be true and at least one [CollisionLayer] bit to be set.
+
+[CollisionLayer]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.CollisionLayer
+[InputPickable]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject2D#Instance.InputPickable
+[Shape2D]: https://pkg.go.dev/graphics.gd/classdb/Shape2D
+*/
 func (self Instance) OnMouseShapeExited(cb func(shape_idx int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

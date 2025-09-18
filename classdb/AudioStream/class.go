@@ -634,6 +634,10 @@ func (self class) IsMetaStream() bool { //gd:AudioStream.is_meta_stream
 	var ret = r_ret
 	return ret
 }
+
+/*
+Signal to be emitted to notify when the parameter list changed.
+*/
 func (self Instance) OnParameterListChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

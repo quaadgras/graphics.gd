@@ -162,58 +162,90 @@ func New() Instance {
 	return casted
 }
 
+/*
+The button's text that will be displayed inside the button's area.
+*/
 func (self Instance) Text() string {
 	return string(class(self).GetText().String())
 }
 
+// SetText sets the property returned by [GetText].
 func (self Instance) SetText(value string) {
 	class(self).SetText(String.New(value))
 }
 
+/*
+The underline mode to use for the text.
+*/
 func (self Instance) Underline() UnderlineMode {
 	return UnderlineMode(class(self).GetUnderlineMode())
 }
 
+// SetUnderline sets the property returned by [GetUnderlineMode].
 func (self Instance) SetUnderline(value UnderlineMode) {
 	class(self).SetUnderlineMode(value)
 }
 
+/*
+The [URI] for this [LinkButton]. If set to a valid URI, pressing the button opens the URI using the operating system's default program for the protocol (via [OS.ShellOpen]). HTTP and HTTPS URLs open the default web browser.
+
+[LinkButton]: https://pkg.go.dev/graphics.gd/classdb/LinkButton
+[OS.ShellOpen]: https://pkg.go.dev/graphics.gd/classdb/OS#ShellOpen
+[URI]: https://en.wikipedia.org/wiki/Uniform_Resource_Identifier
+*/
 func (self Instance) Uri() string {
 	return string(class(self).GetUri().String())
 }
 
+// SetUri sets the property returned by [GetUri].
 func (self Instance) SetUri(value string) {
 	class(self).SetUri(String.New(value))
 }
 
+/*
+Base text writing direction.
+*/
 func (self Instance) TextDirection() Control.TextDirection {
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
+// SetTextDirection sets the property returned by [GetTextDirection].
 func (self Instance) SetTextDirection(value Control.TextDirection) {
 	class(self).SetTextDirection(value)
 }
 
+/*
+Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+*/
 func (self Instance) Language() string {
 	return string(class(self).GetLanguage().String())
 }
 
+// SetLanguage sets the property returned by [GetLanguage].
 func (self Instance) SetLanguage(value string) {
 	class(self).SetLanguage(String.New(value))
 }
 
+/*
+Set BiDi algorithm override for the structured text.
+*/
 func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
 	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
+// SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride].
 func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) {
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
+/*
+Set additional options for BiDi override.
+*/
 func (self Instance) StructuredTextBidiOverrideOptions() []any {
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
+// SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions].
 func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
 }

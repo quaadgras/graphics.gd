@@ -166,14 +166,19 @@ func (self Instance) Data() []Vector3.XYZ {
 	return []Vector3.XYZ(slices.Collect(class(self).GetFaces().Values()))
 }
 
+// SetData sets the property returned by [GetFaces].
 func (self Instance) SetData(value []Vector3.XYZ) {
 	class(self).SetFaces(Packed.New(value...))
 }
 
+/*
+If set to true, collisions occur on both sides of the concave shape faces. Otherwise they occur only along the face normals.
+*/
 func (self Instance) BackfaceCollision() bool {
 	return bool(class(self).IsBackfaceCollisionEnabled())
 }
 
+// SetBackfaceCollision sets the property returned by [IsBackfaceCollisionEnabled].
 func (self Instance) SetBackfaceCollision(value bool) {
 	class(self).SetBackfaceCollisionEnabled(value)
 }

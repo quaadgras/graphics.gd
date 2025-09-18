@@ -156,18 +156,26 @@ func New() Instance {
 	return casted
 }
 
+/*
+The box's width, height and depth.
+*/
 func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
+/*
+The material used to render the box.
+*/
 func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
+// SetMaterial sets the property returned by [GetMaterial].
 func (self Instance) SetMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }

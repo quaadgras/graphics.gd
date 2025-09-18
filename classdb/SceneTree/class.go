@@ -585,86 +585,191 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the application automatically accepts quitting requests.
+
+For mobile platforms, see [QuitOnGoBack].
+
+[QuitOnGoBack]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.QuitOnGoBack
+*/
 func (self Instance) AutoAcceptQuit() bool {
 	return bool(class(self).IsAutoAcceptQuit())
 }
 
+// SetAutoAcceptQuit sets the property returned by [IsAutoAcceptQuit].
 func (self Instance) SetAutoAcceptQuit(value bool) {
 	class(self).SetAutoAcceptQuit(value)
 }
 
+/*
+If true, the application quits automatically when navigating back (e.g. using the system "Back" button on Android).
+
+To handle 'Go Back' button when this option is disabled, use [Displayserver.WindowEventGoBackRequest].
+*/
 func (self Instance) QuitOnGoBack() bool {
 	return bool(class(self).IsQuitOnGoBack())
 }
 
+// SetQuitOnGoBack sets the property returned by [IsQuitOnGoBack].
 func (self Instance) SetQuitOnGoBack(value bool) {
 	class(self).SetQuitOnGoBack(value)
 }
 
+/*
+If true, collision shapes will be visible when running the game from the editor for debugging purposes.
+
+Note: This property is not designed to be changed at run-time. Changing the value of [DebugCollisionsHint] while the project is running will not have the desired effect.
+
+[DebugCollisionsHint]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.DebugCollisionsHint
+*/
 func (self Instance) DebugCollisionsHint() bool {
 	return bool(class(self).IsDebuggingCollisionsHint())
 }
 
+// SetDebugCollisionsHint sets the property returned by [IsDebuggingCollisionsHint].
 func (self Instance) SetDebugCollisionsHint(value bool) {
 	class(self).SetDebugCollisionsHint(value)
 }
 
+/*
+If true, curves from [Path2D] and [Path3D] nodes will be visible when running the game from the editor for debugging purposes.
+
+Note: This property is not designed to be changed at run-time. Changing the value of [DebugPathsHint] while the project is running will not have the desired effect.
+
+[DebugPathsHint]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.DebugPathsHint
+[Path2D]: https://pkg.go.dev/graphics.gd/classdb/Path2D
+[Path3D]: https://pkg.go.dev/graphics.gd/classdb/Path3D
+*/
 func (self Instance) DebugPathsHint() bool {
 	return bool(class(self).IsDebuggingPathsHint())
 }
 
+// SetDebugPathsHint sets the property returned by [IsDebuggingPathsHint].
 func (self Instance) SetDebugPathsHint(value bool) {
 	class(self).SetDebugPathsHint(value)
 }
 
+/*
+If true, navigation polygons will be visible when running the game from the editor for debugging purposes.
+
+Note: This property is not designed to be changed at run-time. Changing the value of [DebugNavigationHint] while the project is running will not have the desired effect.
+
+[DebugNavigationHint]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.DebugNavigationHint
+*/
 func (self Instance) DebugNavigationHint() bool {
 	return bool(class(self).IsDebuggingNavigationHint())
 }
 
+// SetDebugNavigationHint sets the property returned by [IsDebuggingNavigationHint].
 func (self Instance) SetDebugNavigationHint(value bool) {
 	class(self).SetDebugNavigationHint(value)
 }
 
+/*
+If true, the scene tree is considered paused. This causes the following behavior:
+
+- 2D and 3D physics will be stopped, as well as collision detection and related signals.
+
+- Depending on each node's [Node.ProcessMode], their [Node.Process], [Node.PhysicsProcess] and [Node.Input] callback methods may not called anymore.
+
+[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
+[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
+[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
+[Node.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
+*/
 func (self Instance) Paused() bool {
 	return bool(class(self).IsPaused())
 }
 
+// SetPaused sets the property returned by [IsPaused].
 func (self Instance) SetPaused(value bool) {
 	class(self).SetPause(value)
 }
 
+/*
+The root of the scene currently being edited in the editor. This is usually a direct child of [Root].
+
+Note: This property does nothing in release builds.
+
+[Root]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Root
+*/
 func (self Instance) EditedSceneRoot() Node.Instance {
 	return Node.Instance(class(self).GetEditedSceneRoot())
 }
 
+// SetEditedSceneRoot sets the property returned by [GetEditedSceneRoot].
 func (self Instance) SetEditedSceneRoot(value Node.Instance) {
 	class(self).SetEditedSceneRoot(value)
 }
 
+/*
+The root node of the currently loaded main scene, usually as a direct child of [Root]. See also [ChangeSceneToFile], [ChangeSceneToPacked], and [ReloadCurrentScene].
+
+Warning: Setting this property directly may not work as expected, as it does not add or remove any nodes from this tree.
+
+[ChangeSceneToFile]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.ChangeSceneToFile
+[ChangeSceneToPacked]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.ChangeSceneToPacked
+[ReloadCurrentScene]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.ReloadCurrentScene
+[Root]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Root
+*/
 func (self Instance) CurrentScene() Node.Instance {
 	return Node.Instance(class(self).GetCurrentScene())
 }
 
+// SetCurrentScene sets the property returned by [GetCurrentScene].
 func (self Instance) SetCurrentScene(value Node.Instance) {
 	class(self).SetCurrentScene(value)
 }
 
+/*
+The tree's root [Window]. This is top-most [Node] of the scene tree, and is always present. An absolute node path always starts from this node. Children of the root node may include the loaded [CurrentScene], as well as any [AutoLoad] configured in the Project Settings.
+
+Warning: Do not delete this node. This will result in unstable behavior, followed by a crash.
+
+[AutoLoad]: https://docs.godotengine.org/tutorials/scripting/singletons_autoload.html
+[CurrentScene]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.CurrentScene
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) Root() Window.Instance {
 	return Window.Instance(class(self).GetRoot())
 }
 
+/*
+If true (default value), enables automatic polling of the [MultiplayerAPI] for this SceneTree during [OnProcessFrame].
+
+If false, you need to manually call [MultiplayerAPI.Poll] to process network packets and deliver RPCs. This allows running RPCs in a different loop (e.g. physics, thread, specific time step) and for manual [Mutex] protection when accessing the [MultiplayerAPI] from threads.
+
+[MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
+[MultiplayerAPI.Poll]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.Poll
+[Mutex]: https://pkg.go.dev/graphics.gd/classdb/Mutex
+[OnProcessFrame]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.OnProcessFrame
+*/
 func (self Instance) MultiplayerPoll() bool {
 	return bool(class(self).IsMultiplayerPollEnabled())
 }
 
+// SetMultiplayerPoll sets the property returned by [IsMultiplayerPollEnabled].
 func (self Instance) SetMultiplayerPoll(value bool) {
 	class(self).SetMultiplayerPollEnabled(value)
 }
 
+/*
+If true, the renderer will interpolate the transforms of objects (both physics and non-physics) between the last two transforms, so that smooth motion is seen even when physics ticks do not coincide with rendered frames.
+
+The default value of this property is controlled by [ProjectSettings] "physics/common/physics_interpolation".
+
+Note: Although this is a global setting, finer control of individual branches of the [SceneTree] is possible using [Node.PhysicsInterpolationMode].
+
+[Node.PhysicsInterpolationMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsInterpolationMode
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
+*/
 func (self Instance) PhysicsInterpolation() bool {
 	return bool(class(self).IsPhysicsInterpolationEnabled())
 }
 
+// SetPhysicsInterpolation sets the property returned by [IsPhysicsInterpolationEnabled].
 func (self Instance) SetPhysicsInterpolation(value bool) {
 	class(self).SetPhysicsInterpolationEnabled(value)
 }
@@ -1192,6 +1297,10 @@ func (self class) IsMultiplayerPollEnabled() bool { //gd:SceneTree.is_multiplaye
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted any time the tree's hierarchy changes (nodes being moved, renamed, etc.).
+*/
 func (self Instance) OnTreeChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1204,6 +1313,11 @@ func (self class) TreeChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeChanged`))))
 }
 
+/*
+Emitted after the new scene is added to scene tree and initialized. Can be used to reliably access [CurrentScene] when changing scenes.
+
+[CurrentScene]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.CurrentScene
+*/
 func (self Instance) OnSceneChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1216,6 +1330,11 @@ func (self class) SceneChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SceneChanged`))))
 }
 
+/*
+Emitted when the [Node.ProcessMode] of any node inside the tree is changed. Only emitted in the editor, to update the visibility of disabled nodes.
+
+[Node.ProcessMode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessMode
+*/
 func (self Instance) OnTreeProcessModeChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1228,6 +1347,9 @@ func (self class) TreeProcessModeChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeProcessModeChanged`))))
 }
 
+/*
+Emitted when the 'node' enters this tree.
+*/
 func (self Instance) OnNodeAdded(cb func(node Node.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1240,6 +1362,9 @@ func (self class) NodeAdded() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeAdded`))))
 }
 
+/*
+Emitted when the 'node' exits this tree.
+*/
 func (self Instance) OnNodeRemoved(cb func(node Node.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1252,6 +1377,11 @@ func (self class) NodeRemoved() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeRemoved`))))
 }
 
+/*
+Emitted when the 'node”s [Node.Name] is changed.
+
+[Node.Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
+*/
 func (self Instance) OnNodeRenamed(cb func(node Node.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1264,6 +1394,11 @@ func (self class) NodeRenamed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeRenamed`))))
 }
 
+/*
+Emitted when the 'node”s [Node.UpdateConfigurationWarnings] is called. Only emitted in the editor.
+
+[Node.UpdateConfigurationWarnings]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UpdateConfigurationWarnings
+*/
 func (self Instance) OnNodeConfigurationWarningChanged(cb func(node Node.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1276,6 +1411,11 @@ func (self class) NodeConfigurationWarningChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NodeConfigurationWarningChanged`))))
 }
 
+/*
+Emitted immediately before [Node.Process] is called on every node in this tree.
+
+[Node.Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Process
+*/
 func (self Instance) OnProcessFrame(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1288,6 +1428,11 @@ func (self class) ProcessFrame() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ProcessFrame`))))
 }
 
+/*
+Emitted immediately before [Node.PhysicsProcess] is called on every node in this tree.
+
+[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
+*/
 func (self Instance) OnPhysicsFrame(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

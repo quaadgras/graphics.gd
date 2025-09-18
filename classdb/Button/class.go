@@ -203,106 +203,162 @@ func New() Instance {
 	return casted
 }
 
+/*
+The button's text that will be displayed inside the button's area.
+*/
 func (self Instance) Text() string {
 	return string(class(self).GetText().String())
 }
 
+// SetText sets the property returned by [GetText].
 func (self Instance) SetText(value string) {
 	class(self).SetText(String.New(value))
 }
 
+/*
+Button's icon, if text is present the icon will be placed before the text.
+
+To edit margin and spacing of the icon, use theme's 'h_separation' theme property and content_margin_* properties of the used [StyleBox]es.
+
+[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
+*/
 func (self Instance) Icon() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetButtonIcon())
 }
 
+// SetIcon sets the property returned by [GetButtonIcon].
 func (self Instance) SetIcon(value Texture2D.Instance) {
 	class(self).SetButtonIcon(value)
 }
 
+/*
+Flat buttons don't display decoration.
+*/
 func (self Instance) Flat() bool {
 	return bool(class(self).IsFlat())
 }
 
+// SetFlat sets the property returned by [IsFlat].
 func (self Instance) SetFlat(value bool) {
 	class(self).SetFlat(value)
 }
 
+/*
+Text alignment policy for the button's text.
+*/
 func (self Instance) Alignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetTextAlignment())
 }
 
+// SetAlignment sets the property returned by [GetTextAlignment].
 func (self Instance) SetAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetTextAlignment(value)
 }
 
+/*
+Sets the clipping behavior when the text exceeds the node's bounding rectangle.
+*/
 func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
 	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
+// SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior].
 func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) {
 	class(self).SetTextOverrunBehavior(value)
 }
 
+/*
+If set to something other than [Textserver.AutowrapOff], the text gets wrapped inside the node's bounding rectangle.
+*/
 func (self Instance) AutowrapMode() TextServer.AutowrapMode {
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
+// SetAutowrapMode sets the property returned by [GetAutowrapMode].
 func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
 	class(self).SetAutowrapMode(value)
 }
 
+/*
+Autowrap space trimming flags. See [Textserver.BreakTrimStartEdgeSpaces] and [Textserver.BreakTrimEndEdgeSpaces] for more info.
+*/
 func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag {
 	return TextServer.LineBreakFlag(class(self).GetAutowrapTrimFlags())
 }
 
+// SetAutowrapTrimFlags sets the property returned by [GetAutowrapTrimFlags].
 func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) {
 	class(self).SetAutowrapTrimFlags(value)
 }
 
+/*
+If true, text that is too large to fit the button is clipped horizontally. If false, the button will always be wide enough to hold the text. The text is not vertically clipped, and the button's height is not affected by this property.
+*/
 func (self Instance) ClipText() bool {
 	return bool(class(self).GetClipText())
 }
 
+// SetClipText sets the property returned by [GetClipText].
 func (self Instance) SetClipText(value bool) {
 	class(self).SetClipText(value)
 }
 
+/*
+Specifies if the icon should be aligned horizontally to the left, right, or center of a button. Uses the same [HorizontalAlignment] constants as the text alignment. If centered horizontally and vertically, text will draw on top of the icon.
+*/
 func (self Instance) IconAlignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetIconAlignment())
 }
 
+// SetIconAlignment sets the property returned by [GetIconAlignment].
 func (self Instance) SetIconAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetIconAlignment(value)
 }
 
+/*
+Specifies if the icon should be aligned vertically to the top, bottom, or center of a button. Uses the same [VerticalAlignment] constants as the text alignment. If centered horizontally and vertically, text will draw on top of the icon.
+*/
 func (self Instance) VerticalIconAlignment() GUI.VerticalAlignment {
 	return GUI.VerticalAlignment(class(self).GetVerticalIconAlignment())
 }
 
+// SetVerticalIconAlignment sets the property returned by [GetVerticalIconAlignment].
 func (self Instance) SetVerticalIconAlignment(value GUI.VerticalAlignment) {
 	class(self).SetVerticalIconAlignment(value)
 }
 
+/*
+When enabled, the button's icon will expand/shrink to fit the button's size while keeping its aspect. See also theme's 'icon_max_width'.
+*/
 func (self Instance) ExpandIcon() bool {
 	return bool(class(self).IsExpandIcon())
 }
 
+// SetExpandIcon sets the property returned by [IsExpandIcon].
 func (self Instance) SetExpandIcon(value bool) {
 	class(self).SetExpandIcon(value)
 }
 
+/*
+Base text writing direction.
+*/
 func (self Instance) TextDirection() Control.TextDirection {
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
+// SetTextDirection sets the property returned by [GetTextDirection].
 func (self Instance) SetTextDirection(value Control.TextDirection) {
 	class(self).SetTextDirection(value)
 }
 
+/*
+Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+*/
 func (self Instance) Language() string {
 	return string(class(self).GetLanguage().String())
 }
 
+// SetLanguage sets the property returned by [GetLanguage].
 func (self Instance) SetLanguage(value string) {
 	class(self).SetLanguage(String.New(value))
 }

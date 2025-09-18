@@ -145,6 +145,9 @@ func New() Instance {
 	return casted
 }
 
+/*
+Emitted when the popup is hidden.
+*/
 func (self Instance) OnPopupHide(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

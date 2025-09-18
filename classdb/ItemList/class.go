@@ -680,130 +680,217 @@ func New() Instance {
 	return casted
 }
 
+/*
+Allows single or multiple item selection. See the [SelectMode] constants.
+*/
 func (self Instance) SelectMode() SelectMode {
 	return SelectMode(class(self).GetSelectMode())
 }
 
+// SetSelectMode sets the property returned by [GetSelectMode].
 func (self Instance) SetSelectMode(value SelectMode) {
 	class(self).SetSelectMode(value)
 }
 
+/*
+If true, the currently selected item can be selected again.
+*/
 func (self Instance) AllowReselect() bool {
 	return bool(class(self).GetAllowReselect())
 }
 
+// SetAllowReselect sets the property returned by [GetAllowReselect].
 func (self Instance) SetAllowReselect(value bool) {
 	class(self).SetAllowReselect(value)
 }
 
+/*
+If true, right mouse button click can select items.
+*/
 func (self Instance) AllowRmbSelect() bool {
 	return bool(class(self).GetAllowRmbSelect())
 }
 
+// SetAllowRmbSelect sets the property returned by [GetAllowRmbSelect].
 func (self Instance) SetAllowRmbSelect(value bool) {
 	class(self).SetAllowRmbSelect(value)
 }
 
+/*
+If true, allows navigating the [ItemList] with letter keys through incremental search.
+
+[ItemList]: https://pkg.go.dev/graphics.gd/classdb/ItemList
+*/
 func (self Instance) AllowSearch() bool {
 	return bool(class(self).GetAllowSearch())
 }
 
+// SetAllowSearch sets the property returned by [GetAllowSearch].
 func (self Instance) SetAllowSearch(value bool) {
 	class(self).SetAllowSearch(value)
 }
 
+/*
+Maximum lines of text allowed in each item. Space will be reserved even when there is not enough lines of text to display.
+
+Note: This property takes effect only when [IconMode] is [IconModeTop]. To make the text wrap, [FixedColumnWidth] should be greater than zero.
+
+[FixedColumnWidth]: https://pkg.go.dev/graphics.gd/classdb/ItemList#Instance.FixedColumnWidth
+[IconMode]: https://pkg.go.dev/graphics.gd/classdb/ItemList#Instance.IconMode
+*/
 func (self Instance) MaxTextLines() int {
 	return int(int(class(self).GetMaxTextLines()))
 }
 
+// SetMaxTextLines sets the property returned by [GetMaxTextLines].
 func (self Instance) SetMaxTextLines(value int) {
 	class(self).SetMaxTextLines(int64(value))
 }
 
+/*
+If true, the control will automatically resize the width to fit its content.
+*/
 func (self Instance) AutoWidth() bool {
 	return bool(class(self).HasAutoWidth())
 }
 
+// SetAutoWidth sets the property returned by [HasAutoWidth].
 func (self Instance) SetAutoWidth(value bool) {
 	class(self).SetAutoWidth(value)
 }
 
+/*
+If true, the control will automatically resize the height to fit its content.
+*/
 func (self Instance) AutoHeight() bool {
 	return bool(class(self).HasAutoHeight())
 }
 
+// SetAutoHeight sets the property returned by [HasAutoHeight].
 func (self Instance) SetAutoHeight(value bool) {
 	class(self).SetAutoHeight(value)
 }
 
+/*
+The clipping behavior when the text exceeds an item's bounding rectangle.
+*/
 func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
 	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
+// SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior].
 func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) {
 	class(self).SetTextOverrunBehavior(value)
 }
 
+/*
+If true, the control will automatically move items into a new row to fit its content. See also [HFlowContainer] for this behavior.
+
+If false, the control will add a horizontal scrollbar to make all items visible.
+
+[HFlowContainer]: https://pkg.go.dev/graphics.gd/classdb/HFlowContainer
+*/
 func (self Instance) WraparoundItems() bool {
 	return bool(class(self).HasWraparoundItems())
 }
 
+// SetWraparoundItems sets the property returned by [HasWraparoundItems].
 func (self Instance) SetWraparoundItems(value bool) {
 	class(self).SetWraparoundItems(value)
 }
 
+/*
+The number of items currently in the list.
+*/
 func (self Instance) ItemCount() int {
 	return int(int(class(self).GetItemCount()))
 }
 
+// SetItemCount sets the property returned by [GetItemCount].
 func (self Instance) SetItemCount(value int) {
 	class(self).SetItemCount(int64(value))
 }
 
+/*
+Maximum columns the list will have.
+
+If greater than zero, the content will be split among the specified columns.
+
+A value of zero means unlimited columns, i.e. all items will be put in the same row.
+*/
 func (self Instance) MaxColumns() int {
 	return int(int(class(self).GetMaxColumns()))
 }
 
+// SetMaxColumns sets the property returned by [GetMaxColumns].
 func (self Instance) SetMaxColumns(value int) {
 	class(self).SetMaxColumns(int64(value))
 }
 
+/*
+Whether all columns will have the same width.
+
+If true, the width is equal to the largest column width of all columns.
+*/
 func (self Instance) SameColumnWidth() bool {
 	return bool(class(self).IsSameColumnWidth())
 }
 
+// SetSameColumnWidth sets the property returned by [IsSameColumnWidth].
 func (self Instance) SetSameColumnWidth(value bool) {
 	class(self).SetSameColumnWidth(value)
 }
 
+/*
+The width all columns will be adjusted to.
+
+A value of zero disables the adjustment, each item will have a width equal to the width of its content and the columns will have an uneven width.
+*/
 func (self Instance) FixedColumnWidth() int {
 	return int(int(class(self).GetFixedColumnWidth()))
 }
 
+// SetFixedColumnWidth sets the property returned by [GetFixedColumnWidth].
 func (self Instance) SetFixedColumnWidth(value int) {
 	class(self).SetFixedColumnWidth(int64(value))
 }
 
+/*
+The icon position, whether above or to the left of the text. See the [IconMode] constants.
+*/
 func (self Instance) IconMode() IconMode {
 	return IconMode(class(self).GetIconMode())
 }
 
+// SetIconMode sets the property returned by [GetIconMode].
 func (self Instance) SetIconMode(value IconMode) {
 	class(self).SetIconMode(value)
 }
 
+/*
+The scale of icon applied after [FixedIconSize] and transposing takes effect.
+
+[FixedIconSize]: https://pkg.go.dev/graphics.gd/classdb/ItemList#Instance.FixedIconSize
+*/
 func (self Instance) IconScale() Float.X {
 	return Float.X(Float.X(class(self).GetIconScale()))
 }
 
+// SetIconScale sets the property returned by [GetIconScale].
 func (self Instance) SetIconScale(value Float.X) {
 	class(self).SetIconScale(float64(value))
 }
 
+/*
+The size all icons will be adjusted to.
+
+If either X or Y component is not greater than zero, icon size won't be affected.
+*/
 func (self Instance) FixedIconSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetFixedIconSize())
 }
 
+// SetFixedIconSize sets the property returned by [GetFixedIconSize].
 func (self Instance) SetFixedIconSize(value Vector2i.XY) {
 	class(self).SetFixedIconSize(Vector2i.XY(value))
 }
@@ -1537,6 +1624,14 @@ Forces an update to the list size based on its items. This happens automatically
 func (self class) ForceUpdateListSize() { //gd:ItemList.force_update_list_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_update_list_size, 0, &struct{}{})
 }
+
+/*
+Emitted when specified item has been selected. Only applicable in single selection mode.
+
+[AllowReselect] must be enabled to reselect an item.
+
+[AllowReselect]: https://pkg.go.dev/graphics.gd/classdb/ItemList#Instance.AllowReselect
+*/
 func (self Instance) OnItemSelected(cb func(index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1549,6 +1644,11 @@ func (self class) ItemSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemSelected`))))
 }
 
+/*
+Emitted when any mouse click is issued within the rect of the list but on empty space.
+
+'at_position' is the click position in this control's local coordinate system.
+*/
 func (self Instance) OnEmptyClicked(cb func(at_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1561,6 +1661,11 @@ func (self class) EmptyClicked() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EmptyClicked`))))
 }
 
+/*
+Emitted when specified list item has been clicked with any mouse button.
+
+'at_position' is the click position in this control's local coordinate system.
+*/
 func (self Instance) OnItemClicked(cb func(index int, at_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1573,6 +1678,9 @@ func (self class) ItemClicked() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemClicked`))))
 }
 
+/*
+Emitted when a multiple selection is altered on a list allowing multiple selection.
+*/
 func (self Instance) OnMultiSelected(cb func(index int, selected bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1585,6 +1693,9 @@ func (self class) MultiSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MultiSelected`))))
 }
 
+/*
+Emitted when specified list item is activated via double-clicking or by pressing Enter.
+*/
 func (self Instance) OnItemActivated(cb func(index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

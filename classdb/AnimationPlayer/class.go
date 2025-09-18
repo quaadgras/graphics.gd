@@ -653,90 +653,164 @@ func New() Instance {
 	return casted
 }
 
+/*
+The key of the currently playing animation. If no animation is playing, the property's value is an empty string. Changing this value does not restart the animation. See [Play] for more information on playing animations.
+
+Note: While this property appears in the Inspector, it's not meant to be edited, and it's not saved in the scene. This property is mainly used to get the currently playing animation, and internally for animation playback tracks. For more information, see [Animation].
+
+[Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
+[Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
+*/
 func (self Instance) CurrentAnimation() string {
 	return string(class(self).GetCurrentAnimation().String())
 }
 
+// SetCurrentAnimation sets the property returned by [GetCurrentAnimation].
 func (self Instance) SetCurrentAnimation(value string) {
 	class(self).SetCurrentAnimation(String.New(value))
 }
 
+/*
+If playing, the current animation's key, otherwise, the animation last played. When set, this changes the animation, but will not play it unless already playing. See also [CurrentAnimation].
+
+[CurrentAnimation]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.CurrentAnimation
+*/
 func (self Instance) AssignedAnimation() string {
 	return string(class(self).GetAssignedAnimation().String())
 }
 
+// SetAssignedAnimation sets the property returned by [GetAssignedAnimation].
 func (self Instance) SetAssignedAnimation(value string) {
 	class(self).SetAssignedAnimation(String.New(value))
 }
 
+/*
+The key of the animation to play when the scene loads.
+*/
 func (self Instance) Autoplay() string {
 	return string(class(self).GetAutoplay().String())
 }
 
+// SetAutoplay sets the property returned by [GetAutoplay].
 func (self Instance) SetAutoplay(value string) {
 	class(self).SetAutoplay(String.New(value))
 }
 
+/*
+The length (in seconds) of the currently playing animation.
+*/
 func (self Instance) CurrentAnimationLength() Float.X {
 	return Float.X(Float.X(class(self).GetCurrentAnimationLength()))
 }
 
+/*
+The position (in seconds) of the currently playing animation.
+*/
 func (self Instance) CurrentAnimationPosition() Float.X {
 	return Float.X(Float.X(class(self).GetCurrentAnimationPosition()))
 }
 
+/*
+If true, performs [AnimationMixer.Capture] before playback automatically. This means just [PlayWithCapture] is executed with default arguments instead of [Play].
+
+Note: Capture interpolation is only performed if the animation contains a capture track. See also [Animation.UpdateCapture].
+
+[AnimationMixer.Capture]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.Capture
+[Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
+[PlayWithCapture]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlayWithCapture
+*/
 func (self Instance) PlaybackAutoCapture() bool {
 	return bool(class(self).IsAutoCapture())
 }
 
+// SetPlaybackAutoCapture sets the property returned by [IsAutoCapture].
 func (self Instance) SetPlaybackAutoCapture(value bool) {
 	class(self).SetAutoCapture(value)
 }
 
+/*
+See also [PlayWithCapture] and [AnimationMixer.Capture].
+
+If [PlaybackAutoCaptureDuration] is negative value, the duration is set to the interval between the current position and the first key.
+
+[AnimationMixer.Capture]: https://pkg.go.dev/graphics.gd/classdb/AnimationMixer#Instance.Capture
+[PlayWithCapture]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlayWithCapture
+[PlaybackAutoCaptureDuration]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.PlaybackAutoCaptureDuration
+*/
 func (self Instance) PlaybackAutoCaptureDuration() Float.X {
 	return Float.X(Float.X(class(self).GetAutoCaptureDuration()))
 }
 
+// SetPlaybackAutoCaptureDuration sets the property returned by [GetAutoCaptureDuration].
 func (self Instance) SetPlaybackAutoCaptureDuration(value Float.X) {
 	class(self).SetAutoCaptureDuration(float64(value))
 }
 
+/*
+The transition type of the capture interpolation. See also [Tween.TransitionType].
+*/
 func (self Instance) PlaybackAutoCaptureTransitionType() Tween.TransitionType {
 	return Tween.TransitionType(class(self).GetAutoCaptureTransitionType())
 }
 
+// SetPlaybackAutoCaptureTransitionType sets the property returned by [GetAutoCaptureTransitionType].
 func (self Instance) SetPlaybackAutoCaptureTransitionType(value Tween.TransitionType) {
 	class(self).SetAutoCaptureTransitionType(value)
 }
 
+/*
+The ease type of the capture interpolation. See also [Tween.EaseType].
+*/
 func (self Instance) PlaybackAutoCaptureEaseType() Tween.EaseType {
 	return Tween.EaseType(class(self).GetAutoCaptureEaseType())
 }
 
+// SetPlaybackAutoCaptureEaseType sets the property returned by [GetAutoCaptureEaseType].
 func (self Instance) SetPlaybackAutoCaptureEaseType(value Tween.EaseType) {
 	class(self).SetAutoCaptureEaseType(value)
 }
 
+/*
+The default time in which to blend animations. Ranges from 0 to 4096 with 0.01 precision.
+*/
 func (self Instance) PlaybackDefaultBlendTime() Float.X {
 	return Float.X(Float.X(class(self).GetDefaultBlendTime()))
 }
 
+// SetPlaybackDefaultBlendTime sets the property returned by [GetDefaultBlendTime].
 func (self Instance) SetPlaybackDefaultBlendTime(value Float.X) {
 	class(self).SetDefaultBlendTime(float64(value))
 }
 
+/*
+The speed scaling ratio. For example, if this value is 1, then the animation plays at normal speed. If it's 0.5, then it plays at half speed. If it's 2, then it plays at double speed.
+
+If set to a negative value, the animation is played in reverse. If set to 0, the animation will not advance.
+*/
 func (self Instance) SpeedScale() Float.X {
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
+// SetSpeedScale sets the property returned by [GetSpeedScale].
 func (self Instance) SetSpeedScale(value Float.X) {
 	class(self).SetSpeedScale(float64(value))
 }
 
+/*
+If true and the engine is running in Movie Maker mode (see [MovieWriter]), exits the engine with [SceneTree.Quit] as soon as an animation is done playing in this [AnimationPlayer]. A message is printed when the engine quits for this reason.
+
+Note: This obeys the same logic as the [OnAnimationmixer.AnimationFinished] signal, so it will not quit the engine if the animation is set to be looping.
+
+[AnimationPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer
+[MovieWriter]: https://pkg.go.dev/graphics.gd/classdb/MovieWriter
+[OnAnimationmixer.AnimationFinished]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.OnAnimationmixer.AnimationFinished
+[SceneTree.Quit]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.Quit
+*/
 func (self Instance) MovieQuitOnFinish() bool {
 	return bool(class(self).IsMovieQuitOnFinishEnabled())
 }
 
+// SetMovieQuitOnFinish sets the property returned by [IsMovieQuitOnFinishEnabled].
 func (self Instance) SetMovieQuitOnFinish(value bool) {
 	class(self).SetMovieQuitOnFinishEnabled(value)
 }
@@ -1288,6 +1362,12 @@ func (self class) GetRoot() Path.ToNode { //gd:AnimationPlayer.get_root
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }
+
+/*
+Emitted when [CurrentAnimation] changes.
+
+[CurrentAnimation]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.CurrentAnimation
+*/
 func (self Instance) OnCurrentAnimationChanged(cb func(name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1300,6 +1380,15 @@ func (self class) CurrentAnimationChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CurrentAnimationChanged`))))
 }
 
+/*
+Emitted when a queued animation plays after the previous animation finished. See also [AnimationPlayer.Queue].
+
+Note: The signal is not emitted when the animation is changed via [AnimationPlayer.Play] or by an [AnimationTree].
+
+[AnimationPlayer.Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
+[AnimationPlayer.Queue]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Queue
+[AnimationTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree
+*/
 func (self Instance) OnAnimationChanged(cb func(old_name string, new_name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -147,10 +147,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The dimensions of the quad.
+*/
 func (self Instance) QuadSize() Vector2.XY {
 	return Vector2.XY(class(self).GetQuadSize())
 }
 
+// SetQuadSize sets the property returned by [GetQuadSize].
 func (self Instance) SetQuadSize(value Vector2.XY) {
 	class(self).SetQuadSize(Vector2.XY(value))
 }

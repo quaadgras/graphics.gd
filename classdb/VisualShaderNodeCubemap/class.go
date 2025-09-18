@@ -149,26 +149,41 @@ func New() Instance {
 	return casted
 }
 
+/*
+Defines which source should be used for the sampling.
+*/
 func (self Instance) Source() Source {
 	return Source(class(self).GetSource())
 }
 
+// SetSource sets the property returned by [GetSource].
 func (self Instance) SetSource(value Source) {
 	class(self).SetSource(value)
 }
 
+/*
+The [Cubemap] texture to sample when using [SourceTexture] as [Source].
+
+[Cubemap]: https://pkg.go.dev/graphics.gd/classdb/Cubemap
+[Source]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeCubemap#Instance.Source
+*/
 func (self Instance) CubeMap() TextureLayered.Instance {
 	return TextureLayered.Instance(class(self).GetCubeMap())
 }
 
+// SetCubeMap sets the property returned by [GetCubeMap].
 func (self Instance) SetCubeMap(value TextureLayered.Instance) {
 	class(self).SetCubeMap(value)
 }
 
+/*
+Defines the type of data provided by the source texture.
+*/
 func (self Instance) TextureType() TextureType {
 	return TextureType(class(self).GetTextureType())
 }
 
+// SetTextureType sets the property returned by [GetTextureType].
 func (self Instance) SetTextureType(value TextureType) {
 	class(self).SetTextureType(value)
 }

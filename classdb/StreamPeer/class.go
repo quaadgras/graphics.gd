@@ -488,10 +488,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, this [StreamPeer] will using big-endian format for encoding and decoding.
+
+[StreamPeer]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer
+*/
 func (self Instance) BigEndian() bool {
 	return bool(class(self).IsBigEndianEnabled())
 }
 
+// SetBigEndian sets the property returned by [IsBigEndianEnabled].
 func (self Instance) SetBigEndian(value bool) {
 	class(self).SetBigEndian(value)
 }

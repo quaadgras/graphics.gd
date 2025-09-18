@@ -169,74 +169,114 @@ func New() Instance {
 	return casted
 }
 
+/*
+Action set for which this dpad binding modifier is active.
+*/
 func (self Instance) ActionSet() OpenXRActionSet.Instance {
 	return OpenXRActionSet.Instance(class(self).GetActionSet())
 }
 
+// SetActionSet sets the property returned by [GetActionSet].
 func (self Instance) SetActionSet(value OpenXRActionSet.Instance) {
 	class(self).SetActionSet(value)
 }
 
+/*
+Input path for this dpad binding modifier.
+*/
 func (self Instance) InputPath() string {
 	return string(class(self).GetInputPath().String())
 }
 
+// SetInputPath sets the property returned by [GetInputPath].
 func (self Instance) SetInputPath(value string) {
 	class(self).SetInputPath(String.New(value))
 }
 
+/*
+When our input value is equal or larger than this value, our dpad in that direction becomes true. It stays true until it falls under the [ThresholdReleased] value.
+
+[ThresholdReleased]: https://pkg.go.dev/graphics.gd/classdb/OpenXRDpadBindingModifier#Instance.ThresholdReleased
+*/
 func (self Instance) Threshold() Float.X {
 	return Float.X(Float.X(class(self).GetThreshold()))
 }
 
+// SetThreshold sets the property returned by [GetThreshold].
 func (self Instance) SetThreshold(value Float.X) {
 	class(self).SetThreshold(float64(value))
 }
 
+/*
+When our input value falls below this, our output becomes false.
+*/
 func (self Instance) ThresholdReleased() Float.X {
 	return Float.X(Float.X(class(self).GetThresholdReleased()))
 }
 
+// SetThresholdReleased sets the property returned by [GetThresholdReleased].
 func (self Instance) SetThresholdReleased(value Float.X) {
 	class(self).SetThresholdReleased(float64(value))
 }
 
+/*
+Center region in which our center position of our dpad return true.
+*/
 func (self Instance) CenterRegion() Float.X {
 	return Float.X(Float.X(class(self).GetCenterRegion()))
 }
 
+// SetCenterRegion sets the property returned by [GetCenterRegion].
 func (self Instance) SetCenterRegion(value Float.X) {
 	class(self).SetCenterRegion(float64(value))
 }
 
+/*
+The angle of each wedge that identifies the 4 directions of the emulated dpad.
+*/
 func (self Instance) WedgeAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetWedgeAngle()))
 }
 
+// SetWedgeAngle sets the property returned by [GetWedgeAngle].
 func (self Instance) SetWedgeAngle(value Angle.Radians) {
 	class(self).SetWedgeAngle(float64(value))
 }
 
+/*
+If false, when the joystick enters a new dpad zone this becomes true.
+
+If true, when the joystick remains in active dpad zone, this remains true even if we overlap with another zone.
+*/
 func (self Instance) IsSticky() bool {
 	return bool(class(self).GetIsSticky())
 }
 
+// SetIsSticky sets the property returned by [GetIsSticky].
 func (self Instance) SetIsSticky(value bool) {
 	class(self).SetIsSticky(value)
 }
 
+/*
+Haptic pulse to emit when the user presses the input.
+*/
 func (self Instance) OnHaptic() OpenXRHapticBase.Instance {
 	return OpenXRHapticBase.Instance(class(self).GetOnHaptic())
 }
 
+// SetOnHaptic sets the property returned by [GetOnHaptic].
 func (self Instance) SetOnHaptic(value OpenXRHapticBase.Instance) {
 	class(self).SetOnHaptic(value)
 }
 
+/*
+Haptic pulse to emit when the user releases the input.
+*/
 func (self Instance) OffHaptic() OpenXRHapticBase.Instance {
 	return OpenXRHapticBase.Instance(class(self).GetOffHaptic())
 }
 
+// SetOffHaptic sets the property returned by [GetOffHaptic].
 func (self Instance) SetOffHaptic(value OpenXRHapticBase.Instance) {
 	class(self).SetOffHaptic(value)
 }

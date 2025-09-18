@@ -203,58 +203,108 @@ func New() Instance {
 	return casted
 }
 
+/*
+The dynamic range to use (1.0 represents a low dynamic range scene brightness). Higher values can be used to provide brighter indirect lighting, at the cost of more visible color banding in dark areas (both in indirect lighting and reflections). To avoid color banding, it's recommended to use the lowest value that does not result in visible light clipping.
+*/
 func (self Instance) DynamicRange() Float.X {
 	return Float.X(Float.X(class(self).GetDynamicRange()))
 }
 
+// SetDynamicRange sets the property returned by [GetDynamicRange].
 func (self Instance) SetDynamicRange(value Float.X) {
 	class(self).SetDynamicRange(float64(value))
 }
 
+/*
+The energy of the indirect lighting and reflections produced by the [VoxelGI] node. Higher values result in brighter indirect lighting. If indirect lighting looks too flat, try decreasing [Propagation] while increasing [Energy] at the same time. See also [UseTwoBounces] which influences the indirect lighting's effective brightness.
+
+[Energy]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Energy
+[Propagation]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Propagation
+[UseTwoBounces]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.UseTwoBounces
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
+*/
 func (self Instance) Energy() Float.X {
 	return Float.X(Float.X(class(self).GetEnergy()))
 }
 
+// SetEnergy sets the property returned by [GetEnergy].
 func (self Instance) SetEnergy(value Float.X) {
 	class(self).SetEnergy(float64(value))
 }
 
+/*
+The normal bias to use for indirect lighting and reflections. Higher values reduce self-reflections visible in non-rough materials, at the cost of more visible light leaking and flatter-looking indirect lighting. To prioritize hiding self-reflections over lighting quality, set [Bias] to 0.0 and [NormalBias] to a value between 1.0 and 2.0.
+
+[Bias]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Bias
+[NormalBias]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.NormalBias
+*/
 func (self Instance) Bias() Float.X {
 	return Float.X(Float.X(class(self).GetBias()))
 }
 
+// SetBias sets the property returned by [GetBias].
 func (self Instance) SetBias(value Float.X) {
 	class(self).SetBias(float64(value))
 }
 
+/*
+The normal bias to use for indirect lighting and reflections. Higher values reduce self-reflections visible in non-rough materials, at the cost of more visible light leaking and flatter-looking indirect lighting. See also [Bias]. To prioritize hiding self-reflections over lighting quality, set [Bias] to 0.0 and [NormalBias] to a value between 1.0 and 2.0.
+
+[Bias]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Bias
+[NormalBias]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.NormalBias
+*/
 func (self Instance) NormalBias() Float.X {
 	return Float.X(Float.X(class(self).GetNormalBias()))
 }
 
+// SetNormalBias sets the property returned by [GetNormalBias].
 func (self Instance) SetNormalBias(value Float.X) {
 	class(self).SetNormalBias(float64(value))
 }
 
+/*
+The multiplier to use when light bounces off a surface. Higher values result in brighter indirect lighting. If indirect lighting looks too flat, try decreasing [Propagation] while increasing [Energy] at the same time. See also [UseTwoBounces] which influences the indirect lighting's effective brightness.
+
+[Energy]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Energy
+[Propagation]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Propagation
+[UseTwoBounces]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.UseTwoBounces
+*/
 func (self Instance) Propagation() Float.X {
 	return Float.X(Float.X(class(self).GetPropagation()))
 }
 
+// SetPropagation sets the property returned by [GetPropagation].
 func (self Instance) SetPropagation(value Float.X) {
 	class(self).SetPropagation(float64(value))
 }
 
+/*
+If true, performs two bounces of indirect lighting instead of one. This makes indirect lighting look more natural and brighter at a small performance cost. The second bounce is also visible in reflections. If the scene appears too bright after enabling [UseTwoBounces], adjust [Propagation] and [Energy].
+
+[Energy]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Energy
+[Propagation]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.Propagation
+[UseTwoBounces]: https://pkg.go.dev/graphics.gd/classdb/VoxelGIData#Instance.UseTwoBounces
+*/
 func (self Instance) UseTwoBounces() bool {
 	return bool(class(self).IsUsingTwoBounces())
 }
 
+// SetUseTwoBounces sets the property returned by [IsUsingTwoBounces].
 func (self Instance) SetUseTwoBounces(value bool) {
 	class(self).SetUseTwoBounces(value)
 }
 
+/*
+If true, [Environment] lighting is ignored by the [VoxelGI] node. If false, [Environment] lighting is taken into account by the [VoxelGI] node. [Environment] lighting updates in real-time, which means it can be changed without having to bake the [VoxelGI] node again.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
+*/
 func (self Instance) Interior() bool {
 	return bool(class(self).IsInterior())
 }
 
+// SetInterior sets the property returned by [IsInterior].
 func (self Instance) SetInterior(value bool) {
 	class(self).SetInterior(value)
 }

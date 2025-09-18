@@ -153,10 +153,17 @@ func New() Instance {
 	return casted
 }
 
+/*
+The maximum distance from the camera center objects can be before their shadows are culled (in pixels). Decreasing this value can prevent objects located outside the camera from casting shadows (while also improving performance). [Camera2D.Zoom] is not taken into account by [MaxDistance], which means that at higher zoom values, shadows will appear to fade out sooner when zooming onto a given point.
+
+[Camera2D.Zoom]: https://pkg.go.dev/graphics.gd/classdb/Camera2D#Instance.Zoom
+[MaxDistance]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight2D#Instance.MaxDistance
+*/
 func (self Instance) MaxDistance() Float.X {
 	return Float.X(Float.X(class(self).GetMaxDistance()))
 }
 
+// SetMaxDistance sets the property returned by [GetMaxDistance].
 func (self Instance) SetMaxDistance(value Float.X) {
 	class(self).SetMaxDistance(float64(value))
 }

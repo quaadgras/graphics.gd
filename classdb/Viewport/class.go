@@ -783,394 +783,747 @@ func New() Instance {
 	return casted
 }
 
+/*
+Disable 3D rendering (but keep 2D rendering).
+*/
 func (self Instance) Disable3d() bool {
 	return bool(class(self).Is3dDisabled())
 }
 
+// SetDisable3d sets the property returned by [Is3dDisabled].
 func (self Instance) SetDisable3d(value bool) {
 	class(self).SetDisable3d(value)
 }
 
+/*
+If true, the viewport will use the primary XR interface to render XR output. When applicable this can result in a stereoscopic image and the resulting render being output to a headset.
+*/
 func (self Instance) UseXr() bool {
 	return bool(class(self).IsUsingXr())
 }
 
+// SetUseXr sets the property returned by [IsUsingXr].
 func (self Instance) SetUseXr(value bool) {
 	class(self).SetUseXr(value)
 }
 
+/*
+If true, the viewport will use a unique copy of the [World3D] defined in [World3d].
+
+[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
+[World3d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.World3d
+*/
 func (self Instance) OwnWorld3d() bool {
 	return bool(class(self).IsUsingOwnWorld3d())
 }
 
+// SetOwnWorld3d sets the property returned by [IsUsingOwnWorld3d].
 func (self Instance) SetOwnWorld3d(value bool) {
 	class(self).SetUseOwnWorld3d(value)
 }
 
+/*
+The custom [World3D] which can be used as 3D environment source.
+
+[World3D]: https://pkg.go.dev/graphics.gd/classdb/World3D
+*/
 func (self Instance) World3d() World3D.Instance {
 	return World3D.Instance(class(self).GetWorld3d())
 }
 
+// SetWorld3d sets the property returned by [GetWorld3d].
 func (self Instance) SetWorld3d(value World3D.Instance) {
 	class(self).SetWorld3d(value)
 }
 
+/*
+The custom [World2D] which can be used as 2D environment source.
+
+[World2D]: https://pkg.go.dev/graphics.gd/classdb/World2D
+*/
 func (self Instance) World2d() World2D.Instance {
 	return World2D.Instance(class(self).GetWorld2d())
 }
 
+// SetWorld2d sets the property returned by [GetWorld2d].
 func (self Instance) SetWorld2d(value World2D.Instance) {
 	class(self).SetWorld2d(value)
 }
 
+/*
+If true, the viewport should render its background as transparent.
+*/
 func (self Instance) TransparentBg() bool {
 	return bool(class(self).HasTransparentBackground())
 }
 
+// SetTransparentBg sets the property returned by [HasTransparentBackground].
 func (self Instance) SetTransparentBg(value bool) {
 	class(self).SetTransparentBackground(value)
 }
 
+/*
+If true, this viewport will mark incoming input events as handled by itself. If false, this is instead done by the first parent viewport that is set to handle input locally.
+
+A [SubViewportContainer] will automatically set this property to false for the [Viewport] contained inside of it.
+
+See also [SetInputAsHandled] and [IsInputHandled].
+
+[IsInputHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.IsInputHandled
+[SetInputAsHandled]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.SetInputAsHandled
+[SubViewportContainer]: https://pkg.go.dev/graphics.gd/classdb/SubViewportContainer
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+*/
 func (self Instance) HandleInputLocally() bool {
 	return bool(class(self).IsHandlingInputLocally())
 }
 
+// SetHandleInputLocally sets the property returned by [IsHandlingInputLocally].
 func (self Instance) SetHandleInputLocally(value bool) {
 	class(self).SetHandleInputLocally(value)
 }
 
+/*
+If true, [CanvasItem] nodes will internally snap to full pixels. Their position can still be sub-pixel, but the decimals will not have effect. This can lead to a crisper appearance at the cost of less smooth movement, especially when [Camera2D] smoothing is enabled.
+
+[Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+*/
 func (self Instance) Snap2dTransformsToPixel() bool {
 	return bool(class(self).IsSnap2dTransformsToPixelEnabled())
 }
 
+// SetSnap2dTransformsToPixel sets the property returned by [IsSnap2dTransformsToPixelEnabled].
 func (self Instance) SetSnap2dTransformsToPixel(value bool) {
 	class(self).SetSnap2dTransformsToPixel(value)
 }
 
+/*
+If true, vertices of [CanvasItem] nodes will snap to full pixels. Only affects the final vertex positions, not the transforms. This can lead to a crisper appearance at the cost of less smooth movement, especially when [Camera2D] smoothing is enabled.
+
+[Camera2D]: https://pkg.go.dev/graphics.gd/classdb/Camera2D
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+*/
 func (self Instance) Snap2dVerticesToPixel() bool {
 	return bool(class(self).IsSnap2dVerticesToPixelEnabled())
 }
 
+// SetSnap2dVerticesToPixel sets the property returned by [IsSnap2dVerticesToPixelEnabled].
 func (self Instance) SetSnap2dVerticesToPixel(value bool) {
 	class(self).SetSnap2dVerticesToPixel(value)
 }
 
+/*
+The multisample antialiasing mode for 2D/Canvas rendering. A higher number results in smoother edges at the cost of significantly worse performance. A value of [Viewport.Msaa2x] or [Viewport.Msaa4x] is best unless targeting very high-end systems. This has no effect on shader-induced aliasing or texture aliasing.
+
+See also [ProjectSettings] "rendering/anti_aliasing/quality/msaa_2d" and [RenderingServer.ViewportSetMsaa2d].
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[RenderingServer.ViewportSetMsaa2d]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#ViewportSetMsaa2d
+*/
 func (self Instance) Msaa2d() MSAA {
 	return MSAA(class(self).GetMsaa2d())
 }
 
+// SetMsaa2d sets the property returned by [GetMsaa2d].
 func (self Instance) SetMsaa2d(value MSAA) {
 	class(self).SetMsaa2d(value)
 }
 
+/*
+The multisample antialiasing mode for 3D rendering. A higher number results in smoother edges at the cost of significantly worse performance. A value of [Viewport.Msaa2x] or [Viewport.Msaa4x] is best unless targeting very high-end systems. See also bilinear scaling 3D [Scaling3dMode] for supersampling, which provides higher quality but is much more expensive. This has no effect on shader-induced aliasing or texture aliasing.
+
+See also [ProjectSettings] "rendering/anti_aliasing/quality/msaa_3d" and [RenderingServer.ViewportSetMsaa3d].
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[RenderingServer.ViewportSetMsaa3d]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#ViewportSetMsaa3d
+[Scaling3dMode]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Scaling3dMode
+*/
 func (self Instance) Msaa3d() MSAA {
 	return MSAA(class(self).GetMsaa3d())
 }
 
+// SetMsaa3d sets the property returned by [GetMsaa3d].
 func (self Instance) SetMsaa3d(value MSAA) {
 	class(self).SetMsaa3d(value)
 }
 
+/*
+Sets the screen-space antialiasing method used. Screen-space antialiasing works by selectively blurring edges in a post-process shader. It differs from MSAA which takes multiple coverage samples while rendering objects. Screen-space AA methods are typically faster than MSAA and will smooth out specular aliasing, but tend to make scenes appear blurry.
+
+See also [ProjectSettings] "rendering/anti_aliasing/quality/screen_space_aa" and [RenderingServer.ViewportSetScreenSpaceAa].
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[RenderingServer.ViewportSetScreenSpaceAa]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#ViewportSetScreenSpaceAa
+*/
 func (self Instance) ScreenSpaceAa() ScreenSpaceAA {
 	return ScreenSpaceAA(class(self).GetScreenSpaceAa())
 }
 
+// SetScreenSpaceAa sets the property returned by [GetScreenSpaceAa].
 func (self Instance) SetScreenSpaceAa(value ScreenSpaceAA) {
 	class(self).SetScreenSpaceAa(value)
 }
 
+/*
+Enables temporal antialiasing for this viewport. TAA works by jittering the camera and accumulating the images of the last rendered frames, motion vector rendering is used to account for camera and object motion.
+
+Note: The implementation is not complete yet, some visual instances such as particles and skinned meshes may show artifacts.
+
+See also [ProjectSettings] "rendering/anti_aliasing/quality/use_taa" and [RenderingServer.ViewportSetUseTaa].
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[RenderingServer.ViewportSetUseTaa]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#ViewportSetUseTaa
+*/
 func (self Instance) UseTaa() bool {
 	return bool(class(self).IsUsingTaa())
 }
 
+// SetUseTaa sets the property returned by [IsUsingTaa].
 func (self Instance) SetUseTaa(value bool) {
 	class(self).SetUseTaa(value)
 }
 
+/*
+If true, uses a fast post-processing filter to make banding significantly less visible. If [UseHdr2d] is false, 2D rendering is not affected by debanding unless the [Environment.BackgroundMode] is [Environment.BgCanvas]. If [UseHdr2d] is true, debanding will only be applied if this is the root [Viewport] and will affect all 2D and 3D rendering, including canvas items.
+
+In some cases, debanding may introduce a slightly noticeable dithering pattern. It's recommended to enable debanding only when actually needed since the dithering pattern will make lossless-compressed screenshots larger.
+
+See also [ProjectSettings] "rendering/anti_aliasing/quality/use_debanding" and [RenderingServer.ViewportSetUseDebanding].
+
+[Environment.BackgroundMode]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.BackgroundMode
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[RenderingServer.ViewportSetUseDebanding]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#ViewportSetUseDebanding
+[UseHdr2d]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseHdr2d
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+*/
 func (self Instance) UseDebanding() bool {
 	return bool(class(self).IsUsingDebanding())
 }
 
+// SetUseDebanding sets the property returned by [IsUsingDebanding].
 func (self Instance) SetUseDebanding(value bool) {
 	class(self).SetUseDebanding(value)
 }
 
+/*
+If true, [OccluderInstance3D] nodes will be usable for occlusion culling in 3D for this viewport. For the root viewport, [ProjectSettings] "rendering/occlusion_culling/use_occlusion_culling" must be set to true instead.
+
+Note: Enabling occlusion culling has a cost on the CPU. Only enable occlusion culling if you actually plan to use it, and think whether your scene can actually benefit from occlusion culling. Large, open scenes with few or no objects blocking the view will generally not benefit much from occlusion culling. Large open scenes generally benefit more from mesh LOD and visibility ranges ([GeometryInstance3D.VisibilityRangeBegin] and [GeometryInstance3D.VisibilityRangeEnd]) compared to occlusion culling.
+
+Note: Due to memory constraints, occlusion culling is not supported by default in Web export templates. It can be enabled by compiling custom Web export templates with module_raycast_enabled=yes.
+
+[GeometryInstance3D.VisibilityRangeBegin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeBegin
+[GeometryInstance3D.VisibilityRangeEnd]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeEnd
+[OccluderInstance3D]: https://pkg.go.dev/graphics.gd/classdb/OccluderInstance3D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) UseOcclusionCulling() bool {
 	return bool(class(self).IsUsingOcclusionCulling())
 }
 
+// SetUseOcclusionCulling sets the property returned by [IsUsingOcclusionCulling].
 func (self Instance) SetUseOcclusionCulling(value bool) {
 	class(self).SetUseOcclusionCulling(value)
 }
 
+/*
+The automatic LOD bias to use for meshes rendered within the [Viewport] (this is analogous to [ReflectionProbe.MeshLodThreshold]). Higher values will use less detailed versions of meshes that have LOD variations generated. If set to 0.0, automatic LOD is disabled. Increase [MeshLodThreshold] to improve performance at the cost of geometry detail.
+
+To control this property on the root viewport, set the [ProjectSettings] "rendering/mesh_lod/lod_change/threshold_pixels" project setting.
+
+Note: [MeshLodThreshold] does not affect [GeometryInstance3D] visibility ranges (also known as "manual" LOD or hierarchical LOD).
+
+[GeometryInstance3D]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D
+[MeshLodThreshold]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.MeshLodThreshold
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[ReflectionProbe.MeshLodThreshold]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.MeshLodThreshold
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+*/
 func (self Instance) MeshLodThreshold() Float.X {
 	return Float.X(Float.X(class(self).GetMeshLodThreshold()))
 }
 
+// SetMeshLodThreshold sets the property returned by [GetMeshLodThreshold].
 func (self Instance) SetMeshLodThreshold(value Float.X) {
 	class(self).SetMeshLodThreshold(float64(value))
 }
 
+/*
+The overlay mode for test rendered geometry in debug purposes.
+*/
 func (self Instance) DebugDraw() DebugDraw {
 	return DebugDraw(class(self).GetDebugDraw())
 }
 
+// SetDebugDraw sets the property returned by [GetDebugDraw].
 func (self Instance) SetDebugDraw(value DebugDraw) {
 	class(self).SetDebugDraw(value)
 }
 
+/*
+If true, 2D rendering will use a high dynamic range (HDR) format framebuffer matching the bit depth of the 3D framebuffer. When using the Forward+ or Compatibility renderer, this will be an RGBA16 framebuffer. When using the Mobile renderer, it will be an RGB10_A2 framebuffer.
+
+Additionally, 2D rendering will take place in linear color space and will be converted to sRGB space immediately before blitting to the screen (if the Viewport is attached to the screen).
+
+Practically speaking, this means that the end result of the Viewport will not be clamped to the 0-1 range and can be used in 3D rendering without color space adjustments. This allows 2D rendering to take advantage of effects requiring high dynamic range (e.g. 2D glow) as well as substantially improves the appearance of effects requiring highly detailed gradients.
+*/
 func (self Instance) UseHdr2d() bool {
 	return bool(class(self).IsUsingHdr2d())
 }
 
+// SetUseHdr2d sets the property returned by [IsUsingHdr2d].
 func (self Instance) SetUseHdr2d(value bool) {
 	class(self).SetUseHdr2d(value)
 }
 
+/*
+Sets scaling 3D mode. Bilinear scaling renders at different resolution to either undersample or supersample the viewport. FidelityFX Super Resolution 1.0, abbreviated to FSR, is an upscaling technology that produces high quality images at fast framerates by using a spatially aware upscaling algorithm. FSR is slightly more expensive than bilinear, but it produces significantly higher image quality. FSR should be used where possible.
+
+To control this property on the root viewport, set the [ProjectSettings] "rendering/scaling_3d/mode" project setting.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) Scaling3dMode() Scaling3DMode {
 	return Scaling3DMode(class(self).GetScaling3dMode())
 }
 
+// SetScaling3dMode sets the property returned by [GetScaling3dMode].
 func (self Instance) SetScaling3dMode(value Scaling3DMode) {
 	class(self).SetScaling3dMode(value)
 }
 
+/*
+Scales the 3D render buffer based on the viewport size uses an image filter specified in [ProjectSettings] "rendering/scaling_3d/mode" to scale the output image to the full viewport size. Values lower than 1.0 can be used to speed up 3D rendering at the cost of quality (undersampling). Values greater than 1.0 are only valid for bilinear mode and can be used to improve 3D rendering quality at a high performance cost (supersampling). See also [ProjectSettings] "rendering/anti_aliasing/quality/msaa_3d" for multi-sample antialiasing, which is significantly cheaper but only smooths the edges of polygons.
+
+When using FSR upscaling, AMD recommends exposing the following values as preset options to users "Ultra Quality: 0.77", "Quality: 0.67", "Balanced: 0.59", "Performance: 0.5" instead of exposing the entire scale.
+
+To control this property on the root viewport, set the [ProjectSettings] "rendering/scaling_3d/scale" project setting.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) Scaling3dScale() Float.X {
 	return Float.X(Float.X(class(self).GetScaling3dScale()))
 }
 
+// SetScaling3dScale sets the property returned by [GetScaling3dScale].
 func (self Instance) SetScaling3dScale(value Float.X) {
 	class(self).SetScaling3dScale(float64(value))
 }
 
+/*
+Affects the final texture sharpness by reading from a lower or higher mipmap (also called "texture LOD bias"). Negative values make mipmapped textures sharper but grainier when viewed at a distance, while positive values make mipmapped textures blurrier (even when up close).
+
+Enabling temporal antialiasing ([UseTaa]) will automatically apply a -0.5 offset to this value, while enabling FXAA ([ScreenSpaceAa]) will automatically apply a -0.25 offset to this value. If both TAA and FXAA are enabled at the same time, an offset of -0.75 is applied to this value.
+
+Note: If [Scaling3dScale] is lower than 1.0 (exclusive), [TextureMipmapBias] is used to adjust the automatic mipmap bias which is calculated internally based on the scale factor. The formula for this is log2(scaling_3d_scale) + mipmap_bias.
+
+To control this property on the root viewport, set the [ProjectSettings] "rendering/textures/default_filters/texture_mipmap_bias" project setting.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Scaling3dScale]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.Scaling3dScale
+[ScreenSpaceAa]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.ScreenSpaceAa
+[TextureMipmapBias]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.TextureMipmapBias
+[UseTaa]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.UseTaa
+*/
 func (self Instance) TextureMipmapBias() Float.X {
 	return Float.X(Float.X(class(self).GetTextureMipmapBias()))
 }
 
+// SetTextureMipmapBias sets the property returned by [GetTextureMipmapBias].
 func (self Instance) SetTextureMipmapBias(value Float.X) {
 	class(self).SetTextureMipmapBias(float64(value))
 }
 
+/*
+Sets the maximum number of samples to take when using anisotropic filtering on textures (as a power of two). A higher sample count will result in sharper textures at oblique angles, but is more expensive to compute. A value of 0 forcibly disables anisotropic filtering, even on materials where it is enabled.
+
+The anisotropic filtering level also affects decals and light projectors if they are configured to use anisotropic filtering. See [ProjectSettings] "rendering/textures/decals/filter" and [ProjectSettings] "rendering/textures/light_projectors/filter".
+
+Note: In 3D, for this setting to have an effect, set [BaseMaterial3D.TextureFilter] to [Basematerial3d.TextureFilterLinearWithMipmapsAnisotropic] or [Basematerial3d.TextureFilterNearestWithMipmapsAnisotropic] on materials.
+
+Note: In 2D, for this setting to have an effect, set [CanvasItem.TextureFilter] to [Canvasitem.TextureFilterLinearWithMipmapsAnisotropic] or [Canvasitem.TextureFilterNearestWithMipmapsAnisotropic] on the [CanvasItem] node displaying the texture (or in [CanvasTexture]). However, anisotropic filtering is rarely useful in 2D, so only enable it for textures in 2D if it makes a meaningful visual difference.
+
+[BaseMaterial3D.TextureFilter]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.TextureFilter
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[CanvasItem.TextureFilter]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.TextureFilter
+[CanvasTexture]: https://pkg.go.dev/graphics.gd/classdb/CanvasTexture
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) AnisotropicFilteringLevel() AnisotropicFiltering {
 	return AnisotropicFiltering(class(self).GetAnisotropicFilteringLevel())
 }
 
+// SetAnisotropicFilteringLevel sets the property returned by [GetAnisotropicFilteringLevel].
 func (self Instance) SetAnisotropicFilteringLevel(value AnisotropicFiltering) {
 	class(self).SetAnisotropicFilteringLevel(value)
 }
 
+/*
+Determines how sharp the upscaled image will be when using the FSR upscaling mode. Sharpness halves with every whole number. Values go from 0.0 (sharpest) to 2.0. Values above 2.0 won't make a visible difference.
+
+To control this property on the root viewport, set the [ProjectSettings] "rendering/scaling_3d/fsr_sharpness" project setting.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) FsrSharpness() Float.X {
 	return Float.X(Float.X(class(self).GetFsrSharpness()))
 }
 
+// SetFsrSharpness sets the property returned by [GetFsrSharpness].
 func (self Instance) SetFsrSharpness(value Float.X) {
 	class(self).SetFsrSharpness(float64(value))
 }
 
+/*
+The Variable Rate Shading (VRS) mode that is used for this viewport. Note, if hardware does not support VRS this property is ignored.
+*/
 func (self Instance) VrsMode() VRSMode {
 	return VRSMode(class(self).GetVrsMode())
 }
 
+// SetVrsMode sets the property returned by [GetVrsMode].
 func (self Instance) SetVrsMode(value VRSMode) {
 	class(self).SetVrsMode(value)
 }
 
+/*
+Sets the update mode for Variable Rate Shading (VRS) for the viewport. VRS requires the input texture to be converted to the format usable by the VRS method supported by the hardware. The update mode defines how often this happens. If the GPU does not support VRS, or VRS is not enabled, this property is ignored.
+*/
 func (self Instance) VrsUpdateMode() VRSUpdateMode {
 	return VRSUpdateMode(class(self).GetVrsUpdateMode())
 }
 
+// SetVrsUpdateMode sets the property returned by [GetVrsUpdateMode].
 func (self Instance) SetVrsUpdateMode(value VRSUpdateMode) {
 	class(self).SetVrsUpdateMode(value)
 }
 
+/*
+Texture to use when [VrsMode] is set to [Viewport.VrsTexture].
+
+The texture must use a lossless compression format so that colors can be matched precisely. The following VRS densities are mapped to various colors, with brighter colors representing a lower level of shading precision:
+
+[VrsMode]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.VrsMode
+*/
 func (self Instance) VrsTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetVrsTexture())
 }
 
+// SetVrsTexture sets the property returned by [GetVrsTexture].
 func (self Instance) SetVrsTexture(value Texture2D.Instance) {
 	class(self).SetVrsTexture(value)
 }
 
+/*
+Sets the default filter mode used by [CanvasItem]s in this Viewport.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+*/
 func (self Instance) CanvasItemDefaultTextureFilter() DefaultCanvasItemTextureFilter {
 	return DefaultCanvasItemTextureFilter(class(self).GetDefaultCanvasItemTextureFilter())
 }
 
+// SetCanvasItemDefaultTextureFilter sets the property returned by [GetDefaultCanvasItemTextureFilter].
 func (self Instance) SetCanvasItemDefaultTextureFilter(value DefaultCanvasItemTextureFilter) {
 	class(self).SetDefaultCanvasItemTextureFilter(value)
 }
 
+/*
+Sets the default repeat mode used by [CanvasItem]s in this Viewport.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+*/
 func (self Instance) CanvasItemDefaultTextureRepeat() DefaultCanvasItemTextureRepeat {
 	return DefaultCanvasItemTextureRepeat(class(self).GetDefaultCanvasItemTextureRepeat())
 }
 
+// SetCanvasItemDefaultTextureRepeat sets the property returned by [GetDefaultCanvasItemTextureRepeat].
 func (self Instance) SetCanvasItemDefaultTextureRepeat(value DefaultCanvasItemTextureRepeat) {
 	class(self).SetDefaultCanvasItemTextureRepeat(value)
 }
 
+/*
+If true, the viewport will process 2D audio streams.
+*/
 func (self Instance) AudioListenerEnable2d() bool {
 	return bool(class(self).IsAudioListener2d())
 }
 
+// SetAudioListenerEnable2d sets the property returned by [IsAudioListener2d].
 func (self Instance) SetAudioListenerEnable2d(value bool) {
 	class(self).SetAsAudioListener2d(value)
 }
 
+/*
+If true, the viewport will process 3D audio streams.
+*/
 func (self Instance) AudioListenerEnable3d() bool {
 	return bool(class(self).IsAudioListener3d())
 }
 
+// SetAudioListenerEnable3d sets the property returned by [IsAudioListener3d].
 func (self Instance) SetAudioListenerEnable3d(value bool) {
 	class(self).SetAsAudioListener3d(value)
 }
 
+/*
+If true, the objects rendered by viewport become subjects of mouse picking process.
+
+Note: The number of simultaneously pickable objects is limited to 64 and they are selected in a non-deterministic order, which can be different in each picking process.
+*/
 func (self Instance) PhysicsObjectPicking() bool {
 	return bool(class(self).GetPhysicsObjectPicking())
 }
 
+// SetPhysicsObjectPicking sets the property returned by [GetPhysicsObjectPicking].
 func (self Instance) SetPhysicsObjectPicking(value bool) {
 	class(self).SetPhysicsObjectPicking(value)
 }
 
+/*
+If true, objects receive mouse picking events sorted primarily by their [CanvasItem.ZIndex] and secondarily by their position in the scene tree. If false, the order is undetermined.
+
+Note: This setting is disabled by default because of its potential expensive computational cost.
+
+Note: Sorting happens after selecting the pickable objects. Because of the limitation of 64 simultaneously pickable objects, it is not guaranteed that the object with the highest [CanvasItem.ZIndex] receives the picking event.
+
+[CanvasItem.ZIndex]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem#Instance.ZIndex
+*/
 func (self Instance) PhysicsObjectPickingSort() bool {
 	return bool(class(self).GetPhysicsObjectPickingSort())
 }
 
+// SetPhysicsObjectPickingSort sets the property returned by [GetPhysicsObjectPickingSort].
 func (self Instance) SetPhysicsObjectPickingSort(value bool) {
 	class(self).SetPhysicsObjectPickingSort(value)
 }
 
+/*
+If true, the input_event signal will only be sent to one physics object in the mouse picking process. If you want to get the top object only, you must also enable [PhysicsObjectPickingSort].
+
+If false, an input_event signal will be sent to all physics objects in the mouse picking process.
+
+This applies to 2D CanvasItem object picking only.
+
+[PhysicsObjectPickingSort]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.PhysicsObjectPickingSort
+*/
 func (self Instance) PhysicsObjectPickingFirstOnly() bool {
 	return bool(class(self).GetPhysicsObjectPickingFirstOnly())
 }
 
+// SetPhysicsObjectPickingFirstOnly sets the property returned by [GetPhysicsObjectPickingFirstOnly].
 func (self Instance) SetPhysicsObjectPickingFirstOnly(value bool) {
 	class(self).SetPhysicsObjectPickingFirstOnly(value)
 }
 
+/*
+If true, the viewport will not receive input events.
+*/
 func (self Instance) GuiDisableInput() bool {
 	return bool(class(self).IsInputDisabled())
 }
 
+// SetGuiDisableInput sets the property returned by [IsInputDisabled].
 func (self Instance) SetGuiDisableInput(value bool) {
 	class(self).SetDisableInput(value)
 }
 
+/*
+If true, the GUI controls on the viewport will lay pixel perfectly.
+*/
 func (self Instance) GuiSnapControlsToPixels() bool {
 	return bool(class(self).IsSnapControlsToPixelsEnabled())
 }
 
+// SetGuiSnapControlsToPixels sets the property returned by [IsSnapControlsToPixelsEnabled].
 func (self Instance) SetGuiSnapControlsToPixels(value bool) {
 	class(self).SetSnapControlsToPixels(value)
 }
 
+/*
+If true, sub-windows (popups and dialogs) will be embedded inside application window as control-like nodes. If false, they will appear as separate windows handled by the operating system.
+*/
 func (self Instance) GuiEmbedSubwindows() bool {
 	return bool(class(self).IsEmbeddingSubwindows())
 }
 
+// SetGuiEmbedSubwindows sets the property returned by [IsEmbeddingSubwindows].
 func (self Instance) SetGuiEmbedSubwindows(value bool) {
 	class(self).SetEmbeddingSubwindows(value)
 }
 
+/*
+Controls how much of the original viewport's size should be covered by the 2D signed distance field. This SDF can be sampled in [CanvasItem] shaders and is also used for [GPUParticles2D] collision. Higher values allow portions of occluders located outside the viewport to still be taken into account in the generated signed distance field, at the cost of performance. If you notice particles falling through [LightOccluder2D]s as the occluders leave the viewport, increase this setting.
+
+The percentage is added on each axis and on both sides. For example, with the default [SdfOversize120Percent], the signed distance field will cover 20% of the viewport's size outside the viewport on each side (top, right, bottom, left).
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
+[LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
+*/
 func (self Instance) SdfOversize() SDFOversize {
 	return SDFOversize(class(self).GetSdfOversize())
 }
 
+// SetSdfOversize sets the property returned by [GetSdfOversize].
 func (self Instance) SetSdfOversize(value SDFOversize) {
 	class(self).SetSdfOversize(value)
 }
 
+/*
+The resolution scale to use for the 2D signed distance field. Higher values lead to a more precise and more stable signed distance field as the camera moves, at the cost of performance.
+*/
 func (self Instance) SdfScale() SDFScale {
 	return SDFScale(class(self).GetSdfScale())
 }
 
+// SetSdfScale sets the property returned by [GetSdfScale].
 func (self Instance) SetSdfScale(value SDFScale) {
 	class(self).SetSdfScale(value)
 }
 
+/*
+The shadow atlas' resolution (used for omni and spot lights). The value is rounded up to the nearest power of 2.
+
+Note: If this is set to 0, no positional shadows will be visible at all. This can improve performance significantly on low-end systems by reducing both the CPU and GPU load (as fewer draw calls are needed to draw the scene without shadows).
+*/
 func (self Instance) PositionalShadowAtlasSize() int {
 	return int(int(class(self).GetPositionalShadowAtlasSize()))
 }
 
+// SetPositionalShadowAtlasSize sets the property returned by [GetPositionalShadowAtlasSize].
 func (self Instance) SetPositionalShadowAtlasSize(value int) {
 	class(self).SetPositionalShadowAtlasSize(int64(value))
 }
 
+/*
+Use 16 bits for the omni/spot shadow depth map. Enabling this results in shadows having less precision and may result in shadow acne, but can lead to performance improvements on some devices.
+*/
 func (self Instance) PositionalShadowAtlas16Bits() bool {
 	return bool(class(self).GetPositionalShadowAtlas16Bits())
 }
 
+// SetPositionalShadowAtlas16Bits sets the property returned by [GetPositionalShadowAtlas16Bits].
 func (self Instance) SetPositionalShadowAtlas16Bits(value bool) {
 	class(self).SetPositionalShadowAtlas16Bits(value)
 }
 
+/*
+The subdivision amount of the first quadrant on the shadow atlas.
+*/
 func (self Instance) PositionalShadowAtlasQuad0() PositionalShadowAtlasQuadrantSubdiv {
 	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(0))
 }
 
+// SetPositionalShadowAtlasQuad0 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv].
 func (self Instance) SetPositionalShadowAtlasQuad0(value PositionalShadowAtlasQuadrantSubdiv) {
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(0, value)
 }
 
+/*
+The subdivision amount of the second quadrant on the shadow atlas.
+*/
 func (self Instance) PositionalShadowAtlasQuad1() PositionalShadowAtlasQuadrantSubdiv {
 	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(1))
 }
 
+// SetPositionalShadowAtlasQuad1 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv].
 func (self Instance) SetPositionalShadowAtlasQuad1(value PositionalShadowAtlasQuadrantSubdiv) {
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(1, value)
 }
 
+/*
+The subdivision amount of the third quadrant on the shadow atlas.
+*/
 func (self Instance) PositionalShadowAtlasQuad2() PositionalShadowAtlasQuadrantSubdiv {
 	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(2))
 }
 
+// SetPositionalShadowAtlasQuad2 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv].
 func (self Instance) SetPositionalShadowAtlasQuad2(value PositionalShadowAtlasQuadrantSubdiv) {
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(2, value)
 }
 
+/*
+The subdivision amount of the fourth quadrant on the shadow atlas.
+*/
 func (self Instance) PositionalShadowAtlasQuad3() PositionalShadowAtlasQuadrantSubdiv {
 	return PositionalShadowAtlasQuadrantSubdiv(class(self).GetPositionalShadowAtlasQuadrantSubdiv(3))
 }
 
+// SetPositionalShadowAtlasQuad3 sets the property returned by [GetPositionalShadowAtlasQuadrantSubdiv].
 func (self Instance) SetPositionalShadowAtlasQuad3(value PositionalShadowAtlasQuadrantSubdiv) {
 	class(self).SetPositionalShadowAtlasQuadrantSubdiv(3, value)
 }
 
+/*
+The canvas transform of the viewport, useful for changing the on-screen positions of all child [CanvasItem]s. This is relative to the global canvas transform of the viewport.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+*/
 func (self Instance) CanvasTransform() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetCanvasTransform())
 }
 
+// SetCanvasTransform sets the property returned by [GetCanvasTransform].
 func (self Instance) SetCanvasTransform(value Transform2D.OriginXY) {
 	class(self).SetCanvasTransform(Transform2D.OriginXY(value))
 }
 
+/*
+The global canvas transform of the viewport. The canvas transform is relative to this.
+*/
 func (self Instance) GlobalCanvasTransform() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetGlobalCanvasTransform())
 }
 
+// SetGlobalCanvasTransform sets the property returned by [GetGlobalCanvasTransform].
 func (self Instance) SetGlobalCanvasTransform(value Transform2D.OriginXY) {
 	class(self).SetGlobalCanvasTransform(Transform2D.OriginXY(value))
 }
 
+/*
+The rendering layers in which this [Viewport] renders [CanvasItem] nodes.
+
+[CanvasItem]: https://pkg.go.dev/graphics.gd/classdb/CanvasItem
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+*/
 func (self Instance) CanvasCullMask() int {
 	return int(int(class(self).GetCanvasCullMask()))
 }
 
+// SetCanvasCullMask sets the property returned by [GetCanvasCullMask].
 func (self Instance) SetCanvasCullMask(value int) {
 	class(self).SetCanvasCullMask(int64(value))
 }
 
+/*
+If true and one of the following conditions are true: [SubViewport.Size2dOverrideStretch] and [SubViewport.Size2dOverride] are set, [Window.ContentScaleFactor] is set and scaling is enabled, [OversamplingOverride] is set, font and [DPITexture] oversampling are enabled.
+
+[DPITexture]: https://pkg.go.dev/graphics.gd/classdb/DPITexture
+[OversamplingOverride]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.OversamplingOverride
+[SubViewport.Size2dOverride]: https://pkg.go.dev/graphics.gd/classdb/SubViewport#Instance.Size2dOverride
+[SubViewport.Size2dOverrideStretch]: https://pkg.go.dev/graphics.gd/classdb/SubViewport#Instance.Size2dOverrideStretch
+[Window.ContentScaleFactor]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ContentScaleFactor
+*/
 func (self Instance) Oversampling() bool {
 	return bool(class(self).IsUsingOversampling())
 }
 
+// SetOversampling sets the property returned by [IsUsingOversampling].
 func (self Instance) SetOversampling(value bool) {
 	class(self).SetUseOversampling(value)
 }
 
+/*
+If greater than zero, this value is used as the font oversampling factor, otherwise oversampling is equal to viewport scale.
+*/
 func (self Instance) OversamplingOverride() Float.X {
 	return Float.X(Float.X(class(self).GetOversamplingOverride()))
 }
 
+// SetOversamplingOverride sets the property returned by [GetOversamplingOverride].
 func (self Instance) SetOversamplingOverride(value Float.X) {
 	class(self).SetOversamplingOverride(float64(value))
 }
@@ -2253,6 +2606,10 @@ func (self class) GetVrsTexture() [1]gdclass.Texture2D { //gd:Viewport.get_vrs_t
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
+
+/*
+Emitted when the size of the viewport is changed, whether by resizing of window, or some other means.
+*/
 func (self Instance) OnSizeChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -2265,6 +2622,11 @@ func (self class) SizeChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SizeChanged`))))
 }
 
+/*
+Emitted when a Control node grabs keyboard focus.
+
+Note: A Control node losing focus doesn't cause this signal to be emitted.
+*/
 func (self Instance) OnGuiFocusChanged(cb func(node Control.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -413,18 +413,29 @@ func New() Instance {
 	return casted
 }
 
+/*
+The distance in pixels between two adjacent cached points. Changing it forces the cache to be recomputed the next time the [GetBakedPoints] or [GetBakedLength] function is called. The smaller the distance, the more points in the cache and the more memory it will consume, so use with care.
+
+[GetBakedLength]: https://pkg.go.dev/graphics.gd/classdb/Curve2D#Instance.GetBakedLength
+[GetBakedPoints]: https://pkg.go.dev/graphics.gd/classdb/Curve2D#Instance.GetBakedPoints
+*/
 func (self Instance) BakeInterval() Float.X {
 	return Float.X(Float.X(class(self).GetBakeInterval()))
 }
 
+// SetBakeInterval sets the property returned by [GetBakeInterval].
 func (self Instance) SetBakeInterval(value Float.X) {
 	class(self).SetBakeInterval(float64(value))
 }
 
+/*
+The number of points describing the curve.
+*/
 func (self Instance) PointCount() int {
 	return int(int(class(self).GetPointCount()))
 }
 
+// SetPointCount sets the property returned by [GetPointCount].
 func (self Instance) SetPointCount(value int) {
 	class(self).SetPointCount(int64(value))
 }

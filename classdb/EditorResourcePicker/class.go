@@ -235,34 +235,52 @@ func New() Instance {
 	return casted
 }
 
+/*
+The base type of allowed resource types. Can be a comma-separated list of several options.
+*/
 func (self Instance) BaseType() string {
 	return string(class(self).GetBaseType().String())
 }
 
+// SetBaseType sets the property returned by [GetBaseType].
 func (self Instance) SetBaseType(value string) {
 	class(self).SetBaseType(String.New(value))
 }
 
+/*
+The edited resource value.
+*/
 func (self Instance) EditedResource() Resource.Instance {
 	return Resource.Instance(class(self).GetEditedResource())
 }
 
+// SetEditedResource sets the property returned by [GetEditedResource].
 func (self Instance) SetEditedResource(value Resource.Instance) {
 	class(self).SetEditedResource(value)
 }
 
+/*
+If true, the value can be selected and edited.
+*/
 func (self Instance) Editable() bool {
 	return bool(class(self).IsEditable())
 }
 
+// SetEditable sets the property returned by [IsEditable].
 func (self Instance) SetEditable(value bool) {
 	class(self).SetEditable(value)
 }
 
+/*
+If true, the main button with the resource preview works in the toggle mode. Use [SetTogglePressed] to manually set the state.
+
+[SetTogglePressed]: https://pkg.go.dev/graphics.gd/classdb/EditorResourcePicker#Instance.SetTogglePressed
+*/
 func (self Instance) ToggleMode() bool {
 	return bool(class(self).IsToggleMode())
 }
 
+// SetToggleMode sets the property returned by [IsToggleMode].
 func (self Instance) SetToggleMode(value bool) {
 	class(self).SetToggleMode(value)
 }
@@ -368,6 +386,10 @@ func (self class) IsEditable() bool { //gd:EditorResourcePicker.is_editable
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the resource value was set and user clicked to edit it. When 'inspect' is true, the signal was caused by the context menu "Edit" or "Inspect" option.
+*/
 func (self Instance) OnResourceSelected(cb func(resource Resource.Instance, inspect bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -380,6 +402,9 @@ func (self class) ResourceSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourceSelected`))))
 }
 
+/*
+Emitted when the value of the edited resource was changed.
+*/
 func (self Instance) OnResourceChanged(cb func(resource Resource.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

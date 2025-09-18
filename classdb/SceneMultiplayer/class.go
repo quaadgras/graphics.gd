@@ -254,66 +254,120 @@ func New() Instance {
 	return casted
 }
 
+/*
+The root path to use for RPCs and replication. Instead of an absolute path, a relative path will be used to find the node upon which the RPC should be executed.
+
+This effectively allows to have different branches of the scene tree to be managed by different MultiplayerAPI, allowing for example to run both client and server in the same scene.
+*/
 func (self Instance) RootPath() string {
 	return string(class(self).GetRootPath().String())
 }
 
+// SetRootPath sets the property returned by [GetRootPath].
 func (self Instance) SetRootPath(value string) {
 	class(self).SetRootPath(Path.ToNode(String.New(value)))
 }
 
+/*
+The callback to execute when receiving authentication data sent via [SendAuth]. If the func is empty (default), peers will be automatically accepted as soon as they connect.
+
+[SendAuth]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.SendAuth
+*/
 func (self Instance) AuthCallback() Callable.Function {
 	return Callable.Function(gd.CallableAs[Callable.Function](gd.InternalCallable(class(self).GetAuthCallback())))
 }
 
+// SetAuthCallback sets the property returned by [GetAuthCallback].
 func (self Instance) SetAuthCallback(value Callable.Function) {
 	class(self).SetAuthCallback(Callable.New(value))
 }
 
+/*
+If set to a value greater than 0.0, the maximum duration in seconds peers can stay in the authenticating state, after which the authentication will automatically fail. See the [OnPeerAuthenticating] and [OnPeerAuthenticationFailed] signals.
+
+[OnPeerAuthenticating]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.OnPeerAuthenticating
+[OnPeerAuthenticationFailed]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.OnPeerAuthenticationFailed
+*/
 func (self Instance) AuthTimeout() Float.X {
 	return Float.X(Float.X(class(self).GetAuthTimeout()))
 }
 
+// SetAuthTimeout sets the property returned by [GetAuthTimeout].
 func (self Instance) SetAuthTimeout(value Float.X) {
 	class(self).SetAuthTimeout(float64(value))
 }
 
+/*
+If true, the MultiplayerAPI will allow encoding and decoding of object during RPCs.
+
+Warning: Deserialized objects can contain code which gets executed. Do not use this option if the serialized object comes from untrusted sources to avoid potential security threat such as remote code execution.
+*/
 func (self Instance) AllowObjectDecoding() bool {
 	return bool(class(self).IsObjectDecodingAllowed())
 }
 
+// SetAllowObjectDecoding sets the property returned by [IsObjectDecodingAllowed].
 func (self Instance) SetAllowObjectDecoding(value bool) {
 	class(self).SetAllowObjectDecoding(value)
 }
 
+/*
+If true, the MultiplayerAPI's [MultiplayerAPI.MultiplayerPeer] refuses new incoming connections.
+
+[MultiplayerAPI.MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
+*/
 func (self Instance) RefuseNewConnections() bool {
 	return bool(class(self).IsRefusingNewConnections())
 }
 
+// SetRefuseNewConnections sets the property returned by [IsRefusingNewConnections].
 func (self Instance) SetRefuseNewConnections(value bool) {
 	class(self).SetRefuseNewConnections(value)
 }
 
+/*
+Enable or disable the server feature that notifies clients of other peers' connection/disconnection, and relays messages between them. When this option is false, clients won't be automatically notified of other peers and won't be able to send them packets through the server.
+
+Note: Changing this option while other peers are connected may lead to unexpected behaviors.
+
+Note: Support for this feature may depend on the current [MultiplayerPeer] configuration. See [MultiplayerPeer.IsServerRelaySupported].
+
+[MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer
+[MultiplayerPeer.IsServerRelaySupported]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerPeer#Instance.IsServerRelaySupported
+*/
 func (self Instance) ServerRelay() bool {
 	return bool(class(self).IsServerRelayEnabled())
 }
 
+// SetServerRelay sets the property returned by [IsServerRelayEnabled].
 func (self Instance) SetServerRelay(value bool) {
 	class(self).SetServerRelayEnabled(value)
 }
 
+/*
+Maximum size of each synchronization packet. Higher values increase the chance of receiving full updates in a single frame, but also the chance of packet loss. See [MultiplayerSynchronizer].
+
+[MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
+*/
 func (self Instance) MaxSyncPacketSize() int {
 	return int(int(class(self).GetMaxSyncPacketSize()))
 }
 
+// SetMaxSyncPacketSize sets the property returned by [GetMaxSyncPacketSize].
 func (self Instance) SetMaxSyncPacketSize(value int) {
 	class(self).SetMaxSyncPacketSize(int64(value))
 }
 
+/*
+Maximum size of each delta packet. Higher values increase the chance of receiving full updates in a single frame, but also the chance of causing networking congestion (higher latency, disconnections). See [MultiplayerSynchronizer].
+
+[MultiplayerSynchronizer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerSynchronizer
+*/
 func (self Instance) MaxDeltaPacketSize() int {
 	return int(int(class(self).GetMaxDeltaPacketSize()))
 }
 
+// SetMaxDeltaPacketSize sets the property returned by [GetMaxDeltaPacketSize].
 func (self Instance) SetMaxDeltaPacketSize(value int) {
 	class(self).SetMaxDeltaPacketSize(int64(value))
 }
@@ -491,6 +545,18 @@ func (self class) GetMaxDeltaPacketSize() int64 { //gd:SceneMultiplayer.get_max_
 func (self class) SetMaxDeltaPacketSize(size int64) { //gd:SceneMultiplayer.set_max_delta_packet_size
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_delta_packet_size, 0|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 }
+
+/*
+Emitted when this MultiplayerAPI's [MultiplayerAPI.MultiplayerPeer] connects to a new peer and a valid [AuthCallback] is set. In this case, the [OnMultiplayerapi.PeerConnected] will not be emitted until [CompleteAuth] is called with given peer 'id'. While in this state, the peer will not be included in the list returned by [MultiplayerAPI.GetPeers] (but in the one returned by [GetAuthenticatingPeers]), and only authentication data will be sent or received. See [SendAuth] for sending authentication data.
+
+[AuthCallback]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.AuthCallback
+[CompleteAuth]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.CompleteAuth
+[GetAuthenticatingPeers]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.GetAuthenticatingPeers
+[MultiplayerAPI.GetPeers]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.GetPeers
+[MultiplayerAPI.MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
+[OnMultiplayerapi.PeerConnected]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.OnMultiplayerapi.PeerConnected
+[SendAuth]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.SendAuth
+*/
 func (self Instance) OnPeerAuthenticating(cb func(id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -503,6 +569,12 @@ func (self class) PeerAuthenticating() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PeerAuthenticating`))))
 }
 
+/*
+Emitted when this MultiplayerAPI's [MultiplayerAPI.MultiplayerPeer] disconnects from a peer for which authentication had not yet completed. See [OnPeerAuthenticating].
+
+[MultiplayerAPI.MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
+[OnPeerAuthenticating]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.OnPeerAuthenticating
+*/
 func (self Instance) OnPeerAuthenticationFailed(cb func(id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -515,6 +587,12 @@ func (self class) PeerAuthenticationFailed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PeerAuthenticationFailed`))))
 }
 
+/*
+Emitted when this MultiplayerAPI's [MultiplayerAPI.MultiplayerPeer] receives a 'packet' with custom data (see [SendBytes]). ID is the peer ID of the peer that sent the packet.
+
+[MultiplayerAPI.MultiplayerPeer]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI#Instance.MultiplayerPeer
+[SendBytes]: https://pkg.go.dev/graphics.gd/classdb/SceneMultiplayer#Instance.SendBytes
+*/
 func (self Instance) OnPeerPacket(cb func(id int, packet []byte), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

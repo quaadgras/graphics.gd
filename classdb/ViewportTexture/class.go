@@ -183,10 +183,19 @@ func New() Instance {
 	return casted
 }
 
+/*
+The path to the [Viewport] node to display. This is relative to the local scene root (see [Resource.GetLocalScene]), not to the nodes that use this texture.
+
+Note: In the editor, this path is automatically updated when the target viewport or one of its ancestors is renamed or moved. At runtime, this path may not automatically update if the scene root cannot be found.
+
+[Resource.GetLocalScene]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.GetLocalScene
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+*/
 func (self Instance) ViewportPath() string {
 	return string(class(self).GetViewportPathInScene().String())
 }
 
+// SetViewportPath sets the property returned by [GetViewportPathInScene].
 func (self Instance) SetViewportPath(value string) {
 	class(self).SetViewportPathInScene(Path.ToNode(String.New(value)))
 }

@@ -156,18 +156,30 @@ func New() Instance {
 	return casted
 }
 
+/*
+The scale of the game world compared to the real world. This is the same as [XRServer.WorldScale]. By default, most AR/VR platforms assume that 1 game unit corresponds to 1 real world meter.
+
+[XRServer.WorldScale]: https://pkg.go.dev/graphics.gd/classdb/XRServer#WorldScale
+*/
 func (self Instance) WorldScale() Float.X {
 	return Float.X(Float.X(class(self).GetWorldScale()))
 }
 
+// SetWorldScale sets the property returned by [GetWorldScale].
 func (self Instance) SetWorldScale(value Float.X) {
 	class(self).SetWorldScale(float64(value))
 }
 
+/*
+If true, this origin node is currently being used by the [XRServer]. Only one origin point can be used at a time.
+
+[XRServer]: https://pkg.go.dev/graphics.gd/classdb/XRServer
+*/
 func (self Instance) Current() bool {
 	return bool(class(self).IsCurrent())
 }
 
+// SetCurrent sets the property returned by [IsCurrent].
 func (self Instance) SetCurrent(value bool) {
 	class(self).SetCurrent(value)
 }

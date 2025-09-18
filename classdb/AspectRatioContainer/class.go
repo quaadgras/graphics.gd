@@ -151,34 +151,52 @@ func New() Instance {
 	return casted
 }
 
+/*
+The aspect ratio to enforce on child controls. This is the width divided by the height. The ratio depends on the [StretchMode].
+
+[StretchMode]: https://pkg.go.dev/graphics.gd/classdb/AspectRatioContainer#Instance.StretchMode
+*/
 func (self Instance) Ratio() Float.X {
 	return Float.X(Float.X(class(self).GetRatio()))
 }
 
+// SetRatio sets the property returned by [GetRatio].
 func (self Instance) SetRatio(value Float.X) {
 	class(self).SetRatio(float64(value))
 }
 
+/*
+The stretch mode used to align child controls.
+*/
 func (self Instance) StretchMode() StretchMode {
 	return StretchMode(class(self).GetStretchMode())
 }
 
+// SetStretchMode sets the property returned by [GetStretchMode].
 func (self Instance) SetStretchMode(value StretchMode) {
 	class(self).SetStretchMode(value)
 }
 
+/*
+Specifies the horizontal relative position of child controls.
+*/
 func (self Instance) AlignmentHorizontal() AlignmentMode {
 	return AlignmentMode(class(self).GetAlignmentHorizontal())
 }
 
+// SetAlignmentHorizontal sets the property returned by [GetAlignmentHorizontal].
 func (self Instance) SetAlignmentHorizontal(value AlignmentMode) {
 	class(self).SetAlignmentHorizontal(value)
 }
 
+/*
+Specifies the vertical relative position of child controls.
+*/
 func (self Instance) AlignmentVertical() AlignmentMode {
 	return AlignmentMode(class(self).GetAlignmentVertical())
 }
 
+// SetAlignmentVertical sets the property returned by [GetAlignmentVertical].
 func (self Instance) SetAlignmentVertical(value AlignmentMode) {
 	class(self).SetAlignmentVertical(value)
 }

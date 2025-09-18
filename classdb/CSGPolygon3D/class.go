@@ -187,138 +187,249 @@ func New() Instance {
 	return casted
 }
 
+/*
+The point array that defines the 2D polygon that is extruded. This can be a convex or concave polygon with 3 or more points. The polygon must not have any intersecting edges. Otherwise, triangulation will fail and no mesh will be generated.
+
+Note: If only 1 or 2 points are defined in [Polygon], no mesh will be generated.
+
+[Polygon]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Polygon
+*/
 func (self Instance) Polygon() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
+// SetPolygon sets the property returned by [GetPolygon].
 func (self Instance) SetPolygon(value []Vector2.XY) {
 	class(self).SetPolygon(Packed.New(value...))
 }
 
+/*
+The [Mode] used to extrude the [Polygon].
+
+[Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
+[Polygon]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Polygon
+*/
 func (self Instance) Mode() Mode {
 	return Mode(class(self).GetMode())
 }
 
+// SetMode sets the property returned by [GetMode].
 func (self Instance) SetMode(value Mode) {
 	class(self).SetMode(value)
 }
 
+/*
+When [Mode] is [ModeDepth], the depth of the extrusion.
+
+[Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
+*/
 func (self Instance) Depth() Float.X {
 	return Float.X(Float.X(class(self).GetDepth()))
 }
 
+// SetDepth sets the property returned by [GetDepth].
 func (self Instance) SetDepth(value Float.X) {
 	class(self).SetDepth(float64(value))
 }
 
+/*
+When [Mode] is [ModeSpin], the total number of degrees the [Polygon] is rotated when extruding.
+
+[Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
+[Polygon]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Polygon
+*/
 func (self Instance) SpinDegrees() Float.X {
 	return Float.X(Float.X(class(self).GetSpinDegrees()))
 }
 
+// SetSpinDegrees sets the property returned by [GetSpinDegrees].
 func (self Instance) SetSpinDegrees(value Float.X) {
 	class(self).SetSpinDegrees(float64(value))
 }
 
+/*
+When [Mode] is [ModeSpin], the number of extrusions made.
+
+[Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
+*/
 func (self Instance) SpinSides() int {
 	return int(int(class(self).GetSpinSides()))
 }
 
+// SetSpinSides sets the property returned by [GetSpinSides].
 func (self Instance) SetSpinSides(value int) {
 	class(self).SetSpinSides(int64(value))
 }
 
+/*
+When [Mode] is [ModePath], the location of the [Path3D] object used to extrude the [Polygon].
+
+[Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
+[Path3D]: https://pkg.go.dev/graphics.gd/classdb/Path3D
+[Polygon]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Polygon
+*/
 func (self Instance) PathNode() string {
 	return string(class(self).GetPathNode().String())
 }
 
+// SetPathNode sets the property returned by [GetPathNode].
 func (self Instance) SetPathNode(value string) {
 	class(self).SetPathNode(Path.ToNode(String.New(value)))
 }
 
+/*
+When [Mode] is [ModePath], this will determine if the interval should be by distance ([PathIntervalDistance]) or subdivision fractions ([PathIntervalSubdivide]).
+
+[Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
+*/
 func (self Instance) PathIntervalType() PathIntervalType {
 	return PathIntervalType(class(self).GetPathIntervalType())
 }
 
+// SetPathIntervalType sets the property returned by [GetPathIntervalType].
 func (self Instance) SetPathIntervalType(value PathIntervalType) {
 	class(self).SetPathIntervalType(value)
 }
 
+/*
+When [Mode] is [ModePath], the path interval or ratio of path points to extrusions.
+
+[Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
+*/
 func (self Instance) PathInterval() Float.X {
 	return Float.X(Float.X(class(self).GetPathInterval()))
 }
 
+// SetPathInterval sets the property returned by [GetPathInterval].
 func (self Instance) SetPathInterval(value Float.X) {
 	class(self).SetPathInterval(float64(value))
 }
 
+/*
+When [Mode] is [ModePath], extrusions that are less than this angle, will be merged together to reduce polygon count.
+
+[Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
+*/
 func (self Instance) PathSimplifyAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetPathSimplifyAngle()))
 }
 
+// SetPathSimplifyAngle sets the property returned by [GetPathSimplifyAngle].
 func (self Instance) SetPathSimplifyAngle(value Angle.Radians) {
 	class(self).SetPathSimplifyAngle(float64(value))
 }
 
+/*
+When [Mode] is [ModePath], the path rotation method used to rotate the [Polygon] as it is extruded.
+
+[Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
+[Polygon]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Polygon
+*/
 func (self Instance) PathRotation() PathRotation {
 	return PathRotation(class(self).GetPathRotation())
 }
 
+// SetPathRotation sets the property returned by [GetPathRotation].
 func (self Instance) SetPathRotation(value PathRotation) {
 	class(self).SetPathRotation(value)
 }
 
+/*
+When [Mode] is [ModePath], if true the polygon will be rotated according to the proper tangent of the path at the sampled points. If false an approximation is used, which decreases in accuracy as the number of subdivisions decreases.
+
+[Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
+*/
 func (self Instance) PathRotationAccurate() bool {
 	return bool(class(self).GetPathRotationAccurate())
 }
 
+// SetPathRotationAccurate sets the property returned by [GetPathRotationAccurate].
 func (self Instance) SetPathRotationAccurate(value bool) {
 	class(self).SetPathRotationAccurate(value)
 }
 
+/*
+When [Mode] is [ModePath], if true the [Transform3D.BasisOrigin] of the [CSGPolygon3D] is used as the starting point for the extrusions, not the [Transform3D.BasisOrigin] of the [PathNode].
+
+[CSGPolygon3D]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D
+[Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
+[PathNode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.PathNode
+[Transform3D.BasisOrigin]: https://pkg.go.dev/graphics.gd/variant/Transform3D#BasisOrigin
+*/
 func (self Instance) PathLocal() bool {
 	return bool(class(self).IsPathLocal())
 }
 
+// SetPathLocal sets the property returned by [IsPathLocal].
 func (self Instance) SetPathLocal(value bool) {
 	class(self).SetPathLocal(value)
 }
 
+/*
+When [Mode] is [ModePath], by default, the top half of the [Material] is stretched along the entire length of the extruded shape. If false the top half of the material is repeated every step of the extrusion.
+
+[Material]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Material
+[Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
+*/
 func (self Instance) PathContinuousU() bool {
 	return bool(class(self).IsPathContinuousU())
 }
 
+// SetPathContinuousU sets the property returned by [IsPathContinuousU].
 func (self Instance) SetPathContinuousU(value bool) {
 	class(self).SetPathContinuousU(value)
 }
 
+/*
+When [Mode] is [ModePath], this is the distance along the path, in meters, the texture coordinates will tile. When set to 0, texture coordinates will match geometry exactly with no tiling.
+
+[Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
+*/
 func (self Instance) PathUDistance() Float.X {
 	return Float.X(Float.X(class(self).GetPathUDistance()))
 }
 
+// SetPathUDistance sets the property returned by [GetPathUDistance].
 func (self Instance) SetPathUDistance(value Float.X) {
 	class(self).SetPathUDistance(float64(value))
 }
 
+/*
+When [Mode] is [ModePath], if true the ends of the path are joined, by adding an extrusion between the last and first points of the path.
+
+[Mode]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Mode
+*/
 func (self Instance) PathJoined() bool {
 	return bool(class(self).IsPathJoined())
 }
 
+// SetPathJoined sets the property returned by [IsPathJoined].
 func (self Instance) SetPathJoined(value bool) {
 	class(self).SetPathJoined(value)
 }
 
+/*
+If true, applies smooth shading to the extrusions.
+*/
 func (self Instance) SmoothFaces() bool {
 	return bool(class(self).GetSmoothFaces())
 }
 
+// SetSmoothFaces sets the property returned by [GetSmoothFaces].
 func (self Instance) SetSmoothFaces(value bool) {
 	class(self).SetSmoothFaces(value)
 }
 
+/*
+Material to use for the resulting mesh. The UV maps the top half of the material to the extruded shape (U along the length of the extrusions and V around the outline of the [Polygon]), the bottom-left quarter to the front end face, and the bottom-right quarter to the back end face.
+
+[Polygon]: https://pkg.go.dev/graphics.gd/classdb/CSGPolygon3D#Instance.Polygon
+*/
 func (self Instance) Material() Material.Instance {
 	return Material.Instance(class(self).GetMaterial())
 }
 
+// SetMaterial sets the property returned by [GetMaterial].
 func (self Instance) SetMaterial(value Material.Instance) {
 	class(self).SetMaterial(value)
 }

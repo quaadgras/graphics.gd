@@ -504,42 +504,64 @@ func New() Instance {
 	return casted
 }
 
+/*
+The atlas texture.
+*/
 func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
+// SetTexture sets the property returned by [GetTexture].
 func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 
+/*
+Margins, in pixels, to offset the origin of the grid in the texture.
+*/
 func (self Instance) Margins() Vector2i.XY {
 	return Vector2i.XY(class(self).GetMargins())
 }
 
+// SetMargins sets the property returned by [GetMargins].
 func (self Instance) SetMargins(value Vector2i.XY) {
 	class(self).SetMargins(Vector2i.XY(value))
 }
 
+/*
+Separation, in pixels, between each tile texture region of the grid.
+*/
 func (self Instance) Separation() Vector2i.XY {
 	return Vector2i.XY(class(self).GetSeparation())
 }
 
+// SetSeparation sets the property returned by [GetSeparation].
 func (self Instance) SetSeparation(value Vector2i.XY) {
 	class(self).SetSeparation(Vector2i.XY(value))
 }
 
+/*
+The base tile size in the texture (in pixel). This size must be bigger than or equal to the TileSet's tile_size value.
+*/
 func (self Instance) TextureRegionSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetTextureRegionSize())
 }
 
+// SetTextureRegionSize sets the property returned by [GetTextureRegionSize].
 func (self Instance) SetTextureRegionSize(value Vector2i.XY) {
 	class(self).SetTextureRegionSize(Vector2i.XY(value))
 }
 
+/*
+If true, generates an internal texture with an additional one pixel padding around each tile. Texture padding avoids a common artifact where lines appear between tiles.
+
+Disabling this setting might lead a small performance improvement, as generating the internal texture requires both memory and processing time when the TileSetAtlasSource resource is modified.
+*/
 func (self Instance) UseTexturePadding() bool {
 	return bool(class(self).GetUseTexturePadding())
 }
 
+// SetUseTexturePadding sets the property returned by [GetUseTexturePadding].
 func (self Instance) SetUseTexturePadding(value bool) {
 	class(self).SetUseTexturePadding(value)
 }

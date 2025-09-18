@@ -158,34 +158,55 @@ func New() Instance {
 	return casted
 }
 
+/*
+Status indicator tooltip.
+*/
 func (self Instance) Tooltip() string {
 	return string(class(self).GetTooltip().String())
 }
 
+// SetTooltip sets the property returned by [GetTooltip].
 func (self Instance) SetTooltip(value string) {
 	class(self).SetTooltip(String.New(value))
 }
 
+/*
+Status indicator icon.
+*/
 func (self Instance) Icon() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetIcon())
 }
 
+// SetIcon sets the property returned by [GetIcon].
 func (self Instance) SetIcon(value Texture2D.Instance) {
 	class(self).SetIcon(value)
 }
 
+/*
+Status indicator native popup menu. If this is set, the [OnPressed] signal is not emitted.
+
+Note: Native popup is only supported if [NativeMenu] supports [Nativemenu.FeaturePopupMenu] feature.
+
+[NativeMenu]: https://pkg.go.dev/graphics.gd/classdb/NativeMenu
+[OnPressed]: https://pkg.go.dev/graphics.gd/classdb/StatusIndicator#Instance.OnPressed
+*/
 func (self Instance) Menu() string {
 	return string(class(self).GetMenu().String())
 }
 
+// SetMenu sets the property returned by [GetMenu].
 func (self Instance) SetMenu(value string) {
 	class(self).SetMenu(Path.ToNode(String.New(value)))
 }
 
+/*
+If true, the status indicator is visible.
+*/
 func (self Instance) Visible() bool {
 	return bool(class(self).IsVisible())
 }
 
+// SetVisible sets the property returned by [IsVisible].
 func (self Instance) SetVisible(value bool) {
 	class(self).SetVisible(value)
 }
@@ -249,6 +270,10 @@ func (self class) GetRect() Rect2.PositionSize { //gd:StatusIndicator.get_rect
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the status indicator is pressed.
+*/
 func (self Instance) OnPressed(cb func(mouse_button int, mouse_position Vector2i.XY), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

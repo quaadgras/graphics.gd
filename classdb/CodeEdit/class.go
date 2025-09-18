@@ -995,170 +995,294 @@ func New() Instance {
 	return casted
 }
 
+/*
+Set when a validated word from [OnSymbolValidate] is clicked, the [OnSymbolLookup] should be emitted.
+
+[OnSymbolLookup]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.OnSymbolLookup
+[OnSymbolValidate]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.OnSymbolValidate
+*/
 func (self Instance) SymbolLookupOnClick() bool {
 	return bool(class(self).IsSymbolLookupOnClickEnabled())
 }
 
+// SetSymbolLookupOnClick sets the property returned by [IsSymbolLookupOnClickEnabled].
 func (self Instance) SetSymbolLookupOnClick(value bool) {
 	class(self).SetSymbolLookupOnClickEnabled(value)
 }
 
+/*
+If true, the [OnSymbolHovered] signal is emitted when hovering over a word.
+
+[OnSymbolHovered]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.OnSymbolHovered
+*/
 func (self Instance) SymbolTooltipOnHover() bool {
 	return bool(class(self).IsSymbolTooltipOnHoverEnabled())
 }
 
+// SetSymbolTooltipOnHover sets the property returned by [IsSymbolTooltipOnHoverEnabled].
 func (self Instance) SetSymbolTooltipOnHover(value bool) {
 	class(self).SetSymbolTooltipOnHoverEnabled(value)
 }
 
+/*
+If true, lines can be folded. Otherwise, line folding methods like [FoldLine] will not work and [CanFoldLine] will always return false. See [GuttersDrawFoldGutter].
+
+[CanFoldLine]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.CanFoldLine
+[FoldLine]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.FoldLine
+[GuttersDrawFoldGutter]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.GuttersDrawFoldGutter
+*/
 func (self Instance) LineFolding() bool {
 	return bool(class(self).IsLineFoldingEnabled())
 }
 
+// SetLineFolding sets the property returned by [IsLineFoldingEnabled].
 func (self Instance) SetLineFolding(value bool) {
 	class(self).SetLineFoldingEnabled(value)
 }
 
+/*
+Draws vertical lines at the provided columns. The first entry is considered a main hard guideline and is drawn more prominently.
+*/
 func (self Instance) LineLengthGuidelines() []int {
 	return []int(gd.ArrayAs[[]int](gd.InternalArray(class(self).GetLineLengthGuidelines())))
 }
 
+// SetLineLengthGuidelines sets the property returned by [GetLineLengthGuidelines].
 func (self Instance) SetLineLengthGuidelines(value []int) {
 	class(self).SetLineLengthGuidelines(gd.ArrayFromSlice[Array.Contains[int64]](value))
 }
 
+/*
+If true, breakpoints are drawn in the gutter. This gutter is shared with bookmarks and executing lines. Clicking the gutter will toggle the breakpoint for the line, see [SetLineAsBreakpoint].
+
+[SetLineAsBreakpoint]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.SetLineAsBreakpoint
+*/
 func (self Instance) GuttersDrawBreakpointsGutter() bool {
 	return bool(class(self).IsDrawingBreakpointsGutter())
 }
 
+// SetGuttersDrawBreakpointsGutter sets the property returned by [IsDrawingBreakpointsGutter].
 func (self Instance) SetGuttersDrawBreakpointsGutter(value bool) {
 	class(self).SetDrawBreakpointsGutter(value)
 }
 
+/*
+If true, bookmarks are drawn in the gutter. This gutter is shared with breakpoints and executing lines. See [SetLineAsBookmarked].
+
+[SetLineAsBookmarked]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.SetLineAsBookmarked
+*/
 func (self Instance) GuttersDrawBookmarks() bool {
 	return bool(class(self).IsDrawingBookmarksGutter())
 }
 
+// SetGuttersDrawBookmarks sets the property returned by [IsDrawingBookmarksGutter].
 func (self Instance) SetGuttersDrawBookmarks(value bool) {
 	class(self).SetDrawBookmarksGutter(value)
 }
 
+/*
+If true, executing lines are marked in the gutter. This gutter is shared with breakpoints and bookmarks. See [SetLineAsExecuting].
+
+[SetLineAsExecuting]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.SetLineAsExecuting
+*/
 func (self Instance) GuttersDrawExecutingLines() bool {
 	return bool(class(self).IsDrawingExecutingLinesGutter())
 }
 
+// SetGuttersDrawExecutingLines sets the property returned by [IsDrawingExecutingLinesGutter].
 func (self Instance) SetGuttersDrawExecutingLines(value bool) {
 	class(self).SetDrawExecutingLinesGutter(value)
 }
 
+/*
+If true, the line number gutter is drawn. Line numbers start at 1 and are incremented for each line of text. Clicking and dragging in the line number gutter will select entire lines of text.
+*/
 func (self Instance) GuttersDrawLineNumbers() bool {
 	return bool(class(self).IsDrawLineNumbersEnabled())
 }
 
+// SetGuttersDrawLineNumbers sets the property returned by [IsDrawLineNumbersEnabled].
 func (self Instance) SetGuttersDrawLineNumbers(value bool) {
 	class(self).SetDrawLineNumbers(value)
 }
 
+/*
+If true, line numbers drawn in the gutter are zero padded based on the total line count. Requires [GuttersDrawLineNumbers] to be set to true.
+
+[GuttersDrawLineNumbers]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.GuttersDrawLineNumbers
+*/
 func (self Instance) GuttersZeroPadLineNumbers() bool {
 	return bool(class(self).IsLineNumbersZeroPadded())
 }
 
+// SetGuttersZeroPadLineNumbers sets the property returned by [IsLineNumbersZeroPadded].
 func (self Instance) SetGuttersZeroPadLineNumbers(value bool) {
 	class(self).SetLineNumbersZeroPadded(value)
 }
 
+/*
+If true, the fold gutter is drawn. In this gutter, the theme's 'can_fold_code_region' icon is drawn for each foldable line (see [CanFoldLine]) and the theme's 'folded_code_region' icon is drawn for each folded line (see [IsLineFolded]). These icons can be clicked to toggle the fold state, see [ToggleFoldableLine]. [LineFolding] must be true to show icons.
+
+[CanFoldLine]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.CanFoldLine
+[IsLineFolded]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.IsLineFolded
+[LineFolding]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.LineFolding
+[ToggleFoldableLine]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.ToggleFoldableLine
+*/
 func (self Instance) GuttersDrawFoldGutter() bool {
 	return bool(class(self).IsDrawingFoldGutter())
 }
 
+// SetGuttersDrawFoldGutter sets the property returned by [IsDrawingFoldGutter].
 func (self Instance) SetGuttersDrawFoldGutter(value bool) {
 	class(self).SetDrawFoldGutter(value)
 }
 
+/*
+Sets the string delimiters. All existing string delimiters will be removed.
+*/
 func (self Instance) DelimiterStrings() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetStringDelimiters())))
 }
 
+// SetDelimiterStrings sets the property returned by [GetStringDelimiters].
 func (self Instance) SetDelimiterStrings(value []string) {
 	class(self).SetStringDelimiters(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 }
 
+/*
+Sets the comment delimiters. All existing comment delimiters will be removed.
+*/
 func (self Instance) DelimiterComments() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetCommentDelimiters())))
 }
 
+// SetDelimiterComments sets the property returned by [GetCommentDelimiters].
 func (self Instance) SetDelimiterComments(value []string) {
 	class(self).SetCommentDelimiters(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 }
 
+/*
+If true, the [ProjectSettings] "input/ui_text_completion_query" action requests code completion. To handle it, see [RequestCodeCompletion] or [OnCodeCompletionRequested].
+
+[OnCodeCompletionRequested]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.OnCodeCompletionRequested
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[RequestCodeCompletion]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Interface
+*/
 func (self Instance) CodeCompletionEnabled() bool {
 	return bool(class(self).IsCodeCompletionEnabled())
 }
 
+// SetCodeCompletionEnabled sets the property returned by [IsCodeCompletionEnabled].
 func (self Instance) SetCodeCompletionEnabled(value bool) {
 	class(self).SetCodeCompletionEnabled(value)
 }
 
+/*
+Sets prefixes that will trigger code completion.
+*/
 func (self Instance) CodeCompletionPrefixes() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetCodeCompletionPrefixes())))
 }
 
+// SetCodeCompletionPrefixes sets the property returned by [GetCodeCompletionPrefixes].
 func (self Instance) SetCodeCompletionPrefixes(value []string) {
 	class(self).SetCodeCompletionPrefixes(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 }
 
+/*
+Size of the tabulation indent (one Tab press) in characters. If [IndentUseSpaces] is enabled the number of spaces to use.
+
+[IndentUseSpaces]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.IndentUseSpaces
+*/
 func (self Instance) IndentSize() int {
 	return int(int(class(self).GetIndentSize()))
 }
 
+// SetIndentSize sets the property returned by [GetIndentSize].
 func (self Instance) SetIndentSize(value int) {
 	class(self).SetIndentSize(int64(value))
 }
 
+/*
+Use spaces instead of tabs for indentation.
+*/
 func (self Instance) IndentUseSpaces() bool {
 	return bool(class(self).IsIndentUsingSpaces())
 }
 
+// SetIndentUseSpaces sets the property returned by [IsIndentUsingSpaces].
 func (self Instance) SetIndentUseSpaces(value bool) {
 	class(self).SetIndentUsingSpaces(value)
 }
 
+/*
+If true, an extra indent is automatically inserted when a new line is added and a prefix in [IndentAutomaticPrefixes] is found. If a brace pair opening key is found, the matching closing brace will be moved to another new line (see [AutoBraceCompletionPairs]).
+
+[AutoBraceCompletionPairs]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.AutoBraceCompletionPairs
+[IndentAutomaticPrefixes]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.IndentAutomaticPrefixes
+*/
 func (self Instance) IndentAutomatic() bool {
 	return bool(class(self).IsAutoIndentEnabled())
 }
 
+// SetIndentAutomatic sets the property returned by [IsAutoIndentEnabled].
 func (self Instance) SetIndentAutomatic(value bool) {
 	class(self).SetAutoIndentEnabled(value)
 }
 
+/*
+Prefixes to trigger an automatic indent. Used when [IndentAutomatic] is set to true.
+
+[IndentAutomatic]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.IndentAutomatic
+*/
 func (self Instance) IndentAutomaticPrefixes() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetAutoIndentPrefixes())))
 }
 
+// SetIndentAutomaticPrefixes sets the property returned by [GetAutoIndentPrefixes].
 func (self Instance) SetIndentAutomaticPrefixes(value []string) {
 	class(self).SetAutoIndentPrefixes(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 }
 
+/*
+If true, uses [AutoBraceCompletionPairs] to automatically insert the closing brace when the opening brace is inserted by typing or autocompletion. Also automatically removes the closing brace when using backspace on the opening brace.
+
+[AutoBraceCompletionPairs]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.AutoBraceCompletionPairs
+*/
 func (self Instance) AutoBraceCompletionEnabled() bool {
 	return bool(class(self).IsAutoBraceCompletionEnabled())
 }
 
+// SetAutoBraceCompletionEnabled sets the property returned by [IsAutoBraceCompletionEnabled].
 func (self Instance) SetAutoBraceCompletionEnabled(value bool) {
 	class(self).SetAutoBraceCompletionEnabled(value)
 }
 
+/*
+If true, highlights brace pairs when the caret is on either one, using [AutoBraceCompletionPairs]. If matching, the pairs will be underlined. If a brace is unmatched, it is colored with theme's 'brace_mismatch_color'.
+
+[AutoBraceCompletionPairs]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.AutoBraceCompletionPairs
+*/
 func (self Instance) AutoBraceCompletionHighlightMatching() bool {
 	return bool(class(self).IsHighlightMatchingBracesEnabled())
 }
 
+// SetAutoBraceCompletionHighlightMatching sets the property returned by [IsHighlightMatchingBracesEnabled].
 func (self Instance) SetAutoBraceCompletionHighlightMatching(value bool) {
 	class(self).SetHighlightMatchingBracesEnabled(value)
 }
 
+/*
+Sets the brace pairs to be autocompleted. For each entry in the dictionary, the key is the opening brace and the value is the closing brace that matches it. A brace is a string made of symbols. See [AutoBraceCompletionEnabled] and [AutoBraceCompletionHighlightMatching].
+
+[AutoBraceCompletionEnabled]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.AutoBraceCompletionEnabled
+[AutoBraceCompletionHighlightMatching]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.AutoBraceCompletionHighlightMatching
+*/
 func (self Instance) AutoBraceCompletionPairs() map[any]any {
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetAutoBraceCompletionPairs()))
 }
 
+// SetAutoBraceCompletionPairs sets the property returned by [GetAutoBraceCompletionPairs].
 func (self Instance) SetAutoBraceCompletionPairs(value map[any]any) {
 	class(self).SetAutoBraceCompletionPairs(gd.DictionaryFromMap(value))
 }
@@ -2215,6 +2339,10 @@ Duplicates all lines currently selected with any caret. Duplicates the entire li
 func (self class) DuplicateLines() { //gd:CodeEdit.duplicate_lines
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.duplicate_lines, 0, &struct{}{})
 }
+
+/*
+Emitted when a breakpoint is added or removed from a line. If the line is removed via backspace, a signal is emitted at the old line.
+*/
 func (self Instance) OnBreakpointToggled(cb func(line int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -2227,6 +2355,12 @@ func (self class) BreakpointToggled() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`BreakpointToggled`))))
 }
 
+/*
+Emitted when the user requests code completion. This signal will not be sent if [RequestCodeCompletion] is overridden or [CodeCompletionEnabled] is false.
+
+[CodeCompletionEnabled]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.CodeCompletionEnabled
+[RequestCodeCompletion]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Interface
+*/
 func (self Instance) OnCodeCompletionRequested(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -2239,6 +2373,9 @@ func (self class) CodeCompletionRequested() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CodeCompletionRequested`))))
 }
 
+/*
+Emitted when the user has clicked on a valid symbol.
+*/
 func (self Instance) OnSymbolLookup(cb func(symbol string, line int, column int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -2251,6 +2388,14 @@ func (self class) SymbolLookup() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SymbolLookup`))))
 }
 
+/*
+Emitted when the user hovers over a symbol. The symbol should be validated and responded to, by calling [SetSymbolLookupWordAsValid].
+
+Note: [SymbolLookupOnClick] must be true for this signal to be emitted.
+
+[SetSymbolLookupWordAsValid]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.SetSymbolLookupWordAsValid
+[SymbolLookupOnClick]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.SymbolLookupOnClick
+*/
 func (self Instance) OnSymbolValidate(cb func(symbol string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -2263,6 +2408,15 @@ func (self class) SymbolValidate() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SymbolValidate`))))
 }
 
+/*
+Emitted when the user hovers over a symbol. Unlike [OnControl.MouseEntered], this signal is not emitted immediately, but when the cursor is over the symbol for [ProjectSettings] "gui/timers/tooltip_delay_sec" seconds.
+
+Note: [SymbolTooltipOnHover] must be true for this signal to be emitted.
+
+[OnControl.MouseEntered]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.OnControl.MouseEntered
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[SymbolTooltipOnHover]: https://pkg.go.dev/graphics.gd/classdb/CodeEdit#Instance.SymbolTooltipOnHover
+*/
 func (self Instance) OnSymbolHovered(cb func(symbol string, line int, column int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

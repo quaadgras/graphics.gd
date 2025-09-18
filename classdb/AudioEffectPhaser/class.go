@@ -152,42 +152,62 @@ func New() Instance {
 	return casted
 }
 
+/*
+Determines the minimum frequency affected by the LFO modulations, in Hz. Value can range from 10 to 10000.
+*/
 func (self Instance) RangeMinHz() Float.X {
 	return Float.X(Float.X(class(self).GetRangeMinHz()))
 }
 
+// SetRangeMinHz sets the property returned by [GetRangeMinHz].
 func (self Instance) SetRangeMinHz(value Float.X) {
 	class(self).SetRangeMinHz(float64(value))
 }
 
+/*
+Determines the maximum frequency affected by the LFO modulations, in Hz. Value can range from 10 to 10000.
+*/
 func (self Instance) RangeMaxHz() Float.X {
 	return Float.X(Float.X(class(self).GetRangeMaxHz()))
 }
 
+// SetRangeMaxHz sets the property returned by [GetRangeMaxHz].
 func (self Instance) SetRangeMaxHz(value Float.X) {
 	class(self).SetRangeMaxHz(float64(value))
 }
 
+/*
+Adjusts the rate in Hz at which the effect sweeps up and down across the frequency range.
+*/
 func (self Instance) RateHz() Float.X {
 	return Float.X(Float.X(class(self).GetRateHz()))
 }
 
+// SetRateHz sets the property returned by [GetRateHz].
 func (self Instance) SetRateHz(value Float.X) {
 	class(self).SetRateHz(float64(value))
 }
 
+/*
+Output percent of modified sound. Value can range from 0.1 to 0.9.
+*/
 func (self Instance) Feedback() Float.X {
 	return Float.X(Float.X(class(self).GetFeedback()))
 }
 
+// SetFeedback sets the property returned by [GetFeedback].
 func (self Instance) SetFeedback(value Float.X) {
 	class(self).SetFeedback(float64(value))
 }
 
+/*
+Determines how high the filter frequencies sweep. Low value will primarily affect bass frequencies. High value can sweep high into the treble. Value can range from 0.1 to 4.0.
+*/
 func (self Instance) Depth() Float.X {
 	return Float.X(Float.X(class(self).GetDepth()))
 }
 
+// SetDepth sets the property returned by [GetDepth].
 func (self Instance) SetDepth(value Float.X) {
 	class(self).SetDepth(float64(value))
 }

@@ -243,58 +243,93 @@ func New() Instance {
 	return casted
 }
 
+/*
+The type of shape this shape represents. Valid values are "box", "capsule", "cylinder", "sphere", "hull", and "trimesh".
+*/
 func (self Instance) ShapeType() string {
 	return string(class(self).GetShapeType().String())
 }
 
+// SetShapeType sets the property returned by [GetShapeType].
 func (self Instance) SetShapeType(value string) {
 	class(self).SetShapeType(String.New(value))
 }
 
+/*
+The size of the shape, in meters. This is only used when the shape type is "box", and it represents the "diameter" of the box. This value should not be negative.
+*/
 func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
+/*
+The radius of the shape, in meters. This is only used when the shape type is "capsule", "cylinder", or "sphere". This value should not be negative.
+*/
 func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetRadius sets the property returned by [GetRadius].
 func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }
 
+/*
+The height of the shape, in meters. This is only used when the shape type is "capsule" or "cylinder". This value should not be negative, and for "capsule" it should be at least twice the radius.
+*/
 func (self Instance) Height() Float.X {
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
+// SetHeight sets the property returned by [GetHeight].
 func (self Instance) SetHeight(value Float.X) {
 	class(self).SetHeight(float64(value))
 }
 
+/*
+If true, indicates that this shape is a trigger. For Godot, this means that the shape should be a child of an [Area3D] node.
+
+This is the only variable not used in the [ToNode] method, it's intended to be used alongside when deciding where to add the generated node as a child.
+
+[Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
+[ToNode]: https://pkg.go.dev/graphics.gd/classdb/GLTFPhysicsShape#Instance.ToNode
+*/
 func (self Instance) IsTrigger() bool {
 	return bool(class(self).GetIsTrigger())
 }
 
+// SetIsTrigger sets the property returned by [GetIsTrigger].
 func (self Instance) SetIsTrigger(value bool) {
 	class(self).SetIsTrigger(value)
 }
 
+/*
+The index of the shape's mesh in the glTF file. This is only used when the shape type is "hull" (convex hull) or "trimesh" (concave trimesh).
+*/
 func (self Instance) MeshIndex() int {
 	return int(int(class(self).GetMeshIndex()))
 }
 
+// SetMeshIndex sets the property returned by [GetMeshIndex].
 func (self Instance) SetMeshIndex(value int) {
 	class(self).SetMeshIndex(int64(value))
 }
 
+/*
+The [ImporterMesh] resource of the shape. This is only used when the shape type is "hull" (convex hull) or "trimesh" (concave trimesh).
+
+[ImporterMesh]: https://pkg.go.dev/graphics.gd/classdb/ImporterMesh
+*/
 func (self Instance) ImporterMesh() ImporterMesh.Instance {
 	return ImporterMesh.Instance(class(self).GetImporterMesh())
 }
 
+// SetImporterMesh sets the property returned by [GetImporterMesh].
 func (self Instance) SetImporterMesh(value ImporterMesh.Instance) {
 	class(self).SetImporterMesh(value)
 }

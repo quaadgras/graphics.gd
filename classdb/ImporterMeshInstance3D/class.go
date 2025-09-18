@@ -165,6 +165,7 @@ func (self Instance) Mesh() ImporterMesh.Instance {
 	return ImporterMesh.Instance(class(self).GetMesh())
 }
 
+// SetMesh sets the property returned by [GetMesh].
 func (self Instance) SetMesh(value ImporterMesh.Instance) {
 	class(self).SetMesh(value)
 }
@@ -173,6 +174,7 @@ func (self Instance) Skin() Skin.Instance {
 	return Skin.Instance(class(self).GetSkin())
 }
 
+// SetSkin sets the property returned by [GetSkin].
 func (self Instance) SetSkin(value Skin.Instance) {
 	class(self).SetSkin(value)
 }
@@ -181,6 +183,7 @@ func (self Instance) SkeletonPath() string {
 	return string(class(self).GetSkeletonPath().String())
 }
 
+// SetSkeletonPath sets the property returned by [GetSkeletonPath].
 func (self Instance) SetSkeletonPath(value string) {
 	class(self).SetSkeletonPath(Path.ToNode(String.New(value)))
 }
@@ -189,6 +192,7 @@ func (self Instance) LayerMask() int {
 	return int(int(class(self).GetLayerMask()))
 }
 
+// SetLayerMask sets the property returned by [GetLayerMask].
 func (self Instance) SetLayerMask(value int) {
 	class(self).SetLayerMask(int64(value))
 }
@@ -197,6 +201,7 @@ func (self Instance) CastShadow() GeometryInstance3D.ShadowCastingSetting {
 	return GeometryInstance3D.ShadowCastingSetting(class(self).GetCastShadowsSetting())
 }
 
+// SetCastShadow sets the property returned by [GetCastShadowsSetting].
 func (self Instance) SetCastShadow(value GeometryInstance3D.ShadowCastingSetting) {
 	class(self).SetCastShadowsSetting(value)
 }
@@ -205,6 +210,7 @@ func (self Instance) VisibilityRangeBegin() Float.X {
 	return Float.X(Float.X(class(self).GetVisibilityRangeBegin()))
 }
 
+// SetVisibilityRangeBegin sets the property returned by [GetVisibilityRangeBegin].
 func (self Instance) SetVisibilityRangeBegin(value Float.X) {
 	class(self).SetVisibilityRangeBegin(float64(value))
 }
@@ -213,6 +219,7 @@ func (self Instance) VisibilityRangeBeginMargin() Float.X {
 	return Float.X(Float.X(class(self).GetVisibilityRangeBeginMargin()))
 }
 
+// SetVisibilityRangeBeginMargin sets the property returned by [GetVisibilityRangeBeginMargin].
 func (self Instance) SetVisibilityRangeBeginMargin(value Float.X) {
 	class(self).SetVisibilityRangeBeginMargin(float64(value))
 }
@@ -221,6 +228,7 @@ func (self Instance) VisibilityRangeEnd() Float.X {
 	return Float.X(Float.X(class(self).GetVisibilityRangeEnd()))
 }
 
+// SetVisibilityRangeEnd sets the property returned by [GetVisibilityRangeEnd].
 func (self Instance) SetVisibilityRangeEnd(value Float.X) {
 	class(self).SetVisibilityRangeEnd(float64(value))
 }
@@ -229,6 +237,7 @@ func (self Instance) VisibilityRangeEndMargin() Float.X {
 	return Float.X(Float.X(class(self).GetVisibilityRangeEndMargin()))
 }
 
+// SetVisibilityRangeEndMargin sets the property returned by [GetVisibilityRangeEndMargin].
 func (self Instance) SetVisibilityRangeEndMargin(value Float.X) {
 	class(self).SetVisibilityRangeEndMargin(float64(value))
 }
@@ -237,6 +246,7 @@ func (self Instance) VisibilityRangeFadeMode() GeometryInstance3D.VisibilityRang
 	return GeometryInstance3D.VisibilityRangeFadeMode(class(self).GetVisibilityRangeFadeMode())
 }
 
+// SetVisibilityRangeFadeMode sets the property returned by [GetVisibilityRangeFadeMode].
 func (self Instance) SetVisibilityRangeFadeMode(value GeometryInstance3D.VisibilityRangeFadeMode) {
 	class(self).SetVisibilityRangeFadeMode(value)
 }

@@ -276,6 +276,10 @@ func (self class) GetTrackerHand() XRPositionalTracker.TrackerHand { //gd:XRCont
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when a button on this controller is pressed.
+*/
 func (self Instance) OnButtonPressed(cb func(name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -288,6 +292,9 @@ func (self class) ButtonPressed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonPressed`))))
 }
 
+/*
+Emitted when a button on this controller is released.
+*/
 func (self Instance) OnButtonReleased(cb func(name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -300,6 +307,9 @@ func (self class) ButtonReleased() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonReleased`))))
 }
 
+/*
+Emitted when a trigger or similar input on this controller changes value.
+*/
 func (self Instance) OnInputFloatChanged(cb func(name string, value Float.X), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -312,6 +322,9 @@ func (self class) InputFloatChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InputFloatChanged`))))
 }
 
+/*
+Emitted when a thumbstick or thumbpad on this controller is moved.
+*/
 func (self Instance) OnInputVector2Changed(cb func(name string, value Vector2.XY), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -324,6 +337,9 @@ func (self class) InputVector2Changed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InputVector2Changed`))))
 }
 
+/*
+Emitted when the interaction profile on this controller is changed.
+*/
 func (self Instance) OnProfileChanged(cb func(role string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -203,34 +203,57 @@ func New() Instance {
 	return casted
 }
 
+/*
+[OpenXRAction] that is bound to [BindingPath].
+
+[BindingPath]: https://pkg.go.dev/graphics.gd/classdb/OpenXRIPBinding#Instance.BindingPath
+[OpenXRAction]: https://pkg.go.dev/graphics.gd/classdb/OpenXRAction
+*/
 func (self Instance) Action() OpenXRAction.Instance {
 	return OpenXRAction.Instance(class(self).GetAction())
 }
 
+// SetAction sets the property returned by [GetAction].
 func (self Instance) SetAction(value OpenXRAction.Instance) {
 	class(self).SetAction(value)
 }
 
+/*
+Binding path that defines the input or output bound to [Action].
+
+Note: Binding paths are suggestions, an XR runtime may choose to bind the action to a different input or output emulating this input or output.
+
+[Action]: https://pkg.go.dev/graphics.gd/classdb/OpenXRIPBinding#Instance.Action
+*/
 func (self Instance) BindingPath() string {
 	return string(class(self).GetBindingPath().String())
 }
 
+// SetBindingPath sets the property returned by [GetBindingPath].
 func (self Instance) SetBindingPath(value string) {
 	class(self).SetBindingPath(String.New(value))
 }
 
+/*
+Binding modifiers for this binding.
+*/
 func (self Instance) BindingModifiers() []OpenXRActionBindingModifier.Instance {
 	return []OpenXRActionBindingModifier.Instance(gd.ArrayAs[[]OpenXRActionBindingModifier.Instance](gd.InternalArray(class(self).GetBindingModifiers())))
 }
 
+// SetBindingModifiers sets the property returned by [GetBindingModifiers].
 func (self Instance) SetBindingModifiers(value []OpenXRActionBindingModifier.Instance) {
 	class(self).SetBindingModifiers(gd.EngineArrayFromSlice(value))
 }
 
+/*
+Paths that define the inputs or outputs bound on the device.
+*/
 func (self Instance) Paths() []string {
 	return []string(class(self).GetPaths().Strings())
 }
 
+// SetPaths sets the property returned by [GetPaths].
 func (self Instance) SetPaths(value []string) {
 	class(self).SetPaths(Packed.MakeStrings(value...))
 }

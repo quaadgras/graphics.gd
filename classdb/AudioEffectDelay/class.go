@@ -168,106 +168,158 @@ func New() Instance {
 	return casted
 }
 
+/*
+Output percent of original sound. At 0, only delayed sounds are output. Value can range from 0 to 1.
+*/
 func (self Instance) Dry() Float.X {
 	return Float.X(Float.X(class(self).GetDry()))
 }
 
+// SetDry sets the property returned by [GetDry].
 func (self Instance) SetDry(value Float.X) {
 	class(self).SetDry(float64(value))
 }
 
+/*
+If true, the first tap will be enabled.
+*/
 func (self Instance) Tap1Active() bool {
 	return bool(class(self).IsTap1Active())
 }
 
+// SetTap1Active sets the property returned by [IsTap1Active].
 func (self Instance) SetTap1Active(value bool) {
 	class(self).SetTap1Active(value)
 }
 
+/*
+First tap delay time in milliseconds.
+*/
 func (self Instance) Tap1DelayMs() Float.X {
 	return Float.X(Float.X(class(self).GetTap1DelayMs()))
 }
 
+// SetTap1DelayMs sets the property returned by [GetTap1DelayMs].
 func (self Instance) SetTap1DelayMs(value Float.X) {
 	class(self).SetTap1DelayMs(float64(value))
 }
 
+/*
+Sound level for the first tap.
+*/
 func (self Instance) Tap1LevelDb() Float.X {
 	return Float.X(Float.X(class(self).GetTap1LevelDb()))
 }
 
+// SetTap1LevelDb sets the property returned by [GetTap1LevelDb].
 func (self Instance) SetTap1LevelDb(value Float.X) {
 	class(self).SetTap1LevelDb(float64(value))
 }
 
+/*
+Pan position for the first tap. Value can range from -1 (fully left) to 1 (fully right).
+*/
 func (self Instance) Tap1Pan() Float.X {
 	return Float.X(Float.X(class(self).GetTap1Pan()))
 }
 
+// SetTap1Pan sets the property returned by [GetTap1Pan].
 func (self Instance) SetTap1Pan(value Float.X) {
 	class(self).SetTap1Pan(float64(value))
 }
 
+/*
+If true, the second tap will be enabled.
+*/
 func (self Instance) Tap2Active() bool {
 	return bool(class(self).IsTap2Active())
 }
 
+// SetTap2Active sets the property returned by [IsTap2Active].
 func (self Instance) SetTap2Active(value bool) {
 	class(self).SetTap2Active(value)
 }
 
+/*
+Second tap delay time in milliseconds.
+*/
 func (self Instance) Tap2DelayMs() Float.X {
 	return Float.X(Float.X(class(self).GetTap2DelayMs()))
 }
 
+// SetTap2DelayMs sets the property returned by [GetTap2DelayMs].
 func (self Instance) SetTap2DelayMs(value Float.X) {
 	class(self).SetTap2DelayMs(float64(value))
 }
 
+/*
+Sound level for the second tap.
+*/
 func (self Instance) Tap2LevelDb() Float.X {
 	return Float.X(Float.X(class(self).GetTap2LevelDb()))
 }
 
+// SetTap2LevelDb sets the property returned by [GetTap2LevelDb].
 func (self Instance) SetTap2LevelDb(value Float.X) {
 	class(self).SetTap2LevelDb(float64(value))
 }
 
+/*
+Pan position for the second tap. Value can range from -1 (fully left) to 1 (fully right).
+*/
 func (self Instance) Tap2Pan() Float.X {
 	return Float.X(Float.X(class(self).GetTap2Pan()))
 }
 
+// SetTap2Pan sets the property returned by [GetTap2Pan].
 func (self Instance) SetTap2Pan(value Float.X) {
 	class(self).SetTap2Pan(float64(value))
 }
 
+/*
+If true, feedback is enabled.
+*/
 func (self Instance) FeedbackActive() bool {
 	return bool(class(self).IsFeedbackActive())
 }
 
+// SetFeedbackActive sets the property returned by [IsFeedbackActive].
 func (self Instance) SetFeedbackActive(value bool) {
 	class(self).SetFeedbackActive(value)
 }
 
+/*
+Feedback delay time in milliseconds.
+*/
 func (self Instance) FeedbackDelayMs() Float.X {
 	return Float.X(Float.X(class(self).GetFeedbackDelayMs()))
 }
 
+// SetFeedbackDelayMs sets the property returned by [GetFeedbackDelayMs].
 func (self Instance) SetFeedbackDelayMs(value Float.X) {
 	class(self).SetFeedbackDelayMs(float64(value))
 }
 
+/*
+Sound level for feedback.
+*/
 func (self Instance) FeedbackLevelDb() Float.X {
 	return Float.X(Float.X(class(self).GetFeedbackLevelDb()))
 }
 
+// SetFeedbackLevelDb sets the property returned by [GetFeedbackLevelDb].
 func (self Instance) SetFeedbackLevelDb(value Float.X) {
 	class(self).SetFeedbackLevelDb(float64(value))
 }
 
+/*
+Low-pass filter for feedback, in Hz. Frequencies below this value are filtered out of the source signal.
+*/
 func (self Instance) FeedbackLowpass() Float.X {
 	return Float.X(Float.X(class(self).GetFeedbackLowpass()))
 }
 
+// SetFeedbackLowpass sets the property returned by [GetFeedbackLowpass].
 func (self Instance) SetFeedbackLowpass(value Float.X) {
 	class(self).SetFeedbackLowpass(float64(value))
 }

@@ -157,6 +157,7 @@ func (self Instance) OmniShadowMode() ShadowMode {
 	return ShadowMode(class(self).GetShadowMode())
 }
 
+// SetOmniShadowMode sets the property returned by [GetShadowMode].
 func (self Instance) SetOmniShadowMode(value ShadowMode) {
 	class(self).SetShadowMode(value)
 }

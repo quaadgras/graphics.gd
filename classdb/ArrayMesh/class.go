@@ -415,26 +415,42 @@ func New() Instance {
 	return casted
 }
 
+/*
+The blend shape mode.
+*/
 func (self Instance) BlendShapeMode() Mesh.BlendShapeMode {
 	return Mesh.BlendShapeMode(class(self).GetBlendShapeMode())
 }
 
+// SetBlendShapeMode sets the property returned by [GetBlendShapeMode].
 func (self Instance) SetBlendShapeMode(value Mesh.BlendShapeMode) {
 	class(self).SetBlendShapeMode(value)
 }
 
+/*
+Overrides the [AABB.PositionSize] with one defined by user for use with frustum culling. Especially useful to avoid unexpected culling when using a shader to offset vertices.
+
+[AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
+*/
 func (self Instance) CustomAabb() AABB.PositionSize {
 	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
+// SetCustomAabb sets the property returned by [GetCustomAabb].
 func (self Instance) SetCustomAabb(value AABB.PositionSize) {
 	class(self).SetCustomAabb(AABB.PositionSize(value))
 }
 
+/*
+An optional mesh which can be used for rendering shadows and the depth prepass. Can be used to increase performance by supplying a mesh with fused vertices and only vertex position data (without normals, UVs, colors, etc.).
+
+Note: This mesh must have exactly the same vertex positions as the source mesh (including the source mesh's LODs, if present). If vertex positions differ, then the mesh will not draw correctly.
+*/
 func (self Instance) ShadowMesh() Instance {
 	return Instance(class(self).GetShadowMesh())
 }
 
+// SetShadowMesh sets the property returned by [GetShadowMesh].
 func (self Instance) SetShadowMesh(value Instance) {
 	class(self).SetShadowMesh(value)
 }

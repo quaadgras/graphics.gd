@@ -163,50 +163,77 @@ func New() Instance {
 	return casted
 }
 
+/*
+The text that displays to the left of the value.
+*/
 func (self Instance) Label() string {
 	return string(class(self).GetLabel().String())
 }
 
+// SetLabel sets the property returned by [GetLabel].
 func (self Instance) SetLabel(value string) {
 	class(self).SetLabel(String.New(value))
 }
 
+/*
+The suffix to display after the value (in a faded color). This should generally be a plural word. You may have to use an abbreviation if the suffix is too long to be displayed.
+*/
 func (self Instance) Suffix() string {
 	return string(class(self).GetSuffix().String())
 }
 
+// SetSuffix sets the property returned by [GetSuffix].
 func (self Instance) SetSuffix(value string) {
 	class(self).SetSuffix(String.New(value))
 }
 
+/*
+If true, the slider can't be interacted with.
+*/
 func (self Instance) ReadOnly() bool {
 	return bool(class(self).IsReadOnly())
 }
 
+// SetReadOnly sets the property returned by [IsReadOnly].
 func (self Instance) SetReadOnly(value bool) {
 	class(self).SetReadOnly(value)
 }
 
+/*
+If true, the slider will not draw background.
+*/
 func (self Instance) Flat() bool {
 	return bool(class(self).IsFlat())
 }
 
+// SetFlat sets the property returned by [IsFlat].
 func (self Instance) SetFlat(value bool) {
 	class(self).SetFlat(value)
 }
 
+/*
+If true, the slider and up/down arrows are hidden.
+*/
 func (self Instance) HideSlider() bool {
 	return bool(class(self).IsHidingSlider())
 }
 
+// SetHideSlider sets the property returned by [IsHidingSlider].
 func (self Instance) SetHideSlider(value bool) {
 	class(self).SetHideSlider(value)
 }
 
+/*
+If true, the [EditorSpinSlider] is considered to be editing an integer value. If false, the [EditorSpinSlider] is considered to be editing a floating-point value. This is used to determine whether a slider should be drawn. The slider is only drawn for floats; integers use up-down arrows similar to [SpinBox] instead.
+
+[EditorSpinSlider]: https://pkg.go.dev/graphics.gd/classdb/EditorSpinSlider
+[SpinBox]: https://pkg.go.dev/graphics.gd/classdb/SpinBox
+*/
 func (self Instance) EditingInteger() bool {
 	return bool(class(self).IsEditingInteger())
 }
 
+// SetEditingInteger sets the property returned by [IsEditingInteger].
 func (self Instance) SetEditingInteger(value bool) {
 	class(self).SetEditingInteger(value)
 }
@@ -282,6 +309,10 @@ func (self class) IsEditingInteger() bool { //gd:EditorSpinSlider.is_editing_int
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the spinner/slider is grabbed.
+*/
 func (self Instance) OnGrabbed(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -294,6 +325,9 @@ func (self class) Grabbed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Grabbed`))))
 }
 
+/*
+Emitted when the spinner/slider is ungrabbed.
+*/
 func (self Instance) OnUngrabbed(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -306,6 +340,9 @@ func (self class) Ungrabbed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Ungrabbed`))))
 }
 
+/*
+Emitted when the updown button is pressed.
+*/
 func (self Instance) OnUpdownPressed(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -318,6 +355,9 @@ func (self class) UpdownPressed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`UpdownPressed`))))
 }
 
+/*
+Emitted when the value form gains focus.
+*/
 func (self Instance) OnValueFocusEntered(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -330,6 +370,9 @@ func (self class) ValueFocusEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ValueFocusEntered`))))
 }
 
+/*
+Emitted when the value form loses focus.
+*/
 func (self Instance) OnValueFocusExited(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

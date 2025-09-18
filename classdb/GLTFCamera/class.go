@@ -190,42 +190,68 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the camera is in perspective mode. Otherwise, the camera is in orthographic/orthogonal mode. This maps to glTF's camera type property. See [Camera3D.Projection] and the glTF spec for more information.
+
+[Camera3D.Projection]: https://pkg.go.dev/graphics.gd/classdb/Camera3D#Instance.Projection
+*/
 func (self Instance) Perspective() bool {
 	return bool(class(self).GetPerspective())
 }
 
+// SetPerspective sets the property returned by [GetPerspective].
 func (self Instance) SetPerspective(value bool) {
 	class(self).SetPerspective(value)
 }
 
+/*
+The FOV of the camera. This class and glTF define the camera FOV in radians, while Godot uses degrees. This maps to glTF's yfov property. This value is only used for perspective cameras, when [Perspective] is true.
+
+[Perspective]: https://pkg.go.dev/graphics.gd/classdb/GLTFCamera#Instance.Perspective
+*/
 func (self Instance) Fov() Float.X {
 	return Float.X(Float.X(class(self).GetFov()))
 }
 
+// SetFov sets the property returned by [GetFov].
 func (self Instance) SetFov(value Float.X) {
 	class(self).SetFov(float64(value))
 }
 
+/*
+The size of the camera. This class and glTF define the camera size magnitude as a radius in meters, while Godot defines it as a diameter in meters. This maps to glTF's ymag property. This value is only used for orthographic/orthogonal cameras, when [Perspective] is false.
+
+[Perspective]: https://pkg.go.dev/graphics.gd/classdb/GLTFCamera#Instance.Perspective
+*/
 func (self Instance) SizeMag() Float.X {
 	return Float.X(Float.X(class(self).GetSizeMag()))
 }
 
+// SetSizeMag sets the property returned by [GetSizeMag].
 func (self Instance) SetSizeMag(value Float.X) {
 	class(self).SetSizeMag(float64(value))
 }
 
+/*
+The distance to the far culling boundary for this camera relative to its local Z axis, in meters. This maps to glTF's zfar property.
+*/
 func (self Instance) DepthFar() Float.X {
 	return Float.X(Float.X(class(self).GetDepthFar()))
 }
 
+// SetDepthFar sets the property returned by [GetDepthFar].
 func (self Instance) SetDepthFar(value Float.X) {
 	class(self).SetDepthFar(float64(value))
 }
 
+/*
+The distance to the near culling boundary for this camera relative to its local Z axis, in meters. This maps to glTF's znear property.
+*/
 func (self Instance) DepthNear() Float.X {
 	return Float.X(Float.X(class(self).GetDepthNear()))
 }
 
+// SetDepthNear sets the property returned by [GetDepthNear].
 func (self Instance) SetDepthNear(value Float.X) {
 	class(self).SetDepthNear(float64(value))
 }

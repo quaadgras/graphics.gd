@@ -162,10 +162,25 @@ func New() Instance {
 	return casted
 }
 
+/*
+The occluder's vertex positions in local 3D coordinates.
+
+Note: The occluder is always updated after setting this value. If creating occluders procedurally, consider using [SetArrays] instead to avoid updating the occluder twice when it's created.
+
+[SetArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayOccluder3D#Instance.SetArrays
+*/
 func (self Instance) SetVertices(value []Vector3.XYZ) {
 	class(self).SetVertices(Packed.New(value...))
 }
 
+/*
+The occluder's index position. Indices determine which points from the [Vertices] array should be drawn, and in which order.
+
+Note: The occluder is always updated after setting this value. If creating occluders procedurally, consider using [SetArrays] instead to avoid updating the occluder twice when it's created.
+
+[SetArrays]: https://pkg.go.dev/graphics.gd/classdb/ArrayOccluder3D#Instance.SetArrays
+[Vertices]: https://pkg.go.dev/graphics.gd/classdb/ArrayOccluder3D#Instance.Vertices
+*/
 func (self Instance) SetIndices(value []int32) {
 	class(self).SetIndices(Packed.New(value...))
 }

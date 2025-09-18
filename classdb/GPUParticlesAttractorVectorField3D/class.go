@@ -161,18 +161,30 @@ func New() Instance {
 	return casted
 }
 
+/*
+The size of the vector field box in 3D units.
+*/
 func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
+/*
+The 3D texture to be used. Values are linearly interpolated between the texture's pixels.
+
+Note: To get better performance, the 3D texture's resolution should reflect the [Size] of the attractor. Since particle attraction is usually low-frequency data, the texture can be kept at a low resolution such as 64×64×64.
+
+[Size]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorVectorField3D#Instance.Size
+*/
 func (self Instance) Texture() Texture3D.Instance {
 	return Texture3D.Instance(class(self).GetTexture())
 }
 
+// SetTexture sets the property returned by [GetTexture].
 func (self Instance) SetTexture(value Texture3D.Instance) {
 	class(self).SetTexture(value)
 }

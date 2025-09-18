@@ -163,74 +163,128 @@ func New() Instance {
 	return casted
 }
 
+/*
+The physics layers the query will detect (as a bitmask). By default, all collision layers are detected. See [Collision layers and masks] in the documentation for more information.
+
+[Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
+*/
 func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
+// SetCollisionMask sets the property returned by [GetCollisionMask].
 func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
+/*
+The list of object [Resource.ID]s that will be excluded from collisions. Use [CollisionObject3D.GetRid] to get the [Resource.ID] associated with a [CollisionObject3D]-derived node.
+
+Note: The returned array is copied and any changes to it will not update the original property value. To update the value you need to modify the returned array, and then assign it to the property again.
+
+[CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
+[CollisionObject3D.GetRid]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D#Instance.GetRid
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func (self Instance) Exclude() [][]RID.Body3D {
 	return [][]RID.Body3D(gd.ArrayAs[[][]RID.Body3D](gd.InternalArray(class(self).GetExclude())))
 }
 
+// SetExclude sets the property returned by [GetExclude].
 func (self Instance) SetExclude(value [][]RID.Body3D) {
 	class(self).SetExclude(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 }
 
+/*
+The collision margin for the shape.
+*/
 func (self Instance) Margin() Float.X {
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
+// SetMargin sets the property returned by [GetMargin].
 func (self Instance) SetMargin(value Float.X) {
 	class(self).SetMargin(float64(value))
 }
 
+/*
+The motion of the shape being queried for.
+*/
 func (self Instance) Motion() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetMotion())
 }
 
+// SetMotion sets the property returned by [GetMotion].
 func (self Instance) SetMotion(value Vector3.XYZ) {
 	class(self).SetMotion(Vector3.XYZ(value))
 }
 
+/*
+The [Shape3D] that will be used for collision/intersection queries. This stores the actual reference which avoids the shape to be released while being used for queries, so always prefer using this over [ShapeRid].
+
+[Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
+[ShapeRid]: https://pkg.go.dev/graphics.gd/classdb/PhysicsShapeQueryParameters3D#Instance.ShapeRid
+*/
 func (self Instance) Shape() Resource.Instance {
 	return Resource.Instance(class(self).GetShape())
 }
 
+// SetShape sets the property returned by [GetShape].
 func (self Instance) SetShape(value Resource.Instance) {
 	class(self).SetShape(value)
 }
 
+/*
+The queried shape's [Resource.ID] that will be used for collision/intersection queries. Use this over [Shape] if you want to optimize for performance using the Servers API:
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+[Shape]: https://pkg.go.dev/graphics.gd/classdb/PhysicsShapeQueryParameters3D#Instance.Shape
+*/
 func (self Instance) ShapeRid() RID.Any {
 	return RID.Any(RID.Any(class(self).GetShapeRid()))
 }
 
+// SetShapeRid sets the property returned by [GetShapeRid].
 func (self Instance) SetShapeRid(value RID.Any) {
 	class(self).SetShapeRid(RID.Any(value))
 }
 
+/*
+The queried shape's transform matrix.
+*/
 func (self Instance) Transform() Transform3D.BasisOrigin {
 	return Transform3D.BasisOrigin(class(self).GetTransform())
 }
 
+// SetTransform sets the property returned by [GetTransform].
 func (self Instance) SetTransform(value Transform3D.BasisOrigin) {
 	class(self).SetTransform(Transform3D.BasisOrigin(value))
 }
 
+/*
+If true, the query will take [PhysicsBody3D]s into account.
+
+[PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
+*/
 func (self Instance) CollideWithBodies() bool {
 	return bool(class(self).IsCollideWithBodiesEnabled())
 }
 
+// SetCollideWithBodies sets the property returned by [IsCollideWithBodiesEnabled].
 func (self Instance) SetCollideWithBodies(value bool) {
 	class(self).SetCollideWithBodies(value)
 }
 
+/*
+If true, the query will take [Area3D]s into account.
+
+[Area3D]: https://pkg.go.dev/graphics.gd/classdb/Area3D
+*/
 func (self Instance) CollideWithAreas() bool {
 	return bool(class(self).IsCollideWithAreasEnabled())
 }
 
+// SetCollideWithAreas sets the property returned by [IsCollideWithAreasEnabled].
 func (self Instance) SetCollideWithAreas(value bool) {
 	class(self).SetCollideWithAreas(value)
 }

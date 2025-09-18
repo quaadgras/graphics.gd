@@ -201,26 +201,55 @@ func New() Instance {
 	return casted
 }
 
+/*
+Mixing rate mode. If set to [MixRateCustom], [MixRate] is used, otherwise current [AudioServer] mixing rate is used.
+
+[AudioServer]: https://pkg.go.dev/graphics.gd/classdb/AudioServer
+[MixRate]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamGenerator#Instance.MixRate
+*/
 func (self Instance) MixRateMode() AudioStreamGeneratorMixRate {
 	return AudioStreamGeneratorMixRate(class(self).GetMixRateMode())
 }
 
+// SetMixRateMode sets the property returned by [GetMixRateMode].
 func (self Instance) SetMixRateMode(value AudioStreamGeneratorMixRate) {
 	class(self).SetMixRateMode(value)
 }
 
+/*
+The sample rate to use (in Hz). Higher values are more demanding for the CPU to generate, but result in better quality.
+
+In games, common sample rates in use are 11025, 16000, 22050, 32000, 44100, and 48000.
+
+According to the [Nyquist-Shannon sampling theorem], there is no quality difference to human hearing when going past 40,000 Hz (since most humans can only hear up to ~20,000 Hz, often less). If you are generating lower-pitched sounds such as voices, lower sample rates such as 32000 or 22050 may be usable with no loss in quality.
+
+Note: [AudioStreamGenerator] is not automatically resampling input data, to produce expected result [MixRateMode] should match the sampling rate of input data.
+
+Note: If you are using [AudioEffectCapture] as the source of your data, set [MixRateMode] to [MixRateInput] or [MixRateOutput] to automatically match current [AudioServer] mixing rate.
+
+[AudioEffectCapture]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectCapture
+[AudioServer]: https://pkg.go.dev/graphics.gd/classdb/AudioServer
+[AudioStreamGenerator]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamGenerator
+[MixRateMode]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamGenerator#Instance.MixRateMode
+[Nyquist-Shannon sampling theorem]: https://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem
+*/
 func (self Instance) MixRate() Float.X {
 	return Float.X(Float.X(class(self).GetMixRate()))
 }
 
+// SetMixRate sets the property returned by [GetMixRate].
 func (self Instance) SetMixRate(value Float.X) {
 	class(self).SetMixRate(float64(value))
 }
 
+/*
+The length of the buffer to generate (in seconds). Lower values result in less latency, but require the script to generate audio data faster, resulting in increased CPU usage and more risk for audio cracking if the CPU can't keep up.
+*/
 func (self Instance) BufferLength() Float.X {
 	return Float.X(Float.X(class(self).GetBufferLength()))
 }
 
+// SetBufferLength sets the property returned by [GetBufferLength].
 func (self Instance) SetBufferLength(value Float.X) {
 	class(self).SetBufferLength(float64(value))
 }

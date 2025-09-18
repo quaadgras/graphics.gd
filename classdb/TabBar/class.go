@@ -453,106 +453,167 @@ func New() Instance {
 	return casted
 }
 
+/*
+The index of the current selected tab. A value of -1 means that no tab is selected and can only be set when [DeselectEnabled] is true or if all tabs are hidden or disabled.
+
+[DeselectEnabled]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.DeselectEnabled
+*/
 func (self Instance) CurrentTab() int {
 	return int(int(class(self).GetCurrentTab()))
 }
 
+// SetCurrentTab sets the property returned by [GetCurrentTab].
 func (self Instance) SetCurrentTab(value int) {
 	class(self).SetCurrentTab(int64(value))
 }
 
+/*
+The position at which tabs will be placed.
+*/
 func (self Instance) TabAlignment() AlignmentMode {
 	return AlignmentMode(class(self).GetTabAlignment())
 }
 
+// SetTabAlignment sets the property returned by [GetTabAlignment].
 func (self Instance) SetTabAlignment(value AlignmentMode) {
 	class(self).SetTabAlignment(value)
 }
 
+/*
+If true, tabs overflowing this node's width will be hidden, displaying two navigation buttons instead. Otherwise, this node's minimum size is updated so that all tabs are visible.
+*/
 func (self Instance) ClipTabs() bool {
 	return bool(class(self).GetClipTabs())
 }
 
+// SetClipTabs sets the property returned by [GetClipTabs].
 func (self Instance) SetClipTabs(value bool) {
 	class(self).SetClipTabs(value)
 }
 
+/*
+If true, middle clicking on the mouse will fire the [OnTabClosePressed] signal.
+
+[OnTabClosePressed]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.OnTabClosePressed
+*/
 func (self Instance) CloseWithMiddleMouse() bool {
 	return bool(class(self).GetCloseWithMiddleMouse())
 }
 
+// SetCloseWithMiddleMouse sets the property returned by [GetCloseWithMiddleMouse].
 func (self Instance) SetCloseWithMiddleMouse(value bool) {
 	class(self).SetCloseWithMiddleMouse(value)
 }
 
+/*
+When the close button will appear on the tabs.
+*/
 func (self Instance) TabCloseDisplayPolicy() CloseButtonDisplayPolicy {
 	return CloseButtonDisplayPolicy(class(self).GetTabCloseDisplayPolicy())
 }
 
+// SetTabCloseDisplayPolicy sets the property returned by [GetTabCloseDisplayPolicy].
 func (self Instance) SetTabCloseDisplayPolicy(value CloseButtonDisplayPolicy) {
 	class(self).SetTabCloseDisplayPolicy(value)
 }
 
+/*
+Sets the maximum width which all tabs should be limited to. Unlimited if set to 0.
+*/
 func (self Instance) MaxTabWidth() int {
 	return int(int(class(self).GetMaxTabWidth()))
 }
 
+// SetMaxTabWidth sets the property returned by [GetMaxTabWidth].
 func (self Instance) SetMaxTabWidth(value int) {
 	class(self).SetMaxTabWidth(int64(value))
 }
 
+/*
+if true, the mouse's scroll wheel can be used to navigate the scroll view.
+*/
 func (self Instance) ScrollingEnabled() bool {
 	return bool(class(self).GetScrollingEnabled())
 }
 
+// SetScrollingEnabled sets the property returned by [GetScrollingEnabled].
 func (self Instance) SetScrollingEnabled(value bool) {
 	class(self).SetScrollingEnabled(value)
 }
 
+/*
+If true, tabs can be rearranged with mouse drag.
+*/
 func (self Instance) DragToRearrangeEnabled() bool {
 	return bool(class(self).GetDragToRearrangeEnabled())
 }
 
+// SetDragToRearrangeEnabled sets the property returned by [GetDragToRearrangeEnabled].
 func (self Instance) SetDragToRearrangeEnabled(value bool) {
 	class(self).SetDragToRearrangeEnabled(value)
 }
 
+/*
+[TabBar]s with the same rearrange group ID will allow dragging the tabs between them. Enable drag with [DragToRearrangeEnabled].
+
+Setting this to -1 will disable rearranging between [TabBar]s.
+
+[DragToRearrangeEnabled]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.DragToRearrangeEnabled
+[TabBar]: https://pkg.go.dev/graphics.gd/classdb/TabBar
+*/
 func (self Instance) TabsRearrangeGroup() int {
 	return int(int(class(self).GetTabsRearrangeGroup()))
 }
 
+// SetTabsRearrangeGroup sets the property returned by [GetTabsRearrangeGroup].
 func (self Instance) SetTabsRearrangeGroup(value int) {
 	class(self).SetTabsRearrangeGroup(int64(value))
 }
 
+/*
+If true, the tab offset will be changed to keep the currently selected tab visible.
+*/
 func (self Instance) ScrollToSelected() bool {
 	return bool(class(self).GetScrollToSelected())
 }
 
+// SetScrollToSelected sets the property returned by [GetScrollToSelected].
 func (self Instance) SetScrollToSelected(value bool) {
 	class(self).SetScrollToSelected(value)
 }
 
+/*
+If true, enables selecting a tab with the right mouse button.
+*/
 func (self Instance) SelectWithRmb() bool {
 	return bool(class(self).GetSelectWithRmb())
 }
 
+// SetSelectWithRmb sets the property returned by [GetSelectWithRmb].
 func (self Instance) SetSelectWithRmb(value bool) {
 	class(self).SetSelectWithRmb(value)
 }
 
+/*
+If true, all tabs can be deselected so that no tab is selected. Click on the current tab to deselect it.
+*/
 func (self Instance) DeselectEnabled() bool {
 	return bool(class(self).GetDeselectEnabled())
 }
 
+// SetDeselectEnabled sets the property returned by [GetDeselectEnabled].
 func (self Instance) SetDeselectEnabled(value bool) {
 	class(self).SetDeselectEnabled(value)
 }
 
+/*
+The number of tabs currently in the bar.
+*/
 func (self Instance) TabCount() int {
 	return int(int(class(self).GetTabCount()))
 }
 
+// SetTabCount sets the property returned by [GetTabCount].
 func (self Instance) SetTabCount(value int) {
 	class(self).SetTabCount(int64(value))
 }
@@ -1048,6 +1109,10 @@ Clears all tabs.
 func (self class) ClearTabs() { //gd:TabBar.clear_tabs
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_tabs, 0, &struct{}{})
 }
+
+/*
+Emitted when a tab is selected via click, directional input, or script, even if it is the current tab.
+*/
 func (self Instance) OnTabSelected(cb func(tab int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1060,6 +1125,9 @@ func (self class) TabSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabSelected`))))
 }
 
+/*
+Emitted when switching to another tab.
+*/
 func (self Instance) OnTabChanged(cb func(tab int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1072,6 +1140,9 @@ func (self class) TabChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabChanged`))))
 }
 
+/*
+Emitted when a tab is clicked, even if it is the current tab.
+*/
 func (self Instance) OnTabClicked(cb func(tab int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1084,6 +1155,11 @@ func (self class) TabClicked() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabClicked`))))
 }
 
+/*
+Emitted when a tab is right-clicked. [SelectWithRmb] must be enabled.
+
+[SelectWithRmb]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.SelectWithRmb
+*/
 func (self Instance) OnTabRmbClicked(cb func(tab int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1096,6 +1172,13 @@ func (self class) TabRmbClicked() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabRmbClicked`))))
 }
 
+/*
+Emitted when a tab's close button is pressed or when middle-clicking on a tab, if [CloseWithMiddleMouse] is enabled.
+
+Note: Tabs are not removed automatically once the close button is pressed, this behavior needs to be programmed manually. For example:
+
+[CloseWithMiddleMouse]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.CloseWithMiddleMouse
+*/
 func (self Instance) OnTabClosePressed(cb func(tab int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1108,6 +1191,11 @@ func (self class) TabClosePressed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabClosePressed`))))
 }
 
+/*
+Emitted when a tab's right button is pressed. See [SetTabButtonIcon].
+
+[SetTabButtonIcon]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.SetTabButtonIcon
+*/
 func (self Instance) OnTabButtonPressed(cb func(tab int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1120,6 +1208,9 @@ func (self class) TabButtonPressed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabButtonPressed`))))
 }
 
+/*
+Emitted when a tab is hovered by the mouse.
+*/
 func (self Instance) OnTabHovered(cb func(tab int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1132,6 +1223,11 @@ func (self class) TabHovered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TabHovered`))))
 }
 
+/*
+Emitted when the active tab is rearranged via mouse drag. See [DragToRearrangeEnabled].
+
+[DragToRearrangeEnabled]: https://pkg.go.dev/graphics.gd/classdb/TabBar#Instance.DragToRearrangeEnabled
+*/
 func (self Instance) OnActiveTabRearranged(cb func(idx_to int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

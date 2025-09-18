@@ -149,34 +149,54 @@ func New() Instance {
 	return casted
 }
 
+/*
+The body's friction. Values range from 0 (frictionless) to 1 (maximum friction).
+*/
 func (self Instance) Friction() Float.X {
 	return Float.X(Float.X(class(self).GetFriction()))
 }
 
+// SetFriction sets the property returned by [GetFriction].
 func (self Instance) SetFriction(value Float.X) {
 	class(self).SetFriction(float64(value))
 }
 
+/*
+If true, the physics engine will use the friction of the object marked as "rough" when two objects collide. If false, the physics engine will use the lowest friction of all colliding objects instead. If true for both colliding objects, the physics engine will use the highest friction.
+*/
 func (self Instance) Rough() bool {
 	return bool(class(self).IsRough())
 }
 
+// SetRough sets the property returned by [IsRough].
 func (self Instance) SetRough(value bool) {
 	class(self).SetRough(value)
 }
 
+/*
+The body's bounciness. Values range from 0 (no bounce) to 1 (full bounciness).
+
+Note: Even with [Bounce] set to 1.0, some energy will be lost over time due to linear and angular damping. To have a physics body that preserves all its energy over time, set [Bounce] to 1.0, the body's linear damp mode to Replace (if applicable), its linear damp to 0.0, its angular damp mode to Replace (if applicable), and its angular damp to 0.0.
+
+[Bounce]: https://pkg.go.dev/graphics.gd/classdb/PhysicsMaterial#Instance.Bounce
+*/
 func (self Instance) Bounce() Float.X {
 	return Float.X(Float.X(class(self).GetBounce()))
 }
 
+// SetBounce sets the property returned by [GetBounce].
 func (self Instance) SetBounce(value Float.X) {
 	class(self).SetBounce(float64(value))
 }
 
+/*
+If true, subtracts the bounciness from the colliding object's bounciness instead of adding it.
+*/
 func (self Instance) Absorbent() bool {
 	return bool(class(self).IsAbsorbent())
 }
 
+// SetAbsorbent sets the property returned by [IsAbsorbent].
 func (self Instance) SetAbsorbent(value bool) {
 	class(self).SetAbsorbent(value)
 }

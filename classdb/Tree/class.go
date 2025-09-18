@@ -621,106 +621,170 @@ func New() Instance {
 	return casted
 }
 
+/*
+The number of columns.
+*/
 func (self Instance) Columns() int {
 	return int(int(class(self).GetColumns()))
 }
 
+// SetColumns sets the property returned by [GetColumns].
 func (self Instance) SetColumns(value int) {
 	class(self).SetColumns(int64(value))
 }
 
+/*
+If true, column titles are visible.
+*/
 func (self Instance) ColumnTitlesVisible() bool {
 	return bool(class(self).AreColumnTitlesVisible())
 }
 
+// SetColumnTitlesVisible sets the property returned by [AreColumnTitlesVisible].
 func (self Instance) SetColumnTitlesVisible(value bool) {
 	class(self).SetColumnTitlesVisible(value)
 }
 
+/*
+If true, the currently selected cell may be selected again.
+*/
 func (self Instance) AllowReselect() bool {
 	return bool(class(self).GetAllowReselect())
 }
 
+// SetAllowReselect sets the property returned by [GetAllowReselect].
 func (self Instance) SetAllowReselect(value bool) {
 	class(self).SetAllowReselect(value)
 }
 
+/*
+If true, a right mouse button click can select items.
+*/
 func (self Instance) AllowRmbSelect() bool {
 	return bool(class(self).GetAllowRmbSelect())
 }
 
+// SetAllowRmbSelect sets the property returned by [GetAllowRmbSelect].
 func (self Instance) SetAllowRmbSelect(value bool) {
 	class(self).SetAllowRmbSelect(value)
 }
 
+/*
+If true, allows navigating the [Tree] with letter keys through incremental search.
+
+[Tree]: https://pkg.go.dev/graphics.gd/classdb/Tree
+*/
 func (self Instance) AllowSearch() bool {
 	return bool(class(self).GetAllowSearch())
 }
 
+// SetAllowSearch sets the property returned by [GetAllowSearch].
 func (self Instance) SetAllowSearch(value bool) {
 	class(self).SetAllowSearch(value)
 }
 
+/*
+If true, the folding arrow is hidden.
+*/
 func (self Instance) HideFolding() bool {
 	return bool(class(self).IsFoldingHidden())
 }
 
+// SetHideFolding sets the property returned by [IsFoldingHidden].
 func (self Instance) SetHideFolding(value bool) {
 	class(self).SetHideFolding(value)
 }
 
+/*
+If true, recursive folding is enabled for this [Tree]. Holding down Shift while clicking the fold arrow or using ui_right/ui_left shortcuts collapses or uncollapses the [TreeItem] and all its descendants.
+
+[Tree]: https://pkg.go.dev/graphics.gd/classdb/Tree
+[TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
+*/
 func (self Instance) EnableRecursiveFolding() bool {
 	return bool(class(self).IsRecursiveFoldingEnabled())
 }
 
+// SetEnableRecursiveFolding sets the property returned by [IsRecursiveFoldingEnabled].
 func (self Instance) SetEnableRecursiveFolding(value bool) {
 	class(self).SetEnableRecursiveFolding(value)
 }
 
+/*
+If true, the tree's root is hidden.
+*/
 func (self Instance) HideRoot() bool {
 	return bool(class(self).IsRootHidden())
 }
 
+// SetHideRoot sets the property returned by [IsRootHidden].
 func (self Instance) SetHideRoot(value bool) {
 	class(self).SetHideRoot(value)
 }
 
+/*
+The drop mode as an OR combination of flags. See [DropModeFlags] constants. Once dropping is done, reverts to [DropModeDisabled]. Setting this during [Control.CanDropData] is recommended.
+
+This controls the drop sections, i.e. the decision and drawing of possible drop locations based on the mouse position.
+
+[Control.CanDropData]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.CanDropData
+*/
 func (self Instance) DropModeFlags() int {
 	return int(int(class(self).GetDropModeFlags()))
 }
 
+// SetDropModeFlags sets the property returned by [GetDropModeFlags].
 func (self Instance) SetDropModeFlags(value int) {
 	class(self).SetDropModeFlags(int64(value))
 }
 
+/*
+Allows single or multiple selection. See the [SelectMode] constants.
+*/
 func (self Instance) SelectMode() SelectMode {
 	return SelectMode(class(self).GetSelectMode())
 }
 
+// SetSelectMode sets the property returned by [GetSelectMode].
 func (self Instance) SetSelectMode(value SelectMode) {
 	class(self).SetSelectMode(value)
 }
 
+/*
+If true, enables horizontal scrolling.
+*/
 func (self Instance) ScrollHorizontalEnabled() bool {
 	return bool(class(self).IsHScrollEnabled())
 }
 
+// SetScrollHorizontalEnabled sets the property returned by [IsHScrollEnabled].
 func (self Instance) SetScrollHorizontalEnabled(value bool) {
 	class(self).SetHScrollEnabled(value)
 }
 
+/*
+If true, enables vertical scrolling.
+*/
 func (self Instance) ScrollVerticalEnabled() bool {
 	return bool(class(self).IsVScrollEnabled())
 }
 
+// SetScrollVerticalEnabled sets the property returned by [IsVScrollEnabled].
 func (self Instance) SetScrollVerticalEnabled(value bool) {
 	class(self).SetVScrollEnabled(value)
 }
 
+/*
+If true, tree items with no tooltip assigned display their text as their tooltip. See also [TreeItem.GetTooltipText] and [TreeItem.GetButtonTooltipText].
+
+[TreeItem.GetButtonTooltipText]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.GetButtonTooltipText
+[TreeItem.GetTooltipText]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.GetTooltipText
+*/
 func (self Instance) AutoTooltip() bool {
 	return bool(class(self).IsAutoTooltipEnabled())
 }
 
+// SetAutoTooltip sets the property returned by [IsAutoTooltipEnabled].
 func (self Instance) SetAutoTooltip(value bool) {
 	class(self).SetAutoTooltip(value)
 }
@@ -1324,6 +1388,10 @@ func (self class) IsAutoTooltipEnabled() bool { //gd:Tree.is_auto_tooltip_enable
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when an item is selected.
+*/
 func (self Instance) OnItemSelected(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1336,6 +1404,9 @@ func (self class) ItemSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemSelected`))))
 }
 
+/*
+Emitted when a cell is selected.
+*/
 func (self Instance) OnCellSelected(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1348,6 +1419,12 @@ func (self class) CellSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CellSelected`))))
 }
 
+/*
+Emitted instead of [OnItemSelected] if [SelectMode] is set to [SelectMulti].
+
+[OnItemSelected]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.OnItemSelected
+[SelectMode]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.SelectMode
+*/
 func (self Instance) OnMultiSelected(cb func(item TreeItem.Instance, column int, selected bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1360,6 +1437,9 @@ func (self class) MultiSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MultiSelected`))))
 }
 
+/*
+Emitted when an item is selected with a mouse button.
+*/
 func (self Instance) OnItemMouseSelected(cb func(mouse_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1372,6 +1452,9 @@ func (self class) ItemMouseSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemMouseSelected`))))
 }
 
+/*
+Emitted when a mouse button is clicked in the empty space of the tree.
+*/
 func (self Instance) OnEmptyClicked(cb func(click_position Vector2.XY, mouse_button_index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1384,6 +1467,9 @@ func (self class) EmptyClicked() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EmptyClicked`))))
 }
 
+/*
+Emitted when an item is edited.
+*/
 func (self Instance) OnItemEdited(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1396,6 +1482,9 @@ func (self class) ItemEdited() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemEdited`))))
 }
 
+/*
+Emitted when an item with [Treeitem.CellModeCustom] is clicked with a mouse button.
+*/
 func (self Instance) OnCustomItemClicked(cb func(mouse_button_index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1408,6 +1497,11 @@ func (self class) CustomItemClicked() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CustomItemClicked`))))
 }
 
+/*
+Emitted when an item's icon is double-clicked. For a signal that emits when any part of the item is double-clicked, see [OnItemActivated].
+
+[OnItemActivated]: https://pkg.go.dev/graphics.gd/classdb/Tree#Instance.OnItemActivated
+*/
 func (self Instance) OnItemIconDoubleClicked(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1420,6 +1514,11 @@ func (self class) ItemIconDoubleClicked() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemIconDoubleClicked`))))
 }
 
+/*
+Emitted when an item is expanded or collapsed by clicking on the folding arrow or through code.
+
+Note: Despite its name, this signal is also emitted when an item is expanded.
+*/
 func (self Instance) OnItemCollapsed(cb func(item TreeItem.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1432,6 +1531,11 @@ func (self class) ItemCollapsed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemCollapsed`))))
 }
 
+/*
+Emitted when [TreeItem.PropagateCheck] is called. Connect to this signal to process the items that are affected when [TreeItem.PropagateCheck] is invoked. The order that the items affected will be processed is as follows: the item that invoked the method, children of that item, and finally parents of that item.
+
+[TreeItem.PropagateCheck]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.PropagateCheck
+*/
 func (self Instance) OnCheckPropagatedToItem(cb func(item TreeItem.Instance, column int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1444,6 +1548,11 @@ func (self class) CheckPropagatedToItem() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CheckPropagatedToItem`))))
 }
 
+/*
+Emitted when a button on the tree was pressed (see [TreeItem.AddButton]).
+
+[TreeItem.AddButton]: https://pkg.go.dev/graphics.gd/classdb/TreeItem#Instance.AddButton
+*/
 func (self Instance) OnButtonClicked(cb func(item TreeItem.Instance, column int, id int, mouse_button_index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1456,6 +1565,9 @@ func (self class) ButtonClicked() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ButtonClicked`))))
 }
 
+/*
+Emitted when a cell with the [Treeitem.CellModeCustom] is clicked to be edited.
+*/
 func (self Instance) OnCustomPopupEdited(cb func(arrow_clicked bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1468,6 +1580,9 @@ func (self class) CustomPopupEdited() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CustomPopupEdited`))))
 }
 
+/*
+Emitted when an item is double-clicked, or selected with a ui_accept input event (e.g. using Enter or Space on the keyboard).
+*/
 func (self Instance) OnItemActivated(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1480,6 +1595,9 @@ func (self class) ItemActivated() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ItemActivated`))))
 }
 
+/*
+Emitted when a column's title is clicked with either [MouseButtonLeft] or [MouseButtonRight].
+*/
 func (self Instance) OnColumnTitleClicked(cb func(column int, mouse_button_index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1492,6 +1610,9 @@ func (self class) ColumnTitleClicked() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ColumnTitleClicked`))))
 }
 
+/*
+Emitted when a left mouse button click does not select any item.
+*/
 func (self Instance) OnNothingSelected(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

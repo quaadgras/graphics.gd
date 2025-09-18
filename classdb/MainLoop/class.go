@@ -367,6 +367,9 @@ func (class) _finalize(impl func(ptr gdclass.Receiver)) (cb gd.ExtensionClassCal
 	}
 }
 
+/*
+Emitted when a user responds to a permission request.
+*/
 func (self Instance) OnOnRequestPermissionsResult(cb func(permission string, granted bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

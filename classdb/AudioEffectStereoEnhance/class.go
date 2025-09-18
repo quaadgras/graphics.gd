@@ -148,26 +148,42 @@ func New() Instance {
 	return casted
 }
 
+/*
+Amplifies the difference between stereo channels, increasing or decreasing existing panning. A value of 0.0 will downmix stereo to mono. Does not affect a mono signal.
+*/
 func (self Instance) PanPullout() Float.X {
 	return Float.X(Float.X(class(self).GetPanPullout()))
 }
 
+// SetPanPullout sets the property returned by [GetPanPullout].
 func (self Instance) SetPanPullout(value Float.X) {
 	class(self).SetPanPullout(float64(value))
 }
 
+/*
+Widens sound stage through phase shifting in conjunction with [Surround]. Just delays the right channel if [Surround] is 0.
+
+[Surround]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectStereoEnhance#Instance.Surround
+*/
 func (self Instance) TimePulloutMs() Float.X {
 	return Float.X(Float.X(class(self).GetTimePullout()))
 }
 
+// SetTimePulloutMs sets the property returned by [GetTimePullout].
 func (self Instance) SetTimePulloutMs(value Float.X) {
 	class(self).SetTimePullout(float64(value))
 }
 
+/*
+Widens sound stage through phase shifting in conjunction with [TimePulloutMs]. Just pans sound to the left channel if [TimePulloutMs] is 0.
+
+[TimePulloutMs]: https://pkg.go.dev/graphics.gd/classdb/AudioEffectStereoEnhance#Instance.TimePulloutMs
+*/
 func (self Instance) Surround() Float.X {
 	return Float.X(Float.X(class(self).GetSurround()))
 }
 
+// SetSurround sets the property returned by [GetSurround].
 func (self Instance) SetSurround(value Float.X) {
 	class(self).SetSurround(float64(value))
 }

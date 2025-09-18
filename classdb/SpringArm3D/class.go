@@ -192,34 +192,66 @@ func New() Instance {
 	return casted
 }
 
+/*
+The layers against which the collision check shall be done. See [Collision layers and masks] in the documentation for more information.
+
+[Collision layers and masks]: https://docs.godotengine.org/tutorials/physics/physics_introduction.html#collision-layers-and-masks
+*/
 func (self Instance) CollisionMask() int {
 	return int(int(class(self).GetCollisionMask()))
 }
 
+// SetCollisionMask sets the property returned by [GetCollisionMask].
 func (self Instance) SetCollisionMask(value int) {
 	class(self).SetCollisionMask(int64(value))
 }
 
+/*
+The [Shape3D] to use for the SpringArm3D.
+
+When the shape is set, the SpringArm3D will cast the [Shape3D] on its z axis instead of performing a ray cast.
+
+[Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
+*/
 func (self Instance) Shape() Shape3D.Instance {
 	return Shape3D.Instance(class(self).GetShape())
 }
 
+// SetShape sets the property returned by [GetShape].
 func (self Instance) SetShape(value Shape3D.Instance) {
 	class(self).SetShape(value)
 }
 
+/*
+The maximum extent of the SpringArm3D. This is used as a length for both the ray and the shape cast used internally to calculate the desired position of the SpringArm3D's child nodes.
+
+To know more about how to perform a shape cast or a ray cast, please consult the [PhysicsDirectSpaceState3D] documentation.
+
+[PhysicsDirectSpaceState3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsDirectSpaceState3D
+*/
 func (self Instance) SpringLength() Float.X {
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
+// SetSpringLength sets the property returned by [GetLength].
 func (self Instance) SetSpringLength(value Float.X) {
 	class(self).SetLength(float64(value))
 }
 
+/*
+When the collision check is made, a candidate length for the SpringArm3D is given.
+
+The margin is then subtracted to this length and the translation is applied to the child objects of the SpringArm3D.
+
+This margin is useful for when the SpringArm3D has a [Camera3D] as a child node: without the margin, the [Camera3D] would be placed on the exact point of collision, while with the margin the [Camera3D] would be placed close to the point of collision.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+*/
 func (self Instance) Margin() Float.X {
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
+// SetMargin sets the property returned by [GetMargin].
 func (self Instance) SetMargin(value Float.X) {
 	class(self).SetMargin(float64(value))
 }

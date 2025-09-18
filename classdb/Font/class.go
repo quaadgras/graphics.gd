@@ -670,10 +670,20 @@ func New() Instance {
 	return casted
 }
 
+/*
+Array of fallback [Font]s to use as a substitute if a glyph is not found in this current [Font].
+
+If this array is empty in a [FontVariation], the [FontVariation.BaseFont]'s fallbacks are used instead.
+
+[Font]: https://pkg.go.dev/graphics.gd/classdb/Font
+[FontVariation]: https://pkg.go.dev/graphics.gd/classdb/FontVariation
+[FontVariation.BaseFont]: https://pkg.go.dev/graphics.gd/classdb/FontVariation#Instance.BaseFont
+*/
 func (self Instance) Fallbacks() []Instance {
 	return []Instance(gd.ArrayAs[[]Instance](gd.InternalArray(class(self).GetFallbacks())))
 }
 
+// SetFallbacks sets the property returned by [GetFallbacks].
 func (self Instance) SetFallbacks(value []Instance) {
 	class(self).SetFallbacks(gd.ArrayFromSlice[Array.Contains[[1]gdclass.Font]](value))
 }

@@ -258,178 +258,285 @@ func New() Instance {
 	return casted
 }
 
+/*
+The text to display on screen.
+*/
 func (self Instance) Text() string {
 	return string(class(self).GetText().String())
 }
 
+// SetText sets the property returned by [GetText].
 func (self Instance) SetText(value string) {
 	class(self).SetText(String.New(value))
 }
 
+/*
+A [LabelSettings] resource that can be shared between multiple [Label] nodes. Takes priority over theme properties.
+
+[Label]: https://pkg.go.dev/graphics.gd/classdb/Label
+[LabelSettings]: https://pkg.go.dev/graphics.gd/classdb/LabelSettings
+*/
 func (self Instance) LabelSettings() LabelSettings.Instance {
 	return LabelSettings.Instance(class(self).GetLabelSettings())
 }
 
+// SetLabelSettings sets the property returned by [GetLabelSettings].
 func (self Instance) SetLabelSettings(value LabelSettings.Instance) {
 	class(self).SetLabelSettings(value)
 }
 
+/*
+Controls the text's horizontal alignment. Supports left, center, right, and fill (also known as justify).
+*/
 func (self Instance) HorizontalAlignment() GUI.HorizontalAlignment {
 	return GUI.HorizontalAlignment(class(self).GetHorizontalAlignment())
 }
 
+// SetHorizontalAlignment sets the property returned by [GetHorizontalAlignment].
 func (self Instance) SetHorizontalAlignment(value GUI.HorizontalAlignment) {
 	class(self).SetHorizontalAlignment(value)
 }
 
+/*
+Controls the text's vertical alignment. Supports top, center, bottom, and fill.
+*/
 func (self Instance) VerticalAlignment() GUI.VerticalAlignment {
 	return GUI.VerticalAlignment(class(self).GetVerticalAlignment())
 }
 
+// SetVerticalAlignment sets the property returned by [GetVerticalAlignment].
 func (self Instance) SetVerticalAlignment(value GUI.VerticalAlignment) {
 	class(self).SetVerticalAlignment(value)
 }
 
+/*
+If set to something other than [Textserver.AutowrapOff], the text gets wrapped inside the node's bounding rectangle. If you resize the node, it will change its height automatically to show all the text.
+*/
 func (self Instance) AutowrapMode() TextServer.AutowrapMode {
 	return TextServer.AutowrapMode(class(self).GetAutowrapMode())
 }
 
+// SetAutowrapMode sets the property returned by [GetAutowrapMode].
 func (self Instance) SetAutowrapMode(value TextServer.AutowrapMode) {
 	class(self).SetAutowrapMode(value)
 }
 
+/*
+Autowrap space trimming flags. See [Textserver.BreakTrimStartEdgeSpaces] and [Textserver.BreakTrimEndEdgeSpaces] for more info.
+*/
 func (self Instance) AutowrapTrimFlags() TextServer.LineBreakFlag {
 	return TextServer.LineBreakFlag(class(self).GetAutowrapTrimFlags())
 }
 
+// SetAutowrapTrimFlags sets the property returned by [GetAutowrapTrimFlags].
 func (self Instance) SetAutowrapTrimFlags(value TextServer.LineBreakFlag) {
 	class(self).SetAutowrapTrimFlags(value)
 }
 
+/*
+Line fill alignment rules.
+*/
 func (self Instance) JustificationFlags() TextServer.JustificationFlag {
 	return TextServer.JustificationFlag(class(self).GetJustificationFlags())
 }
 
+// SetJustificationFlags sets the property returned by [GetJustificationFlags].
 func (self Instance) SetJustificationFlags(value TextServer.JustificationFlag) {
 	class(self).SetJustificationFlags(value)
 }
 
+/*
+String used as a paragraph separator. Each paragraph is processed independently, in its own BiDi context.
+*/
 func (self Instance) ParagraphSeparator() string {
 	return string(class(self).GetParagraphSeparator().String())
 }
 
+// SetParagraphSeparator sets the property returned by [GetParagraphSeparator].
 func (self Instance) SetParagraphSeparator(value string) {
 	class(self).SetParagraphSeparator(String.New(value))
 }
 
+/*
+If true, the Label only shows the text that fits inside its bounding rectangle and will clip text horizontally.
+*/
 func (self Instance) ClipText() bool {
 	return bool(class(self).IsClippingText())
 }
 
+// SetClipText sets the property returned by [IsClippingText].
 func (self Instance) SetClipText(value bool) {
 	class(self).SetClipText(value)
 }
 
+/*
+The clipping behavior when the text exceeds the node's bounding rectangle.
+*/
 func (self Instance) TextOverrunBehavior() TextServer.OverrunBehavior {
 	return TextServer.OverrunBehavior(class(self).GetTextOverrunBehavior())
 }
 
+// SetTextOverrunBehavior sets the property returned by [GetTextOverrunBehavior].
 func (self Instance) SetTextOverrunBehavior(value TextServer.OverrunBehavior) {
 	class(self).SetTextOverrunBehavior(value)
 }
 
+/*
+Ellipsis character used for text clipping.
+*/
 func (self Instance) EllipsisChar() string {
 	return string(class(self).GetEllipsisChar().String())
 }
 
+// SetEllipsisChar sets the property returned by [GetEllipsisChar].
 func (self Instance) SetEllipsisChar(value string) {
 	class(self).SetEllipsisChar(String.New(value))
 }
 
+/*
+If true, all the text displays as UPPERCASE.
+*/
 func (self Instance) Uppercase() bool {
 	return bool(class(self).IsUppercase())
 }
 
+// SetUppercase sets the property returned by [IsUppercase].
 func (self Instance) SetUppercase(value bool) {
 	class(self).SetUppercase(value)
 }
 
+/*
+Aligns text to the given tab-stops.
+*/
 func (self Instance) TabStops() []float32 {
 	return []float32(slices.Collect(class(self).GetTabStops().Values()))
 }
 
+// SetTabStops sets the property returned by [GetTabStops].
 func (self Instance) SetTabStops(value []float32) {
 	class(self).SetTabStops(Packed.New(value...))
 }
 
+/*
+The number of the lines ignored and not displayed from the start of the [Text] value.
+
+[Text]: https://pkg.go.dev/graphics.gd/classdb/Label#Instance.Text
+*/
 func (self Instance) LinesSkipped() int {
 	return int(int(class(self).GetLinesSkipped()))
 }
 
+// SetLinesSkipped sets the property returned by [GetLinesSkipped].
 func (self Instance) SetLinesSkipped(value int) {
 	class(self).SetLinesSkipped(int64(value))
 }
 
+/*
+Limits the lines of text the node shows on screen.
+*/
 func (self Instance) MaxLinesVisible() int {
 	return int(int(class(self).GetMaxLinesVisible()))
 }
 
+// SetMaxLinesVisible sets the property returned by [GetMaxLinesVisible].
 func (self Instance) SetMaxLinesVisible(value int) {
 	class(self).SetMaxLinesVisible(int64(value))
 }
 
+/*
+The number of characters to display. If set to -1, all characters are displayed. This can be useful when animating the text appearing in a dialog box.
+
+Note: Setting this property updates [VisibleRatio] accordingly.
+
+Note: Characters are counted as Unicode codepoints. A single visible grapheme may contain multiple codepoints (e.g. certain emoji use three codepoints). A single codepoint may contain two UTF-16 characters, which are used in C# strings.
+
+[VisibleRatio]: https://pkg.go.dev/graphics.gd/classdb/Label#Instance.VisibleRatio
+*/
 func (self Instance) VisibleCharacters() int {
 	return int(int(class(self).GetVisibleCharacters()))
 }
 
+// SetVisibleCharacters sets the property returned by [GetVisibleCharacters].
 func (self Instance) SetVisibleCharacters(value int) {
 	class(self).SetVisibleCharacters(int64(value))
 }
 
+/*
+The clipping behavior when [VisibleCharacters] or [VisibleRatio] is set.
+
+[VisibleCharacters]: https://pkg.go.dev/graphics.gd/classdb/Label#Instance.VisibleCharacters
+[VisibleRatio]: https://pkg.go.dev/graphics.gd/classdb/Label#Instance.VisibleRatio
+*/
 func (self Instance) VisibleCharactersBehavior() TextServer.VisibleCharactersBehavior {
 	return TextServer.VisibleCharactersBehavior(class(self).GetVisibleCharactersBehavior())
 }
 
+// SetVisibleCharactersBehavior sets the property returned by [GetVisibleCharactersBehavior].
 func (self Instance) SetVisibleCharactersBehavior(value TextServer.VisibleCharactersBehavior) {
 	class(self).SetVisibleCharactersBehavior(value)
 }
 
+/*
+The fraction of characters to display, relative to the total number of characters (see [GetTotalCharacterCount]). If set to 1.0, all characters are displayed. If set to 0.5, only half of the characters will be displayed. This can be useful when animating the text appearing in a dialog box.
+
+Note: Setting this property updates [VisibleCharacters] accordingly.
+
+[GetTotalCharacterCount]: https://pkg.go.dev/graphics.gd/classdb/Label#Instance.GetTotalCharacterCount
+[VisibleCharacters]: https://pkg.go.dev/graphics.gd/classdb/Label#Instance.VisibleCharacters
+*/
 func (self Instance) VisibleRatio() Float.X {
 	return Float.X(Float.X(class(self).GetVisibleRatio()))
 }
 
+// SetVisibleRatio sets the property returned by [GetVisibleRatio].
 func (self Instance) SetVisibleRatio(value Float.X) {
 	class(self).SetVisibleRatio(float64(value))
 }
 
+/*
+Base text writing direction.
+*/
 func (self Instance) TextDirection() Control.TextDirection {
 	return Control.TextDirection(class(self).GetTextDirection())
 }
 
+// SetTextDirection sets the property returned by [GetTextDirection].
 func (self Instance) SetTextDirection(value Control.TextDirection) {
 	class(self).SetTextDirection(value)
 }
 
+/*
+Language code used for line-breaking and text shaping algorithms, if left empty current locale is used instead.
+*/
 func (self Instance) Language() string {
 	return string(class(self).GetLanguage().String())
 }
 
+// SetLanguage sets the property returned by [GetLanguage].
 func (self Instance) SetLanguage(value string) {
 	class(self).SetLanguage(String.New(value))
 }
 
+/*
+Set BiDi algorithm override for the structured text.
+*/
 func (self Instance) StructuredTextBidiOverride() TextServer.StructuredTextParser {
 	return TextServer.StructuredTextParser(class(self).GetStructuredTextBidiOverride())
 }
 
+// SetStructuredTextBidiOverride sets the property returned by [GetStructuredTextBidiOverride].
 func (self Instance) SetStructuredTextBidiOverride(value TextServer.StructuredTextParser) {
 	class(self).SetStructuredTextBidiOverride(value)
 }
 
+/*
+Set additional options for BiDi override.
+*/
 func (self Instance) StructuredTextBidiOverrideOptions() []any {
 	return []any(gd.ArrayAs[[]any](gd.InternalArray(class(self).GetStructuredTextBidiOverrideOptions())))
 }
 
+// SetStructuredTextBidiOverrideOptions sets the property returned by [GetStructuredTextBidiOverrideOptions].
 func (self Instance) SetStructuredTextBidiOverrideOptions(value []any) {
 	class(self).SetStructuredTextBidiOverrideOptions(gd.EngineArrayFromSlice(value))
 }

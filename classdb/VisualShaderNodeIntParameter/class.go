@@ -159,58 +159,96 @@ func New() Instance {
 	return casted
 }
 
+/*
+Range hint of this node. Use it to customize valid parameter range.
+*/
 func (self Instance) Hint() Hint {
 	return Hint(class(self).GetHint())
 }
 
+// SetHint sets the property returned by [GetHint].
 func (self Instance) SetHint(value Hint) {
 	class(self).SetHint(value)
 }
 
+/*
+The minimum value this parameter can take. [Hint] must be either [HintRange] or [HintRangeStep] for this to take effect.
+
+[Hint]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeIntParameter#Instance.Hint
+*/
 func (self Instance) Min() int {
 	return int(int(class(self).GetMin()))
 }
 
+// SetMin sets the property returned by [GetMin].
 func (self Instance) SetMin(value int) {
 	class(self).SetMin(int64(value))
 }
 
+/*
+The maximum value this parameter can take. [Hint] must be either [HintRange] or [HintRangeStep] for this to take effect.
+
+[Hint]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeIntParameter#Instance.Hint
+*/
 func (self Instance) Max() int {
 	return int(int(class(self).GetMax()))
 }
 
+// SetMax sets the property returned by [GetMax].
 func (self Instance) SetMax(value int) {
 	class(self).SetMax(int64(value))
 }
 
+/*
+The step between parameter's values. Forces the parameter to be a multiple of the given value. [Hint] must be [HintRangeStep] for this to take effect.
+
+[Hint]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeIntParameter#Instance.Hint
+*/
 func (self Instance) Step() int {
 	return int(int(class(self).GetStep()))
 }
 
+// SetStep sets the property returned by [GetStep].
 func (self Instance) SetStep(value int) {
 	class(self).SetStep(int64(value))
 }
 
+/*
+The names used for the enum select in the editor. [Hint] must be [HintEnum] for this to take effect.
+
+[Hint]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeIntParameter#Instance.Hint
+*/
 func (self Instance) EnumNames() []string {
 	return []string(class(self).GetEnumNames().Strings())
 }
 
+// SetEnumNames sets the property returned by [GetEnumNames].
 func (self Instance) SetEnumNames(value []string) {
 	class(self).SetEnumNames(Packed.MakeStrings(value...))
 }
 
+/*
+If true, the node will have a custom default value.
+*/
 func (self Instance) DefaultValueEnabled() bool {
 	return bool(class(self).IsDefaultValueEnabled())
 }
 
+// SetDefaultValueEnabled sets the property returned by [IsDefaultValueEnabled].
 func (self Instance) SetDefaultValueEnabled(value bool) {
 	class(self).SetDefaultValueEnabled(value)
 }
 
+/*
+Default value of this parameter, which will be used if not set externally. [DefaultValueEnabled] must be enabled; defaults to 0 otherwise.
+
+[DefaultValueEnabled]: https://pkg.go.dev/graphics.gd/classdb/VisualShaderNodeIntParameter#Instance.DefaultValueEnabled
+*/
 func (self Instance) DefaultValue() int {
 	return int(int(class(self).GetDefaultValue()))
 }
 
+// SetDefaultValue sets the property returned by [GetDefaultValue].
 func (self Instance) SetDefaultValue(value int) {
 	class(self).SetDefaultValue(int64(value))
 }

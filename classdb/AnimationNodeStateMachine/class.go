@@ -342,26 +342,44 @@ func New() Instance {
 	return casted
 }
 
+/*
+This property can define the process of transitions for different use cases. See also [AnimationNodeStateMachine.StateMachineType].
+*/
 func (self Instance) StateMachineType() StateMachineType {
 	return StateMachineType(class(self).GetStateMachineType())
 }
 
+// SetStateMachineType sets the property returned by [GetStateMachineType].
 func (self Instance) SetStateMachineType(value StateMachineType) {
 	class(self).SetStateMachineType(value)
 }
 
+/*
+If true, allows teleport to the self state with [AnimationNodeStateMachinePlayback.Travel]. When the reset option is enabled in [AnimationNodeStateMachinePlayback.Travel], the animation is restarted. If false, nothing happens on the teleportation to the self state.
+
+[AnimationNodeStateMachinePlayback.Travel]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachinePlayback#Instance.Travel
+*/
 func (self Instance) AllowTransitionToSelf() bool {
 	return bool(class(self).IsAllowTransitionToSelf())
 }
 
+// SetAllowTransitionToSelf sets the property returned by [IsAllowTransitionToSelf].
 func (self Instance) SetAllowTransitionToSelf(value bool) {
 	class(self).SetAllowTransitionToSelf(value)
 }
 
+/*
+If true, treat the cross-fade to the start and end nodes as a blend with the RESET animation.
+
+In most cases, when additional cross-fades are performed in the parent [AnimationNode] of the state machine, setting this property to false and matching the cross-fade time of the parent [AnimationNode] and the state machine's start node and end node gives good results.
+
+[AnimationNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode
+*/
 func (self Instance) ResetEnds() bool {
 	return bool(class(self).AreEndsReset())
 }
 
+// SetResetEnds sets the property returned by [AreEndsReset].
 func (self Instance) SetResetEnds(value bool) {
 	class(self).SetResetEnds(value)
 }

@@ -287,22 +287,33 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the feed is active.
+*/
 func (self Instance) FeedIsActive() bool {
 	return bool(class(self).IsActive())
 }
 
+// SetFeedIsActive sets the property returned by [IsActive].
 func (self Instance) SetFeedIsActive(value bool) {
 	class(self).SetActive(value)
 }
 
+/*
+The transform applied to the camera's image.
+*/
 func (self Instance) FeedTransform() Transform2D.OriginXY {
 	return Transform2D.OriginXY(class(self).GetTransform())
 }
 
+// SetFeedTransform sets the property returned by [GetTransform].
 func (self Instance) SetFeedTransform(value Transform2D.OriginXY) {
 	class(self).SetTransform(Transform2D.OriginXY(value))
 }
 
+/*
+Formats supported by the feed. Each entry is a data structure describing format parameters.
+*/
 func (self Instance) Formats() []Format {
 	return []Format(gd.ArrayAs[[]Format](gd.InternalArray(class(self).GetFormats())))
 }
@@ -472,6 +483,10 @@ func (self class) SetFormat(index int64, parameters Dictionary.Any) bool { //gd:
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when a new frame is available.
+*/
 func (self Instance) OnFrameChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -484,6 +499,9 @@ func (self class) FrameChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FrameChanged`))))
 }
 
+/*
+Emitted when the format has changed.
+*/
 func (self Instance) OnFormatChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

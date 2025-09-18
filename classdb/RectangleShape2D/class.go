@@ -152,10 +152,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The rectangle's width and height.
+*/
 func (self Instance) Size() Vector2.XY {
 	return Vector2.XY(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector2.XY) {
 	class(self).SetSize(Vector2.XY(value))
 }

@@ -159,10 +159,22 @@ func New() Instance {
 	return casted
 }
 
+/*
+The particle rendering layers ([VisualInstance3D.Layers]) that will be affected by the collision shape. By default, all particles that have [ParticleProcessMaterial.CollisionMode] set to [Particleprocessmaterial.CollisionRigid] or [Particleprocessmaterial.CollisionHideOnContact] will be affected by a collision shape.
+
+After configuring particle nodes accordingly, specific layers can be unchecked to prevent certain particles from being affected by colliders. For example, this can be used if you're using a collider as part of a spell effect but don't want the collider to affect unrelated weather particles at the same position.
+
+Particle collision can also be disabled on a per-process material basis by setting [ParticleProcessMaterial.CollisionMode] on the [GPUParticles3D] node.
+
+[GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+[ParticleProcessMaterial.CollisionMode]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.CollisionMode
+[VisualInstance3D.Layers]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D#Instance.Layers
+*/
 func (self Instance) CullMask() int {
 	return int(int(class(self).GetCullMask()))
 }
 
+// SetCullMask sets the property returned by [GetCullMask].
 func (self Instance) SetCullMask(value int) {
 	class(self).SetCullMask(int64(value))
 }

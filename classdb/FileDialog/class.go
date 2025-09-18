@@ -361,162 +361,277 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, changing the [FileMode] property will set the window title accordingly (e.g. setting [FileMode] to [FileModeOpenFile] will change the window title to "Open a File").
+
+[FileMode]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.FileMode
+*/
 func (self Instance) ModeOverridesTitle() bool {
 	return bool(class(self).IsModeOverridingTitle())
 }
 
+// SetModeOverridesTitle sets the property returned by [IsModeOverridingTitle].
 func (self Instance) SetModeOverridesTitle(value bool) {
 	class(self).SetModeOverridesTitle(value)
 }
 
+/*
+The dialog's open or save mode, which affects the selection behavior.
+*/
 func (self Instance) FileMode() FileMode {
 	return FileMode(class(self).GetFileMode())
 }
 
+// SetFileMode sets the property returned by [GetFileMode].
 func (self Instance) SetFileMode(value FileMode) {
 	class(self).SetFileMode(value)
 }
 
+/*
+Display mode of the dialog's file list.
+*/
 func (self Instance) DisplayMode() DisplayMode {
 	return DisplayMode(class(self).GetDisplayMode())
 }
 
+// SetDisplayMode sets the property returned by [GetDisplayMode].
 func (self Instance) SetDisplayMode(value DisplayMode) {
 	class(self).SetDisplayMode(value)
 }
 
+/*
+The file system access scope.
+
+Warning: In Web builds, FileDialog cannot access the host file system. In sandboxed Linux and macOS environments, [UseNativeDialog] is automatically used to allow limited access to host file system.
+
+[UseNativeDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.UseNativeDialog
+*/
 func (self Instance) Access() Access {
 	return Access(class(self).GetAccess())
 }
 
+// SetAccess sets the property returned by [GetAccess].
 func (self Instance) SetAccess(value Access) {
 	class(self).SetAccess(value)
 }
 
+/*
+If non-empty, the given sub-folder will be "root" of this [FileDialog], i.e. user won't be able to go to its parent directory.
+
+Note: This property is ignored by native file dialogs.
+
+[FileDialog]: https://pkg.go.dev/graphics.gd/classdb/FileDialog
+*/
 func (self Instance) RootSubfolder() string {
 	return string(class(self).GetRootSubfolder().String())
 }
 
+// SetRootSubfolder sets the property returned by [GetRootSubfolder].
 func (self Instance) SetRootSubfolder(value string) {
 	class(self).SetRootSubfolder(String.New(value))
 }
 
+/*
+The available file type filters. Each filter string in the array should be formatted like this: *.png,*.jpg,*.jpeg;Image Files;image/png,image/jpeg. The description text of the filter is optional and can be omitted. Both file extensions and MIME type should be always set.
+
+Note: Embedded file dialog and Windows file dialog support only file extensions, while Android, Linux, and macOS file dialogs also support MIME types.
+*/
 func (self Instance) Filters() []string {
 	return []string(class(self).GetFilters().Strings())
 }
 
+// SetFilters sets the property returned by [GetFilters].
 func (self Instance) SetFilters(value []string) {
 	class(self).SetFilters(Packed.MakeStrings(value...))
 }
 
+/*
+The filter for file names (case-insensitive). When set to a non-empty string, only files that contains the substring will be shown. [FilenameFilter] can be edited by the user with the filter button at the top of the file dialog.
+
+See also [Filters], which should be used to restrict the file types that can be selected instead of [FilenameFilter] which is meant to be set by the user.
+
+[FilenameFilter]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.FilenameFilter
+[Filters]: https://pkg.go.dev/graphics.gd/classdb/FileDialog#Instance.Filters
+*/
 func (self Instance) FilenameFilter() string {
 	return string(class(self).GetFilenameFilter().String())
 }
 
+// SetFilenameFilter sets the property returned by [GetFilenameFilter].
 func (self Instance) SetFilenameFilter(value string) {
 	class(self).SetFilenameFilter(String.New(value))
 }
 
+/*
+If true, the dialog will show hidden files.
+
+Note: This property is ignored by native file dialogs on Android and Linux.
+*/
 func (self Instance) ShowHiddenFiles() bool {
 	return bool(class(self).IsShowingHiddenFiles())
 }
 
+// SetShowHiddenFiles sets the property returned by [IsShowingHiddenFiles].
 func (self Instance) SetShowHiddenFiles(value bool) {
 	class(self).SetShowHiddenFiles(value)
 }
 
+/*
+If true, and if supported by the current [DisplayServer], OS native dialog will be used instead of custom one.
+
+Note: On Android, it is only supported for Android 10+ devices and when using [AccessFilesystem]. For access mode [AccessResources] and [AccessUserdata], the system will fall back to custom FileDialog.
+
+Note: On Linux and macOS, sandboxed apps always use native dialogs to access the host file system.
+
+Note: On macOS, sandboxed apps will save security-scoped bookmarks to retain access to the opened folders across multiple sessions. Use [OS.GetGrantedPermissions] to get a list of saved bookmarks.
+
+Note: Native dialogs are isolated from the base process, file dialog properties can't be modified once the dialog is shown.
+
+[DisplayServer]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer
+[OS.GetGrantedPermissions]: https://pkg.go.dev/graphics.gd/classdb/OS#GetGrantedPermissions
+*/
 func (self Instance) UseNativeDialog() bool {
 	return bool(class(self).GetUseNativeDialog())
 }
 
+// SetUseNativeDialog sets the property returned by [GetUseNativeDialog].
 func (self Instance) SetUseNativeDialog(value bool) {
 	class(self).SetUseNativeDialog(value)
 }
 
+/*
+The number of additional [OptionButton]s and [CheckBox]es in the dialog.
+
+[CheckBox]: https://pkg.go.dev/graphics.gd/classdb/CheckBox
+[OptionButton]: https://pkg.go.dev/graphics.gd/classdb/OptionButton
+*/
 func (self Instance) OptionCount() int {
 	return int(int(class(self).GetOptionCount()))
 }
 
+// SetOptionCount sets the property returned by [GetOptionCount].
 func (self Instance) SetOptionCount(value int) {
 	class(self).SetOptionCount(int64(value))
 }
 
+/*
+If true, shows the toggle hidden files button.
+*/
 func (self Instance) HiddenFilesToggleEnabled() bool {
 	return bool(class(self).IsCustomizationFlagEnabled(0))
 }
 
+// SetHiddenFilesToggleEnabled sets the property returned by [IsCustomizationFlagEnabled].
 func (self Instance) SetHiddenFilesToggleEnabled(value bool) {
 	class(self).SetCustomizationFlagEnabled(0, value)
 }
 
+/*
+If true, shows the toggle file filter button.
+*/
 func (self Instance) FileFilterToggleEnabled() bool {
 	return bool(class(self).IsCustomizationFlagEnabled(2))
 }
 
+// SetFileFilterToggleEnabled sets the property returned by [IsCustomizationFlagEnabled].
 func (self Instance) SetFileFilterToggleEnabled(value bool) {
 	class(self).SetCustomizationFlagEnabled(2, value)
 }
 
+/*
+If true, shows the file sorting options button.
+*/
 func (self Instance) FileSortOptionsEnabled() bool {
 	return bool(class(self).IsCustomizationFlagEnabled(3))
 }
 
+// SetFileSortOptionsEnabled sets the property returned by [IsCustomizationFlagEnabled].
 func (self Instance) SetFileSortOptionsEnabled(value bool) {
 	class(self).SetCustomizationFlagEnabled(3, value)
 }
 
+/*
+If true, shows the button for creating new directories (when using [FileModeOpenDir], [FileModeOpenAny], or [FileModeSaveFile]).
+*/
 func (self Instance) FolderCreationEnabled() bool {
 	return bool(class(self).IsCustomizationFlagEnabled(1))
 }
 
+// SetFolderCreationEnabled sets the property returned by [IsCustomizationFlagEnabled].
 func (self Instance) SetFolderCreationEnabled(value bool) {
 	class(self).SetCustomizationFlagEnabled(1, value)
 }
 
+/*
+If true, shows the toggle favorite button and favorite list on the left side of the dialog.
+*/
 func (self Instance) FavoritesEnabled() bool {
 	return bool(class(self).IsCustomizationFlagEnabled(4))
 }
 
+// SetFavoritesEnabled sets the property returned by [IsCustomizationFlagEnabled].
 func (self Instance) SetFavoritesEnabled(value bool) {
 	class(self).SetCustomizationFlagEnabled(4, value)
 }
 
+/*
+If true, shows the recent directories list on the left side of the dialog.
+*/
 func (self Instance) RecentListEnabled() bool {
 	return bool(class(self).IsCustomizationFlagEnabled(5))
 }
 
+// SetRecentListEnabled sets the property returned by [IsCustomizationFlagEnabled].
 func (self Instance) SetRecentListEnabled(value bool) {
 	class(self).SetCustomizationFlagEnabled(5, value)
 }
 
+/*
+If true, shows the layout switch buttons (list/thumbnails).
+*/
 func (self Instance) LayoutToggleEnabled() bool {
 	return bool(class(self).IsCustomizationFlagEnabled(6))
 }
 
+// SetLayoutToggleEnabled sets the property returned by [IsCustomizationFlagEnabled].
 func (self Instance) SetLayoutToggleEnabled(value bool) {
 	class(self).SetCustomizationFlagEnabled(6, value)
 }
 
+/*
+The current working directory of the file dialog.
+
+Note: For native file dialogs, this property is only treated as a hint and may not be respected by specific OS implementations.
+*/
 func (self Instance) CurrentDir() string {
 	return string(class(self).GetCurrentDir().String())
 }
 
+// SetCurrentDir sets the property returned by [GetCurrentDir].
 func (self Instance) SetCurrentDir(value string) {
 	class(self).SetCurrentDir(String.New(value))
 }
 
+/*
+The currently selected file of the file dialog.
+*/
 func (self Instance) CurrentFile() string {
 	return string(class(self).GetCurrentFile().String())
 }
 
+// SetCurrentFile sets the property returned by [GetCurrentFile].
 func (self Instance) SetCurrentFile(value string) {
 	class(self).SetCurrentFile(String.New(value))
 }
 
+/*
+The currently selected file path of the file dialog.
+*/
 func (self Instance) CurrentPath() string {
 	return string(class(self).GetCurrentPath().String())
 }
 
+// SetCurrentPath sets the property returned by [GetCurrentPath].
 func (self Instance) SetCurrentPath(value string) {
 	class(self).SetCurrentPath(String.New(value))
 }
@@ -892,6 +1007,10 @@ Note: This method does nothing on native file dialogs.
 func (self class) Invalidate() { //gd:FileDialog.invalidate
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.invalidate, 0, &struct{}{})
 }
+
+/*
+Emitted when the user selects a file by double-clicking it or pressing the OK button.
+*/
 func (self Instance) OnFileSelected(cb func(path string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -904,6 +1023,9 @@ func (self class) FileSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FileSelected`))))
 }
 
+/*
+Emitted when the user selects multiple files.
+*/
 func (self Instance) OnFilesSelected(cb func(paths []string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -916,6 +1038,9 @@ func (self class) FilesSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FilesSelected`))))
 }
 
+/*
+Emitted when the user selects a directory.
+*/
 func (self Instance) OnDirSelected(cb func(dir string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -928,6 +1053,9 @@ func (self class) DirSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DirSelected`))))
 }
 
+/*
+Emitted when the filter for file names changes.
+*/
 func (self Instance) OnFilenameFilterChanged(cb func(filter string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

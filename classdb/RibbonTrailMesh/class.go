@@ -163,50 +163,81 @@ func New() Instance {
 	return casted
 }
 
+/*
+Determines the shape of the ribbon.
+*/
 func (self Instance) Shape() Shape {
 	return Shape(class(self).GetShape())
 }
 
+// SetShape sets the property returned by [GetShape].
 func (self Instance) SetShape(value Shape) {
 	class(self).SetShape(value)
 }
 
+/*
+The baseline size of the ribbon. The size of a particular section segment is obtained by multiplying this size by the value of the [Curve] at the given distance.
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/RibbonTrailMesh#Instance.Curve
+*/
 func (self Instance) Size() Float.X {
 	return Float.X(Float.X(class(self).GetSize()))
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Float.X) {
 	class(self).SetSize(float64(value))
 }
 
+/*
+The total number of sections on the ribbon.
+*/
 func (self Instance) Sections() int {
 	return int(int(class(self).GetSections()))
 }
 
+// SetSections sets the property returned by [GetSections].
 func (self Instance) SetSections(value int) {
 	class(self).SetSections(int64(value))
 }
 
+/*
+The length of a section of the ribbon.
+*/
 func (self Instance) SectionLength() Float.X {
 	return Float.X(Float.X(class(self).GetSectionLength()))
 }
 
+// SetSectionLength sets the property returned by [GetSectionLength].
 func (self Instance) SetSectionLength(value Float.X) {
 	class(self).SetSectionLength(float64(value))
 }
 
+/*
+The number of segments in a section. The [Curve] is sampled on each segment to determine its size. Higher values result in a more detailed ribbon at the cost of performance.
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/RibbonTrailMesh#Instance.Curve
+*/
 func (self Instance) SectionSegments() int {
 	return int(int(class(self).GetSectionSegments()))
 }
 
+// SetSectionSegments sets the property returned by [GetSectionSegments].
 func (self Instance) SetSectionSegments(value int) {
 	class(self).SetSectionSegments(int64(value))
 }
 
+/*
+Determines the size of the ribbon along its length. The size of a particular section segment is obtained by multiplying the baseline [Size] by the value of this curve at the given distance. For values smaller than 0, the faces will be inverted. Should be a unit [Curve].
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
+[Size]: https://pkg.go.dev/graphics.gd/classdb/RibbonTrailMesh#Instance.Size
+*/
 func (self Instance) Curve() Curve.Instance {
 	return Curve.Instance(class(self).GetCurve())
 }
 
+// SetCurve sets the property returned by [GetCurve].
 func (self Instance) SetCurve(value Curve.Instance) {
 	class(self).SetCurve(value)
 }

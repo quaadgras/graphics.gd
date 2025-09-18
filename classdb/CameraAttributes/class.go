@@ -166,42 +166,69 @@ func New() Instance {
 	return casted
 }
 
+/*
+Sensitivity of camera sensors, measured in ISO. A higher sensitivity results in a brighter image.
+
+If [AutoExposureEnabled] is true, this can be used as a method of exposure compensation, doubling the value will increase the exposure value (measured in EV100) by 1 stop.
+
+Note: Only available when [ProjectSettings] "rendering/lights_and_shadows/use_physical_light_units" is enabled.
+
+[AutoExposureEnabled]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes#Instance.AutoExposureEnabled
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) ExposureSensitivity() Float.X {
 	return Float.X(Float.X(class(self).GetExposureSensitivity()))
 }
 
+// SetExposureSensitivity sets the property returned by [GetExposureSensitivity].
 func (self Instance) SetExposureSensitivity(value Float.X) {
 	class(self).SetExposureSensitivity(float64(value))
 }
 
+/*
+Multiplier for the exposure amount. A higher value results in a brighter image.
+*/
 func (self Instance) ExposureMultiplier() Float.X {
 	return Float.X(Float.X(class(self).GetExposureMultiplier()))
 }
 
+// SetExposureMultiplier sets the property returned by [GetExposureMultiplier].
 func (self Instance) SetExposureMultiplier(value Float.X) {
 	class(self).SetExposureMultiplier(float64(value))
 }
 
+/*
+If true, enables the tonemapping auto exposure mode of the scene renderer. If true, the renderer will automatically determine the exposure setting to adapt to the scene's illumination and the observed light.
+*/
 func (self Instance) AutoExposureEnabled() bool {
 	return bool(class(self).IsAutoExposureEnabled())
 }
 
+// SetAutoExposureEnabled sets the property returned by [IsAutoExposureEnabled].
 func (self Instance) SetAutoExposureEnabled(value bool) {
 	class(self).SetAutoExposureEnabled(value)
 }
 
+/*
+The scale of the auto exposure effect. Affects the intensity of auto exposure.
+*/
 func (self Instance) AutoExposureScale() Float.X {
 	return Float.X(Float.X(class(self).GetAutoExposureScale()))
 }
 
+// SetAutoExposureScale sets the property returned by [GetAutoExposureScale].
 func (self Instance) SetAutoExposureScale(value Float.X) {
 	class(self).SetAutoExposureScale(float64(value))
 }
 
+/*
+The speed of the auto exposure effect. Affects the time needed for the camera to perform auto exposure.
+*/
 func (self Instance) AutoExposureSpeed() Float.X {
 	return Float.X(Float.X(class(self).GetAutoExposureSpeed()))
 }
 
+// SetAutoExposureSpeed sets the property returned by [GetAutoExposureSpeed].
 func (self Instance) SetAutoExposureSpeed(value Float.X) {
 	class(self).SetAutoExposureSpeed(float64(value))
 }

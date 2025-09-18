@@ -423,122 +423,223 @@ func New() Instance {
 	return casted
 }
 
+/*
+Sets the motion mode which defines the behavior of [MoveAndSlide].
+
+[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
+*/
 func (self Instance) MotionMode() MotionMode {
 	return MotionMode(class(self).GetMotionMode())
 }
 
+// SetMotionMode sets the property returned by [GetMotionMode].
 func (self Instance) SetMotionMode(value MotionMode) {
 	class(self).SetMotionMode(value)
 }
 
+/*
+Vector pointing upwards, used to determine what is a wall and what is a floor (or a ceiling) when calling [MoveAndSlide]. Defaults to [Vector3.Up]. As the vector will be normalized it can't be equal to [Vector3.Zero], if you want all collisions to be reported as walls, consider using [MotionModeFloating] as [MotionMode].
+
+[MotionMode]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MotionMode
+[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
+*/
 func (self Instance) UpDirection() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetUpDirection())
 }
 
+// SetUpDirection sets the property returned by [GetUpDirection].
 func (self Instance) SetUpDirection(value Vector3.XYZ) {
 	class(self).SetUpDirection(Vector3.XYZ(value))
 }
 
+/*
+If true, during a jump against the ceiling, the body will slide, if false it will be stopped and will fall vertically.
+*/
 func (self Instance) SlideOnCeiling() bool {
 	return bool(class(self).IsSlideOnCeilingEnabled())
 }
 
+// SetSlideOnCeiling sets the property returned by [IsSlideOnCeilingEnabled].
 func (self Instance) SetSlideOnCeiling(value bool) {
 	class(self).SetSlideOnCeilingEnabled(value)
 }
 
+/*
+Current velocity vector (typically meters per second), used and modified during calls to [MoveAndSlide].
+
+[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
+*/
 func (self Instance) Velocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetVelocity())
 }
 
+// SetVelocity sets the property returned by [GetVelocity].
 func (self Instance) SetVelocity(value Vector3.XYZ) {
 	class(self).SetVelocity(Vector3.XYZ(value))
 }
 
+/*
+Maximum number of times the body can change direction before it stops when calling [MoveAndSlide]. Must be greater than zero.
+
+[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
+*/
 func (self Instance) MaxSlides() int {
 	return int(int(class(self).GetMaxSlides()))
 }
 
+// SetMaxSlides sets the property returned by [GetMaxSlides].
 func (self Instance) SetMaxSlides(value int) {
 	class(self).SetMaxSlides(int64(value))
 }
 
+/*
+Minimum angle (in radians) where the body is allowed to slide when it encounters a wall. The default value equals 15 degrees. When [MotionMode] is [MotionModeGrounded], it only affects movement if [FloorBlockOnWall] is true.
+
+[FloorBlockOnWall]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.FloorBlockOnWall
+[MotionMode]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MotionMode
+*/
 func (self Instance) WallMinSlideAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetWallMinSlideAngle()))
 }
 
+// SetWallMinSlideAngle sets the property returned by [GetWallMinSlideAngle].
 func (self Instance) SetWallMinSlideAngle(value Angle.Radians) {
 	class(self).SetWallMinSlideAngle(float64(value))
 }
 
+/*
+If true, the body will not slide on slopes when calling [MoveAndSlide] when the body is standing still.
+
+If false, the body will slide on floor's slopes when [Velocity] applies a downward force.
+
+[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
+[Velocity]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.Velocity
+*/
 func (self Instance) FloorStopOnSlope() bool {
 	return bool(class(self).IsFloorStopOnSlopeEnabled())
 }
 
+// SetFloorStopOnSlope sets the property returned by [IsFloorStopOnSlopeEnabled].
 func (self Instance) SetFloorStopOnSlope(value bool) {
 	class(self).SetFloorStopOnSlopeEnabled(value)
 }
 
+/*
+If false (by default), the body will move faster on downward slopes and slower on upward slopes.
+
+If true, the body will always move at the same speed on the ground no matter the slope. Note that you need to use [FloorSnapLength] to stick along a downward slope at constant speed.
+
+[FloorSnapLength]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.FloorSnapLength
+*/
 func (self Instance) FloorConstantSpeed() bool {
 	return bool(class(self).IsFloorConstantSpeedEnabled())
 }
 
+// SetFloorConstantSpeed sets the property returned by [IsFloorConstantSpeedEnabled].
 func (self Instance) SetFloorConstantSpeed(value bool) {
 	class(self).SetFloorConstantSpeedEnabled(value)
 }
 
+/*
+If true, the body will be able to move on the floor only. This option avoids to be able to walk on walls, it will however allow to slide down along them.
+*/
 func (self Instance) FloorBlockOnWall() bool {
 	return bool(class(self).IsFloorBlockOnWallEnabled())
 }
 
+// SetFloorBlockOnWall sets the property returned by [IsFloorBlockOnWallEnabled].
 func (self Instance) SetFloorBlockOnWall(value bool) {
 	class(self).SetFloorBlockOnWallEnabled(value)
 }
 
+/*
+Maximum angle (in radians) where a slope is still considered a floor (or a ceiling), rather than a wall, when calling [MoveAndSlide]. The default value equals 45 degrees.
+
+[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
+*/
 func (self Instance) FloorMaxAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetFloorMaxAngle()))
 }
 
+// SetFloorMaxAngle sets the property returned by [GetFloorMaxAngle].
 func (self Instance) SetFloorMaxAngle(value Angle.Radians) {
 	class(self).SetFloorMaxAngle(float64(value))
 }
 
+/*
+Sets a snapping distance. When set to a value different from 0.0, the body is kept attached to slopes when calling [MoveAndSlide]. The snapping vector is determined by the given distance along the opposite direction of the [UpDirection].
+
+As long as the snapping vector is in contact with the ground and the body moves against [UpDirection], the body will remain attached to the surface. Snapping is not applied if the body moves along [UpDirection], meaning it contains vertical rising velocity, so it will be able to detach from the ground when jumping or when the body is pushed up by something. If you want to apply a snap without taking into account the velocity, use [ApplyFloorSnap].
+
+[ApplyFloorSnap]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.ApplyFloorSnap
+[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
+[UpDirection]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.UpDirection
+*/
 func (self Instance) FloorSnapLength() Float.X {
 	return Float.X(Float.X(class(self).GetFloorSnapLength()))
 }
 
+// SetFloorSnapLength sets the property returned by [GetFloorSnapLength].
 func (self Instance) SetFloorSnapLength(value Float.X) {
 	class(self).SetFloorSnapLength(float64(value))
 }
 
+/*
+Sets the behavior to apply when you leave a moving platform. By default, to be physically accurate, when you leave the last platform velocity is applied.
+*/
 func (self Instance) PlatformOnLeave() PlatformOnLeave {
 	return PlatformOnLeave(class(self).GetPlatformOnLeave())
 }
 
+// SetPlatformOnLeave sets the property returned by [GetPlatformOnLeave].
 func (self Instance) SetPlatformOnLeave(value PlatformOnLeave) {
 	class(self).SetPlatformOnLeave(value)
 }
 
+/*
+Collision layers that will be included for detecting floor bodies that will act as moving platforms to be followed by the [CharacterBody3D]. By default, all floor bodies are detected and propagate their velocity.
+
+[CharacterBody3D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D
+*/
 func (self Instance) PlatformFloorLayers() int {
 	return int(int(class(self).GetPlatformFloorLayers()))
 }
 
+// SetPlatformFloorLayers sets the property returned by [GetPlatformFloorLayers].
 func (self Instance) SetPlatformFloorLayers(value int) {
 	class(self).SetPlatformFloorLayers(int64(value))
 }
 
+/*
+Collision layers that will be included for detecting wall bodies that will act as moving platforms to be followed by the [CharacterBody3D]. By default, all wall bodies are ignored.
+
+[CharacterBody3D]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D
+*/
 func (self Instance) PlatformWallLayers() int {
 	return int(int(class(self).GetPlatformWallLayers()))
 }
 
+// SetPlatformWallLayers sets the property returned by [GetPlatformWallLayers].
 func (self Instance) SetPlatformWallLayers(value int) {
 	class(self).SetPlatformWallLayers(int64(value))
 }
 
+/*
+Extra margin used for collision recovery when calling [MoveAndSlide].
+
+If the body is at least this close to another body, it will consider them to be colliding and will be pushed away before performing the actual motion.
+
+A higher value means it's more flexible for detecting collision, which helps with consistently detecting walls and floors.
+
+A lower value forces the collision algorithm to use more exact detection, so it can be used in cases that specifically require precision, e.g at very low scale to avoid visible jittering, or for stability with a stack of character bodies.
+
+[MoveAndSlide]: https://pkg.go.dev/graphics.gd/classdb/CharacterBody3D#Instance.MoveAndSlide
+*/
 func (self Instance) SafeMargin() Float.X {
 	return Float.X(Float.X(class(self).GetSafeMargin()))
 }
 
+// SetSafeMargin sets the property returned by [GetSafeMargin].
 func (self Instance) SetSafeMargin(value Float.X) {
 	class(self).SetSafeMargin(float64(value))
 }

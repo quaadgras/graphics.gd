@@ -147,10 +147,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+A boolean constant which represents a state of this node.
+*/
 func (self Instance) Constant() bool {
 	return bool(class(self).GetConstant())
 }
 
+// SetConstant sets the property returned by [GetConstant].
 func (self Instance) SetConstant(value bool) {
 	class(self).SetConstant(value)
 }

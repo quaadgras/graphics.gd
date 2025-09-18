@@ -347,10 +347,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The locale of the translation.
+*/
 func (self Instance) Locale() string {
 	return string(class(self).GetLocale().String())
 }
 
+// SetLocale sets the property returned by [GetLocale].
 func (self Instance) SetLocale(value string) {
 	class(self).SetLocale(String.New(value))
 }

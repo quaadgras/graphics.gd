@@ -154,10 +154,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The texture's size (in pixels).
+*/
 func (self Instance) Size() Vector3i.XYZ {
 	return Vector3i.XYZ(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector3i.XYZ) {
 	class(self).SetSize(Vector3i.XYZ(value))
 }

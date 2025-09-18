@@ -152,18 +152,30 @@ func New() Instance {
 	return casted
 }
 
+/*
+A [Curve3D] describing the path.
+
+[Curve3D]: https://pkg.go.dev/graphics.gd/classdb/Curve3D
+*/
 func (self Instance) Curve() Curve3D.Instance {
 	return Curve3D.Instance(class(self).GetCurve())
 }
 
+// SetCurve sets the property returned by [GetCurve].
 func (self Instance) SetCurve(value Curve3D.Instance) {
 	class(self).SetCurve(value)
 }
 
+/*
+The custom color to use to draw the shape in the editor.
+
+If set to Color(0.0, 0.0, 0.0) (by default), the color set in EditorSettings is used.
+*/
 func (self Instance) DebugCustomColor() Color.RGBA {
 	return Color.RGBA(class(self).GetDebugCustomColor())
 }
 
+// SetDebugCustomColor sets the property returned by [GetDebugCustomColor].
 func (self Instance) SetDebugCustomColor(value Color.RGBA) {
 	class(self).SetDebugCustomColor(Color.RGBA(value))
 }
@@ -191,6 +203,12 @@ func (self class) GetDebugCustomColor() Color.RGBA { //gd:Path3D.get_debug_custo
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the [Curve] changes.
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/Path3D#Instance.Curve
+*/
 func (self Instance) OnCurveChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -203,6 +221,11 @@ func (self class) CurveChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CurveChanged`))))
 }
 
+/*
+Emitted when the [DebugCustomColor] changes.
+
+[DebugCustomColor]: https://pkg.go.dev/graphics.gd/classdb/Path3D#Instance.DebugCustomColor
+*/
 func (self Instance) OnDebugColorChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

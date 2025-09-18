@@ -436,10 +436,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The maximum number of steps that can be stored in the undo/redo history. If the number of stored steps exceeds this limit, older steps are removed from history and can no longer be reached by calling [Undo]. A value of 0 or lower means no limit.
+
+[Undo]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.Undo
+*/
 func (self Instance) MaxSteps() int {
 	return int(int(class(self).GetMaxSteps()))
 }
 
+// SetMaxSteps sets the property returned by [GetMaxSteps].
 func (self Instance) SetMaxSteps(value int) {
 	class(self).SetMaxSteps(int64(value))
 }
@@ -690,6 +696,13 @@ func (self class) Undo() bool { //gd:UndoRedo.undo
 	var ret = r_ret
 	return ret
 }
+
+/*
+Called when [Undo] or [Redo] was called.
+
+[Redo]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.Redo
+[Undo]: https://pkg.go.dev/graphics.gd/classdb/UndoRedo#Instance.Undo
+*/
 func (self Instance) OnVersionChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

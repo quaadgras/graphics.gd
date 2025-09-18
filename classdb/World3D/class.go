@@ -154,42 +154,78 @@ func New() Instance {
 	return casted
 }
 
+/*
+The World3D's [Environment].
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
+*/
 func (self Instance) Environment() Environment.Instance {
 	return Environment.Instance(class(self).GetEnvironment())
 }
 
+// SetEnvironment sets the property returned by [GetEnvironment].
 func (self Instance) SetEnvironment(value Environment.Instance) {
 	class(self).SetEnvironment(value)
 }
 
+/*
+The World3D's fallback environment will be used if [Environment] fails or is missing.
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/World3D#Instance.Environment
+*/
 func (self Instance) FallbackEnvironment() Environment.Instance {
 	return Environment.Instance(class(self).GetFallbackEnvironment())
 }
 
+// SetFallbackEnvironment sets the property returned by [GetFallbackEnvironment].
 func (self Instance) SetFallbackEnvironment(value Environment.Instance) {
 	class(self).SetFallbackEnvironment(value)
 }
 
+/*
+The default [CameraAttributes] resource to use if none set on the [Camera3D].
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[CameraAttributes]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributes
+*/
 func (self Instance) CameraAttributes() CameraAttributes.Instance {
 	return CameraAttributes.Instance(class(self).GetCameraAttributes())
 }
 
+// SetCameraAttributes sets the property returned by [GetCameraAttributes].
 func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) {
 	class(self).SetCameraAttributes(value)
 }
 
+/*
+The World3D's physics space.
+*/
 func (self Instance) Space() RID.Space3D {
 	return RID.Space3D(RID.Space3D(class(self).GetSpace()))
 }
 
+/*
+The [Resource.ID] of this world's navigation map. Used by the [NavigationServer3D].
+
+[NavigationServer3D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer3D
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func (self Instance) NavigationMap() RID.NavigationMap3D {
 	return RID.NavigationMap3D(RID.NavigationMap3D(class(self).GetNavigationMap()))
 }
 
+/*
+The World3D's visual scenario.
+*/
 func (self Instance) Scenario() RID.Scenario {
 	return RID.Scenario(RID.Scenario(class(self).GetScenario()))
 }
 
+/*
+Direct access to the world's physics 3D space state. Used for querying current and potential collisions. When using multi-threaded physics, access is limited to [Node.PhysicsProcess] in the main thread.
+
+[Node.PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.PhysicsProcess
+*/
 func (self Instance) DirectSpaceState() PhysicsDirectSpaceState3D.Instance {
 	return PhysicsDirectSpaceState3D.Instance(class(self).GetDirectSpaceState())
 }

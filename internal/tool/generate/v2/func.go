@@ -11,6 +11,11 @@ import (
 )
 
 func (classDB ClassDB) signalCall(w io.Writer, class gdjson.Class, signal gdjson.Signal, singleton bool) {
+	if signal.Description != "" {
+		fmt.Fprintln(w, "\n/*")
+		fmt.Fprint(w, gdjson.DocsToGoDoc(signal.Description, classDB, class.Name, class.Name+"_"+convertName(signal.Name)))
+		fmt.Fprint(w, "\n*/")
+	}
 	if singleton {
 		fmt.Fprintf(w, "\nfunc On%v(cb func(", convertName(signal.Name))
 	} else {

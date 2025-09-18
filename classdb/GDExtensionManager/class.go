@@ -258,6 +258,10 @@ func (self class) GetExtension(path String.Readable) [1]gdclass.GDExtension { //
 	var ret = [1]gdclass.GDExtension{gd.PointerWithOwnershipTransferredToGo[gdclass.GDExtension](r_ret)}
 	return ret
 }
+
+/*
+Emitted after the editor has finished reloading one or more extensions.
+*/
 func OnExtensionsReloaded(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -270,6 +274,11 @@ func (self class) ExtensionsReloaded() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ExtensionsReloaded`))))
 }
 
+/*
+Emitted after the editor has finished loading a new extension.
+
+Note: This signal is only emitted in editor builds.
+*/
 func OnExtensionLoaded(cb func(extension GDExtension.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -282,6 +291,11 @@ func (self class) ExtensionLoaded() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ExtensionLoaded`))))
 }
 
+/*
+Emitted before the editor starts unloading an extension.
+
+Note: This signal is only emitted in editor builds.
+*/
 func OnExtensionUnloading(cb func(extension GDExtension.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

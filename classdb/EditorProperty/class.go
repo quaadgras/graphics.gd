@@ -329,94 +329,141 @@ func New() Instance {
 	return casted
 }
 
+/*
+Set this property to change the label (if you want to show one).
+*/
 func (self Instance) Label() string {
 	return string(class(self).GetLabel().String())
 }
 
+// SetLabel sets the property returned by [GetLabel].
 func (self Instance) SetLabel(value string) {
 	class(self).SetLabel(String.New(value))
 }
 
+/*
+Used by the inspector, set to true when the property is read-only.
+*/
 func (self Instance) ReadOnly() bool {
 	return bool(class(self).IsReadOnly())
 }
 
+/*
+Used by the inspector, set to true when the property label is drawn.
+*/
 func (self Instance) DrawLabel() bool {
 	return bool(class(self).IsDrawLabel())
 }
 
+// SetDrawLabel sets the property returned by [IsDrawLabel].
 func (self Instance) SetDrawLabel(value bool) {
 	class(self).SetDrawLabel(value)
 }
 
+/*
+Used by the inspector, set to true when the property background is drawn.
+*/
 func (self Instance) DrawBackground() bool {
 	return bool(class(self).IsDrawBackground())
 }
 
+// SetDrawBackground sets the property returned by [IsDrawBackground].
 func (self Instance) SetDrawBackground(value bool) {
 	class(self).SetDrawBackground(value)
 }
 
+/*
+Used by the inspector, set to true when the property is checkable.
+*/
 func (self Instance) Checkable() bool {
 	return bool(class(self).IsCheckable())
 }
 
+// SetCheckable sets the property returned by [IsCheckable].
 func (self Instance) SetCheckable(value bool) {
 	class(self).SetCheckable(value)
 }
 
+/*
+Used by the inspector, set to true when the property is checked.
+*/
 func (self Instance) Checked() bool {
 	return bool(class(self).IsChecked())
 }
 
+// SetChecked sets the property returned by [IsChecked].
 func (self Instance) SetChecked(value bool) {
 	class(self).SetChecked(value)
 }
 
+/*
+Used by the inspector, set to true when the property is drawn with the editor theme's warning color. This is used for editable children's properties.
+*/
 func (self Instance) DrawWarning() bool {
 	return bool(class(self).IsDrawWarning())
 }
 
+// SetDrawWarning sets the property returned by [IsDrawWarning].
 func (self Instance) SetDrawWarning(value bool) {
 	class(self).SetDrawWarning(value)
 }
 
+/*
+Used by the inspector, set to true when the property can add keys for animation.
+*/
 func (self Instance) Keying() bool {
 	return bool(class(self).IsKeying())
 }
 
+// SetKeying sets the property returned by [IsKeying].
 func (self Instance) SetKeying(value bool) {
 	class(self).SetKeying(value)
 }
 
+/*
+Used by the inspector, set to true when the property can be deleted by the user.
+*/
 func (self Instance) Deletable() bool {
 	return bool(class(self).IsDeletable())
 }
 
+// SetDeletable sets the property returned by [IsDeletable].
 func (self Instance) SetDeletable(value bool) {
 	class(self).SetDeletable(value)
 }
 
+/*
+Used by the inspector, set to true when the property is selectable.
+*/
 func (self Instance) Selectable() bool {
 	return bool(class(self).IsSelectable())
 }
 
+// SetSelectable sets the property returned by [IsSelectable].
 func (self Instance) SetSelectable(value bool) {
 	class(self).SetSelectable(value)
 }
 
+/*
+Used by the inspector, set to true when the property is using folding.
+*/
 func (self Instance) UseFolding() bool {
 	return bool(class(self).IsUsingFolding())
 }
 
+// SetUseFolding sets the property returned by [IsUsingFolding].
 func (self Instance) SetUseFolding(value bool) {
 	class(self).SetUseFolding(value)
 }
 
+/*
+Space distribution ratio between the label and the editing field.
+*/
 func (self Instance) NameSplitRatio() Float.X {
 	return Float.X(Float.X(class(self).GetNameSplitRatio()))
 }
 
+// SetNameSplitRatio sets the property returned by [GetNameSplitRatio].
 func (self Instance) SetNameSplitRatio(value Float.X) {
 	class(self).SetNameSplitRatio(float64(value))
 }
@@ -700,6 +747,12 @@ func (self class) EmitChanged(property String.Name, value variant.Any, field Str
 		changing bool
 	}{pointers.Get(gd.InternalStringName(property)), gdextension.Variant(pointers.Get(gd.InternalVariant(value))), pointers.Get(gd.InternalStringName(field)), changing})
 }
+
+/*
+Do not emit this manually, use the [EmitChanged] method instead.
+
+[EmitChanged]: https://pkg.go.dev/graphics.gd/classdb/EditorProperty#Instance.EmitChanged
+*/
 func (self Instance) OnPropertyChanged(cb func(property string, value any, field string, changing bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -712,6 +765,11 @@ func (self class) PropertyChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyChanged`))))
 }
 
+/*
+Emit it if you want multiple properties modified at the same time. Do not use if added via [EditorInspectorPlugin.ParseProperty].
+
+[EditorInspectorPlugin.ParseProperty]: https://pkg.go.dev/graphics.gd/classdb/EditorInspectorPlugin#Instance.ParseProperty
+*/
 func (self Instance) OnMultiplePropertiesChanged(cb func(properties []string, value []any), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -724,6 +782,9 @@ func (self class) MultiplePropertiesChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MultiplePropertiesChanged`))))
 }
 
+/*
+Emit it if you want to add this value as an animation key (check for keying being enabled first).
+*/
 func (self Instance) OnPropertyKeyed(cb func(property string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -736,6 +797,9 @@ func (self class) PropertyKeyed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyKeyed`))))
 }
 
+/*
+Emitted when a property was deleted. Used internally.
+*/
 func (self Instance) OnPropertyDeleted(cb func(property string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -748,6 +812,9 @@ func (self class) PropertyDeleted() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyDeleted`))))
 }
 
+/*
+Emit it if you want to key a property with a single value.
+*/
 func (self Instance) OnPropertyKeyedWithValue(cb func(property string, value any), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -760,6 +827,9 @@ func (self class) PropertyKeyedWithValue() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyKeyedWithValue`))))
 }
 
+/*
+Emitted when a property was checked. Used internally.
+*/
 func (self Instance) OnPropertyChecked(cb func(property string, checked bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -772,6 +842,9 @@ func (self class) PropertyChecked() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyChecked`))))
 }
 
+/*
+Emitted when a setting override for the current project is requested.
+*/
 func (self Instance) OnPropertyOverridden(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -784,6 +857,9 @@ func (self class) PropertyOverridden() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyOverridden`))))
 }
 
+/*
+Emit it if you want to mark a property as favorited, making it appear at the top of the inspector.
+*/
 func (self Instance) OnPropertyFavorited(cb func(property string, favorited bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -796,6 +872,11 @@ func (self class) PropertyFavorited() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyFavorited`))))
 }
 
+/*
+Emit it if you want to mark (or unmark) the value of a property for being saved regardless of being equal to the default value.
+
+The default value is the one the property will get when the node is just instantiated and can come from an ancestor scene in the inheritance/instantiation chain, a script or a builtin class.
+*/
 func (self Instance) OnPropertyPinned(cb func(property string, pinned bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -808,6 +889,9 @@ func (self class) PropertyPinned() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyPinned`))))
 }
 
+/*
+Emitted when the revertability (i.e., whether it has a non-default value and thus is displayed with a revert icon) of a property has changed.
+*/
 func (self Instance) OnPropertyCanRevertChanged(cb func(property string, can_revert bool), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -820,6 +904,9 @@ func (self class) PropertyCanRevertChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PropertyCanRevertChanged`))))
 }
 
+/*
+If you want a sub-resource to be edited, emit this signal with the resource.
+*/
 func (self Instance) OnResourceSelected(cb func(path string, resource Resource.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -832,6 +919,9 @@ func (self class) ResourceSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ResourceSelected`))))
 }
 
+/*
+Used by sub-inspectors. Emit it if what was selected was an Object ID.
+*/
 func (self Instance) OnObjectIdSelected(cb func(property string, id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -844,6 +934,9 @@ func (self class) ObjectIdSelected() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ObjectIdSelected`))))
 }
 
+/*
+Emitted when selected. Used internally.
+*/
 func (self Instance) OnSelected(cb func(path string, focusable_idx int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

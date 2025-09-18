@@ -145,10 +145,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+An unsigned integer constant which represents a state of this node.
+*/
 func (self Instance) Constant() int {
 	return int(int(class(self).GetConstant()))
 }
 
+// SetConstant sets the property returned by [GetConstant].
 func (self Instance) SetConstant(value int) {
 	class(self).SetConstant(int64(value))
 }

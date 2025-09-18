@@ -163,42 +163,64 @@ func New() Instance {
 	return casted
 }
 
+/*
+Size of the generated plane.
+*/
 func (self Instance) Size() Vector2.XY {
 	return Vector2.XY(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector2.XY) {
 	class(self).SetSize(Vector2.XY(value))
 }
 
+/*
+Number of subdivision along the X axis.
+*/
 func (self Instance) SubdivideWidth() int {
 	return int(int(class(self).GetSubdivideWidth()))
 }
 
+// SetSubdivideWidth sets the property returned by [GetSubdivideWidth].
 func (self Instance) SetSubdivideWidth(value int) {
 	class(self).SetSubdivideWidth(int64(value))
 }
 
+/*
+Number of subdivision along the Z axis.
+*/
 func (self Instance) SubdivideDepth() int {
 	return int(int(class(self).GetSubdivideDepth()))
 }
 
+// SetSubdivideDepth sets the property returned by [GetSubdivideDepth].
 func (self Instance) SetSubdivideDepth(value int) {
 	class(self).SetSubdivideDepth(int64(value))
 }
 
+/*
+Offset of the generated plane. Useful for particles.
+*/
 func (self Instance) CenterOffset() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetCenterOffset())
 }
 
+// SetCenterOffset sets the property returned by [GetCenterOffset].
 func (self Instance) SetCenterOffset(value Vector3.XYZ) {
 	class(self).SetCenterOffset(Vector3.XYZ(value))
 }
 
+/*
+Direction that the [PlaneMesh] is facing.
+
+[PlaneMesh]: https://pkg.go.dev/graphics.gd/classdb/PlaneMesh
+*/
 func (self Instance) Orientation() Orientation {
 	return Orientation(class(self).GetOrientation())
 }
 
+// SetOrientation sets the property returned by [GetOrientation].
 func (self Instance) SetOrientation(value Orientation) {
 	class(self).SetOrientation(value)
 }

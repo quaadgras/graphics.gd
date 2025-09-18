@@ -251,58 +251,109 @@ func New() Instance {
 	return casted
 }
 
+/*
+Whether this link is currently active. If false, [NavigationServer2D.MapGetPath] will ignore this link.
+
+[NavigationServer2D.MapGetPath]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D#MapGetPath
+*/
 func (self Instance) Enabled() bool {
 	return bool(class(self).IsEnabled())
 }
 
+// SetEnabled sets the property returned by [IsEnabled].
 func (self Instance) SetEnabled(value bool) {
 	class(self).SetEnabled(value)
 }
 
+/*
+Whether this link can be traveled in both directions or only from [StartPosition] to [EndPosition].
+
+[EndPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationLink2D#Instance.EndPosition
+[StartPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationLink2D#Instance.StartPosition
+*/
 func (self Instance) Bidirectional() bool {
 	return bool(class(self).IsBidirectional())
 }
 
+// SetBidirectional sets the property returned by [IsBidirectional].
 func (self Instance) SetBidirectional(value bool) {
 	class(self).SetBidirectional(value)
 }
 
+/*
+A bitfield determining all navigation layers the link belongs to. These navigation layers will be checked when requesting a path with [NavigationServer2D.MapGetPath].
+
+[NavigationServer2D.MapGetPath]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D#MapGetPath
+*/
 func (self Instance) NavigationLayers() int {
 	return int(int(class(self).GetNavigationLayers()))
 }
 
+// SetNavigationLayers sets the property returned by [GetNavigationLayers].
 func (self Instance) SetNavigationLayers(value int) {
 	class(self).SetNavigationLayers(int64(value))
 }
 
+/*
+Starting position of the link.
+
+This position will search out the nearest polygon in the navigation mesh to attach to.
+
+The distance the link will search is controlled by [NavigationServer2D.MapSetLinkConnectionRadius].
+
+[NavigationServer2D.MapSetLinkConnectionRadius]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D#MapSetLinkConnectionRadius
+*/
 func (self Instance) StartPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetStartPosition())
 }
 
+// SetStartPosition sets the property returned by [GetStartPosition].
 func (self Instance) SetStartPosition(value Vector2.XY) {
 	class(self).SetStartPosition(Vector2.XY(value))
 }
 
+/*
+Ending position of the link.
+
+This position will search out the nearest polygon in the navigation mesh to attach to.
+
+The distance the link will search is controlled by [NavigationServer2D.MapSetLinkConnectionRadius].
+
+[NavigationServer2D.MapSetLinkConnectionRadius]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D#MapSetLinkConnectionRadius
+*/
 func (self Instance) EndPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetEndPosition())
 }
 
+// SetEndPosition sets the property returned by [GetEndPosition].
 func (self Instance) SetEndPosition(value Vector2.XY) {
 	class(self).SetEndPosition(Vector2.XY(value))
 }
 
+/*
+When pathfinding enters this link from another regions navigation mesh the [EnterCost] value is added to the path distance for determining the shortest path.
+
+[EnterCost]: https://pkg.go.dev/graphics.gd/classdb/NavigationLink2D#Instance.EnterCost
+*/
 func (self Instance) EnterCost() Float.X {
 	return Float.X(Float.X(class(self).GetEnterCost()))
 }
 
+// SetEnterCost sets the property returned by [GetEnterCost].
 func (self Instance) SetEnterCost(value Float.X) {
 	class(self).SetEnterCost(float64(value))
 }
 
+/*
+When pathfinding moves along the link the traveled distance is multiplied with [TravelCost] for determining the shortest path.
+
+[TravelCost]: https://pkg.go.dev/graphics.gd/classdb/NavigationLink2D#Instance.TravelCost
+*/
 func (self Instance) TravelCost() Float.X {
 	return Float.X(Float.X(class(self).GetTravelCost()))
 }
 
+// SetTravelCost sets the property returned by [GetTravelCost].
 func (self Instance) SetTravelCost(value Float.X) {
 	class(self).SetTravelCost(float64(value))
 }

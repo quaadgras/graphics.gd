@@ -168,74 +168,134 @@ func New() Instance {
 	return casted
 }
 
+/*
+Enables depth of field blur for objects further than [DofBlurFarDistance]. Strength of blur is controlled by [DofBlurAmount] and modulated by [DofBlurFarTransition].
+
+Note: Depth of field blur is only supported in the Forward+ and Mobile rendering methods, not Compatibility.
+
+[DofBlurAmount]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurAmount
+[DofBlurFarDistance]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurFarDistance
+[DofBlurFarTransition]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurFarTransition
+*/
 func (self Instance) DofBlurFarEnabled() bool {
 	return bool(class(self).IsDofBlurFarEnabled())
 }
 
+// SetDofBlurFarEnabled sets the property returned by [IsDofBlurFarEnabled].
 func (self Instance) SetDofBlurFarEnabled(value bool) {
 	class(self).SetDofBlurFarEnabled(value)
 }
 
+/*
+Objects further from the [Camera3D] by this amount will be blurred by the depth of field effect. Measured in meters.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+*/
 func (self Instance) DofBlurFarDistance() Float.X {
 	return Float.X(Float.X(class(self).GetDofBlurFarDistance()))
 }
 
+// SetDofBlurFarDistance sets the property returned by [GetDofBlurFarDistance].
 func (self Instance) SetDofBlurFarDistance(value Float.X) {
 	class(self).SetDofBlurFarDistance(float64(value))
 }
 
+/*
+When positive, distance over which (starting from [DofBlurFarDistance]) blur effect will scale from 0 to [DofBlurAmount]. When negative, uses physically-based scaling so depth of field effect will scale from 0 at [DofBlurFarDistance] and will increase in a physically accurate way as objects get further from the [Camera3D].
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[DofBlurAmount]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurAmount
+[DofBlurFarDistance]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurFarDistance
+*/
 func (self Instance) DofBlurFarTransition() Float.X {
 	return Float.X(Float.X(class(self).GetDofBlurFarTransition()))
 }
 
+// SetDofBlurFarTransition sets the property returned by [GetDofBlurFarTransition].
 func (self Instance) SetDofBlurFarTransition(value Float.X) {
 	class(self).SetDofBlurFarTransition(float64(value))
 }
 
+/*
+Enables depth of field blur for objects closer than [DofBlurNearDistance]. Strength of blur is controlled by [DofBlurAmount] and modulated by [DofBlurNearTransition].
+
+Note: Depth of field blur is only supported in the Forward+ and Mobile rendering methods, not Compatibility.
+
+[DofBlurAmount]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurAmount
+[DofBlurNearDistance]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurNearDistance
+[DofBlurNearTransition]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurNearTransition
+*/
 func (self Instance) DofBlurNearEnabled() bool {
 	return bool(class(self).IsDofBlurNearEnabled())
 }
 
+// SetDofBlurNearEnabled sets the property returned by [IsDofBlurNearEnabled].
 func (self Instance) SetDofBlurNearEnabled(value bool) {
 	class(self).SetDofBlurNearEnabled(value)
 }
 
+/*
+Objects closer from the [Camera3D] by this amount will be blurred by the depth of field effect. Measured in meters.
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+*/
 func (self Instance) DofBlurNearDistance() Float.X {
 	return Float.X(Float.X(class(self).GetDofBlurNearDistance()))
 }
 
+// SetDofBlurNearDistance sets the property returned by [GetDofBlurNearDistance].
 func (self Instance) SetDofBlurNearDistance(value Float.X) {
 	class(self).SetDofBlurNearDistance(float64(value))
 }
 
+/*
+When positive, distance over which blur effect will scale from 0 to [DofBlurAmount], ending at [DofBlurNearDistance]. When negative, uses physically-based scaling so depth of field effect will scale from 0 at [DofBlurNearDistance] and will increase in a physically accurate way as objects get closer to the [Camera3D].
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[DofBlurAmount]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurAmount
+[DofBlurNearDistance]: https://pkg.go.dev/graphics.gd/classdb/CameraAttributesPractical#Instance.DofBlurNearDistance
+*/
 func (self Instance) DofBlurNearTransition() Float.X {
 	return Float.X(Float.X(class(self).GetDofBlurNearTransition()))
 }
 
+// SetDofBlurNearTransition sets the property returned by [GetDofBlurNearTransition].
 func (self Instance) SetDofBlurNearTransition(value Float.X) {
 	class(self).SetDofBlurNearTransition(float64(value))
 }
 
+/*
+Sets the maximum amount of blur. When using physically-based blur amounts, will instead act as a multiplier. High values lead to an increased amount of blurriness, but can be much more expensive to calculate. It is best to keep this as low as possible for a given art style.
+*/
 func (self Instance) DofBlurAmount() Float.X {
 	return Float.X(Float.X(class(self).GetDofBlurAmount()))
 }
 
+// SetDofBlurAmount sets the property returned by [GetDofBlurAmount].
 func (self Instance) SetDofBlurAmount(value Float.X) {
 	class(self).SetDofBlurAmount(float64(value))
 }
 
+/*
+The minimum sensitivity (in ISO) used when calculating auto exposure. When calculating scene average luminance, color values will be clamped to at least this value. This limits the auto-exposure from exposing above a certain brightness, resulting in a cut off point where the scene will remain dark.
+*/
 func (self Instance) AutoExposureMinSensitivity() Float.X {
 	return Float.X(Float.X(class(self).GetAutoExposureMinSensitivity()))
 }
 
+// SetAutoExposureMinSensitivity sets the property returned by [GetAutoExposureMinSensitivity].
 func (self Instance) SetAutoExposureMinSensitivity(value Float.X) {
 	class(self).SetAutoExposureMinSensitivity(float64(value))
 }
 
+/*
+The maximum sensitivity (in ISO) used when calculating auto exposure. When calculating scene average luminance, color values will be clamped to at least this value. This limits the auto-exposure from exposing below a certain brightness, resulting in a cut off point where the scene will remain bright.
+*/
 func (self Instance) AutoExposureMaxSensitivity() Float.X {
 	return Float.X(Float.X(class(self).GetAutoExposureMaxSensitivity()))
 }
 
+// SetAutoExposureMaxSensitivity sets the property returned by [GetAutoExposureMaxSensitivity].
 func (self Instance) SetAutoExposureMaxSensitivity(value Float.X) {
 	class(self).SetAutoExposureMaxSensitivity(float64(value))
 }

@@ -149,10 +149,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The sphere's radius in 3D units.
+*/
 func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetRadius sets the property returned by [GetRadius].
 func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }

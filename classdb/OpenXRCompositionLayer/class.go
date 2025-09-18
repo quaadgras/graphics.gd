@@ -218,138 +218,250 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [SubViewport] to render on the composition layer.
+
+[SubViewport]: https://pkg.go.dev/graphics.gd/classdb/SubViewport
+*/
 func (self Instance) LayerViewport() SubViewport.Instance {
 	return SubViewport.Instance(class(self).GetLayerViewport())
 }
 
+// SetLayerViewport sets the property returned by [GetLayerViewport].
 func (self Instance) SetLayerViewport(value SubViewport.Instance) {
 	class(self).SetLayerViewport(value)
 }
 
+/*
+If enabled, an Android surface will be created (with the dimensions from [AndroidSurfaceSize]) which will provide the 2D content for the composition layer, rather than using [LayerViewport].
+
+See [GetAndroidSurface] for information about how to get the surface so that your application can draw to it.
+
+Note: This will only work in Android builds.
+
+[AndroidSurfaceSize]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer#Instance.AndroidSurfaceSize
+[GetAndroidSurface]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer#Instance.GetAndroidSurface
+[LayerViewport]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer#Instance.LayerViewport
+*/
 func (self Instance) UseAndroidSurface() bool {
 	return bool(class(self).GetUseAndroidSurface())
 }
 
+// SetUseAndroidSurface sets the property returned by [GetUseAndroidSurface].
 func (self Instance) SetUseAndroidSurface(value bool) {
 	class(self).SetUseAndroidSurface(value)
 }
 
+/*
+The size of the Android surface to create if [UseAndroidSurface] is enabled.
+
+[UseAndroidSurface]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer#Instance.UseAndroidSurface
+*/
 func (self Instance) AndroidSurfaceSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetAndroidSurfaceSize())
 }
 
+// SetAndroidSurfaceSize sets the property returned by [GetAndroidSurfaceSize].
 func (self Instance) SetAndroidSurfaceSize(value Vector2i.XY) {
 	class(self).SetAndroidSurfaceSize(Vector2i.XY(value))
 }
 
+/*
+The sort order for this composition layer. Higher numbers will be shown in front of lower numbers.
+
+Note: This will have no effect if a fallback mesh is being used.
+*/
 func (self Instance) SortOrder() int {
 	return int(int(class(self).GetSortOrder()))
 }
 
+// SetSortOrder sets the property returned by [GetSortOrder].
 func (self Instance) SetSortOrder(value int) {
 	class(self).SetSortOrder(int64(value))
 }
 
+/*
+Enables the blending the layer using its alpha channel.
+
+Can be combined with [Viewport.TransparentBg] to give the layer a transparent background.
+
+[Viewport.TransparentBg]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.TransparentBg
+*/
 func (self Instance) AlphaBlend() bool {
 	return bool(class(self).GetAlphaBlend())
 }
 
+// SetAlphaBlend sets the property returned by [GetAlphaBlend].
 func (self Instance) SetAlphaBlend(value bool) {
 	class(self).SetAlphaBlend(value)
 }
 
+/*
+Enables a technique called "hole punching", which allows putting the composition layer behind the main projection layer (i.e. setting [SortOrder] to a negative value) while "punching a hole" through everything rendered by Godot so that the layer is still visible.
+
+This can be used to create the illusion that the composition layer exists in the same 3D space as everything rendered by Godot, allowing objects to appear to pass both behind or in front of the composition layer.
+
+[SortOrder]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer#Instance.SortOrder
+*/
 func (self Instance) EnableHolePunch() bool {
 	return bool(class(self).GetEnableHolePunch())
 }
 
+// SetEnableHolePunch sets the property returned by [GetEnableHolePunch].
 func (self Instance) SetEnableHolePunch(value bool) {
 	class(self).SetEnableHolePunch(value)
 }
 
+/*
+The minification filter of the swapchain state.
+
+Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
+*/
 func (self Instance) SwapchainStateMinFilter() Filter {
 	return Filter(class(self).GetMinFilter())
 }
 
+// SetSwapchainStateMinFilter sets the property returned by [GetMinFilter].
 func (self Instance) SetSwapchainStateMinFilter(value Filter) {
 	class(self).SetMinFilter(value)
 }
 
+/*
+The magnification filter of the swapchain state.
+
+Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
+*/
 func (self Instance) SwapchainStateMagFilter() Filter {
 	return Filter(class(self).GetMagFilter())
 }
 
+// SetSwapchainStateMagFilter sets the property returned by [GetMagFilter].
 func (self Instance) SetSwapchainStateMagFilter(value Filter) {
 	class(self).SetMagFilter(value)
 }
 
+/*
+The mipmap mode of the swapchain state.
+
+Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
+*/
 func (self Instance) SwapchainStateMipmapMode() MipmapMode {
 	return MipmapMode(class(self).GetMipmapMode())
 }
 
+// SetSwapchainStateMipmapMode sets the property returned by [GetMipmapMode].
 func (self Instance) SetSwapchainStateMipmapMode(value MipmapMode) {
 	class(self).SetMipmapMode(value)
 }
 
+/*
+The horizontal wrap mode of the swapchain state.
+
+Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
+*/
 func (self Instance) SwapchainStateHorizontalWrap() Wrap {
 	return Wrap(class(self).GetHorizontalWrap())
 }
 
+// SetSwapchainStateHorizontalWrap sets the property returned by [GetHorizontalWrap].
 func (self Instance) SetSwapchainStateHorizontalWrap(value Wrap) {
 	class(self).SetHorizontalWrap(value)
 }
 
+/*
+The vertical wrap mode of the swapchain state.
+
+Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
+*/
 func (self Instance) SwapchainStateVerticalWrap() Wrap {
 	return Wrap(class(self).GetVerticalWrap())
 }
 
+// SetSwapchainStateVerticalWrap sets the property returned by [GetVerticalWrap].
 func (self Instance) SetSwapchainStateVerticalWrap(value Wrap) {
 	class(self).SetVerticalWrap(value)
 }
 
+/*
+The swizzle value for the red channel of the swapchain state.
+
+Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
+*/
 func (self Instance) SwapchainStateRedSwizzle() Swizzle {
 	return Swizzle(class(self).GetRedSwizzle())
 }
 
+// SetSwapchainStateRedSwizzle sets the property returned by [GetRedSwizzle].
 func (self Instance) SetSwapchainStateRedSwizzle(value Swizzle) {
 	class(self).SetRedSwizzle(value)
 }
 
+/*
+The swizzle value for the green channel of the swapchain state.
+
+Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
+*/
 func (self Instance) SwapchainStateGreenSwizzle() Swizzle {
 	return Swizzle(class(self).GetGreenSwizzle())
 }
 
+// SetSwapchainStateGreenSwizzle sets the property returned by [GetGreenSwizzle].
 func (self Instance) SetSwapchainStateGreenSwizzle(value Swizzle) {
 	class(self).SetGreenSwizzle(value)
 }
 
+/*
+The swizzle value for the blue channel of the swapchain state.
+
+Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
+*/
 func (self Instance) SwapchainStateBlueSwizzle() Swizzle {
 	return Swizzle(class(self).GetBlueSwizzle())
 }
 
+// SetSwapchainStateBlueSwizzle sets the property returned by [GetBlueSwizzle].
 func (self Instance) SetSwapchainStateBlueSwizzle(value Swizzle) {
 	class(self).SetBlueSwizzle(value)
 }
 
+/*
+The swizzle value for the alpha channel of the swapchain state.
+
+Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
+*/
 func (self Instance) SwapchainStateAlphaSwizzle() Swizzle {
 	return Swizzle(class(self).GetAlphaSwizzle())
 }
 
+// SetSwapchainStateAlphaSwizzle sets the property returned by [GetAlphaSwizzle].
 func (self Instance) SetSwapchainStateAlphaSwizzle(value Swizzle) {
 	class(self).SetAlphaSwizzle(value)
 }
 
+/*
+The max anisotropy of the swapchain state.
+
+Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
+*/
 func (self Instance) SwapchainStateMaxAnisotropy() Float.X {
 	return Float.X(Float.X(class(self).GetMaxAnisotropy()))
 }
 
+// SetSwapchainStateMaxAnisotropy sets the property returned by [GetMaxAnisotropy].
 func (self Instance) SetSwapchainStateMaxAnisotropy(value Float.X) {
 	class(self).SetMaxAnisotropy(float64(value))
 }
 
+/*
+The border color of the swapchain state that is used when the wrap mode clamps to the border.
+
+Note: This property only has an effect on devices that support the OpenXR XR_FB_swapchain_update_state OpenGLES/Vulkan extensions.
+*/
 func (self Instance) SwapchainStateBorderColor() Color.RGBA {
 	return Color.RGBA(class(self).GetBorderColor())
 }
 
+// SetSwapchainStateBorderColor sets the property returned by [GetBorderColor].
 func (self Instance) SetSwapchainStateBorderColor(value Color.RGBA) {
 	class(self).SetBorderColor(Color.RGBA(value))
 }

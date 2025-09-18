@@ -144,10 +144,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+A vector type that this operation is performed on.
+*/
 func (self Instance) OpType() OpType {
 	return OpType(class(self).GetOpType())
 }
 
+// SetOpType sets the property returned by [GetOpType].
 func (self Instance) SetOpType(value OpType) {
 	class(self).SetOpType(value)
 }

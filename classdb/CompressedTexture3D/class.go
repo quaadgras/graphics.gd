@@ -153,10 +153,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [CompressedTexture3D]'s file path to a .ctex3d file.
+
+[CompressedTexture3D]: https://pkg.go.dev/graphics.gd/classdb/CompressedTexture3D
+*/
 func (self Instance) LoadPath() string {
 	return string(class(self).GetLoadPath().String())
 }
 
+// SetLoadPath sets the property returned by [GetLoadPath].
 func (self Instance) SetLoadPath(value string) {
 	class(self).Load(String.New(value))
 }

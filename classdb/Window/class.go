@@ -1360,314 +1360,609 @@ func New() Instance {
 	return casted
 }
 
+/*
+Set's the window's current mode.
+
+Note: Fullscreen mode is not exclusive full screen on Windows and Linux.
+
+Note: This method only works with native windows, i.e. the main window and [Window]-derived nodes when [Viewport.GuiEmbedSubwindows] is disabled in the main viewport.
+
+[Viewport.GuiEmbedSubwindows]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiEmbedSubwindows
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) Mode() Mode {
 	return Mode(class(self).GetMode())
 }
 
+// SetMode sets the property returned by [GetMode].
 func (self Instance) SetMode(value Mode) {
 	class(self).SetMode(value)
 }
 
+/*
+The window's title. If the [Window] is native, title styles set in [Theme] will have no effect.
+
+[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) Title() string {
 	return string(class(self).GetTitle().String())
 }
 
+// SetTitle sets the property returned by [GetTitle].
 func (self Instance) SetTitle(value string) {
 	class(self).SetTitle(String.New(value))
 }
 
+/*
+Specifies the initial type of position for the [Window].
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) InitialPosition() WindowInitialPosition {
 	return WindowInitialPosition(class(self).GetInitialPosition())
 }
 
+// SetInitialPosition sets the property returned by [GetInitialPosition].
 func (self Instance) SetInitialPosition(value WindowInitialPosition) {
 	class(self).SetInitialPosition(value)
 }
 
+/*
+The window's position in pixels.
+
+If [ProjectSettings] "display/window/subwindows/embed_subwindows" is false, the position is in absolute screen coordinates. This typically applies to editor plugins. If the setting is true, the window's position is in the coordinates of its parent [Viewport].
+
+Note: This property only works if [InitialPosition] is set to [WindowInitialPositionAbsolute].
+
+[InitialPosition]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.InitialPosition
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+*/
 func (self Instance) Position() Vector2i.XY {
 	return Vector2i.XY(class(self).GetPosition())
 }
 
+// SetPosition sets the property returned by [GetPosition].
 func (self Instance) SetPosition(value Vector2i.XY) {
 	class(self).SetPosition(Vector2i.XY(value))
 }
 
+/*
+The window's size in pixels.
+*/
 func (self Instance) Size() Vector2i.XY {
 	return Vector2i.XY(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector2i.XY) {
 	class(self).SetSize(Vector2i.XY(value))
 }
 
+/*
+The screen the window is currently on.
+*/
 func (self Instance) CurrentScreen() int {
 	return int(int(class(self).GetCurrentScreen()))
 }
 
+// SetCurrentScreen sets the property returned by [GetCurrentScreen].
 func (self Instance) SetCurrentScreen(value int) {
 	class(self).SetCurrentScreen(int64(value))
 }
 
+/*
+Sets a polygonal region of the window which accepts mouse events. Mouse events outside the region will be passed through.
+
+Passing an empty array will disable passthrough support (all mouse events will be intercepted by the window, which is the default behavior).
+
+Note: This property is ignored if [MousePassthrough] is set to true.
+
+Note: On Windows, the portion of a window that lies outside the region is not drawn, while on Linux (X11) and macOS it is.
+
+Note: This property is implemented on Linux (X11), macOS and Windows.
+
+[MousePassthrough]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.MousePassthrough
+*/
 func (self Instance) MousePassthroughPolygon() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetMousePassthroughPolygon().Values()))
 }
 
+// SetMousePassthroughPolygon sets the property returned by [GetMousePassthroughPolygon].
 func (self Instance) SetMousePassthroughPolygon(value []Vector2.XY) {
 	class(self).SetMousePassthroughPolygon(Packed.New(value...))
 }
 
+/*
+If true, the window is visible.
+*/
 func (self Instance) Visible() bool {
 	return bool(class(self).IsVisible())
 }
 
+// SetVisible sets the property returned by [IsVisible].
 func (self Instance) SetVisible(value bool) {
 	class(self).SetVisible(value)
 }
 
+/*
+If true, the window's size will automatically update when a child node is added or removed, ignoring [MinSize] if the new size is bigger.
+
+If false, you need to call [ChildControlsChanged] manually.
+
+[ChildControlsChanged]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ChildControlsChanged
+[MinSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.MinSize
+*/
 func (self Instance) WrapControls() bool {
 	return bool(class(self).IsWrappingControls())
 }
 
+// SetWrapControls sets the property returned by [IsWrappingControls].
 func (self Instance) SetWrapControls(value bool) {
 	class(self).SetWrapControls(value)
 }
 
+/*
+If true, the [Window] is transient, i.e. it's considered a child of another [Window]. The transient window will be destroyed with its transient parent and will return focus to their parent when closed. The transient window is displayed on top of a non-exclusive full-screen parent window. Transient windows can't enter full-screen mode.
+
+Note that behavior might be different depending on the platform.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) Transient() bool {
 	return bool(class(self).IsTransient())
 }
 
+// SetTransient sets the property returned by [IsTransient].
 func (self Instance) SetTransient(value bool) {
 	class(self).SetTransient(value)
 }
 
+/*
+If true, and the [Window] is [Transient], this window will (at the time of becoming visible) become transient to the currently focused window instead of the immediate parent window in the hierarchy. Note that the transient parent is assigned at the time this window becomes visible, so changing it afterwards has no effect until re-shown.
+
+[Transient]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Transient
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) TransientToFocused() bool {
 	return bool(class(self).IsTransientToFocused())
 }
 
+// SetTransientToFocused sets the property returned by [IsTransientToFocused].
 func (self Instance) SetTransientToFocused(value bool) {
 	class(self).SetTransientToFocused(value)
 }
 
+/*
+If true, the [Window] will be in exclusive mode. Exclusive windows are always on top of their parent and will block all input going to the parent [Window].
+
+Needs [Transient] enabled to work.
+
+[Transient]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Transient
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) Exclusive() bool {
 	return bool(class(self).IsExclusive())
 }
 
+// SetExclusive sets the property returned by [IsExclusive].
 func (self Instance) SetExclusive(value bool) {
 	class(self).SetExclusive(value)
 }
 
+/*
+If true, the window can't be resized.
+*/
 func (self Instance) Unresizable() bool {
 	return bool(class(self).GetFlag(0))
 }
 
+// SetUnresizable sets the property returned by [GetFlag].
 func (self Instance) SetUnresizable(value bool) {
 	class(self).SetFlag(0, value)
 }
 
+/*
+If true, the window will have no borders.
+*/
 func (self Instance) Borderless() bool {
 	return bool(class(self).GetFlag(1))
 }
 
+// SetBorderless sets the property returned by [GetFlag].
 func (self Instance) SetBorderless(value bool) {
 	class(self).SetFlag(1, value)
 }
 
+/*
+If true, the window will be on top of all other windows. Does not work if [Transient] is enabled.
+
+[Transient]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Transient
+*/
 func (self Instance) AlwaysOnTop() bool {
 	return bool(class(self).GetFlag(2))
 }
 
+// SetAlwaysOnTop sets the property returned by [GetFlag].
 func (self Instance) SetAlwaysOnTop(value bool) {
 	class(self).SetFlag(2, value)
 }
 
+/*
+If true, the [Window]'s background can be transparent. This is best used with embedded windows.
+
+Note: Transparency support is implemented on Linux, macOS and Windows, but availability might vary depending on GPU driver, display manager, and compositor capabilities.
+
+Note: This property has no effect if [ProjectSettings] "display/window/per_pixel_transparency/allowed" is set to false.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) Transparent() bool {
 	return bool(class(self).GetFlag(3))
 }
 
+// SetTransparent sets the property returned by [GetFlag].
 func (self Instance) SetTransparent(value bool) {
 	class(self).SetFlag(3, value)
 }
 
+/*
+If true, the [Window] can't be focused nor interacted with. It can still be visible.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) Unfocusable() bool {
 	return bool(class(self).GetFlag(4))
 }
 
+// SetUnfocusable sets the property returned by [GetFlag].
 func (self Instance) SetUnfocusable(value bool) {
 	class(self).SetFlag(4, value)
 }
 
+/*
+If true, the [Window] will be considered a popup. Popups are sub-windows that don't show as separate windows in system's window manager's window list and will send close request when anything is clicked outside of them (unless [Exclusive] is enabled).
+
+[Exclusive]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Exclusive
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) PopupWindow() bool {
 	return bool(class(self).GetFlag(5))
 }
 
+// SetPopupWindow sets the property returned by [GetFlag].
 func (self Instance) SetPopupWindow(value bool) {
 	class(self).SetFlag(5, value)
 }
 
+/*
+If true, the [Window] contents is expanded to the full size of the window, window title bar is transparent.
+
+Note: This property is implemented only on macOS.
+
+Note: This property only works with native windows.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) ExtendToTitle() bool {
 	return bool(class(self).GetFlag(6))
 }
 
+// SetExtendToTitle sets the property returned by [GetFlag].
 func (self Instance) SetExtendToTitle(value bool) {
 	class(self).SetFlag(6, value)
 }
 
+/*
+If true, all mouse events will be passed to the underlying window of the same application. See also [MousePassthroughPolygon].
+
+Note: This property is implemented on Linux (X11), macOS and Windows.
+
+Note: This property only works with native windows.
+
+[MousePassthroughPolygon]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.MousePassthroughPolygon
+*/
 func (self Instance) MousePassthrough() bool {
 	return bool(class(self).GetFlag(7))
 }
 
+// SetMousePassthrough sets the property returned by [GetFlag].
 func (self Instance) SetMousePassthrough(value bool) {
 	class(self).SetFlag(7, value)
 }
 
+/*
+If true, the [Window] will override the OS window style to display sharp corners.
+
+Note: This property is implemented only on Windows (11).
+
+Note: This property only works with native windows.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) SharpCorners() bool {
 	return bool(class(self).GetFlag(8))
 }
 
+// SetSharpCorners sets the property returned by [GetFlag].
 func (self Instance) SetSharpCorners(value bool) {
 	class(self).SetFlag(8, value)
 }
 
+/*
+If true, the [Window] is excluded from screenshots taken by [DisplayServer.ScreenGetImage], [DisplayServer.ScreenGetImageRect], and [DisplayServer.ScreenGetPixel].
+
+Note: This property is implemented on macOS and Windows.
+
+Note: Enabling this setting will prevent standard screenshot methods from capturing a window image, but does NOT guarantee that other apps won't be able to capture an image. It should not be used as a DRM or security measure.
+
+[DisplayServer.ScreenGetImage]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer#ScreenGetImage
+[DisplayServer.ScreenGetImageRect]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer#ScreenGetImageRect
+[DisplayServer.ScreenGetPixel]: https://pkg.go.dev/graphics.gd/classdb/DisplayServer#ScreenGetPixel
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) ExcludeFromCapture() bool {
 	return bool(class(self).GetFlag(9))
 }
 
+// SetExcludeFromCapture sets the property returned by [GetFlag].
 func (self Instance) SetExcludeFromCapture(value bool) {
 	class(self).SetFlag(9, value)
 }
 
+/*
+If true, the [Window] will signal to the window manager that it is supposed to be an implementation-defined "popup" (usually a floating, borderless, untileable and immovable child window).
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) PopupWmHint() bool {
 	return bool(class(self).GetFlag(10))
 }
 
+// SetPopupWmHint sets the property returned by [GetFlag].
 func (self Instance) SetPopupWmHint(value bool) {
 	class(self).SetFlag(10, value)
 }
 
+/*
+If true, the [Window]'s minimize button is disabled.
+
+Note: If both minimize and maximize buttons are disabled, buttons are fully hidden, and only close button is visible.
+
+Note: This property is implemented only on macOS and Windows.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) MinimizeDisabled() bool {
 	return bool(class(self).GetFlag(11))
 }
 
+// SetMinimizeDisabled sets the property returned by [GetFlag].
 func (self Instance) SetMinimizeDisabled(value bool) {
 	class(self).SetFlag(11, value)
 }
 
+/*
+If true, the [Window]'s maximize button is disabled.
+
+Note: If both minimize and maximize buttons are disabled, buttons are fully hidden, and only close button is visible.
+
+Note: This property is implemented only on macOS and Windows.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) MaximizeDisabled() bool {
 	return bool(class(self).GetFlag(12))
 }
 
+// SetMaximizeDisabled sets the property returned by [GetFlag].
 func (self Instance) SetMaximizeDisabled(value bool) {
 	class(self).SetFlag(12, value)
 }
 
+/*
+If true, native window will be used regardless of parent viewport and project settings.
+*/
 func (self Instance) ForceNative() bool {
 	return bool(class(self).GetForceNative())
 }
 
+// SetForceNative sets the property returned by [GetForceNative].
 func (self Instance) SetForceNative(value bool) {
 	class(self).SetForceNative(value)
 }
 
+/*
+If non-zero, the [Window] can't be resized to be smaller than this size.
+
+Note: This property will be ignored in favor of [GetContentsMinimumSize] if [WrapControls] is enabled and if its size is bigger.
+
+[GetContentsMinimumSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.GetContentsMinimumSize
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+[WrapControls]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.WrapControls
+*/
 func (self Instance) MinSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetMinSize())
 }
 
+// SetMinSize sets the property returned by [GetMinSize].
 func (self Instance) SetMinSize(value Vector2i.XY) {
 	class(self).SetMinSize(Vector2i.XY(value))
 }
 
+/*
+If non-zero, the [Window] can't be resized to be bigger than this size.
+
+Note: This property will be ignored if the value is lower than [MinSize].
+
+[MinSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.MinSize
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) MaxSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetMaxSize())
 }
 
+// SetMaxSize sets the property returned by [GetMaxSize].
 func (self Instance) SetMaxSize(value Vector2i.XY) {
 	class(self).SetMaxSize(Vector2i.XY(value))
 }
 
+/*
+If true, the [Window] width is expanded to keep the title bar text fully visible.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) KeepTitleVisible() bool {
 	return bool(class(self).GetKeepTitleVisible())
 }
 
+// SetKeepTitleVisible sets the property returned by [GetKeepTitleVisible].
 func (self Instance) SetKeepTitleVisible(value bool) {
 	class(self).SetKeepTitleVisible(value)
 }
 
+/*
+Base size of the content (i.e. nodes that are drawn inside the window). If non-zero, [Window]'s content will be scaled when the window is resized to a different size.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) ContentScaleSize() Vector2i.XY {
 	return Vector2i.XY(class(self).GetContentScaleSize())
 }
 
+// SetContentScaleSize sets the property returned by [GetContentScaleSize].
 func (self Instance) SetContentScaleSize(value Vector2i.XY) {
 	class(self).SetContentScaleSize(Vector2i.XY(value))
 }
 
+/*
+Specifies how the content is scaled when the [Window] is resized.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) ContentScaleMode() ContentScaleMode {
 	return ContentScaleMode(class(self).GetContentScaleMode())
 }
 
+// SetContentScaleMode sets the property returned by [GetContentScaleMode].
 func (self Instance) SetContentScaleMode(value ContentScaleMode) {
 	class(self).SetContentScaleMode(value)
 }
 
+/*
+Specifies how the content's aspect behaves when the [Window] is resized. The base aspect is determined by [ContentScaleSize].
+
+[ContentScaleSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ContentScaleSize
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) ContentScaleAspect() ContentScaleAspect {
 	return ContentScaleAspect(class(self).GetContentScaleAspect())
 }
 
+// SetContentScaleAspect sets the property returned by [GetContentScaleAspect].
 func (self Instance) SetContentScaleAspect(value ContentScaleAspect) {
 	class(self).SetContentScaleAspect(value)
 }
 
+/*
+The policy to use to determine the final scale factor for 2D elements. This affects how [ContentScaleFactor] is applied, in addition to the automatic scale factor determined by [ContentScaleSize].
+
+[ContentScaleFactor]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ContentScaleFactor
+[ContentScaleSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ContentScaleSize
+*/
 func (self Instance) ContentScaleStretch() ContentScaleStretch {
 	return ContentScaleStretch(class(self).GetContentScaleStretch())
 }
 
+// SetContentScaleStretch sets the property returned by [GetContentScaleStretch].
 func (self Instance) SetContentScaleStretch(value ContentScaleStretch) {
 	class(self).SetContentScaleStretch(value)
 }
 
+/*
+Specifies the base scale of [Window]'s content when its [Size] is equal to [ContentScaleSize]. See also [Viewport.GetStretchTransform].
+
+[ContentScaleSize]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.ContentScaleSize
+[Size]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Size
+[Viewport.GetStretchTransform]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GetStretchTransform
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) ContentScaleFactor() Float.X {
 	return Float.X(Float.X(class(self).GetContentScaleFactor()))
 }
 
+// SetContentScaleFactor sets the property returned by [GetContentScaleFactor].
 func (self Instance) SetContentScaleFactor(value Float.X) {
 	class(self).SetContentScaleFactor(float64(value))
 }
 
+/*
+Toggles if any text should automatically change to its translated version depending on the current locale.
+*/
 func (self Instance) AutoTranslate() bool {
 	return bool(class(self).IsAutoTranslating())
 }
 
+// SetAutoTranslate sets the property returned by [IsAutoTranslating].
 func (self Instance) SetAutoTranslate(value bool) {
 	class(self).SetAutoTranslate(value)
 }
 
+/*
+The human-readable node name that is reported to assistive apps.
+*/
 func (self Instance) AccessibilityName() string {
 	return string(class(self).GetAccessibilityName().String())
 }
 
+// SetAccessibilityName sets the property returned by [GetAccessibilityName].
 func (self Instance) SetAccessibilityName(value string) {
 	class(self).SetAccessibilityName(String.New(value))
 }
 
+/*
+The human-readable node description that is reported to assistive apps.
+*/
 func (self Instance) AccessibilityDescription() string {
 	return string(class(self).GetAccessibilityDescription().String())
 }
 
+// SetAccessibilityDescription sets the property returned by [GetAccessibilityDescription].
 func (self Instance) SetAccessibilityDescription(value string) {
 	class(self).SetAccessibilityDescription(String.New(value))
 }
 
+/*
+The [Theme] resource this node and all its [Control] and [Window] children use. If a child node has its own [Theme] resource set, theme items are merged with child's definitions having higher priority.
+
+Note: [Window] styles will have no effect unless the window is embedded.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Theme]: https://pkg.go.dev/graphics.gd/classdb/Theme
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) Theme() Theme.Instance {
 	return Theme.Instance(class(self).GetTheme())
 }
 
+// SetTheme sets the property returned by [GetTheme].
 func (self Instance) SetTheme(value Theme.Instance) {
 	class(self).SetTheme(value)
 }
 
+/*
+The name of a theme type variation used by this [Window] to look up its own theme items. See [Control.ThemeTypeVariation] for more details.
+
+[Control.ThemeTypeVariation]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.ThemeTypeVariation
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) ThemeTypeVariation() string {
 	return string(class(self).GetThemeTypeVariation().String())
 }
 
+// SetThemeTypeVariation sets the property returned by [GetThemeTypeVariation].
 func (self Instance) SetThemeTypeVariation(value string) {
 	class(self).SetThemeTypeVariation(String.Name(String.New(value)))
 }
@@ -3000,6 +3295,12 @@ func (self class) PopupExclusiveCenteredClamped(from_node [1]gdclass.Node, minsi
 		fallback_ratio float64
 	}{gdextension.Object(gd.ObjectChecked(from_node[0].AsObject())), minsize, fallback_ratio})
 }
+
+/*
+Emitted when the [Window] is currently focused and receives any input, passing the received event as an argument. The event's position, if present, is in the embedder's coordinate system.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) OnWindowInput(cb func(event InputEvent.Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3012,6 +3313,14 @@ func (self class) WindowInput() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`WindowInput`))))
 }
 
+/*
+Emitted when files are dragged from the OS file manager and dropped in the game window. The argument is a list of file paths.
+
+Note: This signal only works with native windows, i.e. the main window and [Window]-derived nodes when [Viewport.GuiEmbedSubwindows] is disabled in the main viewport.
+
+[Viewport.GuiEmbedSubwindows]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiEmbedSubwindows
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) OnFilesDropped(cb func(files []string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3024,6 +3333,13 @@ func (self class) FilesDropped() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FilesDropped`))))
 }
 
+/*
+Emitted when the mouse cursor enters the [Window]'s visible area, that is not occluded behind other [Control]s or windows, provided its [Viewport.GuiDisableInput] is false and regardless if it's currently focused or not.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Viewport.GuiDisableInput]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiDisableInput
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) OnMouseEntered(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3036,6 +3352,13 @@ func (self class) MouseEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseEntered`))))
 }
 
+/*
+Emitted when the mouse cursor leaves the [Window]'s visible area, that is not occluded behind other [Control]s or windows, provided its [Viewport.GuiDisableInput] is false and regardless if it's currently focused or not.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Viewport.GuiDisableInput]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.GuiDisableInput
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) OnMouseExited(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3048,6 +3371,11 @@ func (self class) MouseExited() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`MouseExited`))))
 }
 
+/*
+Emitted when the [Window] gains focus.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) OnFocusEntered(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3060,6 +3388,11 @@ func (self class) FocusEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FocusEntered`))))
 }
 
+/*
+Emitted when the [Window] loses its focus.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) OnFocusExited(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3072,6 +3405,15 @@ func (self class) FocusExited() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`FocusExited`))))
 }
 
+/*
+Emitted when the [Window]'s close button is pressed or when [PopupWindow] is enabled and user clicks outside the window.
+
+This signal can be used to handle window closing, e.g. by connecting it to [Hide].
+
+[Hide]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Hide
+[PopupWindow]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.PopupWindow
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) OnCloseRequested(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3084,6 +3426,9 @@ func (self class) CloseRequested() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CloseRequested`))))
 }
 
+/*
+Emitted when a go back request is sent (e.g. pressing the "Back" button on Android), right after [Node.NotificationWmGoBackRequest].
+*/
 func (self Instance) OnGoBackRequested(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3096,6 +3441,11 @@ func (self class) GoBackRequested() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`GoBackRequested`))))
 }
 
+/*
+Emitted when [Window] is made visible or disappears.
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) OnVisibilityChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3108,6 +3458,12 @@ func (self class) VisibilityChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`VisibilityChanged`))))
 }
 
+/*
+Emitted right after [Popup] call, before the [Window] appears or does anything.
+
+[Popup]: https://pkg.go.dev/graphics.gd/classdb/Window#Instance.Popup
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) OnAboutToPopup(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3120,6 +3476,9 @@ func (self class) AboutToPopup() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AboutToPopup`))))
 }
 
+/*
+Emitted when the [NotificationThemeChanged] notification is sent.
+*/
 func (self Instance) OnThemeChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3132,6 +3491,13 @@ func (self class) ThemeChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ThemeChanged`))))
 }
 
+/*
+Emitted when the [Window]'s DPI changes as a result of OS-level changes (e.g. moving the window from a Retina display to a lower resolution one).
+
+Note: Only implemented on macOS and Linux (Wayland).
+
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) OnDpiChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3144,6 +3510,9 @@ func (self class) DpiChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`DpiChanged`))))
 }
 
+/*
+Emitted when window title bar decorations are changed, e.g. macOS window enter/exit full screen mode, or extend-to-title flag is changed.
+*/
 func (self Instance) OnTitlebarChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -3156,6 +3525,9 @@ func (self class) TitlebarChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TitlebarChanged`))))
 }
 
+/*
+Emitted when window title bar text is changed.
+*/
 func (self Instance) OnTitleChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

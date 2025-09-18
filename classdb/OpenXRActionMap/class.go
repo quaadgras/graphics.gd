@@ -239,18 +239,30 @@ func New() Instance {
 	return casted
 }
 
+/*
+Collection of [OpenXRActionSet]s that are part of this action map.
+
+[OpenXRActionSet]: https://pkg.go.dev/graphics.gd/classdb/OpenXRActionSet
+*/
 func (self Instance) ActionSets() []OpenXRActionSet.Instance {
 	return []OpenXRActionSet.Instance(gd.ArrayAs[[]OpenXRActionSet.Instance](gd.InternalArray(class(self).GetActionSets())))
 }
 
+// SetActionSets sets the property returned by [GetActionSets].
 func (self Instance) SetActionSets(value []OpenXRActionSet.Instance) {
 	class(self).SetActionSets(gd.EngineArrayFromSlice(value))
 }
 
+/*
+Collection of [OpenXRInteractionProfile]s that are part of this action map.
+
+[OpenXRInteractionProfile]: https://pkg.go.dev/graphics.gd/classdb/OpenXRInteractionProfile
+*/
 func (self Instance) InteractionProfiles() []OpenXRInteractionProfile.Instance {
 	return []OpenXRInteractionProfile.Instance(gd.ArrayAs[[]OpenXRInteractionProfile.Instance](gd.InternalArray(class(self).GetInteractionProfiles())))
 }
 
+// SetInteractionProfiles sets the property returned by [GetInteractionProfiles].
 func (self Instance) SetInteractionProfiles(value []OpenXRInteractionProfile.Instance) {
 	class(self).SetInteractionProfiles(gd.EngineArrayFromSlice(value))
 }

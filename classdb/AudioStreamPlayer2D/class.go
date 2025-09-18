@@ -255,114 +255,189 @@ func New() Instance {
 	return casted
 }
 
+/*
+The [AudioStream] object to be played.
+
+[AudioStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStream
+*/
 func (self Instance) Stream() AudioStream.Instance {
 	return AudioStream.Instance(class(self).GetStream())
 }
 
+// SetStream sets the property returned by [GetStream].
 func (self Instance) SetStream(value AudioStream.Instance) {
 	class(self).SetStream(value)
 }
 
+/*
+Base volume before attenuation, in decibels.
+*/
 func (self Instance) VolumeDb() Float.X {
 	return Float.X(Float.X(class(self).GetVolumeDb()))
 }
 
+// SetVolumeDb sets the property returned by [GetVolumeDb].
 func (self Instance) SetVolumeDb(value Float.X) {
 	class(self).SetVolumeDb(float64(value))
 }
 
+/*
+Base volume before attenuation, as a linear value.
+
+Note: This member modifies [VolumeDb] for convenience. The returned value is equivalent to the result of [@GlobalScope.DbToLinear] on [VolumeDb]. Setting this member is equivalent to setting [VolumeDb] to the result of [@GlobalScope.LinearToDb] on a value.
+
+[@GlobalScope.DbToLinear]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.DbToLinear
+[@GlobalScope.LinearToDb]: https://pkg.go.dev/graphics.gd/classdb/@GlobalScope#Instance.LinearToDb
+[VolumeDb]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer2D#Instance.VolumeDb
+*/
 func (self Instance) VolumeLinear() Float.X {
 	return Float.X(Float.X(class(self).GetVolumeLinear()))
 }
 
+// SetVolumeLinear sets the property returned by [GetVolumeLinear].
 func (self Instance) SetVolumeLinear(value Float.X) {
 	class(self).SetVolumeLinear(float64(value))
 }
 
+/*
+The pitch and the tempo of the audio, as a multiplier of the audio sample's sample rate.
+*/
 func (self Instance) PitchScale() Float.X {
 	return Float.X(Float.X(class(self).GetPitchScale()))
 }
 
+// SetPitchScale sets the property returned by [GetPitchScale].
 func (self Instance) SetPitchScale(value Float.X) {
 	class(self).SetPitchScale(float64(value))
 }
 
+/*
+If true, audio is playing or is queued to be played (see [Play]).
+
+[Play]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer2D#Instance.Play
+*/
 func (self Instance) Playing() bool {
 	return bool(class(self).IsPlaying())
 }
 
+// SetPlaying sets the property returned by [IsPlaying].
 func (self Instance) SetPlaying(value bool) {
 	class(self).SetPlaying(value)
 }
 
+/*
+If true, audio plays when added to scene tree.
+*/
 func (self Instance) Autoplay() bool {
 	return bool(class(self).IsAutoplayEnabled())
 }
 
+// SetAutoplay sets the property returned by [IsAutoplayEnabled].
 func (self Instance) SetAutoplay(value bool) {
 	class(self).SetAutoplay(value)
 }
 
+/*
+If true, the playback is paused. You can resume it by setting [StreamPaused] to false.
+
+[StreamPaused]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamPlayer2D#Instance.StreamPaused
+*/
 func (self Instance) StreamPaused() bool {
 	return bool(class(self).GetStreamPaused())
 }
 
+// SetStreamPaused sets the property returned by [GetStreamPaused].
 func (self Instance) SetStreamPaused(value bool) {
 	class(self).SetStreamPaused(value)
 }
 
+/*
+Maximum distance from which audio is still hearable.
+*/
 func (self Instance) MaxDistance() Float.X {
 	return Float.X(Float.X(class(self).GetMaxDistance()))
 }
 
+// SetMaxDistance sets the property returned by [GetMaxDistance].
 func (self Instance) SetMaxDistance(value Float.X) {
 	class(self).SetMaxDistance(float64(value))
 }
 
+/*
+The volume is attenuated over distance with this as an exponent.
+*/
 func (self Instance) Attenuation() Float.X {
 	return Float.X(Float.X(class(self).GetAttenuation()))
 }
 
+// SetAttenuation sets the property returned by [GetAttenuation].
 func (self Instance) SetAttenuation(value Float.X) {
 	class(self).SetAttenuation(float64(value))
 }
 
+/*
+The maximum number of sounds this node can play at the same time. Playing additional sounds after this value is reached will cut off the oldest sounds.
+*/
 func (self Instance) MaxPolyphony() int {
 	return int(int(class(self).GetMaxPolyphony()))
 }
 
+// SetMaxPolyphony sets the property returned by [GetMaxPolyphony].
 func (self Instance) SetMaxPolyphony(value int) {
 	class(self).SetMaxPolyphony(int64(value))
 }
 
+/*
+Scales the panning strength for this node by multiplying the base [ProjectSettings] "audio/general/2d_panning_strength" with this factor. Higher values will pan audio from left to right more dramatically than lower values.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) PanningStrength() Float.X {
 	return Float.X(Float.X(class(self).GetPanningStrength()))
 }
 
+// SetPanningStrength sets the property returned by [GetPanningStrength].
 func (self Instance) SetPanningStrength(value Float.X) {
 	class(self).SetPanningStrength(float64(value))
 }
 
+/*
+Bus on which this audio is playing.
+
+Note: When setting this property, keep in mind that no validation is performed to see if the given name matches an existing bus. This is because audio bus layouts might be loaded after this property is set. If this given name can't be resolved at runtime, it will fall back to "Master".
+*/
 func (self Instance) Bus() string {
 	return string(class(self).GetBus().String())
 }
 
+// SetBus sets the property returned by [GetBus].
 func (self Instance) SetBus(value string) {
 	class(self).SetBus(String.Name(String.New(value)))
 }
 
+/*
+Determines which [Area2D] layers affect the sound for reverb and audio bus effects. Areas can be used to redirect [AudioStream]s so that they play in a certain audio bus. An example of how you might use this is making a "water" area so that sounds played in the water are redirected through an audio bus to make them sound like they are being played underwater.
+
+[Area2D]: https://pkg.go.dev/graphics.gd/classdb/Area2D
+[AudioStream]: https://pkg.go.dev/graphics.gd/classdb/AudioStream
+*/
 func (self Instance) AreaMask() int {
 	return int(int(class(self).GetAreaMask()))
 }
 
+// SetAreaMask sets the property returned by [GetAreaMask].
 func (self Instance) SetAreaMask(value int) {
 	class(self).SetAreaMask(int64(value))
 }
 
+/*
+The playback type of the stream player. If set other than to the default value, it will force that playback type.
+*/
 func (self Instance) PlaybackType() AudioServer.PlaybackType {
 	return AudioServer.PlaybackType(class(self).GetPlaybackType())
 }
 
+// SetPlaybackType sets the property returned by [GetPlaybackType].
 func (self Instance) SetPlaybackType(value AudioServer.PlaybackType) {
 	class(self).SetPlaybackType(value)
 }
@@ -596,6 +671,10 @@ func (self class) GetPlaybackType() AudioServer.PlaybackType { //gd:AudioStreamP
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the audio stops playing.
+*/
 func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -235,66 +235,116 @@ func New() Instance {
 	return casted
 }
 
+/*
+Contains the audio data in bytes.
+
+Note: If [Format] is set to [Format8Bits], this property expects signed 8-bit PCM data. To convert from unsigned 8-bit PCM, subtract 128 from each byte.
+
+Note: If [Format] is set to [FormatQoa], this property expects data from a full QOA file.
+
+[Format]: https://pkg.go.dev/graphics.gd/classdb/AudioStreamWAV#Instance.Format
+*/
 func (self Instance) Data() []byte {
 	return []byte(class(self).GetData().Bytes())
 }
 
+// SetData sets the property returned by [GetData].
 func (self Instance) SetData(value []byte) {
 	class(self).SetData(Packed.BytesFrom(value...))
 }
 
+/*
+Audio format.
+*/
 func (self Instance) Format() Format {
 	return Format(class(self).GetFormat())
 }
 
+// SetFormat sets the property returned by [GetFormat].
 func (self Instance) SetFormat(value Format) {
 	class(self).SetFormat(value)
 }
 
+/*
+The loop mode.
+*/
 func (self Instance) LoopMode() LoopMode {
 	return LoopMode(class(self).GetLoopMode())
 }
 
+// SetLoopMode sets the property returned by [GetLoopMode].
 func (self Instance) SetLoopMode(value LoopMode) {
 	class(self).SetLoopMode(value)
 }
 
+/*
+The loop start point (in number of samples, relative to the beginning of the stream).
+*/
 func (self Instance) LoopBegin() int {
 	return int(int(class(self).GetLoopBegin()))
 }
 
+// SetLoopBegin sets the property returned by [GetLoopBegin].
 func (self Instance) SetLoopBegin(value int) {
 	class(self).SetLoopBegin(int64(value))
 }
 
+/*
+The loop end point (in number of samples, relative to the beginning of the stream).
+*/
 func (self Instance) LoopEnd() int {
 	return int(int(class(self).GetLoopEnd()))
 }
 
+// SetLoopEnd sets the property returned by [GetLoopEnd].
 func (self Instance) SetLoopEnd(value int) {
 	class(self).SetLoopEnd(int64(value))
 }
 
+/*
+The sample rate for mixing this audio. Higher values require more storage space, but result in better quality.
+
+In games, common sample rates in use are 11025, 16000, 22050, 32000, 44100, and 48000.
+
+According to the [Nyquist-Shannon sampling theorem], there is no quality difference to human hearing when going past 40,000 Hz (since most humans can only hear up to ~20,000 Hz, often less). If you are using lower-pitched sounds such as voices, lower sample rates such as 32000 or 22050 may be usable with no loss in quality.
+
+[Nyquist-Shannon sampling theorem]: https://en.wikipedia.org/wiki/Nyquist%E2%80%93Shannon_sampling_theorem
+*/
 func (self Instance) MixRate() int {
 	return int(int(class(self).GetMixRate()))
 }
 
+// SetMixRate sets the property returned by [GetMixRate].
 func (self Instance) SetMixRate(value int) {
 	class(self).SetMixRate(int64(value))
 }
 
+/*
+If true, audio is stereo.
+*/
 func (self Instance) Stereo() bool {
 	return bool(class(self).IsStereo())
 }
 
+// SetStereo sets the property returned by [IsStereo].
 func (self Instance) SetStereo(value bool) {
 	class(self).SetStereo(value)
 }
 
+/*
+Contains user-defined tags if found in the WAV data.
+
+Commonly used tags include title, artist, album, tracknumber, and date (date does not have a standard date format).
+
+Note: No tag is guaranteed to be present in every file, so make sure to account for the keys not always existing.
+
+Note: Only WAV files using a LIST chunk with an identifier of INFO to encode the tags are currently supported.
+*/
 func (self Instance) Tags() map[string]interface{} {
 	return map[string]interface{}(gd.DictionaryAs[map[string]interface{}](class(self).GetTags()))
 }
 
+// SetTags sets the property returned by [GetTags].
 func (self Instance) SetTags(value map[string]interface{}) {
 	class(self).SetTags(gd.DictionaryFromMap(value))
 }

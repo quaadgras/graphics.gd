@@ -173,122 +173,204 @@ func New() Instance {
 	return casted
 }
 
+/*
+The navigation map [Resource.ID] used in the path query.
+
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func (self Instance) Map() RID.NavigationMap2D {
 	return RID.NavigationMap2D(RID.NavigationMap2D(class(self).GetMap()))
 }
 
+// SetMap sets the property returned by [GetMap].
 func (self Instance) SetMap(value RID.NavigationMap2D) {
 	class(self).SetMap(RID.Any(value))
 }
 
+/*
+The pathfinding start position in global coordinates.
+*/
 func (self Instance) StartPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetStartPosition())
 }
 
+// SetStartPosition sets the property returned by [GetStartPosition].
 func (self Instance) SetStartPosition(value Vector2.XY) {
 	class(self).SetStartPosition(Vector2.XY(value))
 }
 
+/*
+The pathfinding target position in global coordinates.
+*/
 func (self Instance) TargetPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetTargetPosition())
 }
 
+// SetTargetPosition sets the property returned by [GetTargetPosition].
 func (self Instance) SetTargetPosition(value Vector2.XY) {
 	class(self).SetTargetPosition(Vector2.XY(value))
 }
 
+/*
+The navigation layers the query will use (as a bitmask).
+*/
 func (self Instance) NavigationLayers() int {
 	return int(int(class(self).GetNavigationLayers()))
 }
 
+// SetNavigationLayers sets the property returned by [GetNavigationLayers].
 func (self Instance) SetNavigationLayers(value int) {
 	class(self).SetNavigationLayers(int64(value))
 }
 
+/*
+The pathfinding algorithm used in the path query.
+*/
 func (self Instance) PathfindingAlgorithm() PathfindingAlgorithm {
 	return PathfindingAlgorithm(class(self).GetPathfindingAlgorithm())
 }
 
+// SetPathfindingAlgorithm sets the property returned by [GetPathfindingAlgorithm].
 func (self Instance) SetPathfindingAlgorithm(value PathfindingAlgorithm) {
 	class(self).SetPathfindingAlgorithm(value)
 }
 
+/*
+The path postprocessing applied to the raw path corridor found by the [PathfindingAlgorithm].
+
+[PathfindingAlgorithm]: https://pkg.go.dev/graphics.gd/classdb/NavigationPathQueryParameters2D#Instance.PathfindingAlgorithm
+*/
 func (self Instance) PathPostprocessing() PathPostProcessing {
 	return PathPostProcessing(class(self).GetPathPostprocessing())
 }
 
+// SetPathPostprocessing sets the property returned by [GetPathPostprocessing].
 func (self Instance) SetPathPostprocessing(value PathPostProcessing) {
 	class(self).SetPathPostprocessing(value)
 }
 
+/*
+Additional information to include with the navigation path.
+*/
 func (self Instance) MetadataFlags() PathMetadataFlags {
 	return PathMetadataFlags(class(self).GetMetadataFlags())
 }
 
+// SetMetadataFlags sets the property returned by [GetMetadataFlags].
 func (self Instance) SetMetadataFlags(value PathMetadataFlags) {
 	class(self).SetMetadataFlags(value)
 }
 
+/*
+If true a simplified version of the path will be returned with less critical path points removed. The simplification amount is controlled by [SimplifyEpsilon]. The simplification uses a variant of Ramer-Douglas-Peucker algorithm for curve point decimation.
+
+Path simplification can be helpful to mitigate various path following issues that can arise with certain agent types and script behaviors. E.g. "steering" agents or avoidance in "open fields".
+
+[SimplifyEpsilon]: https://pkg.go.dev/graphics.gd/classdb/NavigationPathQueryParameters2D#Instance.SimplifyEpsilon
+*/
 func (self Instance) SimplifyPath() bool {
 	return bool(class(self).GetSimplifyPath())
 }
 
+// SetSimplifyPath sets the property returned by [GetSimplifyPath].
 func (self Instance) SetSimplifyPath(value bool) {
 	class(self).SetSimplifyPath(value)
 }
 
+/*
+The path simplification amount in worlds units.
+*/
 func (self Instance) SimplifyEpsilon() Float.X {
 	return Float.X(Float.X(class(self).GetSimplifyEpsilon()))
 }
 
+// SetSimplifyEpsilon sets the property returned by [GetSimplifyEpsilon].
 func (self Instance) SetSimplifyEpsilon(value Float.X) {
 	class(self).SetSimplifyEpsilon(float64(value))
 }
 
+/*
+The list of region [Resource.ID]s that will be excluded from the path query. Use [NavigationRegion2D.GetRid] to get the [Resource.ID] associated with a [NavigationRegion2D] node.
+
+Note: The returned array is copied and any changes to it will not update the original property value. To update the value you need to modify the returned array, and then set it to the property again.
+
+[NavigationRegion2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion2D
+[NavigationRegion2D.GetRid]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion2D#Instance.GetRid
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func (self Instance) ExcludedRegions() []RID.Any {
 	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetExcludedRegions())))
 }
 
+// SetExcludedRegions sets the property returned by [GetExcludedRegions].
 func (self Instance) SetExcludedRegions(value []RID.Any) {
 	class(self).SetExcludedRegions(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 }
 
+/*
+The list of region [Resource.ID]s that will be included by the path query. Use [NavigationRegion2D.GetRid] to get the [Resource.ID] associated with a [NavigationRegion2D] node. If left empty all regions are included. If a region ends up being both included and excluded at the same time it will be excluded.
+
+Note: The returned array is copied and any changes to it will not update the original property value. To update the value you need to modify the returned array, and then set it to the property again.
+
+[NavigationRegion2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion2D
+[NavigationRegion2D.GetRid]: https://pkg.go.dev/graphics.gd/classdb/NavigationRegion2D#Instance.GetRid
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func (self Instance) IncludedRegions() []RID.Any {
 	return []RID.Any(gd.ArrayAs[[]RID.Any](gd.InternalArray(class(self).GetIncludedRegions())))
 }
 
+// SetIncludedRegions sets the property returned by [GetIncludedRegions].
 func (self Instance) SetIncludedRegions(value []RID.Any) {
 	class(self).SetIncludedRegions(gd.ArrayFromSlice[Array.Contains[RID.Any]](value))
 }
 
+/*
+The maximum allowed length of the returned path in world units. A path will be clipped when going over this length. A value of 0 or below counts as disabled.
+*/
 func (self Instance) PathReturnMaxLength() Float.X {
 	return Float.X(Float.X(class(self).GetPathReturnMaxLength()))
 }
 
+// SetPathReturnMaxLength sets the property returned by [GetPathReturnMaxLength].
 func (self Instance) SetPathReturnMaxLength(value Float.X) {
 	class(self).SetPathReturnMaxLength(float64(value))
 }
 
+/*
+The maximum allowed radius in world units that the returned path can be from the path start. The path will be clipped when going over this radius. A value of 0 or below counts as disabled.
+
+Note: This will perform a circle shaped clip operation on the path with the first path position being the circle's center position.
+*/
 func (self Instance) PathReturnMaxRadius() Float.X {
 	return Float.X(Float.X(class(self).GetPathReturnMaxRadius()))
 }
 
+// SetPathReturnMaxRadius sets the property returned by [GetPathReturnMaxRadius].
 func (self Instance) SetPathReturnMaxRadius(value Float.X) {
 	class(self).SetPathReturnMaxRadius(float64(value))
 }
 
+/*
+The maximum number of polygons that are searched before the pathfinding cancels the search for a path to the (possibly unreachable or very far away) target position polygon. In this case the pathfinding resets and builds a path from the start polygon to the polygon that was found closest to the target position so far. A value of 0 or below counts as unlimited. In case of unlimited the pathfinding will search all polygons connected with the start polygon until either the target position polygon is found or all available polygon search options are exhausted.
+*/
 func (self Instance) PathSearchMaxPolygons() int {
 	return int(int(class(self).GetPathSearchMaxPolygons()))
 }
 
+// SetPathSearchMaxPolygons sets the property returned by [GetPathSearchMaxPolygons].
 func (self Instance) SetPathSearchMaxPolygons(value int) {
 	class(self).SetPathSearchMaxPolygons(int64(value))
 }
 
+/*
+The maximum distance a searched polygon can be away from the start polygon before the pathfinding cancels the search for a path to the (possibly unreachable or very far away) target position polygon. In this case the pathfinding resets and builds a path from the start polygon to the polygon that was found closest to the target position so far. A value of 0 or below counts as unlimited. In case of unlimited the pathfinding will search all polygons connected with the start polygon until either the target position polygon is found or all available polygon search options are exhausted.
+*/
 func (self Instance) PathSearchMaxDistance() Float.X {
 	return Float.X(Float.X(class(self).GetPathSearchMaxDistance()))
 }
 
+// SetPathSearchMaxDistance sets the property returned by [GetPathSearchMaxDistance].
 func (self Instance) SetPathSearchMaxDistance(value Float.X) {
 	class(self).SetPathSearchMaxDistance(float64(value))
 }

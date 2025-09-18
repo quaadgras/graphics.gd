@@ -411,6 +411,10 @@ Note: This is only useful for modules or extensions that can't use [FileAccess] 
 func (self class) ForceFsSync() { //gd:JavaScriptBridge.force_fs_sync
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.force_fs_sync, 0, &struct{}{})
 }
+
+/*
+Emitted when an update for this progressive web app has been detected but is waiting to be activated because a previous version is active. See [PwaUpdate] to force the update to take place immediately.
+*/
 func OnPwaUpdateAvailable(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

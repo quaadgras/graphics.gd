@@ -148,18 +148,28 @@ func New() Instance {
 	return casted
 }
 
+/*
+The specialization constant's value. Only bool, int and [Float.X] types are valid for specialization constants.
+
+[Float.X]: https://pkg.go.dev/graphics.gd/variant/Float#X
+*/
 func (self Instance) Value() any {
 	return any(class(self).GetValue().Interface())
 }
 
+// SetValue sets the property returned by [GetValue].
 func (self Instance) SetValue(value any) {
 	class(self).SetValue(variant.New(value))
 }
 
+/*
+The identifier of the specialization constant. This is a value starting from 0 and that increments for every different specialization constant for a given shader.
+*/
 func (self Instance) ConstantId() int {
 	return int(int(class(self).GetConstantId()))
 }
 
+// SetConstantId sets the property returned by [GetConstantId].
 func (self Instance) SetConstantId(value int) {
 	class(self).SetConstantId(int64(value))
 }

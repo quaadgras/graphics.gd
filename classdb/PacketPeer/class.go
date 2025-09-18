@@ -236,10 +236,19 @@ func New() Instance {
 	return casted
 }
 
+/*
+Maximum buffer size allowed when encoding anys. Raise this value to support heavier memory allocations.
+
+The [PutVar] method allocates memory on the stack, and the buffer used will grow automatically to the closest power of two to match the size of the any. If the any is bigger than [EncodeBufferMaxSize], the method will error out with [ErrOutOfMemory].
+
+[EncodeBufferMaxSize]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.EncodeBufferMaxSize
+[PutVar]: https://pkg.go.dev/graphics.gd/classdb/PacketPeer#Instance.PutVar
+*/
 func (self Instance) EncodeBufferMaxSize() int {
 	return int(int(class(self).GetEncodeBufferMaxSize()))
 }
 
+// SetEncodeBufferMaxSize sets the property returned by [GetEncodeBufferMaxSize].
 func (self Instance) SetEncodeBufferMaxSize(value int) {
 	class(self).SetEncodeBufferMaxSize(int64(value))
 }

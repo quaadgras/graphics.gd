@@ -960,30 +960,47 @@ func New() Instance {
 	return casted
 }
 
+/*
+The total length of the animation (in seconds).
+
+Note: Length is not delimited by the last key, as this one may be before or after the end to ensure correct interpolation and looping.
+*/
 func (self Instance) Length() Float.X {
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
+// SetLength sets the property returned by [GetLength].
 func (self Instance) SetLength(value Float.X) {
 	class(self).SetLength(float64(value))
 }
 
+/*
+Determines the behavior of both ends of the animation timeline during animation playback. This indicates whether and how the animation should be restarted, and is also used to correctly interpolate animation cycles.
+*/
 func (self Instance) LoopMode() LoopMode {
 	return LoopMode(class(self).GetLoopMode())
 }
 
+// SetLoopMode sets the property returned by [GetLoopMode].
 func (self Instance) SetLoopMode(value LoopMode) {
 	class(self).SetLoopMode(value)
 }
 
+/*
+The animation step value.
+*/
 func (self Instance) Step() Float.X {
 	return Float.X(Float.X(class(self).GetStep()))
 }
 
+// SetStep sets the property returned by [GetStep].
 func (self Instance) SetStep(value Float.X) {
 	class(self).SetStep(float64(value))
 }
 
+/*
+Returns true if the capture track is included. This is a cached readonly value for performance.
+*/
 func (self Instance) CaptureIncluded() bool {
 	return bool(class(self).IsCaptureIncluded())
 }

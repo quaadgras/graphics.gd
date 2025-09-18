@@ -149,10 +149,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The path the texture should be loaded from.
+*/
 func (self Instance) LoadPath() string {
 	return string(class(self).GetLoadPath().String())
 }
 
+// SetLoadPath sets the property returned by [GetLoadPath].
 func (self Instance) SetLoadPath(value string) {
 	class(self).Load(String.New(value))
 }

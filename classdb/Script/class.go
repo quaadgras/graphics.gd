@@ -315,10 +315,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The script source code or an empty string if source code is not available. When set, does not reload the class implementation automatically.
+*/
 func (self Instance) SourceCode() string {
 	return string(class(self).GetSourceCode().String())
 }
 
+// SetSourceCode sets the property returned by [GetSourceCode].
 func (self Instance) SetSourceCode(value string) {
 	class(self).SetSourceCode(String.New(value))
 }

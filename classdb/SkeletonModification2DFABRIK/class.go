@@ -231,18 +231,26 @@ func New() Instance {
 	return casted
 }
 
+/*
+The NodePath to the node that is the target for the FABRIK modification. This node is what the FABRIK chain will attempt to rotate the bone chain to.
+*/
 func (self Instance) TargetNodepath() string {
 	return string(class(self).GetTargetNode().String())
 }
 
+// SetTargetNodepath sets the property returned by [GetTargetNode].
 func (self Instance) SetTargetNodepath(value string) {
 	class(self).SetTargetNode(Path.ToNode(String.New(value)))
 }
 
+/*
+The number of FABRIK joints in the FABRIK modification.
+*/
 func (self Instance) FabrikDataChainLength() int {
 	return int(int(class(self).GetFabrikDataChainLength()))
 }
 
+// SetFabrikDataChainLength sets the property returned by [GetFabrikDataChainLength].
 func (self Instance) SetFabrikDataChainLength(value int) {
 	class(self).SetFabrikDataChainLength(int64(value))
 }

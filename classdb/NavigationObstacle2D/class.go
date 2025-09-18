@@ -218,58 +218,96 @@ func New() Instance {
 	return casted
 }
 
+/*
+Sets the avoidance radius for the obstacle.
+*/
 func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetRadius sets the property returned by [GetRadius].
 func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }
 
+/*
+The outline vertices of the obstacle. If the vertices are winded in clockwise order agents will be pushed in by the obstacle, else they will be pushed out. Outlines can not be crossed or overlap. Should the vertices using obstacle be warped to a new position agent's can not predict this movement and may get trapped inside the obstacle.
+*/
 func (self Instance) Vertices() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetVertices().Values()))
 }
 
+// SetVertices sets the property returned by [GetVertices].
 func (self Instance) SetVertices(value []Vector2.XY) {
 	class(self).SetVertices(Packed.New(value...))
 }
 
+/*
+If enabled and parsed in a navigation mesh baking process the obstacle will discard source geometry inside its [Vertices] defined shape.
+
+[Vertices]: https://pkg.go.dev/graphics.gd/classdb/NavigationObstacle2D#Instance.Vertices
+*/
 func (self Instance) AffectNavigationMesh() bool {
 	return bool(class(self).GetAffectNavigationMesh())
 }
 
+// SetAffectNavigationMesh sets the property returned by [GetAffectNavigationMesh].
 func (self Instance) SetAffectNavigationMesh(value bool) {
 	class(self).SetAffectNavigationMesh(value)
 }
 
+/*
+If enabled the obstacle vertices will carve into the baked navigation mesh with the shape unaffected by additional offsets (e.g. agent radius).
+
+It will still be affected by further postprocessing of the baking process, like edge and polygon simplification.
+
+Requires [AffectNavigationMesh] to be enabled.
+
+[AffectNavigationMesh]: https://pkg.go.dev/graphics.gd/classdb/NavigationObstacle2D#Instance.AffectNavigationMesh
+*/
 func (self Instance) CarveNavigationMesh() bool {
 	return bool(class(self).GetCarveNavigationMesh())
 }
 
+// SetCarveNavigationMesh sets the property returned by [GetCarveNavigationMesh].
 func (self Instance) SetCarveNavigationMesh(value bool) {
 	class(self).SetCarveNavigationMesh(value)
 }
 
+/*
+If true the obstacle affects avoidance using agents.
+*/
 func (self Instance) AvoidanceEnabled() bool {
 	return bool(class(self).GetAvoidanceEnabled())
 }
 
+// SetAvoidanceEnabled sets the property returned by [GetAvoidanceEnabled].
 func (self Instance) SetAvoidanceEnabled(value bool) {
 	class(self).SetAvoidanceEnabled(value)
 }
 
+/*
+Sets the wanted velocity for the obstacle so other agent's can better predict the obstacle if it is moved with a velocity regularly (every frame) instead of warped to a new position. Does only affect avoidance for the obstacles [Radius]. Does nothing for the obstacles static vertices.
+
+[Radius]: https://pkg.go.dev/graphics.gd/classdb/NavigationObstacle2D#Instance.Radius
+*/
 func (self Instance) Velocity() Vector2.XY {
 	return Vector2.XY(class(self).GetVelocity())
 }
 
+// SetVelocity sets the property returned by [GetVelocity].
 func (self Instance) SetVelocity(value Vector2.XY) {
 	class(self).SetVelocity(Vector2.XY(value))
 }
 
+/*
+A bitfield determining the avoidance layers for this obstacle. Agents with a matching bit on the their avoidance mask will avoid this obstacle.
+*/
 func (self Instance) AvoidanceLayers() int {
 	return int(int(class(self).GetAvoidanceLayers()))
 }
 
+// SetAvoidanceLayers sets the property returned by [GetAvoidanceLayers].
 func (self Instance) SetAvoidanceLayers(value int) {
 	class(self).SetAvoidanceLayers(int64(value))
 }

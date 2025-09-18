@@ -150,18 +150,30 @@ func New() Instance {
 	return casted
 }
 
+/*
+The groove's length. The groove is from the joint's origin towards [Length] along the joint's local Y axis.
+
+[Length]: https://pkg.go.dev/graphics.gd/classdb/GrooveJoint2D#Instance.Length
+*/
 func (self Instance) Length() Float.X {
 	return Float.X(Float.X(class(self).GetLength()))
 }
 
+// SetLength sets the property returned by [GetLength].
 func (self Instance) SetLength(value Float.X) {
 	class(self).SetLength(float64(value))
 }
 
+/*
+The body B's initial anchor position defined by the joint's origin and a local offset [InitialOffset] along the joint's Y axis (along the groove).
+
+[InitialOffset]: https://pkg.go.dev/graphics.gd/classdb/GrooveJoint2D#Instance.InitialOffset
+*/
 func (self Instance) InitialOffset() Float.X {
 	return Float.X(Float.X(class(self).GetInitialOffset()))
 }
 
+// SetInitialOffset sets the property returned by [GetInitialOffset].
 func (self Instance) SetInitialOffset(value Float.X) {
 	class(self).SetInitialOffset(float64(value))
 }

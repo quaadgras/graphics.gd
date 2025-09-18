@@ -555,10 +555,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, filtering is enabled.
+*/
 func (self Instance) FilterEnabled() bool {
 	return bool(class(self).IsFilterEnabled())
 }
 
+// SetFilterEnabled sets the property returned by [IsFilterEnabled].
 func (self Instance) SetFilterEnabled(value bool) {
 	class(self).SetFilterEnabled(value)
 }
@@ -918,6 +922,16 @@ func (self class) GetParameter(name String.Name) variant.Any { //gd:AnimationNod
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
+
+/*
+Emitted by nodes that inherit from this class and that have an internal tree when one of their animation nodes changes. The animation nodes that emit this signal are [AnimationNodeBlendSpace1D], [AnimationNodeBlendSpace2D], [AnimationNodeStateMachine], [AnimationNodeBlendTree] and [AnimationNodeTransition].
+
+[AnimationNodeBlendSpace1D]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace1D
+[AnimationNodeBlendSpace2D]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace2D
+[AnimationNodeBlendTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendTree
+[AnimationNodeStateMachine]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachine
+[AnimationNodeTransition]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeTransition
+*/
 func (self Instance) OnTreeChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -930,6 +944,14 @@ func (self class) TreeChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeChanged`))))
 }
 
+/*
+Emitted by nodes that inherit from this class and that have an internal tree when one of their animation node names changes. The animation nodes that emit this signal are [AnimationNodeBlendSpace1D], [AnimationNodeBlendSpace2D], [AnimationNodeStateMachine], and [AnimationNodeBlendTree].
+
+[AnimationNodeBlendSpace1D]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace1D
+[AnimationNodeBlendSpace2D]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace2D
+[AnimationNodeBlendTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendTree
+[AnimationNodeStateMachine]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachine
+*/
 func (self Instance) OnAnimationNodeRenamed(cb func(object_id int, old_name string, new_name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -942,6 +964,14 @@ func (self class) AnimationNodeRenamed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`AnimationNodeRenamed`))))
 }
 
+/*
+Emitted by nodes that inherit from this class and that have an internal tree when one of their animation nodes removes. The animation nodes that emit this signal are [AnimationNodeBlendSpace1D], [AnimationNodeBlendSpace2D], [AnimationNodeStateMachine], and [AnimationNodeBlendTree].
+
+[AnimationNodeBlendSpace1D]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace1D
+[AnimationNodeBlendSpace2D]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace2D
+[AnimationNodeBlendTree]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendTree
+[AnimationNodeStateMachine]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeStateMachine
+*/
 func (self Instance) OnAnimationNodeRemoved(cb func(object_id int, name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

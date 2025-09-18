@@ -365,11 +365,17 @@ func (self *Instance) SetObject(obj [1]gd.Object) bool {
 func (self Instance) AsObject() [1]gd.Object      { return self[0].AsObject() }
 func (self *Extension[T]) AsObject() [1]gd.Object { return self.Super().AsObject() }
 
+/*
+If true, enables the use of pseudolocalization on the main translation domain. See [ProjectSettings] "internationalization/pseudolocalization/use_pseudolocalization" for details.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func PseudolocalizationEnabled() bool {
 	once.Do(singleton)
 	return bool(class(self).IsPseudolocalizationEnabled())
 }
 
+// SetPseudolocalizationEnabled sets the property returned by [IsPseudolocalizationEnabled].
 func SetPseudolocalizationEnabled(value bool) {
 	once.Do(singleton)
 	class(self).SetPseudolocalizationEnabled(value)

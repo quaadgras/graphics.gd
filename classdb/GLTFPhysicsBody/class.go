@@ -199,66 +199,114 @@ func New() Instance {
 	return casted
 }
 
+/*
+The type of the body.
+
+When importing, this controls what type of [CollisionObject3D] node Godot should generate. Valid values are "static", "animatable", "character", "rigid", "vehicle", and "trigger".
+
+When exporting, this will be squashed down to one of "static", "kinematic", or "dynamic" motion types, or the "trigger" property.
+
+[CollisionObject3D]: https://pkg.go.dev/graphics.gd/classdb/CollisionObject3D
+*/
 func (self Instance) BodyType() string {
 	return string(class(self).GetBodyType().String())
 }
 
+// SetBodyType sets the property returned by [GetBodyType].
 func (self Instance) SetBodyType(value string) {
 	class(self).SetBodyType(String.New(value))
 }
 
+/*
+The mass of the physics body, in kilograms. This is only used when the body type is "rigid" or "vehicle".
+*/
 func (self Instance) Mass() Float.X {
 	return Float.X(Float.X(class(self).GetMass()))
 }
 
+// SetMass sets the property returned by [GetMass].
 func (self Instance) SetMass(value Float.X) {
 	class(self).SetMass(float64(value))
 }
 
+/*
+The linear velocity of the physics body, in meters per second. This is only used when the body type is "rigid" or "vehicle".
+*/
 func (self Instance) LinearVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetLinearVelocity())
 }
 
+// SetLinearVelocity sets the property returned by [GetLinearVelocity].
 func (self Instance) SetLinearVelocity(value Vector3.XYZ) {
 	class(self).SetLinearVelocity(Vector3.XYZ(value))
 }
 
+/*
+The angular velocity of the physics body, in radians per second. This is only used when the body type is "rigid" or "vehicle".
+*/
 func (self Instance) AngularVelocity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetAngularVelocity())
 }
 
+// SetAngularVelocity sets the property returned by [GetAngularVelocity].
 func (self Instance) SetAngularVelocity(value Vector3.XYZ) {
 	class(self).SetAngularVelocity(Vector3.XYZ(value))
 }
 
+/*
+The center of mass of the body, in meters. This is in local space relative to the body. By default, the center of the mass is the body's origin.
+*/
 func (self Instance) CenterOfMass() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetCenterOfMass())
 }
 
+// SetCenterOfMass sets the property returned by [GetCenterOfMass].
 func (self Instance) SetCenterOfMass(value Vector3.XYZ) {
 	class(self).SetCenterOfMass(Vector3.XYZ(value))
 }
 
+/*
+The inertia strength of the physics body, in kilogram meter squared (kg⋅m²). This represents the inertia around the principle axes, the diagonal of the inertia tensor matrix. This is only used when the body type is "rigid" or "vehicle".
+
+When converted to a Godot [RigidBody3D] node, if this value is zero, then the inertia will be calculated automatically.
+
+[RigidBody3D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D
+*/
 func (self Instance) InertiaDiagonal() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetInertiaDiagonal())
 }
 
+// SetInertiaDiagonal sets the property returned by [GetInertiaDiagonal].
 func (self Instance) SetInertiaDiagonal(value Vector3.XYZ) {
 	class(self).SetInertiaDiagonal(Vector3.XYZ(value))
 }
 
+/*
+The inertia orientation of the physics body. This defines the rotation of the inertia's principle axes relative to the object's local axes. This is only used when the body type is "rigid" or "vehicle" and [InertiaDiagonal] is set to a non-zero value.
+
+[InertiaDiagonal]: https://pkg.go.dev/graphics.gd/classdb/GLTFPhysicsBody#Instance.InertiaDiagonal
+*/
 func (self Instance) InertiaOrientation() Quaternion.IJKX {
 	return Quaternion.IJKX(class(self).GetInertiaOrientation())
 }
 
+// SetInertiaOrientation sets the property returned by [GetInertiaOrientation].
 func (self Instance) SetInertiaOrientation(value Quaternion.IJKX) {
 	class(self).SetInertiaOrientation(value)
 }
 
+/*
+The inertia tensor of the physics body, in kilogram meter squared (kg⋅m²). This is only used when the body type is "rigid" or "vehicle".
+
+When converted to a Godot [RigidBody3D] node, if this value is zero, then the inertia will be calculated automatically.
+
+[RigidBody3D]: https://pkg.go.dev/graphics.gd/classdb/RigidBody3D
+*/
 func (self Instance) InertiaTensor() Basis.XYZ {
 	return Basis.XYZ(class(self).GetInertiaTensor())
 }
 
+// SetInertiaTensor sets the property returned by [GetInertiaTensor].
 func (self Instance) SetInertiaTensor(value Basis.XYZ) {
 	class(self).SetInertiaTensor(Basis.XYZ(value))
 }

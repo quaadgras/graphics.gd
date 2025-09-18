@@ -144,10 +144,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the result of this emitter is projected to 2D space. By default it is false and meant for use in 3D space.
+*/
 func (self Instance) Mode2d() bool {
 	return bool(class(self).IsMode2d())
 }
 
+// SetMode2d sets the property returned by [IsMode2d].
 func (self Instance) SetMode2d(value bool) {
 	class(self).SetMode2d(value)
 }

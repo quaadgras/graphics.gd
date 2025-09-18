@@ -264,18 +264,33 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the [SkeletonModifier3D] will be processing.
+
+[SkeletonModifier3D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D
+*/
 func (self Instance) Active() bool {
 	return bool(class(self).IsActive())
 }
 
+// SetActive sets the property returned by [IsActive].
 func (self Instance) SetActive(value bool) {
 	class(self).SetActive(value)
 }
 
+/*
+Sets the influence of the modification.
+
+Note: This value is used by [Skeleton3D] to blend, so the [SkeletonModifier3D] should always apply only 100% of the result without interpolation.
+
+[Skeleton3D]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D
+[SkeletonModifier3D]: https://pkg.go.dev/graphics.gd/classdb/SkeletonModifier3D
+*/
 func (self Instance) Influence() Float.X {
 	return Float.X(Float.X(class(self).GetInfluence()))
 }
 
+// SetInfluence sets the property returned by [GetInfluence].
 func (self Instance) SetInfluence(value Float.X) {
 	class(self).SetInfluence(float64(value))
 }
@@ -377,6 +392,15 @@ func (self class) GetInfluence() float64 { //gd:SkeletonModifier3D.get_influence
 	var ret = r_ret
 	return ret
 }
+
+/*
+Notifies when the modification have been finished.
+
+Note: If you want to get the modified bone pose by the modifier, you must use [Skeleton3D.GetBonePose] or [Skeleton3D.GetBoneGlobalPose] at the moment this signal is fired.
+
+[Skeleton3D.GetBoneGlobalPose]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.GetBoneGlobalPose
+[Skeleton3D.GetBonePose]: https://pkg.go.dev/graphics.gd/classdb/Skeleton3D#Instance.GetBonePose
+*/
 func (self Instance) OnModificationProcessed(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

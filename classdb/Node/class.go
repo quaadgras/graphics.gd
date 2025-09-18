@@ -2340,110 +2340,228 @@ func New() Instance {
 	return casted
 }
 
+/*
+The name of the node. This name must be unique among the siblings (other child nodes from the same parent). When set to an existing sibling's name, the node is automatically renamed.
+
+Note: When changing the name, the following characters will be replaced with an underscore: (. : @ / " %). In particular, the @ character is reserved for auto-generated names. See also [String.ValidateNodeName].
+
+[String.ValidateNodeName]: https://pkg.go.dev/graphics.gd/classdb/String#Instance.ValidateNodeName
+*/
 func (self Instance) Name() string {
 	return string(class(self).GetName().String())
 }
 
+// SetName sets the property returned by [GetName].
 func (self Instance) SetName(value string) {
 	class(self).SetName(String.Name(String.New(value)))
 }
 
+/*
+If true, the node can be accessed from any node sharing the same [Owner] or from the [Owner] itself, with special %Name syntax in [GetNode].
+
+Note: If another node with the same [Owner] shares the same [Name] as this node, the other node will no longer be accessible as unique.
+
+[GetNode]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.GetNode
+[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
+[Owner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Owner
+*/
 func (self Instance) UniqueNameInOwner() bool {
 	return bool(class(self).IsUniqueNameInOwner())
 }
 
+// SetUniqueNameInOwner sets the property returned by [IsUniqueNameInOwner].
 func (self Instance) SetUniqueNameInOwner(value bool) {
 	class(self).SetUniqueNameInOwner(value)
 }
 
+/*
+The original scene's file path, if the node has been instantiated from a [PackedScene] file. Only scene root nodes contains this.
+
+[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
+*/
 func (self Instance) SceneFilePath() string {
 	return string(class(self).GetSceneFilePath().String())
 }
 
+// SetSceneFilePath sets the property returned by [GetSceneFilePath].
 func (self Instance) SetSceneFilePath(value string) {
 	class(self).SetSceneFilePath(String.New(value))
 }
 
+/*
+The owner of this node. The owner must be an ancestor of this node. When packing the owner node in a [PackedScene], all the nodes it owns are also saved with it. See also [UniqueNameInOwner].
+
+Note: In the editor, nodes not owned by the scene root are usually not displayed in the Scene dock, and will not be saved. To prevent this, remember to set the owner after calling [AddChild].
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[PackedScene]: https://pkg.go.dev/graphics.gd/classdb/PackedScene
+[UniqueNameInOwner]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UniqueNameInOwner
+*/
 func (self Instance) Owner() Instance {
 	return Instance(class(self).GetOwner())
 }
 
+// SetOwner sets the property returned by [GetOwner].
 func (self Instance) SetOwner(value Instance) {
 	class(self).SetOwner(value)
 }
 
+/*
+The [MultiplayerAPI] instance associated with this node. See [SceneTree.GetMultiplayer].
+
+Note: Renaming the node, or moving it in the tree, will not move the [MultiplayerAPI] to the new path, you will have to update this manually.
+
+[MultiplayerAPI]: https://pkg.go.dev/graphics.gd/classdb/MultiplayerAPI
+[SceneTree.GetMultiplayer]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.GetMultiplayer
+*/
 func (self Instance) Multiplayer() MultiplayerAPI.Instance {
 	return MultiplayerAPI.Instance(class(self).GetMultiplayer())
 }
 
+/*
+The node's processing behavior. To check if the node can process in its current mode, use [CanProcess].
+
+[CanProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CanProcess
+*/
 func (self Instance) ProcessMode() ProcessMode {
 	return ProcessMode(class(self).GetProcessMode())
 }
 
+// SetProcessMode sets the property returned by [GetProcessMode].
 func (self Instance) SetProcessMode(value ProcessMode) {
 	class(self).SetProcessMode(value)
 }
 
+/*
+The node's execution order of the process callbacks ([Process], [NotificationProcess], and [NotificationInternalProcess]). Nodes whose priority value is lower call their process callbacks first, regardless of tree order.
+
+[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+*/
 func (self Instance) ProcessPriority() int {
 	return int(int(class(self).GetProcessPriority()))
 }
 
+// SetProcessPriority sets the property returned by [GetProcessPriority].
 func (self Instance) SetProcessPriority(value int) {
 	class(self).SetProcessPriority(int64(value))
 }
 
+/*
+Similar to [ProcessPriority] but for [NotificationPhysicsProcess], [PhysicsProcess], or [NotificationInternalPhysicsProcess].
+
+[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[ProcessPriority]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessPriority
+*/
 func (self Instance) ProcessPhysicsPriority() int {
 	return int(int(class(self).GetPhysicsProcessPriority()))
 }
 
+// SetProcessPhysicsPriority sets the property returned by [GetPhysicsProcessPriority].
 func (self Instance) SetProcessPhysicsPriority(value int) {
 	class(self).SetPhysicsProcessPriority(int64(value))
 }
 
+/*
+Set the process thread group for this node (basically, whether it receives [NotificationProcess], [NotificationPhysicsProcess], [Process] or [PhysicsProcess] (and the internal versions) on the main thread or in a sub-thread.
+
+By default, the thread group is [ProcessThreadGroupInherit], which means that this node belongs to the same thread group as the parent node. The thread groups means that nodes in a specific thread group will process together, separate to other thread groups (depending on [ProcessThreadGroupOrder]). If the value is set is [ProcessThreadGroupSubThread], this thread group will occur on a sub thread (not the main thread), otherwise if set to [ProcessThreadGroupMainThread] it will process on the main thread. If there is not a parent or grandparent node set to something other than inherit, the node will belong to the default thread group. This default group will process on the main thread and its group order is 0.
+
+During processing in a sub-thread, accessing most functions in nodes outside the thread group is forbidden (and it will result in an error in debug mode). Use [Object.CallDeferred], [CallThreadSafe], [CallDeferredThreadGroup] and the likes in order to communicate from the thread groups to the main thread (or to other thread groups).
+
+To better understand process thread groups, the idea is that any node set to any other value than [ProcessThreadGroupInherit] will include any child (and grandchild) nodes set to inherit into its process thread group. This means that the processing of all the nodes in the group will happen together, at the same time as the node including them.
+
+[CallDeferredThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallDeferredThreadGroup
+[CallThreadSafe]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallThreadSafe
+[Object.CallDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#CallDeferred
+[PhysicsProcess]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[Process]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+[ProcessThreadGroupOrder]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ProcessThreadGroupOrder
+*/
 func (self Instance) ProcessThreadGroup() ProcessThreadGroup {
 	return ProcessThreadGroup(class(self).GetProcessThreadGroup())
 }
 
+// SetProcessThreadGroup sets the property returned by [GetProcessThreadGroup].
 func (self Instance) SetProcessThreadGroup(value ProcessThreadGroup) {
 	class(self).SetProcessThreadGroup(value)
 }
 
+/*
+Change the process thread group order. Groups with a lesser order will process before groups with a greater order. This is useful when a large amount of nodes process in sub thread and, afterwards, another group wants to collect their result in the main thread, as an example.
+*/
 func (self Instance) ProcessThreadGroupOrder() int {
 	return int(int(class(self).GetProcessThreadGroupOrder()))
 }
 
+// SetProcessThreadGroupOrder sets the property returned by [GetProcessThreadGroupOrder].
 func (self Instance) SetProcessThreadGroupOrder(value int) {
 	class(self).SetProcessThreadGroupOrder(int64(value))
 }
 
+/*
+Set whether the current thread group will process messages (calls to [CallDeferredThreadGroup] on threads), and whether it wants to receive them during regular process or physics process callbacks.
+
+[CallDeferredThreadGroup]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.CallDeferredThreadGroup
+*/
 func (self Instance) ProcessThreadMessages() ProcessThreadMessages {
 	return ProcessThreadMessages(class(self).GetProcessThreadMessages())
 }
 
+// SetProcessThreadMessages sets the property returned by [GetProcessThreadMessages].
 func (self Instance) SetProcessThreadMessages(value ProcessThreadMessages) {
 	class(self).SetProcessThreadMessages(value)
 }
 
+/*
+The physics interpolation mode to use for this node. Only effective if [ProjectSettings] "physics/common/physics_interpolation" or [SceneTree.PhysicsInterpolation] is true.
+
+By default, nodes inherit the physics interpolation mode from their parent. This property can enable or disable physics interpolation individually for each node, regardless of their parents' physics interpolation mode.
+
+Note: Some node types like [VehicleWheel3D] have physics interpolation disabled by default, as they rely on their own custom solution.
+
+Note: When teleporting a node to a distant position, it's recommended to temporarily disable interpolation with [Node.ResetPhysicsInterpolation] after moving the node. This avoids creating a visual streak between the old and new positions.
+
+[Node.ResetPhysicsInterpolation]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ResetPhysicsInterpolation
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[SceneTree.PhysicsInterpolation]: https://pkg.go.dev/graphics.gd/classdb/SceneTree#Instance.PhysicsInterpolation
+[VehicleWheel3D]: https://pkg.go.dev/graphics.gd/classdb/VehicleWheel3D
+*/
 func (self Instance) PhysicsInterpolationMode() PhysicsInterpolationMode {
 	return PhysicsInterpolationMode(class(self).GetPhysicsInterpolationMode())
 }
 
+// SetPhysicsInterpolationMode sets the property returned by [GetPhysicsInterpolationMode].
 func (self Instance) SetPhysicsInterpolationMode(value PhysicsInterpolationMode) {
 	class(self).SetPhysicsInterpolationMode(value)
 }
 
+/*
+Defines if any text should automatically change to its translated version depending on the current locale (for nodes such as [Label], [RichTextLabel], [Window], etc.). Also decides if the node's strings should be parsed for POT generation.
+
+Note: For the root node, auto translate mode can also be set via [ProjectSettings] "internationalization/rendering/root_node_auto_translate".
+
+[Label]: https://pkg.go.dev/graphics.gd/classdb/Label
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[RichTextLabel]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel
+[Window]: https://pkg.go.dev/graphics.gd/classdb/Window
+*/
 func (self Instance) AutoTranslateMode() AutoTranslateMode {
 	return AutoTranslateMode(class(self).GetAutoTranslateMode())
 }
 
+// SetAutoTranslateMode sets the property returned by [GetAutoTranslateMode].
 func (self Instance) SetAutoTranslateMode(value AutoTranslateMode) {
 	class(self).SetAutoTranslateMode(value)
 }
 
+/*
+An optional description to the node. It will be displayed as a tooltip when hovering over the node in the editor's Scene dock.
+*/
 func (self Instance) EditorDescription() string {
 	return string(class(self).GetEditorDescription().String())
 }
 
+// SetEditorDescription sets the property returned by [GetEditorDescription].
 func (self Instance) SetEditorDescription(value string) {
 	class(self).SetEditorDescription(String.New(value))
 }
@@ -4451,6 +4569,12 @@ Similar to [CallThreadSafe], but for notifications.
 func (self class) NotifyThreadSafe(what int64) { //gd:Node.notify_thread_safe
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.notify_thread_safe, 0|(gdextension.SizeInt<<4), &struct{ what int64 }{what})
 }
+
+/*
+Emitted when the node is considered ready, after [Ready] is called.
+
+[Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+*/
 func (self Instance) OnReady(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4463,6 +4587,11 @@ func (self class) Ready() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Ready`))))
 }
 
+/*
+Emitted when the node's [Name] is changed, if the node is inside the tree.
+
+[Name]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Name
+*/
 func (self Instance) OnRenamed(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4475,6 +4604,11 @@ func (self class) Renamed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`Renamed`))))
 }
 
+/*
+Emitted when the node enters the tree.
+
+This signal is emitted after the related [NotificationEnterTree] notification.
+*/
 func (self Instance) OnTreeEntered(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4487,6 +4621,13 @@ func (self class) TreeEntered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeEntered`))))
 }
 
+/*
+Emitted when the node is just about to exit the tree. The node is still valid. As such, this is the right place for de-initialization (or a "destructor", if you will).
+
+This signal is emitted after the node's [ExitTree], and before the related [NotificationExitTree].
+
+[ExitTree]: https://pkg.go.dev/graphics.gd/classdb/Node#Interface
+*/
 func (self Instance) OnTreeExiting(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4499,6 +4640,11 @@ func (self class) TreeExiting() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeExiting`))))
 }
 
+/*
+Emitted after the node exits the tree and is no longer active.
+
+This signal is emitted after the related [NotificationExitTree] notification.
+*/
 func (self Instance) OnTreeExited(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4511,6 +4657,15 @@ func (self class) TreeExited() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TreeExited`))))
 }
 
+/*
+Emitted when the child 'node' enters the [SceneTree], usually because this node entered the tree (see [OnTreeEntered]), or [AddChild] has been called.
+
+This signal is emitted after the child node's own [NotificationEnterTree] and [OnTreeEntered].
+
+[AddChild]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.AddChild
+[OnTreeEntered]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnTreeEntered
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
+*/
 func (self Instance) OnChildEnteredTree(cb func(node Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4523,6 +4678,14 @@ func (self class) ChildEnteredTree() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ChildEnteredTree`))))
 }
 
+/*
+Emitted when the child 'node' is about to exit the [SceneTree], usually because this node is exiting the tree (see [OnTreeExiting]), or because the child 'node' is being removed or freed.
+
+When this signal is received, the child 'node' is still accessible inside the tree. This signal is emitted after the child node's own [OnTreeExiting] and [NotificationExitTree].
+
+[OnTreeExiting]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.OnTreeExiting
+[SceneTree]: https://pkg.go.dev/graphics.gd/classdb/SceneTree
+*/
 func (self Instance) OnChildExitingTree(cb func(node Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4535,6 +4698,9 @@ func (self class) ChildExitingTree() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ChildExitingTree`))))
 }
 
+/*
+Emitted when the list of children is changed. This happens when child nodes are added, moved or removed.
+*/
 func (self Instance) OnChildOrderChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4547,6 +4713,13 @@ func (self class) ChildOrderChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ChildOrderChanged`))))
 }
 
+/*
+Emitted when this node is being replaced by the 'node', see [ReplaceBy].
+
+This signal is emitted after 'node' has been added as a child of the original parent node, but before all original child nodes have been reparented to 'node'.
+
+[ReplaceBy]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.ReplaceBy
+*/
 func (self Instance) OnReplacingBy(cb func(node Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4559,6 +4732,9 @@ func (self class) ReplacingBy() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ReplacingBy`))))
 }
 
+/*
+Emitted when the node's editor description field changed.
+*/
 func (self Instance) OnEditorDescriptionChanged(cb func(node Instance), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -4571,6 +4747,9 @@ func (self class) EditorDescriptionChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`EditorDescriptionChanged`))))
 }
 
+/*
+Emitted when an attribute of the node that is relevant to the editor is changed. Only emitted in the editor.
+*/
 func (self Instance) OnEditorStateChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

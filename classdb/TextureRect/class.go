@@ -155,42 +155,64 @@ func New() Instance {
 	return casted
 }
 
+/*
+The node's [Texture2D] resource.
+
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
 func (self Instance) Texture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetTexture())
 }
 
+// SetTexture sets the property returned by [GetTexture].
 func (self Instance) SetTexture(value Texture2D.Instance) {
 	class(self).SetTexture(value)
 }
 
+/*
+Defines how minimum size is determined based on the texture's size.
+*/
 func (self Instance) ExpandMode() ExpandMode {
 	return ExpandMode(class(self).GetExpandMode())
 }
 
+// SetExpandMode sets the property returned by [GetExpandMode].
 func (self Instance) SetExpandMode(value ExpandMode) {
 	class(self).SetExpandMode(value)
 }
 
+/*
+Controls the texture's behavior when resizing the node's bounding rectangle.
+*/
 func (self Instance) StretchMode() StretchMode {
 	return StretchMode(class(self).GetStretchMode())
 }
 
+// SetStretchMode sets the property returned by [GetStretchMode].
 func (self Instance) SetStretchMode(value StretchMode) {
 	class(self).SetStretchMode(value)
 }
 
+/*
+If true, texture is flipped horizontally.
+*/
 func (self Instance) FlipH() bool {
 	return bool(class(self).IsFlippedH())
 }
 
+// SetFlipH sets the property returned by [IsFlippedH].
 func (self Instance) SetFlipH(value bool) {
 	class(self).SetFlipH(value)
 }
 
+/*
+If true, texture is flipped vertically.
+*/
 func (self Instance) FlipV() bool {
 	return bool(class(self).IsFlippedV())
 }
 
+// SetFlipV sets the property returned by [IsFlippedV].
 func (self Instance) SetFlipV(value bool) {
 	class(self).SetFlipV(value)
 }

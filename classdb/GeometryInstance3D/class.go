@@ -202,130 +202,247 @@ func New() Instance {
 	return casted
 }
 
+/*
+The material override for the whole geometry.
+
+If a material is assigned to this property, it will be used instead of any material set in any material slot of the mesh.
+*/
 func (self Instance) MaterialOverride() Material.Instance {
 	return Material.Instance(class(self).GetMaterialOverride())
 }
 
+// SetMaterialOverride sets the property returned by [GetMaterialOverride].
 func (self Instance) SetMaterialOverride(value Material.Instance) {
 	class(self).SetMaterialOverride(value)
 }
 
+/*
+The material overlay for the whole geometry.
+
+If a material is assigned to this property, it will be rendered on top of any other active material for all the surfaces.
+*/
 func (self Instance) MaterialOverlay() Material.Instance {
 	return Material.Instance(class(self).GetMaterialOverlay())
 }
 
+// SetMaterialOverlay sets the property returned by [GetMaterialOverlay].
 func (self Instance) SetMaterialOverlay(value Material.Instance) {
 	class(self).SetMaterialOverlay(value)
 }
 
+/*
+The transparency applied to the whole geometry (as a multiplier of the materials' existing transparency). 0.0 is fully opaque, while 1.0 is fully transparent. Values greater than 0.0 (exclusive) will force the geometry's materials to go through the transparent pipeline, which is slower to render and can exhibit rendering issues due to incorrect transparency sorting. However, unlike using a transparent material, setting [Transparency] to a value greater than 0.0 (exclusive) will not disable shadow rendering.
+
+In spatial shaders, 1.0 - transparency is set as the default value of the ALPHA built-in.
+
+Note: [Transparency] is clamped between 0.0 and 1.0, so this property cannot be used to make transparent materials more opaque than they originally are.
+
+Note: Only supported when using the Forward+ rendering method. When using the Mobile or Compatibility rendering method, [Transparency] is ignored and is considered as always being 0.0.
+
+[Transparency]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.Transparency
+*/
 func (self Instance) Transparency() Float.X {
 	return Float.X(Float.X(class(self).GetTransparency()))
 }
 
+// SetTransparency sets the property returned by [GetTransparency].
 func (self Instance) SetTransparency(value Float.X) {
 	class(self).SetTransparency(float64(value))
 }
 
+/*
+The selected shadow casting flag.
+*/
 func (self Instance) CastShadow() ShadowCastingSetting {
 	return ShadowCastingSetting(class(self).GetCastShadowsSetting())
 }
 
+// SetCastShadow sets the property returned by [GetCastShadowsSetting].
 func (self Instance) SetCastShadow(value ShadowCastingSetting) {
 	class(self).SetCastShadowsSetting(value)
 }
 
+/*
+The extra distance added to the GeometryInstance3D's bounding box ([AABB.PositionSize]) to increase its cull box.
+
+[AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
+*/
 func (self Instance) ExtraCullMargin() Float.X {
 	return Float.X(Float.X(class(self).GetExtraCullMargin()))
 }
 
+// SetExtraCullMargin sets the property returned by [GetExtraCullMargin].
 func (self Instance) SetExtraCullMargin(value Float.X) {
 	class(self).SetExtraCullMargin(float64(value))
 }
 
+/*
+Overrides the bounding box of this node with a custom one. This can be used to avoid the expensive [AABB.PositionSize] recalculation that happens when a skeleton is used with a [MeshInstance3D] or to have precise control over the [MeshInstance3D]'s bounding box. To use the default AABB, set value to an [AABB.PositionSize] with all fields set to 0.0. To avoid frustum culling, set [CustomAabb] to a very large AABB that covers your entire game world such as AABB(-10000, -10000, -10000, 20000, 20000, 20000). To disable all forms of culling (including occlusion culling), call [RenderingServer.InstanceSetIgnoreCulling] on the [GeometryInstance3D]'s [Resource.ID].
+
+[AABB.PositionSize]: https://pkg.go.dev/graphics.gd/variant/AABB#PositionSize
+[CustomAabb]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.CustomAabb
+[GeometryInstance3D]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D
+[MeshInstance3D]: https://pkg.go.dev/graphics.gd/classdb/MeshInstance3D
+[RenderingServer.InstanceSetIgnoreCulling]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#InstanceSetIgnoreCulling
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func (self Instance) CustomAabb() AABB.PositionSize {
 	return AABB.PositionSize(class(self).GetCustomAabb())
 }
 
+// SetCustomAabb sets the property returned by [GetCustomAabb].
 func (self Instance) SetCustomAabb(value AABB.PositionSize) {
 	class(self).SetCustomAabb(AABB.PositionSize(value))
 }
 
+/*
+Changes how quickly the mesh transitions to a lower level of detail. A value of 0 will force the mesh to its lowest level of detail, a value of 1 will use the default settings, and larger values will keep the mesh in a higher level of detail at farther distances.
+
+Useful for testing level of detail transitions in the editor.
+*/
 func (self Instance) LodBias() Float.X {
 	return Float.X(Float.X(class(self).GetLodBias()))
 }
 
+// SetLodBias sets the property returned by [GetLodBias].
 func (self Instance) SetLodBias(value Float.X) {
 	class(self).SetLodBias(float64(value))
 }
 
+/*
+If true, disables occlusion culling for this instance. Useful for gizmos that must be rendered even when occlusion culling is in use.
+
+Note: [IgnoreOcclusionCulling] does not affect frustum culling (which is what happens when an object is not visible given the camera's angle). To avoid frustum culling, set [CustomAabb] to a very large AABB that covers your entire game world such as AABB(-10000, -10000, -10000, 20000, 20000, 20000).
+
+[CustomAabb]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.CustomAabb
+[IgnoreOcclusionCulling]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.IgnoreOcclusionCulling
+*/
 func (self Instance) IgnoreOcclusionCulling() bool {
 	return bool(class(self).IsIgnoringOcclusionCulling())
 }
 
+// SetIgnoreOcclusionCulling sets the property returned by [IsIgnoringOcclusionCulling].
 func (self Instance) SetIgnoreOcclusionCulling(value bool) {
 	class(self).SetIgnoreOcclusionCulling(value)
 }
 
+/*
+The global illumination mode to use for the whole geometry. To avoid inconsistent results, use a mode that matches the purpose of the mesh during gameplay (static/dynamic).
+
+Note: Lights' bake mode will also affect the global illumination rendering. See [Light3D.LightBakeMode].
+
+[Light3D.LightBakeMode]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightBakeMode
+*/
 func (self Instance) GiMode() GIMode {
 	return GIMode(class(self).GetGiMode())
 }
 
+// SetGiMode sets the property returned by [GetGiMode].
 func (self Instance) SetGiMode(value GIMode) {
 	class(self).SetGiMode(value)
 }
 
+/*
+The texel density to use for lightmapping in [LightmapGI]. Greater scale values provide higher resolution in the lightmap, which can result in sharper shadows for lights that have both direct and indirect light baked. However, greater scale values will also increase the space taken by the mesh in the lightmap texture, which increases the memory, storage, and bake time requirements. When using a single mesh at different scales, consider adjusting this value to keep the lightmap texel density consistent across meshes.
+
+For example, doubling [GiLightmapTexelScale] doubles the lightmap texture resolution for this object on each axis, so it will quadruple the texel count.
+
+[GiLightmapTexelScale]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GiLightmapTexelScale
+[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+*/
 func (self Instance) GiLightmapTexelScale() Float.X {
 	return Float.X(Float.X(class(self).GetLightmapTexelScale()))
 }
 
+// SetGiLightmapTexelScale sets the property returned by [GetLightmapTexelScale].
 func (self Instance) SetGiLightmapTexelScale(value Float.X) {
 	class(self).SetLightmapTexelScale(float64(value))
 }
 
+/*
+The texel density to use for lightmapping in [LightmapGI].
+
+[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+*/
 func (self Instance) GiLightmapScale() LightmapScale {
 	return LightmapScale(class(self).GetLightmapScale())
 }
 
+// SetGiLightmapScale sets the property returned by [GetLightmapScale].
 func (self Instance) SetGiLightmapScale(value LightmapScale) {
 	class(self).SetLightmapScale(value)
 }
 
+/*
+Starting distance from which the GeometryInstance3D will be visible, taking [VisibilityRangeBeginMargin] into account as well. The default value of 0 is used to disable the range check.
+
+[VisibilityRangeBeginMargin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeBeginMargin
+*/
 func (self Instance) VisibilityRangeBegin() Float.X {
 	return Float.X(Float.X(class(self).GetVisibilityRangeBegin()))
 }
 
+// SetVisibilityRangeBegin sets the property returned by [GetVisibilityRangeBegin].
 func (self Instance) SetVisibilityRangeBegin(value Float.X) {
 	class(self).SetVisibilityRangeBegin(float64(value))
 }
 
+/*
+Margin for the [VisibilityRangeBegin] threshold. The GeometryInstance3D will only change its visibility state when it goes over or under the [VisibilityRangeBegin] threshold by this amount.
+
+If [VisibilityRangeFadeMode] is [VisibilityRangeFadeDisabled], this acts as a hysteresis distance. If [VisibilityRangeFadeMode] is [VisibilityRangeFadeSelf] or [VisibilityRangeFadeDependencies], this acts as a fade transition distance and must be set to a value greater than 0.0 for the effect to be noticeable.
+
+[VisibilityRangeBegin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeBegin
+[VisibilityRangeFadeMode]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeFadeMode
+*/
 func (self Instance) VisibilityRangeBeginMargin() Float.X {
 	return Float.X(Float.X(class(self).GetVisibilityRangeBeginMargin()))
 }
 
+// SetVisibilityRangeBeginMargin sets the property returned by [GetVisibilityRangeBeginMargin].
 func (self Instance) SetVisibilityRangeBeginMargin(value Float.X) {
 	class(self).SetVisibilityRangeBeginMargin(float64(value))
 }
 
+/*
+Distance from which the GeometryInstance3D will be hidden, taking [VisibilityRangeEndMargin] into account as well. The default value of 0 is used to disable the range check.
+
+[VisibilityRangeEndMargin]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeEndMargin
+*/
 func (self Instance) VisibilityRangeEnd() Float.X {
 	return Float.X(Float.X(class(self).GetVisibilityRangeEnd()))
 }
 
+// SetVisibilityRangeEnd sets the property returned by [GetVisibilityRangeEnd].
 func (self Instance) SetVisibilityRangeEnd(value Float.X) {
 	class(self).SetVisibilityRangeEnd(float64(value))
 }
 
+/*
+Margin for the [VisibilityRangeEnd] threshold. The GeometryInstance3D will only change its visibility state when it goes over or under the [VisibilityRangeEnd] threshold by this amount.
+
+If [VisibilityRangeFadeMode] is [VisibilityRangeFadeDisabled], this acts as a hysteresis distance. If [VisibilityRangeFadeMode] is [VisibilityRangeFadeSelf] or [VisibilityRangeFadeDependencies], this acts as a fade transition distance and must be set to a value greater than 0.0 for the effect to be noticeable.
+
+[VisibilityRangeEnd]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeEnd
+[VisibilityRangeFadeMode]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.VisibilityRangeFadeMode
+*/
 func (self Instance) VisibilityRangeEndMargin() Float.X {
 	return Float.X(Float.X(class(self).GetVisibilityRangeEndMargin()))
 }
 
+// SetVisibilityRangeEndMargin sets the property returned by [GetVisibilityRangeEndMargin].
 func (self Instance) SetVisibilityRangeEndMargin(value Float.X) {
 	class(self).SetVisibilityRangeEndMargin(float64(value))
 }
 
+/*
+Controls which instances will be faded when approaching the limits of the visibility range.
+*/
 func (self Instance) VisibilityRangeFadeMode() VisibilityRangeFadeMode {
 	return VisibilityRangeFadeMode(class(self).GetVisibilityRangeFadeMode())
 }
 
+// SetVisibilityRangeFadeMode sets the property returned by [GetVisibilityRangeFadeMode].
 func (self Instance) SetVisibilityRangeFadeMode(value VisibilityRangeFadeMode) {
 	class(self).SetVisibilityRangeFadeMode(value)
 }

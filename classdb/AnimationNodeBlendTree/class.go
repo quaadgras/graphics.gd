@@ -254,10 +254,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The global offset of all sub animation nodes.
+*/
 func (self Instance) GraphOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetGraphOffset())
 }
 
+// SetGraphOffset sets the property returned by [GetGraphOffset].
 func (self Instance) SetGraphOffset(value Vector2.XY) {
 	class(self).SetGraphOffset(Vector2.XY(value))
 }
@@ -382,6 +386,10 @@ func (self class) GetGraphOffset() Vector2.XY { //gd:AnimationNodeBlendTree.get_
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the input port information is changed.
+*/
 func (self Instance) OnNodeChanged(cb func(node_name string), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

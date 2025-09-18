@@ -163,42 +163,69 @@ func New() Instance {
 	return casted
 }
 
+/*
+The width and height of the sub-viewport. Must be set to a value greater than or equal to 2 pixels on both dimensions. Otherwise, nothing will be displayed.
+
+Note: If the parent node is a [SubViewportContainer] and its [SubViewportContainer.Stretch] is true, the viewport size cannot be changed manually.
+
+[SubViewportContainer]: https://pkg.go.dev/graphics.gd/classdb/SubViewportContainer
+[SubViewportContainer.Stretch]: https://pkg.go.dev/graphics.gd/classdb/SubViewportContainer#Instance.Stretch
+*/
 func (self Instance) Size() Vector2i.XY {
 	return Vector2i.XY(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector2i.XY) {
 	class(self).SetSize(Vector2i.XY(value))
 }
 
+/*
+The 2D size override of the sub-viewport. If either the width or height is 0, the override is disabled.
+*/
 func (self Instance) Size2dOverride() Vector2i.XY {
 	return Vector2i.XY(class(self).GetSize2dOverride())
 }
 
+// SetSize2dOverride sets the property returned by [GetSize2dOverride].
 func (self Instance) SetSize2dOverride(value Vector2i.XY) {
 	class(self).SetSize2dOverride(Vector2i.XY(value))
 }
 
+/*
+If true, the 2D size override affects stretch as well.
+*/
 func (self Instance) Size2dOverrideStretch() bool {
 	return bool(class(self).IsSize2dOverrideStretchEnabled())
 }
 
+// SetSize2dOverrideStretch sets the property returned by [IsSize2dOverrideStretchEnabled].
 func (self Instance) SetSize2dOverrideStretch(value bool) {
 	class(self).SetSize2dOverrideStretch(value)
 }
 
+/*
+The clear mode when the sub-viewport is used as a render target.
+
+Note: This property is intended for 2D usage.
+*/
 func (self Instance) RenderTargetClearMode() ClearMode {
 	return ClearMode(class(self).GetClearMode())
 }
 
+// SetRenderTargetClearMode sets the property returned by [GetClearMode].
 func (self Instance) SetRenderTargetClearMode(value ClearMode) {
 	class(self).SetClearMode(value)
 }
 
+/*
+The update mode when the sub-viewport is used as a render target.
+*/
 func (self Instance) RenderTargetUpdateMode() UpdateMode {
 	return UpdateMode(class(self).GetUpdateMode())
 }
 
+// SetRenderTargetUpdateMode sets the property returned by [GetUpdateMode].
 func (self Instance) SetRenderTargetUpdateMode(value UpdateMode) {
 	class(self).SetUpdateMode(value)
 }

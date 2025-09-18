@@ -209,186 +209,330 @@ func New() Instance {
 	return casted
 }
 
+/*
+The background color of the stylebox.
+*/
 func (self Instance) BgColor() Color.RGBA {
 	return Color.RGBA(class(self).GetBgColor())
 }
 
+// SetBgColor sets the property returned by [GetBgColor].
 func (self Instance) SetBgColor(value Color.RGBA) {
 	class(self).SetBgColor(Color.RGBA(value))
 }
 
+/*
+Toggles drawing of the inner part of the stylebox.
+*/
 func (self Instance) DrawCenter() bool {
 	return bool(class(self).IsDrawCenterEnabled())
 }
 
+// SetDrawCenter sets the property returned by [IsDrawCenterEnabled].
 func (self Instance) SetDrawCenter(value bool) {
 	class(self).SetDrawCenter(value)
 }
 
+/*
+If set to a non-zero value on either axis, [Skew] distorts the StyleBox horizontally and/or vertically. This can be used for "futuristic"-style UIs. Positive values skew the StyleBox towards the right (X axis) and upwards (Y axis), while negative values skew the StyleBox towards the left (X axis) and downwards (Y axis).
+
+Note: To ensure text does not touch the StyleBox's edges, consider increasing the [StyleBox]'s content margin (see [StyleBox.ContentMarginBottom]). It is preferable to increase the content margin instead of the expand margin (see [ExpandMarginBottom]), as increasing the expand margin does not increase the size of the clickable area for [Control]s.
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[ExpandMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.ExpandMarginBottom
+[Skew]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.Skew
+[StyleBox]: https://pkg.go.dev/graphics.gd/classdb/StyleBox
+[StyleBox.ContentMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginBottom
+*/
 func (self Instance) Skew() Vector2.XY {
 	return Vector2.XY(class(self).GetSkew())
 }
 
+// SetSkew sets the property returned by [GetSkew].
 func (self Instance) SetSkew(value Vector2.XY) {
 	class(self).SetSkew(Vector2.XY(value))
 }
 
+/*
+Border width for the left border.
+*/
 func (self Instance) BorderWidthLeft() int {
 	return int(int(class(self).GetBorderWidth(0)))
 }
 
+// SetBorderWidthLeft sets the property returned by [GetBorderWidth].
 func (self Instance) SetBorderWidthLeft(value int) {
 	class(self).SetBorderWidth(0, int64(value))
 }
 
+/*
+Border width for the top border.
+*/
 func (self Instance) BorderWidthTop() int {
 	return int(int(class(self).GetBorderWidth(1)))
 }
 
+// SetBorderWidthTop sets the property returned by [GetBorderWidth].
 func (self Instance) SetBorderWidthTop(value int) {
 	class(self).SetBorderWidth(1, int64(value))
 }
 
+/*
+Border width for the right border.
+*/
 func (self Instance) BorderWidthRight() int {
 	return int(int(class(self).GetBorderWidth(2)))
 }
 
+// SetBorderWidthRight sets the property returned by [GetBorderWidth].
 func (self Instance) SetBorderWidthRight(value int) {
 	class(self).SetBorderWidth(2, int64(value))
 }
 
+/*
+Border width for the bottom border.
+*/
 func (self Instance) BorderWidthBottom() int {
 	return int(int(class(self).GetBorderWidth(3)))
 }
 
+// SetBorderWidthBottom sets the property returned by [GetBorderWidth].
 func (self Instance) SetBorderWidthBottom(value int) {
 	class(self).SetBorderWidth(3, int64(value))
 }
 
+/*
+Sets the color of the border.
+*/
 func (self Instance) BorderColor() Color.RGBA {
 	return Color.RGBA(class(self).GetBorderColor())
 }
 
+// SetBorderColor sets the property returned by [GetBorderColor].
 func (self Instance) SetBorderColor(value Color.RGBA) {
 	class(self).SetBorderColor(Color.RGBA(value))
 }
 
+/*
+If true, the border will fade into the background color.
+*/
 func (self Instance) BorderBlend() bool {
 	return bool(class(self).GetBorderBlend())
 }
 
+// SetBorderBlend sets the property returned by [GetBorderBlend].
 func (self Instance) SetBorderBlend(value bool) {
 	class(self).SetBorderBlend(value)
 }
 
+/*
+The top-left corner's radius. If 0, the corner is not rounded.
+*/
 func (self Instance) CornerRadiusTopLeft() int {
 	return int(int(class(self).GetCornerRadius(0)))
 }
 
+// SetCornerRadiusTopLeft sets the property returned by [GetCornerRadius].
 func (self Instance) SetCornerRadiusTopLeft(value int) {
 	class(self).SetCornerRadius(0, int64(value))
 }
 
+/*
+The top-right corner's radius. If 0, the corner is not rounded.
+*/
 func (self Instance) CornerRadiusTopRight() int {
 	return int(int(class(self).GetCornerRadius(1)))
 }
 
+// SetCornerRadiusTopRight sets the property returned by [GetCornerRadius].
 func (self Instance) SetCornerRadiusTopRight(value int) {
 	class(self).SetCornerRadius(1, int64(value))
 }
 
+/*
+The bottom-right corner's radius. If 0, the corner is not rounded.
+*/
 func (self Instance) CornerRadiusBottomRight() int {
 	return int(int(class(self).GetCornerRadius(2)))
 }
 
+// SetCornerRadiusBottomRight sets the property returned by [GetCornerRadius].
 func (self Instance) SetCornerRadiusBottomRight(value int) {
 	class(self).SetCornerRadius(2, int64(value))
 }
 
+/*
+The bottom-left corner's radius. If 0, the corner is not rounded.
+*/
 func (self Instance) CornerRadiusBottomLeft() int {
 	return int(int(class(self).GetCornerRadius(3)))
 }
 
+// SetCornerRadiusBottomLeft sets the property returned by [GetCornerRadius].
 func (self Instance) SetCornerRadiusBottomLeft(value int) {
 	class(self).SetCornerRadius(3, int64(value))
 }
 
+/*
+This sets the number of vertices used for each corner. Higher values result in rounder corners but take more processing power to compute. When choosing a value, you should take the corner radius ([SetCornerRadiusAll]) into account.
+
+For corner radii less than 10, 4 or 5 should be enough. For corner radii less than 30, values between 8 and 12 should be enough.
+
+A corner detail of 1 will result in chamfered corners instead of rounded corners, which is useful for some artistic effects.
+
+[SetCornerRadiusAll]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.SetCornerRadiusAll
+*/
 func (self Instance) CornerDetail() int {
 	return int(int(class(self).GetCornerDetail()))
 }
 
+// SetCornerDetail sets the property returned by [GetCornerDetail].
 func (self Instance) SetCornerDetail(value int) {
 	class(self).SetCornerDetail(int64(value))
 }
 
+/*
+Expands the stylebox outside of the control rect on the left edge. Useful in combination with [BorderWidthLeft] to draw a border outside the control rect.
+
+Note: Unlike [StyleBox.ContentMarginLeft], [ExpandMarginLeft] does not affect the size of the clickable area for [Control]s. This can negatively impact usability if used wrong, as the user may try to click an area of the StyleBox that cannot actually receive clicks.
+
+[BorderWidthLeft]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.BorderWidthLeft
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[ExpandMarginLeft]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.ExpandMarginLeft
+[StyleBox.ContentMarginLeft]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginLeft
+*/
 func (self Instance) ExpandMarginLeft() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(0)))
 }
 
+// SetExpandMarginLeft sets the property returned by [GetExpandMargin].
 func (self Instance) SetExpandMarginLeft(value Float.X) {
 	class(self).SetExpandMargin(0, float64(value))
 }
 
+/*
+Expands the stylebox outside of the control rect on the top edge. Useful in combination with [BorderWidthTop] to draw a border outside the control rect.
+
+Note: Unlike [StyleBox.ContentMarginTop], [ExpandMarginTop] does not affect the size of the clickable area for [Control]s. This can negatively impact usability if used wrong, as the user may try to click an area of the StyleBox that cannot actually receive clicks.
+
+[BorderWidthTop]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.BorderWidthTop
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[ExpandMarginTop]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.ExpandMarginTop
+[StyleBox.ContentMarginTop]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginTop
+*/
 func (self Instance) ExpandMarginTop() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(1)))
 }
 
+// SetExpandMarginTop sets the property returned by [GetExpandMargin].
 func (self Instance) SetExpandMarginTop(value Float.X) {
 	class(self).SetExpandMargin(1, float64(value))
 }
 
+/*
+Expands the stylebox outside of the control rect on the right edge. Useful in combination with [BorderWidthRight] to draw a border outside the control rect.
+
+Note: Unlike [StyleBox.ContentMarginRight], [ExpandMarginRight] does not affect the size of the clickable area for [Control]s. This can negatively impact usability if used wrong, as the user may try to click an area of the StyleBox that cannot actually receive clicks.
+
+[BorderWidthRight]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.BorderWidthRight
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[ExpandMarginRight]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.ExpandMarginRight
+[StyleBox.ContentMarginRight]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginRight
+*/
 func (self Instance) ExpandMarginRight() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(2)))
 }
 
+// SetExpandMarginRight sets the property returned by [GetExpandMargin].
 func (self Instance) SetExpandMarginRight(value Float.X) {
 	class(self).SetExpandMargin(2, float64(value))
 }
 
+/*
+Expands the stylebox outside of the control rect on the bottom edge. Useful in combination with [BorderWidthBottom] to draw a border outside the control rect.
+
+Note: Unlike [StyleBox.ContentMarginBottom], [ExpandMarginBottom] does not affect the size of the clickable area for [Control]s. This can negatively impact usability if used wrong, as the user may try to click an area of the StyleBox that cannot actually receive clicks.
+
+[BorderWidthBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.BorderWidthBottom
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[ExpandMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.ExpandMarginBottom
+[StyleBox.ContentMarginBottom]: https://pkg.go.dev/graphics.gd/classdb/StyleBox#Instance.ContentMarginBottom
+*/
 func (self Instance) ExpandMarginBottom() Float.X {
 	return Float.X(Float.X(class(self).GetExpandMargin(3)))
 }
 
+// SetExpandMarginBottom sets the property returned by [GetExpandMargin].
 func (self Instance) SetExpandMarginBottom(value Float.X) {
 	class(self).SetExpandMargin(3, float64(value))
 }
 
+/*
+The color of the shadow. This has no effect if [ShadowSize] is lower than 1.
+
+[ShadowSize]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.ShadowSize
+*/
 func (self Instance) ShadowColor() Color.RGBA {
 	return Color.RGBA(class(self).GetShadowColor())
 }
 
+// SetShadowColor sets the property returned by [GetShadowColor].
 func (self Instance) SetShadowColor(value Color.RGBA) {
 	class(self).SetShadowColor(Color.RGBA(value))
 }
 
+/*
+The shadow size in pixels.
+*/
 func (self Instance) ShadowSize() int {
 	return int(int(class(self).GetShadowSize()))
 }
 
+// SetShadowSize sets the property returned by [GetShadowSize].
 func (self Instance) SetShadowSize(value int) {
 	class(self).SetShadowSize(int64(value))
 }
 
+/*
+The shadow offset in pixels. Adjusts the position of the shadow relatively to the stylebox.
+*/
 func (self Instance) ShadowOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetShadowOffset())
 }
 
+// SetShadowOffset sets the property returned by [GetShadowOffset].
 func (self Instance) SetShadowOffset(value Vector2.XY) {
 	class(self).SetShadowOffset(Vector2.XY(value))
 }
 
+/*
+Antialiasing draws a small ring around the edges, which fades to transparency. As a result, edges look much smoother. This is only noticeable when using rounded corners or [Skew].
+
+Note: When using beveled corners with 45-degree angles ([CornerDetail] = 1), it is recommended to set [AntiAliasing] to false to ensure crisp visuals and avoid possible visual glitches.
+
+[AntiAliasing]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.AntiAliasing
+[CornerDetail]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.CornerDetail
+[Skew]: https://pkg.go.dev/graphics.gd/classdb/StyleBoxFlat#Instance.Skew
+*/
 func (self Instance) AntiAliasing() bool {
 	return bool(class(self).IsAntiAliased())
 }
 
+// SetAntiAliasing sets the property returned by [IsAntiAliased].
 func (self Instance) SetAntiAliasing(value bool) {
 	class(self).SetAntiAliased(value)
 }
 
+/*
+This changes the size of the antialiasing effect. 1.0 is recommended for an optimal result at 100% scale, identical to how rounded rectangles are rendered in web browsers and most vector drawing software.
+
+Note: Higher values may produce a blur effect but can also create undesired artifacts on small boxes with large-radius corners.
+*/
 func (self Instance) AntiAliasingSize() Float.X {
 	return Float.X(Float.X(class(self).GetAaSize()))
 }
 
+// SetAntiAliasingSize sets the property returned by [GetAaSize].
 func (self Instance) SetAntiAliasingSize(value Float.X) {
 	class(self).SetAaSize(float64(value))
 }

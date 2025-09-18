@@ -153,18 +153,32 @@ func New() Instance {
 	return casted
 }
 
+/*
+The shape's custom solver bias. Defines how much bodies react to enforce contact separation when this shape is involved.
+
+When set to 0, the default value from [ProjectSettings] "physics/3d/solver/default_contact_bias" is used.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) CustomSolverBias() Float.X {
 	return Float.X(Float.X(class(self).GetCustomSolverBias()))
 }
 
+// SetCustomSolverBias sets the property returned by [GetCustomSolverBias].
 func (self Instance) SetCustomSolverBias(value Float.X) {
 	class(self).SetCustomSolverBias(float64(value))
 }
 
+/*
+The collision margin for the shape. This is not used in Godot Physics.
+
+Collision margins allow collision detection to be more efficient by adding an extra shell around shapes. Collision algorithms are more expensive when objects overlap by more than their margin, so a higher value for margins is better for performance, at the cost of accuracy around edges as it makes them less sharp.
+*/
 func (self Instance) Margin() Float.X {
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
+// SetMargin sets the property returned by [GetMargin].
 func (self Instance) SetMargin(value Float.X) {
 	class(self).SetMargin(float64(value))
 }

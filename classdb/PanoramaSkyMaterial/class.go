@@ -158,26 +158,41 @@ func New() Instance {
 	return casted
 }
 
+/*
+[Texture2D] to be applied to the [PanoramaSkyMaterial].
+
+[PanoramaSkyMaterial]: https://pkg.go.dev/graphics.gd/classdb/PanoramaSkyMaterial
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
 func (self Instance) Panorama() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetPanorama())
 }
 
+// SetPanorama sets the property returned by [GetPanorama].
 func (self Instance) SetPanorama(value Texture2D.Instance) {
 	class(self).SetPanorama(value)
 }
 
+/*
+A boolean value to determine if the background texture should be filtered or not.
+*/
 func (self Instance) Filter() bool {
 	return bool(class(self).IsFilteringEnabled())
 }
 
+// SetFilter sets the property returned by [IsFilteringEnabled].
 func (self Instance) SetFilter(value bool) {
 	class(self).SetFilteringEnabled(value)
 }
 
+/*
+The sky's overall brightness multiplier. Higher values result in a brighter sky.
+*/
 func (self Instance) EnergyMultiplier() Float.X {
 	return Float.X(Float.X(class(self).GetEnergyMultiplier()))
 }
 
+// SetEnergyMultiplier sets the property returned by [GetEnergyMultiplier].
 func (self Instance) SetEnergyMultiplier(value Float.X) {
 	class(self).SetEnergyMultiplier(float64(value))
 }

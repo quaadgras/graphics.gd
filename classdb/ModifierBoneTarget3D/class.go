@@ -153,18 +153,26 @@ func New() Instance {
 	return casted
 }
 
+/*
+The name of the attached bone.
+*/
 func (self Instance) BoneName() string {
 	return string(class(self).GetBoneName().String())
 }
 
+// SetBoneName sets the property returned by [GetBoneName].
 func (self Instance) SetBoneName(value string) {
 	class(self).SetBoneName(String.New(value))
 }
 
+/*
+The index of the attached bone.
+*/
 func (self Instance) Bone() int {
 	return int(int(class(self).GetBone()))
 }
 
+// SetBone sets the property returned by [GetBone].
 func (self Instance) SetBone(value int) {
 	class(self).SetBone(int64(value))
 }

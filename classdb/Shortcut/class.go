@@ -220,10 +220,20 @@ func New() Instance {
 	return casted
 }
 
+/*
+The shortcut's [InputEvent] array.
+
+Generally the [InputEvent] used is an [InputEventKey], though it can be any [InputEvent], including an [InputEventAction].
+
+[InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
+[InputEventAction]: https://pkg.go.dev/graphics.gd/classdb/InputEventAction
+[InputEventKey]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey
+*/
 func (self Instance) Events() []InputEvent.Instance {
 	return []InputEvent.Instance(gd.ArrayAs[[]InputEvent.Instance](gd.InternalArray(class(self).GetEvents())))
 }
 
+// SetEvents sets the property returned by [GetEvents].
 func (self Instance) SetEvents(value []InputEvent.Instance) {
 	class(self).SetEvents(gd.EngineArrayFromSlice(value))
 }

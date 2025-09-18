@@ -164,66 +164,127 @@ func New() Instance {
 	return casted
 }
 
+/*
+Animation to use as an output. It is one of the animations provided by [AnimationTree.AnimPlayer].
+
+[AnimationTree.AnimPlayer]: https://pkg.go.dev/graphics.gd/classdb/AnimationTree#Instance.AnimPlayer
+*/
 func (self Instance) Animation() string {
 	return string(class(self).GetAnimation().String())
 }
 
+// SetAnimation sets the property returned by [GetAnimation].
 func (self Instance) SetAnimation(value string) {
 	class(self).SetAnimation(String.Name(String.New(value)))
 }
 
+/*
+Determines the playback direction of the animation.
+*/
 func (self Instance) PlayMode() PlayMode {
 	return PlayMode(class(self).GetPlayMode())
 }
 
+// SetPlayMode sets the property returned by [GetPlayMode].
 func (self Instance) SetPlayMode(value PlayMode) {
 	class(self).SetPlayMode(value)
 }
 
+/*
+If true, on receiving a request to play an animation from the start, the first frame is not drawn, but only processed, and playback starts from the next frame.
+
+See also the notes of [AnimationPlayer.Play].
+
+[AnimationPlayer.Play]: https://pkg.go.dev/graphics.gd/classdb/AnimationPlayer#Instance.Play
+*/
 func (self Instance) AdvanceOnStart() bool {
 	return bool(class(self).IsAdvanceOnStart())
 }
 
+// SetAdvanceOnStart sets the property returned by [IsAdvanceOnStart].
 func (self Instance) SetAdvanceOnStart(value bool) {
 	class(self).SetAdvanceOnStart(value)
 }
 
+/*
+If true, [AnimationNode] provides an animation based on the [Animation] resource with some parameters adjusted.
+
+[Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
+[AnimationNode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNode
+*/
 func (self Instance) UseCustomTimeline() bool {
 	return bool(class(self).IsUsingCustomTimeline())
 }
 
+// SetUseCustomTimeline sets the property returned by [IsUsingCustomTimeline].
 func (self Instance) SetUseCustomTimeline(value bool) {
 	class(self).SetUseCustomTimeline(value)
 }
 
+/*
+If [UseCustomTimeline] is true, offset the start position of the animation.
+
+[UseCustomTimeline]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation#Instance.UseCustomTimeline
+*/
 func (self Instance) TimelineLength() Float.X {
 	return Float.X(Float.X(class(self).GetTimelineLength()))
 }
 
+// SetTimelineLength sets the property returned by [GetTimelineLength].
 func (self Instance) SetTimelineLength(value Float.X) {
 	class(self).SetTimelineLength(float64(value))
 }
 
+/*
+If true, scales the time so that the length specified in [TimelineLength] is one cycle.
+
+This is useful for matching the periods of walking and running animations.
+
+If false, the original animation length is respected. If you set the loop to [LoopMode], the animation will loop in [TimelineLength].
+
+[LoopMode]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation#Instance.LoopMode
+[TimelineLength]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation#Instance.TimelineLength
+*/
 func (self Instance) StretchTimeScale() bool {
 	return bool(class(self).IsStretchingTimeScale())
 }
 
+// SetStretchTimeScale sets the property returned by [IsStretchingTimeScale].
 func (self Instance) SetStretchTimeScale(value bool) {
 	class(self).SetStretchTimeScale(value)
 }
 
+/*
+If [UseCustomTimeline] is true, offset the start position of the animation.
+
+This is useful for adjusting which foot steps first in 3D walking animations.
+
+[UseCustomTimeline]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation#Instance.UseCustomTimeline
+*/
 func (self Instance) StartOffset() Float.X {
 	return Float.X(Float.X(class(self).GetStartOffset()))
 }
 
+// SetStartOffset sets the property returned by [GetStartOffset].
 func (self Instance) SetStartOffset(value Float.X) {
 	class(self).SetStartOffset(float64(value))
 }
 
+/*
+If [UseCustomTimeline] is true, override the loop settings of the original [Animation] resource with the value.
+
+Note: If the [Animation.LoopMode] isn't set to looping, the [Animation.TrackSetInterpolationLoopWrap] option will not be respected. If you cannot get the expected behavior, consider duplicating the [Animation] resource and changing the loop settings.
+
+[Animation]: https://pkg.go.dev/graphics.gd/classdb/Animation
+[Animation.LoopMode]: https://pkg.go.dev/graphics.gd/classdb/Animation#Instance.LoopMode
+[Animation.TrackSetInterpolationLoopWrap]: https://pkg.go.dev/graphics.gd/classdb/Animation#Instance.TrackSetInterpolationLoopWrap
+[UseCustomTimeline]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeAnimation#Instance.UseCustomTimeline
+*/
 func (self Instance) LoopMode() Animation.LoopMode {
 	return Animation.LoopMode(class(self).GetLoopMode())
 }
 
+// SetLoopMode sets the property returned by [GetLoopMode].
 func (self Instance) SetLoopMode(value Animation.LoopMode) {
 	class(self).SetLoopMode(value)
 }

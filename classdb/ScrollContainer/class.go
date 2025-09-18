@@ -211,74 +211,126 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the ScrollContainer will automatically scroll to focused children (including indirect children) to make sure they are fully visible.
+*/
 func (self Instance) FollowFocus() bool {
 	return bool(class(self).IsFollowingFocus())
 }
 
+// SetFollowFocus sets the property returned by [IsFollowingFocus].
 func (self Instance) SetFollowFocus(value bool) {
 	class(self).SetFollowFocus(value)
 }
 
+/*
+If true, theme's 'focus' is drawn when the ScrollContainer or one of its descendant nodes is focused.
+*/
 func (self Instance) DrawFocusBorder() bool {
 	return bool(class(self).GetDrawFocusBorder())
 }
 
+// SetDrawFocusBorder sets the property returned by [GetDrawFocusBorder].
 func (self Instance) SetDrawFocusBorder(value bool) {
 	class(self).SetDrawFocusBorder(value)
 }
 
+/*
+The current horizontal scroll value.
+
+Note: If you are setting this value in the [Node.Ready] function or earlier, it needs to be wrapped with [Object.SetDeferred], since scroll bar's [Range.MaxValue] is not initialized yet.
+
+[Node.Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Ready
+[Object.SetDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#SetDeferred
+[Range.MaxValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MaxValue
+*/
 func (self Instance) ScrollHorizontal() int {
 	return int(int(class(self).GetHScroll()))
 }
 
+// SetScrollHorizontal sets the property returned by [GetHScroll].
 func (self Instance) SetScrollHorizontal(value int) {
 	class(self).SetHScroll(int64(value))
 }
 
+/*
+The current vertical scroll value.
+
+Note: Setting it early needs to be deferred, just like in [ScrollHorizontal].
+
+[ScrollHorizontal]: https://pkg.go.dev/graphics.gd/classdb/ScrollContainer#Instance.ScrollHorizontal
+*/
 func (self Instance) ScrollVertical() int {
 	return int(int(class(self).GetVScroll()))
 }
 
+// SetScrollVertical sets the property returned by [GetVScroll].
 func (self Instance) SetScrollVertical(value int) {
 	class(self).SetVScroll(int64(value))
 }
 
+/*
+Overrides the [ScrollBar.CustomStep] used when clicking the internal scroll bar's horizontal increment and decrement buttons or when using arrow keys when the [ScrollBar] is focused.
+
+[ScrollBar]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar
+[ScrollBar.CustomStep]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar#Instance.CustomStep
+*/
 func (self Instance) ScrollHorizontalCustomStep() Float.X {
 	return Float.X(Float.X(class(self).GetHorizontalCustomStep()))
 }
 
+// SetScrollHorizontalCustomStep sets the property returned by [GetHorizontalCustomStep].
 func (self Instance) SetScrollHorizontalCustomStep(value Float.X) {
 	class(self).SetHorizontalCustomStep(float64(value))
 }
 
+/*
+Overrides the [ScrollBar.CustomStep] used when clicking the internal scroll bar's vertical increment and decrement buttons or when using arrow keys when the [ScrollBar] is focused.
+
+[ScrollBar]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar
+[ScrollBar.CustomStep]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar#Instance.CustomStep
+*/
 func (self Instance) ScrollVerticalCustomStep() Float.X {
 	return Float.X(Float.X(class(self).GetVerticalCustomStep()))
 }
 
+// SetScrollVerticalCustomStep sets the property returned by [GetVerticalCustomStep].
 func (self Instance) SetScrollVerticalCustomStep(value Float.X) {
 	class(self).SetVerticalCustomStep(float64(value))
 }
 
+/*
+Controls whether horizontal scrollbar can be used and when it should be visible.
+*/
 func (self Instance) HorizontalScrollMode() ScrollMode {
 	return ScrollMode(class(self).GetHorizontalScrollMode())
 }
 
+// SetHorizontalScrollMode sets the property returned by [GetHorizontalScrollMode].
 func (self Instance) SetHorizontalScrollMode(value ScrollMode) {
 	class(self).SetHorizontalScrollMode(value)
 }
 
+/*
+Controls whether vertical scrollbar can be used and when it should be visible.
+*/
 func (self Instance) VerticalScrollMode() ScrollMode {
 	return ScrollMode(class(self).GetVerticalScrollMode())
 }
 
+// SetVerticalScrollMode sets the property returned by [GetVerticalScrollMode].
 func (self Instance) SetVerticalScrollMode(value ScrollMode) {
 	class(self).SetVerticalScrollMode(value)
 }
 
+/*
+Deadzone for touch scrolling. Lower deadzone makes the scrolling more sensitive.
+*/
 func (self Instance) ScrollDeadzone() int {
 	return int(int(class(self).GetDeadzone()))
 }
 
+// SetScrollDeadzone sets the property returned by [GetDeadzone].
 func (self Instance) SetScrollDeadzone(value int) {
 	class(self).SetDeadzone(int64(value))
 }
@@ -442,6 +494,14 @@ func (self class) GetDrawFocusBorder() bool { //gd:ScrollContainer.get_draw_focu
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when scrolling starts when dragging the scrollable area with a touch event. This signal is not emitted when scrolling by dragging the scrollbar, scrolling with the mouse wheel or scrolling with keyboard/gamepad events.
+
+Note: This signal is only emitted on Android or iOS, or on desktop/web platforms when [ProjectSettings] "input_devices/pointing/emulate_touch_from_mouse" is enabled.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) OnScrollStarted(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -454,6 +514,13 @@ func (self class) ScrollStarted() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ScrollStarted`))))
 }
 
+/*
+Emitted when scrolling stops when dragging the scrollable area with a touch event. This signal is not emitted when scrolling by dragging the scrollbar, scrolling with the mouse wheel or scrolling with keyboard/gamepad events.
+
+Note: This signal is only emitted on Android or iOS, or on desktop/web platforms when [ProjectSettings] "input_devices/pointing/emulate_touch_from_mouse" is enabled.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) OnScrollEnded(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

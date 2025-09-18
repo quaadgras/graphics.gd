@@ -1200,66 +1200,115 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, hides the [PopupMenu] when an item is selected.
+
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+*/
 func (self Instance) HideOnItemSelection() bool {
 	return bool(class(self).IsHideOnItemSelection())
 }
 
+// SetHideOnItemSelection sets the property returned by [IsHideOnItemSelection].
 func (self Instance) SetHideOnItemSelection(value bool) {
 	class(self).SetHideOnItemSelection(value)
 }
 
+/*
+If true, hides the [PopupMenu] when a checkbox or radio button is selected.
+
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+*/
 func (self Instance) HideOnCheckableItemSelection() bool {
 	return bool(class(self).IsHideOnCheckableItemSelection())
 }
 
+// SetHideOnCheckableItemSelection sets the property returned by [IsHideOnCheckableItemSelection].
 func (self Instance) SetHideOnCheckableItemSelection(value bool) {
 	class(self).SetHideOnCheckableItemSelection(value)
 }
 
+/*
+If true, hides the [PopupMenu] when a state item is selected.
+
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+*/
 func (self Instance) HideOnStateItemSelection() bool {
 	return bool(class(self).IsHideOnStateItemSelection())
 }
 
+// SetHideOnStateItemSelection sets the property returned by [IsHideOnStateItemSelection].
 func (self Instance) SetHideOnStateItemSelection(value bool) {
 	class(self).SetHideOnStateItemSelection(value)
 }
 
+/*
+Sets the delay time in seconds for the submenu item to popup on mouse hovering. If the popup menu is added as a child of another (acting as a submenu), it will inherit the delay time of the parent menu item.
+*/
 func (self Instance) SubmenuPopupDelay() Float.X {
 	return Float.X(Float.X(class(self).GetSubmenuPopupDelay()))
 }
 
+// SetSubmenuPopupDelay sets the property returned by [GetSubmenuPopupDelay].
 func (self Instance) SetSubmenuPopupDelay(value Float.X) {
 	class(self).SetSubmenuPopupDelay(float64(value))
 }
 
+/*
+If true, allows navigating [PopupMenu] with letter keys.
+
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+*/
 func (self Instance) AllowSearch() bool {
 	return bool(class(self).GetAllowSearch())
 }
 
+// SetAllowSearch sets the property returned by [GetAllowSearch].
 func (self Instance) SetAllowSearch(value bool) {
 	class(self).SetAllowSearch(value)
 }
 
+/*
+If set to one of the values of [NativeMenu.SystemMenus], this [PopupMenu] is bound to the special system menu. Only one [PopupMenu] can be bound to each special menu at a time.
+
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+*/
 func (self Instance) SystemMenuId() NativeMenu.SystemMenus {
 	return NativeMenu.SystemMenus(class(self).GetSystemMenu())
 }
 
+// SetSystemMenuId sets the property returned by [GetSystemMenu].
 func (self Instance) SetSystemMenuId(value NativeMenu.SystemMenus) {
 	class(self).SetSystemMenu(value)
 }
 
+/*
+If true, [MenuBar] will use native menu when supported.
+
+Note: If [PopupMenu] is linked to [StatusIndicator], [MenuBar], or another [PopupMenu] item it can use native menu regardless of this property, use [IsNativeMenu] to check it.
+
+[IsNativeMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.IsNativeMenu
+[MenuBar]: https://pkg.go.dev/graphics.gd/classdb/MenuBar
+[PopupMenu]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu
+[StatusIndicator]: https://pkg.go.dev/graphics.gd/classdb/StatusIndicator
+*/
 func (self Instance) PreferNativeMenu() bool {
 	return bool(class(self).IsPreferNativeMenu())
 }
 
+// SetPreferNativeMenu sets the property returned by [IsPreferNativeMenu].
 func (self Instance) SetPreferNativeMenu(value bool) {
 	class(self).SetPreferNativeMenu(value)
 }
 
+/*
+The number of items currently in the list.
+*/
 func (self Instance) ItemCount() int {
 	return int(int(class(self).GetItemCount()))
 }
 
+// SetItemCount sets the property returned by [GetItemCount].
 func (self Instance) SetItemCount(value int) {
 	class(self).SetItemCount(int64(value))
 }
@@ -2323,6 +2372,12 @@ func (self class) GetSystemMenu() NativeMenu.SystemMenus { //gd:PopupMenu.get_sy
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when an item of some 'id' is pressed or its accelerator is activated.
+
+Note: If 'id' is negative (either explicitly or due to overflow), this will return the corresponding index instead.
+*/
 func (self Instance) OnIdPressed(cb func(id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -2335,6 +2390,11 @@ func (self class) IdPressed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`IdPressed`))))
 }
 
+/*
+Emitted when the user navigated to an item of some 'id' using the [ProjectSettings] "input/ui_up" or [ProjectSettings] "input/ui_down" input action.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) OnIdFocused(cb func(id int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -2347,6 +2407,9 @@ func (self class) IdFocused() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`IdFocused`))))
 }
 
+/*
+Emitted when an item of some 'index' is pressed or its accelerator is activated.
+*/
 func (self Instance) OnIndexPressed(cb func(index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -2359,6 +2422,9 @@ func (self class) IndexPressed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`IndexPressed`))))
 }
 
+/*
+Emitted when any item is added, modified or removed.
+*/
 func (self Instance) OnMenuChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

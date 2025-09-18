@@ -227,82 +227,151 @@ func New() Instance {
 	return casted
 }
 
+/*
+Minimum value. Range is clamped if [Value] is less than [MinValue].
+
+[MinValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MinValue
+[Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
+*/
 func (self Instance) MinValue() Float.X {
 	return Float.X(Float.X(class(self).GetMin()))
 }
 
+// SetMinValue sets the property returned by [GetMin].
 func (self Instance) SetMinValue(value Float.X) {
 	class(self).SetMin(float64(value))
 }
 
+/*
+Maximum value. Range is clamped if [Value] is greater than [MaxValue].
+
+[MaxValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MaxValue
+[Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
+*/
 func (self Instance) MaxValue() Float.X {
 	return Float.X(Float.X(class(self).GetMax()))
 }
 
+// SetMaxValue sets the property returned by [GetMax].
 func (self Instance) SetMaxValue(value Float.X) {
 	class(self).SetMax(float64(value))
 }
 
+/*
+If greater than 0, [Value] will always be rounded to a multiple of this property's value above [MinValue]. For example, if [MinValue] is 0.1 and step is 0.2, then [Value] is limited to 0.1, 0.3, 0.5, and so on. If [Rounded] is also true, [Value] will first be rounded to a multiple of this property's value, then rounded to the nearest integer.
+
+[MinValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MinValue
+[Rounded]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Rounded
+[Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
+*/
 func (self Instance) Step() Float.X {
 	return Float.X(Float.X(class(self).GetStep()))
 }
 
+// SetStep sets the property returned by [GetStep].
 func (self Instance) SetStep(value Float.X) {
 	class(self).SetStep(float64(value))
 }
 
+/*
+Page size. Used mainly for [ScrollBar]. A [ScrollBar]'s grabber length is the [ScrollBar]'s size multiplied by [Page] over the difference between [MinValue] and [MaxValue].
+
+[MaxValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MaxValue
+[MinValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MinValue
+[Page]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Page
+[ScrollBar]: https://pkg.go.dev/graphics.gd/classdb/ScrollBar
+*/
 func (self Instance) Page() Float.X {
 	return Float.X(Float.X(class(self).GetPage()))
 }
 
+// SetPage sets the property returned by [GetPage].
 func (self Instance) SetPage(value Float.X) {
 	class(self).SetPage(float64(value))
 }
 
+/*
+Range's current value. Changing this property (even via code) will trigger [OnValueChanged] signal. Use [SetValueNoSignal] if you want to avoid it.
+
+[OnValueChanged]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.OnValueChanged
+[SetValueNoSignal]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.SetValueNoSignal
+*/
 func (self Instance) Value() Float.X {
 	return Float.X(Float.X(class(self).GetValue()))
 }
 
+// SetValue sets the property returned by [GetValue].
 func (self Instance) SetValue(value Float.X) {
 	class(self).SetValue(float64(value))
 }
 
+/*
+The value mapped between 0 and 1.
+*/
 func (self Instance) Ratio() Float.X {
 	return Float.X(Float.X(class(self).GetAsRatio()))
 }
 
+// SetRatio sets the property returned by [GetAsRatio].
 func (self Instance) SetRatio(value Float.X) {
 	class(self).SetAsRatio(float64(value))
 }
 
+/*
+If true, and [MinValue] is greater or equal to 0, [Value] will be represented exponentially rather than linearly.
+
+[MinValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MinValue
+[Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
+*/
 func (self Instance) ExpEdit() bool {
 	return bool(class(self).IsRatioExp())
 }
 
+// SetExpEdit sets the property returned by [IsRatioExp].
 func (self Instance) SetExpEdit(value bool) {
 	class(self).SetExpRatio(value)
 }
 
+/*
+If true, [Value] will always be rounded to the nearest integer.
+
+[Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
+*/
 func (self Instance) Rounded() bool {
 	return bool(class(self).IsUsingRoundedValues())
 }
 
+// SetRounded sets the property returned by [IsUsingRoundedValues].
 func (self Instance) SetRounded(value bool) {
 	class(self).SetUseRoundedValues(value)
 }
 
+/*
+If true, [Value] may be greater than [MaxValue].
+
+[MaxValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MaxValue
+[Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
+*/
 func (self Instance) AllowGreater() bool {
 	return bool(class(self).IsGreaterAllowed())
 }
 
+// SetAllowGreater sets the property returned by [IsGreaterAllowed].
 func (self Instance) SetAllowGreater(value bool) {
 	class(self).SetAllowGreater(value)
 }
 
+/*
+If true, [Value] may be less than [MinValue].
+
+[MinValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MinValue
+[Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
+*/
 func (self Instance) AllowLesser() bool {
 	return bool(class(self).IsLesserAllowed())
 }
 
+// SetAllowLesser sets the property returned by [IsLesserAllowed].
 func (self Instance) SetAllowLesser(value bool) {
 	class(self).SetAllowLesser(value)
 }
@@ -471,6 +540,18 @@ Stops the [Range] from sharing its member variables with any other.
 func (self class) Unshare() { //gd:Range.unshare
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unshare, 0, &struct{}{})
 }
+
+/*
+Emitted when [Value] changes. When used on a [Slider], this is called continuously while dragging (potentially every frame). If you are performing an expensive operation in a function connected to [OnValueChanged], consider using a debouncing [Timer] to call the function less often.
+
+Note: Unlike signals such as [OnLineedit.TextChanged], [OnValueChanged] is also emitted when 'value' is set directly via code.
+
+[OnLineedit.TextChanged]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.OnLineedit.TextChanged
+[OnValueChanged]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.OnValueChanged
+[Slider]: https://pkg.go.dev/graphics.gd/classdb/Slider
+[Timer]: https://pkg.go.dev/graphics.gd/classdb/Timer
+[Value]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Value
+*/
 func (self Instance) OnValueChanged(cb func(value Float.X), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -483,6 +564,14 @@ func (self class) ValueChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ValueChanged`))))
 }
 
+/*
+Emitted when [MinValue], [MaxValue], [Page], or [Step] change.
+
+[MaxValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MaxValue
+[MinValue]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.MinValue
+[Page]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Page
+[Step]: https://pkg.go.dev/graphics.gd/classdb/Range#Instance.Step
+*/
 func (self Instance) OnChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -153,10 +153,17 @@ func New() Instance {
 	return casted
 }
 
+/*
+The render model RID for the render model to load, as returned by [OpenXRRenderModelExtension.RenderModelCreate] or [OpenXRRenderModelExtension.RenderModelGetAll].
+
+[OpenXRRenderModelExtension.RenderModelCreate]: https://pkg.go.dev/graphics.gd/classdb/OpenXRRenderModelExtension#Instance.RenderModelCreate
+[OpenXRRenderModelExtension.RenderModelGetAll]: https://pkg.go.dev/graphics.gd/classdb/OpenXRRenderModelExtension#Instance.RenderModelGetAll
+*/
 func (self Instance) RenderModel() RID.RenderModel {
 	return RID.RenderModel(RID.RenderModel(class(self).GetRenderModel()))
 }
 
+// SetRenderModel sets the property returned by [GetRenderModel].
 func (self Instance) SetRenderModel(value RID.RenderModel) {
 	class(self).SetRenderModel(RID.Any(value))
 }
@@ -182,6 +189,10 @@ func (self class) GetRenderModel() RID.Any { //gd:OpenXRRenderModel.get_render_m
 func (self class) SetRenderModel(render_model RID.Any) { //gd:OpenXRRenderModel.set_render_model
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_render_model, 0|(gdextension.SizeRID<<4), &struct{ render_model RID.Any }{render_model})
 }
+
+/*
+Emitted when the top level path of this render model has changed.
+*/
 func (self Instance) OnRenderModelTopLevelPathChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

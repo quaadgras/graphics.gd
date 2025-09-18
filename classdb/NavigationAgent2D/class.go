@@ -415,242 +415,410 @@ func New() Instance {
 	return casted
 }
 
+/*
+If set, a new navigation path from the current agent position to the [TargetPosition] is requested from the NavigationServer.
+
+[TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.TargetPosition
+*/
 func (self Instance) TargetPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetTargetPosition())
 }
 
+// SetTargetPosition sets the property returned by [GetTargetPosition].
 func (self Instance) SetTargetPosition(value Vector2.XY) {
 	class(self).SetTargetPosition(Vector2.XY(value))
 }
 
+/*
+The distance threshold before a path point is considered to be reached. This allows agents to not have to hit a path point on the path exactly, but only to reach its general area. If this value is set too high, the NavigationAgent will skip points on the path, which can lead to it leaving the navigation mesh. If this value is set too low, the NavigationAgent will be stuck in a repath loop because it will constantly overshoot the distance to the next point on each physics frame update.
+*/
 func (self Instance) PathDesiredDistance() Float.X {
 	return Float.X(Float.X(class(self).GetPathDesiredDistance()))
 }
 
+// SetPathDesiredDistance sets the property returned by [GetPathDesiredDistance].
 func (self Instance) SetPathDesiredDistance(value Float.X) {
 	class(self).SetPathDesiredDistance(float64(value))
 }
 
+/*
+The distance threshold before the target is considered to be reached. On reaching the target, [OnTargetReached] is emitted and navigation ends (see [IsNavigationFinished] and [OnNavigationFinished]).
+
+You can make navigation end early by setting this property to a value greater than [PathDesiredDistance] (navigation will end before reaching the last waypoint).
+
+You can also make navigation end closer to the target than each individual path position by setting this property to a value lower than [PathDesiredDistance] (navigation won't immediately end when reaching the last waypoint). However, if the value set is too low, the agent will be stuck in a repath loop because it will constantly overshoot the distance to the target on each physics frame update.
+
+[IsNavigationFinished]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.IsNavigationFinished
+[OnNavigationFinished]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.OnNavigationFinished
+[OnTargetReached]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.OnTargetReached
+[PathDesiredDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.PathDesiredDistance
+*/
 func (self Instance) TargetDesiredDistance() Float.X {
 	return Float.X(Float.X(class(self).GetTargetDesiredDistance()))
 }
 
+// SetTargetDesiredDistance sets the property returned by [GetTargetDesiredDistance].
 func (self Instance) SetTargetDesiredDistance(value Float.X) {
 	class(self).SetTargetDesiredDistance(float64(value))
 }
 
+/*
+The maximum distance the agent is allowed away from the ideal path to the final position. This can happen due to trying to avoid collisions. When the maximum distance is exceeded, it recalculates the ideal path.
+*/
 func (self Instance) PathMaxDistance() Float.X {
 	return Float.X(Float.X(class(self).GetPathMaxDistance()))
 }
 
+// SetPathMaxDistance sets the property returned by [GetPathMaxDistance].
 func (self Instance) SetPathMaxDistance(value Float.X) {
 	class(self).SetPathMaxDistance(float64(value))
 }
 
+/*
+A bitfield determining which navigation layers of navigation regions this agent will use to calculate a path. Changing it during runtime will clear the current navigation path and generate a new one, according to the new navigation layers.
+*/
 func (self Instance) NavigationLayers() int {
 	return int(int(class(self).GetNavigationLayers()))
 }
 
+// SetNavigationLayers sets the property returned by [GetNavigationLayers].
 func (self Instance) SetNavigationLayers(value int) {
 	class(self).SetNavigationLayers(int64(value))
 }
 
+/*
+The pathfinding algorithm used in the path query.
+*/
 func (self Instance) PathfindingAlgorithm() NavigationPathQueryParameters2D.PathfindingAlgorithm {
 	return NavigationPathQueryParameters2D.PathfindingAlgorithm(class(self).GetPathfindingAlgorithm())
 }
 
+// SetPathfindingAlgorithm sets the property returned by [GetPathfindingAlgorithm].
 func (self Instance) SetPathfindingAlgorithm(value NavigationPathQueryParameters2D.PathfindingAlgorithm) {
 	class(self).SetPathfindingAlgorithm(value)
 }
 
+/*
+The path postprocessing applied to the raw path corridor found by the [PathfindingAlgorithm].
+
+[PathfindingAlgorithm]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.PathfindingAlgorithm
+*/
 func (self Instance) PathPostprocessing() NavigationPathQueryParameters2D.PathPostProcessing {
 	return NavigationPathQueryParameters2D.PathPostProcessing(class(self).GetPathPostprocessing())
 }
 
+// SetPathPostprocessing sets the property returned by [GetPathPostprocessing].
 func (self Instance) SetPathPostprocessing(value NavigationPathQueryParameters2D.PathPostProcessing) {
 	class(self).SetPathPostprocessing(value)
 }
 
+/*
+Additional information to return with the navigation path.
+*/
 func (self Instance) PathMetadataFlags() NavigationPathQueryParameters2D.PathMetadataFlags {
 	return NavigationPathQueryParameters2D.PathMetadataFlags(class(self).GetPathMetadataFlags())
 }
 
+// SetPathMetadataFlags sets the property returned by [GetPathMetadataFlags].
 func (self Instance) SetPathMetadataFlags(value NavigationPathQueryParameters2D.PathMetadataFlags) {
 	class(self).SetPathMetadataFlags(value)
 }
 
+/*
+If true a simplified version of the path will be returned with less critical path points removed. The simplification amount is controlled by [SimplifyEpsilon]. The simplification uses a variant of Ramer-Douglas-Peucker algorithm for curve point decimation.
+
+Path simplification can be helpful to mitigate various path following issues that can arise with certain agent types and script behaviors. E.g. "steering" agents or avoidance in "open fields".
+
+[SimplifyEpsilon]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.SimplifyEpsilon
+*/
 func (self Instance) SimplifyPath() bool {
 	return bool(class(self).GetSimplifyPath())
 }
 
+// SetSimplifyPath sets the property returned by [GetSimplifyPath].
 func (self Instance) SetSimplifyPath(value bool) {
 	class(self).SetSimplifyPath(value)
 }
 
+/*
+The path simplification amount in worlds units.
+*/
 func (self Instance) SimplifyEpsilon() Float.X {
 	return Float.X(Float.X(class(self).GetSimplifyEpsilon()))
 }
 
+// SetSimplifyEpsilon sets the property returned by [GetSimplifyEpsilon].
 func (self Instance) SetSimplifyEpsilon(value Float.X) {
 	class(self).SetSimplifyEpsilon(float64(value))
 }
 
+/*
+The maximum allowed length of the returned path in world units. A path will be clipped when going over this length.
+*/
 func (self Instance) PathReturnMaxLength() Float.X {
 	return Float.X(Float.X(class(self).GetPathReturnMaxLength()))
 }
 
+// SetPathReturnMaxLength sets the property returned by [GetPathReturnMaxLength].
 func (self Instance) SetPathReturnMaxLength(value Float.X) {
 	class(self).SetPathReturnMaxLength(float64(value))
 }
 
+/*
+The maximum allowed radius in world units that the returned path can be from the path start. The path will be clipped when going over this radius. Compared to [PathReturnMaxLength], this allows the agent to go that much further, if they need to walk around a corner.
+
+Note: This will perform a sphere clip considering only the actual navigation mesh path points with the first path position being the sphere's center.
+
+[PathReturnMaxLength]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.PathReturnMaxLength
+*/
 func (self Instance) PathReturnMaxRadius() Float.X {
 	return Float.X(Float.X(class(self).GetPathReturnMaxRadius()))
 }
 
+// SetPathReturnMaxRadius sets the property returned by [GetPathReturnMaxRadius].
 func (self Instance) SetPathReturnMaxRadius(value Float.X) {
 	class(self).SetPathReturnMaxRadius(float64(value))
 }
 
+/*
+The maximum number of polygons that are searched before the pathfinding cancels the search for a path to the (possibly unreachable or very far away) target position polygon. In this case the pathfinding resets and builds a path from the start polygon to the polygon that was found closest to the target position so far. A value of 0 or below counts as unlimited. In case of unlimited the pathfinding will search all polygons connected with the start polygon until either the target position polygon is found or all available polygon search options are exhausted.
+*/
 func (self Instance) PathSearchMaxPolygons() int {
 	return int(int(class(self).GetPathSearchMaxPolygons()))
 }
 
+// SetPathSearchMaxPolygons sets the property returned by [GetPathSearchMaxPolygons].
 func (self Instance) SetPathSearchMaxPolygons(value int) {
 	class(self).SetPathSearchMaxPolygons(int64(value))
 }
 
+/*
+The maximum distance a searched polygon can be away from the start polygon before the pathfinding cancels the search for a path to the (possibly unreachable or very far away) target position polygon. In this case the pathfinding resets and builds a path from the start polygon to the polygon that was found closest to the target position so far. A value of 0 or below counts as unlimited. In case of unlimited the pathfinding will search all polygons connected with the start polygon until either the target position polygon is found or all available polygon search options are exhausted.
+*/
 func (self Instance) PathSearchMaxDistance() Float.X {
 	return Float.X(Float.X(class(self).GetPathSearchMaxDistance()))
 }
 
+// SetPathSearchMaxDistance sets the property returned by [GetPathSearchMaxDistance].
 func (self Instance) SetPathSearchMaxDistance(value Float.X) {
 	class(self).SetPathSearchMaxDistance(float64(value))
 }
 
+/*
+If true the agent is registered for an RVO avoidance callback on the [NavigationServer2D]. When [Velocity] is used and the processing is completed a safe_velocity Vector2 is received with a signal connection to [OnVelocityComputed]. Avoidance processing with many registered agents has a significant performance cost and should only be enabled on agents that currently require it.
+
+[NavigationServer2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationServer2D
+[OnVelocityComputed]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.OnVelocityComputed
+[Velocity]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.Velocity
+*/
 func (self Instance) AvoidanceEnabled() bool {
 	return bool(class(self).GetAvoidanceEnabled())
 }
 
+// SetAvoidanceEnabled sets the property returned by [GetAvoidanceEnabled].
 func (self Instance) SetAvoidanceEnabled(value bool) {
 	class(self).SetAvoidanceEnabled(value)
 }
 
+/*
+Sets the new wanted velocity for the agent. The avoidance simulation will try to fulfill this velocity if possible but will modify it to avoid collision with other agents and obstacles. When an agent is teleported to a new position, use [SetVelocityForced] as well to reset the internal simulation velocity.
+
+[SetVelocityForced]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.SetVelocityForced
+*/
 func (self Instance) Velocity() Vector2.XY {
 	return Vector2.XY(class(self).GetVelocity())
 }
 
+// SetVelocity sets the property returned by [GetVelocity].
 func (self Instance) SetVelocity(value Vector2.XY) {
 	class(self).SetVelocity(Vector2.XY(value))
 }
 
+/*
+The radius of the avoidance agent. This is the "body" of the avoidance agent and not the avoidance maneuver starting radius (which is controlled by [NeighborDistance]).
+
+Does not affect normal pathfinding. To change an actor's pathfinding radius bake [NavigationPolygon] resources with a different [NavigationPolygon.AgentRadius] property and use different navigation maps for each actor size.
+
+[NavigationPolygon]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon
+[NavigationPolygon.AgentRadius]: https://pkg.go.dev/graphics.gd/classdb/NavigationPolygon#Instance.AgentRadius
+[NeighborDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.NeighborDistance
+*/
 func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetRadius sets the property returned by [GetRadius].
 func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }
 
+/*
+The distance to search for other agents.
+*/
 func (self Instance) NeighborDistance() Float.X {
 	return Float.X(Float.X(class(self).GetNeighborDistance()))
 }
 
+// SetNeighborDistance sets the property returned by [GetNeighborDistance].
 func (self Instance) SetNeighborDistance(value Float.X) {
 	class(self).SetNeighborDistance(float64(value))
 }
 
+/*
+The maximum number of neighbors for the agent to consider.
+*/
 func (self Instance) MaxNeighbors() int {
 	return int(int(class(self).GetMaxNeighbors()))
 }
 
+// SetMaxNeighbors sets the property returned by [GetMaxNeighbors].
 func (self Instance) SetMaxNeighbors(value int) {
 	class(self).SetMaxNeighbors(int64(value))
 }
 
+/*
+The minimal amount of time for which this agent's velocities, that are computed with the collision avoidance algorithm, are safe with respect to other agents. The larger the number, the sooner the agent will respond to other agents, but less freedom in choosing its velocities. A too high value will slow down agents movement considerably. Must be positive.
+*/
 func (self Instance) TimeHorizonAgents() Float.X {
 	return Float.X(Float.X(class(self).GetTimeHorizonAgents()))
 }
 
+// SetTimeHorizonAgents sets the property returned by [GetTimeHorizonAgents].
 func (self Instance) SetTimeHorizonAgents(value Float.X) {
 	class(self).SetTimeHorizonAgents(float64(value))
 }
 
+/*
+The minimal amount of time for which this agent's velocities, that are computed with the collision avoidance algorithm, are safe with respect to static avoidance obstacles. The larger the number, the sooner the agent will respond to static avoidance obstacles, but less freedom in choosing its velocities. A too high value will slow down agents movement considerably. Must be positive.
+*/
 func (self Instance) TimeHorizonObstacles() Float.X {
 	return Float.X(Float.X(class(self).GetTimeHorizonObstacles()))
 }
 
+// SetTimeHorizonObstacles sets the property returned by [GetTimeHorizonObstacles].
 func (self Instance) SetTimeHorizonObstacles(value Float.X) {
 	class(self).SetTimeHorizonObstacles(float64(value))
 }
 
+/*
+The maximum speed that an agent can move.
+*/
 func (self Instance) MaxSpeed() Float.X {
 	return Float.X(Float.X(class(self).GetMaxSpeed()))
 }
 
+// SetMaxSpeed sets the property returned by [GetMaxSpeed].
 func (self Instance) SetMaxSpeed(value Float.X) {
 	class(self).SetMaxSpeed(float64(value))
 }
 
+/*
+A bitfield determining the avoidance layers for this NavigationAgent. Other agents with a matching bit on the [AvoidanceMask] will avoid this agent.
+
+[AvoidanceMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.AvoidanceMask
+*/
 func (self Instance) AvoidanceLayers() int {
 	return int(int(class(self).GetAvoidanceLayers()))
 }
 
+// SetAvoidanceLayers sets the property returned by [GetAvoidanceLayers].
 func (self Instance) SetAvoidanceLayers(value int) {
 	class(self).SetAvoidanceLayers(int64(value))
 }
 
+/*
+A bitfield determining what other avoidance agents and obstacles this NavigationAgent will avoid when a bit matches at least one of their [AvoidanceLayers].
+
+[AvoidanceLayers]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.AvoidanceLayers
+*/
 func (self Instance) AvoidanceMask() int {
 	return int(int(class(self).GetAvoidanceMask()))
 }
 
+// SetAvoidanceMask sets the property returned by [GetAvoidanceMask].
 func (self Instance) SetAvoidanceMask(value int) {
 	class(self).SetAvoidanceMask(int64(value))
 }
 
+/*
+The agent does not adjust the velocity for other agents that would match the [AvoidanceMask] but have a lower [AvoidancePriority]. This in turn makes the other agents with lower priority adjust their velocities even more to avoid collision with this agent.
+
+[AvoidanceMask]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.AvoidanceMask
+[AvoidancePriority]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.AvoidancePriority
+*/
 func (self Instance) AvoidancePriority() Float.X {
 	return Float.X(Float.X(class(self).GetAvoidancePriority()))
 }
 
+// SetAvoidancePriority sets the property returned by [GetAvoidancePriority].
 func (self Instance) SetAvoidancePriority(value Float.X) {
 	class(self).SetAvoidancePriority(float64(value))
 }
 
+/*
+If true shows debug visuals for this agent.
+*/
 func (self Instance) DebugEnabled() bool {
 	return bool(class(self).GetDebugEnabled())
 }
 
+// SetDebugEnabled sets the property returned by [GetDebugEnabled].
 func (self Instance) SetDebugEnabled(value bool) {
 	class(self).SetDebugEnabled(value)
 }
 
+/*
+If true uses the defined [DebugPathCustomColor] for this agent instead of global color.
+
+[DebugPathCustomColor]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.DebugPathCustomColor
+*/
 func (self Instance) DebugUseCustom() bool {
 	return bool(class(self).GetDebugUseCustom())
 }
 
+// SetDebugUseCustom sets the property returned by [GetDebugUseCustom].
 func (self Instance) SetDebugUseCustom(value bool) {
 	class(self).SetDebugUseCustom(value)
 }
 
+/*
+If [DebugUseCustom] is true uses this color for this agent instead of global color.
+
+[DebugUseCustom]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.DebugUseCustom
+*/
 func (self Instance) DebugPathCustomColor() Color.RGBA {
 	return Color.RGBA(class(self).GetDebugPathCustomColor())
 }
 
+// SetDebugPathCustomColor sets the property returned by [GetDebugPathCustomColor].
 func (self Instance) SetDebugPathCustomColor(value Color.RGBA) {
 	class(self).SetDebugPathCustomColor(Color.RGBA(value))
 }
 
+/*
+If [DebugUseCustom] is true uses this rasterized point size for rendering path points for this agent instead of global point size.
+
+[DebugUseCustom]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.DebugUseCustom
+*/
 func (self Instance) DebugPathCustomPointSize() Float.X {
 	return Float.X(Float.X(class(self).GetDebugPathCustomPointSize()))
 }
 
+// SetDebugPathCustomPointSize sets the property returned by [GetDebugPathCustomPointSize].
 func (self Instance) SetDebugPathCustomPointSize(value Float.X) {
 	class(self).SetDebugPathCustomPointSize(float64(value))
 }
 
+/*
+If [DebugUseCustom] is true uses this line width for rendering paths for this agent instead of global line width.
+
+[DebugUseCustom]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.DebugUseCustom
+*/
 func (self Instance) DebugPathCustomLineWidth() Float.X {
 	return Float.X(Float.X(class(self).GetDebugPathCustomLineWidth()))
 }
 
+// SetDebugPathCustomLineWidth sets the property returned by [GetDebugPathCustomLineWidth].
 func (self Instance) SetDebugPathCustomLineWidth(value Float.X) {
 	class(self).SetDebugPathCustomLineWidth(float64(value))
 }
@@ -1259,6 +1427,18 @@ func (self class) GetDebugPathCustomLineWidth() float64 { //gd:NavigationAgent2D
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the agent had to update the loaded path:
+
+- because path was previously empty.
+
+- because navigation map has changed.
+
+- because agent pushed further away from the current path segment than the [PathMaxDistance].
+
+[PathMaxDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.PathMaxDistance
+*/
 func (self Instance) OnPathChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1271,6 +1451,18 @@ func (self class) PathChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PathChanged`))))
 }
 
+/*
+Signals that the agent reached the target, i.e. the agent moved within [TargetDesiredDistance] of the [TargetPosition]. This signal is emitted only once per loaded path.
+
+This signal will be emitted just before [OnNavigationFinished] when the target is reachable.
+
+It may not always be possible to reach the target but it should always be possible to reach the final position. See [GetFinalPosition].
+
+[GetFinalPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.GetFinalPosition
+[OnNavigationFinished]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.OnNavigationFinished
+[TargetDesiredDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.TargetDesiredDistance
+[TargetPosition]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.TargetPosition
+*/
 func (self Instance) OnTargetReached(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1283,6 +1475,23 @@ func (self class) TargetReached() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`TargetReached`))))
 }
 
+/*
+Signals that the agent reached a waypoint. Emitted when the agent moves within [PathDesiredDistance] of the next position of the path.
+
+The details dictionary may contain the following keys depending on the value of [PathMetadataFlags]:
+
+- position: The position of the waypoint that was reached.
+
+- type: The type of navigation primitive (region or link) that contains this waypoint.
+
+- rid: The [Resource.ID] of the containing navigation primitive (region or link).
+
+- owner: The object which manages the containing navigation primitive (region or link).
+
+[PathDesiredDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.PathDesiredDistance
+[PathMetadataFlags]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.PathMetadataFlags
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func (self Instance) OnWaypointReached(cb func(details map[any]any), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1295,6 +1504,28 @@ func (self class) WaypointReached() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`WaypointReached`))))
 }
 
+/*
+Signals that the agent reached a navigation link. Emitted when the agent moves within [PathDesiredDistance] of the next position of the path when that position is a navigation link.
+
+The details dictionary may contain the following keys depending on the value of [PathMetadataFlags]:
+
+- position: The start position of the link that was reached.
+
+- type: Always [Navigationpathqueryresult2d.PathSegmentTypeLink].
+
+- rid: The [Resource.ID] of the link.
+
+- owner: The object which manages the link (usually [NavigationLink2D]).
+
+- link_entry_position: If owner is available and the owner is a [NavigationLink2D], it will contain the global position of the link's point the agent is entering.
+
+- link_exit_position: If owner is available and the owner is a [NavigationLink2D], it will contain the global position of the link's point which the agent is exiting.
+
+[NavigationLink2D]: https://pkg.go.dev/graphics.gd/classdb/NavigationLink2D
+[PathDesiredDistance]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.PathDesiredDistance
+[PathMetadataFlags]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.PathMetadataFlags
+[Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
+*/
 func (self Instance) OnLinkReached(cb func(details map[any]any), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1307,6 +1538,13 @@ func (self class) LinkReached() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`LinkReached`))))
 }
 
+/*
+Signals that the agent's navigation has finished. If the target is reachable, navigation ends when the target is reached. If the target is unreachable, navigation ends when the last waypoint of the path is reached. This signal is emitted only once per loaded path.
+
+This signal will be emitted just after [OnTargetReached] when the target is reachable.
+
+[OnTargetReached]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.OnTargetReached
+*/
 func (self Instance) OnNavigationFinished(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -1319,6 +1557,11 @@ func (self class) NavigationFinished() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`NavigationFinished`))))
 }
 
+/*
+Notifies when the collision avoidance velocity is calculated. Emitted every update as long as [AvoidanceEnabled] is true and the agent has a navigation map.
+
+[AvoidanceEnabled]: https://pkg.go.dev/graphics.gd/classdb/NavigationAgent2D#Instance.AvoidanceEnabled
+*/
 func (self Instance) OnVelocityComputed(cb func(safe_velocity Vector2.XY), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

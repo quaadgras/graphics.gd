@@ -334,50 +334,88 @@ func New() Instance {
 	return casted
 }
 
+/*
+The display refresh rate for the current HMD. Only functional if this feature is supported by the OpenXR runtime and after the interface has been initialized.
+*/
 func (self Instance) DisplayRefreshRate() Float.X {
 	return Float.X(Float.X(class(self).GetDisplayRefreshRate()))
 }
 
+// SetDisplayRefreshRate sets the property returned by [GetDisplayRefreshRate].
 func (self Instance) SetDisplayRefreshRate(value Float.X) {
 	class(self).SetDisplayRefreshRate(float64(value))
 }
 
+/*
+The render size multiplier for the current HMD. Must be set before the interface has been initialized.
+*/
 func (self Instance) RenderTargetSizeMultiplier() Float.X {
 	return Float.X(Float.X(class(self).GetRenderTargetSizeMultiplier()))
 }
 
+// SetRenderTargetSizeMultiplier sets the property returned by [GetRenderTargetSizeMultiplier].
 func (self Instance) SetRenderTargetSizeMultiplier(value Float.X) {
 	class(self).SetRenderTargetSizeMultiplier(float64(value))
 }
 
+/*
+Set foveation level from 0 (off) to 3 (high), the interface must be initialized before this is accessible.
+
+Note: Only works on the Compatibility renderer.
+*/
 func (self Instance) FoveationLevel() int {
 	return int(int(class(self).GetFoveationLevel()))
 }
 
+// SetFoveationLevel sets the property returned by [GetFoveationLevel].
 func (self Instance) SetFoveationLevel(value int) {
 	class(self).SetFoveationLevel(int64(value))
 }
 
+/*
+Enable dynamic foveation adjustment, the interface must be initialized before this is accessible. If enabled foveation will automatically adjusted between low and [FoveationLevel].
+
+Note: Only works on the Compatibility renderer.
+
+[FoveationLevel]: https://pkg.go.dev/graphics.gd/classdb/OpenXRInterface#Instance.FoveationLevel
+*/
 func (self Instance) FoveationDynamic() bool {
 	return bool(class(self).GetFoveationDynamic())
 }
 
+// SetFoveationDynamic sets the property returned by [GetFoveationDynamic].
 func (self Instance) SetFoveationDynamic(value bool) {
 	class(self).SetFoveationDynamic(value)
 }
 
+/*
+The minimum radius around the focal point where full quality is guaranteed if VRS is used as a percentage of screen size.
+
+Note: Mobile and Forward+ renderers only. Requires [Viewport.VrsMode] to be set to [Viewport.VrsXr].
+
+[Viewport.VrsMode]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.VrsMode
+*/
 func (self Instance) VrsMinRadius() Float.X {
 	return Float.X(Float.X(class(self).GetVrsMinRadius()))
 }
 
+// SetVrsMinRadius sets the property returned by [GetVrsMinRadius].
 func (self Instance) SetVrsMinRadius(value Float.X) {
 	class(self).SetVrsMinRadius(float64(value))
 }
 
+/*
+The strength used to calculate the VRS density map. The greater this value, the more noticeable VRS is. This improves performance at the cost of quality.
+
+Note: Mobile and Forward+ renderers only. Requires [Viewport.VrsMode] to be set to [Viewport.VrsXr].
+
+[Viewport.VrsMode]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.VrsMode
+*/
 func (self Instance) VrsStrength() Float.X {
 	return Float.X(Float.X(class(self).GetVrsStrength()))
 }
 
+// SetVrsStrength sets the property returned by [GetVrsStrength].
 func (self Instance) SetVrsStrength(value Float.X) {
 	class(self).SetVrsStrength(float64(value))
 }
@@ -685,6 +723,10 @@ Sets the GPU performance level of the OpenXR device.
 func (self class) SetGpuLevel(level PerfSettingsLevel) { //gd:OpenXRInterface.set_gpu_level
 	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gpu_level, 0|(gdextension.SizeInt<<4), &struct{ level PerfSettingsLevel }{level})
 }
+
+/*
+Informs our OpenXR session has been started.
+*/
 func (self Instance) OnSessionBegun(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -697,6 +739,9 @@ func (self class) SessionBegun() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionBegun`))))
 }
 
+/*
+Informs our OpenXR session is stopping.
+*/
 func (self Instance) OnSessionStopping(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -709,6 +754,9 @@ func (self class) SessionStopping() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionStopping`))))
 }
 
+/*
+Informs our OpenXR session has been synchronized.
+*/
 func (self Instance) OnSessionSynchronized(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -721,6 +769,9 @@ func (self class) SessionSynchronized() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionSynchronized`))))
 }
 
+/*
+Informs our OpenXR session now has focus, for example output is sent to the HMD and we're receiving XR input.
+*/
 func (self Instance) OnSessionFocussed(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -733,6 +784,9 @@ func (self class) SessionFocussed() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionFocussed`))))
 }
 
+/*
+Informs our OpenXR session is now visible, for example output is sent to the HMD but we don't receive XR input.
+*/
 func (self Instance) OnSessionVisible(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -745,6 +799,9 @@ func (self class) SessionVisible() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionVisible`))))
 }
 
+/*
+Informs our OpenXR session is in the process of being lost.
+*/
 func (self Instance) OnSessionLossPending(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -757,6 +814,9 @@ func (self class) SessionLossPending() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`SessionLossPending`))))
 }
 
+/*
+Informs our OpenXR instance is exiting.
+*/
 func (self Instance) OnInstanceExiting(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -769,6 +829,9 @@ func (self class) InstanceExiting() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`InstanceExiting`))))
 }
 
+/*
+Informs the user queued a recenter of the player position.
+*/
 func (self Instance) OnPoseRecentered(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -781,6 +844,11 @@ func (self class) PoseRecentered() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PoseRecentered`))))
 }
 
+/*
+Informs the user the HMD refresh rate has changed.
+
+Note: Only emitted if XR runtime supports the refresh rate extension.
+*/
 func (self Instance) OnRefreshRateChanged(cb func(refresh_rate Float.X), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -793,6 +861,9 @@ func (self class) RefreshRateChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`RefreshRateChanged`))))
 }
 
+/*
+Informs the device CPU performance level has changed in the specified subdomain.
+*/
 func (self Instance) OnCpuLevelChanged(cb func(sub_domain int, from_level int, to_level int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -805,6 +876,9 @@ func (self class) CpuLevelChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`CpuLevelChanged`))))
 }
 
+/*
+Informs the device GPU performance level has changed in the specified subdomain.
+*/
 func (self Instance) OnGpuLevelChanged(cb func(sub_domain int, from_level int, to_level int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

@@ -227,98 +227,146 @@ func New() Instance {
 	return casted
 }
 
+/*
+The currently selected color.
+*/
 func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetPickColor())
 }
 
+// SetColor sets the property returned by [GetPickColor].
 func (self Instance) SetColor(value Color.RGBA) {
 	class(self).SetPickColor(Color.RGBA(value))
 }
 
+/*
+If true, shows an alpha channel slider (opacity).
+*/
 func (self Instance) EditAlpha() bool {
 	return bool(class(self).IsEditingAlpha())
 }
 
+// SetEditAlpha sets the property returned by [IsEditingAlpha].
 func (self Instance) SetEditAlpha(value bool) {
 	class(self).SetEditAlpha(value)
 }
 
+/*
+If true, shows an intensity slider. The intensity is applied as follows: multiply the color by 2 ** intensity in linear RGB space, and then convert it back to sRGB.
+*/
 func (self Instance) EditIntensity() bool {
 	return bool(class(self).IsEditingIntensity())
 }
 
+// SetEditIntensity sets the property returned by [IsEditingIntensity].
 func (self Instance) SetEditIntensity(value bool) {
 	class(self).SetEditIntensity(value)
 }
 
+/*
+The currently selected color mode.
+*/
 func (self Instance) ColorMode() ColorModeType {
 	return ColorModeType(class(self).GetColorMode())
 }
 
+// SetColorMode sets the property returned by [GetColorMode].
 func (self Instance) SetColorMode(value ColorModeType) {
 	class(self).SetColorMode(value)
 }
 
+/*
+If true, the color will apply only after the user releases the mouse button, otherwise it will apply immediately even in mouse motion event (which can cause performance issues).
+*/
 func (self Instance) DeferredMode() bool {
 	return bool(class(self).IsDeferredMode())
 }
 
+// SetDeferredMode sets the property returned by [IsDeferredMode].
 func (self Instance) SetDeferredMode(value bool) {
 	class(self).SetDeferredMode(value)
 }
 
+/*
+The shape of the color space view.
+*/
 func (self Instance) PickerShape() PickerShapeType {
 	return PickerShapeType(class(self).GetPickerShape())
 }
 
+// SetPickerShape sets the property returned by [GetPickerShape].
 func (self Instance) SetPickerShape(value PickerShapeType) {
 	class(self).SetPickerShape(value)
 }
 
+/*
+If true, it's possible to add presets under Swatches. If false, the button to add presets is disabled.
+*/
 func (self Instance) CanAddSwatches() bool {
 	return bool(class(self).AreSwatchesEnabled())
 }
 
+// SetCanAddSwatches sets the property returned by [AreSwatchesEnabled].
 func (self Instance) SetCanAddSwatches(value bool) {
 	class(self).SetCanAddSwatches(value)
 }
 
+/*
+If true, the color sampler and color preview are visible.
+*/
 func (self Instance) SamplerVisible() bool {
 	return bool(class(self).IsSamplerVisible())
 }
 
+// SetSamplerVisible sets the property returned by [IsSamplerVisible].
 func (self Instance) SetSamplerVisible(value bool) {
 	class(self).SetSamplerVisible(value)
 }
 
+/*
+If true, the color mode buttons are visible.
+*/
 func (self Instance) ColorModesVisible() bool {
 	return bool(class(self).AreModesVisible())
 }
 
+// SetColorModesVisible sets the property returned by [AreModesVisible].
 func (self Instance) SetColorModesVisible(value bool) {
 	class(self).SetModesVisible(value)
 }
 
+/*
+If true, the color sliders are visible.
+*/
 func (self Instance) SlidersVisible() bool {
 	return bool(class(self).AreSlidersVisible())
 }
 
+// SetSlidersVisible sets the property returned by [AreSlidersVisible].
 func (self Instance) SetSlidersVisible(value bool) {
 	class(self).SetSlidersVisible(value)
 }
 
+/*
+If true, the hex color code input field is visible.
+*/
 func (self Instance) HexVisible() bool {
 	return bool(class(self).IsHexVisible())
 }
 
+// SetHexVisible sets the property returned by [IsHexVisible].
 func (self Instance) SetHexVisible(value bool) {
 	class(self).SetHexVisible(value)
 }
 
+/*
+If true, the Swatches and Recent Colors presets are visible.
+*/
 func (self Instance) PresetsVisible() bool {
 	return bool(class(self).ArePresetsVisible())
 }
 
+// SetPresetsVisible sets the property returned by [ArePresetsVisible].
 func (self Instance) SetPresetsVisible(value bool) {
 	class(self).SetPresetsVisible(value)
 }
@@ -522,6 +570,10 @@ func (self class) GetPickerShape() PickerShapeType { //gd:ColorPicker.get_picker
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when the color is changed.
+*/
 func (self Instance) OnColorChanged(cb func(color Color.RGBA), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -534,6 +586,9 @@ func (self class) ColorChanged() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`ColorChanged`))))
 }
 
+/*
+Emitted when a preset is added.
+*/
 func (self Instance) OnPresetAdded(cb func(color Color.RGBA), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {
@@ -546,6 +601,9 @@ func (self class) PresetAdded() Signal.Any {
 	return Signal.Via(gd.SignalProxy{}, pointers.Pack(gd.NewSignalOf(self.AsObject(), gd.NewStringName(`PresetAdded`))))
 }
 
+/*
+Emitted when a preset is removed.
+*/
 func (self Instance) OnPresetRemoved(cb func(color Color.RGBA), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

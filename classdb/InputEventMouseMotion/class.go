@@ -168,58 +168,116 @@ func New() Instance {
 	return casted
 }
 
+/*
+Represents the angles of tilt of the pen. Positive X-coordinate value indicates a tilt to the right. Positive Y-coordinate value indicates a tilt toward the user. Ranges from -1.0 to 1.0 for both axes.
+*/
 func (self Instance) Tilt() Vector2.XY {
 	return Vector2.XY(class(self).GetTilt())
 }
 
+// SetTilt sets the property returned by [GetTilt].
 func (self Instance) SetTilt(value Vector2.XY) {
 	class(self).SetTilt(Vector2.XY(value))
 }
 
+/*
+Represents the pressure the user puts on the pen. Ranges from 0.0 to 1.0.
+*/
 func (self Instance) Pressure() Float.X {
 	return Float.X(Float.X(class(self).GetPressure()))
 }
 
+// SetPressure sets the property returned by [GetPressure].
 func (self Instance) SetPressure(value Float.X) {
 	class(self).SetPressure(float64(value))
 }
 
+/*
+Returns true when using the eraser end of a stylus pen.
+
+Note: This property is implemented on Linux, macOS and Windows.
+*/
 func (self Instance) PenInverted() bool {
 	return bool(class(self).GetPenInverted())
 }
 
+// SetPenInverted sets the property returned by [GetPenInverted].
 func (self Instance) SetPenInverted(value bool) {
 	class(self).SetPenInverted(value)
 }
 
+/*
+The mouse position relative to the previous position (position at the last frame).
+
+Note: Since [InputEventMouseMotion] may only be emitted when the mouse moves, it is not possible to reliably detect when the mouse has stopped moving by checking this property. A separate, short timer may be necessary.
+
+Note: [Relative] is automatically scaled according to the content scale factor, which is defined by the project's stretch mode settings. This means mouse sensitivity will appear different depending on resolution when using [Relative] in a script that handles mouse aiming with the [Input.MouseModeCaptured] mouse mode. To avoid this, use [ScreenRelative] instead.
+
+[InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
+[Relative]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.Relative
+[ScreenRelative]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.ScreenRelative
+*/
 func (self Instance) Relative() Vector2.XY {
 	return Vector2.XY(class(self).GetRelative())
 }
 
+// SetRelative sets the property returned by [GetRelative].
 func (self Instance) SetRelative(value Vector2.XY) {
 	class(self).SetRelative(Vector2.XY(value))
 }
 
+/*
+The unscaled mouse position relative to the previous position in the coordinate system of the screen (position at the last frame).
+
+Note: Since [InputEventMouseMotion] may only be emitted when the mouse moves, it is not possible to reliably detect when the mouse has stopped moving by checking this property. A separate, short timer may be necessary.
+
+Note: This coordinate is not scaled according to the content scale factor or calls to [InputEvent.XformedBy]. This should be preferred over [Relative] for mouse aiming when using the [Input.MouseModeCaptured] mouse mode, regardless of the project's stretch mode.
+
+[InputEvent.XformedBy]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.XformedBy
+[InputEventMouseMotion]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion
+[Relative]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.Relative
+*/
 func (self Instance) ScreenRelative() Vector2.XY {
 	return Vector2.XY(class(self).GetScreenRelative())
 }
 
+// SetScreenRelative sets the property returned by [GetScreenRelative].
 func (self Instance) SetScreenRelative(value Vector2.XY) {
 	class(self).SetScreenRelative(Vector2.XY(value))
 }
 
+/*
+The mouse velocity in pixels per second.
+
+Note: [Velocity] is automatically scaled according to the content scale factor, which is defined by the project's stretch mode settings. That means mouse sensitivity may appear different depending on resolution.
+
+Note: Use [ScreenRelative] for mouse aiming using the [Input.MouseModeCaptured] mouse mode.
+
+[ScreenRelative]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.ScreenRelative
+[Velocity]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.Velocity
+*/
 func (self Instance) Velocity() Vector2.XY {
 	return Vector2.XY(class(self).GetVelocity())
 }
 
+// SetVelocity sets the property returned by [GetVelocity].
 func (self Instance) SetVelocity(value Vector2.XY) {
 	class(self).SetVelocity(Vector2.XY(value))
 }
 
+/*
+The unscaled mouse velocity in pixels per second in screen coordinates. This velocity is not scaled according to the content scale factor or calls to [InputEvent.XformedBy].
+
+Note: Use [ScreenRelative] for mouse aiming using the [Input.MouseModeCaptured] mouse mode.
+
+[InputEvent.XformedBy]: https://pkg.go.dev/graphics.gd/classdb/InputEvent#Instance.XformedBy
+[ScreenRelative]: https://pkg.go.dev/graphics.gd/classdb/InputEventMouseMotion#Instance.ScreenRelative
+*/
 func (self Instance) ScreenVelocity() Vector2.XY {
 	return Vector2.XY(class(self).GetScreenVelocity())
 }
 
+// SetScreenVelocity sets the property returned by [GetScreenVelocity].
 func (self Instance) SetScreenVelocity(value Vector2.XY) {
 	class(self).SetScreenVelocity(Vector2.XY(value))
 }

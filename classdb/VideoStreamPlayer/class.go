@@ -230,98 +230,148 @@ func New() Instance {
 	return casted
 }
 
+/*
+The embedded audio track to play.
+*/
 func (self Instance) AudioTrack() int {
 	return int(int(class(self).GetAudioTrack()))
 }
 
+// SetAudioTrack sets the property returned by [GetAudioTrack].
 func (self Instance) SetAudioTrack(value int) {
 	class(self).SetAudioTrack(int64(value))
 }
 
+/*
+The assigned video stream. See description for supported formats.
+*/
 func (self Instance) Stream() VideoStream.Instance {
 	return VideoStream.Instance(class(self).GetStream())
 }
 
+// SetStream sets the property returned by [GetStream].
 func (self Instance) SetStream(value VideoStream.Instance) {
 	class(self).SetStream(value)
 }
 
+/*
+Audio volume in dB.
+*/
 func (self Instance) VolumeDb() Float.X {
 	return Float.X(Float.X(class(self).GetVolumeDb()))
 }
 
+// SetVolumeDb sets the property returned by [GetVolumeDb].
 func (self Instance) SetVolumeDb(value Float.X) {
 	class(self).SetVolumeDb(float64(value))
 }
 
+/*
+Audio volume as a linear value.
+*/
 func (self Instance) Volume() Float.X {
 	return Float.X(Float.X(class(self).GetVolume()))
 }
 
+// SetVolume sets the property returned by [GetVolume].
 func (self Instance) SetVolume(value Float.X) {
 	class(self).SetVolume(float64(value))
 }
 
+/*
+The stream's current speed scale. 1.0 is the normal speed, while 2.0 is double speed and 0.5 is half speed. A speed scale of 0.0 pauses the video, similar to setting [Paused] to true.
+
+[Paused]: https://pkg.go.dev/graphics.gd/classdb/VideoStreamPlayer#Instance.Paused
+*/
 func (self Instance) SpeedScale() Float.X {
 	return Float.X(Float.X(class(self).GetSpeedScale()))
 }
 
+// SetSpeedScale sets the property returned by [GetSpeedScale].
 func (self Instance) SetSpeedScale(value Float.X) {
 	class(self).SetSpeedScale(float64(value))
 }
 
+/*
+If true, playback starts when the scene loads.
+*/
 func (self Instance) Autoplay() bool {
 	return bool(class(self).HasAutoplay())
 }
 
+// SetAutoplay sets the property returned by [HasAutoplay].
 func (self Instance) SetAutoplay(value bool) {
 	class(self).SetAutoplay(value)
 }
 
+/*
+If true, the video is paused.
+*/
 func (self Instance) Paused() bool {
 	return bool(class(self).IsPaused())
 }
 
+// SetPaused sets the property returned by [IsPaused].
 func (self Instance) SetPaused(value bool) {
 	class(self).SetPaused(value)
 }
 
+/*
+If true, the video scales to the control size. Otherwise, the control minimum size will be automatically adjusted to match the video stream's dimensions.
+*/
 func (self Instance) Expand() bool {
 	return bool(class(self).HasExpand())
 }
 
+// SetExpand sets the property returned by [HasExpand].
 func (self Instance) SetExpand(value bool) {
 	class(self).SetExpand(value)
 }
 
+/*
+If true, the video restarts when it reaches its end.
+*/
 func (self Instance) Loop() bool {
 	return bool(class(self).HasLoop())
 }
 
+// SetLoop sets the property returned by [HasLoop].
 func (self Instance) SetLoop(value bool) {
 	class(self).SetLoop(value)
 }
 
+/*
+Amount of time in milliseconds to store in buffer while playing.
+*/
 func (self Instance) BufferingMsec() int {
 	return int(int(class(self).GetBufferingMsec()))
 }
 
+// SetBufferingMsec sets the property returned by [GetBufferingMsec].
 func (self Instance) SetBufferingMsec(value int) {
 	class(self).SetBufferingMsec(int64(value))
 }
 
+/*
+The current position of the stream, in seconds.
+*/
 func (self Instance) StreamPosition() Float.X {
 	return Float.X(Float.X(class(self).GetStreamPosition()))
 }
 
+// SetStreamPosition sets the property returned by [GetStreamPosition].
 func (self Instance) SetStreamPosition(value Float.X) {
 	class(self).SetStreamPosition(float64(value))
 }
 
+/*
+Audio bus to use for sound playback.
+*/
 func (self Instance) Bus() string {
 	return string(class(self).GetBus().String())
 }
 
+// SetBus sets the property returned by [GetBus].
 func (self Instance) SetBus(value string) {
 	class(self).SetBus(String.Name(String.New(value)))
 }
@@ -531,6 +581,10 @@ func (self class) GetVideoTexture() [1]gdclass.Texture2D { //gd:VideoStreamPlaye
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
+
+/*
+Emitted when playback is finished.
+*/
 func (self Instance) OnFinished(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

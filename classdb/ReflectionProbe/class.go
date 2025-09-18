@@ -193,122 +193,232 @@ func New() Instance {
 	return casted
 }
 
+/*
+Sets how frequently the [ReflectionProbe] is updated. Can be [UpdateOnce] or [UpdateAlways].
+
+[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
+*/
 func (self Instance) UpdateMode() UpdateMode {
 	return UpdateMode(class(self).GetUpdateMode())
 }
 
+// SetUpdateMode sets the property returned by [GetUpdateMode].
 func (self Instance) SetUpdateMode(value UpdateMode) {
 	class(self).SetUpdateMode(value)
 }
 
+/*
+Defines the reflection intensity. Intensity modulates the strength of the reflection.
+*/
 func (self Instance) Intensity() Float.X {
 	return Float.X(Float.X(class(self).GetIntensity()))
 }
 
+// SetIntensity sets the property returned by [GetIntensity].
 func (self Instance) SetIntensity(value Float.X) {
 	class(self).SetIntensity(float64(value))
 }
 
+/*
+Defines the distance in meters over which a probe blends into the scene.
+*/
 func (self Instance) BlendDistance() Float.X {
 	return Float.X(Float.X(class(self).GetBlendDistance()))
 }
 
+// SetBlendDistance sets the property returned by [GetBlendDistance].
 func (self Instance) SetBlendDistance(value Float.X) {
 	class(self).SetBlendDistance(float64(value))
 }
 
+/*
+The maximum distance away from the [ReflectionProbe] an object can be before it is culled. Decrease this to improve performance, especially when using the [UpdateAlways] [UpdateMode].
+
+Note: The maximum reflection distance is always at least equal to the probe's extents. This means that decreasing [MaxDistance] will not always cull objects from reflections, especially if the reflection probe's box defined by its [Size] is already large.
+
+[MaxDistance]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.MaxDistance
+[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
+[Size]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Size
+[UpdateMode]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.UpdateMode
+*/
 func (self Instance) MaxDistance() Float.X {
 	return Float.X(Float.X(class(self).GetMaxDistance()))
 }
 
+// SetMaxDistance sets the property returned by [GetMaxDistance].
 func (self Instance) SetMaxDistance(value Float.X) {
 	class(self).SetMaxDistance(float64(value))
 }
 
+/*
+The size of the reflection probe. The larger the size, the more space covered by the probe, which will lower the perceived resolution. It is best to keep the size only as large as you need it.
+
+Note: To better fit areas that are not aligned to the grid, you can rotate the [ReflectionProbe] node.
+
+[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
+*/
 func (self Instance) Size() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetSize())
 }
 
+// SetSize sets the property returned by [GetSize].
 func (self Instance) SetSize(value Vector3.XYZ) {
 	class(self).SetSize(Vector3.XYZ(value))
 }
 
+/*
+Sets the origin offset to be used when this [ReflectionProbe] is in [BoxProjection] mode. This can be set to a non-zero value to ensure a reflection fits a rectangle-shaped room, while reducing the number of objects that "get in the way" of the reflection.
+
+[BoxProjection]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.BoxProjection
+[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
+*/
 func (self Instance) OriginOffset() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetOriginOffset())
 }
 
+// SetOriginOffset sets the property returned by [GetOriginOffset].
 func (self Instance) SetOriginOffset(value Vector3.XYZ) {
 	class(self).SetOriginOffset(Vector3.XYZ(value))
 }
 
+/*
+If true, enables box projection. This makes reflections look more correct in rectangle-shaped rooms by offsetting the reflection center depending on the camera's location.
+
+Note: To better fit rectangle-shaped rooms that are not aligned to the grid, you can rotate the [ReflectionProbe] node.
+
+[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
+*/
 func (self Instance) BoxProjection() bool {
 	return bool(class(self).IsBoxProjectionEnabled())
 }
 
+// SetBoxProjection sets the property returned by [IsBoxProjectionEnabled].
 func (self Instance) SetBoxProjection(value bool) {
 	class(self).SetEnableBoxProjection(value)
 }
 
+/*
+If true, reflections will ignore sky contribution.
+*/
 func (self Instance) Interior() bool {
 	return bool(class(self).IsSetAsInterior())
 }
 
+// SetInterior sets the property returned by [IsSetAsInterior].
 func (self Instance) SetInterior(value bool) {
 	class(self).SetAsInterior(value)
 }
 
+/*
+If true, computes shadows in the reflection probe. This makes the reflection probe slower to render; you may want to disable this if using the [UpdateAlways] [UpdateMode].
+
+[UpdateMode]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.UpdateMode
+*/
 func (self Instance) EnableShadows() bool {
 	return bool(class(self).AreShadowsEnabled())
 }
 
+// SetEnableShadows sets the property returned by [AreShadowsEnabled].
 func (self Instance) SetEnableShadows(value bool) {
 	class(self).SetEnableShadows(value)
 }
 
+/*
+Sets the cull mask which determines what objects are drawn by this probe. Every [VisualInstance3D] with a layer included in this cull mask will be rendered by the probe. It is best to only include large objects which are likely to take up a lot of space in the reflection in order to save on rendering cost.
+
+This can also be used to prevent an object from reflecting upon itself (for instance, a [ReflectionProbe] centered on a vehicle).
+
+[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
+[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
+*/
 func (self Instance) CullMask() int {
 	return int(int(class(self).GetCullMask()))
 }
 
+// SetCullMask sets the property returned by [GetCullMask].
 func (self Instance) SetCullMask(value int) {
 	class(self).SetCullMask(int64(value))
 }
 
+/*
+Sets the reflection mask which determines what objects have reflections applied from this probe. Every [VisualInstance3D] with a layer included in this reflection mask will have reflections applied from this probe. See also [CullMask], which can be used to exclude objects from appearing in the reflection while still making them affected by the [ReflectionProbe].
+
+[CullMask]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.CullMask
+[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
+[VisualInstance3D]: https://pkg.go.dev/graphics.gd/classdb/VisualInstance3D
+*/
 func (self Instance) ReflectionMask() int {
 	return int(int(class(self).GetReflectionMask()))
 }
 
+// SetReflectionMask sets the property returned by [GetReflectionMask].
 func (self Instance) SetReflectionMask(value int) {
 	class(self).SetReflectionMask(int64(value))
 }
 
+/*
+The automatic LOD bias to use for meshes rendered within the [ReflectionProbe] (this is analog to [Viewport.MeshLodThreshold]). Higher values will use less detailed versions of meshes that have LOD variations generated. If set to 0.0, automatic LOD is disabled. Increase [MeshLodThreshold] to improve performance at the cost of geometry detail, especially when using the [UpdateAlways] [UpdateMode].
+
+Note: [MeshLodThreshold] does not affect [GeometryInstance3D] visibility ranges (also known as "manual" LOD or hierarchical LOD).
+
+[GeometryInstance3D]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D
+[MeshLodThreshold]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.MeshLodThreshold
+[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
+[UpdateMode]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.UpdateMode
+[Viewport.MeshLodThreshold]: https://pkg.go.dev/graphics.gd/classdb/Viewport#Instance.MeshLodThreshold
+*/
 func (self Instance) MeshLodThreshold() Float.X {
 	return Float.X(Float.X(class(self).GetMeshLodThreshold()))
 }
 
+// SetMeshLodThreshold sets the property returned by [GetMeshLodThreshold].
 func (self Instance) SetMeshLodThreshold(value Float.X) {
 	class(self).SetMeshLodThreshold(float64(value))
 }
 
+/*
+The ambient color to use within the [ReflectionProbe]'s box defined by its [Size]. The ambient color will smoothly blend with other [ReflectionProbe]s and the rest of the scene (outside the [ReflectionProbe]'s box defined by its [Size]).
+
+[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
+[Size]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Size
+*/
 func (self Instance) AmbientMode() AmbientMode {
 	return AmbientMode(class(self).GetAmbientMode())
 }
 
+// SetAmbientMode sets the property returned by [GetAmbientMode].
 func (self Instance) SetAmbientMode(value AmbientMode) {
 	class(self).SetAmbientMode(value)
 }
 
+/*
+The custom ambient color to use within the [ReflectionProbe]'s box defined by its [Size]. Only effective if [AmbientMode] is [AmbientColor].
+
+[AmbientMode]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.AmbientMode
+[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
+[Size]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Size
+*/
 func (self Instance) AmbientColor() Color.RGBA {
 	return Color.RGBA(class(self).GetAmbientColor())
 }
 
+// SetAmbientColor sets the property returned by [GetAmbientColor].
 func (self Instance) SetAmbientColor(value Color.RGBA) {
 	class(self).SetAmbientColor(Color.RGBA(value))
 }
 
+/*
+The custom ambient color energy to use within the [ReflectionProbe]'s box defined by its [Size]. Only effective if [AmbientMode] is [AmbientColor].
+
+[AmbientMode]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.AmbientMode
+[ReflectionProbe]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe
+[Size]: https://pkg.go.dev/graphics.gd/classdb/ReflectionProbe#Instance.Size
+*/
 func (self Instance) AmbientColorEnergy() Float.X {
 	return Float.X(Float.X(class(self).GetAmbientColorEnergy()))
 }
 
+// SetAmbientColorEnergy sets the property returned by [GetAmbientColorEnergy].
 func (self Instance) SetAmbientColorEnergy(value Float.X) {
 	class(self).SetAmbientColorEnergy(float64(value))
 }

@@ -172,90 +172,150 @@ func New() Instance {
 	return casted
 }
 
+/*
+Controls the strength of the [Rayleigh scattering]. Rayleigh scattering results from light colliding with small particles. It is responsible for the blue color of the sky.
+
+[Rayleigh scattering]: https://en.wikipedia.org/wiki/Rayleigh_scattering
+*/
 func (self Instance) RayleighCoefficient() Float.X {
 	return Float.X(Float.X(class(self).GetRayleighCoefficient()))
 }
 
+// SetRayleighCoefficient sets the property returned by [GetRayleighCoefficient].
 func (self Instance) SetRayleighCoefficient(value Float.X) {
 	class(self).SetRayleighCoefficient(float64(value))
 }
 
+/*
+Controls the [Color.RGBA] of the [Rayleigh scattering]. While not physically accurate, this allows for the creation of alien-looking planets. For example, setting this to a red [Color.RGBA] results in a Mars-looking atmosphere with a corresponding blue sunset.
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[Rayleigh scattering]: https://en.wikipedia.org/wiki/Rayleigh_scattering
+*/
 func (self Instance) RayleighColor() Color.RGBA {
 	return Color.RGBA(class(self).GetRayleighColor())
 }
 
+// SetRayleighColor sets the property returned by [GetRayleighColor].
 func (self Instance) SetRayleighColor(value Color.RGBA) {
 	class(self).SetRayleighColor(Color.RGBA(value))
 }
 
+/*
+Controls the strength of [Mie scattering] for the sky. Mie scattering results from light colliding with larger particles (like water). On earth, Mie scattering results in a whitish color around the sun and horizon.
+
+[Mie scattering]: https://en.wikipedia.org/wiki/Mie_scattering
+*/
 func (self Instance) MieCoefficient() Float.X {
 	return Float.X(Float.X(class(self).GetMieCoefficient()))
 }
 
+// SetMieCoefficient sets the property returned by [GetMieCoefficient].
 func (self Instance) SetMieCoefficient(value Float.X) {
 	class(self).SetMieCoefficient(float64(value))
 }
 
+/*
+Controls the direction of the [Mie scattering]. A value of 1 means that when light hits a particle it's passing through straight forward. A value of -1 means that all light is scatter backwards.
+
+[Mie scattering]: https://en.wikipedia.org/wiki/Mie_scattering
+*/
 func (self Instance) MieEccentricity() Float.X {
 	return Float.X(Float.X(class(self).GetMieEccentricity()))
 }
 
+// SetMieEccentricity sets the property returned by [GetMieEccentricity].
 func (self Instance) SetMieEccentricity(value Float.X) {
 	class(self).SetMieEccentricity(float64(value))
 }
 
+/*
+Controls the [Color.RGBA] of the [Mie scattering] effect. While not physically accurate, this allows for the creation of alien-looking planets.
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+[Mie scattering]: https://en.wikipedia.org/wiki/Mie_scattering
+*/
 func (self Instance) MieColor() Color.RGBA {
 	return Color.RGBA(class(self).GetMieColor())
 }
 
+// SetMieColor sets the property returned by [GetMieColor].
 func (self Instance) SetMieColor(value Color.RGBA) {
 	class(self).SetMieColor(Color.RGBA(value))
 }
 
+/*
+Sets the thickness of the atmosphere. High turbidity creates a foggy-looking atmosphere, while a low turbidity results in a clearer atmosphere.
+*/
 func (self Instance) Turbidity() Float.X {
 	return Float.X(Float.X(class(self).GetTurbidity()))
 }
 
+// SetTurbidity sets the property returned by [GetTurbidity].
 func (self Instance) SetTurbidity(value Float.X) {
 	class(self).SetTurbidity(float64(value))
 }
 
+/*
+Sets the size of the sun disk. Default value is based on Sol's perceived size from Earth.
+*/
 func (self Instance) SunDiskScale() Float.X {
 	return Float.X(Float.X(class(self).GetSunDiskScale()))
 }
 
+// SetSunDiskScale sets the property returned by [GetSunDiskScale].
 func (self Instance) SetSunDiskScale(value Float.X) {
 	class(self).SetSunDiskScale(float64(value))
 }
 
+/*
+Modulates the [Color.RGBA] on the bottom half of the sky to represent the ground.
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+*/
 func (self Instance) GroundColor() Color.RGBA {
 	return Color.RGBA(class(self).GetGroundColor())
 }
 
+// SetGroundColor sets the property returned by [GetGroundColor].
 func (self Instance) SetGroundColor(value Color.RGBA) {
 	class(self).SetGroundColor(Color.RGBA(value))
 }
 
+/*
+The sky's overall brightness multiplier. Higher values result in a brighter sky.
+*/
 func (self Instance) EnergyMultiplier() Float.X {
 	return Float.X(Float.X(class(self).GetEnergyMultiplier()))
 }
 
+// SetEnergyMultiplier sets the property returned by [GetEnergyMultiplier].
 func (self Instance) SetEnergyMultiplier(value Float.X) {
 	class(self).SetEnergyMultiplier(float64(value))
 }
 
+/*
+If true, enables debanding. Debanding adds a small amount of noise which helps reduce banding that appears from the smooth changes in color in the sky.
+*/
 func (self Instance) UseDebanding() bool {
 	return bool(class(self).GetUseDebanding())
 }
 
+// SetUseDebanding sets the property returned by [GetUseDebanding].
 func (self Instance) SetUseDebanding(value bool) {
 	class(self).SetUseDebanding(value)
 }
 
+/*
+[Texture2D] for the night sky. This is added to the sky, so if it is bright enough, it may be visible during the day.
+
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
 func (self Instance) NightSky() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetNightSky())
 }
 
+// SetNightSky sets the property returned by [GetNightSky].
 func (self Instance) SetNightSky(value Texture2D.Instance) {
 	class(self).SetNightSky(value)
 }

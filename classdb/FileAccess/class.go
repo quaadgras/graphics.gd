@@ -944,10 +944,19 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the file is read with big-endian [endianness]. If false, the file is read with little-endian endianness. If in doubt, leave this to false as most files are written with little-endian endianness.
+
+Note: This is always reset to system endianness, which is little-endian on all supported platforms, whenever you open the file. Therefore, you must set [BigEndian] after opening the file, not before.
+
+[BigEndian]: https://pkg.go.dev/graphics.gd/classdb/FileAccess#Instance.BigEndian
+[endianness]: https://en.wikipedia.org/wiki/Endianness
+*/
 func (self Instance) BigEndian() bool {
 	return bool(class(self).IsBigEndian())
 }
 
+// SetBigEndian sets the property returned by [IsBigEndian].
 func (self Instance) SetBigEndian(value bool) {
 	class(self).SetBigEndian(value)
 }

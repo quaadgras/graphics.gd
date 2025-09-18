@@ -295,54 +295,81 @@ func New() Instance {
 	return casted
 }
 
+/*
+Sets the color for numbers.
+*/
 func (self Instance) NumberColor() Color.RGBA {
 	return Color.RGBA(class(self).GetNumberColor())
 }
 
+// SetNumberColor sets the property returned by [GetNumberColor].
 func (self Instance) SetNumberColor(value Color.RGBA) {
 	class(self).SetNumberColor(Color.RGBA(value))
 }
 
+/*
+Sets the color for symbols.
+*/
 func (self Instance) SymbolColor() Color.RGBA {
 	return Color.RGBA(class(self).GetSymbolColor())
 }
 
+// SetSymbolColor sets the property returned by [GetSymbolColor].
 func (self Instance) SetSymbolColor(value Color.RGBA) {
 	class(self).SetSymbolColor(Color.RGBA(value))
 }
 
+/*
+Sets color for functions. A function is a non-keyword string followed by a '('.
+*/
 func (self Instance) FunctionColor() Color.RGBA {
 	return Color.RGBA(class(self).GetFunctionColor())
 }
 
+// SetFunctionColor sets the property returned by [GetFunctionColor].
 func (self Instance) SetFunctionColor(value Color.RGBA) {
 	class(self).SetFunctionColor(Color.RGBA(value))
 }
 
+/*
+Sets color for member variables. A member variable is non-keyword, non-function string proceeded with a '.'.
+*/
 func (self Instance) MemberVariableColor() Color.RGBA {
 	return Color.RGBA(class(self).GetMemberVariableColor())
 }
 
+// SetMemberVariableColor sets the property returned by [GetMemberVariableColor].
 func (self Instance) SetMemberVariableColor(value Color.RGBA) {
 	class(self).SetMemberVariableColor(Color.RGBA(value))
 }
 
+/*
+Sets the keyword colors. All existing keywords will be removed. The data structure key is the keyword. The value is the keyword color.
+*/
 func (self Instance) KeywordColors() map[any]any {
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetKeywordColors()))
 }
 
+// SetKeywordColors sets the property returned by [GetKeywordColors].
 func (self Instance) SetKeywordColors(value map[any]any) {
 	class(self).SetKeywordColors(gd.DictionaryFromMap(value))
 }
 
+/*
+Sets the member keyword colors. All existing member keyword will be removed. The data structure key is the member keyword. The value is the member keyword color.
+*/
 func (self Instance) MemberKeywordColors() map[any]any {
 	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetMemberKeywordColors()))
 }
 
+// SetMemberKeywordColors sets the property returned by [GetMemberKeywordColors].
 func (self Instance) SetMemberKeywordColors(value map[any]any) {
 	class(self).SetMemberKeywordColors(gd.DictionaryFromMap(value))
 }
 
+/*
+Sets the color regions. All existing regions will be removed. The data structure key is the region start and end key, separated by a space. The value is the region color.
+*/
 func (self Instance) ColorRegions() map[string]struct {
 	R float32
 	G float32
@@ -362,6 +389,7 @@ func (self Instance) ColorRegions() map[string]struct {
 	}](class(self).GetColorRegions()))
 }
 
+// SetColorRegions sets the property returned by [GetColorRegions].
 func (self Instance) SetColorRegions(value map[string]struct {
 	R float32
 	G float32

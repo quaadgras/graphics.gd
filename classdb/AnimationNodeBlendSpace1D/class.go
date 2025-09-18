@@ -240,50 +240,80 @@ func New() Instance {
 	return casted
 }
 
+/*
+The blend space's axis's lower limit for the points' position. See [AddBlendPoint].
+
+[AddBlendPoint]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace1D#Instance.AddBlendPoint
+*/
 func (self Instance) MinSpace() Float.X {
 	return Float.X(Float.X(class(self).GetMinSpace()))
 }
 
+// SetMinSpace sets the property returned by [GetMinSpace].
 func (self Instance) SetMinSpace(value Float.X) {
 	class(self).SetMinSpace(float64(value))
 }
 
+/*
+The blend space's axis's upper limit for the points' position. See [AddBlendPoint].
+
+[AddBlendPoint]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeBlendSpace1D#Instance.AddBlendPoint
+*/
 func (self Instance) MaxSpace() Float.X {
 	return Float.X(Float.X(class(self).GetMaxSpace()))
 }
 
+// SetMaxSpace sets the property returned by [GetMaxSpace].
 func (self Instance) SetMaxSpace(value Float.X) {
 	class(self).SetMaxSpace(float64(value))
 }
 
+/*
+Position increment to snap to when moving a point on the axis.
+*/
 func (self Instance) Snap() Float.X {
 	return Float.X(Float.X(class(self).GetSnap()))
 }
 
+// SetSnap sets the property returned by [GetSnap].
 func (self Instance) SetSnap(value Float.X) {
 	class(self).SetSnap(float64(value))
 }
 
+/*
+Label of the virtual axis of the blend space.
+*/
 func (self Instance) ValueLabel() string {
 	return string(class(self).GetValueLabel().String())
 }
 
+// SetValueLabel sets the property returned by [GetValueLabel].
 func (self Instance) SetValueLabel(value string) {
 	class(self).SetValueLabel(String.New(value))
 }
 
+/*
+Controls the interpolation between animations.
+*/
 func (self Instance) BlendMode() BlendMode {
 	return BlendMode(class(self).GetBlendMode())
 }
 
+// SetBlendMode sets the property returned by [GetBlendMode].
 func (self Instance) SetBlendMode(value BlendMode) {
 	class(self).SetBlendMode(value)
 }
 
+/*
+If false, the blended animations' frame are stopped when the blend value is 0.
+
+If true, forcing the blended animations to advance frame.
+*/
 func (self Instance) Sync() bool {
 	return bool(class(self).IsUsingSync())
 }
 
+// SetSync sets the property returned by [IsUsingSync].
 func (self Instance) SetSync(value bool) {
 	class(self).SetUseSync(value)
 }

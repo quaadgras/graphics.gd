@@ -248,154 +248,261 @@ func New() Instance {
 	return casted
 }
 
+/*
+Particle lifetime randomness ratio. The equation for the lifetime of a particle is lifetime * (1.0 - randf() * lifetime_randomness). For example, a [LifetimeRandomness] of 0.4 scales the lifetime between 0.6 to 1.0 of its original value.
+
+[LifetimeRandomness]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.LifetimeRandomness
+*/
 func (self Instance) LifetimeRandomness() Float.X {
 	return Float.X(Float.X(class(self).GetLifetimeRandomness()))
 }
 
+// SetLifetimeRandomness sets the property returned by [GetLifetimeRandomness].
 func (self Instance) SetLifetimeRandomness(value Float.X) {
 	class(self).SetLifetimeRandomness(float64(value))
 }
 
+/*
+Align Y axis of particle with the direction of its velocity.
+*/
 func (self Instance) ParticleFlagAlignY() bool {
 	return bool(class(self).GetParticleFlag(0))
 }
 
+// SetParticleFlagAlignY sets the property returned by [GetParticleFlag].
 func (self Instance) SetParticleFlagAlignY(value bool) {
 	class(self).SetParticleFlag(0, value)
 }
 
+/*
+If true, particles rotate around Y axis by [AngleMin].
+
+[AngleMin]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.AngleMin
+*/
 func (self Instance) ParticleFlagRotateY() bool {
 	return bool(class(self).GetParticleFlag(1))
 }
 
+// SetParticleFlagRotateY sets the property returned by [GetParticleFlag].
 func (self Instance) SetParticleFlagRotateY(value bool) {
 	class(self).SetParticleFlag(1, value)
 }
 
+/*
+If true, particles will not move on the z axis.
+*/
 func (self Instance) ParticleFlagDisableZ() bool {
 	return bool(class(self).GetParticleFlag(2))
 }
 
+// SetParticleFlagDisableZ sets the property returned by [GetParticleFlag].
 func (self Instance) SetParticleFlagDisableZ(value bool) {
 	class(self).SetParticleFlag(2, value)
 }
 
+/*
+Changes the behavior of the damping properties from a linear deceleration to a deceleration based on speed percentage.
+*/
 func (self Instance) ParticleFlagDampingAsFriction() bool {
 	return bool(class(self).GetParticleFlag(3))
 }
 
+// SetParticleFlagDampingAsFriction sets the property returned by [GetParticleFlag].
 func (self Instance) SetParticleFlagDampingAsFriction(value bool) {
 	class(self).SetParticleFlag(3, value)
 }
 
+/*
+The offset for the [EmissionShape], in local space.
+
+[EmissionShape]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.EmissionShape
+*/
 func (self Instance) EmissionShapeOffset() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetEmissionShapeOffset())
 }
 
+// SetEmissionShapeOffset sets the property returned by [GetEmissionShapeOffset].
 func (self Instance) SetEmissionShapeOffset(value Vector3.XYZ) {
 	class(self).SetEmissionShapeOffset(Vector3.XYZ(value))
 }
 
+/*
+The scale of the [EmissionShape], in local space.
+
+[EmissionShape]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.EmissionShape
+*/
 func (self Instance) EmissionShapeScale() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetEmissionShapeScale())
 }
 
+// SetEmissionShapeScale sets the property returned by [GetEmissionShapeScale].
 func (self Instance) SetEmissionShapeScale(value Vector3.XYZ) {
 	class(self).SetEmissionShapeScale(Vector3.XYZ(value))
 }
 
+/*
+Particles will be emitted inside this region.
+*/
 func (self Instance) EmissionShape() EmissionShape {
 	return EmissionShape(class(self).GetEmissionShape())
 }
 
+// SetEmissionShape sets the property returned by [GetEmissionShape].
 func (self Instance) SetEmissionShape(value EmissionShape) {
 	class(self).SetEmissionShape(value)
 }
 
+/*
+The sphere's radius if [EmissionShape] is set to [EmissionShapeSphere].
+
+[EmissionShape]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.EmissionShape
+*/
 func (self Instance) EmissionSphereRadius() Float.X {
 	return Float.X(Float.X(class(self).GetEmissionSphereRadius()))
 }
 
+// SetEmissionSphereRadius sets the property returned by [GetEmissionSphereRadius].
 func (self Instance) SetEmissionSphereRadius(value Float.X) {
 	class(self).SetEmissionSphereRadius(float64(value))
 }
 
+/*
+The box's extents if [EmissionShape] is set to [EmissionShapeBox].
+
+Note: [EmissionBoxExtents] starts from the center point and applies the X, Y, and Z values in both directions. The size is twice the area of the extents.
+
+[EmissionBoxExtents]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.EmissionBoxExtents
+[EmissionShape]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.EmissionShape
+*/
 func (self Instance) EmissionBoxExtents() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetEmissionBoxExtents())
 }
 
+// SetEmissionBoxExtents sets the property returned by [GetEmissionBoxExtents].
 func (self Instance) SetEmissionBoxExtents(value Vector3.XYZ) {
 	class(self).SetEmissionBoxExtents(Vector3.XYZ(value))
 }
 
+/*
+Particles will be emitted at positions determined by sampling this texture at a random position. Used with [EmissionShapePoints] and [EmissionShapeDirectedPoints]. Can be created automatically from mesh or node by selecting "Create Emission Points from Mesh/Node" under the "Particles" tool in the toolbar.
+*/
 func (self Instance) EmissionPointTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetEmissionPointTexture())
 }
 
+// SetEmissionPointTexture sets the property returned by [GetEmissionPointTexture].
 func (self Instance) SetEmissionPointTexture(value Texture2D.Instance) {
 	class(self).SetEmissionPointTexture(value)
 }
 
+/*
+Particle velocity and rotation will be set by sampling this texture at the same point as the [EmissionPointTexture]. Used only in [EmissionShapeDirectedPoints]. Can be created automatically from mesh or node by selecting "Create Emission Points from Mesh/Node" under the "Particles" tool in the toolbar.
+
+[EmissionPointTexture]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.EmissionPointTexture
+*/
 func (self Instance) EmissionNormalTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetEmissionNormalTexture())
 }
 
+// SetEmissionNormalTexture sets the property returned by [GetEmissionNormalTexture].
 func (self Instance) SetEmissionNormalTexture(value Texture2D.Instance) {
 	class(self).SetEmissionNormalTexture(value)
 }
 
+/*
+Particle color will be modulated by color determined by sampling this texture at the same point as the [EmissionPointTexture].
+
+Note: [EmissionColorTexture] multiplies the particle mesh's vertex colors. To have a visible effect on a [BaseMaterial3D], [BaseMaterial3D.VertexColorUseAsAlbedo] must be true. For a [ShaderMaterial], ALBEDO *= COLOR.rgb; must be inserted in the shader's fragment() function. Otherwise, [EmissionColorTexture] will have no visible effect.
+
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[BaseMaterial3D.VertexColorUseAsAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.VertexColorUseAsAlbedo
+[EmissionColorTexture]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.EmissionColorTexture
+[EmissionPointTexture]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.EmissionPointTexture
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+*/
 func (self Instance) EmissionColorTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetEmissionColorTexture())
 }
 
+// SetEmissionColorTexture sets the property returned by [GetEmissionColorTexture].
 func (self Instance) SetEmissionColorTexture(value Texture2D.Instance) {
 	class(self).SetEmissionColorTexture(value)
 }
 
+/*
+The number of emission points if [EmissionShape] is set to [EmissionShapePoints] or [EmissionShapeDirectedPoints].
+
+[EmissionShape]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.EmissionShape
+*/
 func (self Instance) EmissionPointCount() int {
 	return int(int(class(self).GetEmissionPointCount()))
 }
 
+// SetEmissionPointCount sets the property returned by [GetEmissionPointCount].
 func (self Instance) SetEmissionPointCount(value int) {
 	class(self).SetEmissionPointCount(int64(value))
 }
 
+/*
+The axis of the ring when using the emitter [EmissionShapeRing].
+*/
 func (self Instance) EmissionRingAxis() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetEmissionRingAxis())
 }
 
+// SetEmissionRingAxis sets the property returned by [GetEmissionRingAxis].
 func (self Instance) SetEmissionRingAxis(value Vector3.XYZ) {
 	class(self).SetEmissionRingAxis(Vector3.XYZ(value))
 }
 
+/*
+The height of the ring when using the emitter [EmissionShapeRing].
+*/
 func (self Instance) EmissionRingHeight() Float.X {
 	return Float.X(Float.X(class(self).GetEmissionRingHeight()))
 }
 
+// SetEmissionRingHeight sets the property returned by [GetEmissionRingHeight].
 func (self Instance) SetEmissionRingHeight(value Float.X) {
 	class(self).SetEmissionRingHeight(float64(value))
 }
 
+/*
+The radius of the ring when using the emitter [EmissionShapeRing].
+*/
 func (self Instance) EmissionRingRadius() Float.X {
 	return Float.X(Float.X(class(self).GetEmissionRingRadius()))
 }
 
+// SetEmissionRingRadius sets the property returned by [GetEmissionRingRadius].
 func (self Instance) SetEmissionRingRadius(value Float.X) {
 	class(self).SetEmissionRingRadius(float64(value))
 }
 
+/*
+The inner radius of the ring when using the emitter [EmissionShapeRing].
+*/
 func (self Instance) EmissionRingInnerRadius() Float.X {
 	return Float.X(Float.X(class(self).GetEmissionRingInnerRadius()))
 }
 
+// SetEmissionRingInnerRadius sets the property returned by [GetEmissionRingInnerRadius].
 func (self Instance) SetEmissionRingInnerRadius(value Float.X) {
 	class(self).SetEmissionRingInnerRadius(float64(value))
 }
 
+/*
+The angle of the cone when using the emitter [EmissionShapeRing]. The default angle of 90 degrees results in a ring, while an angle of 0 degrees results in a cone. Intermediate values will result in a ring where one end is larger than the other.
+
+Note: Depending on [EmissionRingHeight], the angle may be clamped if the ring's end is reached to form a perfect cone.
+
+[EmissionRingHeight]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.EmissionRingHeight
+*/
 func (self Instance) EmissionRingConeAngle() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetEmissionRingConeAngle()))
 }
 
+// SetEmissionRingConeAngle sets the property returned by [GetEmissionRingConeAngle].
 func (self Instance) SetEmissionRingConeAngle(value Angle.Radians) {
 	class(self).SetEmissionRingConeAngle(float64(value))
 }
@@ -404,70 +511,118 @@ func (self Instance) Angle() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(7))
 }
 
+// SetAngle sets the property returned by [GetParam].
 func (self Instance) SetAngle(value Vector2.XY) {
 	class(self).SetParam(7, Vector2.XY(value))
 }
 
+/*
+Minimum equivalent of [AngleMax].
+
+[AngleMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.AngleMax
+*/
 func (self Instance) AngleMin() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetParamMin(7)))
 }
 
+// SetAngleMin sets the property returned by [GetParamMin].
 func (self Instance) SetAngleMin(value Angle.Radians) {
 	class(self).SetParamMin(7, float64(value))
 }
 
+/*
+Maximum initial rotation applied to each particle, in degrees.
+
+Only applied when [ParticleFlagDisableZ] or [ParticleFlagRotateY] are true or the [BaseMaterial3D] being used to draw the particle is using [Basematerial3d.BillboardParticles].
+
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[ParticleFlagDisableZ]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ParticleFlagDisableZ
+[ParticleFlagRotateY]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ParticleFlagRotateY
+*/
 func (self Instance) AngleMax() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetParamMax(7)))
 }
 
+// SetAngleMax sets the property returned by [GetParamMax].
 func (self Instance) SetAngleMax(value Angle.Radians) {
 	class(self).SetParamMax(7, float64(value))
 }
 
+/*
+Each particle's rotation will be animated along this [CurveTexture].
+
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+*/
 func (self Instance) AngleCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetParamTexture(7))
 }
 
+// SetAngleCurve sets the property returned by [GetParamTexture].
 func (self Instance) SetAngleCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(7, value)
 }
 
+/*
+Percentage of the velocity of the respective [GPUParticles2D] or [GPUParticles3D] inherited by each particle when spawning.
+
+[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
+[GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+*/
 func (self Instance) InheritVelocityRatio() Float.X {
 	return Float.X(Float.X(class(self).GetInheritVelocityRatio()))
 }
 
+// SetInheritVelocityRatio sets the property returned by [GetInheritVelocityRatio].
 func (self Instance) SetInheritVelocityRatio(value Float.X) {
 	class(self).SetInheritVelocityRatio(float64(value))
 }
 
+/*
+A pivot point used to calculate radial and orbital velocity of particles.
+*/
 func (self Instance) VelocityPivot() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetVelocityPivot())
 }
 
+// SetVelocityPivot sets the property returned by [GetVelocityPivot].
 func (self Instance) SetVelocityPivot(value Vector3.XYZ) {
 	class(self).SetVelocityPivot(Vector3.XYZ(value))
 }
 
+/*
+Unit vector specifying the particles' emission direction.
+*/
 func (self Instance) Direction() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetDirection())
 }
 
+// SetDirection sets the property returned by [GetDirection].
 func (self Instance) SetDirection(value Vector3.XYZ) {
 	class(self).SetDirection(Vector3.XYZ(value))
 }
 
+/*
+Each particle's initial direction range from +spread to -spread degrees.
+*/
 func (self Instance) Spread() Float.X {
 	return Float.X(Float.X(class(self).GetSpread()))
 }
 
+// SetSpread sets the property returned by [GetSpread].
 func (self Instance) SetSpread(value Float.X) {
 	class(self).SetSpread(float64(value))
 }
 
+/*
+Amount of [Spread] along the Y axis.
+
+[Spread]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.Spread
+*/
 func (self Instance) Flatness() Float.X {
 	return Float.X(Float.X(class(self).GetFlatness()))
 }
 
+// SetFlatness sets the property returned by [GetFlatness].
 func (self Instance) SetFlatness(value Float.X) {
 	class(self).SetFlatness(float64(value))
 }
@@ -476,22 +631,36 @@ func (self Instance) InitialVelocity() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(0))
 }
 
+// SetInitialVelocity sets the property returned by [GetParam].
 func (self Instance) SetInitialVelocity(value Vector2.XY) {
 	class(self).SetParam(0, Vector2.XY(value))
 }
 
+/*
+Minimum equivalent of [InitialVelocityMax].
+
+[InitialVelocityMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.InitialVelocityMax
+*/
 func (self Instance) InitialVelocityMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(0)))
 }
 
+// SetInitialVelocityMin sets the property returned by [GetParamMin].
 func (self Instance) SetInitialVelocityMin(value Float.X) {
 	class(self).SetParamMin(0, float64(value))
 }
 
+/*
+Maximum initial velocity magnitude for each particle. Direction comes from [Direction] and [Spread].
+
+[Direction]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.Direction
+[Spread]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.Spread
+*/
 func (self Instance) InitialVelocityMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(0)))
 }
 
+// SetInitialVelocityMax sets the property returned by [GetParamMax].
 func (self Instance) SetInitialVelocityMax(value Float.X) {
 	class(self).SetParamMax(0, float64(value))
 }
@@ -500,30 +669,53 @@ func (self Instance) AngularVelocity() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(1))
 }
 
+// SetAngularVelocity sets the property returned by [GetParam].
 func (self Instance) SetAngularVelocity(value Vector2.XY) {
 	class(self).SetParam(1, Vector2.XY(value))
 }
 
+/*
+Minimum equivalent of [AngularVelocityMax].
+
+[AngularVelocityMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.AngularVelocityMax
+*/
 func (self Instance) AngularVelocityMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(1)))
 }
 
+// SetAngularVelocityMin sets the property returned by [GetParamMin].
 func (self Instance) SetAngularVelocityMin(value Float.X) {
 	class(self).SetParamMin(1, float64(value))
 }
 
+/*
+Maximum initial angular velocity (rotation speed) applied to each particle in degrees per second.
+
+Only applied when [ParticleFlagDisableZ] or [ParticleFlagRotateY] are true or the [BaseMaterial3D] being used to draw the particle is using [Basematerial3d.BillboardParticles].
+
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[ParticleFlagDisableZ]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ParticleFlagDisableZ
+[ParticleFlagRotateY]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ParticleFlagRotateY
+*/
 func (self Instance) AngularVelocityMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(1)))
 }
 
+// SetAngularVelocityMax sets the property returned by [GetParamMax].
 func (self Instance) SetAngularVelocityMax(value Float.X) {
 	class(self).SetParamMax(1, float64(value))
 }
 
+/*
+Each particle's angular velocity (rotation speed) will vary along this [CurveTexture] over its lifetime.
+
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+*/
 func (self Instance) AngularVelocityCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetParamTexture(1))
 }
 
+// SetAngularVelocityCurve sets the property returned by [GetParamTexture].
 func (self Instance) SetAngularVelocityCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(1, value)
 }
@@ -532,30 +724,57 @@ func (self Instance) DirectionalVelocity() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(16))
 }
 
+// SetDirectionalVelocity sets the property returned by [GetParam].
 func (self Instance) SetDirectionalVelocity(value Vector2.XY) {
 	class(self).SetParam(16, Vector2.XY(value))
 }
 
+/*
+Minimum directional velocity value, which is multiplied by [DirectionalVelocityCurve].
+
+Note: Animated velocities will not be affected by damping, use [VelocityLimitCurve] instead.
+
+[DirectionalVelocityCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.DirectionalVelocityCurve
+[VelocityLimitCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.VelocityLimitCurve
+*/
 func (self Instance) DirectionalVelocityMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(16)))
 }
 
+// SetDirectionalVelocityMin sets the property returned by [GetParamMin].
 func (self Instance) SetDirectionalVelocityMin(value Float.X) {
 	class(self).SetParamMin(16, float64(value))
 }
 
+/*
+Maximum directional velocity value, which is multiplied by [DirectionalVelocityCurve].
+
+Note: Animated velocities will not be affected by damping, use [VelocityLimitCurve] instead.
+
+[DirectionalVelocityCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.DirectionalVelocityCurve
+[VelocityLimitCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.VelocityLimitCurve
+*/
 func (self Instance) DirectionalVelocityMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(16)))
 }
 
+// SetDirectionalVelocityMax sets the property returned by [GetParamMax].
 func (self Instance) SetDirectionalVelocityMax(value Float.X) {
 	class(self).SetParamMax(16, float64(value))
 }
 
+/*
+A curve that specifies the velocity along each of the axes of the particle system along its lifetime.
+
+Note: Animated velocities will not be affected by damping, use [VelocityLimitCurve] instead.
+
+[VelocityLimitCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.VelocityLimitCurve
+*/
 func (self Instance) DirectionalVelocityCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetParamTexture(16))
 }
 
+// SetDirectionalVelocityCurve sets the property returned by [GetParamTexture].
 func (self Instance) SetDirectionalVelocityCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(16, value)
 }
@@ -564,30 +783,60 @@ func (self Instance) OrbitVelocity() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(2))
 }
 
+// SetOrbitVelocity sets the property returned by [GetParam].
 func (self Instance) SetOrbitVelocity(value Vector2.XY) {
 	class(self).SetParam(2, Vector2.XY(value))
 }
 
+/*
+Minimum equivalent of [OrbitVelocityMax].
+
+Note: Animated velocities will not be affected by damping, use [VelocityLimitCurve] instead.
+
+[OrbitVelocityMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.OrbitVelocityMax
+[VelocityLimitCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.VelocityLimitCurve
+*/
 func (self Instance) OrbitVelocityMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(2)))
 }
 
+// SetOrbitVelocityMin sets the property returned by [GetParamMin].
 func (self Instance) SetOrbitVelocityMin(value Float.X) {
 	class(self).SetParamMin(2, float64(value))
 }
 
+/*
+Maximum orbital velocity applied to each particle. Makes the particles circle around origin. Specified in number of full rotations around origin per second.
+
+Note: Animated velocities will not be affected by damping, use [VelocityLimitCurve] instead.
+
+[VelocityLimitCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.VelocityLimitCurve
+*/
 func (self Instance) OrbitVelocityMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(2)))
 }
 
+// SetOrbitVelocityMax sets the property returned by [GetParamMax].
 func (self Instance) SetOrbitVelocityMax(value Float.X) {
 	class(self).SetParamMax(2, float64(value))
 }
 
+/*
+Each particle's orbital velocity will vary along this [CurveTexture].
+
+Note: For 3D orbital velocity, use a [CurveXYZTexture].
+
+Note: Animated velocities will not be affected by damping, use [VelocityLimitCurve] instead.
+
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+[CurveXYZTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveXYZTexture
+[VelocityLimitCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.VelocityLimitCurve
+*/
 func (self Instance) OrbitVelocityCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetParamTexture(2))
 }
 
+// SetOrbitVelocityCurve sets the property returned by [GetParamTexture].
 func (self Instance) SetOrbitVelocityCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(2, value)
 }
@@ -596,46 +845,85 @@ func (self Instance) RadialVelocity() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(15))
 }
 
+// SetRadialVelocity sets the property returned by [GetParam].
 func (self Instance) SetRadialVelocity(value Vector2.XY) {
 	class(self).SetParam(15, Vector2.XY(value))
 }
 
+/*
+Minimum radial velocity applied to each particle. Makes particles move away from the [VelocityPivot], or toward it if negative.
+
+Note: Animated velocities will not be affected by damping, use [VelocityLimitCurve] instead.
+
+[VelocityLimitCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.VelocityLimitCurve
+[VelocityPivot]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.VelocityPivot
+*/
 func (self Instance) RadialVelocityMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(15)))
 }
 
+// SetRadialVelocityMin sets the property returned by [GetParamMin].
 func (self Instance) SetRadialVelocityMin(value Float.X) {
 	class(self).SetParamMin(15, float64(value))
 }
 
+/*
+Maximum radial velocity applied to each particle. Makes particles move away from the [VelocityPivot], or toward it if negative.
+
+Note: Animated velocities will not be affected by damping, use [VelocityLimitCurve] instead.
+
+[VelocityLimitCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.VelocityLimitCurve
+[VelocityPivot]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.VelocityPivot
+*/
 func (self Instance) RadialVelocityMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(15)))
 }
 
+// SetRadialVelocityMax sets the property returned by [GetParamMax].
 func (self Instance) SetRadialVelocityMax(value Float.X) {
 	class(self).SetParamMax(15, float64(value))
 }
 
+/*
+A [CurveTexture] that defines the velocity over the particle's lifetime away (or toward) the [VelocityPivot].
+
+Note: Animated velocities will not be affected by damping, use [VelocityLimitCurve] instead.
+
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+[VelocityLimitCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.VelocityLimitCurve
+[VelocityPivot]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.VelocityPivot
+*/
 func (self Instance) RadialVelocityCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetParamTexture(15))
 }
 
+// SetRadialVelocityCurve sets the property returned by [GetParamTexture].
 func (self Instance) SetRadialVelocityCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(15, value)
 }
 
+/*
+A [CurveTexture] that defines the maximum velocity of a particle during its lifetime.
+
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+*/
 func (self Instance) VelocityLimitCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetVelocityLimitCurve())
 }
 
+// SetVelocityLimitCurve sets the property returned by [GetVelocityLimitCurve].
 func (self Instance) SetVelocityLimitCurve(value Texture2D.Instance) {
 	class(self).SetVelocityLimitCurve(value)
 }
 
+/*
+Gravity applied to every particle.
+*/
 func (self Instance) Gravity() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetGravity())
 }
 
+// SetGravity sets the property returned by [GetGravity].
 func (self Instance) SetGravity(value Vector3.XYZ) {
 	class(self).SetGravity(Vector3.XYZ(value))
 }
@@ -644,30 +932,47 @@ func (self Instance) LinearAccel() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(3))
 }
 
+// SetLinearAccel sets the property returned by [GetParam].
 func (self Instance) SetLinearAccel(value Vector2.XY) {
 	class(self).SetParam(3, Vector2.XY(value))
 }
 
+/*
+Minimum equivalent of [LinearAccelMax].
+
+[LinearAccelMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.LinearAccelMax
+*/
 func (self Instance) LinearAccelMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(3)))
 }
 
+// SetLinearAccelMin sets the property returned by [GetParamMin].
 func (self Instance) SetLinearAccelMin(value Float.X) {
 	class(self).SetParamMin(3, float64(value))
 }
 
+/*
+Maximum linear acceleration applied to each particle in the direction of motion.
+*/
 func (self Instance) LinearAccelMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(3)))
 }
 
+// SetLinearAccelMax sets the property returned by [GetParamMax].
 func (self Instance) SetLinearAccelMax(value Float.X) {
 	class(self).SetParamMax(3, float64(value))
 }
 
+/*
+Each particle's linear acceleration will vary along this [CurveTexture].
+
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+*/
 func (self Instance) LinearAccelCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetParamTexture(3))
 }
 
+// SetLinearAccelCurve sets the property returned by [GetParamTexture].
 func (self Instance) SetLinearAccelCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(3, value)
 }
@@ -676,30 +981,47 @@ func (self Instance) RadialAccel() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(4))
 }
 
+// SetRadialAccel sets the property returned by [GetParam].
 func (self Instance) SetRadialAccel(value Vector2.XY) {
 	class(self).SetParam(4, Vector2.XY(value))
 }
 
+/*
+Minimum equivalent of [RadialAccelMax].
+
+[RadialAccelMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.RadialAccelMax
+*/
 func (self Instance) RadialAccelMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(4)))
 }
 
+// SetRadialAccelMin sets the property returned by [GetParamMin].
 func (self Instance) SetRadialAccelMin(value Float.X) {
 	class(self).SetParamMin(4, float64(value))
 }
 
+/*
+Maximum radial acceleration applied to each particle. Makes particle accelerate away from the origin or towards it if negative.
+*/
 func (self Instance) RadialAccelMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(4)))
 }
 
+// SetRadialAccelMax sets the property returned by [GetParamMax].
 func (self Instance) SetRadialAccelMax(value Float.X) {
 	class(self).SetParamMax(4, float64(value))
 }
 
+/*
+Each particle's radial acceleration will vary along this [CurveTexture].
+
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+*/
 func (self Instance) RadialAccelCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetParamTexture(4))
 }
 
+// SetRadialAccelCurve sets the property returned by [GetParamTexture].
 func (self Instance) SetRadialAccelCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(4, value)
 }
@@ -708,30 +1030,47 @@ func (self Instance) TangentialAccel() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(5))
 }
 
+// SetTangentialAccel sets the property returned by [GetParam].
 func (self Instance) SetTangentialAccel(value Vector2.XY) {
 	class(self).SetParam(5, Vector2.XY(value))
 }
 
+/*
+Minimum equivalent of [TangentialAccelMax].
+
+[TangentialAccelMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.TangentialAccelMax
+*/
 func (self Instance) TangentialAccelMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(5)))
 }
 
+// SetTangentialAccelMin sets the property returned by [GetParamMin].
 func (self Instance) SetTangentialAccelMin(value Float.X) {
 	class(self).SetParamMin(5, float64(value))
 }
 
+/*
+Maximum tangential acceleration applied to each particle. Tangential acceleration is perpendicular to the particle's velocity giving the particles a swirling motion.
+*/
 func (self Instance) TangentialAccelMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(5)))
 }
 
+// SetTangentialAccelMax sets the property returned by [GetParamMax].
 func (self Instance) SetTangentialAccelMax(value Float.X) {
 	class(self).SetParamMax(5, float64(value))
 }
 
+/*
+Each particle's tangential acceleration will vary along this [CurveTexture].
+
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+*/
 func (self Instance) TangentialAccelCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetParamTexture(5))
 }
 
+// SetTangentialAccelCurve sets the property returned by [GetParamTexture].
 func (self Instance) SetTangentialAccelCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(5, value)
 }
@@ -740,38 +1079,62 @@ func (self Instance) Damping() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(6))
 }
 
+// SetDamping sets the property returned by [GetParam].
 func (self Instance) SetDamping(value Vector2.XY) {
 	class(self).SetParam(6, Vector2.XY(value))
 }
 
+/*
+Minimum equivalent of [DampingMax].
+
+[DampingMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.DampingMax
+*/
 func (self Instance) DampingMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(6)))
 }
 
+// SetDampingMin sets the property returned by [GetParamMin].
 func (self Instance) SetDampingMin(value Float.X) {
 	class(self).SetParamMin(6, float64(value))
 }
 
+/*
+The maximum rate at which particles lose velocity. For example value of 100 means that the particle will go from 100 velocity to 0 in 1 second.
+*/
 func (self Instance) DampingMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(6)))
 }
 
+// SetDampingMax sets the property returned by [GetParamMax].
 func (self Instance) SetDampingMax(value Float.X) {
 	class(self).SetParamMax(6, float64(value))
 }
 
+/*
+Damping will vary along this [CurveTexture].
+
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+*/
 func (self Instance) DampingCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetParamTexture(6))
 }
 
+// SetDampingCurve sets the property returned by [GetParamTexture].
 func (self Instance) SetDampingCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(6, value)
 }
 
+/*
+If true, interaction with particle attractors is enabled. In 3D, attraction only occurs within the area defined by the [GPUParticles3D] node's [GPUParticles3D.VisibilityAabb].
+
+[GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+[GPUParticles3D.VisibilityAabb]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.VisibilityAabb
+*/
 func (self Instance) AttractorInteractionEnabled() bool {
 	return bool(class(self).IsAttractorInteractionEnabled())
 }
 
+// SetAttractorInteractionEnabled sets the property returned by [IsAttractorInteractionEnabled].
 func (self Instance) SetAttractorInteractionEnabled(value bool) {
 	class(self).SetAttractorInteractionEnabled(value)
 }
@@ -780,30 +1143,48 @@ func (self Instance) Scale() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(8))
 }
 
+// SetScale sets the property returned by [GetParam].
 func (self Instance) SetScale(value Vector2.XY) {
 	class(self).SetParam(8, Vector2.XY(value))
 }
 
+/*
+Minimum equivalent of [ScaleMax].
+
+[ScaleMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ScaleMax
+*/
 func (self Instance) ScaleMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(8)))
 }
 
+// SetScaleMin sets the property returned by [GetParamMin].
 func (self Instance) SetScaleMin(value Float.X) {
 	class(self).SetParamMin(8, float64(value))
 }
 
+/*
+Maximum initial scale applied to each particle.
+*/
 func (self Instance) ScaleMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(8)))
 }
 
+// SetScaleMax sets the property returned by [GetParamMax].
 func (self Instance) SetScaleMax(value Float.X) {
 	class(self).SetParamMax(8, float64(value))
 }
 
+/*
+Each particle's scale will vary along this [CurveTexture] over its lifetime. If a [CurveXYZTexture] is supplied instead, the scale will be separated per-axis.
+
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+[CurveXYZTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveXYZTexture
+*/
 func (self Instance) ScaleCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetParamTexture(8))
 }
 
+// SetScaleCurve sets the property returned by [GetParamTexture].
 func (self Instance) SetScaleCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(8, value)
 }
@@ -812,70 +1193,160 @@ func (self Instance) ScaleOverVelocity() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(17))
 }
 
+// SetScaleOverVelocity sets the property returned by [GetParam].
 func (self Instance) SetScaleOverVelocity(value Vector2.XY) {
 	class(self).SetParam(17, Vector2.XY(value))
 }
 
+/*
+Minimum velocity value reference for [ScaleOverVelocityCurve].
+
+[ScaleOverVelocityCurve] will be interpolated between [ScaleOverVelocityMin] and [ScaleOverVelocityMax].
+
+[ScaleOverVelocityCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ScaleOverVelocityCurve
+[ScaleOverVelocityMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ScaleOverVelocityMax
+[ScaleOverVelocityMin]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ScaleOverVelocityMin
+*/
 func (self Instance) ScaleOverVelocityMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(17)))
 }
 
+// SetScaleOverVelocityMin sets the property returned by [GetParamMin].
 func (self Instance) SetScaleOverVelocityMin(value Float.X) {
 	class(self).SetParamMin(17, float64(value))
 }
 
+/*
+Maximum velocity value reference for [ScaleOverVelocityCurve].
+
+[ScaleOverVelocityCurve] will be interpolated between [ScaleOverVelocityMin] and [ScaleOverVelocityMax].
+
+[ScaleOverVelocityCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ScaleOverVelocityCurve
+[ScaleOverVelocityMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ScaleOverVelocityMax
+[ScaleOverVelocityMin]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ScaleOverVelocityMin
+*/
 func (self Instance) ScaleOverVelocityMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(17)))
 }
 
+// SetScaleOverVelocityMax sets the property returned by [GetParamMax].
 func (self Instance) SetScaleOverVelocityMax(value Float.X) {
 	class(self).SetParamMax(17, float64(value))
 }
 
+/*
+Either a [CurveTexture] or a [CurveXYZTexture] that scales each particle based on its velocity.
+
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+[CurveXYZTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveXYZTexture
+*/
 func (self Instance) ScaleOverVelocityCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetParamTexture(17))
 }
 
+// SetScaleOverVelocityCurve sets the property returned by [GetParamTexture].
 func (self Instance) SetScaleOverVelocityCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(17, value)
 }
 
+/*
+Each particle's initial color. If the [GPUParticles2D]'s texture is defined, it will be multiplied by this color.
+
+Note: [Color] multiplies the particle mesh's vertex colors. To have a visible effect on a [BaseMaterial3D], [BaseMaterial3D.VertexColorUseAsAlbedo] must be true. For a [ShaderMaterial], ALBEDO *= COLOR.rgb; must be inserted in the shader's fragment() function. Otherwise, [Color] will have no visible effect.
+
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[BaseMaterial3D.VertexColorUseAsAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.VertexColorUseAsAlbedo
+[Color]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.Color
+[GPUParticles2D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+*/
 func (self Instance) Color() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
+// SetColor sets the property returned by [GetColor].
 func (self Instance) SetColor(value Color.RGBA) {
 	class(self).SetColor(Color.RGBA(value))
 }
 
+/*
+Each particle's color will vary along this [GradientTexture1D] over its lifetime (multiplied with [Color]).
+
+Note: [ColorRamp] multiplies the particle mesh's vertex colors. To have a visible effect on a [BaseMaterial3D], [BaseMaterial3D.VertexColorUseAsAlbedo] must be true. For a [ShaderMaterial], ALBEDO *= COLOR.rgb; must be inserted in the shader's fragment() function. Otherwise, [ColorRamp] will have no visible effect.
+
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[BaseMaterial3D.VertexColorUseAsAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.VertexColorUseAsAlbedo
+[Color]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.Color
+[ColorRamp]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ColorRamp
+[GradientTexture1D]: https://pkg.go.dev/graphics.gd/classdb/GradientTexture1D
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+*/
 func (self Instance) ColorRamp() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetColorRamp())
 }
 
+// SetColorRamp sets the property returned by [GetColorRamp].
 func (self Instance) SetColorRamp(value Texture2D.Instance) {
 	class(self).SetColorRamp(value)
 }
 
+/*
+Each particle's initial color will vary along this [GradientTexture1D] (multiplied with [Color]).
+
+Note: [ColorInitialRamp] multiplies the particle mesh's vertex colors. To have a visible effect on a [BaseMaterial3D], [BaseMaterial3D.VertexColorUseAsAlbedo] must be true. For a [ShaderMaterial], ALBEDO *= COLOR.rgb; must be inserted in the shader's fragment() function. Otherwise, [ColorInitialRamp] will have no visible effect.
+
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[BaseMaterial3D.VertexColorUseAsAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.VertexColorUseAsAlbedo
+[Color]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.Color
+[ColorInitialRamp]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ColorInitialRamp
+[GradientTexture1D]: https://pkg.go.dev/graphics.gd/classdb/GradientTexture1D
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+*/
 func (self Instance) ColorInitialRamp() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetColorInitialRamp())
 }
 
+// SetColorInitialRamp sets the property returned by [GetColorInitialRamp].
 func (self Instance) SetColorInitialRamp(value Texture2D.Instance) {
 	class(self).SetColorInitialRamp(value)
 }
 
+/*
+The alpha value of each particle's color will be multiplied by this [CurveTexture] over its lifetime.
+
+Note: [AlphaCurve] multiplies the particle mesh's vertex colors. To have a visible effect on a [BaseMaterial3D], [BaseMaterial3D.VertexColorUseAsAlbedo] must be true. For a [ShaderMaterial], ALBEDO *= COLOR.rgb; must be inserted in the shader's fragment() function. Otherwise, [AlphaCurve] will have no visible effect.
+
+[AlphaCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.AlphaCurve
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[BaseMaterial3D.VertexColorUseAsAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.VertexColorUseAsAlbedo
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+*/
 func (self Instance) AlphaCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetAlphaCurve())
 }
 
+// SetAlphaCurve sets the property returned by [GetAlphaCurve].
 func (self Instance) SetAlphaCurve(value Texture2D.Instance) {
 	class(self).SetAlphaCurve(value)
 }
 
+/*
+Each particle's color will be multiplied by this [CurveTexture] over its lifetime.
+
+Note: [EmissionCurve] multiplies the particle mesh's vertex colors. To have a visible effect on a [BaseMaterial3D], [BaseMaterial3D.VertexColorUseAsAlbedo] must be true. For a [ShaderMaterial], ALBEDO *= COLOR.rgb; must be inserted in the shader's fragment() function. Otherwise, [EmissionCurve] will have no visible effect.
+
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[BaseMaterial3D.VertexColorUseAsAlbedo]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D#Instance.VertexColorUseAsAlbedo
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+[EmissionCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.EmissionCurve
+[ShaderMaterial]: https://pkg.go.dev/graphics.gd/classdb/ShaderMaterial
+*/
 func (self Instance) EmissionCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetEmissionCurve())
 }
 
+// SetEmissionCurve sets the property returned by [GetEmissionCurve].
 func (self Instance) SetEmissionCurve(value Texture2D.Instance) {
 	class(self).SetEmissionCurve(value)
 }
@@ -884,30 +1355,47 @@ func (self Instance) HueVariation() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(9))
 }
 
+// SetHueVariation sets the property returned by [GetParam].
 func (self Instance) SetHueVariation(value Vector2.XY) {
 	class(self).SetParam(9, Vector2.XY(value))
 }
 
+/*
+Minimum equivalent of [HueVariationMax].
+
+[HueVariationMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.HueVariationMax
+*/
 func (self Instance) HueVariationMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(9)))
 }
 
+// SetHueVariationMin sets the property returned by [GetParamMin].
 func (self Instance) SetHueVariationMin(value Float.X) {
 	class(self).SetParamMin(9, float64(value))
 }
 
+/*
+Maximum initial hue variation applied to each particle. It will shift the particle color's hue.
+*/
 func (self Instance) HueVariationMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(9)))
 }
 
+// SetHueVariationMax sets the property returned by [GetParamMax].
 func (self Instance) SetHueVariationMax(value Float.X) {
 	class(self).SetParamMax(9, float64(value))
 }
 
+/*
+Each particle's hue will vary along this [CurveTexture].
+
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+*/
 func (self Instance) HueVariationCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetParamTexture(9))
 }
 
+// SetHueVariationCurve sets the property returned by [GetParamTexture].
 func (self Instance) SetHueVariationCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(9, value)
 }
@@ -916,30 +1404,51 @@ func (self Instance) AnimSpeed() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(10))
 }
 
+// SetAnimSpeed sets the property returned by [GetParam].
 func (self Instance) SetAnimSpeed(value Vector2.XY) {
 	class(self).SetParam(10, Vector2.XY(value))
 }
 
+/*
+Minimum equivalent of [AnimSpeedMax].
+
+[AnimSpeedMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.AnimSpeedMax
+*/
 func (self Instance) AnimSpeedMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(10)))
 }
 
+// SetAnimSpeedMin sets the property returned by [GetParamMin].
 func (self Instance) SetAnimSpeedMin(value Float.X) {
 	class(self).SetParamMin(10, float64(value))
 }
 
+/*
+Maximum particle animation speed. Animation speed of 1 means that the particles will make full 0 to 1 offset cycle during lifetime, 2 means 2 cycles etc.
+
+With animation speed greater than 1, remember to enable [CanvasItemMaterial.ParticlesAnimLoop] property if you want the animation to repeat.
+
+[CanvasItemMaterial.ParticlesAnimLoop]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial#Instance.ParticlesAnimLoop
+*/
 func (self Instance) AnimSpeedMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(10)))
 }
 
+// SetAnimSpeedMax sets the property returned by [GetParamMax].
 func (self Instance) SetAnimSpeedMax(value Float.X) {
 	class(self).SetParamMax(10, float64(value))
 }
 
+/*
+Each particle's animation speed will vary along this [CurveTexture].
+
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+*/
 func (self Instance) AnimSpeedCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetParamTexture(10))
 }
 
+// SetAnimSpeedCurve sets the property returned by [GetParamTexture].
 func (self Instance) SetAnimSpeedCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(10, value)
 }
@@ -948,70 +1457,120 @@ func (self Instance) AnimOffset() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(11))
 }
 
+// SetAnimOffset sets the property returned by [GetParam].
 func (self Instance) SetAnimOffset(value Vector2.XY) {
 	class(self).SetParam(11, Vector2.XY(value))
 }
 
+/*
+Minimum equivalent of [AnimOffsetMax].
+
+[AnimOffsetMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.AnimOffsetMax
+*/
 func (self Instance) AnimOffsetMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(11)))
 }
 
+// SetAnimOffsetMin sets the property returned by [GetParamMin].
 func (self Instance) SetAnimOffsetMin(value Float.X) {
 	class(self).SetParamMin(11, float64(value))
 }
 
+/*
+Maximum animation offset that corresponds to frame index in the texture. 0 is the first frame, 1 is the last one. See [CanvasItemMaterial.ParticlesAnimation].
+
+[CanvasItemMaterial.ParticlesAnimation]: https://pkg.go.dev/graphics.gd/classdb/CanvasItemMaterial#Instance.ParticlesAnimation
+*/
 func (self Instance) AnimOffsetMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(11)))
 }
 
+// SetAnimOffsetMax sets the property returned by [GetParamMax].
 func (self Instance) SetAnimOffsetMax(value Float.X) {
 	class(self).SetParamMax(11, float64(value))
 }
 
+/*
+Each particle's animation offset will vary along this [CurveTexture].
+
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+*/
 func (self Instance) AnimOffsetCurve() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetParamTexture(11))
 }
 
+// SetAnimOffsetCurve sets the property returned by [GetParamTexture].
 func (self Instance) SetAnimOffsetCurve(value Texture2D.Instance) {
 	class(self).SetParamTexture(11, value)
 }
 
+/*
+If true, enables turbulence for the particle system. Turbulence can be used to vary particle movement according to its position (based on a 3D noise pattern). In 3D, [GPUParticlesAttractorVectorField3D] with [NoiseTexture3D] can be used as an alternative to turbulence that works in world space and with multiple particle systems reacting in the same way.
+
+Note: Enabling turbulence has a high performance cost on the GPU. Only enable turbulence on a few particle systems at once at most, and consider disabling it when targeting mobile/web platforms.
+
+[GPUParticlesAttractorVectorField3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesAttractorVectorField3D
+[NoiseTexture3D]: https://pkg.go.dev/graphics.gd/classdb/NoiseTexture3D
+*/
 func (self Instance) TurbulenceEnabled() bool {
 	return bool(class(self).GetTurbulenceEnabled())
 }
 
+// SetTurbulenceEnabled sets the property returned by [GetTurbulenceEnabled].
 func (self Instance) SetTurbulenceEnabled(value bool) {
 	class(self).SetTurbulenceEnabled(value)
 }
 
+/*
+The turbulence noise strength. Increasing this will result in a stronger, more contrasting, flow pattern.
+*/
 func (self Instance) TurbulenceNoiseStrength() Float.X {
 	return Float.X(Float.X(class(self).GetTurbulenceNoiseStrength()))
 }
 
+// SetTurbulenceNoiseStrength sets the property returned by [GetTurbulenceNoiseStrength].
 func (self Instance) SetTurbulenceNoiseStrength(value Float.X) {
 	class(self).SetTurbulenceNoiseStrength(float64(value))
 }
 
+/*
+This value controls the overall scale/frequency of the turbulence noise pattern.
+
+A small scale will result in smaller features with more detail while a high scale will result in smoother noise with larger features.
+*/
 func (self Instance) TurbulenceNoiseScale() Float.X {
 	return Float.X(Float.X(class(self).GetTurbulenceNoiseScale()))
 }
 
+// SetTurbulenceNoiseScale sets the property returned by [GetTurbulenceNoiseScale].
 func (self Instance) SetTurbulenceNoiseScale(value Float.X) {
 	class(self).SetTurbulenceNoiseScale(float64(value))
 }
 
+/*
+A scrolling velocity for the turbulence field. This sets a directional trend for the pattern to move in over time.
+
+The default value of Vector3(0, 0, 0) turns off the scrolling.
+*/
 func (self Instance) TurbulenceNoiseSpeed() Vector3.XYZ {
 	return Vector3.XYZ(class(self).GetTurbulenceNoiseSpeed())
 }
 
+// SetTurbulenceNoiseSpeed sets the property returned by [GetTurbulenceNoiseSpeed].
 func (self Instance) SetTurbulenceNoiseSpeed(value Vector3.XYZ) {
 	class(self).SetTurbulenceNoiseSpeed(Vector3.XYZ(value))
 }
 
+/*
+The in-place rate of change of the turbulence field. This defines how quickly the noise pattern varies over time.
+
+A value of 0.0 will result in a fixed pattern.
+*/
 func (self Instance) TurbulenceNoiseSpeedRandom() Float.X {
 	return Float.X(Float.X(class(self).GetTurbulenceNoiseSpeedRandom()))
 }
 
+// SetTurbulenceNoiseSpeedRandom sets the property returned by [GetTurbulenceNoiseSpeedRandom].
 func (self Instance) SetTurbulenceNoiseSpeedRandom(value Float.X) {
 	class(self).SetTurbulenceNoiseSpeedRandom(float64(value))
 }
@@ -1020,22 +1579,43 @@ func (self Instance) TurbulenceInfluence() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(13))
 }
 
+// SetTurbulenceInfluence sets the property returned by [GetParam].
 func (self Instance) SetTurbulenceInfluence(value Vector2.XY) {
 	class(self).SetParam(13, Vector2.XY(value))
 }
 
+/*
+Minimum turbulence influence on each particle.
+
+The actual amount of turbulence influence on each particle is calculated as a random value between [TurbulenceInfluenceMin] and [TurbulenceInfluenceMax] and multiplied by the amount of turbulence influence from [TurbulenceInfluenceOverLife].
+
+[TurbulenceInfluenceMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.TurbulenceInfluenceMax
+[TurbulenceInfluenceMin]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.TurbulenceInfluenceMin
+[TurbulenceInfluenceOverLife]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.TurbulenceInfluenceOverLife
+*/
 func (self Instance) TurbulenceInfluenceMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(13)))
 }
 
+// SetTurbulenceInfluenceMin sets the property returned by [GetParamMin].
 func (self Instance) SetTurbulenceInfluenceMin(value Float.X) {
 	class(self).SetParamMin(13, float64(value))
 }
 
+/*
+Maximum turbulence influence on each particle.
+
+The actual amount of turbulence influence on each particle is calculated as a random value between [TurbulenceInfluenceMin] and [TurbulenceInfluenceMax] and multiplied by the amount of turbulence influence from [TurbulenceInfluenceOverLife].
+
+[TurbulenceInfluenceMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.TurbulenceInfluenceMax
+[TurbulenceInfluenceMin]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.TurbulenceInfluenceMin
+[TurbulenceInfluenceOverLife]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.TurbulenceInfluenceOverLife
+*/
 func (self Instance) TurbulenceInfluenceMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(13)))
 }
 
+// SetTurbulenceInfluenceMax sets the property returned by [GetParamMax].
 func (self Instance) SetTurbulenceInfluenceMax(value Float.X) {
 	class(self).SetParamMax(13, float64(value))
 }
@@ -1044,110 +1624,220 @@ func (self Instance) TurbulenceInitialDisplacement() Vector2.XY {
 	return Vector2.XY(class(self).GetParam(14))
 }
 
+// SetTurbulenceInitialDisplacement sets the property returned by [GetParam].
 func (self Instance) SetTurbulenceInitialDisplacement(value Vector2.XY) {
 	class(self).SetParam(14, Vector2.XY(value))
 }
 
+/*
+Minimum displacement of each particle's spawn position by the turbulence.
+
+The actual amount of displacement will be a factor of the underlying turbulence multiplied by a random value between [TurbulenceInitialDisplacementMin] and [TurbulenceInitialDisplacementMax].
+
+[TurbulenceInitialDisplacementMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.TurbulenceInitialDisplacementMax
+[TurbulenceInitialDisplacementMin]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.TurbulenceInitialDisplacementMin
+*/
 func (self Instance) TurbulenceInitialDisplacementMin() Float.X {
 	return Float.X(Float.X(class(self).GetParamMin(14)))
 }
 
+// SetTurbulenceInitialDisplacementMin sets the property returned by [GetParamMin].
 func (self Instance) SetTurbulenceInitialDisplacementMin(value Float.X) {
 	class(self).SetParamMin(14, float64(value))
 }
 
+/*
+Maximum displacement of each particle's spawn position by the turbulence.
+
+The actual amount of displacement will be a factor of the underlying turbulence multiplied by a random value between [TurbulenceInitialDisplacementMin] and [TurbulenceInitialDisplacementMax].
+
+[TurbulenceInitialDisplacementMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.TurbulenceInitialDisplacementMax
+[TurbulenceInitialDisplacementMin]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.TurbulenceInitialDisplacementMin
+*/
 func (self Instance) TurbulenceInitialDisplacementMax() Float.X {
 	return Float.X(Float.X(class(self).GetParamMax(14)))
 }
 
+// SetTurbulenceInitialDisplacementMax sets the property returned by [GetParamMax].
 func (self Instance) SetTurbulenceInitialDisplacementMax(value Float.X) {
 	class(self).SetParamMax(14, float64(value))
 }
 
+/*
+Each particle's amount of turbulence will be influenced along this [CurveTexture] over its life time.
+
+[CurveTexture]: https://pkg.go.dev/graphics.gd/classdb/CurveTexture
+*/
 func (self Instance) TurbulenceInfluenceOverLife() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetParamTexture(12))
 }
 
+// SetTurbulenceInfluenceOverLife sets the property returned by [GetParamTexture].
 func (self Instance) SetTurbulenceInfluenceOverLife(value Texture2D.Instance) {
 	class(self).SetParamTexture(12, value)
 }
 
+/*
+The particles' collision mode.
+
+Note: 3D Particles can only collide with [GPUParticlesCollision3D] nodes, not [PhysicsBody3D] nodes. To make particles collide with various objects, you can add [GPUParticlesCollision3D] nodes as children of [PhysicsBody3D] nodes. In 3D, collisions only occur within the area defined by the [GPUParticles3D] node's [GPUParticles3D.VisibilityAabb].
+
+Note: 2D Particles can only collide with [LightOccluder2D] nodes, not [PhysicsBody2D] nodes.
+
+[GPUParticles3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D
+[GPUParticles3D.VisibilityAabb]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.VisibilityAabb
+[GPUParticlesCollision3D]: https://pkg.go.dev/graphics.gd/classdb/GPUParticlesCollision3D
+[LightOccluder2D]: https://pkg.go.dev/graphics.gd/classdb/LightOccluder2D
+[PhysicsBody2D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody2D
+[PhysicsBody3D]: https://pkg.go.dev/graphics.gd/classdb/PhysicsBody3D
+*/
 func (self Instance) CollisionMode() CollisionMode {
 	return CollisionMode(class(self).GetCollisionMode())
 }
 
+// SetCollisionMode sets the property returned by [GetCollisionMode].
 func (self Instance) SetCollisionMode(value CollisionMode) {
 	class(self).SetCollisionMode(value)
 }
 
+/*
+The particles' friction. Values range from 0 (frictionless) to 1 (maximum friction). Only effective if [CollisionMode] is [CollisionRigid].
+
+[CollisionMode]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.CollisionMode
+*/
 func (self Instance) CollisionFriction() Float.X {
 	return Float.X(Float.X(class(self).GetCollisionFriction()))
 }
 
+// SetCollisionFriction sets the property returned by [GetCollisionFriction].
 func (self Instance) SetCollisionFriction(value Float.X) {
 	class(self).SetCollisionFriction(float64(value))
 }
 
+/*
+The particles' bounciness. Values range from 0 (no bounce) to 1 (full bounciness). Only effective if [CollisionMode] is [CollisionRigid].
+
+[CollisionMode]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.CollisionMode
+*/
 func (self Instance) CollisionBounce() Float.X {
 	return Float.X(Float.X(class(self).GetCollisionBounce()))
 }
 
+// SetCollisionBounce sets the property returned by [GetCollisionBounce].
 func (self Instance) SetCollisionBounce(value Float.X) {
 	class(self).SetCollisionBounce(float64(value))
 }
 
+/*
+If true, [GPUParticles3D.CollisionBaseSize] is multiplied by the particle's effective scale (see [ScaleMin], [ScaleMax], [ScaleCurve], and [ScaleOverVelocityCurve]).
+
+[GPUParticles3D.CollisionBaseSize]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.CollisionBaseSize
+[ScaleCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ScaleCurve
+[ScaleMax]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ScaleMax
+[ScaleMin]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ScaleMin
+[ScaleOverVelocityCurve]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.ScaleOverVelocityCurve
+*/
 func (self Instance) CollisionUseScale() bool {
 	return bool(class(self).IsCollisionUsingScale())
 }
 
+// SetCollisionUseScale sets the property returned by [IsCollisionUsingScale].
 func (self Instance) SetCollisionUseScale(value bool) {
 	class(self).SetCollisionUseScale(value)
 }
 
+/*
+The particle subemitter mode (see [GPUParticles2D.SubEmitter] and [GPUParticles3D.SubEmitter]).
+
+[GPUParticles2D.SubEmitter]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D#Instance.SubEmitter
+[GPUParticles3D.SubEmitter]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.SubEmitter
+*/
 func (self Instance) SubEmitterMode() SubEmitterMode {
 	return SubEmitterMode(class(self).GetSubEmitterMode())
 }
 
+// SetSubEmitterMode sets the property returned by [GetSubEmitterMode].
 func (self Instance) SetSubEmitterMode(value SubEmitterMode) {
 	class(self).SetSubEmitterMode(value)
 }
 
+/*
+The frequency at which particles should be emitted from the subemitter node. One particle will be spawned every [SubEmitterFrequency] seconds.
+
+Note: This value shouldn't exceed [GPUParticles2D.Amount] or [GPUParticles3D.Amount] defined on the subemitter node (not the main node), relative to the subemitter's particle lifetime. If the number of particles is exceeded, no new particles will spawn from the subemitter until enough particles have expired.
+
+[GPUParticles2D.Amount]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D#Instance.Amount
+[GPUParticles3D.Amount]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Amount
+[SubEmitterFrequency]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.SubEmitterFrequency
+*/
 func (self Instance) SubEmitterFrequency() Float.X {
 	return Float.X(Float.X(class(self).GetSubEmitterFrequency()))
 }
 
+// SetSubEmitterFrequency sets the property returned by [GetSubEmitterFrequency].
 func (self Instance) SetSubEmitterFrequency(value Float.X) {
 	class(self).SetSubEmitterFrequency(float64(value))
 }
 
+/*
+The amount of particles to spawn from the subemitter node when the particle expires.
+
+Note: This value shouldn't exceed [GPUParticles2D.Amount] or [GPUParticles3D.Amount] defined on the subemitter node (not the main node), relative to the subemitter's particle lifetime. If the number of particles is exceeded, no new particles will spawn from the subemitter until enough particles have expired.
+
+[GPUParticles2D.Amount]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D#Instance.Amount
+[GPUParticles3D.Amount]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Amount
+*/
 func (self Instance) SubEmitterAmountAtEnd() int {
 	return int(int(class(self).GetSubEmitterAmountAtEnd()))
 }
 
+// SetSubEmitterAmountAtEnd sets the property returned by [GetSubEmitterAmountAtEnd].
 func (self Instance) SetSubEmitterAmountAtEnd(value int) {
 	class(self).SetSubEmitterAmountAtEnd(int64(value))
 }
 
+/*
+The amount of particles to spawn from the subemitter node when a collision occurs. When combined with [CollisionHideOnContact] on the main particles material, this can be used to achieve effects such as raindrops hitting the ground.
+
+Note: This value shouldn't exceed [GPUParticles2D.Amount] or [GPUParticles3D.Amount] defined on the subemitter node (not the main node), relative to the subemitter's particle lifetime. If the number of particles is exceeded, no new particles will spawn from the subemitter until enough particles have expired.
+
+[GPUParticles2D.Amount]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D#Instance.Amount
+[GPUParticles3D.Amount]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Amount
+*/
 func (self Instance) SubEmitterAmountAtCollision() int {
 	return int(int(class(self).GetSubEmitterAmountAtCollision()))
 }
 
+// SetSubEmitterAmountAtCollision sets the property returned by [GetSubEmitterAmountAtCollision].
 func (self Instance) SetSubEmitterAmountAtCollision(value int) {
 	class(self).SetSubEmitterAmountAtCollision(int64(value))
 }
 
+/*
+The amount of particles to spawn from the subemitter node when the particle spawns.
+
+Note: This value shouldn't exceed [GPUParticles2D.Amount] or [GPUParticles3D.Amount] defined on the subemitter node (not the main node), relative to the subemitter's particle lifetime. If the number of particles is exceeded, no new particles will spawn from the subemitter until enough particles have expired.
+
+[GPUParticles2D.Amount]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles2D#Instance.Amount
+[GPUParticles3D.Amount]: https://pkg.go.dev/graphics.gd/classdb/GPUParticles3D#Instance.Amount
+*/
 func (self Instance) SubEmitterAmountAtStart() int {
 	return int(int(class(self).GetSubEmitterAmountAtStart()))
 }
 
+// SetSubEmitterAmountAtStart sets the property returned by [GetSubEmitterAmountAtStart].
 func (self Instance) SetSubEmitterAmountAtStart(value int) {
 	class(self).SetSubEmitterAmountAtStart(int64(value))
 }
 
+/*
+If true, the subemitter inherits the parent particle's velocity when it spawns.
+*/
 func (self Instance) SubEmitterKeepVelocity() bool {
 	return bool(class(self).GetSubEmitterKeepVelocity())
 }
 
+// SetSubEmitterKeepVelocity sets the property returned by [GetSubEmitterKeepVelocity].
 func (self Instance) SetSubEmitterKeepVelocity(value bool) {
 	class(self).SetSubEmitterKeepVelocity(value)
 }
@@ -1780,6 +2470,16 @@ func (self class) GetCollisionBounce() float64 { //gd:ParticleProcessMaterial.ge
 	var ret = r_ret
 	return ret
 }
+
+/*
+Emitted when this material's emission shape is changed in any way. This includes changes to [EmissionShape], [EmissionShapeScale], or [EmissionSphereRadius], and any other property that affects the emission shape's offset, size, scale, or orientation.
+
+Note: This signal is only emitted inside the editor for performance reasons.
+
+[EmissionShape]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.EmissionShape
+[EmissionShapeScale]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.EmissionShapeScale
+[EmissionSphereRadius]: https://pkg.go.dev/graphics.gd/classdb/ParticleProcessMaterial#Instance.EmissionSphereRadius
+*/
 func (self Instance) OnEmissionShapeChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags
 	for _, flag := range flags {

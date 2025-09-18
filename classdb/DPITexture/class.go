@@ -230,22 +230,35 @@ func New() Instance {
 	return casted
 }
 
+/*
+Texture scale. 1.0 is the original SVG size. Higher values result in a larger image.
+*/
 func (self Instance) BaseScale() Float.X {
 	return Float.X(Float.X(class(self).GetBaseScale()))
 }
 
+// SetBaseScale sets the property returned by [GetBaseScale].
 func (self Instance) SetBaseScale(value Float.X) {
 	class(self).SetBaseScale(float64(value))
 }
 
+/*
+Overrides texture saturation.
+*/
 func (self Instance) Saturation() Float.X {
 	return Float.X(Float.X(class(self).GetSaturation()))
 }
 
+// SetSaturation sets the property returned by [GetSaturation].
 func (self Instance) SetSaturation(value Float.X) {
 	class(self).SetSaturation(float64(value))
 }
 
+/*
+If set, remaps texture colors according to [Color.RGBA]-[Color.RGBA] map.
+
+[Color.RGBA]: https://pkg.go.dev/graphics.gd/variant/Color#RGBA
+*/
 func (self Instance) ColorMap() map[struct {
 	R float32
 	G float32
@@ -280,6 +293,7 @@ func (self Instance) ColorMap() map[struct {
 	}](class(self).GetColorMap()))
 }
 
+// SetColorMap sets the property returned by [GetColorMap].
 func (self Instance) SetColorMap(value map[struct {
 	R float32
 	G float32

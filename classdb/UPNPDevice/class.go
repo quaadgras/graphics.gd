@@ -219,50 +219,76 @@ func New() Instance {
 	return casted
 }
 
+/*
+URL to the device description.
+*/
 func (self Instance) DescriptionUrl() string {
 	return string(class(self).GetDescriptionUrl().String())
 }
 
+// SetDescriptionUrl sets the property returned by [GetDescriptionUrl].
 func (self Instance) SetDescriptionUrl(value string) {
 	class(self).SetDescriptionUrl(String.New(value))
 }
 
+/*
+Service type.
+*/
 func (self Instance) ServiceType() string {
 	return string(class(self).GetServiceType().String())
 }
 
+// SetServiceType sets the property returned by [GetServiceType].
 func (self Instance) SetServiceType(value string) {
 	class(self).SetServiceType(String.New(value))
 }
 
+/*
+IDG control URL.
+*/
 func (self Instance) IgdControlUrl() string {
 	return string(class(self).GetIgdControlUrl().String())
 }
 
+// SetIgdControlUrl sets the property returned by [GetIgdControlUrl].
 func (self Instance) SetIgdControlUrl(value string) {
 	class(self).SetIgdControlUrl(String.New(value))
 }
 
+/*
+IGD service type.
+*/
 func (self Instance) IgdServiceType() string {
 	return string(class(self).GetIgdServiceType().String())
 }
 
+// SetIgdServiceType sets the property returned by [GetIgdServiceType].
 func (self Instance) SetIgdServiceType(value string) {
 	class(self).SetIgdServiceType(String.New(value))
 }
 
+/*
+Address of the local machine in the network connecting it to this [UPNPDevice].
+
+[UPNPDevice]: https://pkg.go.dev/graphics.gd/classdb/UPNPDevice
+*/
 func (self Instance) IgdOurAddr() string {
 	return string(class(self).GetIgdOurAddr().String())
 }
 
+// SetIgdOurAddr sets the property returned by [GetIgdOurAddr].
 func (self Instance) SetIgdOurAddr(value string) {
 	class(self).SetIgdOurAddr(String.New(value))
 }
 
+/*
+IGD status.
+*/
 func (self Instance) IgdStatus() IGDStatus {
 	return IGDStatus(class(self).GetIgdStatus())
 }
 
+// SetIgdStatus sets the property returned by [GetIgdStatus].
 func (self Instance) SetIgdStatus(value IGDStatus) {
 	class(self).SetIgdStatus(value)
 }

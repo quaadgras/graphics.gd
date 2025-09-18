@@ -162,50 +162,83 @@ func New() Instance {
 	return casted
 }
 
+/*
+Length that the resulting collision extends in either direction perpendicular to its 2D polygon.
+*/
 func (self Instance) Depth() Float.X {
 	return Float.X(Float.X(class(self).GetDepth()))
 }
 
+// SetDepth sets the property returned by [GetDepth].
 func (self Instance) SetDepth(value Float.X) {
 	class(self).SetDepth(float64(value))
 }
 
+/*
+If true, no collision will be produced. This property should be changed with [Object.SetDeferred].
+
+[Object.SetDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#SetDeferred
+*/
 func (self Instance) Disabled() bool {
 	return bool(class(self).IsDisabled())
 }
 
+// SetDisabled sets the property returned by [IsDisabled].
 func (self Instance) SetDisabled(value bool) {
 	class(self).SetDisabled(value)
 }
 
+/*
+Array of vertices which define the 2D polygon in the local XY plane.
+*/
 func (self Instance) Polygon() []Vector2.XY {
 	return []Vector2.XY(slices.Collect(class(self).GetPolygon().Values()))
 }
 
+// SetPolygon sets the property returned by [GetPolygon].
 func (self Instance) SetPolygon(value []Vector2.XY) {
 	class(self).SetPolygon(Packed.New(value...))
 }
 
+/*
+The collision margin for the generated [Shape3D]. See [Shape3D.Margin] for more details.
+
+[Shape3D]: https://pkg.go.dev/graphics.gd/classdb/Shape3D
+[Shape3D.Margin]: https://pkg.go.dev/graphics.gd/classdb/Shape3D#Instance.Margin
+*/
 func (self Instance) Margin() Float.X {
 	return Float.X(Float.X(class(self).GetMargin()))
 }
 
+// SetMargin sets the property returned by [GetMargin].
 func (self Instance) SetMargin(value Float.X) {
 	class(self).SetMargin(float64(value))
 }
 
+/*
+The collision shape color that is displayed in the editor, or in the running project if Debug > Visible Collision Shapes is checked at the top of the editor.
+
+Note: The default value is [ProjectSettings] "debug/shapes/collision/shape_color". The Color(0, 0, 0, 0) value documented here is a placeholder, and not the actual default debug color.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) DebugColor() Color.RGBA {
 	return Color.RGBA(class(self).GetDebugColor())
 }
 
+// SetDebugColor sets the property returned by [GetDebugColor].
 func (self Instance) SetDebugColor(value Color.RGBA) {
 	class(self).SetDebugColor(Color.RGBA(value))
 }
 
+/*
+If true, when the shape is displayed, it will show a solid fill color in addition to its wireframe.
+*/
 func (self Instance) DebugFill() bool {
 	return bool(class(self).GetEnableDebugFill())
 }
 
+// SetDebugFill sets the property returned by [GetEnableDebugFill].
 func (self Instance) SetDebugFill(value bool) {
 	class(self).SetEnableDebugFill(value)
 }

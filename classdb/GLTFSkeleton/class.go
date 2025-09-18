@@ -165,6 +165,7 @@ func (self Instance) Joints() []int32 {
 	return []int32(slices.Collect(class(self).GetJoints().Values()))
 }
 
+// SetJoints sets the property returned by [GetJoints].
 func (self Instance) SetJoints(value []int32) {
 	class(self).SetJoints(Packed.New(value...))
 }
@@ -173,6 +174,7 @@ func (self Instance) Roots() []int32 {
 	return []int32(slices.Collect(class(self).GetRoots().Values()))
 }
 
+// SetRoots sets the property returned by [GetRoots].
 func (self Instance) SetRoots(value []int32) {
 	class(self).SetRoots(Packed.New(value...))
 }
@@ -181,6 +183,7 @@ func (self Instance) UniqueNames() []string {
 	return []string(gd.ArrayAs[[]string](gd.InternalArray(class(self).GetUniqueNames())))
 }
 
+// SetUniqueNames sets the property returned by [GetUniqueNames].
 func (self Instance) SetUniqueNames(value []string) {
 	class(self).SetUniqueNames(gd.ArrayFromSlice[Array.Contains[String.Readable]](value))
 }
@@ -189,6 +192,7 @@ func (self Instance) GodotBoneNode() map[int]int {
 	return map[int]int(gd.DictionaryAs[map[int]int](class(self).GetGodotBoneNode()))
 }
 
+// SetGodotBoneNode sets the property returned by [GetGodotBoneNode].
 func (self Instance) SetGodotBoneNode(value map[int]int) {
 	class(self).SetGodotBoneNode(gd.DictionaryFromMap(value))
 }

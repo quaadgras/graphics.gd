@@ -155,42 +155,64 @@ func New() Instance {
 	return casted
 }
 
+/*
+Radius of sphere.
+*/
 func (self Instance) Radius() Float.X {
 	return Float.X(Float.X(class(self).GetRadius()))
 }
 
+// SetRadius sets the property returned by [GetRadius].
 func (self Instance) SetRadius(value Float.X) {
 	class(self).SetRadius(float64(value))
 }
 
+/*
+Full height of the sphere.
+*/
 func (self Instance) Height() Float.X {
 	return Float.X(Float.X(class(self).GetHeight()))
 }
 
+// SetHeight sets the property returned by [GetHeight].
 func (self Instance) SetHeight(value Float.X) {
 	class(self).SetHeight(float64(value))
 }
 
+/*
+Number of radial segments on the sphere.
+*/
 func (self Instance) RadialSegments() int {
 	return int(int(class(self).GetRadialSegments()))
 }
 
+// SetRadialSegments sets the property returned by [GetRadialSegments].
 func (self Instance) SetRadialSegments(value int) {
 	class(self).SetRadialSegments(int64(value))
 }
 
+/*
+Number of segments along the height of the sphere.
+*/
 func (self Instance) Rings() int {
 	return int(int(class(self).GetRings()))
 }
 
+// SetRings sets the property returned by [GetRings].
 func (self Instance) SetRings(value int) {
 	class(self).SetRings(int64(value))
 }
 
+/*
+If true, a hemisphere is created rather than a full sphere.
+
+Note: To get a regular hemisphere, the height and radius of the sphere must be equal.
+*/
 func (self Instance) IsHemisphere() bool {
 	return bool(class(self).GetIsHemisphere())
 }
 
+// SetIsHemisphere sets the property returned by [GetIsHemisphere].
 func (self Instance) SetIsHemisphere(value bool) {
 	class(self).SetIsHemisphere(value)
 }

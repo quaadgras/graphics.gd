@@ -170,10 +170,16 @@ func New() Instance {
 	return casted
 }
 
+/*
+The text displayed by the cancel button (see [GetCancelButton]).
+
+[GetCancelButton]: https://pkg.go.dev/graphics.gd/classdb/ConfirmationDialog#Instance.GetCancelButton
+*/
 func (self Instance) CancelButtonText() string {
 	return string(class(self).GetCancelButtonText().String())
 }
 
+// SetCancelButtonText sets the property returned by [GetCancelButtonText].
 func (self Instance) SetCancelButtonText(value string) {
 	class(self).SetCancelButtonText(String.New(value))
 }

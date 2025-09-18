@@ -151,26 +151,38 @@ func New() Instance {
 	return casted
 }
 
+/*
+Sets the mesh used to draw. It must be a mesh using 2D vertices.
+*/
 func (self Instance) Mesh() Mesh.Instance {
 	return Mesh.Instance(class(self).GetMesh())
 }
 
+// SetMesh sets the property returned by [GetMesh].
 func (self Instance) SetMesh(value Mesh.Instance) {
 	class(self).SetMesh(value)
 }
 
+/*
+Sets the base texture that the Mesh will use to draw.
+*/
 func (self Instance) BaseTexture() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetBaseTexture())
 }
 
+// SetBaseTexture sets the property returned by [GetBaseTexture].
 func (self Instance) SetBaseTexture(value Texture2D.Instance) {
 	class(self).SetBaseTexture(value)
 }
 
+/*
+Sets the size of the image, needed for reference.
+*/
 func (self Instance) ImageSize() Vector2.XY {
 	return Vector2.XY(class(self).GetImageSize())
 }
 
+// SetImageSize sets the property returned by [GetImageSize].
 func (self Instance) SetImageSize(value Vector2.XY) {
 	class(self).SetImageSize(Vector2.XY(value))
 }

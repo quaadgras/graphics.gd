@@ -153,82 +153,122 @@ func New() Instance {
 	return casted
 }
 
+/*
+The SPIR-V bytecode for the vertex shader stage.
+*/
 func (self Instance) BytecodeVertex() []byte {
 	return []byte(class(self).GetStageBytecode(0).Bytes())
 }
 
+// SetBytecodeVertex sets the property returned by [GetStageBytecode].
 func (self Instance) SetBytecodeVertex(value []byte) {
 	class(self).SetStageBytecode(0, Packed.BytesFrom(value...))
 }
 
+/*
+The SPIR-V bytecode for the fragment shader stage.
+*/
 func (self Instance) BytecodeFragment() []byte {
 	return []byte(class(self).GetStageBytecode(1).Bytes())
 }
 
+// SetBytecodeFragment sets the property returned by [GetStageBytecode].
 func (self Instance) SetBytecodeFragment(value []byte) {
 	class(self).SetStageBytecode(1, Packed.BytesFrom(value...))
 }
 
+/*
+The SPIR-V bytecode for the tessellation control shader stage.
+*/
 func (self Instance) BytecodeTesselationControl() []byte {
 	return []byte(class(self).GetStageBytecode(2).Bytes())
 }
 
+// SetBytecodeTesselationControl sets the property returned by [GetStageBytecode].
 func (self Instance) SetBytecodeTesselationControl(value []byte) {
 	class(self).SetStageBytecode(2, Packed.BytesFrom(value...))
 }
 
+/*
+The SPIR-V bytecode for the tessellation evaluation shader stage.
+*/
 func (self Instance) BytecodeTesselationEvaluation() []byte {
 	return []byte(class(self).GetStageBytecode(3).Bytes())
 }
 
+// SetBytecodeTesselationEvaluation sets the property returned by [GetStageBytecode].
 func (self Instance) SetBytecodeTesselationEvaluation(value []byte) {
 	class(self).SetStageBytecode(3, Packed.BytesFrom(value...))
 }
 
+/*
+The SPIR-V bytecode for the compute shader stage.
+*/
 func (self Instance) BytecodeCompute() []byte {
 	return []byte(class(self).GetStageBytecode(4).Bytes())
 }
 
+// SetBytecodeCompute sets the property returned by [GetStageBytecode].
 func (self Instance) SetBytecodeCompute(value []byte) {
 	class(self).SetStageBytecode(4, Packed.BytesFrom(value...))
 }
 
+/*
+The compilation error message for the vertex shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
+*/
 func (self Instance) CompileErrorVertex() string {
 	return string(class(self).GetStageCompileError(0).String())
 }
 
+// SetCompileErrorVertex sets the property returned by [GetStageCompileError].
 func (self Instance) SetCompileErrorVertex(value string) {
 	class(self).SetStageCompileError(0, String.New(value))
 }
 
+/*
+The compilation error message for the fragment shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
+*/
 func (self Instance) CompileErrorFragment() string {
 	return string(class(self).GetStageCompileError(1).String())
 }
 
+// SetCompileErrorFragment sets the property returned by [GetStageCompileError].
 func (self Instance) SetCompileErrorFragment(value string) {
 	class(self).SetStageCompileError(1, String.New(value))
 }
 
+/*
+The compilation error message for the tessellation control shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
+*/
 func (self Instance) CompileErrorTesselationControl() string {
 	return string(class(self).GetStageCompileError(2).String())
 }
 
+// SetCompileErrorTesselationControl sets the property returned by [GetStageCompileError].
 func (self Instance) SetCompileErrorTesselationControl(value string) {
 	class(self).SetStageCompileError(2, String.New(value))
 }
 
+/*
+The compilation error message for the tessellation evaluation shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
+*/
 func (self Instance) CompileErrorTesselationEvaluation() string {
 	return string(class(self).GetStageCompileError(3).String())
 }
 
+// SetCompileErrorTesselationEvaluation sets the property returned by [GetStageCompileError].
 func (self Instance) SetCompileErrorTesselationEvaluation(value string) {
 	class(self).SetStageCompileError(3, String.New(value))
 }
 
+/*
+The compilation error message for the compute shader stage (set by the SPIR-V compiler and Godot). If empty, shader compilation was successful.
+*/
 func (self Instance) CompileErrorCompute() string {
 	return string(class(self).GetStageCompileError(4).String())
 }
 
+// SetCompileErrorCompute sets the property returned by [GetStageCompileError].
 func (self Instance) SetCompileErrorCompute(value string) {
 	class(self).SetStageCompileError(4, String.New(value))
 }

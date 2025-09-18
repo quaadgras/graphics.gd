@@ -1250,34 +1250,54 @@ func New() Instance {
 	return casted
 }
 
+/*
+If true, the TreeItem is collapsed.
+*/
 func (self Instance) Collapsed() bool {
 	return bool(class(self).IsCollapsed())
 }
 
+// SetCollapsed sets the property returned by [IsCollapsed].
 func (self Instance) SetCollapsed(value bool) {
 	class(self).SetCollapsed(value)
 }
 
+/*
+If true, the [TreeItem] is visible (default).
+
+Note that if a [TreeItem] is set to not be visible, none of its children will be visible either.
+
+[TreeItem]: https://pkg.go.dev/graphics.gd/classdb/TreeItem
+*/
 func (self Instance) Visible() bool {
 	return bool(class(self).IsVisible())
 }
 
+// SetVisible sets the property returned by [IsVisible].
 func (self Instance) SetVisible(value bool) {
 	class(self).SetVisible(value)
 }
 
+/*
+If true, folding is disabled for this TreeItem.
+*/
 func (self Instance) DisableFolding() bool {
 	return bool(class(self).IsFoldingDisabled())
 }
 
+// SetDisableFolding sets the property returned by [IsFoldingDisabled].
 func (self Instance) SetDisableFolding(value bool) {
 	class(self).SetDisableFolding(value)
 }
 
+/*
+The custom minimum height.
+*/
 func (self Instance) CustomMinimumHeight() int {
 	return int(int(class(self).GetCustomMinimumHeight()))
 }
 
+// SetCustomMinimumHeight sets the property returned by [GetCustomMinimumHeight].
 func (self Instance) SetCustomMinimumHeight(value int) {
 	class(self).SetCustomMinimumHeight(int64(value))
 }

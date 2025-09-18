@@ -235,6 +235,7 @@ func (self Instance) TraversableOutlines() [][]Vector2.XY {
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).GetTraversableOutlines())))
 }
 
+// SetTraversableOutlines sets the property returned by [GetTraversableOutlines].
 func (self Instance) SetTraversableOutlines(value [][]Vector2.XY) {
 	class(self).SetTraversableOutlines(gd.ArrayFromSlice[Array.Contains[Packed.Array[Vector2.XY]]](value))
 }
@@ -243,6 +244,7 @@ func (self Instance) ObstructionOutlines() [][]Vector2.XY {
 	return [][]Vector2.XY(gd.ArrayAs[[][]Vector2.XY](gd.InternalArray(class(self).GetObstructionOutlines())))
 }
 
+// SetObstructionOutlines sets the property returned by [GetObstructionOutlines].
 func (self Instance) SetObstructionOutlines(value [][]Vector2.XY) {
 	class(self).SetObstructionOutlines(gd.ArrayFromSlice[Array.Contains[Packed.Array[Vector2.XY]]](value))
 }
@@ -251,6 +253,7 @@ func (self Instance) ProjectedObstructions() []ProjectedObstruction2D {
 	return []ProjectedObstruction2D(gd.ArrayAs[[]ProjectedObstruction2D](gd.InternalArray(class(self).GetProjectedObstructions())))
 }
 
+// SetProjectedObstructions sets the property returned by [GetProjectedObstructions].
 func (self Instance) SetProjectedObstructions(value []ProjectedObstruction2D) {
 	class(self).SetProjectedObstructions(gd.EngineArrayFromSlice(value))
 }

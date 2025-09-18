@@ -154,26 +154,44 @@ func New() Instance {
 	return casted
 }
 
+/*
+The ID of the [CameraFeed] for which we want to display the image.
+
+[CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
+*/
 func (self Instance) CameraFeedId() int {
 	return int(int(class(self).GetCameraFeedId()))
 }
 
+// SetCameraFeedId sets the property returned by [GetCameraFeedId].
 func (self Instance) SetCameraFeedId(value int) {
 	class(self).SetCameraFeedId(int64(value))
 }
 
+/*
+Which image within the [CameraFeed] we want access to, important if the camera image is split in a Y and CbCr component.
+
+[CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
+*/
 func (self Instance) WhichFeed() CameraFeed.ImageType {
 	return CameraFeed.ImageType(class(self).GetWhichFeed())
 }
 
+// SetWhichFeed sets the property returned by [GetWhichFeed].
 func (self Instance) SetWhichFeed(value CameraFeed.ImageType) {
 	class(self).SetWhichFeed(value)
 }
 
+/*
+Convenience property that gives access to the active property of the [CameraFeed].
+
+[CameraFeed]: https://pkg.go.dev/graphics.gd/classdb/CameraFeed
+*/
 func (self Instance) CameraIsActive() bool {
 	return bool(class(self).GetCameraActive())
 }
 
+// SetCameraIsActive sets the property returned by [GetCameraActive].
 func (self Instance) SetCameraIsActive(value bool) {
 	class(self).SetCameraActive(value)
 }

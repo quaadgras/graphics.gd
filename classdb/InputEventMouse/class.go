@@ -152,26 +152,56 @@ func New() Instance {
 	return casted
 }
 
+/*
+The mouse button mask identifier, one of or a bitwise combination of the [MouseButton] button masks.
+*/
 func (self Instance) ButtonMask() Input.MouseButtonMask {
 	return Input.MouseButtonMask(class(self).GetButtonMask())
 }
 
+// SetButtonMask sets the property returned by [GetButtonMask].
 func (self Instance) SetButtonMask(value Input.MouseButtonMask) {
 	class(self).SetButtonMask(value)
 }
 
+/*
+When received in [Node.Input] or [Node.UnhandledInput], returns the mouse's position in the [Viewport] this [Node] is in using the coordinate system of this [Viewport].
+
+When received in [Control.GuiInput], returns the mouse's position in the [Control] using the local coordinate system of the [Control].
+
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Control.GuiInput]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GuiInput
+[Node]: https://pkg.go.dev/graphics.gd/classdb/Node
+[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
+[Node.UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledInput
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+*/
 func (self Instance) Position() Vector2.XY {
 	return Vector2.XY(class(self).GetPosition())
 }
 
+// SetPosition sets the property returned by [GetPosition].
 func (self Instance) SetPosition(value Vector2.XY) {
 	class(self).SetPosition(Vector2.XY(value))
 }
 
+/*
+When received in [Node.Input] or [Node.UnhandledInput], returns the mouse's position in the root [Viewport] using the coordinate system of the root [Viewport].
+
+When received in [Control.GuiInput], returns the mouse's position in the [CanvasLayer] that the [Control] is in using the coordinate system of the [CanvasLayer].
+
+[CanvasLayer]: https://pkg.go.dev/graphics.gd/classdb/CanvasLayer
+[Control]: https://pkg.go.dev/graphics.gd/classdb/Control
+[Control.GuiInput]: https://pkg.go.dev/graphics.gd/classdb/Control#Instance.GuiInput
+[Node.Input]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Input
+[Node.UnhandledInput]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.UnhandledInput
+[Viewport]: https://pkg.go.dev/graphics.gd/classdb/Viewport
+*/
 func (self Instance) GlobalPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetGlobalPosition())
 }
 
+// SetGlobalPosition sets the property returned by [GetGlobalPosition].
 func (self Instance) SetGlobalPosition(value Vector2.XY) {
 	class(self).SetGlobalPosition(Vector2.XY(value))
 }

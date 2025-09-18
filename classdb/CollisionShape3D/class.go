@@ -179,34 +179,56 @@ func New() Instance {
 	return casted
 }
 
+/*
+The actual shape owned by this collision shape.
+*/
 func (self Instance) Shape() Shape3D.Instance {
 	return Shape3D.Instance(class(self).GetShape())
 }
 
+// SetShape sets the property returned by [GetShape].
 func (self Instance) SetShape(value Shape3D.Instance) {
 	class(self).SetShape(value)
 }
 
+/*
+A disabled collision shape has no effect in the world. This property should be changed with [Object.SetDeferred].
+
+[Object.SetDeferred]: https://pkg.go.dev/graphics.gd/variant/Object#SetDeferred
+*/
 func (self Instance) Disabled() bool {
 	return bool(class(self).IsDisabled())
 }
 
+// SetDisabled sets the property returned by [IsDisabled].
 func (self Instance) SetDisabled(value bool) {
 	class(self).SetDisabled(value)
 }
 
+/*
+The collision shape color that is displayed in the editor, or in the running project if Debug > Visible Collision Shapes is checked at the top of the editor.
+
+Note: The default value is [ProjectSettings] "debug/shapes/collision/shape_color". The Color(0, 0, 0, 0) value documented here is a placeholder, and not the actual default debug color.
+
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) DebugColor() Color.RGBA {
 	return Color.RGBA(class(self).GetDebugColor())
 }
 
+// SetDebugColor sets the property returned by [GetDebugColor].
 func (self Instance) SetDebugColor(value Color.RGBA) {
 	class(self).SetDebugColor(Color.RGBA(value))
 }
 
+/*
+If true, when the shape is displayed, it will show a solid fill color in addition to its wireframe.
+*/
 func (self Instance) DebugFill() bool {
 	return bool(class(self).GetEnableDebugFill())
 }
 
+// SetDebugFill sets the property returned by [GetEnableDebugFill].
 func (self Instance) SetDebugFill(value bool) {
 	class(self).SetEnableDebugFill(value)
 }

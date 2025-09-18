@@ -302,90 +302,173 @@ func New() Instance {
 	return casted
 }
 
+/*
+Position, relative to the node's parent. See also [GlobalPosition].
+
+[GlobalPosition]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalPosition
+*/
 func (self Instance) Position() Vector2.XY {
 	return Vector2.XY(class(self).GetPosition())
 }
 
+// SetPosition sets the property returned by [GetPosition].
 func (self Instance) SetPosition(value Vector2.XY) {
 	class(self).SetPosition(Vector2.XY(value))
 }
 
+/*
+Rotation in radians, relative to the node's parent. See also [GlobalRotation].
+
+Note: This property is edited in the inspector in degrees. If you want to use degrees in a script, use [RotationDegrees].
+
+[GlobalRotation]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalRotation
+[RotationDegrees]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.RotationDegrees
+*/
 func (self Instance) Rotation() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetRotation()))
 }
 
+// SetRotation sets the property returned by [GetRotation].
 func (self Instance) SetRotation(value Angle.Radians) {
 	class(self).SetRotation(float64(value))
 }
 
+/*
+Helper property to access [Rotation] in degrees instead of radians. See also [GlobalRotationDegrees].
+
+[GlobalRotationDegrees]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalRotationDegrees
+[Rotation]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Rotation
+*/
 func (self Instance) RotationDegrees() Angle.Degrees {
 	return Angle.Degrees(Float.X(class(self).GetRotationDegrees()))
 }
 
+// SetRotationDegrees sets the property returned by [GetRotationDegrees].
 func (self Instance) SetRotationDegrees(value Angle.Degrees) {
 	class(self).SetRotationDegrees(float64(value))
 }
 
+/*
+The node's scale, relative to the node's parent. Unscaled value: (1, 1). See also [GlobalScale].
+
+Note: Negative X scales in 2D are not decomposable from the transformation matrix. Due to the way scale is represented with transformation matrices in Godot, negative scales on the X axis will be changed to negative scales on the Y axis and a rotation of 180 degrees when decomposed.
+
+[GlobalScale]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalScale
+*/
 func (self Instance) Scale() Vector2.XY {
 	return Vector2.XY(class(self).GetScale())
 }
 
+// SetScale sets the property returned by [GetScale].
 func (self Instance) SetScale(value Vector2.XY) {
 	class(self).SetScale(Vector2.XY(value))
 }
 
+/*
+If set to a non-zero value, slants the node in one direction or another. This can be used for pseudo-3D effects. See also [GlobalSkew].
+
+Note: Skew is performed on the X axis only, and between rotation and scaling.
+
+Note: This property is edited in the inspector in degrees. If you want to use degrees in a script, use skew = deg_to_rad(value_in_degrees).
+
+[GlobalSkew]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalSkew
+*/
 func (self Instance) Skew() Float.X {
 	return Float.X(Float.X(class(self).GetSkew()))
 }
 
+// SetSkew sets the property returned by [GetSkew].
 func (self Instance) SetSkew(value Float.X) {
 	class(self).SetSkew(float64(value))
 }
 
+/*
+The node's [Transform2D.OriginXY], relative to the node's parent. See also [GlobalTransform].
+
+[GlobalTransform]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalTransform
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
+*/
 func (self Instance) SetTransform(value Transform2D.OriginXY) {
 	class(self).SetTransform(Transform2D.OriginXY(value))
 }
 
+/*
+Global position. See also [Position].
+
+[Position]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Position
+*/
 func (self Instance) GlobalPosition() Vector2.XY {
 	return Vector2.XY(class(self).GetGlobalPosition())
 }
 
+// SetGlobalPosition sets the property returned by [GetGlobalPosition].
 func (self Instance) SetGlobalPosition(value Vector2.XY) {
 	class(self).SetGlobalPosition(Vector2.XY(value))
 }
 
+/*
+Global rotation in radians. See also [Rotation].
+
+[Rotation]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Rotation
+*/
 func (self Instance) GlobalRotation() Angle.Radians {
 	return Angle.Radians(Float.X(class(self).GetGlobalRotation()))
 }
 
+// SetGlobalRotation sets the property returned by [GetGlobalRotation].
 func (self Instance) SetGlobalRotation(value Angle.Radians) {
 	class(self).SetGlobalRotation(float64(value))
 }
 
+/*
+Helper property to access [GlobalRotation] in degrees instead of radians. See also [RotationDegrees].
+
+[GlobalRotation]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.GlobalRotation
+[RotationDegrees]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.RotationDegrees
+*/
 func (self Instance) GlobalRotationDegrees() Angle.Degrees {
 	return Angle.Degrees(Float.X(class(self).GetGlobalRotationDegrees()))
 }
 
+// SetGlobalRotationDegrees sets the property returned by [GetGlobalRotationDegrees].
 func (self Instance) SetGlobalRotationDegrees(value Angle.Degrees) {
 	class(self).SetGlobalRotationDegrees(float64(value))
 }
 
+/*
+Global scale. See also [Scale].
+
+[Scale]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Scale
+*/
 func (self Instance) GlobalScale() Vector2.XY {
 	return Vector2.XY(class(self).GetGlobalScale())
 }
 
+// SetGlobalScale sets the property returned by [GetGlobalScale].
 func (self Instance) SetGlobalScale(value Vector2.XY) {
 	class(self).SetGlobalScale(Vector2.XY(value))
 }
 
+/*
+Global skew in radians. See also [Skew].
+
+[Skew]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Skew
+*/
 func (self Instance) GlobalSkew() Float.X {
 	return Float.X(Float.X(class(self).GetGlobalSkew()))
 }
 
+// SetGlobalSkew sets the property returned by [GetGlobalSkew].
 func (self Instance) SetGlobalSkew(value Float.X) {
 	class(self).SetGlobalSkew(float64(value))
 }
 
+/*
+Global [Transform2D.OriginXY]. See also [Transform].
+
+[Transform]: https://pkg.go.dev/graphics.gd/classdb/Node2D#Instance.Transform
+[Transform2D.OriginXY]: https://pkg.go.dev/graphics.gd/variant/Transform2D#OriginXY
+*/
 func (self Instance) SetGlobalTransform(value Transform2D.OriginXY) {
 	class(self).SetGlobalTransform(Transform2D.OriginXY(value))
 }

@@ -158,66 +158,98 @@ func New() Instance {
 	return casted
 }
 
+/*
+Time between the original signal and the early reflections of the reverb signal, in milliseconds.
+*/
 func (self Instance) PredelayMsec() Float.X {
 	return Float.X(Float.X(class(self).GetPredelayMsec()))
 }
 
+// SetPredelayMsec sets the property returned by [GetPredelayMsec].
 func (self Instance) SetPredelayMsec(value Float.X) {
 	class(self).SetPredelayMsec(float64(value))
 }
 
+/*
+Output percent of predelay. Value can range from 0 to 1.
+*/
 func (self Instance) PredelayFeedback() Float.X {
 	return Float.X(Float.X(class(self).GetPredelayFeedback()))
 }
 
+// SetPredelayFeedback sets the property returned by [GetPredelayFeedback].
 func (self Instance) SetPredelayFeedback(value Float.X) {
 	class(self).SetPredelayFeedback(float64(value))
 }
 
+/*
+Dimensions of simulated room. Bigger means more echoes. Value can range from 0 to 1.
+*/
 func (self Instance) RoomSize() Float.X {
 	return Float.X(Float.X(class(self).GetRoomSize()))
 }
 
+// SetRoomSize sets the property returned by [GetRoomSize].
 func (self Instance) SetRoomSize(value Float.X) {
 	class(self).SetRoomSize(float64(value))
 }
 
+/*
+Defines how reflective the imaginary room's walls are. Value can range from 0 to 1.
+*/
 func (self Instance) Damping() Float.X {
 	return Float.X(Float.X(class(self).GetDamping()))
 }
 
+// SetDamping sets the property returned by [GetDamping].
 func (self Instance) SetDamping(value Float.X) {
 	class(self).SetDamping(float64(value))
 }
 
+/*
+Widens or narrows the stereo image of the reverb tail. 1 means fully widens. Value can range from 0 to 1.
+*/
 func (self Instance) Spread() Float.X {
 	return Float.X(Float.X(class(self).GetSpread()))
 }
 
+// SetSpread sets the property returned by [GetSpread].
 func (self Instance) SetSpread(value Float.X) {
 	class(self).SetSpread(float64(value))
 }
 
+/*
+High-pass filter passes signals with a frequency higher than a certain cutoff frequency and attenuates signals with frequencies lower than the cutoff frequency. Value can range from 0 to 1.
+*/
 func (self Instance) Hipass() Float.X {
 	return Float.X(Float.X(class(self).GetHpf()))
 }
 
+// SetHipass sets the property returned by [GetHpf].
 func (self Instance) SetHipass(value Float.X) {
 	class(self).SetHpf(float64(value))
 }
 
+/*
+Output percent of original sound. At 0, only modified sound is outputted. Value can range from 0 to 1.
+*/
 func (self Instance) Dry() Float.X {
 	return Float.X(Float.X(class(self).GetDry()))
 }
 
+// SetDry sets the property returned by [GetDry].
 func (self Instance) SetDry(value Float.X) {
 	class(self).SetDry(float64(value))
 }
 
+/*
+Output percent of modified sound. At 0, only original sound is outputted. Value can range from 0 to 1.
+*/
 func (self Instance) Wet() Float.X {
 	return Float.X(Float.X(class(self).GetWet()))
 }
 
+// SetWet sets the property returned by [GetWet].
 func (self Instance) SetWet(value Float.X) {
 	class(self).SetWet(float64(value))
 }

@@ -151,10 +151,14 @@ func New() Instance {
 	return casted
 }
 
+/*
+The amount (or delta) of the event. This value is closer to 1.0 the slower the gesture is performed.
+*/
 func (self Instance) Factor() Float.X {
 	return Float.X(Float.X(class(self).GetFactor()))
 }
 
+// SetFactor sets the property returned by [GetFactor].
 func (self Instance) SetFactor(value Float.X) {
 	class(self).SetFactor(float64(value))
 }

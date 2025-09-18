@@ -187,146 +187,288 @@ func New() Instance {
 	return casted
 }
 
+/*
+Used by positional lights ([OmniLight3D] and [SpotLight3D]) when [ProjectSettings] "rendering/lights_and_shadows/use_physical_light_units" is true. Sets the intensity of the light source measured in Lumens. Lumens are a measure of luminous flux, which is the total amount of visible light emitted by a light source per unit of time.
+
+For [SpotLight3D]s, we assume that the area outside the visible cone is surrounded by a perfect light absorbing material. Accordingly, the apparent brightness of the cone area does not change as the cone increases and decreases in size.
+
+A typical household lightbulb can range from around 600 lumens to 1,200 lumens, a candle is about 13 lumens, while a streetlight can be approximately 60,000 lumens.
+
+[OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
+*/
 func (self Instance) LightIntensityLumens() Float.X {
 	return Float.X(Float.X(class(self).GetParam(20)))
 }
 
+// SetLightIntensityLumens sets the property returned by [GetParam].
 func (self Instance) SetLightIntensityLumens(value Float.X) {
 	class(self).SetParam(20, float64(value))
 }
 
+/*
+Used by [DirectionalLight3D]s when [ProjectSettings] "rendering/lights_and_shadows/use_physical_light_units" is true. Sets the intensity of the light source measured in Lux. Lux is a measure of luminous flux per unit area, it is equal to one lumen per square meter. Lux is the measure of how much light hits a surface at a given time.
+
+On a clear sunny day a surface in direct sunlight may be approximately 100,000 lux, a typical room in a home may be approximately 50 lux, while the moonlit ground may be approximately 0.1 lux.
+
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+*/
 func (self Instance) LightIntensityLux() Float.X {
 	return Float.X(Float.X(class(self).GetParam(20)))
 }
 
+// SetLightIntensityLux sets the property returned by [GetParam].
 func (self Instance) SetLightIntensityLux(value Float.X) {
 	class(self).SetParam(20, float64(value))
 }
 
+/*
+Sets the color temperature of the light source, measured in Kelvin. This is used to calculate a correlated color temperature which tints the [LightColor].
+
+The sun on a cloudy day is approximately 6500 Kelvin, on a clear day it is between 5500 to 6000 Kelvin, and on a clear day at sunrise or sunset it ranges to around 1850 Kelvin.
+
+[LightColor]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightColor
+*/
 func (self Instance) LightTemperature() Float.X {
 	return Float.X(Float.X(class(self).GetTemperature()))
 }
 
+// SetLightTemperature sets the property returned by [GetTemperature].
 func (self Instance) SetLightTemperature(value Float.X) {
 	class(self).SetTemperature(float64(value))
 }
 
+/*
+The light's color in the nonlinear sRGB color space. An overbright color can be used to achieve a result equivalent to increasing the light's [LightEnergy].
+
+[LightEnergy]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightEnergy
+*/
 func (self Instance) LightColor() Color.RGBA {
 	return Color.RGBA(class(self).GetColor())
 }
 
+// SetLightColor sets the property returned by [GetColor].
 func (self Instance) SetLightColor(value Color.RGBA) {
 	class(self).SetColor(Color.RGBA(value))
 }
 
+/*
+The light's strength multiplier (this is not a physical unit). For [OmniLight3D] and [SpotLight3D], changing this value will only change the light color's intensity, not the light's radius.
+
+[OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
+[SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
+*/
 func (self Instance) LightEnergy() Float.X {
 	return Float.X(Float.X(class(self).GetParam(0)))
 }
 
+// SetLightEnergy sets the property returned by [GetParam].
 func (self Instance) SetLightEnergy(value Float.X) {
 	class(self).SetParam(0, float64(value))
 }
 
+/*
+Secondary multiplier used with indirect light (light bounces). Used with [VoxelGI] and SDFGI (see [Environment.SdfgiEnabled]).
+
+Note: This property is ignored if [LightEnergy] is equal to 0.0, as the light won't be present at all in the GI shader.
+
+[Environment.SdfgiEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.SdfgiEnabled
+[LightEnergy]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightEnergy
+[VoxelGI]: https://pkg.go.dev/graphics.gd/classdb/VoxelGI
+*/
 func (self Instance) LightIndirectEnergy() Float.X {
 	return Float.X(Float.X(class(self).GetParam(1)))
 }
 
+// SetLightIndirectEnergy sets the property returned by [GetParam].
 func (self Instance) SetLightIndirectEnergy(value Float.X) {
 	class(self).SetParam(1, float64(value))
 }
 
+/*
+Secondary multiplier multiplied with [LightEnergy] then used with the [Environment]'s volumetric fog (if enabled). If set to 0.0, computing volumetric fog will be skipped for this light, which can improve performance for large amounts of lights when volumetric fog is enabled.
+
+Note: To prevent short-lived dynamic light effects from poorly interacting with volumetric fog, lights used in those effects should have [LightVolumetricFogEnergy] set to 0.0 unless [Environment.VolumetricFogTemporalReprojectionEnabled] is disabled (or unless the reprojection amount is significantly lowered).
+
+[Environment]: https://pkg.go.dev/graphics.gd/classdb/Environment
+[Environment.VolumetricFogTemporalReprojectionEnabled]: https://pkg.go.dev/graphics.gd/classdb/Environment#Instance.VolumetricFogTemporalReprojectionEnabled
+[LightEnergy]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightEnergy
+[LightVolumetricFogEnergy]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightVolumetricFogEnergy
+*/
 func (self Instance) LightVolumetricFogEnergy() Float.X {
 	return Float.X(Float.X(class(self).GetParam(2)))
 }
 
+// SetLightVolumetricFogEnergy sets the property returned by [GetParam].
 func (self Instance) SetLightVolumetricFogEnergy(value Float.X) {
 	class(self).SetParam(2, float64(value))
 }
 
+/*
+[Texture2D] projected by light. [ShadowEnabled] must be on for the projector to work. Light projectors make the light appear as if it is shining through a colored but transparent object, almost like light shining through stained-glass.
+
+Note: Unlike [BaseMaterial3D] whose filter mode can be adjusted on a per-material basis, the filter mode for light projector textures is set globally with [ProjectSettings] "rendering/textures/light_projectors/filter".
+
+Note: Light projector textures are only supported in the Forward+ and Mobile rendering methods, not Compatibility.
+
+[BaseMaterial3D]: https://pkg.go.dev/graphics.gd/classdb/BaseMaterial3D
+[ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
+[ShadowEnabled]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowEnabled
+[Texture2D]: https://pkg.go.dev/graphics.gd/classdb/Texture2D
+*/
 func (self Instance) LightProjector() Texture2D.Instance {
 	return Texture2D.Instance(class(self).GetProjector())
 }
 
+// SetLightProjector sets the property returned by [GetProjector].
 func (self Instance) SetLightProjector(value Texture2D.Instance) {
 	class(self).SetProjector(value)
 }
 
+/*
+The size of the light in Godot units. Only available for [OmniLight3D]s and [SpotLight3D]s. Increasing this value will make the light fade out slower and shadows appear blurrier (also called percentage-closer soft shadows, or PCSS). This can be used to simulate area lights to an extent. Increasing this value above 0.0 for lights with shadows enabled will have a noticeable performance cost due to PCSS.
+
+Note: [LightSize] is not affected by [Node3D.Scale] (the light's scale or its parent's scale).
+
+Note: PCSS for positional lights is only supported in the Forward+ and Mobile rendering methods, not Compatibility.
+
+[LightSize]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightSize
+[Node3D.Scale]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Scale
+[OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
+[SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
+*/
 func (self Instance) LightSize() Float.X {
 	return Float.X(Float.X(class(self).GetParam(5)))
 }
 
+// SetLightSize sets the property returned by [GetParam].
 func (self Instance) SetLightSize(value Float.X) {
 	class(self).SetParam(5, float64(value))
 }
 
+/*
+The light's angular size in degrees. Increasing this will make shadows softer at greater distances (also called percentage-closer soft shadows, or PCSS). Only available for [DirectionalLight3D]s. For reference, the Sun from the Earth is approximately 0.5. Increasing this value above 0.0 for lights with shadows enabled will have a noticeable performance cost due to PCSS.
+
+Note: [LightAngularDistance] is not affected by [Node3D.Scale] (the light's scale or its parent's scale).
+
+Note: PCSS for directional lights is only supported in the Forward+ rendering method, not Mobile or Compatibility.
+
+[DirectionalLight3D]: https://pkg.go.dev/graphics.gd/classdb/DirectionalLight3D
+[LightAngularDistance]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightAngularDistance
+[Node3D.Scale]: https://pkg.go.dev/graphics.gd/classdb/Node3D#Instance.Scale
+*/
 func (self Instance) LightAngularDistance() Float.X {
 	return Float.X(Float.X(class(self).GetParam(5)))
 }
 
+// SetLightAngularDistance sets the property returned by [GetParam].
 func (self Instance) SetLightAngularDistance(value Float.X) {
 	class(self).SetParam(5, float64(value))
 }
 
+/*
+If true, the light's effect is reversed, darkening areas and casting bright shadows.
+*/
 func (self Instance) LightNegative() bool {
 	return bool(class(self).IsNegative())
 }
 
+// SetLightNegative sets the property returned by [IsNegative].
 func (self Instance) SetLightNegative(value bool) {
 	class(self).SetNegative(value)
 }
 
+/*
+The intensity of the specular blob in objects affected by the light. At 0, the light becomes a pure diffuse light. When not baking emission, this can be used to avoid unrealistic reflections when placing lights above an emissive surface.
+*/
 func (self Instance) LightSpecular() Float.X {
 	return Float.X(Float.X(class(self).GetParam(3)))
 }
 
+// SetLightSpecular sets the property returned by [GetParam].
 func (self Instance) SetLightSpecular(value Float.X) {
 	class(self).SetParam(3, float64(value))
 }
 
+/*
+The light's bake mode. This will affect the global illumination techniques that have an effect on the light's rendering.
+
+Note: Meshes' global illumination mode will also affect the global illumination rendering. See [GeometryInstance3D.GiMode].
+
+[GeometryInstance3D.GiMode]: https://pkg.go.dev/graphics.gd/classdb/GeometryInstance3D#Instance.GiMode
+*/
 func (self Instance) LightBakeMode() BakeMode {
 	return BakeMode(class(self).GetBakeMode())
 }
 
+// SetLightBakeMode sets the property returned by [GetBakeMode].
 func (self Instance) SetLightBakeMode(value BakeMode) {
 	class(self).SetBakeMode(value)
 }
 
+/*
+The light will affect objects in the selected layers.
+*/
 func (self Instance) LightCullMask() int {
 	return int(int(class(self).GetCullMask()))
 }
 
+// SetLightCullMask sets the property returned by [GetCullMask].
 func (self Instance) SetLightCullMask(value int) {
 	class(self).SetCullMask(int64(value))
 }
 
+/*
+If true, the light will cast real-time shadows. This has a significant performance cost. Only enable shadow rendering when it makes a noticeable difference in the scene's appearance, and consider using [DistanceFadeEnabled] to hide the light when far away from the [Camera3D].
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[DistanceFadeEnabled]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeEnabled
+*/
 func (self Instance) ShadowEnabled() bool {
 	return bool(class(self).HasShadow())
 }
 
+// SetShadowEnabled sets the property returned by [HasShadow].
 func (self Instance) SetShadowEnabled(value bool) {
 	class(self).SetShadow(value)
 }
 
+/*
+Used to adjust shadow appearance. Too small a value results in self-shadowing ("shadow acne"), while too large a value causes shadows to separate from casters ("peter-panning"). Adjust as needed.
+*/
 func (self Instance) ShadowBias() Float.X {
 	return Float.X(Float.X(class(self).GetParam(15)))
 }
 
+// SetShadowBias sets the property returned by [GetParam].
 func (self Instance) SetShadowBias(value Float.X) {
 	class(self).SetParam(15, float64(value))
 }
 
+/*
+Offsets the lookup into the shadow map by the object's normal. This can be used to reduce self-shadowing artifacts without using [ShadowBias]. In practice, this value should be tweaked along with [ShadowBias] to reduce artifacts as much as possible.
+
+[ShadowBias]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowBias
+*/
 func (self Instance) ShadowNormalBias() Float.X {
 	return Float.X(Float.X(class(self).GetParam(14)))
 }
 
+// SetShadowNormalBias sets the property returned by [GetParam].
 func (self Instance) SetShadowNormalBias(value Float.X) {
 	class(self).SetParam(14, float64(value))
 }
 
+/*
+If true, reverses the backface culling of the mesh. This can be useful when you have a flat mesh that has a light behind it. If you need to cast a shadow on both sides of the mesh, set the mesh to use double-sided shadows with [Geometryinstance3d.ShadowCastingSettingDoubleSided].
+*/
 func (self Instance) ShadowReverseCullFace() bool {
 	return bool(class(self).GetShadowReverseCullFace())
 }
 
+// SetShadowReverseCullFace sets the property returned by [GetShadowReverseCullFace].
 func (self Instance) SetShadowReverseCullFace(value bool) {
 	class(self).SetShadowReverseCullFace(value)
 }
@@ -335,70 +477,132 @@ func (self Instance) ShadowTransmittanceBias() Float.X {
 	return Float.X(Float.X(class(self).GetParam(19)))
 }
 
+// SetShadowTransmittanceBias sets the property returned by [GetParam].
 func (self Instance) SetShadowTransmittanceBias(value Float.X) {
 	class(self).SetParam(19, float64(value))
 }
 
+/*
+The opacity to use when rendering the light's shadow map. Values lower than 1.0 make the light appear through shadows. This can be used to fake global illumination at a low performance cost.
+*/
 func (self Instance) ShadowOpacity() Float.X {
 	return Float.X(Float.X(class(self).GetParam(17)))
 }
 
+// SetShadowOpacity sets the property returned by [GetParam].
 func (self Instance) SetShadowOpacity(value Float.X) {
 	class(self).SetParam(17, float64(value))
 }
 
+/*
+Blurs the edges of the shadow. Can be used to hide pixel artifacts in low-resolution shadow maps. A high value can impact performance, make shadows appear grainy and can cause other unwanted artifacts. Try to keep as near default as possible.
+*/
 func (self Instance) ShadowBlur() Float.X {
 	return Float.X(Float.X(class(self).GetParam(18)))
 }
 
+// SetShadowBlur sets the property returned by [GetParam].
 func (self Instance) SetShadowBlur(value Float.X) {
 	class(self).SetParam(18, float64(value))
 }
 
+/*
+The light will only cast shadows using objects in the selected layers.
+*/
 func (self Instance) ShadowCasterMask() int {
 	return int(int(class(self).GetShadowCasterMask()))
 }
 
+// SetShadowCasterMask sets the property returned by [GetShadowCasterMask].
 func (self Instance) SetShadowCasterMask(value int) {
 	class(self).SetShadowCasterMask(int64(value))
 }
 
+/*
+If true, the light will smoothly fade away when far from the active [Camera3D] starting at [DistanceFadeBegin]. This acts as a form of level of detail (LOD). The light will fade out over [DistanceFadeBegin] + [DistanceFadeLength], after which it will be culled and not sent to the shader at all. Use this to reduce the number of active lights in a scene and thus improve performance.
+
+Note: Only effective for [OmniLight3D] and [SpotLight3D].
+
+[Camera3D]: https://pkg.go.dev/graphics.gd/classdb/Camera3D
+[DistanceFadeBegin]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeBegin
+[DistanceFadeLength]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeLength
+[OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
+[SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
+*/
 func (self Instance) DistanceFadeEnabled() bool {
 	return bool(class(self).IsDistanceFadeEnabled())
 }
 
+// SetDistanceFadeEnabled sets the property returned by [IsDistanceFadeEnabled].
 func (self Instance) SetDistanceFadeEnabled(value bool) {
 	class(self).SetEnableDistanceFade(value)
 }
 
+/*
+The distance from the camera at which the light begins to fade away (in 3D units).
+
+Note: Only effective for [OmniLight3D] and [SpotLight3D].
+
+[OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
+[SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
+*/
 func (self Instance) DistanceFadeBegin() Float.X {
 	return Float.X(Float.X(class(self).GetDistanceFadeBegin()))
 }
 
+// SetDistanceFadeBegin sets the property returned by [GetDistanceFadeBegin].
 func (self Instance) SetDistanceFadeBegin(value Float.X) {
 	class(self).SetDistanceFadeBegin(float64(value))
 }
 
+/*
+The distance from the camera at which the light's shadow cuts off (in 3D units). Set this to a value lower than [DistanceFadeBegin] + [DistanceFadeLength] to further improve performance, as shadow rendering is often more expensive than light rendering itself.
+
+Note: Only effective for [OmniLight3D] and [SpotLight3D], and only when [ShadowEnabled] is true.
+
+[DistanceFadeBegin]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeBegin
+[DistanceFadeLength]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.DistanceFadeLength
+[OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
+[ShadowEnabled]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.ShadowEnabled
+[SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
+*/
 func (self Instance) DistanceFadeShadow() Float.X {
 	return Float.X(Float.X(class(self).GetDistanceFadeShadow()))
 }
 
+// SetDistanceFadeShadow sets the property returned by [GetDistanceFadeShadow].
 func (self Instance) SetDistanceFadeShadow(value Float.X) {
 	class(self).SetDistanceFadeShadow(float64(value))
 }
 
+/*
+Distance over which the light and its shadow fades. The light's energy and shadow's opacity is progressively reduced over this distance and is completely invisible at the end.
+
+Note: Only effective for [OmniLight3D] and [SpotLight3D].
+
+[OmniLight3D]: https://pkg.go.dev/graphics.gd/classdb/OmniLight3D
+[SpotLight3D]: https://pkg.go.dev/graphics.gd/classdb/SpotLight3D
+*/
 func (self Instance) DistanceFadeLength() Float.X {
 	return Float.X(Float.X(class(self).GetDistanceFadeLength()))
 }
 
+// SetDistanceFadeLength sets the property returned by [GetDistanceFadeLength].
 func (self Instance) SetDistanceFadeLength(value Float.X) {
 	class(self).SetDistanceFadeLength(float64(value))
 }
 
+/*
+If true, the light only appears in the editor and will not be visible at runtime. If true, the light will never be baked in [LightmapGI] regardless of its [LightBakeMode].
+
+[LightBakeMode]: https://pkg.go.dev/graphics.gd/classdb/Light3D#Instance.LightBakeMode
+[LightmapGI]: https://pkg.go.dev/graphics.gd/classdb/LightmapGI
+*/
 func (self Instance) EditorOnly() bool {
 	return bool(class(self).IsEditorOnly())
 }
 
+// SetEditorOnly sets the property returned by [IsEditorOnly].
 func (self Instance) SetEditorOnly(value bool) {
 	class(self).SetEditorOnly(value)
 }

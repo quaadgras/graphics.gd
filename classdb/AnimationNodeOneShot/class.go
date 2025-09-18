@@ -191,74 +191,129 @@ func New() Instance {
 	return casted
 }
 
+/*
+The blend type.
+*/
 func (self Instance) MixMode() MixMode {
 	return MixMode(class(self).GetMixMode())
 }
 
+// SetMixMode sets the property returned by [GetMixMode].
 func (self Instance) SetMixMode(value MixMode) {
 	class(self).SetMixMode(value)
 }
 
+/*
+The fade-in duration. For example, setting this to 1.0 for a 5 second length animation will produce a cross-fade that starts at 0 second and ends at 1 second during the animation.
+
+Note: [AnimationNodeOneShot] transitions the current state after the fading has finished.
+
+[AnimationNodeOneShot]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeOneShot
+*/
 func (self Instance) FadeinTime() Float.X {
 	return Float.X(Float.X(class(self).GetFadeinTime()))
 }
 
+// SetFadeinTime sets the property returned by [GetFadeinTime].
 func (self Instance) SetFadeinTime(value Float.X) {
 	class(self).SetFadeinTime(float64(value))
 }
 
+/*
+Determines how cross-fading between animations is eased. If empty, the transition will be linear. Should be a unit [Curve].
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
+*/
 func (self Instance) FadeinCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetFadeinCurve())
 }
 
+// SetFadeinCurve sets the property returned by [GetFadeinCurve].
 func (self Instance) SetFadeinCurve(value Curve.Instance) {
 	class(self).SetFadeinCurve(value)
 }
 
+/*
+The fade-out duration. For example, setting this to 1.0 for a 5 second length animation will produce a cross-fade that starts at 4 second and ends at 5 second during the animation.
+
+Note: [AnimationNodeOneShot] transitions the current state after the fading has finished.
+
+[AnimationNodeOneShot]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeOneShot
+*/
 func (self Instance) FadeoutTime() Float.X {
 	return Float.X(Float.X(class(self).GetFadeoutTime()))
 }
 
+// SetFadeoutTime sets the property returned by [GetFadeoutTime].
 func (self Instance) SetFadeoutTime(value Float.X) {
 	class(self).SetFadeoutTime(float64(value))
 }
 
+/*
+Determines how cross-fading between animations is eased. If empty, the transition will be linear. Should be a unit [Curve].
+
+[Curve]: https://pkg.go.dev/graphics.gd/classdb/Curve
+*/
 func (self Instance) FadeoutCurve() Curve.Instance {
 	return Curve.Instance(class(self).GetFadeoutCurve())
 }
 
+// SetFadeoutCurve sets the property returned by [GetFadeoutCurve].
 func (self Instance) SetFadeoutCurve(value Curve.Instance) {
 	class(self).SetFadeoutCurve(value)
 }
 
+/*
+If true, breaks the loop at the end of the loop cycle for transition, even if the animation is looping.
+*/
 func (self Instance) BreakLoopAtEnd() bool {
 	return bool(class(self).IsLoopBrokenAtEnd())
 }
 
+// SetBreakLoopAtEnd sets the property returned by [IsLoopBrokenAtEnd].
 func (self Instance) SetBreakLoopAtEnd(value bool) {
 	class(self).SetBreakLoopAtEnd(value)
 }
 
+/*
+If true, the sub-animation will restart automatically after finishing.
+
+In other words, to start auto restarting, the animation must be played once with the [OneShotRequestFire] request. The [OneShotRequestAbort] request stops the auto restarting, but it does not disable the [Autorestart] itself. So, the [OneShotRequestFire] request will start auto restarting again.
+
+[Autorestart]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeOneShot#Instance.Autorestart
+*/
 func (self Instance) Autorestart() bool {
 	return bool(class(self).HasAutorestart())
 }
 
+// SetAutorestart sets the property returned by [HasAutorestart].
 func (self Instance) SetAutorestart(value bool) {
 	class(self).SetAutorestart(value)
 }
 
+/*
+The delay after which the automatic restart is triggered, in seconds.
+*/
 func (self Instance) AutorestartDelay() Float.X {
 	return Float.X(Float.X(class(self).GetAutorestartDelay()))
 }
 
+// SetAutorestartDelay sets the property returned by [GetAutorestartDelay].
 func (self Instance) SetAutorestartDelay(value Float.X) {
 	class(self).SetAutorestartDelay(float64(value))
 }
 
+/*
+If [Autorestart] is true, a random additional delay (in seconds) between 0 and this value will be added to [AutorestartDelay].
+
+[Autorestart]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeOneShot#Instance.Autorestart
+[AutorestartDelay]: https://pkg.go.dev/graphics.gd/classdb/AnimationNodeOneShot#Instance.AutorestartDelay
+*/
 func (self Instance) AutorestartRandomDelay() Float.X {
 	return Float.X(Float.X(class(self).GetAutorestartRandomDelay()))
 }
 
+// SetAutorestartRandomDelay sets the property returned by [GetAutorestartRandomDelay].
 func (self Instance) SetAutorestartRandomDelay(value Float.X) {
 	class(self).SetAutorestartRandomDelay(float64(value))
 }
