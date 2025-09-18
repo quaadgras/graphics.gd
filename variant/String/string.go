@@ -260,15 +260,20 @@ func Unescape[S Any](s S) S { //gd:String.c_unescape String.xml_unescape
 func Runes[S Any](s S) iter.Seq2[int, Rune] { //gd:String.chars
 	return func(yield func(int, Rune) bool) {
 		utf := New(s)
-		for i := 0; i < utf.api.Len(utf.buf); i++ {
-			r, _, next := utf.api.DecodeRune(utf.buf)
+		var i int
+		for {
+			r, size, next := utf.api.DecodeRune(utf.buf)
 			if r == utf8.RuneError {
 				break
 			}
 			if !yield(i, r) {
 				return
 			}
+			i += size
 			utf = next
+			if utf.api == nil {
+				break
+			}
 		}
 	}
 }
@@ -290,7 +295,7 @@ func Title[S Any](s S) S {
 	var prev Rune = ' '
 	return Map(
 		func(r Rune) Rune {
-			if isSeparator(rune(prev)) {
+			if isSeparator(prev) {
 				prev = r
 				return Rune(unicode.ToTitle(rune(r)))
 			}
@@ -337,16 +342,38 @@ func Map[S Any](mapping func(Rune) Rune, s S) S {
 // before uppercase letters in the middle of a word, converts all letters to lowercase, then converts
 // the first one and each one following a space to uppercase.
 func Capitalize[S Any](s S) S { //gd:String.capitalize
-	pieces := slices.Collect(Splits(s, "_"))
-	for i, piece := range pieces {
-		for i, r := range Runes(piece) {
-			if unicode.IsUpper(rune(r)) {
-				piece = As[S](New(Slice(piece, 0, i), " ", Slice(piece, i, Length(piece))))
-			}
+	var (
+		buf      Readable = builder()
+		prev     Rune     = ' '
+		addSpace          = false
+	)
+	for _, c := range Runes(s) {
+		if c == '_' {
+			c = ' '
+			addSpace = true
+		} else if unicode.IsUpper(rune(c)) && !isSeparator(prev) && prev != ' ' {
+			addSpace = true
 		}
-		pieces[i] = Title(ToLower(piece))
+		if addSpace && !isSeparator(c) {
+			buf = Append(buf, Rune(' '))
+			addSpace = false
+		}
+		if isSeparator(c) {
+			if !addSpace {
+				buf = Append(buf, c)
+			}
+			prev = c
+			continue
+		}
+		if isSeparator(prev) || prev == ' ' || unicode.IsUpper(rune(c)) {
+			c = Rune(unicode.ToUpper(rune(c)))
+		} else {
+			c = Rune(unicode.ToLower(rune(c)))
+		}
+		buf = Append(buf, c)
+		prev = c
 	}
-	return JoinedWith(" ", pieces...)
+	return As[S](buf)
 }
 
 // ComparisonIgnoreCasing performs a case-insensitive comparison to another string. Returns -1
@@ -1483,7 +1510,7 @@ func DecodeFileURI[S Any](s S) S { //gd:String.uri_file_decode
 
 // isSeparator reports whether the rune could mark a word boundary.
 // TODO: update when package unicode captures more of the properties.
-func isSeparator(r rune) bool {
+func isSeparator(r Rune) bool {
 	// ASCII alphanumerics and underscore are not separators
 	if r <= 0x7F {
 		switch {
@@ -1499,11 +1526,11 @@ func isSeparator(r rune) bool {
 		return true
 	}
 	// Letters and digits are not separators
-	if unicode.IsLetter(r) || unicode.IsDigit(r) {
+	if unicode.IsLetter(rune(r)) || unicode.IsDigit(rune(r)) {
 		return false
 	}
 	// Otherwise, all we can do for now is treat spaces as separators.
-	return unicode.IsSpace(r)
+	return unicode.IsSpace(rune(r))
 }
 
 // IsValidIdentifierASCII returns true if this string is a valid ASCII identifier. A valid ASCII identifier may
