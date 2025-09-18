@@ -263,6 +263,8 @@ Puts a zero-terminated ASCII string into the stream prepended by a 32-bit unsign
 
 Note: To put an ASCII string without prepending its size, you can use [PutData]:
 
+	streamPeer.PutData([]byte("Hello world"))
+
 [PutData]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutData
 */
 func (self Instance) PutString(value string) { //gd:StreamPeer.put_string
@@ -273,6 +275,8 @@ func (self Instance) PutString(value string) { //gd:StreamPeer.put_string
 Puts a zero-terminated UTF-8 string into the stream prepended by a 32 bits unsigned integer representing its size.
 
 Note: To put a UTF-8 string without prepending its size, you can use [PutData]:
+
+	streamPeer.PutData([]byte("Hello World"))
 
 [PutData]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutData
 */
@@ -650,6 +654,8 @@ Puts a zero-terminated ASCII string into the stream prepended by a 32-bit unsign
 Note: To put an ASCII string without prepending its size, you can use [PutData]:
 
 
+	streamPeer.PutData([]byte("Hello world"))
+
 
 [PutData]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutData
 */
@@ -663,6 +669,8 @@ Puts a zero-terminated UTF-8 string into the stream prepended by a 32 bits unsig
 
 Note: To put a UTF-8 string without prepending its size, you can use [PutData]:
 
+
+	streamPeer.PutData([]byte("Hello World"))
 
 
 [PutData]: https://pkg.go.dev/graphics.gd/classdb/StreamPeer#Instance.PutData

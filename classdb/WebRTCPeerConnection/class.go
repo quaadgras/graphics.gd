@@ -142,6 +142,19 @@ func SetDefaultExtension(extension_class string) { //gd:WebRTCPeerConnection.set
 Re-initialize this peer connection, closing any previously active connection, and going back to state [StateNew]. A dictionary of 'configuration' options can be passed to configure the peer connection.
 
 Valid 'configuration' options are:
+
+	var example = WebRTCPeerConnection.Configuration{
+		IceServers: []WebRTCPeerConnection.IceServer{
+			{
+				URLs: []string{"stun:stun.example.com:3478"}, // One or more STUN servers.
+			},
+			{
+				URLs:       []string{"turn:turn.example.com:3478"}, // One or more TURN servers.
+				Username:   "a_username",                           // Optional username for the TURN server.
+				Credential: "a_password",                           // Optional password for the TURN server.
+			},
+		},
+	}
 */
 func (self Instance) Initialize() error { //gd:WebRTCPeerConnection.initialize
 	return error(gd.ToError(Advanced(self).Initialize(Dictionary.Nil)))
@@ -151,6 +164,19 @@ func (self Instance) Initialize() error { //gd:WebRTCPeerConnection.initialize
 Re-initialize this peer connection, closing any previously active connection, and going back to state [StateNew]. A dictionary of 'configuration' options can be passed to configure the peer connection.
 
 Valid 'configuration' options are:
+
+	var example = WebRTCPeerConnection.Configuration{
+		IceServers: []WebRTCPeerConnection.IceServer{
+			{
+				URLs: []string{"stun:stun.example.com:3478"}, // One or more STUN servers.
+			},
+			{
+				URLs:       []string{"turn:turn.example.com:3478"}, // One or more TURN servers.
+				Username:   "a_username",                           // Optional username for the TURN server.
+				Credential: "a_password",                           // Optional password for the TURN server.
+			},
+		},
+	}
 */
 func (self MoreArgs) Initialize(configuration Configuration) error { //gd:WebRTCPeerConnection.initialize
 	return error(gd.ToError(Advanced(self).Initialize(gd.DictionaryFromMap(configuration))))
@@ -162,6 +188,16 @@ Returns a new [WebRTCDataChannel] (or null on failure) with given 'label' and op
 There are two ways to create a working data channel: either call [CreateDataChannel] on only one of the peer and listen to [OnDataChannelReceived] on the other, or call [CreateDataChannel] on both peers, with the same values, and the "negotiated" option set to true.
 
 Valid 'options' are:
+
+	var example = WebRTCPeerConnection.Options{
+		Negotiated: true, // When set to true (default off), means the channel is negotiated out of band. "id" must be set too. "data_channel_received" will not be called.
+		ID:         1,    // When "negotiated" is true this value must also be set to the same value on both peer.
+		// Only one of maxRetransmits and maxPacketLifeTime can be specified, not both. They make the channel unreliable (but also better at real time).
+		MaxRetransmits:    1,                    // Specify the maximum number of attempt the peer will make to retransmits packets if they are not acknowledged.
+		MaxPacketLifeTime: 100,                  // Specify the maximum amount of time before giving up retransmitions of unacknowledged packets (in milliseconds).
+		Ordered:           true,                 // When in unreliable mode (i.e. either "maxRetransmits" or "maxPacketLifetime" is set), "ordered" (true by default) specify if packet ordering is to be enforced.
+		Protocol:          "my-custom-protocol", // A custom sub-protocol string for this channel.
+	}
 
 Note: You must keep a reference to channels created this way, or it will be closed.
 
@@ -179,6 +215,16 @@ Returns a new [WebRTCDataChannel] (or null on failure) with given 'label' and op
 There are two ways to create a working data channel: either call [CreateDataChannel] on only one of the peer and listen to [OnDataChannelReceived] on the other, or call [CreateDataChannel] on both peers, with the same values, and the "negotiated" option set to true.
 
 Valid 'options' are:
+
+	var example = WebRTCPeerConnection.Options{
+		Negotiated: true, // When set to true (default off), means the channel is negotiated out of band. "id" must be set too. "data_channel_received" will not be called.
+		ID:         1,    // When "negotiated" is true this value must also be set to the same value on both peer.
+		// Only one of maxRetransmits and maxPacketLifeTime can be specified, not both. They make the channel unreliable (but also better at real time).
+		MaxRetransmits:    1,                    // Specify the maximum number of attempt the peer will make to retransmits packets if they are not acknowledged.
+		MaxPacketLifeTime: 100,                  // Specify the maximum amount of time before giving up retransmitions of unacknowledged packets (in milliseconds).
+		Ordered:           true,                 // When in unreliable mode (i.e. either "maxRetransmits" or "maxPacketLifetime" is set), "ordered" (true by default) specify if packet ordering is to be enforced.
+		Protocol:          "my-custom-protocol", // A custom sub-protocol string for this channel.
+	}
 
 Note: You must keep a reference to channels created this way, or it will be closed.
 
@@ -339,6 +385,19 @@ Re-initialize this peer connection, closing any previously active connection, an
 Valid 'configuration' options are:
 
 
+	var example = WebRTCPeerConnection.Configuration{
+		IceServers: []WebRTCPeerConnection.IceServer{
+			{
+				URLs: []string{"stun:stun.example.com:3478"}, // One or more STUN servers.
+			},
+			{
+				URLs:       []string{"turn:turn.example.com:3478"}, // One or more TURN servers.
+				Username:   "a_username",                           // Optional username for the TURN server.
+				Credential: "a_password",                           // Optional password for the TURN server.
+			},
+		},
+	}
+
 */
 //go:nosplit
 func (self class) Initialize(configuration Dictionary.Any) Error.Code { //gd:WebRTCPeerConnection.initialize
@@ -354,6 +413,16 @@ There are two ways to create a working data channel: either call [CreateDataChan
 
 Valid 'options' are:
 
+
+	var example = WebRTCPeerConnection.Options{
+		Negotiated: true, // When set to true (default off), means the channel is negotiated out of band. "id" must be set too. "data_channel_received" will not be called.
+		ID:         1,    // When "negotiated" is true this value must also be set to the same value on both peer.
+		// Only one of maxRetransmits and maxPacketLifeTime can be specified, not both. They make the channel unreliable (but also better at real time).
+		MaxRetransmits:    1,                    // Specify the maximum number of attempt the peer will make to retransmits packets if they are not acknowledged.
+		MaxPacketLifeTime: 100,                  // Specify the maximum amount of time before giving up retransmitions of unacknowledged packets (in milliseconds).
+		Ordered:           true,                 // When in unreliable mode (i.e. either "maxRetransmits" or "maxPacketLifetime" is set), "ordered" (true by default) specify if packet ordering is to be enforced.
+		Protocol:          "my-custom-protocol", // A custom sub-protocol string for this channel.
+	}
 
 
 Note: You must keep a reference to channels created this way, or it will be closed.

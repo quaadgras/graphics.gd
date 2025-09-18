@@ -7,6 +7,41 @@ One shortcut can contain multiple [InputEvent] resources, making it possible to 
 
 Example: Capture the Ctrl + S shortcut using a [Shortcut] resource:
 
+	package main
+
+	import (
+		"fmt"
+
+		"graphics.gd/classdb/Input"
+		"graphics.gd/classdb/InputEvent"
+		"graphics.gd/classdb/InputEventKey"
+		"graphics.gd/classdb/Node"
+		"graphics.gd/classdb/Shortcut"
+		"graphics.gd/classdb/Viewport"
+	)
+
+	type NodeWithShortcut struct {
+		Node.Extension[NodeWithShortcut]
+
+		save_shortcut Shortcut.Instance
+	}
+
+	func (n *NodeWithShortcut) Ready() {
+		n.save_shortcut = Shortcut.New()
+		var key_event = InputEventKey.New()
+		key_event.SetKeycode(Input.KeyS)
+		key_event.AsInputEventWithModifiers().SetCtrlPressed(true)
+		key_event.AsInputEventWithModifiers().SetCommandOrControlAutoremap(true) // Swaps Ctrl for Command on Mac.
+		n.save_shortcut.SetEvents([]InputEvent.Instance{key_event.AsInputEvent()})
+	}
+
+	func (n *NodeWithShortcut) Input(event InputEvent.Instance) {
+		if n.save_shortcut.MatchesEvent(event) && event.IsPressed() && !event.IsEcho() {
+			fmt.Println("Save shortcut pressed!")
+			Viewport.Get(n.AsNode()).SetInputAsHandled()
+		}
+	}
+
 [Control]: https://pkg.go.dev/graphics.gd/classdb/Control
 [InputEvent]: https://pkg.go.dev/graphics.gd/classdb/InputEvent
 [Shortcut]: https://pkg.go.dev/graphics.gd/classdb/Shortcut

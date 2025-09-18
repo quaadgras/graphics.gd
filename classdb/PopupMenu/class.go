@@ -421,6 +421,19 @@ Contrarily to normal binary items, multistate items can have more than two state
 
 An 'id' can optionally be provided, as well as an accelerator ('accel'). If no 'id' is provided, one will be created from the index. If no 'accel' is provided, then the default value of 0 (corresponding to [@Globalscope.KeyNone]) will be assigned to the item (which means it won't have any accelerator). See [GetItemAccelerator] for more info on accelerators.
 
+	popup_menu.AddMultistateItem("Item", 3)
+	popup_menu.OnIndexPressed(func(index int) {
+		popup_menu.ToggleItemMultistate(index)
+		switch popup_menu.GetItemMultistate(index) {
+		case 0:
+			fmt.Println("First state")
+		case 1:
+			fmt.Println("Second state")
+		case 2:
+			fmt.Println("Third state")
+		}
+	})
+
 Note: Multistate items don't update their state automatically and must be done manually. See [ToggleItemMultistate], [SetItemMultistate] and [GetItemMultistate] for more info on how to control it.
 
 [GetItemAccelerator]: https://pkg.go.dev/graphics.gd/classdb/PopupMenu#Instance.GetItemAccelerator
@@ -438,6 +451,19 @@ Adds a new multistate item with text 'label'.
 Contrarily to normal binary items, multistate items can have more than two states, as defined by 'max_states'. The default value is defined by 'default_state'.
 
 An 'id' can optionally be provided, as well as an accelerator ('accel'). If no 'id' is provided, one will be created from the index. If no 'accel' is provided, then the default value of 0 (corresponding to [@Globalscope.KeyNone]) will be assigned to the item (which means it won't have any accelerator). See [GetItemAccelerator] for more info on accelerators.
+
+	popup_menu.AddMultistateItem("Item", 3)
+	popup_menu.OnIndexPressed(func(index int) {
+		popup_menu.ToggleItemMultistate(index)
+		switch popup_menu.GetItemMultistate(index) {
+		case 0:
+			fmt.Println("First state")
+		case 1:
+			fmt.Println("Second state")
+		case 2:
+			fmt.Println("Third state")
+		}
+	})
 
 Note: Multistate items don't update their state automatically and must be done manually. See [ToggleItemMultistate], [SetItemMultistate] and [GetItemMultistate] for more info on how to control it.
 
@@ -1401,6 +1427,19 @@ Contrarily to normal binary items, multistate items can have more than two state
 
 An 'id' can optionally be provided, as well as an accelerator ('accel'). If no 'id' is provided, one will be created from the index. If no 'accel' is provided, then the default value of 0 (corresponding to [@Globalscope.KeyNone]) will be assigned to the item (which means it won't have any accelerator). See [GetItemAccelerator] for more info on accelerators.
 
+
+	popup_menu.AddMultistateItem("Item", 3)
+	popup_menu.OnIndexPressed(func(index int) {
+		popup_menu.ToggleItemMultistate(index)
+		switch popup_menu.GetItemMultistate(index) {
+		case 0:
+			fmt.Println("First state")
+		case 1:
+			fmt.Println("Second state")
+		case 2:
+			fmt.Println("Third state")
+		}
+	})
 
 
 Note: Multistate items don't update their state automatically and must be done manually. See [ToggleItemMultistate], [SetItemMultistate] and [GetItemMultistate] for more info on how to control it.

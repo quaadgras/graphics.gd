@@ -186,6 +186,23 @@ Override this method to customize the newly duplicated resource created from [Pa
 
 Example: Set a random damage value to every local resource from an instantiated scene:
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Resource"
+		"graphics.gd/variant/Int"
+	)
+
+	type MyResource struct {
+		Resource.Extension[MyResource]
+
+		damage int
+	}
+
+	func (r *MyResource) SetupLocalToScene() {
+		r.damage = Int.RandomBetween(10, 40)
+	}
+
 [PackedScene.Instantiate]: https://pkg.go.dev/graphics.gd/classdb/PackedScene#Instance.Instantiate
 [ResourceLocalToScene]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourceLocalToScene
 */
@@ -337,6 +354,23 @@ func GenerateSceneUniqueId() string { //gd:Resource.generate_scene_unique_id
 Emits the [OnChanged] signal. This method is called automatically for some built-in resources.
 
 Note: For custom resources, it's recommended to call this method whenever a meaningful change occurs, such as a modified property. This ensures that custom [Object]s depending on the resource are properly updated.
+
+	package main
+
+	import "graphics.gd/classdb/Resource"
+
+	type SomeResource struct {
+		Resource.Extension[SomeResource]
+
+		damage int
+	}
+
+	func (r *SomeResource) SetDamage(newValue int) {
+		if r.damage != newValue {
+			r.damage = newValue
+			r.AsResource().EmitChanged()
+		}
+	}
 
 [Object]: https://pkg.go.dev/graphics.gd/variant/Object
 [OnChanged]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.OnChanged
@@ -496,6 +530,23 @@ func (self Instance) SetResourceSceneUniqueId(value string) {
 Override this method to customize the newly duplicated resource created from [PackedScene.Instantiate], if the original's [ResourceLocalToScene] is set to true.
 
 Example: Set a random damage value to every local resource from an instantiated scene:
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Resource"
+		"graphics.gd/variant/Int"
+	)
+
+	type MyResource struct {
+		Resource.Extension[MyResource]
+
+		damage int
+	}
+
+	func (r *MyResource) SetupLocalToScene() {
+		r.damage = Int.RandomBetween(10, 40)
+	}
 
 [PackedScene.Instantiate]: https://pkg.go.dev/graphics.gd/classdb/PackedScene#Instance.Instantiate
 [ResourceLocalToScene]: https://pkg.go.dev/graphics.gd/classdb/Resource#Instance.ResourceLocalToScene
@@ -730,6 +781,22 @@ Emits the [OnChanged] signal. This method is called automatically for some built
 
 Note: For custom resources, it's recommended to call this method whenever a meaningful change occurs, such as a modified property. This ensures that custom [Object]s depending on the resource are properly updated.
 
+	package main
+
+	import "graphics.gd/classdb/Resource"
+
+	type SomeResource struct {
+		Resource.Extension[SomeResource]
+
+		damage int
+	}
+
+	func (r *SomeResource) SetDamage(newValue int) {
+		if r.damage != newValue {
+			r.damage = newValue
+			r.AsResource().EmitChanged()
+		}
+	}
 
 
 [Object]: https://pkg.go.dev/graphics.gd/variant/Object

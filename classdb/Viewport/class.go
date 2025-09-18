@@ -324,6 +324,10 @@ Returns the viewport's texture.
 
 Note: When trying to store the current texture (e.g. in a file), it might be completely black or outdated if used too early, especially when used in e.g. [Node.Ready]. To make sure the texture you get is correct, you can await [OnRenderingserver.FramePostDraw] signal.
 
+	RenderingServer.OnFramePostDraw(func() {
+		viewport.GetTexture().AsTexture2D().GetImage().SavePng("user://Screenshot.png")
+	})
+
 Note: When [UseHdr2d] is true the returned texture will be an HDR image encoded in linear space.
 
 [Node.Ready]: https://pkg.go.dev/graphics.gd/classdb/Node#Instance.Ready
@@ -1431,6 +1435,10 @@ Returns the viewport's texture.
 
 Note: When trying to store the current texture (e.g. in a file), it might be completely black or outdated if used too early, especially when used in e.g. [Node.Ready]. To make sure the texture you get is correct, you can await [OnRenderingserver.FramePostDraw] signal.
 
+
+	RenderingServer.OnFramePostDraw(func() {
+		viewport.GetTexture().AsTexture2D().GetImage().SavePng("user://Screenshot.png")
+	})
 
 
 Note: When [UseHdr2d] is true the returned texture will be an HDR image encoded in linear space.

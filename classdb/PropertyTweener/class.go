@@ -118,6 +118,9 @@ Sets a custom initial value to the [PropertyTweener].
 
 Example: Move the node from position (100, 100) to (200, 100).
 
+	var tween = SceneTree.Get(node).CreateTween()
+	PropertyTweener.Make(tween, self, "position", Vector2.New(200, 100), 1).From(Vector2.New(100, 100))
+
 [PropertyTweener]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener
 */
 func (self Instance) From(value any) Instance { //gd:PropertyTweener.from
@@ -126,6 +129,9 @@ func (self Instance) From(value any) Instance { //gd:PropertyTweener.from
 
 /*
 Makes the [PropertyTweener] use the current property value (i.e. at the time of creating this [PropertyTweener]) as a starting point. This is equivalent of using [From] with the current value. These two calls will do the same:
+
+	PropertyTweener.Make(tween, self, "position", Vector2.New(200, 100), 1).From(node2d.Position())
+	PropertyTweener.Make(tween, self, "position", Vector2.New(200, 100), 1).FromCurrent()
 
 [From]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener#Instance.From
 [PropertyTweener]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener
@@ -138,6 +144,9 @@ func (self Instance) FromCurrent() Instance { //gd:PropertyTweener.from_current
 When called, the final value will be used as a relative value instead.
 
 Example: Move the node by 100 pixels to the right.
+
+	var tween = SceneTree.Get(node).CreateTween()
+	PropertyTweener.Make(tween, self, "position", Vector2.MulX(Vector2.Right, 100), 1).AsRelative()
 */
 func (self Instance) AsRelative() Instance { //gd:PropertyTweener.as_relative
 	return Instance(Advanced(self).AsRelative())
@@ -163,6 +172,12 @@ func (self Instance) SetEase(ease Tween.EaseType) Instance { //gd:PropertyTweene
 
 /*
 Allows interpolating the value with a custom easing function. The provided 'interpolator_method' will be called with a value ranging from 0.0 to 1.0 and is expected to return a value within the same range (values outside the range can be used for overshoot). The return value of the method is then used for interpolation between initial and final value. Note that the parameter passed to the method is still subject to the tweener's own easing.
+
+	var curve Curve.Instance
+	var tween Tween.Instance
+	PropertyTweener.Make(tween, self, "position:x", 300, 1).AsRelative().SetCustomInterpolator(func(v float32) float32 {
+		return curve.SampleBaked(v)
+	})
 */
 func (self Instance) SetCustomInterpolator(interpolator_method func(Float.X) Float.X) Instance { //gd:PropertyTweener.set_custom_interpolator
 	return Instance(Advanced(self).SetCustomInterpolator(Callable.New(interpolator_method)))
@@ -260,6 +275,9 @@ Sets a custom initial value to the [PropertyTweener].
 Example: Move the node from position (100, 100) to (200, 100).
 
 
+	var tween = SceneTree.Get(node).CreateTween()
+	PropertyTweener.Make(tween, self, "position", Vector2.New(200, 100), 1).From(Vector2.New(100, 100))
+
 
 [PropertyTweener]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener
 */
@@ -273,6 +291,9 @@ func (self class) From(value variant.Any) [1]gdclass.PropertyTweener { //gd:Prop
 /*
 Makes the [PropertyTweener] use the current property value (i.e. at the time of creating this [PropertyTweener]) as a starting point. This is equivalent of using [From] with the current value. These two calls will do the same:
 
+
+	PropertyTweener.Make(tween, self, "position", Vector2.New(200, 100), 1).From(node2d.Position())
+	PropertyTweener.Make(tween, self, "position", Vector2.New(200, 100), 1).FromCurrent()
 
 
 [From]: https://pkg.go.dev/graphics.gd/classdb/PropertyTweener#Instance.From
@@ -290,6 +311,9 @@ When called, the final value will be used as a relative value instead.
 
 Example: Move the node by 100 pixels to the right.
 
+
+	var tween = SceneTree.Get(node).CreateTween()
+	PropertyTweener.Make(tween, self, "position", Vector2.MulX(Vector2.Right, 100), 1).AsRelative()
 
 */
 //go:nosplit
@@ -325,6 +349,13 @@ func (self class) SetEase(ease Tween.EaseType) [1]gdclass.PropertyTweener { //gd
 
 /*
 Allows interpolating the value with a custom easing function. The provided 'interpolator_method' will be called with a value ranging from 0.0 to 1.0 and is expected to return a value within the same range (values outside the range can be used for overshoot). The return value of the method is then used for interpolation between initial and final value. Note that the parameter passed to the method is still subject to the tweener's own easing.
+
+
+	var curve Curve.Instance
+	var tween Tween.Instance
+	PropertyTweener.Make(tween, self, "position:x", 300, 1).AsRelative().SetCustomInterpolator(func(v float32) float32 {
+		return curve.SampleBaked(v)
+	})
 
 
 */

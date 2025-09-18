@@ -272,6 +272,15 @@ func SetAbortOnMissingResources(abort bool) { //gd:ResourceLoader.set_abort_on_m
 Returns the dependencies for the resource at the given 'path'.
 
 Each dependency is a string that can be divided into sections by ::. There can be either one section or three sections, with the second section always being empty. When there is one section, it contains the file path. When there are three sections, the first section contains the UID and the third section contains the fallback path.
+
+	for _, dependency := range ResourceLoader.GetDependencies(path) {
+		if strings.Contains(dependency, "::") {
+			fmt.Println(strings.Split(dependency, "::")[0]) // Prints the UID.
+			fmt.Println(strings.Split(dependency, "::")[2]) // Prints the fallback path.
+		} else {
+			fmt.Println(dependency) // Prints the path.
+		}
+	}
 */
 func GetDependencies(path string) []string { //gd:ResourceLoader.get_dependencies
 	once.Do(singleton)
@@ -329,6 +338,9 @@ func GetResourceUid(path string) int { //gd:ResourceLoader.get_resource_uid
 
 /*
 Lists a directory, returning all resources and subdirectories contained within. The resource files have the original file names as visible in the editor before exporting. The directories have "/" appended.
+
+	// Prints ["extra_data/", "model.gltf", "model.tscn", "model_slime.png"]
+	fmt.Println(ResourceLoader.ListDirectory("res://assets/enemies/slime"))
 
 Note: The order of files and directories returned by this method is not deterministic, and can vary between operating systems.
 
@@ -496,6 +508,15 @@ Returns the dependencies for the resource at the given 'path'.
 Each dependency is a string that can be divided into sections by ::. There can be either one section or three sections, with the second section always being empty. When there is one section, it contains the file path. When there are three sections, the first section contains the UID and the third section contains the fallback path.
 
 
+	for _, dependency := range ResourceLoader.GetDependencies(path) {
+		if strings.Contains(dependency, "::") {
+			fmt.Println(strings.Split(dependency, "::")[0]) // Prints the UID.
+			fmt.Println(strings.Split(dependency, "::")[2]) // Prints the fallback path.
+		} else {
+			fmt.Println(dependency) // Prints the path.
+		}
+	}
+
 */
 //go:nosplit
 func (self class) GetDependencies(path String.Readable) Packed.Strings { //gd:ResourceLoader.get_dependencies
@@ -567,6 +588,9 @@ func (self class) GetResourceUid(path String.Readable) int64 { //gd:ResourceLoad
 /*
 Lists a directory, returning all resources and subdirectories contained within. The resource files have the original file names as visible in the editor before exporting. The directories have "/" appended.
 
+
+	// Prints ["extra_data/", "model.gltf", "model.tscn", "model_slime.png"]
+	fmt.Println(ResourceLoader.ListDirectory("res://assets/enemies/slime"))
 
 
 Note: The order of files and directories returned by this method is not deterministic, and can vary between operating systems.

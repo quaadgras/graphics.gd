@@ -257,6 +257,8 @@ func (self Instance) GetFrameTexture(anim string, idx int) Texture2D.Instance { 
 /*
 Returns a relative duration of the frame 'idx' in the 'anim' animation (defaults to 1.0). For example, a frame with a duration of 2.0 is displayed twice as long as a frame with a duration of 1.0. You can calculate the absolute duration (in seconds) of a frame using the following formula:
 
+	absolute_duration := relative_duration / (animation_fps * Float.Abs(playing_speed))
+
 In this example, playing_speed refers to either [AnimatedSprite2D.GetPlayingSpeed] or [AnimatedSprite3D.GetPlayingSpeed].
 
 [AnimatedSprite2D.GetPlayingSpeed]: https://pkg.go.dev/graphics.gd/classdb/AnimatedSprite2D#Instance.GetPlayingSpeed
@@ -490,6 +492,8 @@ func (self class) GetFrameTexture(anim String.Name, idx int64) [1]gdclass.Textur
 /*
 Returns a relative duration of the frame 'idx' in the 'anim' animation (defaults to 1.0). For example, a frame with a duration of 2.0 is displayed twice as long as a frame with a duration of 1.0. You can calculate the absolute duration (in seconds) of a frame using the following formula:
 
+
+	absolute_duration := relative_duration / (animation_fps * Float.Abs(playing_speed))
 
 
 In this example, playing_speed refers to either [AnimatedSprite2D.GetPlayingSpeed] or [AnimatedSprite3D.GetPlayingSpeed].

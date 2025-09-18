@@ -598,6 +598,8 @@ If the process is successfully created, this method returns its process ID, whic
 
 Example: Run another instance of the project:
 
+	var pid = OS.CreateProcess(OS.GetExecutablePath(), []string{}, false)
+
 See [Execute] if you wish to run an external command and retrieve the results.
 
 Note: This method is implemented on Android, Linux, macOS, and Windows.
@@ -801,6 +803,23 @@ Returns the name of the host platform.
 
 Note: Custom builds of the engine may support additional platforms, such as consoles, possibly returning other names.
 
+	switch OS.GetName() {
+	case "Windows":
+		fmt.Println("Welcome to Windows!")
+	case "macOS":
+		fmt.Println("Welcome to macOS!")
+	case "Linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD":
+		fmt.Println("Welcome to Linux/BSD!")
+	case "Android":
+		fmt.Println("Welcome to Android!")
+	case "iOS":
+		fmt.Println("Welcome to iOS!")
+	case "Web":
+		fmt.Println("Welcome to the Web!")
+	default:
+		fmt.Println("Unknown OS")
+	}
+
 Note: On Web platforms, it is still possible to determine the host platform's OS with feature tags. See [HasFeature].
 */
 func GetName() string { //gd:OS.get_name
@@ -863,6 +882,18 @@ You can set [ProjectSettings] "editor/run/main_run_args" to define command-line 
 
 Example: Parse command-line arguments into a data structure using the --key=value form for arguments:
 
+	var arguments = map[string]string{}
+	for _, argument := range OS.GetCmdlineArgs() {
+		if strings.Contains(argument, "=") {
+			_, keyValue, _ := strings.Cut(argument, "=")
+			arguments[strings.TrimPrefix(keyValue, "--")] = keyValue
+		} else {
+			// Options without an argument will be present in the dictionary,
+			// with the value set to an empty string.
+			arguments[strings.TrimPrefix(argument, "--")] = ""
+		}
+	}
+
 Note: Passing custom user arguments directly is not recommended, as the engine may discard or modify them. Instead, pass the standard UNIX double dash (--) and then the custom arguments, which the engine will ignore by design. These can be read via [GetCmdlineUserArgs].
 
 [ProjectSettings]: https://pkg.go.dev/graphics.gd/classdb/ProjectSettings
@@ -874,6 +905,11 @@ func GetCmdlineArgs() []string { //gd:OS.get_cmdline_args
 
 /*
 Returns the command-line user arguments passed to the engine. User arguments are ignored by the engine and reserved for the user. They are passed after the double dash -- argument. ++ may be used when -- is intercepted by another program (such as startx).
+
+	// The application has been executed with the following command:
+	// myprogram --fullscreen -- --level=2 --hardcore
+	OS.GetCmdlineArgs()     // Returns ["--fullscreen", "--level=2", "--hardcore"]
+	OS.GetCmdlineUserArgs() // Returns ["--level=2", "--hardcore"]
 
 To get all passed arguments, use [GetCmdlineArgs].
 */
@@ -892,6 +928,15 @@ The second element holds the driver version. For example, on the nvidia driver o
 Note: This method is only supported on Linux/BSD and Windows when not running in headless mode. On other platforms, it returns an empty array.
 
 Note: This method will run slowly the first time it is called in a session; it can take several seconds depending on the operating system and hardware. It is blocking if called on the main thread, so it's recommended to call it on a separate thread using [Thread]. This allows the engine to keep running while the information is being retrieved. However, [GetVideoAdapterDriverInfo] is not thread-safe, so it should not be called from multiple threads at the same time.
+
+	go func() {
+		var driverInfo = OS.GetVideoAdapterDriverInfo()
+		if len(driverInfo) != 0 {
+			fmt.Printf("Driver: %s %s\n", driverInfo[0], driverInfo[1])
+		} else {
+			fmt.Println("Driver: (unknown)")
+		}
+	}()
 
 [RenderingServer.GetVideoAdapterApiVersion]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#GetVideoAdapterApiVersion
 [Thread]: https://pkg.go.dev/graphics.gd/classdb/Thread
@@ -1085,6 +1130,9 @@ The method takes only global paths, so you may need to use [ProjectSettings.Glob
 
 Returns [Failed] if the file or directory cannot be found, or the system does not support this method.
 
+	var file_to_remove = "user://slot1.save"
+	OS.MoveToTrash(ProjectSettings.GlobalizePath(file_to_remove))
+
 Note: This method is implemented on Android, Linux, macOS and Windows.
 
 Note: If the user has disabled the recycle bin on their system, the file will be permanently deleted instead.
@@ -1210,6 +1258,10 @@ func GetUniqueId() string { //gd:OS.get_unique_id
 /*
 Returns the given keycode as a string.
 
+	fmt.Println(OS.GetKeycodeString(Input.KeyC))                                   // Prints "C"
+	fmt.Println(OS.GetKeycodeString(Input.KeyEscape))                              // Prints "Escape"
+	fmt.Println(OS.GetKeycodeString(Input.Key(Input.KeyMaskShift) | Input.KeyTab)) // Prints "Shift+Tab"
+
 See also [FindKeycodeFromString], [InputEventKey.Keycode], and [InputEventKey.GetKeycodeWithModifiers].
 
 [InputEventKey.GetKeycodeWithModifiers]: https://pkg.go.dev/graphics.gd/classdb/InputEventKey#Instance.GetKeycodeWithModifiers
@@ -1222,14 +1274,24 @@ func GetKeycodeString(code Input.Key) string { //gd:OS.get_keycode_string
 
 /*
 Returns true if the input keycode corresponds to a Unicode character. For a list of codes, see the [Key] constants.
+
+	fmt.Println(OS.IsKeycodeUnicode(Input.KeyG))      // Prints True
+	fmt.Println(OS.IsKeycodeUnicode(Input.KeyKp4))    // Prints True
+	fmt.Println(OS.IsKeycodeUnicode(Input.KeyTab))    // Prints False
+	fmt.Println(OS.IsKeycodeUnicode(Input.KeyEscape)) // Prints False
 */
-func IsKeycodeUnicode(code int) bool { //gd:OS.is_keycode_unicode
+func IsKeycodeUnicode(code Input.Key) bool { //gd:OS.is_keycode_unicode
 	once.Do(singleton)
 	return bool(Advanced().IsKeycodeUnicode(int64(code)))
 }
 
 /*
 Finds the keycode for the given string. The returned values are equivalent to the [Key] constants.
+
+	fmt.Println(OS.FindKeycodeFromString("C"))         // Prints 67 (KEY_C)
+	fmt.Println(OS.FindKeycodeFromString("Escape"))    // Prints 4194305 (KEY_ESCAPE)
+	fmt.Println(OS.FindKeycodeFromString("Shift+Tab")) // Prints 37748738 (KEY_MASK_SHIFT | KEY_TAB)
+	fmt.Println(OS.FindKeycodeFromString("Unknown"))   // Prints 0 (KEY_NONE)
 
 See also [GetKeycodeString].
 */
@@ -1822,6 +1884,8 @@ If the process is successfully created, this method returns its process ID, whic
 Example: Run another instance of the project:
 
 
+	var pid = OS.CreateProcess(OS.GetExecutablePath(), []string{}, false)
+
 
 See [Execute] if you wish to run an external command and retrieve the results.
 
@@ -2047,6 +2111,23 @@ Returns the name of the host platform.
 Note: Custom builds of the engine may support additional platforms, such as consoles, possibly returning other names.
 
 
+	switch OS.GetName() {
+	case "Windows":
+		fmt.Println("Welcome to Windows!")
+	case "macOS":
+		fmt.Println("Welcome to macOS!")
+	case "Linux", "FreeBSD", "NetBSD", "OpenBSD", "BSD":
+		fmt.Println("Welcome to Linux/BSD!")
+	case "Android":
+		fmt.Println("Welcome to Android!")
+	case "iOS":
+		fmt.Println("Welcome to iOS!")
+	case "Web":
+		fmt.Println("Welcome to the Web!")
+	default:
+		fmt.Println("Unknown OS")
+	}
+
 
 Note: On Web platforms, it is still possible to determine the host platform's OS with feature tags. See [HasFeature].
 */
@@ -2119,6 +2200,18 @@ You can set [ProjectSettings] "editor/run/main_run_args" to define command-line 
 Example: Parse command-line arguments into a data structure using the --key=value form for arguments:
 
 
+	var arguments = map[string]string{}
+	for _, argument := range OS.GetCmdlineArgs() {
+		if strings.Contains(argument, "=") {
+			_, keyValue, _ := strings.Cut(argument, "=")
+			arguments[strings.TrimPrefix(keyValue, "--")] = keyValue
+		} else {
+			// Options without an argument will be present in the dictionary,
+			// with the value set to an empty string.
+			arguments[strings.TrimPrefix(argument, "--")] = ""
+		}
+	}
+
 
 Note: Passing custom user arguments directly is not recommended, as the engine may discard or modify them. Instead, pass the standard UNIX double dash (--) and then the custom arguments, which the engine will ignore by design. These can be read via [GetCmdlineUserArgs].
 
@@ -2134,6 +2227,11 @@ func (self class) GetCmdlineArgs() Packed.Strings { //gd:OS.get_cmdline_args
 /*
 Returns the command-line user arguments passed to the engine. User arguments are ignored by the engine and reserved for the user. They are passed after the double dash -- argument. ++ may be used when -- is intercepted by another program (such as startx).
 
+
+	// The application has been executed with the following command:
+	// myprogram --fullscreen -- --level=2 --hardcore
+	OS.GetCmdlineArgs()     // Returns ["--fullscreen", "--level=2", "--hardcore"]
+	OS.GetCmdlineUserArgs() // Returns ["--level=2", "--hardcore"]
 
 
 To get all passed arguments, use [GetCmdlineArgs].
@@ -2156,6 +2254,15 @@ Note: This method is only supported on Linux/BSD and Windows when not running in
 
 Note: This method will run slowly the first time it is called in a session; it can take several seconds depending on the operating system and hardware. It is blocking if called on the main thread, so it's recommended to call it on a separate thread using [Thread]. This allows the engine to keep running while the information is being retrieved. However, [GetVideoAdapterDriverInfo] is not thread-safe, so it should not be called from multiple threads at the same time.
 
+
+	go func() {
+		var driverInfo = OS.GetVideoAdapterDriverInfo()
+		if len(driverInfo) != 0 {
+			fmt.Printf("Driver: %s %s\n", driverInfo[0], driverInfo[1])
+		} else {
+			fmt.Println("Driver: (unknown)")
+		}
+	}()
 
 
 [RenderingServer.GetVideoAdapterApiVersion]: https://pkg.go.dev/graphics.gd/classdb/RenderingServer#GetVideoAdapterApiVersion
@@ -2378,6 +2485,9 @@ The method takes only global paths, so you may need to use [ProjectSettings.Glob
 Returns [Failed] if the file or directory cannot be found, or the system does not support this method.
 
 
+	var file_to_remove = "user://slot1.save"
+	OS.MoveToTrash(ProjectSettings.GlobalizePath(file_to_remove))
+
 
 Note: This method is implemented on Android, Linux, macOS and Windows.
 
@@ -2512,6 +2622,10 @@ func (self class) GetUniqueId() String.Readable { //gd:OS.get_unique_id
 Returns the given keycode as a string.
 
 
+	fmt.Println(OS.GetKeycodeString(Input.KeyC))                                   // Prints "C"
+	fmt.Println(OS.GetKeycodeString(Input.KeyEscape))                              // Prints "Escape"
+	fmt.Println(OS.GetKeycodeString(Input.Key(Input.KeyMaskShift) | Input.KeyTab)) // Prints "Shift+Tab"
+
 
 See also [FindKeycodeFromString], [InputEventKey.Keycode], and [InputEventKey.GetKeycodeWithModifiers].
 
@@ -2529,6 +2643,11 @@ func (self class) GetKeycodeString(code Input.Key) String.Readable { //gd:OS.get
 Returns true if the input keycode corresponds to a Unicode character. For a list of codes, see the [Key] constants.
 
 
+	fmt.Println(OS.IsKeycodeUnicode(Input.KeyG))      // Prints True
+	fmt.Println(OS.IsKeycodeUnicode(Input.KeyKp4))    // Prints True
+	fmt.Println(OS.IsKeycodeUnicode(Input.KeyTab))    // Prints False
+	fmt.Println(OS.IsKeycodeUnicode(Input.KeyEscape)) // Prints False
+
 */
 //go:nosplit
 func (self class) IsKeycodeUnicode(code int64) bool { //gd:OS.is_keycode_unicode
@@ -2540,6 +2659,11 @@ func (self class) IsKeycodeUnicode(code int64) bool { //gd:OS.is_keycode_unicode
 /*
 Finds the keycode for the given string. The returned values are equivalent to the [Key] constants.
 
+
+	fmt.Println(OS.FindKeycodeFromString("C"))         // Prints 67 (KEY_C)
+	fmt.Println(OS.FindKeycodeFromString("Escape"))    // Prints 4194305 (KEY_ESCAPE)
+	fmt.Println(OS.FindKeycodeFromString("Shift+Tab")) // Prints 37748738 (KEY_MASK_SHIFT | KEY_TAB)
+	fmt.Println(OS.FindKeycodeFromString("Unknown"))   // Prints 0 (KEY_NONE)
 
 
 See also [GetKeycodeString].

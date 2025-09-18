@@ -196,6 +196,11 @@ If 'ignore_time_scale' is true, the timer will ignore [Engine.TimeScale] and upd
 
 This method is commonly used to create a one-shot delay timer, as in the following example:
 
+	fmt.Println("start")
+	SceneTree.Get(node).CreateTimer(1.0).OnTimeout(func() {
+		fmt.Println("end")
+	}, Signal.OneShot)
+
 Note: The timer is always updated after all of the nodes in the tree. A node's [Node.Process] method would be called before the timer updates (or [Node.PhysicsProcess] if 'process_in_physics' is set to true).
 
 [Engine.TimeScale]: https://pkg.go.dev/graphics.gd/classdb/Engine#TimeScale
@@ -219,6 +224,11 @@ If 'process_in_physics' is true, the timer will update at the end of the physics
 If 'ignore_time_scale' is true, the timer will ignore [Engine.TimeScale] and update with the real, elapsed time.
 
 This method is commonly used to create a one-shot delay timer, as in the following example:
+
+	fmt.Println("start")
+	SceneTree.Get(node).CreateTimer(1.0).OnTimeout(func() {
+		fmt.Println("end")
+	}, Signal.OneShot)
 
 Note: The timer is always updated after all of the nodes in the tree. A node's [Node.Process] method would be called before the timer updates (or [Node.PhysicsProcess] if 'process_in_physics' is set to true).
 
@@ -312,9 +322,14 @@ func (self Instance) QueueDelete(obj Object.Instance) { //gd:SceneTree.queue_del
 /*
 Calls the given 'method' on each node inside this tree added to the given 'group'. Use 'flags' to customize this method's behavior (see [GroupCallFlags]). Additional arguments for 'method' can be passed at the end of this method. Nodes that cannot call 'method' (either because the method doesn't exist or the arguments do not match) are ignored.
 
+	// Calls "hide" to all nodes of the "enemies" group, at the end of the frame and in reverse tree order.
+	SceneTree.Get(node).CallGroupFlags(
+		SceneTree.GroupCallDeferred|SceneTree.GroupCallReverse,
+		"enemies", "hide")
+
 Note: In C#, 'method' must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the MethodName class to avoid allocating a new string on each call.
 */
-func (self Instance) CallGroupFlags(flags int, group string, method string, args ...any) { //gd:SceneTree.call_group_flags
+func (self Instance) CallGroupFlags(flags GroupCallFlags, group string, method string, args ...any) { //gd:SceneTree.call_group_flags
 	var converted_variants = make([]gd.Variant, len(args))
 	for i, arg := range args {
 		converted_variants[i] = gd.NewVariant(arg)
@@ -787,6 +802,11 @@ If 'ignore_time_scale' is true, the timer will ignore [Engine.TimeScale] and upd
 This method is commonly used to create a one-shot delay timer, as in the following example:
 
 
+	fmt.Println("start")
+	SceneTree.Get(node).CreateTimer(1.0).OnTimeout(func() {
+		fmt.Println("end")
+	}, Signal.OneShot)
+
 
 Note: The timer is always updated after all of the nodes in the tree. A node's [Node.Process] method would be called before the timer updates (or [Node.PhysicsProcess] if 'process_in_physics' is set to true).
 
@@ -901,6 +921,11 @@ func (self class) QueueDelete(obj [1]gd.Object) { //gd:SceneTree.queue_delete
 /*
 Calls the given 'method' on each node inside this tree added to the given 'group'. Use 'flags' to customize this method's behavior (see [GroupCallFlags]). Additional arguments for 'method' can be passed at the end of this method. Nodes that cannot call 'method' (either because the method doesn't exist or the arguments do not match) are ignored.
 
+
+	// Calls "hide" to all nodes of the "enemies" group, at the end of the frame and in reverse tree order.
+	SceneTree.Get(node).CallGroupFlags(
+		SceneTree.GroupCallDeferred|SceneTree.GroupCallReverse,
+		"enemies", "hide")
 
 
 Note: In C#, 'method' must be in snake_case when referring to built-in Godot methods. Prefer using the names exposed in the MethodName class to avoid allocating a new string on each call.

@@ -811,6 +811,10 @@ Returns an [Image] instance from the given 'texture' [Resource.ID].
 
 Example: Get the test texture from [GetTestTexture] and apply it to a [Sprite2D] node:
 
+	var texture_rid = RenderingServer.GetTestTexture()
+	var texture = ImageTexture.CreateFromImage(RenderingServer.Texture2dGet(RID.Texture2D(texture_rid)))
+	sprite.SetTexture(texture.AsTexture2D())
+
 [Image]: https://pkg.go.dev/graphics.gd/classdb/Image
 [Resource.ID]: https://pkg.go.dev/graphics.gd/variant/Resource#ID
 [Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
@@ -2998,6 +3002,9 @@ Copies the viewport to a region of the screen specified by 'rect'. If [ViewportS
 
 For example, you can set the root viewport to not render at all with the following code:
 
+	RenderingServer.ViewportAttachToScreen(Viewport.Get(node).GetViewportRid(), Rect2.PositionSize{}, 0)
+	RenderingServer.ViewportAttachToScreen(viewport.GetViewportRid(), Rect2.New(0, 0, 600, 600), 0)
+
 Using this can result in significant optimization, especially on lower-end devices. However, it comes at the cost of having to manage your viewports manually. For further optimization, see [ViewportSetRenderDirectToScreen].
 */
 func ViewportAttachToScreen(viewport RID.Viewport, rect Rect2.PositionSize, screen int) { //gd:RenderingServer.viewport_attach_to_screen
@@ -3391,6 +3398,12 @@ Returns a statistic about the rendering engine which can be used for performance
 See also [GetRenderingInfo], which returns global information across all viewports.
 
 Note: Viewport rendering information is not available until at least 2 frames have been rendered by the engine. If rendering information is not available, [ViewportGetRenderInfo] returns 0. To print rendering information in _ready() successfully, use the following:
+
+	if Engine.GetFramesDrawn() == 2 {
+		fmt.Println(RenderingServer.ViewportGetRenderInfo(Viewport.Get(node).GetViewportRid(),
+			RenderingServer.ViewportRenderInfoTypeVisible,
+			RenderingServer.ViewportRenderInfoDrawCallsInFrame))
+	}
 */
 func ViewportGetRenderInfo(viewport RID.Viewport, atype ViewportRenderInfoType, info ViewportRenderInfo) int { //gd:RenderingServer.viewport_get_render_info
 	once.Do(singleton)
@@ -3949,6 +3962,10 @@ func CameraAttributesSetDofBlur(camera_attributes RID.CameraAttributes, far_enab
 Sets the exposure values that will be used by the renderers. The normalization amount is used to bake a given Exposure Value (EV) into rendering calculations to reduce the dynamic range of the scene.
 
 The normalization factor can be calculated from exposure value (EV100) as follows:
+
+	GetExposureNormalization := func(ev100 float32) float32 {
+		return 1.0 / (Float.Pow(2, ev100) * 12 / 10)
+	}
 
 The exposure value can be calculated from aperture (in f-stops), shutter speed (in seconds), and sensitivity (in ISO) as follows:
 */
@@ -5591,6 +5608,10 @@ Returns a statistic about the rendering engine which can be used for performance
 Note: Only 3D rendering is currently taken into account by some of these values, such as the number of draw calls.
 
 Note: Rendering information is not available until at least 2 frames have been rendered by the engine. If rendering information is not available, [GetRenderingInfo] returns 0. To print rendering information in _ready() successfully, use the following:
+
+	if Engine.GetFramesDrawn() == 2 {
+		fmt.Println(RenderingServer.GetRenderingInfo(RenderingServer.RenderingInfoTotalDrawCallsInFrame))
+	}
 */
 func GetRenderingInfo(info RenderingInfo) int { //gd:RenderingServer.get_rendering_info
 	once.Do(singleton)
@@ -5690,6 +5711,10 @@ Returns the RID of a 256×256 texture with a testing pattern on it (in [Image.Fo
 
 Example: Get the test texture and apply it to a [Sprite2D] node:
 
+	var texture_rid = RenderingServer.GetTestTexture()
+	var texture = ImageTexture.CreateFromImage(RenderingServer.Texture2dGet(RID.Texture2D(texture_rid)))
+	sprite.SetTexture(texture.AsTexture2D())
+
 [Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
 */
 func GetTestTexture() RID.Texture { //gd:RenderingServer.get_test_texture
@@ -5701,6 +5726,10 @@ func GetTestTexture() RID.Texture { //gd:RenderingServer.get_test_texture
 Returns the ID of a 4×4 white texture (in [Image.FormatRgb8] format). This texture will be created and returned on the first call to [GetWhiteTexture], then it will be cached for subsequent calls. See also [GetTestTexture].
 
 Example: Get the white texture and apply it to a [Sprite2D] node:
+
+	var texture_rid = RenderingServer.GetWhiteTexture()
+	var texture = ImageTexture.CreateFromImage(RenderingServer.Texture2dGet(RID.Texture2D(texture_rid)))
+	sprite.SetTexture(texture.AsTexture2D())
 
 [Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
 */
@@ -6057,6 +6086,10 @@ Returns an [Image] instance from the given 'texture' [Resource.ID].
 
 Example: Get the test texture from [GetTestTexture] and apply it to a [Sprite2D] node:
 
+
+	var texture_rid = RenderingServer.GetTestTexture()
+	var texture = ImageTexture.CreateFromImage(RenderingServer.Texture2dGet(RID.Texture2D(texture_rid)))
+	sprite.SetTexture(texture.AsTexture2D())
 
 
 [Image]: https://pkg.go.dev/graphics.gd/classdb/Image
@@ -9031,6 +9064,9 @@ Copies the viewport to a region of the screen specified by 'rect'. If [ViewportS
 For example, you can set the root viewport to not render at all with the following code:
 
 
+	RenderingServer.ViewportAttachToScreen(Viewport.Get(node).GetViewportRid(), Rect2.PositionSize{}, 0)
+	RenderingServer.ViewportAttachToScreen(viewport.GetViewportRid(), Rect2.New(0, 0, 600, 600), 0)
+
 
 Using this can result in significant optimization, especially on lower-end devices. However, it comes at the cost of having to manage your viewports manually. For further optimization, see [ViewportSetRenderDirectToScreen].
 */
@@ -9546,6 +9582,12 @@ See also [GetRenderingInfo], which returns global information across all viewpor
 
 Note: Viewport rendering information is not available until at least 2 frames have been rendered by the engine. If rendering information is not available, [ViewportGetRenderInfo] returns 0. To print rendering information in _ready() successfully, use the following:
 
+
+	if Engine.GetFramesDrawn() == 2 {
+		fmt.Println(RenderingServer.ViewportGetRenderInfo(Viewport.Get(node).GetViewportRid(),
+			RenderingServer.ViewportRenderInfoTypeVisible,
+			RenderingServer.ViewportRenderInfoDrawCallsInFrame))
+	}
 
 */
 //go:nosplit
@@ -10331,6 +10373,10 @@ Sets the exposure values that will be used by the renderers. The normalization a
 
 The normalization factor can be calculated from exposure value (EV100) as follows:
 
+
+	GetExposureNormalization := func(ev100 float32) float32 {
+		return 1.0 / (Float.Pow(2, ev100) * 12 / 10)
+	}
 
 
 The exposure value can be calculated from aperture (in f-stops), shutter speed (in seconds), and sensitivity (in ISO) as follows:
@@ -12375,6 +12421,10 @@ Note: Only 3D rendering is currently taken into account by some of these values,
 Note: Rendering information is not available until at least 2 frames have been rendered by the engine. If rendering information is not available, [GetRenderingInfo] returns 0. To print rendering information in _ready() successfully, use the following:
 
 
+	if Engine.GetFramesDrawn() == 2 {
+		fmt.Println(RenderingServer.GetRenderingInfo(RenderingServer.RenderingInfoTotalDrawCallsInFrame))
+	}
+
 */
 //go:nosplit
 func (self class) GetRenderingInfo(info RenderingInfo) int64 { //gd:RenderingServer.get_rendering_info
@@ -12497,6 +12547,10 @@ Returns the RID of a 256×256 texture with a testing pattern on it (in [Image.Fo
 Example: Get the test texture and apply it to a [Sprite2D] node:
 
 
+	var texture_rid = RenderingServer.GetTestTexture()
+	var texture = ImageTexture.CreateFromImage(RenderingServer.Texture2dGet(RID.Texture2D(texture_rid)))
+	sprite.SetTexture(texture.AsTexture2D())
+
 
 [Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D
 */
@@ -12512,6 +12566,10 @@ Returns the ID of a 4×4 white texture (in [Image.FormatRgb8] format). This text
 
 Example: Get the white texture and apply it to a [Sprite2D] node:
 
+
+	var texture_rid = RenderingServer.GetWhiteTexture()
+	var texture = ImageTexture.CreateFromImage(RenderingServer.Texture2dGet(RID.Texture2D(texture_rid)))
+	sprite.SetTexture(texture.AsTexture2D())
 
 
 [Sprite2D]: https://pkg.go.dev/graphics.gd/classdb/Sprite2D

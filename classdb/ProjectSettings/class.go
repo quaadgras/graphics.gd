@@ -138,6 +138,8 @@ func HasSetting(name string) bool { //gd:ProjectSettings.has_setting
 /*
 Sets the value of a setting.
 
+	ProjectSettings.SetSetting("application/config/name", "Example")
+
 This can also be used to erase custom project settings. To do this change the setting value to null.
 */
 func SetSetting(name string, value any) { //gd:ProjectSettings.set_setting
@@ -147,6 +149,9 @@ func SetSetting(name string, value any) { //gd:ProjectSettings.set_setting
 
 /*
 Returns the value of the setting identified by 'name'. If the setting doesn't exist and 'default_value' is specified, the value of 'default_value' is returned. Otherwise, null is returned.
+
+	fmt.Println(ProjectSettings.GetSetting("application/config/name", nil))
+	fmt.Println(ProjectSettings.GetSetting("application/config/custom_description", "No description specified."))
 
 Note: This method doesn't take potential feature overrides into account automatically. Use [GetSettingWithOverride] to handle seamlessly.
 
@@ -161,6 +166,8 @@ func GetSetting(name string, default_value any) any { //gd:ProjectSettings.get_s
 Similar to [GetSetting], but applies feature tag overrides if any exists and is valid.
 
 Example: If the setting override "application/config/name.windows" exists, and the following code is executed on a Windows operating system, the overridden setting is printed instead:
+
+	fmt.Println(ProjectSettings.GetSettingWithOverride("application/config/name"))
 */
 func GetSettingWithOverride(name string) any { //gd:ProjectSettings.get_setting_with_override
 	once.Do(singleton)
@@ -214,6 +221,14 @@ func GetOrder(name string) int { //gd:ProjectSettings.get_order
 /*
 Sets the specified setting's initial value. This is the value the setting reverts to. The setting should already exist before calling this method. Note that project settings equal to their default value are not saved, so your code needs to account for that.
 
+	const SETTING_NAME = "addons/my_setting"
+	const SETTING_DEFAULT = 10.0
+
+	if !ProjectSettings.HasSetting(SETTING_NAME) {
+		ProjectSettings.SetSetting(SETTING_NAME, SETTING_DEFAULT)
+	}
+	ProjectSettings.SetInitialValue(SETTING_NAME, SETTING_DEFAULT)
+
 If you have a project setting defined by an [EditorPlugin], but want to use it in a running project, you will need a similar code at runtime.
 
 [EditorPlugin]: https://pkg.go.dev/graphics.gd/classdb/EditorPlugin
@@ -247,6 +262,14 @@ Adds a custom property info to a property. The dictionary must contain:
 - "type": int (see [Variant.Type])
 
 - optionally "hint": int (see [PropertyHint]) and "hint_string": string
+
+	ProjectSettings.SetSetting("category/property_name", 0)
+	ProjectSettings.AddPropertyInfo(Object.PropertyInfo{
+		Name:       "category/propertyName",
+		Type:       reflect.TypeFor[int](),
+		Hint:       int(classdb.PropertyHintEnum),
+		HintString: "one,two,three",
+	})
 
 Note: Setting "usage" for the property is not supported. Use [SetAsBasic], [SetRestartIfChanged], and [SetAsInternal] to modify usage flags.
 */
@@ -285,6 +308,19 @@ func LocalizePath(path string) string { //gd:ProjectSettings.localize_path
 Returns the absolute, native OS path corresponding to the localized 'path' (starting with res:// or user://). The returned path will vary depending on the operating system and user preferences. See [File paths in Godot projects] to see what those paths convert to. See also [LocalizePath].
 
 Note: [GlobalizePath] with res:// will not work in an exported project. Instead, prepend the executable's base directory to the path when running from an exported project:
+
+	var path = ""
+	if OS.HasFeature("editor") {
+		// Running from an editor binary.
+		// `path` will contain the absolute path to `hello.txt` located in the project root.
+		path = ProjectSettings.GlobalizePath("res://hello.txt")
+	} else {
+		// Running from an exported project.
+		// `path` will contain the absolute path to `hello.txt` next to the executable.
+		// This is *not* identical to using `ProjectSettings.globalize_path()` with a `res://` path,
+		// but is close enough in spirit.
+		path = filepath.Join(filepath.Base(OS.GetExecutablePath()), "hello.txt")
+	}
 
 [File paths in Godot projects]: https://docs.godotengine.org/tutorials/io/data_paths.html
 */
@@ -386,6 +422,8 @@ func (self class) HasSetting(name String.Readable) bool { //gd:ProjectSettings.h
 Sets the value of a setting.
 
 
+	ProjectSettings.SetSetting("application/config/name", "Example")
+
 
 This can also be used to erase custom project settings. To do this change the setting value to null.
 */
@@ -400,6 +438,9 @@ func (self class) SetSetting(name String.Readable, value variant.Any) { //gd:Pro
 /*
 Returns the value of the setting identified by 'name'. If the setting doesn't exist and 'default_value' is specified, the value of 'default_value' is returned. Otherwise, null is returned.
 
+
+	fmt.Println(ProjectSettings.GetSetting("application/config/name", nil))
+	fmt.Println(ProjectSettings.GetSetting("application/config/custom_description", "No description specified."))
 
 
 Note: This method doesn't take potential feature overrides into account automatically. Use [GetSettingWithOverride] to handle seamlessly.
@@ -421,6 +462,8 @@ Similar to [GetSetting], but applies feature tag overrides if any exists and is 
 
 Example: If the setting override "application/config/name.windows" exists, and the following code is executed on a Windows operating system, the overridden setting is printed instead:
 
+
+	fmt.Println(ProjectSettings.GetSettingWithOverride("application/config/name"))
 
 */
 //go:nosplit
@@ -490,6 +533,14 @@ func (self class) GetOrder(name String.Readable) int64 { //gd:ProjectSettings.ge
 Sets the specified setting's initial value. This is the value the setting reverts to. The setting should already exist before calling this method. Note that project settings equal to their default value are not saved, so your code needs to account for that.
 
 
+	const SETTING_NAME = "addons/my_setting"
+	const SETTING_DEFAULT = 10.0
+
+	if !ProjectSettings.HasSetting(SETTING_NAME) {
+		ProjectSettings.SetSetting(SETTING_NAME, SETTING_DEFAULT)
+	}
+	ProjectSettings.SetInitialValue(SETTING_NAME, SETTING_DEFAULT)
+
 
 If you have a project setting defined by an [EditorPlugin], but want to use it in a running project, you will need a similar code at runtime.
 
@@ -535,6 +586,14 @@ Adds a custom property info to a property. The dictionary must contain:
 - optionally "hint": int (see [PropertyHint]) and "hint_string": string
 
 
+	ProjectSettings.SetSetting("category/property_name", 0)
+	ProjectSettings.AddPropertyInfo(Object.PropertyInfo{
+		Name:       "category/propertyName",
+		Type:       reflect.TypeFor[int](),
+		Hint:       int(classdb.PropertyHintEnum),
+		HintString: "one,two,three",
+	})
+
 
 Note: Setting "usage" for the property is not supported. Use [SetAsBasic], [SetRestartIfChanged], and [SetAsInternal] to modify usage flags.
 */
@@ -579,6 +638,19 @@ Returns the absolute, native OS path corresponding to the localized 'path' (star
 
 Note: [GlobalizePath] with res:// will not work in an exported project. Instead, prepend the executable's base directory to the path when running from an exported project:
 
+
+	var path = ""
+	if OS.HasFeature("editor") {
+		// Running from an editor binary.
+		// `path` will contain the absolute path to `hello.txt` located in the project root.
+		path = ProjectSettings.GlobalizePath("res://hello.txt")
+	} else {
+		// Running from an exported project.
+		// `path` will contain the absolute path to `hello.txt` next to the executable.
+		// This is *not* identical to using `ProjectSettings.globalize_path()` with a `res://` path,
+		// but is close enough in spirit.
+		path = filepath.Join(filepath.Base(OS.GetExecutablePath()), "hello.txt")
+	}
 
 
 [File paths in Godot projects]: https://docs.godotengine.org/tutorials/io/data_paths.html

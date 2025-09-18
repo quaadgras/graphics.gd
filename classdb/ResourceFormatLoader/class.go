@@ -316,6 +316,15 @@ Should return the dependencies for the resource at the given 'path'. Each depend
 
 - The third section should contain the fallback path if the resource has a UID. Otherwise, it should be empty.
 
+	GetDependencies := func(path string, addTypes bool) []string {
+		return []string{
+			"uid://fqgvuwrkuixh::Script::res://script.gd",
+			"uid://fqgvuwrkuixh::::res://script.gd",
+			"res://script.gd::Script",
+			"res://script.gd",
+		}
+	}
+
 Note: Custom resource types defined by scripts aren't known by the [ClassDB], so "Resource" can be used for the class name.
 
 [ClassDB]: https://pkg.go.dev/graphics.gd/classdb/ClassDB
@@ -566,6 +575,15 @@ Should return the dependencies for the resource at the given 'path'. Each depend
 - The second section should contain the class name of the dependency if 'add_types' is true. Otherwise, it should be empty.
 
 - The third section should contain the fallback path if the resource has a UID. Otherwise, it should be empty.
+
+	GetDependencies := func(path string, addTypes bool) []string {
+		return []string{
+			"uid://fqgvuwrkuixh::Script::res://script.gd",
+			"uid://fqgvuwrkuixh::::res://script.gd",
+			"res://script.gd::Script",
+			"res://script.gd",
+		}
+	}
 
 Note: Custom resource types defined by scripts aren't known by the [ClassDB], so "Resource" can be used for the class name.
 

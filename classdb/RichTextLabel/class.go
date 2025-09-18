@@ -1066,6 +1066,25 @@ func (self Instance) GetLineWidth(line int) int { //gd:RichTextLabel.get_line_wi
 Returns the bounding rectangle of the visible content.
 
 Note: This method returns a correct value only after the label has been drawn.
+
+	package main
+
+	import (
+		"graphics.gd/classdb/Panel"
+		"graphics.gd/classdb/RichTextLabel"
+		"graphics.gd/variant/Vector2"
+	)
+
+	type MyRichTextLabel struct {
+		RichTextLabel.Extension[MyRichTextLabel]
+
+		BackgroundPanel Panel.Instance
+	}
+
+	func (r *MyRichTextLabel) Ready() {
+		r.BackgroundPanel.AsControl().SetPosition(Vector2.From(r.AsRichTextLabel().GetVisibleContentRect().Position))
+		r.BackgroundPanel.AsControl().SetSize(Vector2.From(r.AsRichTextLabel().GetVisibleContentRect().Size))
+	}
 */
 func (self Instance) GetVisibleContentRect() Rect2i.PositionSize { //gd:RichTextLabel.get_visible_content_rect
 	return Rect2i.PositionSize(Advanced(self).GetVisibleContentRect())
@@ -1109,6 +1128,22 @@ Installs a custom effect. This can also be done in the Inspector through the [Cu
 
 Example: With the following script extending from [RichTextEffect]:
 
+	package main
+
+	import "graphics.gd/classdb/RichTextEffect"
+
+	type MyCustomEffect struct {
+		RichTextEffect.Extension[MyCustomEffect]
+
+		Bbcode string
+	}
+
+	func NewMyCustomEffect() *MyCustomEffect {
+		return &MyCustomEffect{
+			Bbcode: "my_custom_effect",
+		}
+	}
+
 The above effect can be installed in [RichTextLabel] from a script:
 
 [CustomEffects]: https://pkg.go.dev/graphics.gd/classdb/RichTextLabel#Instance.CustomEffects
@@ -1132,6 +1167,19 @@ func (self Instance) ReloadEffects() { //gd:RichTextLabel.reload_effects
 Returns the [PopupMenu] of this [RichTextLabel]. By default, this menu is displayed when right-clicking on the [RichTextLabel].
 
 You can add custom menu items or remove standard ones. Make sure your IDs don't conflict with the standard ones (see [MenuItems]). For example:
+
+	var menu = richTextLabel.GetMenu()
+	// Remove "Select All" item.
+	menu.RemoveItem(int(RichTextLabel.MenuSelectAll))
+	// Add custom items.
+	menu.AddSeparator()
+	menu.MoreArgs().AddItem("Duplicate Text", int(RichTextLabel.MenuMax)+1, 0)
+	// Add event handler.
+	menu.OnIdPressed(func(id int) {
+		if id == int(RichTextLabel.MenuMax)+1 {
+			richTextLabel.AddText("\n" + richTextLabel.GetParsedText())
+		}
+	})
 
 Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [Window.Visible] property.
 
@@ -2645,6 +2693,24 @@ Returns the bounding rectangle of the visible content.
 
 Note: This method returns a correct value only after the label has been drawn.
 
+	package main
+
+	import (
+		"graphics.gd/classdb/Panel"
+		"graphics.gd/classdb/RichTextLabel"
+		"graphics.gd/variant/Vector2"
+	)
+
+	type MyRichTextLabel struct {
+		RichTextLabel.Extension[MyRichTextLabel]
+
+		BackgroundPanel Panel.Instance
+	}
+
+	func (r *MyRichTextLabel) Ready() {
+		r.BackgroundPanel.AsControl().SetPosition(Vector2.From(r.AsRichTextLabel().GetVisibleContentRect().Position))
+		r.BackgroundPanel.AsControl().SetSize(Vector2.From(r.AsRichTextLabel().GetVisibleContentRect().Size))
+	}
 
 */
 //go:nosplit
@@ -2715,6 +2781,21 @@ Installs a custom effect. This can also be done in the Inspector through the [Cu
 
 Example: With the following script extending from [RichTextEffect]:
 
+	package main
+
+	import "graphics.gd/classdb/RichTextEffect"
+
+	type MyCustomEffect struct {
+		RichTextEffect.Extension[MyCustomEffect]
+
+		Bbcode string
+	}
+
+	func NewMyCustomEffect() *MyCustomEffect {
+		return &MyCustomEffect{
+			Bbcode: "my_custom_effect",
+		}
+	}
 
 
 The above effect can be installed in [RichTextLabel] from a script:
@@ -2745,6 +2826,19 @@ Returns the [PopupMenu] of this [RichTextLabel]. By default, this menu is displa
 
 You can add custom menu items or remove standard ones. Make sure your IDs don't conflict with the standard ones (see [MenuItems]). For example:
 
+
+	var menu = richTextLabel.GetMenu()
+	// Remove "Select All" item.
+	menu.RemoveItem(int(RichTextLabel.MenuSelectAll))
+	// Add custom items.
+	menu.AddSeparator()
+	menu.MoreArgs().AddItem("Duplicate Text", int(RichTextLabel.MenuMax)+1, 0)
+	// Add event handler.
+	menu.OnIdPressed(func(id int) {
+		if id == int(RichTextLabel.MenuMax)+1 {
+			richTextLabel.AddText("\n" + richTextLabel.GetParsedText())
+		}
+	})
 
 
 Warning: This is a required internal node, removing and freeing it may cause a crash. If you wish to hide it or any of its children, use their [Window.Visible] property.

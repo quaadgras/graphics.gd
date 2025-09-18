@@ -682,6 +682,20 @@ Sets the active environment blend mode.
 Note: Not all runtimes support all environment blend modes, so it is important to check this at startup. For example:
 
 
+	var xrInterface = XRServer.FindInterface("OpenXR")
+	if xrInterface != XRInterface.Nil && xrInterface.IsInitialized() {
+		var vp = Viewport.Get(node)
+		vp.SetUseXr(true)
+		var acceptableModes = []XRInterface.EnvironmentBlendMode{XRInterface.XrEnvBlendModeOpaque, XRInterface.XrEnvBlendModeAdditive}
+		var modes = xrInterface.GetSupportedEnvironmentBlendModes()
+		for _, mode := range acceptableModes {
+			if slices.Contains(modes, mode) {
+				xrInterface.SetEnvironmentBlendMode(mode)
+				break
+			}
+		}
+	}
+
 */
 //go:nosplit
 func (self class) SetEnvironmentBlendMode(mode EnvironmentBlendMode) bool { //gd:XRInterface.set_environment_blend_mode

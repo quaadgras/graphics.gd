@@ -400,6 +400,16 @@ func (self Instance) GetCellAlternativeTile(coords Vector2i.XY) int { //gd:TileM
 /*
 Returns the [TileData] object associated with the given cell, or null if the cell does not exist or is not a [TileSetAtlasSource].
 
+	GetClickedTilePower := func() int {
+		var clickedCell = tileMapLayer.LocalToMap(tileMapLayer.AsCanvasItem().GetLocalMousePosition())
+		var data = tileMapLayer.GetCellTileData(clickedCell)
+		if data != TileData.Nil {
+			return data.GetCustomData("power").(int)
+		} else {
+			return 0
+		}
+	}
+
 [TileData]: https://pkg.go.dev/graphics.gd/classdb/TileData
 [TileSetAtlasSource]: https://pkg.go.dev/graphics.gd/classdb/TileSetAtlasSource
 */
@@ -974,6 +984,16 @@ func (self class) GetCellAlternativeTile(coords Vector2i.XY) int64 { //gd:TileMa
 /*
 Returns the [TileData] object associated with the given cell, or null if the cell does not exist or is not a [TileSetAtlasSource].
 
+
+	GetClickedTilePower := func() int {
+		var clickedCell = tileMapLayer.LocalToMap(tileMapLayer.AsCanvasItem().GetLocalMousePosition())
+		var data = tileMapLayer.GetCellTileData(clickedCell)
+		if data != TileData.Nil {
+			return data.GetCustomData("power").(int)
+		} else {
+			return 0
+		}
+	}
 
 
 [TileData]: https://pkg.go.dev/graphics.gd/classdb/TileData

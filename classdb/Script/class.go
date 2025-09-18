@@ -187,6 +187,8 @@ func (self Instance) GetInstanceBaseType() string { //gd:Script.get_instance_bas
 Returns the class name associated with the script, if there is one. Returns an empty string otherwise.
 
 To give the script a global name, you can use the class_name keyword in GDScript and the [GlobalClass] attribute in C#.
+
+	package main
 */
 func (self Instance) GetGlobalName() string { //gd:Script.get_global_name
 	return string(Advanced(self).GetGlobalName().String())
@@ -403,6 +405,7 @@ Returns the class name associated with the script, if there is one. Returns an e
 
 To give the script a global name, you can use the class_name keyword in GDScript and the [GlobalClass] attribute in C#.
 
+	package main
 
 */
 //go:nosplit

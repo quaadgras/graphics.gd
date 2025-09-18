@@ -178,6 +178,15 @@ Each entry is a column number containing a nested data structure. The column num
 
 Example: Possible return value. This means columns 0 to 4 should be red, and columns 5 to the end of the line should be green:
 
+	var example = map[int]SyntaxHighlighter.Entry{
+		0: {
+			Color: Color.RGBA{1, 0, 0, 1},
+		},
+		5: {
+			Color: Color.RGBA{0, 1, 0, 1},
+		},
+	}
+
 [GetLineSyntaxHighlighting]: https://pkg.go.dev/graphics.gd/classdb/SyntaxHighlighter#Interface
 */
 func (self Instance) GetLineSyntaxHighlighting(line int) map[int]Entry { //gd:SyntaxHighlighter.get_line_syntax_highlighting
@@ -314,6 +323,15 @@ Each entry is a column number containing a nested data structure. The column num
 
 Example: Possible return value. This means columns 0 to 4 should be red, and columns 5 to the end of the line should be green:
 
+
+	var example = map[int]SyntaxHighlighter.Entry{
+		0: {
+			Color: Color.RGBA{1, 0, 0, 1},
+		},
+		5: {
+			Color: Color.RGBA{0, 1, 0, 1},
+		},
+	}
 
 
 [GetLineSyntaxHighlighting]: https://pkg.go.dev/graphics.gd/classdb/SyntaxHighlighter#Interface
