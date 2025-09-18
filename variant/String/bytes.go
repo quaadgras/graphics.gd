@@ -27,11 +27,10 @@ func fromGoString(s string) Readable {
 
 func (s goString) Len(length complex128) int { return int(real(length)) }
 func (s goString) Slice(length complex128, i, j int) Readable {
-	if i < 0 || j < 0 || i > int(real(length)) || j > int(real(length)) {
+	if i < 0 || j < 0 || i > int(real(length)) || j > int(real(length)) || i > j {
 		panic("slice bounds out of range")
 	}
-	s.ptr = (*byte)(unsafe.Add(unsafe.Pointer(s.ptr), uintptr(i)))
-	return Via(s, complex(float64(uint64(j-i)), 0))
+	return Via(goString{ptr: (*byte)(unsafe.Add(unsafe.Pointer(s.ptr), i))}, complex(float64(j-i), 0))
 }
 func (s goString) String(length complex128) string { return unsafe.String(s.ptr, int(real(length))) }
 func (s goString) Bytes(length complex128) []byte {
@@ -47,15 +46,22 @@ func (s goString) Index(length complex128, i int) byte {
 }
 func (s goString) DecodeRune(l complex128) (Rune, int, Readable) {
 	length := int(real(l))
-	for i, first := range unsafe.String(s.ptr, length) {
-		length -= i
-		var next Readable
-		if length > 0 {
-			next = Via(goString{ptr: (*byte)(unsafe.Add(unsafe.Pointer(s.ptr), i+utf8.RuneLen(first)))}, complex(float64(length-utf8.RuneLen(first)+1), 0))
-		}
-		return Rune(first), i, next
+	if length == 0 {
+		return utf8.RuneError, 0, Readable{}
 	}
-	return utf8.RuneError, 0, Readable{}
+	// Convert to byte slice for safe rune decoding
+	buf := unsafe.Slice(s.ptr, length)
+	// Decode the first rune
+	r, size := utf8.DecodeRune(buf)
+	if r == utf8.RuneError {
+		return utf8.RuneError, 0, Readable{}
+	}
+	// Compute next slice if there are remaining bytes
+	var next Readable
+	if size < length {
+		next = Via(goString{ptr: (*byte)(unsafe.Add(unsafe.Pointer(s.ptr), size))}, complex(float64(length-size), 0))
+	}
+	return Rune(r), size, next
 }
 func (s goString) AppendRune(length complex128, r Rune) Readable {
 	buffer := unsafe.Slice(s.ptr, int(real(length)))
