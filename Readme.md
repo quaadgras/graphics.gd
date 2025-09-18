@@ -33,7 +33,7 @@ _Why use graphics.gd?_
 
 * [Write shaders in Go!](./shaders/Readme.md)
 * Unlike C++/C#/GDScript/Rust/Swift, all RIDs, Callables and Dictionary arguments are strongly typed.
-* Fully documented on pkg.go.dev, with all code snippets in Go.
+* Fully documented on [pkg.go.dev](https://pkg.go.dev/graphics.gd), with all code snippets in Go.
 * General purpose pure-Go 'variant' math packages, reuse them in any Go project.
 * After the first build, recompile quickly, with an experience similar to a scripting language.
 * Easily cross-compile for windows/macos/android/linux/ios/web on any host platform.
