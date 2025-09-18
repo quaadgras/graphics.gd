@@ -1,6 +1,5 @@
 [gd_scene load_steps=6 format=3 uid="uid://bq562nfq7puh"]
 
-[ext_resource type="Script" uid="uid://dncy24tlebwa6" path="res://Player/Grenade.gd" id="1_ak024"]
 [ext_resource type="PackedScene" uid="uid://d3765dge2xh0" path="res://Player/GrenadeVisuals/grenade/grenade.tscn" id="2_6f7t1"]
 [ext_resource type="AudioStream" uid="uid://csou1m38pk3m4" path="res://Player/Sounds/musket-explosion-6383.wav" id="3_7x8ud"]
 
@@ -10,10 +9,9 @@ radius = 3.0
 [sub_resource type="SphereShape3D" id="SphereShape3D_nac87"]
 radius = 0.1
 
-[node name="Grenade" type="CharacterBody3D"]
+[node name="Grenade" type="Grenade"]
 top_level = true
 collision_layer = 0
-script = ExtResource("1_ak024")
 
 [node name="ExplosionArea" type="Area3D" parent="."]
 

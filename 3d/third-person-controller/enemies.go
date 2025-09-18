@@ -27,6 +27,12 @@ import (
 	"graphics.gd/variant/Vector3"
 )
 
+type Damageable interface {
+	Object.Any
+
+	Damage(impact_point Vector3.XYZ, force Vector3.XYZ)
+}
+
 type SmokePuff struct {
 	Node3D.Extension[SmokePuff] `gd:"SmokePuff"`
 

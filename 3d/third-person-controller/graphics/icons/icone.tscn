@@ -1,9 +1,8 @@
 [gd_scene load_steps=3 format=3 uid="uid://b1fed4rxaa3qj"]
 
 [ext_resource type="Texture2D" uid="uid://10s03a0ng24t" path="res://icons/flash_icon.png" id="1_tbpcg"]
-[ext_resource type="Script" uid="uid://cs2olv3gh76j6" path="res://icons/icone.gd" id="2_fy12r"]
 
-[node name="Flash" type="TextureRect"]
+[node name="Flash" type="Icone"]
 unique_name_in_owner = true
 anchors_preset = 8
 anchor_left = 0.5
@@ -20,4 +19,3 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("1_tbpcg")
 stretch_mode = 5
-script = ExtResource("2_fy12r")

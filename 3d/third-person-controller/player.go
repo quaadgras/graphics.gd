@@ -9,7 +9,6 @@ import (
 	"graphics.gd/classdb/Camera3D"
 	"graphics.gd/classdb/CharacterBody3D"
 	"graphics.gd/classdb/ColorRect"
-	"graphics.gd/classdb/HBoxContainer"
 	"graphics.gd/classdb/Input"
 	"graphics.gd/classdb/InputEvent"
 	"graphics.gd/classdb/InputEventKey"
@@ -17,19 +16,11 @@ import (
 	"graphics.gd/classdb/InputEventMouseMotion"
 	"graphics.gd/classdb/InputMap"
 	"graphics.gd/classdb/Marker3D"
-	"graphics.gd/classdb/Mesh"
-	"graphics.gd/classdb/MeshInstance3D"
 	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/Node3D"
-	"graphics.gd/classdb/PackedScene"
-	"graphics.gd/classdb/PhysicsServer3D"
-	"graphics.gd/classdb/ProjectSettings"
 	"graphics.gd/classdb/RayCast3D"
-	"graphics.gd/classdb/Resource"
 	"graphics.gd/classdb/ShapeCast3D"
 	"graphics.gd/classdb/SpringArm3D"
-	"graphics.gd/classdb/SurfaceTool"
-	"graphics.gd/classdb/Viewport"
 	"graphics.gd/variant/Angle"
 	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/Callable"
@@ -42,7 +33,6 @@ import (
 	"graphics.gd/variant/RID"
 	"graphics.gd/variant/Signal"
 	"graphics.gd/variant/Transform3D"
-	"graphics.gd/variant/Vector2"
 	"graphics.gd/variant/Vector3"
 )
 
@@ -79,8 +69,8 @@ type DemoPlayer struct {
 	CharacterSkin         *CharacterSkin           `gd:"CharacterRotationRoot/CharacterSkin"`
 
 	UI struct {
-		AimReticle     ColorRect.Instance     `gd:"%AimRecticle"`
-		CoinsContainer HBoxContainer.Instance `gd:"%CoinsContainer"`
+		AimReticle     ColorRect.Instance `gd:"%AimRecticle"`
+		CoinsContainer *CoinsContainer    `gd:"%CoinsContainer"`
 	} `gd:"-"`
 
 	StepSound    AudioStreamPlayer3D.Instance `gd:"StepSound"`
@@ -479,132 +469,6 @@ func (p *CameraController) GetAimTarget() Vector3.XYZ {
 func (p *CameraController) GetAimCollider() Node.Instance {
 	node, _ := p.aim_collider.Instance()
 	return node
-}
-
-var GrenadeScene = Resource.Load[PackedScene.Is[CharacterBody3D.Instance]]("res://Player/Grenade.tscn")
-
-type GrenadeLauncher struct {
-	Node3D.Extension[GrenadeLauncher] `gd:"GrenadeLauncher"`
-
-	MinThrowDistance Float.X
-	MaxThrowDistance Float.X
-	Gravity          Float.X
-
-	FromLookPosition Vector3.XYZ
-	ThrowDirection   Vector3.XYZ
-
-	SnapMesh          Node3D.Instance         `gd:"%SnapMesh"`
-	Raycast           ShapeCast3D.Instance    `gd:"%ShapeCast3D"`
-	LaunchPoint       Marker3D.Instance       `gd:"%LaunchPoint"`
-	TrailMeshInstance MeshInstance3D.Instance `gd:"%TrailMeshInstance"`
-
-	throwVelocity Vector3.XYZ
-	timeToLand    Float.X
-}
-
-func NewGrenadeLauncher() *GrenadeLauncher {
-	return &GrenadeLauncher{
-		MinThrowDistance: 7,
-		MaxThrowDistance: 16,
-		Gravity:          Float.X(ProjectSettings.GetSetting("physics/3d/default_gravity", Float.X(0)).(float64)),
-	}
-}
-
-func (weapon *GrenadeLauncher) PhysicsProcess(delta Float.X) {
-	if weapon.AsNode3D().Visible() {
-		weapon.update_throw_velocity()
-		weapon.draw_throw_path()
-	}
-}
-
-func (weapon *GrenadeLauncher) ThrowGrenade() bool {
-	if !weapon.AsNode3D().Visible() {
-		return false
-	}
-	var grenade = GrenadeScene.Instantiate()
-	weapon.AsNode().GetParent().AddChild(grenade.AsNode())
-	grenade.AsNode3D().SetGlobalPosition(weapon.LaunchPoint.AsNode3D().GlobalPosition())
-	Object.Call(grenade, "throw", weapon.throwVelocity)
-	parent := Object.To[CharacterBody3D.Instance](grenade.AsNode().GetParent())
-	PhysicsServer3D.BodyAddCollisionException(parent.AsCollisionObject3D().GetRid(), grenade.AsCollisionObject3D().GetRid())
-	return true
-}
-
-func (weapon *GrenadeLauncher) update_throw_velocity() {
-	var camera = Viewport.Get(weapon.AsNode()).GetCamera3d()
-	var up_ratio = Float.Clamp(max(camera.AsNode3D().Rotation().X+0.5, -0.4)*2, 0, 1)
-	var base_throw_distance = Float.Lerp(weapon.MinThrowDistance, weapon.MaxThrowDistance, Float.X(up_ratio))
-	var throw_distance = base_throw_distance
-	var global_camera_look_position = Vector3.Add(weapon.FromLookPosition, Vector3.MulX(weapon.ThrowDirection, throw_distance))
-	weapon.Raycast.SetTargetPosition(Vector3.Sub(global_camera_look_position, weapon.Raycast.AsNode3D().GlobalPosition()))
-	var to_target = weapon.Raycast.TargetPosition()
-	if weapon.Raycast.GetCollisionCount() != 0 {
-		if node, ok := Object.As[Node3D.Instance](weapon.Raycast.GetCollider(0)); ok {
-			var has_target = node != Node3D.Nil && node.AsNode().IsInGroup("targeteables")
-			weapon.SnapMesh.SetVisible(has_target)
-			if has_target {
-				to_target = Vector3.Sub(node.GlobalPosition(), weapon.LaunchPoint.AsNode3D().GlobalPosition())
-				weapon.SnapMesh.SetGlobalPosition(Vector3.Add(weapon.LaunchPoint.AsNode3D().GlobalPosition(), to_target))
-				weapon.SnapMesh.LookAt(weapon.LaunchPoint.AsNode3D().GlobalPosition())
-			}
-		}
-	} else {
-		weapon.SnapMesh.SetVisible(false)
-	}
-	var peak_height = max(to_target.Y+0.25, weapon.LaunchPoint.AsNode3D().Position().Y+0.25)
-	var motion_up = peak_height
-	var time_going_up = Float.Sqrt(2 * motion_up / weapon.Gravity)
-	var motion_down = to_target.Y - peak_height
-	var time_going_down = Float.Sqrt(2 * motion_down / weapon.Gravity)
-	weapon.timeToLand = time_going_up + time_going_down
-	var target_position_xz_plane = Vector3.New(to_target.X, 0, to_target.Z)
-	var start_position_xz_plane = Vector3.New(weapon.LaunchPoint.AsNode3D().Position().X, 0, weapon.LaunchPoint.AsNode3D().Position().Z)
-	var forward_velocity = Vector3.DivX(Vector3.Sub(target_position_xz_plane, start_position_xz_plane), weapon.timeToLand)
-	var velocity_up = Float.Sqrt(2 * weapon.Gravity * motion_up)
-	weapon.throwVelocity = Vector3.Add(Vector3.MulX(Vector3.Up, velocity_up), forward_velocity)
-}
-
-func (weapon *GrenadeLauncher) draw_throw_path() {
-	const TimeStep = 0.05
-	const TrailWidth = 0.25
-	var forward_direction = Vector3.Normalized(Vector3.New(weapon.ThrowDirection.X, 0, weapon.ThrowDirection.Z))
-	var left_direction = Vector3.Cross(Vector3.Up, forward_direction)
-	var offset_left = Vector3.MulX(left_direction, TrailWidth/2)
-	var offset_right = Vector3.MulX(Vector3.Neg(left_direction), -TrailWidth/2)
-	var st = SurfaceTool.New()
-	st.Begin(Mesh.PrimitiveTriangles)
-	var end_time = weapon.timeToLand + 0.5
-	var point_previous Vector3.XYZ
-	var time_current Float.X
-	for time_current < end_time {
-		time_current += TimeStep
-		var point_current = Vector3.Add(Vector3.MulX(weapon.throwVelocity, time_current), Vector3.MulX(Vector3.Down, weapon.Gravity*0.5*time_current*time_current))
-		var trail_point_left_end = Vector3.Add(point_current, offset_left)
-		var trail_point_right_end = Vector3.Add(point_current, offset_right)
-		var trail_point_left_start = Vector3.Add(point_previous, offset_left)
-		var trail_point_right_start = Vector3.Add(point_previous, offset_right)
-		var uv_progress_end = time_current / end_time
-		var uv_progress_start = uv_progress_end - (TimeStep / end_time)
-		var uv_value_right_start = Vector2.MulX(Vector2.Right, uv_progress_start)
-		var uv_value_right_end = Vector2.MulX(Vector2.Right, uv_progress_end)
-		var uv_value_left_start = Vector2.Add(Vector2.Down, uv_value_right_start)
-		var uv_value_left_end = Vector2.Add(Vector2.Down, uv_value_right_end)
-		point_previous = point_current
-		st.SetUv(uv_value_right_end)
-		st.AddVertex(trail_point_right_end)
-		st.SetUv(uv_value_left_start)
-		st.AddVertex(trail_point_left_start)
-		st.SetUv(uv_value_left_end)
-		st.AddVertex(trail_point_left_end)
-		st.SetUv(uv_value_right_start)
-		st.AddVertex(trail_point_right_start)
-		st.SetUv(uv_value_left_start)
-		st.AddVertex(trail_point_left_start)
-		st.SetUv(uv_value_right_end)
-		st.AddVertex(trail_point_right_end)
-	}
-	st.GenerateNormals()
-	weapon.TrailMeshInstance.SetMesh(st.Commit().AsMesh())
 }
 
 type CharacterSkin struct {

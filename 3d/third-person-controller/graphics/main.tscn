@@ -11,7 +11,6 @@
 [ext_resource type="PackedScene" uid="uid://dr8slkof1nc8r" path="res://Environment/trees/tree.tscn" id="7_rvx5i"]
 [ext_resource type="Shader" uid="uid://b6r7htt0t7v0n" path="res://Environment/water/water_shader.gdshader" id="8_trepf"]
 [ext_resource type="Texture2D" uid="uid://ssrlnj65d4bs" path="res://Environment/water/textures/caustic_texture.png" id="9_8eqnd"]
-[ext_resource type="Script" uid="uid://ffd06bs3b4c8" path="res://Level/DeathPlane.gd" id="9_i1hvo"]
 [ext_resource type="PackedScene" uid="uid://dx8qkjcbt8emp" path="res://Environment/grass/GrassChunk.tscn" id="10_8c06q"]
 [ext_resource type="PackedScene" uid="uid://cn8o7sv1osssk" path="res://Environment/bushes/bush.tscn" id="11_f8df7"]
 [ext_resource type="PackedScene" uid="uid://cmwyiep10m4u4" path="res://Box/Box.tscn" id="12_xvr0j"]
@@ -378,9 +377,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.12, -2, 7.71762)
 material_override = SubResource("ShaderMaterial_ylhgr")
 mesh = SubResource("PlaneMesh_eflel")
 
-[node name="DeathPlane" type="Area3D" parent="."]
+[node name="DeathPlane" type="DeathPlane" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0)
-script = ExtResource("9_i1hvo")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DeathPlane"]
 shape = SubResource("BoxShape3D_gym67")

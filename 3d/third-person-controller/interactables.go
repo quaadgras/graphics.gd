@@ -9,6 +9,7 @@ import (
 	"graphics.gd/classdb/Node3D"
 	"graphics.gd/classdb/PackedScene"
 	"graphics.gd/classdb/PhysicsServer3D"
+	"graphics.gd/classdb/PropertyTweener"
 	"graphics.gd/classdb/Resource"
 	"graphics.gd/classdb/RigidBody3D"
 	"graphics.gd/classdb/SceneTree"
@@ -16,6 +17,7 @@ import (
 	"graphics.gd/classdb/Tween"
 	"graphics.gd/variant/Angle"
 	"graphics.gd/variant/Array"
+	"graphics.gd/variant/Basis"
 	"graphics.gd/variant/Callable"
 	"graphics.gd/variant/Float"
 	"graphics.gd/variant/Object"
@@ -163,6 +165,48 @@ func (coin *Coin) collect() {
 		coin.sound_played = true
 		if coin.timer_fired {
 			coin.AsNode().QueueFree()
+		}
+	})
+}
+
+type JumpingPad struct {
+	Area3D.Extension[JumpingPad] `gd:"JumpingPad"`
+
+	ImpulseStrength Float.X
+
+	Mushroom Node3D.Instance `gd:"%mushroom"`
+}
+
+func NewJumpingPad() *JumpingPad {
+	return &JumpingPad{ImpulseStrength: 10.0}
+}
+
+func (pad *JumpingPad) Ready() {
+	pad.AsArea3D().OnBodyEntered(func(body Node3D.Instance) {
+		if body, ok := Object.As[*DemoPlayer](body); ok {
+			body.AsCharacterBody3D().SetVelocity(
+				Vector3.Add(
+					Vector3.MulX(Vector3.Up, pad.ImpulseStrength),
+					Basis.Transform(Vector3.MulX(Vector3.Up, pad.ImpulseStrength), pad.AsNode3D().Transform().Basis),
+				),
+			)
+			var tween = pad.AsNode().CreateTween()
+			scale := pad.Mushroom.Scale()
+			scale.Y = 0.4
+			pad.Mushroom.SetScale(scale)
+			PropertyTweener.Make(tween, pad.Mushroom.AsObject(), "scale:y", 1.0, 1.0).SetEase(Tween.EaseOut).SetTrans(Tween.TransElastic)
+		}
+	})
+}
+
+type DeathPlane struct {
+	Area3D.Extension[DeathPlane] `gd:"DeathPlane"`
+}
+
+func (plane *DeathPlane) Ready() {
+	plane.AsArea3D().OnBodyEntered(func(body Node3D.Instance) {
+		if body, ok := Object.As[*DemoPlayer](body); ok {
+			body.ResetPosition()
 		}
 	})
 }

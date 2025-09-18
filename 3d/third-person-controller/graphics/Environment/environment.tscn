@@ -13,7 +13,6 @@
 [ext_resource type="PackedScene" uid="uid://drcwbur5pemly" path="res://Environment/tree_trunk/tree_trunk_small.glb" id="8_0wkfp"]
 [ext_resource type="Material" path="res://Environment/dark_bark/dark_bark.tres" id="9_423rm"]
 [ext_resource type="Script" uid="uid://dgvp8boaskhfx" path="res://Environment/grass_scatter.gd" id="9_qev2o"]
-[ext_resource type="Script" uid="uid://ffd06bs3b4c8" path="res://Level/DeathPlane.gd" id="10_evept"]
 [ext_resource type="Material" uid="uid://cbwea5kec68u6" path="res://Environment/large_tree_trunk/trunk_top/trunk_top.tres" id="10_junlj"]
 [ext_resource type="PackedScene" uid="uid://ciqrpd5675boy" path="res://Player/Player.tscn" id="11_1wby0"]
 [ext_resource type="PackedScene" uid="uid://c28pgdu71100y" path="res://Environment/tree_trunk/tree_trunk_long.glb" id="11_y8l25"]
@@ -120,9 +119,8 @@ material_override = SubResource("ShaderMaterial_8t5sk")
 mesh = SubResource("PlaneMesh_prq5n")
 skeleton = NodePath("../..")
 
-[node name="DeathPlane" type="Area3D" parent="World"]
+[node name="DeathPlane" type="DeathPlane" parent="World"]
 transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0.806205, 0)
-script = ExtResource("10_evept")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="World/DeathPlane"]
 shape = SubResource("WorldBoundaryShape3D_uj5s5")

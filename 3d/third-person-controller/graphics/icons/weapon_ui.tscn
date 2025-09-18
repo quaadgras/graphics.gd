@@ -1,6 +1,5 @@
 [gd_scene load_steps=5 format=3 uid="uid://mb58xbunfaep"]
 
-[ext_resource type="Script" uid="uid://ui0n4ujcnnls" path="res://icons/weapon_ui.gd" id="1_vteie"]
 [ext_resource type="PackedScene" uid="uid://b1fed4rxaa3qj" path="res://icons/icone.tscn" id="2_etwmu"]
 [ext_resource type="Texture2D" uid="uid://cj4npx16cmso7" path="res://icons/bomb_icon.png" id="2_s3oom"]
 
@@ -11,7 +10,7 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[node name="weapon_switch_ui" type="PanelContainer" groups=["camera_mode_toggle"]]
+[node name="weapon_switch_ui" type="WeaponUI" groups=["camera_mode_toggle"]]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -26,7 +25,6 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_kmqom")
-script = ExtResource("1_vteie")
 
 [node name="Control" type="HBoxContainer" parent="."]
 layout_mode = 2

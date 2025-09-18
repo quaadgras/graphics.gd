@@ -1,9 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://ciqrpd5675boy"]
 
 [ext_resource type="PackedScene" uid="uid://b2ew46dlu7u7x" path="res://Player/GrenadeLauncher.tscn" id="3_54qc4"]
-[ext_resource type="Script" uid="uid://bymi8j63sh1s2" path="res://Player/MeleeAttackArea.gd" id="3_v1vve"]
 [ext_resource type="PackedScene" uid="uid://c0mo8tek77du4" path="res://Player/CharacterSkin.tscn" id="4_ign62"]
-[ext_resource type="Script" uid="uid://o76pxdt0sj2p" path="res://Player/CoinsContainer.gd" id="7_8eehq"]
 [ext_resource type="PackedScene" uid="uid://cqw64w6kb0fyg" path="res://Player/Coin/CoinVisuals/CoinModel.tscn" id="8_6qxxt"]
 [ext_resource type="AudioStream" uid="uid://bx0t7f2nuk2lr" path="res://Player/Sounds/03_Step_grass_03.wav" id="10_wx4h4"]
 [ext_resource type="AudioStream" uid="uid://cbcb2d63weegs" path="res://Player/Sounds/45_Landing_01.wav" id="11_3s4i7"]
@@ -167,9 +165,8 @@ libraries = {
 &"": SubResource("AnimationLibrary_xvsui")
 }
 
-[node name="MeleeAttackArea" type="Area3D" parent="CharacterRotationRoot"]
+[node name="MeleeAttackArea" type="MeleeAttackArea" parent="CharacterRotationRoot"]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0.959482, 1.0525)
-script = ExtResource("3_v1vve")
 
 [node name="CollisionShape3d" type="CollisionShape3D" parent="CharacterRotationRoot/MeleeAttackArea"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.246944)
@@ -203,7 +200,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.290196)
 
-[node name="CoinsContainer" type="HBoxContainer" parent="PlayerUI"]
+[node name="CoinsContainer" type="CoinsContainer" parent="PlayerUI"]
 unique_name_in_owner = true
 layout_mode = 0
 anchor_left = 1.0
@@ -216,7 +213,6 @@ grow_horizontal = 0
 mouse_filter = 2
 theme_override_constants/separation = 30
 alignment = 2
-script = ExtResource("7_8eehq")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="PlayerUI/CoinsContainer"]
 custom_minimum_size = Vector2(96, 96)

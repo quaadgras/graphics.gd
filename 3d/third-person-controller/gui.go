@@ -1,19 +1,27 @@
 package main
 
 import (
+	"fmt"
+
 	"graphics.gd/classdb/Button"
 	"graphics.gd/classdb/Control"
 	"graphics.gd/classdb/GridContainer"
+	"graphics.gd/classdb/HBoxContainer"
 	"graphics.gd/classdb/Input"
 	"graphics.gd/classdb/InputEvent"
+	"graphics.gd/classdb/Label"
 	"graphics.gd/classdb/Node"
 	"graphics.gd/classdb/OS"
+	"graphics.gd/classdb/PanelContainer"
 	"graphics.gd/classdb/PropertyTweener"
 	"graphics.gd/classdb/SceneTree"
 	"graphics.gd/classdb/TextureButton"
+	"graphics.gd/classdb/TextureRect"
+	"graphics.gd/classdb/Timer"
 	"graphics.gd/variant/Color"
 	"graphics.gd/variant/Enum"
 	"graphics.gd/variant/Float"
+	"graphics.gd/variant/Object"
 )
 
 type InstructionType Enum.Int[struct {
@@ -117,4 +125,79 @@ func (button *DemoLinkButton) Ready() {
 	button.AsBaseButton().OnPressed(func() {
 		OS.ShellOpen(button.Link)
 	})
+}
+
+type Icone struct {
+	TextureRect.Extension[Icone] `gd:"Icone"`
+
+	DisabledAlpha Float.X
+}
+
+func NewIcone() *Icone {
+	return &Icone{DisabledAlpha: 0.2}
+}
+
+func (icon *Icone) Ready() {
+	modulate := icon.AsCanvasItem().Modulate()
+	modulate.A = icon.DisabledAlpha
+	icon.AsCanvasItem().SetModulate(modulate)
+}
+
+func (icon *Icone) SetState(state bool) {
+	var from, to = Color.RGBA{1, 1, 1, icon.DisabledAlpha}, Color.W3C.White
+	if state {
+		from, to = to, from
+	}
+	var tween = icon.AsNode().CreateTween()
+	PropertyTweener.Make(tween, icon.AsObject(), "modulate", to, 0.3).From(from)
+}
+
+type WeaponUI struct {
+	PanelContainer.Extension[WeaponUI] `gd:"WeaponUI"`
+
+	Nodes        map[string]*Icone
+	SelectedNode string
+}
+
+func (ui *WeaponUI) Ready() {
+	ui.Nodes = map[string]*Icone{
+		"DEFAULT": Object.To[*Icone](ui.AsNode().GetNode("%Flash")),
+		"GRENADE": Object.To[*Icone](ui.AsNode().GetNode("%Grenade")),
+	}
+}
+
+func (ui *WeaponUI) SwitchTo(node_name string) {
+	if node_name == ui.SelectedNode {
+		return
+	}
+	if ui.SelectedNode != "" {
+		ui.Nodes[ui.SelectedNode].SetState(false)
+	}
+	ui.Nodes[node_name].SetState(true)
+	ui.SelectedNode = node_name
+}
+
+type CoinsContainer struct {
+	HBoxContainer.Extension[CoinsContainer] `gd:"CoinsContainer"`
+
+	DisplayTimer Timer.Instance `gd:"Timer"`
+	CoinsLabel   Label.Instance `gd:"CoinsLabel"`
+}
+
+func (container *CoinsContainer) Ready() {
+	const Hidden_Y_Pos = -100.0
+	container.DisplayTimer.AsTimer().OnTimeout(func() {
+		var tween = container.AsNode().CreateTween()
+		PropertyTweener.Make(tween, container.AsObject(), "position:y", Hidden_Y_Pos, 0.5)
+	})
+}
+
+func (container *CoinsContainer) UpdateCoinsAmount(amount int) {
+	const Display_Y_Pos = 20.0
+	if container.DisplayTimer.IsStopped() {
+		var tween = container.AsNode().CreateTween()
+		PropertyTweener.Make(tween, container.AsObject(), "position:y", Display_Y_Pos, 0.5)
+	}
+	container.DisplayTimer.Start()
+	container.CoinsLabel.SetText(fmt.Sprintf("%d", amount))
 }

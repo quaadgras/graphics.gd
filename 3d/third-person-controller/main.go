@@ -6,6 +6,8 @@ import (
 	"graphics.gd/startup"
 )
 
+const DefaultGravity = 16.0
+
 func main() {
 	classdb.Register[Box]()
 	classdb.Register[Coin]()
@@ -25,6 +27,13 @@ func main() {
 	classdb.Register[CharacterSkin](NewCharacterSkin)
 	classdb.Register[GrenadeLauncher](NewGrenadeLauncher)
 	classdb.Register[FaceShader](NewFaceShader)
+	classdb.Register[JumpingPad](NewJumpingPad)
+	classdb.Register[Icone](NewIcone)
+	classdb.Register[WeaponUI]()
+	classdb.Register[DeathPlane]()
+	classdb.Register[CoinsContainer]()
+	classdb.Register[MeleeAttackArea]()
+	classdb.Register[Grenade](NewGrenade)
 	startup.LoadingScene()
 	SceneTree.Add(NewFullScreenHandler())
 	startup.Scene()
