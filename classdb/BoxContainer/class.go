@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -46,6 +47,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -91,7 +93,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -178,31 +180,31 @@ Adds a [Control] node to the box as a spacer. If 'begin' is true, it will insert
 */
 //go:nosplit
 func (self class) AddSpacer(begin bool) [1]gdclass.Control { //gd:BoxContainer.add_spacer
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_spacer, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ begin bool }{begin})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.add_spacer, gdextension.SizeObject|(gdextension.SizeBool<<4), &struct{ begin bool }{begin})
 	var ret = [1]gdclass.Control{gd.PointerLifetimeBoundTo[gdclass.Control](self.AsObject(), r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlignment(alignment AlignmentMode) { //gd:BoxContainer.set_alignment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment AlignmentMode }{alignment})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment AlignmentMode }{alignment})
 }
 
 //go:nosplit
 func (self class) GetAlignment() AlignmentMode { //gd:BoxContainer.get_alignment
-	var r_ret = gdextension.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[AlignmentMode](gd.ObjectChecked(self.AsObject()), methods.get_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVertical(vertical bool) { //gd:BoxContainer.set_vertical
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical, 0|(gdextension.SizeBool<<4), &struct{ vertical bool }{vertical})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical, 0|(gdextension.SizeBool<<4), &struct{ vertical bool }{vertical})
 }
 
 //go:nosplit
 func (self class) IsVertical() bool { //gd:BoxContainer.is_vertical
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_vertical, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_vertical, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -46,6 +47,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -90,7 +92,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -183,7 +185,7 @@ Returns the current expanded container.
 */
 //go:nosplit
 func (self class) GetExpandedContainer() [1]gdclass.FoldableContainer { //gd:FoldableGroup.get_expanded_container
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_expanded_container, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_expanded_container, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.FoldableContainer{gd.PointerMustAssertInstanceID[gdclass.FoldableContainer](r_ret)}
 	return ret
 }
@@ -197,19 +199,19 @@ Returns an slice of [FoldableContainer]s that have this as their FoldableGroup (
 */
 //go:nosplit
 func (self class) GetContainers() Array.Contains[[1]gdclass.FoldableContainer] { //gd:FoldableGroup.get_containers
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_containers, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_containers, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.FoldableContainer]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowFoldingAll(enabled bool) { //gd:FoldableGroup.set_allow_folding_all
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_folding_all, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_folding_all, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsAllowFoldingAll() bool { //gd:FoldableGroup.is_allow_folding_all
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_allow_folding_all, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_allow_folding_all, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

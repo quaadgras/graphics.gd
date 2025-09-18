@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +51,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -95,7 +97,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -236,7 +238,7 @@ Note: 'path' should be a "*.pub" file if 'public_only' is true, a "*.key" file o
 */
 //go:nosplit
 func (self class) Save(path String.Readable, public_only bool) Error.Code { //gd:CryptoKey.save
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path        gdextension.String
 		public_only bool
 	}{pointers.Get(gd.InternalString(path)), public_only})
@@ -251,7 +253,7 @@ Note: 'path' should be a "*.pub" file if 'public_only' is true, a "*.key" file o
 */
 //go:nosplit
 func (self class) Load(path String.Readable, public_only bool) Error.Code { //gd:CryptoKey.load
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		path        gdextension.String
 		public_only bool
 	}{pointers.Get(gd.InternalString(path)), public_only})
@@ -264,7 +266,7 @@ Returns true if this CryptoKey only has the public part, and not the private one
 */
 //go:nosplit
 func (self class) IsPublicOnly() bool { //gd:CryptoKey.is_public_only
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_public_only, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_public_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -274,7 +276,7 @@ Returns a string containing the key in PEM format. If 'public_only' is true, onl
 */
 //go:nosplit
 func (self class) SaveToString(public_only bool) String.Readable { //gd:CryptoKey.save_to_string
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.save_to_string, gdextension.SizeString|(gdextension.SizeBool<<4), &struct{ public_only bool }{public_only})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.save_to_string, gdextension.SizeString|(gdextension.SizeBool<<4), &struct{ public_only bool }{public_only})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -284,7 +286,7 @@ Loads a key from the given 'string_key'. If 'public_only' is true, only the publ
 */
 //go:nosplit
 func (self class) LoadFromString(string_key String.Readable, public_only bool) Error.Code { //gd:CryptoKey.load_from_string
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_from_string, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_from_string, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		string_key  gdextension.String
 		public_only bool
 	}{pointers.Get(gd.InternalString(string_key)), public_only})

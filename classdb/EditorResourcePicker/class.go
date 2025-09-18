@@ -16,6 +16,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -55,6 +56,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -105,7 +107,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -299,12 +301,12 @@ func (class) _handle_menu_selected(impl func(ptr gdclass.Receiver, id int64) boo
 
 //go:nosplit
 func (self class) SetBaseType(base_type String.Readable) { //gd:EditorResourcePicker.set_base_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_type, 0|(gdextension.SizeString<<4), &struct{ base_type gdextension.String }{pointers.Get(gd.InternalString(base_type))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_base_type, 0|(gdextension.SizeString<<4), &struct{ base_type gdextension.String }{pointers.Get(gd.InternalString(base_type))})
 }
 
 //go:nosplit
 func (self class) GetBaseType() String.Readable { //gd:EditorResourcePicker.get_base_type
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_type, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_base_type, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -316,31 +318,31 @@ Returns a list of all allowed types and subtypes corresponding to the [BaseType]
 */
 //go:nosplit
 func (self class) GetAllowedTypes() Packed.Strings { //gd:EditorResourcePicker.get_allowed_types
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_allowed_types, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_allowed_types, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditedResource(resource [1]gdclass.Resource) { //gd:EditorResourcePicker.set_edited_resource
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edited_resource, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_edited_resource, 0|(gdextension.SizeObject<<4), &struct{ resource gdextension.Object }{gdextension.Object(gd.ObjectChecked(resource[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetEditedResource() [1]gdclass.Resource { //gd:EditorResourcePicker.get_edited_resource
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_resource, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_edited_resource, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetToggleMode(enable bool) { //gd:EditorResourcePicker.set_toggle_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_toggle_mode, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_toggle_mode, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsToggleMode() bool { //gd:EditorResourcePicker.is_toggle_mode
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_toggle_mode, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_toggle_mode, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -352,17 +354,17 @@ Sets the toggle mode state for the main button. Works only if [ToggleMode] is se
 */
 //go:nosplit
 func (self class) SetTogglePressed(pressed bool) { //gd:EditorResourcePicker.set_toggle_pressed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_toggle_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_toggle_pressed, 0|(gdextension.SizeBool<<4), &struct{ pressed bool }{pressed})
 }
 
 //go:nosplit
 func (self class) SetEditable(enable bool) { //gd:EditorResourcePicker.set_editable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsEditable() bool { //gd:EditorResourcePicker.is_editable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

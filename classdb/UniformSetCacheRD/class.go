@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -43,6 +44,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -84,7 +86,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -152,7 +154,7 @@ Creates/returns a cached uniform set based on the provided uniforms for a given 
 */
 //go:nosplit
 func (self class) GetCache(shader RID.Any, set int64, uniforms Array.Contains[[1]gdclass.RDUniform]) RID.Any { //gd:UniformSetCacheRD.get_cache
-	var r_ret = gdextension.CallStatic[RID.Any](methods.get_cache, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeArray<<12), &struct {
+	var r_ret = noescape.CallStatic[RID.Any](methods.get_cache, gdextension.SizeRID|(gdextension.SizeRID<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeArray<<12), &struct {
 		shader   RID.Any
 		set      int64
 		uniforms gdextension.Array

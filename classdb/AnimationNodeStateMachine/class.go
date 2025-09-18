@@ -27,6 +27,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -64,6 +65,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -130,7 +132,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -369,7 +371,7 @@ Adds a new animation node to the graph. The 'position' is used for display in th
 */
 //go:nosplit
 func (self class) AddNode(name String.Name, node [1]gdclass.AnimationNode, position Vector2.XY) { //gd:AnimationNodeStateMachine.add_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_node, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeVector2<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_node, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeVector2<<12), &struct {
 		name     gdextension.StringName
 		node     gdextension.Object
 		position Vector2.XY
@@ -381,7 +383,7 @@ Replaces the given animation node with a new animation node.
 */
 //go:nosplit
 func (self class) ReplaceNode(name String.Name, node [1]gdclass.AnimationNode) { //gd:AnimationNodeStateMachine.replace_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.replace_node, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.replace_node, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeObject<<8), &struct {
 		name gdextension.StringName
 		node gdextension.Object
 	}{pointers.Get(gd.InternalStringName(name)), gdextension.Object(gd.ObjectChecked(node[0].AsObject()))})
@@ -392,7 +394,7 @@ Returns the animation node with the given name.
 */
 //go:nosplit
 func (self class) GetNode(name String.Name) [1]gdclass.AnimationNode { //gd:AnimationNodeStateMachine.get_node
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_node, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = [1]gdclass.AnimationNode{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationNode](r_ret)}
 	return ret
 }
@@ -402,7 +404,7 @@ Deletes the given animation node from the graph.
 */
 //go:nosplit
 func (self class) RemoveNode(name String.Name) { //gd:AnimationNodeStateMachine.remove_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_node, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_node, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 /*
@@ -410,7 +412,7 @@ Renames the given animation node.
 */
 //go:nosplit
 func (self class) RenameNode(name String.Name, new_name String.Name) { //gd:AnimationNodeStateMachine.rename_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_node, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.rename_node, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		name     gdextension.StringName
 		new_name gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(name)), pointers.Get(gd.InternalStringName(new_name))})
@@ -421,7 +423,7 @@ Returns true if the graph contains the given animation node.
 */
 //go:nosplit
 func (self class) HasNode(name String.Name) bool { //gd:AnimationNodeStateMachine.has_node
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_node, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_node, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
@@ -431,7 +433,7 @@ Returns the given animation node's name.
 */
 //go:nosplit
 func (self class) GetNodeName(node [1]gdclass.AnimationNode) String.Name { //gd:AnimationNodeStateMachine.get_node_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_node_name, gdextension.SizeStringName|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_node_name, gdextension.SizeStringName|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.ObjectChecked(node[0].AsObject()))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -441,7 +443,7 @@ Returns a list containing the names of all animation nodes in this state machine
 */
 //go:nosplit
 func (self class) GetNodeList() Array.Contains[String.Name] { //gd:AnimationNodeStateMachine.get_node_list
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_node_list, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_node_list, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[String.Name]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -451,7 +453,7 @@ Sets the animation node's coordinates. Used for display in the editor.
 */
 //go:nosplit
 func (self class) SetNodePosition(name String.Name, position Vector2.XY) { //gd:AnimationNodeStateMachine.set_node_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_position, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVector2<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_position, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVector2<<8), &struct {
 		name     gdextension.StringName
 		position Vector2.XY
 	}{pointers.Get(gd.InternalStringName(name)), position})
@@ -462,7 +464,7 @@ Returns the given animation node's coordinates. Used for display in the editor.
 */
 //go:nosplit
 func (self class) GetNodePosition(name String.Name) Vector2.XY { //gd:AnimationNodeStateMachine.get_node_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_node_position, gdextension.SizeVector2|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_node_position, gdextension.SizeVector2|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = r_ret
 	return ret
 }
@@ -472,7 +474,7 @@ Returns true if there is a transition between the given animation nodes.
 */
 //go:nosplit
 func (self class) HasTransition(from String.Name, to String.Name) bool { //gd:AnimationNodeStateMachine.has_transition
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_transition, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_transition, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		from gdextension.StringName
 		to   gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(from)), pointers.Get(gd.InternalStringName(to))})
@@ -485,7 +487,7 @@ Adds a transition between the given animation nodes.
 */
 //go:nosplit
 func (self class) AddTransition(from String.Name, to String.Name, transition [1]gdclass.AnimationNodeStateMachineTransition) { //gd:AnimationNodeStateMachine.add_transition
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_transition, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeObject<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_transition, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeObject<<12), &struct {
 		from       gdextension.StringName
 		to         gdextension.StringName
 		transition gdextension.Object
@@ -497,7 +499,7 @@ Returns the given transition.
 */
 //go:nosplit
 func (self class) GetTransition(idx int64) [1]gdclass.AnimationNodeStateMachineTransition { //gd:AnimationNodeStateMachine.get_transition
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_transition, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_transition, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = [1]gdclass.AnimationNodeStateMachineTransition{gd.PointerWithOwnershipTransferredToGo[gdclass.AnimationNodeStateMachineTransition](r_ret)}
 	return ret
 }
@@ -507,7 +509,7 @@ Returns the given transition's start node.
 */
 //go:nosplit
 func (self class) GetTransitionFrom(idx int64) String.Name { //gd:AnimationNodeStateMachine.get_transition_from
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_transition_from, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_transition_from, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -517,7 +519,7 @@ Returns the given transition's end node.
 */
 //go:nosplit
 func (self class) GetTransitionTo(idx int64) String.Name { //gd:AnimationNodeStateMachine.get_transition_to
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_transition_to, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_transition_to, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -527,7 +529,7 @@ Returns the number of connections in the graph.
 */
 //go:nosplit
 func (self class) GetTransitionCount() int64 { //gd:AnimationNodeStateMachine.get_transition_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_transition_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_transition_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -537,7 +539,7 @@ Deletes the given transition by index.
 */
 //go:nosplit
 func (self class) RemoveTransitionByIndex(idx int64) { //gd:AnimationNodeStateMachine.remove_transition_by_index
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_transition_by_index, 0|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_transition_by_index, 0|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 }
 
 /*
@@ -545,7 +547,7 @@ Deletes the transition between the two specified animation nodes.
 */
 //go:nosplit
 func (self class) RemoveTransition(from String.Name, to String.Name) { //gd:AnimationNodeStateMachine.remove_transition
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_transition, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_transition, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		from gdextension.StringName
 		to   gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(from)), pointers.Get(gd.InternalStringName(to))})
@@ -556,7 +558,7 @@ Sets the draw offset of the graph. Used for display in the editor.
 */
 //go:nosplit
 func (self class) SetGraphOffset(offset Vector2.XY) { //gd:AnimationNodeStateMachine.set_graph_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_graph_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_graph_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 
 /*
@@ -564,43 +566,43 @@ Returns the draw offset of the graph. Used for display in the editor.
 */
 //go:nosplit
 func (self class) GetGraphOffset() Vector2.XY { //gd:AnimationNodeStateMachine.get_graph_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_graph_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_graph_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStateMachineType(state_machine_type StateMachineType) { //gd:AnimationNodeStateMachine.set_state_machine_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_state_machine_type, 0|(gdextension.SizeInt<<4), &struct{ state_machine_type StateMachineType }{state_machine_type})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_state_machine_type, 0|(gdextension.SizeInt<<4), &struct{ state_machine_type StateMachineType }{state_machine_type})
 }
 
 //go:nosplit
 func (self class) GetStateMachineType() StateMachineType { //gd:AnimationNodeStateMachine.get_state_machine_type
-	var r_ret = gdextension.Call[StateMachineType](gd.ObjectChecked(self.AsObject()), methods.get_state_machine_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[StateMachineType](gd.ObjectChecked(self.AsObject()), methods.get_state_machine_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowTransitionToSelf(enable bool) { //gd:AnimationNodeStateMachine.set_allow_transition_to_self
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_transition_to_self, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_transition_to_self, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsAllowTransitionToSelf() bool { //gd:AnimationNodeStateMachine.is_allow_transition_to_self
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_allow_transition_to_self, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_allow_transition_to_self, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetResetEnds(enable bool) { //gd:AnimationNodeStateMachine.set_reset_ends
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reset_ends, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_reset_ends, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) AreEndsReset() bool { //gd:AnimationNodeStateMachine.are_ends_reset
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_ends_reset, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.are_ends_reset, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

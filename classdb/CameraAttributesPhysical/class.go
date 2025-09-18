@@ -27,6 +27,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -61,6 +62,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -118,7 +120,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -249,72 +251,72 @@ func (self Instance) SetAutoExposureMaxExposureValue(value Float.X) {
 
 //go:nosplit
 func (self class) SetAperture(aperture float64) { //gd:CameraAttributesPhysical.set_aperture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_aperture, 0|(gdextension.SizeFloat<<4), &struct{ aperture float64 }{aperture})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_aperture, 0|(gdextension.SizeFloat<<4), &struct{ aperture float64 }{aperture})
 }
 
 //go:nosplit
 func (self class) GetAperture() float64 { //gd:CameraAttributesPhysical.get_aperture
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_aperture, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_aperture, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShutterSpeed(shutter_speed float64) { //gd:CameraAttributesPhysical.set_shutter_speed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shutter_speed, 0|(gdextension.SizeFloat<<4), &struct{ shutter_speed float64 }{shutter_speed})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shutter_speed, 0|(gdextension.SizeFloat<<4), &struct{ shutter_speed float64 }{shutter_speed})
 }
 
 //go:nosplit
 func (self class) GetShutterSpeed() float64 { //gd:CameraAttributesPhysical.get_shutter_speed
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_shutter_speed, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_shutter_speed, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFocalLength(focal_length float64) { //gd:CameraAttributesPhysical.set_focal_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focal_length, 0|(gdextension.SizeFloat<<4), &struct{ focal_length float64 }{focal_length})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focal_length, 0|(gdextension.SizeFloat<<4), &struct{ focal_length float64 }{focal_length})
 }
 
 //go:nosplit
 func (self class) GetFocalLength() float64 { //gd:CameraAttributesPhysical.get_focal_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_focal_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_focal_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFocusDistance(focus_distance float64) { //gd:CameraAttributesPhysical.set_focus_distance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_distance, 0|(gdextension.SizeFloat<<4), &struct{ focus_distance float64 }{focus_distance})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_focus_distance, 0|(gdextension.SizeFloat<<4), &struct{ focus_distance float64 }{focus_distance})
 }
 
 //go:nosplit
 func (self class) GetFocusDistance() float64 { //gd:CameraAttributesPhysical.get_focus_distance
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_focus_distance, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_focus_distance, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNear(near float64) { //gd:CameraAttributesPhysical.set_near
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_near, 0|(gdextension.SizeFloat<<4), &struct{ near float64 }{near})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_near, 0|(gdextension.SizeFloat<<4), &struct{ near float64 }{near})
 }
 
 //go:nosplit
 func (self class) GetNear() float64 { //gd:CameraAttributesPhysical.get_near
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_near, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_near, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFar(far float64) { //gd:CameraAttributesPhysical.set_far
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_far, 0|(gdextension.SizeFloat<<4), &struct{ far float64 }{far})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_far, 0|(gdextension.SizeFloat<<4), &struct{ far float64 }{far})
 }
 
 //go:nosplit
 func (self class) GetFar() float64 { //gd:CameraAttributesPhysical.get_far
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_far, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_far, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -326,31 +328,31 @@ Returns the vertical field of view that corresponds to the [FrustumFocalLength].
 */
 //go:nosplit
 func (self class) GetFov() float64 { //gd:CameraAttributesPhysical.get_fov
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fov, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_fov, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoExposureMaxExposureValue(exposure_value_max float64) { //gd:CameraAttributesPhysical.set_auto_exposure_max_exposure_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_max_exposure_value, 0|(gdextension.SizeFloat<<4), &struct{ exposure_value_max float64 }{exposure_value_max})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_max_exposure_value, 0|(gdextension.SizeFloat<<4), &struct{ exposure_value_max float64 }{exposure_value_max})
 }
 
 //go:nosplit
 func (self class) GetAutoExposureMaxExposureValue() float64 { //gd:CameraAttributesPhysical.get_auto_exposure_max_exposure_value
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_max_exposure_value, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_max_exposure_value, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoExposureMinExposureValue(exposure_value_min float64) { //gd:CameraAttributesPhysical.set_auto_exposure_min_exposure_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_min_exposure_value, 0|(gdextension.SizeFloat<<4), &struct{ exposure_value_min float64 }{exposure_value_min})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_exposure_min_exposure_value, 0|(gdextension.SizeFloat<<4), &struct{ exposure_value_min float64 }{exposure_value_min})
 }
 
 //go:nosplit
 func (self class) GetAutoExposureMinExposureValue() float64 { //gd:CameraAttributesPhysical.get_auto_exposure_min_exposure_value
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_min_exposure_value, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_exposure_min_exposure_value, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

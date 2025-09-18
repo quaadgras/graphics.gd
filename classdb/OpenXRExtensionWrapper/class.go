@@ -13,6 +13,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -45,6 +46,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -87,7 +89,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -220,7 +222,7 @@ type Interface interface {
 	//
 	// [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 	// [OpenXRCompositionLayer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer
-	GetViewportCompositionLayerExtensionProperties() [][]Object.PropertyInfo
+	GetViewportCompositionLayerExtensionProperties() [][]struct{}
 	// Gets a data structure containing the default values for the properties returned by [GetViewportCompositionLayerExtensionProperties].
 	//
 	// [GetViewportCompositionLayerExtensionProperties]: https://pkg.go.dev/graphics.gd/classdb/OpenXRExtensionWrapper#Interface
@@ -304,9 +306,7 @@ func (self implementation) OnEventPolled(event gdextension.Pointer) (_ bool) { r
 func (self implementation) SetViewportCompositionLayerAndGetNextPointer(layer gdextension.Pointer, property_values Object.PropertyInfo, next_pointer gdextension.Pointer) (_ int) {
 	return
 }
-func (self implementation) GetViewportCompositionLayerExtensionProperties() (_ [][]Object.PropertyInfo) {
-	return
-}
+func (self implementation) GetViewportCompositionLayerExtensionProperties() (_ [][]struct{}) { return }
 func (self implementation) GetViewportCompositionLayerExtensionPropertyDefaults() (_ map[string]interface{}) {
 	return
 }
@@ -783,7 +783,7 @@ Gets an array of data structures that represent properties, just like [Object.Ge
 [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 [OpenXRCompositionLayer]: https://pkg.go.dev/graphics.gd/classdb/OpenXRCompositionLayer
 */
-func (Instance) _get_viewport_composition_layer_extension_properties(impl func(ptr gdclass.Receiver) [][]Object.PropertyInfo) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_viewport_composition_layer_extension_properties(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -1437,7 +1437,7 @@ Returns the created [OpenXRAPIExtension], which can be used to access the OpenXR
 */
 //go:nosplit
 func (self class) GetOpenxrApi() [1]gdclass.OpenXRAPIExtension { //gd:OpenXRExtensionWrapper.get_openxr_api
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_openxr_api, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_openxr_api, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.OpenXRAPIExtension{gd.PointerWithOwnershipTransferredToGo[gdclass.OpenXRAPIExtension](r_ret)}
 	return ret
 }
@@ -1447,7 +1447,7 @@ Registers the extension. This should happen at core module initialization level.
 */
 //go:nosplit
 func (self class) RegisterExtensionWrapper() { //gd:OpenXRExtensionWrapper.register_extension_wrapper
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_extension_wrapper, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.register_extension_wrapper, 0, &struct{}{})
 }
 func (self class) AsOpenXRExtensionWrapper() Advanced {
 	return Advanced{pointers.AsA[gdclass.OpenXRExtensionWrapper](self[0])}

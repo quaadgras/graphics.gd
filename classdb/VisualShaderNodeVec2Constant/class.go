@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +49,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -90,7 +92,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -156,12 +158,12 @@ func (self Instance) SetConstant(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetConstant(constant Vector2.XY) { //gd:VisualShaderNodeVec2Constant.set_constant
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeVector2<<4), &struct{ constant Vector2.XY }{constant})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant, 0|(gdextension.SizeVector2<<4), &struct{ constant Vector2.XY }{constant})
 }
 
 //go:nosplit
 func (self class) GetConstant() Vector2.XY { //gd:VisualShaderNodeVec2Constant.get_constant
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_constant, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

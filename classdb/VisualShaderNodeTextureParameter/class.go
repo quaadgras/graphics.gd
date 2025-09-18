@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -45,6 +46,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -95,7 +97,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -193,60 +195,60 @@ func (self Instance) SetTextureSource(value TextureSource) {
 
 //go:nosplit
 func (self class) SetTextureType(atype TextureType) { //gd:VisualShaderNodeTextureParameter.set_texture_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_type, 0|(gdextension.SizeInt<<4), &struct{ atype TextureType }{atype})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_type, 0|(gdextension.SizeInt<<4), &struct{ atype TextureType }{atype})
 }
 
 //go:nosplit
 func (self class) GetTextureType() TextureType { //gd:VisualShaderNodeTextureParameter.get_texture_type
-	var r_ret = gdextension.Call[TextureType](gd.ObjectChecked(self.AsObject()), methods.get_texture_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TextureType](gd.ObjectChecked(self.AsObject()), methods.get_texture_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColorDefault(color ColorDefault) { //gd:VisualShaderNodeTextureParameter.set_color_default
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_default, 0|(gdextension.SizeInt<<4), &struct{ color ColorDefault }{color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color_default, 0|(gdextension.SizeInt<<4), &struct{ color ColorDefault }{color})
 }
 
 //go:nosplit
 func (self class) GetColorDefault() ColorDefault { //gd:VisualShaderNodeTextureParameter.get_color_default
-	var r_ret = gdextension.Call[ColorDefault](gd.ObjectChecked(self.AsObject()), methods.get_color_default, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[ColorDefault](gd.ObjectChecked(self.AsObject()), methods.get_color_default, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureFilter(filter TextureFilter) { //gd:VisualShaderNodeTextureParameter.set_texture_filter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_filter, 0|(gdextension.SizeInt<<4), &struct{ filter TextureFilter }{filter})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_filter, 0|(gdextension.SizeInt<<4), &struct{ filter TextureFilter }{filter})
 }
 
 //go:nosplit
 func (self class) GetTextureFilter() TextureFilter { //gd:VisualShaderNodeTextureParameter.get_texture_filter
-	var r_ret = gdextension.Call[TextureFilter](gd.ObjectChecked(self.AsObject()), methods.get_texture_filter, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TextureFilter](gd.ObjectChecked(self.AsObject()), methods.get_texture_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureRepeat(repeat TextureRepeat) { //gd:VisualShaderNodeTextureParameter.set_texture_repeat
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_repeat, 0|(gdextension.SizeInt<<4), &struct{ repeat TextureRepeat }{repeat})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_repeat, 0|(gdextension.SizeInt<<4), &struct{ repeat TextureRepeat }{repeat})
 }
 
 //go:nosplit
 func (self class) GetTextureRepeat() TextureRepeat { //gd:VisualShaderNodeTextureParameter.get_texture_repeat
-	var r_ret = gdextension.Call[TextureRepeat](gd.ObjectChecked(self.AsObject()), methods.get_texture_repeat, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TextureRepeat](gd.ObjectChecked(self.AsObject()), methods.get_texture_repeat, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureSource(source TextureSource) { //gd:VisualShaderNodeTextureParameter.set_texture_source
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_source, 0|(gdextension.SizeInt<<4), &struct{ source TextureSource }{source})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_source, 0|(gdextension.SizeInt<<4), &struct{ source TextureSource }{source})
 }
 
 //go:nosplit
 func (self class) GetTextureSource() TextureSource { //gd:VisualShaderNodeTextureParameter.get_texture_source
-	var r_ret = gdextension.Call[TextureSource](gd.ObjectChecked(self.AsObject()), methods.get_texture_source, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TextureSource](gd.ObjectChecked(self.AsObject()), methods.get_texture_source, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -19,6 +19,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +55,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -117,7 +119,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -299,19 +301,19 @@ Returns the [Resource.ID] of this obstacle on the [NavigationServer3D].
 */
 //go:nosplit
 func (self class) GetRid() RID.Any { //gd:NavigationObstacle3D.get_rid
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_rid, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAvoidanceEnabled(enabled bool) { //gd:NavigationObstacle3D.set_avoidance_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_avoidance_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_avoidance_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetAvoidanceEnabled() bool { //gd:NavigationObstacle3D.get_avoidance_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -323,7 +325,7 @@ Sets the [Resource.ID] of the navigation map this NavigationObstacle node should
 */
 //go:nosplit
 func (self class) SetNavigationMap(navigation_map RID.Any) { //gd:NavigationObstacle3D.set_navigation_map
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_map, 0|(gdextension.SizeRID<<4), &struct{ navigation_map RID.Any }{navigation_map})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_navigation_map, 0|(gdextension.SizeRID<<4), &struct{ navigation_map RID.Any }{navigation_map})
 }
 
 /*
@@ -334,69 +336,69 @@ Returns the [Resource.ID] of the navigation map for this NavigationObstacle node
 */
 //go:nosplit
 func (self class) GetNavigationMap() RID.Any { //gd:NavigationObstacle3D.get_navigation_map
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID, &struct{}{})
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_navigation_map, gdextension.SizeRID, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRadius(radius float64) { //gd:NavigationObstacle3D.set_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 
 //go:nosplit
 func (self class) GetRadius() float64 { //gd:NavigationObstacle3D.get_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeight(height float64) { //gd:NavigationObstacle3D.set_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
 
 //go:nosplit
 func (self class) GetHeight() float64 { //gd:NavigationObstacle3D.get_height
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVelocity(velocity Vector3.XYZ) { //gd:NavigationObstacle3D.set_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeVector3<<4), &struct{ velocity Vector3.XYZ }{velocity})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_velocity, 0|(gdextension.SizeVector3<<4), &struct{ velocity Vector3.XYZ }{velocity})
 }
 
 //go:nosplit
 func (self class) GetVelocity() Vector3.XYZ { //gd:NavigationObstacle3D.get_velocity
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_velocity, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVertices(vertices Packed.Array[Vector3.XYZ]) { //gd:NavigationObstacle3D.set_vertices
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertices, 0|(gdextension.SizePackedArray<<4), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertices, 0|(gdextension.SizePackedArray<<4), &struct {
 		vertices gdextension.PackedArray[Vector3.XYZ]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](vertices))})
 }
 
 //go:nosplit
 func (self class) GetVertices() Packed.Array[Vector3.XYZ] { //gd:NavigationObstacle3D.get_vertices
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertices, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_vertices, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAvoidanceLayers(layers int64) { //gd:NavigationObstacle3D.set_avoidance_layers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_avoidance_layers, 0|(gdextension.SizeInt<<4), &struct{ layers int64 }{layers})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_avoidance_layers, 0|(gdextension.SizeInt<<4), &struct{ layers int64 }{layers})
 }
 
 //go:nosplit
 func (self class) GetAvoidanceLayers() int64 { //gd:NavigationObstacle3D.get_avoidance_layers
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_layers, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_layers, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -408,7 +410,7 @@ Based on 'value', enables or disables the specified layer in the [AvoidanceLayer
 */
 //go:nosplit
 func (self class) SetAvoidanceLayerValue(layer_number int64, value bool) { //gd:NavigationObstacle3D.set_avoidance_layer_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_avoidance_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_avoidance_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
@@ -421,43 +423,43 @@ Returns whether or not the specified layer of the [AvoidanceLayers] bitmask is e
 */
 //go:nosplit
 func (self class) GetAvoidanceLayerValue(layer_number int64) bool { //gd:NavigationObstacle3D.get_avoidance_layer_value
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_avoidance_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUse3dAvoidance(enabled bool) { //gd:NavigationObstacle3D.set_use_3d_avoidance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_3d_avoidance, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_3d_avoidance, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetUse3dAvoidance() bool { //gd:NavigationObstacle3D.get_use_3d_avoidance
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_3d_avoidance, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_3d_avoidance, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAffectNavigationMesh(enabled bool) { //gd:NavigationObstacle3D.set_affect_navigation_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_affect_navigation_mesh, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_affect_navigation_mesh, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetAffectNavigationMesh() bool { //gd:NavigationObstacle3D.get_affect_navigation_mesh
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_affect_navigation_mesh, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_affect_navigation_mesh, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCarveNavigationMesh(enabled bool) { //gd:NavigationObstacle3D.set_carve_navigation_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_carve_navigation_mesh, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_carve_navigation_mesh, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetCarveNavigationMesh() bool { //gd:NavigationObstacle3D.get_carve_navigation_mesh
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_carve_navigation_mesh, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_carve_navigation_mesh, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

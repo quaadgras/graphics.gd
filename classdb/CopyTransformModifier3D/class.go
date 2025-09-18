@@ -33,6 +33,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -69,6 +70,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -137,7 +139,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -430,7 +432,7 @@ Note: If the rotation is valid for only one axis, it respects the roll of the va
 */
 //go:nosplit
 func (self class) SetCopyFlags(index int64, copy_flags TransformFlag) { //gd:CopyTransformModifier3D.set_copy_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_copy_flags, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_copy_flags, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index      int64
 		copy_flags TransformFlag
 	}{index, copy_flags})
@@ -441,7 +443,7 @@ Returns the copy flags of the setting at 'index'.
 */
 //go:nosplit
 func (self class) GetCopyFlags(index int64) TransformFlag { //gd:CopyTransformModifier3D.get_copy_flags
-	var r_ret = gdextension.Call[TransformFlag](gd.ObjectChecked(self.AsObject()), methods.get_copy_flags, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[TransformFlag](gd.ObjectChecked(self.AsObject()), methods.get_copy_flags, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -451,7 +453,7 @@ Sets the flags to copy axes. If the flag is valid, the axis is copied.
 */
 //go:nosplit
 func (self class) SetAxisFlags(index int64, axis_flags AxisFlag) { //gd:CopyTransformModifier3D.set_axis_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_flags, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_flags, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index      int64
 		axis_flags AxisFlag
 	}{index, axis_flags})
@@ -462,7 +464,7 @@ Returns the axis flags of the setting at 'index'.
 */
 //go:nosplit
 func (self class) GetAxisFlags(index int64) AxisFlag { //gd:CopyTransformModifier3D.get_axis_flags
-	var r_ret = gdextension.Call[AxisFlag](gd.ObjectChecked(self.AsObject()), methods.get_axis_flags, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[AxisFlag](gd.ObjectChecked(self.AsObject()), methods.get_axis_flags, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -476,7 +478,7 @@ Note: An inverted rotation flips the elements of the quaternion. For example, a 
 */
 //go:nosplit
 func (self class) SetInvertFlags(index int64, axis_flags AxisFlag) { //gd:CopyTransformModifier3D.set_invert_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_invert_flags, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_invert_flags, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index      int64
 		axis_flags AxisFlag
 	}{index, axis_flags})
@@ -487,7 +489,7 @@ Returns the invert flags of the setting at 'index'.
 */
 //go:nosplit
 func (self class) GetInvertFlags(index int64) AxisFlag { //gd:CopyTransformModifier3D.get_invert_flags
-	var r_ret = gdextension.Call[AxisFlag](gd.ObjectChecked(self.AsObject()), methods.get_invert_flags, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[AxisFlag](gd.ObjectChecked(self.AsObject()), methods.get_invert_flags, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -497,7 +499,7 @@ If sets 'enabled' to true, the position will be copied.
 */
 //go:nosplit
 func (self class) SetCopyPosition(index int64, enabled bool) { //gd:CopyTransformModifier3D.set_copy_position
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_copy_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_copy_position, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		enabled bool
 	}{index, enabled})
@@ -510,7 +512,7 @@ Returns true if the copy flags has the flag for the position in the setting at '
 */
 //go:nosplit
 func (self class) IsPositionCopying(index int64) bool { //gd:CopyTransformModifier3D.is_position_copying
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_position_copying, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_position_copying, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -520,7 +522,7 @@ If sets 'enabled' to true, the rotation will be copied.
 */
 //go:nosplit
 func (self class) SetCopyRotation(index int64, enabled bool) { //gd:CopyTransformModifier3D.set_copy_rotation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_copy_rotation, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_copy_rotation, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		enabled bool
 	}{index, enabled})
@@ -533,7 +535,7 @@ Returns true if the copy flags has the flag for the rotation in the setting at '
 */
 //go:nosplit
 func (self class) IsRotationCopying(index int64) bool { //gd:CopyTransformModifier3D.is_rotation_copying
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rotation_copying, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rotation_copying, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -543,7 +545,7 @@ If sets 'enabled' to true, the scale will be copied.
 */
 //go:nosplit
 func (self class) SetCopyScale(index int64, enabled bool) { //gd:CopyTransformModifier3D.set_copy_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_copy_scale, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_copy_scale, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		enabled bool
 	}{index, enabled})
@@ -556,7 +558,7 @@ Returns true if the copy flags has the flag for the scale in the setting at 'ind
 */
 //go:nosplit
 func (self class) IsScaleCopying(index int64) bool { //gd:CopyTransformModifier3D.is_scale_copying
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scale_copying, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_scale_copying, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -566,7 +568,7 @@ If sets 'enabled' to true, the X-axis will be copied.
 */
 //go:nosplit
 func (self class) SetAxisXEnabled(index int64, enabled bool) { //gd:CopyTransformModifier3D.set_axis_x_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_x_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_x_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		enabled bool
 	}{index, enabled})
@@ -579,7 +581,7 @@ Returns true if the enable flags has the flag for the X-axis in the setting at '
 */
 //go:nosplit
 func (self class) IsAxisXEnabled(index int64) bool { //gd:CopyTransformModifier3D.is_axis_x_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_axis_x_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_axis_x_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -589,7 +591,7 @@ If sets 'enabled' to true, the Y-axis will be copied.
 */
 //go:nosplit
 func (self class) SetAxisYEnabled(index int64, enabled bool) { //gd:CopyTransformModifier3D.set_axis_y_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_y_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_y_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		enabled bool
 	}{index, enabled})
@@ -602,7 +604,7 @@ Returns true if the enable flags has the flag for the Y-axis in the setting at '
 */
 //go:nosplit
 func (self class) IsAxisYEnabled(index int64) bool { //gd:CopyTransformModifier3D.is_axis_y_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_axis_y_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_axis_y_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -612,7 +614,7 @@ If sets 'enabled' to true, the Z-axis will be copied.
 */
 //go:nosplit
 func (self class) SetAxisZEnabled(index int64, enabled bool) { //gd:CopyTransformModifier3D.set_axis_z_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_z_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_z_enabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		enabled bool
 	}{index, enabled})
@@ -625,7 +627,7 @@ Returns true if the enable flags has the flag for the Z-axis in the setting at '
 */
 //go:nosplit
 func (self class) IsAxisZEnabled(index int64) bool { //gd:CopyTransformModifier3D.is_axis_z_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_axis_z_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_axis_z_enabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -635,7 +637,7 @@ If sets 'enabled' to true, the X-axis will be inverted.
 */
 //go:nosplit
 func (self class) SetAxisXInverted(index int64, enabled bool) { //gd:CopyTransformModifier3D.set_axis_x_inverted
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_x_inverted, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_x_inverted, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		enabled bool
 	}{index, enabled})
@@ -648,7 +650,7 @@ Returns true if the invert flags has the flag for the X-axis in the setting at '
 */
 //go:nosplit
 func (self class) IsAxisXInverted(index int64) bool { //gd:CopyTransformModifier3D.is_axis_x_inverted
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_axis_x_inverted, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_axis_x_inverted, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -658,7 +660,7 @@ If sets 'enabled' to true, the Y-axis will be inverted.
 */
 //go:nosplit
 func (self class) SetAxisYInverted(index int64, enabled bool) { //gd:CopyTransformModifier3D.set_axis_y_inverted
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_y_inverted, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_y_inverted, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		enabled bool
 	}{index, enabled})
@@ -671,7 +673,7 @@ Returns true if the invert flags has the flag for the Y-axis in the setting at '
 */
 //go:nosplit
 func (self class) IsAxisYInverted(index int64) bool { //gd:CopyTransformModifier3D.is_axis_y_inverted
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_axis_y_inverted, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_axis_y_inverted, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -681,7 +683,7 @@ If sets 'enabled' to true, the Z-axis will be inverted.
 */
 //go:nosplit
 func (self class) SetAxisZInverted(index int64, enabled bool) { //gd:CopyTransformModifier3D.set_axis_z_inverted
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_z_inverted, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_z_inverted, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		enabled bool
 	}{index, enabled})
@@ -694,7 +696,7 @@ Returns true if the invert flags has the flag for the Z-axis in the setting at '
 */
 //go:nosplit
 func (self class) IsAxisZInverted(index int64) bool { //gd:CopyTransformModifier3D.is_axis_z_inverted
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_axis_z_inverted, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_axis_z_inverted, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -708,7 +710,7 @@ If sets 'enabled' to false, the extracted transform is absolute.
 */
 //go:nosplit
 func (self class) SetRelative(index int64, enabled bool) { //gd:CopyTransformModifier3D.set_relative
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_relative, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_relative, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		enabled bool
 	}{index, enabled})
@@ -719,7 +721,7 @@ Returns true if the relative option is enabled in the setting at 'index'.
 */
 //go:nosplit
 func (self class) IsRelative(index int64) bool { //gd:CopyTransformModifier3D.is_relative
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_relative, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_relative, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -736,7 +738,7 @@ If sets 'enabled' to false, the pose of the current apply bone is replaced with 
 */
 //go:nosplit
 func (self class) SetAdditive(index int64, enabled bool) { //gd:CopyTransformModifier3D.set_additive
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_additive, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_additive, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		enabled bool
 	}{index, enabled})
@@ -747,7 +749,7 @@ Returns true if the additive option is enabled in the setting at 'index'.
 */
 //go:nosplit
 func (self class) IsAdditive(index int64) bool { //gd:CopyTransformModifier3D.is_additive
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_additive, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_additive, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }

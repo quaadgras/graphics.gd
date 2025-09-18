@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -44,6 +45,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -94,7 +96,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -192,60 +194,60 @@ func (self Instance) SetDepth(value Float.X) {
 
 //go:nosplit
 func (self class) SetRangeMinHz(hz float64) { //gd:AudioEffectPhaser.set_range_min_hz
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_range_min_hz, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_range_min_hz, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
 }
 
 //go:nosplit
 func (self class) GetRangeMinHz() float64 { //gd:AudioEffectPhaser.get_range_min_hz
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_range_min_hz, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_range_min_hz, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRangeMaxHz(hz float64) { //gd:AudioEffectPhaser.set_range_max_hz
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_range_max_hz, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_range_max_hz, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
 }
 
 //go:nosplit
 func (self class) GetRangeMaxHz() float64 { //gd:AudioEffectPhaser.get_range_max_hz
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_range_max_hz, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_range_max_hz, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRateHz(hz float64) { //gd:AudioEffectPhaser.set_rate_hz
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rate_hz, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rate_hz, 0|(gdextension.SizeFloat<<4), &struct{ hz float64 }{hz})
 }
 
 //go:nosplit
 func (self class) GetRateHz() float64 { //gd:AudioEffectPhaser.get_rate_hz
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rate_hz, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_rate_hz, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFeedback(fbk float64) { //gd:AudioEffectPhaser.set_feedback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_feedback, 0|(gdextension.SizeFloat<<4), &struct{ fbk float64 }{fbk})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_feedback, 0|(gdextension.SizeFloat<<4), &struct{ fbk float64 }{fbk})
 }
 
 //go:nosplit
 func (self class) GetFeedback() float64 { //gd:AudioEffectPhaser.get_feedback
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_feedback, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_feedback, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDepth(depth float64) { //gd:AudioEffectPhaser.set_depth
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth, 0|(gdextension.SizeFloat<<4), &struct{ depth float64 }{depth})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_depth, 0|(gdextension.SizeFloat<<4), &struct{ depth float64 }{depth})
 }
 
 //go:nosplit
 func (self class) GetDepth() float64 { //gd:AudioEffectPhaser.get_depth
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_depth, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

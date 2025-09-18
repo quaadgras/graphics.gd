@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -45,6 +46,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -95,7 +97,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -209,52 +211,52 @@ func (self Instance) SetInstanceMaterials(value []Material.Instance) {
 
 //go:nosplit
 func (self class) GetOriginalName() String.Readable { //gd:GLTFMesh.get_original_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_original_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOriginalName(original_name String.Readable) { //gd:GLTFMesh.set_original_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_original_name, 0|(gdextension.SizeString<<4), &struct{ original_name gdextension.String }{pointers.Get(gd.InternalString(original_name))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_original_name, 0|(gdextension.SizeString<<4), &struct{ original_name gdextension.String }{pointers.Get(gd.InternalString(original_name))})
 }
 
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.ImporterMesh { //gd:GLTFMesh.get_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ImporterMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ImporterMesh](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.ImporterMesh) { //gd:GLTFMesh.set_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetBlendWeights() Packed.Array[float32] { //gd:GLTFMesh.get_blend_weights
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_blend_weights, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_blend_weights, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBlendWeights(blend_weights Packed.Array[float32]) { //gd:GLTFMesh.set_blend_weights
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_weights, 0|(gdextension.SizePackedArray<<4), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_weights, 0|(gdextension.SizePackedArray<<4), &struct {
 		blend_weights gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](blend_weights))})
 }
 
 //go:nosplit
 func (self class) GetInstanceMaterials() Array.Contains[[1]gdclass.Material] { //gd:GLTFMesh.get_instance_materials
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_instance_materials, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_instance_materials, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[[1]gdclass.Material]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInstanceMaterials(instance_materials Array.Contains[[1]gdclass.Material]) { //gd:GLTFMesh.set_instance_materials
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_materials, 0|(gdextension.SizeArray<<4), &struct{ instance_materials gdextension.Array }{pointers.Get(gd.InternalArray(instance_materials))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_materials, 0|(gdextension.SizeArray<<4), &struct{ instance_materials gdextension.Array }{pointers.Get(gd.InternalArray(instance_materials))})
 }
 
 /*
@@ -267,7 +269,7 @@ The argument should be the [GLTFDocumentExtension] name (does not have to match 
 */
 //go:nosplit
 func (self class) GetAdditionalData(extension_name String.Name) variant.Any { //gd:GLTFMesh.get_additional_data
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_additional_data, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ extension_name gdextension.StringName }{pointers.Get(gd.InternalStringName(extension_name))})
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_additional_data, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ extension_name gdextension.StringName }{pointers.Get(gd.InternalStringName(extension_name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -282,7 +284,7 @@ The first argument should be the [GLTFDocumentExtension] name (does not have to 
 */
 //go:nosplit
 func (self class) SetAdditionalData(extension_name String.Name, additional_data variant.Any) { //gd:GLTFMesh.set_additional_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_additional_data, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_additional_data, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeVariant<<8), &struct {
 		extension_name  gdextension.StringName
 		additional_data gdextension.Variant
 	}{pointers.Get(gd.InternalStringName(extension_name)), gdextension.Variant(pointers.Get(gd.InternalVariant(additional_data)))})

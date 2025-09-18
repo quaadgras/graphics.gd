@@ -30,6 +30,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -62,6 +63,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -109,7 +111,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -243,7 +245,7 @@ This must be called before everything else.
 */
 //go:nosplit
 func (self class) Open(path String.Readable, append ZipAppend) Error.Code { //gd:ZIPPacker.open
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.open, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		path   gdextension.String
 		append ZipAppend
 	}{pointers.Get(gd.InternalString(path)), append})
@@ -253,12 +255,12 @@ func (self class) Open(path String.Readable, append ZipAppend) Error.Code { //gd
 
 //go:nosplit
 func (self class) SetCompressionLevel(compression_level int64) { //gd:ZIPPacker.set_compression_level
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compression_level, 0|(gdextension.SizeInt<<4), &struct{ compression_level int64 }{compression_level})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_compression_level, 0|(gdextension.SizeInt<<4), &struct{ compression_level int64 }{compression_level})
 }
 
 //go:nosplit
 func (self class) GetCompressionLevel() int64 { //gd:ZIPPacker.get_compression_level
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_compression_level, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_compression_level, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -272,7 +274,7 @@ Must be called after [Open].
 */
 //go:nosplit
 func (self class) StartFile(path String.Readable) Error.Code { //gd:ZIPPacker.start_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_file, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.start_file, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -286,7 +288,7 @@ Needs to be called after [StartFile].
 */
 //go:nosplit
 func (self class) WriteFile(data Packed.Bytes) Error.Code { //gd:ZIPPacker.write_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.write_file, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.write_file, gdextension.SizeInt|(gdextension.SizePackedArray<<4), &struct{ data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](data.Array)))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -298,7 +300,7 @@ It will fail if there is no open file.
 */
 //go:nosplit
 func (self class) CloseFile() Error.Code { //gd:ZIPPacker.close_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close_file, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close_file, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -308,7 +310,7 @@ Closes the underlying resources used by this instance.
 */
 //go:nosplit
 func (self class) Close() Error.Code { //gd:ZIPPacker.close
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.close, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }

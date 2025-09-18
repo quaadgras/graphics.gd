@@ -7,6 +7,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -40,6 +41,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -94,7 +96,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -255,7 +257,7 @@ Reserved, but not used for now.
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:WebRTCDataChannel.poll
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -265,7 +267,7 @@ Closes this data channel, notifying the other peer.
 */
 //go:nosplit
 func (self class) Close() { //gd:WebRTCDataChannel.close
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close, 0, &struct{}{})
 }
 
 /*
@@ -275,19 +277,19 @@ Returns true if the last received packet was transferred as text. See [WriteMode
 */
 //go:nosplit
 func (self class) WasStringPacket() bool { //gd:WebRTCDataChannel.was_string_packet
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.was_string_packet, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.was_string_packet, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWriteMode(write_mode WriteMode) { //gd:WebRTCDataChannel.set_write_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_write_mode, 0|(gdextension.SizeInt<<4), &struct{ write_mode WriteMode }{write_mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_write_mode, 0|(gdextension.SizeInt<<4), &struct{ write_mode WriteMode }{write_mode})
 }
 
 //go:nosplit
 func (self class) GetWriteMode() WriteMode { //gd:WebRTCDataChannel.get_write_mode
-	var r_ret = gdextension.Call[WriteMode](gd.ObjectChecked(self.AsObject()), methods.get_write_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[WriteMode](gd.ObjectChecked(self.AsObject()), methods.get_write_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -297,7 +299,7 @@ Returns the current state of this channel.
 */
 //go:nosplit
 func (self class) GetReadyState() ChannelState { //gd:WebRTCDataChannel.get_ready_state
-	var r_ret = gdextension.Call[ChannelState](gd.ObjectChecked(self.AsObject()), methods.get_ready_state, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[ChannelState](gd.ObjectChecked(self.AsObject()), methods.get_ready_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -307,7 +309,7 @@ Returns the label assigned to this channel during creation.
 */
 //go:nosplit
 func (self class) GetLabel() String.Readable { //gd:WebRTCDataChannel.get_label
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_label, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -317,7 +319,7 @@ Returns true if this channel was created with ordering enabled (default).
 */
 //go:nosplit
 func (self class) IsOrdered() bool { //gd:WebRTCDataChannel.is_ordered
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ordered, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ordered, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -329,7 +331,7 @@ If the channel is not negotiated out-of-band the ID will only be available after
 */
 //go:nosplit
 func (self class) GetId() int64 { //gd:WebRTCDataChannel.get_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -341,7 +343,7 @@ Will be 65535 if not specified.
 */
 //go:nosplit
 func (self class) GetMaxPacketLifeTime() int64 { //gd:WebRTCDataChannel.get_max_packet_life_time
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_packet_life_time, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_packet_life_time, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -353,7 +355,7 @@ Will be 65535 if not specified.
 */
 //go:nosplit
 func (self class) GetMaxRetransmits() int64 { //gd:WebRTCDataChannel.get_max_retransmits
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_retransmits, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_retransmits, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -363,7 +365,7 @@ Returns the sub-protocol assigned to this channel during creation. An empty stri
 */
 //go:nosplit
 func (self class) GetProtocol() String.Readable { //gd:WebRTCDataChannel.get_protocol
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_protocol, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_protocol, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -373,7 +375,7 @@ Returns true if this channel was created with out-of-band configuration.
 */
 //go:nosplit
 func (self class) IsNegotiated() bool { //gd:WebRTCDataChannel.is_negotiated
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_negotiated, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_negotiated, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -383,7 +385,7 @@ Returns the number of bytes currently queued to be sent over this channel.
 */
 //go:nosplit
 func (self class) GetBufferedAmount() int64 { //gd:WebRTCDataChannel.get_buffered_amount
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_buffered_amount, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_buffered_amount, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -14,6 +14,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +50,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -137,7 +139,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -586,85 +588,85 @@ func (self Instance) SetTransform(value Transform2D.OriginXY) {
 
 //go:nosplit
 func (self class) GetTotalGravity() Vector2.XY { //gd:PhysicsDirectBodyState2D.get_total_gravity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_total_gravity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_total_gravity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetTotalLinearDamp() float64 { //gd:PhysicsDirectBodyState2D.get_total_linear_damp
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_total_linear_damp, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_total_linear_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetTotalAngularDamp() float64 { //gd:PhysicsDirectBodyState2D.get_total_angular_damp
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_total_angular_damp, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_total_angular_damp, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCenterOfMass() Vector2.XY { //gd:PhysicsDirectBodyState2D.get_center_of_mass
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCenterOfMassLocal() Vector2.XY { //gd:PhysicsDirectBodyState2D.get_center_of_mass_local
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass_local, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_center_of_mass_local, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetInverseMass() float64 { //gd:PhysicsDirectBodyState2D.get_inverse_mass
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inverse_mass, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inverse_mass, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetInverseInertia() float64 { //gd:PhysicsDirectBodyState2D.get_inverse_inertia
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inverse_inertia, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inverse_inertia, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLinearVelocity(velocity Vector2.XY) { //gd:PhysicsDirectBodyState2D.set_linear_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector2<<4), &struct{ velocity Vector2.XY }{velocity})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_linear_velocity, 0|(gdextension.SizeVector2<<4), &struct{ velocity Vector2.XY }{velocity})
 }
 
 //go:nosplit
 func (self class) GetLinearVelocity() Vector2.XY { //gd:PhysicsDirectBodyState2D.get_linear_velocity
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_linear_velocity, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAngularVelocity(velocity float64) { //gd:PhysicsDirectBodyState2D.set_angular_velocity
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeFloat<<4), &struct{ velocity float64 }{velocity})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_angular_velocity, 0|(gdextension.SizeFloat<<4), &struct{ velocity float64 }{velocity})
 }
 
 //go:nosplit
 func (self class) GetAngularVelocity() float64 { //gd:PhysicsDirectBodyState2D.get_angular_velocity
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_angular_velocity, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransform(transform Transform2D.OriginXY) { //gd:PhysicsDirectBodyState2D.set_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform, 0|(gdextension.SizeTransform2D<<4), &struct{ transform Transform2D.OriginXY }{transform})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform, 0|(gdextension.SizeTransform2D<<4), &struct{ transform Transform2D.OriginXY }{transform})
 }
 
 //go:nosplit
 func (self class) GetTransform() Transform2D.OriginXY { //gd:PhysicsDirectBodyState2D.get_transform
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform2D, &struct{}{})
+	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_transform, gdextension.SizeTransform2D, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -674,7 +676,7 @@ Returns the body's velocity at the given relative position, including both trans
 */
 //go:nosplit
 func (self class) GetVelocityAtLocalPosition(local_position Vector2.XY) Vector2.XY { //gd:PhysicsDirectBodyState2D.get_velocity_at_local_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_velocity_at_local_position, gdextension.SizeVector2|(gdextension.SizeVector2<<4), &struct{ local_position Vector2.XY }{local_position})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_velocity_at_local_position, gdextension.SizeVector2|(gdextension.SizeVector2<<4), &struct{ local_position Vector2.XY }{local_position})
 	var ret = r_ret
 	return ret
 }
@@ -690,7 +692,7 @@ This is equivalent to using [ApplyImpulse] at the body's center of mass.
 */
 //go:nosplit
 func (self class) ApplyCentralImpulse(impulse Vector2.XY) { //gd:PhysicsDirectBodyState2D.apply_central_impulse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_central_impulse, 0|(gdextension.SizeVector2<<4), &struct{ impulse Vector2.XY }{impulse})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_central_impulse, 0|(gdextension.SizeVector2<<4), &struct{ impulse Vector2.XY }{impulse})
 }
 
 /*
@@ -705,7 +707,7 @@ Note: [InverseInertia] is required for this to work. To have [InverseInertia], a
 */
 //go:nosplit
 func (self class) ApplyTorqueImpulse(impulse float64) { //gd:PhysicsDirectBodyState2D.apply_torque_impulse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_torque_impulse, 0|(gdextension.SizeFloat<<4), &struct{ impulse float64 }{impulse})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_torque_impulse, 0|(gdextension.SizeFloat<<4), &struct{ impulse float64 }{impulse})
 }
 
 /*
@@ -717,7 +719,7 @@ An impulse is time-independent! Applying an impulse every frame would result in 
 */
 //go:nosplit
 func (self class) ApplyImpulse(impulse Vector2.XY, position Vector2.XY) { //gd:PhysicsDirectBodyState2D.apply_impulse
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_impulse, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_impulse, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
 		impulse  Vector2.XY
 		position Vector2.XY
 	}{impulse, position})
@@ -732,7 +734,7 @@ This is equivalent to using [ApplyForce] at the body's center of mass.
 */
 //go:nosplit
 func (self class) ApplyCentralForce(force Vector2.XY) { //gd:PhysicsDirectBodyState2D.apply_central_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_central_force, 0|(gdextension.SizeVector2<<4), &struct{ force Vector2.XY }{force})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_central_force, 0|(gdextension.SizeVector2<<4), &struct{ force Vector2.XY }{force})
 }
 
 /*
@@ -742,7 +744,7 @@ Applies a positioned force to the body. A force is time dependent and meant to b
 */
 //go:nosplit
 func (self class) ApplyForce(force Vector2.XY, position Vector2.XY) { //gd:PhysicsDirectBodyState2D.apply_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_force, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_force, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
 		force    Vector2.XY
 		position Vector2.XY
 	}{force, position})
@@ -758,7 +760,7 @@ Note: [InverseInertia] is required for this to work. To have [InverseInertia], a
 */
 //go:nosplit
 func (self class) ApplyTorque(torque float64) { //gd:PhysicsDirectBodyState2D.apply_torque
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_torque, 0|(gdextension.SizeFloat<<4), &struct{ torque float64 }{torque})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_torque, 0|(gdextension.SizeFloat<<4), &struct{ torque float64 }{torque})
 }
 
 /*
@@ -770,7 +772,7 @@ This is equivalent to using [AddConstantForce] at the body's center of mass.
 */
 //go:nosplit
 func (self class) AddConstantCentralForce(force Vector2.XY) { //gd:PhysicsDirectBodyState2D.add_constant_central_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_central_force, 0|(gdextension.SizeVector2<<4), &struct{ force Vector2.XY }{force})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_central_force, 0|(gdextension.SizeVector2<<4), &struct{ force Vector2.XY }{force})
 }
 
 /*
@@ -780,7 +782,7 @@ Adds a constant positioned force to the body that keeps being applied over time 
 */
 //go:nosplit
 func (self class) AddConstantForce(force Vector2.XY, position Vector2.XY) { //gd:PhysicsDirectBodyState2D.add_constant_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_force, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_force, 0|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
 		force    Vector2.XY
 		position Vector2.XY
 	}{force, position})
@@ -791,7 +793,7 @@ Adds a constant rotational force without affecting position that keeps being app
 */
 //go:nosplit
 func (self class) AddConstantTorque(torque float64) { //gd:PhysicsDirectBodyState2D.add_constant_torque
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_torque, 0|(gdextension.SizeFloat<<4), &struct{ torque float64 }{torque})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_constant_torque, 0|(gdextension.SizeFloat<<4), &struct{ torque float64 }{torque})
 }
 
 /*
@@ -804,7 +806,7 @@ See [AddConstantForce] and [AddConstantCentralForce].
 */
 //go:nosplit
 func (self class) SetConstantForce(force Vector2.XY) { //gd:PhysicsDirectBodyState2D.set_constant_force
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_force, 0|(gdextension.SizeVector2<<4), &struct{ force Vector2.XY }{force})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_force, 0|(gdextension.SizeVector2<<4), &struct{ force Vector2.XY }{force})
 }
 
 /*
@@ -817,7 +819,7 @@ See [AddConstantForce] and [AddConstantCentralForce].
 */
 //go:nosplit
 func (self class) GetConstantForce() Vector2.XY { //gd:PhysicsDirectBodyState2D.get_constant_force
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_constant_force, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_constant_force, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -831,7 +833,7 @@ See [AddConstantTorque].
 */
 //go:nosplit
 func (self class) SetConstantTorque(torque float64) { //gd:PhysicsDirectBodyState2D.set_constant_torque
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_torque, 0|(gdextension.SizeFloat<<4), &struct{ torque float64 }{torque})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_constant_torque, 0|(gdextension.SizeFloat<<4), &struct{ torque float64 }{torque})
 }
 
 /*
@@ -843,43 +845,43 @@ See [AddConstantTorque].
 */
 //go:nosplit
 func (self class) GetConstantTorque() float64 { //gd:PhysicsDirectBodyState2D.get_constant_torque
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constant_torque, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_constant_torque, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSleepState(enabled bool) { //gd:PhysicsDirectBodyState2D.set_sleep_state
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sleep_state, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sleep_state, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsSleeping() bool { //gd:PhysicsDirectBodyState2D.is_sleeping
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sleeping, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_sleeping, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionLayer(layer int64) { //gd:PhysicsDirectBodyState2D.set_collision_layer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 
 //go:nosplit
 func (self class) GetCollisionLayer() int64 { //gd:PhysicsDirectBodyState2D.get_collision_layer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionMask(mask int64) { //gd:PhysicsDirectBodyState2D.set_collision_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 
 //go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:PhysicsDirectBodyState2D.get_collision_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -893,7 +895,7 @@ Note: By default, this returns 0 unless bodies are configured to monitor contact
 */
 //go:nosplit
 func (self class) GetContactCount() int64 { //gd:PhysicsDirectBodyState2D.get_contact_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -903,7 +905,7 @@ Returns the position of the contact point on the body in the global coordinate s
 */
 //go:nosplit
 func (self class) GetContactLocalPosition(contact_idx int64) Vector2.XY { //gd:PhysicsDirectBodyState2D.get_contact_local_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_contact_local_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_contact_local_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
@@ -913,7 +915,7 @@ Returns the local normal at the contact point.
 */
 //go:nosplit
 func (self class) GetContactLocalNormal(contact_idx int64) Vector2.XY { //gd:PhysicsDirectBodyState2D.get_contact_local_normal
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_contact_local_normal, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_contact_local_normal, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
@@ -923,7 +925,7 @@ Returns the local shape index of the collision.
 */
 //go:nosplit
 func (self class) GetContactLocalShape(contact_idx int64) int64 { //gd:PhysicsDirectBodyState2D.get_contact_local_shape
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_local_shape, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_local_shape, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
@@ -933,7 +935,7 @@ Returns the velocity vector at the body's contact point.
 */
 //go:nosplit
 func (self class) GetContactLocalVelocityAtPosition(contact_idx int64) Vector2.XY { //gd:PhysicsDirectBodyState2D.get_contact_local_velocity_at_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_contact_local_velocity_at_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_contact_local_velocity_at_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
@@ -945,7 +947,7 @@ Returns the collider's [Resource.ID].
 */
 //go:nosplit
 func (self class) GetContactCollider(contact_idx int64) RID.Any { //gd:PhysicsDirectBodyState2D.get_contact_collider
-	var r_ret = gdextension.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
+	var r_ret = noescape.Call[RID.Any](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider, gdextension.SizeRID|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
@@ -955,7 +957,7 @@ Returns the position of the contact point on the collider in the global coordina
 */
 //go:nosplit
 func (self class) GetContactColliderPosition(contact_idx int64) Vector2.XY { //gd:PhysicsDirectBodyState2D.get_contact_collider_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
@@ -965,7 +967,7 @@ Returns the collider's object id.
 */
 //go:nosplit
 func (self class) GetContactColliderId(contact_idx int64) int64 { //gd:PhysicsDirectBodyState2D.get_contact_collider_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
@@ -975,7 +977,7 @@ Returns the collider object. This depends on how it was created (will return a s
 */
 //go:nosplit
 func (self class) GetContactColliderObject(contact_idx int64) [1]gd.Object { //gd:PhysicsDirectBodyState2D.get_contact_collider_object
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_object, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_object, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = [1]gd.Object{gd.PointerMustAssertInstanceID[gd.Object](r_ret)}
 	return ret
 }
@@ -985,7 +987,7 @@ Returns the collider's shape index.
 */
 //go:nosplit
 func (self class) GetContactColliderShape(contact_idx int64) int64 { //gd:PhysicsDirectBodyState2D.get_contact_collider_shape
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_shape, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_shape, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
@@ -995,7 +997,7 @@ Returns the velocity vector at the collider's contact point.
 */
 //go:nosplit
 func (self class) GetContactColliderVelocityAtPosition(contact_idx int64) Vector2.XY { //gd:PhysicsDirectBodyState2D.get_contact_collider_velocity_at_position
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_velocity_at_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_contact_collider_velocity_at_position, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
@@ -1005,14 +1007,14 @@ Returns the impulse created by the contact.
 */
 //go:nosplit
 func (self class) GetContactImpulse(contact_idx int64) Vector2.XY { //gd:PhysicsDirectBodyState2D.get_contact_impulse
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_contact_impulse, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_contact_impulse, gdextension.SizeVector2|(gdextension.SizeInt<<4), &struct{ contact_idx int64 }{contact_idx})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetStep() float64 { //gd:PhysicsDirectBodyState2D.get_step
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_step, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_step, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1022,7 +1024,7 @@ Updates the body's linear and angular velocity by applying gravity and damping f
 */
 //go:nosplit
 func (self class) IntegrateForces() { //gd:PhysicsDirectBodyState2D.integrate_forces
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.integrate_forces, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.integrate_forces, 0, &struct{}{})
 }
 
 /*
@@ -1030,7 +1032,7 @@ Returns the current state of the space, useful for queries.
 */
 //go:nosplit
 func (self class) GetSpaceState() [1]gdclass.PhysicsDirectSpaceState2D { //gd:PhysicsDirectBodyState2D.get_space_state
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_space_state, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_space_state, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PhysicsDirectSpaceState2D{gd.PointerMustAssertInstanceID[gdclass.PhysicsDirectSpaceState2D](r_ret)}
 	return ret
 }

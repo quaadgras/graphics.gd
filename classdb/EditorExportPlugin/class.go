@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +54,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -114,7 +116,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -217,9 +219,9 @@ type Interface interface {
 	// [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 	// [OnObject.PropertyListChanged]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.OnObject.PropertyListChanged
 	GetExportOptions(platform EditorExportPlatform.Instance) [][]struct {
-		Option           Object.PropertyInfo "gd:\"option\""
-		DefaultValue     interface{}         "gd:\"default_value\""
-		UpdateVisibility bool                "gd:\"update_visibility\""
+		Option           interface{} "gd:\"option\" type:\"Object.PropertyInfo\""
+		DefaultValue     interface{} "gd:\"default_value\""
+		UpdateVisibility bool        "gd:\"update_visibility\""
 	}
 	// Return a data structure of override values for export options, that will be used instead of user-provided values. Overridden options will be hidden from the user interface.
 	//
@@ -355,9 +357,9 @@ func (self implementation) GetCustomizationConfigurationHash() (_ int)          
 func (self implementation) EndCustomizeScenes()                                               { return }
 func (self implementation) EndCustomizeResources()                                            { return }
 func (self implementation) GetExportOptions(platform EditorExportPlatform.Instance) (_ [][]struct {
-	Option           Object.PropertyInfo "gd:\"option\""
-	DefaultValue     interface{}         "gd:\"default_value\""
-	UpdateVisibility bool                "gd:\"update_visibility\""
+	Option           interface{} "gd:\"option\" type:\"Object.PropertyInfo\""
+	DefaultValue     interface{} "gd:\"default_value\""
+	UpdateVisibility bool        "gd:\"update_visibility\""
 }) { return }
 func (self implementation) GetExportOptionsOverrides(platform EditorExportPlatform.Instance) (_ map[string]interface{}) {
 	return
@@ -616,9 +618,9 @@ Each element in the return value is a data structure with the following keys:
 [OnObject.PropertyListChanged]: https://pkg.go.dev/graphics.gd/classdb/EditorExportPlugin#Instance.OnObject.PropertyListChanged
 */
 func (Instance) _get_export_options(impl func(ptr gdclass.Receiver, platform EditorExportPlatform.Instance) [][]struct {
-	Option           Object.PropertyInfo "gd:\"option\""
-	DefaultValue     interface{}         "gd:\"default_value\""
-	UpdateVisibility bool                "gd:\"update_visibility\""
+	Option           interface{} "gd:\"option\" type:\"Object.PropertyInfo\""
+	DefaultValue     interface{} "gd:\"default_value\""
+	UpdateVisibility bool        "gd:\"update_visibility\""
 }) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		var platform = [1]gdclass.EditorExportPlatform{pointers.New[gdclass.EditorExportPlatform]([3]uint64{uint64(gd.UnsafeGet[gdextension.Object](p_args, 0))})}
@@ -1760,7 +1762,7 @@ In case of a directory code-sign will error if you place non code object in dire
 */
 //go:nosplit
 func (self class) AddSharedObject(path String.Readable, tags Packed.Strings, target String.Readable) { //gd:EditorExportPlugin.add_shared_object
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_shared_object, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeString<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_shared_object, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeString<<12), &struct {
 		path   gdextension.String
 		tags   gdextension.PackedArray[gdextension.String]
 		target gdextension.String
@@ -1779,7 +1781,7 @@ When called inside [ExportFile] and 'remap' is true, the current file will not b
 */
 //go:nosplit
 func (self class) AddFile(path String.Readable, file Packed.Bytes, remap bool) { //gd:EditorExportPlugin.add_file
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_file, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_file, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeBool<<12), &struct {
 		path  gdextension.String
 		file  gdextension.PackedArray[byte]
 		remap bool
@@ -1791,7 +1793,7 @@ Adds a static library from the given 'path' to the Apple embedded platform proje
 */
 //go:nosplit
 func (self class) AddAppleEmbeddedPlatformProjectStaticLib(path String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_project_static_lib
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_project_static_lib, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_project_static_lib, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 
 /*
@@ -1799,7 +1801,7 @@ Adds a static library (*.a) or a dynamic library (*.dylib, *.framework) to the L
 */
 //go:nosplit
 func (self class) AddAppleEmbeddedPlatformFramework(path String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_framework
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 
 /*
@@ -1813,7 +1815,7 @@ Note: This method should not be used for System libraries as they are already pr
 */
 //go:nosplit
 func (self class) AddAppleEmbeddedPlatformEmbeddedFramework(path String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_embedded_framework
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_embedded_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_embedded_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 
 /*
@@ -1821,7 +1823,7 @@ Adds additional fields to the Apple embedded platform's project Info.plist file.
 */
 //go:nosplit
 func (self class) AddAppleEmbeddedPlatformPlistContent(plist_content String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_plist_content
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_plist_content, 0|(gdextension.SizeString<<4), &struct{ plist_content gdextension.String }{pointers.Get(gd.InternalString(plist_content))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_plist_content, 0|(gdextension.SizeString<<4), &struct{ plist_content gdextension.String }{pointers.Get(gd.InternalString(plist_content))})
 }
 
 /*
@@ -1829,7 +1831,7 @@ Adds linker flags for the Apple embedded platform export.
 */
 //go:nosplit
 func (self class) AddAppleEmbeddedPlatformLinkerFlags(flags String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_linker_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_linker_flags, 0|(gdextension.SizeString<<4), &struct{ flags gdextension.String }{pointers.Get(gd.InternalString(flags))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_linker_flags, 0|(gdextension.SizeString<<4), &struct{ flags gdextension.String }{pointers.Get(gd.InternalString(flags))})
 }
 
 /*
@@ -1837,7 +1839,7 @@ Adds an Apple embedded platform bundle file from the given 'path' to the exporte
 */
 //go:nosplit
 func (self class) AddAppleEmbeddedPlatformBundleFile(path String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_bundle_file
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_bundle_file, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_bundle_file, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 
 /*
@@ -1845,7 +1847,7 @@ Adds C++ code to the Apple embedded platform export. The final code is created f
 */
 //go:nosplit
 func (self class) AddAppleEmbeddedPlatformCppCode(code String.Readable) { //gd:EditorExportPlugin.add_apple_embedded_platform_cpp_code
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_cpp_code, 0|(gdextension.SizeString<<4), &struct{ code gdextension.String }{pointers.Get(gd.InternalString(code))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_apple_embedded_platform_cpp_code, 0|(gdextension.SizeString<<4), &struct{ code gdextension.String }{pointers.Get(gd.InternalString(code))})
 }
 
 /*
@@ -1853,7 +1855,7 @@ Adds a static library from the given 'path' to the iOS project.
 */
 //go:nosplit
 func (self class) AddIosProjectStaticLib(path String.Readable) { //gd:EditorExportPlugin.add_ios_project_static_lib
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_project_static_lib, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_project_static_lib, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 
 /*
@@ -1861,7 +1863,7 @@ Adds a static library (*.a) or a dynamic library (*.dylib, *.framework) to the L
 */
 //go:nosplit
 func (self class) AddIosFramework(path String.Readable) { //gd:EditorExportPlugin.add_ios_framework
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 
 /*
@@ -1875,7 +1877,7 @@ Note: This method should not be used for System libraries as they are already pr
 */
 //go:nosplit
 func (self class) AddIosEmbeddedFramework(path String.Readable) { //gd:EditorExportPlugin.add_ios_embedded_framework
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_embedded_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_embedded_framework, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 
 /*
@@ -1883,7 +1885,7 @@ Adds additional fields to the iOS project Info.plist file.
 */
 //go:nosplit
 func (self class) AddIosPlistContent(plist_content String.Readable) { //gd:EditorExportPlugin.add_ios_plist_content
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_plist_content, 0|(gdextension.SizeString<<4), &struct{ plist_content gdextension.String }{pointers.Get(gd.InternalString(plist_content))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_plist_content, 0|(gdextension.SizeString<<4), &struct{ plist_content gdextension.String }{pointers.Get(gd.InternalString(plist_content))})
 }
 
 /*
@@ -1891,7 +1893,7 @@ Adds linker flags for the iOS export.
 */
 //go:nosplit
 func (self class) AddIosLinkerFlags(flags String.Readable) { //gd:EditorExportPlugin.add_ios_linker_flags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_linker_flags, 0|(gdextension.SizeString<<4), &struct{ flags gdextension.String }{pointers.Get(gd.InternalString(flags))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_linker_flags, 0|(gdextension.SizeString<<4), &struct{ flags gdextension.String }{pointers.Get(gd.InternalString(flags))})
 }
 
 /*
@@ -1899,7 +1901,7 @@ Adds an iOS bundle file from the given 'path' to the exported project.
 */
 //go:nosplit
 func (self class) AddIosBundleFile(path String.Readable) { //gd:EditorExportPlugin.add_ios_bundle_file
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_bundle_file, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_bundle_file, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 
 /*
@@ -1907,7 +1909,7 @@ Adds C++ code to the iOS export. The final code is created from the code appende
 */
 //go:nosplit
 func (self class) AddIosCppCode(code String.Readable) { //gd:EditorExportPlugin.add_ios_cpp_code
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_cpp_code, 0|(gdextension.SizeString<<4), &struct{ code gdextension.String }{pointers.Get(gd.InternalString(code))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_ios_cpp_code, 0|(gdextension.SizeString<<4), &struct{ code gdextension.String }{pointers.Get(gd.InternalString(code))})
 }
 
 /*
@@ -1917,7 +1919,7 @@ Note: This is useful only for macOS exports.
 */
 //go:nosplit
 func (self class) AddMacosPluginFile(path String.Readable) { //gd:EditorExportPlugin.add_macos_plugin_file
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_macos_plugin_file, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_macos_plugin_file, 0|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 }
 
 /*
@@ -1927,7 +1929,7 @@ To be called inside [ExportFile]. Skips the current file, so it's not included i
 */
 //go:nosplit
 func (self class) Skip() { //gd:EditorExportPlugin.skip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.skip, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.skip, 0, &struct{}{})
 }
 
 /*
@@ -1937,7 +1939,7 @@ Returns the current value of an export option supplied by [GetExportOptions].
 */
 //go:nosplit
 func (self class) GetOption(name String.Name) variant.Any { //gd:EditorExportPlugin.get_option
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_option, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_option, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -1947,7 +1949,7 @@ Returns currently used export preset.
 */
 //go:nosplit
 func (self class) GetExportPreset() [1]gdclass.EditorExportPreset { //gd:EditorExportPlugin.get_export_preset
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_export_preset, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_export_preset, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorExportPreset{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorExportPreset](r_ret)}
 	return ret
 }
@@ -1957,7 +1959,7 @@ Returns currently used export platform.
 */
 //go:nosplit
 func (self class) GetExportPlatform() [1]gdclass.EditorExportPlatform { //gd:EditorExportPlugin.get_export_platform
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_export_platform, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_export_platform, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorExportPlatform{gd.PointerWithOwnershipTransferredToGo[gdclass.EditorExportPlatform](r_ret)}
 	return ret
 }

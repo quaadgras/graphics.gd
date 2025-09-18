@@ -14,6 +14,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +55,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -131,7 +133,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -354,72 +356,72 @@ func (self Instance) SetSwapchainStateBorderColor(value Color.RGBA) {
 
 //go:nosplit
 func (self class) SetLayerViewport(viewport [1]gdclass.SubViewport) { //gd:OpenXRCompositionLayer.set_layer_viewport
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_viewport, 0|(gdextension.SizeObject<<4), &struct{ viewport gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(viewport[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_viewport, 0|(gdextension.SizeObject<<4), &struct{ viewport gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(viewport[0].AsObject()[0]))})
 }
 
 //go:nosplit
 func (self class) GetLayerViewport() [1]gdclass.SubViewport { //gd:OpenXRCompositionLayer.get_layer_viewport
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_layer_viewport, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_layer_viewport, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SubViewport{gd.PointerMustAssertInstanceID[gdclass.SubViewport](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseAndroidSurface(enable bool) { //gd:OpenXRCompositionLayer.set_use_android_surface
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_android_surface, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_android_surface, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) GetUseAndroidSurface() bool { //gd:OpenXRCompositionLayer.get_use_android_surface
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_android_surface, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_use_android_surface, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAndroidSurfaceSize(size Vector2i.XY) { //gd:OpenXRCompositionLayer.set_android_surface_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_android_surface_size, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_android_surface_size, 0|(gdextension.SizeVector2i<<4), &struct{ size Vector2i.XY }{size})
 }
 
 //go:nosplit
 func (self class) GetAndroidSurfaceSize() Vector2i.XY { //gd:OpenXRCompositionLayer.get_android_surface_size
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_android_surface_size, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_android_surface_size, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnableHolePunch(enable bool) { //gd:OpenXRCompositionLayer.set_enable_hole_punch
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_hole_punch, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enable_hole_punch, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) GetEnableHolePunch() bool { //gd:OpenXRCompositionLayer.get_enable_hole_punch
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_hole_punch, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_enable_hole_punch, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSortOrder(order int64) { //gd:OpenXRCompositionLayer.set_sort_order
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sort_order, 0|(gdextension.SizeInt<<4), &struct{ order int64 }{order})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sort_order, 0|(gdextension.SizeInt<<4), &struct{ order int64 }{order})
 }
 
 //go:nosplit
 func (self class) GetSortOrder() int64 { //gd:OpenXRCompositionLayer.get_sort_order
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sort_order, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sort_order, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaBlend(enabled bool) { //gd:OpenXRCompositionLayer.set_alpha_blend
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_blend, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_blend, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetAlphaBlend() bool { //gd:OpenXRCompositionLayer.get_alpha_blend
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_alpha_blend, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_alpha_blend, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -434,7 +436,7 @@ Note: The surface can only be created during an active OpenXR session. So, if [U
 */
 //go:nosplit
 func (self class) GetAndroidSurface() [1]gdclass.JavaObject { //gd:OpenXRCompositionLayer.get_android_surface
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_android_surface, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_android_surface, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.JavaObject{gd.PointerWithOwnershipTransferredToGo[gdclass.JavaObject](r_ret)}
 	return ret
 }
@@ -446,139 +448,139 @@ Note: This will only return an accurate result after the OpenXR session has star
 */
 //go:nosplit
 func (self class) IsNativelySupported() bool { //gd:OpenXRCompositionLayer.is_natively_supported
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_natively_supported, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_natively_supported, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMinFilter(mode Filter) { //gd:OpenXRCompositionLayer.set_min_filter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_filter, 0|(gdextension.SizeInt<<4), &struct{ mode Filter }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_min_filter, 0|(gdextension.SizeInt<<4), &struct{ mode Filter }{mode})
 }
 
 //go:nosplit
 func (self class) GetMinFilter() Filter { //gd:OpenXRCompositionLayer.get_min_filter
-	var r_ret = gdextension.Call[Filter](gd.ObjectChecked(self.AsObject()), methods.get_min_filter, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Filter](gd.ObjectChecked(self.AsObject()), methods.get_min_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMagFilter(mode Filter) { //gd:OpenXRCompositionLayer.set_mag_filter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mag_filter, 0|(gdextension.SizeInt<<4), &struct{ mode Filter }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mag_filter, 0|(gdextension.SizeInt<<4), &struct{ mode Filter }{mode})
 }
 
 //go:nosplit
 func (self class) GetMagFilter() Filter { //gd:OpenXRCompositionLayer.get_mag_filter
-	var r_ret = gdextension.Call[Filter](gd.ObjectChecked(self.AsObject()), methods.get_mag_filter, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Filter](gd.ObjectChecked(self.AsObject()), methods.get_mag_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMipmapMode(mode MipmapMode) { //gd:OpenXRCompositionLayer.set_mipmap_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mipmap_mode, 0|(gdextension.SizeInt<<4), &struct{ mode MipmapMode }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mipmap_mode, 0|(gdextension.SizeInt<<4), &struct{ mode MipmapMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetMipmapMode() MipmapMode { //gd:OpenXRCompositionLayer.get_mipmap_mode
-	var r_ret = gdextension.Call[MipmapMode](gd.ObjectChecked(self.AsObject()), methods.get_mipmap_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[MipmapMode](gd.ObjectChecked(self.AsObject()), methods.get_mipmap_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHorizontalWrap(mode Wrap) { //gd:OpenXRCompositionLayer.set_horizontal_wrap
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_wrap, 0|(gdextension.SizeInt<<4), &struct{ mode Wrap }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_wrap, 0|(gdextension.SizeInt<<4), &struct{ mode Wrap }{mode})
 }
 
 //go:nosplit
 func (self class) GetHorizontalWrap() Wrap { //gd:OpenXRCompositionLayer.get_horizontal_wrap
-	var r_ret = gdextension.Call[Wrap](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_wrap, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Wrap](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_wrap, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVerticalWrap(mode Wrap) { //gd:OpenXRCompositionLayer.set_vertical_wrap
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical_wrap, 0|(gdextension.SizeInt<<4), &struct{ mode Wrap }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertical_wrap, 0|(gdextension.SizeInt<<4), &struct{ mode Wrap }{mode})
 }
 
 //go:nosplit
 func (self class) GetVerticalWrap() Wrap { //gd:OpenXRCompositionLayer.get_vertical_wrap
-	var r_ret = gdextension.Call[Wrap](gd.ObjectChecked(self.AsObject()), methods.get_vertical_wrap, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Wrap](gd.ObjectChecked(self.AsObject()), methods.get_vertical_wrap, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRedSwizzle(mode Swizzle) { //gd:OpenXRCompositionLayer.set_red_swizzle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_red_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_red_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
 }
 
 //go:nosplit
 func (self class) GetRedSwizzle() Swizzle { //gd:OpenXRCompositionLayer.get_red_swizzle
-	var r_ret = gdextension.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_red_swizzle, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_red_swizzle, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGreenSwizzle(mode Swizzle) { //gd:OpenXRCompositionLayer.set_green_swizzle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_green_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_green_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
 }
 
 //go:nosplit
 func (self class) GetGreenSwizzle() Swizzle { //gd:OpenXRCompositionLayer.get_green_swizzle
-	var r_ret = gdextension.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_green_swizzle, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_green_swizzle, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBlueSwizzle(mode Swizzle) { //gd:OpenXRCompositionLayer.set_blue_swizzle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blue_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blue_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
 }
 
 //go:nosplit
 func (self class) GetBlueSwizzle() Swizzle { //gd:OpenXRCompositionLayer.get_blue_swizzle
-	var r_ret = gdextension.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_blue_swizzle, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_blue_swizzle, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAlphaSwizzle(mode Swizzle) { //gd:OpenXRCompositionLayer.set_alpha_swizzle
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_alpha_swizzle, 0|(gdextension.SizeInt<<4), &struct{ mode Swizzle }{mode})
 }
 
 //go:nosplit
 func (self class) GetAlphaSwizzle() Swizzle { //gd:OpenXRCompositionLayer.get_alpha_swizzle
-	var r_ret = gdextension.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_alpha_swizzle, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Swizzle](gd.ObjectChecked(self.AsObject()), methods.get_alpha_swizzle, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxAnisotropy(value float64) { //gd:OpenXRCompositionLayer.set_max_anisotropy
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_anisotropy, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_anisotropy, 0|(gdextension.SizeFloat<<4), &struct{ value float64 }{value})
 }
 
 //go:nosplit
 func (self class) GetMaxAnisotropy() float64 { //gd:OpenXRCompositionLayer.get_max_anisotropy
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_anisotropy, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_max_anisotropy, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBorderColor(color Color.RGBA) { //gd:OpenXRCompositionLayer.set_border_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_border_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_border_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetBorderColor() Color.RGBA { //gd:OpenXRCompositionLayer.get_border_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_border_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_border_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -590,7 +592,7 @@ Returns Vector2(-1.0, -1.0) if the ray doesn't intersect.
 */
 //go:nosplit
 func (self class) IntersectsRay(origin Vector3.XYZ, direction Vector3.XYZ) Vector2.XY { //gd:OpenXRCompositionLayer.intersects_ray
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.intersects_ray, gdextension.SizeVector2|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.intersects_ray, gdextension.SizeVector2|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8), &struct {
 		origin    Vector3.XYZ
 		direction Vector3.XYZ
 	}{origin, direction})

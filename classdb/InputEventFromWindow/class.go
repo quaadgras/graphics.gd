@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -44,6 +45,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -86,7 +88,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -152,12 +154,12 @@ func (self Instance) SetWindowId(value int) {
 
 //go:nosplit
 func (self class) SetWindowId(id int64) { //gd:InputEventFromWindow.set_window_id
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_window_id, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_window_id, 0|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 }
 
 //go:nosplit
 func (self class) GetWindowId() int64 { //gd:InputEventFromWindow.get_window_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_window_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_window_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -46,6 +47,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -118,7 +120,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -315,180 +317,180 @@ func (self Instance) SetShadowItemCullMask(value int) {
 
 //go:nosplit
 func (self class) SetEnabled(enabled bool) { //gd:Light2D.set_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsEnabled() bool { //gd:Light2D.is_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditorOnly(editor_only bool) { //gd:Light2D.set_editor_only
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_only, 0|(gdextension.SizeBool<<4), &struct{ editor_only bool }{editor_only})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editor_only, 0|(gdextension.SizeBool<<4), &struct{ editor_only bool }{editor_only})
 }
 
 //go:nosplit
 func (self class) IsEditorOnly() bool { //gd:Light2D.is_editor_only
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editor_only, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editor_only, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetColor(color Color.RGBA) { //gd:Light2D.set_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_color, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetColor() Color.RGBA { //gd:Light2D.get_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnergy(energy float64) { //gd:Light2D.set_energy
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_energy, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_energy, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
 }
 
 //go:nosplit
 func (self class) GetEnergy() float64 { //gd:Light2D.get_energy
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetZRangeMin(z int64) { //gd:Light2D.set_z_range_min
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_z_range_min, 0|(gdextension.SizeInt<<4), &struct{ z int64 }{z})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_z_range_min, 0|(gdextension.SizeInt<<4), &struct{ z int64 }{z})
 }
 
 //go:nosplit
 func (self class) GetZRangeMin() int64 { //gd:Light2D.get_z_range_min
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_z_range_min, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_z_range_min, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetZRangeMax(z int64) { //gd:Light2D.set_z_range_max
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_z_range_max, 0|(gdextension.SizeInt<<4), &struct{ z int64 }{z})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_z_range_max, 0|(gdextension.SizeInt<<4), &struct{ z int64 }{z})
 }
 
 //go:nosplit
 func (self class) GetZRangeMax() int64 { //gd:Light2D.get_z_range_max
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_z_range_max, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_z_range_max, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLayerRangeMin(layer int64) { //gd:Light2D.set_layer_range_min
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_range_min, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_range_min, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 
 //go:nosplit
 func (self class) GetLayerRangeMin() int64 { //gd:Light2D.get_layer_range_min
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_range_min, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_range_min, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLayerRangeMax(layer int64) { //gd:Light2D.set_layer_range_max
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_range_max, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_layer_range_max, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 
 //go:nosplit
 func (self class) GetLayerRangeMax() int64 { //gd:Light2D.get_layer_range_max
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_range_max, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_layer_range_max, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetItemCullMask(item_cull_mask int64) { //gd:Light2D.set_item_cull_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ item_cull_mask int64 }{item_cull_mask})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ item_cull_mask int64 }{item_cull_mask})
 }
 
 //go:nosplit
 func (self class) GetItemCullMask() int64 { //gd:Light2D.get_item_cull_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_cull_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_cull_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetItemShadowCullMask(item_shadow_cull_mask int64) { //gd:Light2D.set_item_shadow_cull_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_shadow_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ item_shadow_cull_mask int64 }{item_shadow_cull_mask})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_shadow_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ item_shadow_cull_mask int64 }{item_shadow_cull_mask})
 }
 
 //go:nosplit
 func (self class) GetItemShadowCullMask() int64 { //gd:Light2D.get_item_shadow_cull_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_shadow_cull_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_shadow_cull_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShadowEnabled(enabled bool) { //gd:Light2D.set_shadow_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsShadowEnabled() bool { //gd:Light2D.is_shadow_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shadow_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shadow_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShadowSmooth(smooth float64) { //gd:Light2D.set_shadow_smooth
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_smooth, 0|(gdextension.SizeFloat<<4), &struct{ smooth float64 }{smooth})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_smooth, 0|(gdextension.SizeFloat<<4), &struct{ smooth float64 }{smooth})
 }
 
 //go:nosplit
 func (self class) GetShadowSmooth() float64 { //gd:Light2D.get_shadow_smooth
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_shadow_smooth, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_shadow_smooth, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShadowFilter(filter ShadowFilter) { //gd:Light2D.set_shadow_filter
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_filter, 0|(gdextension.SizeInt<<4), &struct{ filter ShadowFilter }{filter})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_filter, 0|(gdextension.SizeInt<<4), &struct{ filter ShadowFilter }{filter})
 }
 
 //go:nosplit
 func (self class) GetShadowFilter() ShadowFilter { //gd:Light2D.get_shadow_filter
-	var r_ret = gdextension.Call[ShadowFilter](gd.ObjectChecked(self.AsObject()), methods.get_shadow_filter, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[ShadowFilter](gd.ObjectChecked(self.AsObject()), methods.get_shadow_filter, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShadowColor(shadow_color Color.RGBA) { //gd:Light2D.set_shadow_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_color, 0|(gdextension.SizeColor<<4), &struct{ shadow_color Color.RGBA }{shadow_color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shadow_color, 0|(gdextension.SizeColor<<4), &struct{ shadow_color Color.RGBA }{shadow_color})
 }
 
 //go:nosplit
 func (self class) GetShadowColor() Color.RGBA { //gd:Light2D.get_shadow_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_shadow_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_shadow_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBlendMode(mode BlendMode) { //gd:Light2D.set_blend_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_mode, 0|(gdextension.SizeInt<<4), &struct{ mode BlendMode }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_mode, 0|(gdextension.SizeInt<<4), &struct{ mode BlendMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetBlendMode() BlendMode { //gd:Light2D.get_blend_mode
-	var r_ret = gdextension.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -501,7 +503,7 @@ Sets the light's height, which is used in 2D normal mapping. See [PointLight2D.H
 */
 //go:nosplit
 func (self class) SetHeight(height float64) { //gd:Light2D.set_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
 
 /*
@@ -512,7 +514,7 @@ Returns the light's height, which is used in 2D normal mapping. See [PointLight2
 */
 //go:nosplit
 func (self class) GetHeight() float64 { //gd:Light2D.get_height
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

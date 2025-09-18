@@ -11,6 +11,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -45,6 +46,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -100,7 +102,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -304,7 +306,7 @@ Calculates and returns all the vertex points of a convex shape defined by an arr
 */
 //go:nosplit
 func (self class) ComputeConvexMeshPoints(planes Array.Contains[Plane.NormalD]) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.compute_convex_mesh_points
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.compute_convex_mesh_points, gdextension.SizePackedArray|(gdextension.SizeArray<<4), &struct{ planes gdextension.Array }{pointers.Get(gd.InternalArray(planes))})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.compute_convex_mesh_points, gdextension.SizePackedArray|(gdextension.SizeArray<<4), &struct{ planes gdextension.Array }{pointers.Get(gd.InternalArray(planes))})
 	var ret = Packed.Array[Vector3.XYZ](Array.Through(gd.PackedProxy[gd.PackedVector3Array, Vector3.XYZ]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -316,7 +318,7 @@ Returns an array with 6 [Plane.NormalD]s that describe the sides of a box center
 */
 //go:nosplit
 func (self class) BuildBoxPlanes(extents Vector3.XYZ) Array.Contains[Plane.NormalD] { //gd:Geometry3D.build_box_planes
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.build_box_planes, gdextension.SizeArray|(gdextension.SizeVector3<<4), &struct{ extents Vector3.XYZ }{extents})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.build_box_planes, gdextension.SizeArray|(gdextension.SizeVector3<<4), &struct{ extents Vector3.XYZ }{extents})
 	var ret = Array.Through(gd.ArrayProxy[Plane.NormalD]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -328,7 +330,7 @@ Returns an array of [Plane.NormalD]s closely bounding a faceted cylinder centere
 */
 //go:nosplit
 func (self class) BuildCylinderPlanes(radius float64, height float64, sides int64, axis Vector3.Axis) Array.Contains[Plane.NormalD] { //gd:Geometry3D.build_cylinder_planes
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.build_cylinder_planes, gdextension.SizeArray|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.build_cylinder_planes, gdextension.SizeArray|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16), &struct {
 		radius float64
 		height float64
 		sides  int64
@@ -345,7 +347,7 @@ Returns an array of [Plane.NormalD]s closely bounding a faceted capsule centered
 */
 //go:nosplit
 func (self class) BuildCapsulePlanes(radius float64, height float64, sides int64, lats int64, axis Vector3.Axis) Array.Contains[Plane.NormalD] { //gd:Geometry3D.build_capsule_planes
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.build_capsule_planes, gdextension.SizeArray|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), &struct {
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.build_capsule_planes, gdextension.SizeArray|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20), &struct {
 		radius float64
 		height float64
 		sides  int64
@@ -363,7 +365,7 @@ Given the two 3D segments ('p1', 'p2') and ('q1', 'q2'), finds those two points 
 */
 //go:nosplit
 func (self class) GetClosestPointsBetweenSegments(p1 Vector3.XYZ, p2 Vector3.XYZ, q1 Vector3.XYZ, q2 Vector3.XYZ) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.get_closest_points_between_segments
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_closest_points_between_segments, gdextension.SizePackedArray|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_closest_points_between_segments, gdextension.SizePackedArray|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16), &struct {
 		p1 Vector3.XYZ
 		p2 Vector3.XYZ
 		q1 Vector3.XYZ
@@ -378,7 +380,7 @@ Returns the 3D point on the 3D segment ('s1', 's2') that is closest to 'point'. 
 */
 //go:nosplit
 func (self class) GetClosestPointToSegment(point Vector3.XYZ, s1 Vector3.XYZ, s2 Vector3.XYZ) Vector3.XYZ { //gd:Geometry3D.get_closest_point_to_segment
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_closest_point_to_segment, gdextension.SizeVector3|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), &struct {
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_closest_point_to_segment, gdextension.SizeVector3|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), &struct {
 		point Vector3.XYZ
 		s1    Vector3.XYZ
 		s2    Vector3.XYZ
@@ -392,7 +394,7 @@ Returns the 3D point on the 3D line defined by ('s1', 's2') that is closest to '
 */
 //go:nosplit
 func (self class) GetClosestPointToSegmentUncapped(point Vector3.XYZ, s1 Vector3.XYZ, s2 Vector3.XYZ) Vector3.XYZ { //gd:Geometry3D.get_closest_point_to_segment_uncapped
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_closest_point_to_segment_uncapped, gdextension.SizeVector3|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), &struct {
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_closest_point_to_segment_uncapped, gdextension.SizeVector3|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12), &struct {
 		point Vector3.XYZ
 		s1    Vector3.XYZ
 		s2    Vector3.XYZ
@@ -411,7 +413,7 @@ Returns a [Vector3.XYZ] containing weights based on how close a 3D position ('po
 */
 //go:nosplit
 func (self class) GetTriangleBarycentricCoords(point Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) Vector3.XYZ { //gd:Geometry3D.get_triangle_barycentric_coords
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_triangle_barycentric_coords, gdextension.SizeVector3|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16), &struct {
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_triangle_barycentric_coords, gdextension.SizeVector3|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16), &struct {
 		point Vector3.XYZ
 		a     Vector3.XYZ
 		b     Vector3.XYZ
@@ -428,7 +430,7 @@ Tests if the 3D ray starting at 'from' with the direction of 'dir' intersects th
 */
 //go:nosplit
 func (self class) RayIntersectsTriangle(from Vector3.XYZ, dir Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) variant.Any { //gd:Geometry3D.ray_intersects_triangle
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.ray_intersects_triangle, gdextension.SizeVariant|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16)|(gdextension.SizeVector3<<20), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.ray_intersects_triangle, gdextension.SizeVariant|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16)|(gdextension.SizeVector3<<20), &struct {
 		from Vector3.XYZ
 		dir  Vector3.XYZ
 		a    Vector3.XYZ
@@ -446,7 +448,7 @@ Tests if the segment ('from', 'to') intersects the triangle 'a', 'b', 'c'. If ye
 */
 //go:nosplit
 func (self class) SegmentIntersectsTriangle(from Vector3.XYZ, to Vector3.XYZ, a Vector3.XYZ, b Vector3.XYZ, c Vector3.XYZ) variant.Any { //gd:Geometry3D.segment_intersects_triangle
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.segment_intersects_triangle, gdextension.SizeVariant|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16)|(gdextension.SizeVector3<<20), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.segment_intersects_triangle, gdextension.SizeVariant|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeVector3<<16)|(gdextension.SizeVector3<<20), &struct {
 		from Vector3.XYZ
 		to   Vector3.XYZ
 		a    Vector3.XYZ
@@ -464,7 +466,7 @@ Checks if the segment ('from', 'to') intersects the sphere that is located at 's
 */
 //go:nosplit
 func (self class) SegmentIntersectsSphere(from Vector3.XYZ, to Vector3.XYZ, sphere_position Vector3.XYZ, sphere_radius float64) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.segment_intersects_sphere
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.segment_intersects_sphere, gdextension.SizePackedArray|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeFloat<<16), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.segment_intersects_sphere, gdextension.SizePackedArray|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizeFloat<<16), &struct {
 		from            Vector3.XYZ
 		to              Vector3.XYZ
 		sphere_position Vector3.XYZ
@@ -481,7 +483,7 @@ Checks if the segment ('from', 'to') intersects the cylinder with height 'height
 */
 //go:nosplit
 func (self class) SegmentIntersectsCylinder(from Vector3.XYZ, to Vector3.XYZ, height float64, radius float64) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.segment_intersects_cylinder
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.segment_intersects_cylinder, gdextension.SizePackedArray|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.segment_intersects_cylinder, gdextension.SizePackedArray|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
 		from   Vector3.XYZ
 		to     Vector3.XYZ
 		height float64
@@ -499,7 +501,7 @@ Given a convex hull defined though the [Plane.NormalD]s in the array 'planes', t
 */
 //go:nosplit
 func (self class) SegmentIntersectsConvex(from Vector3.XYZ, to Vector3.XYZ, planes Array.Contains[Plane.NormalD]) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.segment_intersects_convex
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.segment_intersects_convex, gdextension.SizePackedArray|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeArray<<12), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.segment_intersects_convex, gdextension.SizePackedArray|(gdextension.SizeVector3<<4)|(gdextension.SizeVector3<<8)|(gdextension.SizeArray<<12), &struct {
 		from   Vector3.XYZ
 		to     Vector3.XYZ
 		planes gdextension.Array
@@ -513,7 +515,7 @@ Clips the polygon defined by the points in 'points' against the 'plane' and retu
 */
 //go:nosplit
 func (self class) ClipPolygon(points Packed.Array[Vector3.XYZ], plane Plane.NormalD) Packed.Array[Vector3.XYZ] { //gd:Geometry3D.clip_polygon
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.clip_polygon, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4)|(gdextension.SizePlane<<8), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.clip_polygon, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4)|(gdextension.SizePlane<<8), &struct {
 		points gdextension.PackedArray[Vector3.XYZ]
 		plane  Plane.NormalD
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points)), plane})
@@ -526,7 +528,7 @@ Tetrahedralizes the volume specified by a discrete set of 'points' in 3D space, 
 */
 //go:nosplit
 func (self class) TetrahedralizeDelaunay(points Packed.Array[Vector3.XYZ]) Packed.Array[int32] { //gd:Geometry3D.tetrahedralize_delaunay
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.tetrahedralize_delaunay, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.tetrahedralize_delaunay, gdextension.SizePackedArray|(gdextension.SizePackedArray<<4), &struct {
 		points gdextension.PackedArray[Vector3.XYZ]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector3Array, Vector3.XYZ](points))})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))

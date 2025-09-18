@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +51,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -95,7 +97,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -169,24 +171,24 @@ func (self Instance) SetMargin(value Float.X) {
 
 //go:nosplit
 func (self class) SetCustomSolverBias(bias float64) { //gd:Shape3D.set_custom_solver_bias
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_solver_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_solver_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
 }
 
 //go:nosplit
 func (self class) GetCustomSolverBias() float64 { //gd:Shape3D.get_custom_solver_bias
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_solver_bias, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_solver_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMargin(margin float64) { //gd:Shape3D.set_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_margin, 0|(gdextension.SizeFloat<<4), &struct{ margin float64 }{margin})
 }
 
 //go:nosplit
 func (self class) GetMargin() float64 { //gd:Shape3D.get_margin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_margin, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -199,7 +201,7 @@ Returns the [ArrayMesh] used to draw the debug collision for this [Shape3D].
 */
 //go:nosplit
 func (self class) GetDebugMesh() [1]gdclass.ArrayMesh { //gd:Shape3D.get_debug_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_debug_mesh, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_debug_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
 	return ret
 }

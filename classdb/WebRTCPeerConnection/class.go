@@ -20,6 +20,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +54,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -105,7 +107,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -328,7 +330,7 @@ Sets the 'extension_class' as the default [WebRTCPeerConnectionExtension] return
 */
 //go:nosplit
 func (self class) SetDefaultExtension(extension_class String.Name) { //gd:WebRTCPeerConnection.set_default_extension
-	gdextension.CallStatic[struct{}](methods.set_default_extension, 0|(gdextension.SizeStringName<<4), &struct{ extension_class gdextension.StringName }{pointers.Get(gd.InternalStringName(extension_class))})
+	noescape.CallStatic[struct{}](methods.set_default_extension, 0|(gdextension.SizeStringName<<4), &struct{ extension_class gdextension.StringName }{pointers.Get(gd.InternalStringName(extension_class))})
 }
 
 /*
@@ -340,7 +342,7 @@ Valid 'configuration' options are:
 */
 //go:nosplit
 func (self class) Initialize(configuration Dictionary.Any) Error.Code { //gd:WebRTCPeerConnection.initialize
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.initialize, gdextension.SizeInt|(gdextension.SizeDictionary<<4), &struct{ configuration gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(configuration))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.initialize, gdextension.SizeInt|(gdextension.SizeDictionary<<4), &struct{ configuration gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(configuration))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -362,7 +364,7 @@ Note: You must keep a reference to channels created this way, or it will be clos
 */
 //go:nosplit
 func (self class) CreateDataChannel(label String.Readable, options Dictionary.Any) [1]gdclass.WebRTCDataChannel { //gd:WebRTCPeerConnection.create_data_channel
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_data_channel, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_data_channel, gdextension.SizeObject|(gdextension.SizeString<<4)|(gdextension.SizeDictionary<<8), &struct {
 		label   gdextension.String
 		options gdextension.Dictionary
 	}{pointers.Get(gd.InternalString(label)), pointers.Get(gd.InternalDictionary(options))})
@@ -380,7 +382,7 @@ If this functions returns [Ok], [OnSessionDescriptionCreated] will be called whe
 */
 //go:nosplit
 func (self class) CreateOffer() Error.Code { //gd:WebRTCPeerConnection.create_offer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_offer, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create_offer, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -395,7 +397,7 @@ After calling this function the peer will start emitting [OnIceCandidateCreated]
 */
 //go:nosplit
 func (self class) SetLocalDescription(atype String.Readable, sdp String.Readable) Error.Code { //gd:WebRTCPeerConnection.set_local_description
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.set_local_description, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.set_local_description, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		atype gdextension.String
 		sdp   gdextension.String
 	}{pointers.Get(gd.InternalString(atype)), pointers.Get(gd.InternalString(sdp))})
@@ -415,7 +417,7 @@ If 'type' is "answer" the peer will start emitting [OnIceCandidateCreated].
 */
 //go:nosplit
 func (self class) SetRemoteDescription(atype String.Readable, sdp String.Readable) Error.Code { //gd:WebRTCPeerConnection.set_remote_description
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.set_remote_description, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.set_remote_description, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeString<<8), &struct {
 		atype gdextension.String
 		sdp   gdextension.String
 	}{pointers.Get(gd.InternalString(atype)), pointers.Get(gd.InternalString(sdp))})
@@ -430,7 +432,7 @@ Add an ice candidate generated by a remote peer (and received over the signaling
 */
 //go:nosplit
 func (self class) AddIceCandidate(media String.Readable, index int64, name String.Readable) Error.Code { //gd:WebRTCPeerConnection.add_ice_candidate
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_ice_candidate, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.add_ice_candidate, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeString<<12), &struct {
 		media gdextension.String
 		index int64
 		name  gdextension.String
@@ -447,7 +449,7 @@ Call this method frequently (e.g. in [Node.Process] or [Node.PhysicsProcess]) to
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:WebRTCPeerConnection.poll
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -461,7 +463,7 @@ Note: You cannot reuse this object for a new connection unless you call [Initial
 */
 //go:nosplit
 func (self class) Close() { //gd:WebRTCPeerConnection.close
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close, 0, &struct{}{})
 }
 
 /*
@@ -469,7 +471,7 @@ Returns the connection state.
 */
 //go:nosplit
 func (self class) GetConnectionState() ConnectionState { //gd:WebRTCPeerConnection.get_connection_state
-	var r_ret = gdextension.Call[ConnectionState](gd.ObjectChecked(self.AsObject()), methods.get_connection_state, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[ConnectionState](gd.ObjectChecked(self.AsObject()), methods.get_connection_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -479,7 +481,7 @@ Returns the ICE [GatheringState] of the connection. This lets you detect, for ex
 */
 //go:nosplit
 func (self class) GetGatheringState() GatheringState { //gd:WebRTCPeerConnection.get_gathering_state
-	var r_ret = gdextension.Call[GatheringState](gd.ObjectChecked(self.AsObject()), methods.get_gathering_state, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[GatheringState](gd.ObjectChecked(self.AsObject()), methods.get_gathering_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -489,7 +491,7 @@ Returns the signaling state on the local end of the connection while connecting 
 */
 //go:nosplit
 func (self class) GetSignalingState() SignalingState { //gd:WebRTCPeerConnection.get_signaling_state
-	var r_ret = gdextension.Call[SignalingState](gd.ObjectChecked(self.AsObject()), methods.get_signaling_state, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[SignalingState](gd.ObjectChecked(self.AsObject()), methods.get_signaling_state, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

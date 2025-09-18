@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -45,6 +46,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -91,7 +93,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -173,36 +175,36 @@ func (self Instance) SetTextureType(value TextureType) {
 
 //go:nosplit
 func (self class) SetSource(value Source) { //gd:VisualShaderNodeCubemap.set_source
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source, 0|(gdextension.SizeInt<<4), &struct{ value Source }{value})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source, 0|(gdextension.SizeInt<<4), &struct{ value Source }{value})
 }
 
 //go:nosplit
 func (self class) GetSource() Source { //gd:VisualShaderNodeCubemap.get_source
-	var r_ret = gdextension.Call[Source](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Source](gd.ObjectChecked(self.AsObject()), methods.get_source, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCubeMap(value [1]gdclass.TextureLayered) { //gd:VisualShaderNodeCubemap.set_cube_map
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cube_map, 0|(gdextension.SizeObject<<4), &struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(value[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cube_map, 0|(gdextension.SizeObject<<4), &struct{ value gdextension.Object }{gdextension.Object(gd.ObjectChecked(value[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetCubeMap() [1]gdclass.TextureLayered { //gd:VisualShaderNodeCubemap.get_cube_map
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_cube_map, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_cube_map, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.TextureLayered{gd.PointerWithOwnershipTransferredToGo[gdclass.TextureLayered](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureType(value TextureType) { //gd:VisualShaderNodeCubemap.set_texture_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_type, 0|(gdextension.SizeInt<<4), &struct{ value TextureType }{value})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_type, 0|(gdextension.SizeInt<<4), &struct{ value TextureType }{value})
 }
 
 //go:nosplit
 func (self class) GetTextureType() TextureType { //gd:VisualShaderNodeCubemap.get_texture_type
-	var r_ret = gdextension.Call[TextureType](gd.ObjectChecked(self.AsObject()), methods.get_texture_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TextureType](gd.ObjectChecked(self.AsObject()), methods.get_texture_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

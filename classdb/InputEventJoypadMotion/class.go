@@ -13,6 +13,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +49,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -92,7 +94,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -166,24 +168,24 @@ func (self Instance) SetAxisValue(value Float.X) {
 
 //go:nosplit
 func (self class) SetAxis(axis Input.JoyAxis) { //gd:InputEventJoypadMotion.set_axis
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis, 0|(gdextension.SizeInt<<4), &struct{ axis Input.JoyAxis }{axis})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis, 0|(gdextension.SizeInt<<4), &struct{ axis Input.JoyAxis }{axis})
 }
 
 //go:nosplit
 func (self class) GetAxis() Input.JoyAxis { //gd:InputEventJoypadMotion.get_axis
-	var r_ret = gdextension.Call[Input.JoyAxis](gd.ObjectChecked(self.AsObject()), methods.get_axis, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Input.JoyAxis](gd.ObjectChecked(self.AsObject()), methods.get_axis, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAxisValue(axis_value float64) { //gd:InputEventJoypadMotion.set_axis_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_value, 0|(gdextension.SizeFloat<<4), &struct{ axis_value float64 }{axis_value})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_axis_value, 0|(gdextension.SizeFloat<<4), &struct{ axis_value float64 }{axis_value})
 }
 
 //go:nosplit
 func (self class) GetAxisValue() float64 { //gd:InputEventJoypadMotion.get_axis_value
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_axis_value, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_axis_value, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -11,6 +11,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -43,6 +44,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -89,7 +91,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -191,7 +193,7 @@ Internally, this uses the same encoding mechanism as the [@GlobalScope.VarToByte
 */
 //go:nosplit
 func (self class) VariantToBase64(v variant.Any, full_objects bool) String.Readable { //gd:Marshalls.variant_to_base64
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.variant_to_base64, gdextension.SizeString|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.variant_to_base64, gdextension.SizeString|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
 		v            gdextension.Variant
 		full_objects bool
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(v))), full_objects})
@@ -210,7 +212,7 @@ Warning: Deserialized objects can contain code which gets executed. Do not use t
 */
 //go:nosplit
 func (self class) Base64ToVariant(base64_str String.Readable, allow_objects bool) variant.Any { //gd:Marshalls.base64_to_variant
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.base64_to_variant, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.base64_to_variant, gdextension.SizeVariant|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		base64_str    gdextension.String
 		allow_objects bool
 	}{pointers.Get(gd.InternalString(base64_str)), allow_objects})
@@ -223,7 +225,7 @@ Returns a Base64-encoded string of a given []byte.
 */
 //go:nosplit
 func (self class) RawToBase64(array Packed.Bytes) String.Readable { //gd:Marshalls.raw_to_base64
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.raw_to_base64, gdextension.SizeString|(gdextension.SizePackedArray<<4), &struct{ array gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](array.Array)))})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.raw_to_base64, gdextension.SizeString|(gdextension.SizePackedArray<<4), &struct{ array gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](array.Array)))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -233,7 +235,7 @@ Returns a decoded []byte corresponding to the Base64-encoded string 'base64_str'
 */
 //go:nosplit
 func (self class) Base64ToRaw(base64_str String.Readable) Packed.Bytes { //gd:Marshalls.base64_to_raw
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.base64_to_raw, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ base64_str gdextension.String }{pointers.Get(gd.InternalString(base64_str))})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.base64_to_raw, gdextension.SizePackedArray|(gdextension.SizeString<<4), &struct{ base64_str gdextension.String }{pointers.Get(gd.InternalString(base64_str))})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -243,7 +245,7 @@ Returns a Base64-encoded string of the UTF-8 string 'utf8_str'.
 */
 //go:nosplit
 func (self class) Utf8ToBase64(utf8_str String.Readable) String.Readable { //gd:Marshalls.utf8_to_base64
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.utf8_to_base64, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ utf8_str gdextension.String }{pointers.Get(gd.InternalString(utf8_str))})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.utf8_to_base64, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ utf8_str gdextension.String }{pointers.Get(gd.InternalString(utf8_str))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -253,7 +255,7 @@ Returns a decoded string corresponding to the Base64-encoded string 'base64_str'
 */
 //go:nosplit
 func (self class) Base64ToUtf8(base64_str String.Readable) String.Readable { //gd:Marshalls.base64_to_utf8
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.base64_to_utf8, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ base64_str gdextension.String }{pointers.Get(gd.InternalString(base64_str))})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.base64_to_utf8, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ base64_str gdextension.String }{pointers.Get(gd.InternalString(base64_str))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

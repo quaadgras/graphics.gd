@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -45,6 +46,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -89,7 +91,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -163,24 +165,24 @@ func (self Instance) SetVaryingType(value VisualShader.VaryingType) {
 
 //go:nosplit
 func (self class) SetVaryingName(name String.Readable) { //gd:VisualShaderNodeVarying.set_varying_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_varying_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_varying_name, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 
 //go:nosplit
 func (self class) GetVaryingName() String.Readable { //gd:VisualShaderNodeVarying.get_varying_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_varying_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_varying_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVaryingType(atype VisualShader.VaryingType) { //gd:VisualShaderNodeVarying.set_varying_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_varying_type, 0|(gdextension.SizeInt<<4), &struct{ atype VisualShader.VaryingType }{atype})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_varying_type, 0|(gdextension.SizeInt<<4), &struct{ atype VisualShader.VaryingType }{atype})
 }
 
 //go:nosplit
 func (self class) GetVaryingType() VisualShader.VaryingType { //gd:VisualShaderNodeVarying.get_varying_type
-	var r_ret = gdextension.Call[VisualShader.VaryingType](gd.ObjectChecked(self.AsObject()), methods.get_varying_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[VisualShader.VaryingType](gd.ObjectChecked(self.AsObject()), methods.get_varying_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

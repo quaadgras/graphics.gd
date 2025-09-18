@@ -20,6 +20,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -56,6 +57,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -98,7 +100,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -180,7 +182,7 @@ Creates the [ImageTexture3D] with specified 'format', 'width', 'height', and 'de
 */
 //go:nosplit
 func (self class) Create(format Image.Format, width int64, height int64, depth int64, use_mipmaps bool, data Array.Contains[[1]gdclass.Image]) Error.Code { //gd:ImageTexture3D.create
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeArray<<24), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.create, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeArray<<24), &struct {
 		format      Image.Format
 		width       int64
 		height      int64
@@ -200,7 +202,7 @@ Replaces the texture's existing data with the layers specified in 'data'. The si
 */
 //go:nosplit
 func (self class) Update(data Array.Contains[[1]gdclass.Image]) { //gd:ImageTexture3D.update
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update, 0|(gdextension.SizeArray<<4), &struct{ data gdextension.Array }{pointers.Get(gd.InternalArray(data))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.update, 0|(gdextension.SizeArray<<4), &struct{ data gdextension.Array }{pointers.Get(gd.InternalArray(data))})
 }
 func (self class) AsImageTexture3D() Advanced {
 	return Advanced{pointers.AsA[gdclass.ImageTexture3D](self[0])}

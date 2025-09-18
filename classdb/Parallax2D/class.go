@@ -18,6 +18,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +55,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -114,7 +116,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -251,120 +253,120 @@ func (self Instance) SetScreenOffset(value Vector2.XY) {
 
 //go:nosplit
 func (self class) SetScrollScale(scale Vector2.XY) { //gd:Parallax2D.set_scroll_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_scale, 0|(gdextension.SizeVector2<<4), &struct{ scale Vector2.XY }{scale})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_scale, 0|(gdextension.SizeVector2<<4), &struct{ scale Vector2.XY }{scale})
 }
 
 //go:nosplit
 func (self class) GetScrollScale() Vector2.XY { //gd:Parallax2D.get_scroll_scale
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_scale, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_scale, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRepeatSize(repeat_size Vector2.XY) { //gd:Parallax2D.set_repeat_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_repeat_size, 0|(gdextension.SizeVector2<<4), &struct{ repeat_size Vector2.XY }{repeat_size})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_repeat_size, 0|(gdextension.SizeVector2<<4), &struct{ repeat_size Vector2.XY }{repeat_size})
 }
 
 //go:nosplit
 func (self class) GetRepeatSize() Vector2.XY { //gd:Parallax2D.get_repeat_size
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_repeat_size, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_repeat_size, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRepeatTimes(repeat_times int64) { //gd:Parallax2D.set_repeat_times
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_repeat_times, 0|(gdextension.SizeInt<<4), &struct{ repeat_times int64 }{repeat_times})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_repeat_times, 0|(gdextension.SizeInt<<4), &struct{ repeat_times int64 }{repeat_times})
 }
 
 //go:nosplit
 func (self class) GetRepeatTimes() int64 { //gd:Parallax2D.get_repeat_times
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_repeat_times, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_repeat_times, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoscroll(autoscroll Vector2.XY) { //gd:Parallax2D.set_autoscroll
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoscroll, 0|(gdextension.SizeVector2<<4), &struct{ autoscroll Vector2.XY }{autoscroll})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoscroll, 0|(gdextension.SizeVector2<<4), &struct{ autoscroll Vector2.XY }{autoscroll})
 }
 
 //go:nosplit
 func (self class) GetAutoscroll() Vector2.XY { //gd:Parallax2D.get_autoscroll
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_autoscroll, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_autoscroll, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScrollOffset(offset Vector2.XY) { //gd:Parallax2D.set_scroll_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_scroll_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 
 //go:nosplit
 func (self class) GetScrollOffset() Vector2.XY { //gd:Parallax2D.get_scroll_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_scroll_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetScreenOffset(offset Vector2.XY) { //gd:Parallax2D.set_screen_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_screen_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 
 //go:nosplit
 func (self class) GetScreenOffset() Vector2.XY { //gd:Parallax2D.get_screen_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_screen_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLimitBegin(offset Vector2.XY) { //gd:Parallax2D.set_limit_begin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_begin, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_begin, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 
 //go:nosplit
 func (self class) GetLimitBegin() Vector2.XY { //gd:Parallax2D.get_limit_begin
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_limit_begin, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_limit_begin, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLimitEnd(offset Vector2.XY) { //gd:Parallax2D.set_limit_end
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_end, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_limit_end, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 
 //go:nosplit
 func (self class) GetLimitEnd() Vector2.XY { //gd:Parallax2D.get_limit_end
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_limit_end, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_limit_end, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFollowViewport(follow bool) { //gd:Parallax2D.set_follow_viewport
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_follow_viewport, 0|(gdextension.SizeBool<<4), &struct{ follow bool }{follow})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_follow_viewport, 0|(gdextension.SizeBool<<4), &struct{ follow bool }{follow})
 }
 
 //go:nosplit
 func (self class) GetFollowViewport() bool { //gd:Parallax2D.get_follow_viewport
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_follow_viewport, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_follow_viewport, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetIgnoreCameraScroll(ignore bool) { //gd:Parallax2D.set_ignore_camera_scroll
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_camera_scroll, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ignore_camera_scroll, 0|(gdextension.SizeBool<<4), &struct{ ignore bool }{ignore})
 }
 
 //go:nosplit
 func (self class) IsIgnoreCameraScroll() bool { //gd:Parallax2D.is_ignore_camera_scroll
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignore_camera_scroll, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_ignore_camera_scroll, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

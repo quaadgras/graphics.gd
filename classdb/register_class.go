@@ -349,7 +349,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 		if !field.IsExported() || field.Anonymous || field.Name == "Object" {
 			return
 		}
-		if _, ok := field.Type.MethodByName("AsNode"); ok || field.Type.Kind() == reflect.Chan {
+		if _, ok := field.Type.MethodByName("AsNode"); ok {
 			return
 		}
 		name := String.ToSnakeCase(field.Name)
@@ -359,7 +359,7 @@ func registerClassInformation(className gd.StringName, classNameString string, i
 			}
 			name = tag
 		}
-		if reflect.PointerTo(field.Type).Implements(reflect.TypeFor[Signal.Pointer]()) {
+		if (field.Type.Kind() == reflect.Chan && field.Type.ChanDir() == reflect.SendDir) || reflect.PointerTo(field.Type).Implements(reflect.TypeFor[Signal.Pointer]()) {
 			var signal docgen.Signal
 			name, _, _ = strings.Cut(name, "(")
 			signal.Name = name

@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +52,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -95,7 +97,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -168,24 +170,24 @@ func (self Instance) SetDebugCustomColor(value Color.RGBA) {
 
 //go:nosplit
 func (self class) SetCurve(curve [1]gdclass.Curve3D) { //gd:Path3D.set_curve
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetCurve() [1]gdclass.Curve3D { //gd:Path3D.get_curve
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve3D{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve3D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDebugCustomColor(debug_custom_color Color.RGBA) { //gd:Path3D.set_debug_custom_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_custom_color, 0|(gdextension.SizeColor<<4), &struct{ debug_custom_color Color.RGBA }{debug_custom_color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_debug_custom_color, 0|(gdextension.SizeColor<<4), &struct{ debug_custom_color Color.RGBA }{debug_custom_color})
 }
 
 //go:nosplit
 func (self class) GetDebugCustomColor() Color.RGBA { //gd:Path3D.get_debug_custom_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_debug_custom_color, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_debug_custom_color, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }

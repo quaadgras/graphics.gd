@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +54,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -97,7 +99,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -170,24 +172,24 @@ func (self Instance) SetRect(value Rect2.PositionSize) {
 
 //go:nosplit
 func (self class) SetRect(rect Rect2.PositionSize) { //gd:BackBufferCopy.set_rect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rect, 0|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rect, 0|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
 }
 
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:BackBufferCopy.get_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCopyMode(copy_mode CopyMode) { //gd:BackBufferCopy.set_copy_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_copy_mode, 0|(gdextension.SizeInt<<4), &struct{ copy_mode CopyMode }{copy_mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_copy_mode, 0|(gdextension.SizeInt<<4), &struct{ copy_mode CopyMode }{copy_mode})
 }
 
 //go:nosplit
 func (self class) GetCopyMode() CopyMode { //gd:BackBufferCopy.get_copy_mode
-	var r_ret = gdextension.Call[CopyMode](gd.ObjectChecked(self.AsObject()), methods.get_copy_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[CopyMode](gd.ObjectChecked(self.AsObject()), methods.get_copy_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

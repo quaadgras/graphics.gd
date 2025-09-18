@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +48,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -95,7 +97,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -184,48 +186,48 @@ func (self Instance) SetInside(value bool) {
 
 //go:nosplit
 func (self class) SetRadius(radius float64) { //gd:SpringBoneCollisionCapsule3D.set_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 
 //go:nosplit
 func (self class) GetRadius() float64 { //gd:SpringBoneCollisionCapsule3D.get_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHeight(height float64) { //gd:SpringBoneCollisionCapsule3D.set_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_height, 0|(gdextension.SizeFloat<<4), &struct{ height float64 }{height})
 }
 
 //go:nosplit
 func (self class) GetHeight() float64 { //gd:SpringBoneCollisionCapsule3D.get_height
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMidHeight(mid_height float64) { //gd:SpringBoneCollisionCapsule3D.set_mid_height
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mid_height, 0|(gdextension.SizeFloat<<4), &struct{ mid_height float64 }{mid_height})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mid_height, 0|(gdextension.SizeFloat<<4), &struct{ mid_height float64 }{mid_height})
 }
 
 //go:nosplit
 func (self class) GetMidHeight() float64 { //gd:SpringBoneCollisionCapsule3D.get_mid_height
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mid_height, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_mid_height, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInside(enabled bool) { //gd:SpringBoneCollisionCapsule3D.set_inside
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inside, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inside, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsInside() bool { //gd:SpringBoneCollisionCapsule3D.is_inside
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_inside, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_inside, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

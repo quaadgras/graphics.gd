@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -43,6 +44,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -91,7 +93,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -181,48 +183,48 @@ func (self Instance) SetAbsorbent(value bool) {
 
 //go:nosplit
 func (self class) SetFriction(friction float64) { //gd:PhysicsMaterial.set_friction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_friction, 0|(gdextension.SizeFloat<<4), &struct{ friction float64 }{friction})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_friction, 0|(gdextension.SizeFloat<<4), &struct{ friction float64 }{friction})
 }
 
 //go:nosplit
 func (self class) GetFriction() float64 { //gd:PhysicsMaterial.get_friction
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_friction, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_friction, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRough(rough bool) { //gd:PhysicsMaterial.set_rough
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rough, 0|(gdextension.SizeBool<<4), &struct{ rough bool }{rough})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_rough, 0|(gdextension.SizeBool<<4), &struct{ rough bool }{rough})
 }
 
 //go:nosplit
 func (self class) IsRough() bool { //gd:PhysicsMaterial.is_rough
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rough, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_rough, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBounce(bounce float64) { //gd:PhysicsMaterial.set_bounce
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bounce, 0|(gdextension.SizeFloat<<4), &struct{ bounce float64 }{bounce})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bounce, 0|(gdextension.SizeFloat<<4), &struct{ bounce float64 }{bounce})
 }
 
 //go:nosplit
 func (self class) GetBounce() float64 { //gd:PhysicsMaterial.get_bounce
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bounce, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bounce, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAbsorbent(absorbent bool) { //gd:PhysicsMaterial.set_absorbent
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_absorbent, 0|(gdextension.SizeBool<<4), &struct{ absorbent bool }{absorbent})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_absorbent, 0|(gdextension.SizeBool<<4), &struct{ absorbent bool }{absorbent})
 }
 
 //go:nosplit
 func (self class) IsAbsorbent() bool { //gd:PhysicsMaterial.is_absorbent
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_absorbent, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_absorbent, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

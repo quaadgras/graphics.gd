@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -52,6 +53,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -100,7 +102,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -226,7 +228,7 @@ Sets the forward axis of the bone.
 */
 //go:nosplit
 func (self class) SetForwardAxis(index int64, axis SkeletonModifier3D.BoneAxis) { //gd:AimModifier3D.set_forward_axis
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_forward_axis, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_forward_axis, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
 		axis  SkeletonModifier3D.BoneAxis
 	}{index, axis})
@@ -237,7 +239,7 @@ Returns the forward axis of the bone.
 */
 //go:nosplit
 func (self class) GetForwardAxis(index int64) SkeletonModifier3D.BoneAxis { //gd:AimModifier3D.get_forward_axis
-	var r_ret = gdextension.Call[SkeletonModifier3D.BoneAxis](gd.ObjectChecked(self.AsObject()), methods.get_forward_axis, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[SkeletonModifier3D.BoneAxis](gd.ObjectChecked(self.AsObject()), methods.get_forward_axis, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -249,7 +251,7 @@ If sets 'enabled' to false, it provides rotation with using rotation by arc gene
 */
 //go:nosplit
 func (self class) SetUseEuler(index int64, enabled bool) { //gd:AimModifier3D.set_use_euler
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_euler, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_euler, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		enabled bool
 	}{index, enabled})
@@ -260,7 +262,7 @@ Returns true if it provides rotation with using euler.
 */
 //go:nosplit
 func (self class) IsUsingEuler(index int64) bool { //gd:AimModifier3D.is_using_euler
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_euler, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_euler, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -272,7 +274,7 @@ Sets the axis of the first rotation. It is enabled only if [IsUsingEuler] is tru
 */
 //go:nosplit
 func (self class) SetPrimaryRotationAxis(index int64, axis Vector3.Axis) { //gd:AimModifier3D.set_primary_rotation_axis
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_rotation_axis, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_rotation_axis, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		index int64
 		axis  Vector3.Axis
 	}{index, axis})
@@ -285,7 +287,7 @@ Returns the axis of the first rotation. It is enabled only if [IsUsingEuler] is 
 */
 //go:nosplit
 func (self class) GetPrimaryRotationAxis(index int64) Vector3.Axis { //gd:AimModifier3D.get_primary_rotation_axis
-	var r_ret = gdextension.Call[Vector3.Axis](gd.ObjectChecked(self.AsObject()), methods.get_primary_rotation_axis, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[Vector3.Axis](gd.ObjectChecked(self.AsObject()), methods.get_primary_rotation_axis, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -297,7 +299,7 @@ If sets 'enabled' to true, it provides rotation by two axes. It is enabled only 
 */
 //go:nosplit
 func (self class) SetUseSecondaryRotation(index int64, enabled bool) { //gd:AimModifier3D.set_use_secondary_rotation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_secondary_rotation, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_secondary_rotation, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		index   int64
 		enabled bool
 	}{index, enabled})
@@ -310,7 +312,7 @@ Returns true if it provides rotation by two axes. It is enabled only if [IsUsing
 */
 //go:nosplit
 func (self class) IsUsingSecondaryRotation(index int64) bool { //gd:AimModifier3D.is_using_secondary_rotation
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_secondary_rotation, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_secondary_rotation, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }

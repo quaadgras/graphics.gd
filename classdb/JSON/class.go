@@ -67,6 +67,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -100,6 +101,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -150,7 +152,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -369,7 +371,7 @@ Example output:
 */
 //go:nosplit
 func (self class) Stringify(data variant.Any, indent String.Readable, sort_keys bool, full_precision bool) String.Readable { //gd:JSON.stringify
-	var r_ret = gdextension.CallStatic[gdextension.String](methods.stringify, gdextension.SizeString|(gdextension.SizeVariant<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
+	var r_ret = noescape.CallStatic[gdextension.String](methods.stringify, gdextension.SizeString|(gdextension.SizeVariant<<4)|(gdextension.SizeString<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeBool<<16), &struct {
 		data           gdextension.Variant
 		indent         gdextension.String
 		sort_keys      bool
@@ -384,7 +386,7 @@ Attempts to parse the 'json_string' provided and returns the parsed data. Return
 */
 //go:nosplit
 func (self class) ParseString(json_string String.Readable) variant.Any { //gd:JSON.parse_string
-	var r_ret = gdextension.CallStatic[gdextension.Variant](methods.parse_string, gdextension.SizeVariant|(gdextension.SizeString<<4), &struct{ json_string gdextension.String }{pointers.Get(gd.InternalString(json_string))})
+	var r_ret = noescape.CallStatic[gdextension.Variant](methods.parse_string, gdextension.SizeVariant|(gdextension.SizeString<<4), &struct{ json_string gdextension.String }{pointers.Get(gd.InternalString(json_string))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -405,7 +407,7 @@ The optional 'keep_text' argument instructs the parser to keep a copy of the ori
 */
 //go:nosplit
 func (self class) Parse(json_text String.Readable, keep_text bool) Error.Code { //gd:JSON.parse
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.parse, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.parse, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeBool<<8), &struct {
 		json_text gdextension.String
 		keep_text bool
 	}{pointers.Get(gd.InternalString(json_text)), keep_text})
@@ -415,14 +417,14 @@ func (self class) Parse(json_text String.Readable, keep_text bool) Error.Code { 
 
 //go:nosplit
 func (self class) GetData() variant.Any { //gd:JSON.get_data
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizeVariant, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_data, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetData(data variant.Any) { //gd:JSON.set_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizeVariant<<4), &struct{ data gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(data)))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_data, 0|(gdextension.SizeVariant<<4), &struct{ data gdextension.Variant }{gdextension.Variant(pointers.Get(gd.InternalVariant(data)))})
 }
 
 /*
@@ -432,7 +434,7 @@ Return the text parsed by [Parse] (requires passing keep_text to [Parse]).
 */
 //go:nosplit
 func (self class) GetParsedText() String.Readable { //gd:JSON.get_parsed_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_parsed_text, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_parsed_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -444,7 +446,7 @@ Returns 0 if the last call to [Parse] was successful, or the line number where t
 */
 //go:nosplit
 func (self class) GetErrorLine() int64 { //gd:JSON.get_error_line
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_error_line, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_error_line, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -456,7 +458,7 @@ Returns an empty string if the last call to [Parse] was successful, or the error
 */
 //go:nosplit
 func (self class) GetErrorMessage() String.Readable { //gd:JSON.get_error_message
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_error_message, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_error_message, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -472,7 +474,7 @@ You can convert a native value to a JSON string like this:
 */
 //go:nosplit
 func (self class) FromNative(v variant.Any, full_objects bool) variant.Any { //gd:JSON.from_native
-	var r_ret = gdextension.CallStatic[gdextension.Variant](methods.from_native, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.CallStatic[gdextension.Variant](methods.from_native, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
 		v            gdextension.Variant
 		full_objects bool
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(v))), full_objects})
@@ -491,7 +493,7 @@ You can convert a JSON string back to a native value like this:
 */
 //go:nosplit
 func (self class) ToNative(json variant.Any, allow_objects bool) variant.Any { //gd:JSON.to_native
-	var r_ret = gdextension.CallStatic[gdextension.Variant](methods.to_native, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
+	var r_ret = noescape.CallStatic[gdextension.Variant](methods.to_native, gdextension.SizeVariant|(gdextension.SizeVariant<<4)|(gdextension.SizeBool<<8), &struct {
 		json          gdextension.Variant
 		allow_objects bool
 	}{gdextension.Variant(pointers.Get(gd.InternalVariant(json))), allow_objects})

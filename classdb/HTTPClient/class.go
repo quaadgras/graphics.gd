@@ -36,6 +36,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -70,6 +71,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -132,7 +134,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -430,7 +432,7 @@ If no 'port' is specified (or -1 is used), it is automatically set to 80 for HTT
 */
 //go:nosplit
 func (self class) ConnectToHost(host String.Readable, port int64, tls_options [1]gdclass.TLSOptions) Error.Code { //gd:HTTPClient.connect_to_host
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_to_host, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.connect_to_host, gdextension.SizeInt|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeObject<<12), &struct {
 		host        gdextension.String
 		port        int64
 		tls_options gdextension.Object
@@ -441,12 +443,12 @@ func (self class) ConnectToHost(host String.Readable, port int64, tls_options [1
 
 //go:nosplit
 func (self class) SetConnection(connection [1]gdclass.StreamPeer) { //gd:HTTPClient.set_connection
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_connection, 0|(gdextension.SizeObject<<4), &struct{ connection gdextension.Object }{gdextension.Object(gd.ObjectChecked(connection[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_connection, 0|(gdextension.SizeObject<<4), &struct{ connection gdextension.Object }{gdextension.Object(gd.ObjectChecked(connection[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetConnection() [1]gdclass.StreamPeer { //gd:HTTPClient.get_connection
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_connection, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_connection, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.StreamPeer{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeer](r_ret)}
 	return ret
 }
@@ -462,7 +464,7 @@ Sends the body data raw, as a byte array and does not encode it in any way.
 */
 //go:nosplit
 func (self class) RequestRaw(method Method, url String.Readable, headers Packed.Strings, body Packed.Bytes) Error.Code { //gd:HTTPClient.request_raw
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.request_raw, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.request_raw, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizePackedArray<<16), &struct {
 		method  Method
 		url     gdextension.String
 		headers gdextension.PackedArray[gdextension.String]
@@ -494,7 +496,7 @@ Note: The 'body' parameter is ignored if 'method' is [Httpclient.MethodGet]. Thi
 */
 //go:nosplit
 func (self class) Request(method Method, url String.Readable, headers Packed.Strings, body String.Readable) Error.Code { //gd:HTTPClient.request
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.request, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.request, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeString<<16), &struct {
 		method  Method
 		url     gdextension.String
 		headers gdextension.PackedArray[gdextension.String]
@@ -511,7 +513,7 @@ Closes the current connection, allowing reuse of this [HTTPClient].
 */
 //go:nosplit
 func (self class) Close() { //gd:HTTPClient.close
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.close, 0, &struct{}{})
 }
 
 /*
@@ -521,7 +523,7 @@ If true, this [HTTPClient] has a response available.
 */
 //go:nosplit
 func (self class) HasResponse() bool { //gd:HTTPClient.has_response
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_response, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_response, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -533,7 +535,7 @@ If true, this [HTTPClient] has a response that is chunked.
 */
 //go:nosplit
 func (self class) IsResponseChunked() bool { //gd:HTTPClient.is_response_chunked
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_response_chunked, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_response_chunked, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -543,7 +545,7 @@ Returns the response's HTTP status code.
 */
 //go:nosplit
 func (self class) GetResponseCode() int64 { //gd:HTTPClient.get_response_code
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_response_code, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_response_code, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -553,7 +555,7 @@ Returns the response headers.
 */
 //go:nosplit
 func (self class) GetResponseHeaders() Packed.Strings { //gd:HTTPClient.get_response_headers
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_response_headers, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_response_headers, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -570,7 +572,7 @@ Returns all response headers as a data structure. Each entry is composed by the 
 */
 //go:nosplit
 func (self class) GetResponseHeadersAsDictionary() Dictionary.Any { //gd:HTTPClient.get_response_headers_as_dictionary
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_response_headers_as_dictionary, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_response_headers_as_dictionary, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -584,7 +586,7 @@ Note: This function always returns -1 on the Web platform due to browsers limita
 */
 //go:nosplit
 func (self class) GetResponseBodyLength() int64 { //gd:HTTPClient.get_response_body_length
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_response_body_length, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_response_body_length, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -594,31 +596,31 @@ Reads one chunk from the response.
 */
 //go:nosplit
 func (self class) ReadResponseBodyChunk() Packed.Bytes { //gd:HTTPClient.read_response_body_chunk
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.read_response_body_chunk, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.read_response_body_chunk, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetReadChunkSize(bytes int64) { //gd:HTTPClient.set_read_chunk_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_read_chunk_size, 0|(gdextension.SizeInt<<4), &struct{ bytes int64 }{bytes})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_read_chunk_size, 0|(gdextension.SizeInt<<4), &struct{ bytes int64 }{bytes})
 }
 
 //go:nosplit
 func (self class) GetReadChunkSize() int64 { //gd:HTTPClient.get_read_chunk_size
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_read_chunk_size, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_read_chunk_size, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBlockingMode(enabled bool) { //gd:HTTPClient.set_blocking_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blocking_mode, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blocking_mode, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsBlockingModeEnabled() bool { //gd:HTTPClient.is_blocking_mode_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_blocking_mode_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_blocking_mode_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -630,7 +632,7 @@ Returns a [Status] constant. Need to call [Poll] in order to get status updates.
 */
 //go:nosplit
 func (self class) GetStatus() Status { //gd:HTTPClient.get_status
-	var r_ret = gdextension.Call[Status](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Status](gd.ObjectChecked(self.AsObject()), methods.get_status, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -642,7 +644,7 @@ This needs to be called in order to have any request processed. Check results wi
 */
 //go:nosplit
 func (self class) Poll() Error.Code { //gd:HTTPClient.poll
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.poll, gdextension.SizeInt, &struct{}{})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -654,7 +656,7 @@ The proxy server is unset if 'host' is empty or 'port' is -1.
 */
 //go:nosplit
 func (self class) SetHttpProxy(host String.Readable, port int64) { //gd:HTTPClient.set_http_proxy
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_http_proxy, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_http_proxy, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host gdextension.String
 		port int64
 	}{pointers.Get(gd.InternalString(host)), port})
@@ -667,7 +669,7 @@ The proxy server is unset if 'host' is empty or 'port' is -1.
 */
 //go:nosplit
 func (self class) SetHttpsProxy(host String.Readable, port int64) { //gd:HTTPClient.set_https_proxy
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_https_proxy, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_https_proxy, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		host gdextension.String
 		port int64
 	}{pointers.Get(gd.InternalString(host)), port})
@@ -688,7 +690,7 @@ Furthermore, if a key has a null value, only the key itself is added, without eq
 */
 //go:nosplit
 func (self class) QueryStringFromDict(fields Dictionary.Any) String.Readable { //gd:HTTPClient.query_string_from_dict
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.query_string_from_dict, gdextension.SizeString|(gdextension.SizeDictionary<<4), &struct{ fields gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(fields))})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.query_string_from_dict, gdextension.SizeString|(gdextension.SizeDictionary<<4), &struct{ fields gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(fields))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

@@ -6,6 +6,7 @@ import (
 	"reflect"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	ArrayVariant "graphics.gd/variant/Array"
@@ -32,7 +33,7 @@ func (a Array) SetIndex(index int64, value Variant) {
 
 func (a Array) Free() {
 	if ptr, ok := pointers.End(a); ok {
-		gdextension.Free(gdextension.TypeArray, &ptr)
+		noescape.Free(gdextension.TypeArray, &ptr)
 	}
 }
 
@@ -47,7 +48,7 @@ func (a Array) Iter() iter.Seq2[int64, Variant] {
 }
 
 func NewArray() Array {
-	return pointers.New[Array](gdextension.Make[gdextension.Array](builtin.creation.Array[0], 0, nil))
+	return pointers.New[Array](noescape.Make[gdextension.Array](builtin.creation.Array[0], 0, nil))
 }
 
 func ArrayAs[S []T, T any](array Array) []T {

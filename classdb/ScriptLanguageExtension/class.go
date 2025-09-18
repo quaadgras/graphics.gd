@@ -7,6 +7,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -41,6 +42,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -81,7 +83,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -146,9 +148,9 @@ type Interface interface {
 	ReloadScripts(scripts []Script.Instance, soft_reload bool)
 	ReloadToolScript(script Script.Instance, soft_reload bool)
 	GetRecognizedExtensions() []string
-	GetPublicFunctions() [][]Object.MethodInfo
+	GetPublicFunctions() [][]struct{}
 	GetPublicConstants() []Constant
-	GetPublicAnnotations() [][]Object.MethodInfo
+	GetPublicAnnotations() [][]struct{}
 	ProfilingStart()
 	ProfilingStop()
 	ProfilingSetSaveNativeCalls(enable bool)
@@ -231,9 +233,9 @@ func (self implementation) ReloadAllScripts()                                   
 func (self implementation) ReloadScripts(scripts []Script.Instance, soft_reload bool) { return }
 func (self implementation) ReloadToolScript(script Script.Instance, soft_reload bool) { return }
 func (self implementation) GetRecognizedExtensions() (_ []string)                     { return }
-func (self implementation) GetPublicFunctions() (_ [][]Object.MethodInfo)             { return }
+func (self implementation) GetPublicFunctions() (_ [][]struct{})                      { return }
 func (self implementation) GetPublicConstants() (_ []Constant)                        { return }
-func (self implementation) GetPublicAnnotations() (_ [][]Object.MethodInfo)           { return }
+func (self implementation) GetPublicAnnotations() (_ [][]struct{})                    { return }
 func (self implementation) ProfilingStart()                                           { return }
 func (self implementation) ProfilingStop()                                            { return }
 func (self implementation) ProfilingSetSaveNativeCalls(enable bool)                   { return }
@@ -804,7 +806,7 @@ func (Instance) _get_recognized_extensions(impl func(ptr gdclass.Receiver) []str
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_public_functions(impl func(ptr gdclass.Receiver) [][]Object.MethodInfo) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_public_functions(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -828,7 +830,7 @@ func (Instance) _get_public_constants(impl func(ptr gdclass.Receiver) []Constant
 		gd.UnsafeSet(p_back, ptr)
 	}
 }
-func (Instance) _get_public_annotations(impl func(ptr gdclass.Receiver) [][]Object.MethodInfo) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_public_annotations(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)

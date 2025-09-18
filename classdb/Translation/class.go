@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -45,6 +46,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -95,7 +97,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -402,12 +404,12 @@ func (class) _get_message(impl func(ptr gdclass.Receiver, src_message String.Nam
 
 //go:nosplit
 func (self class) SetLocale(locale String.Readable) { //gd:Translation.set_locale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_locale, 0|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_locale, 0|(gdextension.SizeString<<4), &struct{ locale gdextension.String }{pointers.Get(gd.InternalString(locale))})
 }
 
 //go:nosplit
 func (self class) GetLocale() String.Readable { //gd:Translation.get_locale
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_locale, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -419,7 +421,7 @@ An additional context could be used to specify the translation context or differ
 */
 //go:nosplit
 func (self class) AddMessage(src_message String.Name, xlated_message String.Name, context String.Name) { //gd:Translation.add_message
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_message, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_message, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12), &struct {
 		src_message    gdextension.StringName
 		xlated_message gdextension.StringName
 		context        gdextension.StringName
@@ -437,7 +439,7 @@ Note: Plurals are only supported in [gettext-based translations (PO)], not CSV.
 */
 //go:nosplit
 func (self class) AddPluralMessage(src_message String.Name, xlated_messages Packed.Strings, context String.Name) { //gd:Translation.add_plural_message
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_plural_message, 0|(gdextension.SizeStringName<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeStringName<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_plural_message, 0|(gdextension.SizeStringName<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeStringName<<12), &struct {
 		src_message     gdextension.StringName
 		xlated_messages gdextension.PackedArray[gdextension.String]
 		context         gdextension.StringName
@@ -449,7 +451,7 @@ Returns a message's translation.
 */
 //go:nosplit
 func (self class) GetMessage(src_message String.Name, context String.Name) String.Name { //gd:Translation.get_message
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_message, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_message, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		src_message gdextension.StringName
 		context     gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(src_message)), pointers.Get(gd.InternalStringName(context))})
@@ -468,7 +470,7 @@ Note: Plurals are only supported in [gettext-based translations (PO)], not CSV.
 */
 //go:nosplit
 func (self class) GetPluralMessage(src_message String.Name, src_plural_message String.Name, n int64, context String.Name) String.Name { //gd:Translation.get_plural_message
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_plural_message, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), &struct {
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_plural_message, gdextension.SizeStringName|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeStringName<<16), &struct {
 		src_message        gdextension.StringName
 		src_plural_message gdextension.StringName
 		n                  int64
@@ -483,7 +485,7 @@ Erases a message.
 */
 //go:nosplit
 func (self class) EraseMessage(src_message String.Name, context String.Name) { //gd:Translation.erase_message
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_message, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_message, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		src_message gdextension.StringName
 		context     gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(src_message)), pointers.Get(gd.InternalStringName(context))})
@@ -494,7 +496,7 @@ Returns all the messages (keys).
 */
 //go:nosplit
 func (self class) GetMessageList() Packed.Strings { //gd:Translation.get_message_list
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_message_list, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_message_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -504,7 +506,7 @@ Returns all the messages (translated text).
 */
 //go:nosplit
 func (self class) GetTranslatedMessageList() Packed.Strings { //gd:Translation.get_translated_message_list
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_translated_message_list, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_translated_message_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -514,7 +516,7 @@ Returns the number of existing messages.
 */
 //go:nosplit
 func (self class) GetMessageCount() int64 { //gd:Translation.get_message_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_message_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_message_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -18,6 +18,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -52,6 +53,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -97,7 +99,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -193,12 +195,12 @@ func (self Instance) SetEvents(value []InputEvent.Instance) {
 
 //go:nosplit
 func (self class) SetEvents(events Array.Any) { //gd:Shortcut.set_events
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_events, 0|(gdextension.SizeArray<<4), &struct{ events gdextension.Array }{pointers.Get(gd.InternalArray(events))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_events, 0|(gdextension.SizeArray<<4), &struct{ events gdextension.Array }{pointers.Get(gd.InternalArray(events))})
 }
 
 //go:nosplit
 func (self class) GetEvents() Array.Any { //gd:Shortcut.get_events
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_events, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_events, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -211,7 +213,7 @@ Returns whether [Events] contains an [InputEvent] which is valid.
 */
 //go:nosplit
 func (self class) HasValidEvent() bool { //gd:Shortcut.has_valid_event
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_valid_event, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_valid_event, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -225,7 +227,7 @@ Returns whether any [InputEvent] in [Events] equals 'event'. This uses [InputEve
 */
 //go:nosplit
 func (self class) MatchesEvent(event [1]gdclass.InputEvent) bool { //gd:Shortcut.matches_event
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.matches_event, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(event[0].AsObject()))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.matches_event, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ event gdextension.Object }{gdextension.Object(gd.ObjectChecked(event[0].AsObject()))})
 	var ret = r_ret
 	return ret
 }
@@ -237,7 +239,7 @@ Returns the shortcut's first valid [InputEvent] as a string.
 */
 //go:nosplit
 func (self class) GetAsText() String.Readable { //gd:Shortcut.get_as_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_as_text, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_as_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

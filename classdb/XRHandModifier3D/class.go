@@ -18,6 +18,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +54,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -97,7 +99,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -170,24 +172,24 @@ func (self Instance) SetBoneUpdate(value BoneUpdate) {
 
 //go:nosplit
 func (self class) SetHandTracker(tracker_name String.Name) { //gd:XRHandModifier3D.set_hand_tracker
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand_tracker, 0|(gdextension.SizeStringName<<4), &struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hand_tracker, 0|(gdextension.SizeStringName<<4), &struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))})
 }
 
 //go:nosplit
 func (self class) GetHandTracker() String.Name { //gd:XRHandModifier3D.get_hand_tracker
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_hand_tracker, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_hand_tracker, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBoneUpdate(bone_update BoneUpdate) { //gd:XRHandModifier3D.set_bone_update
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_update, 0|(gdextension.SizeInt<<4), &struct{ bone_update BoneUpdate }{bone_update})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bone_update, 0|(gdextension.SizeInt<<4), &struct{ bone_update BoneUpdate }{bone_update})
 }
 
 //go:nosplit
 func (self class) GetBoneUpdate() BoneUpdate { //gd:XRHandModifier3D.get_bone_update
-	var r_ret = gdextension.Call[BoneUpdate](gd.ObjectChecked(self.AsObject()), methods.get_bone_update, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[BoneUpdate](gd.ObjectChecked(self.AsObject()), methods.get_bone_update, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

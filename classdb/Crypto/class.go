@@ -52,6 +52,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -87,6 +88,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -136,7 +138,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -299,7 +301,7 @@ Generates a []byte of cryptographically secure random bytes with given 'size'.
 */
 //go:nosplit
 func (self class) GenerateRandomBytes(size int64) Packed.Bytes { //gd:Crypto.generate_random_bytes
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.generate_random_bytes, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.generate_random_bytes, gdextension.SizePackedArray|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
@@ -312,7 +314,7 @@ Generates an RSA [CryptoKey] that can be used for creating self-signed certifica
 */
 //go:nosplit
 func (self class) GenerateRsa(size int64) [1]gdclass.CryptoKey { //gd:Crypto.generate_rsa
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_rsa, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_rsa, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ size int64 }{size})
 	var ret = [1]gdclass.CryptoKey{gd.PointerWithOwnershipTransferredToGo[gdclass.CryptoKey](r_ret)}
 	return ret
 }
@@ -329,7 +331,7 @@ A small example to generate an RSA key and an X509 self-signed certificate.
 */
 //go:nosplit
 func (self class) GenerateSelfSignedCertificate(key [1]gdclass.CryptoKey, issuer_name String.Readable, not_before String.Readable, not_after String.Readable) [1]gdclass.X509Certificate { //gd:Crypto.generate_self_signed_certificate
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_self_signed_certificate, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16), &struct {
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_self_signed_certificate, gdextension.SizeObject|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeString<<12)|(gdextension.SizeString<<16), &struct {
 		key         gdextension.Object
 		issuer_name gdextension.String
 		not_before  gdextension.String
@@ -344,7 +346,7 @@ Sign a given 'hash' of type 'hash_type' with the provided private 'key'.
 */
 //go:nosplit
 func (self class) Sign(hash_type HashingContext.HashType, hash Packed.Bytes, key [1]gdclass.CryptoKey) Packed.Bytes { //gd:Crypto.sign
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.sign, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeObject<<12), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.sign, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeObject<<12), &struct {
 		hash_type HashingContext.HashType
 		hash      gdextension.PackedArray[byte]
 		key       gdextension.Object
@@ -358,7 +360,7 @@ Verify that a given 'signature' for 'hash' of type 'hash_type' against the provi
 */
 //go:nosplit
 func (self class) Verify(hash_type HashingContext.HashType, hash Packed.Bytes, signature Packed.Bytes, key [1]gdclass.CryptoKey) bool { //gd:Crypto.verify
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.verify, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeObject<<16), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.verify, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12)|(gdextension.SizeObject<<16), &struct {
 		hash_type HashingContext.HashType
 		hash      gdextension.PackedArray[byte]
 		signature gdextension.PackedArray[byte]
@@ -375,7 +377,7 @@ Note: The maximum size of accepted plaintext is limited by the key size.
 */
 //go:nosplit
 func (self class) Encrypt(key [1]gdclass.CryptoKey, plaintext Packed.Bytes) Packed.Bytes { //gd:Crypto.encrypt
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.encrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.encrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), &struct {
 		key       gdextension.Object
 		plaintext gdextension.PackedArray[byte]
 	}{gdextension.Object(gd.ObjectChecked(key[0].AsObject())), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](plaintext.Array)))})
@@ -390,7 +392,7 @@ Note: The maximum size of accepted ciphertext is limited by the key size.
 */
 //go:nosplit
 func (self class) Decrypt(key [1]gdclass.CryptoKey, ciphertext Packed.Bytes) Packed.Bytes { //gd:Crypto.decrypt
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.decrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.decrypt, gdextension.SizePackedArray|(gdextension.SizeObject<<4)|(gdextension.SizePackedArray<<8), &struct {
 		key        gdextension.Object
 		ciphertext gdextension.PackedArray[byte]
 	}{gdextension.Object(gd.ObjectChecked(key[0].AsObject())), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](ciphertext.Array)))})
@@ -407,7 +409,7 @@ Currently, only [Hashingcontext.HashSha256] and [Hashingcontext.HashSha1] are su
 */
 //go:nosplit
 func (self class) HmacDigest(hash_type HashingContext.HashType, key Packed.Bytes, msg Packed.Bytes) Packed.Bytes { //gd:Crypto.hmac_digest
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.hmac_digest, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.hmac_digest, gdextension.SizePackedArray|(gdextension.SizeInt<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizePackedArray<<12), &struct {
 		hash_type HashingContext.HashType
 		key       gdextension.PackedArray[byte]
 		msg       gdextension.PackedArray[byte]
@@ -425,7 +427,7 @@ See [this blog post] for more information.
 */
 //go:nosplit
 func (self class) ConstantTimeCompare(trusted Packed.Bytes, received Packed.Bytes) bool { //gd:Crypto.constant_time_compare
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.constant_time_compare, gdextension.SizeBool|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.constant_time_compare, gdextension.SizeBool|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
 		trusted  gdextension.PackedArray[byte]
 		received gdextension.PackedArray[byte]
 	}{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](trusted.Array))), pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](received.Array)))})

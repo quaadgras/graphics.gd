@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -45,6 +46,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -92,7 +94,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -187,24 +189,24 @@ func (self Instance) SetBinding(value int) {
 
 //go:nosplit
 func (self class) SetUniformType(p_member Rendering.UniformType) { //gd:RDUniform.set_uniform_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uniform_type, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.UniformType }{p_member})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_uniform_type, 0|(gdextension.SizeInt<<4), &struct{ p_member Rendering.UniformType }{p_member})
 }
 
 //go:nosplit
 func (self class) GetUniformType() Rendering.UniformType { //gd:RDUniform.get_uniform_type
-	var r_ret = gdextension.Call[Rendering.UniformType](gd.ObjectChecked(self.AsObject()), methods.get_uniform_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Rendering.UniformType](gd.ObjectChecked(self.AsObject()), methods.get_uniform_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBinding(p_member int64) { //gd:RDUniform.set_binding
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_binding, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_binding, 0|(gdextension.SizeInt<<4), &struct{ p_member int64 }{p_member})
 }
 
 //go:nosplit
 func (self class) GetBinding() int64 { //gd:RDUniform.get_binding
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_binding, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_binding, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -214,7 +216,7 @@ Binds the given id to the uniform. The data associated with the id is then used 
 */
 //go:nosplit
 func (self class) AddId(id RID.Any) { //gd:RDUniform.add_id
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_id, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_id, 0|(gdextension.SizeRID<<4), &struct{ id RID.Any }{id})
 }
 
 /*
@@ -222,7 +224,7 @@ Unbinds all ids currently bound to the uniform.
 */
 //go:nosplit
 func (self class) ClearIds() { //gd:RDUniform.clear_ids
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_ids, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_ids, 0, &struct{}{})
 }
 
 /*
@@ -230,7 +232,7 @@ Returns an array of all ids currently bound to the uniform.
 */
 //go:nosplit
 func (self class) GetIds() Array.Contains[RID.Any] { //gd:RDUniform.get_ids
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_ids, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_ids, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[RID.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }

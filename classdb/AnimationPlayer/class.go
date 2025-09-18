@@ -20,6 +20,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -55,6 +56,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -148,7 +150,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -744,7 +746,7 @@ Triggers the 'animation_to' animation when the 'animation_from' animation comple
 */
 //go:nosplit
 func (self class) AnimationSetNext(animation_from String.Name, animation_to String.Name) { //gd:AnimationPlayer.animation_set_next
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.animation_set_next, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.animation_set_next, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		animation_from gdextension.StringName
 		animation_to   gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(animation_from)), pointers.Get(gd.InternalStringName(animation_to))})
@@ -755,7 +757,7 @@ Returns the key of the animation which is queued to play after the 'animation_fr
 */
 //go:nosplit
 func (self class) AnimationGetNext(animation_from String.Name) String.Name { //gd:AnimationPlayer.animation_get_next
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.animation_get_next, gdextension.SizeStringName|(gdextension.SizeStringName<<4), &struct{ animation_from gdextension.StringName }{pointers.Get(gd.InternalStringName(animation_from))})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.animation_get_next, gdextension.SizeStringName|(gdextension.SizeStringName<<4), &struct{ animation_from gdextension.StringName }{pointers.Get(gd.InternalStringName(animation_from))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -765,7 +767,7 @@ Specifies a blend time (in seconds) between two animations, referenced by their 
 */
 //go:nosplit
 func (self class) SetBlendTime(animation_from String.Name, animation_to String.Name, sec float64) { //gd:AnimationPlayer.set_blend_time
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_time, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeFloat<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_time, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeFloat<<12), &struct {
 		animation_from gdextension.StringName
 		animation_to   gdextension.StringName
 		sec            float64
@@ -777,7 +779,7 @@ Returns the blend time (in seconds) between two animations, referenced by their 
 */
 //go:nosplit
 func (self class) GetBlendTime(animation_from String.Name, animation_to String.Name) float64 { //gd:AnimationPlayer.get_blend_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_blend_time, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_blend_time, gdextension.SizeFloat|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		animation_from gdextension.StringName
 		animation_to   gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(animation_from)), pointers.Get(gd.InternalStringName(animation_to))})
@@ -787,60 +789,60 @@ func (self class) GetBlendTime(animation_from String.Name, animation_to String.N
 
 //go:nosplit
 func (self class) SetDefaultBlendTime(sec float64) { //gd:AnimationPlayer.set_default_blend_time
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_blend_time, 0|(gdextension.SizeFloat<<4), &struct{ sec float64 }{sec})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_default_blend_time, 0|(gdextension.SizeFloat<<4), &struct{ sec float64 }{sec})
 }
 
 //go:nosplit
 func (self class) GetDefaultBlendTime() float64 { //gd:AnimationPlayer.get_default_blend_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_default_blend_time, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_default_blend_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoCapture(auto_capture bool) { //gd:AnimationPlayer.set_auto_capture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture, 0|(gdextension.SizeBool<<4), &struct{ auto_capture bool }{auto_capture})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture, 0|(gdextension.SizeBool<<4), &struct{ auto_capture bool }{auto_capture})
 }
 
 //go:nosplit
 func (self class) IsAutoCapture() bool { //gd:AnimationPlayer.is_auto_capture
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_capture, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_auto_capture, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoCaptureDuration(auto_capture_duration float64) { //gd:AnimationPlayer.set_auto_capture_duration
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_duration, 0|(gdextension.SizeFloat<<4), &struct{ auto_capture_duration float64 }{auto_capture_duration})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_duration, 0|(gdextension.SizeFloat<<4), &struct{ auto_capture_duration float64 }{auto_capture_duration})
 }
 
 //go:nosplit
 func (self class) GetAutoCaptureDuration() float64 { //gd:AnimationPlayer.get_auto_capture_duration
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_duration, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_duration, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoCaptureTransitionType(auto_capture_transition_type Tween.TransitionType) { //gd:AnimationPlayer.set_auto_capture_transition_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_transition_type, 0|(gdextension.SizeInt<<4), &struct{ auto_capture_transition_type Tween.TransitionType }{auto_capture_transition_type})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_transition_type, 0|(gdextension.SizeInt<<4), &struct{ auto_capture_transition_type Tween.TransitionType }{auto_capture_transition_type})
 }
 
 //go:nosplit
 func (self class) GetAutoCaptureTransitionType() Tween.TransitionType { //gd:AnimationPlayer.get_auto_capture_transition_type
-	var r_ret = gdextension.Call[Tween.TransitionType](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_transition_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Tween.TransitionType](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_transition_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoCaptureEaseType(auto_capture_ease_type Tween.EaseType) { //gd:AnimationPlayer.set_auto_capture_ease_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_ease_type, 0|(gdextension.SizeInt<<4), &struct{ auto_capture_ease_type Tween.EaseType }{auto_capture_ease_type})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_auto_capture_ease_type, 0|(gdextension.SizeInt<<4), &struct{ auto_capture_ease_type Tween.EaseType }{auto_capture_ease_type})
 }
 
 //go:nosplit
 func (self class) GetAutoCaptureEaseType() Tween.EaseType { //gd:AnimationPlayer.get_auto_capture_ease_type
-	var r_ret = gdextension.Call[Tween.EaseType](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_ease_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Tween.EaseType](gd.ObjectChecked(self.AsObject()), methods.get_auto_capture_ease_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -860,7 +862,7 @@ Note: The animation will be updated the next time the [AnimationPlayer] is proce
 */
 //go:nosplit
 func (self class) Play(name String.Name, custom_blend float64, custom_speed float64, from_end bool) { //gd:AnimationPlayer.play
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeBool<<16), &struct {
 		name         gdextension.StringName
 		custom_blend float64
 		custom_speed float64
@@ -877,7 +879,7 @@ If the start marker is empty, the section starts from the beginning of the anima
 */
 //go:nosplit
 func (self class) PlaySectionWithMarkers(name String.Name, start_marker String.Name, end_marker String.Name, custom_blend float64, custom_speed float64, from_end bool) { //gd:AnimationPlayer.play_section_with_markers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section_with_markers, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section_with_markers, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), &struct {
 		name         gdextension.StringName
 		start_marker gdextension.StringName
 		end_marker   gdextension.StringName
@@ -896,7 +898,7 @@ Setting 'start_time' to a value outside the range of the animation means the sta
 */
 //go:nosplit
 func (self class) PlaySection(name String.Name, start_time float64, end_time float64, custom_blend float64, custom_speed float64, from_end bool) { //gd:AnimationPlayer.play_section
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeFloat<<20)|(gdextension.SizeBool<<24), &struct {
 		name         gdextension.StringName
 		start_time   float64
 		end_time     float64
@@ -915,7 +917,7 @@ This method is a shorthand for [Play] with custom_speed = -1.0 and from_end = tr
 */
 //go:nosplit
 func (self class) PlayBackwards(name String.Name, custom_blend float64) { //gd:AnimationPlayer.play_backwards
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_backwards, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_backwards, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8), &struct {
 		name         gdextension.StringName
 		custom_blend float64
 	}{pointers.Get(gd.InternalStringName(name)), custom_blend})
@@ -930,7 +932,7 @@ This method is a shorthand for [PlaySectionWithMarkers] with custom_speed = -1.0
 */
 //go:nosplit
 func (self class) PlaySectionWithMarkersBackwards(name String.Name, start_marker String.Name, end_marker String.Name, custom_blend float64) { //gd:AnimationPlayer.play_section_with_markers_backwards
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section_with_markers_backwards, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeFloat<<16), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section_with_markers_backwards, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeStringName<<12)|(gdextension.SizeFloat<<16), &struct {
 		name         gdextension.StringName
 		start_marker gdextension.StringName
 		end_marker   gdextension.StringName
@@ -947,7 +949,7 @@ This method is a shorthand for [PlaySection] with custom_speed = -1.0 and from_e
 */
 //go:nosplit
 func (self class) PlaySectionBackwards(name String.Name, start_time float64, end_time float64, custom_blend float64) { //gd:AnimationPlayer.play_section_backwards
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section_backwards, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_section_backwards, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16), &struct {
 		name         gdextension.StringName
 		start_time   float64
 		end_time     float64
@@ -978,7 +980,7 @@ Note: The 'duration' takes [SpeedScale] into account, but 'custom_speed' does no
 */
 //go:nosplit
 func (self class) PlayWithCapture(name String.Name, duration float64, custom_blend float64, custom_speed float64, from_end bool, trans_type Tween.TransitionType, ease_type Tween.EaseType) { //gd:AnimationPlayer.play_with_capture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_with_capture, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.play_with_capture, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeBool<<20)|(gdextension.SizeInt<<24)|(gdextension.SizeInt<<28), &struct {
 		name         gdextension.StringName
 		duration     float64
 		custom_blend float64
@@ -1002,7 +1004,7 @@ See also [Stop].
 */
 //go:nosplit
 func (self class) Pause() { //gd:AnimationPlayer.pause
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pause, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.pause, 0, &struct{}{})
 }
 
 /*
@@ -1016,7 +1018,7 @@ Note: The method / audio / animation playback tracks will not be processed by th
 */
 //go:nosplit
 func (self class) Stop(keep_state bool) { //gd:AnimationPlayer.stop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0|(gdextension.SizeBool<<4), &struct{ keep_state bool }{keep_state})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0|(gdextension.SizeBool<<4), &struct{ keep_state bool }{keep_state})
 }
 
 /*
@@ -1026,31 +1028,31 @@ Returns true if an animation is currently playing (even if [SpeedScale] and/or c
 */
 //go:nosplit
 func (self class) IsPlaying() bool { //gd:AnimationPlayer.is_playing
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_playing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurrentAnimation(animation String.Readable) { //gd:AnimationPlayer.set_current_animation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_animation, 0|(gdextension.SizeString<<4), &struct{ animation gdextension.String }{pointers.Get(gd.InternalString(animation))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_current_animation, 0|(gdextension.SizeString<<4), &struct{ animation gdextension.String }{pointers.Get(gd.InternalString(animation))})
 }
 
 //go:nosplit
 func (self class) GetCurrentAnimation() String.Readable { //gd:AnimationPlayer.get_current_animation
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_animation, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_current_animation, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAssignedAnimation(animation String.Readable) { //gd:AnimationPlayer.set_assigned_animation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_assigned_animation, 0|(gdextension.SizeString<<4), &struct{ animation gdextension.String }{pointers.Get(gd.InternalString(animation))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_assigned_animation, 0|(gdextension.SizeString<<4), &struct{ animation gdextension.String }{pointers.Get(gd.InternalString(animation))})
 }
 
 //go:nosplit
 func (self class) GetAssignedAnimation() String.Readable { //gd:AnimationPlayer.get_assigned_animation
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_assigned_animation, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_assigned_animation, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1062,7 +1064,7 @@ Note: If a looped animation is currently playing, the queued animation will neve
 */
 //go:nosplit
 func (self class) Queue(name String.Name) { //gd:AnimationPlayer.queue
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.queue, 0|(gdextension.SizeStringName<<4), &struct{ name gdextension.StringName }{pointers.Get(gd.InternalStringName(name))})
 }
 
 /*
@@ -1070,7 +1072,7 @@ Returns a list of the animation keys that are currently queued to play.
 */
 //go:nosplit
 func (self class) GetQueue() Packed.Strings { //gd:AnimationPlayer.get_queue
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_queue, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_queue, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -1080,17 +1082,17 @@ Clears all queued, unplayed animations.
 */
 //go:nosplit
 func (self class) ClearQueue() { //gd:AnimationPlayer.clear_queue
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_queue, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_queue, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetSpeedScale(speed float64) { //gd:AnimationPlayer.set_speed_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_speed_scale, 0|(gdextension.SizeFloat<<4), &struct{ speed float64 }{speed})
 }
 
 //go:nosplit
 func (self class) GetSpeedScale() float64 { //gd:AnimationPlayer.get_speed_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_speed_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1105,45 +1107,45 @@ Returns a negative value if the current animation is playing backwards.
 */
 //go:nosplit
 func (self class) GetPlayingSpeed() float64 { //gd:AnimationPlayer.get_playing_speed
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_playing_speed, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_playing_speed, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAutoplay(name String.Readable) { //gd:AnimationPlayer.set_autoplay
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_autoplay, 0|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 }
 
 //go:nosplit
 func (self class) GetAutoplay() String.Readable { //gd:AnimationPlayer.get_autoplay
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_autoplay, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_autoplay, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMovieQuitOnFinishEnabled(enabled bool) { //gd:AnimationPlayer.set_movie_quit_on_finish_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_movie_quit_on_finish_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_movie_quit_on_finish_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsMovieQuitOnFinishEnabled() bool { //gd:AnimationPlayer.is_movie_quit_on_finish_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_movie_quit_on_finish_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_movie_quit_on_finish_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCurrentAnimationPosition() float64 { //gd:AnimationPlayer.get_current_animation_position
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_animation_position, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_animation_position, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetCurrentAnimationLength() float64 { //gd:AnimationPlayer.get_current_animation_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_animation_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_current_animation_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1157,7 +1159,7 @@ If the argument is empty, the section uses the beginning or end of the animation
 */
 //go:nosplit
 func (self class) SetSectionWithMarkers(start_marker String.Name, end_marker String.Name) { //gd:AnimationPlayer.set_section_with_markers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section_with_markers, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section_with_markers, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		start_marker gdextension.StringName
 		end_marker   gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(start_marker)), pointers.Get(gd.InternalStringName(end_marker))})
@@ -1170,7 +1172,7 @@ Changes the start and end times of the section being played. The current playbac
 */
 //go:nosplit
 func (self class) SetSection(start_time float64, end_time float64) { //gd:AnimationPlayer.set_section
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeFloat<<8), &struct {
 		start_time float64
 		end_time   float64
 	}{start_time, end_time})
@@ -1181,7 +1183,7 @@ Resets the current section. Does nothing if a section has not been set.
 */
 //go:nosplit
 func (self class) ResetSection() { //gd:AnimationPlayer.reset_section
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_section, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_section, 0, &struct{}{})
 }
 
 /*
@@ -1189,7 +1191,7 @@ Returns the start time of the section currently being played.
 */
 //go:nosplit
 func (self class) GetSectionStartTime() float64 { //gd:AnimationPlayer.get_section_start_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_start_time, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_start_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1199,7 +1201,7 @@ Returns the end time of the section currently being played.
 */
 //go:nosplit
 func (self class) GetSectionEndTime() float64 { //gd:AnimationPlayer.get_section_end_time
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_end_time, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_end_time, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1209,7 +1211,7 @@ Returns true if an animation is currently playing with a section.
 */
 //go:nosplit
 func (self class) HasSection() bool { //gd:AnimationPlayer.has_section
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_section, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_section, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1226,7 +1228,7 @@ Note: Seeking to the end of the animation doesn't emit [OnAnimationmixer.Animati
 */
 //go:nosplit
 func (self class) SeekTo(seconds float64, update bool, update_only bool) { //gd:AnimationPlayer.seek
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.seek, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.seek, 0|(gdextension.SizeFloat<<4)|(gdextension.SizeBool<<8)|(gdextension.SizeBool<<12), &struct {
 		seconds     float64
 		update      bool
 		update_only bool
@@ -1238,7 +1240,7 @@ Sets the process notification in which to update animations.
 */
 //go:nosplit
 func (self class) SetProcessCallback(mode AnimationProcessCallback) { //gd:AnimationPlayer.set_process_callback
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_callback, 0|(gdextension.SizeInt<<4), &struct{ mode AnimationProcessCallback }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_process_callback, 0|(gdextension.SizeInt<<4), &struct{ mode AnimationProcessCallback }{mode})
 }
 
 /*
@@ -1246,7 +1248,7 @@ Returns the process notification in which to update animations.
 */
 //go:nosplit
 func (self class) GetProcessCallback() AnimationProcessCallback { //gd:AnimationPlayer.get_process_callback
-	var r_ret = gdextension.Call[AnimationProcessCallback](gd.ObjectChecked(self.AsObject()), methods.get_process_callback, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[AnimationProcessCallback](gd.ObjectChecked(self.AsObject()), methods.get_process_callback, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1256,7 +1258,7 @@ Sets the call mode used for "Call Method" tracks.
 */
 //go:nosplit
 func (self class) SetMethodCallMode(mode AnimationMethodCallMode) { //gd:AnimationPlayer.set_method_call_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_method_call_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AnimationMethodCallMode }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_method_call_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AnimationMethodCallMode }{mode})
 }
 
 /*
@@ -1264,7 +1266,7 @@ Returns the call mode used for "Call Method" tracks.
 */
 //go:nosplit
 func (self class) GetMethodCallMode() AnimationMethodCallMode { //gd:AnimationPlayer.get_method_call_mode
-	var r_ret = gdextension.Call[AnimationMethodCallMode](gd.ObjectChecked(self.AsObject()), methods.get_method_call_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[AnimationMethodCallMode](gd.ObjectChecked(self.AsObject()), methods.get_method_call_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1274,7 +1276,7 @@ Sets the node which node path references will travel from.
 */
 //go:nosplit
 func (self class) SetRoot(path Path.ToNode) { //gd:AnimationPlayer.set_root
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_root, 0|(gdextension.SizeNodePath<<4), &struct{ path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(path))})
 }
 
 /*
@@ -1282,7 +1284,7 @@ Returns the node which node path references will travel from.
 */
 //go:nosplit
 func (self class) GetRoot() Path.ToNode { //gd:AnimationPlayer.get_root
-	var r_ret = gdextension.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root, gdextension.SizeNodePath, &struct{}{})
+	var r_ret = noescape.Call[gdextension.NodePath](gd.ObjectChecked(self.AsObject()), methods.get_root, gdextension.SizeNodePath, &struct{}{})
 	var ret = Path.ToNode(String.Via(gd.NodePathProxy{}, pointers.Pack(pointers.New[gd.NodePath](r_ret))))
 	return ret
 }

@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +52,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -112,7 +114,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -259,7 +261,7 @@ func (self Instance) SetInterior(value bool) {
 
 //go:nosplit
 func (self class) Allocate(to_cell_xform Transform3D.BasisOrigin, aabb AABB.PositionSize, octree_size Vector3.XYZ, octree_cells Packed.Bytes, data_cells Packed.Bytes, distance_field Packed.Bytes, level_counts Packed.Array[int32]) { //gd:VoxelGIData.allocate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.allocate, 0|(gdextension.SizeTransform3D<<4)|(gdextension.SizeAABB<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizePackedArray<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizePackedArray<<28), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.allocate, 0|(gdextension.SizeTransform3D<<4)|(gdextension.SizeAABB<<8)|(gdextension.SizeVector3<<12)|(gdextension.SizePackedArray<<16)|(gdextension.SizePackedArray<<20)|(gdextension.SizePackedArray<<24)|(gdextension.SizePackedArray<<28), &struct {
 		to_cell_xform  Transform3D.BasisOrigin
 		aabb           AABB.PositionSize
 		octree_size    Vector3.XYZ
@@ -282,126 +284,126 @@ Note: If the size was modified without baking the VoxelGI data, then the value o
 */
 //go:nosplit
 func (self class) GetBounds() AABB.PositionSize { //gd:VoxelGIData.get_bounds
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_bounds, gdextension.SizeAABB, &struct{}{})
+	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_bounds, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetOctreeSize() Vector3.XYZ { //gd:VoxelGIData.get_octree_size
-	var r_ret = gdextension.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_octree_size, gdextension.SizeVector3, &struct{}{})
+	var r_ret = noescape.Call[Vector3.XYZ](gd.ObjectChecked(self.AsObject()), methods.get_octree_size, gdextension.SizeVector3, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetToCellXform() Transform3D.BasisOrigin { //gd:VoxelGIData.get_to_cell_xform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_to_cell_xform, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_to_cell_xform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) GetOctreeCells() Packed.Bytes { //gd:VoxelGIData.get_octree_cells
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_octree_cells, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_octree_cells, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetDataCells() Packed.Bytes { //gd:VoxelGIData.get_data_cells
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data_cells, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_data_cells, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Bytes{Array: Packed.Array[byte](Array.Through(gd.PackedProxy[gd.PackedByteArray, byte]{}, pointers.Pack(pointers.Let[gd.PackedByteArray](r_ret))))}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetLevelCounts() Packed.Array[int32] { //gd:VoxelGIData.get_level_counts
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_level_counts, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_level_counts, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDynamicRange(dynamic_range float64) { //gd:VoxelGIData.set_dynamic_range
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dynamic_range, 0|(gdextension.SizeFloat<<4), &struct{ dynamic_range float64 }{dynamic_range})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_dynamic_range, 0|(gdextension.SizeFloat<<4), &struct{ dynamic_range float64 }{dynamic_range})
 }
 
 //go:nosplit
 func (self class) GetDynamicRange() float64 { //gd:VoxelGIData.get_dynamic_range
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dynamic_range, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_dynamic_range, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEnergy(energy float64) { //gd:VoxelGIData.set_energy
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_energy, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_energy, 0|(gdextension.SizeFloat<<4), &struct{ energy float64 }{energy})
 }
 
 //go:nosplit
 func (self class) GetEnergy() float64 { //gd:VoxelGIData.get_energy
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_energy, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBias(bias float64) { //gd:VoxelGIData.set_bias
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
 }
 
 //go:nosplit
 func (self class) GetBias() float64 { //gd:VoxelGIData.get_bias
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bias, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNormalBias(bias float64) { //gd:VoxelGIData.set_normal_bias
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal_bias, 0|(gdextension.SizeFloat<<4), &struct{ bias float64 }{bias})
 }
 
 //go:nosplit
 func (self class) GetNormalBias() float64 { //gd:VoxelGIData.get_normal_bias
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_normal_bias, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_normal_bias, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPropagation(propagation float64) { //gd:VoxelGIData.set_propagation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_propagation, 0|(gdextension.SizeFloat<<4), &struct{ propagation float64 }{propagation})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_propagation, 0|(gdextension.SizeFloat<<4), &struct{ propagation float64 }{propagation})
 }
 
 //go:nosplit
 func (self class) GetPropagation() float64 { //gd:VoxelGIData.get_propagation
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_propagation, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_propagation, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInterior(interior bool) { //gd:VoxelGIData.set_interior
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interior, 0|(gdextension.SizeBool<<4), &struct{ interior bool }{interior})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_interior, 0|(gdextension.SizeBool<<4), &struct{ interior bool }{interior})
 }
 
 //go:nosplit
 func (self class) IsInterior() bool { //gd:VoxelGIData.is_interior
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_interior, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_interior, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseTwoBounces(enable bool) { //gd:VoxelGIData.set_use_two_bounces
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_two_bounces, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_two_bounces, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsUsingTwoBounces() bool { //gd:VoxelGIData.is_using_two_bounces
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_two_bounces, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_two_bounces, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

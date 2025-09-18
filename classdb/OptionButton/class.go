@@ -21,6 +21,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -60,6 +61,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -136,7 +138,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -496,7 +498,7 @@ Note: The item will be selected if there are no other items.
 */
 //go:nosplit
 func (self class) AddItem(label String.Readable, id int64) { //gd:OptionButton.add_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_item, 0|(gdextension.SizeString<<4)|(gdextension.SizeInt<<8), &struct {
 		label gdextension.String
 		id    int64
 	}{pointers.Get(gd.InternalString(label)), id})
@@ -509,7 +511,7 @@ Note: The item will be selected if there are no other items.
 */
 //go:nosplit
 func (self class) AddIconItem(texture [1]gdclass.Texture2D, label String.Readable, id int64) { //gd:OptionButton.add_icon_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_icon_item, 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_icon_item, 0|(gdextension.SizeObject<<4)|(gdextension.SizeString<<8)|(gdextension.SizeInt<<12), &struct {
 		texture gdextension.Object
 		label   gdextension.String
 		id      int64
@@ -521,7 +523,7 @@ Sets the text of the item at index 'idx'.
 */
 //go:nosplit
 func (self class) SetItemText(idx int64, text String.Readable) { //gd:OptionButton.set_item_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_text, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_text, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		idx  int64
 		text gdextension.String
 	}{idx, pointers.Get(gd.InternalString(text))})
@@ -532,7 +534,7 @@ Sets the icon of the item at index 'idx'.
 */
 //go:nosplit
 func (self class) SetItemIcon(idx int64, texture [1]gdclass.Texture2D) { //gd:OptionButton.set_item_icon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_icon, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		idx     int64
 		texture gdextension.Object
 	}{idx, gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
@@ -545,7 +547,7 @@ Disabled items are drawn differently in the dropdown and are not selectable by t
 */
 //go:nosplit
 func (self class) SetItemDisabled(idx int64, disabled bool) { //gd:OptionButton.set_item_disabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_disabled, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		idx      int64
 		disabled bool
 	}{idx, disabled})
@@ -556,7 +558,7 @@ Sets the ID of the item at index 'idx'.
 */
 //go:nosplit
 func (self class) SetItemId(idx int64, id int64) { //gd:OptionButton.set_item_id
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_id, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		idx int64
 		id  int64
 	}{idx, id})
@@ -567,7 +569,7 @@ Sets the metadata of an item. Metadata may be of any type and can be used to sto
 */
 //go:nosplit
 func (self class) SetItemMetadata(idx int64, metadata variant.Any) { //gd:OptionButton.set_item_metadata
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_metadata, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_metadata, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVariant<<8), &struct {
 		idx      int64
 		metadata gdextension.Variant
 	}{idx, gdextension.Variant(pointers.Get(gd.InternalVariant(metadata)))})
@@ -578,7 +580,7 @@ Sets the tooltip of the item at index 'idx'.
 */
 //go:nosplit
 func (self class) SetItemTooltip(idx int64, tooltip String.Readable) { //gd:OptionButton.set_item_tooltip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tooltip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_tooltip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		idx     int64
 		tooltip gdextension.String
 	}{idx, pointers.Get(gd.InternalString(tooltip))})
@@ -593,7 +595,7 @@ Items use [Node.AutoTranslateModeInherit] by default, which uses the same auto t
 */
 //go:nosplit
 func (self class) SetItemAutoTranslateMode(idx int64, mode Node.AutoTranslateMode) { //gd:OptionButton.set_item_auto_translate_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_auto_translate_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_auto_translate_mode, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		idx  int64
 		mode Node.AutoTranslateMode
 	}{idx, mode})
@@ -604,7 +606,7 @@ Returns the text of the item at index 'idx'.
 */
 //go:nosplit
 func (self class) GetItemText(idx int64) String.Readable { //gd:OptionButton.get_item_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_text, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_text, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -614,7 +616,7 @@ Returns the icon of the item at index 'idx'.
 */
 //go:nosplit
 func (self class) GetItemIcon(idx int64) [1]gdclass.Texture2D { //gd:OptionButton.get_item_icon
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_item_icon, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -624,7 +626,7 @@ Returns the ID of the item at index 'idx'.
 */
 //go:nosplit
 func (self class) GetItemId(idx int64) int64 { //gd:OptionButton.get_item_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_id, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -634,7 +636,7 @@ Returns the index of the item with the given 'id'.
 */
 //go:nosplit
 func (self class) GetItemIndex(id int64) int64 { //gd:OptionButton.get_item_index
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_index, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_index, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ id int64 }{id})
 	var ret = r_ret
 	return ret
 }
@@ -644,7 +646,7 @@ Retrieves the metadata of an item. Metadata may be any type and can be used to s
 */
 //go:nosplit
 func (self class) GetItemMetadata(idx int64) variant.Any { //gd:OptionButton.get_item_metadata
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_item_metadata, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_item_metadata, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -654,7 +656,7 @@ Returns the tooltip of the item at index 'idx'.
 */
 //go:nosplit
 func (self class) GetItemTooltip(idx int64) String.Readable { //gd:OptionButton.get_item_tooltip
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_tooltip, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_item_tooltip, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -664,7 +666,7 @@ Returns the auto translate mode of the item at index 'idx'.
 */
 //go:nosplit
 func (self class) GetItemAutoTranslateMode(idx int64) Node.AutoTranslateMode { //gd:OptionButton.get_item_auto_translate_mode
-	var r_ret = gdextension.Call[Node.AutoTranslateMode](gd.ObjectChecked(self.AsObject()), methods.get_item_auto_translate_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[Node.AutoTranslateMode](gd.ObjectChecked(self.AsObject()), methods.get_item_auto_translate_mode, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -674,7 +676,7 @@ Returns true if the item at index 'idx' is disabled.
 */
 //go:nosplit
 func (self class) IsItemDisabled(idx int64) bool { //gd:OptionButton.is_item_disabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -684,7 +686,7 @@ Returns true if the item at index 'idx' is marked as a separator.
 */
 //go:nosplit
 func (self class) IsItemSeparator(idx int64) bool { //gd:OptionButton.is_item_separator
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_separator, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_item_separator, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
@@ -694,7 +696,7 @@ Adds a separator to the list of items. Separators help to group items, and can o
 */
 //go:nosplit
 func (self class) AddSeparator(text String.Readable) { //gd:OptionButton.add_separator
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_separator, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_separator, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 
 /*
@@ -704,7 +706,7 @@ Clears all the items in the [OptionButton].
 */
 //go:nosplit
 func (self class) Clear() { //gd:OptionButton.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
 
 /*
@@ -714,12 +716,12 @@ Passing -1 as the index deselects any currently selected item.
 */
 //go:nosplit
 func (self class) Select(idx int64) { //gd:OptionButton.select_
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_, 0|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_, 0|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 }
 
 //go:nosplit
 func (self class) GetSelected() int64 { //gd:OptionButton.get_selected
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selected, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selected, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -729,7 +731,7 @@ Returns the ID of the selected item, or -1 if no item is selected.
 */
 //go:nosplit
 func (self class) GetSelectedId() int64 { //gd:OptionButton.get_selected_id
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selected_id, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selected_id, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -741,7 +743,7 @@ Gets the metadata of the selected item. Metadata for items can be set using [Set
 */
 //go:nosplit
 func (self class) GetSelectedMetadata() variant.Any { //gd:OptionButton.get_selected_metadata
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_selected_metadata, gdextension.SizeVariant, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_selected_metadata, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -751,7 +753,7 @@ Removes the item at index 'idx'.
 */
 //go:nosplit
 func (self class) RemoveItem(idx int64) { //gd:OptionButton.remove_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_item, 0|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_item, 0|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 }
 
 /*
@@ -764,7 +766,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 */
 //go:nosplit
 func (self class) GetPopup() [1]gdclass.PopupMenu { //gd:OptionButton.get_popup
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_popup, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_popup, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }
@@ -777,17 +779,17 @@ Adjusts popup position and sizing for the [OptionButton], then shows the [PopupM
 */
 //go:nosplit
 func (self class) ShowPopup() { //gd:OptionButton.show_popup
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.show_popup, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.show_popup, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetItemCount(count int64) { //gd:OptionButton.set_item_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_item_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 
 //go:nosplit
 func (self class) GetItemCount() int64 { //gd:OptionButton.get_item_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_item_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -797,7 +799,7 @@ Returns true if this button contains at least one item which is not disabled, or
 */
 //go:nosplit
 func (self class) HasSelectableItems() bool { //gd:OptionButton.has_selectable_items
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_selectable_items, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_selectable_items, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -809,31 +811,31 @@ Returns -1 if no item is found.
 */
 //go:nosplit
 func (self class) GetSelectableItem(from_last bool) int64 { //gd:OptionButton.get_selectable_item
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selectable_item, gdextension.SizeInt|(gdextension.SizeBool<<4), &struct{ from_last bool }{from_last})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selectable_item, gdextension.SizeInt|(gdextension.SizeBool<<4), &struct{ from_last bool }{from_last})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFitToLongestItem(fit bool) { //gd:OptionButton.set_fit_to_longest_item
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fit_to_longest_item, 0|(gdextension.SizeBool<<4), &struct{ fit bool }{fit})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_fit_to_longest_item, 0|(gdextension.SizeBool<<4), &struct{ fit bool }{fit})
 }
 
 //go:nosplit
 func (self class) IsFitToLongestItem() bool { //gd:OptionButton.is_fit_to_longest_item
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_fit_to_longest_item, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_fit_to_longest_item, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAllowReselect(allow bool) { //gd:OptionButton.set_allow_reselect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_reselect, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_allow_reselect, 0|(gdextension.SizeBool<<4), &struct{ allow bool }{allow})
 }
 
 //go:nosplit
 func (self class) GetAllowReselect() bool { //gd:OptionButton.get_allow_reselect
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_reselect, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_allow_reselect, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -843,7 +845,7 @@ If true, shortcuts are disabled and cannot be used to trigger the button.
 */
 //go:nosplit
 func (self class) SetDisableShortcuts(disabled bool) { //gd:OptionButton.set_disable_shortcuts
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_shortcuts, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_shortcuts, 0|(gdextension.SizeBool<<4), &struct{ disabled bool }{disabled})
 }
 func (self Instance) OnItemSelected(cb func(index int), flags ...Signal.Flags) {
 	var flags_together Signal.Flags

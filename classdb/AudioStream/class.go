@@ -13,6 +13,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +49,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -94,7 +96,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -143,7 +145,7 @@ type Interface interface {
 	// Return the controllable parameters of this stream. This array contains dictionaries with a property info description format (see [Object.GetPropertyList]). Additionally, the default value for this parameter must be added tho each dictionary in "default_value" field.
 	//
 	// [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
-	GetParameterList() [][]Object.PropertyInfo
+	GetParameterList() [][]struct{}
 	// Override this method to return true if this stream has a loop.
 	HasLoop() bool
 	// Override this method to return the bar beats of this stream.
@@ -162,7 +164,7 @@ func (self implementation) IsMonophonic() (_ bool)                              
 func (self implementation) GetBpm() (_ Float.X)                                   { return }
 func (self implementation) GetBeatCount() (_ int)                                 { return }
 func (self implementation) GetTags() (_ map[string]interface{})                   { return }
-func (self implementation) GetParameterList() (_ [][]Object.PropertyInfo)         { return }
+func (self implementation) GetParameterList() (_ [][]struct{})                    { return }
 func (self implementation) HasLoop() (_ bool)                                     { return }
 func (self implementation) GetBarBeats() (_ int)                                  { return }
 
@@ -281,7 +283,7 @@ Return the controllable parameters of this stream. This array contains dictionar
 
 [Object.GetPropertyList]: https://pkg.go.dev/graphics.gd/variant/Object#GetPropertyList
 */
-func (Instance) _get_parameter_list(impl func(ptr gdclass.Receiver) [][]Object.PropertyInfo) (cb gd.ExtensionClassCallVirtualFunc) {
+func (Instance) _get_parameter_list(impl func(ptr gdclass.Receiver) [][]struct{}) (cb gd.ExtensionClassCallVirtualFunc) {
 	return func(class any, p_args, p_back gdextension.Pointer) {
 		self := gdclass.Receiver(reflect.ValueOf(class).UnsafePointer())
 		ret := impl(self)
@@ -571,7 +573,7 @@ Returns the length of the audio stream in seconds. If this stream is an [AudioSt
 */
 //go:nosplit
 func (self class) GetLength() float64 { //gd:AudioStream.get_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -581,7 +583,7 @@ Returns true if this audio stream only supports one channel (monophony), or fals
 */
 //go:nosplit
 func (self class) IsMonophonic() bool { //gd:AudioStream.is_monophonic
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monophonic, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_monophonic, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -594,7 +596,7 @@ Returns a newly created [AudioStreamPlayback] intended to play this audio stream
 */
 //go:nosplit
 func (self class) InstantiatePlayback() [1]gdclass.AudioStreamPlayback { //gd:AudioStream.instantiate_playback
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.instantiate_playback, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.instantiate_playback, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioStreamPlayback{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamPlayback](r_ret)}
 	return ret
 }
@@ -606,7 +608,7 @@ Returns if the current [AudioStream] can be used as a sample. Only static stream
 */
 //go:nosplit
 func (self class) CanBeSampled() bool { //gd:AudioStream.can_be_sampled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_be_sampled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_be_sampled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -618,7 +620,7 @@ Generates an [AudioSample] based on the current stream.
 */
 //go:nosplit
 func (self class) GenerateSample() [1]gdclass.AudioSample { //gd:AudioStream.generate_sample
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_sample, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.generate_sample, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.AudioSample{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioSample](r_ret)}
 	return ret
 }
@@ -628,7 +630,7 @@ Returns true if the stream is a collection of other streams, false otherwise.
 */
 //go:nosplit
 func (self class) IsMetaStream() bool { //gd:AudioStream.is_meta_stream
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_meta_stream, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_meta_stream, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

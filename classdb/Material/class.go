@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +50,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -95,7 +97,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -317,24 +319,24 @@ func (class) _can_use_render_priority(impl func(ptr gdclass.Receiver) bool) (cb 
 
 //go:nosplit
 func (self class) SetNextPass(next_pass [1]gdclass.Material) { //gd:Material.set_next_pass
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_next_pass, 0|(gdextension.SizeObject<<4), &struct{ next_pass gdextension.Object }{gdextension.Object(gd.ObjectChecked(next_pass[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_next_pass, 0|(gdextension.SizeObject<<4), &struct{ next_pass gdextension.Object }{gdextension.Object(gd.ObjectChecked(next_pass[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetNextPass() [1]gdclass.Material { //gd:Material.get_next_pass
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_pass, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_next_pass, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRenderPriority(priority int64) { //gd:Material.set_render_priority
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_render_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_render_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
 
 //go:nosplit
 func (self class) GetRenderPriority() int64 { //gd:Material.get_render_priority
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_render_priority, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_render_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -346,7 +348,7 @@ Only available when running in the editor. Opens a popup that visualizes the gen
 */
 //go:nosplit
 func (self class) InspectNativeShaderCode() { //gd:Material.inspect_native_shader_code
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.inspect_native_shader_code, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.inspect_native_shader_code, 0, &struct{}{})
 }
 
 /*
@@ -356,7 +358,7 @@ Creates a placeholder version of this resource ([PlaceholderMaterial]).
 */
 //go:nosplit
 func (self class) CreatePlaceholder() [1]gdclass.Resource { //gd:Material.create_placeholder
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.create_placeholder, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Resource{gd.PointerWithOwnershipTransferredToGo[gdclass.Resource](r_ret)}
 	return ret
 }

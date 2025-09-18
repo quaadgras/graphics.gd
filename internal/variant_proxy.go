@@ -6,6 +6,7 @@ import (
 	"unsafe"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	AABBType "graphics.gd/variant/AABB"
@@ -107,109 +108,109 @@ func (VariantProxy) New(val any) complex128 {
 }
 func (VariantProxy) NewBool(val bool) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeBool, gdextension.SizeBool, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeBool, gdextension.SizeBool, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewInt(val int64) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeInt, gdextension.SizeInt, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeInt, gdextension.SizeInt, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewFloat(val float64) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeFloat, gdextension.SizeFloat, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeFloat, gdextension.SizeFloat, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewVector2(val Vector2Type.XY) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeVector2, gdextension.SizeVector2, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeVector2, gdextension.SizeVector2, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewVector2i(val Vector2iType.XY) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeVector2i, gdextension.SizeVector2i, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeVector2i, gdextension.SizeVector2i, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewRect2(val Rect2Type.PositionSize) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeRect2, gdextension.SizeRect2, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeRect2, gdextension.SizeRect2, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewRect2i(val Rect2iType.PositionSize) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeRect2i, gdextension.SizeRect2i, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeRect2i, gdextension.SizeRect2i, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewVector3(val Vector3Type.XYZ) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeVector3, gdextension.SizeVector3, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeVector3, gdextension.SizeVector3, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewVector3i(val Vector3iType.XYZ) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeVector3i, gdextension.SizeVector3i, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeVector3i, gdextension.SizeVector3i, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewTransform2D(val Transform2DType.OriginXY) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeTransform2D, gdextension.SizeTransform2D, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeTransform2D, gdextension.SizeTransform2D, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewVector4(val Vector4Type.XYZW) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeVector4, gdextension.SizeVector4, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeVector4, gdextension.SizeVector4, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewVector4i(val Vector4iType.XYZW) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeVector4i, gdextension.SizeVector4i, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeVector4i, gdextension.SizeVector4i, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewPlane(val PlaneType.NormalD) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypePlane, gdextension.SizePlane, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypePlane, gdextension.SizePlane, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewQuaternion(val QuaternionType.IJKX) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeQuaternion, gdextension.SizeQuaternion, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeQuaternion, gdextension.SizeQuaternion, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewAABB(val AABBType.PositionSize) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeAABB, gdextension.SizeAABB, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeAABB, gdextension.SizeAABB, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewBasis(val BasisType.XYZ) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeBasis, gdextension.SizeBasis, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeBasis, gdextension.SizeBasis, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewTransform3D(val Transform3DType.BasisOrigin) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeTransform3D, gdextension.SizeTransform3D, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeTransform3D, gdextension.SizeTransform3D, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewProjection(val ProjectionType.XYZW) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeProjection, gdextension.SizeProjection, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeProjection, gdextension.SizeProjection, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewColor(val ColorType.RGBA) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeColor, gdextension.SizeColor, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeColor, gdextension.SizeColor, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 func (VariantProxy) NewRID(val RIDType.Any) complex128 {
 	var ret gdextension.Variant
-	ret.LoadNative(gdextension.TypeRID, gdextension.SizeRID, unsafe.Pointer(&val))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypeRID, gdextension.SizeRID, unsafe.Pointer(&val))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 
 func (VariantProxy) NewBytes(val []byte) complex128 {
 	var ret gdextension.Variant
 	var arr = pointers.Get(NewPackedByteSlice(val))
-	ret.LoadNative(gdextension.TypePackedByteArray, gdextension.SizePackedArray, unsafe.Pointer(&arr))
+	((*noescape.Variant)(&ret)).LoadNative(gdextension.TypePackedByteArray, gdextension.SizePackedArray, unsafe.Pointer(&arr))
 	return pointers.Pack(pointers.New[Variant]([3]uint64(ret)))
 }
 

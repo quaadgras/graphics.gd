@@ -21,6 +21,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -61,6 +62,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -123,7 +125,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -328,67 +330,67 @@ Returns true if this is a root shape and is thus the object that is rendered.
 */
 //go:nosplit
 func (self class) IsRootShape() bool { //gd:CSGShape3D.is_root_shape
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_root_shape, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_root_shape, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOperation(operation Operation) { //gd:CSGShape3D.set_operation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_operation, 0|(gdextension.SizeInt<<4), &struct{ operation Operation }{operation})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_operation, 0|(gdextension.SizeInt<<4), &struct{ operation Operation }{operation})
 }
 
 //go:nosplit
 func (self class) GetOperation() Operation { //gd:CSGShape3D.get_operation
-	var r_ret = gdextension.Call[Operation](gd.ObjectChecked(self.AsObject()), methods.get_operation, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Operation](gd.ObjectChecked(self.AsObject()), methods.get_operation, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSnap(snap float64) { //gd:CSGShape3D.set_snap
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_snap, 0|(gdextension.SizeFloat<<4), &struct{ snap float64 }{snap})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_snap, 0|(gdextension.SizeFloat<<4), &struct{ snap float64 }{snap})
 }
 
 //go:nosplit
 func (self class) GetSnap() float64 { //gd:CSGShape3D.get_snap
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_snap, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_snap, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseCollision(operation bool) { //gd:CSGShape3D.set_use_collision
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_collision, 0|(gdextension.SizeBool<<4), &struct{ operation bool }{operation})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_collision, 0|(gdextension.SizeBool<<4), &struct{ operation bool }{operation})
 }
 
 //go:nosplit
 func (self class) IsUsingCollision() bool { //gd:CSGShape3D.is_using_collision
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_collision, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_collision, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionLayer(layer int64) { //gd:CSGShape3D.set_collision_layer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer, 0|(gdextension.SizeInt<<4), &struct{ layer int64 }{layer})
 }
 
 //go:nosplit
 func (self class) GetCollisionLayer() int64 { //gd:CSGShape3D.get_collision_layer
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionMask(mask int64) { //gd:CSGShape3D.set_collision_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 
 //go:nosplit
 func (self class) GetCollisionMask() int64 { //gd:CSGShape3D.get_collision_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -400,7 +402,7 @@ Based on 'value', enables or disables the specified layer in the [CollisionMask]
 */
 //go:nosplit
 func (self class) SetCollisionMaskValue(layer_number int64, value bool) { //gd:CSGShape3D.set_collision_mask_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_mask_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
@@ -413,7 +415,7 @@ Returns whether or not the specified layer of the [CollisionMask] is enabled, gi
 */
 //go:nosplit
 func (self class) GetCollisionMaskValue(layer_number int64) bool { //gd:CSGShape3D.get_collision_mask_value
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_mask_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
@@ -425,7 +427,7 @@ Based on 'value', enables or disables the specified layer in the [CollisionLayer
 */
 //go:nosplit
 func (self class) SetCollisionLayerValue(layer_number int64, value bool) { //gd:CSGShape3D.set_collision_layer_value
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_layer_value, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		layer_number int64
 		value        bool
 	}{layer_number, value})
@@ -438,19 +440,19 @@ Returns whether or not the specified layer of the [CollisionLayer] is enabled, g
 */
 //go:nosplit
 func (self class) GetCollisionLayerValue(layer_number int64) bool { //gd:CSGShape3D.get_collision_layer_value
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_collision_layer_value, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ layer_number int64 }{layer_number})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCollisionPriority(priority float64) { //gd:CSGShape3D.set_collision_priority
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_priority, 0|(gdextension.SizeFloat<<4), &struct{ priority float64 }{priority})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_collision_priority, 0|(gdextension.SizeFloat<<4), &struct{ priority float64 }{priority})
 }
 
 //go:nosplit
 func (self class) GetCollisionPriority() float64 { //gd:CSGShape3D.get_collision_priority
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_collision_priority, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -469,19 +471,19 @@ Note: CSG mesh data updates are deferred, which means they are updated with a de
 */
 //go:nosplit
 func (self class) BakeCollisionShape() [1]gdclass.ConcavePolygonShape3D { //gd:CSGShape3D.bake_collision_shape
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_collision_shape, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_collision_shape, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ConcavePolygonShape3D{gd.PointerWithOwnershipTransferredToGo[gdclass.ConcavePolygonShape3D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCalculateTangents(enabled bool) { //gd:CSGShape3D.set_calculate_tangents
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_calculate_tangents, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_calculate_tangents, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsCalculatingTangents() bool { //gd:CSGShape3D.is_calculating_tangents
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_calculating_tangents, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_calculating_tangents, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -499,7 +501,7 @@ Note: CSG mesh data updates are deferred, which means they are updated with a de
 */
 //go:nosplit
 func (self class) GetMeshes() Array.Any { //gd:CSGShape3D.get_meshes
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_meshes, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_meshes, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -516,7 +518,7 @@ Note: CSG mesh data updates are deferred, which means they are updated with a de
 */
 //go:nosplit
 func (self class) BakeStaticMesh() [1]gdclass.ArrayMesh { //gd:CSGShape3D.bake_static_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_static_mesh, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.bake_static_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.ArrayMesh{gd.PointerWithOwnershipTransferredToGo[gdclass.ArrayMesh](r_ret)}
 	return ret
 }

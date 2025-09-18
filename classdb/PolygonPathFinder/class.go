@@ -7,6 +7,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -42,6 +43,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -90,7 +92,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -193,7 +195,7 @@ The length of 'connections' must be even, returns an error if odd.
 */
 //go:nosplit
 func (self class) Setup(points Packed.Array[Vector2.XY], connections Packed.Array[int32]) { //gd:PolygonPathFinder.setup
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.setup, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
 		points      gdextension.PackedArray[Vector2.XY]
 		connections gdextension.PackedArray[int32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](points)), pointers.Get(gd.InternalPacked[gd.PackedInt32Array, int32](connections))})
@@ -201,7 +203,7 @@ func (self class) Setup(points Packed.Array[Vector2.XY], connections Packed.Arra
 
 //go:nosplit
 func (self class) FindPath(from Vector2.XY, to Vector2.XY) Packed.Array[Vector2.XY] { //gd:PolygonPathFinder.find_path
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.find_path, gdextension.SizePackedArray|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.find_path, gdextension.SizePackedArray|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
 		from Vector2.XY
 		to   Vector2.XY
 	}{from, to})
@@ -211,7 +213,7 @@ func (self class) FindPath(from Vector2.XY, to Vector2.XY) Packed.Array[Vector2.
 
 //go:nosplit
 func (self class) GetIntersections(from Vector2.XY, to Vector2.XY) Packed.Array[Vector2.XY] { //gd:PolygonPathFinder.get_intersections
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_intersections, gdextension.SizePackedArray|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_intersections, gdextension.SizePackedArray|(gdextension.SizeVector2<<4)|(gdextension.SizeVector2<<8), &struct {
 		from Vector2.XY
 		to   Vector2.XY
 	}{from, to})
@@ -221,7 +223,7 @@ func (self class) GetIntersections(from Vector2.XY, to Vector2.XY) Packed.Array[
 
 //go:nosplit
 func (self class) GetClosestPoint(point Vector2.XY) Vector2.XY { //gd:PolygonPathFinder.get_closest_point
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_closest_point, gdextension.SizeVector2|(gdextension.SizeVector2<<4), &struct{ point Vector2.XY }{point})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_closest_point, gdextension.SizeVector2|(gdextension.SizeVector2<<4), &struct{ point Vector2.XY }{point})
 	var ret = r_ret
 	return ret
 }
@@ -233,14 +235,14 @@ Returns true if 'point' falls inside the polygon area.
 */
 //go:nosplit
 func (self class) IsPointInside(point Vector2.XY) bool { //gd:PolygonPathFinder.is_point_inside
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_point_inside, gdextension.SizeBool|(gdextension.SizeVector2<<4), &struct{ point Vector2.XY }{point})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_point_inside, gdextension.SizeBool|(gdextension.SizeVector2<<4), &struct{ point Vector2.XY }{point})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPointPenalty(idx int64, penalty float64) { //gd:PolygonPathFinder.set_point_penalty
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_penalty, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_point_penalty, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		idx     int64
 		penalty float64
 	}{idx, penalty})
@@ -248,14 +250,14 @@ func (self class) SetPointPenalty(idx int64, penalty float64) { //gd:PolygonPath
 
 //go:nosplit
 func (self class) GetPointPenalty(idx int64) float64 { //gd:PolygonPathFinder.get_point_penalty
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_point_penalty, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_point_penalty, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetBounds() Rect2.PositionSize { //gd:PolygonPathFinder.get_bounds
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_bounds, gdextension.SizeRect2, &struct{}{})
+	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_bounds, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

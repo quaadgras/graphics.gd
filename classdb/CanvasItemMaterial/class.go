@@ -14,6 +14,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +49,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -100,7 +102,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -206,72 +208,72 @@ func (self Instance) SetParticlesAnimLoop(value bool) {
 
 //go:nosplit
 func (self class) SetBlendMode(blend_mode BlendMode) { //gd:CanvasItemMaterial.set_blend_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_mode, 0|(gdextension.SizeInt<<4), &struct{ blend_mode BlendMode }{blend_mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_blend_mode, 0|(gdextension.SizeInt<<4), &struct{ blend_mode BlendMode }{blend_mode})
 }
 
 //go:nosplit
 func (self class) GetBlendMode() BlendMode { //gd:CanvasItemMaterial.get_blend_mode
-	var r_ret = gdextension.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[BlendMode](gd.ObjectChecked(self.AsObject()), methods.get_blend_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLightMode(light_mode LightMode) { //gd:CanvasItemMaterial.set_light_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_mode, 0|(gdextension.SizeInt<<4), &struct{ light_mode LightMode }{light_mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_light_mode, 0|(gdextension.SizeInt<<4), &struct{ light_mode LightMode }{light_mode})
 }
 
 //go:nosplit
 func (self class) GetLightMode() LightMode { //gd:CanvasItemMaterial.get_light_mode
-	var r_ret = gdextension.Call[LightMode](gd.ObjectChecked(self.AsObject()), methods.get_light_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[LightMode](gd.ObjectChecked(self.AsObject()), methods.get_light_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParticlesAnimation(particles_anim bool) { //gd:CanvasItemMaterial.set_particles_animation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_animation, 0|(gdextension.SizeBool<<4), &struct{ particles_anim bool }{particles_anim})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_animation, 0|(gdextension.SizeBool<<4), &struct{ particles_anim bool }{particles_anim})
 }
 
 //go:nosplit
 func (self class) GetParticlesAnimation() bool { //gd:CanvasItemMaterial.get_particles_animation
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_particles_animation, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_particles_animation, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParticlesAnimHFrames(frames int64) { //gd:CanvasItemMaterial.set_particles_anim_h_frames
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_anim_h_frames, 0|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_anim_h_frames, 0|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
 }
 
 //go:nosplit
 func (self class) GetParticlesAnimHFrames() int64 { //gd:CanvasItemMaterial.get_particles_anim_h_frames
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_h_frames, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_h_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParticlesAnimVFrames(frames int64) { //gd:CanvasItemMaterial.set_particles_anim_v_frames
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_anim_v_frames, 0|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_anim_v_frames, 0|(gdextension.SizeInt<<4), &struct{ frames int64 }{frames})
 }
 
 //go:nosplit
 func (self class) GetParticlesAnimVFrames() int64 { //gd:CanvasItemMaterial.get_particles_anim_v_frames
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_v_frames, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_v_frames, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetParticlesAnimLoop(loop bool) { //gd:CanvasItemMaterial.set_particles_anim_loop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_anim_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_particles_anim_loop, 0|(gdextension.SizeBool<<4), &struct{ loop bool }{loop})
 }
 
 //go:nosplit
 func (self class) GetParticlesAnimLoop() bool { //gd:CanvasItemMaterial.get_particles_anim_loop
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_loop, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_particles_anim_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

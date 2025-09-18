@@ -85,6 +85,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -124,6 +125,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -257,7 +259,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -843,7 +845,7 @@ Returns true if the user has text in the [Input Method Editor] (IME).
 */
 //go:nosplit
 func (self class) HasImeText() bool { //gd:LineEdit.has_ime_text
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_ime_text, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_ime_text, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -855,7 +857,7 @@ Closes the [Input Method Editor] (IME) if it is open. Any text in the IME will b
 */
 //go:nosplit
 func (self class) CancelIme() { //gd:LineEdit.cancel_ime
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cancel_ime, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.cancel_ime, 0, &struct{}{})
 }
 
 /*
@@ -865,17 +867,17 @@ Applies text from the [Input Method Editor] (IME) and closes the IME if it is op
 */
 //go:nosplit
 func (self class) ApplyIme() { //gd:LineEdit.apply_ime
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_ime, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply_ime, 0, &struct{}{})
 }
 
 //go:nosplit
 func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:LineEdit.set_horizontal_alignment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.HorizontalAlignment }{alignment})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.HorizontalAlignment }{alignment})
 }
 
 //go:nosplit
 func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:LineEdit.get_horizontal_alignment
-	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -890,7 +892,7 @@ See also [KeepEditingOnTextSubmit].
 */
 //go:nosplit
 func (self class) Edit() { //gd:LineEdit.edit
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.edit, 0, &struct{}{})
 }
 
 /*
@@ -898,7 +900,7 @@ Allows exiting edit mode while preserving focus.
 */
 //go:nosplit
 func (self class) Unedit() { //gd:LineEdit.unedit
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unedit, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unedit, 0, &struct{}{})
 }
 
 /*
@@ -908,19 +910,19 @@ Returns whether the [LineEdit] is being edited.
 */
 //go:nosplit
 func (self class) IsEditing() bool { //gd:LineEdit.is_editing
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetKeepEditingOnTextSubmit(enable bool) { //gd:LineEdit.set_keep_editing_on_text_submit
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_editing_on_text_submit, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_keep_editing_on_text_submit, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsEditingKeptOnTextSubmit() bool { //gd:LineEdit.is_editing_kept_on_text_submit
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_kept_on_text_submit, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editing_kept_on_text_submit, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -933,7 +935,7 @@ Erases the [LineEdit]'s [Text].
 */
 //go:nosplit
 func (self class) Clear() { //gd:LineEdit.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
 
 /*
@@ -950,7 +952,7 @@ Selects characters inside [LineEdit] between 'from' and 'to'. By default, 'from'
 */
 //go:nosplit
 func (self class) Select(from int64, to int64) { //gd:LineEdit.select_
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from int64
 		to   int64
 	}{from, to})
@@ -961,7 +963,7 @@ Selects the whole string.
 */
 //go:nosplit
 func (self class) SelectAll() { //gd:LineEdit.select_all
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_all, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.select_all, 0, &struct{}{})
 }
 
 /*
@@ -969,7 +971,7 @@ Clears the current selection.
 */
 //go:nosplit
 func (self class) Deselect() { //gd:LineEdit.deselect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.deselect, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.deselect, 0, &struct{}{})
 }
 
 /*
@@ -977,7 +979,7 @@ Returns true if an "undo" action is available.
 */
 //go:nosplit
 func (self class) HasUndo() bool { //gd:LineEdit.has_undo
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_undo, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_undo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -987,7 +989,7 @@ Returns true if a "redo" action is available.
 */
 //go:nosplit
 func (self class) HasRedo() bool { //gd:LineEdit.has_redo
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_redo, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_redo, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -997,7 +999,7 @@ Returns true if the user has selected text.
 */
 //go:nosplit
 func (self class) HasSelection() bool { //gd:LineEdit.has_selection
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_selection, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_selection, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1007,7 +1009,7 @@ Returns the text inside the selection.
 */
 //go:nosplit
 func (self class) GetSelectedText() String.Readable { //gd:LineEdit.get_selected_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_selected_text, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_selected_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1017,7 +1019,7 @@ Returns the selection begin column.
 */
 //go:nosplit
 func (self class) GetSelectionFromColumn() int64 { //gd:LineEdit.get_selection_from_column
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selection_from_column, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selection_from_column, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1027,105 +1029,105 @@ Returns the selection end column.
 */
 //go:nosplit
 func (self class) GetSelectionToColumn() int64 { //gd:LineEdit.get_selection_to_column
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selection_to_column, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_selection_to_column, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetText(text String.Readable) { //gd:LineEdit.set_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 
 //go:nosplit
 func (self class) GetText() String.Readable { //gd:LineEdit.get_text
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_text, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) GetDrawControlChars() bool { //gd:LineEdit.get_draw_control_chars
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_draw_control_chars, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_draw_control_chars, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawControlChars(enable bool) { //gd:LineEdit.set_draw_control_chars
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_control_chars, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_control_chars, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) SetTextDirection(direction Control.TextDirection) { //gd:LineEdit.set_text_direction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_direction, 0|(gdextension.SizeInt<<4), &struct{ direction Control.TextDirection }{direction})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_text_direction, 0|(gdextension.SizeInt<<4), &struct{ direction Control.TextDirection }{direction})
 }
 
 //go:nosplit
 func (self class) GetTextDirection() Control.TextDirection { //gd:LineEdit.get_text_direction
-	var r_ret = gdextension.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Control.TextDirection](gd.ObjectChecked(self.AsObject()), methods.get_text_direction, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLanguage(language String.Readable) { //gd:LineEdit.set_language
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_language, 0|(gdextension.SizeString<<4), &struct{ language gdextension.String }{pointers.Get(gd.InternalString(language))})
 }
 
 //go:nosplit
 func (self class) GetLanguage() String.Readable { //gd:LineEdit.get_language
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverride(parser TextServer.StructuredTextParser) { //gd:LineEdit.set_structured_text_bidi_override
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override, 0|(gdextension.SizeInt<<4), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override, 0|(gdextension.SizeInt<<4), &struct {
 		parser TextServer.StructuredTextParser
 	}{parser})
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverride() TextServer.StructuredTextParser { //gd:LineEdit.get_structured_text_bidi_override
-	var r_ret = gdextension.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TextServer.StructuredTextParser](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStructuredTextBidiOverrideOptions(args Array.Any) { //gd:LineEdit.set_structured_text_bidi_override_options
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override_options, 0|(gdextension.SizeArray<<4), &struct{ args gdextension.Array }{pointers.Get(gd.InternalArray(args))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_structured_text_bidi_override_options, 0|(gdextension.SizeArray<<4), &struct{ args gdextension.Array }{pointers.Get(gd.InternalArray(args))})
 }
 
 //go:nosplit
 func (self class) GetStructuredTextBidiOverrideOptions() Array.Any { //gd:LineEdit.get_structured_text_bidi_override_options
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override_options, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_structured_text_bidi_override_options, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPlaceholder(text String.Readable) { //gd:LineEdit.set_placeholder
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_placeholder, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_placeholder, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 
 //go:nosplit
 func (self class) GetPlaceholder() String.Readable { //gd:LineEdit.get_placeholder
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_placeholder, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_placeholder, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCaretColumn(position int64) { //gd:LineEdit.set_caret_column
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_caret_column, 0|(gdextension.SizeInt<<4), &struct{ position int64 }{position})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_caret_column, 0|(gdextension.SizeInt<<4), &struct{ position int64 }{position})
 }
 
 //go:nosplit
 func (self class) GetCaretColumn() int64 { //gd:LineEdit.get_caret_column
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_caret_column, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_caret_column, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1137,7 +1139,7 @@ Note: To check at caret location use get_next_composite_character_column(get_car
 */
 //go:nosplit
 func (self class) GetNextCompositeCharacterColumn(column int64) int64 { //gd:LineEdit.get_next_composite_character_column
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_next_composite_character_column, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_next_composite_character_column, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
 	var ret = r_ret
 	return ret
 }
@@ -1149,7 +1151,7 @@ Note: To check at caret location use get_previous_composite_character_column(get
 */
 //go:nosplit
 func (self class) GetPreviousCompositeCharacterColumn(column int64) int64 { //gd:LineEdit.get_previous_composite_character_column
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_previous_composite_character_column, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_previous_composite_character_column, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ column int64 }{column})
 	var ret = r_ret
 	return ret
 }
@@ -1161,79 +1163,79 @@ Returns the scroll offset due to [CaretColumn], as a number of characters.
 */
 //go:nosplit
 func (self class) GetScrollOffset() float64 { //gd:LineEdit.get_scroll_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_scroll_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_scroll_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetExpandToTextLengthEnabled(enabled bool) { //gd:LineEdit.set_expand_to_text_length_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_expand_to_text_length_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_expand_to_text_length_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsExpandToTextLengthEnabled() bool { //gd:LineEdit.is_expand_to_text_length_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_expand_to_text_length_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_expand_to_text_length_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCaretBlinkEnabled(enabled bool) { //gd:LineEdit.set_caret_blink_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_caret_blink_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_caret_blink_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsCaretBlinkEnabled() bool { //gd:LineEdit.is_caret_blink_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_caret_blink_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_caret_blink_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCaretMidGraphemeEnabled(enabled bool) { //gd:LineEdit.set_caret_mid_grapheme_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_caret_mid_grapheme_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_caret_mid_grapheme_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsCaretMidGraphemeEnabled() bool { //gd:LineEdit.is_caret_mid_grapheme_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_caret_mid_grapheme_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_caret_mid_grapheme_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCaretForceDisplayed(enabled bool) { //gd:LineEdit.set_caret_force_displayed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_caret_force_displayed, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_caret_force_displayed, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsCaretForceDisplayed() bool { //gd:LineEdit.is_caret_force_displayed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_caret_force_displayed, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_caret_force_displayed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCaretBlinkInterval(interval float64) { //gd:LineEdit.set_caret_blink_interval
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_caret_blink_interval, 0|(gdextension.SizeFloat<<4), &struct{ interval float64 }{interval})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_caret_blink_interval, 0|(gdextension.SizeFloat<<4), &struct{ interval float64 }{interval})
 }
 
 //go:nosplit
 func (self class) GetCaretBlinkInterval() float64 { //gd:LineEdit.get_caret_blink_interval
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_caret_blink_interval, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_caret_blink_interval, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaxLength(chars int64) { //gd:LineEdit.set_max_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_length, 0|(gdextension.SizeInt<<4), &struct{ chars int64 }{chars})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_max_length, 0|(gdextension.SizeInt<<4), &struct{ chars int64 }{chars})
 }
 
 //go:nosplit
 func (self class) GetMaxLength() int64 { //gd:LineEdit.get_max_length
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_length, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_max_length, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -1245,7 +1247,7 @@ Inserts 'text' at the caret. If the resulting value is longer than [MaxLength], 
 */
 //go:nosplit
 func (self class) InsertTextAtCaret(text String.Readable) { //gd:LineEdit.insert_text_at_caret
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.insert_text_at_caret, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.insert_text_at_caret, 0|(gdextension.SizeString<<4), &struct{ text gdextension.String }{pointers.Get(gd.InternalString(text))})
 }
 
 /*
@@ -1253,7 +1255,7 @@ Deletes one character at the caret's current position (equivalent to pressing De
 */
 //go:nosplit
 func (self class) DeleteCharAtCaret() { //gd:LineEdit.delete_char_at_caret
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.delete_char_at_caret, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.delete_char_at_caret, 0, &struct{}{})
 }
 
 /*
@@ -1263,7 +1265,7 @@ Deletes a section of the [Text] going from position 'from_column' to 'to_column'
 */
 //go:nosplit
 func (self class) DeleteText(from_column int64, to_column int64) { //gd:LineEdit.delete_text
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.delete_text, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.delete_text, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from_column int64
 		to_column   int64
 	}{from_column, to_column})
@@ -1271,36 +1273,36 @@ func (self class) DeleteText(from_column int64, to_column int64) { //gd:LineEdit
 
 //go:nosplit
 func (self class) SetEditable(enabled bool) { //gd:LineEdit.set_editable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsEditable() bool { //gd:LineEdit.is_editable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSecret(enabled bool) { //gd:LineEdit.set_secret
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_secret, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_secret, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsSecret() bool { //gd:LineEdit.is_secret
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_secret, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_secret, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSecretCharacter(character String.Readable) { //gd:LineEdit.set_secret_character
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_secret_character, 0|(gdextension.SizeString<<4), &struct{ character gdextension.String }{pointers.Get(gd.InternalString(character))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_secret_character, 0|(gdextension.SizeString<<4), &struct{ character gdextension.String }{pointers.Get(gd.InternalString(character))})
 }
 
 //go:nosplit
 func (self class) GetSecretCharacter() String.Readable { //gd:LineEdit.get_secret_character
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_secret_character, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_secret_character, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -1310,7 +1312,7 @@ Executes a given action as defined in the [MenuItems] enum.
 */
 //go:nosplit
 func (self class) MenuOption(option int64) { //gd:LineEdit.menu_option
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.menu_option, 0|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.menu_option, 0|(gdextension.SizeInt<<4), &struct{ option int64 }{option})
 }
 
 /*
@@ -1343,7 +1345,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 */
 //go:nosplit
 func (self class) GetMenu() [1]gdclass.PopupMenu { //gd:LineEdit.get_menu
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_menu, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_menu, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.PopupMenu{gd.PointerLifetimeBoundTo[gdclass.PopupMenu](self.AsObject(), r_ret)}
 	return ret
 }
@@ -1353,187 +1355,187 @@ Returns whether the menu is visible. Use this instead of get_menu().visible to i
 */
 //go:nosplit
 func (self class) IsMenuVisible() bool { //gd:LineEdit.is_menu_visible
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_menu_visible, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_menu_visible, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetContextMenuEnabled(enable bool) { //gd:LineEdit.set_context_menu_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_context_menu_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_context_menu_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsContextMenuEnabled() bool { //gd:LineEdit.is_context_menu_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_context_menu_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_context_menu_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEmojiMenuEnabled(enable bool) { //gd:LineEdit.set_emoji_menu_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emoji_menu_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_emoji_menu_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsEmojiMenuEnabled() bool { //gd:LineEdit.is_emoji_menu_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emoji_menu_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_emoji_menu_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBackspaceDeletesCompositeCharacterEnabled(enable bool) { //gd:LineEdit.set_backspace_deletes_composite_character_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_backspace_deletes_composite_character_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_backspace_deletes_composite_character_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsBackspaceDeletesCompositeCharacterEnabled() bool { //gd:LineEdit.is_backspace_deletes_composite_character_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_backspace_deletes_composite_character_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_backspace_deletes_composite_character_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVirtualKeyboardEnabled(enable bool) { //gd:LineEdit.set_virtual_keyboard_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_virtual_keyboard_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_virtual_keyboard_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsVirtualKeyboardEnabled() bool { //gd:LineEdit.is_virtual_keyboard_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_virtual_keyboard_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_virtual_keyboard_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVirtualKeyboardShowOnFocus(show_on_focus bool) { //gd:LineEdit.set_virtual_keyboard_show_on_focus
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_virtual_keyboard_show_on_focus, 0|(gdextension.SizeBool<<4), &struct{ show_on_focus bool }{show_on_focus})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_virtual_keyboard_show_on_focus, 0|(gdextension.SizeBool<<4), &struct{ show_on_focus bool }{show_on_focus})
 }
 
 //go:nosplit
 func (self class) GetVirtualKeyboardShowOnFocus() bool { //gd:LineEdit.get_virtual_keyboard_show_on_focus
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_virtual_keyboard_show_on_focus, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_virtual_keyboard_show_on_focus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVirtualKeyboardType(atype VirtualKeyboardType) { //gd:LineEdit.set_virtual_keyboard_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_virtual_keyboard_type, 0|(gdextension.SizeInt<<4), &struct{ atype VirtualKeyboardType }{atype})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_virtual_keyboard_type, 0|(gdextension.SizeInt<<4), &struct{ atype VirtualKeyboardType }{atype})
 }
 
 //go:nosplit
 func (self class) GetVirtualKeyboardType() VirtualKeyboardType { //gd:LineEdit.get_virtual_keyboard_type
-	var r_ret = gdextension.Call[VirtualKeyboardType](gd.ObjectChecked(self.AsObject()), methods.get_virtual_keyboard_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[VirtualKeyboardType](gd.ObjectChecked(self.AsObject()), methods.get_virtual_keyboard_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetClearButtonEnabled(enable bool) { //gd:LineEdit.set_clear_button_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clear_button_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clear_button_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsClearButtonEnabled() bool { //gd:LineEdit.is_clear_button_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_clear_button_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_clear_button_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShortcutKeysEnabled(enable bool) { //gd:LineEdit.set_shortcut_keys_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_keys_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shortcut_keys_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsShortcutKeysEnabled() bool { //gd:LineEdit.is_shortcut_keys_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shortcut_keys_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_shortcut_keys_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMiddleMousePasteEnabled(enable bool) { //gd:LineEdit.set_middle_mouse_paste_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_middle_mouse_paste_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_middle_mouse_paste_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsMiddleMousePasteEnabled() bool { //gd:LineEdit.is_middle_mouse_paste_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_middle_mouse_paste_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_middle_mouse_paste_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelectingEnabled(enable bool) { //gd:LineEdit.set_selecting_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selecting_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_selecting_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsSelectingEnabled() bool { //gd:LineEdit.is_selecting_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selecting_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_selecting_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDeselectOnFocusLossEnabled(enable bool) { //gd:LineEdit.set_deselect_on_focus_loss_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deselect_on_focus_loss_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_deselect_on_focus_loss_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsDeselectOnFocusLossEnabled() bool { //gd:LineEdit.is_deselect_on_focus_loss_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deselect_on_focus_loss_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_deselect_on_focus_loss_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDragAndDropSelectionEnabled(enable bool) { //gd:LineEdit.set_drag_and_drop_selection_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_and_drop_selection_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_drag_and_drop_selection_enabled, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsDragAndDropSelectionEnabled() bool { //gd:LineEdit.is_drag_and_drop_selection_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_and_drop_selection_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_drag_and_drop_selection_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRightIcon(icon [1]gdclass.Texture2D) { //gd:LineEdit.set_right_icon
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_right_icon, 0|(gdextension.SizeObject<<4), &struct{ icon gdextension.Object }{gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_right_icon, 0|(gdextension.SizeObject<<4), &struct{ icon gdextension.Object }{gdextension.Object(gd.ObjectChecked(icon[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetRightIcon() [1]gdclass.Texture2D { //gd:LineEdit.get_right_icon
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_right_icon, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_right_icon, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlat(enabled bool) { //gd:LineEdit.set_flat
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flat, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flat, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsFlat() bool { //gd:LineEdit.is_flat
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flat, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flat, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelectAllOnFocus(enabled bool) { //gd:LineEdit.set_select_all_on_focus
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_select_all_on_focus, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_select_all_on_focus, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsSelectAllOnFocus() bool { //gd:LineEdit.is_select_all_on_focus
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_select_all_on_focus, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_select_all_on_focus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

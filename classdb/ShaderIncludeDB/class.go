@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -42,6 +43,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -85,7 +87,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -169,7 +171,7 @@ Returns a list of built-in include files that are currently registered.
 */
 //go:nosplit
 func (self class) ListBuiltInIncludeFiles() Packed.Strings { //gd:ShaderIncludeDB.list_built_in_include_files
-	var r_ret = gdextension.CallStatic[gd.PackedPointers](methods.list_built_in_include_files, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.CallStatic[gd.PackedPointers](methods.list_built_in_include_files, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Strings(Array.Through(gd.PackedStringArrayProxy{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -179,7 +181,7 @@ Returns true if an include file with this name exists.
 */
 //go:nosplit
 func (self class) HasBuiltInIncludeFile(filename String.Readable) bool { //gd:ShaderIncludeDB.has_built_in_include_file
-	var r_ret = gdextension.CallStatic[bool](methods.has_built_in_include_file, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ filename gdextension.String }{pointers.Get(gd.InternalString(filename))})
+	var r_ret = noescape.CallStatic[bool](methods.has_built_in_include_file, gdextension.SizeBool|(gdextension.SizeString<<4), &struct{ filename gdextension.String }{pointers.Get(gd.InternalString(filename))})
 	var ret = r_ret
 	return ret
 }
@@ -189,7 +191,7 @@ Returns the code for the built-in shader fragment. You can also access this in y
 */
 //go:nosplit
 func (self class) GetBuiltInIncludeFile(filename String.Readable) String.Readable { //gd:ShaderIncludeDB.get_built_in_include_file
-	var r_ret = gdextension.CallStatic[gdextension.String](methods.get_built_in_include_file, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ filename gdextension.String }{pointers.Get(gd.InternalString(filename))})
+	var r_ret = noescape.CallStatic[gdextension.String](methods.get_built_in_include_file, gdextension.SizeString|(gdextension.SizeString<<4), &struct{ filename gdextension.String }{pointers.Get(gd.InternalString(filename))})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }

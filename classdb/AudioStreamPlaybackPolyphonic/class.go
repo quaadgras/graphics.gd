@@ -18,6 +18,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +54,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -98,7 +100,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -249,7 +251,7 @@ This function returns [InvalidId] if the amount of streams currently playing equ
 */
 //go:nosplit
 func (self class) PlayStream(stream [1]gdclass.AudioStream, from_offset float64, volume_db float64, pitch_scale float64, playback_type AudioServer.PlaybackType, bus String.Name) int64 { //gd:AudioStreamPlaybackPolyphonic.play_stream
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.play_stream, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeStringName<<24), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.play_stream, gdextension.SizeInt|(gdextension.SizeObject<<4)|(gdextension.SizeFloat<<8)|(gdextension.SizeFloat<<12)|(gdextension.SizeFloat<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeStringName<<24), &struct {
 		stream        gdextension.Object
 		from_offset   float64
 		volume_db     float64
@@ -268,7 +270,7 @@ Change the stream volume (in db). The 'stream' argument is an integer ID returne
 */
 //go:nosplit
 func (self class) SetStreamVolume(stream int64, volume_db float64) { //gd:AudioStreamPlaybackPolyphonic.set_stream_volume
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_volume, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_volume, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		stream    int64
 		volume_db float64
 	}{stream, volume_db})
@@ -281,7 +283,7 @@ Change the stream pitch scale. The 'stream' argument is an integer ID returned b
 */
 //go:nosplit
 func (self class) SetStreamPitchScale(stream int64, pitch_scale float64) { //gd:AudioStreamPlaybackPolyphonic.set_stream_pitch_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_pitch_scale, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_stream_pitch_scale, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		stream      int64
 		pitch_scale float64
 	}{stream, pitch_scale})
@@ -294,7 +296,7 @@ Returns true if the stream associated with the given integer ID is still playing
 */
 //go:nosplit
 func (self class) IsStreamPlaying(stream int64) bool { //gd:AudioStreamPlaybackPolyphonic.is_stream_playing
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stream_playing, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ stream int64 }{stream})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_stream_playing, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ stream int64 }{stream})
 	var ret = r_ret
 	return ret
 }
@@ -306,7 +308,7 @@ Stop a stream. The 'stream' argument is an integer ID returned by [PlayStream], 
 */
 //go:nosplit
 func (self class) StopStream(stream int64) { //gd:AudioStreamPlaybackPolyphonic.stop_stream
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_stream, 0|(gdextension.SizeInt<<4), &struct{ stream int64 }{stream})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop_stream, 0|(gdextension.SizeInt<<4), &struct{ stream int64 }{stream})
 }
 func (self class) AsAudioStreamPlaybackPolyphonic() Advanced {
 	return Advanced{pointers.AsA[gdclass.AudioStreamPlaybackPolyphonic](self[0])}

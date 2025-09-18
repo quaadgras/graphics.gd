@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +55,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -106,7 +108,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -211,72 +213,72 @@ func (self Instance) SetMaterial(value Material.Instance) {
 
 //go:nosplit
 func (self class) SetInnerRadius(radius float64) { //gd:CSGTorus3D.set_inner_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inner_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_inner_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 
 //go:nosplit
 func (self class) GetInnerRadius() float64 { //gd:CSGTorus3D.get_inner_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inner_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_inner_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOuterRadius(radius float64) { //gd:CSGTorus3D.set_outer_radius
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outer_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_outer_radius, 0|(gdextension.SizeFloat<<4), &struct{ radius float64 }{radius})
 }
 
 //go:nosplit
 func (self class) GetOuterRadius() float64 { //gd:CSGTorus3D.get_outer_radius
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_outer_radius, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_outer_radius, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSides(sides int64) { //gd:CSGTorus3D.set_sides
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sides, 0|(gdextension.SizeInt<<4), &struct{ sides int64 }{sides})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sides, 0|(gdextension.SizeInt<<4), &struct{ sides int64 }{sides})
 }
 
 //go:nosplit
 func (self class) GetSides() int64 { //gd:CSGTorus3D.get_sides
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sides, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sides, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRingSides(sides int64) { //gd:CSGTorus3D.set_ring_sides
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ring_sides, 0|(gdextension.SizeInt<<4), &struct{ sides int64 }{sides})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_ring_sides, 0|(gdextension.SizeInt<<4), &struct{ sides int64 }{sides})
 }
 
 //go:nosplit
 func (self class) GetRingSides() int64 { //gd:CSGTorus3D.get_ring_sides
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_ring_sides, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_ring_sides, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetMaterial(material [1]gdclass.Material) { //gd:CSGTorus3D.set_material
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_material, 0|(gdextension.SizeObject<<4), &struct{ material gdextension.Object }{gdextension.Object(gd.ObjectChecked(material[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetMaterial() [1]gdclass.Material { //gd:CSGTorus3D.get_material
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_material, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Material{gd.PointerWithOwnershipTransferredToGo[gdclass.Material](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSmoothFaces(smooth_faces bool) { //gd:CSGTorus3D.set_smooth_faces
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_smooth_faces, 0|(gdextension.SizeBool<<4), &struct{ smooth_faces bool }{smooth_faces})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_smooth_faces, 0|(gdextension.SizeBool<<4), &struct{ smooth_faces bool }{smooth_faces})
 }
 
 //go:nosplit
 func (self class) GetSmoothFaces() bool { //gd:CSGTorus3D.get_smooth_faces
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_smooth_faces, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_smooth_faces, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +49,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -90,7 +92,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -388,7 +390,7 @@ Add a specific import option (name and default value only). This function can on
 */
 //go:nosplit
 func (self class) AddImportOption(name String.Readable, value variant.Any) { //gd:EditorSceneFormatImporter.add_import_option
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_import_option, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_import_option, 0|(gdextension.SizeString<<4)|(gdextension.SizeVariant<<8), &struct {
 		name  gdextension.String
 		value gdextension.Variant
 	}{pointers.Get(gd.InternalString(name)), gdextension.Variant(pointers.Get(gd.InternalVariant(value)))})
@@ -401,7 +403,7 @@ Add a specific import option. This function can only be called from [GetImportOp
 */
 //go:nosplit
 func (self class) AddImportOptionAdvanced(atype variant.Type, name String.Readable, default_value variant.Any, hint ClassDB.PropertyHint, hint_string String.Readable, usage_flags int64) { //gd:EditorSceneFormatImporter.add_import_option_advanced
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_import_option_advanced, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_import_option_advanced, 0|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8)|(gdextension.SizeVariant<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeString<<20)|(gdextension.SizeInt<<24), &struct {
 		atype         variant.Type
 		name          gdextension.String
 		default_value gdextension.Variant

@@ -7,6 +7,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -41,6 +42,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -84,7 +86,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -300,7 +302,7 @@ Sets the position for the [SoftBody3D] vertex at the index specified by 'vertex_
 */
 //go:nosplit
 func (self class) SetVertex(vertex_id int64, vertex Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_vertex
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vertex, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
 		vertex_id int64
 		vertex    Vector3.XYZ
 	}{vertex_id, vertex})
@@ -313,7 +315,7 @@ Sets the normal for the [SoftBody3D] vertex at the index specified by 'vertex_id
 */
 //go:nosplit
 func (self class) SetNormal(vertex_id int64, normal Vector3.XYZ) { //gd:PhysicsServer3DRenderingServerHandler.set_normal
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_normal, 0|(gdextension.SizeInt<<4)|(gdextension.SizeVector3<<8), &struct {
 		vertex_id int64
 		normal    Vector3.XYZ
 	}{vertex_id, normal})
@@ -326,7 +328,7 @@ Sets the bounding box for the [SoftBody3D].
 */
 //go:nosplit
 func (self class) SetAabb(aabb AABB.PositionSize) { //gd:PhysicsServer3DRenderingServerHandler.set_aabb
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
 }
 func (self class) AsPhysicsServer3DRenderingServerHandler() Advanced {
 	return Advanced{pointers.AsA[gdclass.PhysicsServer3DRenderingServerHandler](self[0])}

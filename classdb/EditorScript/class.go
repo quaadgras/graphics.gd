@@ -38,6 +38,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -72,6 +73,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -115,7 +117,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -234,7 +236,7 @@ Makes 'node' root of the currently opened scene. Only works if the scene is empt
 */
 //go:nosplit
 func (self class) AddRootNode(node [1]gdclass.Node) { //gd:EditorScript.add_root_node
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_root_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_root_node, 0|(gdextension.SizeObject<<4), &struct{ node gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(node[0].AsObject()[0]))})
 }
 
 /*
@@ -245,7 +247,7 @@ Returns the edited (current) scene's root [Node]. Equivalent of [EditorInterface
 */
 //go:nosplit
 func (self class) GetScene() [1]gdclass.Node { //gd:EditorScript.get_scene
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scene, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_scene, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Node{gd.PointerMustAssertInstanceID[gdclass.Node](r_ret)}
 	return ret
 }
@@ -257,7 +259,7 @@ Returns the [EditorInterface] singleton instance.
 */
 //go:nosplit
 func (self class) GetEditorInterface() [1]gdclass.EditorInterface { //gd:EditorScript.get_editor_interface
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_interface, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_editor_interface, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.EditorInterface{gd.PointerLifetimeBoundTo[gdclass.EditorInterface](self.AsObject(), r_ret)}
 	return ret
 }

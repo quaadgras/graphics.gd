@@ -14,6 +14,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +48,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -93,7 +95,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -228,7 +230,7 @@ If 'bind_address' is set to any valid address (e.g. "192.168.1.101", "::1", etc.
 */
 //go:nosplit
 func (self class) Listen(port int64, bind_address String.Readable) Error.Code { //gd:TCPServer.listen
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.listen, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.listen, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeString<<8), &struct {
 		port         int64
 		bind_address gdextension.String
 	}{port, pointers.Get(gd.InternalString(bind_address))})
@@ -241,7 +243,7 @@ Returns true if a connection is available for taking.
 */
 //go:nosplit
 func (self class) IsConnectionAvailable() bool { //gd:TCPServer.is_connection_available
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_connection_available, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_connection_available, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -251,7 +253,7 @@ Returns true if the server is currently listening for connections.
 */
 //go:nosplit
 func (self class) IsListening() bool { //gd:TCPServer.is_listening
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_listening, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_listening, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -261,7 +263,7 @@ Returns the local port this server is listening to.
 */
 //go:nosplit
 func (self class) GetLocalPort() int64 { //gd:TCPServer.get_local_port
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_port, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -271,7 +273,7 @@ If a connection is available, returns a StreamPeerTCP with the connection.
 */
 //go:nosplit
 func (self class) TakeConnection() [1]gdclass.StreamPeerTCP { //gd:TCPServer.take_connection
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.StreamPeerTCP{gd.PointerWithOwnershipTransferredToGo[gdclass.StreamPeerTCP](r_ret)}
 	return ret
 }
@@ -281,7 +283,7 @@ Stops listening.
 */
 //go:nosplit
 func (self class) Stop() { //gd:TCPServer.stop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.stop, 0, &struct{}{})
 }
 func (self class) AsTCPServer() Advanced { return Advanced{pointers.AsA[gdclass.TCPServer](self[0])} }
 func (self Instance) AsTCPServer() Instance {

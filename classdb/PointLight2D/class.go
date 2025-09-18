@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +49,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -94,7 +96,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -175,36 +177,36 @@ func (self Instance) SetTextureScale(value Float.X) {
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:PointLight2D.set_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:PointLight2D.get_texture
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureOffset(texture_offset Vector2.XY) { //gd:PointLight2D.set_texture_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_offset, 0|(gdextension.SizeVector2<<4), &struct{ texture_offset Vector2.XY }{texture_offset})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_offset, 0|(gdextension.SizeVector2<<4), &struct{ texture_offset Vector2.XY }{texture_offset})
 }
 
 //go:nosplit
 func (self class) GetTextureOffset() Vector2.XY { //gd:PointLight2D.get_texture_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_texture_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTextureScale(texture_scale float64) { //gd:PointLight2D.set_texture_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_scale, 0|(gdextension.SizeFloat<<4), &struct{ texture_scale float64 }{texture_scale})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_scale, 0|(gdextension.SizeFloat<<4), &struct{ texture_scale float64 }{texture_scale})
 }
 
 //go:nosplit
 func (self class) GetTextureScale() float64 { //gd:PointLight2D.get_texture_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_texture_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_texture_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

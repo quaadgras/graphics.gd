@@ -13,6 +13,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -50,6 +51,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -108,7 +110,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -292,12 +294,12 @@ func (self Instance) SetDrawCenter(value bool) {
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:StyleBoxTexture.set_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:StyleBoxTexture.get_texture
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
@@ -307,7 +309,7 @@ Sets the margin to 'size' pixels for the specified [Side].
 */
 //go:nosplit
 func (self class) SetTextureMargin(margin Rect2.Side, size float64) { //gd:StyleBoxTexture.set_texture_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		margin Rect2.Side
 		size   float64
 	}{margin, size})
@@ -318,7 +320,7 @@ Sets the margin to 'size' pixels for all sides.
 */
 //go:nosplit
 func (self class) SetTextureMarginAll(size float64) { //gd:StyleBoxTexture.set_texture_margin_all
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_margin_all, 0|(gdextension.SizeFloat<<4), &struct{ size float64 }{size})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture_margin_all, 0|(gdextension.SizeFloat<<4), &struct{ size float64 }{size})
 }
 
 /*
@@ -326,7 +328,7 @@ Returns the margin size of the specified [Side].
 */
 //go:nosplit
 func (self class) GetTextureMargin(margin Rect2.Side) float64 { //gd:StyleBoxTexture.get_texture_margin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_texture_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ margin Rect2.Side }{margin})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_texture_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ margin Rect2.Side }{margin})
 	var ret = r_ret
 	return ret
 }
@@ -336,7 +338,7 @@ Sets the expand margin to 'size' pixels for the specified [Side].
 */
 //go:nosplit
 func (self class) SetExpandMargin(margin Rect2.Side, size float64) { //gd:StyleBoxTexture.set_expand_margin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_expand_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_expand_margin, 0|(gdextension.SizeInt<<4)|(gdextension.SizeFloat<<8), &struct {
 		margin Rect2.Side
 		size   float64
 	}{margin, size})
@@ -347,7 +349,7 @@ Sets the expand margin to 'size' pixels for all sides.
 */
 //go:nosplit
 func (self class) SetExpandMarginAll(size float64) { //gd:StyleBoxTexture.set_expand_margin_all
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_expand_margin_all, 0|(gdextension.SizeFloat<<4), &struct{ size float64 }{size})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_expand_margin_all, 0|(gdextension.SizeFloat<<4), &struct{ size float64 }{size})
 }
 
 /*
@@ -355,67 +357,67 @@ Returns the expand margin size of the specified [Side].
 */
 //go:nosplit
 func (self class) GetExpandMargin(margin Rect2.Side) float64 { //gd:StyleBoxTexture.get_expand_margin
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_expand_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ margin Rect2.Side }{margin})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_expand_margin, gdextension.SizeFloat|(gdextension.SizeInt<<4), &struct{ margin Rect2.Side }{margin})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRegionRect(region Rect2.PositionSize) { //gd:StyleBoxTexture.set_region_rect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region_rect, 0|(gdextension.SizeRect2<<4), &struct{ region Rect2.PositionSize }{region})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region_rect, 0|(gdextension.SizeRect2<<4), &struct{ region Rect2.PositionSize }{region})
 }
 
 //go:nosplit
 func (self class) GetRegionRect() Rect2.PositionSize { //gd:StyleBoxTexture.get_region_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDrawCenter(enable bool) { //gd:StyleBoxTexture.set_draw_center
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_center, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_draw_center, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsDrawCenterEnabled() bool { //gd:StyleBoxTexture.is_draw_center_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_center_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_draw_center_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetModulate(color Color.RGBA) { //gd:StyleBoxTexture.set_modulate
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_modulate, 0|(gdextension.SizeColor<<4), &struct{ color Color.RGBA }{color})
 }
 
 //go:nosplit
 func (self class) GetModulate() Color.RGBA { //gd:StyleBoxTexture.get_modulate
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, &struct{}{})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_modulate, gdextension.SizeColor, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHAxisStretchMode(mode AxisStretchMode) { //gd:StyleBoxTexture.set_h_axis_stretch_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_axis_stretch_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AxisStretchMode }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_h_axis_stretch_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AxisStretchMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetHAxisStretchMode() AxisStretchMode { //gd:StyleBoxTexture.get_h_axis_stretch_mode
-	var r_ret = gdextension.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), methods.get_h_axis_stretch_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), methods.get_h_axis_stretch_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVAxisStretchMode(mode AxisStretchMode) { //gd:StyleBoxTexture.set_v_axis_stretch_mode
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_axis_stretch_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AxisStretchMode }{mode})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_v_axis_stretch_mode, 0|(gdextension.SizeInt<<4), &struct{ mode AxisStretchMode }{mode})
 }
 
 //go:nosplit
 func (self class) GetVAxisStretchMode() AxisStretchMode { //gd:StyleBoxTexture.get_v_axis_stretch_mode
-	var r_ret = gdextension.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), methods.get_v_axis_stretch_mode, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[AxisStretchMode](gd.ObjectChecked(self.AsObject()), methods.get_v_axis_stretch_mode, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

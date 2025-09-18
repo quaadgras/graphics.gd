@@ -22,6 +22,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -60,6 +61,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -129,7 +131,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -369,84 +371,84 @@ func (self Instance) SetPhysicsInterpolationQuality(value PhysicsInterpolationQu
 
 //go:nosplit
 func (self class) SetMesh(mesh [1]gdclass.Mesh) { //gd:MultiMesh.set_mesh
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_mesh, 0|(gdextension.SizeObject<<4), &struct{ mesh gdextension.Object }{gdextension.Object(gd.ObjectChecked(mesh[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetMesh() [1]gdclass.Mesh { //gd:MultiMesh.get_mesh
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_mesh, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Mesh{gd.PointerWithOwnershipTransferredToGo[gdclass.Mesh](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseColors(enable bool) { //gd:MultiMesh.set_use_colors
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_colors, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_colors, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsUsingColors() bool { //gd:MultiMesh.is_using_colors
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_colors, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_colors, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUseCustomData(enable bool) { //gd:MultiMesh.set_use_custom_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_custom_data, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_use_custom_data, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) IsUsingCustomData() bool { //gd:MultiMesh.is_using_custom_data
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_data, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_using_custom_data, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTransformFormat(format TransformFormat) { //gd:MultiMesh.set_transform_format
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform_format, 0|(gdextension.SizeInt<<4), &struct{ format TransformFormat }{format})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_transform_format, 0|(gdextension.SizeInt<<4), &struct{ format TransformFormat }{format})
 }
 
 //go:nosplit
 func (self class) GetTransformFormat() TransformFormat { //gd:MultiMesh.get_transform_format
-	var r_ret = gdextension.Call[TransformFormat](gd.ObjectChecked(self.AsObject()), methods.get_transform_format, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[TransformFormat](gd.ObjectChecked(self.AsObject()), methods.get_transform_format, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInstanceCount(count int64) { //gd:MultiMesh.set_instance_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 
 //go:nosplit
 func (self class) GetInstanceCount() int64 { //gd:MultiMesh.get_instance_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_instance_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_instance_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVisibleInstanceCount(count int64) { //gd:MultiMesh.set_visible_instance_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible_instance_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_visible_instance_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 
 //go:nosplit
 func (self class) GetVisibleInstanceCount() int64 { //gd:MultiMesh.get_visible_instance_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visible_instance_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_visible_instance_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPhysicsInterpolationQuality(quality PhysicsInterpolationQuality) { //gd:MultiMesh.set_physics_interpolation_quality
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_interpolation_quality, 0|(gdextension.SizeInt<<4), &struct{ quality PhysicsInterpolationQuality }{quality})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_physics_interpolation_quality, 0|(gdextension.SizeInt<<4), &struct{ quality PhysicsInterpolationQuality }{quality})
 }
 
 //go:nosplit
 func (self class) GetPhysicsInterpolationQuality() PhysicsInterpolationQuality { //gd:MultiMesh.get_physics_interpolation_quality
-	var r_ret = gdextension.Call[PhysicsInterpolationQuality](gd.ObjectChecked(self.AsObject()), methods.get_physics_interpolation_quality, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[PhysicsInterpolationQuality](gd.ObjectChecked(self.AsObject()), methods.get_physics_interpolation_quality, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -458,7 +460,7 @@ Sets the [Transform3D.BasisOrigin] for a specific instance.
 */
 //go:nosplit
 func (self class) SetInstanceTransform(instance int64, transform Transform3D.BasisOrigin) { //gd:MultiMesh.set_instance_transform
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_transform, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform3D<<8), &struct {
 		instance  int64
 		transform Transform3D.BasisOrigin
 	}{instance, gd.Transposed(transform)})
@@ -471,7 +473,7 @@ Sets the [Transform2D.OriginXY] for a specific instance.
 */
 //go:nosplit
 func (self class) SetInstanceTransform2d(instance int64, transform Transform2D.OriginXY) { //gd:MultiMesh.set_instance_transform_2d
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_transform_2d, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform2D<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_transform_2d, 0|(gdextension.SizeInt<<4)|(gdextension.SizeTransform2D<<8), &struct {
 		instance  int64
 		transform Transform2D.OriginXY
 	}{instance, transform})
@@ -484,7 +486,7 @@ Returns the [Transform3D.BasisOrigin] of a specific instance.
 */
 //go:nosplit
 func (self class) GetInstanceTransform(instance int64) Transform3D.BasisOrigin { //gd:MultiMesh.get_instance_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_instance_transform, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), &struct{ instance int64 }{instance})
+	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_instance_transform, gdextension.SizeTransform3D|(gdextension.SizeInt<<4), &struct{ instance int64 }{instance})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -496,7 +498,7 @@ Returns the [Transform2D.OriginXY] of a specific instance.
 */
 //go:nosplit
 func (self class) GetInstanceTransform2d(instance int64) Transform2D.OriginXY { //gd:MultiMesh.get_instance_transform_2d
-	var r_ret = gdextension.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_instance_transform_2d, gdextension.SizeTransform2D|(gdextension.SizeInt<<4), &struct{ instance int64 }{instance})
+	var r_ret = noescape.Call[Transform2D.OriginXY](gd.ObjectChecked(self.AsObject()), methods.get_instance_transform_2d, gdextension.SizeTransform2D|(gdextension.SizeInt<<4), &struct{ instance int64 }{instance})
 	var ret = r_ret
 	return ret
 }
@@ -514,7 +516,7 @@ For the color to take effect, ensure that [UseColors] is true on the [MultiMesh]
 */
 //go:nosplit
 func (self class) SetInstanceColor(instance int64, color Color.RGBA) { //gd:MultiMesh.set_instance_color
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_color, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		instance int64
 		color    Color.RGBA
 	}{instance, color})
@@ -525,7 +527,7 @@ Gets a specific instance's color multiplier.
 */
 //go:nosplit
 func (self class) GetInstanceColor(instance int64) Color.RGBA { //gd:MultiMesh.get_instance_color
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_instance_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ instance int64 }{instance})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_instance_color, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ instance int64 }{instance})
 	var ret = r_ret
 	return ret
 }
@@ -544,7 +546,7 @@ This custom instance data has to be manually accessed in your custom shader usin
 */
 //go:nosplit
 func (self class) SetInstanceCustomData(instance int64, custom_data Color.RGBA) { //gd:MultiMesh.set_instance_custom_data
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_custom_data, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_instance_custom_data, 0|(gdextension.SizeInt<<4)|(gdextension.SizeColor<<8), &struct {
 		instance    int64
 		custom_data Color.RGBA
 	}{instance, custom_data})
@@ -555,7 +557,7 @@ Returns the custom data that has been set for a specific instance.
 */
 //go:nosplit
 func (self class) GetInstanceCustomData(instance int64) Color.RGBA { //gd:MultiMesh.get_instance_custom_data
-	var r_ret = gdextension.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_instance_custom_data, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ instance int64 }{instance})
+	var r_ret = noescape.Call[Color.RGBA](gd.ObjectChecked(self.AsObject()), methods.get_instance_custom_data, gdextension.SizeColor|(gdextension.SizeInt<<4), &struct{ instance int64 }{instance})
 	var ret = r_ret
 	return ret
 }
@@ -567,17 +569,17 @@ This allows you to move instances instantaneously, and should usually be used wh
 */
 //go:nosplit
 func (self class) ResetInstancePhysicsInterpolation(instance int64) { //gd:MultiMesh.reset_instance_physics_interpolation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_instance_physics_interpolation, 0|(gdextension.SizeInt<<4), &struct{ instance int64 }{instance})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.reset_instance_physics_interpolation, 0|(gdextension.SizeInt<<4), &struct{ instance int64 }{instance})
 }
 
 //go:nosplit
 func (self class) SetCustomAabb(aabb AABB.PositionSize) { //gd:MultiMesh.set_custom_aabb
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_aabb, 0|(gdextension.SizeAABB<<4), &struct{ aabb AABB.PositionSize }{aabb})
 }
 
 //go:nosplit
 func (self class) GetCustomAabb() AABB.PositionSize { //gd:MultiMesh.get_custom_aabb
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, &struct{}{})
+	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_custom_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -587,21 +589,21 @@ Returns the visibility axis-aligned bounding box in local space.
 */
 //go:nosplit
 func (self class) GetAabb() AABB.PositionSize { //gd:MultiMesh.get_aabb
-	var r_ret = gdextension.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_aabb, gdextension.SizeAABB, &struct{}{})
+	var r_ret = noescape.Call[AABB.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_aabb, gdextension.SizeAABB, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetBuffer() Packed.Array[float32] { //gd:MultiMesh.get_buffer
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_buffer, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_buffer, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[float32](Array.Through(gd.PackedProxy[gd.PackedFloat32Array, float32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBuffer(buffer Packed.Array[float32]) { //gd:MultiMesh.set_buffer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer, 0|(gdextension.SizePackedArray<<4), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer, 0|(gdextension.SizePackedArray<<4), &struct {
 		buffer gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer))})
 }
@@ -617,7 +619,7 @@ When the order of instances is coherent, the simpler alternative of setting [Buf
 */
 //go:nosplit
 func (self class) SetBufferInterpolated(buffer_curr Packed.Array[float32], buffer_prev Packed.Array[float32]) { //gd:MultiMesh.set_buffer_interpolated
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer_interpolated, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_buffer_interpolated, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizePackedArray<<8), &struct {
 		buffer_curr gdextension.PackedArray[float32]
 		buffer_prev gdextension.PackedArray[float32]
 	}{pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer_curr)), pointers.Get(gd.InternalPacked[gd.PackedFloat32Array, float32](buffer_prev))})

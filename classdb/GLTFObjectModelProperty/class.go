@@ -19,6 +19,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +54,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -111,7 +113,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -287,7 +289,7 @@ Appends a node path to [NodePaths]. This can be used by [GLTFDocumentExtension] 
 */
 //go:nosplit
 func (self class) AppendNodePath(node_path Path.ToNode) { //gd:GLTFObjectModelProperty.append_node_path
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_node_path, 0|(gdextension.SizeNodePath<<4), &struct{ node_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node_path))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_node_path, 0|(gdextension.SizeNodePath<<4), &struct{ node_path gdextension.NodePath }{pointers.Get(gd.InternalNodePath(node_path))})
 }
 
 /*
@@ -298,7 +300,7 @@ High-level wrapper over [AppendNodePath] that handles the most common cases. It 
 */
 //go:nosplit
 func (self class) AppendPathToProperty(node_path Path.ToNode, prop_name String.Name) { //gd:GLTFObjectModelProperty.append_path_to_property
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_path_to_property, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeStringName<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_path_to_property, 0|(gdextension.SizeNodePath<<4)|(gdextension.SizeStringName<<8), &struct {
 		node_path gdextension.NodePath
 		prop_name gdextension.StringName
 	}{pointers.Get(gd.InternalNodePath(node_path)), pointers.Get(gd.InternalStringName(prop_name))})
@@ -312,38 +314,38 @@ The GLTF accessor type associated with this property's [ObjectModelType]. See [G
 */
 //go:nosplit
 func (self class) GetAccessorType() GLTFAccessor.GLTFAccessorType { //gd:GLTFObjectModelProperty.get_accessor_type
-	var r_ret = gdextension.Call[GLTFAccessor.GLTFAccessorType](gd.ObjectChecked(self.AsObject()), methods.get_accessor_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[GLTFAccessor.GLTFAccessorType](gd.ObjectChecked(self.AsObject()), methods.get_accessor_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetGltfToGodotExpression() [1]gdclass.Expression { //gd:GLTFObjectModelProperty.get_gltf_to_godot_expression
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_gltf_to_godot_expression, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_gltf_to_godot_expression, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Expression{gd.PointerWithOwnershipTransferredToGo[gdclass.Expression](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGltfToGodotExpression(gltf_to_godot_expr [1]gdclass.Expression) { //gd:GLTFObjectModelProperty.set_gltf_to_godot_expression
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gltf_to_godot_expression, 0|(gdextension.SizeObject<<4), &struct{ gltf_to_godot_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(gltf_to_godot_expr[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_gltf_to_godot_expression, 0|(gdextension.SizeObject<<4), &struct{ gltf_to_godot_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(gltf_to_godot_expr[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetGodotToGltfExpression() [1]gdclass.Expression { //gd:GLTFObjectModelProperty.get_godot_to_gltf_expression
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_godot_to_gltf_expression, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_godot_to_gltf_expression, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Expression{gd.PointerWithOwnershipTransferredToGo[gdclass.Expression](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetGodotToGltfExpression(godot_to_gltf_expr [1]gdclass.Expression) { //gd:GLTFObjectModelProperty.set_godot_to_gltf_expression
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_godot_to_gltf_expression, 0|(gdextension.SizeObject<<4), &struct{ godot_to_gltf_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(godot_to_gltf_expr[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_godot_to_gltf_expression, 0|(gdextension.SizeObject<<4), &struct{ godot_to_gltf_expr gdextension.Object }{gdextension.Object(gd.ObjectChecked(godot_to_gltf_expr[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetNodePaths() Array.Contains[Path.ToNode] { //gd:GLTFObjectModelProperty.get_node_paths
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_node_paths, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_node_paths, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Path.ToNode]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -356,31 +358,31 @@ Returns true if [NodePaths] is not empty. This is used during import to determin
 */
 //go:nosplit
 func (self class) HasNodePaths() bool { //gd:GLTFObjectModelProperty.has_node_paths
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_node_paths, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_node_paths, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetNodePaths(node_paths Array.Contains[Path.ToNode]) { //gd:GLTFObjectModelProperty.set_node_paths
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_paths, 0|(gdextension.SizeArray<<4), &struct{ node_paths gdextension.Array }{pointers.Get(gd.InternalArray(node_paths))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_node_paths, 0|(gdextension.SizeArray<<4), &struct{ node_paths gdextension.Array }{pointers.Get(gd.InternalArray(node_paths))})
 }
 
 //go:nosplit
 func (self class) GetObjectModelType() GLTFObjectModelType { //gd:GLTFObjectModelProperty.get_object_model_type
-	var r_ret = gdextension.Call[GLTFObjectModelType](gd.ObjectChecked(self.AsObject()), methods.get_object_model_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[GLTFObjectModelType](gd.ObjectChecked(self.AsObject()), methods.get_object_model_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetObjectModelType(atype GLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_object_model_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_object_model_type, 0|(gdextension.SizeInt<<4), &struct{ atype GLTFObjectModelType }{atype})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_object_model_type, 0|(gdextension.SizeInt<<4), &struct{ atype GLTFObjectModelType }{atype})
 }
 
 //go:nosplit
 func (self class) GetJsonPointers() Array.Contains[Packed.Strings] { //gd:GLTFObjectModelProperty.get_json_pointers
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_json_pointers, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_json_pointers, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Packed.Strings]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -393,26 +395,26 @@ Returns true if [JsonPointers] is not empty. This is used during export to deter
 */
 //go:nosplit
 func (self class) HasJsonPointers() bool { //gd:GLTFObjectModelProperty.has_json_pointers
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_json_pointers, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_json_pointers, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetJsonPointers(json_pointers Array.Contains[Packed.Strings]) { //gd:GLTFObjectModelProperty.set_json_pointers
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_json_pointers, 0|(gdextension.SizeArray<<4), &struct{ json_pointers gdextension.Array }{pointers.Get(gd.InternalArray(json_pointers))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_json_pointers, 0|(gdextension.SizeArray<<4), &struct{ json_pointers gdextension.Array }{pointers.Get(gd.InternalArray(json_pointers))})
 }
 
 //go:nosplit
 func (self class) GetVariantType() variant.Type { //gd:GLTFObjectModelProperty.get_variant_type
-	var r_ret = gdextension.Call[variant.Type](gd.ObjectChecked(self.AsObject()), methods.get_variant_type, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[variant.Type](gd.ObjectChecked(self.AsObject()), methods.get_variant_type, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVariantType(variant_type variant.Type) { //gd:GLTFObjectModelProperty.set_variant_type
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variant_type, 0|(gdextension.SizeInt<<4), &struct{ variant_type variant.Type }{variant_type})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_variant_type, 0|(gdextension.SizeInt<<4), &struct{ variant_type variant.Type }{variant_type})
 }
 
 /*
@@ -423,7 +425,7 @@ Sets the [VariantType] and [ObjectModelType] properties. This is a convenience m
 */
 //go:nosplit
 func (self class) SetTypes(variant_type variant.Type, obj_model_type GLTFObjectModelType) { //gd:GLTFObjectModelProperty.set_types
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_types, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_types, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		variant_type   variant.Type
 		obj_model_type GLTFObjectModelType
 	}{variant_type, obj_model_type})

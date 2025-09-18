@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -46,6 +47,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -95,7 +97,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -198,24 +200,24 @@ func (self Instance) SetActions(value []OpenXRAction.Instance) {
 
 //go:nosplit
 func (self class) SetLocalizedName(localized_name String.Readable) { //gd:OpenXRActionSet.set_localized_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_localized_name, 0|(gdextension.SizeString<<4), &struct{ localized_name gdextension.String }{pointers.Get(gd.InternalString(localized_name))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_localized_name, 0|(gdextension.SizeString<<4), &struct{ localized_name gdextension.String }{pointers.Get(gd.InternalString(localized_name))})
 }
 
 //go:nosplit
 func (self class) GetLocalizedName() String.Readable { //gd:OpenXRActionSet.get_localized_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_localized_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_localized_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPriority(priority int64) { //gd:OpenXRActionSet.set_priority
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_priority, 0|(gdextension.SizeInt<<4), &struct{ priority int64 }{priority})
 }
 
 //go:nosplit
 func (self class) GetPriority() int64 { //gd:OpenXRActionSet.get_priority
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_priority, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_priority, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -225,19 +227,19 @@ Retrieve the number of actions in our action set.
 */
 //go:nosplit
 func (self class) GetActionCount() int64 { //gd:OpenXRActionSet.get_action_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_action_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_action_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetActions(actions Array.Any) { //gd:OpenXRActionSet.set_actions
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_actions, 0|(gdextension.SizeArray<<4), &struct{ actions gdextension.Array }{pointers.Get(gd.InternalArray(actions))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_actions, 0|(gdextension.SizeArray<<4), &struct{ actions gdextension.Array }{pointers.Get(gd.InternalArray(actions))})
 }
 
 //go:nosplit
 func (self class) GetActions() Array.Any { //gd:OpenXRActionSet.get_actions
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_actions, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_actions, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -247,7 +249,7 @@ Add an action to this action set.
 */
 //go:nosplit
 func (self class) AddAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRActionSet.add_action
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_action, 0|(gdextension.SizeObject<<4), &struct{ action gdextension.Object }{gdextension.Object(gd.ObjectChecked(action[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_action, 0|(gdextension.SizeObject<<4), &struct{ action gdextension.Object }{gdextension.Object(gd.ObjectChecked(action[0].AsObject()))})
 }
 
 /*
@@ -255,7 +257,7 @@ Remove an action from this action set.
 */
 //go:nosplit
 func (self class) RemoveAction(action [1]gdclass.OpenXRAction) { //gd:OpenXRActionSet.remove_action
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_action, 0|(gdextension.SizeObject<<4), &struct{ action gdextension.Object }{gdextension.Object(gd.ObjectChecked(action[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_action, 0|(gdextension.SizeObject<<4), &struct{ action gdextension.Object }{gdextension.Object(gd.ObjectChecked(action[0].AsObject()))})
 }
 func (self class) AsOpenXRActionSet() Advanced {
 	return Advanced{pointers.AsA[gdclass.OpenXRActionSet](self[0])}

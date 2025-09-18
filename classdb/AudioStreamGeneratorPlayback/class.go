@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -47,6 +48,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -93,7 +95,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -205,7 +207,7 @@ Pushes a single audio data frame to the buffer. This is usually less efficient t
 */
 //go:nosplit
 func (self class) PushFrame(frame_ Vector2.XY) bool { //gd:AudioStreamGeneratorPlayback.push_frame
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_frame, gdextension.SizeBool|(gdextension.SizeVector2<<4), &struct{ frame_ Vector2.XY }{frame_})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_frame, gdextension.SizeBool|(gdextension.SizeVector2<<4), &struct{ frame_ Vector2.XY }{frame_})
 	var ret = r_ret
 	return ret
 }
@@ -215,7 +217,7 @@ Returns true if a buffer of the size 'amount' can be pushed to the audio sample 
 */
 //go:nosplit
 func (self class) CanPushBuffer(amount int64) bool { //gd:AudioStreamGeneratorPlayback.can_push_buffer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_push_buffer, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_push_buffer, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ amount int64 }{amount})
 	var ret = r_ret
 	return ret
 }
@@ -228,7 +230,7 @@ Pushes several audio data frames to the buffer. This is usually more efficient t
 */
 //go:nosplit
 func (self class) PushBuffer(frames Packed.Array[Vector2.XY]) bool { //gd:AudioStreamGeneratorPlayback.push_buffer
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_buffer, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.push_buffer, gdextension.SizeBool|(gdextension.SizePackedArray<<4), &struct {
 		frames gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](frames))})
 	var ret = r_ret
@@ -240,7 +242,7 @@ Returns the number of frames that can be pushed to the audio sample data buffer 
 */
 //go:nosplit
 func (self class) GetFramesAvailable() int64 { //gd:AudioStreamGeneratorPlayback.get_frames_available
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames_available, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frames_available, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -250,7 +252,7 @@ Returns the number of times the playback skipped due to a buffer underrun in the
 */
 //go:nosplit
 func (self class) GetSkips() int64 { //gd:AudioStreamGeneratorPlayback.get_skips
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skips, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_skips, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -260,7 +262,7 @@ Clears the audio sample data buffer.
 */
 //go:nosplit
 func (self class) ClearBuffer() { //gd:AudioStreamGeneratorPlayback.clear_buffer
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_buffer, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_buffer, 0, &struct{}{})
 }
 func (self class) AsAudioStreamGeneratorPlayback() Advanced {
 	return Advanced{pointers.AsA[gdclass.AudioStreamGeneratorPlayback](self[0])}

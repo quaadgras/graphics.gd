@@ -13,6 +13,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +49,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -104,7 +106,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -243,7 +245,7 @@ Creates a new [AudioStreamOggVorbis] instance from the given buffer. The buffer 
 */
 //go:nosplit
 func (self class) LoadFromBuffer(stream_data Packed.Bytes) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_buffer
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4), &struct{ stream_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data.Array)))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.load_from_buffer, gdextension.SizeObject|(gdextension.SizePackedArray<<4), &struct{ stream_data gdextension.PackedArray[byte] }{pointers.Get(gd.InternalPacked[gd.PackedByteArray, byte](Packed.Array[byte](stream_data.Array)))})
 	var ret = [1]gdclass.AudioStreamOggVorbis{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamOggVorbis](r_ret)}
 	return ret
 }
@@ -255,91 +257,91 @@ Creates a new [AudioStreamOggVorbis] instance from the given file path. The file
 */
 //go:nosplit
 func (self class) LoadFromFile(path String.Readable) [1]gdclass.AudioStreamOggVorbis { //gd:AudioStreamOggVorbis.load_from_file
-	var r_ret = gdextension.CallStatic[gdextension.Object](methods.load_from_file, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = noescape.CallStatic[gdextension.Object](methods.load_from_file, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = [1]gdclass.AudioStreamOggVorbis{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStreamOggVorbis](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPacketSequence(packet_sequence [1]gdclass.OggPacketSequence) { //gd:AudioStreamOggVorbis.set_packet_sequence
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_packet_sequence, 0|(gdextension.SizeObject<<4), &struct{ packet_sequence gdextension.Object }{gdextension.Object(gd.ObjectChecked(packet_sequence[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_packet_sequence, 0|(gdextension.SizeObject<<4), &struct{ packet_sequence gdextension.Object }{gdextension.Object(gd.ObjectChecked(packet_sequence[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetPacketSequence() [1]gdclass.OggPacketSequence { //gd:AudioStreamOggVorbis.get_packet_sequence
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_packet_sequence, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_packet_sequence, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.OggPacketSequence{gd.PointerWithOwnershipTransferredToGo[gdclass.OggPacketSequence](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLoop(enable bool) { //gd:AudioStreamOggVorbis.set_loop
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop, 0|(gdextension.SizeBool<<4), &struct{ enable bool }{enable})
 }
 
 //go:nosplit
 func (self class) HasLoop() bool { //gd:AudioStreamOggVorbis.has_loop
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_loop, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetLoopOffset(seconds float64) { //gd:AudioStreamOggVorbis.set_loop_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_offset, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_loop_offset, 0|(gdextension.SizeFloat<<4), &struct{ seconds float64 }{seconds})
 }
 
 //go:nosplit
 func (self class) GetLoopOffset() float64 { //gd:AudioStreamOggVorbis.get_loop_offset
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_loop_offset, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_loop_offset, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBpm(bpm float64) { //gd:AudioStreamOggVorbis.set_bpm
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bpm, 0|(gdextension.SizeFloat<<4), &struct{ bpm float64 }{bpm})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bpm, 0|(gdextension.SizeFloat<<4), &struct{ bpm float64 }{bpm})
 }
 
 //go:nosplit
 func (self class) GetBpm() float64 { //gd:AudioStreamOggVorbis.get_bpm
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bpm, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_bpm, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBeatCount(count int64) { //gd:AudioStreamOggVorbis.set_beat_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_beat_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_beat_count, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 
 //go:nosplit
 func (self class) GetBeatCount() int64 { //gd:AudioStreamOggVorbis.get_beat_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_beat_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_beat_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetBarBeats(count int64) { //gd:AudioStreamOggVorbis.set_bar_beats
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bar_beats, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_bar_beats, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 
 //go:nosplit
 func (self class) GetBarBeats() int64 { //gd:AudioStreamOggVorbis.get_bar_beats
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bar_beats, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_bar_beats, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetTags(tags Dictionary.Any) { //gd:AudioStreamOggVorbis.set_tags
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tags, 0|(gdextension.SizeDictionary<<4), &struct{ tags gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(tags))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_tags, 0|(gdextension.SizeDictionary<<4), &struct{ tags gdextension.Dictionary }{pointers.Get(gd.InternalDictionary(tags))})
 }
 
 //go:nosplit
 func (self class) GetTags() Dictionary.Any { //gd:AudioStreamOggVorbis.get_tags
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_tags, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_tags, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }

@@ -12,6 +12,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -44,6 +45,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -95,7 +97,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -243,7 +245,7 @@ If 'disable' is true, disables the class specified by 'class_name'. When disable
 */
 //go:nosplit
 func (self class) SetDisableClass(class_name String.Name, disable bool) { //gd:EditorFeatureProfile.set_disable_class
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_class, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_class, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		class_name gdextension.StringName
 		disable    bool
 	}{pointers.Get(gd.InternalStringName(class_name)), disable})
@@ -254,7 +256,7 @@ Returns true if the class specified by 'class_name' is disabled. When disabled, 
 */
 //go:nosplit
 func (self class) IsClassDisabled(class_name String.Name) bool { //gd:EditorFeatureProfile.is_class_disabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_class_disabled, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ class_name gdextension.StringName }{pointers.Get(gd.InternalStringName(class_name))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_class_disabled, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ class_name gdextension.StringName }{pointers.Get(gd.InternalStringName(class_name))})
 	var ret = r_ret
 	return ret
 }
@@ -264,7 +266,7 @@ If 'disable' is true, disables editing for the class specified by 'class_name'. 
 */
 //go:nosplit
 func (self class) SetDisableClassEditor(class_name String.Name, disable bool) { //gd:EditorFeatureProfile.set_disable_class_editor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_class_editor, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_class_editor, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeBool<<8), &struct {
 		class_name gdextension.StringName
 		disable    bool
 	}{pointers.Get(gd.InternalStringName(class_name)), disable})
@@ -275,7 +277,7 @@ Returns true if editing for the class specified by 'class_name' is disabled. Whe
 */
 //go:nosplit
 func (self class) IsClassEditorDisabled(class_name String.Name) bool { //gd:EditorFeatureProfile.is_class_editor_disabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_class_editor_disabled, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ class_name gdextension.StringName }{pointers.Get(gd.InternalStringName(class_name))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_class_editor_disabled, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ class_name gdextension.StringName }{pointers.Get(gd.InternalStringName(class_name))})
 	var ret = r_ret
 	return ret
 }
@@ -285,7 +287,7 @@ If 'disable' is true, disables editing for 'property' in the class specified by 
 */
 //go:nosplit
 func (self class) SetDisableClassProperty(class_name String.Name, property String.Name, disable bool) { //gd:EditorFeatureProfile.set_disable_class_property
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_class_property, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeBool<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_class_property, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8)|(gdextension.SizeBool<<12), &struct {
 		class_name gdextension.StringName
 		property   gdextension.StringName
 		disable    bool
@@ -297,7 +299,7 @@ Returns true if 'property' is disabled in the class specified by 'class_name'. W
 */
 //go:nosplit
 func (self class) IsClassPropertyDisabled(class_name String.Name, property String.Name) bool { //gd:EditorFeatureProfile.is_class_property_disabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_class_property_disabled, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_class_property_disabled, gdextension.SizeBool|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		class_name gdextension.StringName
 		property   gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(class_name)), pointers.Get(gd.InternalStringName(property))})
@@ -310,7 +312,7 @@ If 'disable' is true, disables the editor feature specified in 'feature'. When a
 */
 //go:nosplit
 func (self class) SetDisableFeature(feature Feature, disable bool) { //gd:EditorFeatureProfile.set_disable_feature
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_feature, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_disable_feature, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		feature Feature
 		disable bool
 	}{feature, disable})
@@ -321,7 +323,7 @@ Returns true if the 'feature' is disabled. When a feature is disabled, it will d
 */
 //go:nosplit
 func (self class) IsFeatureDisabled(feature Feature) bool { //gd:EditorFeatureProfile.is_feature_disabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_feature_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_feature_disabled, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
 	var ret = r_ret
 	return ret
 }
@@ -331,7 +333,7 @@ Returns the specified 'feature''s human-readable name.
 */
 //go:nosplit
 func (self class) GetFeatureName(feature Feature) String.Readable { //gd:EditorFeatureProfile.get_feature_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_feature_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_feature_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ feature Feature }{feature})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -346,7 +348,7 @@ Note: Feature profiles created via the user interface are saved in the feature_p
 */
 //go:nosplit
 func (self class) SaveToFile(path String.Readable) Error.Code { //gd:EditorFeatureProfile.save_to_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_to_file, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.save_to_file, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -361,7 +363,7 @@ Note: Feature profiles created via the user interface are loaded from the featur
 */
 //go:nosplit
 func (self class) LoadFromFile(path String.Readable) Error.Code { //gd:EditorFeatureProfile.load_from_file
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_from_file, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.load_from_file, gdextension.SizeInt|(gdextension.SizeString<<4), &struct{ path gdextension.String }{pointers.Get(gd.InternalString(path))})
 	var ret = Error.Code(r_ret)
 	return ret
 }

@@ -22,6 +22,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -54,6 +55,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -97,7 +99,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -203,7 +205,7 @@ Waits for the [Semaphore], if its value is zero, blocks until non-zero.
 */
 //go:nosplit
 func (self class) Wait() { //gd:Semaphore.wait
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.wait, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.wait, 0, &struct{}{})
 }
 
 /*
@@ -213,7 +215,7 @@ Like [Wait], but won't block, so if the value is zero, fails immediately and ret
 */
 //go:nosplit
 func (self class) TryWait() bool { //gd:Semaphore.try_wait
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.try_wait, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.try_wait, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -225,7 +227,7 @@ Lowers the [Semaphore], allowing one thread in, or more if 'count' is specified.
 */
 //go:nosplit
 func (self class) Post(count int64) { //gd:Semaphore.post
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.post, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.post, 0|(gdextension.SizeInt<<4), &struct{ count int64 }{count})
 }
 func (self class) AsSemaphore() Advanced { return Advanced{pointers.AsA[gdclass.Semaphore](self[0])} }
 func (self Instance) AsSemaphore() Instance {

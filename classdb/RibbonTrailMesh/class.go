@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +54,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -105,7 +107,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -211,72 +213,72 @@ func (self Instance) SetCurve(value Curve.Instance) {
 
 //go:nosplit
 func (self class) SetSize(size float64) { //gd:RibbonTrailMesh.set_size
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeFloat<<4), &struct{ size float64 }{size})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_size, 0|(gdextension.SizeFloat<<4), &struct{ size float64 }{size})
 }
 
 //go:nosplit
 func (self class) GetSize() float64 { //gd:RibbonTrailMesh.get_size
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_size, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSections(sections int64) { //gd:RibbonTrailMesh.set_sections
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sections, 0|(gdextension.SizeInt<<4), &struct{ sections int64 }{sections})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_sections, 0|(gdextension.SizeInt<<4), &struct{ sections int64 }{sections})
 }
 
 //go:nosplit
 func (self class) GetSections() int64 { //gd:RibbonTrailMesh.get_sections
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sections, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_sections, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSectionLength(section_length float64) { //gd:RibbonTrailMesh.set_section_length
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section_length, 0|(gdextension.SizeFloat<<4), &struct{ section_length float64 }{section_length})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section_length, 0|(gdextension.SizeFloat<<4), &struct{ section_length float64 }{section_length})
 }
 
 //go:nosplit
 func (self class) GetSectionLength() float64 { //gd:RibbonTrailMesh.get_section_length
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_length, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_section_length, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSectionSegments(section_segments int64) { //gd:RibbonTrailMesh.set_section_segments
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section_segments, 0|(gdextension.SizeInt<<4), &struct{ section_segments int64 }{section_segments})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_section_segments, 0|(gdextension.SizeInt<<4), &struct{ section_segments int64 }{section_segments})
 }
 
 //go:nosplit
 func (self class) GetSectionSegments() int64 { //gd:RibbonTrailMesh.get_section_segments
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_section_segments, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_section_segments, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCurve(curve [1]gdclass.Curve) { //gd:RibbonTrailMesh.set_curve
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_curve, 0|(gdextension.SizeObject<<4), &struct{ curve gdextension.Object }{gdextension.Object(gd.ObjectChecked(curve[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetCurve() [1]gdclass.Curve { //gd:RibbonTrailMesh.get_curve
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_curve, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Curve{gd.PointerWithOwnershipTransferredToGo[gdclass.Curve](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetShape(shape Shape) { //gd:RibbonTrailMesh.set_shape
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeInt<<4), &struct{ shape Shape }{shape})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_shape, 0|(gdextension.SizeInt<<4), &struct{ shape Shape }{shape})
 }
 
 //go:nosplit
 func (self class) GetShape() Shape { //gd:RibbonTrailMesh.get_shape
-	var r_ret = gdextension.Call[Shape](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[Shape](gd.ObjectChecked(self.AsObject()), methods.get_shape, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }

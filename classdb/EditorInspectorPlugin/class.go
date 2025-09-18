@@ -31,6 +31,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -65,6 +66,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -108,7 +110,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, true)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -429,7 +431,7 @@ Adds a custom control, which is not necessarily a property editor.
 */
 //go:nosplit
 func (self class) AddCustomControl(control [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_custom_control
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_custom_control, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_custom_control, 0|(gdextension.SizeObject<<4), &struct{ control gdextension.Object }{gdextension.Object(gd.PointerWithOwnershipTransferredToGodot(control[0].AsObject()[0]))})
 }
 
 /*
@@ -445,7 +447,7 @@ There can be multiple property editors for a property. If 'add_to_end' is true, 
 */
 //go:nosplit
 func (self class) AddPropertyEditor(property String.Readable, editor [1]gdclass.Control, add_to_end bool, label String.Readable) { //gd:EditorInspectorPlugin.add_property_editor
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_property_editor, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeString<<16), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_property_editor, 0|(gdextension.SizeString<<4)|(gdextension.SizeObject<<8)|(gdextension.SizeBool<<12)|(gdextension.SizeString<<16), &struct {
 		property   gdextension.String
 		editor     gdextension.Object
 		add_to_end bool
@@ -460,7 +462,7 @@ Adds an editor that allows modifying multiple properties. The 'editor' control m
 */
 //go:nosplit
 func (self class) AddPropertyEditorForMultipleProperties(label String.Readable, properties Packed.Strings, editor [1]gdclass.Control) { //gd:EditorInspectorPlugin.add_property_editor_for_multiple_properties
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_property_editor_for_multiple_properties, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeObject<<12), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_property_editor_for_multiple_properties, 0|(gdextension.SizeString<<4)|(gdextension.SizePackedArray<<8)|(gdextension.SizeObject<<12), &struct {
 		label      gdextension.String
 		properties gdextension.PackedArray[gdextension.String]
 		editor     gdextension.Object

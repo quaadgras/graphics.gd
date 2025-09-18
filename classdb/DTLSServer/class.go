@@ -109,6 +109,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -144,6 +145,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -186,7 +188,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -269,7 +271,7 @@ Setup the DTLS server to use the given 'server_options'. See [TLSOptions.Server]
 */
 //go:nosplit
 func (self class) Setup(server_options [1]gdclass.TLSOptions) Error.Code { //gd:DTLSServer.setup
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.setup, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ server_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(server_options[0].AsObject()))})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.setup, gdextension.SizeInt|(gdextension.SizeObject<<4), &struct{ server_options gdextension.Object }{gdextension.Object(gd.ObjectChecked(server_options[0].AsObject()))})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -283,7 +285,7 @@ Note: You must check that the state of the return PacketPeerUDP is [Packetpeerdt
 */
 //go:nosplit
 func (self class) TakeConnection(udp_peer [1]gdclass.PacketPeerUDP) [1]gdclass.PacketPeerDTLS { //gd:DTLSServer.take_connection
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ udp_peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(udp_peer[0].AsObject()))})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.take_connection, gdextension.SizeObject|(gdextension.SizeObject<<4), &struct{ udp_peer gdextension.Object }{gdextension.Object(gd.ObjectChecked(udp_peer[0].AsObject()))})
 	var ret = [1]gdclass.PacketPeerDTLS{gd.PointerWithOwnershipTransferredToGo[gdclass.PacketPeerDTLS](r_ret)}
 	return ret
 }

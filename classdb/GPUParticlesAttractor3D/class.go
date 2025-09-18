@@ -20,6 +20,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -55,6 +56,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -103,7 +105,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -192,48 +194,48 @@ func (self Instance) SetCullMask(value int) {
 
 //go:nosplit
 func (self class) SetCullMask(mask int64) { //gd:GPUParticlesAttractor3D.set_cull_mask
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_cull_mask, 0|(gdextension.SizeInt<<4), &struct{ mask int64 }{mask})
 }
 
 //go:nosplit
 func (self class) GetCullMask() int64 { //gd:GPUParticlesAttractor3D.get_cull_mask
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_cull_mask, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetStrength(strength float64) { //gd:GPUParticlesAttractor3D.set_strength
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_strength, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_strength, 0|(gdextension.SizeFloat<<4), &struct{ strength float64 }{strength})
 }
 
 //go:nosplit
 func (self class) GetStrength() float64 { //gd:GPUParticlesAttractor3D.get_strength
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_strength, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_strength, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetAttenuation(attenuation float64) { //gd:GPUParticlesAttractor3D.set_attenuation
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attenuation, 0|(gdextension.SizeFloat<<4), &struct{ attenuation float64 }{attenuation})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_attenuation, 0|(gdextension.SizeFloat<<4), &struct{ attenuation float64 }{attenuation})
 }
 
 //go:nosplit
 func (self class) GetAttenuation() float64 { //gd:GPUParticlesAttractor3D.get_attenuation
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_attenuation, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_attenuation, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetDirectionality(amount float64) { //gd:GPUParticlesAttractor3D.set_directionality
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_directionality, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_directionality, 0|(gdextension.SizeFloat<<4), &struct{ amount float64 }{amount})
 }
 
 //go:nosplit
 func (self class) GetDirectionality() float64 { //gd:GPUParticlesAttractor3D.get_directionality
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_directionality, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_directionality, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }

@@ -16,6 +16,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +50,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -107,7 +109,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -324,7 +326,7 @@ Returns true if the script can be instantiated.
 */
 //go:nosplit
 func (self class) CanInstantiate() bool { //gd:Script.can_instantiate
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_instantiate, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.can_instantiate, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -334,7 +336,7 @@ Returns true if 'base_object' is an instance of this script.
 */
 //go:nosplit
 func (self class) InstanceHas(base_object [1]gd.Object) bool { //gd:Script.instance_has
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.instance_has, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ base_object gdextension.Object }{gdextension.Object(gd.ObjectChecked(base_object[0].AsObject()))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.instance_has, gdextension.SizeBool|(gdextension.SizeObject<<4), &struct{ base_object gdextension.Object }{gdextension.Object(gd.ObjectChecked(base_object[0].AsObject()))})
 	var ret = r_ret
 	return ret
 }
@@ -349,21 +351,21 @@ Note: If a script does not have source code, this does not mean that it is inval
 */
 //go:nosplit
 func (self class) HasSourceCode() bool { //gd:Script.has_source_code
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_source_code, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_source_code, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) GetSourceCode() String.Readable { //gd:Script.get_source_code
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_source_code, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_source_code, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSourceCode(source String.Readable) { //gd:Script.set_source_code
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source_code, 0|(gdextension.SizeString<<4), &struct{ source gdextension.String }{pointers.Get(gd.InternalString(source))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_source_code, 0|(gdextension.SizeString<<4), &struct{ source gdextension.String }{pointers.Get(gd.InternalString(source))})
 }
 
 /*
@@ -371,7 +373,7 @@ Reloads the script's class implementation. Returns an error code.
 */
 //go:nosplit
 func (self class) Reload(keep_state bool) Error.Code { //gd:Script.reload
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.reload, gdextension.SizeInt|(gdextension.SizeBool<<4), &struct{ keep_state bool }{keep_state})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.reload, gdextension.SizeInt|(gdextension.SizeBool<<4), &struct{ keep_state bool }{keep_state})
 	var ret = Error.Code(r_ret)
 	return ret
 }
@@ -381,7 +383,7 @@ Returns the script directly inherited by this script.
 */
 //go:nosplit
 func (self class) GetBaseScript() [1]gdclass.Script { //gd:Script.get_base_script
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_script, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_base_script, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Script{gd.PointerWithOwnershipTransferredToGo[gdclass.Script](r_ret)}
 	return ret
 }
@@ -391,7 +393,7 @@ Returns the script's base type.
 */
 //go:nosplit
 func (self class) GetInstanceBaseType() String.Name { //gd:Script.get_instance_base_type
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_instance_base_type, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_instance_base_type, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -405,7 +407,7 @@ To give the script a global name, you can use the class_name keyword in GDScript
 */
 //go:nosplit
 func (self class) GetGlobalName() String.Name { //gd:Script.get_global_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_global_name, gdextension.SizeStringName, &struct{}{})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_global_name, gdextension.SizeStringName, &struct{}{})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -415,7 +417,7 @@ Returns true if the script, or a base class, defines a signal with the given nam
 */
 //go:nosplit
 func (self class) HasScriptSignal(signal_name String.Name) bool { //gd:Script.has_script_signal
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_script_signal, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ signal_name gdextension.StringName }{pointers.Get(gd.InternalStringName(signal_name))})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_script_signal, gdextension.SizeBool|(gdextension.SizeStringName<<4), &struct{ signal_name gdextension.StringName }{pointers.Get(gd.InternalStringName(signal_name))})
 	var ret = r_ret
 	return ret
 }
@@ -430,7 +432,7 @@ Note: The dictionaries returned by this method are formatted identically to thos
 */
 //go:nosplit
 func (self class) GetScriptPropertyList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_property_list
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_script_property_list, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_script_property_list, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -445,7 +447,7 @@ Note: The dictionaries returned by this method are formatted identically to thos
 */
 //go:nosplit
 func (self class) GetScriptMethodList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_method_list
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_script_method_list, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_script_method_list, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -460,7 +462,7 @@ Note: The dictionaries returned by this method are formatted identically to thos
 */
 //go:nosplit
 func (self class) GetScriptSignalList() Array.Contains[Dictionary.Any] { //gd:Script.get_script_signal_list
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_script_signal_list, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_script_signal_list, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -470,7 +472,7 @@ Returns a dictionary containing constant names and their values.
 */
 //go:nosplit
 func (self class) GetScriptConstantMap() Dictionary.Any { //gd:Script.get_script_constant_map
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_script_constant_map, gdextension.SizeDictionary, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_script_constant_map, gdextension.SizeDictionary, &struct{}{})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -480,7 +482,7 @@ Returns the default value of the specified property.
 */
 //go:nosplit
 func (self class) GetPropertyDefaultValue(property String.Name) variant.Any { //gd:Script.get_property_default_value
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_property_default_value, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ property gdextension.StringName }{pointers.Get(gd.InternalStringName(property))})
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_property_default_value, gdextension.SizeVariant|(gdextension.SizeStringName<<4), &struct{ property gdextension.StringName }{pointers.Get(gd.InternalStringName(property))})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -490,7 +492,7 @@ Returns true if the script is a tool script. A tool script can run in the editor
 */
 //go:nosplit
 func (self class) IsTool() bool { //gd:Script.is_tool
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tool, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_tool, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -500,7 +502,7 @@ Returns true if the script is an abstract script. An abstract script does not ha
 */
 //go:nosplit
 func (self class) IsAbstract() bool { //gd:Script.is_abstract
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_abstract, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_abstract, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -510,7 +512,7 @@ Returns a data structure mapping method names to their RPC configuration defined
 */
 //go:nosplit
 func (self class) GetRpcConfig() variant.Any { //gd:Script.get_rpc_config
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_rpc_config, gdextension.SizeVariant, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_rpc_config, gdextension.SizeVariant, &struct{}{})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }

@@ -6,6 +6,7 @@ import (
 	"reflect"
 
 	"graphics.gd/internal/gdextension"
+	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	VariantPkg "graphics.gd/variant"
 	DictionaryType "graphics.gd/variant/Dictionary"
@@ -23,12 +24,12 @@ func (d Dictionary) SetIndex(key Variant, value Variant) {
 
 func (d Dictionary) Free() {
 	if ptr, ok := pointers.End(d); ok {
-		gdextension.Free(gdextension.TypeDictionary, &ptr)
+		noescape.Free(gdextension.TypeDictionary, &ptr)
 	}
 }
 
 func NewDictionary() Dictionary {
-	return pointers.New[Dictionary](gdextension.Make[gdextension.Dictionary](builtin.creation.Dictionary[0], 0, nil))
+	return pointers.New[Dictionary](noescape.Make[gdextension.Dictionary](builtin.creation.Dictionary[0], 0, nil))
 }
 
 func InternalDictionary[K comparable, V any](dict DictionaryType.Map[K, V]) Dictionary {

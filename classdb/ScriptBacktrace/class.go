@@ -16,6 +16,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -48,6 +49,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -104,7 +106,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -321,7 +323,7 @@ Returns the name of the script language that this backtrace was captured from.
 */
 //go:nosplit
 func (self class) GetLanguageName() String.Readable { //gd:ScriptBacktrace.get_language_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language_name, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_language_name, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -331,7 +333,7 @@ Returns true if the backtrace has no stack frames.
 */
 //go:nosplit
 func (self class) IsEmpty() bool { //gd:ScriptBacktrace.is_empty
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_empty, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_empty, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -341,7 +343,7 @@ Returns the number of stack frames in the backtrace.
 */
 //go:nosplit
 func (self class) GetFrameCount() int64 { //gd:ScriptBacktrace.get_frame_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -351,7 +353,7 @@ Returns the name of the function called at the stack frame at the specified inde
 */
 //go:nosplit
 func (self class) GetFrameFunction(index int64) String.Readable { //gd:ScriptBacktrace.get_frame_function
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_frame_function, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_frame_function, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -361,7 +363,7 @@ Returns the file name of the call site represented by the stack frame at the spe
 */
 //go:nosplit
 func (self class) GetFrameFile(index int64) String.Readable { //gd:ScriptBacktrace.get_frame_file
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_frame_file, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_frame_file, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -371,7 +373,7 @@ Returns the line number of the call site represented by the stack frame at the s
 */
 //go:nosplit
 func (self class) GetFrameLine(index int64) int64 { //gd:ScriptBacktrace.get_frame_line
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame_line, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame_line, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ index int64 }{index})
 	var ret = r_ret
 	return ret
 }
@@ -385,7 +387,7 @@ Note: This will be non-zero only if the include_variables parameter was true whe
 */
 //go:nosplit
 func (self class) GetGlobalVariableCount() int64 { //gd:ScriptBacktrace.get_global_variable_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_global_variable_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_global_variable_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -395,7 +397,7 @@ Returns the name of the global variable at the specified index.
 */
 //go:nosplit
 func (self class) GetGlobalVariableName(variable_index int64) String.Readable { //gd:ScriptBacktrace.get_global_variable_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_global_variable_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ variable_index int64 }{variable_index})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_global_variable_name, gdextension.SizeString|(gdextension.SizeInt<<4), &struct{ variable_index int64 }{variable_index})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
@@ -407,7 +409,7 @@ Warning: With GDScript backtraces, the returned any will be the variable's actua
 */
 //go:nosplit
 func (self class) GetGlobalVariableValue(variable_index int64) variant.Any { //gd:ScriptBacktrace.get_global_variable_value
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_global_variable_value, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ variable_index int64 }{variable_index})
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_global_variable_value, gdextension.SizeVariant|(gdextension.SizeInt<<4), &struct{ variable_index int64 }{variable_index})
 	var ret = variant.Implementation(gd.VariantProxy{}, pointers.Pack(pointers.New[gd.Variant](r_ret)))
 	return ret
 }
@@ -421,7 +423,7 @@ Note: This will be non-zero only if the include_variables parameter was true whe
 */
 //go:nosplit
 func (self class) GetLocalVariableCount(frame_index int64) int64 { //gd:ScriptBacktrace.get_local_variable_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_variable_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ frame_index int64 }{frame_index})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_local_variable_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ frame_index int64 }{frame_index})
 	var ret = r_ret
 	return ret
 }
@@ -431,7 +433,7 @@ Returns the name of the local variable at the specified 'variable_index' in the 
 */
 //go:nosplit
 func (self class) GetLocalVariableName(frame_index int64, variable_index int64) String.Readable { //gd:ScriptBacktrace.get_local_variable_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_local_variable_name, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_local_variable_name, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		frame_index    int64
 		variable_index int64
 	}{frame_index, variable_index})
@@ -446,7 +448,7 @@ Warning: With GDScript backtraces, the returned any will be the variable's actua
 */
 //go:nosplit
 func (self class) GetLocalVariableValue(frame_index int64, variable_index int64) variant.Any { //gd:ScriptBacktrace.get_local_variable_value
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_local_variable_value, gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_local_variable_value, gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		frame_index    int64
 		variable_index int64
 	}{frame_index, variable_index})
@@ -463,7 +465,7 @@ Note: This will be non-zero only if the include_variables parameter was true whe
 */
 //go:nosplit
 func (self class) GetMemberVariableCount(frame_index int64) int64 { //gd:ScriptBacktrace.get_member_variable_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_member_variable_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ frame_index int64 }{frame_index})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_member_variable_count, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ frame_index int64 }{frame_index})
 	var ret = r_ret
 	return ret
 }
@@ -473,7 +475,7 @@ Returns the name of the member variable at the specified 'variable_index' in the
 */
 //go:nosplit
 func (self class) GetMemberVariableName(frame_index int64, variable_index int64) String.Readable { //gd:ScriptBacktrace.get_member_variable_name
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_member_variable_name, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_member_variable_name, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		frame_index    int64
 		variable_index int64
 	}{frame_index, variable_index})
@@ -488,7 +490,7 @@ Warning: With GDScript backtraces, the returned any will be the variable's actua
 */
 //go:nosplit
 func (self class) GetMemberVariableValue(frame_index int64, variable_index int64) variant.Any { //gd:ScriptBacktrace.get_member_variable_value
-	var r_ret = gdextension.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_member_variable_value, gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.Variant](gd.ObjectChecked(self.AsObject()), methods.get_member_variable_value, gdextension.SizeVariant|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		frame_index    int64
 		variable_index int64
 	}{frame_index, variable_index})
@@ -507,7 +509,7 @@ Note: Calling [Object.ToString] on a [ScriptBacktrace] will produce the same out
 */
 //go:nosplit
 func (self class) Format(indent_all int64, indent_frames int64) String.Readable { //gd:ScriptBacktrace.format
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.format, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.format, gdextension.SizeString|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		indent_all    int64
 		indent_frames int64
 	}{indent_all, indent_frames})

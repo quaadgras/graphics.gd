@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -45,6 +46,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -101,7 +103,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -258,7 +260,7 @@ Clears the internal data.
 */
 //go:nosplit
 func (self class) Clear() { //gd:NavigationMeshSourceGeometryData2D.clear
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear, 0, &struct{}{})
 }
 
 /*
@@ -266,7 +268,7 @@ Returns true when parsed source geometry data exists.
 */
 //go:nosplit
 func (self class) HasData() bool { //gd:NavigationMeshSourceGeometryData2D.has_data
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_data, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_data, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -276,7 +278,7 @@ Sets all the traversable area outlines arrays.
 */
 //go:nosplit
 func (self class) SetTraversableOutlines(traversable_outlines Array.Contains[Packed.Array[Vector2.XY]]) { //gd:NavigationMeshSourceGeometryData2D.set_traversable_outlines
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_traversable_outlines, 0|(gdextension.SizeArray<<4), &struct{ traversable_outlines gdextension.Array }{pointers.Get(gd.InternalArray(traversable_outlines))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_traversable_outlines, 0|(gdextension.SizeArray<<4), &struct{ traversable_outlines gdextension.Array }{pointers.Get(gd.InternalArray(traversable_outlines))})
 }
 
 /*
@@ -284,7 +286,7 @@ Returns all the traversable area outlines arrays.
 */
 //go:nosplit
 func (self class) GetTraversableOutlines() Array.Contains[Packed.Array[Vector2.XY]] { //gd:NavigationMeshSourceGeometryData2D.get_traversable_outlines
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_traversable_outlines, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_traversable_outlines, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -294,7 +296,7 @@ Sets all the obstructed area outlines arrays.
 */
 //go:nosplit
 func (self class) SetObstructionOutlines(obstruction_outlines Array.Contains[Packed.Array[Vector2.XY]]) { //gd:NavigationMeshSourceGeometryData2D.set_obstruction_outlines
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_obstruction_outlines, 0|(gdextension.SizeArray<<4), &struct{ obstruction_outlines gdextension.Array }{pointers.Get(gd.InternalArray(obstruction_outlines))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_obstruction_outlines, 0|(gdextension.SizeArray<<4), &struct{ obstruction_outlines gdextension.Array }{pointers.Get(gd.InternalArray(obstruction_outlines))})
 }
 
 /*
@@ -302,7 +304,7 @@ Returns all the obstructed area outlines arrays.
 */
 //go:nosplit
 func (self class) GetObstructionOutlines() Array.Contains[Packed.Array[Vector2.XY]] { //gd:NavigationMeshSourceGeometryData2D.get_obstruction_outlines
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_obstruction_outlines, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_obstruction_outlines, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Packed.Array[Vector2.XY]]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -312,7 +314,7 @@ Appends another array of 'traversable_outlines' at the end of the existing trave
 */
 //go:nosplit
 func (self class) AppendTraversableOutlines(traversable_outlines Array.Contains[Packed.Array[Vector2.XY]]) { //gd:NavigationMeshSourceGeometryData2D.append_traversable_outlines
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_traversable_outlines, 0|(gdextension.SizeArray<<4), &struct{ traversable_outlines gdextension.Array }{pointers.Get(gd.InternalArray(traversable_outlines))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_traversable_outlines, 0|(gdextension.SizeArray<<4), &struct{ traversable_outlines gdextension.Array }{pointers.Get(gd.InternalArray(traversable_outlines))})
 }
 
 /*
@@ -320,7 +322,7 @@ Appends another array of 'obstruction_outlines' at the end of the existing obstr
 */
 //go:nosplit
 func (self class) AppendObstructionOutlines(obstruction_outlines Array.Contains[Packed.Array[Vector2.XY]]) { //gd:NavigationMeshSourceGeometryData2D.append_obstruction_outlines
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_obstruction_outlines, 0|(gdextension.SizeArray<<4), &struct{ obstruction_outlines gdextension.Array }{pointers.Get(gd.InternalArray(obstruction_outlines))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.append_obstruction_outlines, 0|(gdextension.SizeArray<<4), &struct{ obstruction_outlines gdextension.Array }{pointers.Get(gd.InternalArray(obstruction_outlines))})
 }
 
 /*
@@ -328,7 +330,7 @@ Adds the outline points of a shape as traversable area.
 */
 //go:nosplit
 func (self class) AddTraversableOutline(shape_outline Packed.Array[Vector2.XY]) { //gd:NavigationMeshSourceGeometryData2D.add_traversable_outline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_traversable_outline, 0|(gdextension.SizePackedArray<<4), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_traversable_outline, 0|(gdextension.SizePackedArray<<4), &struct {
 		shape_outline gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](shape_outline))})
 }
@@ -338,7 +340,7 @@ Adds the outline points of a shape as obstructed area.
 */
 //go:nosplit
 func (self class) AddObstructionOutline(shape_outline Packed.Array[Vector2.XY]) { //gd:NavigationMeshSourceGeometryData2D.add_obstruction_outline
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_obstruction_outline, 0|(gdextension.SizePackedArray<<4), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_obstruction_outline, 0|(gdextension.SizePackedArray<<4), &struct {
 		shape_outline gdextension.PackedArray[Vector2.XY]
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](shape_outline))})
 }
@@ -350,7 +352,7 @@ Adds the geometry data of another [NavigationMeshSourceGeometryData2D] to the na
 */
 //go:nosplit
 func (self class) Merge(other_geometry [1]gdclass.NavigationMeshSourceGeometryData2D) { //gd:NavigationMeshSourceGeometryData2D.merge
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge, 0|(gdextension.SizeObject<<4), &struct{ other_geometry gdextension.Object }{gdextension.Object(gd.ObjectChecked(other_geometry[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.merge, 0|(gdextension.SizeObject<<4), &struct{ other_geometry gdextension.Object }{gdextension.Object(gd.ObjectChecked(other_geometry[0].AsObject()))})
 }
 
 /*
@@ -358,7 +360,7 @@ Adds a projected obstruction shape to the source geometry. If 'carve' is true th
 */
 //go:nosplit
 func (self class) AddProjectedObstruction(vertices Packed.Array[Vector2.XY], carve bool) { //gd:NavigationMeshSourceGeometryData2D.add_projected_obstruction
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_projected_obstruction, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_projected_obstruction, 0|(gdextension.SizePackedArray<<4)|(gdextension.SizeBool<<8), &struct {
 		vertices gdextension.PackedArray[Vector2.XY]
 		carve    bool
 	}{pointers.Get(gd.InternalPacked[gd.PackedVector2Array, Vector2.XY](vertices)), carve})
@@ -369,7 +371,7 @@ Clears all projected obstructions.
 */
 //go:nosplit
 func (self class) ClearProjectedObstructions() { //gd:NavigationMeshSourceGeometryData2D.clear_projected_obstructions
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_projected_obstructions, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_projected_obstructions, 0, &struct{}{})
 }
 
 /*
@@ -384,7 +386,7 @@ Sets the projected obstructions with an Array of Dictionaries with the following
 */
 //go:nosplit
 func (self class) SetProjectedObstructions(projected_obstructions Array.Any) { //gd:NavigationMeshSourceGeometryData2D.set_projected_obstructions
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_projected_obstructions, 0|(gdextension.SizeArray<<4), &struct{ projected_obstructions gdextension.Array }{pointers.Get(gd.InternalArray(projected_obstructions))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_projected_obstructions, 0|(gdextension.SizeArray<<4), &struct{ projected_obstructions gdextension.Array }{pointers.Get(gd.InternalArray(projected_obstructions))})
 }
 
 /*
@@ -396,7 +398,7 @@ Returns the projected obstructions as an slice of dictionaries. Each data struct
 */
 //go:nosplit
 func (self class) GetProjectedObstructions() Array.Any { //gd:NavigationMeshSourceGeometryData2D.get_projected_obstructions
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_projected_obstructions, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_projected_obstructions, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[variant.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -406,7 +408,7 @@ Returns an axis-aligned bounding box that covers all the stored geometry data. T
 */
 //go:nosplit
 func (self class) GetBounds() Rect2.PositionSize { //gd:NavigationMeshSourceGeometryData2D.get_bounds
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_bounds, gdextension.SizeRect2, &struct{}{})
+	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_bounds, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

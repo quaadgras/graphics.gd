@@ -45,6 +45,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -83,6 +84,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -139,7 +141,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -276,84 +278,84 @@ func (self Instance) SetSelectAllOnFocus(value bool) {
 
 //go:nosplit
 func (self class) SetHorizontalAlignment(alignment GUI.HorizontalAlignment) { //gd:SpinBox.set_horizontal_alignment
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.HorizontalAlignment }{alignment})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_horizontal_alignment, 0|(gdextension.SizeInt<<4), &struct{ alignment GUI.HorizontalAlignment }{alignment})
 }
 
 //go:nosplit
 func (self class) GetHorizontalAlignment() GUI.HorizontalAlignment { //gd:SpinBox.get_horizontal_alignment
-	var r_ret = gdextension.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[GUI.HorizontalAlignment](gd.ObjectChecked(self.AsObject()), methods.get_horizontal_alignment, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSuffix(suffix String.Readable) { //gd:SpinBox.set_suffix
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suffix, 0|(gdextension.SizeString<<4), &struct{ suffix gdextension.String }{pointers.Get(gd.InternalString(suffix))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_suffix, 0|(gdextension.SizeString<<4), &struct{ suffix gdextension.String }{pointers.Get(gd.InternalString(suffix))})
 }
 
 //go:nosplit
 func (self class) GetSuffix() String.Readable { //gd:SpinBox.get_suffix
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_suffix, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_suffix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrefix(prefix String.Readable) { //gd:SpinBox.set_prefix
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_prefix, 0|(gdextension.SizeString<<4), &struct{ prefix gdextension.String }{pointers.Get(gd.InternalString(prefix))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_prefix, 0|(gdextension.SizeString<<4), &struct{ prefix gdextension.String }{pointers.Get(gd.InternalString(prefix))})
 }
 
 //go:nosplit
 func (self class) GetPrefix() String.Readable { //gd:SpinBox.get_prefix
-	var r_ret = gdextension.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_prefix, gdextension.SizeString, &struct{}{})
+	var r_ret = noescape.Call[gdextension.String](gd.ObjectChecked(self.AsObject()), methods.get_prefix, gdextension.SizeString, &struct{}{})
 	var ret = String.Via(gd.StringProxy{}, pointers.Pack(pointers.New[gd.String](r_ret)))
 	return ret
 }
 
 //go:nosplit
 func (self class) SetEditable(enabled bool) { //gd:SpinBox.set_editable
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_editable, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) SetCustomArrowStep(arrow_step float64) { //gd:SpinBox.set_custom_arrow_step
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_arrow_step, 0|(gdextension.SizeFloat<<4), &struct{ arrow_step float64 }{arrow_step})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_custom_arrow_step, 0|(gdextension.SizeFloat<<4), &struct{ arrow_step float64 }{arrow_step})
 }
 
 //go:nosplit
 func (self class) GetCustomArrowStep() float64 { //gd:SpinBox.get_custom_arrow_step
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_arrow_step, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_custom_arrow_step, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) IsEditable() bool { //gd:SpinBox.is_editable
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_editable, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetUpdateOnTextChanged(enabled bool) { //gd:SpinBox.set_update_on_text_changed
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_on_text_changed, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_update_on_text_changed, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) GetUpdateOnTextChanged() bool { //gd:SpinBox.get_update_on_text_changed
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_on_text_changed, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.get_update_on_text_changed, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetSelectAllOnFocus(enabled bool) { //gd:SpinBox.set_select_all_on_focus
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_select_all_on_focus, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_select_all_on_focus, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsSelectAllOnFocus() bool { //gd:SpinBox.is_select_all_on_focus
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_select_all_on_focus, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_select_all_on_focus, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -367,7 +369,7 @@ Applies the current value of this [SpinBox]. This is equivalent to pressing Ente
 */
 //go:nosplit
 func (self class) Apply() { //gd:SpinBox.apply
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.apply, 0, &struct{}{})
 }
 
 /*
@@ -381,7 +383,7 @@ Warning: This is a required internal node, removing and freeing it may cause a c
 */
 //go:nosplit
 func (self class) GetLineEdit() [1]gdclass.LineEdit { //gd:SpinBox.get_line_edit
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_line_edit, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_line_edit, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.LineEdit{gd.PointerLifetimeBoundTo[gdclass.LineEdit](self.AsObject(), r_ret)}
 	return ret
 }

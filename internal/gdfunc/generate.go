@@ -180,7 +180,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 		fmt.Fprintln(w, "for _, arg := range args {")
 		fmt.Fprintln(w, "\tdynamic = append(dynamic, gdextension.Variant(pointers.Get(gd.NewVariant(arg))))")
 		fmt.Fprintln(w, "}")
-		fmt.Fprintf(w, "\tret, err := methods.%v.Call%s(%s append(fixed[:], dynamic...)...)\n", method.Name, static, self)
+		fmt.Fprintf(w, "\tret, err := noescape.MethodForClass(methods.%v).Call%s(%s append(fixed[:], dynamic...)...)\n", method.Name, static, self)
 		fmt.Fprintf(w, "\tif err != nil {\n")
 		fmt.Fprintf(w, "\t\tpanic(err)\n")
 		fmt.Fprintf(w, "\t}\n")
@@ -197,7 +197,7 @@ func Generate(w io.Writer, classDB map[string]gdjson.Class, pkg string, class gd
 	} else {
 		callResult = "struct{}"
 	}
-	fmt.Fprintf(w, "gdextension.Call%s[%s](%s methods.%v, %v, &struct{", static, callResult, self, method.Name, shapeOf(class, method))
+	fmt.Fprintf(w, "noescape.Call%s[%s](%s methods.%v, %v, &struct{", static, callResult, self, method.Name, shapeOf(class, method))
 	for i, arg := range method.Arguments {
 		if i > 0 {
 			fmt.Fprint(w, "; ")

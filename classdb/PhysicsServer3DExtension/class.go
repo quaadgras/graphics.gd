@@ -14,6 +14,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -53,6 +54,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -95,7 +97,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -4217,14 +4219,14 @@ func (class) _get_process_info(impl func(ptr gdclass.Receiver, process_info Phys
 
 //go:nosplit
 func (self class) BodyTestMotionIsExcludingBody(body RID.Any) bool { //gd:PhysicsServer3DExtension.body_test_motion_is_excluding_body
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_test_motion_is_excluding_body, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_test_motion_is_excluding_body, gdextension.SizeBool|(gdextension.SizeRID<<4), &struct{ body RID.Any }{body})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) BodyTestMotionIsExcludingObject(obj int64) bool { //gd:PhysicsServer3DExtension.body_test_motion_is_excluding_object
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_test_motion_is_excluding_object, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ obj int64 }{obj})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.body_test_motion_is_excluding_object, gdextension.SizeBool|(gdextension.SizeInt<<4), &struct{ obj int64 }{obj})
 	var ret = r_ret
 	return ret
 }

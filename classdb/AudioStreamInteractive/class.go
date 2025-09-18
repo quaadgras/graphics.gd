@@ -17,6 +17,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -51,6 +52,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -114,7 +116,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -385,24 +387,24 @@ func (self Instance) SetInitialClip(value Clip) {
 
 //go:nosplit
 func (self class) SetClipCount(clip_count int64) { //gd:AudioStreamInteractive.set_clip_count
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_count, 0|(gdextension.SizeInt<<4), &struct{ clip_count int64 }{clip_count})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_count, 0|(gdextension.SizeInt<<4), &struct{ clip_count int64 }{clip_count})
 }
 
 //go:nosplit
 func (self class) GetClipCount() int64 { //gd:AudioStreamInteractive.get_clip_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_clip_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_clip_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetInitialClip(clip_index int64) { //gd:AudioStreamInteractive.set_initial_clip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_initial_clip, 0|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_initial_clip, 0|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
 }
 
 //go:nosplit
 func (self class) GetInitialClip() int64 { //gd:AudioStreamInteractive.get_initial_clip
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_initial_clip, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_initial_clip, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -412,7 +414,7 @@ Set the name of the current clip (for easier identification).
 */
 //go:nosplit
 func (self class) SetClipName(clip_index int64, name String.Name) { //gd:AudioStreamInteractive.set_clip_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_name, 0|(gdextension.SizeInt<<4)|(gdextension.SizeStringName<<8), &struct {
 		clip_index int64
 		name       gdextension.StringName
 	}{clip_index, pointers.Get(gd.InternalStringName(name))})
@@ -423,7 +425,7 @@ Return the name of a clip.
 */
 //go:nosplit
 func (self class) GetClipName(clip_index int64) String.Name { //gd:AudioStreamInteractive.get_clip_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_clip_name, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_clip_name, gdextension.SizeStringName|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -435,7 +437,7 @@ Set the [AudioStream] associated with the current clip.
 */
 //go:nosplit
 func (self class) SetClipStream(clip_index int64, stream [1]gdclass.AudioStream) { //gd:AudioStreamInteractive.set_clip_stream
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_stream, 0|(gdextension.SizeInt<<4)|(gdextension.SizeObject<<8), &struct {
 		clip_index int64
 		stream     gdextension.Object
 	}{clip_index, gdextension.Object(gd.ObjectChecked(stream[0].AsObject()))})
@@ -448,7 +450,7 @@ Return the [AudioStream] associated with a clip.
 */
 //go:nosplit
 func (self class) GetClipStream(clip_index int64) [1]gdclass.AudioStream { //gd:AudioStreamInteractive.get_clip_stream
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_clip_stream, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_clip_stream, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
 	var ret = [1]gdclass.AudioStream{gd.PointerWithOwnershipTransferredToGo[gdclass.AudioStream](r_ret)}
 	return ret
 }
@@ -458,7 +460,7 @@ Set whether a clip will auto-advance by changing the auto-advance mode.
 */
 //go:nosplit
 func (self class) SetClipAutoAdvance(clip_index int64, mode AutoAdvanceMode) { //gd:AudioStreamInteractive.set_clip_auto_advance
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_auto_advance, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_auto_advance, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		clip_index int64
 		mode       AutoAdvanceMode
 	}{clip_index, mode})
@@ -471,7 +473,7 @@ Return whether a clip has auto-advance enabled. See [SetClipAutoAdvance].
 */
 //go:nosplit
 func (self class) GetClipAutoAdvance(clip_index int64) AutoAdvanceMode { //gd:AudioStreamInteractive.get_clip_auto_advance
-	var r_ret = gdextension.Call[AutoAdvanceMode](gd.ObjectChecked(self.AsObject()), methods.get_clip_auto_advance, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
+	var r_ret = noescape.Call[AutoAdvanceMode](gd.ObjectChecked(self.AsObject()), methods.get_clip_auto_advance, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
 	var ret = r_ret
 	return ret
 }
@@ -481,7 +483,7 @@ Set the index of the next clip towards which this clip will auto advance to when
 */
 //go:nosplit
 func (self class) SetClipAutoAdvanceNextClip(clip_index int64, auto_advance_next_clip int64) { //gd:AudioStreamInteractive.set_clip_auto_advance_next_clip
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_auto_advance_next_clip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_clip_auto_advance_next_clip, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		clip_index             int64
 		auto_advance_next_clip int64
 	}{clip_index, auto_advance_next_clip})
@@ -492,7 +494,7 @@ Return the clip towards which the clip referenced by 'clip_index' will auto-adva
 */
 //go:nosplit
 func (self class) GetClipAutoAdvanceNextClip(clip_index int64) int64 { //gd:AudioStreamInteractive.get_clip_auto_advance_next_clip
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_clip_auto_advance_next_clip, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_clip_auto_advance_next_clip, gdextension.SizeInt|(gdextension.SizeInt<<4), &struct{ clip_index int64 }{clip_index})
 	var ret = r_ret
 	return ret
 }
@@ -516,7 +518,7 @@ Add a transition between two clips. Provide the indices of the source and destin
 */
 //go:nosplit
 func (self class) AddTransition(from_clip int64, to_clip int64, from_time TransitionFromTime, to_time TransitionToTime, fade_mode FadeMode, fade_beats float64, use_filler_clip bool, filler_clip int64, hold_previous bool) { //gd:AudioStreamInteractive.add_transition
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_transition, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeBool<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeBool<<36), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_transition, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8)|(gdextension.SizeInt<<12)|(gdextension.SizeInt<<16)|(gdextension.SizeInt<<20)|(gdextension.SizeFloat<<24)|(gdextension.SizeBool<<28)|(gdextension.SizeInt<<32)|(gdextension.SizeBool<<36), &struct {
 		from_clip       int64
 		to_clip         int64
 		from_time       TransitionFromTime
@@ -536,7 +538,7 @@ Returns true if a given transition exists (was added via [AddTransition]).
 */
 //go:nosplit
 func (self class) HasTransition(from_clip int64, to_clip int64) bool { //gd:AudioStreamInteractive.has_transition
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_transition, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.has_transition, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from_clip int64
 		to_clip   int64
 	}{from_clip, to_clip})
@@ -549,7 +551,7 @@ Erase a transition by providing 'from_clip' and 'to_clip' clip indices. [ClipAny
 */
 //go:nosplit
 func (self class) EraseTransition(from_clip int64, to_clip int64) { //gd:AudioStreamInteractive.erase_transition
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_transition, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.erase_transition, 0|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from_clip int64
 		to_clip   int64
 	}{from_clip, to_clip})
@@ -560,7 +562,7 @@ Return the list of transitions (from, to interleaved).
 */
 //go:nosplit
 func (self class) GetTransitionList() Packed.Array[int32] { //gd:AudioStreamInteractive.get_transition_list
-	var r_ret = gdextension.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_transition_list, gdextension.SizePackedArray, &struct{}{})
+	var r_ret = noescape.Call[gd.PackedPointers](gd.ObjectChecked(self.AsObject()), methods.get_transition_list, gdextension.SizePackedArray, &struct{}{})
 	var ret = Packed.Array[int32](Array.Through(gd.PackedProxy[gd.PackedInt32Array, int32]{}, pointers.Pack(pointers.Let[gd.PackedStringArray](r_ret))))
 	return ret
 }
@@ -572,7 +574,7 @@ Return the source time position for a transition (see [AddTransition]).
 */
 //go:nosplit
 func (self class) GetTransitionFromTime(from_clip int64, to_clip int64) TransitionFromTime { //gd:AudioStreamInteractive.get_transition_from_time
-	var r_ret = gdextension.Call[TransitionFromTime](gd.ObjectChecked(self.AsObject()), methods.get_transition_from_time, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[TransitionFromTime](gd.ObjectChecked(self.AsObject()), methods.get_transition_from_time, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from_clip int64
 		to_clip   int64
 	}{from_clip, to_clip})
@@ -587,7 +589,7 @@ Return the destination time position for a transition (see [AddTransition]).
 */
 //go:nosplit
 func (self class) GetTransitionToTime(from_clip int64, to_clip int64) TransitionToTime { //gd:AudioStreamInteractive.get_transition_to_time
-	var r_ret = gdextension.Call[TransitionToTime](gd.ObjectChecked(self.AsObject()), methods.get_transition_to_time, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[TransitionToTime](gd.ObjectChecked(self.AsObject()), methods.get_transition_to_time, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from_clip int64
 		to_clip   int64
 	}{from_clip, to_clip})
@@ -602,7 +604,7 @@ Return the mode for a transition (see [AddTransition]).
 */
 //go:nosplit
 func (self class) GetTransitionFadeMode(from_clip int64, to_clip int64) FadeMode { //gd:AudioStreamInteractive.get_transition_fade_mode
-	var r_ret = gdextension.Call[FadeMode](gd.ObjectChecked(self.AsObject()), methods.get_transition_fade_mode, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[FadeMode](gd.ObjectChecked(self.AsObject()), methods.get_transition_fade_mode, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from_clip int64
 		to_clip   int64
 	}{from_clip, to_clip})
@@ -617,7 +619,7 @@ Return the time (in beats) for a transition (see [AddTransition]).
 */
 //go:nosplit
 func (self class) GetTransitionFadeBeats(from_clip int64, to_clip int64) float64 { //gd:AudioStreamInteractive.get_transition_fade_beats
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_transition_fade_beats, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_transition_fade_beats, gdextension.SizeFloat|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from_clip int64
 		to_clip   int64
 	}{from_clip, to_clip})
@@ -632,7 +634,7 @@ Return whether a transition uses the filler clip functionality (see [AddTransiti
 */
 //go:nosplit
 func (self class) IsTransitionUsingFillerClip(from_clip int64, to_clip int64) bool { //gd:AudioStreamInteractive.is_transition_using_filler_clip
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_transition_using_filler_clip, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_transition_using_filler_clip, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from_clip int64
 		to_clip   int64
 	}{from_clip, to_clip})
@@ -647,7 +649,7 @@ Return the filler clip for a transition (see [AddTransition]).
 */
 //go:nosplit
 func (self class) GetTransitionFillerClip(from_clip int64, to_clip int64) int64 { //gd:AudioStreamInteractive.get_transition_filler_clip
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_transition_filler_clip, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_transition_filler_clip, gdextension.SizeInt|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from_clip int64
 		to_clip   int64
 	}{from_clip, to_clip})
@@ -662,7 +664,7 @@ Return whether a transition uses the hold previous functionality (see [AddTransi
 */
 //go:nosplit
 func (self class) IsTransitionHoldingPrevious(from_clip int64, to_clip int64) bool { //gd:AudioStreamInteractive.is_transition_holding_previous
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_transition_holding_previous, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_transition_holding_previous, gdextension.SizeBool|(gdextension.SizeInt<<4)|(gdextension.SizeInt<<8), &struct {
 		from_clip int64
 		to_clip   int64
 	}{from_clip, to_clip})

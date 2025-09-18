@@ -15,6 +15,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +50,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -94,7 +96,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -187,14 +189,14 @@ func (self Instance) SetProfile(value SkeletonProfile.Instance) {
 
 //go:nosplit
 func (self class) GetProfile() [1]gdclass.SkeletonProfile { //gd:BoneMap.get_profile
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_profile, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_profile, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.SkeletonProfile{gd.PointerWithOwnershipTransferredToGo[gdclass.SkeletonProfile](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetProfile(profile [1]gdclass.SkeletonProfile) { //gd:BoneMap.set_profile
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_profile, 0|(gdextension.SizeObject<<4), &struct{ profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(profile[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_profile, 0|(gdextension.SizeObject<<4), &struct{ profile gdextension.Object }{gdextension.Object(gd.ObjectChecked(profile[0].AsObject()))})
 }
 
 /*
@@ -204,7 +206,7 @@ In the retargeting process, the returned bone name is the bone name of the sourc
 */
 //go:nosplit
 func (self class) GetSkeletonBoneName(profile_bone_name String.Name) String.Name { //gd:BoneMap.get_skeleton_bone_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_bone_name, gdextension.SizeStringName|(gdextension.SizeStringName<<4), &struct{ profile_bone_name gdextension.StringName }{pointers.Get(gd.InternalStringName(profile_bone_name))})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.get_skeleton_bone_name, gdextension.SizeStringName|(gdextension.SizeStringName<<4), &struct{ profile_bone_name gdextension.StringName }{pointers.Get(gd.InternalStringName(profile_bone_name))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }
@@ -216,7 +218,7 @@ In the retargeting process, the setting bone name is the bone name of the source
 */
 //go:nosplit
 func (self class) SetSkeletonBoneName(profile_bone_name String.Name, skeleton_bone_name String.Name) { //gd:BoneMap.set_skeleton_bone_name
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton_bone_name, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_skeleton_bone_name, 0|(gdextension.SizeStringName<<4)|(gdextension.SizeStringName<<8), &struct {
 		profile_bone_name  gdextension.StringName
 		skeleton_bone_name gdextension.StringName
 	}{pointers.Get(gd.InternalStringName(profile_bone_name)), pointers.Get(gd.InternalStringName(skeleton_bone_name))})
@@ -229,7 +231,7 @@ In the retargeting process, the returned bone name is the bone name of the targe
 */
 //go:nosplit
 func (self class) FindProfileBoneName(skeleton_bone_name String.Name) String.Name { //gd:BoneMap.find_profile_bone_name
-	var r_ret = gdextension.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_profile_bone_name, gdextension.SizeStringName|(gdextension.SizeStringName<<4), &struct{ skeleton_bone_name gdextension.StringName }{pointers.Get(gd.InternalStringName(skeleton_bone_name))})
+	var r_ret = noescape.Call[gdextension.StringName](gd.ObjectChecked(self.AsObject()), methods.find_profile_bone_name, gdextension.SizeStringName|(gdextension.SizeStringName<<4), &struct{ skeleton_bone_name gdextension.StringName }{pointers.Get(gd.InternalStringName(skeleton_bone_name))})
 	var ret = String.Name(String.Via(gd.StringNameProxy{}, pointers.Pack(pointers.New[gd.StringName](r_ret))))
 	return ret
 }

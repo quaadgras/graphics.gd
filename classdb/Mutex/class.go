@@ -24,6 +24,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -56,6 +57,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -99,7 +101,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -202,7 +204,7 @@ Note: This function returns without blocking if the thread already has ownership
 */
 //go:nosplit
 func (self class) Lock() { //gd:Mutex.lock
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.lock, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.lock, 0, &struct{}{})
 }
 
 /*
@@ -214,7 +216,7 @@ Note: This function returns true if the thread already has ownership of the mute
 */
 //go:nosplit
 func (self class) TryLock() bool { //gd:Mutex.try_lock
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.try_lock, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.try_lock, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -233,7 +235,7 @@ Warning: Calling [Unlock] more times that [Lock] on a given thread, thus ending 
 */
 //go:nosplit
 func (self class) Unlock() { //gd:Mutex.unlock
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unlock, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.unlock, 0, &struct{}{})
 }
 func (self class) AsMutex() Advanced         { return Advanced{pointers.AsA[gdclass.Mutex](self[0])} }
 func (self Instance) AsMutex() Instance      { return Instance{pointers.AsA[gdclass.Mutex](self[0])} }

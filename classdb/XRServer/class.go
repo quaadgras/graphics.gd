@@ -11,6 +11,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -46,6 +47,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -108,7 +110,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -311,26 +313,26 @@ func SetPrimaryInterface(value XRInterface.Instance) {
 
 //go:nosplit
 func (self class) GetWorldScale() float64 { //gd:XRServer.get_world_scale
-	var r_ret = gdextension.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_world_scale, gdextension.SizeFloat, &struct{}{})
+	var r_ret = noescape.Call[float64](gd.ObjectChecked(self.AsObject()), methods.get_world_scale, gdextension.SizeFloat, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWorldScale(scale float64) { //gd:XRServer.set_world_scale
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_scale, 0|(gdextension.SizeFloat<<4), &struct{ scale float64 }{scale})
 }
 
 //go:nosplit
 func (self class) GetWorldOrigin() Transform3D.BasisOrigin { //gd:XRServer.get_world_origin
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_world_origin, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_world_origin, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetWorldOrigin(world_origin Transform3D.BasisOrigin) { //gd:XRServer.set_world_origin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_origin, 0|(gdextension.SizeTransform3D<<4), &struct{ world_origin Transform3D.BasisOrigin }{gd.Transposed(world_origin)})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_world_origin, 0|(gdextension.SizeTransform3D<<4), &struct{ world_origin Transform3D.BasisOrigin }{gd.Transposed(world_origin)})
 }
 
 /*
@@ -338,7 +340,7 @@ Returns the reference frame transform. Mostly used internally and exposed for GD
 */
 //go:nosplit
 func (self class) GetReferenceFrame() Transform3D.BasisOrigin { //gd:XRServer.get_reference_frame
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_reference_frame, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_reference_frame, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
@@ -348,7 +350,7 @@ Clears the reference frame that was set by previous calls to [CenterOnHmd].
 */
 //go:nosplit
 func (self class) ClearReferenceFrame() { //gd:XRServer.clear_reference_frame
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_reference_frame, 0, &struct{}{})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.clear_reference_frame, 0, &struct{}{})
 }
 
 /*
@@ -366,7 +368,7 @@ You should call this method after a few seconds have passed. For example, when t
 */
 //go:nosplit
 func (self class) CenterOnHmd(rotation_mode RotationMode, keep_height bool) { //gd:XRServer.center_on_hmd
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.center_on_hmd, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.center_on_hmd, 0|(gdextension.SizeInt<<4)|(gdextension.SizeBool<<8), &struct {
 		rotation_mode RotationMode
 		keep_height   bool
 	}{rotation_mode, keep_height})
@@ -377,19 +379,19 @@ Returns the primary interface's transformation.
 */
 //go:nosplit
 func (self class) GetHmdTransform() Transform3D.BasisOrigin { //gd:XRServer.get_hmd_transform
-	var r_ret = gdextension.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_hmd_transform, gdextension.SizeTransform3D, &struct{}{})
+	var r_ret = noescape.Call[Transform3D.BasisOrigin](gd.ObjectChecked(self.AsObject()), methods.get_hmd_transform, gdextension.SizeTransform3D, &struct{}{})
 	var ret = gd.Transposed(r_ret)
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCameraLockedToOrigin(enabled bool) { //gd:XRServer.set_camera_locked_to_origin
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_locked_to_origin, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_camera_locked_to_origin, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsCameraLockedToOrigin() bool { //gd:XRServer.is_camera_locked_to_origin
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_camera_locked_to_origin, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_camera_locked_to_origin, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -401,7 +403,7 @@ Registers an [XRInterface] object.
 */
 //go:nosplit
 func (self class) AddInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.add_interface
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))})
 }
 
 /*
@@ -409,7 +411,7 @@ Returns the number of interfaces currently registered with the AR/VR server. If 
 */
 //go:nosplit
 func (self class) GetInterfaceCount() int64 { //gd:XRServer.get_interface_count
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_interface_count, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_interface_count, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -419,7 +421,7 @@ Removes this 'interface'.
 */
 //go:nosplit
 func (self class) RemoveInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.remove_interface
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))})
 }
 
 /*
@@ -427,7 +429,7 @@ Returns the interface registered at the given 'idx' index in the list of interfa
 */
 //go:nosplit
 func (self class) GetInterface(idx int64) [1]gdclass.XRInterface { //gd:XRServer.get_interface
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_interface, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_interface, gdextension.SizeObject|(gdextension.SizeInt<<4), &struct{ idx int64 }{idx})
 	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret)}
 	return ret
 }
@@ -437,7 +439,7 @@ Returns a list of available interfaces the ID and name of each interface.
 */
 //go:nosplit
 func (self class) GetInterfaces() Array.Contains[Dictionary.Any] { //gd:XRServer.get_interfaces
-	var r_ret = gdextension.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_interfaces, gdextension.SizeArray, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Array](gd.ObjectChecked(self.AsObject()), methods.get_interfaces, gdextension.SizeArray, &struct{}{})
 	var ret = Array.Through(gd.ArrayProxy[Dictionary.Any]{}, pointers.Pack(pointers.New[gd.Array](r_ret)))
 	return ret
 }
@@ -447,7 +449,7 @@ Finds an interface by its 'name'. For example, if your project uses capabilities
 */
 //go:nosplit
 func (self class) FindInterface(name String.Readable) [1]gdclass.XRInterface { //gd:XRServer.find_interface
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_interface, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.find_interface, gdextension.SizeObject|(gdextension.SizeString<<4), &struct{ name gdextension.String }{pointers.Get(gd.InternalString(name))})
 	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret)}
 	return ret
 }
@@ -459,7 +461,7 @@ Registers a new [XRTracker] that tracks a physical object.
 */
 //go:nosplit
 func (self class) AddTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.add_tracker
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tracker, 0|(gdextension.SizeObject<<4), &struct{ tracker gdextension.Object }{gdextension.Object(gd.ObjectChecked(tracker[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.add_tracker, 0|(gdextension.SizeObject<<4), &struct{ tracker gdextension.Object }{gdextension.Object(gd.ObjectChecked(tracker[0].AsObject()))})
 }
 
 /*
@@ -467,7 +469,7 @@ Removes this 'tracker'.
 */
 //go:nosplit
 func (self class) RemoveTracker(tracker [1]gdclass.XRTracker) { //gd:XRServer.remove_tracker
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_tracker, 0|(gdextension.SizeObject<<4), &struct{ tracker gdextension.Object }{gdextension.Object(gd.ObjectChecked(tracker[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.remove_tracker, 0|(gdextension.SizeObject<<4), &struct{ tracker gdextension.Object }{gdextension.Object(gd.ObjectChecked(tracker[0].AsObject()))})
 }
 
 /*
@@ -475,7 +477,7 @@ Returns a dictionary of trackers for 'tracker_types'.
 */
 //go:nosplit
 func (self class) GetTrackers(tracker_types int64) Dictionary.Any { //gd:XRServer.get_trackers
-	var r_ret = gdextension.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_trackers, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ tracker_types int64 }{tracker_types})
+	var r_ret = noescape.Call[gdextension.Dictionary](gd.ObjectChecked(self.AsObject()), methods.get_trackers, gdextension.SizeDictionary|(gdextension.SizeInt<<4), &struct{ tracker_types int64 }{tracker_types})
 	var ret = Dictionary.Through(gd.DictionaryProxy[variant.Any, variant.Any]{}, pointers.Pack(pointers.New[gd.Dictionary](r_ret)))
 	return ret
 }
@@ -485,21 +487,21 @@ Returns the positional tracker with the given 'tracker_name'.
 */
 //go:nosplit
 func (self class) GetTracker(tracker_name String.Name) [1]gdclass.XRTracker { //gd:XRServer.get_tracker
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tracker, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_tracker, gdextension.SizeObject|(gdextension.SizeStringName<<4), &struct{ tracker_name gdextension.StringName }{pointers.Get(gd.InternalStringName(tracker_name))})
 	var ret = [1]gdclass.XRTracker{gd.PointerWithOwnershipTransferredToGo[gdclass.XRTracker](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) GetPrimaryInterface() [1]gdclass.XRInterface { //gd:XRServer.get_primary_interface
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_primary_interface, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_primary_interface, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.XRInterface{gd.PointerWithOwnershipTransferredToGo[gdclass.XRInterface](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetPrimaryInterface(intf [1]gdclass.XRInterface) { //gd:XRServer.set_primary_interface
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_primary_interface, 0|(gdextension.SizeObject<<4), &struct{ intf gdextension.Object }{gdextension.Object(gd.ObjectChecked(intf[0].AsObject()))})
 }
 func OnReferenceFrameChanged(cb func(), flags ...Signal.Flags) {
 	var flags_together Signal.Flags

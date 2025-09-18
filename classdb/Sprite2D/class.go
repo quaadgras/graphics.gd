@@ -10,6 +10,7 @@ import "slices"
 import "graphics.gd/internal/pointers"
 import "graphics.gd/internal/callframe"
 import "graphics.gd/internal/gdextension"
+import "graphics.gd/internal/noescape"
 import gd "graphics.gd/internal"
 import "graphics.gd/internal/gdclass"
 import "graphics.gd/variant"
@@ -49,6 +50,7 @@ var _ variant.Any
 var _ Callable.Function
 var _ Dictionary.Any
 var _ RID.Any
+var _ noescape.Variant
 var _ String.Readable
 var _ Path.ToNode
 var _ Packed.Bytes
@@ -115,7 +117,7 @@ func init() {
 		gd.LinkMethods(sname, &methods, false)
 	})
 	gd.RegisterCleanup(func() {
-		gdextension.Free(gdextension.TypeStringName, &sname)
+		noescape.Free(gdextension.TypeStringName, &sname)
 	})
 }
 func (self Instance) ID() ID { return ID(Object.Instance(self.AsObject()).ID()) }
@@ -288,72 +290,72 @@ func (self Instance) SetRegionFilterClipEnabled(value bool) {
 
 //go:nosplit
 func (self class) SetTexture(texture [1]gdclass.Texture2D) { //gd:Sprite2D.set_texture
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_texture, 0|(gdextension.SizeObject<<4), &struct{ texture gdextension.Object }{gdextension.Object(gd.ObjectChecked(texture[0].AsObject()))})
 }
 
 //go:nosplit
 func (self class) GetTexture() [1]gdclass.Texture2D { //gd:Sprite2D.get_texture
-	var r_ret = gdextension.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
+	var r_ret = noescape.Call[gdextension.Object](gd.ObjectChecked(self.AsObject()), methods.get_texture, gdextension.SizeObject, &struct{}{})
 	var ret = [1]gdclass.Texture2D{gd.PointerWithOwnershipTransferredToGo[gdclass.Texture2D](r_ret)}
 	return ret
 }
 
 //go:nosplit
 func (self class) SetCentered(centered bool) { //gd:Sprite2D.set_centered
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_centered, 0|(gdextension.SizeBool<<4), &struct{ centered bool }{centered})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_centered, 0|(gdextension.SizeBool<<4), &struct{ centered bool }{centered})
 }
 
 //go:nosplit
 func (self class) IsCentered() bool { //gd:Sprite2D.is_centered
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_centered, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_centered, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetOffset(offset Vector2.XY) { //gd:Sprite2D.set_offset
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_offset, 0|(gdextension.SizeVector2<<4), &struct{ offset Vector2.XY }{offset})
 }
 
 //go:nosplit
 func (self class) GetOffset() Vector2.XY { //gd:Sprite2D.get_offset
-	var r_ret = gdextension.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, &struct{}{})
+	var r_ret = noescape.Call[Vector2.XY](gd.ObjectChecked(self.AsObject()), methods.get_offset, gdextension.SizeVector2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlipH(flip_h bool) { //gd:Sprite2D.set_flip_h
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_h, 0|(gdextension.SizeBool<<4), &struct{ flip_h bool }{flip_h})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_h, 0|(gdextension.SizeBool<<4), &struct{ flip_h bool }{flip_h})
 }
 
 //go:nosplit
 func (self class) IsFlippedH() bool { //gd:Sprite2D.is_flipped_h
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_h, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_h, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFlipV(flip_v bool) { //gd:Sprite2D.set_flip_v
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_v, 0|(gdextension.SizeBool<<4), &struct{ flip_v bool }{flip_v})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_flip_v, 0|(gdextension.SizeBool<<4), &struct{ flip_v bool }{flip_v})
 }
 
 //go:nosplit
 func (self class) IsFlippedV() bool { //gd:Sprite2D.is_flipped_v
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_v, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_flipped_v, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRegionEnabled(enabled bool) { //gd:Sprite2D.set_region_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsRegionEnabled() bool { //gd:Sprite2D.is_region_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_region_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_region_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -365,79 +367,79 @@ Note: It also returns false, if the sprite's texture is null or if the given pos
 */
 //go:nosplit
 func (self class) IsPixelOpaque(pos Vector2.XY) bool { //gd:Sprite2D.is_pixel_opaque
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pixel_opaque, gdextension.SizeBool|(gdextension.SizeVector2<<4), &struct{ pos Vector2.XY }{pos})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_pixel_opaque, gdextension.SizeBool|(gdextension.SizeVector2<<4), &struct{ pos Vector2.XY }{pos})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRegionRect(rect Rect2.PositionSize) { //gd:Sprite2D.set_region_rect
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region_rect, 0|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region_rect, 0|(gdextension.SizeRect2<<4), &struct{ rect Rect2.PositionSize }{rect})
 }
 
 //go:nosplit
 func (self class) GetRegionRect() Rect2.PositionSize { //gd:Sprite2D.get_region_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_region_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetRegionFilterClipEnabled(enabled bool) { //gd:Sprite2D.set_region_filter_clip_enabled
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region_filter_clip_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_region_filter_clip_enabled, 0|(gdextension.SizeBool<<4), &struct{ enabled bool }{enabled})
 }
 
 //go:nosplit
 func (self class) IsRegionFilterClipEnabled() bool { //gd:Sprite2D.is_region_filter_clip_enabled
-	var r_ret = gdextension.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_region_filter_clip_enabled, gdextension.SizeBool, &struct{}{})
+	var r_ret = noescape.Call[bool](gd.ObjectChecked(self.AsObject()), methods.is_region_filter_clip_enabled, gdextension.SizeBool, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrame(frame_ int64) { //gd:Sprite2D.set_frame
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame, 0|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame, 0|(gdextension.SizeInt<<4), &struct{ frame_ int64 }{frame_})
 }
 
 //go:nosplit
 func (self class) GetFrame() int64 { //gd:Sprite2D.get_frame
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_frame, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetFrameCoords(coords Vector2i.XY) { //gd:Sprite2D.set_frame_coords
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame_coords, 0|(gdextension.SizeVector2i<<4), &struct{ coords Vector2i.XY }{coords})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_frame_coords, 0|(gdextension.SizeVector2i<<4), &struct{ coords Vector2i.XY }{coords})
 }
 
 //go:nosplit
 func (self class) GetFrameCoords() Vector2i.XY { //gd:Sprite2D.get_frame_coords
-	var r_ret = gdextension.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_frame_coords, gdextension.SizeVector2i, &struct{}{})
+	var r_ret = noescape.Call[Vector2i.XY](gd.ObjectChecked(self.AsObject()), methods.get_frame_coords, gdextension.SizeVector2i, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetVframes(vframes int64) { //gd:Sprite2D.set_vframes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vframes, 0|(gdextension.SizeInt<<4), &struct{ vframes int64 }{vframes})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_vframes, 0|(gdextension.SizeInt<<4), &struct{ vframes int64 }{vframes})
 }
 
 //go:nosplit
 func (self class) GetVframes() int64 { //gd:Sprite2D.get_vframes
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_vframes, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_vframes, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
 
 //go:nosplit
 func (self class) SetHframes(hframes int64) { //gd:Sprite2D.set_hframes
-	gdextension.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hframes, 0|(gdextension.SizeInt<<4), &struct{ hframes int64 }{hframes})
+	noescape.Call[struct{}](gd.ObjectChecked(self.AsObject()), methods.set_hframes, 0|(gdextension.SizeInt<<4), &struct{ hframes int64 }{hframes})
 }
 
 //go:nosplit
 func (self class) GetHframes() int64 { //gd:Sprite2D.get_hframes
-	var r_ret = gdextension.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_hframes, gdextension.SizeInt, &struct{}{})
+	var r_ret = noescape.Call[int64](gd.ObjectChecked(self.AsObject()), methods.get_hframes, gdextension.SizeInt, &struct{}{})
 	var ret = r_ret
 	return ret
 }
@@ -453,7 +455,7 @@ Example: Detect if the Sprite2D was clicked:
 */
 //go:nosplit
 func (self class) GetRect() Rect2.PositionSize { //gd:Sprite2D.get_rect
-	var r_ret = gdextension.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
+	var r_ret = noescape.Call[Rect2.PositionSize](gd.ObjectChecked(self.AsObject()), methods.get_rect, gdextension.SizeRect2, &struct{}{})
 	var ret = r_ret
 	return ret
 }

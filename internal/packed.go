@@ -6,6 +6,7 @@ import (
 
 	"graphics.gd/internal/gdextension"
 	"graphics.gd/internal/gdmemory"
+	"graphics.gd/internal/noescape"
 	"graphics.gd/internal/pointers"
 	StringType "graphics.gd/variant/String"
 )
@@ -70,7 +71,7 @@ func (p PackedByteArray) Cap() int { return int(p.Size()) }
 
 func (p PackedByteArray) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		gdextension.Free(gdextension.TypePackedByteArray, &ptr)
+		noescape.Free(gdextension.TypePackedByteArray, &ptr)
 	}
 }
 
@@ -83,7 +84,7 @@ func (p PackedInt32Array) SetIndex(idx Int, value int32) {
 
 func (p PackedInt32Array) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		gdextension.Free(gdextension.TypePackedInt32Array, &ptr)
+		noescape.Free(gdextension.TypePackedInt32Array, &ptr)
 	}
 }
 
@@ -102,7 +103,7 @@ func (p PackedInt64Array) SetIndex(idx Int, value int64) {
 
 func (p PackedInt64Array) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		gdextension.Free(gdextension.TypePackedInt64Array, &ptr)
+		noescape.Free(gdextension.TypePackedInt64Array, &ptr)
 	}
 }
 
@@ -119,7 +120,7 @@ func (p PackedFloat32Array) SetIndex(idx Int, value float32) {
 
 func (p PackedFloat32Array) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		gdextension.Free(gdextension.TypePackedFloat32Array, &ptr)
+		noescape.Free(gdextension.TypePackedFloat32Array, &ptr)
 	}
 }
 
@@ -136,7 +137,7 @@ func (p PackedFloat64Array) SetIndex(idx Int, value float64) {
 
 func (p PackedFloat64Array) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		gdextension.Free(gdextension.TypePackedFloat64Array, &ptr)
+		noescape.Free(gdextension.TypePackedFloat64Array, &ptr)
 	}
 }
 
@@ -177,12 +178,12 @@ func (p PackedStringArray) AsSlice() []String {
 
 func (p PackedStringArray) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		gdextension.Free(gdextension.TypePackedStringArray, &ptr)
+		noescape.Free(gdextension.TypePackedStringArray, &ptr)
 	}
 }
 
 func (p PackedVector2Array) Index(idx Int) Vector2 {
-	return gdextension.IndexPacked(gdextension.Host.Packed.Vector2s.Access, pointers.Get(p), int(idx))
+	return noescape.IndexPacked(gdextension.Host.Packed.Vector2s.Access, pointers.Get(p), int(idx))
 }
 
 func (p PackedVector2Array) SetIndex(idx Int, value Vector2) {
@@ -191,7 +192,7 @@ func (p PackedVector2Array) SetIndex(idx Int, value Vector2) {
 
 func (p PackedVector2Array) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		gdextension.Free(gdextension.TypePackedVector2Array, &ptr)
+		noescape.Free(gdextension.TypePackedVector2Array, &ptr)
 	}
 }
 
@@ -199,7 +200,7 @@ func (p PackedVector2Array) Len() int { return int(p.Size()) }
 func (p PackedVector2Array) Cap() int { return int(p.Size()) }
 
 func (p PackedVector3Array) Index(idx Int) Vector3 {
-	return gdextension.IndexPacked(gdextension.Host.Packed.Vector3s.Access, pointers.Get(p), int(idx))
+	return noescape.IndexPacked(gdextension.Host.Packed.Vector3s.Access, pointers.Get(p), int(idx))
 }
 
 func (p PackedVector3Array) SetIndex(idx Int, value Vector3) {
@@ -208,7 +209,7 @@ func (p PackedVector3Array) SetIndex(idx Int, value Vector3) {
 
 func (p PackedVector3Array) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		gdextension.Free(gdextension.TypePackedVector3Array, &ptr)
+		noescape.Free(gdextension.TypePackedVector3Array, &ptr)
 	}
 }
 
@@ -216,7 +217,7 @@ func (p PackedVector3Array) Len() int { return int(p.Size()) }
 func (p PackedVector3Array) Cap() int { return int(p.Size()) }
 
 func (p PackedVector4Array) Index(idx Int) Vector4 {
-	return gdextension.IndexPacked(gdextension.Host.Packed.Vector4s.Access, pointers.Get(p), int(idx))
+	return noescape.IndexPacked(gdextension.Host.Packed.Vector4s.Access, pointers.Get(p), int(idx))
 }
 
 func (p PackedVector4Array) SetIndex(idx Int, value Vector4) {
@@ -225,7 +226,7 @@ func (p PackedVector4Array) SetIndex(idx Int, value Vector4) {
 
 func (p PackedVector4Array) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		gdextension.Free(gdextension.TypePackedVector4Array, &ptr)
+		noescape.Free(gdextension.TypePackedVector4Array, &ptr)
 	}
 }
 
@@ -233,7 +234,7 @@ func (p PackedVector4Array) Len() int { return int(p.Size()) }
 func (p PackedVector4Array) Cap() int { return int(p.Size()) }
 
 func (p PackedColorArray) Index(idx Int) Color {
-	return gdextension.IndexPacked(gdextension.Host.Packed.Colors.Access, pointers.Get(p), int(idx))
+	return noescape.IndexPacked(gdextension.Host.Packed.Colors.Access, pointers.Get(p), int(idx))
 }
 
 func (p PackedColorArray) SetIndex(idx Int, value Color) {
@@ -242,7 +243,7 @@ func (p PackedColorArray) SetIndex(idx Int, value Color) {
 
 func (p PackedColorArray) Free() {
 	if ptr, ok := pointers.End(p); ok {
-		gdextension.Free(gdextension.TypePackedColorArray, &ptr)
+		noescape.Free(gdextension.TypePackedColorArray, &ptr)
 	}
 }
 
@@ -250,7 +251,7 @@ func (p PackedColorArray) Len() int { return int(p.Size()) }
 func (p PackedColorArray) Cap() int { return int(p.Size()) }
 
 func NewPackedByteArray() PackedByteArray {
-	return pointers.New[PackedByteArray](gdextension.Make[gdextension.PackedArray[byte]](builtin.creation.PackedByteArray[0], 0, nil))
+	return pointers.New[PackedByteArray](noescape.Make[gdextension.PackedArray[byte]](builtin.creation.PackedByteArray[0], 0, nil))
 }
 
 // PackedByteSlice returns a [PackedByteArray] from a byte slice.
@@ -262,7 +263,7 @@ func NewPackedByteSlice(data []byte) PackedByteArray {
 }
 
 func NewPackedColorArray() PackedColorArray {
-	return pointers.New[PackedColorArray](gdextension.Make[gdextension.PackedArray[Color]](builtin.creation.PackedColorArray[0], 0, nil))
+	return pointers.New[PackedColorArray](noescape.Make[gdextension.PackedArray[Color]](builtin.creation.PackedColorArray[0], 0, nil))
 }
 
 func NewPackedColorSlice(data []Color) PackedColorArray {
@@ -273,7 +274,7 @@ func NewPackedColorSlice(data []Color) PackedColorArray {
 }
 
 func NewPackedFloat32Array() PackedFloat32Array {
-	return pointers.New[PackedFloat32Array](gdextension.Make[gdextension.PackedArray[float32]](builtin.creation.PackedFloat32Array[0], 0, nil))
+	return pointers.New[PackedFloat32Array](noescape.Make[gdextension.PackedArray[float32]](builtin.creation.PackedFloat32Array[0], 0, nil))
 }
 
 func NewPackedFloat32Slice(data []float32) PackedFloat32Array {
@@ -284,7 +285,7 @@ func NewPackedFloat32Slice(data []float32) PackedFloat32Array {
 }
 
 func NewPackedInt32Array() PackedInt32Array {
-	return pointers.New[PackedInt32Array](gdextension.Make[gdextension.PackedArray[int32]](builtin.creation.PackedInt32Array[0], 0, nil))
+	return pointers.New[PackedInt32Array](noescape.Make[gdextension.PackedArray[int32]](builtin.creation.PackedInt32Array[0], 0, nil))
 }
 
 func NewPackedInt32Slice(data []int32) PackedInt32Array {
@@ -295,7 +296,7 @@ func NewPackedInt32Slice(data []int32) PackedInt32Array {
 }
 
 func NewPackedStringArray() PackedStringArray {
-	return pointers.New[PackedStringArray](gdextension.Make[gdextension.PackedArray[gdextension.String]](builtin.creation.PackedStringArray[0], 0, nil))
+	return pointers.New[PackedStringArray](noescape.Make[gdextension.PackedArray[gdextension.String]](builtin.creation.PackedStringArray[0], 0, nil))
 }
 
 func NewPackedStringSlice(data []string) PackedStringArray {
@@ -318,7 +319,7 @@ func NewPackedReadableStringSlice(data []StringType.Readable) PackedStringArray 
 }
 
 func NewPackedVector2Array() PackedVector2Array {
-	return pointers.New[PackedVector2Array](gdextension.Make[gdextension.PackedArray[Vector2]](builtin.creation.PackedVector2Array[0], 0, nil))
+	return pointers.New[PackedVector2Array](noescape.Make[gdextension.PackedArray[Vector2]](builtin.creation.PackedVector2Array[0], 0, nil))
 }
 
 func NewPackedVector2Slice(data []Vector2) PackedVector2Array {
@@ -329,7 +330,7 @@ func NewPackedVector2Slice(data []Vector2) PackedVector2Array {
 }
 
 func NewPackedVector3Array() PackedVector3Array {
-	return pointers.New[PackedVector3Array](gdextension.Make[gdextension.PackedArray[Vector3]](builtin.creation.PackedVector3Array[0], 0, nil))
+	return pointers.New[PackedVector3Array](noescape.Make[gdextension.PackedArray[Vector3]](builtin.creation.PackedVector3Array[0], 0, nil))
 }
 
 func NewPackedVector3Slice(data []Vector3) PackedVector3Array {
@@ -340,7 +341,7 @@ func NewPackedVector3Slice(data []Vector3) PackedVector3Array {
 }
 
 func NewPackedVector4Array() PackedVector4Array {
-	return pointers.New[PackedVector4Array](gdextension.Make[gdextension.PackedArray[Vector4]](builtin.creation.PackedVector4Array[0], 0, nil))
+	return pointers.New[PackedVector4Array](noescape.Make[gdextension.PackedArray[Vector4]](builtin.creation.PackedVector4Array[0], 0, nil))
 }
 
 func NewPackedVector4Slice(data []Vector4) PackedVector4Array {
@@ -351,7 +352,7 @@ func NewPackedVector4Slice(data []Vector4) PackedVector4Array {
 }
 
 func NewPackedInt64Array() PackedInt64Array {
-	return pointers.New[PackedInt64Array](gdextension.Make[gdextension.PackedArray[int64]](builtin.creation.PackedInt64Array[0], 0, nil))
+	return pointers.New[PackedInt64Array](noescape.Make[gdextension.PackedArray[int64]](builtin.creation.PackedInt64Array[0], 0, nil))
 }
 
 func NewPackedInt64Slice(data []int64) PackedInt64Array {
@@ -362,7 +363,7 @@ func NewPackedInt64Slice(data []int64) PackedInt64Array {
 }
 
 func NewPackedFloat64Array() PackedFloat64Array {
-	return pointers.New[PackedFloat64Array](gdextension.Make[gdextension.PackedArray[float64]](builtin.creation.PackedFloat64Array[0], 0, nil))
+	return pointers.New[PackedFloat64Array](noescape.Make[gdextension.PackedArray[float64]](builtin.creation.PackedFloat64Array[0], 0, nil))
 }
 
 func NewPackedFloat64Slice(data []float64) PackedFloat64Array {
