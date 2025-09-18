@@ -223,8 +223,8 @@ func (self Instance) Subject() string {
 	return string(class(self).GetSubject().String())
 }
 
-func (self Instance) Names() map[any]any {
-	return map[any]any(gd.DictionaryAs[map[any]any](class(self).GetNames()))
+func (self Instance) Names() map[string]int {
+	return map[string]int(gd.DictionaryAs[map[string]int](class(self).GetNames()))
 }
 
 func (self Instance) Strings() []string {

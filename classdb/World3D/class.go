@@ -178,16 +178,16 @@ func (self Instance) SetCameraAttributes(value CameraAttributes.Instance) {
 	class(self).SetCameraAttributes(value)
 }
 
-func (self Instance) Space() RID.Any {
-	return RID.Any(RID.Any(class(self).GetSpace()))
+func (self Instance) Space() RID.Space3D {
+	return RID.Space3D(RID.Space3D(class(self).GetSpace()))
 }
 
-func (self Instance) NavigationMap() RID.Any {
-	return RID.Any(RID.Any(class(self).GetNavigationMap()))
+func (self Instance) NavigationMap() RID.NavigationMap3D {
+	return RID.NavigationMap3D(RID.NavigationMap3D(class(self).GetNavigationMap()))
 }
 
-func (self Instance) Scenario() RID.Any {
-	return RID.Any(RID.Any(class(self).GetScenario()))
+func (self Instance) Scenario() RID.Scenario {
+	return RID.Scenario(RID.Scenario(class(self).GetScenario()))
 }
 
 func (self Instance) DirectSpaceState() PhysicsDirectSpaceState3D.Instance {
